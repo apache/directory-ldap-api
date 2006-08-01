@@ -121,6 +121,9 @@ public class TwixTransformer implements TransformerSpi
     /** The logger */
     private static Logger log = LoggerFactory.getLogger( TwixTransformer.class );
 
+    /** A speedup for logger */
+    private static final boolean IS_DEBUG = log.isDebugEnabled();
+    
     /** the provider this transformer is part of */
     private final Provider provider;
 
@@ -658,7 +661,7 @@ public class TwixTransformer implements TransformerSpi
         LdapMessage twixMessage = ( LdapMessage ) obj;
         int messageId = twixMessage.getMessageId();
 
-        if ( log.isDebugEnabled() )
+        if ( IS_DEBUG )
         {
             log.debug( "Transforming LdapMessage <" + messageId + ", " + twixMessage.getMessageTypeName()
                 + "> from Twix to Snickers." );
@@ -1134,7 +1137,7 @@ public class TwixTransformer implements TransformerSpi
      */
     public Object transform( Message msg )
     {
-        if ( log.isDebugEnabled() )
+        if ( IS_DEBUG )
         {
             log.debug( "Transforming message type " + msg.getType() );
         }
@@ -1190,7 +1193,7 @@ public class TwixTransformer implements TransformerSpi
             transformControls( twixMessage, msg );
         }
 
-        if ( log.isDebugEnabled() )
+        if ( IS_DEBUG )
         {
             log.debug( "Transformed message : " + twixMessage );
         }
