@@ -546,8 +546,8 @@ public class LdapResult extends Asn1Object
                 sb.append( "Unknown error code : " ).append( resultCode );
         }
 
-        sb.append( "            Matched DN : '" ).append( matchedDN.toString() ).append( "'\n" );
-        sb.append( "            Error message : '" ).append( errorMessage.toString() ).append( "'\n" );
+        sb.append( "            Matched DN : '" ).append( matchedDN == null ? "": matchedDN.toString() ).append( "'\n" );
+        sb.append( "            Error message : '" ).append( errorMessage == null ? "" : errorMessage.toString() ).append( "'\n" );
 
         if ( referrals.size() != 0 )
         {
@@ -558,7 +558,7 @@ public class LdapResult extends Asn1Object
 
                 LdapURL referral = ( LdapURL ) referrals.get( i );
 
-                sb.append( "                Referral[" ).append( i ).append( "] :" ).append( referral.toString() )
+                sb.append( "                Referral[" ).append( i ).append( "] :" ).append( referral == null ? "" : referral.toString() )
                     .append( '\n' );
             }
         }
