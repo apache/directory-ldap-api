@@ -62,6 +62,7 @@ import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
 import org.apache.directory.shared.ldap.codec.search.SearchResultReference;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
 import org.apache.directory.shared.ldap.codec.search.controls.PSearchControl;
+import org.apache.directory.shared.ldap.codec.search.controls.SubEntryControl;
 import org.apache.directory.shared.ldap.codec.util.LdapString;
 import org.apache.directory.shared.ldap.codec.util.LdapStringEncodingException;
 import org.apache.directory.shared.ldap.codec.util.LdapURL;
@@ -102,6 +103,7 @@ import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.apache.directory.shared.ldap.message.SearchResponseDoneImpl;
 import org.apache.directory.shared.ldap.message.SearchResponseEntryImpl;
 import org.apache.directory.shared.ldap.message.SearchResponseReferenceImpl;
+import org.apache.directory.shared.ldap.message.SubentriesControl;
 import org.apache.directory.shared.ldap.message.UnbindRequestImpl;
 import org.apache.directory.shared.ldap.message.extended.GracefulShutdownRequest;
 import org.apache.directory.shared.ldap.message.spi.Provider;
@@ -650,7 +652,7 @@ public class TwixTransformer implements TransformerSpi
 
 
     /**
-     * Transform the Twix message to a Snickers message.
+     * Transform the Twix message to a codec neutral message.
      * 
      * @param obj
      *            the object to transform
@@ -754,6 +756,15 @@ public class TwixTransformer implements TransformerSpi
                     neutralPsearch.setCritical( twixControl.getCriticality() );
                     neutralPsearch.setValue( twixControl.getEncodedValue() );
                 }
+                else if ( twixControl.getControlValue() instanceof SubEntryControl )
+                {
+                    SubentriesControl neutralSubentriesControl = new SubentriesControl();
+                    SubEntryControl twixSubentriesControl = ( SubEntryControl ) twixControl.getControlValue();
+                    neutralControl = neutralSubentriesControl;
+                    neutralSubentriesControl.setVisibility( twixSubentriesControl.isVisible() );
+                    neutralSubentriesControl.setCritical( twixControl.getCriticality() );
+                    neutralSubentriesControl.setValue( twixControl.getEncodedValue() );
+                }
                 else if ( twixControl.getControlValue() instanceof byte[] )
                 {
                     neutralControl = new ControlImpl()
@@ -779,6 +790,32 @@ public class TwixTransformer implements TransformerSpi
                     // m_value
                     neutralControl.setValue( ( byte[] ) twixControl.getControlValue() );
                 }
+                else if ( twixControl.getControlValue() == null )
+                {
+                    neutralControl = new ControlImpl()
+                    {
+                        // Just to avoid a compilation warning !!!
+                        public static final long serialVersionUID = 1L;
+
+
+                        public byte[] getEncodedValue()
+                        {
+                            return null;
+                        }
+                    };
+
+                    // Twix : boolean criticality -> Snickers : boolean
+                    // m_isCritical
+                    neutralControl.setCritical( twixControl.getCriticality() );
+
+                    // Twix : OID controlType -> Snickers : String m_oid
+                    neutralControl.setType( twixControl.getControlType() );
+
+                    // Twix : OctetString controlValue -> Snickers : byte []
+                    // m_value
+                    neutralControl.setValue( ( byte[] ) twixControl.getControlValue() );
+                }
+                
 
                 snickersMessage.add( neutralControl );
             }
