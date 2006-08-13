@@ -259,6 +259,8 @@ public class RdnParser
      */
     private static String parseAttributeValue( String string, Position pos )
     {
+    	StringBuffer sb = new StringBuffer();
+    	
         char c = StringTools.charAt( string, pos.start );
         
         if ( c == '#' )
@@ -340,6 +342,18 @@ public class RdnParser
                     }
                     else
                     {
+                    	if ( nbChars == 1 ) 
+                    	{
+                    		sb.append( string.charAt( pos.end ) );
+                    	}
+                    	else 
+                    	{
+                    		byte b = (byte)((StringTools.HEX_VALUE[string.charAt( pos.end )] << 4) +
+                    		StringTools.HEX_VALUE[string.charAt( pos.end + 1 )]);
+                    		
+                    		sb.append( b );
+                    	}
+                    	
                         pos.end += nbChars;
                     }
                 }
@@ -656,7 +670,6 @@ public class RdnParser
         if ( rdn != null )
         {
             rdn.addAttributeTypeAndValue( type, value );
-            rdn.setUpName( dn.substring( start, pos.end )  );
             rdn.normalizeString();
             
             pos.start = pos.end;
@@ -664,7 +677,8 @@ public class RdnParser
         }
 
         parseNameComponents( dn, pos, rdn );
-        
+
+        rdn.setUpName( dn.substring( start, pos.end )  );
         pos.start = pos.end;
         return DNUtils.PARSING_OK;
     }
