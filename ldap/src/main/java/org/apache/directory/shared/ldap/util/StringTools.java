@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.io.FileFilter;
+import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -44,9 +45,9 @@ import javax.naming.InvalidNameException;
 public class StringTools
 {
     /** The default charset, because it's not provided by JDK 1.5 */
-    private static final String DEFAULT_CHARSET_JDK_1_4 = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
-    private static final String DEFAULT_CHARSET_JDK_1_5 = Charset.defaultCharset().name();
-    private static final String JAVA_VERSION = System.getProperty( "java.version" );
+	static String defaultCharset = null;
+	
+
     
     // ~ Static fields/initializers
     // -----------------------------------------------------------------
@@ -2617,21 +2618,30 @@ public class StringTools
     }
 
     /**
+     * Get the default charset
+     * 
      * @return The default charset
      */
     public static final String getDefaultCharsetName()
     {
-        if ( JAVA_VERSION.startsWith( "1.4" ) )
-        {
-            return DEFAULT_CHARSET_JDK_1_4;
-        }
-        else
-        {
-            return DEFAULT_CHARSET_JDK_1_5;
-        }
+    	if (null == defaultCharset) 
+    	{
+    		try 
+    		{
+    			// Try with jdk 1.5 method, if we are using a 1.5 jdk :)
+    			Method method = Charset.class.getMethod( "defaultCharset", new Class[0] );
+    			defaultCharset = ((Charset) method.invoke( null, new Object[0]) ).name();
+    		} 
+    		catch (Exception e) 
+    		{
+    			// fall back to old method
+    			defaultCharset = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
+    		}
+    	}
+
+    	return defaultCharset;
     }
-
-
+    
     /**
      * Decodes values of attributes in the DN encoded in hex into a UTF-8 
      * String.  RFC2253 allows a DN's attribute to be encoded in hex.
