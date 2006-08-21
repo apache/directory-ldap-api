@@ -2519,10 +2519,10 @@ public class LdapDNTest extends TestCase
    }
 
    /**
-    * Test for DIRSERVER-184
+    * Test for DIR-184
     * @throws NamingException
     */
-   public void testLeadingAndTrailingSpacesDIRSERVER_184() throws NamingException
+   public void testLeadingAndTrailingSpacesDIR_184() throws NamingException
    {
        LdapDN name = new LdapDN( "dn= \\ four spaces leading and 3 trailing \\  " );
 
@@ -2531,10 +2531,10 @@ public class LdapDNTest extends TestCase
    }
 
    /**
-    * Test for DIRSERVER-184
+    * Test for DIR-184
     * @throws NamingException
     */
-   public void testDIRSERVER_184_1() throws NamingException
+   public void testDIR_184_1() throws NamingException
    {
        try
        {
@@ -2547,10 +2547,10 @@ public class LdapDNTest extends TestCase
    }
 
    /**
-    * Test for DIRSERVER-184
+    * Test for DIR-184
     * @throws NamingException
     */
-   public void testDIRSERVER_184_2() throws NamingException
+   public void testDIR_184_2() throws NamingException
    {
        try
        {
@@ -2563,10 +2563,10 @@ public class LdapDNTest extends TestCase
    }
 
    /**
-    * Test for DIRSERVER-184
+    * Test for DIR-184
     * @throws NamingException
     */
-   public void testDIRSERVER_184_3() throws NamingException
+   public void testDIR_184_3() throws NamingException
    {
        LdapDN name = new LdapDN( "dn=\\# a leading pound" );
 
@@ -2575,38 +2575,38 @@ public class LdapDNTest extends TestCase
    }
 
    /**
-    * Test for DIRSERVER-184
+    * Test for DIR-184
     * @throws NamingException
     */
-   public void testDIRSERVER_184_4() throws NamingException
+   public void testDIR_184_4() throws NamingException
    {
-       LdapDN name = new LdapDN( "dn=a middle \\# pound" );
+       LdapDN name = new LdapDN( "dn=a middle # pound" );
 
        Assert.assertEquals( "dn=a middle # pound", name.toString() );
-       Assert.assertEquals( "dn=a middle \\# pound", name.getUpName() );
+       Assert.assertEquals( "dn=a middle # pound", name.getUpName() );
    }
 
    /**
-    * Test for DIRSERVER-184
+    * Test for DIR-184
     * @throws NamingException
     */
-   public void testDIRSERVER_184_5() throws NamingException
+   public void testDIR_184_5() throws NamingException
    {
-       LdapDN name = new LdapDN( "dn=a trailing pound \\#" );
+       LdapDN name = new LdapDN( "dn=a trailing pound #" );
 
        Assert.assertEquals( "dn=a trailing pound #", name.toString() );
-       Assert.assertEquals( "dn=a trailing pound \\#", name.getUpName() );
+       Assert.assertEquals( "dn=a trailing pound #", name.getUpName() );
    }
 
    /**
-    * Test for DIRSERVER-184
+    * Test for DIR-184
     * @throws NamingException
     */
-   public void testDIRSERVER_184_6() throws NamingException
+   public void testDIR_184_6() throws NamingException
    {
        try
        {
-           new LdapDN( "dn=a middle # pound" );
+           new LdapDN( "dn=a middle \\# pound" );
        }
        catch ( InvalidNameException ine )
        {
@@ -2615,14 +2615,14 @@ public class LdapDNTest extends TestCase
    }
 
    /**
-    * Test for DIRSERVER-184
+    * Test for DIR-184
     * @throws NamingException
     */
-   public void testDIRSERVER_184_7() throws NamingException
+   public void testDIR_184_7() throws NamingException
    {
        try
        {
-           new LdapDN( "dn=a trailing pound #" );
+           new LdapDN( "dn=a trailing pound \\#" );
        }
        catch ( InvalidNameException ine )
        {
