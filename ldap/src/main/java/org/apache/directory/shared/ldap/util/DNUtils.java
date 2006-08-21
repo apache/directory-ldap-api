@@ -145,8 +145,8 @@ public class DNUtils
         };
 
     /**
-     * '"' | '#' | '+' | ',' | [0-9] | ';' | '<' | '=' | '>' | [A-F] | '\' |
-     * [a-f] 0x22 | 0x23 | 0x2B | 0x2C | [0x30-0x39] | 0x3B | 0x3C | 0x3D | 0x3E |
+     * '"' | '#' | '+' | ',' | [0-9] | ';' | '<' | '=' | '>' | [A-F] | '\' | [a-f] 
+     * 0x22 | 0x23 | 0x2B | 0x2C | [0x30-0x39] | 0x3B | 0x3C | 0x3D | 0x3E |
      * [0x41-0x46] | 0x5C | [0x61-0x66]
      */
     private static final int[] STRING_CHAR =
@@ -159,7 +159,7 @@ public class DNUtils
             ONE_CHAR,      ONE_CHAR,      ONE_CHAR,      ONE_CHAR,     // 14 -> 17
             ONE_CHAR,      ONE_CHAR,      ONE_CHAR,      ONE_CHAR,     // 18 -> 1B
             ONE_CHAR,      ONE_CHAR,      ONE_CHAR,      ONE_CHAR,     // 1C -> 1F
-            ONE_CHAR,      ONE_CHAR,      PARSING_ERROR, PARSING_ERROR,// 20 -> 23
+            ONE_CHAR,      ONE_CHAR,      PARSING_ERROR, ONE_CHAR,     // 20 -> 23
             ONE_CHAR,      ONE_CHAR,      ONE_CHAR,      ONE_CHAR,     // 24 -> 27
             ONE_CHAR,      ONE_CHAR,      ONE_CHAR,      PARSING_ERROR,// 28 -> 2B
             PARSING_ERROR, ONE_CHAR,      ONE_CHAR,      ONE_CHAR,     // 2C -> 2F
