@@ -17,6 +17,7 @@
 package org.apache.directory.shared.ldap.codec;
 
 import org.apache.directory.shared.asn1.codec.DecoderException;
+import org.apache.directory.shared.ldap.message.Message;
 
 
 /**
@@ -37,7 +38,7 @@ public class ResponseCarryingException extends DecoderException
     private static final long serialVersionUID = 1L;
 
     /** The response with the error cause */
-    private LdapMessage response;
+    private Message response;
     
     /**
      * Creates a DecoderException
@@ -68,7 +69,7 @@ public class ResponseCarryingException extends DecoderException
      * Set a response if we get an exception while parsing the message
      * @param response the constructed response
      */
-    public void setResponse( LdapMessage response ) 
+    public void setResponse( Message response ) 
     {
         this.response = response;
     }
@@ -77,7 +78,7 @@ public class ResponseCarryingException extends DecoderException
      * Get the constructed response
      * @return The constructed response
      */
-    public LdapMessage getResponse()
+    public Message getResponse()
     {
         return response;
     }

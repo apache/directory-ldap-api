@@ -28,7 +28,6 @@ package org.apache.directory.shared.ldap.message;
 
 
 import org.apache.directory.shared.ldap.RuntimeMultiException;
-import org.apache.directory.shared.ldap.codec.LdapMessage;
 
 
 /**
@@ -48,7 +47,7 @@ public class ResponseCarryingMessageException extends RuntimeMultiException
     private static final long serialVersionUID = 1L;
 
     /** The response with the error cause */
-    private LdapMessage response;
+    private Message response;
     
     /**
      * Constructs an Exception without a message.
@@ -74,7 +73,7 @@ public class ResponseCarryingMessageException extends RuntimeMultiException
      * Set a response if we get an exception while parsing the message
      * @param response the constructed response
      */
-    public void setResponse( LdapMessage response ) 
+    public void setResponse( Message response ) 
     {
         this.response = response;
     }
@@ -83,7 +82,7 @@ public class ResponseCarryingMessageException extends RuntimeMultiException
      * Get the constructed response
      * @return The constructed response
      */
-    public LdapMessage getResponse()
+    public Message getResponse()
     {
         return response;
     }
