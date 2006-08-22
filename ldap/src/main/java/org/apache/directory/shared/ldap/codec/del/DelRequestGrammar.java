@@ -121,7 +121,7 @@ public class DelRequestGrammar extends AbstractGrammar implements IGrammar
                                 + ") is invalid";
                             log.error( "{} : {}", msg, ine.getMessage() );
                             
-                            DeleteResponseImpl message = new DeleteResponseImpl( delRequest.getMessageId() );
+                            DeleteResponseImpl message = new DeleteResponseImpl( ldapMessage.getMessageId() );
                             message.getLdapResult().setErrorMessage( "abc" );
                             message.getLdapResult().setResultCode( ResultCodeEnum.INVALIDDNSYNTAX );
                             message.getLdapResult().setMatchedDn( LdapDN.EMPTY_LDAPDN );
