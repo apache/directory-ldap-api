@@ -146,13 +146,16 @@ public class SearchResultEntryGrammar extends AbstractGrammar implements IGramma
                     }
                     else
                     {
+                        byte[] dnBytes = tlv.getValue().getData();
+
                         try
                         {
-                            objectName = new LdapDN( tlv.getValue().getData() );
+                            objectName = new LdapDN( dnBytes );
                         }
                         catch ( InvalidNameException ine )
                         {
-                            String msg = "The DN " + StringTools.dumpBytes( tlv.getValue().getData() )
+                            // This is for the client side. We will never decode LdapResult on the server
+                            String msg = "The DN " + StringTools.dumpBytes( dnBytes )
                                 + "is invalid : " + ine.getMessage();
                             log.error( "{} : {}", msg, ine.getMessage() );
                             throw new DecoderException( msg, ine );

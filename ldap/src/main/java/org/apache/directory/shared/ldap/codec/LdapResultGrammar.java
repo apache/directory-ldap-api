@@ -276,13 +276,20 @@ public class LdapResultGrammar extends AbstractGrammar implements IGrammar
                             || ( ldapResult.getResultCode() == LdapResultEnum.INVALID_DN_SYNTAX )
                             || ( ldapResult.getResultCode() == LdapResultEnum.ALIAS_DEREFERENCING_PROBLEM ) )
                         {
+                            byte[] dnBytes = tlv.getValue().getData();
+                            
                             try
                             {
-                                ldapResult.setMatchedDN( new LdapDN( tlv.getValue().getData() ) );
+                                ldapResult.setMatchedDN( new LdapDN( dnBytes ) );
                             }
                             catch ( InvalidNameException ine )
                             {
-                                log.error( "Incorrect DN given : " + StringTools.dumpBytes( tlv.getValue().getData() ) );
+                                // This is for the client side. We will never decode LdapResult on the server
+                                String msg = "Incorrect DN given : " + StringTools.utf8ToString( dnBytes ) + 
+                                    " (" + StringTools.dumpBytes( dnBytes )
+                                    + ") is invalid";
+                                log.error( "{} : {}", msg, ine.getMessage() );
+                            
                                 throw new DecoderException( "Incorrect DN given : " + ine.getMessage() );
                             }
                         }

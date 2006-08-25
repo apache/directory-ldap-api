@@ -34,8 +34,11 @@ import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.LdapStatesEnum;
+import org.apache.directory.shared.ldap.codec.ResponseCarryingException;
 import org.apache.directory.shared.ldap.codec.util.LdapString;
 import org.apache.directory.shared.ldap.codec.util.LdapStringEncodingException;
+import org.apache.directory.shared.ldap.message.CompareResponseImpl;
+import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.slf4j.Logger;
@@ -140,16 +143,29 @@ public class CompareRequestGrammar extends AbstractGrammar implements IGrammar
                     }
                     else
                     {
+                        byte[] dnBytes = tlv.getValue().getData();
+                        
                         try
                         {
-                            entry = new LdapDN( tlv.getValue().getData() );
+                            entry = new LdapDN( dnBytes );
                         }
                         catch ( InvalidNameException ine )
                         {
-                            String msg = "The DN to compare  (" + StringTools.dumpBytes( tlv.getValue().getData() )
-                                + ") is invalid";
+                            String msg = "Invalid DN given : " + StringTools.utf8ToString( dnBytes ) + 
+                                " (" + StringTools.dumpBytes( dnBytes ) + 
+                                ") is invalid";
                             log.error( "{} : {}", msg, ine.getMessage() );
-                            throw new DecoderException( msg, ine );
+            
+                            CompareResponseImpl message = new CompareResponseImpl( ldapMessage.getMessageId() );
+                            message.getLdapResult().setErrorMessage( msg );
+                            message.getLdapResult().setResultCode( ResultCodeEnum.INVALIDDNSYNTAX );
+                            message.getLdapResult().setMatchedDn( LdapDN.EMPTY_LDAPDN );
+            
+                            ResponseCarryingException exception = new ResponseCarryingException( msg, ine );
+            
+                            exception.setResponse( message );
+            
+                            throw exception;
                         }
 
                         compareRequest.setEntry( entry );
