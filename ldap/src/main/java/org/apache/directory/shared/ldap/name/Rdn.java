@@ -34,8 +34,6 @@ import javax.naming.directory.BasicAttributes;
 
 import org.apache.commons.collections.MultiHashMap;
 import org.apache.directory.shared.ldap.util.StringTools;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -112,9 +110,6 @@ public class Rdn implements Cloneable, Comparable, Serializable
     *      Declare Serial Version Uid</a>
     */
    private static final long serialVersionUID = 1L;
-
-   /** The LoggerFactory used by this class */
-   private static Logger log = LoggerFactory.getLogger( Rdn.class );
 
    /** The User Provided RDN */
    private String upName = null;
