@@ -130,6 +130,8 @@ public class BindRequestGrammar extends AbstractGrammar implements IGrammar
                     {
                         String msg = "The BindRequest must not be null";
                         log.error( msg );
+                     
+                        // This will generate a PROTOCOL_ERROR
                         throw new DecoderException( msg );
                     }
 
@@ -184,6 +186,7 @@ public class BindRequestGrammar extends AbstractGrammar implements IGrammar
                         log.error( "The version {} is invalid : {}. The version must be between (0 .. 127)",
                             StringTools.dumpBytes( value.getData() ), ide.getMessage() );
 
+                        // This will generate a PROTOCOL_ERROR
                         throw new DecoderException( ide.getMessage() );
                     }
 
@@ -235,16 +238,9 @@ public class BindRequestGrammar extends AbstractGrammar implements IGrammar
                                 + ") is invalid";
                             log.error( "{} : {}", msg, ine.getMessage() );
                         
-                            BindResponseImpl message = new BindResponseImpl( ldapMessage.getMessageId() );
-                            message.getLdapResult().setErrorMessage( msg );
-                            message.getLdapResult().setResultCode( ResultCodeEnum.INVALIDDNSYNTAX );
-                            message.getLdapResult().setMatchedDn( LdapDN.EMPTY_LDAPDN );
+                            BindResponseImpl response = new BindResponseImpl( ldapMessage.getMessageId() );
                         
-                            ResponseCarryingException exception = new ResponseCarryingException( msg, ine );
-                        
-                            exception.setResponse( message );
-                        
-                            throw exception;
+                            throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDDNSYNTAX, LdapDN.EMPTY_LDAPDN, ine );
                         }
 
                         bindRequestMessage.setName( name );
@@ -360,7 +356,8 @@ public class BindRequestGrammar extends AbstractGrammar implements IGrammar
                 {
 
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
-                    BindRequest bindRequestMessage = ldapMessageContainer.getLdapMessage().getBindRequest();
+                    LdapMessage ldapMessage = ldapMessageContainer.getLdapMessage();
+                    BindRequest bindRequestMessage = ldapMessage.getBindRequest();
                     TLV tlv = ldapMessageContainer.getCurrentTLV();
 
                     // We will check that the sasl is not null
@@ -368,7 +365,10 @@ public class BindRequestGrammar extends AbstractGrammar implements IGrammar
                     {
                         String msg = "The SaslCredential must not be null";
                         log.error( msg );
-                        throw new DecoderException( msg );
+                        
+                        BindResponseImpl response = new BindResponseImpl( ldapMessage.getMessageId() );
+                    
+                        throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDCREDENTIALS, LdapDN.EMPTY_LDAPDN, null );
                     }
 
                     // Create the SaslCredentials Object
