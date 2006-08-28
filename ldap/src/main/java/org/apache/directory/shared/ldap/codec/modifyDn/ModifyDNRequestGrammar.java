@@ -143,6 +143,7 @@ public class ModifyDNRequestGrammar extends AbstractGrammar implements IGrammar
 
                     if ( tlv.getLength().getLength() == 0 )
                     {
+                        // This will generate a PROTOCOL_ERROR
                         throw new DecoderException( "The entry must nut be null" );
                     }
                     else
@@ -213,7 +214,11 @@ public class ModifyDNRequestGrammar extends AbstractGrammar implements IGrammar
 
                     if ( tlv.getLength().getLength() == 0 )
                     {
-                        throw new DecoderException( "The newrdn must nut be null" );
+                        String msg = "The newrdn must nut be null";
+                        log.error(  msg  );
+                        
+                        ModifyDnResponseImpl response = new ModifyDnResponseImpl( ldapMessage.getMessageId() );
+                        throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDDNSYNTAX, modifyDNRequest.getEntry(), null );
                     }
                     else
                     {
@@ -232,7 +237,7 @@ public class ModifyDNRequestGrammar extends AbstractGrammar implements IGrammar
                             log.error( "{} : {}", msg, ine.getMessage() );
     
                             ModifyDnResponseImpl response = new ModifyDnResponseImpl( ldapMessage.getMessageId() );
-                            throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDDNSYNTAX, LdapDN.EMPTY_LDAPDN, ine );
+                            throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDDNSYNTAX, modifyDNRequest.getEntry(), ine );
                         }
 
                         modifyDNRequest.setNewRDN( newRdn );
@@ -291,6 +296,7 @@ public class ModifyDNRequestGrammar extends AbstractGrammar implements IGrammar
                         log.error( "The oldRDN flag {} is invalid : {}. It should be 0 or 255", StringTools
                             .dumpBytes( value.getData() ), bde.getMessage() );
 
+                        // This will generate a PROTOCOL_ERROR                        
                         throw new DecoderException( bde.getMessage() );
                     }
 
@@ -353,6 +359,7 @@ public class ModifyDNRequestGrammar extends AbstractGrammar implements IGrammar
 
                         if ( modifyDNRequest.isDeleteOldRDN() )
                         {
+                            // This will generate a PROTOCOL_ERROR
                             throw new DecoderException(
                                 "The new superior must nut be null if the flag 'delete old DN' is set to true" );
                         }
@@ -379,7 +386,7 @@ public class ModifyDNRequestGrammar extends AbstractGrammar implements IGrammar
                             log.error( "{} : {}", msg, ine.getMessage() );
     
                             ModifyDnResponseImpl response = new ModifyDnResponseImpl( ldapMessage.getMessageId() );
-                            throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDDNSYNTAX, LdapDN.EMPTY_LDAPDN, ine );
+                            throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDDNSYNTAX, modifyDNRequest.getEntry(), ine );
                         }
 
                         modifyDNRequest.setNewSuperior( newSuperior );
