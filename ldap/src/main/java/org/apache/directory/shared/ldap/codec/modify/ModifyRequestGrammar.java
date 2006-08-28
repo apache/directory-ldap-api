@@ -275,6 +275,8 @@ public class ModifyRequestGrammar extends AbstractGrammar implements IGrammar
                         String msg = "Invalid operation ( " + StringTools.dumpBytes( tlv.getValue().getData() )
                             + "), it should be 0, 1 or 2";
                         log.error( msg );
+                        
+                        // This will generate a PROTOCOL_ERROR
                         throw new DecoderException( msg );
                     }
 
@@ -347,7 +349,11 @@ public class ModifyRequestGrammar extends AbstractGrammar implements IGrammar
 
                     if ( tlv.getLength().getLength() == 0 )
                     {
-                        throw new DecoderException( "The type can't be null" );
+                        String msg = "The type can't be null";
+                        log.error( msg );
+                        
+                        ModifyResponseImpl response = new ModifyResponseImpl( ldapMessage.getMessageId() );
+                        throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDATTRIBUTESYNTAX, modifyRequest.getObject(), null );
                     }
                     else
                     {
@@ -358,8 +364,11 @@ public class ModifyRequestGrammar extends AbstractGrammar implements IGrammar
                         }
                         catch ( LdapStringEncodingException lsee )
                         {
-                            log.error( "Invalid type : {}", StringTools.dumpBytes( tlv.getValue().getData() ) );
-                            throw new DecoderException( "Invalid type : " + lsee.getMessage() );
+                            String msg = "Invalid type : " + StringTools.dumpBytes( tlv.getValue().getData() );
+                            log.error( msg );
+
+                            ModifyResponseImpl response = new ModifyResponseImpl( ldapMessage.getMessageId() );
+                            throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDATTRIBUTESYNTAX, modifyRequest.getObject(), lsee );
                         }
                     }
 
