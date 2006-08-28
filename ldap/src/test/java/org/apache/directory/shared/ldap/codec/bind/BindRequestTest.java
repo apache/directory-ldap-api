@@ -33,9 +33,11 @@ import org.apache.directory.shared.ldap.codec.Control;
 import org.apache.directory.shared.ldap.codec.LdapDecoder;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
+import org.apache.directory.shared.ldap.codec.ResponseCarryingException;
 import org.apache.directory.shared.ldap.codec.bind.BindRequest;
 import org.apache.directory.shared.ldap.codec.bind.SaslCredentials;
 import org.apache.directory.shared.ldap.codec.bind.SimpleAuthentication;
+import org.apache.directory.shared.ldap.message.Message;
 import org.apache.directory.shared.ldap.util.StringTools;
 
 import junit.framework.TestCase;
@@ -207,6 +209,55 @@ public class BindRequestTest extends TestCase
             ee.printStackTrace();
             fail( ee.getMessage() );
         }
+    }
+
+    /**
+     * Test the decoding of a BindRequest with Simple authentication and
+     * controls
+     */
+    public void testDecodeBindRequestBadDN()
+    {
+        Asn1Decoder ldapDecoder = new LdapDecoder();
+
+        ByteBuffer stream = ByteBuffer.allocate( 0x35 );
+        stream.put( new byte[]
+            { 0x30, 0x33, // LDAPMessage ::=SEQUENCE {
+                0x02, 0x01, 0x01, // messageID MessageID
+                0x60, 0x2E, // CHOICE { ..., bindRequest BindRequest, ...
+                // BindRequest ::= APPLICATION[0] SEQUENCE {
+                0x02, 0x01, 0x03, // version INTEGER (1..127),
+                0x04, 0x1F, // name LDAPDN,
+                'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
+                'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', ( byte ) 0x80, 0x08, // authentication
+                                                                                            // AuthenticationChoice
+                // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
+                // ...
+                'p', 'a', 's', 's', 'w', 'o', 'r', 'd' } );
+
+        stream.flip();
+
+        // Allocate a LdapMessage Container
+        IAsn1Container ldapMessageContainer = new LdapMessageContainer();
+
+        // Decode the BindRequest PDU
+        try
+        {
+            ldapDecoder.decode( stream, ldapMessageContainer );
+        }
+        catch ( DecoderException de )
+        {
+            assertTrue( de instanceof ResponseCarryingException );
+            Message response = ((ResponseCarryingException)de).getResponse();
+            assertTrue( response instanceof BindResponse );
+            return;
+        }
+        catch ( NamingException ne )
+        {
+            ne.printStackTrace();
+            fail( ne.getMessage() );
+        }
+
+        fail( "We should not reach this point" );
     }
 
 
@@ -870,7 +921,7 @@ public class BindRequestTest extends TestCase
         }
         catch ( DecoderException de )
         {
-            assertTrue( true );
+            assertTrue( de instanceof ResponseCarryingException );
             return;
         }
         catch ( NamingException ne )
