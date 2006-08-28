@@ -110,6 +110,7 @@ public class DelRequestGrammar extends AbstractGrammar implements IGrammar
 
                     if ( tlv.getLength().getLength() == 0 )
                     {
+                        // This will generate a PROTOCOL_ERROR
                         throw new DecoderException( "The entry must not be null" );
                     }
                     else
