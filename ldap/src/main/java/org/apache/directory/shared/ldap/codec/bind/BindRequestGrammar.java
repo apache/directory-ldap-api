@@ -167,13 +167,6 @@ public class BindRequestGrammar extends AbstractGrammar implements IGrammar
                     {
                         int version = IntegerDecoder.parse( value, 1, 127 );
 
-                        // will handle this in higher layers: bind handler
-//                        if ( version != 3 )
-//                        {
-//                            log.error( "The version {} is invalid : it must be 3", new Integer( version ) );
-//                            throw new DecoderException( "Ldap Version " + version + " is not supported" );
-//                        }
-
                         if ( IS_DEBUG )
                         {
                             log.debug( "Ldap version ", new Integer( version ) );
@@ -368,7 +361,8 @@ public class BindRequestGrammar extends AbstractGrammar implements IGrammar
                         
                         BindResponseImpl response = new BindResponseImpl( ldapMessage.getMessageId() );
                     
-                        throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDCREDENTIALS, LdapDN.EMPTY_LDAPDN, null );
+                        throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDCREDENTIALS, 
+                            bindRequestMessage.getName(), null );
                     }
 
                     // Create the SaslCredentials Object
@@ -415,7 +409,8 @@ public class BindRequestGrammar extends AbstractGrammar implements IGrammar
                 {
 
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
-                    BindRequest bindRequestMessage = ldapMessageContainer.getLdapMessage().getBindRequest();
+                    LdapMessage ldapMessage = ldapMessageContainer.getLdapMessage();
+                    BindRequest bindRequestMessage = ldapMessage.getBindRequest();
                     TLV tlv = ldapMessageContainer.getCurrentTLV();
 
                     // Get the SaslCredentials Object
@@ -435,9 +430,12 @@ public class BindRequestGrammar extends AbstractGrammar implements IGrammar
                         }
                         catch ( LdapStringEncodingException lsee )
                         {
-                            log.error( "Invalid mechanism : {} : {}",
-                                StringTools.dumpBytes( tlv.getValue().getData() ), lsee.getMessage() );
-                            throw new DecoderException( lsee.getMessage() );
+                            String msg = "Invalid mechanism : " + StringTools.dumpBytes( tlv.getValue().getData() );
+                            log.error( "{} : {}", msg, lsee.getMessage() );
+                            BindResponseImpl response = new BindResponseImpl( ldapMessage.getMessageId() );
+                            
+                            throw new ResponseCarryingException( msg, response, ResultCodeEnum.INAPPROPRIATEAUTHENTICATION, 
+                                bindRequestMessage.getName(), lsee );
                         }
                     }
 
