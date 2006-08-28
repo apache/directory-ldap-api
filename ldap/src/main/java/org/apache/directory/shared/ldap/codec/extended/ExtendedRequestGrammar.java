@@ -131,6 +131,7 @@ public class ExtendedRequestGrammar extends AbstractGrammar implements IGrammar
                     if ( tlv.getLength().getLength() == 0 )
                     {
                         log.error( "The name must not be null" );
+                        // This will generate a PROTOCOL_ERROR                        
                         throw new DecoderException( "The name must not be null" );
                     }
                     else
