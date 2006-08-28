@@ -156,16 +156,8 @@ public class CompareRequestGrammar extends AbstractGrammar implements IGrammar
                                 ") is invalid";
                             log.error( "{} : {}", msg, ine.getMessage() );
             
-                            CompareResponseImpl message = new CompareResponseImpl( ldapMessage.getMessageId() );
-                            message.getLdapResult().setErrorMessage( msg );
-                            message.getLdapResult().setResultCode( ResultCodeEnum.INVALIDDNSYNTAX );
-                            message.getLdapResult().setMatchedDn( LdapDN.EMPTY_LDAPDN );
-            
-                            ResponseCarryingException exception = new ResponseCarryingException( msg, ine );
-            
-                            exception.setResponse( message );
-            
-                            throw exception;
+                            CompareResponseImpl response = new CompareResponseImpl( ldapMessage.getMessageId() );
+                            throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDDNSYNTAX, LdapDN.EMPTY_LDAPDN, ine );
                         }
 
                         compareRequest.setEntry( entry );

@@ -166,16 +166,8 @@ public class AddRequestGrammar extends AbstractGrammar implements IGrammar
                                 ") is invalid";
                             log.error( "{} : {}", msg, ine.getMessage() );
                 
-                            AddResponseImpl message = new AddResponseImpl( ldapMessage.getMessageId() );
-                            message.getLdapResult().setErrorMessage( msg );
-                            message.getLdapResult().setResultCode( ResultCodeEnum.INVALIDDNSYNTAX );
-                            message.getLdapResult().setMatchedDn( LdapDN.EMPTY_LDAPDN );
-                
-                            ResponseCarryingException exception = new ResponseCarryingException( msg, ine );
-                
-                            exception.setResponse( message );
-                
-                            throw exception;
+                            AddResponseImpl response = new AddResponseImpl( ldapMessage.getMessageId() );
+                            throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDDNSYNTAX, LdapDN.EMPTY_LDAPDN, ine );
                         }
 
                         addRequest.setEntry( entry );

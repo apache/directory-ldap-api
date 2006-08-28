@@ -159,16 +159,8 @@ public class ModifyRequestGrammar extends AbstractGrammar implements IGrammar
                                 ") is invalid";
                             log.error( "{} : {}", msg, ine.getMessage() );
                     
-                            ModifyResponseImpl message = new ModifyResponseImpl( ldapMessage.getMessageId() );
-                            message.getLdapResult().setErrorMessage( msg );
-                            message.getLdapResult().setResultCode( ResultCodeEnum.INVALIDDNSYNTAX );
-                            message.getLdapResult().setMatchedDn( LdapDN.EMPTY_LDAPDN );
-                    
-                            ResponseCarryingException exception = new ResponseCarryingException( msg, ine );
-                    
-                            exception.setResponse( message );
-                    
-                            throw exception;
+                            ModifyResponseImpl response = new ModifyResponseImpl( ldapMessage.getMessageId() );
+                            throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDDNSYNTAX, LdapDN.EMPTY_LDAPDN, ine );
                         }
 
                         modifyRequest.setObject( object );

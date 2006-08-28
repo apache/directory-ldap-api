@@ -160,16 +160,8 @@ public class ModifyDNRequestGrammar extends AbstractGrammar implements IGrammar
                                 ") is invalid";
                             log.error( "{} : {}", msg, ine.getMessage() );
         
-                            ModifyDnResponseImpl message = new ModifyDnResponseImpl( ldapMessage.getMessageId() );
-                            message.getLdapResult().setErrorMessage( msg );
-                            message.getLdapResult().setResultCode( ResultCodeEnum.INVALIDDNSYNTAX );
-                            message.getLdapResult().setMatchedDn( LdapDN.EMPTY_LDAPDN );
-        
-                            ResponseCarryingException exception = new ResponseCarryingException( msg, ine );
-        
-                            exception.setResponse( message );
-        
-                            throw exception;
+                            ModifyDnResponseImpl response = new ModifyDnResponseImpl( ldapMessage.getMessageId() );
+                            throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDDNSYNTAX, LdapDN.EMPTY_LDAPDN, ine );
                         }
 
                         modifyDNRequest.setEntry( entry );
@@ -239,16 +231,8 @@ public class ModifyDNRequestGrammar extends AbstractGrammar implements IGrammar
                                 ") is invalid";
                             log.error( "{} : {}", msg, ine.getMessage() );
     
-                            ModifyDnResponseImpl message = new ModifyDnResponseImpl( ldapMessage.getMessageId() );
-                            message.getLdapResult().setErrorMessage( msg );
-                            message.getLdapResult().setResultCode( ResultCodeEnum.INVALIDDNSYNTAX );
-                            message.getLdapResult().setMatchedDn( LdapDN.EMPTY_LDAPDN );
-    
-                            ResponseCarryingException exception = new ResponseCarryingException( msg, ine );
-    
-                            exception.setResponse( message );
-    
-                            throw exception;
+                            ModifyDnResponseImpl response = new ModifyDnResponseImpl( ldapMessage.getMessageId() );
+                            throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDDNSYNTAX, LdapDN.EMPTY_LDAPDN, ine );
                         }
 
                         modifyDNRequest.setNewRDN( newRdn );
@@ -394,16 +378,8 @@ public class ModifyDNRequestGrammar extends AbstractGrammar implements IGrammar
                                 ") is invalid";
                             log.error( "{} : {}", msg, ine.getMessage() );
     
-                            ModifyDnResponseImpl message = new ModifyDnResponseImpl( ldapMessage.getMessageId() );
-                            message.getLdapResult().setErrorMessage( msg );
-                            message.getLdapResult().setResultCode( ResultCodeEnum.INVALIDDNSYNTAX );
-                            message.getLdapResult().setMatchedDn( LdapDN.EMPTY_LDAPDN );
-    
-                            ResponseCarryingException exception = new ResponseCarryingException( msg, ine );
-    
-                            exception.setResponse( message );
-    
-                            throw exception;
+                            ModifyDnResponseImpl response = new ModifyDnResponseImpl( ldapMessage.getMessageId() );
+                            throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDDNSYNTAX, LdapDN.EMPTY_LDAPDN, ine );
                         }
 
                         modifyDNRequest.setNewSuperior( newSuperior );
