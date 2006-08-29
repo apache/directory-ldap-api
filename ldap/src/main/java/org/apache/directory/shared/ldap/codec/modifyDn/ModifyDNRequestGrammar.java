@@ -214,7 +214,7 @@ public class ModifyDNRequestGrammar extends AbstractGrammar implements IGrammar
 
                     if ( tlv.getLength().getLength() == 0 )
                     {
-                        String msg = "The newrdn must nut be null";
+                        String msg = "The newrdn must not be null";
                         log.error(  msg  );
                         
                         ModifyDnResponseImpl response = new ModifyDnResponseImpl( ldapMessage.getMessageId() );
