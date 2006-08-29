@@ -462,8 +462,7 @@ public class ModifyRequestGrammar extends AbstractGrammar implements IGrammar
                     TLV tlv = ldapMessageContainer.getCurrentTLV();
 
                     // Store the value. It can't be null
-                    Object value = new byte[]
-                        {};
+                    Object value = StringTools.EMPTY_BYTES;
 
                     if ( tlv.getLength().getLength() == 0 )
                     {
