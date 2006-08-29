@@ -246,7 +246,7 @@ public class LdapControlTest extends TestCase
     }
 
     /**
-     * Test the decoding of a Request with bad OID controls
+     * Test the decoding of a Request with bad criticality
      */
     public void testDecodeRequestWithControlsBadCriticality()
     {
