@@ -136,8 +136,23 @@ public class ExtendedRequestGrammar extends AbstractGrammar implements IGrammar
                     }
                     else
                     {
-                        extendedRequest
-                            .setRequestName( new OID( StringTools.utf8ToString( tlv.getValue().getData() ) ) );
+                        byte[] requestNameBytes = tlv.getValue().getData();
+                        
+                        try
+                        {
+                            OID oid = new OID( StringTools.utf8ToString( requestNameBytes ) );
+                            extendedRequest.setRequestName( oid );
+                        }
+                        catch ( DecoderException de )
+                        {
+                            String msg = "The Request name is not a valid OID : " + StringTools.utf8ToString( requestNameBytes ) + 
+                            " (" + StringTools.dumpBytes( requestNameBytes )
+                            + ") is invalid";
+                            log.error( "{} : {}", msg, de.getMessage() );
+
+                            // Rethrow the exception, we will get a PROTOCOL_ERROR
+                            throw de;
+                        }
                     }
 
                     // We can have an END transition
