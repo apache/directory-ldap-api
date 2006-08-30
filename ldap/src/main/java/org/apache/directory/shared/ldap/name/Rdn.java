@@ -861,20 +861,6 @@ public class Rdn implements Cloneable, Comparable, Serializable
 
 
    /**
-    * Returns the hash code of this RDN. Two RDNs that are equal (according to
-    * the equals method) will have the same hash code.
-    *
-    * @returnAn int representing the hash code of this Rdn
-    */
-   public int hashcode()
-   {
-       // We compute the hashcode using the string, which is a
-       // normalized form of a rdn. unescapeValue
-       return 37 * 17 + string.hashCode();
-   }
-
-
-   /**
     * Get the number of Attribute type and value of this Rdn
     *
     * @return The number of ATAVs in this Rdn
