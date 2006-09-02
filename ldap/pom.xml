@@ -12,7 +12,7 @@
 
   <issueManagement>
     <system>jira</system>
-    <url>http://issues.apache.org/jira/browse/DIRLDAP</url>
+    <url>http://issues.apache.org/jira/browse/DIRSERVER</url>
   </issueManagement>
 
   <distributionManagement>
@@ -23,9 +23,9 @@
   </distributionManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/trunk/ldap-common</connection>
-    <url>http://svn.apache.org/viewcvs.cgi/directory/trunk/ldap-common/?root=Apache-SVN</url>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/trunk/ldap-common</developerConnection>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/releases/shared/0.9.5.2/ldap</connection>
+    <url>http://svn.apache.org/viewcvs.cgi/directory/releases/shared/0.9.5.2/ldap/?root=Apache-SVN</url>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/branches/shared/0.9.5/ldap</developerConnection>
   </scm>
 
   <ciManagement>
@@ -101,6 +101,7 @@
 
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.1</version>
         <executions>
           <execution>
             <phase>generate-sources</phase>
@@ -115,6 +116,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antlr-plugin</artifactId>
+        <version>2.0-beta-1</version>
         <configuration>
           <grammars>filter-value-lexer.g filter-lexer.g filter-lexer.g filter-value-parser.g filter-parser.g subtree-specification.g ACIItem.g</grammars>
         </configuration>
@@ -126,20 +128,9 @@
            </execution>
         </executions>
       </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.4</source>
-          <target>1.4</target>
-          <debug>true</debug>
-          <optimize>true</optimize>
-          <showDeprecations>true</showDeprecations>
-        </configuration>
-      </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.2</version>
         <configuration>
           <excludes>
             <exclude>**/Abstract*</exclude>
