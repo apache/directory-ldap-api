@@ -14,7 +14,7 @@
   <modules>
     <module>asn1</module>
     <module>ldap</module>
-    <module>mina-asn1-filter</module>
+    <module>asn1-codec</module>
   </modules>
 </project>
 
