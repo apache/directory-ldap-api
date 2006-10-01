@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.codec;
+package org.apache.directory.shared.ldap.codec.actions;
 
 
 import java.util.HashMap;
@@ -30,6 +30,11 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.asn1.codec.DecoderException;
+import org.apache.directory.shared.ldap.codec.Control;
+import org.apache.directory.shared.ldap.codec.ControlDecoder;
+import org.apache.directory.shared.ldap.codec.LdapMessage;
+import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
+import org.apache.directory.shared.ldap.codec.ManageDsaITControlDecoder;
 import org.apache.directory.shared.ldap.codec.search.controls.PSearchControlDecoder;
 import org.apache.directory.shared.ldap.codec.search.controls.SubEntryControlDecoder;
 import org.apache.directory.shared.ldap.util.StringTools;
@@ -75,17 +80,17 @@ public class ControlValueAction extends GrammarAction
     public void action( IAsn1Container container ) throws DecoderException, NamingException
     {
         LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
-        LdapMessage ldapMessage = ldapMessageContainer.getLdapMessage();
         TLV tlv = ldapMessageContainer.getCurrentTLV();
+        LdapMessage message = ldapMessageContainer.getLdapMessage();
 
         // Get the current control
-        Control control = ldapMessage.getCurrentControl();
+        Control control = message.getCurrentControl();
         Value value = tlv.getValue();
 
         ControlDecoder decoder = ( ControlDecoder ) controlDecoders.get( control.getControlType() );
 
         // Store the value - have to handle the special case of a 0 length value
-        if ( tlv.getLength().getLength() == 0 )
+        if ( tlv.getLength() == 0 )
         {
             control.setControlValue( new byte[]
                 {} );

@@ -2817,4 +2817,28 @@ public class StringTools
         
         return advanceBy;
     }
+    
+    /**
+     * Thansform an array of ASCII bytes to a string. the byte array should contains
+     * only values in [0, 127].
+     * 
+     * @param bytes The byte array to transform
+     * @return The resulting string
+     */
+    public static String asciiBytesToString( byte[] bytes )
+    {
+        if ( (bytes == null) || (bytes.length == 0 ) )
+        {
+            return "";
+        }
+        
+        char[] result = new char[bytes.length];
+        
+        for ( int i = 0; i < bytes.length; i++ )
+        {
+            result[i] = (char)bytes[i];
+        }
+        
+        return new String( result );
+    }
 }

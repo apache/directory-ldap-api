@@ -19,8 +19,10 @@
  */
 package org.apache.directory.shared.ldap.message;
 
-
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 
 /**
@@ -34,7 +36,7 @@ public class AbstractMessage implements Message
     static final long serialVersionUID = 7601738291101182094L;
 
     /** Map of message controls using OID Strings for keys and Control values */
-    private final Map controls;
+    private Map controls;
 
     /** The session unique message sequence identifier */
     private final int id;
@@ -88,6 +90,13 @@ public class AbstractMessage implements Message
         return Collections.unmodifiableMap( controls );
     }
 
+    /**
+     * Initialize the controls list
+     */
+    public void initControls()
+    {
+        controls = new HashMap();
+    }
 
     /**
      * Adds a control to this Message.
@@ -203,12 +212,14 @@ public class AbstractMessage implements Message
         }
 
         Map controls = msg.getControls();
+        
         if ( controls.size() != this.controls.size() )
         {
             return false;
         }
 
         Iterator list = this.controls.keySet().iterator();
+        
         while ( list.hasNext() )
         {
             if ( !controls.containsKey( list.next() ) )

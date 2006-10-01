@@ -1413,6 +1413,8 @@ public class LdifReader implements Iterator
                     }
                 }
 
+                isFirstLine = false;
+
                 // We will read the first line which is not a comment
                 switch ( line.charAt( 0 ) )
                 {
@@ -1421,8 +1423,6 @@ public class LdifReader implements Iterator
                         break;
 
                     case ' ':
-                        isFirstLine = false;
-
                         if ( insideComment )
                         {
                             continue;
@@ -1441,8 +1441,6 @@ public class LdifReader implements Iterator
                         break;
 
                     default:
-                        isFirstLine = false;
-
                         // We have found a new entry
                         // First, stores the previous one if any.
                         if ( sb.length() != 0 )
