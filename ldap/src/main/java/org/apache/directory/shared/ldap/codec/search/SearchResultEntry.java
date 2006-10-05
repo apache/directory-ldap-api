@@ -71,6 +71,9 @@ public class SearchResultEntry extends LdapMessage
     /** The DN of the returned entry */
     private LdapDN objectName;
 
+    /** A temporary storage for the byte[] representing the objectName */ 
+    private transient byte[] objectNameBytes;
+
     /** The attributes list. It contains javax.naming.directory.Attribute */
     private Attributes partialAttributeList;
 
@@ -225,9 +228,10 @@ public class SearchResultEntry extends LdapMessage
      */
     public int computeLength()
     {
+        objectNameBytes = StringTools.getBytesUtf8( objectName.getUpName() );
+        
         // The entry
-        searchResultEntryLength = 1 + TLV.getNbBytes( LdapDN.getNbBytes( objectName ) )
-            + LdapDN.getNbBytes( objectName );
+        searchResultEntryLength = 1 + TLV.getNbBytes( objectNameBytes.length ) + objectNameBytes.length;
 
         // The attributes sequence
         attributesLength = 0;
@@ -359,7 +363,7 @@ public class SearchResultEntry extends LdapMessage
             buffer.put( TLV.getBytes( searchResultEntryLength ) );
 
             // The objectName
-            Value.encode( buffer, LdapDN.getBytes( objectName ) );
+            Value.encode( buffer, objectNameBytes );
 
             // The attributes sequence
             buffer.put( UniversalTag.SEQUENCE_TAG );
