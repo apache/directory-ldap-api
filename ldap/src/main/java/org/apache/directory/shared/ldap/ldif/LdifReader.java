@@ -251,8 +251,7 @@ public class LdifReader implements Iterator
     /**
      * A constructor which takes a file name
      * 
-     * @param in
-     *            A file name containing ldif formated input
+     * @param ldifFileName A file name containing ldif formated input
      * @throws NamingException
      *             If the file cannot be processed or if the format is incorrect
      */
@@ -805,12 +804,7 @@ public class LdifReader implements Iterator
     /**
      * Parse an AttributeType/AttributeValue
      * 
-     * @param attribute
-     *            The create attribute
-     * @param line
-     *            The line to parse
-     * @param lowerLine
-     *            The same line, lowercased
+     * @param line The line to parse
      */
     public static Attribute parseAttributeValue( String line )
     {
