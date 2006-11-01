@@ -2121,8 +2121,6 @@ public class StringTools
      * 
      * @param string the string to be trimmed, may be null
      * @param pos The starting position
-     * @return the position of the first char which is not a space, or the last
-     *         position of the array.
      */
     public static final void trimLeft( String string, Position pos )
     {
