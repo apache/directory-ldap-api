@@ -323,7 +323,7 @@ public class StringTools
      * @return the deep trimmed string
      * @see StringTools#deepTrim( String )
      * 
-     * @TODO Replace the toCharArray() by substrig manipulations
+     * TODO Replace the toCharArray() by substring manipulations
      */
     public static final String deepTrim( String str, boolean toLowerCase )
     {
@@ -799,8 +799,7 @@ public class StringTools
     /**
      * Helper function that returns a char from an hex
      * 
-     * @param octet
-     *            The hex to dump
+     * @param hex The hex to dump
      * @return A char representation of the hex
      */
     public static final char dumpHex( byte hex )
@@ -1153,12 +1152,11 @@ public class StringTools
      * Return the Unicode char which is coded in the bytes at the given
      * position.
      * 
-     * @param bytes
-     *            The byte[] represntation of an Unicode string.
-     * @param pos
-     *            The current position to start decoding the char
-     * @return The decoded char, or -1 if no char can be decoded TODO : Should
-     *         stop after the third byte, as a char is only 2 bytes long.
+     * @param car The character to be transformed to an array of bytes
+     * 
+     * @return The byte array representing the char 
+     * 
+     * TODO : Should stop after the third byte, as a char is only 2 bytes long.
      */
     public static final byte[] charToBytes( char car )
     {
@@ -1317,7 +1315,7 @@ public class StringTools
      *            The string which contains the data
      * @param index
      *            Current position in the string
-     * @param test
+     * @param text
      *            The text we want to check
      * @return <code>true</code> if the string contains the text.
      */
@@ -2002,9 +2000,9 @@ public class StringTools
      *  StringUtils.trim(&quot;    abc    &quot;) = &quot;abc&quot;
      * </pre>
      * 
-     * @param str
-     *            the String to be trimmed, may be null
-     * @return the trimmed string, <code>null</code> if null String input
+     * @param bytes the byte array to be trimmed, may be null
+     * 
+     * @return the trimmed byte array
      */
     public static final byte[] trim( byte[] bytes )
     {
@@ -2108,21 +2106,21 @@ public class StringTools
 
     /**
      * <p>
-     * Removes spaces (char &lt;= 32) from start of this array, handling
+     * Removes spaces (char &lt;= 32) from a position in this array, handling
      * <code>null</code> by returning <code>null</code>.
      * </p>
      * Trim removes start characters &lt;= 32.
      * 
      * <pre>
      *  StringUtils.trimLeft(null)          = null
-     *  StringUtils.trimLeft(&quot;&quot;)            = &quot;&quot;
-     *  StringUtils.trimLeft(&quot;     &quot;)       = &quot;&quot;
-     *  StringUtils.trimLeft(&quot;abc&quot;)         = &quot;abc&quot;
-     *  StringUtils.trimLeft(&quot;    abc    &quot;) = &quot;abc    &quot;
+     *  StringUtils.trimLeft(&quot;&quot;,...)            = &quot;&quot;
+     *  StringUtils.trimLeft(&quot;     &quot;,...)       = &quot;&quot;
+     *  StringUtils.trimLeft(&quot;abc&quot;,...)         = &quot;abc&quot;
+     *  StringUtils.trimLeft(&quot;    abc    &quot;,...) = &quot;abc    &quot;
      * </pre>
      * 
-     * @param string
-     *            the string to be trimmed, may be null
+     * @param string the string to be trimmed, may be null
+     * @param pos The starting position
      * @return the position of the first char which is not a space, or the last
      *         position of the array.
      */
@@ -2753,7 +2751,6 @@ public class StringTools
      * String is returned.
      * 
      * @param str the string containing hex escapes
-     * @param index the index at which we start decoding
      * @return decoded string
      */
     public static final String decodeEscapedHex( String str ) throws InvalidNameException
