@@ -81,7 +81,7 @@ public class StringTools
 
     private static final int UTF8_SIX_BYTES = 0x00FC;
 
-    /** <alpha> ::= [0x41-0x5A] | [0x61-0x7A] */
+    /** &lt;alpha> ::= [0x41-0x5A] | [0x61-0x7A] */
     public static final boolean[] ALPHA =
         { 
             false, false, false, false, false, false, false, false, 
@@ -102,7 +102,7 @@ public class StringTools
             true,  true,  true,  false, false, false, false, false 
         };
 
-    /** <alpha> | <digit> | '-' */
+    /** &lt;alpha> | &lt;digit> | '-' */
     public static final boolean[] CHAR =
         { 
             false, false, false, false, false, false, false, false, 
@@ -144,7 +144,7 @@ public class StringTools
             false, false, false, false, false, false, false, false
         };
 
-    /** <hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66] */
+    /** &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66] */
     private static final boolean[] HEX =
         { 
             false, false, false, false, false, false, false, false, 
@@ -164,7 +164,7 @@ public class StringTools
             false, false, false, false, false, false, false, false, 
             false, false, false, false, false, false, false, false };
 
-    /** <hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66] */
+    /** &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66] */
     public static final byte[] HEX_VALUE =
         { 
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00 -> 0F
@@ -498,7 +498,7 @@ public class StringTools
      * @param source
      *            the HTML code to be processes
      * @param replaceNl
-     *            if true '\n' will be replaced by <br>
+     *            if true '\n' will be replaced by &lt;br>
      * @param replaceTag
      *            if true '<' will be replaced by &lt; and '>' will be replaced
      *            by &gt;
@@ -1477,7 +1477,7 @@ public class StringTools
 
 
     /**
-     * Check if the current character is an Hex Char <hex> ::= [0x30-0x39] |
+     * Check if the current character is an Hex Char &lt;hex> ::= [0x30-0x39] |
      * [0x41-0x46] | [0x61-0x66]
      * 
      * @param byteArray
@@ -1509,7 +1509,7 @@ public class StringTools
 
 
     /**
-     * Check if the current character is an Hex Char <hex> ::= [0x30-0x39] |
+     * Check if the current character is an Hex Char &lt;hex> ::= [0x30-0x39] |
      * [0x41-0x46] | [0x61-0x66]
      * 
      * @param chars
@@ -1540,7 +1540,7 @@ public class StringTools
     }
 
     /**
-     * Check if the current character is an Hex Char <hex> ::= [0x30-0x39] |
+     * Check if the current character is an Hex Char &lt;hex> ::= [0x30-0x39] |
      * [0x41-0x46] | [0x61-0x66]
      * 
      * @param string
@@ -1574,7 +1574,7 @@ public class StringTools
     
 
     /**
-     * Test if the current character is a digit <digit> ::= '0' | '1' | '2' |
+     * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
      * '3' | '4' | '5' | '6' | '7' | '8' | '9'
      * 
      * @param byteArray
@@ -1594,7 +1594,7 @@ public class StringTools
     }
 
     /**
-     * Test if the current character is a digit <digit> ::= '0' | '1' | '2' |
+     * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
      * '3' | '4' | '5' | '6' | '7' | '8' | '9'
      * 
      * @param car the character to test
@@ -1608,7 +1608,7 @@ public class StringTools
 
 
     /**
-     * Test if the current character is an Alpha character : <alpha> ::=
+     * Test if the current character is an Alpha character : &lt;alpha> ::=
      * [0x41-0x5A] | [0x61-0x7A]
      * 
      * @param byteArray
@@ -1641,7 +1641,7 @@ public class StringTools
 
 
     /**
-     * Test if the current character is an Alpha character : <alpha> ::=
+     * Test if the current character is an Alpha character : &lt;alpha> ::=
      * [0x41-0x5A] | [0x61-0x7A]
      * 
      * @param chars
@@ -1673,7 +1673,7 @@ public class StringTools
     }
 
     /**
-     * Test if the current character is an Alpha character : <alpha> ::=
+     * Test if the current character is an Alpha character : &lt;alpha> ::=
      * [0x41-0x5A] | [0x61-0x7A]
      * 
      * @param string
@@ -1708,7 +1708,7 @@ public class StringTools
 
 
     /**
-     * Test if the current character is a digit <digit> ::= '0' | '1' | '2' |
+     * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
      * '3' | '4' | '5' | '6' | '7' | '8' | '9'
      * 
      * @param byteArray
@@ -1731,7 +1731,7 @@ public class StringTools
 
 
     /**
-     * Test if the current character is a digit <digit> ::= '0' | '1' | '2' |
+     * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
      * '3' | '4' | '5' | '6' | '7' | '8' | '9'
      * 
      * @param chars
@@ -1753,7 +1753,7 @@ public class StringTools
     }
 
     /**
-     * Test if the current character is a digit <digit> ::= '0' | '1' | '2' |
+     * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
      * '3' | '4' | '5' | '6' | '7' | '8' | '9'
      * 
      * @param string
@@ -1778,7 +1778,7 @@ public class StringTools
     }
 
     /**
-     * Test if the current character is a digit <digit> ::= '0' | '1' | '2' |
+     * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
      * '3' | '4' | '5' | '6' | '7' | '8' | '9'
      * 
      * @param chars
@@ -1800,7 +1800,7 @@ public class StringTools
 
     /**
      * Check if the current character is an 7 bits ASCII CHAR (between 0 and
-     * 127). <char> ::= <alpha> | <digit> | '-'
+     * 127). &lt;char> ::= &lt;alpha> | &lt;digit> | '-'
      * 
      * @param byteArray
      *            The buffer which contains the data
@@ -1832,7 +1832,7 @@ public class StringTools
 
     /**
      * Check if the current character is an 7 bits ASCII CHAR (between 0 and
-     * 127). <char> ::= <alpha> | <digit> | '-'
+     * 127). &lt;char> ::= &lt;alpha> | &lt;digit> | '-'
      * 
      * @param chars
      *            The buffer which contains the data
@@ -1863,7 +1863,7 @@ public class StringTools
 
     /**
      * Check if the current character is an 7 bits ASCII CHAR (between 0 and
-     * 127). <char> ::= <alpha> | <digit> | '-'
+     * 127). &lt;char> ::= &lt;alpha> | &lt;digit> | '-'
      * 
      * @param string
      *            The string which contains the data
