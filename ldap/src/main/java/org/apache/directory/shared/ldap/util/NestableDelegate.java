@@ -54,7 +54,7 @@ public class NestableDelegate implements Serializable
 
     /**
      * Holds the reference to the exception or error that we're wrapping (which
-     * must be a {@link org.apache.commons.lang.exception.Nestable}
+     * must be a {@link "org.apache.commons.lang.exception.Nestable"}
      * implementation).
      */
     private Throwable nestable = null;
