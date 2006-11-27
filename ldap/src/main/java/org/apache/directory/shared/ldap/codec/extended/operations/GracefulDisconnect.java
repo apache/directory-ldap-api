@@ -211,7 +211,7 @@ public class GracefulDisconnect extends GracefulAction
         sb.append( "    TimeOffline : " ).append( timeOffline ).append( '\n' );
         sb.append( "    Delay : " ).append( delay ).append( '\n' );
 
-        if ( replicatedContexts.size() != 0 )
+        if ( ( replicatedContexts != null ) && (replicatedContexts.size() != 0 ) )
         {
             Iterator replicatedContextIterator = replicatedContexts.iterator();
             sb.append( "    Replicated contexts :" );
