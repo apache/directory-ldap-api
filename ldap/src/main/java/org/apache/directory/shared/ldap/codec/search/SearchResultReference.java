@@ -206,8 +206,7 @@ public class SearchResultReference extends LdapMessage
 
             while ( referencesIterator.hasNext() )
             {
-                sb.append( "            '" ).append( ( ( LdapURL ) referencesIterator.next() ).toString() ).append(
-                    "'\n" );
+                sb.append( "            '" ).append( referencesIterator.next() ).append( "'\n" );
             }
         }
 

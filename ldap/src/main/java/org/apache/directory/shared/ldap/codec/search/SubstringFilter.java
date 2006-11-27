@@ -360,7 +360,7 @@ public class SubstringFilter extends Filter
 
         if ( initialSubstrings != null )
         {
-            sb.append( initialSubstrings.toString() );
+            sb.append( initialSubstrings );
         }
 
         sb.append( '*' );
@@ -371,13 +371,13 @@ public class SubstringFilter extends Filter
 
             while ( anyIterator.hasNext() )
             {
-                sb.append( ( String ) anyIterator.next() ).append( '*' );
+                sb.append( anyIterator.next() ).append( '*' );
             }
         }
 
         if ( finalSubstrings != null )
         {
-            sb.append( finalSubstrings.toString() );
+            sb.append( finalSubstrings );
         }
 
         return sb.toString();

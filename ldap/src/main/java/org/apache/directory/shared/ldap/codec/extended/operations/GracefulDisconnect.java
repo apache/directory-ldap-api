@@ -220,7 +220,7 @@ public class GracefulDisconnect extends GracefulAction
             while ( replicatedContextIterator.hasNext() )
             {
                 LdapURL url = ( LdapURL ) replicatedContextIterator.next();
-                sb.append( "\n        " ).append( url.toString() );
+                sb.append( "\n        " ).append( url );
             }
         }
 

@@ -19,6 +19,8 @@
  */
 package org.apache.directory.shared.ldap.codec;
 
+import org.apache.directory.shared.ldap.util.StringTools;
+
 
 /**
  * A class to store an attribute value assertion. 
@@ -92,7 +94,6 @@ public class AttributeValueAssertion
         this.attributeDesc = attributeDesc;
     }
 
-
     /**
      * Get a String representation of an AttributeValueAssertion
      * 
@@ -105,8 +106,10 @@ public class AttributeValueAssertion
         StringBuffer sb = new StringBuffer();
 
         sb.append( tabs ).append( "AttributeValueAssertion\n" );
-        sb.append( tabs ).append( "    Assertion description : '" ).append( attributeDesc.toString() ).append( "'\n" );
-        sb.append( tabs ).append( "    Assertion value : '" ).append( assertionValue.toString() ).append( "'\n" );
+        sb.append( tabs ).append( "    Assertion description : '" );
+        sb.append( attributeDesc != null ? attributeDesc : "null" );
+        sb.append( "'\n" );
+        sb.append( tabs ).append( "    Assertion value : '" ).append( StringTools.dumpObject( assertionValue ) ).append( "'\n" );
 
         return sb.toString();
     }
@@ -124,7 +127,7 @@ public class AttributeValueAssertion
 
         StringBuffer sb = new StringBuffer();
 
-        sb.append( attributeDesc.toString() );
+        sb.append( attributeDesc );
 
         switch ( filterType )
         {
@@ -145,7 +148,7 @@ public class AttributeValueAssertion
                 break;
         }
 
-        sb.append( assertionValue.toString() );
+        sb.append( StringTools.dumpObject( assertionValue ) );
 
         return sb.toString();
     }

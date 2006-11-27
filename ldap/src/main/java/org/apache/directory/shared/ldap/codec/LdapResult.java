@@ -610,8 +610,11 @@ public class LdapResult extends Asn1Object
 
                 LdapURL referral = ( LdapURL ) referrals.get( i );
 
-                sb.append( "                Referral[" ).append( i ).append( "] :" ).append( referral == null ? "" : referral.toString() )
-                    .append( '\n' );
+                sb.append( "                Referral[" ).
+                    append( i ).
+                    append( "] :" ).
+                    append( referral == null ? "" : referral.toString() ).
+                    append( '\n' );
             }
         }
 

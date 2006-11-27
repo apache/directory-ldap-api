@@ -661,13 +661,13 @@ public class LdapMessage extends Asn1Object
 
         sb.append( "LdapMessage\n" );
         sb.append( "    message Id : " ).append( messageId ).append( '\n' );
-        sb.append( protocolOp.toString() );
+        sb.append( protocolOp );
 
         if ( controls != null )
         {
             for ( int i = 0; i < controls.size(); i++ )
             {
-                sb.append( ( ( Control ) controls.get( i ) ).toString() );
+                sb.append(  ( Control ) controls.get( i ) );
             }
         }
 
