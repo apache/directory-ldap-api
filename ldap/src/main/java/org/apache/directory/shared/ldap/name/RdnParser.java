@@ -265,7 +265,6 @@ public class RdnParser
     private static Object parseAttributeValue( String string, Position pos )
     {
         StringBuffer sb = new StringBuffer();
-
         char c = StringTools.charAt( string, pos.start );
 
         if ( c == '#' )
@@ -482,7 +481,7 @@ public class RdnParser
             else
             {
                 // <attributeTypeAndValues> ::= e
-                rdn.normalizeString();
+                rdn.normalize();
                 return DNUtils.PARSING_OK;
             }
 
@@ -581,7 +580,6 @@ public class RdnParser
 
         pos.end = pos.start;
         pos.length = 0;
-
         if ( ( type = parseAttributeType( dn, pos ) ) == null )
         {
             return DNUtils.PARSING_ERROR;
@@ -615,14 +613,17 @@ public class RdnParser
         if ( rdn != null )
         {
             rdn.addAttributeTypeAndValue( type, value );
-            rdn.normalizeString();
+            rdn.normalize();
 
             pos.start = pos.end;
             pos.length = 0;
         }
 
-        parseNameComponents( dn, pos, rdn );
-
+        if ( parseNameComponents( dn, pos, rdn ) == DNUtils.PARSING_ERROR )
+        {
+            return DNUtils.PARSING_ERROR;
+        }
+        
         rdn.setUpName( dn.substring( start, pos.end ) );
         pos.start = pos.end;
         return DNUtils.PARSING_OK;
@@ -645,6 +646,6 @@ public class RdnParser
     public static void parse( String string, Rdn rdn ) throws InvalidNameException
     {
         parse( string, new Position(), rdn );
-        rdn.normalizeString();
+        rdn.normalize();
     }
 }

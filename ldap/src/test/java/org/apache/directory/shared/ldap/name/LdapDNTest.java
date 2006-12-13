@@ -246,8 +246,7 @@ public class LdapDNTest extends TestCase
    {
        
        LdapDN dn = new LdapDN( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C4\\8D" );
-       byte[] expected = new byte[] { 'a', '=', ',', '=', '+', '<', '>', '#', ';', '\\', '"', (byte)0xC4, (byte)0x8D}; 
-       Assert.assertEquals( StringTools.utf8ToString( expected ), dn.toString() );
+       Assert.assertEquals( "a=\\,=\\+\\<\\>#\\;\\\\\\\"\\C4\\8D", dn.toString() );
        Assert.assertEquals( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C4\\8D", dn.getUpName() );
    }
 
@@ -258,7 +257,7 @@ public class LdapDNTest extends TestCase
    {
        LdapDN dn = new LdapDN( "SN=Lu\\C4\\8Di\\C4\\87" );
        byte[] lucic = new byte[] { 's', 'n', '=', 'L', 'u', (byte)0xC4, (byte)0x8D, 'i', (byte)0xC4, (byte)0x87}; 
-       Assert.assertEquals( StringTools.utf8ToString( lucic ), dn.toString() );
+       Assert.assertEquals( "sn=Lu\\C4\\8Di\\C4\\87", dn.toString() );
        Assert.assertEquals( "SN=Lu\\C4\\8Di\\C4\\87", dn.getUpName() );
    }
 
@@ -270,6 +269,16 @@ public class LdapDNTest extends TestCase
        LdapDN dn = new LdapDN( "a = #0010A0AAFF" );
        Assert.assertEquals( "a=#0010A0AAFF", dn.toString() );
        Assert.assertEquals( "a = #0010A0AAFF", dn.getUpName() );
+   }
+
+   /**
+    * test a simple DN with a # on first position
+    */
+   public void testLdapDNSharpFirst() throws InvalidNameException
+   {
+       LdapDN dn = new LdapDN( "a = \\#this is a sharp" );
+       Assert.assertEquals( "a=\\#this is a sharp", dn.toString() );
+       Assert.assertEquals( "a = \\#this is a sharp", dn.getUpName() );
    }
 
    /**
@@ -310,7 +319,7 @@ public class LdapDNTest extends TestCase
    public void testLdapDNQuoteInAttributeValue() throws InvalidNameException
    {
        LdapDN dn = new LdapDN( "a = quoted \\\"value\\\"" );
-       Assert.assertEquals( "a=quoted \"value\"", dn.toString() );
+       Assert.assertEquals( "a=quoted \\\"value\\\"", dn.toString() );
        Assert.assertEquals( "a = quoted \\\"value\\\"", dn.getUpName() );
    }
 
@@ -320,7 +329,7 @@ public class LdapDNTest extends TestCase
    public void testLdapDNQuotedAttributeValue() throws InvalidNameException
    {
        LdapDN dn = new LdapDN( "a = \\\" quoted value \\\"" );
-       Assert.assertEquals( "a=\" quoted value \"", dn.toString() );
+       Assert.assertEquals( "a=\\\" quoted value \\\"", dn.toString() );
        Assert.assertEquals( "a = \\\" quoted value \\\"", dn.getUpName() );
    }
 
@@ -1279,13 +1288,10 @@ public class LdapDNTest extends TestCase
        String dn = StringTools.utf8ToString( new byte[]{'C', 'N', ' ', '=', ' ', 'E', 'm', 'm', 'a', 'n', 'u', 'e', 
            'l', ' ', ' ', 'L', (byte)0xc3, (byte)0xa9, 'c', 'h', 'a', 'r', 'n', 'y'} );
 
-       String expected = StringTools.utf8ToString( new byte[]{'c', 'n', '=','E', 'm', 'm', 'a', 'n', 'u', 'e', 
-           'l', ' ', ' ', 'L', (byte)0xc3, (byte)0xa9, 'c', 'h', 'a', 'r', 'n', 'y'} );
-
        Name name = LdapDnParser.getNameParser().parse( dn );
 
        Assert.assertEquals( dn, ( ( LdapDN ) name ).getUpName() );
-       Assert.assertEquals( expected, name.toString() );
+       Assert.assertEquals( "cn=Emmanuel  L\\C3\\A9charny", name.toString() );
    }
 
 
@@ -2099,11 +2105,11 @@ public class LdapDNTest extends TestCase
    public void testNameFrenchChars() throws Exception
    {
        String cn = new String( new byte[]
-           { 'c', 'n', '=', 0x4A, ( byte ) 0xC3, ( byte ) 0xA9, 0x72, ( byte ) 0xC3, ( byte ) 0xB4, 0x6D, 0x65 } );
+           { 'c', 'n', '=', 0x4A, ( byte ) 0xC3, ( byte ) 0xA9, 0x72, ( byte ) 0xC3, ( byte ) 0xB4, 0x6D, 0x65 }, "UTF-8" );
 
        Name name = new LdapDN( cn );
 
-       assertEquals( cn, name.toString() );
+       assertEquals( "cn=J\\C3\\A9r\\C3\\B4me", name.toString() );
    }
 
 
@@ -2116,7 +2122,7 @@ public class LdapDNTest extends TestCase
 
        Name name = new LdapDN( cn );
 
-       assertEquals( cn, name.toString() );
+       assertEquals( "cn=\\C3\\84\\C3\\96\\C3\\9C\\C3\\9F\\C3\\A4\\C3\\B6\\C3\\BC", name.toString() );
    }
 
 
@@ -2130,7 +2136,7 @@ public class LdapDNTest extends TestCase
 
        Name name = new LdapDN( cn );
 
-       assertEquals( cn, name.toString() );
+       assertEquals( "cn=\\C4\\B0\\C4\\B1\\C5\\9E\\C5\\9F\\C3\\96\\C3\\B6\\C3\\9C\\C3\\BC\\C4\\9E\\C4\\9F", name.toString() );
    }
 
 
@@ -2516,10 +2522,13 @@ public class LdapDNTest extends TestCase
     */
    public void testDoubleQuoteInNameDIRSERVER_642_1() throws NamingException
    {
+       LdapDN dn1 = new LdapDN( "cn= a " );
+       LdapDN dn2 = new LdapDN( "cn=\" a \"" );
+       LdapDN dn3 = new LdapDN( "cn= \" a \" " );
        LdapDN dn = new LdapDN( "cn=\" Kylie Minogue \",dc=example,dc=com" );
 
        Assert.assertEquals( "cn=\" Kylie Minogue \",dc=example,dc=com", dn.getUpName() );
-       Assert.assertEquals( "cn= Kylie Minogue ,dc=example,dc=com", dn.toString() );
+       Assert.assertEquals( "cn=\\ Kylie Minogue\\ ,dc=example,dc=com", dn.toString() );
    }
 
    /**
@@ -2530,7 +2539,7 @@ public class LdapDNTest extends TestCase
    {
        LdapDN name = new LdapDN( "dn= \\ four spaces leading and 3 trailing \\  " );
 
-       Assert.assertEquals( "dn= four spaces leading and 3 trailing  ", name.toString() );
+       Assert.assertEquals( "dn=\\ four spaces leading and 3 trailing \\ ", name.toString() );
        Assert.assertEquals( "dn= \\ four spaces leading and 3 trailing \\  ", name.getUpName() );
    }
 
@@ -2574,7 +2583,7 @@ public class LdapDNTest extends TestCase
    {
        LdapDN name = new LdapDN( "dn=\\# a leading pound" );
 
-       Assert.assertEquals( "dn=# a leading pound", name.toString() );
+       Assert.assertEquals( "dn=\\# a leading pound", name.toString() );
        Assert.assertEquals( "dn=\\# a leading pound", name.getUpName() );
    }
 
@@ -2638,7 +2647,7 @@ public class LdapDNTest extends TestCase
    {
        LdapDN name = new LdapDN( "cn=Bush\\, Kate,dc=example,dc=com" );
 
-       Assert.assertEquals( "cn=Bush, Kate,dc=example,dc=com", name.toString() );
+       Assert.assertEquals( "cn=Bush\\, Kate,dc=example,dc=com", name.toString() );
        Assert.assertEquals( "cn=Bush\\, Kate,dc=example,dc=com", name.getUpName() );
 
    }
@@ -2666,5 +2675,13 @@ public class LdapDNTest extends TestCase
        LdapDN dn = new LdapDN();
        dn.addAll( compoundName );
        System.out.println( dn.toString() );
+   }
+   
+   public void testDNEquals() throws NamingException
+   {
+       LdapDN dn1 = new LdapDN( "a=b,c=d,e=f" );
+       LdapDN dn2 = new LdapDN( "a=b\\,c\\=d,e=f" );
+       
+       assertFalse( dn1.toString().equals( dn2.toString() ) );
    }
 }

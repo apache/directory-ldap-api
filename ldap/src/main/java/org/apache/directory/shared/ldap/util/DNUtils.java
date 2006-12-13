@@ -148,8 +148,8 @@ public class DNUtils
         };
 
     /**
-     * '"' | '#' | '+' | ',' | [0-9] | ';' | '<' | '=' | '>' | [A-F] | '\' | [a-f] 
-     * 0x22 | 0x23 | 0x2B | 0x2C | [0x30-0x39] | 0x3B | 0x3C | 0x3D | 0x3E |
+     * '"' | '#' | '+' | ',' | [0-9] | ';' | '<' | '=' | '>' | [A-F] | '\' |
+     * [a-f] 0x22 | 0x23 | 0x2B | 0x2C | [0x30-0x39] | 0x3B | 0x3C | 0x3D | 0x3E |
      * [0x41-0x46] | 0x5C | [0x61-0x66]
      */
     private static final int[] STRING_CHAR =
@@ -169,7 +169,7 @@ public class DNUtils
             ONE_CHAR,      ONE_CHAR,      ONE_CHAR,      ONE_CHAR,     // 30 -> 33
             ONE_CHAR,      ONE_CHAR,      ONE_CHAR,      ONE_CHAR,     // 34 -> 37
             ONE_CHAR,      ONE_CHAR,      ONE_CHAR,      PARSING_ERROR,// 38 -> 3B
-            PARSING_ERROR, PARSING_ERROR, PARSING_ERROR, ONE_CHAR      // 3C -> 3F
+            PARSING_ERROR, ONE_CHAR,      PARSING_ERROR, ONE_CHAR      // 3C -> 3F
         };
 
     /** "oid." static */
@@ -303,7 +303,7 @@ public class DNUtils
 
 
     /**
-     * Check if the current character is a Pair Char &lt;pairchar> ::= ',' | '=' |
+     * Check if the current character is a Pair Char &lt;pairchar&gt; ::= ',' | '=' |
      * '+' | '<' | '>' | '#' | ';' | '\' | '"' | [0-9a-fA-F] [0-9a-fA-F]
      * 
      * @param byteArray
@@ -717,8 +717,8 @@ public class DNUtils
      */
     private static byte getHexPair( String string, int index )
     {
-    	return (byte)((StringTools.HEX_VALUE[string.charAt( index )] << 4) | 
-    				(StringTools.HEX_VALUE[string.charAt( index + 1 )]) );
+        return (byte)((StringTools.HEX_VALUE[string.charAt( index )] << 4) | 
+                    (StringTools.HEX_VALUE[string.charAt( index + 1 )]) );
     }
 
     /**
@@ -835,7 +835,7 @@ public class DNUtils
      */
     public static int parseHexString( String string, byte[] hex, Position pos )
     {
-    	int i = 0;
+        int i = 0;
         pos.end = pos.start;
         int result = parseHexPair( string, pos.start );
 
@@ -845,13 +845,13 @@ public class DNUtils
         }
         else
         {
-        	hex[i++] = getHexPair( string, pos.end );
+            hex[i++] = getHexPair( string, pos.end );
             pos.end += TWO_CHARS;
         }
 
         while ( ( result = parseHexPair( string, pos.end ) ) >= 0 )
         {
-        	hex[i++] = getHexPair( string, pos.end );
+            hex[i++] = getHexPair( string, pos.end );
             pos.end += TWO_CHARS;
         }
 

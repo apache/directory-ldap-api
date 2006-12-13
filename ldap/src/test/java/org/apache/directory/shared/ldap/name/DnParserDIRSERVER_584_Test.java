@@ -43,7 +43,7 @@ public class DnParserDIRSERVER_584_Test extends TestCase
    {
        try
        {
-           LdapDnParser.parseInternal( "ou=test=testing", new ArrayList() );
+           LdapDnParser.parseInternal( "ou=test+testing", new ArrayList() );
            fail( "should never get here" );
        }
        catch ( InvalidNameException e )
