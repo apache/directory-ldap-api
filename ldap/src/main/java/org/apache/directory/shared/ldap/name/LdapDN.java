@@ -1024,6 +1024,11 @@ public class LdapDN /* extends LdapString */implements Name
     */
    public Name add( String comp ) throws InvalidNameException
    {
+       if ( comp.length() == 0 )
+       {
+           return this;
+       }
+       
        // We have to parse the nameComponent which is given as an argument
        Rdn newRdn = new Rdn( comp );
 
@@ -1439,6 +1444,11 @@ public class LdapDN /* extends LdapString */implements Name
    public void normalize( Map oidsMap ) throws InvalidNameException, NamingException
    {
        if ( ( oidsMap == null ) || ( oidsMap.size() == 0 ) )
+       {
+           return;
+       }
+
+       if ( size() == 0 ) 
        {
            return;
        }
