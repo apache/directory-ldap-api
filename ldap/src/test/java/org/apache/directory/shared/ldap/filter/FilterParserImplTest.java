@@ -175,22 +175,21 @@ public class FilterParserImplTest extends TestCase
         assertEquals( AbstractExprNode.EQUALITY, node.getAssertionType() );
     }
 
-    /*
+
     public void testBadEqualsFilter() throws IOException, ParseException
     {
         try
         {
-            SimpleNode node = ( SimpleNode ) parser.parse( "ou = people" );
+            parser.parse( "ou = people" );
             
             // The parsing should fail
-            fail();
+            fail( "should fail with bad filter" );
         }
         catch( ParseException pe )
         {
-            assertTrue( true );
         }
     }
-    */
+
 
     public void testEqualsWithForwardSlashFilter() throws IOException, ParseException
     {

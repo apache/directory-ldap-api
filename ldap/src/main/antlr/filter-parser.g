@@ -51,6 +51,7 @@ options
 {
     k = 5;
 	importVocab = FilterLexer;
+	defaultErrorHandler=false;
 }
 
 
