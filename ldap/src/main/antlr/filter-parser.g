@@ -181,7 +181,7 @@ and returns [BranchNode node]
       {
           children.add( child );
       }
-    )+
+    )*
     {
         node = new BranchNode( AbstractExprNode.AND, children );
     }
@@ -206,7 +206,7 @@ or returns [BranchNode node]
       {
           children.add( child );
       }
-    )+
+    )*
     {
         node = new BranchNode( AbstractExprNode.OR, children );
     }

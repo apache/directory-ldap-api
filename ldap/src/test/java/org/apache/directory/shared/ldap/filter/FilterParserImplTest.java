@@ -75,10 +75,26 @@ public class FilterParserImplTest extends TestCase
     }
 
 
+    public void testAndFilterOneChildOnly() throws IOException, ParseException
+    {
+        BranchNode node = ( BranchNode ) parser.parse( "(& ( ou ~= people ) ) " );
+        assertEquals( 1, node.getChildren().size() );
+        assertEquals( AbstractExprNode.AND, node.getOperator() );
+    }
+
+
     public void testOrFilter() throws IOException, ParseException
     {
         BranchNode node = ( BranchNode ) parser.parse( "(| ( ou ~= people ) (age>=30) ) " );
         assertEquals( 2, node.getChildren().size() );
+        assertEquals( AbstractExprNode.OR, node.getOperator() );
+    }
+
+
+    public void testOrFilterOneChildOnly() throws IOException, ParseException
+    {
+        BranchNode node = ( BranchNode ) parser.parse( "(| (age>=30) ) " );
+        assertEquals( 1, node.getChildren().size() );
         assertEquals( AbstractExprNode.OR, node.getOperator() );
     }
 
