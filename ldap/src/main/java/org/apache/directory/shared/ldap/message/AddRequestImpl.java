@@ -107,7 +107,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
      */
     public void setAttributes( Attributes attributes )
     {
-        this.attributes = attributes;
+        this.attributes = AttributeUtils.toAttributesImpl( attributes );
     }
 
 

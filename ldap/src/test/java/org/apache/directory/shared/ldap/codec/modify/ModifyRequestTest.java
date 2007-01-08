@@ -25,8 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingException;
-import javax.naming.directory.BasicAttribute;
-import javax.naming.directory.ModificationItem;
+import javax.naming.directory.Attribute;
 
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.IAsn1Container;
@@ -39,6 +38,7 @@ import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.ResponseCarryingException;
 import org.apache.directory.shared.ldap.codec.modify.ModifyRequest;
 import org.apache.directory.shared.ldap.message.Message;
+import org.apache.directory.shared.ldap.message.ModificationItemImpl;
 import org.apache.directory.shared.ldap.message.ModifyResponseImpl;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.util.StringTools;
@@ -125,16 +125,16 @@ public class ModifyRequestTest extends TestCase
 
         assertEquals( 2, modifications.size() );
 
-        ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
-        BasicAttribute attributeValue = ( BasicAttribute ) modification.getAttribute();
+        ModificationItemImpl modification = ( ModificationItemImpl ) modifications.get( 0 );
+        Attribute attributeValue = ( Attribute ) modification.getAttribute();
 
         assertEquals( "l", attributeValue.getID().toLowerCase() );
 
         String attrValue = ( String ) attributeValue.get( 0 );
         assertEquals( "Paris", attrValue );
 
-        modification = ( ModificationItem ) modifications.get( 1 );
-        attributeValue = ( BasicAttribute ) modification.getAttribute();
+        modification = ( ModificationItemImpl ) modifications.get( 1 );
+        attributeValue = ( Attribute ) modification.getAttribute();
 
         assertEquals( "attrs", attributeValue.getID().toLowerCase() );
 
@@ -298,16 +298,16 @@ public class ModifyRequestTest extends TestCase
 
         assertEquals( 2, modifications.size() );
 
-        ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
-        BasicAttribute attributeValue = ( BasicAttribute ) modification.getAttribute();
+        ModificationItemImpl modification = ( ModificationItemImpl ) modifications.get( 0 );
+        Attribute attributeValue = ( Attribute ) modification.getAttribute();
 
         assertEquals( "telephonenumber", attributeValue.getID().toLowerCase() );
 
         String attrValue = ( String ) attributeValue.get( 0 );
         assertEquals( "1234567890", attrValue );
 
-        modification = ( ModificationItem ) modifications.get( 1 );
-        attributeValue = ( BasicAttribute ) modification.getAttribute();
+        modification = ( ModificationItemImpl ) modifications.get( 1 );
+        attributeValue = ( Attribute ) modification.getAttribute();
 
         assertEquals( "cn", attributeValue.getID().toLowerCase() );
 
@@ -421,14 +421,14 @@ public class ModifyRequestTest extends TestCase
 
         assertEquals( 3, modifications.size() );
 
-        ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
-        BasicAttribute attributeValue = ( BasicAttribute ) modification.getAttribute();
+        ModificationItemImpl modification = ( ModificationItemImpl ) modifications.get( 0 );
+        Attribute attributeValue = ( Attribute ) modification.getAttribute();
 
         assertEquals( "description", attributeValue.getID().toLowerCase() );
         assertEquals( 0, attributeValue.size() );
 
-        modification = ( ModificationItem ) modifications.get( 1 );
-        attributeValue = ( BasicAttribute ) modification.getAttribute();
+        modification = ( ModificationItemImpl ) modifications.get( 1 );
+        attributeValue = ( Attribute ) modification.getAttribute();
 
         String attrValue = ( String ) attributeValue.get( 0 );
 
@@ -436,8 +436,8 @@ public class ModifyRequestTest extends TestCase
 
         assertEquals( "01234567890", attrValue );
 
-        modification = ( ModificationItem ) modifications.get( 2 );
-        attributeValue = ( BasicAttribute ) modification.getAttribute();
+        modification = ( ModificationItemImpl ) modifications.get( 2 );
+        attributeValue = ( Attribute ) modification.getAttribute();
 
         attrValue = ( String ) attributeValue.get( 0 );
 
@@ -552,8 +552,8 @@ public class ModifyRequestTest extends TestCase
 
         assertEquals( 2, modifications.size() );
 
-        ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
-        BasicAttribute attributeValue = ( BasicAttribute ) modification.getAttribute();
+        ModificationItemImpl modification = ( ModificationItemImpl ) modifications.get( 0 );
+        Attribute attributeValue = ( Attribute ) modification.getAttribute();
 
         assertEquals( "l", attributeValue.getID().toLowerCase() );
 
@@ -563,8 +563,8 @@ public class ModifyRequestTest extends TestCase
         attrValue = ( String ) attributeValue.get( 1 );
         assertEquals( "London", attrValue );
 
-        modification = ( ModificationItem ) modifications.get( 1 );
-        attributeValue = ( BasicAttribute ) modification.getAttribute();
+        modification = ( ModificationItemImpl ) modifications.get( 1 );
+        attributeValue = ( Attribute ) modification.getAttribute();
 
         assertEquals( "attrs", attributeValue.getID().toLowerCase() );
 
@@ -1088,8 +1088,8 @@ public class ModifyRequestTest extends TestCase
 
         assertEquals( 1, modifications.size() );
 
-        ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
-        BasicAttribute attributeValue = ( BasicAttribute ) modification.getAttribute();
+        ModificationItemImpl modification = ( ModificationItemImpl ) modifications.get( 0 );
+        Attribute attributeValue = ( Attribute ) modification.getAttribute();
 
         assertEquals( "l", attributeValue.getID().toLowerCase() );
         assertEquals( 0, attributeValue.size() );
@@ -1171,8 +1171,8 @@ public class ModifyRequestTest extends TestCase
 
         assertEquals( 1, modifications.size() );
 
-        ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
-        BasicAttribute attributeValue = ( BasicAttribute ) modification.getAttribute();
+        ModificationItemImpl modification = ( ModificationItemImpl ) modifications.get( 0 );
+        Attribute attributeValue = ( Attribute ) modification.getAttribute();
 
         assertEquals( "l", attributeValue.getID().toLowerCase() );
         assertEquals( 0, attributeValue.size() );
@@ -1262,8 +1262,8 @@ public class ModifyRequestTest extends TestCase
 
         assertEquals( 1, modifications.size() );
 
-        ModificationItem modification = ( ModificationItem ) modifications.get( 0 );
-        BasicAttribute attributeValue = ( BasicAttribute ) modification.getAttribute();
+        ModificationItemImpl modification = ( ModificationItemImpl ) modifications.get( 0 );
+        Attribute attributeValue = ( Attribute ) modification.getAttribute();
 
         assertEquals( "l", attributeValue.getID().toLowerCase() );
         assertEquals( 2, attributeValue.size() );

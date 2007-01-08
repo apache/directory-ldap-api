@@ -27,8 +27,8 @@ import java.util.List;
 
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttribute;
 
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.IAsn1Container;
@@ -138,7 +138,7 @@ public class AddRequestTest extends TestCase
         lVal2.add( "test3" );
         typesVals.put( "attrs", lVal2 );
 
-        BasicAttribute attributeValue = ( BasicAttribute ) attributes.get( "l" );
+        Attribute attributeValue = (Attribute) attributes.get( "l" );
 
         assertTrue( expectedTypes.contains( attributeValue.getID().toLowerCase() ) );
 
@@ -154,7 +154,7 @@ public class AddRequestTest extends TestCase
             vals.remove( value.toString() );
         }
 
-        attributeValue = ( BasicAttribute ) attributes.get( "attrs" );
+        attributeValue = ( Attribute ) attributes.get( "attrs" );
 
         assertTrue( expectedTypes.contains( attributeValue.getID().toLowerCase() ) );
 
@@ -625,7 +625,7 @@ public class AddRequestTest extends TestCase
 
         assertEquals( 1, attributes.size() );
 
-        BasicAttribute attributeValue = ( BasicAttribute ) attributes.get( "l" );
+        Attribute attributeValue = ( Attribute ) attributes.get( "l" );
 
         assertEquals( "l", attributeValue.getID().toLowerCase() );
 
@@ -717,7 +717,7 @@ public class AddRequestTest extends TestCase
 
         assertEquals( 1, attributes.size() );
 
-        BasicAttribute attributeValue = ( BasicAttribute ) attributes.get( "l" );
+        Attribute attributeValue = ( Attribute ) attributes.get( "l" );
 
         assertEquals( "l", attributeValue.getID().toLowerCase() );
 

@@ -26,8 +26,6 @@ import java.util.Iterator;
 
 import javax.naming.NamingEnumeration;
 import javax.naming.directory.Attribute;
-import javax.naming.directory.BasicAttribute;
-import javax.naming.directory.ModificationItem;
 import javax.naming.ldap.Control;
 
 import org.apache.directory.shared.asn1.Asn1Object;
@@ -92,6 +90,7 @@ import org.apache.directory.shared.ldap.message.ExtendedResponseImpl;
 import org.apache.directory.shared.ldap.message.LdapResultImpl;
 import org.apache.directory.shared.ldap.message.Message;
 import org.apache.directory.shared.ldap.message.MessageTypeEnum;
+import org.apache.directory.shared.ldap.message.ModificationItemImpl;
 import org.apache.directory.shared.ldap.message.ModifyDnRequestImpl;
 import org.apache.directory.shared.ldap.message.ModifyDnResponseImpl;
 import org.apache.directory.shared.ldap.message.ModifyRequestImpl;
@@ -371,7 +370,7 @@ public class TwixTransformer implements TransformerSpi
             // Loop through the modifications
             while ( modifications.hasNext() )
             {
-                snickersMessage.addModification( ( ModificationItem ) modifications.next() );
+                snickersMessage.addModification( ( ModificationItemImpl ) modifications.next() );
             }
         }
 
@@ -656,7 +655,7 @@ public class TwixTransformer implements TransformerSpi
             {
                 while ( attributes.hasMoreElements() )
                 {
-                    Attribute attribute = ( BasicAttribute ) attributes.nextElement();
+                    Attribute attribute = ( Attribute ) attributes.nextElement();
 
                     if ( attribute != null )
                     {

@@ -21,8 +21,11 @@ package org.apache.directory.shared.ldap.message;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
@@ -30,6 +33,7 @@ import javax.naming.OperationNotSupportedException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.DirContext;
 
+import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +45,9 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org"> Apache Directory Project</a>
  * @version $Rev$
  */
-public class LockableAttributeImpl implements Attribute
+public class AttributeImpl implements Attribute
 {
-    private static final Logger log = LoggerFactory.getLogger( LockableAttributeImpl.class );
+    private static final Logger log = LoggerFactory.getLogger( AttributeImpl.class );
 
     private static final long serialVersionUID = -5158233254341746514L;
 
@@ -53,85 +57,64 @@ public class LockableAttributeImpl implements Attribute
     /** In case we have only one value, just use this container */
     private Object value;
     
-    /** the list of attribute values */
+    /** the list of attribute values, if unordered */
     private List list;
     
     /** The number of values stored */
     private int size = 0;
-
 
     // ------------------------------------------------------------------------
     // Constructors
     // ------------------------------------------------------------------------
 
     /**
-     * Creates a permanently LockableAttribute on id whose locking behavoir is
-     * dicatated by parent.
+     * Creates a permanently Attribute on id whose locking behavior is
+     * dictated by parent.
      * 
      * @param id
      *            the id or name of this attribute.
      */
-    public LockableAttributeImpl(final String id)
+    public AttributeImpl( String id )
     {
         upId = id;
         value = null;
-        list = null; //new ArrayList();
+        list = null;
         size = 0;
     }
 
 
     /**
-     * Creates a permanently LockableAttribute on id with a single value.
+     * Creates a permanently Attribute on id with a single value.
      * 
      * @param id
      *            the id or name of this attribute.
      * @param value
      *            a value for the attribute
      */
-    public LockableAttributeImpl(final String id, final Object value)
+    public AttributeImpl( String id, Object value )
     {
         upId = id;
-        list = null; // new ArrayList();
-        this.value = value; //list.add( value );
+        list = null;
+        this.value = AttributeUtils.cloneValue( value );
         size = 1;
     }
 
 
     /**
-     * Creates a permanently LockableAttribute on id with a single value.
+     * Creates a permanently Attribute on id with a single value.
      * 
      * @param id
      *            the id or name of this attribute.
      * @param value
      *            a value for the attribute
      */
-    public LockableAttributeImpl(final String id, final byte[] value)
+    public AttributeImpl( String id, byte[] value )
     {
         upId = id;
-        list = null; //new ArrayList();
-        this.value = value;
-        //list.add( value );
+        list = null;
+        this.value = AttributeUtils.cloneValue( value );
         size = 1;
     }
-
-
-    /**
-     * Creates a permanently LockableAttribute on id whose locking behavoir is
-     * dicatated by parent. Used for the clone method.
-     * 
-     * @param id
-     *            the id or name of this attribute
-     * @param list
-     *            the list of values to start with
-     */
-    private LockableAttributeImpl(final String id, final List list)
-    {
-        upId = id;
-        this.list = list;
-        value = null;
-        size = (list != null ? list.size() : 0);
-    }
-
 
     // ------------------------------------------------------------------------
     // javax.naming.directory.Attribute Interface Method Implementations
@@ -148,30 +131,30 @@ public class LockableAttributeImpl implements Attribute
     	{
     		return new IteratorNamingEnumeration( new Iterator()
     		{
-    			private boolean done = (size != 0);
+    			private boolean more = (size != 0);
     				
     			public boolean hasNext() 
     			{
-    				return done;
+    				return more;
     			}
     			
     			public Object next() 
     			{
-    				done = false;
+    				more = false;
     				return value;
     			}
     			
     			public void remove() 
     			{
     				value = null;
-    				done = false;
+    				more = true;
     				size = 0;
     			}
     		});
     	}
     	else
     	{
-    		return new IteratorNamingEnumeration( list.iterator() );
+            return new IteratorNamingEnumeration( list.iterator() );
     	}
     }
 
@@ -183,18 +166,14 @@ public class LockableAttributeImpl implements Attribute
      */
     public Object get()
     {
-    	if ( list == null )
-    	{
+        if ( size < 2 )
+        {
     		return value;
     	}
-    	else if ( list.isEmpty() )
+        else
         {
-            return null;
+            return list.get( 0 );
         }
-    	else
-    	{
-    		return list.get( 0 );
-    	}
     }
 
 
@@ -235,10 +214,20 @@ public class LockableAttributeImpl implements Attribute
     			return false;
     			
     		case 1 :
-    			return value == null ? attrVal == null : value.equals( attrVal );
+                return AttributeUtils.equals( value, attrVal );
     			
     		default :
-    			return list.contains( attrVal );
+                Iterator values = list.iterator();
+            
+                while ( values.hasNext() )
+                {
+                    if ( AttributeUtils.equals( values.next(), attrVal ) )
+                    {
+                        return true;
+                    }
+                }
+                
+                return false;
     	}
     }
 
@@ -255,7 +244,16 @@ public class LockableAttributeImpl implements Attribute
     public boolean add( Object attrVal )
     {
     	boolean exists = false;
-    	
+        
+        if ( contains( attrVal ) )
+        {
+            // Do not duplicate values
+            return true;
+        }
+        
+        // First copy the value
+        attrVal = AttributeUtils.cloneValue( attrVal );
+        
     	switch ( size )
     	{
     		case 0 :
@@ -266,12 +264,20 @@ public class LockableAttributeImpl implements Attribute
     		case 1 :
     			exists = value.equals( attrVal );
 
-    			list = new ArrayList();
-    			list.add( value );
-    			list.add( attrVal );
-    			size++;
-    			value = null;
-    			return exists;
+                if ( exists )
+                {
+                    // Don't add two times the same value
+                    return true;
+                }
+                else
+                {
+        			list = new ArrayList();
+        			list.add( value );
+        			list.add( attrVal );
+        			size++;
+        			value = null;
+        			return true;
+                }
     			
     		default :
     			exists = list.contains( attrVal ); 
@@ -303,7 +309,7 @@ public class LockableAttributeImpl implements Attribute
     			size--;
     			return true;
     			
-    		case 2 :
+    		case 2 : 
     			list.remove( attrVal );
     			value = list.get(0);
     			size = 1;
@@ -371,17 +377,31 @@ public class LockableAttributeImpl implements Attribute
      */
     public Object clone()
     {
-    	switch ( size )
-    	{
-    		case 0 :
-    			return new LockableAttributeImpl( upId );
-    			
-    		case 1 :
-    			return new LockableAttributeImpl( upId, value );
-    			
-    		default :
-    			return new LockableAttributeImpl( upId, (List)((ArrayList)list).clone() );
-    	}
+        try
+        {
+            AttributeImpl clone = (AttributeImpl)super.clone();
+            
+            if ( size < 2 )
+            {
+                clone.value = AttributeUtils.cloneValue( value );
+            }
+            else
+            {
+                clone.list = new ArrayList( size );
+                
+                for ( int i = 0; i < size; i++ )
+                {
+                    Object newValue = AttributeUtils.cloneValue( list.get( i ) );
+                    clone.list.add( newValue );
+                }
+            }
+            
+            return clone;
+        }
+        catch ( CloneNotSupportedException cnse )
+        {
+            return null;
+        }
     }
 
 
@@ -406,6 +426,11 @@ public class LockableAttributeImpl implements Attribute
      */
     public Object get( int index )
     {
+        if ( (index < 0 ) || ( index > size + 1 ) )
+        {
+            return null;
+        }
+        
     	switch ( size )
     	{
     		case 0 :
@@ -415,7 +440,7 @@ public class LockableAttributeImpl implements Attribute
     			return value;
     			
     		default :
-    			return list.get( index );
+                return list.get( index );
     	}
     }
 
@@ -430,6 +455,11 @@ public class LockableAttributeImpl implements Attribute
      */
     public Object remove( int index )
     {
+        if ( (index < 0 ) || ( index > size + 1 ) )
+        {
+            return null;
+        }
+        
     	switch ( size )
     	{
     		case 0 :
@@ -441,9 +471,18 @@ public class LockableAttributeImpl implements Attribute
     			size = 0;
     			return result;
     			
+            case 2 :
+                Object removed = list.remove( index );
+                value = list.get(0);
+                size = 1;
+                list = null;
+                return removed;
+                
+                
     		default :
     			size--;
-    			return list.remove( index );
+            
+                return list.remove( index );
     	}
     }
 
@@ -459,6 +498,9 @@ public class LockableAttributeImpl implements Attribute
      */
     public void add( int index, Object attrVal )
     {
+        // First copy the value
+        attrVal = AttributeUtils.cloneValue( attrVal );
+        
     	switch ( size )
     	{
     		case 0 :
@@ -503,6 +545,9 @@ public class LockableAttributeImpl implements Attribute
      */
     public Object set( int index, Object attrVal )
     {
+        // First copy the value
+        attrVal = AttributeUtils.cloneValue( attrVal );
+        
     	switch ( size )
     	{
     		case 0 :
@@ -556,7 +601,7 @@ public class LockableAttributeImpl implements Attribute
             return true;
         }
 
-        if ( !( obj instanceof Attribute ) )
+        if ( ( obj == null ) || !( obj instanceof AttributeImpl ) )
         {
             return false;
         }
@@ -573,43 +618,130 @@ public class LockableAttributeImpl implements Attribute
             return false;
         }
 
-        switch ( size )
+        if ( size == 0 )
         {
-        	case 0 :
-        		return true;
-        		
-        	case 1 :
-                try
+            return true;
+        }
+        else if ( size == 1 )
+        {
+            try
+            {
+                return ( value.equals( attr.get( 0 ) ) );
+            }
+            catch ( NamingException ne )
+            {
+                log.warn( "Failed to get an attribute from the specifid attribute: " + attr, ne );
+                return false;
+            }
+        }
+        else
+        {
+            // We have to create one hashSet to store all the values
+            // of the current attribute, and we will remove from this
+            // hashSet all the values from the second attribute which
+            // are present. At the end, the hashSet should be empty,
+            // and we should not have any value remaining in the second
+            // attribute. If not, that means the attributes are not
+            // equals.
+            //
+            // We have to do that because attribute's values are
+            // not ordered.
+            Map hash = new HashMap();
+            
+            Iterator values = list.iterator();
+            
+            while ( values.hasNext() )
+            {
+                Object v = values.next();
+                int h = 0;
+                
+                if ( v instanceof String )
                 {
-                	return value.equals( attr.get( 0 ) );
+                    h = v.hashCode();
                 }
-                catch ( NamingException e )
+                else if ( v instanceof byte[] )
                 {
-                    log.warn( "Failed to get an attribute from the specifid attribute: " + attr, e );
+                    byte[] bv = (byte[])v;
+                    h = Arrays.hashCode( bv );
+                }
+                else
+                {
                     return false;
                 }
-        		
-        	default :
-                for ( int i = 0; i < size; i++ )
+                
+                hash.put( Integer.valueOf( h ), v );
+            }
+            
+            try
+            {
+                NamingEnumeration attrValues = attr.getAll();
+                
+                while ( attrValues.hasMoreElements() )
                 {
-                    try
+                    Object val = attrValues.next();
+                    
+                    if ( val instanceof String )
                     {
-                        if ( !list.contains( attr.get( i ) ) )
+                        Integer h = Integer.valueOf( val.hashCode() );
+                        
+                        if ( !hash.containsKey( h ) )
                         {
                             return false;
                         }
+                        else
+                        {
+                            Object val2 = hash.remove( h );
+                            
+                            if ( !val.equals( val2 ) )
+                            {
+                                return false;
+                            }
+                        }
                     }
-                    catch ( NamingException e )
+                    else if ( val instanceof byte[] )
                     {
-                        log.warn( "Failed to get an attribute from the specifid attribute: " + attr, e );
+                        Integer h = Integer.valueOf( Arrays.hashCode( (byte[])val ) );
+
+                        if ( !hash.containsKey( h ) )
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            Object val2 = hash.remove( h );
+                            
+                            if ( !Arrays.equals( (byte[])val, (byte[])val2 ) )
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    else
+                    {
                         return false;
                     }
                 }
-        		
-        		return true;
+                
+                if ( hash.size() != 0 )
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch ( NamingException ne )
+            {
+                log.warn( "Failed to get an attribute from the specifid attribute: " + attr, ne );
+                return false;
+            }
         }
     }
     
+    /**
+     * @see Object#toString()
+     */
     public String toString()
     {
     	StringBuffer sb = new StringBuffer();

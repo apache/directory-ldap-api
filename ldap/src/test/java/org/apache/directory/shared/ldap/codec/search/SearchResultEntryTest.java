@@ -26,8 +26,8 @@ import java.util.List;
 
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttribute;
 
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.IAsn1Container;
@@ -110,7 +110,7 @@ public class SearchResultEntryTest extends TestCase
 
         for ( int i = 0; i < partialAttributesList.size(); i++ )
         {
-            BasicAttribute attributeValue = ( BasicAttribute ) partialAttributesList.get( "objectclass" );
+            Attribute attributeValue = ( Attribute ) partialAttributesList.get( "objectclass" );
 
             assertEquals( "objectClass".toLowerCase(), attributeValue.getID().toLowerCase() );
 
@@ -220,7 +220,7 @@ public class SearchResultEntryTest extends TestCase
 
         for ( int i = 0; i < expectedAttributes.length; i++ )
         {
-            BasicAttribute attributeValue = ( BasicAttribute ) partialAttributesList.get( expectedAttributes[i] );
+            Attribute attributeValue = ( Attribute ) partialAttributesList.get( expectedAttributes[i] );
 
             assertEquals( expectedAttributes[i].toLowerCase(), attributeValue.getID().toLowerCase() );
 
@@ -329,7 +329,7 @@ public class SearchResultEntryTest extends TestCase
 
         for ( int i = 0; i < partialAttributesList.size(); i++ )
         {
-            BasicAttribute attributeValue = ( BasicAttribute ) partialAttributesList.get( "objectclass" );
+            Attribute attributeValue = ( Attribute ) partialAttributesList.get( "objectclass" );
 
             assertEquals( "objectClass".toLowerCase(), attributeValue.getID().toLowerCase() );
 
@@ -802,7 +802,7 @@ public class SearchResultEntryTest extends TestCase
 
         for ( int i = 0; i < partialAttributesList.size(); i++ )
         {
-            BasicAttribute attributeValue = ( BasicAttribute ) partialAttributesList.get( "objectclass" );
+            Attribute attributeValue = ( Attribute ) partialAttributesList.get( "objectclass" );
 
             assertEquals( "objectClass".toLowerCase(), attributeValue.getID().toLowerCase() );
 
@@ -885,12 +885,12 @@ public class SearchResultEntryTest extends TestCase
 
         assertEquals( 2, partialAttributesList.size() );
 
-        BasicAttribute attributeValue = ( BasicAttribute ) partialAttributesList.get( "objectclass" );
+        Attribute attributeValue = ( Attribute ) partialAttributesList.get( "objectclass" );
         assertEquals( "objectClass".toLowerCase(), attributeValue.getID().toLowerCase() );
         NamingEnumeration values = attributeValue.getAll();
         assertFalse( values.hasMore() );
 
-        attributeValue = ( BasicAttribute ) partialAttributesList.get( "objectclazz" );
+        attributeValue = ( Attribute ) partialAttributesList.get( "objectclazz" );
         assertEquals( "objectClazz".toLowerCase(), attributeValue.getID().toLowerCase() );
         values = attributeValue.getAll();
         assertFalse( values.hasMore() );
@@ -972,7 +972,7 @@ public class SearchResultEntryTest extends TestCase
 
         for ( int i = 0; i < partialAttributesList.size(); i++ )
         {
-            BasicAttribute attributeValue = ( BasicAttribute ) partialAttributesList.get( "objectclass" );
+            Attribute attributeValue = ( Attribute ) partialAttributesList.get( "objectclass" );
 
             assertEquals( "objectClass".toLowerCase(), attributeValue.getID().toLowerCase() );
 
@@ -1066,7 +1066,7 @@ public class SearchResultEntryTest extends TestCase
 
         for ( int i = 0; i < partialAttributesList.size(); i++ )
         {
-            BasicAttribute attributeValue = ( BasicAttribute ) partialAttributesList.get( "objectclass" );
+            Attribute attributeValue = ( Attribute ) partialAttributesList.get( "objectclass" );
 
             assertEquals( "objectClass".toLowerCase(), attributeValue.getID().toLowerCase() );
 
@@ -1159,7 +1159,7 @@ public class SearchResultEntryTest extends TestCase
 
         for ( int i = 0; i < partialAttributesList.size(); i++ )
         {
-            BasicAttribute attributeValue = ( BasicAttribute ) partialAttributesList.get( "objectclass" );
+            Attribute attributeValue = ( Attribute ) partialAttributesList.get( "objectclass" );
 
             assertEquals( "objectClass".toLowerCase(), attributeValue.getID().toLowerCase() );
 

@@ -103,7 +103,6 @@ public class FilterParserImplTest extends TestCase {
 		assertEquals(1, node.getChildren().size());
 		assertEquals(AbstractExprNode.AND, node.getOperator());
 	}
-
 	public void testOrFilter() throws IOException, ParseException {
 		BranchNode node = (BranchNode) parser
 				.parse("(| ( ou ~= people ) (age>=30) ) ");

@@ -26,6 +26,8 @@ import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.asn1.codec.EncoderException;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
+import org.apache.directory.shared.ldap.message.AttributeImpl;
+import org.apache.directory.shared.ldap.message.ModificationItemImpl;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.slf4j.Logger;
@@ -41,9 +43,7 @@ import java.util.List;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
-import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
 
 
 /**
@@ -180,7 +180,7 @@ public class ModifyRequest extends LdapMessage
      */
     public void addAttributeTypeAndValues( String type )
     {
-        currentAttribute = new BasicAttribute( StringTools.lowerCase( type ) );
+        currentAttribute = new AttributeImpl( StringTools.lowerCase( type ) );
 
         int operation = 0;
 
@@ -200,7 +200,7 @@ public class ModifyRequest extends LdapMessage
                 break;
         }
 
-        ModificationItem modification = new ModificationItem( operation, currentAttribute );
+        ModificationItemImpl modification = new ModificationItemImpl( operation, currentAttribute );
         modifications.add( modification );
     }
 
@@ -330,7 +330,7 @@ public class ModifyRequest extends LdapMessage
                 int localModificationSequenceLength = 1 + 1 + 1;
                 int localValuesLength = 0;
 
-                ModificationItem modification = ( ModificationItem ) modificationsIterator.next();
+                ModificationItemImpl modification = ( ModificationItemImpl ) modificationsIterator.next();
 
                 // Modification length initialized with the type
                 int typeLength = modification.getAttribute().getID().length();
@@ -448,7 +448,7 @@ public class ModifyRequest extends LdapMessage
                 // Compute the modifications length
                 while ( modificationIterator.hasNext() )
                 {
-                    ModificationItem modification = ( ModificationItem ) modificationIterator.next();
+                    ModificationItemImpl modification = ( ModificationItemImpl ) modificationIterator.next();
 
                     // The modification sequence
                     buffer.put( UniversalTag.SEQUENCE_TAG );
@@ -551,7 +551,7 @@ public class ModifyRequest extends LdapMessage
             for ( int i = 0; i < modifications.size(); i++ )
             {
 
-                ModificationItem modification = ( ModificationItem ) modifications.get( i );
+                ModificationItemImpl modification = ( ModificationItemImpl ) modifications.get( i );
 
                 sb.append( "            Modification[" ).append( i ).append( "]\n" );
                 sb.append( "                Operation : " );

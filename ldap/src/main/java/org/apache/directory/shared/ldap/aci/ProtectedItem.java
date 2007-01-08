@@ -346,7 +346,7 @@ public abstract class ProtectedItem implements Serializable
          * @param attributes
          *            the collection of {@link Attribute}s.
          */
-        public AttributeValue(Collection attributes)
+        public AttributeValue( Collection attributes )
         {
             for ( Iterator i = attributes.iterator(); i.hasNext(); )
             {
@@ -355,6 +355,7 @@ public abstract class ProtectedItem implements Serializable
                     throw new IllegalArgumentException( "attributeTypes contains an element which is not an attribute." );
                 }
             }
+            
             this.attributes = Collections.unmodifiableCollection( new ArrayList( attributes ) );
         }
 

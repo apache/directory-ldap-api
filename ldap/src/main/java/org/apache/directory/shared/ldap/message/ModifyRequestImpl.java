@@ -23,20 +23,12 @@ package org.apache.directory.shared.ldap.message;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
 
 import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.util.StringTools;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -48,9 +40,6 @@ import org.slf4j.LoggerFactory;
 public class ModifyRequestImpl extends AbstractAbandonableRequest implements ModifyRequest
 {
     static final long serialVersionUID = -505803669028990304L;
-
-    /** The logger */
-    private static final transient Logger log = LoggerFactory.getLogger( ModifyRequestImpl.class );
 
     /** Dn of the entry to modify or PDU's <b>object</b> field */
     private LdapDN name;
@@ -127,7 +116,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
      * @param mod
      *            a ModificationItem to add.
      */
-    public void addModification( ModificationItem mod )
+    public void addModification( ModificationItemImpl mod )
     {
         mods.add( mod );
     }
@@ -140,7 +129,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
      * @param mod
      *            a ModificationItem to remove.
      */
-    public void removeModification( ModificationItem mod )
+    public void removeModification( ModificationItemImpl mod )
     {
         mods.remove( mod );
     }
@@ -227,9 +216,9 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
 
         for ( int ii = 0; ii < mods.size(); ii++ )
         {
-            ModificationItem item = ( ModificationItem ) list.next();
+            ModificationItemImpl item = ( ModificationItemImpl ) list.next();
 
-            if ( !equals( ( ModificationItem ) mods.get( ii ), item ) )
+            if ( !equals( ( ModificationItemImpl ) mods.get( ii ), item ) )
             {
                 return false;
             }
@@ -249,7 +238,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
      *            the second ModificationItem to compare
      * @return true if the ModificationItems are equal, false otherwise
      */
-    private boolean equals( ModificationItem item0, ModificationItem item1 )
+    private boolean equals( ModificationItemImpl item0, ModificationItemImpl item1 )
     {
         if ( item0 == item1 )
         {
@@ -267,59 +256,10 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
             return false;
         }
 
-        try
-        {
-            Attribute attr0 = item0.getAttribute();
-            Attribute attr1 = item1.getAttribute();
+        Attribute attr0 = item0.getAttribute();
+        Attribute attr1 = item1.getAttribute();
 
-            Set attrHash0 = new HashSet();
-
-            NamingEnumeration iter0 = attr0.getAll();
-
-            while ( iter0.hasMoreElements() )
-            {
-                attrHash0.add( iter0.next() );
-            }
-
-            NamingEnumeration iter1 = attr1.getAll();
-
-            while ( iter1.hasMoreElements() )
-            {
-                Object value = iter1.next();
-
-                if ( attrHash0.contains( value ) == false )
-                {
-                    if ( value instanceof byte[] )
-                    {
-                        String sValue = StringTools.utf8ToString( ( byte[] ) value );
-
-                        if ( attrHash0.contains( sValue ) == false )
-                        {
-                            return false;
-                        }
-                        else
-                        {
-                            attrHash0.remove( sValue );
-                            continue;
-                        }
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    attrHash0.remove( value );
-                }
-            }
-
-            return ( attrHash0.size() == 0 );
-        }
-        catch ( NamingException ne )
-        {
-            return false;
-        }
+        return attr0.equals( attr1 );
     }
 
 
@@ -342,7 +282,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
             for ( int i = 0; i < mods.size(); i++ )
             {
 
-                ModificationItem modification = ( ModificationItem ) mods.get( i );
+                ModificationItemImpl modification = ( ModificationItemImpl ) mods.get( i );
 
                 sb.append( "            Modification[" ).append( i ).append( "]\n" );
                 sb.append( "                Operation : " );
@@ -364,42 +304,8 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
                 }
 
                 sb.append( "                Modification\n" );
-
-                Attribute attribute = modification.getAttribute();
-
-                try
-                {
-                    sb.append( "                    Type : '" ).append( attribute.getID() ).append( "'\n" );
-                    sb.append( "                    Vals\n" );
-
-                    for ( int j = 0; j < attribute.size(); j++ )
-                    {
-                        sb.append( "                        Val[" ).append( j ).append( "] : '" );
-
-                        Object attributeValue = attribute.get( j );
-
-                        if ( attributeValue instanceof byte[] )
-                        {
-                            sb.append( StringTools.utf8ToString( ( byte[] ) attributeValue ) ).append( '/' ).append(
-                                StringTools.dumpBytes( ( byte[] ) attributeValue ) );
-                        }
-                        else if ( attributeValue instanceof String )
-                        {
-                            sb.append( attributeValue );
-                        }
-                        else
-                        {
-                            sb.append( StringTools.dumpBytes( StringTools.getBytesUtf8( attributeValue.toString() ) ) );
-                        }
-
-                        sb.append( "' \n" );
-
-                    }
-                }
-                catch ( NamingException ne )
-                {
-                    log.error( "Naming exception while printing the '" + attribute.getID() + "'" );
-                }
+                sb.append( "                    " ).append( modification.getAttribute() );
+                
             }
         }
 

@@ -83,7 +83,7 @@ public class SearchResponseEntryImpl extends AbstractResponse implements SearchR
      */
     public void setAttributes( Attributes attributes )
     {
-        this.attributes = attributes;
+        this.attributes = AttributeUtils.toAttributesImpl( attributes );
     }
 
 

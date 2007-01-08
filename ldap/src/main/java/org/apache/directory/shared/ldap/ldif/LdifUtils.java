@@ -127,7 +127,9 @@ public class LdifUtils
 		while ( ne.hasMore() )
 		{
 			Object attribute = ne.next();
-			if (attribute instanceof Attribute) {
+            
+			if (attribute instanceof Attribute) 
+            {
 				sb.append( convertToLdif( (Attribute) attribute ) );
 			}			
 		}
@@ -141,7 +143,7 @@ public class LdifUtils
      * @return the corresponding LDIF code as a String
      * @throws NamingException If a naming exception is encountered.
      */
-	private static String convertToLdif(Attribute attr) throws NamingException
+	private static String convertToLdif( Attribute attr ) throws NamingException
 	{
 		StringBuffer sb = new StringBuffer();
 		

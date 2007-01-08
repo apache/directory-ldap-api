@@ -28,13 +28,13 @@ import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.StringReader;
 
-import javax.naming.directory.Attributes;
 import javax.naming.NamingException;
+import javax.naming.directory.Attributes;
 
 import org.apache.directory.shared.ldap.NotImplementedException;
 import org.apache.directory.shared.ldap.ldif.Entry;
 import org.apache.directory.shared.ldap.ldif.LdifReader;
-import org.apache.directory.shared.ldap.message.LockableAttributesImpl;
+import org.apache.directory.shared.ldap.message.AttributesImpl;
 
 
 /**
@@ -688,7 +688,7 @@ public class PropertiesUtils
         {
             if ( values == null )
             {
-                return new LockableAttributesImpl();
+                return new AttributesImpl();
             }
 
             return values;

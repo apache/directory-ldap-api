@@ -25,15 +25,10 @@ package org.apache.directory.shared.ldap.aci;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.Enumeration;
-
-import javax.naming.directory.Attribute;
-import javax.naming.directory.BasicAttribute;
-import javax.naming.NamingException;
 
 import org.apache.directory.shared.ldap.filter.AbstractExprNode;
 import org.apache.directory.shared.ldap.filter.BranchNode;
@@ -51,6 +46,7 @@ import org.apache.directory.shared.ldap.util.NamespaceTools;
 import org.apache.directory.shared.ldap.util.NoDuplicateKeysMap;
 import org.apache.directory.shared.ldap.util.OptionalComponentsMonitor;
 import org.apache.directory.shared.ldap.name.LdapDN;
+import org.apache.directory.shared.ldap.message.AttributeImpl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -500,7 +496,7 @@ attributeValue
             attributeTypeAndValue = ( String ) attributeTypeAndValueSet.nextElement();
             attributeType = NamespaceTools.getRdnAttribute( attributeTypeAndValue );
             attributeValue = NamespaceTools.getRdnValue( attributeTypeAndValue );
-            attributeSet.add( new BasicAttribute( attributeType, attributeValue ) );
+            attributeSet.add( new AttributeImpl( attributeType, attributeValue ) );
             log.debug( "An attributeTypeAndValue from the set: " + attributeType + "=" +  attributeValue);
         }
         m_protectedItemsMap.put( "attributeValue", new ProtectedItem.AttributeValue( attributeSet ) );

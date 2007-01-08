@@ -31,6 +31,7 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
 
+import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.shared.ldap.util.StringTools;
 
 
@@ -40,37 +41,88 @@ import org.apache.directory.shared.ldap.util.StringTools;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$
  */
-public class LockableAttributesImpl implements Attributes, Serializable
+public class AttributesImpl implements Attributes
 {
-    static transient final long serialVersionUID = -69864533495992471L;
+    static transient final long serialVersionUID = 1L;
+    
+    /** This flag is used if the attribute name is not caseSensitive */
+    private boolean ignoreCase;
 
     /**
      * An holder to store <Id, Attribute> couples
-     * 
      */
     private class Holder implements Serializable, Cloneable
 	{
     	static transient final long serialVersionUID = 1L;
     	
+        // The user provided attribute ID
 		private String upId;
+        
+        // The attribute. Should be an instance of LockableAttribute
 		private Attribute attribute;
 		
+        /**
+         * Create a new holder for the given ID
+         * @param upId The attribute UP id
+         * @param attribute The attribute
+         */
 		private Holder( String upId, Attribute attribute )
 		{
 			this.upId = upId;
 			this.attribute = attribute;
 		}
 		
+        /**
+         * @see Object#clone()
+         */
 		public Object clone() throws CloneNotSupportedException
 		{
 			Holder clone = (Holder)super.clone();
 			
 			clone.upId = upId;
+            
+            if ( attribute instanceof BasicAttribute )
+            {
+                // The BasicAttribute clone() method does not
+                // copy the values.
+                clone.attribute = new AttributeImpl( attribute.getID() );
+                
+                try
+                {
+                    NamingEnumeration values = attribute.getAll();
+                    
+                    while ( values.hasMoreElements() )
+                    {
+                        Object value = values.nextElement();
+                        
+                        if ( value instanceof byte[] )
+                        {
+                            // We have to clone the byte array, it's not immutable.
+                            byte[] oldValue = (byte[])value;
+                            byte[] newValue = new byte[oldValue.length];
+                            
+                            System.arraycopy( oldValue, 0, newValue, 0, oldValue.length );
+                            clone.attribute.add( newValue );
+                        }
+                        else
+                        {
+                            clone.attribute.add( value );
+                        }
+                    }
+                }
+                catch( NamingException ne )
+                {
+                    
+                }
+            }
 			clone.attribute = (Attribute)attribute.clone();
 			
 			return clone;
 		}
 		
+        /**
+         * @see Object#toString()
+         */
 		public String toString()
 		{
 			StringBuffer sb = new StringBuffer();
@@ -88,9 +140,11 @@ public class LockableAttributesImpl implements Attributes, Serializable
      */
 	public class AttributeIterator implements Iterator
 	{
+        /** The internal iterator */
 		private Iterator iterator; 
 		
-		private AttributeIterator( LockableAttributesImpl attributes )
+        /** Create an attribute's iterator */
+		private AttributeIterator( AttributesImpl attributes )
 		{
 			iterator = attributes.keyMap.values().iterator();
 		}
@@ -151,11 +205,41 @@ public class LockableAttributesImpl implements Attributes, Serializable
     // ------------------------------------------------------------------------
 
     /**
-     * Creates a LockableAttributes without a parent Lockable.
+     * Creates an Attributes
      */
-    public LockableAttributesImpl()
+    public AttributesImpl()
     {
         keyMap = new HashMap();
+        ignoreCase = true;
+    }
+
+    /**
+     * Creates an Attributes
+     */
+    public AttributesImpl( boolean ignoreCase )
+    {
+        keyMap = new HashMap();
+        this.ignoreCase = ignoreCase;
+    }
+
+    /**
+     * Creates an Attributes with one Attribute
+     */
+    public AttributesImpl( String id, Object value )
+    {
+        keyMap = new HashMap();
+        put( id, value );
+        ignoreCase = true;
+    }
+
+    /**
+     * Creates an Attributes with one attribute
+     */
+    public AttributesImpl(  String id, Object value, boolean ignoreCase )
+    {
+        keyMap = new HashMap();
+        put( id, value );
+        this.ignoreCase = ignoreCase;
     }
 
     // ------------------------------------------------------------------------
@@ -252,7 +336,7 @@ public class LockableAttributesImpl implements Attributes, Serializable
      */
     public boolean isCaseIgnored()
     {
-        return true;
+        return ignoreCase;
     }
 
 
@@ -351,7 +435,7 @@ public class LockableAttributesImpl implements Attributes, Serializable
      */
     public Attribute put( String attrId, Object val )
     {
-        Attribute attr = new LockableAttributeImpl( attrId );
+        Attribute attr = new AttributeImpl( attrId );
         attr.add( val );
         
         String key = StringTools.toLowerCase( attrId );
@@ -367,6 +451,7 @@ public class LockableAttributesImpl implements Attributes, Serializable
      *            The non-null attribute to add. If the attribute set ignores
      *            the character case of its attribute ids, the case of attr's
      *            identifier is ignored.
+     *            The store attribute is a clone of the given attribute.
      * @return The Attribute with the same ID as attr that was previous in this
      *         attribute set; The new attr if no such attribute existed.
      * @see #remove
@@ -374,8 +459,8 @@ public class LockableAttributesImpl implements Attributes, Serializable
     public Attribute put( Attribute attr )
     {
     	String key = StringTools.toLowerCase( attr.getID() );
-    	Attribute old = null;
-    	Attribute newAttr = attr;
+        Attribute old = null;
+        Attribute newAttr = attr;
     	
         if ( keyMap.containsKey( key ) )
         {
@@ -386,24 +471,27 @@ public class LockableAttributesImpl implements Attributes, Serializable
         	old = attr;
         }
 
-        if ( attr instanceof BasicAttribute )
+        if ( attr instanceof AttributeImpl )
         {
-        	 newAttr = new LockableAttributeImpl( attr.getID() );
+        	newAttr = attr;
+        }
+        else if ( attr instanceof BasicAttribute )
+        {
+            newAttr = new AttributeImpl( attr.getID() );
         	 
-        	 try
-        	 {
-	        	 NamingEnumeration values = attr.getAll();
-	        	 
-	        	 while ( values.hasMore() )
-	        	 {
-	        		 Object value = values.next();
-	        		 newAttr.add( value );
-	        	 }
-        	 }
-        	 catch ( NamingException ne )
-        	 {
-        		 // do nothing
-        	 }
+        	try
+        	{
+            	NamingEnumeration values = attr.getAll();
+            	 
+            	while ( values.hasMore() )
+            	{
+                    newAttr.add( AttributeUtils.cloneValue( values.next() ) );
+            	}
+        	}
+        	catch ( NamingException ne )
+        	{
+        	    // do nothing
+        	}
         }
         
         keyMap.put( key, new Holder( attr.getID(), newAttr ) );
@@ -425,7 +513,6 @@ public class LockableAttributesImpl implements Attributes, Serializable
     public Attribute remove( String attrId )
     {
     	String key = StringTools.toLowerCase( attrId );
-    	Attribute old = null;
     	
         if ( keyMap.containsKey( key ) )
         {
@@ -433,11 +520,17 @@ public class LockableAttributesImpl implements Attributes, Serializable
         	
         	if ( holder != null ) 
         	{
-        		old = holder.attribute;
+        		return holder.attribute;
         	}
+            else
+            {
+                return null;
+            }
         }
-
-        return old;
+        else
+        {
+            return null;
+        }
     }
 
 
@@ -451,9 +544,9 @@ public class LockableAttributesImpl implements Attributes, Serializable
     {
     	try
     	{
-	    	LockableAttributesImpl clone = (LockableAttributesImpl)super.clone();
+	    	AttributesImpl clone = (AttributesImpl)super.clone();
 	
-			clone.keyMap = (Map)((HashMap)keyMap).clone();
+			clone.keyMap = new HashMap( keyMap.size() );
 			
 	        Iterator keys = keyMap.keySet().iterator();
 	
@@ -515,7 +608,7 @@ public class LockableAttributesImpl implements Attributes, Serializable
             return true;
         }
 
-        if ( !( obj instanceof Attributes ) )
+        if ( ( obj == null ) || !( obj instanceof AttributesImpl ) )
         {
             return false;
         }
@@ -536,7 +629,7 @@ public class LockableAttributesImpl implements Attributes, Serializable
 
         while ( list.hasMoreElements() )
         {
-            Attribute attr = ( Attribute ) list.nextElement();
+            Attribute attr = ( Attribute )list.nextElement();
             Attribute myAttr = get( attr.getID() );
 
             if ( myAttr == null )
