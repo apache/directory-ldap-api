@@ -367,7 +367,18 @@ public class AttributesImpl implements Attributes
     {
     	if ( attrId != null )
     	{
-    		Holder holder = (Holder)keyMap.get( StringTools.toLowerCase( attrId ) );
+            String key = null;
+            
+            if ( "+".equals( attrId ) || "*".equals( attrId ) ) 
+            {
+                key = attrId;
+            }
+            else
+            {
+                key = StringTools.toLowerCase( attrId );
+            }
+            
+    		Holder holder = (Holder)keyMap.get( key );
     		return holder != null ? holder.attribute : null;
     	}
     	else
@@ -452,13 +463,25 @@ public class AttributesImpl implements Attributes
      *            the character case of its attribute ids, the case of attr's
      *            identifier is ignored.
      *            The store attribute is a clone of the given attribute.
+     *            We have two special attribute names : '+' and '*'
      * @return The Attribute with the same ID as attr that was previous in this
      *         attribute set; The new attr if no such attribute existed.
      * @see #remove
      */
     public Attribute put( Attribute attr )
     {
-    	String key = StringTools.toLowerCase( attr.getID() );
+        String id = attr.getID();
+        String key = null;
+        
+        if ( "+".equals( id ) || "*".equals(  id  ) )
+        {
+            key = id;
+        }
+        else
+        {
+            key = StringTools.toLowerCase( attr.getID() );
+        }
+        
         Attribute old = null;
         Attribute newAttr = attr;
     	
