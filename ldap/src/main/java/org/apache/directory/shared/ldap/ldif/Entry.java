@@ -34,8 +34,8 @@ import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.ldap.Control;
 
-import org.apache.directory.shared.ldap.message.AttributeImpl;
-import org.apache.directory.shared.ldap.message.AttributesImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributeImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributesImpl;
 import org.apache.directory.shared.ldap.message.ModificationItemImpl;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.shared.ldap.util.StringTools;
@@ -96,7 +96,7 @@ public class Entry implements Cloneable
         modificationList = new LinkedList();
         modificationItems = new HashMap();
         dn = null;
-        attributeList = new AttributesImpl( true );
+        attributeList = new LockableAttributesImpl( true );
         control = null;
     }
 
@@ -222,7 +222,7 @@ public class Entry implements Cloneable
     {
         if ( changeType == MODIFY )
         {
-            Attribute attr = new AttributeImpl( id, value );
+            Attribute attr = new LockableAttributeImpl( id, value );
 
             if ( modificationItems.containsKey( id ) )
             {
@@ -353,7 +353,7 @@ public class Entry implements Cloneable
     {
         if ( "dn".equalsIgnoreCase( attributeId ) )
         {
-            return new AttributeImpl( "dn", dn );
+            return new LockableAttributeImpl( "dn", dn );
         }
 
         return attributeList.get( attributeId );

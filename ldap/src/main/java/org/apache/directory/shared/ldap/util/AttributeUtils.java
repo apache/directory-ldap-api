@@ -22,8 +22,8 @@ package org.apache.directory.shared.ldap.util;
 
 import java.util.Arrays;
 
-import org.apache.directory.shared.ldap.message.AttributeImpl;
-import org.apache.directory.shared.ldap.message.AttributesImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributeImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributesImpl;
 import org.apache.directory.shared.ldap.message.ModificationItemImpl;
 import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.shared.ldap.schema.Normalizer;
@@ -100,23 +100,23 @@ public class AttributeUtils
     }
 
     /**
-     * Switch from a BasicAttribute to a AttributeImpl. This is
+     * Switch from a BasicAttribute to a LockableAttributeImpl. This is
      * necessary to allow cloning to be correctly handled.
      * 
      * @param attribute The attribute to transform
-     * @return A instance of AttributeImpl
+     * @return A instance of LockableAttributeImpl
      */
     public final static Attribute toAttributeImpl( Attribute attribute )
     {
-        if ( attribute instanceof AttributeImpl )
+        if ( attribute instanceof LockableAttributeImpl )
         {
             // Just return the attribute
             return attribute;
         }
         else
         {
-            // Create a new AttributeImpl from the original attribute
-            AttributeImpl newAttribute = new AttributeImpl( attribute.getID() );
+            // Create a new LockableAttributeImpl from the original attribute
+            LockableAttributeImpl newAttribute = new LockableAttributeImpl( attribute.getID() );
             
             try
             {
@@ -137,23 +137,23 @@ public class AttributeUtils
     }
     
     /**
-     * Switch from a BasicAttributes to a AttributesImpl. This is
+     * Switch from a BasicAttributes to a LockableAttributesImpl. This is
      * necessary to allow cloning to be correctly handled.
      * 
      * @param attributes The attributes to transform
-     * @return A instance of AttributesImpl
+     * @return A instance of LockableAttributesImpl
      */
     public final static Attributes toAttributesImpl( Attributes attributes )
     {
-        if ( attributes instanceof AttributesImpl )
+        if ( attributes instanceof LockableAttributesImpl )
         {
             // Just return the attribute
             return attributes;
         }
         else
         {
-            // Create a new AttributesImpl from the original attribute
-            AttributesImpl newAttributes = new AttributesImpl( attributes.isCaseIgnored() );
+            // Create a new LockableAttributesImpl from the original attribute
+            LockableAttributesImpl newAttributes = new LockableAttributesImpl( attributes.isCaseIgnored() );
             
             try
             {
@@ -434,7 +434,7 @@ public class AttributeUtils
         }
         else if ( attr0 == null )
         {
-            return new AttributeImpl( attr1.getID() );
+            return new LockableAttributeImpl( attr1.getID() );
         }
         else if ( attr1 == null )
         {
@@ -449,7 +449,7 @@ public class AttributeUtils
             id = attr0.getID();
         }
 
-        Attribute attr = new AttributeImpl( id );
+        Attribute attr = new LockableAttributeImpl( id );
 
         if ( attr0 != null )
         {
@@ -512,7 +512,7 @@ public class AttributeUtils
             id = attr0.getID();
         }
 
-        Attribute attr = new AttributeImpl( id );
+        Attribute attr = new LockableAttributeImpl( id );
 
         if ( attr0 != null )
         {

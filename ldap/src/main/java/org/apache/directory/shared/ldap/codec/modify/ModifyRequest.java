@@ -26,7 +26,7 @@ import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.asn1.codec.EncoderException;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
-import org.apache.directory.shared.ldap.message.AttributeImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributeImpl;
 import org.apache.directory.shared.ldap.message.ModificationItemImpl;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.StringTools;
@@ -180,7 +180,7 @@ public class ModifyRequest extends LdapMessage
      */
     public void addAttributeTypeAndValues( String type )
     {
-        currentAttribute = new AttributeImpl( StringTools.lowerCase( type ) );
+        currentAttribute = new LockableAttributeImpl( StringTools.lowerCase( type ) );
 
         int operation = 0;
 

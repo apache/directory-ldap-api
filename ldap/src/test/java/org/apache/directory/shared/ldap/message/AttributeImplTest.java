@@ -27,7 +27,7 @@ import javax.naming.directory.Attribute;
 import junit.framework.TestCase;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.directory.shared.ldap.message.AttributeImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributeImpl;
 import org.apache.directory.shared.ldap.util.StringTools;
 
 
@@ -42,9 +42,9 @@ public class AttributeImplTest extends TestCase
     /**
      * Creates and populates a LockableAttributeImpl instance for tests.
      */
-    private AttributeImpl getAttribute()
+    private LockableAttributeImpl getAttribute()
     {
-        AttributeImpl attr = new AttributeImpl( "test-attr1" );
+        LockableAttributeImpl attr = new LockableAttributeImpl( "test-attr1" );
         attr.add( "value0" );
         attr.add( "value1" );
         attr.add( "value2" );
@@ -57,7 +57,7 @@ public class AttributeImplTest extends TestCase
      */
     public void testEqualsSameObj()
     {
-        AttributeImpl attr = getAttribute();
+        LockableAttributeImpl attr = getAttribute();
         assertTrue( "same object should be equal", attr.equals( attr ) );
     }
 
@@ -67,8 +67,8 @@ public class AttributeImplTest extends TestCase
      */
     public void testEqualsExactCopy()
     {
-        AttributeImpl attr0 = getAttribute();
-        AttributeImpl attr1 = getAttribute();
+        LockableAttributeImpl attr0 = getAttribute();
+        LockableAttributeImpl attr1 = getAttribute();
         assertTrue( "exact copies should be equal", attr0.equals( attr1 ) );
         assertTrue( "exact copies should be equal", attr1.equals( attr0 ) );
     }
@@ -79,8 +79,8 @@ public class AttributeImplTest extends TestCase
      */
     public void testNotEqualDiffId()
     {
-        AttributeImpl attr0 = getAttribute();
-        AttributeImpl attr1 = new AttributeImpl( "test-attr2" );
+        LockableAttributeImpl attr0 = getAttribute();
+        LockableAttributeImpl attr1 = new LockableAttributeImpl( "test-attr2" );
         attr1.add( "value0" );
         attr1.add( "value1" );
         attr1.add( "value2" );
@@ -94,8 +94,8 @@ public class AttributeImplTest extends TestCase
      */
     public void testNotEqualDiffCasedId()
     {
-        AttributeImpl attr0 = getAttribute();
-        AttributeImpl attr1 = new AttributeImpl( "TEST-attr1" );
+        LockableAttributeImpl attr0 = getAttribute();
+        LockableAttributeImpl attr1 = new LockableAttributeImpl( "TEST-attr1" );
         attr1.add( "value0" );
         attr1.add( "value1" );
         attr1.add( "value2" );
@@ -109,8 +109,8 @@ public class AttributeImplTest extends TestCase
      */
     public void testNotEqualDiffValues()
     {
-        AttributeImpl attr0 = getAttribute();
-        AttributeImpl attr1 = new AttributeImpl( "test-attr1" );
+        LockableAttributeImpl attr0 = getAttribute();
+        LockableAttributeImpl attr1 = new LockableAttributeImpl( "test-attr1" );
         attr1.add( "value0" );
         attr1.add( "value1" );
         assertFalse( "Attributes with different values should not be equal", attr0.equals( attr1 ) );
@@ -132,8 +132,8 @@ public class AttributeImplTest extends TestCase
      */
     public void testNotEqualWithReplicatedValues()
     {
-        AttributeImpl attr0 = getAttribute();
-        AttributeImpl attr1 = new AttributeImpl( "test-attr1" );
+        LockableAttributeImpl attr0 = getAttribute();
+        LockableAttributeImpl attr1 = new LockableAttributeImpl( "test-attr1" );
         attr1.add( "value0" );
         attr1.add( "value1" );
         assertFalse( "Attributes with different values should not be equal", attr0.equals( attr1 ) );
@@ -157,8 +157,8 @@ public class AttributeImplTest extends TestCase
      */
     public void testNotEqualDiffImpl()
     {
-        AttributeImpl attr0 = getAttribute();
-        Attribute attr1 = new AttributeImpl( "test-attr1" );
+        LockableAttributeImpl attr0 = getAttribute();
+        Attribute attr1 = new LockableAttributeImpl( "test-attr1" );
         attr1.add( "value0" );
         attr1.add( "value1" );
         assertFalse( "Attributes with different values should not be equal", attr0.equals( attr1 ) );
@@ -178,7 +178,7 @@ public class AttributeImplTest extends TestCase
 
     public void testContains()
     {
-        AttributeImpl attr = getAttribute();
+        LockableAttributeImpl attr = getAttribute();
         assertTrue( attr.contains( "value0" ) );
         assertTrue( attr.contains( "value1" ) );
         assertTrue( attr.contains( "value2" ) );
@@ -187,7 +187,7 @@ public class AttributeImplTest extends TestCase
     // Test the clone operation
     public void testCloneAttribute() throws NamingException
     {
-        Attribute attr = new AttributeImpl( "test" );
+        Attribute attr = new LockableAttributeImpl( "test" );
 
         String zero = "zero";
         attr.add( zero );
@@ -206,7 +206,7 @@ public class AttributeImplTest extends TestCase
         Attribute clone = (Attribute)attr.clone();
         
         // Test the atomic elements
-        assertTrue( clone instanceof AttributeImpl );
+        assertTrue( clone instanceof LockableAttributeImpl );
         assertEquals( 4, clone.size() );
         assertEquals( "test", clone.getID() );
         
@@ -265,7 +265,7 @@ public class AttributeImplTest extends TestCase
     
     public void testEquals()
     {
-        Attribute attr = new AttributeImpl( "test" );
+        Attribute attr = new LockableAttributeImpl( "test" );
 
         String zero = "zero";
         attr.add( zero );

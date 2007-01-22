@@ -45,9 +45,9 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org"> Apache Directory Project</a>
  * @version $Rev$
  */
-public class AttributeImpl implements Attribute
+public class LockableAttributeImpl implements Attribute
 {
-    private static final Logger log = LoggerFactory.getLogger( AttributeImpl.class );
+    private static final Logger log = LoggerFactory.getLogger( LockableAttributeImpl.class );
 
     private static final long serialVersionUID = -5158233254341746514L;
 
@@ -74,7 +74,7 @@ public class AttributeImpl implements Attribute
      * @param id
      *            the id or name of this attribute.
      */
-    public AttributeImpl( String id )
+    public LockableAttributeImpl( String id )
     {
         upId = id;
         value = null;
@@ -91,7 +91,7 @@ public class AttributeImpl implements Attribute
      * @param value
      *            a value for the attribute
      */
-    public AttributeImpl( String id, Object value )
+    public LockableAttributeImpl( String id, Object value )
     {
         upId = id;
         list = null;
@@ -108,7 +108,7 @@ public class AttributeImpl implements Attribute
      * @param value
      *            a value for the attribute
      */
-    public AttributeImpl( String id, byte[] value )
+    public LockableAttributeImpl( String id, byte[] value )
     {
         upId = id;
         list = null;
@@ -379,7 +379,7 @@ public class AttributeImpl implements Attribute
     {
         try
         {
-            AttributeImpl clone = (AttributeImpl)super.clone();
+            LockableAttributeImpl clone = (LockableAttributeImpl)super.clone();
             
             if ( size < 2 )
             {
@@ -601,7 +601,7 @@ public class AttributeImpl implements Attribute
             return true;
         }
 
-        if ( ( obj == null ) || !( obj instanceof AttributeImpl ) )
+        if ( ( obj == null ) || !( obj instanceof LockableAttributeImpl ) )
         {
             return false;
         }

@@ -26,8 +26,8 @@ import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.asn1.codec.EncoderException;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
-import org.apache.directory.shared.ldap.message.AttributeImpl;
-import org.apache.directory.shared.ldap.message.AttributesImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributeImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributesImpl;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.shared.ldap.util.StringTools;
@@ -127,7 +127,7 @@ public class AddRequest extends LdapMessage
      */
     public void initAttributes()
     {
-        attributes = new AttributesImpl( true );
+        attributes = new LockableAttributesImpl( true );
     }
 
 
@@ -156,7 +156,7 @@ public class AddRequest extends LdapMessage
         }
         
         // fix this to use LockableAttributeImpl(type.getString().toLowerCase())
-        currentAttribute = new AttributeImpl( type.toLowerCase() );
+        currentAttribute = new LockableAttributeImpl( type.toLowerCase() );
         attributes.put( currentAttribute );
     }
 

@@ -41,13 +41,10 @@ import org.apache.directory.shared.ldap.util.StringTools;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$
  */
-public class AttributesImpl implements Attributes
+public class LockableAttributesImpl implements Attributes
 {
     static transient final long serialVersionUID = 1L;
     
-    /** This flag is used if the attribute name is not caseSensitive */
-    private boolean ignoreCase;
-
     /**
      * An holder to store <Id, Attribute> couples
      */
@@ -85,7 +82,7 @@ public class AttributesImpl implements Attributes
             {
                 // The BasicAttribute clone() method does not
                 // copy the values.
-                clone.attribute = new AttributeImpl( attribute.getID() );
+                clone.attribute = new LockableAttributeImpl( attribute.getID() );
                 
                 try
                 {
@@ -144,7 +141,7 @@ public class AttributesImpl implements Attributes
 		private Iterator iterator; 
 		
         /** Create an attribute's iterator */
-		private AttributeIterator( AttributesImpl attributes )
+		private AttributeIterator( LockableAttributesImpl attributes )
 		{
 			iterator = attributes.keyMap.values().iterator();
 		}
@@ -207,39 +204,35 @@ public class AttributesImpl implements Attributes
     /**
      * Creates an Attributes
      */
-    public AttributesImpl()
+    public LockableAttributesImpl()
     {
         keyMap = new HashMap();
-        ignoreCase = true;
     }
 
     /**
      * Creates an Attributes
      */
-    public AttributesImpl( boolean ignoreCase )
+    public LockableAttributesImpl( boolean ignoreCase )
     {
         keyMap = new HashMap();
-        this.ignoreCase = ignoreCase;
     }
 
     /**
      * Creates an Attributes with one Attribute
      */
-    public AttributesImpl( String id, Object value )
+    public LockableAttributesImpl( String id, Object value )
     {
         keyMap = new HashMap();
         put( id, value );
-        ignoreCase = true;
     }
 
     /**
      * Creates an Attributes with one attribute
      */
-    public AttributesImpl(  String id, Object value, boolean ignoreCase )
+    public LockableAttributesImpl(  String id, Object value, boolean ignoreCase )
     {
         keyMap = new HashMap();
         put( id, value );
-        this.ignoreCase = ignoreCase;
     }
 
     // ------------------------------------------------------------------------
@@ -336,7 +329,7 @@ public class AttributesImpl implements Attributes
      */
     public boolean isCaseIgnored()
     {
-        return ignoreCase;
+        return true;
     }
 
 
@@ -437,7 +430,7 @@ public class AttributesImpl implements Attributes
      */
     public Attribute put( String attrId, Object val )
     {
-        Attribute attr = new AttributeImpl( attrId );
+        Attribute attr = new LockableAttributeImpl( attrId );
         attr.add( val );
         
         String key = idToLowerCase( attrId );
@@ -477,13 +470,13 @@ public class AttributesImpl implements Attributes
         	old = attr;
         }
 
-        if ( attr instanceof AttributeImpl )
+        if ( attr instanceof LockableAttributeImpl )
         {
         	newAttr = attr;
         }
         else if ( attr instanceof BasicAttribute )
         {
-            newAttr = new AttributeImpl( id );
+            newAttr = new LockableAttributeImpl( id );
         	 
         	try
         	{
@@ -569,7 +562,7 @@ public class AttributesImpl implements Attributes
     {
     	try
     	{
-	    	AttributesImpl clone = (AttributesImpl)super.clone();
+	    	LockableAttributesImpl clone = (LockableAttributesImpl)super.clone();
 	
 			clone.keyMap = new HashMap( keyMap.size() );
 			
@@ -633,7 +626,7 @@ public class AttributesImpl implements Attributes
             return true;
         }
 
-        if ( ( obj == null ) || !( obj instanceof AttributesImpl ) )
+        if ( ( obj == null ) || !( obj instanceof LockableAttributesImpl ) )
         {
             return false;
         }

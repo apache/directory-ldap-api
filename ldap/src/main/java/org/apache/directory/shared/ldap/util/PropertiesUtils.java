@@ -34,7 +34,7 @@ import javax.naming.directory.Attributes;
 import org.apache.directory.shared.ldap.NotImplementedException;
 import org.apache.directory.shared.ldap.ldif.Entry;
 import org.apache.directory.shared.ldap.ldif.LdifReader;
-import org.apache.directory.shared.ldap.message.AttributesImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributesImpl;
 
 
 /**
@@ -688,7 +688,7 @@ public class PropertiesUtils
         {
             if ( values == null )
             {
-                return new AttributesImpl();
+                return new LockableAttributesImpl();
             }
 
             return values;

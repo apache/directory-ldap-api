@@ -46,7 +46,7 @@ import javax.naming.ldap.Control;
 
 import org.apache.directory.shared.asn1.codec.DecoderException;
 import org.apache.directory.shared.asn1.primitives.OID;
-import org.apache.directory.shared.ldap.message.AttributeImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributeImpl;
 import org.apache.directory.shared.ldap.name.LdapDnParser;
 import org.apache.directory.shared.ldap.util.Base64;
 import org.apache.directory.shared.ldap.util.StringTools;
@@ -816,7 +816,7 @@ public class LdifReader implements Iterator
             Object attributeValue = parseSimpleValue( line, colonIndex );
 
             // Create an attribute
-            return new AttributeImpl( attributeType, attributeValue );
+            return new LockableAttributeImpl( attributeType, attributeValue );
         }
         else
         {

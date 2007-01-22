@@ -32,8 +32,8 @@ import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 
 import org.apache.commons.collections.MultiHashMap;
-import org.apache.directory.shared.ldap.message.AttributeImpl;
-import org.apache.directory.shared.ldap.message.AttributesImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributeImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributesImpl;
 import org.apache.directory.shared.ldap.util.StringTools;
 
 
@@ -883,7 +883,7 @@ public class Rdn implements Cloneable, Comparable, Serializable
     */
    public Attributes toAttributes()
    {
-       Attributes attributes = new AttributesImpl( true );
+       Attributes attributes = new LockableAttributesImpl( true );
        Attribute attribute = null;
 
        switch ( nbAtavs  )
@@ -892,7 +892,7 @@ public class Rdn implements Cloneable, Comparable, Serializable
                break;
 
            case 1 :
-               attribute = new AttributeImpl( atavType );
+               attribute = new LockableAttributeImpl( atavType );
                attribute.add( atav.getValue() );
                attributes.put( attribute );
                break;
@@ -905,7 +905,7 @@ public class Rdn implements Cloneable, Comparable, Serializable
                    String type = ( String ) types.next();
                    List values = ( List ) atavTypes.get( type );
 
-                   attribute = new AttributeImpl( type );
+                   attribute = new LockableAttributeImpl( type );
 
                    Iterator iterValues = values.iterator();
 

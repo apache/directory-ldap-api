@@ -28,10 +28,10 @@ import org.apache.directory.shared.ldap.util.AttributeUtils;
 /**
  *
  * A specific version of this class, which do a transformation of a
- * BasicAttribute to a AttributeImpl when created.
+ * BasicAttribute to a LockableAttributeImpl when created.
  * 
  * This is necessary because BasicAttribute clone method do not do a
- * deep clone, which is _bad_. AttributeImpl do a deep copy when
+ * deep clone, which is _bad_. LockableAttributeImpl do a deep copy when
  * cloning, which is _good_.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

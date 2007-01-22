@@ -26,8 +26,8 @@ import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.asn1.codec.EncoderException;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
-import org.apache.directory.shared.ldap.message.AttributeImpl;
-import org.apache.directory.shared.ldap.message.AttributesImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributeImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributesImpl;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.shared.ldap.util.StringTools;
@@ -99,7 +99,7 @@ public class SearchResultEntry extends LdapMessage
     public SearchResultEntry()
     {
         super();
-        partialAttributeList = new AttributesImpl( true );
+        partialAttributeList = new LockableAttributesImpl( true );
     }
 
 
@@ -166,7 +166,7 @@ public class SearchResultEntry extends LdapMessage
      */
     public void addAttributeValues( String type )
     {
-        currentAttributeValue = new AttributeImpl( StringTools.lowerCase( type ) );
+        currentAttributeValue = new LockableAttributeImpl( StringTools.lowerCase( type ) );
 
         partialAttributeList.put( currentAttributeValue );
     }

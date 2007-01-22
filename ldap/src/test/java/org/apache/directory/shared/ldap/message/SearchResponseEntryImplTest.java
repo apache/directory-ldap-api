@@ -29,8 +29,8 @@ import javax.naming.InvalidNameException;
 import javax.naming.directory.Attributes;
 
 import org.apache.directory.shared.ldap.message.Control;
-import org.apache.directory.shared.ldap.message.AttributeImpl;
-import org.apache.directory.shared.ldap.message.AttributesImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributeImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributesImpl;
 import org.apache.directory.shared.ldap.message.MessageException;
 import org.apache.directory.shared.ldap.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.message.SearchResponseEntry;
@@ -53,9 +53,9 @@ public class SearchResponseEntryImplTest extends TestCase
      *            the id for the attribute
      * @return the LockableAttributeImpl assembled for testing
      */
-    private AttributeImpl getAttribute( String id )
+    private LockableAttributeImpl getAttribute( String id )
     {
-        AttributeImpl attr = new AttributeImpl( id );
+        LockableAttributeImpl attr = new LockableAttributeImpl( id );
         attr.add( "value0" );
         attr.add( "value1" );
         attr.add( "value2" );
@@ -68,9 +68,9 @@ public class SearchResponseEntryImplTest extends TestCase
      * 
      * @return
      */
-    AttributesImpl getAttributes()
+    LockableAttributesImpl getAttributes()
     {
-        AttributesImpl attrs = new AttributesImpl();
+        LockableAttributesImpl attrs = new LockableAttributesImpl();
         attrs.put( getAttribute( "attr0" ) );
         attrs.put( getAttribute( "attr1" ) );
         attrs.put( getAttribute( "attr2" ) );

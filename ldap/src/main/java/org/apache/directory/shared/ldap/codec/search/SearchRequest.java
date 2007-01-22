@@ -30,8 +30,8 @@ import org.apache.directory.shared.asn1.codec.EncoderException;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.LdapMessage;
 import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
-import org.apache.directory.shared.ldap.message.AttributeImpl;
-import org.apache.directory.shared.ldap.message.AttributesImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributeImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributesImpl;
 import org.apache.directory.shared.ldap.name.LdapDN;
 
 import java.io.UnsupportedEncodingException;
@@ -113,7 +113,7 @@ public class SearchRequest extends LdapMessage
         super();
 
         currentFilter = null;
-        attributes = new AttributesImpl( true );
+        attributes = new LockableAttributesImpl( true );
     }
 
 
@@ -149,7 +149,7 @@ public class SearchRequest extends LdapMessage
      */
     public void addAttribute( String attribute )
     {
-        attributes.put( new AttributeImpl( attribute ) );
+        attributes.put( new LockableAttributeImpl( attribute ) );
     }
 
 
