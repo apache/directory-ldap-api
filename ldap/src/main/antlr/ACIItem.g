@@ -46,7 +46,7 @@ import org.apache.directory.shared.ldap.util.NamespaceTools;
 import org.apache.directory.shared.ldap.util.NoDuplicateKeysMap;
 import org.apache.directory.shared.ldap.util.OptionalComponentsMonitor;
 import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.message.AttributeImpl;
+import org.apache.directory.shared.ldap.message.LockableAttributeImpl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -496,7 +496,7 @@ attributeValue
             attributeTypeAndValue = ( String ) attributeTypeAndValueSet.nextElement();
             attributeType = NamespaceTools.getRdnAttribute( attributeTypeAndValue );
             attributeValue = NamespaceTools.getRdnValue( attributeTypeAndValue );
-            attributeSet.add( new AttributeImpl( attributeType, attributeValue ) );
+            attributeSet.add( new LockableAttributeImpl( attributeType, attributeValue ) );
             log.debug( "An attributeTypeAndValue from the set: " + attributeType + "=" +  attributeValue);
         }
         m_protectedItemsMap.put( "attributeValue", new ProtectedItem.AttributeValue( attributeSet ) );
