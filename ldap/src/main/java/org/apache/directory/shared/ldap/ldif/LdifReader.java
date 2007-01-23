@@ -1407,8 +1407,6 @@ public class LdifReader implements Iterator
                     }
                 }
 
-                isFirstLine = false;
-
                 // We will read the first line which is not a comment
                 switch ( line.charAt( 0 ) )
                 {
@@ -1444,6 +1442,7 @@ public class LdifReader implements Iterator
 
                         sb = new StringBuffer( line );
                         insideComment = false;
+                        isFirstLine = false;
                         break;
                 }
             }
