@@ -49,7 +49,6 @@ public class AddResponse extends LdapResponse
         super();
     }
 
-
     // ~ Methods
     // ------------------------------------------------------------------------------------
 

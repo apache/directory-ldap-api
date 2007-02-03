@@ -61,6 +61,9 @@ public class AbstractContainer implements IAsn1Container
 
     /** The grammar end transition flag */
     protected boolean grammarEndAllowed;
+    
+    /** The incremental id used to tag TLVs */
+    private int id = 0;
 
     // ~ Methods
     // ------------------------------------------------------------------------------------
@@ -207,5 +210,16 @@ public class AbstractContainer implements IAsn1Container
         parentTLV = null;
         transition = 0;
         state = TLVStateEnum.TAG_STATE_START;
+    }
+
+
+    public int getNewTlvId()
+    {
+        return id++;
+    }
+
+    public int getTlvId()
+    {
+        return tlv.getId();
     }
 }

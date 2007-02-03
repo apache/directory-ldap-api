@@ -32,4 +32,11 @@ import org.apache.directory.shared.asn1.Asn1Object;
  */
 public abstract class LdapAuthentication extends Asn1Object
 {
+    /**
+     * @see Asn1Object#Asn1Object
+     */
+    public LdapAuthentication()
+    {
+        super();
+    }
 }

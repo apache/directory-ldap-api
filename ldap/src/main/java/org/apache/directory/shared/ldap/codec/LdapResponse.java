@@ -53,7 +53,6 @@ public class LdapResponse extends LdapMessage
         super();
     }
 
-
     // ~ Methods
     // ------------------------------------------------------------------------------------
 

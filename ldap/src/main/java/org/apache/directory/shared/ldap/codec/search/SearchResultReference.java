@@ -46,7 +46,7 @@ public class SearchResultReference extends LdapMessage
     // ----------------------------------------------------------------------------
 
     /** The set of LdapURLs */
-    private ArrayList searchResultReferences;
+    private ArrayList searchResultReferences = new ArrayList();
 
     /** The search result reference length */
     private transient int searchResultReferenceLength;
@@ -61,7 +61,6 @@ public class SearchResultReference extends LdapMessage
     public SearchResultReference()
     {
         super();
-        searchResultReferences = new ArrayList();
     }
 
 

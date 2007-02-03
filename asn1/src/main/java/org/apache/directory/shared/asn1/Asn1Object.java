@@ -44,8 +44,31 @@ public abstract class Asn1Object
 
     /** The encapsulating Object */
     protected transient Asn1Object parent;
+    
+    /** The identifier of the asqsocaited TLV */
+    private transient int tlvId;
 
-
+    /**
+     * Constructor associated with a TLV indentifier. Used when 
+     * decoded a TLV, we create an association between the decode
+     * Asn1Object and the TLV which is the encoded form.
+     * 
+     * @param tlvId The TLV Id.
+     */
+    protected Asn1Object( int tlvId )
+    {
+        this.tlvId = tlvId;
+    }
+    
+    /**
+     * Default constructor. The TLV Id is set to -1. This constructor
+     * is called when an Asn1Object is created to be encoded, not decoded.
+     */
+    protected Asn1Object()
+    {
+        this.tlvId = -1;
+    }
+    
     // ~ Methods
     // ------------------------------------------------------------------------------------
 
@@ -156,5 +179,10 @@ public abstract class Asn1Object
     public void setParent( Asn1Object parent )
     {
         this.parent = parent;
+    }
+
+    public int getTlvId()
+    {
+        return tlvId;
     }
 }

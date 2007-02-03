@@ -69,7 +69,6 @@ public class AbandonRequest extends LdapMessage
         super();
     }
 
-
     // ~ Methods
     // ------------------------------------------------------------------------------------
 

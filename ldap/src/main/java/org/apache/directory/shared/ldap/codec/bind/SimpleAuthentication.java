@@ -49,7 +49,14 @@ public class SimpleAuthentication extends LdapAuthentication
     /** The simple authentication password */
     private byte[] simple;
 
-
+    /**
+     * @see Asn1Object#Asn1Object
+     */
+    public SimpleAuthentication()
+    {
+        super();
+    }
+    
     // ~ Methods
     // ------------------------------------------------------------------------------------
 

@@ -68,7 +68,15 @@ public class ManageDsaITControl extends Asn1Object
 {
     private static final ByteBuffer EMPTY_BUFFER = ByteBuffer.allocate( 0 );
 
-
+    /**
+     * Default constructor
+     *
+     */
+    public ManageDsaITControl()
+    {
+        super();
+    }
+    
     /**
      * Returns 0 everytime.
      */

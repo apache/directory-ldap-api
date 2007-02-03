@@ -68,7 +68,6 @@ public class ExtendedRequest extends LdapMessage
         super();
     }
 
-
     // ~ Methods
     // ------------------------------------------------------------------------------------
 

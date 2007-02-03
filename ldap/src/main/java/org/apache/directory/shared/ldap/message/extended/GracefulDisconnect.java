@@ -128,6 +128,7 @@ public class GracefulDisconnect extends ExtendedResponseImpl
         codec.setTimeOffline( this.timeOffline );
         codec.setDelay( this.delay );
         Iterator contexts = this.replicatedContexts.getLdapUrls().iterator();
+        
         while ( contexts.hasNext() )
         {
             String urlstr = ( String ) contexts.next();

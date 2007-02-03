@@ -4435,4 +4435,74 @@ public class SearchRequestTest extends TestCase
         Attributes attributes = sr.getAttributes();
         assertEquals( 0, attributes.size() );
     }    
+    
+    /**
+     * Test the decoding of a SearchRequest with a complex filter :
+     * (&(objectClass=person)(|(cn=Tori*)(sn=Jagger)))
+     */
+    public void testDecodeSearchRequestComplexFilter()
+    {
+        Asn1Decoder ldapDecoder = new LdapDecoder();
+    
+        ByteBuffer stream = ByteBuffer.allocate( 0x77 );
+        stream.put( new byte[]
+            {
+               0x30, 0x75,                  // LdapMessage
+                 0x02, 0x01, 0x06,          // message Id = 6
+                 0x63, 0x53,                // SearchRequest
+                   0x04, 0x09,              // BasDN 'ou=system'
+                     0x6F, 0x75, 0x3D, 0x73, 0x79, 0x73, 0x74, 0x65, 0x6D, 
+                   0x0A, 0x01, 0x02,        // scope = 2
+                   0x0A, 0x01, 0x03,        // derefAlias = 3
+                   0x02, 0x01, 0x00,        // sizeLimit = none
+                   0x02, 0x01, 0x00,        // timeLimit = none
+                   0x01, 0x01, 0x00,        // types only = false
+                   (byte)0xA0, 0x35,        // AND
+                     (byte)0xA3, 0x15,      // equals
+                       0x04, 0x0B,          // 'objectclass'
+                         0x6F, 0x62, 0x6A, 0x65, 0x63, 0x74, 0x43, 0x6C, 
+                         0x61, 0x73, 0x73, 
+                       0x04, 0x06,          // 'person'
+                         0x70, 0x65, 0x72, 0x73, 0x6F, 0x6E, 
+                     (byte)0xA1, 0x1C,      // OR
+                       (byte)0xA4, 0x0C,    // substrings : 'cn=Tori*'
+                         0x04, 0x02,        // 'cn'
+                           0x63, 0x6E, 
+                         0x30, 0x06,        // initial = 'Tori'
+                           (byte)0x80, 0x04, 
+                               0x54, 0x6F, 0x72, 0x69, 
+                       (byte)0xA3, 0x0C,    // equals
+                         0x04, 0x02,        // 'sn'
+                           0x73, 0x6E,    
+                         0x04, 0x06,        // 'Jagger'
+                           0x4A, 0x61, 0x67, 0x67, 0x65, 0x72, 
+                   0x30, 0x00,              // Control
+                   (byte)0xA0, 0x1B, 
+                     0x30, 0x19, 
+                       0x04, 0x17, 
+                         '2', '.', '1', '6', '.', '8', '4', '0', '.',
+                         '1', '.', '1', '1', '3', '7', '3', '0', '.',
+                         '3', '.', '4', '.', '2'
+            } );
+        
+        stream.flip();
+    
+        // Allocate a BindRequest Container
+        IAsn1Container ldapMessageContainer = new LdapMessageContainer();
+    
+        try
+        {
+            ldapDecoder.decode( stream, ldapMessageContainer );
+        }
+        catch ( DecoderException de )
+        {
+            de.printStackTrace();
+            fail( de.getMessage() );
+        }
+        catch ( NamingException ne )
+        {
+            ne.printStackTrace();
+            fail( ne.getMessage() );
+        }
+    }
 }

@@ -95,6 +95,13 @@ public class EntryChangeControl extends Asn1Object
     /** The entry change global length */
     private transient int eccSeqLength;
 
+    /**
+     * @see Asn1Object#Asn1Object
+     */
+    public EntryChangeControl()
+    {
+        super();
+    }
 
     /**
      * Compute the EntryChangeControl length 

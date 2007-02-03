@@ -94,6 +94,7 @@ public class LdapMessage extends Asn1Object
      */
     public LdapMessage()
     {
+        super();
         // We should not create this kind of object directly
     }
 

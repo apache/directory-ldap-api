@@ -56,6 +56,14 @@ public class Control extends Asn1Object
     /** The control length */
     private transient int controlLength;
 
+    /**
+     * Default constructor.
+     */
+    public Control()
+    {
+        super();
+    }
+    
     // ~ Methods
     // ------------------------------------------------------------------------------------
 

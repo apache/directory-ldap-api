@@ -49,7 +49,6 @@ public class ModifyDNResponse extends LdapResponse
         super();
     }
 
-
     /**
      * Get the message type
      * 

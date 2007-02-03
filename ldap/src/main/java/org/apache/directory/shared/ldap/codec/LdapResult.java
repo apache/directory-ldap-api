@@ -119,10 +119,11 @@ public class LdapResult extends Asn1Object
     // -------------------------------------------------------------------------------
 
     /**
-     * Creates a new BindResponse object.
+     * Creates a new LdapResult object.
      */
     public LdapResult()
     {
+        super();
     }
 
 

@@ -50,6 +50,9 @@ public class TLV
 
     /** The current Value being processed */
     private Value value;
+    
+    /** An identity for the TLV. It store the TLV hashCode */
+    private int id;
 
     /**
      * Reference the TLV which contains the current TLV, if any. As the
@@ -88,12 +91,13 @@ public class TLV
     /**
      * Creates a new TLV object.
      */
-    public TLV()
+    public TLV( int id )
     {
         tag = 0;
         length = 0;
         lengthNbBytes = 0;
         value = new Value();
+        this.id = id;
 
         expectedLength = 0;
     }
@@ -388,6 +392,12 @@ public class TLV
     public void incLengthBytesRead()
     {
         LengthBytesRead++;
+    }
+
+
+    public int getId()
+    {
+        return id;
     }
 }
  

@@ -72,7 +72,7 @@ public class SearchResultEntry extends LdapMessage
     private LdapDN objectName;
 
     /** The attributes list. It contains javax.naming.directory.Attribute */
-    private Attributes partialAttributeList;
+    private Attributes partialAttributeList = new LockableAttributesImpl( true );
 
     /** The current attribute being decoded */
     private transient Attribute currentAttributeValue;
@@ -99,9 +99,7 @@ public class SearchResultEntry extends LdapMessage
     public SearchResultEntry()
     {
         super();
-        partialAttributeList = new LockableAttributesImpl( true );
     }
-
 
     // ~ Methods
     // ------------------------------------------------------------------------------------

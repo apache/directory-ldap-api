@@ -49,7 +49,6 @@ public class ModifyResponse extends LdapResponse
         super();
     }
 
-
     /**
      * Get the message type
      * 

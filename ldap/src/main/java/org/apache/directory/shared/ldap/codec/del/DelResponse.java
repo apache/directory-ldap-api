@@ -49,7 +49,6 @@ public class DelResponse extends LdapResponse
         super();
     }
 
-
     /**
      * Get the message type
      * 

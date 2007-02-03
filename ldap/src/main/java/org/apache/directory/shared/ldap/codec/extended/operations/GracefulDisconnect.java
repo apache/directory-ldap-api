@@ -50,7 +50,7 @@ import org.apache.directory.shared.ldap.codec.util.LdapURL;
 public class GracefulDisconnect extends GracefulAction
 {
     /** List of the alternate servers to use */
-    private List replicatedContexts;
+    private List replicatedContexts = new ArrayList( 2 );
 
     /** Length of the sequence */
     private transient int gracefulDisconnectSequenceLength;
@@ -65,12 +65,9 @@ public class GracefulDisconnect extends GracefulAction
      * @param timeOffline The time the server will be offline
      * @param delay The delay before the disconnection
      */
-    public GracefulDisconnect(int timeOffline, int delay)
+    public GracefulDisconnect( int timeOffline, int delay )
     {
         super( timeOffline, delay );
-
-        // Two urls will be enough, generally
-        this.replicatedContexts = new ArrayList( 2 );
     }
 
 
@@ -80,11 +77,7 @@ public class GracefulDisconnect extends GracefulAction
     public GracefulDisconnect()
     {
         super();
-
-        // Two urls will be enough, generally
-        this.replicatedContexts = new ArrayList( 2 );
     }
-
 
     /**
      * Get the list of replicated servers

@@ -74,7 +74,15 @@ public class PSearchControl extends Asn1Object
     /** A temporary storage for a psearch length */
     private transient int psearchSeqLength;
 
-
+    /**
+     * Default constructor
+     *
+     */
+    public PSearchControl()
+    {
+        super();
+    }
+    
     public void setChangesOnly( boolean changesOnly )
     {
         this.changesOnly = changesOnly;

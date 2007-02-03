@@ -51,7 +51,6 @@ public class SearchResultDone extends LdapResponse
         super();
     }
 
-
     /**
      * Get the message type
      * 

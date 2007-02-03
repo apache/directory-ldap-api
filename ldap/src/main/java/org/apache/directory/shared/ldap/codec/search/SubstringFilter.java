@@ -70,7 +70,7 @@ public class SubstringFilter extends Filter
     private String initialSubstrings;
 
     /** The any filter. It's a list of LdapString */
-    private ArrayList anySubstrings;
+    private ArrayList anySubstrings = new ArrayList( 1 );
 
     /** The final filter */
     private String finalSubstrings;
@@ -89,11 +89,10 @@ public class SubstringFilter extends Filter
      * The constructor. We will create the 'any' subsring arraylist with only
      * one element.
      */
-    public SubstringFilter()
+    public SubstringFilter( int tlvId )
     {
-        anySubstrings = new ArrayList( 1 );
+        super( tlvId );
     }
-
 
     /**
      * Get the internal substrings

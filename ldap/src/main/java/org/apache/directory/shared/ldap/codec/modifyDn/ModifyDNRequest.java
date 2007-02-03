@@ -75,7 +75,6 @@ public class ModifyDNRequest extends LdapMessage
         super();
     }
 
-
     // ~ Methods
     // ------------------------------------------------------------------------------------
 

@@ -33,9 +33,10 @@ import org.apache.directory.shared.asn1.Asn1Object;
 public abstract class Filter extends Asn1Object
 {
     /**
-     * The constructor.
+     * @see Asn1Object#Asn1Object
      */
-    public Filter()
+    public Filter( int tlvId )
     {
+        super( tlvId );
     }
 }

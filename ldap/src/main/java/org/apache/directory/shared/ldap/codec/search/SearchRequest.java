@@ -87,7 +87,7 @@ public class SearchRequest extends LdapMessage
     private Filter filter;
     
     /** The list of attributes to get */
-    private Attributes attributes;
+    private Attributes attributes = new LockableAttributesImpl( true );
 
     /** The current filter. This is used while decoding a PDU */
     private transient Filter currentFilter;
@@ -111,11 +111,7 @@ public class SearchRequest extends LdapMessage
     public SearchRequest()
     {
         super();
-
-        currentFilter = null;
-        attributes = new LockableAttributesImpl( true );
     }
-
 
     // ~ Methods
     // ------------------------------------------------------------------------------------
@@ -389,6 +385,8 @@ public class SearchRequest extends LdapMessage
      * is considered as terminated either if :
      *  - it's a final element (ie an element which cannot contains a Filter)
      *  - its current length equals its expected length.
+     *  
+     *  The main problem is that we must 
      * 
      * @param container The container being decoded
      */
@@ -403,27 +401,38 @@ public class SearchRequest extends LdapMessage
         // The parent has been completed, so fold it
         while ( ( parent != null ) && ( parent.getExpectedLength() == 0 ) )
         {
-            Asn1Object filterParent = filter.getParent();
-            
-            // We have a special case with PresentFilter, which has not been 
-            // pushed on the stack, so we need to get its parent's parent
-            if ( filter instanceof PresentFilter )
+            if ( parent.getId() != filter.getParent().getTlvId() )
             {
-                filterParent = filterParent.getParent();
-            }
-
-            if ( filterParent instanceof Filter )
-            {
-                // The parent is a filter ; it will become the new currentFilter
-                // and we will loop again. 
-                currentFilter = (Filter)filterParent;
-                filter = currentFilter;
                 parent = parent.getParent();
             }
             else
             {
-                // We can stop the recursion, we have reached the searchResult Object
-                break;
+                Asn1Object filterParent = filter.getParent();
+                
+                // We have a special case with PresentFilter, which has not been 
+                // pushed on the stack, so we need to get its parent's parent
+                if ( filter instanceof PresentFilter )
+                {
+                    filterParent = filterParent.getParent();
+                }
+                else if ( filterParent instanceof Filter )
+                {
+                    filterParent = filterParent.getParent();
+                }
+    
+                if ( filterParent instanceof Filter )
+                {
+                    // The parent is a filter ; it will become the new currentFilter
+                    // and we will loop again. 
+                    currentFilter = (Filter)filterParent;
+                    filter = currentFilter;
+                    parent = parent.getParent();
+                }
+                else
+                {
+                    // We can stop the recursion, we have reached the searchResult Object
+                    break;
+                }
             }
         }
     }

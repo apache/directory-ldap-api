@@ -192,7 +192,8 @@ public class GracefulDisconnectGrammar extends AbstractGrammar implements IGramm
                 public void action( IAsn1Container container )
                 {
                     GracefulDisconnectContainer gracefulDisconnectContainer = ( GracefulDisconnectContainer ) container;
-                    GracefulDisconnect gracefulDisconnect = new GracefulDisconnect();
+                    GracefulDisconnect gracefulDisconnect = 
+                        new GracefulDisconnect();
                     gracefulDisconnectContainer.setGracefulDisconnect( gracefulDisconnect );
                     gracefulDisconnectContainer.grammarEndAllowed( true );
                 }

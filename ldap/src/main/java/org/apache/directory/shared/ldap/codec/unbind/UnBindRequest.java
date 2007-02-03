@@ -54,7 +54,6 @@ public class UnBindRequest extends LdapMessage
         super();
     }
 
-
     // ~ Methods
     // ------------------------------------------------------------------------------------
 

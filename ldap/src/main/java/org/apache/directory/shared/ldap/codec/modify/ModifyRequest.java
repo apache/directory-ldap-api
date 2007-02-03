@@ -122,7 +122,6 @@ public class ModifyRequest extends LdapMessage
         super();
     }
 
-
     // ~ Methods
     // ------------------------------------------------------------------------------------
 

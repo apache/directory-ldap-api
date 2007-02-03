@@ -139,7 +139,8 @@ public class EntryChangeControl extends ControlImpl
         if ( getValue() == null )
         {
             // should call this codec or something
-            org.apache.directory.shared.ldap.codec.search.controls.EntryChangeControl ecc = new org.apache.directory.shared.ldap.codec.search.controls.EntryChangeControl();
+            org.apache.directory.shared.ldap.codec.search.controls.EntryChangeControl ecc = 
+                new org.apache.directory.shared.ldap.codec.search.controls.EntryChangeControl();
             ecc.setChangeNumber( changeNumber );
             ecc.setChangeType( changeType );
             ecc.setPreviousDn( previousDn );
