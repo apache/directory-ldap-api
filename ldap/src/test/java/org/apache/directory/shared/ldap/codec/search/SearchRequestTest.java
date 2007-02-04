@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.codec.search;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.naming.NamingException;
@@ -4504,5 +4505,61 @@ public class SearchRequestTest extends TestCase
             ne.printStackTrace();
             fail( ne.getMessage() );
         }
+        
+        assertEquals( TLVStateEnum.PDU_DECODED, ldapMessageContainer.getState() );
+        
+        LdapMessage message = ( ( LdapMessageContainer ) ldapMessageContainer ).getLdapMessage();
+        SearchRequest sr = message.getSearchRequest();
+
+        assertEquals( 6, message.getMessageId() );
+        assertEquals( "ou=system", sr.getBaseObject().toString() );
+        assertEquals( LdapConstants.SCOPE_WHOLE_SUBTREE, sr.getScope() );
+        assertEquals( LdapConstants.DEREF_ALWAYS, sr.getDerefAliases() );
+        assertEquals( 0, sr.getSizeLimit() );
+        assertEquals( 0, sr.getTimeLimit() );
+        assertEquals( false, sr.isTypesOnly() );
+
+        // (&(...
+        AndFilter andFilter = ( AndFilter ) sr.getFilter();
+        assertNotNull( andFilter );
+
+        List andFilters = andFilter.getAndFilter();
+        assertEquals( 2, andFilters.size() );
+        
+        // (&(objectClass=person)..
+        AttributeValueAssertionFilter equalityMatch = ( AttributeValueAssertionFilter ) andFilters.get( 0 );
+        assertNotNull( equalityMatch );
+
+        AttributeValueAssertion assertion = equalityMatch.getAssertion();
+        assertNotNull( assertion );
+
+        assertEquals( "objectClass", assertion.getAttributeDesc() );
+        assertEquals( "person", assertion.getAssertionValue().toString() );
+
+        // (&(a=b)(|
+        OrFilter orFilter = ( OrFilter ) andFilters.get( 1 );
+        assertNotNull( orFilter );
+
+        List orFilters = orFilter.getOrFilter();
+        assertEquals( 2, orFilters.size() );
+        
+        // (&(a=b)(|(cn=Tori*
+        SubstringFilter substringFilter = ( SubstringFilter ) orFilters.get( 0 );
+        assertNotNull( substringFilter );
+
+        assertEquals( "cn", substringFilter.getType() );
+        assertEquals( "Tori", substringFilter.getInitialSubstrings() );
+        assertEquals( 0, substringFilter.getAnySubstrings().size() );
+        assertEquals( null, substringFilter.getFinalSubstrings() );
+
+        // (&(a=b)(|(cn=Tori*)(sn=Jagger)))
+        equalityMatch = ( AttributeValueAssertionFilter ) orFilters.get( 1 );
+        assertNotNull( equalityMatch );
+
+        assertion = equalityMatch.getAssertion();
+        assertNotNull( assertion );
+
+        assertEquals( "sn", assertion.getAttributeDesc() );
+        assertEquals( "Jagger", assertion.getAssertionValue().toString() );
     }
 }
