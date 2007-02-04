@@ -256,7 +256,6 @@ public class LdapDNTest extends TestCase
    public void testLdapDNRFC253_Lucic() throws InvalidNameException
    {
        LdapDN dn = new LdapDN( "SN=Lu\\C4\\8Di\\C4\\87" );
-       byte[] lucic = new byte[] { 's', 'n', '=', 'L', 'u', (byte)0xC4, (byte)0x8D, 'i', (byte)0xC4, (byte)0x87}; 
        Assert.assertEquals( "sn=Lu\\C4\\8Di\\C4\\87", dn.toString() );
        Assert.assertEquals( "SN=Lu\\C4\\8Di\\C4\\87", dn.getUpName() );
    }
