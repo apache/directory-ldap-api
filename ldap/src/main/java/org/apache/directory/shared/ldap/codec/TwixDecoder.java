@@ -110,7 +110,7 @@ public class TwixDecoder implements ProviderDecoder
             {
                 ldapDecoder.decode( buf, ldapMessageContainer );
     
-                //if ( IS_DEBUG )
+                if ( IS_DEBUG )
                 {
                     log.debug( "Decoding the PDU : " );
     
