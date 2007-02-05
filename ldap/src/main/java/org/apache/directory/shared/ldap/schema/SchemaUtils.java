@@ -21,6 +21,12 @@ package org.apache.directory.shared.ldap.schema;
 
 
 import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.DirContext;
+
+import org.apache.directory.shared.ldap.message.LockableAttributeImpl;
+import org.apache.directory.shared.ldap.message.ModificationItemImpl;
 
 
 /**
@@ -636,5 +642,78 @@ public class SchemaUtils
         buf.append( " )" );
 
         return buf;
+    }
+    
+    /**
+     * Gets the target entry as it would look after a modification operation
+     * were performed on it.
+     *
+     * @param mods the modifications performed on the entry
+     * @param entry the source entry that is modified
+     * @return the resultant entry after the modifications have taken place
+     * @throws NamingException if there are problems accessing attributes
+     */
+    public static Attributes getTargetEntry( ModificationItemImpl[] mods, Attributes entry ) throws NamingException
+    {
+        Attributes targetEntry = ( Attributes ) entry.clone();
+        
+        for ( int ii = 0; ii < mods.length; ii++ )
+        {
+            String id = mods[ii].getAttribute().getID();
+
+            switch ( mods[ii].getModificationOp() )
+            {
+                case( DirContext.REPLACE_ATTRIBUTE ):
+                    targetEntry.put( mods[ii].getAttribute() );
+                    break;
+                    
+                case( DirContext.ADD_ATTRIBUTE ):
+                    Attribute combined = new LockableAttributeImpl( id );
+                    Attribute toBeAdded = mods[ii].getAttribute();
+                    Attribute existing = entry.get( id );
+
+                    if ( existing != null )
+                    {
+                        for ( int jj = 0; jj < existing.size(); jj++ )
+                        {
+                            combined.add( existing.get( jj ) );
+                        }
+                    }
+
+                    for ( int jj = 0; jj < toBeAdded.size(); jj++ )
+                    {
+                        combined.add( toBeAdded.get( jj ) );
+                    }
+
+                    targetEntry.put( combined );
+                    break;
+                    
+                case( DirContext.REMOVE_ATTRIBUTE ):
+                    Attribute toBeRemoved = mods[ii].getAttribute();
+
+                    if ( toBeRemoved.size() == 0 )
+                    {
+                        targetEntry.remove( id );
+                    }
+                    else
+                    {
+                        existing = targetEntry.get( id );
+
+                        if ( existing != null )
+                        {
+                            for ( int jj = 0; jj < toBeRemoved.size(); jj++ )
+                            {
+                                existing.remove( toBeRemoved.get( jj ) );
+                            }
+                        }
+                    }
+                    break;
+
+                default:
+                    throw new IllegalStateException( "undefined modification type: " + mods[ii].getModificationOp() );
+            }
+        }
+
+        return targetEntry;
     }
 }
