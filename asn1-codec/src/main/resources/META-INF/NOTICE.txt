@@ -4,12 +4,7 @@ Copyright 2007 The Apache Software Foundation
 This product includes software developed at 
 The Apache Software Foundation (http://www.apache.org/).
 
-This product uses Maven (http://maven.apache.org/).
-
 This product uses JUnit (http://junit.org/).
 
 This product includes a distribution of NLOG4J 
 (http://www.slf4j.org/nlog4j/).
-
-This product includes a distribution of MINA 
-(http://mina.apache.org).
