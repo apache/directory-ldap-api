@@ -467,7 +467,7 @@ public class AttributeTypeAndValue implements Cloneable, Comparable, Serializabl
     {
         if ( value instanceof String )
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuffer sb = new StringBuffer();
             sb.append( StringTools.lowerCase( StringTools.trim( type ) ) ).append( '=' );
             String normalizedValue =  ( String ) value;
             int valueLength = normalizedValue.length();
