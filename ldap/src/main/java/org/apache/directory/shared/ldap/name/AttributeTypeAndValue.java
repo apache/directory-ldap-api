@@ -59,8 +59,11 @@ public class AttributeTypeAndValue implements Cloneable, Comparable, Serializabl
     /** The LoggerFactory used by this class */
     private static Logger log = LoggerFactory.getLogger( AttributeTypeAndValue.class );
 
-    /** The Name type */
-    private String type;
+    /** The normalized Name type */
+    private String normType;
+
+    /** The user provided Name type */
+    private String upType;
 
     /** The name value. It can be a String or a byte array */
     private Object value;
@@ -86,7 +89,8 @@ public class AttributeTypeAndValue implements Cloneable, Comparable, Serializabl
      */
     public AttributeTypeAndValue()
     {
-        type = null;
+        normType = null;
+        upType = null;
         value = null;
         upName = "";
         start = -1;
@@ -112,7 +116,8 @@ public class AttributeTypeAndValue implements Cloneable, Comparable, Serializabl
             throw new InvalidNameException( "Null or empty type is not allowed" );
         }
 
-        this.type = type.trim().toLowerCase();
+        normType = type.trim().toLowerCase();
+        upType = type;
 
         if ( value instanceof String )
         {
@@ -130,13 +135,23 @@ public class AttributeTypeAndValue implements Cloneable, Comparable, Serializabl
 
 
     /**
-     * Get the type of a AttributeTypeAndValue
+     * Get the normalized type of a AttributeTypeAndValue
      *
-     * @return The type
+     * @return The normalized type
      */
-    public String getType()
+    public String getNormType()
     {
-        return type;
+        return normType;
+    }
+
+    /**
+     * Get the user provided type of a AttributeTypeAndValue
+     *
+     * @return The normalized type
+     */
+    public String getUpType()
+    {
+        return upType;
     }
 
 
@@ -154,7 +169,8 @@ public class AttributeTypeAndValue implements Cloneable, Comparable, Serializabl
             throw new InvalidNameException( "The AttributeTypeAndValue type cannot be null or empty " );
         }
 
-        this.type = type.trim().toLowerCase();
+        normType = type.trim().toLowerCase();
+        upType = type;
         upName = type + upName.substring( upName.indexOf( '=' ) );
         start = -1;
         length = upName.length();
@@ -175,7 +191,8 @@ public class AttributeTypeAndValue implements Cloneable, Comparable, Serializabl
             throw new InvalidNameException( "The AttributeTypeAndValue type cannot be null or empty " );
         }
 
-        this.type = type.trim().toLowerCase();
+        normType = type.trim().toLowerCase();
+        upType = type;
         upName = type + upName.substring( upName.indexOf( '=' ) );
         start = -1;
         length = upName.length();
@@ -317,7 +334,7 @@ public class AttributeTypeAndValue implements Cloneable, Comparable, Serializabl
         {
             AttributeTypeAndValue nc = ( AttributeTypeAndValue ) object;
 
-            int res = compareType( type, nc.type );
+            int res = compareType( normType, nc.normType );
 
             if ( res != 0 )
             {
@@ -350,7 +367,7 @@ public class AttributeTypeAndValue implements Cloneable, Comparable, Serializabl
         {
             AttributeTypeAndValue nc = ( AttributeTypeAndValue ) object;
 
-            int res = compareType( type, nc.type );
+            int res = compareType( normType, nc.normType );
 
             if ( res != 0 )
             {
@@ -468,7 +485,7 @@ public class AttributeTypeAndValue implements Cloneable, Comparable, Serializabl
         if ( value instanceof String )
         {
             StringBuffer sb = new StringBuffer();
-            sb.append( StringTools.lowerCase( StringTools.trim( type ) ) ).append( '=' );
+            sb.append( normType ).append( '=' );
             String normalizedValue =  ( String ) value;
             int valueLength = normalizedValue.length();
             
@@ -534,7 +551,7 @@ public class AttributeTypeAndValue implements Cloneable, Comparable, Serializabl
         }
         else
         {
-            return StringTools.lowerCase( StringTools.trim( type ) ) + "=#"
+            return normType + "=#"
                 + StringTools.dumpHexPairs( ( byte[] ) value );
         }
     }
@@ -549,8 +566,8 @@ public class AttributeTypeAndValue implements Cloneable, Comparable, Serializabl
     {
         int result = 17;
 
-        result = result * 37 + ( type != null ? type.hashCode() : 0 );
-        result = result * 37 + ( value != null ? type.hashCode() : 0 );
+        result = result * 37 + ( normType != null ? normType.hashCode() : 0 );
+        result = result * 37 + ( value != null ? value.hashCode() : 0 );
 
         return result;
     }
@@ -565,12 +582,12 @@ public class AttributeTypeAndValue implements Cloneable, Comparable, Serializabl
     {
         StringBuffer sb = new StringBuffer();
 
-        if ( StringTools.isEmpty( type ) || StringTools.isEmpty( type.trim() ) )
+        if ( StringTools.isEmpty( normType ) || StringTools.isEmpty( normType.trim() ) )
         {
             return "";
         }
 
-        sb.append( type ).append( "=" );
+        sb.append( normType ).append( "=" );
 
         if ( value != null )
         {
