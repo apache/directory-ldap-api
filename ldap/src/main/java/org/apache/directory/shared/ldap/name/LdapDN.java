@@ -1261,14 +1261,14 @@ public class LdapDN /* extends LdapString */implements Name
    private static AttributeTypeAndValue atavOidToName( AttributeTypeAndValue atav, Map oidsMap )
        throws InvalidNameException, NamingException
    {
-       String type = StringTools.trim( atav.getType() );
+       String type = StringTools.trim( atav.getNormType() );
 
        if ( ( type.startsWith( "oid." ) ) || ( type.startsWith( "OID." ) ) )
        {
            type = type.substring( 4 );
        }
 
-       if ( StringTools.isNotEmpty( StringTools.lowerCase( type ) ) )
+       if ( StringTools.isNotEmpty( type ) )
        {
            if ( oidsMap == null )
            {
@@ -1328,20 +1328,20 @@ public class LdapDN /* extends LdapString */implements Name
            {
                Object val = atavs.next();
                AttributeTypeAndValue newAtav = atavOidToName( ( AttributeTypeAndValue ) val, oidsMap );
-               rdn.addAttributeTypeAndValue( newAtav.getType(), newAtav.getValue() );
+               rdn.addAttributeTypeAndValue( newAtav.getUpType(), newAtav.getValue() );
            }
 
        }
        else
        {
-           String type = StringTools.trim( rdn.getType() );
+           String type = rdn.getNormType();
 
            if ( ( type.startsWith( "oid." ) ) || ( type.startsWith( "OID." ) ) )
            {
                type = type.substring( 4 );
            }
 
-           if ( StringTools.isNotEmpty( StringTools.lowerCase( type ) ) )
+           if ( StringTools.isNotEmpty( type ) )
            {
                if ( oidsMap == null )
                {
@@ -1357,11 +1357,11 @@ public class LdapDN /* extends LdapString */implements Name
                        Rdn rdnCopy = ( Rdn ) rdn.clone();
                        rdn.clear();
                        Object value = rdnCopy.getValue();
-                       value = DefaultStringNormalizer.normalizeString( ( String ) value );
+                       Object normValue = DefaultStringNormalizer.normalizeString( ( String ) value );
 
                        rdn.addAttributeTypeAndValue( oidNormalizer.getAttributeTypeOid(),
                            ( String ) oidNormalizer.getNormalizer()
-                           .normalize( value ) );
+                           .normalize( normValue ) );
 
                    }
                    else
