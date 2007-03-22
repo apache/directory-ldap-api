@@ -629,6 +629,6 @@ public class OID implements Serializable
             }
         }
 
-        return true;
+        return !dotSeen;
     }
 }
