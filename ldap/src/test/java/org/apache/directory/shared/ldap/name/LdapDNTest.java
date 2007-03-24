@@ -40,7 +40,6 @@ import javax.naming.CompoundName;
 import javax.naming.InvalidNameException;
 import javax.naming.Name;
 import javax.naming.NamingException;
-import javax.naming.ldap.LdapName;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -52,6 +51,8 @@ import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.schema.DeepTrimToLowerNormalizer;
 import org.apache.directory.shared.ldap.schema.OidNormalizer;
 import org.apache.directory.shared.ldap.util.StringTools;
+
+import com.sun.jndi.ldap.LdapName;
 
 
 /**
@@ -2329,7 +2330,7 @@ public class LdapDNTest extends TestCase
     */
    public void testName() throws NamingException
    {
-       Name jName = new javax.naming.ldap.LdapName("cn=four,cn=three,cn=two,cn=one");
+       Name jName = new LdapName("cn=four,cn=three,cn=two,cn=one");
        Name aName = new LdapDN("cn=four,cn=three,cn=two,cn=one");
        assertEquals(jName.toString(), "cn=four,cn=three,cn=two,cn=one");
        assertEquals(aName.toString(), "cn=four,cn=three,cn=two,cn=one");
@@ -2503,16 +2504,19 @@ public class LdapDNTest extends TestCase
    public void testDoubleQuoteInNameDIRSERVER_642() throws NamingException
    {
        Name name1 = new LdapDN( "cn=\"Kylie Minogue\",dc=example,dc=com" );
-       Name name2 = new LdapName( "cn=\"Kylie Minogue\",dc=example,dc=com" );
+       
+       String[] rdns = new String[] { "dc=com", "dc=example", "cn=Kylie Minogue" };
 
-       Enumeration j = name1.getAll();
-       Enumeration a = name2.getAll();
+       Enumeration a = name1.getAll();
+       int i = 0;
 
-       while (j.hasMoreElements())
+       while (a.hasMoreElements())
        {
-           assertTrue(j.hasMoreElements());
-           assertEquals(j.nextElement(), a.nextElement());
+           assertTrue(a.hasMoreElements());
+           assertEquals(rdns[i++], a.nextElement());
        }
+       
+       // com.sun.jndi.ldap.LdapName has a bug: it can't 
    }
 
    /**
