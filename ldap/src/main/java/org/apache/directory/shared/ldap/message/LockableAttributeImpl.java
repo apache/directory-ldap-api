@@ -579,7 +579,18 @@ public class LockableAttributeImpl implements Attribute
     	}
     }
 
-
+    private int computeArrayHashCode( byte[] bv )
+    {
+        int h = 27;
+        
+        for ( int i = 0; i < bv.length; i++ )
+        {
+            h += 37*bv[i];
+        }
+        
+        return h;
+    }
+    
     /**
      * Checks for equality between this Attribute instance and another. The
      * lockable properties are not factored into the equality semantics and
@@ -662,14 +673,15 @@ public class LockableAttributeImpl implements Attribute
                 else if ( v instanceof byte[] )
                 {
                     byte[] bv = (byte[])v;
-                    h = Arrays.hashCode( bv );
+                    
+                    h = computeArrayHashCode( bv );
                 }
                 else
                 {
                     return false;
                 }
                 
-                hash.put( Integer.valueOf( h ), v );
+                hash.put( new Integer( h ), v );
             }
             
             try
@@ -682,7 +694,7 @@ public class LockableAttributeImpl implements Attribute
                     
                     if ( val instanceof String )
                     {
-                        Integer h = Integer.valueOf( val.hashCode() );
+                        Integer h = new Integer( val.hashCode() );
                         
                         if ( !hash.containsKey( h ) )
                         {
@@ -700,7 +712,7 @@ public class LockableAttributeImpl implements Attribute
                     }
                     else if ( val instanceof byte[] )
                     {
-                        Integer h = Integer.valueOf( Arrays.hashCode( (byte[])val ) );
+                        Integer h = new Integer( computeArrayHashCode( (byte[])val ) );
 
                         if ( !hash.containsKey( h ) )
                         {
