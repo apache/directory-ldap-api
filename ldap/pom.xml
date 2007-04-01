@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.apache.directory.shared</groupId>
     <artifactId>build</artifactId>
-    <version>0.9.6-SNAPSHOT</version>
+    <version>0.9.6</version>
   </parent>
   <artifactId>shared-ldap</artifactId>
   <name>Apache Directory Protocol Ldap Shared</name>
@@ -147,7 +147,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.3-SNAPSHOT</version>
+        <version>2.3</version>
         <configuration>
           <excludes>
             <exclude>**/Abstract*</exclude>
