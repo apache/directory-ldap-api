@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.apache.directory.shared</groupId>
     <artifactId>build</artifactId>
-    <version>0.9.5.5-SNAPSHOT</version>
+    <version>0.9.5.6-SNAPSHOT</version>
   </parent>
   <artifactId>shared-ldap</artifactId>
   <name>Apache Directory Protocol Ldap Shared</name>
@@ -21,12 +21,6 @@
       <url>scp://minotaur.apache.org/www/directory.apache.org/subprojects/ldap/common</url>
     </site>
   </distributionManagement>
-
-  <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/releases/shared/0.9.5.2/ldap</connection>
-    <url>http://svn.apache.org/viewcvs.cgi/directory/releases/shared/0.9.5.2/ldap/?root=Apache-SVN</url>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/branches/shared/0.9.5/ldap</developerConnection>
-  </scm>
 
   <ciManagement>
     <notifiers>
