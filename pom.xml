@@ -16,5 +16,23 @@
     <module>ldap</module>
     <module>asn1-codec</module>
   </modules>
+
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/branches/0.9.5</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/branches/0.9.5</developerConnection>
+  </scm>
+
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <configuration>
+          <tagBase>https://svn.apache.org/repos/asf/directory/shared/releases</tagBase>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
 
