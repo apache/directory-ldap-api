@@ -172,21 +172,6 @@ public class AddRequestTest extends TestCase
 
         // Check the length
         assertEquals( 0x59, message.computeLength() );
-
-        // Check the encoding
-        try
-        {
-            ByteBuffer bb = message.encode( null );
-
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
-
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
     }
 
 
