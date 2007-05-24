@@ -10,7 +10,7 @@
   <artifactId>build</artifactId>
   <name>Apache Directory Shared</name>
   <packaging>pom</packaging>  
-  <version>0.9.5.5-SNAPSHOT</version>
+  <version>0.9.5.5</version>
   <modules>
     <module>asn1</module>
     <module>ldap</module>
@@ -18,8 +18,8 @@
   </modules>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/branches/0.9.5</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/branches/0.9.5</developerConnection>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/releases/build-0.9.5.5</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/releases/build-0.9.5.5</developerConnection>
   </scm>
 
   <build>
