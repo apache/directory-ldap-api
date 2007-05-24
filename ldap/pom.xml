@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.shared</groupId>
     <artifactId>build</artifactId>
-    <version>0.9.5.5-SNAPSHOT</version>
+    <version>0.9.5.5</version>
   </parent>
   <artifactId>shared-ldap</artifactId>
   <name>Apache Directory Protocol Ldap Shared</name>
@@ -99,7 +99,7 @@
         <executions>
           <execution>
             <phase>generate-sources</phase>
-            <configuration/>
+            <configuration />
             <goals>
               <goal>run</goal>
             </goals>
