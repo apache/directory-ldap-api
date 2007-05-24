@@ -22,7 +22,6 @@
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/branches/0.9.5</developerConnection>
   </scm>
 
-
   <build>
     <plugins>
       <plugin>
@@ -31,6 +30,19 @@
         <configuration>
           <tagBase>https://svn.apache.org/repos/asf/directory/shared/releases</tagBase>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
