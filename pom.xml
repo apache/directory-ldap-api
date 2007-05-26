@@ -18,8 +18,8 @@
   </modules>
 
   <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/releases/build-0.9.5.5</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/releases/build-0.9.5.5</developerConnection>
+    <connection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/releases/0.9.5.5</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/releases/0.9.5.5</developerConnection>
   </scm>
 
   <build>
