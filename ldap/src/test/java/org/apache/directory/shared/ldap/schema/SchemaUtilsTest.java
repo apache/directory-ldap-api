@@ -202,9 +202,9 @@ public class SchemaUtilsTest extends TestCase
         }
 
 
-        protected SyntaxImpl(String oid, boolean isHumanReadible)
+        protected SyntaxImpl(String oid, boolean isHumanReadable)
         {
-            super( oid, isHumanReadible );
+            super( oid, isHumanReadable );
         }
 
 
@@ -214,9 +214,9 @@ public class SchemaUtilsTest extends TestCase
         }
 
 
-        protected SyntaxImpl(String oid, String description, boolean isHumanReadible)
+        protected SyntaxImpl(String oid, String description, boolean isHumanReadable)
         {
-            super( oid, description, isHumanReadible );
+            super( oid, description, isHumanReadable );
         }
 
 
