@@ -768,7 +768,7 @@ public class LdapMessageGrammar extends AbstractGrammar implements IGrammar
                     }
                     else
                     {
-                        authentication.setMechanism( new String( tlv.getValue().getData() ) );
+                        authentication.setMechanism( StringTools.utf8ToString( tlv.getValue().getData() ) );
                     }
 
                     // We can have an END transition
@@ -1279,7 +1279,7 @@ public class LdapMessageGrammar extends AbstractGrammar implements IGrammar
                     }
                     else
                     {
-                        type = new String( tlv.getValue().getData() );
+                        type = StringTools.utf8ToString( tlv.getValue().getData() );
                         searchResultEntry.addAttributeValues( type );
                     }
 
@@ -1660,7 +1660,7 @@ public class LdapMessageGrammar extends AbstractGrammar implements IGrammar
                     }
                     else
                     {
-                        type = new String( tlv.getValue().getData() );
+                        type = StringTools.utf8ToString( tlv.getValue().getData() );
                         modifyRequest.addAttributeTypeAndValues( type );
                     }
 
@@ -2013,7 +2013,7 @@ public class LdapMessageGrammar extends AbstractGrammar implements IGrammar
                         throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDATTRIBUTESYNTAX, addRequest.getEntry(), null );
                     }
 
-                    String type = new String( tlv.getValue().getData() );
+                    String type = StringTools.utf8ToString( tlv.getValue().getData() );
 
                     addRequest.addAttributeType( type );
 
@@ -2676,7 +2676,7 @@ public class LdapMessageGrammar extends AbstractGrammar implements IGrammar
                         throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALIDATTRIBUTESYNTAX, compareRequest.getEntry(), null );
                     }
 
-                    String type = new String( tlv.getValue().getData() );
+                    String type = StringTools.utf8ToString( tlv.getValue().getData() );
                     compareRequest.setAttributeDesc( type );
 
                     if ( IS_DEBUG )
@@ -4952,7 +4952,7 @@ public class LdapMessageGrammar extends AbstractGrammar implements IGrammar
                     }
                     else
                     {
-                        String type = new String( tlv.getValue().getData() );
+                        String type = StringTools.utf8ToString( tlv.getValue().getData() );
                         substringFilter.setType( type );
 
                         // We now have to get back to the nearest filter which
@@ -5025,7 +5025,7 @@ public class LdapMessageGrammar extends AbstractGrammar implements IGrammar
                         throw new DecoderException( "The substring initial filter is empty" );
                     }
 
-                    substringFilter.setInitialSubstrings( new String( tlv.getValue().getData() ) );
+                    substringFilter.setInitialSubstrings( StringTools.utf8ToString( tlv.getValue().getData() ) );
 
                     // We now have to get back to the nearest filter which is
                     // not terminal.
@@ -5958,7 +5958,7 @@ public class LdapMessageGrammar extends AbstractGrammar implements IGrammar
                     }
                     else
                     {
-                        extensibleMatchFilter.setMatchingRule( new String( tlv.getValue().getData() ) );
+                        extensibleMatchFilter.setMatchingRule( StringTools.utf8ToString( tlv.getValue().getData() ) );
                     }
                 }
             } );

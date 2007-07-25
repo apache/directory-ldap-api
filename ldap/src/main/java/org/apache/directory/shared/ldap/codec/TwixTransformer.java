@@ -108,6 +108,7 @@ import org.apache.directory.shared.ldap.message.UnbindRequestImpl;
 import org.apache.directory.shared.ldap.message.extended.GracefulShutdownRequest;
 import org.apache.directory.shared.ldap.message.spi.Provider;
 import org.apache.directory.shared.ldap.message.spi.TransformerSpi;
+import org.apache.directory.shared.ldap.util.StringTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -878,7 +879,7 @@ public class TwixTransformer implements TransformerSpi
         }
         else
         {
-            twixLdapResult.setErrorMessage( new String( snickersLdapResult.getErrorMessage().getBytes() ) );
+            twixLdapResult.setErrorMessage( errorMessage );
         }
 
         // Snickers : String matchedDn -> Twix : LdapDN matchedDN
@@ -1255,7 +1256,7 @@ public class TwixTransformer implements TransformerSpi
             twixControl.setCriticality( control.isCritical() );
             twixControl.setControlValue( control.getEncodedValue() );
             twixControl.setEncodedValue( control.getEncodedValue() );
-            twixControl.setControlType( new String( Asn1StringUtils.getBytesUtf8( control.getID() ) ) );
+            twixControl.setControlType( control.getID() );
             twixControl.setParent( twixMessage );
         }
     }

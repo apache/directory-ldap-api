@@ -332,16 +332,8 @@ public class LdapURL
             throw new LdapURLEncodingException( "The byte array is empty : this is not a valid LdapURL." );
         }
 
-        try
-        {
-            string = new String( bytes, "UTF-8" );
-            this.bytes = bytes;
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            throw new LdapURLEncodingException( "The byte array is not an UTF-8 encoded Unicode String : "
-                + uee.getMessage() );
-        }
+        string = StringTools.utf8ToString( bytes );
+        this.bytes = bytes;
 
         parse( string.toCharArray() );
     }
@@ -1050,7 +1042,7 @@ public class LdapURL
                     }
                     else
                     {
-                        value = new String( decode( new String( chars, start, i - start ) ) ).trim();
+                        value = decode( new String( chars, start, i - start ) ).trim();
 
                         if ( value.length() == 0 )
                         {
@@ -1085,7 +1077,7 @@ public class LdapURL
                     }
 
                     // An optionnal value
-                    extension = new String( decode( new String( chars, start, i - start ) ) ).trim();
+                    extension = decode( new String( chars, start, i - start ) ).trim();
 
                     if ( extension.length() == 0 )
                     {
@@ -1115,11 +1107,11 @@ public class LdapURL
 
             if ( extension == null )
             {
-                extension = new String( decode( new String( chars, start, chars.length - start ) ) ).trim();
+                extension = decode( new String( chars, start, chars.length - start ) ).trim();
             }
             else
             {
-                value = new String( decode( new String( chars, start, chars.length - start ) ) ).trim();
+                value = decode( new String( chars, start, chars.length - start ) ).trim();
             }
 
             if ( isCritical )
