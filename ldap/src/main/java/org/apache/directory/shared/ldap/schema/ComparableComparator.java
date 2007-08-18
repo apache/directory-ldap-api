@@ -30,7 +30,6 @@ import java.io.Serializable;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$
  */
-@SuppressWarnings("unchecked")
 public class ComparableComparator implements Comparator, Serializable
 {
     static final long serialVersionUID = -5295278271807198471L;
