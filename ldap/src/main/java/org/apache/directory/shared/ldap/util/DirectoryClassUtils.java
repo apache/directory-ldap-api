@@ -20,6 +20,9 @@
 
 package org.apache.directory.shared.ldap.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -29,9 +32,10 @@ import java.util.Arrays;
  */
 public class DirectoryClassUtils
 {
+    private static final Logger LOG = LoggerFactory.getLogger( DirectoryClassUtils.class );
     
     /**
-     * A replacement for {@link java.lang.Class.getMethod} with extended capability.
+     * A replacement for {@link java.lang.Class#getMethod} with extended capability.
      * 
      * <p>
      * This method returns parameter-list assignment-compatible method as well as
@@ -41,33 +45,55 @@ public class DirectoryClassUtils
      * @param candidateMethodName Name of the method been looked for.
      * @param candidateParameterTypes Types of the parameters in the signature of the method being loooked for.
      * @return The Method found.
-     * @throws NoSuchMethodException
+     * @throws NoSuchMethodException when the method cannot be found
      */
-    public static Method getAssignmentCompatibleMethod( Class clazz,
+    public static Method getAssignmentCompatibleMethod( Class<?> clazz,
                                                         String candidateMethodName,
-                                                        Class[] candidateParameterTypes
+                                                        Class<?>[] candidateParameterTypes
                                                       ) throws NoSuchMethodException
     {
+        if ( LOG.isDebugEnabled() )
+        {
+            StringBuilder buf = new StringBuilder();
+            buf.append( "call to getAssignmentCompatibleMethod(): \n\tclazz = " );
+            buf.append( clazz.getName() );
+            buf.append( "\n\tcandidateMethodName = " );
+            buf.append( candidateMethodName );
+            buf.append( "\n\tcandidateParameterTypes = " );
+
+            for ( Class<?> argClass : candidateParameterTypes )
+            {
+                buf.append( "\n\t\t" );
+                buf.append( argClass.getName() );
+            }
+
+            LOG.debug( buf.toString() );
+        }
+
         try
         {
             // Look for exactly the same signature.
             Method exactMethod = clazz.getMethod( candidateMethodName, candidateParameterTypes );
+            
             if ( exactMethod != null )
             {
                 return exactMethod;
             }
         }
-        catch ( SecurityException e ) { }
-        catch ( NoSuchMethodException e ) { }
-        
+        catch ( Exception e )
+        {
+            LOG.info( "Could not find accessible exact match for candidateMethod {}", candidateMethodName, e );
+        }
+
+
         /**
          * Look for the assignment-compatible signature.
          */
         
-        // Get all methods of the clazz.
+        // Get all methods of the class.
         Method[] methods = clazz.getMethods();
         
-        // For each method of the clazz...
+        // For each method of the class...
         for ( int mx = 0; mx < methods.length; mx++ )
         {
             // If the method name does not match...
@@ -78,7 +104,7 @@ public class DirectoryClassUtils
             }
             
             // ... Get parameter types list.
-            Class[] parameterTypes = methods[ mx ].getParameterTypes();
+            Class<?>[] parameterTypes = methods[ mx ].getParameterTypes();
             
             // If parameter types list length mismatch...
             if ( parameterTypes.length != candidateParameterTypes.length )
@@ -102,8 +128,7 @@ public class DirectoryClassUtils
             return methods[ mx ];
         }
         
-        throw new NoSuchMethodException( clazz.getName() + "." + candidateMethodName + "(" + Arrays.toString( candidateParameterTypes ) + ")" );
-        
+        throw new NoSuchMethodException( clazz.getName() + "." + candidateMethodName
+            + "(" + Arrays.toString( candidateParameterTypes ) + ")" );
     }
-
 }

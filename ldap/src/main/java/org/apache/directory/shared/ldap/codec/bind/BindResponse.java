@@ -41,6 +41,7 @@ import org.apache.directory.shared.ldap.util.StringTools;
  * LdapResult ::= resultCode matchedDN errorMessage (referrals)*
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
 public class BindResponse extends LdapResponse
 {
@@ -85,7 +86,14 @@ public class BindResponse extends LdapResponse
      */
     public byte[] getServerSaslCreds()
     {
-        return serverSaslCreds;
+        if ( serverSaslCreds == null )
+        {
+            return null;
+        }
+
+        final byte[] copy = new byte[ serverSaslCreds.length ];
+        System.arraycopy( serverSaslCreds, 0, copy, 0, serverSaslCreds.length );
+        return copy;
     }
 
 
@@ -96,7 +104,13 @@ public class BindResponse extends LdapResponse
      */
     public void setServerSaslCreds( byte[] serverSaslCreds )
     {
-        this.serverSaslCreds = serverSaslCreds;
+        if ( serverSaslCreds != null )
+        {
+            this.serverSaslCreds = new byte[ serverSaslCreds.length ];
+            System.arraycopy( serverSaslCreds, 0, this.serverSaslCreds, 0, serverSaslCreds.length );
+        } else {
+            this.serverSaslCreds = null;
+        }
     }
 
 

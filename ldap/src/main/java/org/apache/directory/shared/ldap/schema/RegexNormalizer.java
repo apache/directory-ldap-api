@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  */
 public class RegexNormalizer implements Normalizer
 {
-    public static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     
     /** the perl 5 regex engine */
     private final Pattern[] regexes;
@@ -47,14 +47,24 @@ public class RegexNormalizer implements Normalizer
      * @param regexes
      *            the set of regular expressions used to transform values
      */
-    public RegexNormalizer(Pattern[] regexes)
+    public RegexNormalizer( Pattern[] regexes )
     {
-        this.regexes = regexes;
-        matchers = new Matcher[regexes.length];
-
-        for ( int i = 0; i < regexes.length; i++ )
+        if ( regexes != null )
         {
-            matchers[i] = regexes[i].matcher( "" );
+            this.regexes = new Pattern[ regexes.length ];
+            System.arraycopy( regexes, 0, this.regexes, 0, regexes.length );
+
+            matchers = new Matcher[regexes.length];
+
+            for ( int i = 0; i < regexes.length; i++ )
+            {
+                matchers[i] = regexes[i].matcher( "" );
+            }
+        } 
+        else 
+        {
+            this.regexes = null;
+            matchers = new Matcher[0];
         }
     }
 

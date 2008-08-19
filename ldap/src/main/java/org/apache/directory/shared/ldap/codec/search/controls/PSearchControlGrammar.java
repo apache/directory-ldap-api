@@ -56,8 +56,9 @@ import org.slf4j.LoggerFactory;
  * modDN  (8).
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
-public class PSearchControlGrammar extends AbstractGrammar implements IGrammar
+public class PSearchControlGrammar extends AbstractGrammar
 {
     /** The logger */
     static final Logger log = LoggerFactory.getLogger( PSearchControlGrammar.class );
@@ -96,7 +97,7 @@ public class PSearchControlGrammar extends AbstractGrammar implements IGrammar
                 public void action( IAsn1Container container )
                 {
                     PSearchControlContainer psearchContainer = ( PSearchControlContainer ) container;
-                    PSearchControl control = new PSearchControl();
+                    PSearchControlCodec control = new PSearchControlCodec();
                     psearchContainer.setPSearchControl( control );
                 }
             } );
@@ -111,7 +112,9 @@ public class PSearchControlGrammar extends AbstractGrammar implements IGrammar
          * Stores the change types value
          */
         super.transitions[PSearchControlStatesEnum.PSEARCH_SEQUENCE_STATE][UniversalTag.INTEGER_TAG] = 
-            new GrammarTransition( PSearchControlStatesEnum.PSEARCH_SEQUENCE_STATE, PSearchControlStatesEnum.CHANGE_TYPES_STATE, UniversalTag.INTEGER_TAG,
+            new GrammarTransition( PSearchControlStatesEnum.PSEARCH_SEQUENCE_STATE, 
+                PSearchControlStatesEnum.CHANGE_TYPES_STATE, 
+                UniversalTag.INTEGER_TAG,
                 new GrammarAction( "Set PSearchControl changeTypes" )
             {
                 public void action( IAsn1Container container ) throws DecoderException
@@ -122,7 +125,9 @@ public class PSearchControlGrammar extends AbstractGrammar implements IGrammar
                     try
                     {
                         // Check that the value is into the allowed interval
-                        int changeTypes = IntegerDecoder.parse( value, PSearchControl.CHANGE_TYPES_MIN, PSearchControl.CHANGE_TYPES_MAX );
+                        int changeTypes = IntegerDecoder.parse( value, 
+                            PSearchControlCodec.CHANGE_TYPES_MIN, 
+                            PSearchControlCodec.CHANGE_TYPES_MAX );
                         
                         if ( IS_DEBUG )
                         {
@@ -150,7 +155,8 @@ public class PSearchControlGrammar extends AbstractGrammar implements IGrammar
          * Stores the change only flag
          */
         super.transitions[PSearchControlStatesEnum.CHANGE_TYPES_STATE][UniversalTag.BOOLEAN_TAG] = 
-            new GrammarTransition( PSearchControlStatesEnum.CHANGE_TYPES_STATE, PSearchControlStatesEnum.CHANGES_ONLY_STATE, UniversalTag.BOOLEAN_TAG,
+            new GrammarTransition( PSearchControlStatesEnum.CHANGE_TYPES_STATE,
+                                    PSearchControlStatesEnum.CHANGES_ONLY_STATE, UniversalTag.BOOLEAN_TAG,
                 new GrammarAction( "Set PSearchControl changesOnly" )
             {
                 public void action( IAsn1Container container ) throws DecoderException
@@ -188,7 +194,8 @@ public class PSearchControlGrammar extends AbstractGrammar implements IGrammar
          * Stores the return ECs flag 
          */
         super.transitions[PSearchControlStatesEnum.CHANGES_ONLY_STATE][UniversalTag.BOOLEAN_TAG] = 
-            new GrammarTransition( PSearchControlStatesEnum.CHANGES_ONLY_STATE, PSearchControlStatesEnum.RETURN_ECS_STATE, UniversalTag.BOOLEAN_TAG,
+            new GrammarTransition( PSearchControlStatesEnum.CHANGES_ONLY_STATE, 
+                                    PSearchControlStatesEnum.RETURN_ECS_STATE, UniversalTag.BOOLEAN_TAG,
                 new GrammarAction( "Set PSearchControl returnECs" )
             {
                 public void action( IAsn1Container container ) throws DecoderException

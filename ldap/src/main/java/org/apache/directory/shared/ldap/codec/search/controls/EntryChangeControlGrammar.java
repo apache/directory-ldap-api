@@ -43,8 +43,9 @@ import org.slf4j.LoggerFactory;
  * this class. As it is a singleton, these declaration are only done once.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
-public class EntryChangeControlGrammar extends AbstractGrammar implements IGrammar
+public class EntryChangeControlGrammar extends AbstractGrammar
 {
     /** The logger */
     static final Logger log = LoggerFactory.getLogger( EntryChangeControlGrammar.class );
@@ -83,7 +84,7 @@ public class EntryChangeControlGrammar extends AbstractGrammar implements IGramm
                 public void action( IAsn1Container container )
                 {
                     EntryChangeControlContainer entryChangeContainer = ( EntryChangeControlContainer ) container;
-                    EntryChangeControl control = new EntryChangeControl();
+                    EntryChangeControlCodec control = new EntryChangeControlCodec();
                     entryChangeContainer.setEntryChangeControl( control );
                 }
             } );

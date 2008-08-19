@@ -24,7 +24,6 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.apache.directory.shared.asn1.codec.DecoderException;
-import org.apache.directory.shared.asn1.primitives.BitString;
 import org.apache.directory.shared.asn1.util.Asn1StringUtils;
 
 
@@ -84,7 +83,7 @@ public class BitStringTest extends TestCase
 
 
     /**
-     * Test a single bit BitString BitString
+     * Test a single bit BitString
      */
     public void testSingleBitBitString() throws DecoderException
     {
@@ -197,7 +196,7 @@ public class BitStringTest extends TestCase
         {
             if ( bits[i] == 1 )
             {
-                bitString.setBit( i );
+                bitString.setBit( bits.length - i - 1 );
             }
         }
         
@@ -212,7 +211,7 @@ public class BitStringTest extends TestCase
             {
                 1, 0, 1, 0 ,   1, 0, 1, 0,
                 0, 0, 0, 1,    0, 0, 0, 1,
-                1, 0, 0, 0,    1, 0, 0, 0,
+                1, 0, 0, 0,    1, 0, 0, 0,  // After modification, will become 8A
                 1, 1, 1, 1,    1, 1, 1, 0
             };
 
@@ -220,13 +219,13 @@ public class BitStringTest extends TestCase
         {
             if ( bits[i] == 1 )
             {
-                bitString.setBit( i );
+                bitString.setBit( bits.length - i - 1 );
             }
         }
         
         bitString.setBit( 9 );
         byte[] bytesModified = new byte[]
-            { (byte)0xAA, 0x51, (byte)0x88, (byte)0xFE };
+            { (byte)0xAA, 0x11, (byte)0x8A, (byte)0xFE };
                             
         assertEquals( Asn1StringUtils.dumpBytes( bytesModified ), Asn1StringUtils.dumpBytes( bitString.getData() ) );
     }
@@ -247,13 +246,13 @@ public class BitStringTest extends TestCase
         {
             if ( bits[i] == 1 )
             {
-                bitString.setBit( i );
+                bitString.setBit( bits.length - i - 1 );
             }
         }
         
         bitString.clearBit( 11 );
         byte[] bytesModified = new byte[]
-            { (byte)0xAA, 0x01, (byte)0x88, (byte)0xFE };
+            { (byte)0xAA, 0x11, (byte)0x80, (byte)0xFE };
                             
         assertEquals( Asn1StringUtils.dumpBytes( bytesModified ), Asn1StringUtils.dumpBytes( bitString.getData() ) );
     }

@@ -50,15 +50,17 @@ public class StoredProcedureLanguageSchemeOption implements StoredProcedureOptio
         return "language " + "\"" + language + "\"";
     }
 
-    /* (non-Javadoc)
+    /**
      * @see java.lang.Object#hashCode()
+     * @return the instance's hash code 
      */
     public int hashCode()
     {
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + ( ( language == null ) ? 0 : language.hashCode() );
-        return result;
+        int h = 37;
+        
+        h = h*17 + ( ( language == null ) ? 0 : language.hashCode() );
+        
+        return h;
     }
 
     /* (non-Javadoc)

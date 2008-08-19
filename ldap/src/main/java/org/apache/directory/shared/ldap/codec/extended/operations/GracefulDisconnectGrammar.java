@@ -58,8 +58,9 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
-public class GracefulDisconnectGrammar extends AbstractGrammar implements IGrammar
+public class GracefulDisconnectGrammar extends AbstractGrammar
 {
     /** The logger */
     static final Logger log = LoggerFactory.getLogger( GracefulDisconnectGrammar.class );
@@ -157,8 +158,8 @@ public class GracefulDisconnectGrammar extends AbstractGrammar implements IGramm
             }
             catch ( IntegerDecoderException e )
             {
-                String msg = "failed to decode the timeOffline, the value should be between 0 and 720 minutes, it is '"
-                    + StringTools.dumpBytes( value.getData() ) + "'";
+                String msg = "failed to decode the timeOffline, the value should be between 0 and 720 minutes, " + 
+                "it is '" + StringTools.dumpBytes( value.getData() ) + "'";
                 log.error( msg );
                 throw new DecoderException( msg );
             }
@@ -224,7 +225,8 @@ public class GracefulDisconnectGrammar extends AbstractGrammar implements IGramm
          *     
          * Set the delay value into the GracefulDisconnect object.    
          */
-        super.transitions[GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE][GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG] = 
+        super.transitions[GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE]
+                         [GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG] = 
             new GrammarTransition( GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE,
                                     GracefulDisconnectStatesEnum.DELAY_STATE, 
                                     GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG, 

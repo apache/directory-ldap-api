@@ -59,15 +59,17 @@ public class SearchScope
     }
     
 
-    /* (non-Javadoc)
+    /**
      * @see java.lang.Object#hashCode()
+     * @return the instance's hash code 
      */
     public int hashCode()
     {
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + ( ( name == null ) ? 0 : name.hashCode() );
-        return result;
+        int h = 37;
+        
+        h = h*17 + ( ( name == null ) ? 0 : name.hashCode() );
+        
+        return h;
     }
 
     /* (non-Javadoc)

@@ -21,6 +21,7 @@ package org.apache.directory.shared.ldap.schema;
 
 
 import java.io.Serializable;
+import javax.naming.NamingException;
 
 
 /**
@@ -74,6 +75,8 @@ public abstract class AbstractAttributeType extends AbstractSchemaObject impleme
 
     /**
      * @see AttributeType#isSingleValue()
+     * @return true if only one value can exist for this AttributeType, false
+     *         otherwise
      */
     public boolean isSingleValue()
     {
@@ -83,6 +86,7 @@ public abstract class AbstractAttributeType extends AbstractSchemaObject impleme
 
     /**
      * @see AttributeType#isCollective()
+     * @return true if the attribute is collective, false otherwise
      */
     public boolean isCollective()
     {
@@ -92,6 +96,7 @@ public abstract class AbstractAttributeType extends AbstractSchemaObject impleme
 
     /**
      * @see AttributeType#isCanUserModify()
+     * @return true if users can modify it, false if only the directory can.
      */
     public boolean isCanUserModify()
     {
@@ -101,6 +106,7 @@ public abstract class AbstractAttributeType extends AbstractSchemaObject impleme
 
     /**
      * @see AttributeType#getUsage()
+     * @return a type safe UsageEnum
      */
     public UsageEnum getUsage()
     {
@@ -110,6 +116,7 @@ public abstract class AbstractAttributeType extends AbstractSchemaObject impleme
 
     /**
      * @see AttributeType#getLength()
+     * @return the length of the attribute
      */
     public int getLength()
     {
@@ -120,6 +127,7 @@ public abstract class AbstractAttributeType extends AbstractSchemaObject impleme
     // ------------------------------------------------------------------------
     // M U T A T O R S
     // ------------------------------------------------------------------------
+
 
     /**
      * Sets whether or not an attribute of this AttributeType single valued or
@@ -181,5 +189,72 @@ public abstract class AbstractAttributeType extends AbstractSchemaObject impleme
     protected void setLength( int length )
     {
         this.length = length;
+    }
+
+
+    // -----------------------------------------------------------------------
+    // Additional Methods
+    // -----------------------------------------------------------------------
+    /**
+     * Checks to see if this AttributeType is the ancestor of another
+     * attributeType.
+     *
+     * @param descendant the perspective descendant to check
+     * @return true if the descendant is truly a derived from this AttributeType
+     * @throws NamingException if there are problems resolving superior types
+     */
+    public boolean isAncestorOf( AttributeType descendant ) throws NamingException
+    {
+        if ( ( descendant == null ) || equals( descendant ) )
+        {
+            return false;
+        }
+
+        return isAncestorOrEqual( this, descendant );
+    }
+
+
+    /**
+     * Checks to see if this AttributeType is the descendant of another
+     * attributeType.
+     *
+     * @param ancestor the perspective ancestor to check
+     * @return true if this AttributeType truly descends from the ancestor
+     * @throws NamingException if there are problems resolving superior types
+     */
+    public boolean isDescentantOf( AttributeType ancestor ) throws NamingException
+    {
+        if ( ( ancestor == null ) || equals( ancestor ) )
+        {
+            return false;
+        }
+
+        return isAncestorOrEqual( ancestor, this );
+    }
+
+
+    /**
+     * Recursive method which checks to see if a descendant is really an ancestor or if the two
+     * are equal.
+     *
+     * @param ancestor the possible ancestor of the descendant
+     * @param descendant the possible descendant of the ancestor
+     * @return true if the ancestor equals the descendant or if the descendant is really
+     * a subtype of the ancestor. otherwise false
+     * @throws NamingException if there are issues with superior attribute resolution
+     */
+    private boolean isAncestorOrEqual( AttributeType ancestor, AttributeType descendant ) throws NamingException
+    {
+        if ( ( ancestor == null ) || ( descendant == null ) )
+        {
+            return false;
+        }
+
+        if ( ancestor.equals( descendant ) )
+        {
+            return true;
+        }
+
+        return isAncestorOrEqual( ancestor, descendant.getSuperior() );
     }
 }

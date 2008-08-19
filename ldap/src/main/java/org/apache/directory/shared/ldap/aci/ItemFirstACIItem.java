@@ -25,6 +25,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
 
+import org.apache.directory.shared.ldap.constants.AuthenticationLevel;
+
 
 /**
  * An {@link ACIItem} which specifies {@link ProtectedItem}s first and then
@@ -87,8 +89,8 @@ public class ItemFirstACIItem extends ACIItem
 
     public String toString()
     {
-    	StringBuilder buf = new StringBuilder();
-    	
+        StringBuilder buf = new StringBuilder();
+        
         // identificationTag
         buf.append( "{ identificationTag \"" );
         buf.append( getIdentificationTag() );

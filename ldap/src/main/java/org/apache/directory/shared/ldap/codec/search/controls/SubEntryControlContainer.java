@@ -21,16 +21,16 @@ package org.apache.directory.shared.ldap.codec.search.controls;
 
 
 import org.apache.directory.shared.asn1.ber.AbstractContainer;
-import org.apache.directory.shared.asn1.ber.IAsn1Container;
 
 
 /**
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
-public class SubEntryControlContainer extends AbstractContainer implements IAsn1Container
+public class SubEntryControlContainer extends AbstractContainer
 {
     /** PSearchControl */
-    private SubEntryControl control;
+    private SubEntryControlCodec control;
 
 
     /**
@@ -48,7 +48,7 @@ public class SubEntryControlContainer extends AbstractContainer implements IAsn1
     /**
      * @return Returns the persistent search control.
      */
-    public SubEntryControl getSubEntryControl()
+    public SubEntryControlCodec getSubEntryControl()
     {
         return control;
     }
@@ -60,7 +60,7 @@ public class SubEntryControlContainer extends AbstractContainer implements IAsn1
      * 
      * @param control the SubEntryControl to set.
      */
-    public void setSubEntryControl( SubEntryControl control )
+    public void setSubEntryControl( SubEntryControlCodec control )
     {
         this.control = control;
     }

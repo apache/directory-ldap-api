@@ -22,7 +22,6 @@ package org.apache.directory.shared.ldap.codec.extended.operations;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
@@ -45,7 +44,7 @@ import org.apache.directory.shared.ldap.codec.util.LdapURL;
  * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @version $Rev$
+ * @version $Rev$, $Date$, 
  */
 public class GracefulDisconnect extends GracefulAction
 {
@@ -132,12 +131,10 @@ public class GracefulDisconnect extends GracefulAction
         {
             replicatedContextsLength = 0;
 
-            Iterator replicatedContextIterator = replicatedContexts.iterator();
-
             // We may have more than one reference.
-            while ( replicatedContextIterator.hasNext() )
+            for ( LdapURL replicatedContext:replicatedContexts )
             {
-                int ldapUrlLength = ( ( LdapURL ) replicatedContextIterator.next() ).getNbBytes();
+                int ldapUrlLength = replicatedContext.getNbBytes();
                 replicatedContextsLength += 1 + TLV.getNbBytes( ldapUrlLength ) + ldapUrlLength;
             }
 
@@ -181,13 +178,10 @@ public class GracefulDisconnect extends GracefulAction
             bb.put( UniversalTag.SEQUENCE_TAG );
             bb.put( TLV.getBytes( replicatedContextsLength ) );
 
-            Iterator replicatedContextIterator = replicatedContexts.iterator();
-
             // We may have more than one reference.
-            while ( replicatedContextIterator.hasNext() )
+            for ( LdapURL replicatedContext:replicatedContexts )
             {
-                LdapURL url = ( LdapURL ) replicatedContextIterator.next();
-                Value.encode( bb, url.getBytes() );
+                Value.encode( bb, replicatedContext.getBytesReference() );
             }
         }
 

@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.filter;
 
+import org.apache.directory.shared.ldap.entry.Value;
 
 /**
  * A simple assertion value node.
@@ -26,7 +27,7 @@ package org.apache.directory.shared.ldap.filter;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Revision: 519266 $
  */
-public class ApproximateNode extends SimpleNode
+public class ApproximateNode extends EqualityNode
 {
     /**
      * Creates a new ApproximateNode object.
@@ -34,37 +35,27 @@ public class ApproximateNode extends SimpleNode
      * @param attribute the attribute name
      * @param value the value to test for
      */
-    public ApproximateNode( String attribute, byte[] value )
+    public ApproximateNode( String attribute, Value<?> value )
     {
-        super( attribute, value );
+        super( attribute, value, AssertionType.APPROXIMATE );
     }
 
 
-    /**
-     * Creates a new ApproximateNode object.
-     * 
-     * @param attribute the attribute name
-     * @param value the value to test for
-     */
-    public ApproximateNode( String attribute, String value )
-    {
-        super( attribute, value );
-    }
-
-
+    
     /**
      * @see Object#toString()
+     * @return A string representing the AndNode
      */
     public String toString()
     {
-    	StringBuilder buf = new StringBuilder();
-    	
+        StringBuilder buf = new StringBuilder();
+    
         buf.append( '(' ).append( getAttribute() ).append( "~=" ).append( value );
 
         buf.append( super.toString() );
         
         buf.append( ')' );
         
-    	return buf.toString();
+        return buf.toString();
     }
 }

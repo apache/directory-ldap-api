@@ -20,12 +20,8 @@
 package org.apache.directory.shared.ldap.codec;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.directory.shared.asn1.ber.AbstractContainer;
-import org.apache.directory.shared.asn1.ber.IAsn1Container;
-import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.ldap.message.spi.BinaryAttributeDetector;
 
 
 /**
@@ -34,8 +30,9 @@ import org.apache.directory.shared.ldap.util.StringTools;
  * ILdapContainer.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
-public class LdapMessageContainer extends AbstractContainer implements IAsn1Container
+public class LdapMessageContainer extends AbstractContainer
 {
     // ~ Instance fields
     // ----------------------------------------------------------------------------
@@ -43,9 +40,9 @@ public class LdapMessageContainer extends AbstractContainer implements IAsn1Cont
     /** The ldap message */
     private LdapMessage ldapMessage;
 
-    /** A HashSet which contaons the binary attributes */
-    private Set binaries;
-    
+    /** checks if attribute is binary */
+    private final BinaryAttributeDetector binaryAttributeDetector;
+
     /** The message ID */
     private int messageId;
     
@@ -61,22 +58,29 @@ public class LdapMessageContainer extends AbstractContainer implements IAsn1Cont
      */
     public LdapMessageContainer()
     {
-        this( new HashSet() );
+        this( new BinaryAttributeDetector()
+        {
+            public boolean isBinary( String attributeId ) 
+            {
+                return false;
+            }
+        });
     }
 
 
     /**
      * Creates a new LdapMessageContainer object. We will store ten grammars,
      * it's enough ...
+     *
+     * @param binaryAttributeDetector checks if an attribute is binary
      */
-    public LdapMessageContainer( Set binaries )
+    public LdapMessageContainer( BinaryAttributeDetector binaryAttributeDetector )
     {
         super();
-        stateStack = new int[10];
-        grammar = LdapMessageGrammar.getInstance();
-        states = LdapStatesEnum.getInstance();
-
-        this.binaries = binaries;
+        this.stateStack = new int[10];
+        this.grammar = LdapMessageGrammar.getInstance();
+        this.states = LdapStatesEnum.getInstance();
+        this.binaryAttributeDetector = binaryAttributeDetector;
     }
 
 
@@ -115,10 +119,16 @@ public class LdapMessageContainer extends AbstractContainer implements IAsn1Cont
 
     /**
      * @return Returns true if the attribute is binary.
+     * @param id checks if an attribute id is binary
      */
     public boolean isBinary( String id )
     {
-        return binaries.contains( StringTools.lowerCaseAscii( StringTools.trim( id ) ) );
+        if ( ( id != null ) && id.endsWith( ";binary" ) )
+        {
+            return true;
+        }
+        
+        return binaryAttributeDetector.isBinary( id );
     }
 
     /**
@@ -131,6 +141,7 @@ public class LdapMessageContainer extends AbstractContainer implements IAsn1Cont
 
     /**
      * Set the message ID
+     * @param messageId the id of the message
      */
     public void setMessageId( int messageId )
     {

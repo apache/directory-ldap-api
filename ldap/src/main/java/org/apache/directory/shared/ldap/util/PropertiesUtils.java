@@ -35,7 +35,7 @@ import javax.naming.directory.Attributes;
 import javax.naming.NamingException;
 
 import org.apache.directory.shared.ldap.NotImplementedException;
-import org.apache.directory.shared.ldap.ldif.Entry;
+import org.apache.directory.shared.ldap.ldif.LdifEntry;
 import org.apache.directory.shared.ldap.ldif.LdifReader;
 import org.apache.directory.shared.ldap.message.AttributesImpl;
 
@@ -200,7 +200,15 @@ public class PropertiesUtils
         {
             try
             {
-                properties.load( new FileInputStream( file ) );
+                final FileInputStream fis = new FileInputStream( file );
+                try
+                {
+                    properties.load( fis );
+                }
+                finally
+                {
+                    fis.close();
+                }
             }
             catch ( IOException e )
             {
@@ -577,11 +585,11 @@ public class PropertiesUtils
         
         LdifReader ldifReader = new LdifReader( new StringReader( ldif ) );
         
-        Entry entry = ldifReader.next();
+        LdifEntry entry = ldifReader.next();
         
         if ( entry != null )
         {
-        	values = entry.getAttributes();
+            values = entry.getAttributes();
         }
         return values;
     }

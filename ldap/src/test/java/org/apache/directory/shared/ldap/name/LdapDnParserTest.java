@@ -27,8 +27,6 @@ import javax.naming.NamingException;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.LdapDnParser;
 import org.apache.directory.shared.ldap.util.StringTools;
 
 
@@ -36,6 +34,7 @@ import org.apache.directory.shared.ldap.util.StringTools;
  * Test the class LdapDN
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
 public class LdapDnParserTest extends TestCase
 {
@@ -241,6 +240,19 @@ public class LdapDnParserTest extends TestCase
 
         Assert.assertEquals( dn, name.getUpName() );
         Assert.assertEquals( "cn=Emmanuel  L\\C3\\A9charny", name.toString() );
+    }
+
+
+    public void testStringParserShort() throws NamingException
+    {
+        String dn = StringTools.utf8ToString( new byte[]
+            { 'C', '=', ' ', 'E', ( byte ) 0xc3, ( byte ) 0xa9, 'c' } );
+
+        NameParser dnParser = LdapDnParser.getNameParser();
+        LdapDN name = ( LdapDN ) dnParser.parse( dn );
+
+        Assert.assertEquals( dn, name.getUpName() );
+        Assert.assertEquals( "c=E\\C3\\A9c", name.toString() );
     }
 
 
@@ -522,6 +534,29 @@ public class LdapDnParserTest extends TestCase
         assertEquals( "cn=\\C4\\B0\\C4\\B1\\C5\\9E\\C5\\9F\\C3\\96\\C3\\B6\\C3\\9C\\C3\\BC\\C4\\9E\\C4\\9F", result );
 
     }
+    
+   
+    public void testAUmlautPlusBytes() throws Exception
+    {
+        String cn = new String( new byte[] { 'c', 'n', '=', (byte)0xC3, (byte)0x84, 0x5C, 0x32, 0x42 }, "UTF-8" );
+
+
+        NameParser parser = LdapDnParser.getNameParser();
+        String result = parser.parse( cn ).toString();
+        
+        assertEquals( "cn=\\C3\\84\\+", result );
+    }
+
+
+    public void testAUmlautPlusChar() throws Exception
+    {
+        String cn = new String( new byte[] { 'c', 'n', '=', (byte)0xC3, (byte)0x84, '\\', '+' }, "UTF-8" );
+        
+        NameParser parser = LdapDnParser.getNameParser();
+        String result = parser.parse( cn ).toString();
+        
+        assertEquals( "cn=\\C3\\84\\+", result );
+    }
 
 
     /**
@@ -538,15 +573,13 @@ public class LdapDnParserTest extends TestCase
 
         try
         {
-            String res = parser.parse( input ).toString();
-            System.out.println( res );
+            parser.parse( input ).toString();
+            fail( "Should never rech this point" );
         }
         catch ( NamingException ne )
         {
             assertTrue( true );
             return;
         }
-
-        fail( "Should never rech this point" );
     }
 }

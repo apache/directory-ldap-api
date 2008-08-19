@@ -68,15 +68,17 @@ public class LdapOperation
     }
 
 
-    /* (non-Javadoc)
+    /**
      * @see java.lang.Object#hashCode()
+     * @return the instance's hash code 
      */
     public int hashCode()
     {
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + ( ( name == null ) ? 0 : name.hashCode() );
-        return result;
+        int h = 37;
+
+        h = h*17 + ( ( name == null ) ? 0 : name.hashCode() );
+        
+        return h;
     }
 
 
@@ -86,20 +88,31 @@ public class LdapOperation
     public boolean equals( Object obj )
     {
         if ( this == obj )
+        {
             return true;
-        if ( obj == null )
+        }
+        
+        if ( ! ( obj  instanceof LdapOperation ) )
+        {
             return false;
-        if ( getClass() != obj.getClass() )
-            return false;
+        }
+
         final LdapOperation other = ( LdapOperation ) obj;
+
         if ( name == null )
         {
             if ( other.name != null )
+            {
                 return false;
+            }
+            else
+            { 
+                return true;
+            }
         }
-        else if ( !name.equals( other.name ) )
-            return false;
-        return true;
+        else 
+        {
+            return name.equals( other.name );
+        }
     }
-    
 }

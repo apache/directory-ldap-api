@@ -207,13 +207,15 @@ public abstract class AbstractMessage implements Message
             return false;
         }
 
-        Map controls = msg.getControls();
+        Map<String, Control> controls = msg.getControls();
+        
         if ( controls.size() != this.controls.size() )
         {
             return false;
         }
 
-        Iterator list = this.controls.keySet().iterator();
+        Iterator<String> list = this.controls.keySet().iterator();
+        
         while ( list.hasNext() )
         {
             if ( !controls.containsKey( list.next() ) )
@@ -227,14 +229,15 @@ public abstract class AbstractMessage implements Message
     
     /**
      * @see Object#hashCode()
+     * @return the instance's hash code 
      */
     public int hashCode()
     {
-        int hash = 7;
-        hash = hash*31 + id;
-        hash = hash*31 + ( type == null ? 0 : type.hashCode() );
-        hash = hash*31 + ( parameters == null ? 0 : parameters.hashCode() );
-        hash = hash*31 + ( controls == null ? 0 : controls.hashCode() );
+        int hash = 37;
+        hash = hash*17 + id;
+        hash = hash*17 + ( type == null ? 0 : type.hashCode() );
+        hash = hash*17 + ( parameters == null ? 0 : parameters.hashCode() );
+        hash = hash*17 + ( controls == null ? 0 : controls.hashCode() );
         
         return hash;
     }

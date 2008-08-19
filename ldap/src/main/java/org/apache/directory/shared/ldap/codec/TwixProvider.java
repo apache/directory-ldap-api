@@ -19,16 +19,14 @@
  */
 package org.apache.directory.shared.ldap.codec;
 
-
-import java.util.Set;
-
-import org.apache.directory.shared.ldap.codec.TwixDecoder;
-import org.apache.directory.shared.ldap.codec.TwixEncoder;
+import org.apache.directory.shared.ldap.message.spi.BinaryAttributeDetector;
 import org.apache.directory.shared.ldap.message.spi.Provider;
 import org.apache.directory.shared.ldap.message.spi.ProviderDecoder;
 import org.apache.directory.shared.ldap.message.spi.ProviderEncoder;
 import org.apache.directory.shared.ldap.message.spi.ProviderException;
 import org.apache.directory.shared.ldap.message.spi.TransformerSpi;
+
+
 
 
 /**
@@ -62,7 +60,7 @@ public class TwixProvider extends Provider
      * 
      * @return the singleton SnaccProvider instance
      */
-    public synchronized static Provider getProvider()
+    public static synchronized Provider getProvider()
     {
         if ( singleton == null )
         {
@@ -93,9 +91,9 @@ public class TwixProvider extends Provider
      * @throws org.apache.directory.shared.ldap.message.spi.ProviderException
      *             if the provider or its decoder cannot be found
      */
-    public ProviderDecoder getDecoder( Set binaries ) throws ProviderException
+    public ProviderDecoder getDecoder( BinaryAttributeDetector binaryAttributeDetector ) throws ProviderException
     {
-        return new TwixDecoder( this, binaries );
+        return new TwixDecoder( this, binaryAttributeDetector );
     }
 
 

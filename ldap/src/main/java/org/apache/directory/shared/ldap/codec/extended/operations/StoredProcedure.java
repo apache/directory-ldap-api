@@ -24,7 +24,6 @@ package org.apache.directory.shared.ldap.codec.extended.operations;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,6 +39,7 @@ import org.apache.directory.shared.ldap.util.StringTools;
  * Stored Procedure Extended Operation bean
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
 public class StoredProcedure extends AbstractAsn1Object
 {
@@ -80,13 +80,26 @@ public class StoredProcedure extends AbstractAsn1Object
 
     public byte[] getProcedure()
     {
-        return procedure;
+        if ( procedure == null )
+        {
+            return null;
+        }
+
+        final byte[] copy = new byte[ procedure.length ];
+        System.arraycopy( procedure, 0, copy, 0, procedure.length );
+        return copy;
     }
 
 
     public void setProcedure( byte[] procedure )
     {
-        this.procedure = procedure;
+        if ( procedure != null )
+        {
+            this.procedure = new byte[ procedure.length ];
+            System.arraycopy( procedure, 0, this.procedure, 0, procedure.length );
+        } else {
+            this.procedure = null;
+        }
     }
 
 
@@ -126,25 +139,51 @@ public class StoredProcedure extends AbstractAsn1Object
 
         public byte[] getType()
         {
-            return type;
+            if ( type == null )
+            {
+                return null;
+            }
+
+            final byte[] copy = new byte[ type.length ];
+            System.arraycopy( type, 0, copy, 0, type.length );
+            return copy;
         }
 
 
         public void setType( byte[] type )
         {
-            this.type = type;
+            if ( type != null )
+            {
+                this.type = new byte[ type.length ];
+                System.arraycopy( type, 0, this.type, 0, type.length );
+            } else {
+                this.type = null;
+            }
         }
 
 
         public byte[] getValue()
         {
-            return value;
+            if ( value == null )
+            {
+                return null;
+            }
+
+            final byte[] copy = new byte[ value.length ];
+            System.arraycopy( value, 0, copy, 0, value.length );
+            return copy;
         }
 
 
         public void setValue( byte[] value )
         {
-            this.value = value;
+            if ( value != null )
+            {
+                this.value = new byte[ value.length ];
+                System.arraycopy( value, 0, this.value, 0, value.length );
+            } else {
+                this.value = null;
+            }
         }
     }
 
@@ -177,49 +216,45 @@ public class StoredProcedure extends AbstractAsn1Object
     public int computeLength()
     {
         // The language
-    	byte[] languageBytes = StringTools.getBytesUtf8( language );
-    	
+        byte[] languageBytes = StringTools.getBytesUtf8( language );
+        
         int languageLength = 1 + TLV.getNbBytes( languageBytes.length )
             + languageBytes.length;
-    	
+        
         // The procedure
         int procedureLength = 1 + TLV.getNbBytes( procedure.length )
             + procedure.length;
-    	
-    	// Compute parameters length value
-    	if ( parameters != null )
-    	{
+        
+        // Compute parameters length value
+        if ( parameters != null )
+        {
             parameterLength = new LinkedList<Integer>();
             paramTypeLength = new LinkedList<Integer>();
             paramValueLength = new LinkedList<Integer>();
             
-    		Iterator params = parameters.iterator();
-    		
-    		while ( params.hasNext() )
-    		{
-    			int localParameterLength = 0;
-    			int localParamTypeLength = 0;
-    			int localParamValueLength = 0;
-    			
-    			StoredProcedureParameter spParam = (StoredProcedureParameter)params.next();
-    			
-    			localParamTypeLength = 1 + TLV.getNbBytes( spParam.type.length ) + spParam.type.length;
-    			localParamValueLength = 1 + TLV.getNbBytes( spParam.value.length ) + spParam.value.length;
-    			
-    			localParameterLength = localParamTypeLength + localParamValueLength;
-    			
-    			parametersLength += 1 + TLV.getNbBytes( localParameterLength ) + localParameterLength;
-    			
-    			parameterLength.add( localParameterLength );
-    			paramTypeLength.add( localParamTypeLength );
-    			paramValueLength.add( localParamValueLength );
-    		}
-    	}
-    	
-    	int localParametersLength = 1 + TLV.getNbBytes( parametersLength ) + parametersLength; 
-    	storedProcedureLength = languageLength + procedureLength + localParametersLength;
+            for ( StoredProcedureParameter spParam:parameters )
+            {
+                int localParameterLength = 0;
+                int localParamTypeLength = 0;
+                int localParamValueLength = 0;
+                
+                localParamTypeLength = 1 + TLV.getNbBytes( spParam.type.length ) + spParam.type.length;
+                localParamValueLength = 1 + TLV.getNbBytes( spParam.value.length ) + spParam.value.length;
+                
+                localParameterLength = localParamTypeLength + localParamValueLength;
+                
+                parametersLength += 1 + TLV.getNbBytes( localParameterLength ) + localParameterLength;
+                
+                parameterLength.add( localParameterLength );
+                paramTypeLength.add( localParamTypeLength );
+                paramValueLength.add( localParamValueLength );
+            }
+        }
+        
+        int localParametersLength = 1 + TLV.getNbBytes( parametersLength ) + parametersLength; 
+        storedProcedureLength = languageLength + procedureLength + localParametersLength;
 
-    	return 1 + TLV.getNbBytes( storedProcedureLength ) + storedProcedureLength; 
+        return 1 + TLV.getNbBytes( storedProcedureLength ) + storedProcedureLength; 
     }
 
     /**
@@ -252,13 +287,10 @@ public class StoredProcedure extends AbstractAsn1Object
             // The parameters list
             if ( ( parameters != null ) && ( parameters.size() != 0 ) )
             {
-            	int parameterNumber = 0;
-        		Iterator params = parameters.iterator();
-        		
-        		while ( params.hasNext() )
-        		{
-        			StoredProcedureParameter spParam = (StoredProcedureParameter)params.next();
+                int parameterNumber = 0;
 
+                for ( StoredProcedureParameter spParam:parameters )
+                {
                     // The parameter sequence
                     bb.put( UniversalTag.SEQUENCE_TAG );
                     int localParameterLength = parameterLength.get( parameterNumber );
@@ -306,18 +338,15 @@ public class StoredProcedure extends AbstractAsn1Object
         {
             sb.append( "        Parameters\n" );
 
-            Iterator params = parameters.iterator();
             int i = 1;
-    		
-    		while ( params.hasNext() )
-    		{
-    			StoredProcedureParameter spParam = (StoredProcedureParameter)params.next();
-    			
-    			sb.append( "            type[" ).append( i ) .append( "] : '" ).
+            
+            for ( StoredProcedureParameter spParam:parameters )
+            {
+                sb.append( "            type[" ).append( i ) .append( "] : '" ).
                     append( StringTools.utf8ToString( spParam.type ) ).append( "'\n" );
-    			sb.append( "            value[" ).append( i ) .append( "] : '" ).
-    				append( StringTools.dumpBytes( spParam.value ) ).append( "'\n" );
-    		}
+                sb.append( "            value[" ).append( i ) .append( "] : '" ).
+                    append( StringTools.dumpBytes( spParam.value ) ).append( "'\n" );
+            }
         }
 
         return sb.toString();

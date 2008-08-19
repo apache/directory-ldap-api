@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.subtree.SubtreeSpecification;
 
 
@@ -59,15 +60,6 @@ public abstract class UserClass implements Serializable
     {
     }
     
-    
-    /**
-     * Converts this item into its string representation as stored
-     * in directory.
-     *
-     * @param buffer the string buffer
-     */
-    public abstract void printToBuffer( StringBuilder buffer );
-    
 
     /**
      * Every directory user (with possible requirements for
@@ -86,12 +78,6 @@ public abstract class UserClass implements Serializable
         public String toString()
         {
             return "allUsers";
-        }
-        
-        
-        public void printToBuffer( StringBuilder buffer )
-        {
-            buffer.append( "allUsers" );
         }
     }
 
@@ -114,12 +100,6 @@ public abstract class UserClass implements Serializable
         {
             return "thisEntry";
         }
-        
-        
-        public void printToBuffer( StringBuilder buffer )
-        {
-            buffer.append( "thisEntry" );
-        }
     }
 
     /**
@@ -127,7 +107,7 @@ public abstract class UserClass implements Serializable
      */
     private static abstract class NamedUserClass extends UserClass
     {
-        protected final Set<javax.naming.Name> names;
+        protected final Set<LdapDN> names;
 
 
         /**
@@ -135,16 +115,16 @@ public abstract class UserClass implements Serializable
          * 
          * @param names a set of names
          */
-        protected NamedUserClass( Set<javax.naming.Name> names )
+        protected NamedUserClass( Set<LdapDN> names )
         {
-            this.names = Collections.unmodifiableSet( new HashSet<javax.naming.Name>( names ) );
+            this.names = Collections.unmodifiableSet( new HashSet<LdapDN>( names ) );
         }
 
 
         /**
          * Returns the set of all names.
          */
-        public Set<javax.naming.Name> getNames()
+        public Set<LdapDN> getNames()
         {
             return names;
         }
@@ -174,12 +154,8 @@ public abstract class UserClass implements Serializable
 
         public String toString()
         {
-            return names.toString();
-        }
-        
-        
-        public void printToBuffer( StringBuilder buffer )
-        {
+            StringBuilder buffer = new StringBuilder();
+            
             boolean isFirst = true;
             buffer.append( "{ " );
             
@@ -200,6 +176,8 @@ public abstract class UserClass implements Serializable
             }
             
             buffer.append( " }" );
+            
+            return buffer.toString();
         }
     }
 
@@ -217,7 +195,7 @@ public abstract class UserClass implements Serializable
          * @param usernames
          *            the set of user DNs.
          */
-        public Name( Set<javax.naming.Name> usernames )
+        public Name( Set<LdapDN> usernames )
         {
             super( usernames );
         }
@@ -225,14 +203,7 @@ public abstract class UserClass implements Serializable
 
         public String toString()
         {
-            return "name: " + super.toString();
-        }
-        
-        
-        public void printToBuffer( StringBuilder buffer )
-        {
-            buffer.append( "name " );
-            super.printToBuffer( buffer );
+            return "name " + super.toString();
         }
     }
 
@@ -253,7 +224,7 @@ public abstract class UserClass implements Serializable
          * @param groupNames
          *            the set of group DNs.
          */
-        public UserGroup( Set<javax.naming.Name> groupNames )
+        public UserGroup( Set<LdapDN> groupNames )
         {
             super( groupNames );
         }
@@ -261,14 +232,7 @@ public abstract class UserClass implements Serializable
 
         public String toString()
         {
-            return "userGroup: " + super.toString();
-        }
-        
-        
-        public void printToBuffer( StringBuilder buffer )
-        {
-            buffer.append( "userGroup " );
-            super.printToBuffer( buffer );
+            return "userGroup " + super.toString();
         }
     }
 
@@ -323,12 +287,8 @@ public abstract class UserClass implements Serializable
 
         public String toString()
         {
-            return "subtree: " + subtreeSpecifications;
-        }
-        
-        
-        public void printToBuffer( StringBuilder buffer )
-        {
+            StringBuilder buffer = new StringBuilder();
+            
             boolean isFirst = true;
             buffer.append( "subtree { " );
             
@@ -347,6 +307,8 @@ public abstract class UserClass implements Serializable
             }
             
             buffer.append( " }" );
+            
+            return buffer.toString();
         }
     }
 }

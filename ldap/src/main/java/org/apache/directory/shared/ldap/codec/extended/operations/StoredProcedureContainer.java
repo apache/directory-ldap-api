@@ -22,15 +22,15 @@ package org.apache.directory.shared.ldap.codec.extended.operations;
 
 
 import org.apache.directory.shared.asn1.ber.AbstractContainer;
-import org.apache.directory.shared.asn1.ber.IAsn1Container;
 
 
 /**
  * A container for the StoredProcedure codec
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
-public class StoredProcedureContainer extends AbstractContainer implements IAsn1Container
+public class StoredProcedureContainer extends AbstractContainer
 {
     // ~ Instance fields
     // ----------------------------------------------------------------------------

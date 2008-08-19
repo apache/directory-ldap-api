@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
  * A ldapObject which stores the SASL authentication of a BindRequest.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
 public class SaslCredentials extends LdapAuthentication
 {
@@ -84,7 +85,14 @@ public class SaslCredentials extends LdapAuthentication
      */
     public byte[] getCredentials()
     {
-        return credentials;
+        if ( credentials == null )
+        {
+            return null;
+        }
+
+        final byte[] copy = new byte[ credentials.length ];
+        System.arraycopy( credentials, 0, copy, 0, credentials.length );
+        return copy;
     }
 
 
@@ -95,7 +103,13 @@ public class SaslCredentials extends LdapAuthentication
      */
     public void setCredentials( byte[] credentials )
     {
-        this.credentials = credentials;
+        if ( credentials != null )
+        {
+            this.credentials = new byte[ credentials.length ];
+            System.arraycopy( credentials, 0, this.credentials, 0, credentials.length );
+        } else {
+            this.credentials = null;
+        }
     }
 
 

@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.codec;
 
+import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.util.StringTools;
 
 
@@ -35,6 +36,7 @@ import org.apache.directory.shared.ldap.util.StringTools;
  * AssertionValue ::= OCTET STRING
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
 public class AttributeValueAssertion
 {
@@ -45,7 +47,7 @@ public class AttributeValueAssertion
     private String attributeDesc;
 
     /** The assertion value */
-    private Object assertionValue;
+    private Value<?> assertionValue;
 
 
     // ~ Methods
@@ -56,7 +58,7 @@ public class AttributeValueAssertion
      * 
      * @return Returns the assertionValue.
      */
-    public Object getAssertionValue()
+    public Value<?> getAssertionValue()
     {
         return assertionValue;
     }
@@ -67,7 +69,7 @@ public class AttributeValueAssertion
      * 
      * @param assertionValue The assertionValue to set.
      */
-    public void setAssertionValue( Object assertionValue )
+    public void setAssertionValue( Value<?> assertionValue )
     {
         this.assertionValue = assertionValue;
     }

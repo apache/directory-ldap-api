@@ -20,6 +20,16 @@
 package org.apache.directory.shared.ldap.codec.search;
 
 
+import java.nio.BufferOverflowException;
+import java.nio.ByteBuffer;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
+
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
@@ -32,16 +42,6 @@ import org.apache.directory.shared.ldap.message.AttributesImpl;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.shared.ldap.util.StringTools;
-
-import java.nio.BufferOverflowException;
-import java.nio.ByteBuffer;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
 
 
 /**
@@ -63,6 +63,7 @@ import javax.naming.directory.Attributes;
  * by one, followed by a searchResultDone message.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
 public class SearchResultEntry extends LdapMessage
 {
@@ -228,8 +229,8 @@ public class SearchResultEntry extends LdapMessage
      */
     public int computeLength()
     {
-    	objectNameBytes = StringTools.getBytesUtf8( objectName.getUpName() );
-    	
+        objectNameBytes = StringTools.getBytesUtf8( objectName.getUpName() );
+        
         // The entry
         searchResultEntryLength = 1 + TLV.getNbBytes( objectNameBytes.length ) + objectNameBytes.length;
 
@@ -238,7 +239,7 @@ public class SearchResultEntry extends LdapMessage
 
         if ( ( partialAttributeList != null ) && ( partialAttributeList.size() != 0 ) )
         {
-            NamingEnumeration attributes = partialAttributeList.getAll();
+            NamingEnumeration<? extends Attribute> attributes = partialAttributeList.getAll();
             attributeLength = new LinkedList<Integer>();
             valsLength = new LinkedList<Integer>();
 
@@ -259,7 +260,7 @@ public class SearchResultEntry extends LdapMessage
                     // The values
                     try
                     {
-                        NamingEnumeration values = attribute.getAll();
+                        NamingEnumeration<?> values = attribute.getAll();
 
                         if ( values.hasMoreElements() )
                         {
@@ -372,7 +373,7 @@ public class SearchResultEntry extends LdapMessage
             // The partial attribute list
             if ( ( partialAttributeList != null ) && ( partialAttributeList.size() != 0 ) )
             {
-                NamingEnumeration attributes = partialAttributeList.getAll();
+                NamingEnumeration<? extends Attribute> attributes = partialAttributeList.getAll();
                 int attributeNumber = 0;
 
                 // Compute the attributes length
@@ -397,7 +398,7 @@ public class SearchResultEntry extends LdapMessage
                     {
                         try
                         {
-                            NamingEnumeration values = attribute.getAll();
+                            NamingEnumeration<?> values = attribute.getAll();
 
                             if ( values.hasMoreElements() )
                             {

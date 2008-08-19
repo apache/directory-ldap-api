@@ -41,8 +41,9 @@ import org.slf4j.LoggerFactory;
  * this class. As it is a singleton, these declaration are only done once.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
-public class SubEntryControlGrammar extends AbstractGrammar implements IGrammar
+public class SubEntryControlGrammar extends AbstractGrammar
 {
     /** The logger */
     static final Logger log = LoggerFactory.getLogger( SubEntryControlGrammar.class );
@@ -63,13 +64,14 @@ public class SubEntryControlGrammar extends AbstractGrammar implements IGrammar
         super.transitions = new GrammarTransition[SubEntryControlStatesEnum.LAST_SUB_ENTRY_STATE][256];
 
         super.transitions[SubEntryControlStatesEnum.START_STATE][UniversalTag.BOOLEAN_TAG] = 
-            new GrammarTransition( SubEntryControlStatesEnum.START_STATE, SubEntryControlStatesEnum.SUB_ENTRY_VISIBILITY_STATE, UniversalTag.BOOLEAN_TAG, 
+            new GrammarTransition( SubEntryControlStatesEnum.START_STATE, 
+                                    SubEntryControlStatesEnum.SUB_ENTRY_VISIBILITY_STATE, UniversalTag.BOOLEAN_TAG, 
                 new GrammarAction( "SubEntryControl visibility" )
             {
                 public void action( IAsn1Container container ) throws DecoderException
                 {
                     SubEntryControlContainer subEntryContainer = ( SubEntryControlContainer ) container;
-                    SubEntryControl control = new SubEntryControl();
+                    SubEntryControlCodec control = new SubEntryControlCodec();
                     subEntryContainer.setSubEntryControl( control );
 
                     TLV tlv = subEntryContainer.getCurrentTLV();

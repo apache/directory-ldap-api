@@ -20,6 +20,9 @@
 package org.apache.directory.shared.ldap.filter;
 
 
+import org.apache.directory.shared.ldap.entry.Value;
+
+
 /**
  * A assertion value node for LessOrEqual.
  * 
@@ -34,37 +37,26 @@ public class LessEqNode extends SimpleNode
      * @param attribute the attribute name
      * @param value the value to test for
      */
-    public LessEqNode( String attribute, byte[] value )
+    public LessEqNode( String attribute, Value<?> value )
     {
-        super( attribute, value );
-    }
-
-
-    /**
-     * Creates a new LessEqNode object.
-     * 
-     * @param attribute the attribute name
-     * @param value the value to test for
-     */
-    public LessEqNode( String attribute, String value )
-    {
-        super( attribute, value );
+        super( attribute, value, AssertionType.LESSEQ );
     }
 
 
     /**
      * @see Object#toString()
+     * @return A string representing the AndNode
      */
     public String toString()
     {
-    	StringBuilder buf = new StringBuilder();
-    	
+        StringBuilder buf = new StringBuilder();
+
         buf.append( '(' ).append( getAttribute() ).append( "<=" ).append( value );
 
         buf.append( super.toString() );
-        
+
         buf.append( ')' );
-        
-    	return buf.toString();
+
+        return buf.toString();
     }
 }

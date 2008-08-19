@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.codec.ControlDecoder;
  * A decoder for CascadeControls.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
 public class CascadeControlDecoder implements ControlDecoder
 {
@@ -40,6 +41,6 @@ public class CascadeControlDecoder implements ControlDecoder
 
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
-        return new org.apache.directory.shared.ldap.codec.controls.CascadeControl();
+        return new org.apache.directory.shared.ldap.codec.controls.CascadeControlCodec();
     }
 }

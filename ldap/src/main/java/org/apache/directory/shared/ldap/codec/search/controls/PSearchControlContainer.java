@@ -21,16 +21,16 @@ package org.apache.directory.shared.ldap.codec.search.controls;
 
 
 import org.apache.directory.shared.asn1.ber.AbstractContainer;
-import org.apache.directory.shared.asn1.ber.IAsn1Container;
 
 
 /**
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
-public class PSearchControlContainer extends AbstractContainer implements IAsn1Container
+public class PSearchControlContainer extends AbstractContainer
 {
     /** PSearchControl */
-    private PSearchControl control;
+    private PSearchControlCodec control;
 
 
     /**
@@ -49,7 +49,7 @@ public class PSearchControlContainer extends AbstractContainer implements IAsn1C
     /**
      * @return Returns the persistent search control.
      */
-    public PSearchControl getPSearchControl()
+    public PSearchControlCodec getPSearchControl()
     {
 
         return control;
@@ -62,7 +62,7 @@ public class PSearchControlContainer extends AbstractContainer implements IAsn1C
      * 
      * @param control the PSearchControl to set.
      */
-    public void setPSearchControl( PSearchControl control )
+    public void setPSearchControl( PSearchControlCodec control )
     {
         this.control = control;
     }

@@ -26,7 +26,7 @@ package org.apache.directory.shared.ldap.filter;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$
  */
-public abstract class LeafNode extends AbstractExprNode
+public class LeafNode extends AbstractExprNode
 {
     /** attribute on which this leaf is based */
     private String attribute;
@@ -36,11 +36,11 @@ public abstract class LeafNode extends AbstractExprNode
      * Creates a leaf node.
      * 
      * @param attribute the attribute this node is based on
-     * @param type the type of this leaf node
+     * @param assertionType the type of this leaf node
      */
-    protected LeafNode( String attribute )
+    protected LeafNode( String attribute, AssertionType assertionType )
     {
-        super();
+        super( assertionType );
         this.attribute = attribute;
     }
 
@@ -77,6 +77,41 @@ public abstract class LeafNode extends AbstractExprNode
         this.attribute = attribute;
     }
 
+    
+    /**
+     * @see org.apache.directory.shared.ldap.filter.ExprNode#accept(
+     *      org.apache.directory.shared.ldap.filter.FilterVisitor)
+     * 
+     * @param visitor the filter expression tree structure visitor
+     * @return The modified element
+     */
+    public final Object accept( FilterVisitor visitor )
+    {
+        if ( visitor.canVisit( this ) )
+        {
+            return visitor.visit( this );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * @see Object#hashCode()
+     * @return the instance's hash code 
+     */
+    public int hashCode()
+    {
+        int h = 37;
+        
+        h = h*17 + super.hashCode();
+        h = h*17 + attribute.hashCode();
+        
+        return h;
+    }
+
 
     /*
      * (non-Javadoc)
@@ -97,26 +132,9 @@ public abstract class LeafNode extends AbstractExprNode
 
         if ( other.getClass() != this.getClass() )
         {
-        	return false;
+            return false;
         }
             
         return attribute.equals( ( ( LeafNode ) other ).getAttribute() );
-    }
-
-
-    /**
-     * @see org.apache.directory.shared.ldap.filter.ExprNode#accept(
-     *      org.apache.directory.shared.ldap.filter.FilterVisitor)
-     */
-    public final Object accept( FilterVisitor visitor )
-    {
-        if ( visitor.canVisit( this ) )
-        {
-            return visitor.visit( this );
-        }
-        else
-        {
-        	return null;
-        }
     }
 }

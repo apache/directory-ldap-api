@@ -39,8 +39,6 @@ import org.apache.directory.shared.ldap.message.AttributeImpl;
  */
 public class AttributeSerializerUtils
 {
-    private static final long serialVersionUID = -3756830073760754086L;
-  
     static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /** value for type parameter for string (non-binary) attributes */
@@ -50,38 +48,6 @@ public class AttributeSerializerUtils
     static final byte BYTE_ARRAY_TYPE = 0x01;
     
     /*
-    private class ExtensibleByteArray
-    {
-    	private static final int EXTENSION = 2048;
-    	private List<byte[]> array;
-    	private byte[] currentData;
-    	private int pos = 0;
-    	private int limit = EXTENSION;
-    	
-    	private ExtensibleByteArray()
-    	{
-    		array = new ArrayList<byte[]>();
-    		currentData = new byte[EXTENSION];
-    		array.add( currentData );
-    	}
-    	
-    	private void extend()
-    	{
-    		limit += EXTENSION;
-    		array.add( new byte[EXTENSION] );
-    	}
-    	
-    	private void put( byte b )
-    	{
-    		if ( pos == limit )
-    		{
-    			extend();
-    			currentData = 
-    		}
-    		
-    		
-    	}
-    }*/
     
 
     // -----------------------------------------------------------------------
@@ -309,13 +275,14 @@ public class AttributeSerializerUtils
         {
             // write the type or is-binary field
             Object first = attr.get();
+            
             if ( first instanceof String )
             {
                 buf[pos] = STRING_TYPE;
                 pos++;
 
                 // write out each value to the buffer whatever type it may be
-                for ( NamingEnumeration ii = attr.getAll(); ii.hasMore(); /**/ )
+                for ( NamingEnumeration<?> ii = attr.getAll(); ii.hasMore(); /**/ )
                 {
                     String value = ( String ) ii.next();
                     pos = write( buf, value, pos );
@@ -327,7 +294,7 @@ public class AttributeSerializerUtils
                 pos++;
 
                 // write out each value to the buffer whatever type it may be
-                for ( NamingEnumeration ii = attr.getAll(); ii.hasMore(); /**/ )
+                for ( NamingEnumeration<?> ii = attr.getAll(); ii.hasMore(); /**/ )
                 {
                     byte[] value = ( byte[] ) ii.next();
                     pos = write( buf, value, pos );
@@ -354,9 +321,10 @@ public class AttributeSerializerUtils
         
         try
         {
-            for ( NamingEnumeration ii = attr.getAll(); ii.hasMore(); /**/ )
+            for ( NamingEnumeration<?> ii = attr.getAll(); ii.hasMore(); /**/ )
             {
                 Object value = ii.next();
+                
                 if ( value instanceof String )
                 {
                     size += ( ( String ) value ).length() << 1; // length of sting * 2

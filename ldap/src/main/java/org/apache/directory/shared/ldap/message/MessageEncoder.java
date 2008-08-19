@@ -22,7 +22,6 @@ package org.apache.directory.shared.ldap.message;
 
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
-import java.util.Hashtable;
 
 import org.apache.directory.shared.asn1.codec.EncoderException;
 import org.apache.directory.shared.asn1.codec.stateful.EncoderCallback;
@@ -56,12 +55,9 @@ public final class MessageEncoder implements ProviderEncoder
      * Creates a MessageEncoder using default properties for enabling a BER
      * library provider.
      * 
-     * @param env
-     *            The Map of environment parameters.
-     * @throws MessageException
-     *             if the encoder cannot be created.
+     * @throws MessageException if the encoder cannot be created.
      */
-    public MessageEncoder(final Hashtable env) throws MessageException
+    public MessageEncoder() throws MessageException
     {
         this.provider = Provider.getProvider( Provider.getEnvironment() );
         this.encoder = provider.getEncoder();
@@ -117,13 +113,11 @@ public final class MessageEncoder implements ProviderEncoder
     // ------------------------------------------------------------------------
 
     /**
-     * Encodes a Message object peice by peice often emitting chunks of the
+     * Encodes a Message object piece by piece often emitting chunks of the
      * final PDU to the callback if present.
      * 
-     * @param obj
-     *            the message object to encode into a PDU
-     * @throws org.apache.directory.shared.asn1.codec.EncoderException
-     *             if there are problems while encodinggg
+     * @param obj the message object to encode into a PDU
+     * @throws EncoderException if there are problems while encoding
      */
     public void encode( Object obj ) throws EncoderException
     {
@@ -140,9 +134,7 @@ public final class MessageEncoder implements ProviderEncoder
      * any special callbacks because when encoding we do not need to transform
      * before a value return as we did in the decoder.
      * 
-     * @param cb
-     *            the callback to set on the underlying provider specific
-     *            encoder
+     * @param cb the callback to set on the underlying provider specific encoder
      */
     public void setCallback( EncoderCallback cb )
     {
@@ -153,8 +145,7 @@ public final class MessageEncoder implements ProviderEncoder
     /**
      * Sets the monitor of the underlying implementation.
      * 
-     * @param monitor
-     *            the monitor to set on the underlying implementation
+     * @param monitor the monitor to set on the underlying implementation
      */
     public void setEncoderMonitor( EncoderMonitor monitor )
     {

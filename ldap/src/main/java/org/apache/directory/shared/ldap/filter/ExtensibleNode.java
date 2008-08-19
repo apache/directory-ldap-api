@@ -20,6 +20,8 @@
 package org.apache.directory.shared.ldap.filter;
 
 
+import java.util.Arrays;
+
 import org.apache.directory.shared.ldap.util.StringTools;
 
 
@@ -43,10 +45,12 @@ public class ExtensibleNode extends LeafNode
 
     /**
      * Creates a new emptyExtensibleNode object.
+     * 
+     * @param attribute The attribute's ID for this node
      */
     public ExtensibleNode( String attribute )
     {
-        super( attribute );
+        super( attribute, AssertionType.EXTENSIBLE );
         
         dnAttributes = false;
     }
@@ -75,9 +79,16 @@ public class ExtensibleNode extends LeafNode
      */
     public ExtensibleNode( String attribute, byte[] value, String matchingRuleId, boolean dnAttributes )
     {
-        super( attribute );
+        super( attribute, AssertionType.EXTENSIBLE );
 
-        this.value = value;
+        if ( value != null )
+        {
+            this.value = new byte[ value.length ];
+            System.arraycopy( value, 0, this.value, 0, value.length );
+        } else {
+            this.value = null;
+        }
+
         this.matchingRuleId = matchingRuleId;
         this.dnAttributes = dnAttributes;
     }
@@ -118,6 +129,8 @@ public class ExtensibleNode extends LeafNode
 
     /**
      * Sets the matching rule id as an OID string.
+     * 
+     * @param matchingRuleId The maching rule ID
      */
     public void setMatchingRuleId( String matchingRuleId )
     {
@@ -132,12 +145,21 @@ public class ExtensibleNode extends LeafNode
      */
     public final byte[] getValue()
     {
-        return value;
+        if ( value == null )
+        {
+            return null;
+        }
+
+        final byte[] copy = new byte[ value.length ];
+        System.arraycopy( value, 0, copy, 0, value.length );
+        return copy;
     }
 
 
     /**
      * Sets the value.
+     * 
+     * @param value the value
      */
     public final void setValue( String value)
     {
@@ -146,21 +168,30 @@ public class ExtensibleNode extends LeafNode
 
     
     /**
-     * @see ExprNode#printRefinementToBuffer(StringBuilder)
+     * @see Object#hashCode()
+     * @return the instance's hash code 
      */
-    public StringBuilder printRefinementToBuffer( StringBuilder buf ) throws UnsupportedOperationException
+    public int hashCode()
     {
-        throw new UnsupportedOperationException( "ExtensibleNode can't be part of a refinement" );
+        int h = 37;
+        
+        h = h*17 + super.hashCode();
+        h = h*17 + ( dnAttributes ? 1 : 0 );
+        h = h*17 + matchingRuleId.hashCode();
+        h = h*17 + Arrays.hashCode( value );
+        
+        return h;
     }
 
 
     /**
      * @see java.lang.Object#toString()
+     * @return A string representing the AndNode
      */
     public String toString()
     {
-    	StringBuilder buf = new StringBuilder();
-    	
+        StringBuilder buf = new StringBuilder();
+        
         buf.append( '(' ).append( getAttribute() );
         buf.append( "-" );
         buf.append( dnAttributes );

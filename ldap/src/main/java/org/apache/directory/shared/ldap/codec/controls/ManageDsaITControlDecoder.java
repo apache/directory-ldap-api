@@ -30,6 +30,7 @@ import org.apache.directory.shared.ldap.message.ManageDsaITControl;
  * A decoder for EntryChangeControls.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
 public class ManageDsaITControlDecoder implements ControlDecoder
 {
@@ -41,6 +42,6 @@ public class ManageDsaITControlDecoder implements ControlDecoder
 
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
-        return new org.apache.directory.shared.ldap.codec.controls.ManageDsaITControl();
+        return new org.apache.directory.shared.ldap.codec.controls.ManageDsaITControlCodec();
     }
 }

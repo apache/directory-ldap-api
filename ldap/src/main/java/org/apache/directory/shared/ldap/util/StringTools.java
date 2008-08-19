@@ -48,8 +48,8 @@ import javax.naming.InvalidNameException;
 public class StringTools
 {
     /** The default charset, because it's not provided by JDK 1.5 */
-	static String defaultCharset = null;
-	
+    static String defaultCharset = null;
+    
 
     
     // ~ Static fields/initializers
@@ -313,38 +313,38 @@ public class StringTools
     
     private static final char[] TO_LOWER_CASE =
     {
-    	0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-    	0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-    	0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
-    	0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
-    	' ',  0x21, 0x22, 0x23, 0x24, 0x25, 0x26, '\'',
-    	'(',  ')',  0x2A, '+',  ',',  '-',  '.',  '/',
-    	'0',  '1',  '2',  '3',  '4',  '5',  '6',  '7',  
-    	'8',  '9',  ':',  0x3B, 0x3C, '=',  0x3E, '?',
-    	0x40, 'a',  'b',  'c',  'd',  'e',  'f',  'g', 
-    	'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
-    	'p',  'q',  'r',  's',  't',  'u',  'v',  'w',
-    	'x',  'y',  'z',  0x5B, 0x5C, 0x5D, 0x5E, 0x5F,
-    	0x60, 'a',  'b',  'c',  'd',  'e',  'f',  'g',
-    	'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
-    	'p',  'q',  'r',  's',  't',  'u',  'v',  'w',
-    	'x',  'y',  'z',  0x7B, 0x7C, 0x7D, 0x7E, 0x7F,
-    	0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
-    	0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F,
-    	0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97,
-    	0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F,
-    	0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7,
-    	0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF,
-    	0xB0, 0xB1, 0xB2, 0xB3, 0xB4, 0xB5, 0xB6, 0xB7,
-    	0xB8, 0xB9, 0xBA, 0xBB, 0xBC, 0xBD, 0xBE, 0xBF,
-    	0xC0, 0xC1, 0xC2, 0xC3, 0xC4, 0xC5, 0xC6, 0xC7,
-    	0xC8, 0xC9, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0xCF,
-    	0xD0, 0xD1, 0xD2, 0xD3, 0xD4, 0xD5, 0xD6, 0xD7,
-    	0xD8, 0xD9, 0xDA, 0xDB, 0xDC, 0xDD, 0xDE, 0xDF,
-    	0xE0, 0xE1, 0xE2, 0xE3, 0xE4, 0xE5, 0xE6, 0xE7,
-    	0xE8, 0xE9, 0xEA, 0xEB, 0xEC, 0xED, 0xEE, 0xEF,
-    	0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7,
-    	0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF,
+        0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+        0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
+        0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+        0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
+        ' ',  0x21, 0x22, 0x23, 0x24, 0x25, 0x26, '\'',
+        '(',  ')',  0x2A, '+',  ',',  '-',  '.',  '/',
+        '0',  '1',  '2',  '3',  '4',  '5',  '6',  '7',  
+        '8',  '9',  ':',  0x3B, 0x3C, '=',  0x3E, '?',
+        0x40, 'a',  'b',  'c',  'd',  'e',  'f',  'g', 
+        'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
+        'p',  'q',  'r',  's',  't',  'u',  'v',  'w',
+        'x',  'y',  'z',  0x5B, 0x5C, 0x5D, 0x5E, 0x5F,
+        0x60, 'a',  'b',  'c',  'd',  'e',  'f',  'g',
+        'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
+        'p',  'q',  'r',  's',  't',  'u',  'v',  'w',
+        'x',  'y',  'z',  0x7B, 0x7C, 0x7D, 0x7E, 0x7F,
+        0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
+        0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F,
+        0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97,
+        0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F,
+        0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7,
+        0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF,
+        0xB0, 0xB1, 0xB2, 0xB3, 0xB4, 0xB5, 0xB6, 0xB7,
+        0xB8, 0xB9, 0xBA, 0xBB, 0xBC, 0xBD, 0xBE, 0xBF,
+        0xC0, 0xC1, 0xC2, 0xC3, 0xC4, 0xC5, 0xC6, 0xC7,
+        0xC8, 0xC9, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0xCF,
+        0xD0, 0xD1, 0xD2, 0xD3, 0xD4, 0xD5, 0xD6, 0xD7,
+        0xD8, 0xD9, 0xDA, 0xDB, 0xDC, 0xDD, 0xDE, 0xDF,
+        0xE0, 0xE1, 0xE2, 0xE3, 0xE4, 0xE5, 0xE6, 0xE7,
+        0xE8, 0xE9, 0xEA, 0xEB, 0xEC, 0xED, 0xEE, 0xEF,
+        0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7,
+        0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF,
     };
     
 
@@ -461,8 +461,7 @@ public class StringTools
      * to a single space to perserve the whitespace separated tokenization order
      * of the String.
      * 
-     * @param string
-     *            the string to deep trim.
+     * @param string the string to deep trim.
      * @return the trimmed string.
      */
     public static final String deepTrim( String string )
@@ -488,10 +487,8 @@ public class StringTools
     /**
      * Put common code to deepTrim(String) and deepTrimToLower here.
      * 
-     * @param str
-     *            the string to deep trim
-     * @param toLowerCase
-     *            how to normalize for case: upper or lower
+     * @param str the string to deep trim
+     * @param toLowerCase how to normalize for case: upper or lower
      * @return the deep trimmed string
      * @see StringTools#deepTrim( String )
      * 
@@ -566,12 +563,9 @@ public class StringTools
      * length of the truncated string so size of '...' can be interpreted.
      * Useful for large strings in UIs or hex dumps to log files.
      * 
-     * @param str
-     *            the string to truncate
-     * @param head
-     *            the amount of the head to display
-     * @param tail
-     *            the amount of the tail to display
+     * @param str the string to truncate
+     * @param head the amount of the head to display
+     * @param tail the amount of the tail to display
      * @return the center truncated string
      */
     public static final String centerTrunc( String str, int head, int tail )
@@ -630,6 +624,11 @@ public class StringTools
      */
     public static final String toLowerCase( String value )
     {
+        if ( ( null == value ) || ( value.length() == 0 ) )
+        {
+            return "";
+        }
+        
         char[] chars = value.toCharArray();
         
         for ( int i = 0; i < chars.length; i++ )
@@ -650,6 +649,11 @@ public class StringTools
      */
     public static final String toUpperCase( String value )
     {
+        if ( ( null == value ) || ( value.length() == 0 ) )
+        {
+            return "";
+        }
+        
         char[] chars = value.toCharArray();
         
         for ( int i = 0; i < chars.length; i++ )
@@ -687,15 +691,11 @@ public class StringTools
     /**
      * This method is used to insert HTML block dynamically
      * 
-     * @param source
-     *            the HTML code to be processes
-     * @param replaceNl
-     *            if true '\n' will be replaced by &lt;br>
-     * @param replaceTag
-     *            if true '<' will be replaced by &lt; and '>' will be replaced
+     * @param source the HTML code to be processes
+     * @param replaceNl if true '\n' will be replaced by &lt;br>
+     * @param replaceTag if true '<' will be replaced by &lt; and '>' will be replaced
      *            by &gt;
-     * @param replaceQuote
-     *            if true '\"' will be replaced by &quot;
+     * @param replaceQuote if true '\"' will be replaced by &quot;
      * @return the formated html block
      */
     public static final String formatHtml( String source, boolean replaceNl, boolean replaceTag,
@@ -903,7 +903,7 @@ public class StringTools
      * @return the filter accepted path component Strings in the order
      *         encountered
      */
-    public static final List getPaths( String paths, FileFilter filter )
+    public static final List<String> getPaths( String paths, FileFilter filter )
     {
         int start = 0;
         int stop = -1;
@@ -978,8 +978,7 @@ public class StringTools
     /**
      * Helper function that dump a byte in hex form
      * 
-     * @param octet
-     *            The byte to dump
+     * @param octet The byte to dump
      * @return A string representation of the byte
      */
     public static final String dumpByte( byte octet )
@@ -1004,8 +1003,7 @@ public class StringTools
     /**
      * Helper function that dump an array of bytes in hex form
      * 
-     * @param buffer
-     *            The bytes array to dump
+     * @param buffer The bytes array to dump
      * @return A string representation of the array of bytes
      */
     public static final String dumpBytes( byte[] buffer )
@@ -1083,8 +1081,7 @@ public class StringTools
     /**
      * Return the Unicode char which is coded in the bytes at position 0.
      * 
-     * @param bytes
-     *            The byte[] represntation of an Unicode string.
+     * @param bytes The byte[] represntation of an Unicode string.
      * @return The first char found.
      */
     public static final char bytesToChar( byte[] bytes )
@@ -1097,10 +1094,8 @@ public class StringTools
      * Count the number of bytes needed to return an Unicode char. This can be
      * from 1 to 6.
      * 
-     * @param bytes
-     *            The bytes to read
-     * @param pos
-     *            Position to start counting. It must be a valid start of a
+     * @param bytes The bytes to read
+     * @param pos Position to start counting. It must be a valid start of a
      *            encoded char !
      * @return The number of bytes to create a char, or -1 if the encoding is
      *         wrong. TODO : Should stop after the third byte, as a char is only
@@ -1147,8 +1142,7 @@ public class StringTools
     /**
      * Return the number of bytes that hold an Unicode char.
      * 
-     * @param car
-     *            The character to be decoded
+     * @param car The character to be decoded
      * @return The number of bytes to hold the char. TODO : Should stop after
      *         the third byte, as a char is only 2 bytes long.
      */
@@ -1188,8 +1182,7 @@ public class StringTools
     /**
      * Count the number of bytes included in the given char[].
      * 
-     * @param chars
-     *            The char array to decode
+     * @param chars The char array to decode
      * @return The number of bytes in the char array
      */
     public static final int countBytes( char[] chars )
@@ -1220,10 +1213,8 @@ public class StringTools
      * Return the Unicode char which is coded in the bytes at the given
      * position.
      * 
-     * @param bytes
-     *            The byte[] represntation of an Unicode string.
-     * @param pos
-     *            The current position to start decoding the char
+     * @param bytes The byte[] represntation of an Unicode string.
+     * @param pos The current position to start decoding the char
      * @return The decoded char, or -1 if no char can be decoded TODO : Should
      *         stop after the third byte, as a char is only 2 bytes long.
      */
@@ -1411,8 +1402,7 @@ public class StringTools
     /**
      * Count the number of chars included in the given byte[].
      * 
-     * @param bytes
-     *            The byte array to decode
+     * @param bytes The byte array to decode
      * @return The number of char in the byte array
      */
     public static final int countChars( byte[] bytes )
@@ -1438,17 +1428,14 @@ public class StringTools
     /**
      * Check if a text is present at the current position in a buffer.
      * 
-     * @param byteArray
-     *            The buffer which contains the data
-     * @param index
-     *            Current position in the buffer
-     * @param text
-     *            The text we want to check
+     * @param bytes The buffer which contains the data
+     * @param index Current position in the buffer
+     * @param text The text we want to check
      * @return <code>true</code> if the buffer contains the text.
      */
-    public static final int areEquals( byte[] byteArray, int index, String text )
+    public static final int areEquals( byte[] bytes, int index, String text )
     {
-        if ( ( byteArray == null ) || ( byteArray.length == 0 ) || ( byteArray.length <= index ) || ( index < 0 )
+        if ( ( bytes == null ) || ( bytes.length == 0 ) || ( bytes.length <= index ) || ( index < 0 )
             || ( text == null ) )
         {
             return NOT_EQUAL;
@@ -1459,7 +1446,7 @@ public class StringTools
             {
                 byte[] data = text.getBytes( "UTF-8" );
 
-                return areEquals( byteArray, index, data );
+                return areEquals( bytes, index, data );
             }
             catch ( UnsupportedEncodingException uee )
             {
@@ -1472,17 +1459,14 @@ public class StringTools
     /**
      * Check if a text is present at the current position in a buffer.
      * 
-     * @param charArray
-     *            The buffer which contains the data
-     * @param index
-     *            Current position in the buffer
-     * @param text
-     *            The text we want to check
+     * @param chars The buffer which contains the data
+     * @param index Current position in the buffer
+     * @param text The text we want to check
      * @return <code>true</code> if the buffer contains the text.
      */
-    public static final int areEquals( char[] charArray, int index, String text )
+    public static final int areEquals( char[] chars, int index, String text )
     {
-        if ( ( charArray == null ) || ( charArray.length == 0 ) || ( charArray.length <= index ) || ( index < 0 )
+        if ( ( chars == null ) || ( chars.length == 0 ) || ( chars.length <= index ) || ( index < 0 )
             || ( text == null ) )
         {
             return NOT_EQUAL;
@@ -1491,7 +1475,7 @@ public class StringTools
         {
             char[] data = text.toCharArray();
 
-            return areEquals( charArray, index, data );
+            return areEquals( chars, index, data );
         }
     }
 
@@ -1499,28 +1483,24 @@ public class StringTools
     /**
      * Check if a text is present at the current position in a buffer.
      * 
-     * @param charArray
-     *            The buffer which contains the data
-     * @param index
-     *            Current position in the buffer
-     * @param charArray2
-     *            The text we want to check
+     * @param chars The buffer which contains the data
+     * @param index Current position in the buffer
+     * @param chars2 The text we want to check
      * @return <code>true</code> if the buffer contains the text.
      */
-    public static final int areEquals( char[] charArray, int index, char[] charArray2 )
+    public static final int areEquals( char[] chars, int index, char[] chars2 )
     {
-
-        if ( ( charArray == null ) || ( charArray.length == 0 ) || ( charArray.length <= index ) || ( index < 0 )
-            || ( charArray2 == null ) || ( charArray2.length == 0 )
-            || ( charArray2.length > ( charArray.length + index ) ) )
+        if ( ( chars == null ) || ( chars.length == 0 ) || ( chars.length <= index ) || ( index < 0 )
+            || ( chars2 == null ) || ( chars2.length == 0 )
+            || ( chars2.length > ( chars.length + index ) ) )
         {
             return NOT_EQUAL;
         }
         else
         {
-            for ( int i = 0; i < charArray2.length; i++ )
+            for ( int i = 0; i < chars2.length; i++ )
             {
-                if ( charArray[index++] != charArray2[i] )
+                if ( chars[index++] != chars2[i] )
                 {
                     return NOT_EQUAL;
                 }
@@ -1533,19 +1513,19 @@ public class StringTools
     /**
      * Check if a text is present at the current position in another string.
      * 
-     * @param string1 The string which contains the data
+     * @param string The string which contains the data
      * @param index Current position in the string
      * @param text The text we want to check
      * @return <code>true</code> if the string contains the text.
      */
-    public static final boolean areEquals( String string1, int index, String text )
+    public static final boolean areEquals( String string, int index, String text )
     {
-        if ( ( string1 == null ) || ( text == null ) ) 
+        if ( ( string == null ) || ( text == null ) ) 
         {
             return false;
         }
         
-        int length1 = string1.length();
+        int length1 = string.length();
         int length2 = text.length();
 
         if ( ( length1 == 0 ) || ( length1 <= index ) || ( index < 0 )
@@ -1555,7 +1535,7 @@ public class StringTools
         }
         else
         {
-        	return string1.substring( index ).startsWith( text );
+            return string.substring( index ).startsWith( text );
         }
     }
     
@@ -1563,28 +1543,25 @@ public class StringTools
     /**
      * Check if a text is present at the current position in a buffer.
      * 
-     * @param byteArray
-     *            The buffer which contains the data
-     * @param index
-     *            Current position in the buffer
-     * @param byteArray2
-     *            The text we want to check
+     * @param bytes The buffer which contains the data
+     * @param index Current position in the buffer
+     * @param bytes2 The text we want to check
      * @return <code>true</code> if the buffer contains the text.
      */
-    public static final int areEquals( byte[] byteArray, int index, byte[] byteArray2 )
+    public static final int areEquals( byte[] bytes, int index, byte[] bytes2 )
     {
 
-        if ( ( byteArray == null ) || ( byteArray.length == 0 ) || ( byteArray.length <= index ) || ( index < 0 )
-            || ( byteArray2 == null ) || ( byteArray2.length == 0 )
-            || ( byteArray2.length > ( byteArray.length + index ) ) )
+        if ( ( bytes == null ) || ( bytes.length == 0 ) || ( bytes.length <= index ) || ( index < 0 )
+            || ( bytes2 == null ) || ( bytes2.length == 0 )
+            || ( bytes2.length > ( bytes.length + index ) ) )
         {
             return NOT_EQUAL;
         }
         else
         {
-            for ( int i = 0; i < byteArray2.length; i++ )
+            for ( int i = 0; i < bytes2.length; i++ )
             {
-                if ( byteArray[index++] != byteArray2[i] )
+                if ( bytes[index++] != bytes2[i] )
                 {
                     return NOT_EQUAL;
                 }
@@ -1677,6 +1654,7 @@ public class StringTools
         }
     }
 
+
     /**
      * Test if the current character is equal to a specific character.
      * 
@@ -1705,6 +1683,37 @@ public class StringTools
             return ( ( string.charAt( index ) | 0x20 ) & car ) == car;
         }
     }
+
+
+    /**
+     * Test if the current character is equal to a specific character.
+     * 
+     * @param string The String which contains the data
+     * @param index Current position in the string
+     * @param car The character we want to compare with the current string
+     *            position
+     * @return <code>true</code> if the current character equals the given
+     *         character.
+     */
+    public static final boolean isICharASCII( byte[] bytes, int index, char car )
+    {
+        if ( bytes == null )
+        {
+            return false;
+        }
+        
+        int length = bytes.length;
+        
+        if ( ( length == 0 ) || ( index < 0 ) || ( index >= length ) )
+        {
+            return false;
+        }
+        else
+        {
+            return ( ( bytes[ index ] | 0x20 ) & car ) == car;
+        }
+    }
+
 
     /**
      * Test if the current character is a bit, ie 0 or 1.
@@ -1739,10 +1748,8 @@ public class StringTools
     /**
      * Get the character at a given position in a string, checking fo limits
      * 
-     * @param string
-     *            The string which contains the data
-     * @param index
-     *            Current position in the string
+     * @param string The string which contains the data
+     * @param index Current position in the string
      * @return The character ar the given position, or '\0' if something went wrong 
      */
     public static final char charAt( String string, int index )
@@ -1764,16 +1771,52 @@ public class StringTools
         }
     }
 
-    public static byte getHexValue( char c1, char c2 )
+    
+    /**
+     * Translate two chars to an hex value. The chars must be 
+     * in [a-fA-F0-9]
+     *
+     * @param high The high value 
+     * @param low The low value
+     * @return A byte representation of the two chars
+     */
+    public static byte getHexValue( char high, char low )
     {
-        if ( ( c1 > 127 ) || (c2 > 127 ) || ( c1 < 0 ) | ( c2 < 0 ) )
+        if ( ( high > 127 ) || ( low > 127 ) || ( high < 0 ) | ( low < 0 ) )
         {
             return -1;
         }
         
-        return (byte)( ( HEX_VALUE[c1] << 4 ) | HEX_VALUE[c2] );
+        return (byte)( ( HEX_VALUE[high] << 4 ) | HEX_VALUE[low] );
     }
 
+
+    /**
+     * Translate two bytes to an hex value. The bytes must be 
+     * in [0-9a-fA-F]
+     *
+     * @param high The high value 
+     * @param low The low value
+     * @return A byte representation of the two bytes
+     */
+    public static byte getHexValue( byte high, byte low )
+    {
+        if ( ( high > 127 ) || ( low > 127 ) || ( high < 0 ) | ( low < 0 ) )
+        {
+            return -1;
+        }
+        
+        return (byte)( ( HEX_VALUE[high] << 4 ) | HEX_VALUE[low] );
+    }
+
+    
+    /**
+     * Return an hex value from a sinle char
+     * The char must be in [0-9a-fA-F]
+     *
+     * @param c The char we want to convert
+     * @return A byte between 0 and 15
+     */
     public static byte getHexValue( char c )
     {
         if ( ( c > 127 ) || ( c < 0 ) )
@@ -1788,21 +1831,19 @@ public class StringTools
      * Check if the current character is an Hex Char &lt;hex> ::= [0x30-0x39] |
      * [0x41-0x46] | [0x61-0x66]
      * 
-     * @param byteArray
-     *            The buffer which contains the data
-     * @param index
-     *            Current position in the buffer
+     * @param bytes The buffer which contains the data
+     * @param index Current position in the buffer
      * @return <code>true</code> if the current character is a Hex Char
      */
-    public static final boolean isHex( byte[] byteArray, int index )
+    public static final boolean isHex( byte[] bytes, int index )
     {
-        if ( ( byteArray == null ) || ( byteArray.length == 0 ) || ( index < 0 ) || ( index >= byteArray.length ) )
+        if ( ( bytes == null ) || ( bytes.length == 0 ) || ( index < 0 ) || ( index >= bytes.length ) )
         {
             return false;
         }
         else
         {
-            byte c = byteArray[index];
+            byte c = bytes[index];
 
             if ( ( ( c | 0x7F ) != 0x7F ) || ( HEX[c] == false ) )
             {
@@ -1820,10 +1861,8 @@ public class StringTools
      * Check if the current character is an Hex Char &lt;hex> ::= [0x30-0x39] |
      * [0x41-0x46] | [0x61-0x66]
      * 
-     * @param chars
-     *            The buffer which contains the data
-     * @param index
-     *            Current position in the buffer
+     * @param chars The buffer which contains the data
+     * @param index Current position in the buffer
      * @return <code>true</code> if the current character is a Hex Char
      */
     public static final boolean isHex( char[] chars, int index )
@@ -1851,10 +1890,8 @@ public class StringTools
      * Check if the current character is an Hex Char &lt;hex> ::= [0x30-0x39] |
      * [0x41-0x46] | [0x61-0x66]
      * 
-     * @param string
-     *            The string which contains the data
-     * @param index
-     *            Current position in the string
+     * @param string The string which contains the data
+     * @param index Current position in the string
      * @return <code>true</code> if the current character is a Hex Char
      */
     public static final boolean isHex( String string, int index )
@@ -1890,22 +1927,22 @@ public class StringTools
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
      * '3' | '4' | '5' | '6' | '7' | '8' | '9'
      * 
-     * @param byteArray
-     *            The buffer which contains the data
+     * @param bytes The buffer which contains the data
      * @return <code>true</code> if the current character is a Digit
      */
-    public static final boolean isDigit( byte[] byteArray )
+    public static final boolean isDigit( byte[] bytes )
     {
-        if ( ( byteArray == null ) || ( byteArray.length == 0 ) )
+        if ( ( bytes == null ) || ( bytes.length == 0 ) )
         {
             return false;
         }
         else
         {
-            return ( ( ( ( byteArray[0] | 0x7F ) != 0x7F ) || !DIGIT[byteArray[0]] ) ? false : true );
+            return ( ( ( ( bytes[0] | 0x7F ) != 0x7F ) || !DIGIT[bytes[0]] ) ? false : true );
         }
     }
 
+    
     /**
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
      * '3' | '4' | '5' | '6' | '7' | '8' | '9'
@@ -1919,6 +1956,7 @@ public class StringTools
         return ( car >= '0' ) && ( car <= '9' );
     }
 
+    
     /**
      * Test if the current byte is an Alpha character : 
      * &lt;alpha> ::= [0x41-0x5A] | [0x61-0x7A]
@@ -1933,6 +1971,7 @@ public class StringTools
         return ( ( c > 0 ) && ( c <= 127 ) && ALPHA[c] );
     }
 
+    
     /**
      * Test if the current character is an Alpha character : 
      * &lt;alpha> ::= [0x41-0x5A] | [0x61-0x7A]
@@ -1952,22 +1991,20 @@ public class StringTools
      * Test if the current character is an Alpha character : &lt;alpha> ::=
      * [0x41-0x5A] | [0x61-0x7A]
      * 
-     * @param byteArray
-     *            The buffer which contains the data
-     * @param index
-     *            Current position in the buffer
+     * @param bytes The buffer which contains the data
+     * @param index Current position in the buffer
      * @return <code>true</code> if the current character is an Alpha
      *         character
      */
-    public static final boolean isAlphaASCII( byte[] byteArray, int index )
+    public static final boolean isAlphaASCII( byte[] bytes, int index )
     {
-        if ( ( byteArray == null ) || ( byteArray.length == 0 ) || ( index < 0 ) || ( index >= byteArray.length ) )
+        if ( ( bytes == null ) || ( bytes.length == 0 ) || ( index < 0 ) || ( index >= bytes.length ) )
         {
             return false;
         }
         else
         {
-            byte c = byteArray[index++];
+            byte c = bytes[index];
 
             if ( ( ( c | 0x7F ) != 0x7F ) || ( ALPHA[c] == false ) )
             {
@@ -1985,10 +2022,8 @@ public class StringTools
      * Test if the current character is an Alpha character : &lt;alpha> ::=
      * [0x41-0x5A] | [0x61-0x7A]
      * 
-     * @param chars
-     *            The buffer which contains the data
-     * @param index
-     *            Current position in the buffer
+     * @param chars The buffer which contains the data
+     * @param index Current position in the buffer
      * @return <code>true</code> if the current character is an Alpha
      *         character
      */
@@ -2000,7 +2035,7 @@ public class StringTools
         }
         else
         {
-            char c = chars[index++];
+            char c = chars[index];
 
             if ( ( c > 127 ) || ( ALPHA[c] == false ) )
             {
@@ -2013,14 +2048,13 @@ public class StringTools
         }
     }
 
+    
     /**
      * Test if the current character is an Alpha character : &lt;alpha> ::=
      * [0x41-0x5A] | [0x61-0x7A]
      * 
-     * @param string
-     *            The string which contains the data
-     * @param index
-     *            Current position in the string
+     * @param string The string which contains the data
+     * @param index Current position in the string
      * @return <code>true</code> if the current character is an Alpha
      *         character
      */
@@ -2039,7 +2073,7 @@ public class StringTools
         }
         else
         {
-            char c = string.charAt( index++ );
+            char c = string.charAt( index );
 
             if ( ( c > 127 ) || ( ALPHA[c] == false ) )
             {
@@ -2052,14 +2086,13 @@ public class StringTools
         }
     }
 
+    
     /**
      * Test if the current character is a lowercased Alpha character : <br/>
      * &lt;alpha> ::= [0x61-0x7A]
      * 
-     * @param string
-     *            The string which contains the data
-     * @param index
-     *            Current position in the string
+     * @param string The string which contains the data
+     * @param index Current position in the string
      * @return <code>true</code> if the current character is a lower Alpha
      *         character
      */
@@ -2078,7 +2111,7 @@ public class StringTools
         }
         else
         {
-            char c = string.charAt( index++ );
+            char c = string.charAt( index );
 
             if ( ( c > 127 ) || ( ALPHA_LOWER_CASE[c] == false ) )
             {
@@ -2091,14 +2124,13 @@ public class StringTools
         }
     }
 
+    
     /**
      * Test if the current character is a uppercased Alpha character : <br/>
      * &lt;alpha> ::= [0x61-0x7A]
      * 
-     * @param string
-     *            The string which contains the data
-     * @param index
-     *            Current position in the string
+     * @param string The string which contains the data
+     * @param index Current position in the string
      * @return <code>true</code> if the current character is a lower Alpha
      *         character
      */
@@ -2117,7 +2149,7 @@ public class StringTools
         }
         else
         {
-            char c = string.charAt( index++ );
+            char c = string.charAt( index );
 
             if ( ( c > 127 ) || ( ALPHA_UPPER_CASE[c] == false ) )
             {
@@ -2135,21 +2167,19 @@ public class StringTools
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
      * '3' | '4' | '5' | '6' | '7' | '8' | '9'
      * 
-     * @param byteArray
-     *            The buffer which contains the data
-     * @param index
-     *            Current position in the buffer
+     * @param bytes The buffer which contains the data
+     * @param index Current position in the buffer
      * @return <code>true</code> if the current character is a Digit
      */
-    public static final boolean isDigit( byte[] byteArray, int index )
+    public static final boolean isDigit( byte[] bytes, int index )
     {
-        if ( ( byteArray == null ) || ( byteArray.length == 0 ) || ( index < 0 ) || ( index >= byteArray.length ) )
+        if ( ( bytes == null ) || ( bytes.length == 0 ) || ( index < 0 ) || ( index >= bytes.length ) )
         {
             return false;
         }
         else
         {
-            return ( ( ( ( byteArray[index] | 0x7F ) !=  0x7F ) || !DIGIT[byteArray[index]] ) ? false : true );
+            return ( ( ( ( bytes[index] | 0x7F ) !=  0x7F ) || !DIGIT[bytes[index]] ) ? false : true );
         }
     }
 
@@ -2158,10 +2188,8 @@ public class StringTools
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
      * '3' | '4' | '5' | '6' | '7' | '8' | '9'
      * 
-     * @param chars
-     *            The buffer which contains the data
-     * @param index
-     *            Current position in the buffer
+     * @param chars The buffer which contains the data
+     * @param index Current position in the buffer
      * @return <code>true</code> if the current character is a Digit
      */
     public static final boolean isDigit( char[] chars, int index )
@@ -2176,14 +2204,13 @@ public class StringTools
         }
     }
 
+    
     /**
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
      * '3' | '4' | '5' | '6' | '7' | '8' | '9'
      * 
-     * @param string
-     *            The string which contains the data
-     * @param index
-     *            Current position in the string
+     * @param string The string which contains the data
+     * @param index Current position in the string
      * @return <code>true</code> if the current character is a Digit
      */
     public static final boolean isDigit( String string, int index )
@@ -2206,12 +2233,12 @@ public class StringTools
         }
     }
 
+    
     /**
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
      * '3' | '4' | '5' | '6' | '7' | '8' | '9'
      * 
-     * @param chars
-     *            The buffer which contains the data
+     * @param chars The buffer which contains the data
      * @return <code>true</code> if the current character is a Digit
      */
     public static final boolean isDigit( char[] chars )
@@ -2226,15 +2253,14 @@ public class StringTools
         }
     }
 
+    
     /**
      * Check if the current character is an 7 bits ASCII CHAR (between 0 and
      * 127). 
      * &lt;char> ::= &lt;alpha> | &lt;digit>
      * 
-     * @param string
-     *            The string which contains the data
-     * @param index
-     *            Current position in the string
+     * @param string The string which contains the data
+     * @param index Current position in the string
      * @return The position of the next character, if the current one is a CHAR.
      */
     public static final boolean isAlphaDigit( String string, int index )
@@ -2252,7 +2278,7 @@ public class StringTools
         }
         else
         {
-            char c = string.charAt( index++ );
+            char c = string.charAt( index );
 
             if ( ( c > 127 ) || ( ALPHA_DIGIT[c] == false ) )
             {
@@ -2266,26 +2292,23 @@ public class StringTools
     }
 
 
-
     /**
      * Check if the current character is an 7 bits ASCII CHAR (between 0 and
      * 127). &lt;char> ::= &lt;alpha> | &lt;digit> | '-'
      * 
-     * @param byteArray
-     *            The buffer which contains the data
-     * @param index
-     *            Current position in the buffer
+     * @param bytes The buffer which contains the data
+     * @param index Current position in the buffer
      * @return The position of the next character, if the current one is a CHAR.
      */
-    public static final boolean isAlphaDigitMinus( byte[] byteArray, int index )
+    public static final boolean isAlphaDigitMinus( byte[] bytes, int index )
     {
-        if ( ( byteArray == null ) || ( byteArray.length == 0 ) || ( index < 0 ) || ( index >= byteArray.length ) )
+        if ( ( bytes == null ) || ( bytes.length == 0 ) || ( index < 0 ) || ( index >= bytes.length ) )
         {
             return false;
         }
         else
         {
-            byte c = byteArray[index++];
+            byte c = bytes[index];
 
             if ( ( ( c | 0x7F ) != 0x7F ) || ( CHAR[c] == false ) )
             {
@@ -2303,10 +2326,8 @@ public class StringTools
      * Check if the current character is an 7 bits ASCII CHAR (between 0 and
      * 127). &lt;char> ::= &lt;alpha> | &lt;digit> | '-'
      * 
-     * @param chars
-     *            The buffer which contains the data
-     * @param index
-     *            Current position in the buffer
+     * @param chars The buffer which contains the data
+     * @param index Current position in the buffer
      * @return The position of the next character, if the current one is a CHAR.
      */
     public static final boolean isAlphaDigitMinus( char[] chars, int index )
@@ -2317,7 +2338,7 @@ public class StringTools
         }
         else
         {
-            char c = chars[index++];
+            char c = chars[index];
 
             if ( ( c > 127 ) || ( CHAR[c] == false ) )
             {
@@ -2330,14 +2351,13 @@ public class StringTools
         }
     }
 
+    
     /**
      * Check if the current character is an 7 bits ASCII CHAR (between 0 and
      * 127). &lt;char> ::= &lt;alpha> | &lt;digit> | '-'
      * 
-     * @param string
-     *            The string which contains the data
-     * @param index
-     *            Current position in the string
+     * @param string The string which contains the data
+     * @param index Current position in the string
      * @return The position of the next character, if the current one is a CHAR.
      */
     public static final boolean isAlphaDigitMinus( String string, int index )
@@ -2355,7 +2375,7 @@ public class StringTools
         }
         else
         {
-            char c = string.charAt( index++ );
+            char c = string.charAt( index );
 
             if ( ( c > 127 ) || ( CHAR[c] == false ) )
             {
@@ -2368,6 +2388,7 @@ public class StringTools
         }
     }
 
+    
     // Empty checks
     // -----------------------------------------------------------------------
     /**
@@ -2388,8 +2409,7 @@ public class StringTools
      * String. That functionality is available in isBlank().
      * </p>
      * 
-     * @param str
-     *            the String to check, may be null
+     * @param str the String to check, may be null
      * @return <code>true</code> if the String is empty or null
      */
     public static final boolean isEmpty( String str )
@@ -2401,8 +2421,7 @@ public class StringTools
     /**
      * Checks if a bytes array is empty or null.
      * 
-     * @param bytes
-     *            The bytes array to check, may be null
+     * @param bytes The bytes array to check, may be null
      * @return <code>true</code> if the bytes array is empty or null
      */
     public static final boolean isEmpty( byte[] bytes )
@@ -2424,8 +2443,7 @@ public class StringTools
      *  StringUtils.isNotEmpty(&quot;  bob  &quot;) = true
      * </pre>
      * 
-     * @param str
-     *            the String to check, may be null
+     * @param str the String to check, may be null
      * @return <code>true</code> if the String is not empty and not null
      */
     public static final boolean isNotEmpty( String str )
@@ -2449,8 +2467,7 @@ public class StringTools
      *  StringUtils.trim(&quot;    abc    &quot;) = &quot;abc&quot;
      * </pre>
      * 
-     * @param str
-     *            the String to be trimmed, may be null
+     * @param str the String to be trimmed, may be null
      * @return the trimmed string, <code>null</code> if null String input
      */
     public static final String trim( String str )
@@ -2520,8 +2537,7 @@ public class StringTools
      *  StringUtils.trimLeft(&quot;    abc    &quot;) = &quot;abc    &quot;
      * </pre>
      * 
-     * @param str
-     *            the String to be trimmed, may be null
+     * @param str the String to be trimmed, may be null
      * @return the trimmed string, <code>null</code> if null String input
      */
     public static final String trimLeft( String str )
@@ -2558,8 +2574,7 @@ public class StringTools
      *  StringUtils.trimLeft(&quot;    abc    &quot;) = &quot;abc    &quot;
      * </pre>
      * 
-     * @param chars
-     *            the chars array to be trimmed, may be null
+     * @param chars the chars array to be trimmed, may be null
      * @return the position of the first char which is not a space, or the last
      *         position of the array.
      */
@@ -2577,6 +2592,7 @@ public class StringTools
 
         return pos;
     }
+
 
     /**
      * <p>
@@ -2618,6 +2634,44 @@ public class StringTools
 
     /**
      * <p>
+     * Removes spaces (char &lt;= 32) from a position in this array, handling
+     * <code>null</code> by returning <code>null</code>.
+     * </p>
+     * Trim removes start characters &lt;= 32.
+     * 
+     * <pre>
+     *  StringUtils.trimLeft(null)          = null
+     *  StringUtils.trimLeft(&quot;&quot;,...)            = &quot;&quot;
+     *  StringUtils.trimLeft(&quot;     &quot;,...)       = &quot;&quot;
+     *  StringUtils.trimLeft(&quot;abc&quot;,...)         = &quot;abc&quot;
+     *  StringUtils.trimLeft(&quot;    abc    &quot;,...) = &quot;abc    &quot;
+     * </pre>
+     * 
+     * @param bytes the byte array to be trimmed, may be null
+     * @param pos The starting position
+     */
+    public static final void trimLeft( byte[] bytes, Position pos )
+    {
+        if ( bytes == null )
+        {
+            return;
+        }
+
+        int length = bytes.length;
+        
+        while ( ( pos.start < length ) && ( bytes[ pos.start ] == ' ' ) )
+        {
+            pos.start++;
+        }
+        
+        pos.end = pos.start;
+
+        return;
+    }
+
+    
+    /**
+     * <p>
      * Removes spaces (char &lt;= 32) from start of this array, handling
      * <code>null</code> by returning <code>null</code>.
      * </p>
@@ -2631,8 +2685,7 @@ public class StringTools
      *  StringUtils.trimLeft(&quot;    abc    &quot;) = &quot;abc    &quot;
      * </pre>
      * 
-     * @param bytes
-     *            the byte array to be trimmed, may be null
+     * @param bytes the byte array to be trimmed, may be null
      * @return the position of the first byte which is not a space, or the last
      *         position of the array.
      */
@@ -2667,8 +2720,7 @@ public class StringTools
      *  StringUtils.trimRight(&quot;    abc    &quot;) = &quot;    abc&quot;
      * </pre>
      * 
-     * @param str
-     *            the String to be trimmed, may be null
+     * @param str the String to be trimmed, may be null
      * @return the trimmed string, <code>null</code> if null String input
      */
     public static final String trimRight( String str )
@@ -2752,8 +2804,7 @@ public class StringTools
      *  StringUtils.trimRight(&quot;    abc    &quot;) = &quot;    abc&quot;
      * </pre>
      * 
-     * @param chars
-     *            the chars array to be trimmed, may be null
+     * @param chars the chars array to be trimmed, may be null
      * @return the position of the first char which is not a space, or the last
      *         position of the array.
      */
@@ -2772,6 +2823,7 @@ public class StringTools
         return pos;
     }
 
+
     /**
      * <p>
      * Removes spaces (char &lt;= 32) from end of this string, handling
@@ -2787,8 +2839,7 @@ public class StringTools
      *  StringUtils.trimRight(&quot;    abc    &quot;) = &quot;    abc&quot;
      * </pre>
      * 
-     * @param string
-     *            the string to be trimmed, may be null
+     * @param string the string to be trimmed, may be null
      * @return the position of the first char which is not a space, or the last
      *         position of the string.
      */
@@ -2812,6 +2863,54 @@ public class StringTools
         return ( pos.end == string.length() ? string : string.substring( 0, pos.end ) );
     }
 
+
+    /**
+     * <p>
+     * Removes spaces (char &lt;= 32) from end of this string, handling
+     * <code>null</code> by returning <code>null</code>.
+     * </p>
+     * Trim removes start characters &lt;= 32.
+     * 
+     * <pre>
+     *  StringUtils.trimRight(null)          = null
+     *  StringUtils.trimRight(&quot;&quot;)            = &quot;&quot;
+     *  StringUtils.trimRight(&quot;     &quot;)       = &quot;&quot;
+     *  StringUtils.trimRight(&quot;abc&quot;)         = &quot;abc&quot;
+     *  StringUtils.trimRight(&quot;    abc    &quot;) = &quot;    abc&quot;
+     * </pre>
+     * 
+     * @param bytes the byte array to be trimmed, may be null
+     * @return the position of the first char which is not a space, or the last
+     *         position of the byte array.
+     */
+    public static final String trimRight( byte[] bytes, Position pos )
+    {
+        if ( bytes == null )
+        {
+            return "";
+        }
+
+        while ( ( pos.end >= 0 ) && ( bytes[pos.end - 1] == ' ' ) )
+        {
+            if ( ( pos.end > 1 ) && ( bytes[pos.end - 2] == '\\' ) )
+            {
+                break;
+            }
+            
+            pos.end--;
+        }
+
+        if ( pos.end == bytes.length )
+        {
+            return StringTools.utf8ToString( bytes );
+        }
+        else
+        {
+            return StringTools.utf8ToString( bytes, pos.end );
+        }
+    }
+
+
     /**
      * <p>
      * Removes spaces (char &lt;= 32) from end of this array, handling
@@ -2827,8 +2926,7 @@ public class StringTools
      *  StringUtils.trimRight(&quot;    abc    &quot;) = &quot;    abc&quot;
      * </pre>
      * 
-     * @param bytes
-     *            the chars array to be trimmed, may be null
+     * @param bytes the byte array to be trimmed, may be null
      * @return the position of the first char which is not a space, or the last
      *         position of the array.
      */
@@ -2864,8 +2962,7 @@ public class StringTools
      *  StringUtils.upperCase(&quot;aBc&quot;) = &quot;ABC&quot;
      * </pre>
      * 
-     * @param str
-     *            the String to upper case, may be null
+     * @param str the String to upper case, may be null
      * @return the upper cased String, <code>null</code> if null String input
      */
     public static final String upperCase( String str )
@@ -2893,8 +2990,7 @@ public class StringTools
      *  StringUtils.lowerCase(&quot;aBc&quot;) = &quot;abc&quot;
      * </pre>
      * 
-     * @param str
-     *            the String to lower case, may be null
+     * @param str the String to lower case, may be null
      * @return the lower cased String, <code>null</code> if null String input
      */
     public static final String lowerCase( String str )
@@ -2907,6 +3003,7 @@ public class StringTools
         return str.toLowerCase();
     }
 
+    
     /**
      * Rewrote the toLowercase method to improve performances.
      * In Ldap, attributesType are supposed to use ASCII chars :
@@ -2928,12 +3025,13 @@ public class StringTools
         
         for ( char c:chars )
         {
-        	chars[pos++] = TO_LOWER_CASE[c];
+            chars[pos++] = TO_LOWER_CASE[c];
         }
         
         return new String( chars );
     }
 
+    
     // Equals
     // -----------------------------------------------------------------------
     /**
@@ -2955,10 +3053,8 @@ public class StringTools
      * </pre>
      * 
      * @see java.lang.String#equals(Object)
-     * @param str1
-     *            the first String, may be null
-     * @param str2
-     *            the second String, may be null
+     * @param str1 the first String, may be null
+     * @param str2 the second String, may be null
      * @return <code>true</code> if the Strings are equal, case sensitive, or
      *         both <code>null</code>
      */
@@ -2971,8 +3067,7 @@ public class StringTools
     /**
      * Return an UTF-8 encoded String
      * 
-     * @param bytes
-     *            The byte array to be transformed to a String
+     * @param bytes The byte array to be transformed to a String
      * @return A String.
      */
     public static final String utf8ToString( byte[] bytes )
@@ -2992,13 +3087,12 @@ public class StringTools
         }
     }
 
+
     /**
      * Return an UTF-8 encoded String
      * 
-     * @param bytes
-     *            The byte array to be transformed to a String
-     * @param length
-     *            The length of the byte array to be converted
+     * @param bytes The byte array to be transformed to a String
+     * @param length The length of the byte array to be converted
      * @return A String.
      */
     public static final String utf8ToString( byte[] bytes, int length )
@@ -3020,10 +3114,35 @@ public class StringTools
 
 
     /**
+     * Return an UTF-8 encoded String
+     * 
+     * @param bytes  The byte array to be transformed to a String
+     * @param start the starting position in the byte array  
+     * @param length The length of the byte array to be converted
+     * @return A String.
+     */
+    public static final String utf8ToString( byte[] bytes, int start, int length )
+    {
+        if ( bytes == null )
+        {
+            return "";
+        }
+
+        try
+        {
+            return new String( bytes, start, length, "UTF-8" );
+        }
+        catch ( UnsupportedEncodingException uee )
+        {
+            return "";
+        }
+    }
+
+
+    /**
      * Return UTF-8 encoded byte[] representation of a String
      * 
-     * @param string
-     *            The string to be transformed to a byte array
+     * @param string The string to be transformed to a byte array
      * @return The transformed byte array
      */
     public static final byte[] getBytesUtf8( String string )
@@ -3048,21 +3167,20 @@ public class StringTools
     /**
      * Utility method that return a String representation of a list
      * 
-     * @param list
-     *            The list to transform to a string
+     * @param list The list to transform to a string
      * @return A csv string
      */
-    public static final String listToString( List list )
+    public static final String listToString( List<?> list )
     {
         if ( ( list == null ) || ( list.size() == 0 ) )
         {
             return "";
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         boolean isFirst = true;
 
-        Iterator iter = list.iterator();
+        Iterator<?> iter = list.iterator();
 
         while ( iter.hasNext() )
         {
@@ -3085,11 +3203,11 @@ public class StringTools
     /**
      * Utility method that return a String representation of a list
      * 
-     * @param list
-     *            The list to transform to a string
+     * @param list The list to transform to a string
+     * @param tabs The tabs to add in ffront of the elements
      * @return A csv string
      */
-    public static final String listToString( List list, String tabs )
+    public static final String listToString( List<?> list, String tabs )
     {
         if ( ( list == null ) || ( list.size() == 0 ) )
         {
@@ -3098,7 +3216,7 @@ public class StringTools
 
         StringBuffer sb = new StringBuffer();
 
-        Iterator iter = list.iterator();
+        Iterator<?> iter = list.iterator();
 
         while ( iter.hasNext() )
         {
@@ -3115,11 +3233,10 @@ public class StringTools
      * Utility method that return a String representation of a map. The elements
      * will be represented as "key = value"
      * 
-     * @param map
-     *            The map to transform to a string
+     * @param map The map to transform to a string
      * @return A csv string
      */
-    public static final String mapToString( Map map )
+    public static final String mapToString( Map<?,?> map )
     {
         if ( ( map == null ) || ( map.size() == 0 ) )
         {
@@ -3129,9 +3246,7 @@ public class StringTools
         StringBuffer sb = new StringBuffer();
         boolean isFirst = true;
 
-        Iterator iter = map.keySet().iterator();
-
-        while ( iter.hasNext() )
+        for ( Map.Entry<?, ?> entry:map.entrySet() )
         {
             if ( isFirst )
             {
@@ -3142,9 +3257,8 @@ public class StringTools
                 sb.append( ", " );
             }
 
-            Object key = iter.next();
-            sb.append( key );
-            sb.append( " = '" ).append( map.get( key ) ).append( "'" );
+            sb.append( entry.getKey() );
+            sb.append( " = '" ).append( entry.getValue() ).append( "'" );
         }
 
         return sb.toString();
@@ -3155,11 +3269,11 @@ public class StringTools
      * Utility method that return a String representation of a map. The elements
      * will be represented as "key = value"
      * 
-     * @param map
-     *            The map to transform to a string
+     * @param map The map to transform to a string
+     * @param tabs The tabs to add in ffront of the elements
      * @return A csv string
      */
-    public static final String mapToString( Map map, String tabs )
+    public static final String mapToString( Map<?,?> map, String tabs )
     {
         if ( ( map == null ) || ( map.size() == 0 ) )
         {
@@ -3168,21 +3282,18 @@ public class StringTools
 
         StringBuffer sb = new StringBuffer();
 
-        Iterator iter = map.keySet().iterator();
-
-        while ( iter.hasNext() )
+        for ( Map.Entry<?, ?> entry:map.entrySet() )
         {
-            Object key = iter.next();
             sb.append( tabs );
-            sb.append( key );
-            Object value = map.get( key );
+            sb.append( entry.getKey() );
 
-            sb.append( " = '" ).append( value.toString() ).append( "'\n" );
+            sb.append( " = '" ).append( entry.getValue().toString() ).append( "'\n" );
         }
 
         return sb.toString();
     }
 
+    
     /**
      * Get the default charset
      * 
@@ -3190,29 +3301,33 @@ public class StringTools
      */
     public static final String getDefaultCharsetName()
     {
-    	if ( null == defaultCharset ) 
-    	{
-    		try 
-    		{
-    			// Try with jdk 1.5 method, if we are using a 1.5 jdk :)
-    			Method method = Charset.class.getMethod( "defaultCharset", new Class[0] );
-    			defaultCharset = ((Charset) method.invoke( null, new Object[0]) ).name();
-    		} 
-    		catch (Exception e) 
-    		{
-    			// fall back to old method
-    			defaultCharset = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
-    		}
-    	}
+        if ( null == defaultCharset ) 
+        {
+            try 
+            {
+                // Try with jdk 1.5 method, if we are using a 1.5 jdk :)
+                Method method = Charset.class.getMethod( "defaultCharset", new Class[0] );
+                defaultCharset = ((Charset) method.invoke( null, new Object[0]) ).name();
+            } 
+            catch (Exception e) 
+            {
+                // fall back to old method
+                defaultCharset = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
+            }
+        }
 
-    	return defaultCharset;
+        return defaultCharset;
     }
+    
     
     /**
      * Decodes values of attributes in the DN encoded in hex into a UTF-8 
      * String.  RFC2253 allows a DN's attribute to be encoded in hex.
      * The encoded value starts with a # then is followed by an even 
      * number of hex characters.  
+     * 
+     * @param str the string to decode
+     * @return the decoded string
      */
     public static final String decodeHexString( String str ) throws InvalidNameException
     {
@@ -3251,7 +3366,7 @@ public class StringTools
      * String is returned.
      * 
      * @param str the string containing hex escapes
-     * @return decoded string
+     * @return the decoded string
      */
     public static final String decodeEscapedHex( String str ) throws InvalidNameException
     {
@@ -3272,11 +3387,14 @@ public class StringTools
         // create buffer and add everything before start of scan
         StringBuffer buf = new StringBuffer();
         ByteBuffer bb = new ByteBuffer();
+        boolean escaped = false;
         
         // start scaning until we find an escaped series of bytes
         for ( int ii = 0; ii < length; ii++ )
         {
-            if ( str.charAt( ii ) == '\\' )
+            char c = str.charAt( ii );
+            
+            if ( c == '\\' )
             {
                 // we have the start of a hex escape sequence
                 if ( isHex( str, ii+1 ) && isHex ( str, ii+2 ) )
@@ -3285,23 +3403,60 @@ public class StringTools
                     int advancedBy = collectEscapedHexBytes( bb, str, ii );
                     ii+=advancedBy-1;
                     buf.append( StringTools.utf8ToString( bb.buffer(), bb.position() ) );
+                    escaped = false;
                     continue;
                 }
-                else
+                else if ( !escaped )
                 {
-                    buf.append( str.charAt( ii ) );
+                    // It may be an escaped char ( ' ', '"', '#', '+', ',', ';', '<', '=', '>', '\' )
+                    escaped = true;
                     continue;
                 }
             }
 
-            buf.append( str.charAt( ii ) );
+            
+            if ( escaped )
+            {
+                if ( DNUtils.isPairCharOnly( c ) )
+                {
+                    // It is an escaped char ( ' ', '"', '#', '+', ',', ';', '<', '=', '>', '\' )
+                    // Stores it into the buffer without the '\'
+                    escaped = false;
+                    buf.append( c );
+                    continue;
+                }
+                else
+                {
+                    throw new InvalidNameException( "The DN must contain valid escaped characters." );
+                }
+            }
+            else
+            {
+                buf.append( str.charAt( ii ) );
+            }
         }
-        
+
+        if ( escaped )
+        {
+            // We should not have a '\' at the end of the string
+            throw new InvalidNameException( "The DN must not ends with a '\\'." );
+        }
+
         return buf.toString();
     }
 
 
-    private static int collectEscapedHexBytes( ByteBuffer bb, String str, int index )
+    /**
+     * Collects an hex sequence from a string, and returns the value
+     * as an integer, after having modified the initial value (the escaped
+     * hex value is transsformed to the byte it represents).
+     *
+     * @param bb the buffer which will contain the unescaped byte
+     * @param str the initial string with ecaped chars 
+     * @param index the position in the string of the escaped data
+     * @return the byte as an integer
+     */
+    public static int collectEscapedHexBytes( ByteBuffer bb, String str, int index )
     {
         int advanceBy = 0;
         
@@ -3322,6 +3477,7 @@ public class StringTools
         
         return advanceBy;
     }
+    
     
     /**
      * Thansform an array of ASCII bytes to a string. the byte array should contains
@@ -3347,6 +3503,7 @@ public class StringTools
         return new String( result );
     }
     
+    
     /**
      * Build an AttributeType froma byte array. An AttributeType contains
      * only chars within [0-9][a-z][A-Z][-.].
@@ -3356,21 +3513,22 @@ public class StringTools
      */
     public static String getType( byte[] bytes)
     {
-    	if ( bytes == null )
-    	{
-    		return null;
-    	}
-    	
-    	char[] chars = new char[bytes.length];
+        if ( bytes == null )
+        {
+            return null;
+        }
+        
+        char[] chars = new char[bytes.length];
         int pos = 0;
         
         for ( byte b:bytes )
         {
-        	chars[pos++] = TO_LOWER_CASE[b];
+            chars[pos++] = TO_LOWER_CASE[b];
         }
         
         return new String( chars );
     }
+    
     
     /**
      * 
@@ -3429,6 +3587,7 @@ public class StringTools
         return true;
     }
 
+    
     /**
      * Check if the current char is in the unicodeSubset : all chars but
      * '\0', '(', ')', '*' and '\'
@@ -3447,9 +3606,9 @@ public class StringTools
         char c = str.charAt( pos );
         
         return ( ( c > 127 ) || UNICODE_SUBSET[c] );
-        
     }
 
+    
     /**
      * Check if the current char is in the unicodeSubset : all chars but
      * '\0', '(', ')', '*' and '\'

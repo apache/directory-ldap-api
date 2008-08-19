@@ -107,12 +107,13 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
 
     /**
      * @see Object#hashCode()
+     * @return the instance's hash code 
      */
     public int hashCode()
     {
-        int hash = 7;
-        hash = hash*31 + abandonId;
-        hash = hash*31 + super.hashCode();
+        int hash = 37;
+        hash = hash*17 + abandonId;
+        hash = hash*17 + super.hashCode();
         
         return hash;
     }

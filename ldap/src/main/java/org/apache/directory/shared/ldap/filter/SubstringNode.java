@@ -39,13 +39,13 @@ import org.apache.directory.shared.ldap.util.StringTools;
  */
 public class SubstringNode extends LeafNode
 {
-    /** The initial fragment before any wildcards */
+    /** The initial fragment before any wildcard */
     private String initialPattern;
 
-    /** The end fragment after wildcards */
+    /** The end fragment after wildcard */
     private String finalPattern;
 
-    /** List of fragments between wildcards */
+    /** List of fragments between wildcard */
     private List<String> anyPattern;
 
     /**
@@ -58,7 +58,7 @@ public class SubstringNode extends LeafNode
      */
     public SubstringNode( String attribute, String initialPattern, String finalPattern )
     {
-        super( attribute );
+        super( attribute, AssertionType.SUBSTRING );
 
         anyPattern = new ArrayList<String>( 2 );
         this.finalPattern = finalPattern;
@@ -70,12 +70,11 @@ public class SubstringNode extends LeafNode
      * Creates a new SubstringNode object without any value
      * 
      * @param attribute the name of the attribute to substring assert
-     * @param initialPattern the initial fragment
-     * @param finalPattern the final fragment
+     * @param attribute The attribute's ID
      */
     public SubstringNode( String attribute )
     {
-        super( attribute );
+        super( attribute, AssertionType.SUBSTRING );
 
         anyPattern = new ArrayList<String>( 2 );
         this.finalPattern = null;
@@ -94,7 +93,7 @@ public class SubstringNode extends LeafNode
      */
     public SubstringNode( List<String> anyPattern, String attribute, String initialPattern, String finalPattern )
     {
-        super( attribute );
+        super( attribute, AssertionType.SUBSTRING );
 
         this.anyPattern = anyPattern;
         this.finalPattern = finalPattern;
@@ -116,10 +115,10 @@ public class SubstringNode extends LeafNode
      * Set the initial pattern
      * @param initialPattern The initial pattern
      */
-	public void setInitial( String initialPattern ) 
-	{
-		this.initialPattern = initialPattern;
-	}
+    public void setInitial( String initialPattern ) 
+    {
+        this.initialPattern = initialPattern;
+    }
 
     /**
      * Gets the final fragment or suffix.
@@ -136,10 +135,10 @@ public class SubstringNode extends LeafNode
      * Set the final pattern
      * @param finalPattern The final pattern
      */
-	public void setFinal( String finalPattern ) 
-	{
-		this.finalPattern = finalPattern;
-	}
+    public void setFinal( String finalPattern ) 
+    {
+        this.finalPattern = finalPattern;
+    }
 
 
     /**
@@ -157,10 +156,10 @@ public class SubstringNode extends LeafNode
      * Set the any patterns
      * @param anyPattern The any patterns
      */
-	public void setAny( List<String> anyPattern ) 
-	{
-		this.anyPattern = anyPattern;
-	}
+    public void setAny( List<String> anyPattern ) 
+    {
+        this.anyPattern = anyPattern;
+    }
 
 
     /**
@@ -177,9 +176,11 @@ public class SubstringNode extends LeafNode
      * Gets the compiled regular expression for the substring expression.
      * 
      * @return the equivalent compiled regular expression
-     * @throws RESyntaxException if the regular expression is invalid
+     * @param normalizer The normalizer to use for the substring expressions
+     * @exception NamingException If the substring can't be normalized
+     * @exception PatternSyntaxException If the regexp is invalid
      */
-    public final Pattern getRegex( Normalizer normalizer ) throws PatternSyntaxException, NamingException
+    public final Pattern getRegex( Normalizer normalizer ) throws NamingException
     {
         if ( ( anyPattern != null ) && ( anyPattern.size() > 0 ) )
         {
@@ -231,12 +232,38 @@ public class SubstringNode extends LeafNode
 
 
     /**
+     * @see Object#hashCode()
+     * @return the instance's hash code 
+     */
+    public int hashCode()
+    {
+        int h = 37;
+        
+        h = h*17 + super.hashCode();
+        h = h*17 + ( initialPattern != null ? initialPattern.hashCode() : 0 );
+        
+        if ( anyPattern != null )
+        {
+            for ( String pattern:anyPattern )
+            {
+                h = h*17 + pattern.hashCode();
+            }
+        }
+        
+        h = h*17 + ( finalPattern != null ? finalPattern.hashCode() : 0 );
+        
+        return h;
+    }
+
+
+    /**
      * @see java.lang.Object#toString()
+     * @return A string representing the AndNode
      */
     public String toString()
     {
-    	StringBuilder buf = new StringBuilder();
-    	
+        StringBuilder buf = new StringBuilder();
+        
         buf.append( '(' ).append( getAttribute() ).append( '=' );
 
         if ( null != initialPattern )
@@ -250,11 +277,11 @@ public class SubstringNode extends LeafNode
 
         if ( null != anyPattern )
         {
-	        for ( String any:anyPattern )
-	        {
-	            buf.append( any );
-	            buf.append( '*' );
-	        }
+            for ( String any:anyPattern )
+            {
+                buf.append( any );
+                buf.append( '*' );
+            }
         }
 
         if ( null != finalPattern )
@@ -267,14 +294,5 @@ public class SubstringNode extends LeafNode
         buf.append( ')' );
         
         return buf.toString();
-    }
-
-
-    /**
-     * @see ExprNode#printRefinementToBuffer(StringBuilder)
-     */
-    public StringBuilder printRefinementToBuffer( StringBuilder buf ) throws UnsupportedOperationException
-    {
-        throw new UnsupportedOperationException( "SubstringNode can't be part of a refinement" );
     }
 }

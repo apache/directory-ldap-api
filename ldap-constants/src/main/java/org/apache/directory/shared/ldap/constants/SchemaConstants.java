@@ -40,7 +40,7 @@ public interface SchemaConstants
     String[] ALL_OPERATIONAL_ATTRIBUTES_ARRAY = new String[]{ ALL_OPERATIONAL_ATTRIBUTES };
     
     // ---- ObjectClasses -----------------------------------------------------
-	// Krb5Principal
+    // Krb5Principal
     String KRB5_PRINCIPAL_OC = "krb5Principal";
     String KRB5_PRINCIPAL_OC_OID = "1.3.6.1.4.1.5322.10.2.1";
     
@@ -100,6 +100,10 @@ public interface SchemaConstants
     String ACCESS_CONTROL_SUBENTRY_OC = "accessControlSubentry";
     String ACCESS_CONTROL_SUBENTRY_OC_OID = "2.5.17.1";
     
+    // CollectiveAttributeSubentry
+    String COLLECTIVE_ATTRIBUTE_SUBENTRY_OC = "collectiveAttributeSubentry";
+    String COLLECTIVE_ATTRIBUTE_SUBENTRY_OC_OID = "2.5.17.2";
+
     // Subschema
     String SUBSCHEMA_OC = "subschema";
     String SUBSCHEMA_OC_OID = "2.5.20.1";
@@ -152,7 +156,11 @@ public interface SchemaConstants
     String UNIQUE_MEMBER_AT = "uniqueMember";
     String UNIQUE_MEMBER_AT_OID = "2.5.4.50";
 
-    // CreateTimestamp
+    // ExcludeAllColectiveAttributes
+    String EXCLUDE_ALL_COLLECTIVE_ATTRIBUTES_AT = "excludeAllCollectiveAttributes";
+    String EXCLUDE_ALL_COLLECTIVE_ATTRIBUTES_AT_OID = "2.5.18.0";
+    
+        // CreateTimestamp
     String CREATE_TIMESTAMP_AT = "createTimestamp";
     String CREATE_TIMESTAMP_AT_OID = "2.5.18.1";
     
@@ -240,11 +248,43 @@ public interface SchemaConstants
     // UidObject
     String UID_OBJECT_AT = "uidObject";
     String UID_OBJECT_AT_OID = "1.3.6.1.1.3.1";
+    
+    // VendorName
+    String VENDOR_NAME_AT = "vendorName";
+    String VENDOR_NAME_AT_OID = "1.3.6.1.1.4";
+    
+    // VendorVersion
+    String VENDOR_VERSION_AT = "vendorVersion";
+    String VENDOR_VERSION_AT_OID = "1.3.6.1.1.5";
+    
+    // NamingContexts
+    String NAMING_CONTEXTS_AT = "namingContexts";
+    String NAMING_CONTEXTS_AT_OID = "1.3.6.1.4.1.1466.101.120.5";
+    
+    // SupportedExtension
+    String SUPPORTED_EXTENSION_AT = "supportedExtension";
+    String SUPPORTED_EXTENSION_AT_OID = "1.3.6.1.4.1.1466.101.120.7";
+
+    // supportedSASLMechanisms
+    String SUPPORTED_SASL_MECHANISMS_AT = "supportedSASLMechanisms";
+    String SUPPORTED_SASL_MECHANISMS_AT_OID = "1.3.6.1.4.1.1466.101.120.14";
+    
+    // supportedControl
+    String SUPPORTED_CONTROL_AT = "supportedControl";
+    String SUPPORTED_CONTROL_AT_OID = "1.3.6.1.4.1.1466.101.120.13";
+    
+    // SupportedLdapVersion
+    String SUPPORTED_LDAP_VERSION_AT = "supportedLDAPVersion";
+    String SUPPORTED_LDAP_VERSION_AT_OID = "1.3.6.1.4.1.1466.101.120.15";
 
     // LdapSyntaxes
     String LDAP_SYNTAXES_AT = "ldapSyntaxes";
     String LDAP_SYNTAXES_AT_OID = "1.3.6.1.4.1.1466.101.120.16";
-
+    
+    // SupportedFeatures
+    String SUPPORTED_FEATURES_AT = "supportedFeatures";
+    String SUPPORTED_FEATURES_AT_OID = "1.3.6.1.4.1.4203.1.3.5";
+    
     // AccessControlSubentries
     String ACCESS_CONTROL_SUBENTRIES_AT = "accessControlSubentries";
     String ACCESS_CONTROL_SUBENTRIES_AT_OID = "1.3.6.1.4.1.18060.0.4.1.2.11";
@@ -268,7 +308,7 @@ public interface SchemaConstants
     // Ref
     String REF_AT = "ref";
     String REF_AT_OID = "2.16.840.1.113730.3.1.34";
-    	
+
     // DisplayName
     String DISPLAY_NAME_AT = "displayName";
     String DISPLAY_NAME_AT_OID = "2.16.840.1.113730.3.1.241";
@@ -301,4 +341,7 @@ public interface SchemaConstants
     String BIT_STRING_MR = "bitStringMatch";
     String GENERALIZED_TIME_MR = "generalizedTimeMatch";
     String GENERALIZED_TIME_ORDERING_MR = "generalizedTimeOrderingMatch";
+    
+    // ---- Features ----------------------------------------------------------
+    String FEATURE_ALL_OPERATIONAL_ATTRIBUTES = "1.3.6.1.4.1.4203.1.5.1";
 }

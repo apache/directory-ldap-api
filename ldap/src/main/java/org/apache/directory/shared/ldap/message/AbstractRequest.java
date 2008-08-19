@@ -65,12 +65,13 @@ public class AbstractRequest extends AbstractMessage implements Request
     
     /**
      * @see Object#hashCode()
+     * @return the instance's hash code 
      */
     public int hashCode()
     {
-        int hash = 7;
-        hash = hash*31 + (hasResponse ? 0 : 1 );
-        hash = hash*31 + super.hashCode();
+        int hash = 37;
+        hash = hash*17 + (hasResponse ? 0 : 1 );
+        hash = hash*17 + super.hashCode();
         
         return hash;
     }

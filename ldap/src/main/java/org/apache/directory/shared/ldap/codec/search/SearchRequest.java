@@ -20,6 +20,14 @@
 package org.apache.directory.shared.ldap.codec.search;
 
 
+import java.io.UnsupportedEncodingException;
+import java.nio.BufferOverflowException;
+import java.nio.ByteBuffer;
+
+import javax.naming.NamingEnumeration;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
+
 import org.apache.directory.shared.asn1.Asn1Object;
 import org.apache.directory.shared.asn1.ber.IAsn1Container;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
@@ -35,20 +43,13 @@ import org.apache.directory.shared.ldap.message.AttributesImpl;
 import org.apache.directory.shared.ldap.message.ScopeEnum;
 import org.apache.directory.shared.ldap.name.LdapDN;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.BufferOverflowException;
-import java.nio.ByteBuffer;
-
-import javax.naming.NamingEnumeration;
-import javax.naming.directory.Attribute;
-import javax.naming.directory.Attributes;
-
 
 /**
  * A SearchRequest ldapObject. It's a sub-class of Asn1Object, and it implements
  * the ldapObject class to be seen as a member of the LdapMessage CHOICE.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
 public class SearchRequest extends LdapMessage
 {
@@ -492,12 +493,12 @@ public class SearchRequest extends LdapMessage
 
         if ( ( attributes != null ) && ( attributes.size() != 0 ) )
         {
-            NamingEnumeration attributeIterator = attributes.getAll();
+            NamingEnumeration<? extends Attribute> attributeIterator = attributes.getAll();
 
             // Compute the attributes length
             while ( attributeIterator.hasMoreElements() )
             {
-                Attribute attribute = ( AttributeImpl ) attributeIterator.nextElement();
+                Attribute attribute = attributeIterator.nextElement();
 
                 // add the attribute length to the attributes length
                 try
@@ -586,7 +587,7 @@ public class SearchRequest extends LdapMessage
 
             if ( ( attributes != null ) && ( attributes.size() != 0 ) )
             {
-                NamingEnumeration attributeIterator = attributes.getAll();
+                NamingEnumeration<? extends Attribute> attributeIterator = attributes.getAll();
 
                 // encode each attribute
                 while ( attributeIterator.hasMoreElements() )
@@ -633,14 +634,14 @@ public class SearchRequest extends LdapMessage
 
         if ( attributes != null )
         {
-            NamingEnumeration attrs = attributes.getAll();
+            NamingEnumeration<? extends Attribute> attrs = attributes.getAll();
             boolean isFirst = true;
     
             if ( attrs != null )
             {
                 while ( attrs.hasMoreElements() )
                 {
-                    Attribute attr = ( AttributeImpl ) attrs.nextElement();
+                    Attribute attr = attrs.nextElement();
         
                     if ( isFirst )
                     {

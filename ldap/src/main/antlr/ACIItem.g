@@ -32,7 +32,6 @@ import java.util.Set;
 import java.util.Enumeration;
 
 import javax.naming.directory.Attribute;
-import javax.naming.Name;
 
 import org.apache.directory.shared.ldap.filter.BranchNode;
 import org.apache.directory.shared.ldap.filter.AndNode;
@@ -54,7 +53,9 @@ import org.apache.directory.shared.ldap.util.NoDuplicateKeysMap;
 import org.apache.directory.shared.ldap.util.OptionalComponentsMonitor;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
+import org.apache.directory.shared.ldap.constants.AuthenticationLevel;
 import org.apache.directory.shared.ldap.schema.OidNormalizer;
+import org.apache.directory.shared.ldap.entry.client.ClientStringValue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,8 +126,8 @@ tokens
     private Set<UserPermission> userPermissions;
     private Map<String, OidNormalizer> oidsMap;
     
-    private Set<Name> chopBeforeExclusions;
-    private Set<Name> chopAfterExclusions;
+    private Set<LdapDN> chopBeforeExclusions;
+    private Set<LdapDN> chopAfterExclusions;
     private SubtreeSpecificationModifier ssModifier = null;
     
     private ComponentsMonitor mainACIItemComponentsMonitor;
@@ -144,7 +145,7 @@ tokens
      */
     public void init( Map<String, OidNormalizer> oidsMap )
     {
-    	this.oidsMap = oidsMap;
+        this.oidsMap = oidsMap;
     }
 
     /**
@@ -882,7 +883,7 @@ thisEntry
 name
 {
     log.debug( "entered name()" );
-    Set<Name> names = new HashSet<Name>();
+    Set<LdapDN> names = new HashSet<LdapDN>();
     LdapDN distinguishedName = null;
 }
     :
@@ -905,7 +906,7 @@ name
 userGroup
 {
     log.debug( "entered userGroup()" );
-    Set<Name> userGroup = new HashSet<Name>();
+    Set<LdapDN> userGroup = new HashSet<LdapDN>();
     LdapDN distinguishedName = null;
 }
     :
@@ -1021,8 +1022,8 @@ subtreeSpecification returns [SubtreeSpecification ss]
     // in case something is left from the last parse
     ss = null;
     ssModifier = new SubtreeSpecificationModifier();
-    chopBeforeExclusions = new HashSet<Name>();
-    chopAfterExclusions = new HashSet<Name>();
+    chopBeforeExclusions = new HashSet<LdapDN>();
+    chopAfterExclusions = new HashSet<LdapDN>();
     subtreeSpecificationComponentsMonitor = new OptionalComponentsMonitor( 
             new String [] { "base", "specificExclusions", "minimum", "maximum" } );
 }
@@ -1223,7 +1224,7 @@ item returns [ LeafNode node ]
     :
     ID_item ( SP )* COLON ( SP )* oid=oid
     {
-        node = new EqualityNode( SchemaConstants.OBJECT_CLASS_AT , oid );
+        node = new EqualityNode( SchemaConstants.OBJECT_CLASS_AT , new ClientStringValue( oid ) );
     }
     ;
 

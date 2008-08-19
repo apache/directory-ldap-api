@@ -36,6 +36,7 @@ import org.apache.directory.shared.ldap.util.StringTools;
  * A Asn1Object to store a Control.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$, 
  */
 public class Control extends AbstractAsn1Object
 {
@@ -119,7 +120,13 @@ public class Control extends AbstractAsn1Object
      */
     public void setEncodedValue( byte[] encodedValue )
     {
-        this.encodedValue = encodedValue;
+        if ( encodedValue != null )
+        {
+            this.encodedValue = new byte[ encodedValue.length ];
+            System.arraycopy( encodedValue, 0, this.encodedValue, 0, encodedValue.length );
+        } else {
+            this.encodedValue = null;
+        }
     }
 
 
@@ -135,7 +142,9 @@ public class Control extends AbstractAsn1Object
             return StringTools.EMPTY_BYTES;
         }
 
-        return encodedValue;
+        final byte[] copy = new byte[ encodedValue.length ];
+        System.arraycopy( encodedValue, 0, copy, 0, encodedValue.length );
+        return copy;
     }
 
 
@@ -257,7 +266,7 @@ public class Control extends AbstractAsn1Object
         }
 
         // The control type
-        Value.encode( buffer, controlType.getBytes() );
+        Value.encode( buffer, getControlType().getBytes() );
 
         // The control criticality, if true
         if ( criticality )
