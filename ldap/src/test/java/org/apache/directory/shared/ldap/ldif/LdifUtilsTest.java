@@ -72,6 +72,25 @@ public class LdifUtilsTest
         return entry;
     }
 
+    /**
+     * Tests the method IsLdifSafe with a null String
+     */
+    @Test
+    public void testIsLdifNullString()
+    {
+        assertTrue( LdifUtils.isLDIFSafe( null ) );
+    }
+    
+
+    /**
+     * Tests the method IsLdifSafe with an empty String
+     */
+    @Test
+    public void testIsLdifEmptyString()
+    {
+        assertTrue( LdifUtils.isLDIFSafe( "" ) );
+    }
+
     
     /**
      * Tests the method IsLdifSafe with a String starting with the
@@ -84,6 +103,7 @@ public class LdifUtilsTest
         
         assertFalse( LdifUtils.isLDIFSafe( c + testString ) );
     }
+    
     
     /**
      * Tests the method IsLdifSafe with a String starting with the

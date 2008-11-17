@@ -76,6 +76,7 @@ import org.apache.directory.shared.ldap.filter.LessEqNode;
 import org.apache.directory.shared.ldap.filter.NotNode;
 import org.apache.directory.shared.ldap.filter.OrNode;
 import org.apache.directory.shared.ldap.filter.PresenceNode;
+import org.apache.directory.shared.ldap.filter.SimpleNode;
 import org.apache.directory.shared.ldap.filter.SubstringNode;
 import org.apache.directory.shared.ldap.message.AbandonRequestImpl;
 import org.apache.directory.shared.ldap.message.AddRequestImpl;
@@ -107,8 +108,6 @@ import org.apache.directory.shared.ldap.message.control.CascadeControl;
 import org.apache.directory.shared.ldap.message.control.PersistentSearchControl;
 import org.apache.directory.shared.ldap.message.control.SubentriesControl;
 import org.apache.directory.shared.ldap.message.extended.GracefulShutdownRequest;
-import org.apache.directory.shared.ldap.message.spi.Provider;
-import org.apache.directory.shared.ldap.message.spi.TransformerSpi;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.util.StringTools;
@@ -122,38 +121,13 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org"> Apache Directory Project</a>
  * @version $Rev$, $Date$, 
  */
-public class TwixTransformer implements TransformerSpi
+public class TwixTransformer
 {
     /** The logger */
-    private static Logger log = LoggerFactory.getLogger( TwixTransformer.class );
+    private static Logger LOG = LoggerFactory.getLogger( TwixTransformer.class );
 
     /** A speedup for logger */
-    private static final boolean IS_DEBUG = log.isDebugEnabled();
-    
-    /** the provider this transformer is part of */
-    private final Provider provider;
-
-
-    /**
-     * Creates a passthrough transformer that really does nothing at all.
-     * 
-     * @param provider the provider for this transformer
-     */
-    public TwixTransformer(Provider provider)
-    {
-        this.provider = provider;
-    }
-
-
-    /**
-     * Gets the Provider associated with this SPI implementation object.
-     * 
-     * @return Provider.
-     */
-    public Provider getProvider()
-    {
-        return provider;
-    }
+    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
 
     /**
@@ -164,7 +138,7 @@ public class TwixTransformer implements TransformerSpi
      * @param messageId The message Id
      * @return A Snickers AbandonRequestImpl
      */
-    private Message transformAbandonRequest( LdapMessage twixMessage, int messageId )
+    public static Message transformAbandonRequest( LdapMessage twixMessage, int messageId )
     {
         AbandonRequestImpl snickersMessage = new AbandonRequestImpl( messageId );
         AbandonRequest abandonRequest = twixMessage.getAbandonRequest();
@@ -183,7 +157,7 @@ public class TwixTransformer implements TransformerSpi
      * @param messageId The message Id
      * @return A Snickers AddRequestImpl
      */
-    private Message transformAddRequest( LdapMessage twixMessage, int messageId )
+    public static Message transformAddRequest( LdapMessage twixMessage, int messageId )
     {
         AddRequestImpl snickersMessage = new AddRequestImpl( messageId );
         AddRequest addRequest = twixMessage.getAddRequest();
@@ -205,7 +179,7 @@ public class TwixTransformer implements TransformerSpi
      * @param messageId The message Id
      * @return A Snickers BindRequestImpl
      */
-    private Message transformBindRequest( LdapMessage twixMessage, int messageId )
+    public static Message transformBindRequest( LdapMessage twixMessage, int messageId )
     {
         BindRequestImpl snickersMessage = new BindRequestImpl( messageId );
         BindRequest bindRequest = twixMessage.getBindRequest();
@@ -248,7 +222,7 @@ public class TwixTransformer implements TransformerSpi
      * @param messageId The message Id
      * @return a Snickers BindResponseImpl
      */
-    private Message transformBindResponse( LdapMessage twixMessage, int messageId )
+    public static Message transformBindResponse( LdapMessage twixMessage, int messageId )
     {
         BindResponseImpl snickersMessage = new BindResponseImpl( messageId );
         BindResponse bindResponse = twixMessage.getBindResponse();
@@ -268,7 +242,7 @@ public class TwixTransformer implements TransformerSpi
      * @param twixResult the Twix LdapResult representation
      * @param snickersResult the Snickers LdapResult representation
      */
-    private void transformLdapResultTwixToSnickers( LdapResult twixResult, 
+    public static void transformLdapResultTwixToSnickers( LdapResult twixResult, 
         org.apache.directory.shared.ldap.message.LdapResult snickersResult )
     {
         snickersResult.setErrorMessage( twixResult.getErrorMessage() );
@@ -279,7 +253,7 @@ public class TwixTransformer implements TransformerSpi
         }
         catch ( InvalidNameException e )
         {
-            log.error( "Could not parse matchedDN while transforming twix value to snickers: {}", 
+        	LOG.error( "Could not parse matchedDN while transforming twix value to snickers: {}", 
                 twixResult.getMatchedDN() );
             snickersResult.setMatchedDn( new LdapDN() );
         }
@@ -312,7 +286,7 @@ public class TwixTransformer implements TransformerSpi
      * @param messageId The message Id
      * @return A Snickers CompareRequestImpl
      */
-    private Message transformCompareRequest( LdapMessage twixMessage, int messageId )
+    public static Message transformCompareRequest( LdapMessage twixMessage, int messageId )
     {
         CompareRequestImpl snickersMessage = new CompareRequestImpl( messageId );
         CompareRequest compareRequest = twixMessage.getCompareRequest();
@@ -344,7 +318,7 @@ public class TwixTransformer implements TransformerSpi
      * @param messageId The message Id
      * @return A Snickers DeleteRequestImpl
      */
-    private Message transformDelRequest( LdapMessage twixMessage, int messageId )
+    public static Message transformDelRequest( LdapMessage twixMessage, int messageId )
     {
         DeleteRequestImpl snickersMessage = new DeleteRequestImpl( messageId );
         DelRequest delRequest = twixMessage.getDelRequest();
@@ -364,7 +338,7 @@ public class TwixTransformer implements TransformerSpi
      * @param messageId The message Id
      * @return A Snickers ExtendedRequestImpl
      */
-    private Message transformExtendedRequest( LdapMessage twixMessage, int messageId )
+    public static Message transformExtendedRequest( LdapMessage twixMessage, int messageId )
     {
         ExtendedRequest extendedRequest = twixMessage.getExtendedRequest();
         ExtendedRequestImpl snickersMessage;
@@ -396,7 +370,7 @@ public class TwixTransformer implements TransformerSpi
      * @param messageId The message Id
      * @return A Snickers ModifyDNRequestImpl
      */
-    private Message transformModifyDNRequest( LdapMessage twixMessage, int messageId )
+    public static Message transformModifyDNRequest( LdapMessage twixMessage, int messageId )
     {
         ModifyDnRequestImpl snickersMessage = new ModifyDnRequestImpl( messageId );
         ModifyDNRequest modifyDNRequest = twixMessage.getModifyDNRequest();
@@ -424,7 +398,7 @@ public class TwixTransformer implements TransformerSpi
      * @param messageId The message Id
      * @return A Snickers ModifyRequestImpl
      */
-    private Message transformModifyRequest( LdapMessage twixMessage, int messageId )
+    public static Message transformModifyRequest( LdapMessage twixMessage, int messageId )
     {
         ModifyRequestImpl snickersMessage = new ModifyRequestImpl( messageId );
         ModifyRequest modifyRequest = twixMessage.getModifyRequest();
@@ -447,12 +421,12 @@ public class TwixTransformer implements TransformerSpi
 
 
     /**
-     * Transform the Filter part of a SearchRequest to en ExprNode
+     * Transform the Filter part of a SearchRequest to an ExprNode
      * 
      * @param twixFilter The filter to be transformed
      * @return An ExprNode
      */
-    private ExprNode transformFilter( Filter twixFilter )
+    public static ExprNode transformFilter( Filter twixFilter )
     {
         if ( twixFilter != null )
         {
@@ -605,6 +579,157 @@ public class TwixTransformer implements TransformerSpi
         }
     }
 
+    /**
+     * Transform an ExprNode filter to a TwixFilter
+     * 
+     * @param exprNode The filter to be transformed
+     * @return A Twix filter
+     */
+    public static Filter transformFilter( ExprNode exprNode )
+    {
+        if ( exprNode != null )
+        {
+            Filter filter  = null;
+
+            // Transform OR, AND or NOT leaves
+            if ( exprNode instanceof BranchNode )
+            {
+                if ( exprNode instanceof AndNode )
+                {
+                    filter = new AndFilter();
+                }
+                else if ( exprNode instanceof OrNode )
+                {
+                    filter = new OrFilter();
+                }
+                else if ( exprNode instanceof NotNode )
+                {
+                    filter = new NotFilter();
+                }
+
+                List<ExprNode> children = ((BranchNode)exprNode).getChildren();
+
+                // Loop on all AND/OR children
+                if ( children != null )
+                {
+                    for ( ExprNode child:children )
+                    {
+                        try
+                        {
+                            ((ConnectorFilter)filter).addFilter( transformFilter( child ) );
+                        }
+                        catch ( DecoderException de )
+                        {
+                            LOG.error( "Error while transforming a ExprNode : " + de.getMessage() );
+                            return null;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if ( exprNode instanceof PresenceNode )
+                {
+                    // Transform Presence Node
+                    filter = new PresentFilter();
+                    ((PresentFilter)filter).setAttributeDescription( ((PresenceNode)exprNode).getAttribute() );
+                }
+                else if ( exprNode instanceof SimpleNode<?> )
+                {
+                    if ( exprNode instanceof EqualityNode<?> )
+                    {
+                        filter = new AttributeValueAssertionFilter( LdapConstants.EQUALITY_MATCH_FILTER );
+                        AttributeValueAssertion assertion = new AttributeValueAssertion();
+                        assertion.setAttributeDesc( ((EqualityNode<?>)exprNode).getAssertionType().name() );
+                        assertion.setAssertionValue( ((EqualityNode<?>)exprNode).getValue() );
+                        ((AttributeValueAssertionFilter)filter).setAssertion( assertion );
+                    }
+                    else if ( exprNode instanceof GreaterEqNode<?> ) 
+                    {
+                        filter = new AttributeValueAssertionFilter( LdapConstants.GREATER_OR_EQUAL_FILTER );
+                        AttributeValueAssertion assertion = new AttributeValueAssertion();
+                        assertion.setAttributeDesc( ((EqualityNode<?>)exprNode).getAssertionType().name() );
+                        assertion.setAssertionValue( ((EqualityNode<?>)exprNode).getValue() );
+                        ((AttributeValueAssertionFilter)filter).setAssertion( assertion );
+                    }
+                    else if ( exprNode instanceof LessEqNode<?> ) 
+                    {
+                        filter = new AttributeValueAssertionFilter( LdapConstants.LESS_OR_EQUAL_FILTER );
+                        AttributeValueAssertion assertion = new AttributeValueAssertion();
+                        assertion.setAttributeDesc( ((EqualityNode<?>)exprNode).getAssertionType().name() );
+                        assertion.setAssertionValue( ((EqualityNode<?>)exprNode).getValue() );
+                        ((AttributeValueAssertionFilter)filter).setAssertion( assertion );
+                    }
+                    else if ( exprNode instanceof ApproximateNode<?> )
+                    {
+                        filter = new AttributeValueAssertionFilter( LdapConstants.APPROX_MATCH_FILTER );
+                        AttributeValueAssertion assertion = new AttributeValueAssertion();
+                        assertion.setAttributeDesc( ((EqualityNode<?>)exprNode).getAssertionType().name() );
+                        assertion.setAssertionValue( ((EqualityNode<?>)exprNode).getValue() );
+                        ((AttributeValueAssertionFilter)filter).setAssertion( assertion );
+                    }
+                }
+                else if ( exprNode instanceof SubstringNode )
+                {
+                    // Transform Substring Nodes
+                    filter = new SubstringFilter();
+
+                    String initialString = ((SubstringNode)exprNode).getInitial();
+                    String finalString = ((SubstringNode)exprNode).getFinal();
+                    List<String> anyStrings = ((SubstringNode)exprNode).getAny();
+
+                    if ( initialString != null )
+                    {
+                        ((SubstringFilter)filter).setInitialSubstrings( initialString );
+                    }
+
+                    if ( finalString != null )
+                    {
+                        ((SubstringFilter)filter).setFinalSubstrings( finalString );
+                    }
+
+                    if ( anyStrings != null )
+                    {
+                        for ( String any:anyStrings )
+                        {
+                            ((SubstringFilter)filter).addAnySubstrings( any );
+                        }
+                    }
+                }
+                else if ( exprNode instanceof ExtensibleNode )
+                {
+                    // Transform Extensible Node
+                    filter = new ExtensibleMatchFilter();
+                    
+                    String attribute = ((ExtensibleNode)exprNode).getAttribute();
+                    String matchingRule = ((ExtensibleNode)exprNode).getMatchingRuleId();
+                    boolean dnAttributes = ((ExtensibleNode)exprNode).hasDnAttributes();
+                    Object value = ((ExtensibleNode)exprNode).getValue();
+
+                    if ( attribute != null )
+                    {
+                        ((ExtensibleMatchFilter)filter).setType( attribute );
+                    }
+
+                    if ( matchingRule != null )
+                    {
+                        ((ExtensibleMatchFilter)filter).setMatchingRule( matchingRule );
+                    }
+
+                    ((ExtensibleMatchFilter)filter).setMatchValue( value );
+                    ((ExtensibleMatchFilter)filter).setDnAttributes( dnAttributes );
+                }
+            }
+
+            return filter;
+        }
+        else
+        {
+            // We have found nothing to transform. Return null then.
+            return null;
+        }
+    }
+
 
     /**
      * Transform a SearchRequest message from a TwixMessage to a SnickersMessage
@@ -613,7 +738,7 @@ public class TwixTransformer implements TransformerSpi
      * @param messageId The message Id
      * @return A Snickers SearchRequestImpl
      */
-    private Message transformSearchRequest( LdapMessage twixMessage, int messageId )
+    public static Message transformSearchRequest( LdapMessage twixMessage, int messageId )
     {
         SearchRequestImpl snickersMessage = new SearchRequestImpl( messageId );
         SearchRequest searchRequest = twixMessage.getSearchRequest();
@@ -687,7 +812,7 @@ public class TwixTransformer implements TransformerSpi
      * @param messageId The message Id
      * @return A Snickers UnBindRequestImpl
      */
-    private Message transformUnBindRequest( LdapMessage twixMessage, int messageId )
+    public static Message transformUnBindRequest( LdapMessage twixMessage, int messageId )
     {
         return new UnbindRequestImpl( messageId );
     }
@@ -699,14 +824,14 @@ public class TwixTransformer implements TransformerSpi
      * @param obj the object to transform
      * @return the object transformed
      */
-    public Message transform( Object obj )
+    public static Message transform( Object obj )
     {
         LdapMessage twixMessage = ( LdapMessage ) obj;
         int messageId = twixMessage.getMessageId();
 
         if ( IS_DEBUG )
         {
-            log.debug( "Transforming LdapMessage <" + messageId + ", " + twixMessage.getMessageTypeName()
+        	LOG.debug( "Transforming LdapMessage <" + messageId + ", " + twixMessage.getMessageTypeName()
                 + "> from Twix to Snickers." );
         }
 
@@ -859,7 +984,7 @@ public class TwixTransformer implements TransformerSpi
      * @param snickersLdapResult the Snickers LdapResult to transform
      * @return A Twix LdapResult
      */
-    private LdapResult transformLdapResult( LdapResultImpl snickersLdapResult )
+    public static LdapResult transformLdapResult( LdapResultImpl snickersLdapResult )
     {
         LdapResult twixLdapResult = new LdapResult();
 
@@ -890,7 +1015,7 @@ public class TwixTransformer implements TransformerSpi
                 }
                 catch ( LdapURLEncodingException lude )
                 {
-                    log.warn( "The referral " + referral + " is invalid : " + lude.getMessage() );
+                	LOG.warn( "The referral " + referral + " is invalid : " + lude.getMessage() );
                     twixLdapResult.addReferral( LdapURL.EMPTY_URL );
                 }
             }
@@ -906,7 +1031,7 @@ public class TwixTransformer implements TransformerSpi
      * @param twixMessage The Twix AddResponse to produce
      * @param snickersMessage The incoming Snickers AddResponse
      */
-    private void transformAddResponse( LdapMessage twixMessage, Message snickersMessage )
+    public static void transformAddResponse( LdapMessage twixMessage, Message snickersMessage )
     {
         AddResponseImpl snickersAddResponse = ( AddResponseImpl ) snickersMessage;
 
@@ -926,7 +1051,7 @@ public class TwixTransformer implements TransformerSpi
      * @param twixMessage The Twix BindResponse to produce
      * @param snickersMessage The incoming Snickers BindResponse
      */
-    private void transformBindResponse( LdapMessage twixMessage, Message snickersMessage )
+    public static void transformBindResponse( LdapMessage twixMessage, Message snickersMessage )
     {
         BindResponseImpl snickersBindResponse = ( BindResponseImpl ) snickersMessage;
 
@@ -955,7 +1080,7 @@ public class TwixTransformer implements TransformerSpi
      * @param twixMessage The Twix BindRequest to produce
      * @param snickersMessage The incoming Snickers BindRequest
      */
-    private void transformBindRequest( LdapMessage twixMessage, Message snickersMessage )
+    public static void transformBindRequest( LdapMessage twixMessage, Message snickersMessage )
     {
         BindRequestImpl snickersBindRequest = ( BindRequestImpl ) snickersMessage;
 
@@ -990,7 +1115,7 @@ public class TwixTransformer implements TransformerSpi
      * @param twixMessage The Twix CompareResponse to produce
      * @param snickersMessage The incoming Snickers CompareResponse
      */
-    private void transformCompareResponse( LdapMessage twixMessage, Message snickersMessage )
+    public static void transformCompareResponse( LdapMessage twixMessage, Message snickersMessage )
     {
         CompareResponseImpl snickersCompareResponse = ( CompareResponseImpl ) snickersMessage;
 
@@ -1011,7 +1136,7 @@ public class TwixTransformer implements TransformerSpi
      * @param twixMessage The Twix DelResponse to produce
      * @param snickersMessage The incoming Snickers DelResponse
      */
-    private void transformDelResponse( LdapMessage twixMessage, Message snickersMessage )
+    public static void transformDelResponse( LdapMessage twixMessage, Message snickersMessage )
     {
         DeleteResponseImpl snickersDelResponse = ( DeleteResponseImpl ) snickersMessage;
 
@@ -1031,7 +1156,7 @@ public class TwixTransformer implements TransformerSpi
      * @param twixMessage The Twix ExtendedResponse to produce
      * @param snickersMessage The incoming Snickers ExtendedResponse
      */
-    private void transformExtendedResponse( LdapMessage twixMessage, Message snickersMessage )
+    public static void transformExtendedResponse( LdapMessage twixMessage, Message snickersMessage )
     {
         ExtendedResponseImpl snickersExtendedResponse = ( ExtendedResponseImpl ) snickersMessage;
         ExtendedResponse extendedResponse = new ExtendedResponse();
@@ -1043,7 +1168,7 @@ public class TwixTransformer implements TransformerSpi
         }
         catch ( DecoderException de )
         {
-            log.warn( "The OID " + snickersExtendedResponse.getResponseName() + " is invalid : " + de.getMessage() );
+        	LOG.warn( "The OID " + snickersExtendedResponse.getResponseName() + " is invalid : " + de.getMessage() );
             extendedResponse.setResponseName( null );
         }
 
@@ -1065,7 +1190,7 @@ public class TwixTransformer implements TransformerSpi
      * @param twixMessage The Twix ModifyResponse to produce
      * @param snickersMessage The incoming Snickers ModifyResponse
      */
-    private void transformModifyResponse( LdapMessage twixMessage, Message snickersMessage )
+    public static void transformModifyResponse( LdapMessage twixMessage, Message snickersMessage )
     {
         ModifyResponseImpl snickersModifyResponse = ( ModifyResponseImpl ) snickersMessage;
 
@@ -1085,7 +1210,7 @@ public class TwixTransformer implements TransformerSpi
      * @param twixMessage The Twix ModifyDNResponse to produce
      * @param snickersMessage The incoming Snickers ModifyDNResponse
      */
-    private void transformModifyDNResponse( LdapMessage twixMessage, Message snickersMessage )
+    public static void transformModifyDNResponse( LdapMessage twixMessage, Message snickersMessage )
     {
         ModifyDnResponseImpl snickersModifyDNResponse = ( ModifyDnResponseImpl ) snickersMessage;
 
@@ -1106,7 +1231,7 @@ public class TwixTransformer implements TransformerSpi
      * @param twixMessage The Twix SearchResultDone to produce
      * @param snickersMessage The incoming Snickers SearchResponseDone
      */
-    private void transformSearchResultDone( LdapMessage twixMessage, Message snickersMessage )
+    public static void transformSearchResultDone( LdapMessage twixMessage, Message snickersMessage )
     {
         SearchResponseDoneImpl snickersSearchResponseDone = ( SearchResponseDoneImpl ) snickersMessage;
         SearchResultDone searchResultDone = new SearchResultDone();
@@ -1126,7 +1251,7 @@ public class TwixTransformer implements TransformerSpi
      * @param twixMessage The Twix SearchResultEntry to produce
      * @param snickersMessage The incoming Snickers SearchResponseEntry
      */
-    private void transformSearchResultEntry( LdapMessage twixMessage, Message snickersMessage )
+    public static void transformSearchResultEntry( LdapMessage twixMessage, Message snickersMessage )
     {
         SearchResponseEntryImpl snickersSearchResultResponse = ( SearchResponseEntryImpl ) snickersMessage;
         SearchResultEntry searchResultEntry = new SearchResultEntry();
@@ -1150,7 +1275,7 @@ public class TwixTransformer implements TransformerSpi
      * @param twixMessage The Twix SearchResultReference to produce
      * @param snickersMessage The incoming Snickers SearchResponseReference
      */
-    private void transformSearchResultReference( LdapMessage twixMessage, Message snickersMessage )
+    public static void transformSearchResultReference( LdapMessage twixMessage, Message snickersMessage )
     {
         SearchResponseReferenceImpl snickersSearchResponseReference = ( SearchResponseReferenceImpl ) snickersMessage;
         SearchResultReference searchResultReference = new SearchResultReference();
@@ -1174,7 +1299,7 @@ public class TwixTransformer implements TransformerSpi
                     }
                     catch ( LdapURLEncodingException luee )
                     {
-                        log.warn( "The LdapURL " + url + " is incorrect : " + luee.getMessage() );
+                    	LOG.warn( "The LdapURL " + url + " is incorrect : " + luee.getMessage() );
                     }
                 }
             }
@@ -1191,11 +1316,11 @@ public class TwixTransformer implements TransformerSpi
      * @param msg the message to transform
      * @return the msg transformed
      */
-    public Object transform( Message msg )
+    public static Object transform( Message msg )
     {
         if ( IS_DEBUG )
         {
-            log.debug( "Transforming message type " + msg.getType() );
+        	LOG.debug( "Transforming message type " + msg.getType() );
         }
 
         LdapMessage twixMessage = new LdapMessage();
@@ -1258,7 +1383,7 @@ public class TwixTransformer implements TransformerSpi
 
         if ( IS_DEBUG )
         {
-            log.debug( "Transformed message : " + twixMessage );
+        	LOG.debug( "Transformed message : " + twixMessage );
         }
 
         return twixMessage;
@@ -1272,7 +1397,7 @@ public class TwixTransformer implements TransformerSpi
      * @param twixMessage the Twix message
      * @param msg the Snickers message
      */
-    private void transformControlsTwixToSnickers( LdapMessage twixMessage, Message msg )
+    public static void transformControlsTwixToSnickers( LdapMessage twixMessage, Message msg )
     {
         if ( twixMessage.getControls() == null )
         {
@@ -1281,7 +1406,7 @@ public class TwixTransformer implements TransformerSpi
         
         for ( Control control:twixMessage.getControls() )
         {
-            log.debug( "Not decoding response control: {}", control );
+        	LOG.debug( "Not decoding response control: {}", control );
         }
     }
     
@@ -1291,7 +1416,7 @@ public class TwixTransformer implements TransformerSpi
      * @param twixMessage The Twix SearchResultReference to produce
      * @param msg The incoming Snickers SearchResponseReference
      */
-    private void transformControls( LdapMessage twixMessage, Message msg )
+    public static void transformControls( LdapMessage twixMessage, Message msg )
     {
         for ( javax.naming.ldap.Control control:msg.getControls().values() )
         {
