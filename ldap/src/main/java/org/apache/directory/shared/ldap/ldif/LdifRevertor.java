@@ -317,7 +317,32 @@ public class LdifRevertor
 
         return reverted;
     }
-
+    
+    
+    /**
+     * A helper method to generate the modified attribute after a rename.
+     */
+    private static LdifEntry generateModify( LdifEntry restored, Entry entry, Rdn oldRdn, Rdn newRdn )
+    {
+        for ( AttributeTypeAndValue ava:newRdn )
+        {
+            // No need to add something which has already been added
+            // in the previous modification
+            if ( !entry.contains( ava.getNormType(), (String)ava.getNormValue() ) &&
+                 !(ava.getNormType().equals( oldRdn.getNormType() ) &&
+                   ava.getNormValue().equals( oldRdn.getNormValue() ) ) )
+            {
+                // Create the modification, which is an Add
+                Modification modification = new ClientModification( 
+                    ModificationOperation.REMOVE_ATTRIBUTE, 
+                    new DefaultClientAttribute( oldRdn.getUpType(), (String)ava.getUpValue() ) );
+                
+                restored.addModificationItem( modification );
+            }
+        }
+        
+        return restored;
+    }
     
     
     /**
@@ -447,23 +472,7 @@ public class LdifRevertor
                         // We have to use the parent DN, the entry has already
                         // been renamed
                         restored.setDn( parentDn );
-                        
-                        for ( AttributeTypeAndValue ava:newRdn )
-                        {
-                            // No need to add something which has already been added
-                            // in the previous modification
-                            if ( !entry.contains( ava.getNormType(), (String)ava.getNormValue() ) &&
-                                 !(ava.getNormType().equals( oldRdn.getNormType() ) &&
-                                   ava.getNormValue().equals( oldRdn.getNormValue() ) ) )
-                            {
-                                // Create the modification, which is an Add
-                                Modification modification = new ClientModification( 
-                                    ModificationOperation.REMOVE_ATTRIBUTE, 
-                                    new DefaultClientAttribute( oldRdn.getUpType(), (String)ava.getUpValue() ) );
-                                
-                                restored.addModificationItem( modification );
-                            }
-                        }
+                        restored = generateModify( restored, entry, oldRdn, newRdn );
                         
                         entries.add( restored );
                     }
@@ -480,8 +489,6 @@ public class LdifRevertor
                         
                         entries.add( reverted );
                     }
-                    
-                    return entries;
                 }
                 else
                 {
@@ -506,23 +513,7 @@ public class LdifRevertor
                         // We have to use the parent DN, the entry has already
                         // been renamed
                         restored.setDn( parentDn );
-                        
-                        for ( AttributeTypeAndValue ava:newRdn )
-                        {
-                            // No need to add something which has already been added
-                            // in the previous modification
-                            if ( !entry.contains( ava.getNormType(), (String)ava.getNormValue() ) &&
-                                 !(ava.getNormType().equals( oldRdn.getNormType() ) &&
-                                   ava.getNormalizedValue().equals( oldRdn.getNormValue() ) ) )
-                            {
-                                // Create the modification, which is an Add
-                                Modification modification = new ClientModification( 
-                                    ModificationOperation.REMOVE_ATTRIBUTE, 
-                                    new DefaultClientAttribute( oldRdn.getUpType(), (String)ava.getUpValue() ) );
-                                
-                                restored.addModificationItem( modification );
-                            }
-                        }
+                        restored = generateModify( restored, entry, oldRdn, newRdn );
                         
                         entries.add( restored );
                     }
@@ -537,8 +528,6 @@ public class LdifRevertor
 
                         entries.add( reverted );
                     }
-                    
-                    return entries;
                 }
             }
             else
@@ -621,23 +610,7 @@ public class LdifRevertor
                         // We have to use the parent DN, the entry has already
                         // been renamed
                         restored.setDn( parentDn );
-                        
-                        for ( AttributeTypeAndValue ava:newRdn )
-                        {
-                            // No need to add something which has already been added
-                            // in the previous modification
-                            if ( !entry.contains( ava.getNormType(), (String)ava.getNormValue() ) &&
-                                 !(ava.getNormType().equals( oldRdn.getNormType() ) &&
-                                   ava.getNormalizedValue().equals( oldRdn.getNormValue() ) ) )
-                            {
-                                // Create the modification, which is an Add
-                                Modification modification = new ClientModification( 
-                                    ModificationOperation.REMOVE_ATTRIBUTE, 
-                                    new DefaultClientAttribute( oldRdn.getUpType(), (String)ava.getUpValue() ) );
-                                
-                                restored.addModificationItem( modification );
-                            }
-                        }
+                        restored = generateModify( restored, entry, oldRdn, newRdn );
                         
                         entries.add( restored );
                     }
