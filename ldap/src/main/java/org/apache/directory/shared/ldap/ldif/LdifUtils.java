@@ -20,11 +20,8 @@
 package org.apache.directory.shared.ldap.ldif;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 
 import org.apache.directory.shared.ldap.entry.Entry;
@@ -35,7 +32,6 @@ import org.apache.directory.shared.ldap.entry.client.ClientBinaryValue;
 import org.apache.directory.shared.ldap.entry.client.ClientStringValue;
 import org.apache.directory.shared.ldap.entry.client.DefaultClientAttribute;
 import org.apache.directory.shared.ldap.name.LdapDN;
-import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.shared.ldap.util.Base64;
 import org.apache.directory.shared.ldap.util.StringTools;
@@ -524,109 +520,6 @@ public class LdifUtils
         System.arraycopy( orig, posSrc, buffer, posDst, remaining == 0 ? charsPerLine : remaining );
         
         return new String( buffer );
-    }
-    
-    
-    /**
-     * Compute a reverse LDIF for a forward change which if in LDIF format
-     * would represent a modrdn operation.
-     *
-     * @param t0 the entry the way it was before changes were made
-     * @param t1_parentDn the new superior dn if this is a move, otherwise null
-     * @param t0_dn the dn of the entry being modified
-     * @param t1_rdn the new rdn to use
-     * @return A reverse LDIF, with potentially more than one reverse operation 
-     * @throws NamingException If something went wrong
-     */
-    public static List<LdifEntry> reverseModifyRdn( Attributes t0, LdapDN t1_parentDn, LdapDN t0_dn, Rdn t1_rdn )
-            throws NamingException
-    {
-        if ( t0_dn == null )
-        {
-            throw new NullPointerException( "t0_dn must not be null" );
-        }
-
-        if ( t0_dn.size() == 0 )
-        {
-            throw new IllegalArgumentException( "Don't think about a move op on the rootDSE." );
-        }
-
-        // if there is no rdn change then this is a raw move operation without
-        // a name change, we can delegate this to a simpler method
-        if ( t1_rdn == null )
-        {
-            List<LdifEntry> entries = new ArrayList<LdifEntry>(1);
-            LdifEntry entry = LdifRevertor.reverseMove( t1_parentDn, t0_dn );
-            entries.add( entry );
-            
-            return entries;
-        }
-
-        // -------------------------------------------------------------------
-        // Below here we do a move and change the name of the rdn all in one
-        // -------------------------------------------------------------------
-
-        // the reverse LDIF we will create
-        LdifEntry reverse = new LdifEntry();
-
-        // take the dn before the forward change was applied, and get it's
-        // parent, this parent will be the newSuperiorDn to be used for the
-        // reverse LDIF.  This is the same as t0_parentDn.
-        LdapDN reverseNewSuperiorDn = ( LdapDN ) t0_dn.clone();
-        reverseNewSuperiorDn.remove( reverseNewSuperiorDn.size() - 1 );
-
-        // take the rdn before the forward change, this will be the newRdn
-        // of the reverse LDIF, this is the same as a t0_rdn.
-        Rdn reverseNewRdn = t0_dn.getRdn();
-
-        // take the newSuperiorDn of the forward operation and append to it
-        // the new rdn of the forward operation to get the new dn after the
-        // change.  This will be the dn of the reverse ldif.  And this is just
-        // the same as t1_dn.
-        LdapDN reverseDn = ( LdapDN ) t1_parentDn.clone();
-        reverseDn.add( t1_rdn );
-
-        reverse.setDn( reverseDn );
-        reverse.setNewSuperior( reverseNewSuperiorDn.getUpName() );
-        reverse.setNewRdn( reverseNewRdn.getUpName() );
-        reverse.setChangeType( ChangeType.ModRdn );
-        reverse.setDeleteOldRdn( reverseDoDeleteOldRdn( t0, t1_rdn ) );
-
-        List<LdifEntry> entries = new ArrayList<LdifEntry>(1);
-        entries.add( reverse );
-        return entries;
-    }
-
-
-    private static boolean reverseDoDeleteOldRdn( Attributes t0_entry, Rdn t1_rdn )
-    {
-        // Consider simple example changes (rename or move does not matter)
-        // -------------------------------------------------------------------
-        // Example A:  t0 (ou=foo) => t1 (ou=bar)
-        //
-        // If at t0 ou=foo contained an ou value of 'bar' then the reverse
-        // LDIF must not delete the old rdn which would be bar.  Otherwise
-        // we must delete the old rdn.
-        //
-        // Example B:  t0 (cn=foo) => t1 (ou=bar)
-        //
-        // Here it's similar to example (A) except because the rdn attribute
-        // is different which shifts basically changes how we check for the
-        // presence of the rdn.  If cn=foo at t0 contains the ou attribute
-        // with a 'bar' value then we cannot delete the oldRdn in the reverse
-        // LDAP.  The logic below expresses this.
-        //
-        // @TODO this code stinks because it does not consider whitespace and
-        // case varience which requires schema awareness.  This must change.
-
-        // look up attribute in t0 using t1's rdn attribute type
-        Attribute t0_attr = t0_entry.get( t1_rdn.getUpType() );
-
-        // if we don't have that attribute in t0 then we need to make sure the
-        // reverse LDIF deletes the t1 rdn of 'bar', if we do have that attribute
-        // then we check if the value 'bar' is in it, if not there we delete
-        // if there we do not
-        return t0_attr == null || ! t0_attr.contains( t1_rdn.getUpValue() );
     }
 }
 

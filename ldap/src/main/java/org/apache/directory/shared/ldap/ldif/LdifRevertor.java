@@ -297,7 +297,17 @@ public class LdifRevertor
         // We have a composite old RDN, something like A=a+B=b
         // It does not matter if the RDNs overlap
         reverted.setChangeType( ChangeType.ModRdn );
-        reverted.setDn( newDn );
+        
+        if ( newSuperior != null )
+        {
+            LdapDN restoredDn = (LdapDN)((LdapDN)newSuperior.clone()).add( newRdn ); 
+            reverted.setDn( restoredDn );
+        }
+        else
+        {
+            reverted.setDn( newDn );
+        }
+        
         reverted.setNewRdn( oldRdn.getUpName() );
 
         // Is the newRdn's value present in the entry ?
@@ -355,12 +365,31 @@ public class LdifRevertor
     /**
      * A helper method which generates a reverted entry
      */
-    private static LdifEntry generateReverted( LdapDN newDn, Rdn oldRdn, boolean deleteOldRdn )
+    private static LdifEntry generateReverted( LdapDN newSuperior, Rdn newRdn, LdapDN newDn, 
+        Rdn oldRdn, boolean deleteOldRdn ) throws InvalidNameException
     {
         LdifEntry reverted = new LdifEntry();
         reverted.setChangeType( ChangeType.ModRdn );
-        reverted.setDn( newDn );
+
+        if ( newSuperior != null )
+        {
+            LdapDN restoredDn = (LdapDN)((LdapDN)newSuperior.clone()).add( newRdn ); 
+            reverted.setDn( restoredDn );
+        }
+        else
+        {
+            reverted.setDn( newDn );
+        }
+        
         reverted.setNewRdn( oldRdn.getUpName() );
+        
+        if ( newSuperior != null )
+        {
+            LdapDN oldSuperior = ( LdapDN ) newDn.clone();
+
+            oldSuperior.remove( oldSuperior.size() - 1 );
+            reverted.setNewSuperior( oldSuperior.getUpName() );
+        }
         
         // Delete the newRDN values
         reverted.setDeleteOldRdn( deleteOldRdn );
@@ -480,7 +509,7 @@ public class LdifRevertor
                         // Some of the new RDN AVAs existed in the entry
                         // We have to restore them, but we also have to remove
                         // the new values
-                        reverted = generateReverted( newDn, oldRdn, KEEP_OLD_RDN );
+                        reverted = generateReverted( newSuperior, newRdn, newDn, oldRdn, KEEP_OLD_RDN );
                         
                         entries.add( reverted );
                         
@@ -493,7 +522,7 @@ public class LdifRevertor
                     {
                         // This is the simplest case, we don't have to restore
                         // some existing values (case 8.1 and 9.1)
-                        reverted = generateReverted( newDn, oldRdn, DELETE_OLD_RDN );
+                        reverted = generateReverted( newSuperior, newRdn, newDn, oldRdn, DELETE_OLD_RDN );
                         
                         entries.add( reverted );
                     }
@@ -505,7 +534,7 @@ public class LdifRevertor
                         // Some of the new RDN AVAs existed in the entry
                         // We have to restore them, but we also have to remove
                         // the new values
-                        reverted = generateReverted( newDn, oldRdn, KEEP_OLD_RDN );
+                        reverted = generateReverted( newSuperior, newRdn, newDn, oldRdn, KEEP_OLD_RDN );
                         
                         entries.add( reverted );
                         
@@ -516,7 +545,7 @@ public class LdifRevertor
                     else
                     {
                         // A much simpler case, as we just have to remove the newRDN
-                        reverted = generateReverted( newDn, oldRdn, DELETE_OLD_RDN );
+                        reverted = generateReverted( newSuperior, newRdn, newDn, oldRdn, DELETE_OLD_RDN );
 
                         entries.add( reverted );
                     }
@@ -558,7 +587,7 @@ public class LdifRevertor
                     {
                         // In this case, we have to reestablish the removed ATAVs
                         // (Cases 12.2 and 13.2)
-                        reverted = generateReverted( newDn, oldRdn, KEEP_OLD_RDN );
+                        reverted = generateReverted( newSuperior, newRdn, newDn, oldRdn, KEEP_OLD_RDN );
     
                         entries.add( reverted );
                     }
@@ -567,7 +596,7 @@ public class LdifRevertor
                         // We can simply remove all the new RDN atavs, as the
                         // overlapping values will be re-created.
                         // (Cases 12.1 and 13.1)
-                        reverted = generateReverted( newDn, oldRdn, DELETE_OLD_RDN );
+                        reverted = generateReverted( newSuperior, newRdn, newDn, oldRdn, DELETE_OLD_RDN );
     
                         entries.add( reverted );
                     }
@@ -579,7 +608,7 @@ public class LdifRevertor
                     {
                         // In this case, we have to reestablish the removed ATAVs
                         // (Cases 10.2 and 11.2)
-                        reverted = generateReverted( newDn, oldRdn, KEEP_OLD_RDN );
+                        reverted = generateReverted( newSuperior, newRdn, newDn, oldRdn, KEEP_OLD_RDN );
     
                         entries.add( reverted );
                         
@@ -591,7 +620,7 @@ public class LdifRevertor
                     {
                         // We are safe ! We can delete all the new Rdn ATAVs
                         // (Cases 10.1 and 11.1)
-                        reverted = generateReverted( newDn, oldRdn, DELETE_OLD_RDN );
+                        reverted = generateReverted( newSuperior, newRdn, newDn, oldRdn, DELETE_OLD_RDN );
     
                         entries.add( reverted );
                     }

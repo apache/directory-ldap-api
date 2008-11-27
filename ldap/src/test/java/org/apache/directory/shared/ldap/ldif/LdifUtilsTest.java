@@ -19,8 +19,10 @@
  */
 package org.apache.directory.shared.ldap.ldif;
 
+import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.entry.client.DefaultClientAttribute;
+import org.apache.directory.shared.ldap.entry.client.DefaultClientEntry;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.name.Rdn;
 import org.apache.directory.shared.ldap.util.StringTools;
@@ -407,20 +409,13 @@ public class LdifUtilsTest
         LdapDN dn = new LdapDN( "cn=john doe, dc=example, dc=com" );
         LdapDN newSuperior = new LdapDN( "ou=system" );
 
-        Attributes attrs = new BasicAttributes( "objectClass", "person", true );
-        attrs.get( "objectClass" ).add( "uidObject" );
-                
-        Attribute attr = new BasicAttribute( "cn" );
-        
-        attr.add( "john doe" );
-        attr.add( "jack doe" );
-        
-        attrs.put( attr );
-        
-        attrs.put( "sn", "doe" );
-        attrs.put( "uid", "jdoe" );
+        Entry entry = new DefaultClientEntry( dn );
+        entry.add( "objectClass", "person", "uidObject" );
+        entry.add( "cn", "john doe", "jack doe" );
+        entry.add( "sn", "doe" );
+        entry.add( "uid", "jdoe" );
 
-        List<LdifEntry> reverseds = LdifUtils.reverseModifyRdn( attrs, newSuperior, dn, new Rdn( "cn=jack doe" ) );
+        List<LdifEntry> reverseds = LdifRevertor.reverseMoveAndRename( entry, newSuperior, new Rdn( "cn=jack doe" ), false );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
@@ -446,13 +441,13 @@ public class LdifUtilsTest
         LdapDN dn = new LdapDN( "cn=john doe, dc=example, dc=com" );
         LdapDN newSuperior = new LdapDN( "ou=system" );
 
-        Attributes attrs = new BasicAttributes( "objectClass", "person", true );
-        attrs.get( "objectClass" ).add( "uidObject" );
-        attrs.put( "cn", "john doe" );
-        attrs.put( "sn", "doe" );
-        attrs.put( "uid", "jdoe" );
+        Entry entry = new DefaultClientEntry( dn );
+        entry.add( "objectClass", "person", "uidObject" );
+        entry.add( "cn", "john doe" );
+        entry.add( "sn", "doe" );
+        entry.add( "uid", "jdoe" );
 
-        List<LdifEntry> reverseds = LdifUtils.reverseModifyRdn( attrs, newSuperior, dn, new Rdn( "cn=jack doe" ) );
+        List<LdifEntry> reverseds = LdifRevertor.reverseMoveAndRename( entry, newSuperior, new Rdn( "cn=jack doe" ), false );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
