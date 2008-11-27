@@ -322,8 +322,15 @@ public class LdifRevertor
     /**
      * A helper method to generate the modified attribute after a rename.
      */
-    private static LdifEntry generateModify( LdifEntry restored, Entry entry, Rdn oldRdn, Rdn newRdn )
+    private static LdifEntry generateModify( LdapDN parentDn, Entry entry, Rdn oldRdn, Rdn newRdn )
     {
+        LdifEntry restored = new LdifEntry();
+        restored.setChangeType( ChangeType.Modify );
+        
+        // We have to use the parent DN, the entry has already
+        // been renamed
+        restored.setDn( parentDn );
+
         for ( AttributeTypeAndValue ava:newRdn )
         {
             // No need to add something which has already been added
@@ -342,6 +349,23 @@ public class LdifRevertor
         }
         
         return restored;
+    }
+    
+    
+    /**
+     * A helper method which generates a reverted entry
+     */
+    private static LdifEntry generateReverted( LdapDN newDn, Rdn oldRdn, boolean deleteOldRdn )
+    {
+        LdifEntry reverted = new LdifEntry();
+        reverted.setChangeType( ChangeType.ModRdn );
+        reverted.setDn( newDn );
+        reverted.setNewRdn( oldRdn.getUpName() );
+        
+        // Delete the newRDN values
+        reverted.setDeleteOldRdn( deleteOldRdn );
+        
+        return reverted;
     }
     
     
@@ -456,23 +480,12 @@ public class LdifRevertor
                         // Some of the new RDN AVAs existed in the entry
                         // We have to restore them, but we also have to remove
                         // the new values
-                        reverted.setChangeType( ChangeType.ModRdn );
-                        reverted.setDn( newDn );
-                        reverted.setNewRdn( oldRdn.getUpName() );
-                        
-                        // Delete the newRDN values
-                        reverted.setDeleteOldRdn( KEEP_OLD_RDN );
+                        reverted = generateReverted( newDn, oldRdn, KEEP_OLD_RDN );
                         
                         entries.add( reverted );
                         
                         // Now, restore the initial values
-                        LdifEntry restored = new LdifEntry();
-                        restored.setChangeType( ChangeType.Modify );
-                        
-                        // We have to use the parent DN, the entry has already
-                        // been renamed
-                        restored.setDn( parentDn );
-                        restored = generateModify( restored, entry, oldRdn, newRdn );
+                        LdifEntry restored = generateModify( parentDn, entry, oldRdn, newRdn );
                         
                         entries.add( restored );
                     }
@@ -480,12 +493,7 @@ public class LdifRevertor
                     {
                         // This is the simplest case, we don't have to restore
                         // some existing values (case 8.1 and 9.1)
-                        reverted.setChangeType( ChangeType.ModRdn );
-                        reverted.setDn( newDn );
-                        reverted.setNewRdn( oldRdn.getUpName() );
-                        
-                        // Delete the newRDN values
-                        reverted.setDeleteOldRdn( DELETE_OLD_RDN );
+                        reverted = generateReverted( newDn, oldRdn, DELETE_OLD_RDN );
                         
                         entries.add( reverted );
                     }
@@ -497,34 +505,18 @@ public class LdifRevertor
                         // Some of the new RDN AVAs existed in the entry
                         // We have to restore them, but we also have to remove
                         // the new values
-                        reverted.setChangeType( ChangeType.ModRdn );
-                        reverted.setDn( newDn );
-                        reverted.setNewRdn( oldRdn.getUpName() );
-                        
-                        // Delete the newRDN values
-                        reverted.setDeleteOldRdn( KEEP_OLD_RDN );
+                        reverted = generateReverted( newDn, oldRdn, KEEP_OLD_RDN );
                         
                         entries.add( reverted );
                         
-                        // Now, restore the initial values
-                        LdifEntry restored = new LdifEntry();
-                        restored.setChangeType( ChangeType.Modify );
-                        
-                        // We have to use the parent DN, the entry has already
-                        // been renamed
-                        restored.setDn( parentDn );
-                        restored = generateModify( restored, entry, oldRdn, newRdn );
+                        LdifEntry restored = generateModify( parentDn, entry, oldRdn, newRdn );
                         
                         entries.add( restored );
                     }
                     else
                     {
                         // A much simpler case, as we just have to remove the newRDN
-                        reverted.setChangeType( ChangeType.ModRdn );
-                        reverted.setDn( newDn );
-                        reverted.setNewRdn( oldRdn.getUpName() );
-
-                        reverted.setDeleteOldRdn( DELETE_OLD_RDN );
+                        reverted = generateReverted( newDn, oldRdn, DELETE_OLD_RDN );
 
                         entries.add( reverted );
                     }
@@ -566,11 +558,7 @@ public class LdifRevertor
                     {
                         // In this case, we have to reestablish the removed ATAVs
                         // (Cases 12.2 and 13.2)
-                        reverted.setChangeType( ChangeType.ModRdn );
-                        reverted.setDn( newDn );
-                        reverted.setNewRdn( oldRdn.getUpName() );
-    
-                        reverted.setDeleteOldRdn( KEEP_OLD_RDN );
+                        reverted = generateReverted( newDn, oldRdn, KEEP_OLD_RDN );
     
                         entries.add( reverted );
                     }
@@ -579,11 +567,7 @@ public class LdifRevertor
                         // We can simply remove all the new RDN atavs, as the
                         // overlapping values will be re-created.
                         // (Cases 12.1 and 13.1)
-                        reverted.setChangeType( ChangeType.ModRdn );
-                        reverted.setDn( newDn );
-                        reverted.setNewRdn( oldRdn.getUpName() );
-    
-                        reverted.setDeleteOldRdn( DELETE_OLD_RDN );
+                        reverted = generateReverted( newDn, oldRdn, DELETE_OLD_RDN );
     
                         entries.add( reverted );
                     }
@@ -595,22 +579,11 @@ public class LdifRevertor
                     {
                         // In this case, we have to reestablish the removed ATAVs
                         // (Cases 10.2 and 11.2)
-                        reverted.setChangeType( ChangeType.ModRdn );
-                        reverted.setDn( newDn );
-                        reverted.setNewRdn( oldRdn.getUpName() );
-    
-                        reverted.setDeleteOldRdn( KEEP_OLD_RDN );
+                        reverted = generateReverted( newDn, oldRdn, KEEP_OLD_RDN );
     
                         entries.add( reverted );
                         
-                        // Now, restore the initial values
-                        LdifEntry restored = new LdifEntry();
-                        restored.setChangeType( ChangeType.Modify );
-                        
-                        // We have to use the parent DN, the entry has already
-                        // been renamed
-                        restored.setDn( parentDn );
-                        restored = generateModify( restored, entry, oldRdn, newRdn );
+                        LdifEntry restored = generateModify( parentDn, entry, oldRdn, newRdn );
                         
                         entries.add( restored );
                     }
@@ -618,11 +591,7 @@ public class LdifRevertor
                     {
                         // We are safe ! We can delete all the new Rdn ATAVs
                         // (Cases 10.1 and 11.1)
-                        reverted.setChangeType( ChangeType.ModRdn );
-                        reverted.setDn( newDn );
-                        reverted.setNewRdn( oldRdn.getUpName() );
-    
-                        reverted.setDeleteOldRdn( DELETE_OLD_RDN );
+                        reverted = generateReverted( newDn, oldRdn, DELETE_OLD_RDN );
     
                         entries.add( reverted );
                     }
