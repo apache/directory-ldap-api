@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.naming.InvalidNameException;
 import javax.naming.NamingException;
 
 import org.apache.directory.shared.ldap.entry.Entry;
@@ -284,7 +285,41 @@ public class LdifRevertor
         return entry;
     }
 
+    
+    /**
+     * A small helper class to compute the simple revert.
+     */
+    private static LdifEntry revertEntry( List<LdifEntry> entries, Entry entry, LdapDN newDn, 
+        LdapDN newSuperior, Rdn oldRdn, Rdn newRdn ) throws InvalidNameException
+    {
+        LdifEntry reverted = new LdifEntry();
+        
+        // We have a composite old RDN, something like A=a+B=b
+        // It does not matter if the RDNs overlap
+        reverted.setChangeType( ChangeType.ModRdn );
+        reverted.setDn( newDn );
+        reverted.setNewRdn( oldRdn.getUpName() );
 
+        // Is the newRdn's value present in the entry ?
+        // ( case 3, 4 and 5)
+        // If keepOldRdn = true, we cover case 4 and 5
+        boolean keepOldRdn = entry.contains( newRdn.getNormType(), newRdn.getNormValue() );
+
+        reverted.setDeleteOldRdn( !keepOldRdn );
+        
+        if ( newSuperior != null )
+        {
+            LdapDN oldSuperior = ( LdapDN ) entry.getDn().clone();
+
+            oldSuperior.remove( oldSuperior.size() - 1 );
+            reverted.setNewSuperior( oldSuperior.getUpName() );
+        }
+
+        return reverted;
+    }
+
+    
+    
     /**
      * Revert a DN to it's previous version by removing the first RDN and adding the given RDN.
      * It's a rename operation. The biggest issue is that we have many corner cases, depending 
@@ -297,6 +332,24 @@ public class LdifRevertor
      * @throws NamingException If the name reverting failed
      */
     public static List<LdifEntry> reverseRename( Entry entry, Rdn newRdn, boolean deleteOldRdn ) throws NamingException
+    {
+        return reverseMoveAndRename( entry, null, newRdn, deleteOldRdn );
+    }
+    
+    
+    /**
+     * Revert a DN to it's previous version by removing the first RDN and adding the given RDN.
+     * It's a rename operation. The biggest issue is that we have many corner cases, depending 
+     * on the RDNs we are manipulating, and on the content of the initial entry.
+     * 
+     * @param entry The initial Entry
+     * @param newSuperior The new superior DN (can be null if it's just a rename)
+     * @param newRdn The new RDN
+     * @param deleteOldRdn A flag which tells to delete the old RDN AVAs
+     * @return A list of LDIF reverted entries 
+     * @throws NamingException If the name reverting failed
+     */
+    public static List<LdifEntry> reverseMoveAndRename( Entry entry, LdapDN newSuperior, Rdn newRdn, boolean deleteOldRdn ) throws NamingException
     {
         LdapDN parentDn = entry.getDn();
         LdapDN newDn = null;
@@ -330,53 +383,18 @@ public class LdifRevertor
         if ( newRdn.size() == 1 )
         {
             // We have a simple new RDN, something like A=a
-            if ( oldRdn.size() == 1 ) 
+            if ( ( oldRdn.size() == 1 ) && ( oldRdn.equals( newRdn ) ) )
             {
                 // We have a simple old RDN, something like A=a
-                // Check if the values overlap
-                if ( oldRdn.equals( newRdn ) )
-                {
-                    // They do : we can't rename the entry, just get out
-                    // with an error
-                    // Case 0
-                    throw new NamingException( "Can't rename an entry using the same name ..." ); 
-                }
-                else
-                {
-                    // No overlapping (Case 1.1, 1.2, 2.1 and 2.2)
-                    reverted.setChangeType( ChangeType.ModRdn );
-                    reverted.setDn( newDn );
-                    reverted.setNewRdn( oldRdn.getUpName() );
-
-                    // Is the newRdn's value present in the entry ?
-                    // (cases 1.1 and 2.1 if keepOldRdn = false)
-                    // (cases 1.2 and 2.2 if keepOldRdn = true)
-                    boolean keepOldRdn = entry.contains( newRdn.getNormType(), newRdn.getNormValue() );
-
-                    reverted.setDeleteOldRdn( !keepOldRdn );
-
-                    entries.add( reverted );
-                    return entries;
-                }
+                // If the values overlap, we can't rename the entry, just get out
+                // with an error
+                throw new NamingException( "Can't rename an entry using the same name ..." ); 
             }
-            else
-            {
-                // We have a composite old RDN, something like A=a+B=b
-                // It does not matter if the RDNs overlap
-                reverted.setChangeType( ChangeType.ModRdn );
-                reverted.setDn( newDn );
-                reverted.setNewRdn( oldRdn.getUpName() );
 
-                // Is the newRdn's value present in the entry ?
-                // ( case 3, 4 and 5)
-                // If keepOldRdn = true, we cover case 4 and 5
-                boolean keepOldRdn = entry.contains( newRdn.getNormType(), newRdn.getNormValue() );
+            reverted =
+                revertEntry( entries, entry, newDn, newSuperior, oldRdn, newRdn );
 
-                reverted.setDeleteOldRdn( !keepOldRdn );
-
-                entries.add( reverted );
-                return entries;
-            }
+            entries.add( reverted );
         }
         else
         {
