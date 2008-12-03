@@ -110,7 +110,7 @@ public class LdifUtils
      */
     public static boolean isLDIFSafe( String str )
     {
-    	if ( StringTools.isEmpty( str ) )
+        if ( StringTools.isEmpty( str ) )
         {
             // A null string is LDIF safe
             return true;

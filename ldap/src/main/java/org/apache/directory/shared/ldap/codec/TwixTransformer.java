@@ -253,7 +253,7 @@ public class TwixTransformer
         }
         catch ( InvalidNameException e )
         {
-        	LOG.error( "Could not parse matchedDN while transforming twix value to snickers: {}", 
+            LOG.error( "Could not parse matchedDN while transforming twix value to snickers: {}", 
                 twixResult.getMatchedDN() );
             snickersResult.setMatchedDn( new LdapDN() );
         }
@@ -831,7 +831,7 @@ public class TwixTransformer
 
         if ( IS_DEBUG )
         {
-        	LOG.debug( "Transforming LdapMessage <" + messageId + ", " + twixMessage.getMessageTypeName()
+            LOG.debug( "Transforming LdapMessage <" + messageId + ", " + twixMessage.getMessageTypeName()
                 + "> from Twix to Snickers." );
         }
 
@@ -1015,7 +1015,7 @@ public class TwixTransformer
                 }
                 catch ( LdapURLEncodingException lude )
                 {
-                	LOG.warn( "The referral " + referral + " is invalid : " + lude.getMessage() );
+                    LOG.warn( "The referral " + referral + " is invalid : " + lude.getMessage() );
                     twixLdapResult.addReferral( LdapURL.EMPTY_URL );
                 }
             }
@@ -1168,7 +1168,7 @@ public class TwixTransformer
         }
         catch ( DecoderException de )
         {
-        	LOG.warn( "The OID " + snickersExtendedResponse.getResponseName() + " is invalid : " + de.getMessage() );
+            LOG.warn( "The OID " + snickersExtendedResponse.getResponseName() + " is invalid : " + de.getMessage() );
             extendedResponse.setResponseName( null );
         }
 
@@ -1299,7 +1299,7 @@ public class TwixTransformer
                     }
                     catch ( LdapURLEncodingException luee )
                     {
-                    	LOG.warn( "The LdapURL " + url + " is incorrect : " + luee.getMessage() );
+                        LOG.warn( "The LdapURL " + url + " is incorrect : " + luee.getMessage() );
                     }
                 }
             }
@@ -1320,7 +1320,7 @@ public class TwixTransformer
     {
         if ( IS_DEBUG )
         {
-        	LOG.debug( "Transforming message type " + msg.getType() );
+            LOG.debug( "Transforming message type " + msg.getType() );
         }
 
         LdapMessage twixMessage = new LdapMessage();
@@ -1383,7 +1383,7 @@ public class TwixTransformer
 
         if ( IS_DEBUG )
         {
-        	LOG.debug( "Transformed message : " + twixMessage );
+            LOG.debug( "Transformed message : " + twixMessage );
         }
 
         return twixMessage;
@@ -1406,7 +1406,7 @@ public class TwixTransformer
         
         for ( Control control:twixMessage.getControls() )
         {
-        	LOG.debug( "Not decoding response control: {}", control );
+            LOG.debug( "Not decoding response control: {}", control );
         }
     }
     
