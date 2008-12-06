@@ -60,6 +60,7 @@ import org.apache.directory.shared.ldap.codec.search.SearchResultEntry;
 import org.apache.directory.shared.ldap.codec.search.SearchResultReference;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
 import org.apache.directory.shared.ldap.codec.search.controls.PSearchControlCodec;
+import org.apache.directory.shared.ldap.codec.search.controls.PagedSearchControlCodec;
 import org.apache.directory.shared.ldap.codec.search.controls.SubEntryControlCodec;
 import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.entry.EntryAttribute;
@@ -105,6 +106,7 @@ import org.apache.directory.shared.ldap.message.SearchResponseReferenceImpl;
 import org.apache.directory.shared.ldap.message.UnbindRequestImpl;
 import org.apache.directory.shared.ldap.message.control.AbstractMutableControlImpl;
 import org.apache.directory.shared.ldap.message.control.CascadeControl;
+import org.apache.directory.shared.ldap.message.control.PagedSearchControl;
 import org.apache.directory.shared.ldap.message.control.PersistentSearchControl;
 import org.apache.directory.shared.ldap.message.control.SubentriesControl;
 import org.apache.directory.shared.ldap.message.extended.GracefulShutdownRequest;
@@ -933,6 +935,15 @@ public class TwixTransformer
                     neutralControl = neutralSubentriesControl;
                     neutralSubentriesControl.setVisibility( twixSubentriesControl.isVisible() );
                     neutralSubentriesControl.setCritical( twixControl.getCriticality() );
+                }
+                else if ( twixControl.getControlValue() instanceof PagedSearchControlCodec )
+                {
+                    PagedSearchControl neutralPagedSearchControl = new PagedSearchControl();
+                    neutralControl = neutralPagedSearchControl;
+                    PagedSearchControlCodec twixPagedSearchControl = (PagedSearchControlCodec)twixControl.getControlValue();
+                    neutralPagedSearchControl.setCookie( twixPagedSearchControl.getCookie() );
+                    neutralPagedSearchControl.setSize( twixPagedSearchControl.getSize() );
+                    neutralPagedSearchControl.setCritical( twixControl.getCriticality() );
                 }
                 else if ( twixControl.getControlValue() instanceof byte[] )
                 {
