@@ -95,6 +95,7 @@ import org.apache.directory.shared.ldap.cursor.ListCursor;
 import org.apache.directory.shared.ldap.filter.ExprNode;
 import org.apache.directory.shared.ldap.filter.FilterParser;
 import org.apache.directory.shared.ldap.filter.SearchScope;
+import org.apache.directory.shared.ldap.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.name.LdapDN;
 import org.apache.directory.shared.ldap.util.LdapURL;
@@ -1185,12 +1186,12 @@ public class LdapConnection  extends IoHandlerAdapter
                     // Store the result into the list, after conversion
                 {
                     // It's an entry
-                    searchResponses.add( convert( (SearchResultEntryCodec)response ) );
+                    searchResponses.add( (SearchResultEntry)response );
                 }
                 else if ( response instanceof SearchResultReference )
                 {
                     // It's a reference
-                    searchResponses.add( convert( (SearchResultReferenceCodec)response ) );
+                    searchResponses.add( (SearchResultReference)response );
                 }
 
                 // get the next response
@@ -1221,7 +1222,18 @@ public class LdapConnection  extends IoHandlerAdapter
 
         LOG.debug( "Search successful, {} elements found", searchResponses.size() );
         
-        return new ListCursor<SearchResponse>( searchResponses );
+        ListCursor<SearchResponse> cursor = new ListCursor<SearchResponse>( searchResponses );
+        
+        try
+        {
+            cursor.first();
+        }
+        catch ( Exception e )
+        {
+            // TODO: handle exception
+        }
+        
+        return cursor;
     }
 
     
@@ -1260,8 +1272,15 @@ public class LdapConnection  extends IoHandlerAdapter
         // Set the scope
         request.setScope( searchRequest.getScope() );
         
-        // Set the typesOnly flag
-        request.setDerefAliases( searchRequest.getDerefAliases().getValue() );
+        // Set the derefAlias flag
+        if ( searchRequest.getDerefAliases() != null )
+        {
+            request.setDerefAliases( searchRequest.getDerefAliases().getValue() );
+        }
+        else
+        {
+            request.setDerefAliases( AliasDerefMode.NEVER_DEREF_ALIASES.getValue() );
+        }
         
         // Set the timeLimit
         request.setTimeLimit( searchRequest.getTimeLimit() );
@@ -1294,7 +1313,7 @@ public class LdapConnection  extends IoHandlerAdapter
         // Set the attributes
         Set<String> attributes = searchRequest.getAttributes();
         
-        if ( attributes != null )
+        if ( ( attributes != null ) && ( attributes.size() != 0 ) )
         {
             for ( String attribute:attributes )
             {
@@ -1447,7 +1466,6 @@ public class LdapConnection  extends IoHandlerAdapter
                 // Store the response into the responseQueue
                 IntermediateResponseCodec intermediateResponseCodec = 
                     response.getIntermediateResponse();
-                intermediateResponseCodec.addControl( response.getCurrentControl() );
                 
                 if ( intermediateResponseListener != null )
                 {
@@ -1476,7 +1494,6 @@ public class LdapConnection  extends IoHandlerAdapter
                 // Store the response into the responseQueue
                 SearchResultDoneCodec searchResultDoneCodec = 
                     response.getSearchResultDone();
-                searchResultDoneCodec.addControl( response.getCurrentControl() );
                 
                 if ( searchListener != null )
                 {
@@ -1493,7 +1510,6 @@ public class LdapConnection  extends IoHandlerAdapter
                 // Store the response into the responseQueue
                 SearchResultEntryCodec searchResultEntryCodec = 
                     response.getSearchResultEntry();
-                searchResultEntryCodec.addControl( response.getCurrentControl() );
                 
                 if ( searchListener != null )
                 {
@@ -1501,7 +1517,8 @@ public class LdapConnection  extends IoHandlerAdapter
                 }
                 else
                 {
-                    searchResponseQueue.add( convert( searchResultEntryCodec ) );
+                    SearchResultEntry entry = convert( searchResultEntryCodec );
+                    searchResponseQueue.add( entry );
                 }
                 
                 break;
@@ -1510,7 +1527,6 @@ public class LdapConnection  extends IoHandlerAdapter
                 // Store the response into the responseQueue
                 SearchResultReferenceCodec searchResultReferenceCodec = 
                     response.getSearchResultReference();
-                searchResultReferenceCodec.addControl( response.getCurrentControl() );
 
                 if ( searchListener != null )
                 {
