@@ -271,6 +271,7 @@ public class LdapConnection  extends IoHandlerAdapter
             
             if ( writeFuture.getException() != null )
             {
+                writeFuture.getException().printStackTrace();
                 String message = "We have got an exception while writing the request : " + 
                     writeFuture.getException().getMessage();
                 LOG.error( message );
@@ -1032,13 +1033,30 @@ public class LdapConnection  extends IoHandlerAdapter
         {
             // Simple bind
             authentication = new SimpleAuthentication();
-            ((SimpleAuthentication)authentication).setSimple( bindRequest.getCredentials() );
+            
+            if ( bindRequest.getCredentials() != null )
+            {
+                ((SimpleAuthentication)authentication).setSimple( bindRequest.getCredentials() );
+            }
+            else
+            {
+                ((SimpleAuthentication)authentication).setSimple( StringTools.EMPTY_BYTES );
+            }
         }
         else
         {
             // SASL bind
             authentication = new SaslCredentials();
-            ((SaslCredentials)authentication).setCredentials( bindRequest.getCredentials() );
+            
+            if ( bindRequest.getCredentials() != null )
+            {
+                ((SaslCredentials)authentication).setCredentials( bindRequest.getCredentials() );
+            }
+            else
+            {
+                ((SaslCredentials)authentication).setCredentials( StringTools.EMPTY_BYTES );
+            }
+            
             ((SaslCredentials)authentication).setMechanism( bindRequest.getSaslMechanism() );
         }
         
