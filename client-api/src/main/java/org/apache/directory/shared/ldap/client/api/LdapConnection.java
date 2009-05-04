@@ -271,7 +271,6 @@ public class LdapConnection  extends IoHandlerAdapter
             
             if ( writeFuture.getException() != null )
             {
-                writeFuture.getException().printStackTrace();
                 String message = "We have got an exception while writing the request : " + 
                     writeFuture.getException().getMessage();
                 LOG.error( message );
