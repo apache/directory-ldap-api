@@ -101,6 +101,7 @@ import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.mina.core.filterchain.IoFilter;
 import org.apache.mina.core.future.ConnectFuture;
+import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.service.IoConnector;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
@@ -266,7 +267,19 @@ public class LdapConnection  extends IoHandlerAdapter
 
         try
         {
-            ldapSession.write( request );
+            WriteFuture writeFuture = ldapSession.write( request );
+            
+            if ( writeFuture.getException() != null )
+            {
+                String message = "We have got an exception while writing the request : " + 
+                    writeFuture.getException().getMessage();
+                LOG.error( message );
+                LdapException ldapException = 
+                    new LdapException( message );
+                ldapException.initCause( writeFuture.getException() );
+                
+                throw ldapException;
+            }
         }
         finally
         {
