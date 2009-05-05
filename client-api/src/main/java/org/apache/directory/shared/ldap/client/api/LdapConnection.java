@@ -1084,6 +1084,120 @@ public class LdapConnection  extends IoHandlerAdapter
     // Search operations                                                   //
     //---------------------------------------------------------------------//
     /**
+     * Do a search with no argument. This is semantically a search for the
+     * rootDSE.
+     * SearchRequest parameters default to :
+     * BaseDN : empty
+     * Filter : (ObjectClass=*)
+     * Scope : OBJECT
+     * DerefAlias : N/A
+     * SizeLimit : N/A
+     * TimeLimit : N/A
+     * TypesOnly : N/A
+     * Attributes : all the user's attributes.
+     * This method is blocking.
+     * 
+     * @return The rootDSE SearchResultEntry. 
+     * @throws LdapException if we weren't able to get the rootDSE
+     */
+    public SearchResultEntry search() throws LdapException
+    {
+        return getRootDSE();
+    }
+    
+    
+    /**
+     * Do a search for the rootDSE.
+     * This method is blocking.
+     * 
+     * @return The rootDSE SearchResultEntry. 
+     * @throws LdapException if we weren't able to get the rootDSE
+     */
+    public SearchResultEntry getRootDSE() throws LdapException
+    {
+        // Create a new SearchRequest object
+        SearchRequest searchRequest = new SearchRequestImpl();
+        
+        searchRequest.setBaseDn( LdapDN.EMPTY_LDAPDN.toString() );
+        searchRequest.setFilter( "(ObjectClass=*)" );
+        searchRequest.setScope( SearchScope.OBJECT );
+        searchRequest.addAttributes( "*" );
+        
+        // Process the request in blocking mode
+        Cursor<SearchResponse> cursor = searchInternal( searchRequest );
+        
+        try
+        {
+            cursor.first();
+            
+            if ( cursor.available() == false )
+            {
+                // No entry in the cursor ? This is an error.
+                // We didn't received anything : this is an error
+                LOG.error( "getRootDSE() failed" );
+                throw new LdapException( "getRootDSE() failed" );
+            }
+            
+            SearchResponse rootDSE = cursor.get();
+            
+            return (SearchResultEntry)rootDSE;
+        }
+        catch ( Exception e )
+        {
+            LOG.error( "getRootDSE() failed : " + e.getMessage() );
+            throw new LdapException( "getRootDSE() failed" + e.getMessage() );
+        }
+    }
+    
+    
+    
+    
+    /**
+     * Do a search for some attributes of the rootDSE .
+     * This method is blocking.
+     * 
+     * @param attributes The attributes to be returned
+     * @return The rootDSE SearchResultEntry. 
+     * @throws LdapException if we weren't able to get the rootDSE
+     */
+    public SearchResultEntry getRootDSE( String... attributes ) throws LdapException
+    {
+        // Create a new SearchRequest object
+        SearchRequest searchRequest = new SearchRequestImpl();
+        
+        searchRequest.setBaseDn( LdapDN.EMPTY_LDAPDN.toString() );
+        searchRequest.setFilter( "(ObjectClass=*)" );
+        searchRequest.setScope( SearchScope.OBJECT );
+        searchRequest.addAttributes( attributes );
+        
+        // Process the request in blocking mode
+        Cursor<SearchResponse> cursor = searchInternal( searchRequest );
+        
+        try
+        {
+            cursor.first();
+            
+            if ( cursor.available() == false )
+            {
+                // No entry in the cursor ? This is an error.
+                // We didn't received anything : this is an error
+                LOG.error( "getRootDSE() failed" );
+                throw new LdapException( "getRootDSE() failed" );
+            }
+            
+            SearchResponse rootDSE = cursor.get();
+            
+            return (SearchResultEntry)rootDSE;
+        }
+        catch ( Exception e )
+        {
+            LOG.error( "getRootDSE() failed : " + e.getMessage() );
+            throw new LdapException( "getRootDSE() failed" + e.getMessage() );
+        }
+    }
+    
+    
+    /**
      * Do a search, on the base object, using the given filter. The
      * SearchRequest parameters default to :
      * Scope : ONE
@@ -1226,11 +1340,18 @@ public class LdapConnection  extends IoHandlerAdapter
         
         try
         {
-            cursor.first();
+            cursor.beforeFirst();
         }
         catch ( Exception e )
         {
-            // TODO: handle exception
+            // Catch all other exceptions
+            LOG.error( "The cursor has been closed." );
+            LdapException ldapException = new LdapException();
+            ldapException.initCause( e );
+            
+            // Send an abandon request
+            abandon( searchRequest.getMessageId() );
+            throw ldapException;
         }
         
         return cursor;
@@ -1433,17 +1554,16 @@ public class LdapConnection  extends IoHandlerAdapter
             case LdapConstants.BIND_RESPONSE: 
                 // Store the response into the responseQueue
                 BindResponseCodec bindResponseCodec = response.getBindResponse();
+                bindResponseCodec.setMessageId( response.getMessageId() );
                 BindResponse bindResponse = convert( bindResponseCodec );
                 
                 if ( bindListener != null )
                 {
                     bindListener.bindCompleted( this, bindResponse );
                 }
-                else
-                {
-                    // Store the response into the responseQueue
-                    bindResponseQueue.add( bindResponse );
-                }
+
+                // Store the response into the responseQueue
+                bindResponseQueue.add( bindResponse );
                 
                 break;
                 
@@ -1466,6 +1586,9 @@ public class LdapConnection  extends IoHandlerAdapter
                 // Store the response into the responseQueue
                 IntermediateResponseCodec intermediateResponseCodec = 
                     response.getIntermediateResponse();
+                
+                // Store the messageId
+                intermediateResponseCodec.setMessageId( response.getMessageId() );
                 
                 if ( intermediateResponseListener != null )
                 {
@@ -1495,6 +1618,9 @@ public class LdapConnection  extends IoHandlerAdapter
                 SearchResultDoneCodec searchResultDoneCodec = 
                     response.getSearchResultDone();
                 
+                // Store the messageId
+                searchResultDoneCodec.setMessageId( response.getMessageId() );
+                
                 if ( searchListener != null )
                 {
                     searchListener.searchDone( this, convert( searchResultDoneCodec ) );
@@ -1510,6 +1636,9 @@ public class LdapConnection  extends IoHandlerAdapter
                 // Store the response into the responseQueue
                 SearchResultEntryCodec searchResultEntryCodec = 
                     response.getSearchResultEntry();
+                
+                // Store the messageId
+                searchResultEntryCodec.setMessageId( response.getMessageId() );
                 
                 if ( searchListener != null )
                 {
@@ -1527,6 +1656,9 @@ public class LdapConnection  extends IoHandlerAdapter
                 // Store the response into the responseQueue
                 SearchResultReferenceCodec searchResultReferenceCodec = 
                     response.getSearchResultReference();
+
+                // Store the messageId
+                searchResultReferenceCodec.setMessageId( response.getMessageId() );
 
                 if ( searchListener != null )
                 {
