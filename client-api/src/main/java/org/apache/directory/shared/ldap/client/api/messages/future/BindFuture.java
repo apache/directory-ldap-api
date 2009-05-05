@@ -67,7 +67,7 @@ public class BindFuture implements Future<BindResponse>
      */
     public BindResponse get() throws InterruptedException, ExecutionException
     {
-        return bindResponseQueue.poll();
+        return bindResponseQueue.take();
     }
 
     
