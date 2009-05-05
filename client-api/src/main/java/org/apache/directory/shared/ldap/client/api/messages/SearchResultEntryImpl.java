@@ -78,4 +78,19 @@ public class SearchResultEntryImpl extends AbstractMessage implements SearchResu
     {
         this.entry = entry;
     }
+    
+    
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append( super.toString() );
+        
+        sb.append( entry );
+        
+        return sb.toString();
+    }
 }
