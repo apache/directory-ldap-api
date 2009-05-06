@@ -199,7 +199,7 @@ public class LdapConnection  extends IoHandlerAdapter
     private BlockingQueue<Response> searchResponseQueue;
     
     /** A queue used to store the incoming intermediate responses */
-    private BlockingQueue<LdapMessageCodec> intermediateResponseQueue;
+    private BlockingQueue<IntermediateResponse> intermediateResponseQueue;
 
     /** An operation mutex to guarantee the operation order */
     private Semaphore operationMutex;
@@ -652,7 +652,7 @@ public class LdapConnection  extends IoHandlerAdapter
         modifyResponseQueue = new LinkedBlockingQueue<LdapMessageCodec>();
         modifyDNResponseQueue = new LinkedBlockingQueue<LdapMessageCodec>();
         searchResponseQueue = new LinkedBlockingQueue<Response>();
-        intermediateResponseQueue = new LinkedBlockingQueue<LdapMessageCodec>();
+        intermediateResponseQueue = new LinkedBlockingQueue<IntermediateResponse>();
         
         // And return
         return true;
@@ -1246,13 +1246,13 @@ public class LdapConnection  extends IoHandlerAdapter
      * @param listener a SearchListener used to be informed when a result 
      * has been found, or when the search is done
      * @param baseObject The base for the search. It must be a valid
-     * DN, and can't be emtpy
+     * DN, and can't be empty
      * @param filter The filter to use for this search. It can't be empty
-     * @return A cursor on the result. 
+     * @return A SearchFuture instance.
      */
-    public void search( SearchRequest searchRequest, SearchListener listener ) throws LdapException
+    public SearchFuture search( SearchRequest searchRequest, SearchListener listener ) throws LdapException
     {
-        searchInternalAsync( searchRequest, listener );
+        return searchAsyncInternal( searchRequest, listener );
     }
     
     
@@ -1272,7 +1272,7 @@ public class LdapConnection  extends IoHandlerAdapter
         throws LdapException
     {
         // Create the future to get the search results
-        SearchFuture searchFuture = searchInternalAsync( searchRequest, searchListener );
+        SearchFuture searchFuture = searchAsyncInternal( searchRequest, searchListener );
         
         // Compute the timeout
         long timeout = getTimeout( searchRequest.getTimeout() );
@@ -1360,9 +1360,15 @@ public class LdapConnection  extends IoHandlerAdapter
     }
 
     
-    private SearchFuture searchInternalAsync( SearchRequest searchRequest, SearchListener searchListener )
+    private SearchFuture searchAsyncInternal( SearchRequest searchRequest, SearchListener searchListener )
     throws LdapException
     {
+        // Set the listener
+        this.searchListener = searchListener;
+
+        // First try to connect, if we aren't already connected.
+        connect();
+        
         // If the session has not been establish, or is closed, we get out immediately
         checkSession();
     
@@ -1550,8 +1556,9 @@ public class LdapConnection  extends IoHandlerAdapter
         switch ( response.getMessageType() )
         {
             case LdapConstants.ADD_RESPONSE :
+                // TODO : Not Yet Implemented
                 // Store the response into the responseQueue
-                addResponseQueue.add( response ); 
+                //addResponseQueue.add( response ); 
                 break;
                 
             case LdapConstants.BIND_RESPONSE: 
@@ -1563,6 +1570,7 @@ public class LdapConnection  extends IoHandlerAdapter
                 
                 BindResponse bindResponse = convert( bindResponseCodec, controls );
                 
+                // Invoke the listener
                 if ( bindListener != null )
                 {
                     bindListener.bindCompleted( this, bindResponse );
@@ -1574,18 +1582,21 @@ public class LdapConnection  extends IoHandlerAdapter
                 break;
                 
             case LdapConstants.COMPARE_RESPONSE :
+                // TODO : Not Yet Implemented
                 // Store the response into the responseQueue
-                compareResponseQueue.add( response ); 
+                //compareResponseQueue.add( response ); 
                 break;
                 
             case LdapConstants.DEL_RESPONSE :
+                // TODO : Not Yet Implemented
                 // Store the response into the responseQueue
-                deleteResponseQueue.add( response ); 
+                //deleteResponseQueue.add( response ); 
                 break;
                 
             case LdapConstants.EXTENDED_RESPONSE :
+                // TODO : Not Yet Implemented
                 // Store the response into the responseQueue
-                extendedResponseQueue.add( response ); 
+                //extendedResponseQueue.add( response ); 
                 break;
                 
             case LdapConstants.INTERMEDIATE_RESPONSE:
@@ -1596,27 +1607,28 @@ public class LdapConnection  extends IoHandlerAdapter
                 // Store the messageId
                 intermediateResponseCodec.setMessageId( response.getMessageId() );
                 
+                IntermediateResponse intermediateResponse = convert( intermediateResponseCodec, controls );
+                
                 if ( intermediateResponseListener != null )
                 {
-                    intermediateResponseListener.responseReceived( this, 
-                        convert( intermediateResponseCodec, controls ) );
+                    intermediateResponseListener.responseReceived( this, intermediateResponse );
                 }
-                else
-                {
-                    // Store the response into the responseQueue
-                    intermediateResponseQueue.add( intermediateResponseCodec );
-                }
+
+                // Store the response into the responseQueue
+                intermediateResponseQueue.add( intermediateResponse );
                 
                 break;
      
             case LdapConstants.MODIFY_RESPONSE :
+                // TODO : Not Yet Implemented
                 // Store the response into the responseQueue
-                modifyResponseQueue.add( response ); 
+                //modifyResponseQueue.add( response ); 
                 break;
                 
             case LdapConstants.MODIFYDN_RESPONSE :
+                // TODO : Not Yet Implemented
                 // Store the response into the responseQueue
-                modifyDNResponseQueue.add( response ); 
+                //modifyDNResponseQueue.add( response ); 
                 break;
                 
             case LdapConstants.SEARCH_RESULT_DONE:
@@ -1626,15 +1638,17 @@ public class LdapConnection  extends IoHandlerAdapter
                 
                 // Store the messageId
                 searchResultDoneCodec.setMessageId( response.getMessageId() );
+
+                SearchResultDone searchResultDone = convert( searchResultDoneCodec, controls );
                 
+                // Invoke the listener
                 if ( searchListener != null )
                 {
-                    searchListener.searchDone( this, convert( searchResultDoneCodec, controls ) );
+                    searchListener.searchDone( this, searchResultDone );
                 }
-                else
-                {
-                    searchResponseQueue.add( convert( searchResultDoneCodec, controls ) );
-                }
+
+                // Add the response to the search queue
+                searchResponseQueue.add( searchResultDone );
                 
                 break;
             
@@ -1645,16 +1659,16 @@ public class LdapConnection  extends IoHandlerAdapter
                 
                 // Store the messageId
                 searchResultEntryCodec.setMessageId( response.getMessageId() );
+                SearchResultEntry entry = convert( searchResultEntryCodec, controls );
                 
+                // Invoke the listener
                 if ( searchListener != null )
                 {
-                    searchListener.entryFound( this, convert( searchResultEntryCodec, controls ) );
+                    searchListener.entryFound( this, entry );
                 }
-                else
-                {
-                    SearchResultEntry entry = convert( searchResultEntryCodec, controls );
-                    searchResponseQueue.add( entry );
-                }
+
+                // Add the response to the search queue
+                searchResponseQueue.add( entry );
                 
                 break;
                        
@@ -1666,18 +1680,23 @@ public class LdapConnection  extends IoHandlerAdapter
                 // Store the messageId
                 searchResultReferenceCodec.setMessageId( response.getMessageId() );
 
+                SearchResultReference reference = convert( searchResultReferenceCodec, controls );
+                
+                // Invoke the listener
                 if ( searchListener != null )
                 {
-                    searchListener.referralFound( this, convert( searchResultReferenceCodec, controls ) );
+                    searchListener.referralFound( this, reference );
                 }
-                else
-                {
-                    searchResponseQueue.add( convert( searchResultReferenceCodec, controls ) );
-                }
+
+                // TODO : handle dereferencing here.
+                
+                // Add the response to the search queue
+                searchResponseQueue.add( reference );
 
                 break;
                        
-             default: LOG.error( "~~~~~~~~~~~~~~~~~~~~~ Unknown message type {} ~~~~~~~~~~~~~~~~~~~~~", response.getMessageTypeName() );
+             default: 
+                 LOG.error( "~~~~~~~~~~~~~~~~~~~~~ Unknown message type {} ~~~~~~~~~~~~~~~~~~~~~", response.getMessageTypeName() );
         }
     }
 }
