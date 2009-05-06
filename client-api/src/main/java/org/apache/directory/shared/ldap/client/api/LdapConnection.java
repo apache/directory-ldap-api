@@ -293,11 +293,11 @@ public class LdapConnection  extends IoHandlerAdapter
     /**
      * Convert the controls
      */
-    private void convertControls( Message response, LdapMessageCodec messageCodec ) throws LdapException
+    private void convertControls( Message response, List<ControlCodec> controls ) throws LdapException
     {
-        if ( ( messageCodec.getControls() != null ) && ( messageCodec.getControls().size() != 0 ) )
+        if ( ( controls != null ) && ( controls.size() != 0 ) )
         {
-            for ( ControlCodec controlCodec:messageCodec.getControls() )
+            for ( ControlCodec controlCodec:controls )
             {
                 Control control = new  BasicControl( 
                     controlCodec.getControlType(),
@@ -308,6 +308,8 @@ public class LdapConnection  extends IoHandlerAdapter
             }
         }
     }
+    
+    
     /**
      * Inject the client Controls into the message
      */
@@ -353,7 +355,7 @@ public class LdapConnection  extends IoHandlerAdapter
     /**
      * Convert a BindResponseCodec to a BindResponse message
      */
-    private BindResponse convert( BindResponseCodec bindResponseCodec ) throws LdapException
+    private BindResponse convert( BindResponseCodec bindResponseCodec, List<ControlCodec> controls ) throws LdapException
     {
         BindResponse bindResponse = new BindResponseImpl();
         
@@ -362,7 +364,7 @@ public class LdapConnection  extends IoHandlerAdapter
         bindResponse.setLdapResult( convert( bindResponseCodec.getLdapResult() ) );
         
         // Convert the controls
-        convertControls( bindResponse, bindResponseCodec );
+        convertControls( bindResponse, controls );
 
         return bindResponse;
     }
@@ -371,7 +373,7 @@ public class LdapConnection  extends IoHandlerAdapter
     /**
      * Convert a IntermediateResponseCodec to a IntermediateResponse message
      */
-    private IntermediateResponse convert( IntermediateResponseCodec intermediateResponseCodec )
+    private IntermediateResponse convert( IntermediateResponseCodec intermediateResponseCodec, List<ControlCodec> controls )
         throws LdapException
     {
         IntermediateResponse intermediateResponse = new IntermediateResponseImpl();
@@ -381,7 +383,7 @@ public class LdapConnection  extends IoHandlerAdapter
         intermediateResponse.setResponseValue( intermediateResponseCodec.getResponseValue() );
 
         // Convert the controls
-        convertControls( intermediateResponse, intermediateResponseCodec );
+        convertControls( intermediateResponse, controls );
 
         return intermediateResponse;
     }
@@ -418,7 +420,7 @@ public class LdapConnection  extends IoHandlerAdapter
     /**
      * Convert a SearchResultEntryCodec to a SearchResultEntry message
      */
-    private SearchResultEntry convert( SearchResultEntryCodec searchEntryResultCodec )
+    private SearchResultEntry convert( SearchResultEntryCodec searchEntryResultCodec, List<ControlCodec> controls )
         throws LdapException
     {
         SearchResultEntry searchResultEntry = new SearchResultEntryImpl();
@@ -427,7 +429,7 @@ public class LdapConnection  extends IoHandlerAdapter
         searchResultEntry.setEntry( searchEntryResultCodec.getEntry() );
         
         // Convert the controls
-        convertControls( searchResultEntry, searchEntryResultCodec );
+        convertControls( searchResultEntry, controls );
         
         return searchResultEntry;
     }
@@ -436,7 +438,7 @@ public class LdapConnection  extends IoHandlerAdapter
     /**
      * Convert a SearchResultDoneCodec to a SearchResultDone message
      */
-    private SearchResultDone convert( SearchResultDoneCodec searchResultDoneCodec )
+    private SearchResultDone convert( SearchResultDoneCodec searchResultDoneCodec, List<ControlCodec> controls )
         throws LdapException
     {
         SearchResultDone searchResultDone = new SearchResultDoneImpl();
@@ -445,7 +447,7 @@ public class LdapConnection  extends IoHandlerAdapter
         searchResultDone.setLdapResult( convert( searchResultDoneCodec.getLdapResult() ) );
         
         // Convert the controls
-        convertControls( searchResultDone, searchResultDoneCodec );
+        convertControls( searchResultDone, controls );
         
         return searchResultDone;
     }
@@ -454,7 +456,7 @@ public class LdapConnection  extends IoHandlerAdapter
     /**
      * Convert a SearchResultReferenceCodec to a SearchResultReference message
      */
-    private SearchResultReference convert( SearchResultReferenceCodec searchEntryReferenceCodec )
+    private SearchResultReference convert( SearchResultReferenceCodec searchEntryReferenceCodec, List<ControlCodec> controls )
         throws LdapException
     {
         SearchResultReference searchResultReference = new SearchResultReferenceImpl();
@@ -475,7 +477,7 @@ public class LdapConnection  extends IoHandlerAdapter
         searchResultReference.setReferral( referral );
         
         // Convert the controls
-        convertControls( searchResultReference, searchEntryReferenceCodec );
+        convertControls( searchResultReference, controls );
 
         return searchResultReference;
     }
@@ -1340,7 +1342,7 @@ public class LdapConnection  extends IoHandlerAdapter
         
         try
         {
-            cursor.beforeFirst();
+            cursor.first();
         }
         catch ( Exception e )
         {
@@ -1543,6 +1545,7 @@ public class LdapConnection  extends IoHandlerAdapter
         LdapMessageCodec response = (LdapMessageCodec)message;
 
         LOG.debug( "-------> {} Message received <-------", response.getMessageTypeName() );
+        List<ControlCodec> controls = response.getControls();
         
         switch ( response.getMessageType() )
         {
@@ -1553,9 +1556,12 @@ public class LdapConnection  extends IoHandlerAdapter
                 
             case LdapConstants.BIND_RESPONSE: 
                 // Store the response into the responseQueue
+                // TODO : implement the following convert method
+                //BindResponse bindResponse = convert( response );
                 BindResponseCodec bindResponseCodec = response.getBindResponse();
                 bindResponseCodec.setMessageId( response.getMessageId() );
-                BindResponse bindResponse = convert( bindResponseCodec );
+                
+                BindResponse bindResponse = convert( bindResponseCodec, controls );
                 
                 if ( bindListener != null )
                 {
@@ -1593,7 +1599,7 @@ public class LdapConnection  extends IoHandlerAdapter
                 if ( intermediateResponseListener != null )
                 {
                     intermediateResponseListener.responseReceived( this, 
-                        convert( intermediateResponseCodec ) );
+                        convert( intermediateResponseCodec, controls ) );
                 }
                 else
                 {
@@ -1623,11 +1629,11 @@ public class LdapConnection  extends IoHandlerAdapter
                 
                 if ( searchListener != null )
                 {
-                    searchListener.searchDone( this, convert( searchResultDoneCodec ) );
+                    searchListener.searchDone( this, convert( searchResultDoneCodec, controls ) );
                 }
                 else
                 {
-                    searchResponseQueue.add( convert( searchResultDoneCodec ) );
+                    searchResponseQueue.add( convert( searchResultDoneCodec, controls ) );
                 }
                 
                 break;
@@ -1642,11 +1648,11 @@ public class LdapConnection  extends IoHandlerAdapter
                 
                 if ( searchListener != null )
                 {
-                    searchListener.entryFound( this, convert( searchResultEntryCodec ) );
+                    searchListener.entryFound( this, convert( searchResultEntryCodec, controls ) );
                 }
                 else
                 {
-                    SearchResultEntry entry = convert( searchResultEntryCodec );
+                    SearchResultEntry entry = convert( searchResultEntryCodec, controls );
                     searchResponseQueue.add( entry );
                 }
                 
@@ -1662,11 +1668,11 @@ public class LdapConnection  extends IoHandlerAdapter
 
                 if ( searchListener != null )
                 {
-                    searchListener.referralFound( this, convert( searchResultReferenceCodec ) );
+                    searchListener.referralFound( this, convert( searchResultReferenceCodec, controls ) );
                 }
                 else
                 {
-                    searchResponseQueue.add( convert( searchResultReferenceCodec ) );
+                    searchResponseQueue.add( convert( searchResultReferenceCodec, controls ) );
                 }
 
                 break;
