@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.directory.shared.ldap.client.api.messages.Response;
+import org.apache.directory.shared.ldap.client.api.messages.SearchResultDone;
 
 /**
  * A Future to manage SearchRequest. The searchResponseQueue contains
@@ -40,6 +41,8 @@ public class SearchFuture implements Future<Response>
     /** The queue where SearchResponse are stored */
     private BlockingQueue<Response> searchResponseQueue;
     
+    /** A flag set to true when the searchResultDone has been received */
+    private boolean done = false;
    
     /**
      * 
@@ -72,7 +75,14 @@ public class SearchFuture implements Future<Response>
      */
     public Response get() throws InterruptedException, ExecutionException
     {
-        return searchResponseQueue.poll();
+        Response response = searchResponseQueue.take();
+        
+        if ( response instanceof SearchResultDone )
+        {
+            done = true;
+        }
+        
+        return response;
     }
 
     
@@ -106,6 +116,6 @@ public class SearchFuture implements Future<Response>
      */
     public boolean isDone()
     {
-        throw new RuntimeException( "Not Yet Implemented" );
+        return done;
     }
 }
