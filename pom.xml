@@ -35,7 +35,6 @@
     <projectName>ApacheDS-Shared</projectName>
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/shared/gen-docs/${version}/</distMgmtSiteUrl>
     <skin.version>1.0.1</skin.version>
-    <org.apache.directory.shared.version>0.9.18-SNAPSHOT</org.apache.directory.shared.version>
     
     <!-- Jar's version -->
     <antlr.version>2.7.7</antlr.version>
@@ -294,9 +293,9 @@
   </reporting>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/trunk</developerConnection>
-    <url>http://svn.apache.org/viewvc/directory/shared/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/branches/shared-0.9.18</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/branches/shared-0.9.18</developerConnection>
+    <url>http://svn.apache.org/viewvc/directory/shared/branches/shared-0.9.18</url>
   </scm>
 
 </project>
