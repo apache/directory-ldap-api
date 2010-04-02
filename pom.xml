@@ -294,9 +294,9 @@
   </reporting>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/trunk</developerConnection>
-    <url>http://svn.apache.org/viewvc/directory/shared/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/branches/shared-0.9.19</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/branches/shared-0.9.19</developerConnection>
+    <url>http://svn.apache.org/viewvc/directory/shared/branches/shared-0.9.19</url>
   </scm>
 
 </project>
