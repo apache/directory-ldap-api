@@ -244,6 +244,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.5</version>
         <configuration>
           <minmemory>512m</minmemory>
           <maxmemory>1g</maxmemory>
