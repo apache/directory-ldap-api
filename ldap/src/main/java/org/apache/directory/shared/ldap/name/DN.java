@@ -742,7 +742,7 @@ public class DN implements Cloneable, Serializable, Comparable<DN>, Iterable<RDN
     
     
     /**
-     * {@inheritDoc}
+     * return true if this DN contains no RDNs
      */
     public boolean isEmpty()
     {
