@@ -307,9 +307,9 @@
   </reporting>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/tags/shared-parent-0.9.19</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/tags/shared-parent-0.9.19</developerConnection>
-    <url>http://svn.apache.org/viewvc/directory/shared/tags/shared-parent-0.9.19</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/tags/0.9.19</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/tags/0.9.19</developerConnection>
+    <url>http://svn.apache.org/viewvc/directory/shared/tags/0.9.19</url>
   </scm>
 
 </project>
