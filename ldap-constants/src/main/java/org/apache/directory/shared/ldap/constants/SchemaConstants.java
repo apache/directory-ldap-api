@@ -438,7 +438,15 @@ public interface SchemaConstants
 
     // TriggerExecutionSubentries
     String TRIGGER_EXECUTION_SUBENTRIES_AT          = "triggerExecutionSubentries";
-    String TRIGGER_EXECUTION_SUBENTRIES_AT_OID      = "1.3.6.1.4.1.18060.0.4.1.2.27";
+    String TRIGGER_EXECUTION_SUBENTRIES_AT_OID      = "1.3.6.1.4.1.18060.0.4.1.2.12";
+
+    // Ads-SubschemaSubentries
+    String ADS_SUBSCHEMA_SUBENTRIES_AT              = "ads-subschemaSubentries";
+    String ADS_SUBSCHEMA_SUBENTRIES_AT_OID          = "1.3.6.1.4.1.18060.0.4.1.2.13";
+
+    // Ads-CollectiveAttributeSubentries
+    String ADS_COLLECTIVE_ATTRIBUTE_SUBENTRIES_AT   = "ads-collectiveAttributeSubentries";
+    String ADS_COLLECTIVE_ATTRIBUTE_SUBENTRIES_AT_OID = "1.3.6.1.4.1.18060.0.4.1.2.14";
 
     // Comparators
     String COMPARATORS_AT                           = "comparators";

@@ -19,9 +19,8 @@
  */
 package org.apache.directory.shared.ldap.entry;
 
-import org.apache.directory.shared.ldap.exception.LdapException;
-
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.shared.ldap.schema.LdapComparator;
 import org.apache.directory.shared.ldap.schema.MatchingRule;
@@ -129,7 +128,7 @@ public abstract class AbstractValue<T> implements Value<T>
         }
         catch ( LdapException le )
         {
-            String message = I18n.err( I18n.ERR_04447, le.getLocalizedMessage() );
+            String message = I18n.err( I18n.ERR_04447_CANNOT_NORMALIZE_VALUE, le.getLocalizedMessage() );
             LOG.info( message );
             normalized = false;
         }
@@ -142,7 +141,7 @@ public abstract class AbstractValue<T> implements Value<T>
         }
         catch ( LdapException ne )
         {
-            String message = I18n.err( I18n.ERR_04447, ne.getLocalizedMessage() );
+            String message = I18n.err( I18n.ERR_04447_CANNOT_NORMALIZE_VALUE, ne.getLocalizedMessage() );
             LOG.info( message );
             normalized = false;
         }

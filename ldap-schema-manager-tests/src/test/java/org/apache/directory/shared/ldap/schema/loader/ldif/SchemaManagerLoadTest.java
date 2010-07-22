@@ -282,14 +282,14 @@ public class SchemaManagerLoadTest
         assertTrue( schemaManager.load( "apache" ) );
 
         assertTrue( schemaManager.getErrors().isEmpty() );
-        assertEquals( 146, schemaManager.getAttributeTypeRegistry().size() );
+        assertEquals( 148, schemaManager.getAttributeTypeRegistry().size() );
         assertEquals( 43, schemaManager.getComparatorRegistry().size() );
         assertEquals( 43, schemaManager.getMatchingRuleRegistry().size() );
         assertEquals( 43, schemaManager.getNormalizerRegistry().size() );
         assertEquals( 53, schemaManager.getObjectClassRegistry().size() );
         assertEquals( 62, schemaManager.getSyntaxCheckerRegistry().size() );
         assertEquals( 66, schemaManager.getLdapSyntaxRegistry().size() );
-        assertEquals( 308, schemaManager.getGlobalOidRegistry().size() );
+        assertEquals( 310, schemaManager.getGlobalOidRegistry().size() );
 
         assertEquals( 3, schemaManager.getRegistries().getLoadedSchemas().size() );
         assertNotNull( schemaManager.getRegistries().getLoadedSchema( "system" ) );
