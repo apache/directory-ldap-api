@@ -1156,7 +1156,7 @@ public class DN implements Cloneable, Serializable, Comparable<DN>, Iterable<RDN
             clonedDn.rdns.add( clonedDn.size() - posn, rdn );
         }
 
-        clonedDn.normalizeInternal();
+        clonedDn.normalize( schemaManager );
         clonedDn.toUpName();
 
         return clonedDn;
@@ -1190,7 +1190,7 @@ public class DN implements Cloneable, Serializable, Comparable<DN>, Iterable<RDN
         }
         else
         {
-            clonedDn.normalizeInternal();
+            clonedDn.normalize( schemaManager );
             clonedDn.toUpName();
         }
 
@@ -1214,7 +1214,7 @@ public class DN implements Cloneable, Serializable, Comparable<DN>, Iterable<RDN
         
         clonedDn.rdns.add( 0, newRdn );
         
-        clonedDn.normalizeInternal();
+        clonedDn.normalize( schemaManager );
         clonedDn.toUpName();
 
         return clonedDn;
@@ -1233,7 +1233,17 @@ public class DN implements Cloneable, Serializable, Comparable<DN>, Iterable<RDN
         
         clonedDn.rdns.add( 0, newRdn );
         
-        clonedDn.normalizeInternal();
+        // FIXME this try-catch block shouldn't be here
+        // instead this method should throw the LdapInvalidDnException
+        try
+        {
+            clonedDn.normalize( schemaManager );
+        }
+        catch( LdapInvalidDnException e )
+        {
+            LOG.error( e.getMessage(), e );
+        }
+        
         clonedDn.toUpName();
 
         return clonedDn;
@@ -1253,7 +1263,17 @@ public class DN implements Cloneable, Serializable, Comparable<DN>, Iterable<RDN
         
         clonedDn.rdns.add( newRdn );
         
-        clonedDn.normalizeInternal();
+        // FIXME this try-catch block shouldn't be here
+        // instead this method should throw the LdapInvalidDnException
+        try
+        {
+            clonedDn.normalize( schemaManager );
+        }
+        catch( LdapInvalidDnException e )
+        {
+            LOG.error( e.getMessage(), e );
+        }
+
         clonedDn.toUpName();
 
         return clonedDn;
@@ -1313,7 +1333,7 @@ public class DN implements Cloneable, Serializable, Comparable<DN>, Iterable<RDN
         int realPos = clonedDn.size() - posn;
         clonedDn.rdns.add( realPos, newRdn );
 
-        clonedDn.normalizeInternal();
+        clonedDn.normalize( schemaManager );
         clonedDn.toUpName();
 
         return clonedDn;
@@ -1617,10 +1637,18 @@ public class DN implements Cloneable, Serializable, Comparable<DN>, Iterable<RDN
             return this;
         }
 
+        /* having the below check improves perf but 
+         * there are many places where a non-normalized RDN gets
+         * added to a normalized DN and when normalized is called on the new DN
+         * this check is preventing it from being normalized
+         * cause the cloned DN (right before adding new RDN(s) ) retains the
+         * original DN's 'normalized' status
+         
         if( normalized.get() )
         {
            return this; 
         }
+         */
         
         synchronized ( this )
         {
@@ -1648,6 +1676,33 @@ public class DN implements Cloneable, Serializable, Comparable<DN>, Iterable<RDN
         }
     }
 
+    
+    /**
+     * normalizes the DN @see {@link #normalize(Map)} however
+     * if the schema manager of the DN is null then sets the given schema manager
+     * as the DN's schema manager.
+     * 
+     * If both, the given schema manager and that of the DN are null then the
+     * {@link #normalizeInternal()} will be called. 
+     *
+     */
+    public DN normalize( SchemaManager schemaManager ) throws LdapInvalidDnException
+    {
+        if( this.schemaManager == null )
+        {
+            this.schemaManager = schemaManager;
+        }
+        
+        if( this.schemaManager != null )
+        {
+            return normalize( schemaManager.getNormalizerMapping() );
+        }
+
+        normalizeInternal();
+        
+        return this;
+    }
+    
 
     /**
      * Check if a DistinguishedName is syntactically valid.
@@ -1761,7 +1816,7 @@ public class DN implements Cloneable, Serializable, Comparable<DN>, Iterable<RDN
         }
         
         // A serialized DN is always normalized.
-        normalized.set( true );
+        normalized = new AtomicBoolean( true );
             
         // Should we read the byte[] ???
         bytes = StringTools.getBytesUtf8( upName );
