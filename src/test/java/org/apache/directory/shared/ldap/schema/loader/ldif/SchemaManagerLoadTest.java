@@ -167,8 +167,8 @@ import org.junit.runner.RunWith;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrent()
+//@RunWith(ConcurrentJunitRunner.class)
+//@Concurrent()
 public class SchemaManagerLoadTest
 {
     // A directory in which the ldif files will be stored
