@@ -29,6 +29,12 @@
   <name>Apache Directory Shared LDAP Schema Manager tests</name>
 
   <description>SchemaManager tests bundle</description>
+
+  <scm>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/branches/seelmann-ldap-schema-manager-tests</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/branches/seelmann-ldap-schema-manager-tests</developerConnection>
+    <url>http://svn.apache.org/viewvc/directory/shared/branches/seelmann-ldap-schema-manager-tests</url>
+  </scm>
   
   <dependencies>
     <dependency>
