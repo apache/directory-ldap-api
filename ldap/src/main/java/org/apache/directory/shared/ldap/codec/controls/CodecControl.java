@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.codec.controls;
 
 import java.nio.ByteBuffer;
 
-import org.apache.directory.shared.asn1.codec.EncoderException;
+import org.apache.directory.shared.asn1.EncoderException;
 
 /**
  * Define the transform method to be implemented by all the codec Controls
@@ -42,7 +42,7 @@ public interface CodecControl
      * </pre>
      * @param buffer The encoded PDU
      * @return A ByteBuffer that contaons the PDU
-     * @throws EncoderException If anything goes wrong.
+     * @throws org.apache.directory.shared.asn1.EncoderException If anything goes wrong.
      */
     ByteBuffer encode( ByteBuffer buffer ) throws EncoderException;
 

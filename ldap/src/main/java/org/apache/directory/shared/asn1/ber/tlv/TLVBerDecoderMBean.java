@@ -20,7 +20,7 @@
 package org.apache.directory.shared.asn1.ber.tlv;
 
 
-import org.apache.directory.shared.asn1.codec.DecoderException;
+import org.apache.directory.shared.asn1.DecoderException;
 
 
 /**
@@ -36,7 +36,7 @@ public interface TLVBerDecoderMBean
      * default is 1
      * 
      * @param length the number of byte to use
-     * @throws DecoderException Thrown if the indefinite length is 
+     * @throws org.apache.directory.shared.asn1.DecoderException Thrown if the indefinite length is
      * allowed or if the length's Length is above 126 bytes
      */
     void setMaxLengthLength( int length ) throws DecoderException;

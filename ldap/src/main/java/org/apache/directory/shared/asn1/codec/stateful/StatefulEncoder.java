@@ -20,7 +20,7 @@
 package org.apache.directory.shared.asn1.codec.stateful;
 
 
-import org.apache.directory.shared.asn1.codec.EncoderException;
+import org.apache.directory.shared.asn1.EncoderException;
 
 
 /**
@@ -35,7 +35,7 @@ public interface StatefulEncoder
      * final PDU to the callback if present.
      * 
      * @param obj the message object to encode into a PDU
-     * @throws EncoderException if there are problems while encoding
+     * @throws org.apache.directory.shared.asn1.EncoderException if there are problems while encoding
      */
     void encode( Object obj ) throws EncoderException;
 

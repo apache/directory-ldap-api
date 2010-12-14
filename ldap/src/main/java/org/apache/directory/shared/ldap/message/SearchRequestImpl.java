@@ -28,7 +28,7 @@ import java.util.List;
 
 import org.apache.directory.shared.asn1.ber.Asn1Container;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.codec.DecoderException;
+import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.shared.ldap.codec.LdapConstants;
 import org.apache.directory.shared.ldap.codec.LdapMessageContainer;

@@ -21,10 +21,10 @@
 package org.apache.directory.shared.asn1.codec.binary;
 
 
-import org.apache.directory.shared.asn1.codec.BinaryDecoder;
-import org.apache.directory.shared.asn1.codec.BinaryEncoder;
-import org.apache.directory.shared.asn1.codec.DecoderException;
-import org.apache.directory.shared.asn1.codec.EncoderException;
+import org.apache.directory.shared.asn1.BinaryDecoder;
+import org.apache.directory.shared.asn1.BinaryEncoder;
+import org.apache.directory.shared.asn1.DecoderException;
+import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.i18n.I18n;
 
 
