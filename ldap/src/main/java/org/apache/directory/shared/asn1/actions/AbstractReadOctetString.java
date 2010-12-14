@@ -17,76 +17,64 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.asn1.codec.actions;
+package org.apache.directory.shared.asn1.actions;
 
 
-import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Container;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
-import org.apache.directory.shared.asn1.util.IntegerDecoder;
-import org.apache.directory.shared.asn1.util.IntegerDecoderException;
+import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.util.StringTools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * The action used to read an integer value
+ * The action used to read an OCTET STRING value
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractReadInteger extends GrammarAction
+public abstract class AbstractReadOctetString extends GrammarAction
 {
     /** The logger */
-    private static final Logger LOG = LoggerFactory.getLogger( AbstractReadInteger.class );
-
-    /** Speedup for logs */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
-
-    /** the acceptable minimum value for the expected value to be parsed */
-    private int minValue = 0;
+    private static final Logger LOG = LoggerFactory.getLogger( AbstractReadOctetString.class );
 
     /** the acceptable maximum value for the expected value to be parsed */
-    private int maxValue = Integer.MAX_VALUE;
+    private boolean canBeNull = Boolean.FALSE;
 
 
     /**
      * Instantiates a new AbstractReadInteger action.
      */
-    public AbstractReadInteger( String name )
+    public AbstractReadOctetString( String name )
     {
         super( name );
     }
 
 
     /**
+     * Instantiates a new AbstractReadInteger action.
      * 
-     * Creates a new instance of AbstractReadInteger.
-     *
-     * @param name the action's name
-     * @param minValue the acceptable minimum value for the expected value to be read
-     * @param maxValue the acceptable maximum value for the value to be read
+     * @param name The log message
+     * @param canBeNull Tells if the byte array can be null or not
      */
-    public AbstractReadInteger( String name, int minValue, int maxValue )
+    public AbstractReadOctetString( String name, boolean canBeNull )
     {
         super( name );
-
-        this.minValue = minValue;
-        this.maxValue = maxValue;
+        
+        this.canBeNull = canBeNull;
     }
 
 
     /**
      * 
-     * set the integer value to the appropriate field of ASN.1 object present in the container
+     * set the OCTET STRING value to the appropriate field of ASN.1 object present in the container
      * 
-     * @param value the integer value
+     * @param value the OCTET STRING value
      * @param container the ASN.1 object's container
      */
-    protected abstract void setIntegerValue( int value, Asn1Container container );
+    protected abstract void setOctetString( byte[] value, Asn1Container container );
 
 
     /**
@@ -97,7 +85,7 @@ public abstract class AbstractReadInteger extends GrammarAction
         TLV tlv = container.getCurrentTLV();
 
         // The Length should not be null
-        if ( tlv.getLength() == 0 )
+        if ( ( tlv.getLength() == 0 ) && ( !canBeNull ) )
         {
             LOG.error( I18n.err( I18n.ERR_04066 ) );
 
@@ -107,24 +95,15 @@ public abstract class AbstractReadInteger extends GrammarAction
         
         Value value = tlv.getValue();
         
-        try
+        // The data should not be null
+        if ( ( value.getData() == null ) && ( !canBeNull ) )
         {
-            int number = IntegerDecoder.parse( value, minValue, maxValue );
-
-            if ( IS_DEBUG )
-            {
-                LOG.debug( "read integer value : {}", number );
-            }
-            
-            setIntegerValue( number, container );
-        }
-        catch ( IntegerDecoderException ide )
-        {
-            LOG.error( I18n.err( I18n.ERR_04070, StringTools.dumpBytes( value.getData() ), ide
-                .getLocalizedMessage() ) );
+            LOG.error( I18n.err( I18n.ERR_04066 ) );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( ide.getMessage() );
+            throw new DecoderException( I18n.err( I18n.ERR_04067 ) );
         }
+        
+        setOctetString( value.getData(), container );
     }
 }

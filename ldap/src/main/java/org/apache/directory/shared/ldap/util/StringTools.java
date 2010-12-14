@@ -37,7 +37,7 @@ import java.util.regex.PatternSyntaxException;
 
 import javax.naming.InvalidNameException;
 
-import org.apache.directory.shared.asn1.codec.binary.Hex;
+import org.apache.directory.shared.asn1.Hex;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.entry.BinaryValue;
 import org.apache.directory.shared.ldap.entry.StringValue;
@@ -3618,7 +3618,7 @@ public final class StringTools
             return "Invalid UUID";
         }
 
-        char[] hex = Hex.encodeHex( bytes );
+        char[] hex = Hex.encodeHex(bytes);
         StringBuffer sb = new StringBuffer();
         sb.append( hex, 0, 8 );
         sb.append( '-' );
