@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.apache.directory.shared.asn1.primitives.OID;
+import org.apache.directory.shared.asn1.util.OID;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.exception.LdapInvalidAttributeValueException;
@@ -566,7 +566,7 @@ public class DefaultEntryAttribute implements EntryAttribute
             if ( attributeType.getName() == null )
             {
                 // If the name is null, then we may have to store an OID
-                if ( !OID.isOID( newId )  || !attributeType.getOid().equals( newId ) )
+                if ( !OID.isOID(newId)  || !attributeType.getOid().equals( newId ) )
                 {
                     // This is an error
                     throw new IllegalArgumentException( I18n.err( I18n.ERR_04132 ) );

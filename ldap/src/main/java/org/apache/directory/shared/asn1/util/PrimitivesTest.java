@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.asn1.primitives;
+package org.apache.directory.shared.asn1.util;
 
 
 import org.apache.directory.junit.tools.Concurrent;
@@ -51,55 +51,55 @@ public class PrimitivesTest
         value.init( 1 );
         value.setData( new byte[]
             { 0x00 } ); // res = 0
-        assertEquals( 0, IntegerDecoder.parse( value ) );
+        Assert.assertEquals(0, IntegerDecoder.parse(value));
         value.reset();
 
         value.init( 1 );
         value.setData( new byte[]
             { 0x01 } ); // res = 1
-        assertEquals( 1, IntegerDecoder.parse( value ) );
+        Assert.assertEquals(1, IntegerDecoder.parse(value));
         value.reset();
 
         value.init( 1 );
         value.setData( new byte[]
             { ( byte ) 0xFF } ); // res = 255
-        assertEquals( -1, IntegerDecoder.parse( value ) );
+        Assert.assertEquals(-1, IntegerDecoder.parse(value));
         value.reset();
 
         value.init( 2 );
         value.setData( new byte[]
             { 0x00, 0x01 } ); // res = 1
-        assertEquals( 1, IntegerDecoder.parse( value ) );
+        Assert.assertEquals(1, IntegerDecoder.parse(value));
         value.reset();
 
         value.init( 2 );
         value.setData( new byte[]
             { 0x01, 0x00 } ); // res = 256
-        assertEquals( 256, IntegerDecoder.parse( value ) );
+        Assert.assertEquals(256, IntegerDecoder.parse(value));
         value.reset();
 
         value.init( 2 );
         value.setData( new byte[]
             { 0x01, 0x01 } ); // res = 257
-        assertEquals( 257, IntegerDecoder.parse( value ) );
+        Assert.assertEquals(257, IntegerDecoder.parse(value));
         value.reset();
 
         value.init( 2 );
         value.setData( new byte[]
             { 0x01, ( byte ) 0xFF } ); // res = 511
-        assertEquals( 511, IntegerDecoder.parse( value ) );
+        Assert.assertEquals(511, IntegerDecoder.parse(value));
         value.reset();
 
         value.init( 2 );
         value.setData( new byte[]
             { 0x02, 0x00 } ); // res = 512
-        assertEquals( 512, IntegerDecoder.parse( value ) );
+        Assert.assertEquals(512, IntegerDecoder.parse(value));
         value.reset();
 
         value.init( 3 );
         value.setData( new byte[]
             { 0x00, ( byte ) 0xFF, ( byte ) 0xFF } ); // res = 65535
-        assertEquals( 65535, IntegerDecoder.parse( value ) );
+        Assert.assertEquals(65535, IntegerDecoder.parse(value));
         value.reset();
 
         value.init( 4 );
@@ -110,7 +110,7 @@ public class PrimitivesTest
                                                                                 // - 1
                                                                                 // =
                                                                                 // MaxInt
-        assertEquals( Integer.MAX_VALUE, IntegerDecoder.parse( value ) );
+        Assert.assertEquals(Integer.MAX_VALUE, IntegerDecoder.parse(value));
         value.reset();
 
         value.init( 4 );
@@ -120,7 +120,7 @@ public class PrimitivesTest
                                                                                 // 2^31
                                                                                 // =
                                                                                 // MinInt
-        assertEquals( Integer.MIN_VALUE, IntegerDecoder.parse( value ) );
+        Assert.assertEquals(Integer.MIN_VALUE, IntegerDecoder.parse(value));
         value.reset();
     }
 } // end class TLVTagDecoderTest

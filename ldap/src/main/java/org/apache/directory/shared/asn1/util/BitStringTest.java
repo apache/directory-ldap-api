@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.asn1.primitives;
+package org.apache.directory.shared.asn1.util;
 
 
 import static org.junit.Assert.assertEquals;
@@ -27,7 +27,6 @@ import static org.junit.Assert.fail;
 import org.apache.directory.junit.tools.Concurrent;
 import org.apache.directory.junit.tools.ConcurrentJunitRunner;
 import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.util.Asn1StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -58,11 +57,11 @@ public class BitStringTest
         try
         {
             bitString.getBit( 0 );
-            fail( "Should not reach this point ..." );
+            Assert.fail("Should not reach this point ...");
         }
         catch ( IndexOutOfBoundsException ioobe )
         {
-            assertTrue( true );
+            Assert.assertTrue(true);
         }
     }
 
@@ -82,11 +81,11 @@ public class BitStringTest
         try
         {
             bitString.getBit( 0 );
-            fail( "Should not reach this point ..." );
+            Assert.fail("Should not reach this point ...");
         }
         catch ( IndexOutOfBoundsException ioobe )
         {
-            assertTrue( true );
+            Assert.assertTrue(true);
         }
     }
 
@@ -211,7 +210,7 @@ public class BitStringTest
             }
         }
         
-        assertEquals( Asn1StringUtils.dumpBytes( bytes ), Asn1StringUtils.dumpBytes( bitString.getData() ) );
+        Assert.assertEquals(Asn1StringUtils.dumpBytes(bytes), Asn1StringUtils.dumpBytes(bitString.getData()));
     }
 
     @Test
@@ -239,7 +238,7 @@ public class BitStringTest
         byte[] bytesModified = new byte[]
             { 0x00, (byte)0xAA, 0x51, (byte)0x88, (byte)0xFE };
                             
-        assertEquals( Asn1StringUtils.dumpBytes( bytesModified ), Asn1StringUtils.dumpBytes( bitString.getData() ) );
+        Assert.assertEquals(Asn1StringUtils.dumpBytes(bytesModified), Asn1StringUtils.dumpBytes(bitString.getData()));
     }
 
     @Test
@@ -267,6 +266,6 @@ public class BitStringTest
         byte[] bytesModified = new byte[]
             { 0x00, (byte)0xAA, 0x01, (byte)0x88, (byte)0xFE };
                             
-        assertEquals( Asn1StringUtils.dumpBytes( bytesModified ), Asn1StringUtils.dumpBytes( bitString.getData() ) );
+        Assert.assertEquals(Asn1StringUtils.dumpBytes(bytesModified), Asn1StringUtils.dumpBytes(bitString.getData()));
     }
 }

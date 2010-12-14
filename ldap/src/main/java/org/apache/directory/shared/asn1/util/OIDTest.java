@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.asn1.primitives;
+package org.apache.directory.shared.asn1.util;
 
 
 import org.apache.directory.junit.tools.Concurrent;
@@ -56,11 +56,11 @@ public class OIDTest
         try
         {
             oid.setOID( ( byte[] ) null );
-            fail( "Should not reach this point ..." );
+            Assert.fail("Should not reach this point ...");
         }
         catch ( DecoderException de )
         {
-            assertTrue( true );
+            Assert.assertTrue(true);
         }
     }
 
@@ -78,11 +78,11 @@ public class OIDTest
         {
             oid.setOID( new byte[]
                 {} );
-            fail( "Should not reach this point ..." );
+            Assert.fail("Should not reach this point ...");
         }
         catch ( DecoderException de )
         {
-            assertTrue( true );
+            Assert.assertTrue(true);
         }
     }
 
@@ -142,7 +142,7 @@ public class OIDTest
         }
         catch ( DecoderException de )
         {
-            fail();
+            Assert.fail();
         }
     }
 
@@ -181,7 +181,7 @@ public class OIDTest
         }
         catch ( DecoderException de )
         {
-            fail();
+            Assert.fail();
         }
     }
 
@@ -232,7 +232,7 @@ public class OIDTest
         }
         catch ( DecoderException de )
         {
-            fail();
+            Assert.fail();
         }
     }
 
@@ -265,7 +265,7 @@ public class OIDTest
         }
         catch ( DecoderException de )
         {
-            fail();
+            Assert.fail();
         }
     }
 
@@ -276,16 +276,16 @@ public class OIDTest
     @Test
     public void testOidStringBad()
     {
-        assertFalse( OID.isOID( "0" ) );
-        assertFalse( OID.isOID( "0." ) );
-        assertFalse( OID.isOID( "." ) );
-        assertFalse( OID.isOID( "0.1.2." ) );
-        assertFalse( OID.isOID( "3.1" ) );
-        assertFalse( OID.isOID( "0..1" ) );
-        assertFalse( OID.isOID( "0..12" ) );
-        assertFalse( OID.isOID( "0.a.2" ) );
-        assertTrue( OID.isOID( "0.123456" ) );
-        assertTrue( OID.isOID( "1.123456" ) );
+        Assert.assertFalse(OID.isOID("0"));
+        Assert.assertFalse(OID.isOID("0."));
+        Assert.assertFalse(OID.isOID("."));
+        Assert.assertFalse(OID.isOID("0.1.2."));
+        Assert.assertFalse(OID.isOID("3.1"));
+        Assert.assertFalse(OID.isOID("0..1"));
+        Assert.assertFalse(OID.isOID("0..12"));
+        Assert.assertFalse(OID.isOID("0.a.2"));
+        Assert.assertTrue(OID.isOID("0.123456"));
+        Assert.assertTrue(OID.isOID("1.123456"));
     }
 
 
@@ -307,7 +307,7 @@ public class OIDTest
         }
         catch ( DecoderException de )
         {
-            fail();
+            Assert.fail();
         }
     }
 
@@ -330,7 +330,7 @@ public class OIDTest
         }
         catch ( DecoderException de )
         {
-            fail();
+            Assert.fail();
         }
     }
 
@@ -368,7 +368,7 @@ public class OIDTest
         }
         catch ( DecoderException de )
         {
-            fail();
+            Assert.fail();
         }
     }
 
@@ -382,9 +382,9 @@ public class OIDTest
         OID oid2 = new OID();
         OID oid3 = new OID( "1.1" );
 
-        assertTrue( oid1.equals( oid2 ) );
-        assertFalse( oid1.equals( oid3 ) );
-        assertFalse( oid2.equals( oid3 ) );
+        Assert.assertTrue(oid1.equals(oid2));
+        Assert.assertFalse(oid1.equals(oid3));
+        Assert.assertFalse(oid2.equals(oid3));
     }
 
     /**
@@ -401,8 +401,8 @@ public class OIDTest
         OID oid2 = new OID( s2 );
         OID oid3 = new OID( s3 );
         
-        assertTrue( oid1.equals( oid2 ) );
-        assertFalse( oid1.equals( oid3 ) );
-        assertFalse( oid2.equals( oid3 ) );
+        Assert.assertTrue(oid1.equals(oid2));
+        Assert.assertFalse(oid1.equals(oid3));
+        Assert.assertFalse(oid2.equals(oid3));
     }
 }

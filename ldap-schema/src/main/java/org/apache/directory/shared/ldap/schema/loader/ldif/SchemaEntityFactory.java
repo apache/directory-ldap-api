@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.directory.shared.asn1.primitives.OID;
+import org.apache.directory.shared.asn1.util.OID;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
@@ -138,7 +138,7 @@ public class SchemaEntityFactory implements EntityFactory
             throw new IllegalArgumentException( msg );
         }
 
-        if ( !OID.isOID( oid ) )
+        if ( !OID.isOID(oid) )
         {
             String msg = I18n.err( I18n.ERR_10006, oid );
             LOG.warn( msg );
