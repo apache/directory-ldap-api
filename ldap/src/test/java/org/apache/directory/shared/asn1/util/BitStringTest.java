@@ -20,9 +20,8 @@
 package org.apache.directory.shared.asn1.util;
 
 
+import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.apache.directory.junit.tools.Concurrent;
 import org.apache.directory.junit.tools.ConcurrentJunitRunner;
