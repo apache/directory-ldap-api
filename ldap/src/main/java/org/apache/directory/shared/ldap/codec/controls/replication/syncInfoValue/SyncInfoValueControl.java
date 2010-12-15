@@ -408,7 +408,7 @@ public class SyncInfoValueControl extends AbstractControl
                 {
                     for ( byte[] syncUUID:syncUUIDs )
                     {
-                        Value.encode( buffer , syncUUID );
+                        Value.encode(buffer, syncUUID);
                     }
                 }
         }
@@ -482,7 +482,7 @@ public class SyncInfoValueControl extends AbstractControl
                         // The refreshDone flag
                         if ( !refreshDone )
                         {
-                            Value.encode( buffer, refreshDone );
+                            Value.encode(buffer, refreshDone);
                         }
 
                         break;

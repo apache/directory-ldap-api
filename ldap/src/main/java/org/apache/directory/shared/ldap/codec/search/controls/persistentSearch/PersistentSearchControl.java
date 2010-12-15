@@ -179,7 +179,7 @@ public class PersistentSearchControl extends AbstractControl
         buffer.put( TLV.getBytes( psearchSeqLength ) );
 
         Value.encode( buffer, changeTypes );
-        Value.encode( buffer, changesOnly );
+        Value.encode(buffer, changesOnly);
         Value.encode( buffer, returnECs );
         
         return buffer;

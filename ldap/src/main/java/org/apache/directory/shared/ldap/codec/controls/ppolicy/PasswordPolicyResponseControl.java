@@ -132,7 +132,7 @@ public class PasswordPolicyResponseControl extends AbstractControl
                 {
                     buffer.put( ( byte ) PasswordPolicyResponseControlTags.TIME_BEFORE_EXPIRATION_TAG.getValue() );
                     buffer.put( TLV.getBytes( timeBeforeExpirationTagLength ) );
-                    buffer.put( Value.getBytes( timeBeforeExpiration ) );
+                    buffer.put( Value.getBytes(timeBeforeExpiration) );
                 }
                 else if ( graceAuthNsRemaining >= 0 )
                 {

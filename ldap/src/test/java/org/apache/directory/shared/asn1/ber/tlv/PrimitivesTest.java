@@ -17,11 +17,13 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.asn1.util;
+package org.apache.directory.shared.asn1.ber.tlv;
 
 
 import org.apache.directory.junit.tools.Concurrent;
 import org.apache.directory.junit.tools.ConcurrentJunitRunner;
+import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
+import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.junit.Test;
 import org.junit.Assert;

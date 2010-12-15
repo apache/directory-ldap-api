@@ -192,7 +192,7 @@ public abstract class AbstractControl extends AbstractAsn1Object implements Cont
         }
 
         // The control type
-        Value.encode( buffer, getOid().getBytes() );
+        Value.encode(buffer, getOid().getBytes());
 
         // The control criticality, if true
         if ( criticality )

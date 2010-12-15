@@ -31,10 +31,9 @@ import java.util.Arrays;
 import org.apache.directory.junit.tools.Concurrent;
 import org.apache.directory.junit.tools.ConcurrentJunitRunner;
 import org.apache.directory.shared.asn1.EncoderException;
-import org.apache.directory.shared.asn1.util.BitString;
 import org.apache.directory.shared.asn1.util.Asn1StringUtils;
-import org.apache.directory.shared.asn1.util.IntegerDecoder;
-import org.apache.directory.shared.asn1.util.LongDecoder;
+import org.apache.directory.shared.asn1.util.BitString;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -77,9 +76,9 @@ public class ValueTest
     public void testValueLongGetNbBytes()
     {
         assertEquals( 1, Value.getNbBytes( 0x0000000000000000L ) );
-        assertEquals( 1, Value.getNbBytes( 0x0000000000000001L ) );
+        assertEquals( 1, Value.getNbBytes(0x0000000000000001L) );
         assertEquals( 2, Value.getNbBytes( 0x00000000000000FFL ) );
-        assertEquals( 2, Value.getNbBytes( 0x0000000000000100L ) );
+        assertEquals( 2, Value.getNbBytes(0x0000000000000100L) );
         assertEquals( 3, Value.getNbBytes( 0x000000000000FFFFL ) );
         assertEquals( 3, Value.getNbBytes( 0x0000000000010000L ) );
         assertEquals( 4, Value.getNbBytes( 0x0000000000FFFFFFL ) );
@@ -650,7 +649,7 @@ public class ValueTest
         {
             encoded = new BigInteger( Integer.toString( i ) ).toByteArray();
 
-            int value = IntegerDecoder.parse( new Value( encoded ) );
+            int value = IntegerDecoder.parse(new Value(encoded));
 
             assertEquals( i, value );
         }
@@ -742,7 +741,7 @@ public class ValueTest
         {
             encoded = new BigInteger( Long.toString( i ) ).toByteArray();
 
-            long value = LongDecoder.parse( new Value( encoded ) );
+            long value = LongDecoder.parse(new Value(encoded));
 
             assertEquals( i, value );
         }
@@ -783,7 +782,7 @@ public class ValueTest
             fail();
         }
         
-        assertEquals( "0x03 0x03 0x06 0x00 0x40 ", Asn1StringUtils.dumpBytes( buffer.array() )  );
+        Assert.assertEquals("0x03 0x03 0x06 0x00 0x40 ", Asn1StringUtils.dumpBytes(buffer.array()));
     }
 }
 

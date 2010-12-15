@@ -647,7 +647,7 @@ public class Value implements Serializable
 
             byte[] value = Asn1StringUtils.getBytesUtf8( string );
 
-            buffer.put( TLV.getBytes( value.length ) );
+            buffer.put( TLV.getBytes(value.length) );
 
             if ( value.length != 0 )
             {

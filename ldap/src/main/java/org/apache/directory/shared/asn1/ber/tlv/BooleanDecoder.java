@@ -17,10 +17,9 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.asn1.util;
+package org.apache.directory.shared.asn1.ber.tlv;
 
 
-import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +50,7 @@ public final class BooleanDecoder
      * 
      * @param value The byte buffer to parse
      * @return A boolean.
-     * @throws BooleanDecoderException Thrown if the byte stream does not contains a boolean
+     * @throws org.apache.directory.shared.asn1.ber.tlv.BooleanDecoderException Thrown if the byte stream does not contains a boolean
      */
     public static boolean parse( Value value ) throws BooleanDecoderException
     {

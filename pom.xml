@@ -137,6 +137,24 @@
         <version>${project.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>shared-util</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>shared-asn1-api</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>shared-asn1-ber</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
       <!-- Mina dependencies -->
 
       <dependency>

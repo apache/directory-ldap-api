@@ -348,7 +348,7 @@ public class LdapEncoder
      */
     private int computeAbandonRequestLength( AbandonRequestImpl abandonRequest )
     {
-        int length = 1 + 1 + Value.getNbBytes( abandonRequest.getAbandoned() );
+        int length = 1 + 1 + Value.getNbBytes(abandonRequest.getAbandoned());
 
         return length;
     }
@@ -1425,7 +1425,7 @@ public class LdapEncoder
                             }
                             else
                             {
-                                Value.encode( buffer, value.getString() );
+                                Value.encode(buffer, value.getString());
                             }
                         }
                     }

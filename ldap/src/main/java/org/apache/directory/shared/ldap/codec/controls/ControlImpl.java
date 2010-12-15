@@ -57,7 +57,7 @@ public class ControlImpl extends AbstractControl
     /**
      * Set the encoded control value
      * 
-     * @param encodedValue The encoded control value to store
+     * @param value The encoded control value to store
      */
     public void setValue( byte[] value )
     {
@@ -129,7 +129,7 @@ public class ControlImpl extends AbstractControl
         // If we have a value, encode it
         if ( value != null )
         {
-            Value.encode( buffer, value );
+            Value.encode(buffer, value);
         }
 
         return buffer;

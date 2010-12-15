@@ -17,62 +17,61 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.asn1.util;
+package org.apache.directory.shared.asn1.ber.tlv;
 
 
-import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
 
 
 /**
- * Parse and decode a Long value.
+ * Parse and decode an Integer value.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class LongDecoder
+public final class IntegerDecoder
 {
     /** A mask used to get only the necessary bytes */
-    private static final long[] MASK = new long[]
-        { 0x00000000000000FFL, 0x000000000000FFFFL, 0x0000000000FFFFFFL, 0x00000000FFFFFFFFL, 0x000000FFFFFFFFFFL,
-            0x0000FFFFFFFFFFFFL, 0x00FFFFFFFFFFFFFFL, 0xFFFFFFFFFFFFFFFFL };
+    private static final int[] MASK = new int[]
+        { 0x000000FF, 0x0000FFFF, 0x00FFFFFF, 0xFFFFFFFF };
 
 
     /**
      * This is a helper class, there is no reason to define a public constructor for it.
      */
-    private LongDecoder()
+    private IntegerDecoder()
     {
         // Do nothing
     }
 
 
     /**
-     * Parse a byte buffer and send back an long, controlling that this number
+     * Parse a byte buffer and send back an integer, controlling that this number
      * is in a specified interval.
      * 
      * @param value The byte buffer to parse
      * @param min Lowest value allowed, included
      * @param max Highest value allowed, included
      * @return An integer
-     * @throws LongDecoderException Thrown if the byte stream does not contains an integer
+     * @throws org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException Thrown if the byte stream does not contains an integer
      */
-    public static long parse( Value value, long min, long max ) throws LongDecoderException
+    public static int parse( Value value, int min, int max ) throws IntegerDecoderException
     {
-        long result = 0;
+
+        int result = 0;
 
         byte[] bytes = value.getData();
 
         if ( ( bytes == null ) || ( bytes.length == 0 ) )
         {
-            throw new LongDecoderException( I18n.err( I18n.ERR_00039_0_BYTES_LONG_LONG ) );
+            throw new IntegerDecoderException( I18n.err( I18n.ERR_00036_0_BYTES_LONG_INTEGER ) );
         }
 
-        if ( bytes.length > 8 )
+        if ( bytes.length > 4 )
         {
-            throw new LongDecoderException( I18n.err( I18n.ERR_00039_0_BYTES_LONG_LONG ) );
+            throw new IntegerDecoderException( I18n.err( I18n.ERR_00037_ABOVE_4_BYTES_INTEGER ) );
         }
 
-        for ( int i = 0; ( i < bytes.length ) && ( i < 9 ); i++ )
+        for ( int i = 0; ( i < bytes.length ) && ( i < 5 ); i++ )
         {
             result = ( result << 8 ) | ( bytes[i] & 0x00FF );
         }
@@ -88,7 +87,7 @@ public final class LongDecoder
         }
         else
         {
-            throw new LongDecoderException( I18n.err( I18n.ERR_00038_VALUE_NOT_IN_RANGE, min, max ) );
+            throw new IntegerDecoderException( I18n.err( I18n.ERR_00038_VALUE_NOT_IN_RANGE, min, max ) );
         }
     }
 
@@ -98,10 +97,10 @@ public final class LongDecoder
      * 
      * @param value The byte buffer to parse
      * @return An integer
-     * @throws LongDecoderException Thrown if the byte stream does not contains an integer
+     * @throws IntegerDecoderException Thrown if the byte stream does not contains an integer
      */
-    public static long parse( Value value ) throws LongDecoderException
+    public static int parse( Value value ) throws IntegerDecoderException
     {
-        return parse( value, Long.MIN_VALUE, Long.MAX_VALUE );
+        return parse( value, Integer.MIN_VALUE, Integer.MAX_VALUE );
     }
 }

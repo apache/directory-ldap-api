@@ -211,10 +211,10 @@ public class SyncStateValueControl  extends AbstractControl
                 // The mode
                 buffer.put( UniversalTag.ENUMERATED.getValue() );
                 buffer.put( ( byte ) 0x01 );
-                buffer.put( Value.getBytes( syncStateType.getValue() ) );
+                buffer.put( Value.getBytes(syncStateType.getValue()) );
 
                 // the entryUUID
-                Value.encode( buffer, entryUUID );
+                Value.encode(buffer, entryUUID);
 
                 // The cookie
                 if ( cookie != null )

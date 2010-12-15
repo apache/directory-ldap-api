@@ -212,7 +212,7 @@ public class EntryChangeControl extends AbstractControl
 
                 if ( previousDn != null )
                 {
-                    Value.encode( buffer, previousDnBytes );
+                    Value.encode(buffer, previousDnBytes);
                 }
 
                 if ( changeNumber != UNDEFINED_CHANGE_NUMBER )

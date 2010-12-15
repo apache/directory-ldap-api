@@ -102,7 +102,7 @@ public class Cancel extends AbstractAsn1Object
     public int computeLength()
     {
         // The messageId length
-        cancelSequenceLength = 1 + 1 + Value.getNbBytes( cancelId );
+        cancelSequenceLength = 1 + 1 + Value.getNbBytes(cancelId);
 
         // Add the sequence and the length
         return 1 + 1 + cancelSequenceLength;

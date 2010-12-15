@@ -152,7 +152,7 @@ public class PagedResultsControl extends AbstractControl
         buffer.put( UniversalTag.SEQUENCE.getValue() );
         buffer.put( TLV.getBytes( pscSeqLength ) );
 
-        Value.encode( buffer, size );
+        Value.encode(buffer, size);
         Value.encode( buffer, cookie );
 
         return buffer;

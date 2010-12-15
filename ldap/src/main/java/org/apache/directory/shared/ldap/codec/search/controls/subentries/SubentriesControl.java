@@ -129,7 +129,7 @@ public class SubentriesControl extends AbstractControl
                 ByteBuffer buffer = ByteBuffer.allocate( valueLength );
                 
                 // Now encode the Subentries specific part
-                Value.encode( buffer, visibility );
+                Value.encode(buffer, visibility);
                 
                 value = buffer.array();
             }

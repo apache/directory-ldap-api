@@ -181,7 +181,7 @@ public class GracefulDisconnect extends GracefulAction
             // We may have more than one reference.
             for ( LdapURL replicatedContext:replicatedContexts )
             {
-                Value.encode( bb, replicatedContext.getBytesReference() );
+                Value.encode(bb, replicatedContext.getBytesReference());
             }
         }
 

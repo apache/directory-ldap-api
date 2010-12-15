@@ -175,7 +175,7 @@ public class SyncRequestValueControl  extends AbstractControl
         // The mode
         buffer.put(  UniversalTag.ENUMERATED.getValue() );
         buffer.put( (byte)0x01 );
-        buffer.put( Value.getBytes( mode.getValue() ) );
+        buffer.put( Value.getBytes(mode.getValue()) );
 
         // The cookie
         if ( cookie != null )
@@ -186,7 +186,7 @@ public class SyncRequestValueControl  extends AbstractControl
         // The reloadHint if not false
         if ( reloadHint )
         {
-            Value.encode( buffer, reloadHint );
+            Value.encode(buffer, reloadHint);
         }
         
         return buffer;

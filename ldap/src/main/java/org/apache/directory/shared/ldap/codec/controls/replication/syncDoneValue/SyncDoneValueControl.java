@@ -124,7 +124,7 @@ public class SyncDoneValueControl extends AbstractControl
 
         if ( refreshDeletes )
         {  
-            Value.encode( buffer, refreshDeletes );
+            Value.encode(buffer, refreshDeletes);
         }
 
         return buffer;

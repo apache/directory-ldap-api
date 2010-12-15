@@ -227,7 +227,7 @@ public class AttributeValueAssertionFilter extends Filter
         }
         else
         {
-            Value.encode( buffer, assertion.getAssertionValue().getBytes() );
+            Value.encode(buffer, assertion.getAssertionValue().getBytes());
         }
 
         return buffer;

@@ -172,7 +172,7 @@ public class SyncModifyDnControl extends AbstractControl
                 buffer.put( ( byte ) SyncModifyDnControlTags.RENAME_TAG.getValue() );
                 buffer.put( TLV.getBytes( renameLen ) );
                 Value.encode( buffer, newRdn );
-                Value.encode( buffer, deleteOldRdn );
+                Value.encode(buffer, deleteOldRdn);
                 break;
 
             case MOVEANDRENAME:

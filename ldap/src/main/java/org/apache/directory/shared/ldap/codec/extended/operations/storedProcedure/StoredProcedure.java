@@ -277,7 +277,7 @@ public class StoredProcedure extends AbstractAsn1Object
             Value.encode( bb, language );
 
             // The procedure
-            Value.encode( bb, procedure );
+            Value.encode(bb, procedure);
             
             // The parameters sequence
             bb.put( UniversalTag.SEQUENCE.getValue() );
@@ -299,7 +299,7 @@ public class StoredProcedure extends AbstractAsn1Object
                     Value.encode( bb, spParam.type );
 
                     // The parameter value
-                    Value.encode( bb, spParam.value );
+                    Value.encode(bb, spParam.value);
 
                     // Go to the next parameter;
                     parameterNumber++;

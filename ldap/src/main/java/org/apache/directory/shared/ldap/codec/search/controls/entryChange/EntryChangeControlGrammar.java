@@ -25,13 +25,8 @@ import org.apache.directory.shared.asn1.ber.grammar.AbstractGrammar;
 import org.apache.directory.shared.asn1.ber.grammar.Grammar;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
-import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.*;
 import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.util.IntegerDecoder;
-import org.apache.directory.shared.asn1.util.IntegerDecoderException;
-import org.apache.directory.shared.asn1.util.LongDecoder;
-import org.apache.directory.shared.asn1.util.LongDecoderException;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.search.controls.ChangeType;
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
@@ -102,7 +97,7 @@ public final class EntryChangeControlGrammar extends AbstractGrammar
 
                 try
                 {
-                    int change = IntegerDecoder.parse( value, 1, 8 );
+                    int change = IntegerDecoder.parse(value, 1, 8);
                     
                     switch ( ChangeType.getChangeType( change ) )
                     {
@@ -207,7 +202,7 @@ public final class EntryChangeControlGrammar extends AbstractGrammar
 
                 try
                 {
-                    long changeNumber = LongDecoder.parse( value );
+                    long changeNumber = LongDecoder.parse(value);
 
                     if ( IS_DEBUG )
                     {

@@ -81,7 +81,7 @@ public class GracefulShutdown extends GracefulAction
 
         if ( delay != 0 )
         {
-            gracefulSequenceLength += 1 + 1 + Value.getNbBytes( delay );
+            gracefulSequenceLength += 1 + 1 + Value.getNbBytes(delay);
         }
 
         return gracefulLength + gracefulSequenceLength;
@@ -110,7 +110,7 @@ public class GracefulShutdown extends GracefulAction
         if ( delay != 0 )
         {
             bb.put( ( byte ) GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG );
-            bb.put( ( byte ) Value.getNbBytes( delay ) );
+            bb.put( ( byte ) Value.getNbBytes(delay) );
             bb.put( Value.getBytes( delay ) );
         }
         return bb;

@@ -302,7 +302,7 @@ public class SubstringFilter extends Filter
             buffer.put( TLV.getBytes( substringsFilterLength ) );
 
             // The type
-            Value.encode( buffer, type.getBytes() );
+            Value.encode(buffer, type.getBytes());
 
             // The SubstringSequenceFilter Tag
             buffer.put( UniversalTag.SEQUENCE.getValue() );

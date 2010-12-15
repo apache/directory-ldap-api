@@ -67,13 +67,13 @@ public class CertGenerationObject extends AbstractAsn1Object
     public int computeLength()
     {
         int len = StringTools.getBytesUtf8( targetDN ).length;
-        requestLength = 1 + Value.getNbBytes( len ) + len;
+        requestLength = 1 + Value.getNbBytes(len) + len;
 
         len = StringTools.getBytesUtf8( issuerDN ).length;
         requestLength += 1 + Value.getNbBytes( len ) + len;
 
         len = StringTools.getBytesUtf8( subjectDN ).length;
-        requestLength += 1 + Value.getNbBytes( len ) + len;
+        requestLength += 1 + Value.getNbBytes(len) + len;
 
         len = StringTools.getBytesUtf8( keyAlgorithm ).length;
         requestLength += 1 + Value.getNbBytes( len ) + len;
