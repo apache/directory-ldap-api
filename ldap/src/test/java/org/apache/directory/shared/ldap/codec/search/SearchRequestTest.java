@@ -55,7 +55,7 @@ import org.apache.directory.shared.ldap.message.SearchResultDoneImpl;
 import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.ldap.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.shared.ldap.schema.normalizers.OidNormalizer;
-import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.Strings;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -169,7 +169,7 @@ public class SearchRequestTest
                 0x04, 0x05, 'a', 't', 't', 'r', '2' // AttributeDescription ::= LDAPString
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -262,7 +262,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x90, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x81 ), decodedPdu.substring( 0, 0x81 ) );
         }
@@ -336,7 +336,7 @@ public class SearchRequestTest
                 0x04, 0x05, 'a', 't', 't', 'r', '2' // AttributeDescription ::= LDAPString
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -430,7 +430,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x0090, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x81 ), decodedPdu.substring( 0, 0x81 ) );
         }
@@ -511,7 +511,7 @@ public class SearchRequestTest
             // LDAPString
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -598,7 +598,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x7B, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x6C ), decodedPdu.substring( 0, 0x6C ) );
         }
@@ -656,7 +656,7 @@ public class SearchRequestTest
                 0x00, 0x00, // Some trailing 00, useless.
                 0x00, 0x00, 0x00, 0x00 } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -703,7 +703,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x39, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu, decodedPdu.substring( 0, decodedPdu.length() - 35 ) );
         }
@@ -934,7 +934,7 @@ public class SearchRequestTest
                 0x04, 0x05, 'a', 't', 't', 'r', '2' // attr2
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -1016,7 +1016,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x0096, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x87 ), decodedPdu.substring( 0, 0x87 ) );
         }
@@ -1084,7 +1084,7 @@ public class SearchRequestTest
 
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         Asn1Container ldapMessageContainer = new LdapMessageContainer();
@@ -1135,7 +1135,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x81, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
             assertEquals( decodedPdu, encodedPdu );
         }
         catch ( EncoderException ee )
@@ -1384,7 +1384,7 @@ public class SearchRequestTest
 
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         Asn1Container ldapMessageContainer = new LdapMessageContainer();
@@ -1432,7 +1432,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x5F, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
             assertEquals( decodedPdu, encodedPdu );
         }
         catch ( EncoderException ee )
@@ -1570,7 +1570,7 @@ public class SearchRequestTest
                 0x04, 0x05, 'a', 't', 't', 'r', '2' // AttributeDescription ::= LDAPString
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -1663,7 +1663,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x6F, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x6F ), decodedPdu.substring( 0, 0x6F ) );
         }
@@ -2600,7 +2600,7 @@ public class SearchRequestTest
 
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -2653,7 +2653,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x43, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -2692,7 +2692,7 @@ public class SearchRequestTest
 
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -2746,7 +2746,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x46, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -3033,7 +3033,7 @@ public class SearchRequestTest
 
         ByteBuffer stream = ByteBuffer.allocate( asn1BER.length );
         stream.put( asn1BER );
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -3097,7 +3097,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x62, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -3148,7 +3148,7 @@ public class SearchRequestTest
                 0x30, 0x00, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -3200,7 +3200,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x25, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x25 ), decodedPdu.substring( 0, 0x25 ) );
         }
@@ -3252,7 +3252,7 @@ public class SearchRequestTest
                 0x30, 0x00, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -3311,7 +3311,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x27, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x27 ), decodedPdu.substring( 0, 0x27 ) );
         }
@@ -3368,7 +3368,7 @@ public class SearchRequestTest
                 0x30, 0x00, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -3437,7 +3437,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x2F, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x2F ), decodedPdu.substring( 0, 0x2F ) );
         }
@@ -3488,7 +3488,7 @@ public class SearchRequestTest
                 0x30, 0x00, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -3554,7 +3554,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x29, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x29 ), decodedPdu.substring( 0, 0x29 ) );
         }
@@ -3611,7 +3611,7 @@ public class SearchRequestTest
                 0x30, 0x00, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -3687,7 +3687,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x31, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x31 ), decodedPdu.substring( 0, 0x31 ) );
         }
@@ -3743,7 +3743,7 @@ public class SearchRequestTest
                 0x30, 0x00, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -3819,7 +3819,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x31, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x31 ), decodedPdu.substring( 0, 0x31 ) );
         }
@@ -3879,7 +3879,7 @@ public class SearchRequestTest
                 0x30, 0x00, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -3965,7 +3965,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x39, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x39 ), decodedPdu.substring( 0, 0x39 ) );
         }
@@ -4025,7 +4025,7 @@ public class SearchRequestTest
                 0x30, 0x00, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -4111,7 +4111,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x39, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x39 ), decodedPdu.substring( 0, 0x39 ) );
         }
@@ -4168,7 +4168,7 @@ public class SearchRequestTest
                 0x30, 0x00 // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -4251,7 +4251,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x33, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x33 ), decodedPdu.substring( 0, 0x33 ) );
         }
@@ -4312,7 +4312,7 @@ public class SearchRequestTest
                 0x30, 0x00 // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -4405,7 +4405,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x3B, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x3B ), decodedPdu.substring( 0, 0x3B ) );
         }
@@ -4461,7 +4461,7 @@ public class SearchRequestTest
                 0x30, 0x00 // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
             } );
 
-        String decodedPdu = StringTools.dumpBytes( stream.array() );
+        String decodedPdu = Strings.dumpBytes(stream.array());
         stream.flip();
 
         // Allocate a BindRequest Container
@@ -4543,7 +4543,7 @@ public class SearchRequestTest
             // Check the length
             assertEquals( 0x3B, bb.limit() );
 
-            String encodedPdu = StringTools.dumpBytes( bb.array() );
+            String encodedPdu = Strings.dumpBytes(bb.array());
 
             assertEquals( encodedPdu.substring( 0, 0x3B ), decodedPdu.substring( 0, 0x3B ) );
         }

@@ -33,6 +33,7 @@ import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.message.SearchRequest;
 import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.CharConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +80,7 @@ public class InitAssertionValueFilterAction extends GrammarAction
         }
         else
         {
-            assertionValue = new BinaryValue( StringTools.EMPTY_BYTES );
+            assertionValue = new BinaryValue( CharConstants.EMPTY_BYTES );
         }
 
         AttributeValueAssertionFilter terminalFilter = ( AttributeValueAssertionFilter ) ( ( SearchRequestImpl ) searchRequest )
@@ -94,7 +95,7 @@ public class InitAssertionValueFilterAction extends GrammarAction
             }
             else
             {
-                assertionValue = new BinaryValue( StringTools.EMPTY_BYTES );
+                assertionValue = new BinaryValue( CharConstants.EMPTY_BYTES );
             }
 
             assertion.setAssertionValue( assertionValue );

@@ -33,6 +33,8 @@ import org.apache.directory.shared.ldap.schema.Normalizer;
 import org.apache.directory.shared.ldap.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.schema.comparators.ByteArrayComparator;
 import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.CharConstants;
+import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -185,7 +187,7 @@ public class BinaryValue extends AbstractValue<byte[]>
         }
         else
         {
-            return StringTools.EMPTY_BYTES;
+            return CharConstants.EMPTY_BYTES;
         }
     }
 
@@ -743,7 +745,7 @@ public class BinaryValue extends AbstractValue<byte[]>
         }
         else if ( wrappedLength == 0 )
         {
-            wrappedValue = StringTools.EMPTY_BYTES;
+            wrappedValue = CharConstants.EMPTY_BYTES;
             same = true;
             normalized = true;
             normalizedValue = wrappedValue;
@@ -780,7 +782,7 @@ public class BinaryValue extends AbstractValue<byte[]>
                     }
                     else
                     {
-                        normalizedValue = StringTools.EMPTY_BYTES;
+                        normalizedValue = CharConstants.EMPTY_BYTES;
                     }
                 }
                 else
@@ -811,11 +813,11 @@ public class BinaryValue extends AbstractValue<byte[]>
 
             System.arraycopy( wrappedValue, 0, copy, 0, 16 );
 
-            return "'" + StringTools.dumpBytes( copy ) + "...'";
+            return "'" + Strings.dumpBytes(copy) + "...'";
         }
         else
         {
-            return "'" + StringTools.dumpBytes( wrappedValue ) + "'";
+            return "'" + Strings.dumpBytes(wrappedValue) + "'";
         }
     }
 }

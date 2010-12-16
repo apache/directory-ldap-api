@@ -30,7 +30,8 @@ import org.apache.directory.shared.ldap.codec.controls.CodecControl;
 import org.apache.directory.shared.ldap.codec.controls.ControlDecoder;
 import org.apache.directory.shared.ldap.message.Message;
 import org.apache.directory.shared.ldap.message.control.Control;
-import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.CharConstants;
+import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +72,7 @@ public class ControlValueAction extends GrammarAction
         // Store the value - have to handle the special case of a 0 length value
         if ( tlv.getLength() == 0 )
         {
-            control.setValue( StringTools.EMPTY_BYTES );
+            control.setValue( CharConstants.EMPTY_BYTES );
         }
         else
         {
@@ -88,7 +89,7 @@ public class ControlValueAction extends GrammarAction
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "Control value : " + StringTools.dumpBytes( ( byte[] ) control.getValue() ) );
+            LOG.debug( "Control value : " + Strings.dumpBytes((byte[]) control.getValue()) );
         }
     }
 }

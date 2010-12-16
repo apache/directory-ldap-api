@@ -37,15 +37,11 @@ import javax.naming.directory.InvalidAttributeValueException;
 
 import org.apache.directory.junit.tools.Concurrent;
 import org.apache.directory.junit.tools.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.entry.BinaryValue;
-import org.apache.directory.shared.ldap.entry.DefaultEntryAttribute;
-import org.apache.directory.shared.ldap.entry.StringValue;
-import org.apache.directory.shared.ldap.entry.EntryAttribute;
-import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.schema.syntaxCheckers.Ia5StringSyntaxChecker;
 import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.CharConstants;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -651,10 +647,10 @@ public class DefaultEntryAttributeTest
         
         EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
         
-        nbAdded = attr2.add( StringTools.EMPTY_BYTES );
+        nbAdded = attr2.add( CharConstants.EMPTY_BYTES );
         assertEquals( 1, nbAdded );
         assertFalse( attr2.isHR() );
-        assertTrue( Arrays.equals( StringTools.EMPTY_BYTES, attr2.getBytes() ) );
+        assertTrue( Arrays.equals( CharConstants.EMPTY_BYTES, attr2.getBytes() ) );
         
         EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
         
@@ -1201,10 +1197,10 @@ public class DefaultEntryAttributeTest
         
         EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
         
-        nbAdded = attr2.add( StringTools.EMPTY_BYTES );
+        nbAdded = attr2.add( CharConstants.EMPTY_BYTES );
         assertEquals( 1, nbAdded );
         assertFalse( attr2.isHR() );
-        assertTrue( Arrays.equals( StringTools.EMPTY_BYTES, attr2.getBytes() ) );
+        assertTrue( Arrays.equals( CharConstants.EMPTY_BYTES, attr2.getBytes() ) );
         
         EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
         

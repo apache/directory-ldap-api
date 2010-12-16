@@ -42,6 +42,8 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.entry.BinaryValue;
 import org.apache.directory.shared.ldap.entry.StringValue;
 import org.apache.directory.shared.ldap.schema.syntaxCheckers.UuidSyntaxChecker;
+import org.apache.directory.shared.util.CharConstants;
+import org.apache.directory.shared.util.Strings;
 
 
 /**
@@ -62,319 +64,6 @@ public final class StringTools
 
     /** The default charset, because it's not provided by JDK 1.5 */
     static String defaultCharset = null;
-    
-
-    
-    // ~ Static fields/initializers
-    // -----------------------------------------------------------------
-
-    /** Hex chars */
-    private static final byte[] HEX_CHAR = new byte[]
-        { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-
-    private static final int UTF8_MULTI_BYTES_MASK = 0x0080;
-
-    private static final int UTF8_TWO_BYTES_MASK = 0x00E0;
-
-    private static final int UTF8_TWO_BYTES = 0x00C0;
-
-    private static final int UTF8_THREE_BYTES_MASK = 0x00F0;
-
-    private static final int UTF8_THREE_BYTES = 0x00E0;
-
-    private static final int UTF8_FOUR_BYTES_MASK = 0x00F8;
-
-    private static final int UTF8_FOUR_BYTES = 0x00F0;
-
-    private static final int UTF8_FIVE_BYTES_MASK = 0x00FC;
-
-    private static final int UTF8_FIVE_BYTES = 0x00F8;
-
-    private static final int UTF8_SIX_BYTES_MASK = 0x00FE;
-
-    private static final int UTF8_SIX_BYTES = 0x00FC;
-
-    /** &lt;alpha> ::= [0x41-0x5A] | [0x61-0x7A] */
-    private static final boolean[] ALPHA =
-        { 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  false, false, false, false, false, 
-            false, true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  false, false, false, false, false 
-        };
-
-    /** &lt;alpha-lower-case> ::= [0x61-0x7A] */
-    private static final boolean[] ALPHA_LOWER_CASE =
-        { 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  false, false, false, false, false 
-        };
-
-    /** &lt;alpha-upper-case> ::= [0x41-0x5A] */
-    private static final boolean[] ALPHA_UPPER_CASE =
-        { 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-        };
-
-    /** &lt;alpha-digit> | &lt;digit> */
-    private static final boolean[] ALPHA_DIGIT =
-        { 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  false, false, false, false, false, false, 
-            false, true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,  
-            true,  true,  true,  false, false, false, false, false, 
-            false, true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  false, false, false, false, false 
-        };
-
-    /** &lt;alpha> | &lt;digit> | '-' */
-    private static final boolean[] CHAR =
-        { 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, true,  false, false, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  false, false, false, false, false, false, 
-            false, true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,  
-            true,  true,  true,  false, false, false, false, false, 
-            false, true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  false, false, false, false, false 
-        };
-
-    /** %01-%27 %2B-%5B %5D-%7F */
-    private static final boolean[] UNICODE_SUBSET =
-        { 
-            false, true,  true,  true,  true,  true,  true,  true, // '\0'
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            false, false, false, true,  true,  true,  true,  true, // '(', ')', '*'
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,  
-            true,  true,  true,  true,  false, true,  true,  true, // '\'
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  true,  true,  true,  true,  true,  true,
-        };
-
-    /** '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' */
-    private static final boolean[] DIGIT =
-        { 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false
-        };
-
-    /** &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66] */
-    private static final boolean[] HEX =
-        { 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            true,  true,  true,  true,  true,  true,  true,  true, 
-            true,  true,  false, false, false, false, false, false, 
-            false, true,  true,  true,  true,  true,  true,  false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, true,  true,  true,  true,  true,  true,  false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false, 
-            false, false, false, false, false, false, false, false };
-    
-    /** A table containing booleans when the corresponding char is printable */
-    private static final boolean[] IS_PRINTABLE_CHAR =
-        {
-        false, false, false, false, false, false, false, false, // ---, ---, ---, ---, ---, ---, ---, ---
-        false, false, false, false, false, false, false, false, // ---, ---, ---, ---, ---, ---, ---, ---
-        false, false, false, false, false, false, false, false, // ---, ---, ---, ---, ---, ---, ---, ---
-        false, false, false, false, false, false, false, false, // ---, ---, ---, ---, ---, ---, ---, ---
-        true,  false, false, false, false, false, false, true,  // ' ', ---, ---, ---, ---, ---, ---, "'" 
-        true,  true,  false, true,  true,  true,  true,  true,  // '(', ')', ---, '+', ',', '-', '.', '/'
-        true,  true,  true,  true,  true,  true,  true,  true,  // '0', '1', '2', '3', '4', '5', '6', '7',  
-        true,  true,  true,  false, false, true,  false, true,  // '8', '9', ':', ---, ---, '=', ---, '?'
-        false, true,  true,  true,  true,  true,  true,  true,  // ---, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 
-        true,  true,  true,  true,  true,  true,  true,  true,  // 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'
-        true,  true,  true,  true,  true,  true,  true,  true,  // 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
-        true,  true,  true,  false, false, false, false, false, // 'X', 'Y', 'Z', ---, ---, ---, ---, ---
-        false, true,  true,  true,  true,  true,  true,  true,  // ---, 'a', 'b', 'c', 'd', 'e', 'f', 'g' 
-        true,  true,  true,  true,  true,  true,  true,  true,  // 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'
-        true,  true,  true,  true,  true,  true,  true,  true,  // 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'
-        true,  true,  true,  false, false, false, false, false  // 'x', 'y', 'z', ---, ---, ---, ---, ---
-        };
-
-
-    /** &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66] */
-    private static final byte[] HEX_VALUE =
-        { 
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00 -> 0F
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10 -> 1F
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 20 -> 2F
-             0,  1,  2,  3,  4,  5,  6,  7,  8,  9, -1, -1, -1, -1, -1, -1, // 30 -> 3F ( 0, 1,2, 3, 4,5, 6, 7, 8, 9 )
-            -1, 10, 11, 12, 13, 14, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 40 -> 4F ( A, B, C, D, E, F )
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 50 -> 5F
-            -1, 10, 11, 12, 13, 14, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1  // 60 -> 6F ( a, b, c, d, e, f )
-        };
-
-    
-    private static final char[] TO_LOWER_CASE =
-    {
-        0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-        0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-        0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
-        0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
-        ' ',  0x21, 0x22, 0x23, 0x24, 0x25, 0x26, '\'',
-        '(',  ')',  0x2A, '+',  ',',  '-',  '.',  '/',
-        '0',  '1',  '2',  '3',  '4',  '5',  '6',  '7',  
-        '8',  '9',  ':',  0x3B, 0x3C, '=',  0x3E, '?',
-        0x40, 'a',  'b',  'c',  'd',  'e',  'f',  'g', 
-        'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
-        'p',  'q',  'r',  's',  't',  'u',  'v',  'w',
-        'x',  'y',  'z',  0x5B, 0x5C, 0x5D, 0x5E, 0x5F,
-        0x60, 'a',  'b',  'c',  'd',  'e',  'f',  'g',
-        'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
-        'p',  'q',  'r',  's',  't',  'u',  'v',  'w',
-        'x',  'y',  'z',  0x7B, 0x7C, 0x7D, 0x7E, 0x7F,
-        0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
-        0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F,
-        0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97,
-        0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F,
-        0xA0, 0xA1, 0xA2, 0xA3, 0xA4, 0xA5, 0xA6, 0xA7,
-        0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF,
-        0xB0, 0xB1, 0xB2, 0xB3, 0xB4, 0xB5, 0xB6, 0xB7,
-        0xB8, 0xB9, 0xBA, 0xBB, 0xBC, 0xBD, 0xBE, 0xBF,
-        0xC0, 0xC1, 0xC2, 0xC3, 0xC4, 0xC5, 0xC6, 0xC7,
-        0xC8, 0xC9, 0xCA, 0xCB, 0xCC, 0xCD, 0xCE, 0xCF,
-        0xD0, 0xD1, 0xD2, 0xD3, 0xD4, 0xD5, 0xD6, 0xD7,
-        0xD8, 0xD9, 0xDA, 0xDB, 0xDC, 0xDD, 0xDE, 0xDF,
-        0xE0, 0xE1, 0xE2, 0xE3, 0xE4, 0xE5, 0xE6, 0xE7,
-        0xE8, 0xE9, 0xEA, 0xEB, 0xEC, 0xED, 0xEE, 0xEF,
-        0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7,
-        0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF,
-    };
-    
-
-    /** upperCase = 'A' .. 'Z', '0'..'9', '-' */
-    private static final char[] UPPER_CASE =
-        { 
-              0,   0,   0,   0,   0,   0,   0,   0, 
-              0,   0,   0,   0,   0,   0,   0,   0, 
-              0,   0,   0,   0,   0,   0,   0,   0, 
-              0,   0,   0,   0,   0,   0,   0,   0, 
-              0,   0,   0,   0,   0,   0,   0,   0, 
-              0,   0,   0,   0,   0, '-',   0,   0, 
-            '0', '1', '2', '3', '4', '5', '6', '7', 
-            '8', '9',   0,   0,   0,   0,   0,   0, 
-              0, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 
-            'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 
-            'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 
-            'X', 'Y', 'Z',   0,   0,   0,   0,   0, 
-              0, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 
-            'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 
-            'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 
-            'X', 'Y', 'Z',   0,   0,   0,   0,   0, 
-              0,   0,   0,   0,   0,   0,   0,   0, 
-              0,   0,   0,   0,   0,   0,   0,   0, 
-              0,   0,   0,   0,   0,   0,   0,   0, 
-              0,   0,   0,   0,   0,   0,   0,   0, 
-              0,   0,   0,   0,   0,   0,   0,   0, 
-              0,   0,   0,   0,   0,   0,   0,   0, 
-              0,   0,   0,   0,   0,   0,   0,   0, 
-              0,   0,   0,   0,   0,   0,   0,   0 
-        };
-    
-    private static final int CHAR_ONE_BYTE_MASK = 0xFFFFFF80;
-
-    private static final int CHAR_TWO_BYTES_MASK = 0xFFFFF800;
-
-    private static final int CHAR_THREE_BYTES_MASK = 0xFFFF0000;
-
-    private static final int CHAR_FOUR_BYTES_MASK = 0xFFE00000;
-
-    private static final int CHAR_FIVE_BYTES_MASK = 0xFC000000;
-
-    private static final int CHAR_SIX_BYTES_MASK = 0x80000000;
-
-    public static final int NOT_EQUAL = -1;
 
     // The following methods are taken from org.apache.commons.lang.StringUtils
 
@@ -386,16 +75,9 @@ public final class StringTools
     public static final String EMPTY = "";
 
     /**
-     * The empty byte[]
-     */
-    public static final byte[] EMPTY_BYTES = new byte[]
-        {};
-
-    /**
      * The empty String[]
      */
-    public static final String[] EMPTY_STRINGS = new String[]
-        {};
+    public static final String[] EMPTY_STRINGS = new String[] {};
 
     /**
      * Trims several consecutive characters into one.
@@ -602,6 +284,7 @@ public final class StringTools
         return buf.toString().toUpperCase();
     }
 
+
     /**
      * Rewrote the toLowercase method to improve performances.
      * In Ldap, attributesType are supposed to use ASCII chars :
@@ -621,11 +304,12 @@ public final class StringTools
         
         for ( int i = 0; i < chars.length; i++ )
         {
-            chars[i] = TO_LOWER_CASE[ chars[i] ];
+            chars[i] = CharConstants.TO_LOWER_CASE[ chars[i] ];
         }
         
         return new String( chars );
     }
+
     
     /**
      * Rewrote the toLowercase method to improve performances.
@@ -646,11 +330,12 @@ public final class StringTools
         
         for ( int i = 0; i < chars.length; i++ )
         {
-            chars[i] = UPPER_CASE[ chars[i] ];
+            chars[i] = CharConstants.UPPER_CASE[ chars[i] ];
         }
         
         return new String( chars );
     }
+
     
     /**
      * Get byte array from hex string
@@ -973,7 +658,7 @@ public final class StringTools
     public static String dumpByte( byte octet )
     {
         return new String( new byte[]
-            { '0', 'x', HEX_CHAR[( octet & 0x00F0 ) >> 4], HEX_CHAR[octet & 0x000F] } );
+            { '0', 'x', CharConstants.HEX_CHAR[( octet & 0x00F0 ) >> 4], CharConstants.HEX_CHAR[octet & 0x000F] } );
     }
 
 
@@ -985,33 +670,9 @@ public final class StringTools
      */
     public static char dumpHex( byte hex )
     {
-        return ( char ) HEX_CHAR[hex & 0x000F];
+        return ( char ) CharConstants.HEX_CHAR[hex & 0x000F];
     }
 
-
-    /**
-     * Helper function that dump an array of bytes in hex form
-     * 
-     * @param buffer The bytes array to dump
-     * @return A string representation of the array of bytes
-     */
-    public static String dumpBytes( byte[] buffer )
-    {
-        if ( buffer == null )
-        {
-            return "";
-        }
-
-        StringBuffer sb = new StringBuffer();
-
-        for ( int i = 0; i < buffer.length; i++ )
-        {
-            sb.append( "0x" ).append( ( char ) ( HEX_CHAR[( buffer[i] & 0x00F0 ) >> 4] ) ).append(
-                ( char ) ( HEX_CHAR[buffer[i] & 0x000F] ) ).append( " " );
-        }
-
-        return sb.toString();
-    }
 
     /**
      * 
@@ -1029,7 +690,7 @@ public final class StringTools
             }
             else if ( object instanceof byte[] )
             {
-                return dumpBytes( ( byte[] ) object );
+                return Strings.dumpBytes((byte[]) object);
             }
             else if ( object instanceof StringValue )
             {
@@ -1037,7 +698,7 @@ public final class StringTools
             }
             else if ( object instanceof BinaryValue )
             {
-                return dumpBytes( ( ( BinaryValue ) object ).get() );
+                return Strings.dumpBytes(((BinaryValue) object).get());
             }
             else
             {
@@ -1068,8 +729,8 @@ public final class StringTools
 
         for ( int i = 0, pos = 0; i < buffer.length; i++ )
         {
-            str[pos++] = ( char ) ( HEX_CHAR[( buffer[i] & 0x00F0 ) >> 4] );
-            str[pos++] = ( char ) ( HEX_CHAR[buffer[i] & 0x000F] );
+            str[pos++] = ( char ) ( CharConstants.HEX_CHAR[( buffer[i] & 0x00F0 ) >> 4] );
+            str[pos++] = ( char ) ( CharConstants.HEX_CHAR[buffer[i] & 0x000F] );
         }
 
         return new String( str );
@@ -1105,27 +766,27 @@ public final class StringTools
             return -1;
         }
 
-        if ( ( bytes[pos] & UTF8_MULTI_BYTES_MASK ) == 0 )
+        if ( ( bytes[pos] & CharConstants.UTF8_MULTI_BYTES_MASK ) == 0 )
         {
             return 1;
         }
-        else if ( ( bytes[pos] & UTF8_TWO_BYTES_MASK ) == UTF8_TWO_BYTES )
+        else if ( ( bytes[pos] & CharConstants.UTF8_TWO_BYTES_MASK ) == CharConstants.UTF8_TWO_BYTES )
         {
             return 2;
         }
-        else if ( ( bytes[pos] & UTF8_THREE_BYTES_MASK ) == UTF8_THREE_BYTES )
+        else if ( ( bytes[pos] & CharConstants.UTF8_THREE_BYTES_MASK ) == CharConstants.UTF8_THREE_BYTES )
         {
             return 3;
         }
-        else if ( ( bytes[pos] & UTF8_FOUR_BYTES_MASK ) == UTF8_FOUR_BYTES )
+        else if ( ( bytes[pos] & CharConstants.UTF8_FOUR_BYTES_MASK ) == CharConstants.UTF8_FOUR_BYTES )
         {
             return 4;
         }
-        else if ( ( bytes[pos] & UTF8_FIVE_BYTES_MASK ) == UTF8_FIVE_BYTES )
+        else if ( ( bytes[pos] & CharConstants.UTF8_FIVE_BYTES_MASK ) == CharConstants.UTF8_FIVE_BYTES )
         {
             return 5;
         }
-        else if ( ( bytes[pos] & UTF8_SIX_BYTES_MASK ) == UTF8_SIX_BYTES )
+        else if ( ( bytes[pos] & CharConstants.UTF8_SIX_BYTES_MASK ) == CharConstants.UTF8_SIX_BYTES )
         {
             return 6;
         }
@@ -1145,27 +806,27 @@ public final class StringTools
      */
     public static int countNbBytesPerChar( char car )
     {
-        if ( ( car & CHAR_ONE_BYTE_MASK ) == 0 )
+        if ( ( car & CharConstants.CHAR_ONE_BYTE_MASK ) == 0 )
         {
             return 1;
         }
-        else if ( ( car & CHAR_TWO_BYTES_MASK ) == 0 )
+        else if ( ( car & CharConstants.CHAR_TWO_BYTES_MASK ) == 0 )
         {
             return 2;
         }
-        else if ( ( car & CHAR_THREE_BYTES_MASK ) == 0 )
+        else if ( ( car & CharConstants.CHAR_THREE_BYTES_MASK ) == 0 )
         {
             return 3;
         }
-        else if ( ( car & CHAR_FOUR_BYTES_MASK ) == 0 )
+        else if ( ( car & CharConstants.CHAR_FOUR_BYTES_MASK ) == 0 )
         {
             return 4;
         }
-        else if ( ( car & CHAR_FIVE_BYTES_MASK ) == 0 )
+        else if ( ( car & CharConstants.CHAR_FIVE_BYTES_MASK ) == 0 )
         {
             return 5;
         }
-        else if ( ( car & CHAR_SIX_BYTES_MASK ) == 0 )
+        else if ( ( car & CharConstants.CHAR_SIX_BYTES_MASK ) == 0 )
         {
             return 6;
         }
@@ -1222,13 +883,13 @@ public final class StringTools
             return ( char ) -1;
         }
 
-        if ( ( bytes[pos] & UTF8_MULTI_BYTES_MASK ) == 0 )
+        if ( ( bytes[pos] & CharConstants.UTF8_MULTI_BYTES_MASK ) == 0 )
         {
             return ( char ) bytes[pos];
         }
         else
         {
-            if ( ( bytes[pos] & UTF8_TWO_BYTES_MASK ) == UTF8_TWO_BYTES )
+            if ( ( bytes[pos] & CharConstants.UTF8_TWO_BYTES_MASK ) == CharConstants.UTF8_TWO_BYTES )
             {
                 // Two bytes char
                 return ( char ) ( ( ( bytes[pos] & 0x1C ) << 6 ) + // 110x-xxyy
@@ -1243,7 +904,7 @@ public final class StringTools
                                             // 00zz-zzzz
                 ); // -> 0000-0xxx yyzz-zzzz (07FF)
             }
-            else if ( ( bytes[pos] & UTF8_THREE_BYTES_MASK ) == UTF8_THREE_BYTES )
+            else if ( ( bytes[pos] & CharConstants.UTF8_THREE_BYTES_MASK ) == CharConstants.UTF8_THREE_BYTES )
             {
                 // Three bytes char
                 return ( char ) (
@@ -1258,7 +919,7 @@ public final class StringTools
                 // -> tttt-xxxx yyzz-zzzz (FF FF)
                 );
             }
-            else if ( ( bytes[pos] & UTF8_FOUR_BYTES_MASK ) == UTF8_FOUR_BYTES )
+            else if ( ( bytes[pos] & CharConstants.UTF8_FOUR_BYTES_MASK ) == CharConstants.UTF8_FOUR_BYTES )
             {
                 // Four bytes char
                 return ( char ) (
@@ -1283,7 +944,7 @@ public final class StringTools
                 // -> 000t-ttuu vvvv-xxxx yyzz-zzzz (1FFFFF)
                 );
             }
-            else if ( ( bytes[pos] & UTF8_FIVE_BYTES_MASK ) == UTF8_FIVE_BYTES )
+            else if ( ( bytes[pos] & CharConstants.UTF8_FIVE_BYTES_MASK ) == CharConstants.UTF8_FIVE_BYTES )
             {
                 // Five bytes char
                 return ( char ) (
@@ -1311,7 +972,7 @@ public final class StringTools
                 // -> 0000-00tt uuuu-uuvv wwww-xxxx yyzz-zzzz (03 FF FF FF)
                 );
             }
-            else if ( ( bytes[pos] & UTF8_FIVE_BYTES_MASK ) == UTF8_FIVE_BYTES )
+            else if ( ( bytes[pos] & CharConstants.UTF8_FIVE_BYTES_MASK ) == CharConstants.UTF8_FIVE_BYTES )
             {
                 // Six bytes char
                 return ( char ) (
@@ -1435,7 +1096,7 @@ public final class StringTools
         if ( ( bytes == null ) || ( bytes.length == 0 ) || ( bytes.length <= index ) || ( index < 0 )
             || ( text == null ) )
         {
-            return NOT_EQUAL;
+            return CharConstants.NOT_EQUAL;
         }
         else
         {
@@ -1467,7 +1128,7 @@ public final class StringTools
         if ( ( chars == null ) || ( chars.length == 0 ) || ( chars.length <= index ) || ( index < 0 )
             || ( text == null ) )
         {
-            return NOT_EQUAL;
+            return CharConstants.NOT_EQUAL;
         }
         else
         {
@@ -1492,7 +1153,7 @@ public final class StringTools
             || ( chars2 == null ) || ( chars2.length == 0 )
             || ( chars2.length > ( chars.length + index ) ) )
         {
-            return NOT_EQUAL;
+            return CharConstants.NOT_EQUAL;
         }
         else
         {
@@ -1500,7 +1161,7 @@ public final class StringTools
             {
                 if ( chars[index++] != chars2[i] )
                 {
-                    return NOT_EQUAL;
+                    return CharConstants.NOT_EQUAL;
                 }
             }
 
@@ -1553,7 +1214,7 @@ public final class StringTools
             || ( bytes2 == null ) || ( bytes2.length == 0 )
             || ( bytes2.length > ( bytes.length + index ) ) )
         {
-            return NOT_EQUAL;
+            return CharConstants.NOT_EQUAL;
         }
         else
         {
@@ -1561,7 +1222,7 @@ public final class StringTools
             {
                 if ( bytes[index++] != bytes2[i] )
                 {
-                    return NOT_EQUAL;
+                    return CharConstants.NOT_EQUAL;
                 }
             }
 
@@ -1785,7 +1446,7 @@ public final class StringTools
             return -1;
         }
         
-        return (byte)( ( HEX_VALUE[high] << 4 ) | HEX_VALUE[low] );
+        return (byte)( ( CharConstants.HEX_VALUE[high] << 4 ) | CharConstants.HEX_VALUE[low] );
     }
 
 
@@ -1804,7 +1465,7 @@ public final class StringTools
             return -1;
         }
         
-        return (byte)( ( HEX_VALUE[high] << 4 ) | HEX_VALUE[low] );
+        return (byte)( ( CharConstants.HEX_VALUE[high] << 4 ) | CharConstants.HEX_VALUE[low] );
     }
 
     
@@ -1822,7 +1483,7 @@ public final class StringTools
             return -1;
         }
         
-        return HEX_VALUE[c];
+        return CharConstants.HEX_VALUE[c];
     }
 
 
@@ -1835,7 +1496,7 @@ public final class StringTools
      */
     public static boolean isHex( byte b )
     {
-        return ( ( b | 0x7F ) == 0x7F ) || HEX[b];
+        return ( ( b | 0x7F ) == 0x7F ) || CharConstants.HEX[b];
     }
 
 
@@ -1857,7 +1518,7 @@ public final class StringTools
         {
             byte c = bytes[index];
 
-            if ( ( ( c | 0x7F ) != 0x7F ) || ( HEX[c] == false ) )
+            if ( ( ( c | 0x7F ) != 0x7F ) || ( CharConstants.HEX[c] == false ) )
             {
                 return false;
             }
@@ -1887,7 +1548,7 @@ public final class StringTools
         {
             char c = chars[index];
 
-            if ( ( c > 127 ) || ( HEX[c] == false ) )
+            if ( ( c > 127 ) || ( CharConstants.HEX[c] == false ) )
             {
                 return false;
             }
@@ -1923,7 +1584,7 @@ public final class StringTools
         {
             char c = string.charAt( index );
 
-            if ( ( c > 127 ) || ( HEX[c] == false ) )
+            if ( ( c > 127 ) || ( CharConstants.HEX[c] == false ) )
             {
                 return false;
             }
@@ -1950,7 +1611,7 @@ public final class StringTools
         }
         else
         {
-            return ( ( ( ( bytes[0] | 0x7F ) != 0x7F ) || !DIGIT[bytes[0]] ) ? false : true );
+            return ( ( ( ( bytes[0] | 0x7F ) != 0x7F ) || !CharConstants.DIGIT[bytes[0]] ) ? false : true );
         }
     }
 
@@ -1980,7 +1641,7 @@ public final class StringTools
      */
     public static boolean isAlpha( byte c )
     {
-        return ( ( c > 0 ) && ( c <= 127 ) && ALPHA[c] );
+        return ( ( c > 0 ) && ( c <= 127 ) && CharConstants.ALPHA[c] );
     }
 
     
@@ -1995,7 +1656,7 @@ public final class StringTools
      */
     public static boolean isAlpha( char c )
     {
-        return ( ( c > 0 ) && ( c <= 127 ) && ALPHA[c] );
+        return ( ( c > 0 ) && ( c <= 127 ) && CharConstants.ALPHA[c] );
     }
 
 
@@ -2018,7 +1679,7 @@ public final class StringTools
         {
             byte c = bytes[index];
 
-            if ( ( ( c | 0x7F ) != 0x7F ) || ( ALPHA[c] == false ) )
+            if ( ( ( c | 0x7F ) != 0x7F ) || ( CharConstants.ALPHA[c] == false ) )
             {
                 return false;
             }
@@ -2049,7 +1710,7 @@ public final class StringTools
         {
             char c = chars[index];
 
-            if ( ( c > 127 ) || ( ALPHA[c] == false ) )
+            if ( ( c > 127 ) || ( CharConstants.ALPHA[c] == false ) )
             {
                 return false;
             }
@@ -2087,7 +1748,7 @@ public final class StringTools
         {
             char c = string.charAt( index );
 
-            if ( ( c > 127 ) || ( ALPHA[c] == false ) )
+            if ( ( c > 127 ) || ( CharConstants.ALPHA[c] == false ) )
             {
                 return false;
             }
@@ -2125,7 +1786,7 @@ public final class StringTools
         {
             char c = string.charAt( index );
 
-            if ( ( c > 127 ) || ( ALPHA_LOWER_CASE[c] == false ) )
+            if ( ( c > 127 ) || ( CharConstants.ALPHA_LOWER_CASE[c] == false ) )
             {
                 return false;
             }
@@ -2163,7 +1824,7 @@ public final class StringTools
         {
             char c = string.charAt( index );
 
-            if ( ( c > 127 ) || ( ALPHA_UPPER_CASE[c] == false ) )
+            if ( ( c > 127 ) || ( CharConstants.ALPHA_UPPER_CASE[c] == false ) )
             {
                 return false;
             }
@@ -2191,7 +1852,7 @@ public final class StringTools
         }
         else
         {
-            return ( ( ( ( bytes[index] | 0x7F ) !=  0x7F ) || !DIGIT[bytes[index]] ) ? false : true );
+            return ( ( ( ( bytes[index] | 0x7F ) !=  0x7F ) || !CharConstants.DIGIT[bytes[index]] ) ? false : true );
         }
     }
 
@@ -2212,7 +1873,7 @@ public final class StringTools
         }
         else
         {
-            return ( ( ( chars[index] > 127 ) || !DIGIT[chars[index]] ) ? false : true );
+            return ( ( ( chars[index] > 127 ) || !CharConstants.DIGIT[chars[index]] ) ? false : true );
         }
     }
 
@@ -2241,7 +1902,7 @@ public final class StringTools
         else
         {
             char c = string.charAt(  index  );
-            return ( ( ( c > 127 ) || !DIGIT[c] ) ? false : true );
+            return ( ( ( c > 127 ) || !CharConstants.DIGIT[c] ) ? false : true );
         }
     }
 
@@ -2261,7 +1922,7 @@ public final class StringTools
         }
         else
         {
-            return ( ( ( chars[0] > 127 ) || !DIGIT[chars[0]] ) ? false : true );
+            return ( ( ( chars[0] > 127 ) || !CharConstants.DIGIT[chars[0]] ) ? false : true );
         }
     }
 
@@ -2292,7 +1953,7 @@ public final class StringTools
         {
             char c = string.charAt( index );
 
-            if ( ( c > 127 ) || ( ALPHA_DIGIT[c] == false ) )
+            if ( ( c > 127 ) || ( CharConstants.ALPHA_DIGIT[c] == false ) )
             {
                 return false;
             }
@@ -2322,7 +1983,7 @@ public final class StringTools
         {
             byte c = bytes[index];
 
-            if ( ( ( c | 0x7F ) != 0x7F ) || ( CHAR[c] == false ) )
+            if ( ( ( c | 0x7F ) != 0x7F ) || ( CharConstants.CHAR[c] == false ) )
             {
                 return false;
             }
@@ -2352,7 +2013,7 @@ public final class StringTools
         {
             char c = chars[index];
 
-            if ( ( c > 127 ) || ( CHAR[c] == false ) )
+            if ( ( c > 127 ) || ( CharConstants.CHAR[c] == false ) )
             {
                 return false;
             }
@@ -2389,7 +2050,7 @@ public final class StringTools
         {
             char c = string.charAt( index );
 
-            if ( ( c > 127 ) || ( CHAR[c] == false ) )
+            if ( ( c > 127 ) || ( CharConstants.CHAR[c] == false ) )
             {
                 return false;
             }
@@ -2511,7 +2172,7 @@ public final class StringTools
     {
         if ( isEmpty( bytes ) )
         {
-            return EMPTY_BYTES;
+            return CharConstants.EMPTY_BYTES;
         }
 
         int start = trimLeft( bytes, 0 );
@@ -2529,7 +2190,7 @@ public final class StringTools
         }
         else
         {
-            return EMPTY_BYTES;
+            return CharConstants.EMPTY_BYTES;
         }
     }
 
@@ -3033,7 +2694,7 @@ public final class StringTools
         
         for ( char c:chars )
         {
-            chars[pos++] = TO_LOWER_CASE[c];
+            chars[pos++] = CharConstants.TO_LOWER_CASE[c];
         }
         
         return new String( chars );
@@ -3402,8 +3063,8 @@ public final class StringTools
 
         for ( int ii = 1, jj = 0 ; ii < chars.length; ii+=2, jj++ )
         {
-            int ch = ( StringTools.HEX_VALUE[chars[ii]] << 4 )
-                 + StringTools.HEX_VALUE[chars[ii + 1]];
+            int ch = ( CharConstants.HEX_VALUE[chars[ii]] << 4 )
+                 + CharConstants.HEX_VALUE[chars[ii + 1]];
             decoded[jj] = ( byte ) ch;
         }
         
@@ -3445,8 +3106,8 @@ public final class StringTools
                 // we have the start of a hex escape sequence
                 if ( isHex( str, i+1 ) && isHex ( str, i+2 ) )
                 {
-                    byte value = ( byte ) ( ( StringTools.HEX_VALUE[str.charAt( i + 1 )] << 4 )
-                        + StringTools.HEX_VALUE[str.charAt( i + 2 )] );
+                    byte value = ( byte ) ( ( CharConstants.HEX_VALUE[str.charAt( i + 1 )] << 4 )
+                        + CharConstants.HEX_VALUE[str.charAt( i + 2 )] );
                     
                     i+=2;
                     buf[pos++] = value;
@@ -3561,7 +3222,7 @@ public final class StringTools
         
         for ( char c:str.toCharArray() )
         {
-            if ( ( c > 127 ) || !IS_PRINTABLE_CHAR[ c ] )
+            if ( ( c > 127 ) || !CharConstants.IS_PRINTABLE_CHAR[ c ] )
             {
                 return false;
             }
@@ -3588,7 +3249,7 @@ public final class StringTools
         
         char c = str.charAt( pos );
         
-        return ( ( c > 127 ) || UNICODE_SUBSET[c] );
+        return ( ( c > 127 ) || CharConstants.UNICODE_SUBSET[c] );
     }
 
     
@@ -3601,7 +3262,7 @@ public final class StringTools
      */
     public static boolean isUnicodeSubset( char c )
     {
-        return ( ( c > 127 ) || UNICODE_SUBSET[c] );
+        return ( ( c > 127 ) || CharConstants.UNICODE_SUBSET[c] );
     }
 
 

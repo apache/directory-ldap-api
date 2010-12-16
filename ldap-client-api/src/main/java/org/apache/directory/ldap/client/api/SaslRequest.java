@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.message.control.Control;
-import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.CharConstants;
 
 
 /**
@@ -112,7 +112,7 @@ public class SaslRequest
         }
         else
         {
-            return StringTools.EMPTY_BYTES;
+            return CharConstants.EMPTY_BYTES;
         }
     }
 

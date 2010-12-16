@@ -137,6 +137,7 @@ import org.apache.directory.shared.ldap.schema.registries.ObjectClassRegistry;
 import org.apache.directory.shared.ldap.schema.registries.Schema;
 import org.apache.directory.shared.ldap.schema.registries.SchemaLoader;
 import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.CharConstants;
 import org.apache.mina.core.filterchain.IoFilter;
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;
@@ -885,7 +886,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         LOG.debug( "Anonymous Bind request" );
 
         // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( StringTools.EMPTY, StringTools.EMPTY_BYTES );
+        BindRequest bindRequest = createBindRequest( StringTools.EMPTY, CharConstants.EMPTY_BYTES );
 
         return bind( bindRequest );
     }
@@ -899,7 +900,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         LOG.debug( "Anonymous Bind request" );
 
         // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( StringTools.EMPTY, StringTools.EMPTY_BYTES );
+        BindRequest bindRequest = createBindRequest( StringTools.EMPTY, CharConstants.EMPTY_BYTES );
 
         return bindAsync( bindRequest );
     }

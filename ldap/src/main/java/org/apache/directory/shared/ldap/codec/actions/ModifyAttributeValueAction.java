@@ -27,6 +27,7 @@ import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.message.ModifyRequest;
 import org.apache.directory.shared.ldap.message.ModifyRequestImpl;
 import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.CharConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,7 +66,7 @@ public class ModifyAttributeValueAction extends GrammarAction
         TLV tlv = ldapMessageContainer.getCurrentTLV();
 
         // Store the value. It can't be null
-        byte[] value = StringTools.EMPTY_BYTES;
+        byte[] value = CharConstants.EMPTY_BYTES;
 
         if ( tlv.getLength() == 0 )
         {

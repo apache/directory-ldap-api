@@ -39,6 +39,7 @@ import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.filter.FilterParser;
 import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.name.DN;
+import org.apache.directory.shared.util.CharConstants;
 
 
 /**
@@ -165,8 +166,8 @@ public class LdapURL
         int pos = 0;
 
         // The scheme
-        if ( ( ( pos = StringTools.areEquals( chars, 0, LDAP_SCHEME ) ) == StringTools.NOT_EQUAL )
-            && ( ( pos = StringTools.areEquals( chars, 0, LDAPS_SCHEME ) ) == StringTools.NOT_EQUAL ) )
+        if ( ( ( pos = StringTools.areEquals( chars, 0, LDAP_SCHEME ) ) == CharConstants.NOT_EQUAL )
+            && ( ( pos = StringTools.areEquals( chars, 0, LDAPS_SCHEME ) ) == CharConstants.NOT_EQUAL ) )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04398 ) );
         }
@@ -681,7 +682,7 @@ public class LdapURL
     {
         if ( bytes == null )
         {
-            return StringTools.EMPTY_BYTES;
+            return CharConstants.EMPTY_BYTES;
         }
 
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();

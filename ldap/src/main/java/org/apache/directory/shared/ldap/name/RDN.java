@@ -42,6 +42,7 @@ import org.apache.directory.shared.ldap.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schema.normalizers.OidNormalizer;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.shared.ldap.util.UTFUtils;
+import org.apache.directory.shared.util.CharConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1176,7 +1177,7 @@ public class RDN implements Cloneable, Comparable<RDN>, Externalizable, Iterable
             if ( chars.length == 1 )
             {
                 // The value is only containing a #
-                return StringTools.EMPTY_BYTES;
+                return CharConstants.EMPTY_BYTES;
             }
 
             if ( ( chars.length % 2 ) != 1 )

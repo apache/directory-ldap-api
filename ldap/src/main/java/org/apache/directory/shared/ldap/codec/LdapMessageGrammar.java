@@ -121,6 +121,8 @@ import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.name.RDN;
 import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.CharConstants;
+import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -243,7 +245,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     }
                     catch ( IntegerDecoderException ide )
                     {
-                        LOG.error( I18n.err( I18n.ERR_04070, StringTools.dumpBytes( value.getData() ), ide
+                        LOG.error( I18n.err( I18n.ERR_04070, Strings.dumpBytes(value.getData()), ide
                             .getLocalizedMessage() ) );
 
                         // This will generate a PROTOCOL_ERROR                        
@@ -367,7 +369,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         }
                         catch ( LdapInvalidDnException ine )
                         {
-                            String msg = I18n.err( I18n.ERR_04074, dnStr, StringTools.dumpBytes( dnBytes ), ine
+                            String msg = I18n.err( I18n.ERR_04074, dnStr, Strings.dumpBytes(dnBytes), ine
                                 .getLocalizedMessage() );
                             LOG.error( msg );
 
@@ -454,7 +456,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     catch ( IntegerDecoderException ide )
                     {
                         LOG.error( I18n
-                            .err( I18n.ERR_04076, StringTools.dumpBytes( value.getData() ), ide.getMessage() ) );
+                            .err( I18n.ERR_04076, Strings.dumpBytes(value.getData()), ide.getMessage() ) );
 
                         // This will generate a PROTOCOL_ERROR
                         throw new DecoderException( ide.getMessage() );
@@ -543,7 +545,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     catch ( IntegerDecoderException ide )
                     {
                         LOG.error( I18n
-                            .err( I18n.ERR_04078, StringTools.dumpBytes( value.getData() ), ide.getMessage() ) );
+                            .err( I18n.ERR_04078, Strings.dumpBytes(value.getData()), ide.getMessage() ) );
 
                         // This will generate a PROTOCOL_ERROR
                         throw new DecoderException( ide.getMessage() );
@@ -589,7 +591,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         }
                         catch ( LdapInvalidDnException ine )
                         {
-                            String msg = "Incorrect DN given : " + dnStr + " (" + StringTools.dumpBytes( dnBytes )
+                            String msg = "Incorrect DN given : " + dnStr + " (" + Strings.dumpBytes(dnBytes)
                                 + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
@@ -636,7 +638,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     // We have to handle the special case of a 0 length simple
                     if ( tlv.getLength() == 0 )
                     {
-                        bindRequestMessage.setCredentials( StringTools.EMPTY_BYTES );
+                        bindRequestMessage.setCredentials( CharConstants.EMPTY_BYTES );
                     }
                     else
                     {
@@ -648,8 +650,8 @@ public final class LdapMessageGrammar extends AbstractGrammar
 
                     if ( IS_DEBUG )
                     {
-                        LOG.debug( "The simple authentication is : {}", StringTools.dumpBytes( bindRequestMessage
-                            .getCredentials() ) );
+                        LOG.debug( "The simple authentication is : {}", Strings.dumpBytes(bindRequestMessage
+                                .getCredentials()) );
                     }
                 }
             } );
@@ -773,7 +775,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     // credentials
                     if ( tlv.getLength() == 0 )
                     {
-                        bindRequestMessage.setCredentials( StringTools.EMPTY_BYTES );
+                        bindRequestMessage.setCredentials( CharConstants.EMPTY_BYTES );
                     }
                     else
                     {
@@ -785,8 +787,8 @@ public final class LdapMessageGrammar extends AbstractGrammar
 
                     if ( IS_DEBUG )
                     {
-                        LOG.debug( "The credentials are : {}", StringTools.dumpBytes( bindRequestMessage
-                            .getCredentials() ) );
+                        LOG.debug( "The credentials are : {}", Strings.dumpBytes(bindRequestMessage
+                                .getCredentials()) );
                     }
                 }
             } );
@@ -1138,7 +1140,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         catch ( LdapInvalidDnException ine )
                         {
                             // This is for the client side. We will never decode LdapResult on the server
-                            String msg = "The DN " + StringTools.dumpBytes( dnBytes ) + "is invalid : "
+                            String msg = "The DN " + Strings.dumpBytes(dnBytes) + "is invalid : "
                                 + ine.getMessage();
                             LOG.error( "{} : {}", msg, ine.getMessage() );
                             throw new DecoderException( msg, ine );
@@ -1452,7 +1454,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         }
                         catch ( LdapInvalidDnException ine )
                         {
-                            String msg = "Invalid DN given : " + dnStr + " (" + StringTools.dumpBytes( dnBytes )
+                            String msg = "Invalid DN given : " + dnStr + " (" + Strings.dumpBytes(dnBytes)
                                 + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
@@ -1526,7 +1528,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     }
                     catch ( IntegerDecoderException ide )
                     {
-                        String msg = I18n.err( I18n.ERR_04082, StringTools.dumpBytes( tlv.getValue().getData() ) );
+                        String msg = I18n.err( I18n.ERR_04082, Strings.dumpBytes(tlv.getValue().getData()) );
                         LOG.error( msg );
 
                         // This will generate a PROTOCOL_ERROR
@@ -1882,7 +1884,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         }
                         catch ( LdapInvalidDnException ine )
                         {
-                            String msg = "Invalid DN given : " + dnStr + " (" + StringTools.dumpBytes( dnBytes )
+                            String msg = "Invalid DN given : " + dnStr + " (" + Strings.dumpBytes(dnBytes)
                                 + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
@@ -2184,7 +2186,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         }
                         catch ( LdapInvalidDnException ine )
                         {
-                            String msg = "Invalid DN given : " + dnStr + " (" + StringTools.dumpBytes( dnBytes )
+                            String msg = "Invalid DN given : " + dnStr + " (" + Strings.dumpBytes(dnBytes)
                                 + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
@@ -2252,7 +2254,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         }
                         catch ( LdapInvalidDnException ine )
                         {
-                            String msg = "Invalid new RDN given : " + dnStr + " (" + StringTools.dumpBytes( dnBytes )
+                            String msg = "Invalid new RDN given : " + dnStr + " (" + Strings.dumpBytes(dnBytes)
                                 + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
@@ -2306,7 +2308,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     catch ( BooleanDecoderException bde )
                     {
                         LOG.error( I18n
-                            .err( I18n.ERR_04091, StringTools.dumpBytes( value.getData() ), bde.getMessage() ) );
+                            .err( I18n.ERR_04091, Strings.dumpBytes(value.getData()), bde.getMessage() ) );
 
                         // This will generate a PROTOCOL_ERROR                        
                         throw new DecoderException( bde.getMessage() );
@@ -2380,7 +2382,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         catch ( LdapInvalidDnException ine )
                         {
                             String msg = "Invalid new superior DN given : " + dnStr + " ("
-                                + StringTools.dumpBytes( dnBytes ) + ") is invalid";
+                                + Strings.dumpBytes(dnBytes) + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
                             ModifyDnResponseImpl response = new ModifyDnResponseImpl( modifyDnRequest.getMessageId() );
@@ -2531,7 +2533,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         }
                         catch ( LdapInvalidDnException ine )
                         {
-                            String msg = "Invalid DN given : " + dnStr + " (" + StringTools.dumpBytes( dnBytes )
+                            String msg = "Invalid DN given : " + dnStr + " (" + Strings.dumpBytes(dnBytes)
                                 + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
@@ -2648,8 +2650,8 @@ public final class LdapMessageGrammar extends AbstractGrammar
 
                             if ( IS_DEBUG )
                             {
-                                LOG.debug( "Comparing attribute value {}", StringTools.dumpBytes( compareRequest
-                                    .getAssertionValue().getBytes() ) );
+                                LOG.debug( "Comparing attribute value {}", Strings.dumpBytes(compareRequest
+                                        .getAssertionValue().getBytes()) );
                             }
                         }
                         else
@@ -2856,7 +2858,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
 
                                 String msg = "The Request name is not a valid OID : "
                                     + StringTools.utf8ToString( requestNameBytes ) + " ("
-                                    + StringTools.dumpBytes( requestNameBytes ) + ") is invalid";
+                                    + Strings.dumpBytes(requestNameBytes) + ") is invalid";
                                 LOG.error( msg );
 
                                 // throw an exception, we will get a PROTOCOL_ERROR
@@ -2869,7 +2871,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         {
                             String msg = "The Request name is not a valid OID : "
                                 + StringTools.utf8ToString( requestNameBytes ) + " ("
-                                + StringTools.dumpBytes( requestNameBytes ) + ") is invalid";
+                                + Strings.dumpBytes(requestNameBytes) + ") is invalid";
                             LOG.error( "{} : {}", msg, de.getMessage() );
 
                             // Rethrow the exception, we will get a PROTOCOL_ERROR
@@ -2913,7 +2915,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     // value
                     if ( tlv.getLength() == 0 )
                     {
-                        extendedRequest.setRequestValue( StringTools.EMPTY_BYTES );
+                        extendedRequest.setRequestValue( CharConstants.EMPTY_BYTES );
                     }
                     else
                     {
@@ -3235,7 +3237,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         {
                             String msg = "The Intermediate Response name is not a valid OID : "
                                 + StringTools.utf8ToString( responseNameBytes ) + " ("
-                                + StringTools.dumpBytes( responseNameBytes ) + ") is invalid";
+                                + Strings.dumpBytes(responseNameBytes) + ") is invalid";
                             LOG.error( "{} : {}", msg, oidStr );
 
                             // Rethrow the exception, we will get a PROTOCOL_ERROR
@@ -3280,7 +3282,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     // value
                     if ( tlv.getLength() == 0 )
                     {
-                        intermediateResponse.setResponseValue( StringTools.EMPTY_BYTES );
+                        intermediateResponse.setResponseValue( CharConstants.EMPTY_BYTES );
                     }
                     else
                     {
@@ -3292,7 +3294,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
 
                     if ( IS_DEBUG )
                     {
-                        LOG.debug( "Value read : {}", StringTools.dumpBytes( intermediateResponse.getResponseValue() ) );
+                        LOG.debug( "Value read : {}", Strings.dumpBytes(intermediateResponse.getResponseValue()) );
                     }
                 }
             } );
@@ -3323,7 +3325,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     // value
                     if ( tlv.getLength() == 0 )
                     {
-                        intermediateResponse.setResponseValue( StringTools.EMPTY_BYTES );
+                        intermediateResponse.setResponseValue( CharConstants.EMPTY_BYTES );
                     }
                     else
                     {
@@ -3433,7 +3435,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     // The OID is encoded as a String, not an Object Id
                     if ( !OID.isOID( oidValue ) )
                     {
-                        LOG.error( I18n.err( I18n.ERR_04098, StringTools.dumpBytes( value ) ) );
+                        LOG.error( I18n.err( I18n.ERR_04098, Strings.dumpBytes(value) ) );
 
                         // This will generate a PROTOCOL_ERROR
                         throw new DecoderException( I18n.err( I18n.ERR_04099, oidValue ) );
@@ -3496,7 +3498,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     catch ( BooleanDecoderException bde )
                     {
                         LOG.error( I18n
-                            .err( I18n.ERR_04100, StringTools.dumpBytes( value.getData() ), bde.getMessage() ) );
+                            .err( I18n.ERR_04100, Strings.dumpBytes(value.getData()), bde.getMessage() ) );
 
                         // This will generate a PROTOCOL_ERROR
                         throw new DecoderException( bde.getMessage() );
@@ -3632,7 +3634,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         }
                         catch ( LdapInvalidDnException ine )
                         {
-                            String msg = "Invalid root DN given : " + dnStr + " (" + StringTools.dumpBytes( dnBytes )
+                            String msg = "Invalid root DN given : " + dnStr + " (" + Strings.dumpBytes(dnBytes)
                                 + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
@@ -3910,7 +3912,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     catch ( BooleanDecoderException bde )
                     {
                         LOG.error( I18n
-                            .err( I18n.ERR_04105, StringTools.dumpBytes( value.getData() ), bde.getMessage() ) );
+                            .err( I18n.ERR_04105, Strings.dumpBytes(value.getData()), bde.getMessage() ) );
 
                         throw new DecoderException( bde.getMessage() );
                     }
@@ -6179,7 +6181,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     catch ( BooleanDecoderException bde )
                     {
                         LOG.error( I18n
-                            .err( I18n.ERR_04110, StringTools.dumpBytes( value.getData() ), bde.getMessage() ) );
+                            .err( I18n.ERR_04110, Strings.dumpBytes(value.getData()), bde.getMessage() ) );
 
                         throw new DecoderException( bde.getMessage() );
                     }
