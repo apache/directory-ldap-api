@@ -78,7 +78,7 @@ import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.name.RDN;
-import org.apache.directory.shared.ldap.util.Base64;
+import org.apache.directory.shared.util.Base64;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -1446,7 +1446,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        compareRequest.setAssertionValue( Base64.decode( nextText.trim().toCharArray() ) );
+                        compareRequest.setAssertionValue( Base64.decode(nextText.trim().toCharArray()) );
                     }
                     else
                     {

@@ -37,7 +37,7 @@ import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.schema.SchemaManager;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
-import org.apache.directory.shared.ldap.util.Base64;
+import org.apache.directory.shared.util.Base64;
 import org.apache.directory.shared.util.Strings;
 
 
@@ -867,7 +867,7 @@ public final class LdifUtils
                 else if ( ava instanceof byte[] )
                 {
                     sb.append( ":: " );
-                    sb.append( new String( Base64.encode( ( byte[] ) ava ) ) );
+                    sb.append( new String( Base64.encode((byte[]) ava) ) );
                     sb.append( '\n' );
                 }
                 else

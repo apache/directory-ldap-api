@@ -43,6 +43,7 @@ import java.util.NoSuchElementException;
 
 import org.apache.directory.shared.asn1.util.OID;
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.util.Base64;
 import org.apache.directory.shared.util.exception.NotImplementedException;
 import org.apache.directory.shared.ldap.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.entry.EntryAttribute;
@@ -53,7 +54,6 @@ import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.name.DnParser;
 import org.apache.directory.shared.ldap.name.RDN;
-import org.apache.directory.shared.ldap.util.Base64;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -515,7 +515,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
                     try
                     {
-                        dn = new String( Base64.decode( trimmedLine.toCharArray() ), "UTF-8" );
+                        dn = new String( Base64.decode(trimmedLine.toCharArray()), "UTF-8" );
                     }
                     catch ( UnsupportedEncodingException uee )
                     {

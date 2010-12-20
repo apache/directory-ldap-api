@@ -21,6 +21,8 @@
 package org.apache.directory.shared.ldap.util;
 
 
+import org.apache.directory.shared.util.AbstractSimpleComponentsMonitor;
+
 /**
  * A components monitor for optional components.
  *

@@ -71,7 +71,7 @@ import org.apache.directory.shared.ldap.message.SearchResultReference;
 import org.apache.directory.shared.ldap.message.SearchResultReferenceImpl;
 import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.util.Base64;
+import org.apache.directory.shared.util.Base64;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.util.Strings;
 import org.xmlpull.v1.XmlPullParser;

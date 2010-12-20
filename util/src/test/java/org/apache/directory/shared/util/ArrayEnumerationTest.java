@@ -17,13 +17,14 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.util;
+package org.apache.directory.shared.util;
 
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import org.junit.Assert;
 
 import java.util.NoSuchElementException;
 
@@ -31,6 +32,7 @@ import org.apache.directory.junit.tools.Concurrent;
 import org.apache.directory.junit.tools.ConcurrentJunitRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Tests the ArrayEnumeration class.
@@ -50,13 +52,13 @@ public class ArrayEnumerationTest
 
         ArrayEnumeration list = new ArrayEnumeration( array );
 
-        assertFalse( list.hasMoreElements() );
+        Assert.assertFalse(list.hasMoreElements());
 
         try
         {
             list.nextElement();
 
-            fail( "should never get here due to a NoSuchElementException" );
+            Assert.fail("should never get here due to a NoSuchElementException");
         }
         catch ( NoSuchElementException e )
         {
@@ -68,15 +70,15 @@ public class ArrayEnumerationTest
 
         list = new ArrayEnumeration( array );
 
-        assertFalse( list.hasMoreElements() );
+        Assert.assertFalse(list.hasMoreElements());
 
-        assertFalse( list.hasMoreElements() );
+        Assert.assertFalse(list.hasMoreElements());
 
         try
         {
             list.nextElement();
 
-            fail( "should never get here due to a NoSuchElementException" );
+            Assert.fail("should never get here due to a NoSuchElementException");
         }
         catch ( NoSuchElementException e )
         {
@@ -89,17 +91,17 @@ public class ArrayEnumerationTest
 
         list = new ArrayEnumeration( array );
 
-        assertTrue( list.hasMoreElements() );
+        Assert.assertTrue(list.hasMoreElements());
 
-        assertNotNull( list.nextElement() );
+        Assert.assertNotNull(list.nextElement());
 
-        assertFalse( list.hasMoreElements() );
+        Assert.assertFalse(list.hasMoreElements());
 
         try
         {
             list.nextElement();
 
-            fail( "should never get here due to a NoSuchElementException" );
+            Assert.fail("should never get here due to a NoSuchElementException");
         }
         catch ( NoSuchElementException e )
         {
@@ -112,21 +114,21 @@ public class ArrayEnumerationTest
 
         list = new ArrayEnumeration( array );
 
-        assertTrue( list.hasMoreElements() );
+        Assert.assertTrue(list.hasMoreElements());
 
-        assertNotNull( list.nextElement() );
+        Assert.assertNotNull(list.nextElement());
 
-        assertTrue( list.hasMoreElements() );
+        Assert.assertTrue(list.hasMoreElements());
 
-        assertNotNull( list.nextElement() );
+        Assert.assertNotNull(list.nextElement());
 
-        assertFalse( list.hasMoreElements() );
+        Assert.assertFalse(list.hasMoreElements());
 
         try
         {
             list.nextElement();
 
-            fail( "should never get here due to a NoSuchElementException" );
+            Assert.fail("should never get here due to a NoSuchElementException");
         }
         catch ( NoSuchElementException e )
         {
@@ -139,25 +141,25 @@ public class ArrayEnumerationTest
 
         list = new ArrayEnumeration( array );
 
-        assertTrue( list.hasMoreElements() );
+        Assert.assertTrue(list.hasMoreElements());
 
-        assertNotNull( list.nextElement() );
+        Assert.assertNotNull(list.nextElement());
 
-        assertTrue( list.hasMoreElements() );
+        Assert.assertTrue(list.hasMoreElements());
 
-        assertNotNull( list.nextElement() );
+        Assert.assertNotNull(list.nextElement());
 
-        assertTrue( list.hasMoreElements() );
+        Assert.assertTrue(list.hasMoreElements());
 
-        assertNotNull( list.nextElement() );
+        Assert.assertNotNull(list.nextElement());
 
-        assertFalse( list.hasMoreElements() );
+        Assert.assertFalse(list.hasMoreElements());
 
         try
         {
             list.nextElement();
 
-            fail( "should never get here due to a NoSuchElementException" );
+            Assert.fail("should never get here due to a NoSuchElementException");
         }
         catch ( NoSuchElementException e )
         {

@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.util.ComponentsMonitor;
 
 
 /**
