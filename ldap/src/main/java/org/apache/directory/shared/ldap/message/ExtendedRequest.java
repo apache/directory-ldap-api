@@ -20,9 +20,6 @@
 package org.apache.directory.shared.ldap.message;
 
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
-
-
 /**
  * Extended protocol request message used to add to more operations to the
  * protocol. Here's what <a href="http://www.faqs.org/rfcs/rfc2251.html"> RFC

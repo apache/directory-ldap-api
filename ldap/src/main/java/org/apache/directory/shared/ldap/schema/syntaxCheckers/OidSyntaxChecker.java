@@ -24,6 +24,7 @@ import org.apache.directory.shared.asn1.util.OID;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,7 +101,7 @@ public class OidSyntaxChecker extends SyntaxChecker
         
         // if the first character is a digit it's an attempt at an OID and must be
         // checked to make sure there are no other chars except '.' and digits.
-        if ( StringTools.isDigit( strValue.charAt( 0 ) ) )
+        if ( Strings.isDigit(strValue.charAt(0)) )
         {
             if ( ! OID.isOID( strValue ) )
             {

@@ -19,8 +19,6 @@
  */
 package org.apache.directory.shared.ldap.message;
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
-
 
 /**
  * Abandon protocol operation request to terminate an operation already in

@@ -29,7 +29,6 @@ import javax.naming.LimitExceededException;
 import javax.naming.PartialResultException;
 import javax.naming.SizeLimitExceededException;
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
 import org.apache.directory.shared.ldap.exception.LdapAttributeInUseException;
 import org.apache.directory.shared.ldap.exception.LdapAuthenticationException;
 import org.apache.directory.shared.ldap.exception.LdapAuthenticationNotSupportedException;

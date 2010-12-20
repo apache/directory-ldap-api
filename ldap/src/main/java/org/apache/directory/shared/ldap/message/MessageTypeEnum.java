@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.codec;
+package org.apache.directory.shared.ldap.message;
 
 /**
  * An enum to store the Ldap message type.

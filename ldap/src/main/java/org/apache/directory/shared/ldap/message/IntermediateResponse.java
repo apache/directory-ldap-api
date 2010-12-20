@@ -21,9 +21,6 @@
 package org.apache.directory.shared.ldap.message;
 
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
-
-
 /**
  * Intermediate response message used to return multiple response
  * messages for a single search request (ExtendedRequest or Control).

@@ -20,9 +20,6 @@
 package org.apache.directory.shared.ldap.message;
 
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
-
-
 /**
  * Search done protocol response message used to indicate the completion of a
  * search request message.

@@ -23,8 +23,6 @@ package org.apache.directory.shared.ldap.message;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
-
 
 /**
  * The base abandonable request message class. All such requests have a reponse

@@ -19,8 +19,6 @@
  */
 package org.apache.directory.shared.ldap.message;
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
-
 
 /**
  * A request that can generate zero, one, or more heterogenous responses for a

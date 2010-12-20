@@ -22,6 +22,7 @@ package org.apache.directory.shared.ldap.schema.syntaxCheckers;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -101,7 +102,7 @@ public class JavaLongSyntaxChecker extends SyntaxChecker
         {
             pos = 1;
         }
-        else if ( !StringTools.isDigit( c ) )
+        else if ( !Strings.isDigit(c) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;

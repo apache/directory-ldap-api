@@ -21,9 +21,6 @@
 package org.apache.directory.shared.ldap.message;
 
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
-
-
 /**
  * Search reference protocol response message used to return referrals to the
  * client in response to a search request message.

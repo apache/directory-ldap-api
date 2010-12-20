@@ -19,8 +19,6 @@
  */
 package org.apache.directory.shared.ldap.message;
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
-
 
 /**
  * Super interface for all request messages returning only one type of response.

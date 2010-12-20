@@ -20,9 +20,6 @@
 package org.apache.directory.shared.ldap.message;
 
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
-
-
 /**
  * Modify protocol response message used to confirm the results of a modify
  * request message.

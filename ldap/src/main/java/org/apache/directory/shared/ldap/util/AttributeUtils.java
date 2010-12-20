@@ -921,7 +921,7 @@ public final class AttributeUtils
 
         int start = pos.start;
 
-        if ( StringTools.isAlpha( c ) )
+        if ( Strings.isAlpha(c) )
         {
             // A DESCR
             pos.start++;
@@ -939,7 +939,7 @@ public final class AttributeUtils
 
             return str.substring( start, pos.start );
         }
-        else if ( StringTools.isDigit( c ) )
+        else if ( Strings.isDigit(c) )
         {
             // An OID
             pos.start++;

@@ -22,8 +22,6 @@ package org.apache.directory.shared.ldap.message;
 
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
-import org.apache.directory.shared.ldap.codec.controls.CodecControl;
 import org.apache.directory.shared.ldap.message.control.Control;
 
 
@@ -48,7 +46,6 @@ public interface Message
      * Gets the controls associated with this message mapped by OID.
      * 
      * @return Map of OID strings to Control object instances.
-     * @see CodecControl
      */
     Map<String, Control> getControls();
 
@@ -58,7 +55,6 @@ public interface Message
      * 
      * @param oid The Cntrol's OID we are looking for
      * @return The Control object instance with ths OID.
-     * @see CodecControl
      */
     Control getControl( String oid );
 

@@ -19,8 +19,6 @@
  */
 package org.apache.directory.shared.ldap.message;
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
-
 
 /**
  * Unbind protocol request message used to end a client session.

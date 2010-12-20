@@ -25,7 +25,6 @@ import java.util.Arrays;
 import javax.naming.NamingException;
 import javax.naming.ldap.ExtendedResponse;
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.shared.util.Strings;
 

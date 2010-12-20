@@ -20,9 +20,6 @@
 package org.apache.directory.shared.ldap.message;
 
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
-
-
 /**
  * Compare protocol response message used to confirm the results of a compare
  * request message.

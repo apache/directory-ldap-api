@@ -31,6 +31,7 @@ import org.apache.directory.shared.ldap.schema.SchemaManager;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
 import org.apache.directory.shared.ldap.util.Position;
 import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.Strings;
 
 
 /**
@@ -241,7 +242,7 @@ public class FilterParser
 
         do
         {
-            if ( StringTools.isUnicodeSubset( c ) )
+            if ( Strings.isUnicodeSubset(c) )
             {
                 value[current++] = (byte)c;
                 pos.start++;

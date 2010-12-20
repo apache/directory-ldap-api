@@ -1347,7 +1347,7 @@ public final class StringTools
     /**
      * Test if the current character is equal to a specific character.
      * 
-     * @param string The String which contains the data
+     * @param bytes The String which contains the data
      * @param index Current position in the string
      * @param car The character we want to compare with the current string
      *            position
@@ -1491,7 +1491,7 @@ public final class StringTools
      * Check if the current byte is an Hex Char 
      * &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66]
      * 
-     * @param byte The byte we want to check
+     * @param b The byte we want to check
      * @return <code>true</code> if the current byte is a Hex byte
      */
     public static boolean isHex( byte b )
@@ -1613,50 +1613,6 @@ public final class StringTools
         {
             return ( ( ( ( bytes[0] | 0x7F ) != 0x7F ) || !CharConstants.DIGIT[bytes[0]] ) ? false : true );
         }
-    }
-
-    
-    /**
-     * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
-     * '3' | '4' | '5' | '6' | '7' | '8' | '9'
-     * 
-     * @param car the character to test
-     *            
-     * @return <code>true</code> if the character is a Digit
-     */
-    public static boolean isDigit( char car )
-    {
-        return ( car >= '0' ) && ( car <= '9' );
-    }
-
-    
-    /**
-     * Test if the current byte is an Alpha character : 
-     * &lt;alpha> ::= [0x41-0x5A] | [0x61-0x7A]
-     * 
-     * @param c The byte to test
-     * 
-     * @return <code>true</code> if the byte is an Alpha
-     *         character
-     */
-    public static boolean isAlpha( byte c )
-    {
-        return ( ( c > 0 ) && ( c <= 127 ) && CharConstants.ALPHA[c] );
-    }
-
-    
-    /**
-     * Test if the current character is an Alpha character : 
-     * &lt;alpha> ::= [0x41-0x5A] | [0x61-0x7A]
-     * 
-     * @param c The char to test
-     * 
-     * @return <code>true</code> if the character is an Alpha
-     *         character
-     */
-    public static boolean isAlpha( char c )
-    {
-        return ( ( c > 0 ) && ( c <= 127 ) && CharConstants.ALPHA[c] );
     }
 
 
@@ -3249,19 +3205,6 @@ public final class StringTools
         
         char c = str.charAt( pos );
         
-        return ( ( c > 127 ) || CharConstants.UNICODE_SUBSET[c] );
-    }
-
-    
-    /**
-     * Check if the current char is in the unicodeSubset : all chars but
-     * '\0', '(', ')', '*' and '\'
-     *
-     * @param c The char to check
-     * @return True if the current char is in the unicode subset
-     */
-    public static boolean isUnicodeSubset( char c )
-    {
         return ( ( c > 127 ) || CharConstants.UNICODE_SUBSET[c] );
     }
 

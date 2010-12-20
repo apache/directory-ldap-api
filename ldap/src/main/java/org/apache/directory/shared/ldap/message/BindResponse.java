@@ -20,9 +20,6 @@
 package org.apache.directory.shared.ldap.message;
 
 
-import org.apache.directory.shared.ldap.codec.MessageTypeEnum;
-
-
 /**
  * Bind protocol response message used to confirm the results of a bind request
  * message. BindResponse consists simply of an indication from the server of the

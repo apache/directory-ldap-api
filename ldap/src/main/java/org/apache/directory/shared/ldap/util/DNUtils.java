@@ -20,6 +20,8 @@
 package org.apache.directory.shared.ldap.util;
 
 
+import org.apache.directory.shared.util.Strings;
+
 /**
  * Utility class used by the DN Parser.
  * 
@@ -323,7 +325,7 @@ public final class DNUtils
         {
             byte b = bytes[index++];
 
-            if ( StringTools.isAlpha( b ) )
+            if ( Strings.isAlpha(b) )
             {
                 return index-1;
             }
