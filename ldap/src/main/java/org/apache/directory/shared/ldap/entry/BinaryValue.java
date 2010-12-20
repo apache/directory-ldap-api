@@ -32,7 +32,6 @@ import org.apache.directory.shared.ldap.schema.LdapComparator;
 import org.apache.directory.shared.ldap.schema.Normalizer;
 import org.apache.directory.shared.ldap.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.schema.comparators.ByteArrayComparator;
-import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.shared.util.CharConstants;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -548,7 +547,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      */
     public String getString()
     {
-        return StringTools.utf8ToString( wrappedValue );
+        return Strings.utf8ToString(wrappedValue);
     }
 
 

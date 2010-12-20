@@ -20,6 +20,8 @@
 package org.apache.directory.shared.util;
 
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * Various string manipulation methods that are more efficient then chaining
  * string operations: all is done in the same buffer without creating a bunch of
@@ -105,5 +107,141 @@ public class Strings
     public static boolean isUnicodeSubset( char c )
     {
         return ( ( c > 127 ) || CharConstants.UNICODE_SUBSET[c] );
+    }
+
+    /**
+     * <p>
+     * Checks if a String is empty ("") or null.
+     * </p>
+     *
+     * <pre>
+     *  StringUtils.isEmpty(null)      = true
+     *  StringUtils.isEmpty(&quot;&quot;)        = true
+     *  StringUtils.isEmpty(&quot; &quot;)       = false
+     *  StringUtils.isEmpty(&quot;bob&quot;)     = false
+     *  StringUtils.isEmpty(&quot;  bob  &quot;) = false
+     * </pre>
+     *
+     * <p>
+     * NOTE: This method changed in Lang version 2.0. It no longer trims the
+     * String. That functionality is available in isBlank().
+     * </p>
+     *
+     * @param str the String to check, may be null
+     * @return <code>true</code> if the String is empty or null
+     */
+    public static boolean isEmpty( String str )
+    {
+        return str == null || str.length() == 0;
+    }
+
+    /**
+     * Checks if a bytes array is empty or null.
+     *
+     * @param bytes The bytes array to check, may be null
+     * @return <code>true</code> if the bytes array is empty or null
+     */
+    public static boolean isEmpty( byte[] bytes )
+    {
+        return bytes == null || bytes.length == 0;
+    }
+
+    /**
+     * Return an UTF-8 encoded String
+     *
+     * @param bytes The byte array to be transformed to a String
+     * @return A String.
+     */
+    public static String utf8ToString( byte[] bytes )
+    {
+        if ( bytes == null )
+        {
+            return "";
+        }
+
+        try
+        {
+            return new String( bytes, "UTF-8" );
+        }
+        catch ( UnsupportedEncodingException uee )
+        {
+            // if this happens something is really strange
+            throw new RuntimeException( uee );
+        }
+    }
+
+    /**
+     * Return an UTF-8 encoded String
+     *
+     * @param bytes The byte array to be transformed to a String
+     * @param length The length of the byte array to be converted
+     * @return A String.
+     */
+    public static String utf8ToString( byte[] bytes, int length )
+    {
+        if ( bytes == null )
+        {
+            return "";
+        }
+
+        try
+        {
+            return new String( bytes, 0, length, "UTF-8" );
+        }
+        catch ( UnsupportedEncodingException uee )
+        {
+            // if this happens something is really strange
+            throw new RuntimeException( uee );
+        }
+    }
+
+    /**
+     * Return an UTF-8 encoded String
+     *
+     * @param bytes  The byte array to be transformed to a String
+     * @param start the starting position in the byte array
+     * @param length The length of the byte array to be converted
+     * @return A String.
+     */
+    public static String utf8ToString( byte[] bytes, int start, int length )
+    {
+        if ( bytes == null )
+        {
+            return "";
+        }
+
+        try
+        {
+            return new String( bytes, start, length, "UTF-8" );
+        }
+        catch ( UnsupportedEncodingException uee )
+        {
+            // if this happens something is really strange
+            throw new RuntimeException( uee );
+        }
+    }
+
+    /**
+     * Return UTF-8 encoded byte[] representation of a String
+     *
+     * @param string The string to be transformed to a byte array
+     * @return The transformed byte array
+     */
+    public static byte[] getBytesUtf8( String string )
+    {
+        if ( string == null )
+        {
+            return new byte[0];
+        }
+
+        try
+        {
+            return string.getBytes( "UTF-8" );
+        }
+        catch ( UnsupportedEncodingException uee )
+        {
+            // if this happens something is really strange
+            throw new RuntimeException( uee );
+        }
     }
 }

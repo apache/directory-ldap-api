@@ -2020,43 +2020,6 @@ public final class StringTools
     
     // Empty checks
     // -----------------------------------------------------------------------
-    /**
-     * <p>
-     * Checks if a String is empty ("") or null.
-     * </p>
-     * 
-     * <pre>
-     *  StringUtils.isEmpty(null)      = true
-     *  StringUtils.isEmpty(&quot;&quot;)        = true
-     *  StringUtils.isEmpty(&quot; &quot;)       = false
-     *  StringUtils.isEmpty(&quot;bob&quot;)     = false
-     *  StringUtils.isEmpty(&quot;  bob  &quot;) = false
-     * </pre>
-     * 
-     * <p>
-     * NOTE: This method changed in Lang version 2.0. It no longer trims the
-     * String. That functionality is available in isBlank().
-     * </p>
-     * 
-     * @param str the String to check, may be null
-     * @return <code>true</code> if the String is empty or null
-     */
-    public static boolean isEmpty( String str )
-    {
-        return str == null || str.length() == 0;
-    }
-
-
-    /**
-     * Checks if a bytes array is empty or null.
-     * 
-     * @param bytes The bytes array to check, may be null
-     * @return <code>true</code> if the bytes array is empty or null
-     */
-    public static boolean isEmpty( byte[] bytes )
-    {
-        return bytes == null || bytes.length == 0;
-    }
 
 
     /**
@@ -2101,7 +2064,7 @@ public final class StringTools
      */
     public static String trim( String str )
     {
-        return ( isEmpty( str ) ? "" : str.trim() );
+        return ( Strings.isEmpty(str) ? "" : str.trim() );
     }
 
 
@@ -2126,7 +2089,7 @@ public final class StringTools
      */
     public static byte[] trim( byte[] bytes )
     {
-        if ( isEmpty( bytes ) )
+        if ( Strings.isEmpty(bytes) )
         {
             return CharConstants.EMPTY_BYTES;
         }
@@ -2171,7 +2134,7 @@ public final class StringTools
      */
     public static String trimLeft( String str )
     {
-        if ( isEmpty( str ) )
+        if ( Strings.isEmpty(str) )
         {
             return "";
         }
@@ -2350,7 +2313,7 @@ public final class StringTools
      */
     public static String trimRight( String str )
     {
-        if ( isEmpty( str ) )
+        if ( Strings.isEmpty(str) )
         {
             return "";
         }
@@ -2392,7 +2355,7 @@ public final class StringTools
      */
     public static String trimRight( String str, int escapedSpace )
     {
-        if ( isEmpty( str ) )
+        if ( Strings.isEmpty(str) )
         {
             return "";
         }
@@ -2527,11 +2490,11 @@ public final class StringTools
 
         if ( pos.end == bytes.length )
         {
-            return StringTools.utf8ToString( bytes );
+            return Strings.utf8ToString(bytes);
         }
         else
         {
-            return StringTools.utf8ToString( bytes, pos.end );
+            return Strings.utf8ToString(bytes, pos.end);
         }
     }
 
@@ -2686,109 +2649,6 @@ public final class StringTools
     public static boolean equals( String str1, String str2 )
     {
         return str1 == null ? str2 == null : str1.equals( str2 );
-    }
-
-
-    /**
-     * Return an UTF-8 encoded String
-     * 
-     * @param bytes The byte array to be transformed to a String
-     * @return A String.
-     */
-    public static String utf8ToString( byte[] bytes )
-    {
-        if ( bytes == null )
-        {
-            return "";
-        }
-
-        try
-        {
-            return new String( bytes, "UTF-8" );
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            // if this happens something is really strange
-            throw new RuntimeException( uee );
-        }
-    }
-
-
-    /**
-     * Return an UTF-8 encoded String
-     * 
-     * @param bytes The byte array to be transformed to a String
-     * @param length The length of the byte array to be converted
-     * @return A String.
-     */
-    public static String utf8ToString( byte[] bytes, int length )
-    {
-        if ( bytes == null )
-        {
-            return "";
-        }
-
-        try
-        {
-            return new String( bytes, 0, length, "UTF-8" );
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            // if this happens something is really strange
-            throw new RuntimeException( uee );
-        }
-    }
-
-
-    /**
-     * Return an UTF-8 encoded String
-     * 
-     * @param bytes  The byte array to be transformed to a String
-     * @param start the starting position in the byte array  
-     * @param length The length of the byte array to be converted
-     * @return A String.
-     */
-    public static String utf8ToString( byte[] bytes, int start, int length )
-    {
-        if ( bytes == null )
-        {
-            return "";
-        }
-
-        try
-        {
-            return new String( bytes, start, length, "UTF-8" );
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            // if this happens something is really strange
-            throw new RuntimeException( uee );
-        }
-    }
-
-
-    /**
-     * Return UTF-8 encoded byte[] representation of a String
-     * 
-     * @param string The string to be transformed to a byte array
-     * @return The transformed byte array
-     */
-    public static byte[] getBytesUtf8( String string )
-    {
-        if ( string == null )
-        {
-            return new byte[0];
-        }
-
-        try
-        {
-            return string.getBytes( "UTF-8" );
-        }
-        catch ( UnsupportedEncodingException uee )
-        {
-            // if this happens something is really strange
-            throw new RuntimeException( uee );
-        }
     }
 
 
@@ -3024,7 +2884,7 @@ public final class StringTools
             decoded[jj] = ( byte ) ch;
         }
         
-        return StringTools.utf8ToString( decoded );
+        return Strings.utf8ToString(decoded);
     }
 
 

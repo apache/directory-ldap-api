@@ -24,7 +24,6 @@ import org.apache.directory.shared.ldap.entry.BinaryValue;
 import org.apache.directory.shared.ldap.entry.StringValue;
 import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.shared.util.Strings;
 
 
@@ -415,7 +414,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
         else
         {
             byte[] binVal = attrVal.getBytes();
-            sb.append( StringTools.utf8ToString( binVal ) ).append( '/' ).append( Strings.dumpBytes(binVal) )
+            sb.append( Strings.utf8ToString(binVal) ).append( '/' ).append( Strings.dumpBytes(binVal) )
                 .append( "'\n" );
         }
 

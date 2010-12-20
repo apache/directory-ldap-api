@@ -701,7 +701,7 @@ public final class AttributeUtils
                         }
                         else if ( attr instanceof byte[] )
                         {
-                            String string = StringTools.utf8ToString( ( byte[] ) attr );
+                            String string = Strings.utf8ToString((byte[]) attr);
 
                             sb.append( tabs ).append( "        Val[" ).append( j ).append( "] : " );
                             sb.append( string ).append( '/' );

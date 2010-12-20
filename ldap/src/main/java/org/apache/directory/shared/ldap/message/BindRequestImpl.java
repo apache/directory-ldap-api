@@ -24,7 +24,6 @@ import java.util.Arrays;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.shared.util.Strings;
 
 
@@ -156,7 +155,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
      */
     public void setCredentials( String credentials )
     {
-        setCredentials( StringTools.getBytesUtf8( credentials ) );
+        setCredentials( Strings.getBytesUtf8(credentials) );
     }
 
 
@@ -493,7 +492,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
         sb.append( "    BindRequest\n" );
         sb.append( "        Version : '" ).append( isVersion3 ? "3" : "2" ).append( "'\n" );
 
-        if ( StringTools.isEmpty( name.getNormName() ) && isSimple )
+        if ( Strings.isEmpty(name.getNormName()) && isSimple )
         {
             sb.append( "        Name : anonymous\n" );
         }
@@ -503,7 +502,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
 
             if ( isSimple )
             {
-                sb.append( "        Simple authentication : '" ).append( StringTools.utf8ToString( credentials ) )
+                sb.append( "        Simple authentication : '" ).append( Strings.utf8ToString(credentials) )
                     .append( '/' ).append( Strings.dumpBytes(credentials) ).append( "'\n" );
             }
             else

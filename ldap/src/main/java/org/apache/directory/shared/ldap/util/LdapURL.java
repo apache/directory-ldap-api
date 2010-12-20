@@ -40,6 +40,7 @@ import org.apache.directory.shared.ldap.filter.FilterParser;
 import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.util.CharConstants;
+import org.apache.directory.shared.util.Strings;
 
 
 /**
@@ -333,7 +334,7 @@ public class LdapURL
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04410 ) );
         }
 
-        string = StringTools.utf8ToString( bytes );
+        string = Strings.utf8ToString(bytes);
 
         this.bytes = new byte[bytes.length];
         System.arraycopy( bytes, 0, this.bytes, 0, bytes.length );

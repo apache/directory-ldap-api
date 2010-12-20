@@ -59,6 +59,7 @@ import org.apache.directory.shared.ldap.schema.registries.Registries;
 import org.apache.directory.shared.ldap.schema.registries.Schema;
 import org.apache.directory.shared.ldap.util.Base64;
 import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -183,7 +184,7 @@ public class SchemaEntityFactory implements EntityFactory
      */
     private Schema getSchema( String schemaName, Registries registries )
     {
-        if ( StringTools.isEmpty( schemaName ) )
+        if ( Strings.isEmpty(schemaName) )
         {
             schemaName = MetaSchemaConstants.SCHEMA_OTHER;
         }

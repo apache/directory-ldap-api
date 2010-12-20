@@ -53,7 +53,7 @@ import org.apache.directory.shared.ldap.cursor.Cursor;
 import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.message.*;
 import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.Strings;
 import org.xmlpull.v1.XmlPullParserException;
 
 
@@ -454,7 +454,7 @@ public class Dsmlv2Engine
     {
         BindRequest bindRequest = new BindRequestImpl();
         bindRequest.setSimple( true );
-        bindRequest.setCredentials( StringTools.getBytesUtf8( password ) );
+        bindRequest.setCredentials( Strings.getBytesUtf8(password) );
         bindRequest.setName( new DN( user ) );
         bindRequest.setVersion3( true );
         bindRequest.setMessageId( messageId );

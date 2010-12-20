@@ -43,6 +43,7 @@ import org.apache.directory.shared.ldap.schema.normalizers.OidNormalizer;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.shared.ldap.util.UTFUtils;
 import org.apache.directory.shared.util.CharConstants;
+import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1165,7 +1166,7 @@ public class RDN implements Cloneable, Comparable<RDN>, Externalizable, Iterable
      */
     public static Object unescapeValue( String value ) throws IllegalArgumentException
     {
-        if ( StringTools.isEmpty( value ) )
+        if ( Strings.isEmpty(value) )
         {
             return "";
         }
@@ -1309,7 +1310,7 @@ public class RDN implements Cloneable, Comparable<RDN>, Externalizable, Iterable
                 }
             }
 
-            return StringTools.utf8ToString( bytes, pos );
+            return Strings.utf8ToString(bytes, pos);
         }
     }
 
@@ -1322,7 +1323,7 @@ public class RDN implements Cloneable, Comparable<RDN>, Externalizable, Iterable
      */
     public static String escapeValue( String value )
     {
-        if ( StringTools.isEmpty( value ) )
+        if ( Strings.isEmpty(value) )
         {
             return "";
         }
@@ -1441,12 +1442,12 @@ public class RDN implements Cloneable, Comparable<RDN>, Externalizable, Iterable
      */
     public static String escapeValue( byte[] attrValue )
     {
-        if ( StringTools.isEmpty( attrValue ) )
+        if ( Strings.isEmpty(attrValue) )
         {
             return "";
         }
 
-        String value = StringTools.utf8ToString( attrValue );
+        String value = Strings.utf8ToString(attrValue);
 
         return escapeValue( value );
     }
@@ -1597,7 +1598,7 @@ public class RDN implements Cloneable, Comparable<RDN>, Externalizable, Iterable
         // Read the normName
         normName = UTFUtils.readUTF( in );
 
-        if ( StringTools.isEmpty( normName ) )
+        if ( Strings.isEmpty(normName) )
         {
             normName = upName;
         }

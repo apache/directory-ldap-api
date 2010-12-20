@@ -55,6 +55,7 @@ import org.apache.directory.shared.ldap.name.DnParser;
 import org.apache.directory.shared.ldap.name.RDN;
 import org.apache.directory.shared.ldap.util.Base64;
 import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -921,7 +922,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 }
                 else
                 {
-                    entry.setNewRdn( StringTools.utf8ToString( ( byte[] ) attributeValue ) );
+                    entry.setNewRdn( Strings.utf8ToString((byte[]) attributeValue) );
                 }
             }
             else
@@ -1189,7 +1190,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                         }
                         else
                         {
-                            entry.setNewSuperior( StringTools.utf8ToString( ( byte[] ) attributeValue ) );
+                            entry.setNewSuperior( Strings.utf8ToString((byte[]) attributeValue) );
                         }
                     }
                     else
@@ -1576,7 +1577,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     @SuppressWarnings("PMD.EmptyCatchBlock")
     public List<LdifEntry> parseLdifFile( String fileName, String encoding ) throws LdapLdifException
     {
-        if ( StringTools.isEmpty( fileName ) )
+        if ( Strings.isEmpty(fileName) )
         {
             LOG.error( I18n.err( I18n.ERR_12064_EMPTY_FILE_NAME ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12064_EMPTY_FILE_NAME ) );
@@ -1640,7 +1641,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     {
         LOG.debug( "Starts parsing ldif buffer" );
 
-        if ( StringTools.isEmpty( ldif ) )
+        if ( Strings.isEmpty(ldif) )
         {
             return new ArrayList<LdifEntry>();
         }

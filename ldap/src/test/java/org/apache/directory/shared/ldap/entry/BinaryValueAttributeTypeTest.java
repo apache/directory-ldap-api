@@ -45,6 +45,7 @@ import org.apache.directory.shared.ldap.schema.comparators.ByteArrayComparator;
 import org.apache.directory.shared.ldap.schema.syntaxCheckers.OctetStringSyntaxChecker;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.shared.util.CharConstants;
+import org.apache.directory.shared.util.Strings;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -562,8 +563,8 @@ public class BinaryValueAttributeTypeTest
      */
     @Test public void testNormalizedBinaryValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        byte[] v1 = StringTools.getBytesUtf8( "  Test   Test  " );
-        byte[] v1Norm = StringTools.getBytesUtf8( "Test   Test" );
+        byte[] v1 = Strings.getBytesUtf8("  Test   Test  ");
+        byte[] v1Norm = Strings.getBytesUtf8("Test   Test");
         
         // First check with a value which will be normalized
         BinaryValue sbv = new BinaryValue( at, v1 );
@@ -586,7 +587,7 @@ public class BinaryValueAttributeTypeTest
      */
     @Test public void testNormalizedBinarySameValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        byte[] v1 = StringTools.getBytesUtf8( "Test   Test" );
+        byte[] v1 = Strings.getBytesUtf8("Test   Test");
         
         // First check with a value which will be normalized
         BinaryValue sbv = new BinaryValue( at, v1 );
@@ -602,8 +603,8 @@ public class BinaryValueAttributeTypeTest
      */
     @Test public void testNoNormalizedBinaryValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        byte[] v1 = StringTools.getBytesUtf8( "test" );
-        byte[] v1Norm = StringTools.getBytesUtf8( "test" );
+        byte[] v1 = Strings.getBytesUtf8("test");
+        byte[] v1Norm = Strings.getBytesUtf8("test");
 
         // First check with a value which will be normalized
         BinaryValue sbv = new BinaryValue( at, v1 );
@@ -665,8 +666,8 @@ public class BinaryValueAttributeTypeTest
      */
     @Test public void testSameNormalizedBinaryValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        byte[] v1 = StringTools.getBytesUtf8( "test" );
-        byte[] v1Norm = StringTools.getBytesUtf8( "test" );
+        byte[] v1 = Strings.getBytesUtf8("test");
+        byte[] v1Norm = Strings.getBytesUtf8("test");
 
         // First check with a value which will be normalized
         BinaryValue sbv = new BinaryValue( at, v1 );

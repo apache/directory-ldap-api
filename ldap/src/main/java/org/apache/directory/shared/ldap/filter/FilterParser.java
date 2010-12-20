@@ -825,7 +825,7 @@ public class FilterParser
     public static ExprNode parse( SchemaManager schemaManager, String filter ) throws ParseException
     {
         // The filter must not be null. This is a defensive test
-        if ( StringTools.isEmpty( filter ) )
+        if ( Strings.isEmpty(filter) )
         {
             throw new ParseException( I18n.err( I18n.ERR_04158 ), 0 );
         }
@@ -852,7 +852,7 @@ public class FilterParser
     public static ExprNode parse( SchemaManager schemaManager, String filter, Position pos ) throws ParseException
     {
         // The filter must not be null. This is a defensive test
-        if ( StringTools.isEmpty( filter ) )
+        if ( Strings.isEmpty(filter) )
         {
             throw new ParseException( I18n.err( I18n.ERR_04158 ), 0 );
         }

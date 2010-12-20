@@ -86,7 +86,7 @@ public class OidSyntaxChecker extends SyntaxChecker
         }
         else if ( value instanceof byte[] )
         {
-            strValue = StringTools.utf8ToString( ( byte[] ) value ); 
+            strValue = Strings.utf8ToString((byte[]) value);
         }
         else
         {
