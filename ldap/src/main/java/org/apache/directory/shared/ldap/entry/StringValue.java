@@ -24,12 +24,12 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.util.UTFUtils;
 import org.apache.directory.shared.util.exception.NotImplementedException;
 import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.shared.ldap.schema.LdapComparator;
 import org.apache.directory.shared.ldap.schema.Normalizer;
-import org.apache.directory.shared.ldap.util.UTFUtils;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -512,7 +512,7 @@ public class StringValue extends AbstractValue<String>
         if ( wrappedValue != null )
         {
             out.writeBoolean( true );
-            UTFUtils.writeUTF( out, wrappedValue );
+            UTFUtils.writeUTF(out, wrappedValue);
         }
         else
         {

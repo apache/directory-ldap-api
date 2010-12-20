@@ -46,7 +46,7 @@ import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.name.RDN;
-import org.apache.directory.shared.ldap.util.UTFUtils;
+import org.apache.directory.shared.util.UTFUtils;
 
 
 /**
@@ -978,7 +978,7 @@ public class LdifEntry implements Cloneable, Externalizable
 
                 if ( in.readBoolean() )
                 {
-                    newRdn = UTFUtils.readUTF( in );
+                    newRdn = UTFUtils.readUTF(in);
                 }
 
                 if ( in.readBoolean() )

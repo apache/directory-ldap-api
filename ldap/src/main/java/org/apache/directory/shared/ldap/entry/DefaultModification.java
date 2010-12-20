@@ -27,7 +27,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.shared.ldap.schema.SchemaManager;
-import org.apache.directory.shared.ldap.util.UTFUtils;
+import org.apache.directory.shared.util.UTFUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -267,7 +267,7 @@ public class DefaultModification implements Modification
         operation = ModificationOperation.getOperation( op );
         
         // Read the attribute OID
-        String oid = UTFUtils.readUTF( in );
+        String oid = UTFUtils.readUTF(in);
         
         // Lookup for tha associated AttributeType
         AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( oid );

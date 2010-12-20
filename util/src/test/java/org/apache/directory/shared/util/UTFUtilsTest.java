@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.util;
+package org.apache.directory.shared.util;
 
 
 import static org.junit.Assert.assertEquals;
@@ -32,6 +32,7 @@ import java.util.Arrays;
 
 import org.apache.directory.junit.tools.Concurrent;
 import org.apache.directory.junit.tools.ConcurrentJunitRunner;
+import org.apache.directory.shared.util.UTFUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -124,7 +125,7 @@ public class UTFUtilsTest
         char[] fill = new char[196622]; // 65535 * 3 + 17
         Arrays.fill( fill, '\u00fc' ); // German &&uuml
         String testString = new String( fill );
-        UTFUtils.writeUTF( dos, testString );
+        UTFUtils.writeUTF(dos, testString);
         dos.flush();
         dos.close();
         assertEquals( testString, UTFUtils.readUTF( dis ) );

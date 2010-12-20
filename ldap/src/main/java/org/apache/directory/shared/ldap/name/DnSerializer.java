@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.util.UTFUtils;
+import org.apache.directory.shared.util.UTFUtils;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,7 +126,7 @@ public final class DnSerializer
     public static DN deserialize( ObjectInput in ) throws IOException
     {
         // Read the UPName
-        String upName = UTFUtils.readUTF( in );
+        String upName = UTFUtils.readUTF(in);
         
         // Read the NormName
         String normName = UTFUtils.readUTF( in );

@@ -34,7 +34,7 @@ import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.shared.ldap.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.util.StringTools;
-import org.apache.directory.shared.ldap.util.UTFUtils;
+import org.apache.directory.shared.util.UTFUtils;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -2410,7 +2410,7 @@ public class DefaultEntryAttribute implements EntryAttribute
     public void serialize( ObjectOutput out ) throws IOException
     {
         // Write the UPId (the id will be deduced from the upID)
-        UTFUtils.writeUTF( out, upId );
+        UTFUtils.writeUTF(out, upId);
         
         // Write the HR flag, if not null
         if ( isHR != null )
