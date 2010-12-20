@@ -328,7 +328,7 @@ public final class AttributeUtils
                             break;
 
                         case 2:
-                            int high = StringTools.getHexValue( c );
+                            int high = Strings.getHexValue(c);
 
                             if ( high == -1 )
                             {
@@ -341,7 +341,7 @@ public final class AttributeUtils
                             break;
 
                         case 3:
-                            int low = StringTools.getHexValue( c );
+                            int low = Strings.getHexValue(c);
 
                             if ( low == -1 )
                             {

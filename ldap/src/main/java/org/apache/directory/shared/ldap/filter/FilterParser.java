@@ -253,7 +253,7 @@ public class FilterParser
                 pos.start++;
 
                 // First hex
-                if ( StringTools.isHex( filter, pos.start ) )
+                if ( Strings.isHex(filter, pos.start) )
                 {
                     pos.start++;
                 }
@@ -263,9 +263,9 @@ public class FilterParser
                 }
 
                 // second hex
-                if ( StringTools.isHex( filter, pos.start ) )
+                if ( Strings.isHex(filter, pos.start) )
                 {
-                    value[current++] = StringTools.getHexValue( filter.charAt( pos.start - 1 ), filter.charAt( pos.start ) );
+                    value[current++] = Strings.getHexValue(filter.charAt(pos.start - 1), filter.charAt(pos.start));
                     pos.start++;
                 }
                 else

@@ -371,7 +371,7 @@ public class Csn implements Serializable, Comparable<Csn>
         {
             for ( int i = 0; i < 6; i++ )
             {
-                if ( !StringTools.isHex( changeCountStr, i ) )
+                if ( !Strings.isHex(changeCountStr, i) )
                 {
                     return false;
                 }
@@ -406,7 +406,7 @@ public class Csn implements Serializable, Comparable<Csn>
         
         for ( int i = 0; i < 3; i++ )
         {
-            if ( !StringTools.isHex( replicaIdStr, i ) )
+            if ( !Strings.isHex(replicaIdStr, i) )
             {
                 return false;
             }
@@ -436,7 +436,7 @@ public class Csn implements Serializable, Comparable<Csn>
 
         for ( int i = 0; i < 6; i++ )
         {
-            if ( !StringTools.isHex( operationNumberStr, i ) )
+            if ( !Strings.isHex(operationNumberStr, i) )
             {
                 return false;
             }

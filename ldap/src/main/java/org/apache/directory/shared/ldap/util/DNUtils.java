@@ -419,9 +419,9 @@ public final class DNUtils
                 {
                     return true;
                 }
-                else if ( StringTools.isHex( bytes, index++ ) )
+                else if ( Strings.isHex(bytes, index++) )
                 {
-                    return StringTools.isHex( bytes, index );
+                    return Strings.isHex(bytes, index);
                 }
                 else
                 {
@@ -469,9 +469,9 @@ public final class DNUtils
                 {
                     return 1;
                 }
-                else if ( StringTools.isHex( bytes, index++ ) )
+                else if ( Strings.isHex(bytes, index++) )
                 {
-                    return StringTools.isHex( bytes, index ) ? 2 : PARSING_ERROR;
+                    return Strings.isHex(bytes, index) ? 2 : PARSING_ERROR;
                 }
                 else
                 {
@@ -507,7 +507,7 @@ public final class DNUtils
             }
             else
             {
-                return StringTools.countBytesPerChar( bytes, index );
+                return Strings.countBytesPerChar(bytes, index);
             }
         }
     }
@@ -540,7 +540,7 @@ public final class DNUtils
             }
             else
             {
-                return StringTools.countBytesPerChar( bytes, index );
+                return Strings.countBytesPerChar(bytes, index);
             }
         }
     }
@@ -571,7 +571,7 @@ public final class DNUtils
             }
             else
             {
-                return StringTools.countBytesPerChar( bytes, index );
+                return Strings.countBytesPerChar(bytes, index);
             }
         }
     }
@@ -587,9 +587,9 @@ public final class DNUtils
      */
     public static int parseHexPair( byte[] bytes, int index )
     {
-        if ( StringTools.isHex( bytes, index ) )
+        if ( Strings.isHex(bytes, index) )
         {
-            if ( StringTools.isHex( bytes, index + 1 ) )
+            if ( Strings.isHex(bytes, index + 1) )
             {
                 return index + 2;
             }
@@ -615,7 +615,7 @@ public final class DNUtils
      */
     private static byte getHexPair( byte[] bytes, int index )
     {
-        return StringTools.getHexValue( bytes[index], bytes[index + 1] );
+        return Strings.getHexValue(bytes[index], bytes[index + 1]);
     }
 
     

@@ -1192,9 +1192,9 @@ public class RDN implements Cloneable, Comparable<RDN>, Externalizable, Iterable
 
             for ( int i = 1; i < chars.length; i += 2 )
             {
-                if ( StringTools.isHex( chars, i ) && StringTools.isHex( chars, i + 1 ) )
+                if ( Strings.isHex(chars, i) && Strings.isHex(chars, i + 1) )
                 {
-                    hexValue[pos++] = StringTools.getHexValue( chars[i], chars[i + 1] );
+                    hexValue[pos++] = Strings.getHexValue(chars[i], chars[i + 1]);
                 }
                 else
                 {
@@ -1235,10 +1235,10 @@ public class RDN implements Cloneable, Comparable<RDN>, Externalizable, Iterable
                             break;
 
                         default:
-                            if ( StringTools.isHex( chars, i ) )
+                            if ( Strings.isHex(chars, i) )
                             {
                                 isHex = true;
-                                pair = ( ( byte ) ( StringTools.getHexValue( chars[i] ) << 4 ) );
+                                pair = ( ( byte ) ( Strings.getHexValue(chars[i]) << 4 ) );
                             }
 
                             break;
@@ -1248,9 +1248,9 @@ public class RDN implements Cloneable, Comparable<RDN>, Externalizable, Iterable
                 {
                     if ( isHex )
                     {
-                        if ( StringTools.isHex( chars, i ) )
+                        if ( Strings.isHex(chars, i) )
                         {
-                            pair += StringTools.getHexValue( chars[i] );
+                            pair += Strings.getHexValue(chars[i]);
                             bytes[pos++] = pair;
                         }
                     }

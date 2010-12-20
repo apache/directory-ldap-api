@@ -737,55 +737,6 @@ public final class StringTools
 
 
     /**
-     * Count the number of bytes needed to return an Unicode char. This can be
-     * from 1 to 6.
-     * 
-     * @param bytes The bytes to read
-     * @param pos Position to start counting. It must be a valid start of a
-     *            encoded char !
-     * @return The number of bytes to create a char, or -1 if the encoding is
-     *         wrong. TODO : Should stop after the third byte, as a char is only
-     *         2 bytes long.
-     */
-    public static int countBytesPerChar( byte[] bytes, int pos )
-    {
-        if ( bytes == null )
-        {
-            return -1;
-        }
-
-        if ( ( bytes[pos] & CharConstants.UTF8_MULTI_BYTES_MASK ) == 0 )
-        {
-            return 1;
-        }
-        else if ( ( bytes[pos] & CharConstants.UTF8_TWO_BYTES_MASK ) == CharConstants.UTF8_TWO_BYTES )
-        {
-            return 2;
-        }
-        else if ( ( bytes[pos] & CharConstants.UTF8_THREE_BYTES_MASK ) == CharConstants.UTF8_THREE_BYTES )
-        {
-            return 3;
-        }
-        else if ( ( bytes[pos] & CharConstants.UTF8_FOUR_BYTES_MASK ) == CharConstants.UTF8_FOUR_BYTES )
-        {
-            return 4;
-        }
-        else if ( ( bytes[pos] & CharConstants.UTF8_FIVE_BYTES_MASK ) == CharConstants.UTF8_FIVE_BYTES )
-        {
-            return 5;
-        }
-        else if ( ( bytes[pos] & CharConstants.UTF8_SIX_BYTES_MASK ) == CharConstants.UTF8_SIX_BYTES )
-        {
-            return 6;
-        }
-        else
-        {
-            return -1;
-        }
-    }
-
-
-    /**
      * Return the number of bytes that hold an Unicode char.
      * 
      * @param car The character to be decoded
@@ -1063,7 +1014,7 @@ public final class StringTools
 
         while ( currentPos < bytes.length )
         {
-            currentPos += countBytesPerChar( bytes, currentPos );
+            currentPos += Strings.countBytesPerChar(bytes, currentPos);
             nbChars++;
         }
 
@@ -1418,171 +1369,6 @@ public final class StringTools
         }
     }
 
-    
-    /**
-     * Translate two chars to an hex value. The chars must be 
-     * in [a-fA-F0-9]
-     *
-     * @param high The high value 
-     * @param low The low value
-     * @return A byte representation of the two chars
-     */
-    public static byte getHexValue( char high, char low )
-    {
-        if ( ( high > 127 ) || ( low > 127 ) || ( high < 0 ) | ( low < 0 ) )
-        {
-            return -1;
-        }
-        
-        return (byte)( ( CharConstants.HEX_VALUE[high] << 4 ) | CharConstants.HEX_VALUE[low] );
-    }
-
-
-    /**
-     * Translate two bytes to an hex value. The bytes must be 
-     * in [0-9a-fA-F]
-     *
-     * @param high The high value 
-     * @param low The low value
-     * @return A byte representation of the two bytes
-     */
-    public static byte getHexValue( byte high, byte low )
-    {
-        if ( ( high > 127 ) || ( low > 127 ) || ( high < 0 ) | ( low < 0 ) )
-        {
-            return -1;
-        }
-        
-        return (byte)( ( CharConstants.HEX_VALUE[high] << 4 ) | CharConstants.HEX_VALUE[low] );
-    }
-
-    
-    /**
-     * Return an hex value from a sinle char
-     * The char must be in [0-9a-fA-F]
-     *
-     * @param c The char we want to convert
-     * @return A byte between 0 and 15
-     */
-    public static byte getHexValue( char c )
-    {
-        if ( ( c > 127 ) || ( c < 0 ) )
-        {
-            return -1;
-        }
-        
-        return CharConstants.HEX_VALUE[c];
-    }
-
-
-    /**
-     * Check if the current byte is an Hex Char 
-     * &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66]
-     * 
-     * @param b The byte we want to check
-     * @return <code>true</code> if the current byte is a Hex byte
-     */
-    public static boolean isHex( byte b )
-    {
-        return ( ( b | 0x7F ) == 0x7F ) || CharConstants.HEX[b];
-    }
-
-
-    /**
-     * Check if the current character is an Hex Char &lt;hex> ::= [0x30-0x39] |
-     * [0x41-0x46] | [0x61-0x66]
-     * 
-     * @param bytes The buffer which contains the data
-     * @param index Current position in the buffer
-     * @return <code>true</code> if the current character is a Hex Char
-     */
-    public static boolean isHex( byte[] bytes, int index )
-    {
-        if ( ( bytes == null ) || ( bytes.length == 0 ) || ( index < 0 ) || ( index >= bytes.length ) )
-        {
-            return false;
-        }
-        else
-        {
-            byte c = bytes[index];
-
-            if ( ( ( c | 0x7F ) != 0x7F ) || ( CharConstants.HEX[c] == false ) )
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-    }
-
-
-    /**
-     * Check if the current character is an Hex Char &lt;hex> ::= [0x30-0x39] |
-     * [0x41-0x46] | [0x61-0x66]
-     * 
-     * @param chars The buffer which contains the data
-     * @param index Current position in the buffer
-     * @return <code>true</code> if the current character is a Hex Char
-     */
-    public static boolean isHex( char[] chars, int index )
-    {
-        if ( ( chars == null ) || ( chars.length == 0 ) || ( index < 0 ) || ( index >= chars.length ) )
-        {
-            return false;
-        }
-        else
-        {
-            char c = chars[index];
-
-            if ( ( c > 127 ) || ( CharConstants.HEX[c] == false ) )
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-    }
-
-    /**
-     * Check if the current character is an Hex Char &lt;hex> ::= [0x30-0x39] |
-     * [0x41-0x46] | [0x61-0x66]
-     * 
-     * @param string The string which contains the data
-     * @param index Current position in the string
-     * @return <code>true</code> if the current character is a Hex Char
-     */
-    public static boolean isHex( String string, int index )
-    {
-        if ( string == null )
-        {
-            return false;
-        }
-        
-        int length = string.length();
-        
-        if ( ( length == 0 ) || ( index < 0 ) || ( index >= length ) )
-        {
-            return false;
-        }
-        else
-        {
-            char c = string.charAt( index );
-
-            if ( ( c > 127 ) || ( CharConstants.HEX[c] == false ) )
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-    }
-    
 
     /**
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
@@ -2872,7 +2658,7 @@ public final class StringTools
             if ( c == '\\' )
             {
                 // we have the start of a hex escape sequence
-                if ( isHex( str, i+1 ) && isHex ( str, i+2 ) )
+                if ( Strings.isHex(str, i + 1) && Strings.isHex(str, i + 2) )
                 {
                     byte value = ( byte ) ( ( CharConstants.HEX_VALUE[str.charAt( i + 1 )] << 4 )
                         + CharConstants.HEX_VALUE[str.charAt( i + 2 )] );
@@ -3065,26 +2851,26 @@ public final class StringTools
 
         char[] chars = string.toCharArray();
         byte[] bytes = new byte[16];
-        bytes[0] = getHexValue( chars[0], chars[1] );
-        bytes[1] = getHexValue( chars[2], chars[3] );
-        bytes[2] = getHexValue( chars[4], chars[5] );
-        bytes[3] = getHexValue( chars[6], chars[7] );
+        bytes[0] = Strings.getHexValue(chars[0], chars[1]);
+        bytes[1] = Strings.getHexValue(chars[2], chars[3]);
+        bytes[2] = Strings.getHexValue(chars[4], chars[5]);
+        bytes[3] = Strings.getHexValue(chars[6], chars[7]);
 
-        bytes[4] = getHexValue( chars[9], chars[10] );
-        bytes[5] = getHexValue( chars[11], chars[12] );
+        bytes[4] = Strings.getHexValue(chars[9], chars[10]);
+        bytes[5] = Strings.getHexValue(chars[11], chars[12]);
 
-        bytes[6] = getHexValue( chars[14], chars[15] );
-        bytes[7] = getHexValue( chars[16], chars[17] );
+        bytes[6] = Strings.getHexValue(chars[14], chars[15]);
+        bytes[7] = Strings.getHexValue(chars[16], chars[17]);
 
-        bytes[8] = getHexValue( chars[19], chars[20] );
-        bytes[9] = getHexValue( chars[21], chars[22] );
+        bytes[8] = Strings.getHexValue(chars[19], chars[20]);
+        bytes[9] = Strings.getHexValue(chars[21], chars[22]);
 
-        bytes[10] = getHexValue( chars[24], chars[25] );
-        bytes[11] = getHexValue( chars[26], chars[27] );
-        bytes[12] = getHexValue( chars[28], chars[29] );
-        bytes[13] = getHexValue( chars[30], chars[31] );
-        bytes[14] = getHexValue( chars[32], chars[33] );
-        bytes[15] = getHexValue( chars[34], chars[35] );
+        bytes[10] = Strings.getHexValue(chars[24], chars[25]);
+        bytes[11] = Strings.getHexValue(chars[26], chars[27]);
+        bytes[12] = Strings.getHexValue(chars[28], chars[29]);
+        bytes[13] = Strings.getHexValue(chars[30], chars[31]);
+        bytes[14] = Strings.getHexValue(chars[32], chars[33]);
+        bytes[15] = Strings.getHexValue(chars[34], chars[35]);
 
         return bytes;
     }
