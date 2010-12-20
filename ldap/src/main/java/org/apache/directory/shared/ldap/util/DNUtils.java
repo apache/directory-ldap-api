@@ -20,6 +20,7 @@
 package org.apache.directory.shared.ldap.util;
 
 
+import org.apache.directory.shared.util.Position;
 import org.apache.directory.shared.util.Strings;
 
 /**

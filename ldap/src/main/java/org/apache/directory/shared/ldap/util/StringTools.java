@@ -31,7 +31,6 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -43,6 +42,7 @@ import org.apache.directory.shared.ldap.entry.BinaryValue;
 import org.apache.directory.shared.ldap.entry.StringValue;
 import org.apache.directory.shared.ldap.schema.syntaxCheckers.UuidSyntaxChecker;
 import org.apache.directory.shared.util.CharConstants;
+import org.apache.directory.shared.util.Position;
 import org.apache.directory.shared.util.Strings;
 
 

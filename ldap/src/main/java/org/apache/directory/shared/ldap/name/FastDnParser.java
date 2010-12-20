@@ -27,7 +27,7 @@ import org.apache.directory.shared.ldap.entry.StringValue;
 import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.util.Position;
+import org.apache.directory.shared.util.Position;
 import org.apache.directory.shared.ldap.util.StringTools;
 
 

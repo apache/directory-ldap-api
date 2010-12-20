@@ -29,7 +29,7 @@ import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.shared.ldap.schema.SchemaManager;
 import org.apache.directory.shared.ldap.util.AttributeUtils;
-import org.apache.directory.shared.ldap.util.Position;
+import org.apache.directory.shared.util.Position;
 import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.shared.util.Strings;
 
@@ -721,7 +721,7 @@ public class FilterParser
      *                    / ( [dnattrs]
      *                         matchingrule COLON EQUALS assertionvalue )
      */
-    private static ExprNode parseFilterComp( SchemaManager schemaManager, String filter, Position pos ) 
+    private static ExprNode parseFilterComp( SchemaManager schemaManager, String filter, Position pos )
         throws ParseException, LdapException
     {
         ExprNode node = null;
