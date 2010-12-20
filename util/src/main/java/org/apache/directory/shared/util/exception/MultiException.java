@@ -17,8 +17,7 @@
  *  under the License. 
  *  
  */
-
-package org.apache.directory.shared.ldap;
+package org.apache.directory.shared.util.exception;
 
 
 import java.io.PrintStream;
@@ -34,10 +33,10 @@ import java.util.Iterator;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class RuntimeMultiException extends RuntimeException
+public class MultiException extends Exception
 {
     /** The serialVersionUID. */
-    private static final long serialVersionUID = 8582253398936366771L;
+    static final long serialVersionUID = 2889747406899775761L;
 
     /** Collection of nested exceptions. */
     private Collection<Throwable> nestedExceptions = new ArrayList<Throwable>();
@@ -46,7 +45,7 @@ public class RuntimeMultiException extends RuntimeException
     /**
      * Constructs an Exception without a message.
      */
-    public RuntimeMultiException()
+    public MultiException()
     {
         super();
     }
@@ -58,7 +57,7 @@ public class RuntimeMultiException extends RuntimeException
      * @param message
      *            The message associated with the exception.
      */
-    public RuntimeMultiException(String message)
+    public MultiException( String message )
     {
         super( message );
     }
@@ -76,7 +75,8 @@ public class RuntimeMultiException extends RuntimeException
 
 
     /**
-     * Gets the size (number of) exceptions nested within this exception.
+     * Gets the size of this nested exception which equals the number of
+     * exception nested within.
      * 
      * @return the size of this nested exception.
      */
@@ -87,9 +87,10 @@ public class RuntimeMultiException extends RuntimeException
 
 
     /**
-     * Tests to see if exceptions are nested within this exception.
+     * Tests to see if there are any nested exceptions within this
+     * MultiException.
      * 
-     * @return true if an exception is nested, false otherwise
+     * @return true if no exceptions are nested, false otherwise.
      */
     public boolean isEmpty()
     {
@@ -126,7 +127,7 @@ public class RuntimeMultiException extends RuntimeException
 
         out.println( "Nested exceptions to follow:\n" );
         boolean isFirst = true;
-        
+
         for ( Throwable throwable:nestedExceptions )
         {
             if ( isFirst )

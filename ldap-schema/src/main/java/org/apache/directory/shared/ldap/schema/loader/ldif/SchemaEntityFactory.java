@@ -58,7 +58,6 @@ import org.apache.directory.shared.ldap.schema.registries.DefaultSchema;
 import org.apache.directory.shared.ldap.schema.registries.Registries;
 import org.apache.directory.shared.ldap.schema.registries.Schema;
 import org.apache.directory.shared.ldap.util.Base64;
-import org.apache.directory.shared.ldap.util.StringTools;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -263,7 +262,7 @@ public class SchemaEntityFactory implements EntityFactory
         // Try to class load the syntaxChecker
         Class<?> clazz = null;
         SyntaxChecker syntaxChecker = null;
-        String byteCodeStr = StringTools.EMPTY;
+        String byteCodeStr = Strings.EMPTY;
 
         if ( byteCode == null )
         {
@@ -395,7 +394,7 @@ public class SchemaEntityFactory implements EntityFactory
         // Try to class load the comparator
         LdapComparator<?> comparator = null;
         Class<?> clazz = null;
-        String byteCodeStr = StringTools.EMPTY;
+        String byteCodeStr = Strings.EMPTY;
 
         if ( byteCode == null )
         {
@@ -545,7 +544,7 @@ public class SchemaEntityFactory implements EntityFactory
         // Try to class load the normalizer
         Class<?> clazz = null;
         Normalizer normalizer = null;
-        String byteCodeStr = StringTools.EMPTY;
+        String byteCodeStr = Strings.EMPTY;
 
         if ( byteCode == null )
         {

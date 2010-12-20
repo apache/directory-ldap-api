@@ -35,6 +35,7 @@ import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.Strings;
 
 
 /**
@@ -173,7 +174,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
 
         String name;
         String owner;
-        String[] dependencies = StringTools.EMPTY_STRINGS;
+        String[] dependencies = Strings.EMPTY_STRINGS;
         boolean isDisabled = false;
 
         if ( entry.get( SchemaConstants.CN_AT ) == null )
@@ -208,7 +209,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
                 depsSet.add( value.getString() );
             }
 
-            dependencies = depsSet.toArray( StringTools.EMPTY_STRINGS );
+            dependencies = depsSet.toArray( Strings.EMPTY_STRINGS );
         }
 
         return new DefaultSchema( name, owner, dependencies, isDisabled )

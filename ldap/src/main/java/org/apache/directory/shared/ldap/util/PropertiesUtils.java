@@ -28,7 +28,7 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Properties;
 
-import org.apache.directory.shared.ldap.NotImplementedException;
+import org.apache.directory.shared.util.exception.NotImplementedException;
 
 
 /**

@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.NotImplementedException;
+import org.apache.directory.shared.util.exception.NotImplementedException;
 import org.apache.directory.shared.ldap.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.entry.Entry;
@@ -1827,7 +1827,7 @@ public class DefaultSchemaManager implements SchemaManager
 
             if ( ( referencing != null ) && !referencing.isEmpty() )
             {
-                String msg = I18n.err( I18n.ERR_11012, schemaObject.getOid(), StringTools.setToString( referencing ) );
+                String msg = I18n.err( I18n.ERR_11012, schemaObject.getOid(), Strings.setToString(referencing) );
 
                 Throwable error = new LdapProtocolErrorException( msg );
                 errors.add( error );

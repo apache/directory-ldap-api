@@ -17,7 +17,8 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap;
+
+package org.apache.directory.shared.util.exception;
 
 
 import java.io.PrintStream;
@@ -33,10 +34,10 @@ import java.util.Iterator;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class MultiException extends Exception
+public class RuntimeMultiException extends RuntimeException
 {
     /** The serialVersionUID. */
-    static final long serialVersionUID = 2889747406899775761L;
+    private static final long serialVersionUID = 8582253398936366771L;
 
     /** Collection of nested exceptions. */
     private Collection<Throwable> nestedExceptions = new ArrayList<Throwable>();
@@ -45,7 +46,7 @@ public class MultiException extends Exception
     /**
      * Constructs an Exception without a message.
      */
-    public MultiException()
+    public RuntimeMultiException()
     {
         super();
     }
@@ -57,7 +58,7 @@ public class MultiException extends Exception
      * @param message
      *            The message associated with the exception.
      */
-    public MultiException( String message )
+    public RuntimeMultiException(String message)
     {
         super( message );
     }
@@ -75,8 +76,7 @@ public class MultiException extends Exception
 
 
     /**
-     * Gets the size of this nested exception which equals the number of
-     * exception nested within.
+     * Gets the size (number of) exceptions nested within this exception.
      * 
      * @return the size of this nested exception.
      */
@@ -87,10 +87,9 @@ public class MultiException extends Exception
 
 
     /**
-     * Tests to see if there are any nested exceptions within this
-     * MultiException.
+     * Tests to see if exceptions are nested within this exception.
      * 
-     * @return true if no exceptions are nested, false otherwise.
+     * @return true if an exception is nested, false otherwise
      */
     public boolean isEmpty()
     {
@@ -127,7 +126,7 @@ public class MultiException extends Exception
 
         out.println( "Nested exceptions to follow:\n" );
         boolean isFirst = true;
-
+        
         for ( Throwable throwable:nestedExceptions )
         {
             if ( isFirst )

@@ -68,18 +68,6 @@ public final class StringTools
     // The following methods are taken from org.apache.commons.lang.StringUtils
 
     /**
-     * The empty String <code>""</code>.
-     * 
-     * @since 2.0
-     */
-    public static final String EMPTY = "";
-
-    /**
-     * The empty String[]
-     */
-    public static final String[] EMPTY_STRINGS = new String[] {};
-
-    /**
      * Trims several consecutive characters into one.
      * 
      * @param str
@@ -2669,42 +2657,6 @@ public final class StringTools
         boolean isFirst = true;
 
         for ( Object elem : list )
-        {
-            if ( isFirst )
-            {
-                isFirst = false;
-            }
-            else
-            {
-                sb.append( ", " );
-            }
-
-            sb.append( elem );
-        }
-
-        return sb.toString();
-    }
-
-
-
-
-    /**
-     * Utility method that return a String representation of a set
-     * 
-     * @param set The set to transform to a string
-     * @return A csv string
-     */
-    public static String setToString( Set<?> set )
-    {
-        if ( ( set == null ) || ( set.size() == 0 ) )
-        {
-            return "";
-        }
-
-        StringBuilder sb = new StringBuilder();
-        boolean isFirst = true;
-
-        for ( Object elem : set )
         {
             if ( isFirst )
             {

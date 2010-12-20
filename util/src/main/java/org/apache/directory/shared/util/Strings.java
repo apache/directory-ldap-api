@@ -21,6 +21,7 @@ package org.apache.directory.shared.util;
 
 
 import java.io.UnsupportedEncodingException;
+import java.util.Set;
 
 /**
  * Various string manipulation methods that are more efficient then chaining
@@ -31,6 +32,18 @@ import java.io.UnsupportedEncodingException;
  */
 public class Strings
 {
+    /**
+     * The empty String <code>""</code>.
+     *
+     * @since 2.0
+     */
+    public static final String EMPTY = "";
+
+    /**
+     * The empty String[]
+     */
+    public static final String[] EMPTY_STRINGS = new String[] {};
+
 
     /**
      * Helper function that dump an array of bytes in hex form
@@ -47,14 +60,15 @@ public class Strings
 
         StringBuffer sb = new StringBuffer();
 
-        for ( int i = 0; i < buffer.length; i++ )
+        for ( byte bite : buffer )
         {
-            sb.append( "0x" ).append( ( char ) ( CharConstants.HEX_CHAR[( buffer[i] & 0x00F0 ) >> 4] ) ).append(
-                ( char ) ( CharConstants.HEX_CHAR[buffer[i] & 0x000F] ) ).append( " " );
+            sb.append( "0x" ).append( ( char ) ( CharConstants.HEX_CHAR [ ( bite & 0x00F0 ) >> 4 ] ) ).append(
+                    ( char ) ( CharConstants.HEX_CHAR [ bite & 0x000F ] ) ).append( " " );
         }
 
         return sb.toString();
     }
+
 
     /**
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
@@ -68,6 +82,7 @@ public class Strings
     {
         return ( car >= '0' ) && ( car <= '9' );
     }
+
 
     /**
      * Test if the current byte is an Alpha character :
@@ -83,6 +98,7 @@ public class Strings
         return ( ( c > 0 ) && ( c <= 127 ) && CharConstants.ALPHA[c] );
     }
 
+
     /**
      * Test if the current character is an Alpha character :
      * &lt;alpha> ::= [0x41-0x5A] | [0x61-0x7A]
@@ -97,6 +113,7 @@ public class Strings
         return ( ( c > 0 ) && ( c <= 127 ) && CharConstants.ALPHA[c] );
     }
 
+
     /**
      * Check if the current char is in the unicodeSubset : all chars but
      * '\0', '(', ')', '*' and '\'
@@ -108,6 +125,7 @@ public class Strings
     {
         return ( ( c > 127 ) || CharConstants.UNICODE_SUBSET[c] );
     }
+
 
     /**
      * <p>
@@ -135,6 +153,7 @@ public class Strings
         return str == null || str.length() == 0;
     }
 
+
     /**
      * Checks if a bytes array is empty or null.
      *
@@ -145,6 +164,7 @@ public class Strings
     {
         return bytes == null || bytes.length == 0;
     }
+
 
     /**
      * Return an UTF-8 encoded String
@@ -170,6 +190,7 @@ public class Strings
         }
     }
 
+
     /**
      * Return an UTF-8 encoded String
      *
@@ -194,6 +215,7 @@ public class Strings
             throw new RuntimeException( uee );
         }
     }
+
 
     /**
      * Return an UTF-8 encoded String
@@ -221,6 +243,7 @@ public class Strings
         }
     }
 
+
     /**
      * Return UTF-8 encoded byte[] representation of a String
      *
@@ -243,5 +266,39 @@ public class Strings
             // if this happens something is really strange
             throw new RuntimeException( uee );
         }
+    }
+
+
+    /**
+     * Utility method that return a String representation of a set
+     *
+     * @param set The set to transform to a string
+     * @return A csv string
+     */
+    public static String setToString( Set<?> set )
+    {
+        if ( ( set == null ) || ( set.size() == 0 ) )
+        {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        boolean isFirst = true;
+
+        for ( Object elem : set )
+        {
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
+            {
+                sb.append( ", " );
+            }
+
+            sb.append( elem );
+        }
+
+        return sb.toString();
     }
 }

@@ -33,7 +33,7 @@ import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.name.DN;
-import org.apache.directory.shared.ldap.util.StringTools;
+import org.apache.directory.shared.util.Strings;
 
 
 /**
@@ -213,7 +213,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
      */
     public void replace( String attributeName )
     {
-        addModification( ModificationOperation.REPLACE_ATTRIBUTE, attributeName, StringTools.EMPTY_STRINGS );
+        addModification( ModificationOperation.REPLACE_ATTRIBUTE, attributeName, Strings.EMPTY_STRINGS );
     }
 
 
