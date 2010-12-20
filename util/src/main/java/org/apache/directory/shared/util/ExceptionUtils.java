@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.util;
+package org.apache.directory.shared.util;
 
 
 import java.util.List;
@@ -31,12 +31,12 @@ import java.util.List;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class LdapExceptionUtils
+public final class ExceptionUtils
 {
     /**
      * Private constructor
      */
-    private LdapExceptionUtils()
+    private ExceptionUtils()
     {
     }
 

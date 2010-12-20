@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.shared.ldap.util;
+package org.apache.directory.shared.util;
 
 
 import java.util.Collections;
@@ -26,7 +26,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.util.ComponentsMonitor;
 
 
 /**

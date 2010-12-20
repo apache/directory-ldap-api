@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.util;
+package org.apache.directory.shared.util;
 
 
 import static org.junit.Assert.assertEquals;
@@ -33,6 +33,7 @@ import java.util.List;
 
 import org.apache.directory.junit.tools.Concurrent;
 import org.apache.directory.junit.tools.ConcurrentJunitRunner;
+import org.apache.directory.shared.util.JoinIterator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -52,11 +53,11 @@ public class JoinIteratorTest
         try
         {
             new JoinIterator( null );
-            fail( "Should not be able to create a JoinIterator with null args" );
+            Assert.fail("Should not be able to create a JoinIterator with null args");
         }
         catch ( IllegalArgumentException e )
         {
-            assertNotNull( e );
+            Assert.assertNotNull(e);
         }
     }
 
@@ -70,11 +71,11 @@ public class JoinIteratorTest
         try
         {
             new JoinIterator( iterators );
-            fail( "Should not be able to create a JoinIterator with a single Iterator" );
+            Assert.fail("Should not be able to create a JoinIterator with a single Iterator");
         }
         catch ( IllegalArgumentException e )
         {
-            assertNotNull( e );
+            Assert.assertNotNull(e);
         }
     }
 
@@ -86,11 +87,11 @@ public class JoinIteratorTest
             { Collections.singleton( "foo" ).iterator(), Collections.singleton( "bar" ).iterator() };
 
         JoinIterator iterator = new JoinIterator( iterators );
-        assertTrue( "iterator should have an element", iterator.hasNext() );
-        assertEquals( "foo", iterator.next() );
-        assertTrue( "iterator should have an element", iterator.hasNext() );
-        assertEquals( "bar", iterator.next() );
-        assertFalse( "iterator should NOT have an element", iterator.hasNext() );
+        Assert.assertTrue("iterator should have an element", iterator.hasNext());
+        Assert.assertEquals("foo", iterator.next());
+        Assert.assertTrue("iterator should have an element", iterator.hasNext());
+        Assert.assertEquals("bar", iterator.next());
+        Assert.assertFalse("iterator should NOT have an element", iterator.hasNext());
     }
 
 
@@ -106,16 +107,16 @@ public class JoinIteratorTest
                 Collections.singleton( "bar0" ).iterator(), Collections.singleton( "bar1" ).iterator() };
 
         JoinIterator iterator = new JoinIterator( iterators );
-        assertTrue( "iterator should have an element", iterator.hasNext() );
-        assertEquals( "foo0", iterator.next() );
-        assertTrue( "iterator should have an element", iterator.hasNext() );
-        assertEquals( "foo1", iterator.next() );
-        assertTrue( "iterator should have an element", iterator.hasNext() );
-        assertEquals( "foo2", iterator.next() );
-        assertTrue( "iterator should have an element", iterator.hasNext() );
-        assertEquals( "bar0", iterator.next() );
-        assertTrue( "iterator should have an element", iterator.hasNext() );
-        assertEquals( "bar1", iterator.next() );
-        assertFalse( "iterator should NOT have an element", iterator.hasNext() );
+        Assert.assertTrue("iterator should have an element", iterator.hasNext());
+        Assert.assertEquals("foo0", iterator.next());
+        Assert.assertTrue("iterator should have an element", iterator.hasNext());
+        Assert.assertEquals("foo1", iterator.next());
+        Assert.assertTrue("iterator should have an element", iterator.hasNext());
+        Assert.assertEquals("foo2", iterator.next());
+        Assert.assertTrue("iterator should have an element", iterator.hasNext());
+        Assert.assertEquals("bar0", iterator.next());
+        Assert.assertTrue("iterator should have an element", iterator.hasNext());
+        Assert.assertEquals("bar1", iterator.next());
+        Assert.assertFalse("iterator should NOT have an element", iterator.hasNext());
     }
 }
