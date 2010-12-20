@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.util;
+package org.apache.directory.shared.util;
 
 
 import java.util.Dictionary;
@@ -25,9 +25,9 @@ import java.util.Enumeration;
 import java.util.prefs.Preferences;
 import java.util.prefs.BackingStoreException;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.util.ArrayEnumeration;
+import org.apache.directory.shared.util.exception.RuntimeMultiException;
 
 
 /**
@@ -78,7 +78,7 @@ public class PreferencesDictionary extends Dictionary<String,String>
         }
         catch ( BackingStoreException e )
         {
-            throw new NestableRuntimeException( I18n.err( I18n.ERR_04423 ), e );
+            throw new RuntimeMultiException( I18n.err( I18n.ERR_04423 ), e );
         }
     }
 
@@ -91,7 +91,7 @@ public class PreferencesDictionary extends Dictionary<String,String>
         }
         catch ( BackingStoreException e )
         {
-            throw new NestableRuntimeException( I18n.err( I18n.ERR_04423 ), e );
+            throw new RuntimeMultiException( I18n.err( I18n.ERR_04423 ), e );
         }
     }
 
@@ -113,7 +113,7 @@ public class PreferencesDictionary extends Dictionary<String,String>
         }
         catch ( BackingStoreException e )
         {
-            throw new NestableRuntimeException( I18n.err( I18n.ERR_04423 ), e );
+            throw new RuntimeMultiException( I18n.err( I18n.ERR_04423 ), e );
         }
     }
 
@@ -127,7 +127,7 @@ public class PreferencesDictionary extends Dictionary<String,String>
         }
         catch ( BackingStoreException e )
         {
-            throw new NestableRuntimeException( I18n.err( I18n.ERR_04423 ), e );
+            throw new RuntimeMultiException( I18n.err( I18n.ERR_04423 ), e );
         }
     }
 

@@ -52,13 +52,20 @@ public class RuntimeMultiException extends RuntimeException
     }
 
 
+    public RuntimeMultiException( String message, Throwable t )
+    {
+        super( message );
+        addThrowable( t );
+    }
+
+
     /**
      * Constructs an Exception with a detailed message.
      * 
      * @param message
      *            The message associated with the exception.
      */
-    public RuntimeMultiException(String message)
+    public RuntimeMultiException( String message )
     {
         super( message );
     }
