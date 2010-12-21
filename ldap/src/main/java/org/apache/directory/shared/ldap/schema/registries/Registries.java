@@ -1071,6 +1071,13 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 if ( !processed.contains( superiorOid ) )
                 {
                     resolveRecursive( superior, processed, errors );
+                    
+                    // Check the USAGE
+                    attributeType.checkUsage( errors );
+
+                    // Check the COLLECTIVE element
+                    attributeType.checkCollective( errors );
+
                     processed.add( attributeType.getOid() );
                 }
                 else
