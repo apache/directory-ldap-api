@@ -221,6 +221,10 @@ public final class SchemaConstants
     public final static String COLLECTIVE_ATTRIBUTE_SUBENTRY_OC     = "collectiveAttributeSubentry";
     public final static String COLLECTIVE_ATTRIBUTE_SUBENTRY_OC_OID = "2.5.17.2";
 
+    // triggerExecutionSubentry
+    public final static String TRIGGER_EXECUTION_SUBENTRY_OC        = "triggerExecutionSubentry";
+    public final static String TRIGGER_EXECUTION_SUBENTRY_OC_OID    = "1.3.6.1.4.1.18060.0.4.1.2.28";
+
     // Subschema
     public final static String SUBSCHEMA_OC                         = "subschema";
     public final static String SUBSCHEMA_OC_OID                     = "2.5.20.1";
