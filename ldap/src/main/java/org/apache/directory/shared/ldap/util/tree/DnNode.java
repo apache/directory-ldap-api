@@ -780,6 +780,59 @@ public class DnNode<N> implements Cloneable
         return hasElement;
     }
 
+
+    /**
+     * Get the closest Node for a given DN which has an element, if present in the tree.<br>
+     * For instance, if we have stored dc=acme, dc=org into the tree,
+     * the DN: ou=example, dc=acme, dc=org will have a parent, and
+     * dc=acme, dc=org will be returned if it has an associated element.
+     * <br>For the DN ou=apache, dc=org, there is no parent, so null will be returned.
+     *
+     * @param dn the normalized distinguished name to resolve to a parent
+     * @return the Node associated with the normalized dn
+     */
+    public DN getParentWithElement( DN dn )
+    {
+        List<RDN> rdns = dn.getRdns();
+
+        DnNode<N> currentNode = this;
+        int pos = 0;
+
+        // Iterate through all the RDN until we find the associated partition
+        for ( int i = rdns.size() - 1; i >= 1; i-- )
+        {
+            RDN rdn = rdns.get( i );
+
+            if ( currentNode.hasChildren() )
+            {
+                currentNode = currentNode.children.get( rdn );
+
+                if ( currentNode == null )
+                {
+                    break;
+                }
+
+                if ( currentNode.hasElement() )
+                {
+                    pos = i;
+                }
+
+                parent = currentNode;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        if ( pos == 0 )
+        {
+            return DN.EMPTY_DN;
+        }
+        
+        return dn.getPrefix( dn.size() - pos );
+    }
+
     
     /**
      * {@inheritDoc}

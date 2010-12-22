@@ -802,4 +802,40 @@ public class TestDnNode
         dns = dnLookupTree.getDescendantElements( dn6 );
         assertEquals( 0, dns.size() );
     }
+    
+    
+    //---------------------------------------------------------------------------
+    // Test the getParentElement(DN) method
+    //---------------------------------------------------------------------------
+    @Test
+    public void testGetParentElement() throws Exception
+    {
+        DnNode<DN> dnLookupTree = new DnNode<DN>();
+        DN dn1 = new DN( "dc=directory,dc=apache,dc=org" );
+        DN dn2 = new DN( "dc=mina,dc=apache,dc=org" );
+        DN dn3 = new DN( "dc=test,dc=com" );
+        DN dn4 = new DN( "dc=acme,dc=com" );
+        DN dn5 = new DN( "dc=acme,c=us,dc=com" );
+        DN dn6 = new DN( "dc=empty" );
+        
+        DN org = new DN( "dc=org" );
+        DN apache =  new DN( "dc=apache,dc=org" );
+        DN test =  new DN( "dc=test,dc=directory,dc=apache,dc=org" );
+    
+        dnLookupTree.add( dn1, dn1 );
+        dnLookupTree.add( dn2, dn2 );
+        dnLookupTree.add( dn3, dn3 );
+        dnLookupTree.add( dn4, dn4 );
+        dnLookupTree.add( dn5 );
+        dnLookupTree.add( dn6, dn6 );
+        
+        // Inject some intermediary nodes
+        dnLookupTree.add( org, org );
+        
+        assertTrue( dnLookupTree.hasParentElement( apache ) );
+        assertEquals( org, dnLookupTree.getParentWithElement( dn1 ) );
+        assertEquals( org, dnLookupTree.getParentWithElement( apache ) );
+        assertEquals( dn1, dnLookupTree.getParentWithElement( test ) );
+        assertEquals( DN.EMPTY_DN, dnLookupTree.getParentWithElement( org ) );
+    }
 }
