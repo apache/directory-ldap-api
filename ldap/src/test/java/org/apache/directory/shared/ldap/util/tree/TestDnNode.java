@@ -836,6 +836,6 @@ public class TestDnNode
         assertEquals( org, dnLookupTree.getParentWithElement( dn1 ) );
         assertEquals( org, dnLookupTree.getParentWithElement( apache ) );
         assertEquals( dn1, dnLookupTree.getParentWithElement( test ) );
-        assertEquals( DN.EMPTY_DN, dnLookupTree.getParentWithElement( org ) );
+        assertNull( dnLookupTree.getParentWithElement( org ) );
     }
 }

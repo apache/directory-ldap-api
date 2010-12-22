@@ -791,12 +791,12 @@ public class DnNode<N> implements Cloneable
      * @param dn the normalized distinguished name to resolve to a parent
      * @return the Node associated with the normalized dn
      */
-    public DN getParentWithElement( DN dn )
+    public N getParentWithElement( DN dn )
     {
         List<RDN> rdns = dn.getRdns();
 
         DnNode<N> currentNode = this;
-        int pos = 0;
+        N element = null;
 
         // Iterate through all the RDN until we find the associated partition
         for ( int i = rdns.size() - 1; i >= 1; i-- )
@@ -814,7 +814,7 @@ public class DnNode<N> implements Cloneable
 
                 if ( currentNode.hasElement() )
                 {
-                    pos = i;
+                    element = currentNode.getElement();
                 }
 
                 parent = currentNode;
@@ -825,12 +825,7 @@ public class DnNode<N> implements Cloneable
             }
         }
 
-        if ( pos == 0 )
-        {
-            return DN.EMPTY_DN;
-        }
-        
-        return dn.getPrefix( dn.size() - pos );
+        return element;
     }
 
     
