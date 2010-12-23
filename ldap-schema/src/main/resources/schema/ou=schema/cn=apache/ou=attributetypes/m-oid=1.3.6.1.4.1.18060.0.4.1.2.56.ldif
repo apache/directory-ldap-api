@@ -1,17 +1,17 @@
 version: 1
-dn: m-oid=1.3.6.1.1.16.4,ou=attributeTypes,cn=apache,ou=schema
+dn: m-oid=1.3.6.1.4.1.18060.0.4.1.2.56,ou=attributeTypes,cn=apache,ou=schema
 objectclass: top
 objectclass: metaTop
 objectclass: metaAttributeType
-m-oid: 1.3.6.1.1.16.4
-m-name: entryUUID
-m-description: UUID of the entry
+m-oid: 1.3.6.1.4.1.18060.0.4.1.2.56
+m-name: CollectiveAttributeSubentriesUUID
+m-description: UUIDs of the associated CollectiveAttribute subentries
 m-syntax: 1.3.6.1.1.16.1
 m-equality: uuidMatch
 m-ordering: uuidOrderingMatch
-m-singlevalue: TRUE
 m-obsolete: FALSE
 m-usage: DIRECTORY_OPERATION
 m-collective: FALSE
+m-singlevalue: FALSE
 m-nousermodification: TRUE
 creatorsname: uid=admin,ou=system
