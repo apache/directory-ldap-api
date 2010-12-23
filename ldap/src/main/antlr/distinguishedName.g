@@ -434,7 +434,7 @@ attributeValue [UpAndNormValue value]
 quotestring [UpAndNormValue value] 
     {
         matchedProduction( "quotestring()" );
-        org.apache.directory.shared.ldap.util.ByteBuffer bb = new org.apache.directory.shared.ldap.util.ByteBuffer();
+        org.apache.directory.shared.util.ByteBuffer bb = new org.apache.directory.shared.util.ByteBuffer();
         byte[] bytes;
     }
     :
@@ -497,7 +497,7 @@ hexstring [UpAndNormValue value]
 string [UpAndNormValue value]
     {
         matchedProduction( "string()" );
-        org.apache.directory.shared.ldap.util.ByteBuffer bb = new org.apache.directory.shared.ldap.util.ByteBuffer();
+        org.apache.directory.shared.util.ByteBuffer bb = new org.apache.directory.shared.util.ByteBuffer();
         String tmp;
         byte[] bytes;
     }
