@@ -833,9 +833,9 @@ public class TestDnNode
         dnLookupTree.add( org, org );
         
         assertTrue( dnLookupTree.hasParentElement( apache ) );
-        assertEquals( org, dnLookupTree.getParentWithElement( dn1 ) );
-        assertEquals( org, dnLookupTree.getParentWithElement( apache ) );
-        assertEquals( dn1, dnLookupTree.getParentWithElement( test ) );
+        assertEquals( org, dnLookupTree.getParentWithElement( dn1 ).getElement() );
+        assertEquals( org, dnLookupTree.getParentWithElement( apache ).getElement() );
+        assertEquals( dn1, dnLookupTree.getParentWithElement( test ).getElement() );
         assertNull( dnLookupTree.getParentWithElement( org ) );
     }
 }
