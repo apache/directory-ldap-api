@@ -15,7 +15,7 @@
  * copyright in this work, please see the NOTICE file in the top level
  * directory of this distribution.
  */
-package org.apache.directory.shared.ldap.util.unicode;
+package org.apache.directory.shared.util.exception;
 
 
 import java.io.IOException;
