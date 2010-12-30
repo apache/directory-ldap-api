@@ -436,8 +436,8 @@ public final class SchemaConstants
     public final static String HAS_SUBORDINATES_AT_OID                  = "2.5.18.9";
 
     // SubschemaSubentry
-    public final static String SUBSCHEMA_SUBENTRY_AT                    = "subschemaSubentry";
-    public final static String SUBSCHEMA_SUBENTRY_AT_OID                = "2.5.18.10";
+    public final static String SUB_SCHEMA_SUBENTRY_AT                   = "subschemaSubentry";
+    public final static String SUB_SCHEMA_SUBENTRY_AT_OID               = "2.5.18.10";
 
     // CollectiveAttributeSubentries
     public final static String COLLECTIVE_ATTRIBUTE_SUBENTRIES_AT       = "collectiveAttributeSubentries";
