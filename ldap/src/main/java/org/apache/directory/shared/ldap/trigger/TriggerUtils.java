@@ -41,9 +41,7 @@ import org.apache.directory.shared.ldap.util.AttributeUtils;
 public final class TriggerUtils
 {
     public static final String TRIGGER_EXECUTION_SPECIFIC_AREA_VALUE = SchemaConstants.TRIGGER_EXECUTION_SPECIFIC_AREA;
-    public static final String TRIGGER_EXECUTION_SUBENTRY_OC = "triggerExecutionSubentry";
     public static final String ENTRY_TRIGGER_SPECIFICATION_ATTR = "entryTriggerSpecification";
-    public static final String PRESCRIPTIVE_TRIGGER_SPECIFICATION_ATTR = "prescriptiveTriggerSpecification";
 
 
     /**
@@ -78,9 +76,9 @@ public final class TriggerUtils
         subentry.put( objectClass );
         objectClass.add( SchemaConstants.TOP_OC );
         objectClass.add( SchemaConstants.SUBENTRY_OC );
-        objectClass.add( TRIGGER_EXECUTION_SUBENTRY_OC );
+        objectClass.add( SchemaConstants.TRIGGER_EXECUTION_SUBENTRY_OC );
         subentry.put( SchemaConstants.SUBTREE_SPECIFICATION_AT, subtreeSpec );
-        subentry.put( PRESCRIPTIVE_TRIGGER_SPECIFICATION_ATTR, prescriptiveTriggerSpec );
+        subentry.put( SchemaConstants.PRESCRIPTIVE_TRIGGER_SPECIFICATION, prescriptiveTriggerSpec );
         apCtx.createSubcontext( "cn=" + subentryCN, subentry );
     }
 
@@ -90,7 +88,7 @@ public final class TriggerUtils
         String subentryCN,
         String triggerSpec ) throws NamingException
     {
-        Attributes changes = new BasicAttributes( PRESCRIPTIVE_TRIGGER_SPECIFICATION_ATTR, triggerSpec, true );
+        Attributes changes = new BasicAttributes( SchemaConstants.PRESCRIPTIVE_TRIGGER_SPECIFICATION, triggerSpec, true );
         apCtx.modifyAttributes( "cn=" + subentryCN, DirContext.ADD_ATTRIBUTE, changes );
     }
 
