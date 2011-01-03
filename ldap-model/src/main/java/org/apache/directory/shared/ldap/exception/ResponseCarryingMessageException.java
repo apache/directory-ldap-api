@@ -18,9 +18,10 @@
  *  
  */
 
-package org.apache.directory.shared.ldap.message;
+package org.apache.directory.shared.ldap.exception;
 
 
+import org.apache.directory.shared.ldap.message.Message;
 import org.apache.directory.shared.util.exception.RuntimeMultiException;
 
 
