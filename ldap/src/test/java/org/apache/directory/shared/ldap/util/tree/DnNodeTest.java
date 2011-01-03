@@ -838,4 +838,31 @@ public class DnNodeTest
         assertEquals( dn1, dnLookupTree.getParentWithElement( test ).getElement() );
         assertNull( dnLookupTree.getParentWithElement( org ) );
     }
+    
+    
+    @Test
+    public void testRename() throws Exception
+    {
+        DnNode<DN> rootNode = new DnNode<DN>();
+        DN dn = new DN( "dc=directory,dc=apache,dc=org" );
+        rootNode.add( dn );
+        
+        RDN childRdn = new RDN( "dc=org" );
+
+        DnNode<DN> child = rootNode.getChild( childRdn );
+        assertNotNull( child );
+
+        RDN newChildRdn = new RDN( "dc=neworg" );
+
+        child.rename( newChildRdn );
+        assertNull( rootNode.getChild( childRdn ) );
+        assertEquals( new DN( "dc=neworg" ), child.getDn() );
+        
+        DnNode<DN> child2 = child.getChild( new RDN( "dc=apache" ) );
+        assertEquals( new DN( "dc=apache,dc=neworg" ), child2.getDn() );
+        
+        assertEquals( new DN( "dc=directory,dc=apache,dc=neworg" ), child2.getChild( new RDN( "dc=directory" ) ).getDn() );
+        
+        assertNotNull( rootNode.getChild( newChildRdn ) );
+    }
 }
