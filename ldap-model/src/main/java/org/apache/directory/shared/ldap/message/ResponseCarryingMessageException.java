@@ -43,14 +43,6 @@ public class ResponseCarryingMessageException extends RuntimeMultiException
     /** The response with the error cause */
     private Message response;
     
-    /**
-     * Constructs an Exception without a message.
-     */
-    public ResponseCarryingMessageException()
-    {
-        super();
-    }
-
 
     /**
      * Constructs an Exception with a detailed message.
