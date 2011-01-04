@@ -865,4 +865,69 @@ public class DnNodeTest
         
         assertNotNull( rootNode.getChild( newChildRdn ) );
     }
+
+
+    @Test
+    public void testMoveToAnAncestor() throws Exception
+    {
+        DnNode<DN> rootNode = new DnNode<DN>();
+        DN dn = new DN( "dc=vysper,dc=mina,dc=directory,dc=apache,dc=org" );
+        
+        rootNode.add( dn );
+
+        RDN minaRdn = new RDN( "dc=mina" );
+        DnNode<DN> apacheNode = rootNode.getChild( new RDN( "dc=org" ) ).getChild( new RDN( "dc=apache" ) );
+        DnNode<DN> directoryNode = apacheNode.getChild( new RDN( "dc=directory" ) ); 
+        DnNode<DN> minaNode = directoryNode.getChild( minaRdn );
+        assertNotNull( minaNode );
+        assertEquals( directoryNode, minaNode.getParent() );
+        assertTrue( directoryNode.contains( minaRdn ) );
+        
+        DN newParent = new DN( "dc=apache,dc=org" );
+        minaNode.move( newParent );
+        
+        minaNode = apacheNode.getChild( minaRdn );
+        assertNotNull( minaNode );
+        assertNull( directoryNode.getChild( minaRdn ) );
+        assertNotNull( apacheNode.getChild( minaRdn ) );
+        assertFalse( directoryNode.contains( minaRdn ) );
+        assertTrue( apacheNode.contains( minaRdn ) );
+        
+        assertEquals( new DN( "dc=mina,dc=apache,dc=org" ), minaNode.getDn() );
+        assertEquals( new DN( "dc=vysper,dc=mina,dc=apache,dc=org" ), minaNode.getChild( new RDN( "dc=vysper" ) ).getDn());
+    }
+
+    
+    @Test
+    public void testMoveToSiblingBranch() throws Exception
+    {
+        DnNode<DN> rootNode = new DnNode<DN>();
+        DN dn1 = new DN( "dc=vysper,dc=mina,dc=directory,dc=apache,dc=org" );
+        
+        DN dn2 = new DN( "dc=kayyagari,dc=apache,dc=org" );
+        rootNode.add( dn1 );
+        rootNode.add( dn2 );
+
+        RDN directoryRdn = new RDN( "dc=directory" );
+        
+        DnNode<DN> apacheNode = rootNode.getChild( new RDN( "dc=org" ) ).getChild( new RDN( "dc=apache" ) );
+        DnNode<DN> directoryNode = apacheNode.getChild( new RDN( "dc=directory" ) ); 
+        assertNotNull( directoryNode );
+        assertEquals( apacheNode, directoryNode.getParent() );
+        assertTrue( apacheNode.contains( directoryRdn ) );
+        
+        directoryNode.move( dn2 );
+        
+        DnNode<DN> newParentNode = rootNode.getChild( new RDN( "dc=org" ) ).getChild( new RDN( "dc=apache" ) ).getChild( new RDN( "dc=kayyagari" ) );
+        directoryNode = newParentNode.getChild( directoryRdn );
+        assertNotNull( directoryNode );
+        assertNull( apacheNode.getChild( directoryRdn ) );
+        assertNotNull( newParentNode.getChild( directoryRdn ) );
+        assertFalse( apacheNode.contains( directoryRdn ) );
+        assertTrue( newParentNode.contains( directoryRdn ) );
+        
+        assertEquals( new DN( "dc=directory,dc=kayyagari,dc=apache,dc=org" ), directoryNode.getDn() );
+        assertEquals( new DN( "dc=mina,dc=directory,dc=kayyagari,dc=apache,dc=org" ), directoryNode.getChild( new RDN( "dc=mina" ) ).getDn());
+        assertEquals( new DN( "dc=vysper,dc=mina,dc=directory,dc=kayyagari,dc=apache,dc=org" ), directoryNode.getChild( new RDN( "dc=mina" ) ).getChild( new RDN( "dc=vysper" ) ).getDn());
+    }
 }

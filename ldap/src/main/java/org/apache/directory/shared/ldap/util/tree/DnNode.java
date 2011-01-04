@@ -856,6 +856,63 @@ public class DnNode<N> implements Cloneable
     
     
     /**
+     * move the DnNode's DN
+     *
+     * @param newParent the new parent DN
+     * @throws LdapException
+     */
+    public void move( DN newParent ) throws LdapException
+    {
+        DnNode<N> tmp = null;
+
+        DN tmpDn = null;
+       
+        // check if the new parent DN is child of the parent
+        if( newParent.isChildOf( parent.nodeDn ) )
+        {
+            tmp = parent;
+            tmpDn = parent.nodeDn;
+        }
+        
+        // if yes, then drill for the new parent node
+        if ( tmpDn != null )
+        {
+            int parentNodeSize = tmpDn.size();
+            int count = newParent.size() - parentNodeSize;
+            
+            while( count-- > 0 )
+            {
+                tmp = tmp.getChild( newParent.getRdn( parentNodeSize++ ) );
+            }
+        }
+
+        // if not, we have to traverse all the way up to the 
+        // root node and then find the new parent node
+        if ( tmp == null )
+        {
+            tmp = this;
+            while( tmp.parent != null )
+            {
+                tmp = tmp.parent;
+            }
+            
+            tmp = tmp.getNode( newParent );
+        }
+        
+        nodeDn = newParent.add( nodeRdn );
+        updateAfterModDn( nodeDn );
+        
+        if( parent != null )
+        {
+            parent.children.remove( nodeRdn );
+        }
+        
+        parent = tmp;
+        parent.children.put( nodeRdn, this );
+    }
+    
+    
+    /**
      * update the children's DN based on the new parent DN created
      * after a rename or move operation
      * 
