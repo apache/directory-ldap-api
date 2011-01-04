@@ -707,7 +707,7 @@ public class DnNode<N> implements Cloneable
         DnNode<N> currentNode = this;
         DnNode<N> parentNode = null;
 
-        // Iterate through all the RDN until we find the associated partition
+        // Iterate through all the RDN until we find the associated element
         for ( int i = rdns.size() - 1; i >= 0; i-- )
         {
             RDN rdn = rdns.get( i );
