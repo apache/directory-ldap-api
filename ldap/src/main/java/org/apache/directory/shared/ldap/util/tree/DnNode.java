@@ -830,6 +830,34 @@ public class DnNode<N> implements Cloneable
 
     
     /**
+     * Get the closest Node for a given DN which has an element, if present in the tree.<br>
+     * For instance, if we have stored dc=acme, dc=org into the tree,
+     * the DN: ou=example, dc=acme, dc=org will have a parent, and
+     * dc=acme, dc=org will be returned if it has an associated element.
+     * <br>For the DN ou=apache, dc=org, there is no parent, so null will be returned.
+     *
+     * @param dn the normalized distinguished name to resolve to a parent
+     * @return the Node associated with the normalized dn
+     */
+    public DnNode<N> getParentWithElement()
+    {
+        DnNode<N> currentNode = parent;
+
+        while ( currentNode != null )
+        {
+            if ( currentNode.nodeElement != null )
+            {
+                return currentNode;
+            }
+            
+            currentNode = currentNode.parent;
+        }
+        
+        return null;
+    }
+
+    
+    /**
      * rename the DnNode's DN
      * 
      * @param newRdn the new RDN of this node
