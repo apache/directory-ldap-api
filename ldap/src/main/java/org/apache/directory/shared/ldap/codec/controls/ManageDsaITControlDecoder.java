@@ -26,7 +26,7 @@ import org.apache.directory.shared.ldap.message.control.Control;
 
 
 /**
- * A decoder for EntryChangeControls.
+ * A decoder for ManageDsaIT.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
