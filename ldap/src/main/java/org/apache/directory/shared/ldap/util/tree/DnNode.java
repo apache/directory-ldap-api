@@ -132,7 +132,7 @@ public class DnNode<N> implements Cloneable
     /**
      * Store the given element into the node
      */
-    private void setElement( N element )
+    private synchronized void setElement( N element )
     {
         this.nodeElement = element;
     }
@@ -206,7 +206,7 @@ public class DnNode<N> implements Cloneable
      *
      * @return <code>true</code> if the class is a leaf node, false otherwise.
      */
-    public boolean isLeaf()
+    public synchronized boolean isLeaf()
     {
         return !hasChildren();
     }
@@ -219,7 +219,7 @@ public class DnNode<N> implements Cloneable
      * @param dn The DN we want to check
      * @return <code>true</code> if this is a leaf node, false otherwise.
      */
-    public boolean isLeaf( DN dn )
+    public synchronized boolean isLeaf( DN dn )
     {
         DnNode<N> node = getNode( dn );
 
@@ -238,7 +238,7 @@ public class DnNode<N> implements Cloneable
      *
      * @return The number of descendents
      */
-    public int size()
+    public synchronized int size()
     {
         // The node itself
         int size = 1;
@@ -259,7 +259,7 @@ public class DnNode<N> implements Cloneable
     /**
      * @return Return the stored element, if any
      */
-    public N getElement()
+    public synchronized N getElement()
     {
         return nodeElement;
     }
@@ -269,7 +269,7 @@ public class DnNode<N> implements Cloneable
      * @return Return the stored element, if any
      * @param dn The DN we want to get the element for
      */
-    public N getElement( DN dn )
+    public synchronized N getElement( DN dn )
     {
         DnNode<N> node = getNode( dn );
 
@@ -286,7 +286,7 @@ public class DnNode<N> implements Cloneable
      * @return True if the Node stores an element. BranchNode may not hold any
      * element.
      */
-    public boolean hasElement()
+    public synchronized boolean hasElement()
     {
         return nodeElement != null;
     }
@@ -297,7 +297,7 @@ public class DnNode<N> implements Cloneable
      * element.
      * @param dn The DN we want to get the element for
      */
-    public boolean hasElement( DN dn )
+    public synchronized boolean hasElement( DN dn )
     {
         DnNode<N> node = getNode( dn );
 
@@ -313,7 +313,7 @@ public class DnNode<N> implements Cloneable
     /**
      * recursively check if the node has a descendant having an element
      */
-    private boolean hasDescendantElement( DnNode<N> node )
+    private synchronized boolean hasDescendantElement( DnNode<N> node )
     {
         if ( node == null )
         {
@@ -343,7 +343,7 @@ public class DnNode<N> implements Cloneable
      * False otherwise
      * @param dn The DN we want to get the element for
      */
-    public boolean hasDescendantElement( DN dn )
+    public synchronized boolean hasDescendantElement( DN dn )
     {
         DnNode<N> node = getNode( dn );
 
@@ -376,7 +376,7 @@ public class DnNode<N> implements Cloneable
     /**
      * recursively get all the elements from nodes having an element
      */
-    private void getDescendantElements( DnNode<N> node, List<N> descendants )
+    private synchronized void getDescendantElements( DnNode<N> node, List<N> descendants )
     {
         if ( node == null )
         {
@@ -403,7 +403,7 @@ public class DnNode<N> implements Cloneable
      * False otherwise
      * @param dn The DN we want to get the element for
      */
-    public List<N> getDescendantElements( DN dn )
+    public synchronized List<N> getDescendantElements( DN dn )
     {
         List<N> descendants = new ArrayList<N>();
         
@@ -437,7 +437,7 @@ public class DnNode<N> implements Cloneable
      *
      * @return <code>true</code> if the node has some children
      */
-    public boolean hasChildren()
+    public synchronized boolean hasChildren()
     {
         return ( children != null ) && children.size() != 0;
     }
@@ -450,7 +450,7 @@ public class DnNode<N> implements Cloneable
      * @return <code>true</code> if the node has some children
      * @throws LdapException if the DN is null or empty
      */
-    public boolean hasChildren( DN dn ) throws LdapException
+    public synchronized boolean hasChildren( DN dn ) throws LdapException
     {
         checkDn( dn );
 
@@ -463,7 +463,7 @@ public class DnNode<N> implements Cloneable
     /**
      * @return The list of DnNode
      */
-    public Map<RDN, DnNode<N>> getChildren()
+    public synchronized Map<RDN, DnNode<N>> getChildren()
     {
         return children;
     }
@@ -472,7 +472,7 @@ public class DnNode<N> implements Cloneable
     /**
      * @return The parent DnNode, if any
      */
-    public DnNode<N> getParent()
+    public synchronized DnNode<N> getParent()
     {
         return parent;
     }
@@ -481,7 +481,7 @@ public class DnNode<N> implements Cloneable
     /**
      * @return True if the current DnNode has a parent
      */
-    public boolean hasParent()
+    public synchronized boolean hasParent()
     {
         return parent != null;
     }
@@ -497,7 +497,7 @@ public class DnNode<N> implements Cloneable
      * @param dn the normalized distinguished name to resolve to a parent
      * @return true if there is a parent associated with the normalized dn
      */
-    public boolean hasParent( DN dn )
+    public synchronized boolean hasParent( DN dn )
     {
         List<RDN> rdns = dn.getRdns();
 
@@ -540,7 +540,7 @@ public class DnNode<N> implements Cloneable
      * @param dn The node's DN
      * @throws LdapException if the DN is null or empty
      */
-    public void add( DN dn ) throws LdapException
+    public synchronized void add( DN dn ) throws LdapException
     {
         add( dn, null );
     }
@@ -554,7 +554,7 @@ public class DnNode<N> implements Cloneable
      * @param element The element to associate with this Node. Can be null.
      * @throws LdapException if the DN is null or empty
      */
-    public void add( DN dn, N element ) throws LdapException
+    public synchronized void add( DN dn, N element ) throws LdapException
     {
         checkDn( dn );
 
@@ -613,7 +613,7 @@ public class DnNode<N> implements Cloneable
      * @param dn the node's DN
      * @throws LdapException if the DN is null or empty
      */
-    public void remove( DN dn ) throws LdapException
+    public synchronized void remove( DN dn ) throws LdapException
     {
         checkDn( dn );
 
@@ -658,7 +658,7 @@ public class DnNode<N> implements Cloneable
      * @param rdn The name we are looking for
      * @return <code>true</code> if the tree instance contains this name
      */
-    public boolean contains( RDN rdn )
+    public synchronized boolean contains( RDN rdn )
     {
         return children.containsKey( rdn );
     }
@@ -670,7 +670,7 @@ public class DnNode<N> implements Cloneable
      * @param rdn the rdn to use as the node key
      * @return the child node corresponding to the rdn.
      */
-    public DnNode<N> getChild( RDN rdn )
+    public synchronized DnNode<N> getChild( RDN rdn )
     {
         if ( children.containsKey( rdn ) )
         {
@@ -684,7 +684,7 @@ public class DnNode<N> implements Cloneable
     /**
      * @return The Node's RDN
      */
-    public RDN getRdn()
+    public synchronized RDN getRdn()
     {
         return nodeRdn;
     }
@@ -700,7 +700,7 @@ public class DnNode<N> implements Cloneable
      * @param dn the normalized distinguished name to resolve to a parent
      * @return the Node associated with the normalized dn
      */
-    public DnNode<N> getNode( DN dn )
+    public synchronized DnNode<N> getNode( DN dn )
     {
         List<RDN> rdns = dn.getRdns();
 
@@ -743,7 +743,7 @@ public class DnNode<N> implements Cloneable
      * @param dn the normalized distinguished name to resolve to a parent
      * @return the Node associated with the normalized dn
      */
-    public boolean hasParentElement( DN dn )
+    public synchronized boolean hasParentElement( DN dn )
     {
         List<RDN> rdns = dn.getRdns();
 
@@ -791,7 +791,7 @@ public class DnNode<N> implements Cloneable
      * @param dn the normalized distinguished name to resolve to a parent
      * @return the Node associated with the normalized dn
      */
-    public DnNode<N> getParentWithElement( DN dn )
+    public synchronized DnNode<N> getParentWithElement( DN dn )
     {
         List<RDN> rdns = dn.getRdns();
 
@@ -839,7 +839,7 @@ public class DnNode<N> implements Cloneable
      * @param dn the normalized distinguished name to resolve to a parent
      * @return the Node associated with the normalized dn
      */
-    public DnNode<N> getParentWithElement()
+    public synchronized DnNode<N> getParentWithElement()
     {
         DnNode<N> currentNode = parent;
 
@@ -863,7 +863,7 @@ public class DnNode<N> implements Cloneable
      * @param newRdn the new RDN of this node
      * @throws LdapException
      */
-    public void rename( RDN newRdn ) throws LdapException
+    public synchronized void rename( RDN newRdn ) throws LdapException
     {
         DN temp = nodeDn.remove( nodeDn.size() - 1 );
         temp = temp.add( newRdn );
@@ -889,7 +889,7 @@ public class DnNode<N> implements Cloneable
      * @param newParent the new parent DN
      * @throws LdapException
      */
-    public void move( DN newParent ) throws LdapException
+    public synchronized void move( DN newParent ) throws LdapException
     {
         DnNode<N> tmp = null;
 
@@ -946,7 +946,7 @@ public class DnNode<N> implements Cloneable
      * 
      * @param newParentDn
      */
-    private void updateAfterModDn( DN newParentDn )
+    private synchronized void updateAfterModDn( DN newParentDn )
     {
         if ( children != null )
         {
@@ -962,7 +962,7 @@ public class DnNode<N> implements Cloneable
     /**
      * {@inheritDoc}
      */
-    public DnNode<N> clone()
+    public synchronized DnNode<N> clone()
     {
         DnNode<N> clonedDnNode = new DnNode<N>();
 
@@ -1046,7 +1046,7 @@ public class DnNode<N> implements Cloneable
     /**
      * @return the dn
      */
-    public DN getDn()
+    public synchronized DN getDn()
     {
         return nodeDn;
     }
