@@ -31,7 +31,6 @@ import org.apache.directory.shared.ldap.entry.BinaryValue;
 import org.apache.directory.shared.ldap.entry.StringValue;
 import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.message.SearchRequest;
-import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.apache.directory.shared.util.CharConstants;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -83,7 +82,7 @@ public class InitAssertionValueFilterAction extends GrammarAction
             assertionValue = new BinaryValue( CharConstants.EMPTY_BYTES );
         }
 
-        AttributeValueAssertionFilter terminalFilter = ( AttributeValueAssertionFilter ) ( ( SearchRequestImpl ) searchRequest )
+        AttributeValueAssertionFilter terminalFilter = ( AttributeValueAssertionFilter ) ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest )
             .getTerminalFilter();
         AttributeValueAssertion assertion = terminalFilter.getAssertion();
 
@@ -116,7 +115,7 @@ public class InitAssertionValueFilterAction extends GrammarAction
 
         // We now have to get back to the nearest filter which is
         // not terminal.
-        ( ( SearchRequestImpl ) searchRequest ).unstackFilters( container );
+        ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).unstackFilters( container );
 
         if ( IS_DEBUG )
         {

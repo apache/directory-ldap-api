@@ -78,42 +78,37 @@ import org.apache.directory.shared.ldap.exception.LdapNoPermissionException;
 import org.apache.directory.shared.ldap.exception.LdapOperationException;
 import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.message.AbandonRequest;
-import org.apache.directory.shared.ldap.message.AbandonRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.AbandonRequestImpl;
 import org.apache.directory.shared.ldap.message.AddRequest;
-import org.apache.directory.shared.ldap.message.AddRequestImpl;
 import org.apache.directory.shared.ldap.message.AddResponse;
 import org.apache.directory.shared.ldap.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.message.BindRequest;
-import org.apache.directory.shared.ldap.message.BindRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.BindRequestImpl;
 import org.apache.directory.shared.ldap.message.BindResponse;
 import org.apache.directory.shared.ldap.message.CompareRequest;
-import org.apache.directory.shared.ldap.message.CompareRequestImpl;
 import org.apache.directory.shared.ldap.message.CompareResponse;
 import org.apache.directory.shared.ldap.message.DeleteRequest;
-import org.apache.directory.shared.ldap.message.DeleteRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.DeleteRequestImpl;
 import org.apache.directory.shared.ldap.message.DeleteResponse;
 import org.apache.directory.shared.ldap.message.ExtendedRequest;
-import org.apache.directory.shared.ldap.message.ExtendedRequestImpl;
 import org.apache.directory.shared.ldap.message.ExtendedResponse;
 import org.apache.directory.shared.ldap.message.IntermediateResponse;
-import org.apache.directory.shared.ldap.message.IntermediateResponseImpl;
 import org.apache.directory.shared.ldap.message.LdapResult;
 import org.apache.directory.shared.ldap.message.Message;
 import org.apache.directory.shared.ldap.message.ModifyDnRequest;
-import org.apache.directory.shared.ldap.message.ModifyDnRequestImpl;
 import org.apache.directory.shared.ldap.message.ModifyDnResponse;
 import org.apache.directory.shared.ldap.message.ModifyRequest;
-import org.apache.directory.shared.ldap.message.ModifyRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.ModifyRequestImpl;
 import org.apache.directory.shared.ldap.message.ModifyResponse;
 import org.apache.directory.shared.ldap.message.Response;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.message.SearchRequest;
-import org.apache.directory.shared.ldap.message.SearchRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.SearchRequestImpl;
 import org.apache.directory.shared.ldap.message.SearchResultDone;
 import org.apache.directory.shared.ldap.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.message.SearchResultReference;
 import org.apache.directory.shared.ldap.message.UnbindRequest;
-import org.apache.directory.shared.ldap.message.UnbindRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.UnbindRequestImpl;
 import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.ldap.message.extended.NoticeOfDisconnect;
 import org.apache.directory.shared.ldap.message.extended.nod.AddNoDResponse;
@@ -655,7 +650,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             throw new IllegalArgumentException( msg );
         }
 
-        AddRequest addRequest = new AddRequestImpl();
+        AddRequest addRequest = new org.apache.directory.shared.ldap.codec.message.AddRequestImpl();
         addRequest.setEntry( entry );
 
         return add( addRequest );
@@ -674,7 +669,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             throw new IllegalArgumentException( msg );
         }
 
-        AddRequest addRequest = new AddRequestImpl();
+        AddRequest addRequest = new org.apache.directory.shared.ldap.codec.message.AddRequestImpl();
         addRequest.setEntry( entry );
 
         return addAsync( addRequest );
@@ -1819,13 +1814,13 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
                 if ( responseFuture instanceof SearchFuture )
                 {
-                    intermediateResponse = new IntermediateResponseImpl( messageId );
+                    intermediateResponse = new org.apache.directory.shared.ldap.codec.message.IntermediateResponseImpl( messageId );
                     addControls( intermediateResponse, ( IntermediateResponse ) response );
                     ( ( SearchFuture ) responseFuture ).set( intermediateResponse );
                 }
                 else if ( responseFuture instanceof ExtendedFuture )
                 {
-                    intermediateResponse = new IntermediateResponseImpl( messageId );
+                    intermediateResponse = new org.apache.directory.shared.ldap.codec.message.IntermediateResponseImpl( messageId );
                     addControls( intermediateResponse, ( IntermediateResponse ) response );
                     ( ( ExtendedFuture ) responseFuture ).set( intermediateResponse );
                 }
@@ -2213,7 +2208,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             throw new IllegalArgumentException( msg );
         }
 
-        ModifyDnRequest modDnRequest = new ModifyDnRequestImpl();
+        ModifyDnRequest modDnRequest = new org.apache.directory.shared.ldap.codec.message.ModifyDnRequestImpl();
         modDnRequest.setName( entryDn );
         modDnRequest.setNewRdn( newRdn );
         modDnRequest.setDeleteOldRdn( deleteOldRdn );
@@ -2272,7 +2267,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             throw new IllegalArgumentException( msg );
         }
 
-        ModifyDnRequest modDnRequest = new ModifyDnRequestImpl();
+        ModifyDnRequest modDnRequest = new org.apache.directory.shared.ldap.codec.message.ModifyDnRequestImpl();
         modDnRequest.setName( entryDn );
         modDnRequest.setNewSuperior( newSuperiorDn );
 
@@ -2328,7 +2323,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         }
 
         // Create the request
-        ModifyDnRequest modDnRequest = new ModifyDnRequestImpl();
+        ModifyDnRequest modDnRequest = new org.apache.directory.shared.ldap.codec.message.ModifyDnRequestImpl();
         modDnRequest.setName( entryDn );
         modDnRequest.setNewRdn( newDn.getRdn() );
         modDnRequest.setNewSuperior( newDn.getParent() );
@@ -2489,7 +2484,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
         if ( isControlSupported( treeDeleteOid ) )
         {
-            DeleteRequest deleteRequest = new DeleteRequestImpl();
+            DeleteRequest deleteRequest = new org.apache.directory.shared.ldap.codec.message.DeleteRequestImpl();
             deleteRequest.setName( dn );
             deleteRequest.addControl( new ControlImpl( treeDeleteOid ) );
             return delete( deleteRequest );
@@ -2682,7 +2677,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public CompareResponse compare( DN dn, String attributeName, String value ) throws LdapException
     {
-        CompareRequest compareRequest = new CompareRequestImpl();
+        CompareRequest compareRequest = new org.apache.directory.shared.ldap.codec.message.CompareRequestImpl();
         compareRequest.setName( dn );
         compareRequest.setAttributeId( attributeName );
         compareRequest.setAssertionValue( value );
@@ -2696,7 +2691,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public CompareResponse compare( DN dn, String attributeName, byte[] value ) throws LdapException
     {
-        CompareRequest compareRequest = new CompareRequestImpl();
+        CompareRequest compareRequest = new org.apache.directory.shared.ldap.codec.message.CompareRequestImpl();
         compareRequest.setName( dn );
         compareRequest.setAttributeId( attributeName );
         compareRequest.setAssertionValue( value );
@@ -2710,7 +2705,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public CompareResponse compare( DN dn, String attributeName, Value<?> value ) throws LdapException
     {
-        CompareRequest compareRequest = new CompareRequestImpl();
+        CompareRequest compareRequest = new org.apache.directory.shared.ldap.codec.message.CompareRequestImpl();
         compareRequest.setName( dn );
         compareRequest.setAttributeId( attributeName );
 
@@ -2877,7 +2872,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public ExtendedResponse extended( OID oid, byte[] value ) throws LdapException
     {
-        ExtendedRequest extendedRequest = new ExtendedRequestImpl();
+        ExtendedRequest extendedRequest = new org.apache.directory.shared.ldap.codec.message.ExtendedRequestImpl();
         extendedRequest.setRequestName( oid.toString() );
         extendedRequest.setRequestValue( value );
 
@@ -3575,7 +3570,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             else
             {
                 // Copy the bindRequest without setting the credentials
-                BindRequest bindRequestCopy = new BindRequestImpl( newId );
+                BindRequest bindRequestCopy = new org.apache.directory.shared.ldap.codec.message.BindRequestImpl( newId );
                 bindRequestCopy.setName( bindRequest.getName() );
                 bindRequestCopy.setSaslMechanism( bindRequest.getSaslMechanism() );
                 bindRequestCopy.setSimple( bindRequest.isSimple() );

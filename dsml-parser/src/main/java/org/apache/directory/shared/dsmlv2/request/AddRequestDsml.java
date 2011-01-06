@@ -27,7 +27,6 @@ import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.message.AddRequest;
-import org.apache.directory.shared.ldap.message.AddRequestImpl;
 import org.apache.directory.shared.ldap.name.DN;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -46,7 +45,7 @@ public class AddRequestDsml extends AbstractRequestDsml
      */
     public AddRequestDsml()
     {
-        super( new AddRequestImpl() );
+        super( new org.apache.directory.shared.ldap.codec.message.AddRequestImpl() );
     }
 
 

@@ -57,24 +57,21 @@ import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.message.AbandonRequest;
-import org.apache.directory.shared.ldap.message.AbandonRequestImpl;
 import org.apache.directory.shared.ldap.message.AddRequest;
-import org.apache.directory.shared.ldap.message.AddRequestImpl;
 import org.apache.directory.shared.ldap.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.message.BindRequest;
-import org.apache.directory.shared.ldap.message.BindRequestImpl;
 import org.apache.directory.shared.ldap.message.CompareRequest;
-import org.apache.directory.shared.ldap.message.CompareRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.CompareRequestImpl;
 import org.apache.directory.shared.ldap.message.DeleteRequest;
-import org.apache.directory.shared.ldap.message.DeleteRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.DeleteRequestImpl;
 import org.apache.directory.shared.ldap.message.ExtendedRequest;
-import org.apache.directory.shared.ldap.message.ExtendedRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.ExtendedRequestImpl;
 import org.apache.directory.shared.ldap.message.ModifyDnRequest;
-import org.apache.directory.shared.ldap.message.ModifyDnRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.ModifyDnRequestImpl;
 import org.apache.directory.shared.ldap.message.ModifyRequest;
-import org.apache.directory.shared.ldap.message.ModifyRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.ModifyRequestImpl;
 import org.apache.directory.shared.ldap.message.SearchRequest;
-import org.apache.directory.shared.ldap.message.SearchRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.SearchRequestImpl;
 import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.name.RDN;
@@ -1137,7 +1134,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            AbandonRequest abandonRequest = new AbandonRequestImpl();
+            AbandonRequest abandonRequest = new org.apache.directory.shared.ldap.codec.message.AbandonRequestImpl();
             container.getBatchRequest().addRequest( abandonRequest );
 
             XmlPullParser xpp = container.getParser();
@@ -1184,7 +1181,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            AddRequest addRequest = new AddRequestImpl();
+            AddRequest addRequest = new org.apache.directory.shared.ldap.codec.message.AddRequestImpl();
             container.getBatchRequest().addRequest( addRequest );
 
             XmlPullParser xpp = container.getParser();
@@ -1300,7 +1297,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            BindRequest authRequest = new BindRequestImpl();
+            BindRequest authRequest = new org.apache.directory.shared.ldap.codec.message.BindRequestImpl();
             container.getBatchRequest().addRequest( authRequest );
 
             authRequest.setSimple( true );
@@ -1734,7 +1731,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            ModifyRequest modifyRequest = new ModifyRequestImpl();
+            ModifyRequest modifyRequest = new org.apache.directory.shared.ldap.codec.message.ModifyRequestImpl();
             container.getBatchRequest().addRequest( modifyRequest );
 
             XmlPullParser xpp = container.getParser();
@@ -1876,7 +1873,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequest searchRequest = new SearchRequestImpl();
+            SearchRequest searchRequest = new org.apache.directory.shared.ldap.codec.message.SearchRequestImpl();
             container.getBatchRequest().addRequest( searchRequest );
 
             XmlPullParser xpp = container.getParser();
@@ -2071,7 +2068,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
 
@@ -2111,7 +2108,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) container.getBatchRequest().getCurrentRequest();
             SubstringFilter substringFilter = ( SubstringFilter ) searchRequest.getTerminalFilter();
 
             XmlPullParser xpp = container.getParser();
@@ -2151,7 +2148,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) container.getBatchRequest().getCurrentRequest();
             SubstringFilter substringFilter = ( SubstringFilter ) searchRequest.getTerminalFilter();
 
             XmlPullParser xpp = container.getParser();
@@ -2230,7 +2227,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            SearchRequestImpl searchRequest = (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) container.getBatchRequest().getCurrentRequest();
 
             searchRequest.setTerminalFilter( null );
         }
@@ -2243,7 +2240,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
 
@@ -2268,7 +2265,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
 
             Filter filter = searchRequest.getCurrentFilter().getParent();
 
@@ -2283,7 +2280,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
 
@@ -2308,7 +2305,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
 
@@ -2333,7 +2330,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
 
@@ -2377,7 +2374,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
 
@@ -2421,7 +2418,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
 
@@ -2467,7 +2464,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
 
@@ -2510,7 +2507,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) container.getBatchRequest().getCurrentRequest();
             AttributeValueAssertionFilter filter = ( AttributeValueAssertionFilter ) searchRequest.getTerminalFilter();
             AttributeValueAssertion assertion = filter.getAssertion();
 
@@ -2557,7 +2554,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             XmlPullParser xpp = container.getParser();
 
             // Adding the filter to the Search Filter
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) container.getBatchRequest().getCurrentRequest();
 
             try
             {
@@ -2596,7 +2593,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
             XmlPullParser xpp = container.getParser();
 
             // Adding the filter to the Search Filter
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
 
             try
             {
@@ -2659,7 +2656,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements IGrammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestImpl searchRequest = ( SearchRequestImpl ) container.getBatchRequest().getCurrentRequest();
+            org.apache.directory.shared.ldap.codec.message.SearchRequestImpl searchRequest = (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) container.getBatchRequest().getCurrentRequest();
             ExtensibleMatchFilter filter = ( ExtensibleMatchFilter ) searchRequest.getTerminalFilter();
 
             XmlPullParser xpp = container.getParser();

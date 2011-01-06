@@ -42,9 +42,8 @@ import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.message.AliasDerefMode;
-import org.apache.directory.shared.ldap.message.LdapEncoder;
+import org.apache.directory.shared.ldap.codec.message.LdapEncoder;
 import org.apache.directory.shared.ldap.message.SearchRequest;
-import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.apache.directory.shared.ldap.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.shared.ldap.schema.normalizers.OidNormalizer;
 import org.apache.directory.shared.util.Strings;
@@ -63,7 +62,7 @@ import org.junit.runner.RunWith;
 public class SearchRequestMatchingRuleAssertionTest
 {
     /** The encoder instance */
-    LdapEncoder encoder = new LdapEncoder();
+    LdapEncoder encoder = new org.apache.directory.shared.ldap.codec.message.LdapEncoder();
 
     static Map<String, OidNormalizer> oids = new HashMap<String, OidNormalizer>();
 
@@ -407,7 +406,7 @@ public class SearchRequestMatchingRuleAssertionTest
         assertEquals( true, searchRequest.getTypesOnly() );
 
         // Extended
-        Filter filter = ( ( SearchRequestImpl ) searchRequest ).getCurrentFilter();
+        Filter filter = ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).getCurrentFilter();
         ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
         assertNotNull( extensibleMatchFilter );
 
@@ -707,7 +706,7 @@ public class SearchRequestMatchingRuleAssertionTest
         assertEquals( true, searchRequest.getTypesOnly() );
 
         // Extended
-        Filter filter = ( ( SearchRequestImpl ) searchRequest ).getCurrentFilter();
+        Filter filter = ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).getCurrentFilter();
         ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
         assertNotNull( extensibleMatchFilter );
 

@@ -28,7 +28,7 @@ import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.search.AttributeValueAssertionFilter;
 import org.apache.directory.shared.ldap.codec.search.Filter;
 import org.apache.directory.shared.ldap.message.SearchRequest;
-import org.apache.directory.shared.ldap.message.SearchRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.SearchRequestImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +72,7 @@ public class InitApproxMatchFilterAction extends GrammarAction
 
         // Store the filter structure that still has to be
         // fulfilled
-        ( ( SearchRequestImpl ) searchRequest ).setTerminalFilter( filter );
+        ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).setTerminalFilter( filter );
 
         if ( IS_DEBUG )
         {

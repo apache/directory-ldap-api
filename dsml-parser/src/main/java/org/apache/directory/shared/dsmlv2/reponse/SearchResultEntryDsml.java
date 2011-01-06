@@ -28,7 +28,6 @@ import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.message.SearchResultEntry;
-import org.apache.directory.shared.ldap.message.SearchResultEntryImpl;
 import org.apache.directory.shared.ldap.name.DN;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -47,7 +46,7 @@ public class SearchResultEntryDsml extends AbstractResponseDsml
      */
     public SearchResultEntryDsml()
     {
-        super( new SearchResultEntryImpl() );
+        super( new org.apache.directory.shared.ldap.codec.message.SearchResultEntryImpl() );
     }
 
 

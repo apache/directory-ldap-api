@@ -28,7 +28,7 @@ import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.search.ExtensibleMatchFilter;
 import org.apache.directory.shared.ldap.entry.BinaryValue;
 import org.apache.directory.shared.ldap.message.SearchRequest;
-import org.apache.directory.shared.ldap.message.SearchRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.SearchRequestImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,7 +67,7 @@ public class StoreMatchValueAction extends GrammarAction
         TLV tlv = ldapMessageContainer.getCurrentTLV();
 
         // Store the value.
-        ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) ( ( SearchRequestImpl ) searchRequest )
+        ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest )
             .getTerminalFilter();
 
         byte[] value = tlv.getValue().getData();

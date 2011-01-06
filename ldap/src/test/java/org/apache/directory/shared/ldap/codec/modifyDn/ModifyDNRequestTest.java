@@ -35,10 +35,10 @@ import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.Asn1Container;
 import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.ResponseCarryingException;
-import org.apache.directory.shared.ldap.message.LdapEncoder;
+import org.apache.directory.shared.ldap.codec.message.LdapEncoder;
 import org.apache.directory.shared.ldap.message.Message;
 import org.apache.directory.shared.ldap.message.ModifyDnRequest;
-import org.apache.directory.shared.ldap.message.ModifyDnResponseImpl;
+import org.apache.directory.shared.ldap.codec.message.ModifyDnResponseImpl;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.util.Strings;
@@ -177,7 +177,7 @@ public class ModifyDNRequestTest
         {
             assertTrue( de instanceof ResponseCarryingException );
             Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof ModifyDnResponseImpl );
+            assertTrue( response instanceof org.apache.directory.shared.ldap.codec.message.ModifyDnResponseImpl);
             assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( ModifyDnResponseImpl ) response ).getLdapResult()
                 .getResultCode() );
             return;
@@ -230,7 +230,7 @@ public class ModifyDNRequestTest
         {
             assertTrue( de instanceof ResponseCarryingException );
             Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof ModifyDnResponseImpl );
+            assertTrue( response instanceof org.apache.directory.shared.ldap.codec.message.ModifyDnResponseImpl);
             assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( ModifyDnResponseImpl ) response ).getLdapResult()
                 .getResultCode() );
             return;
@@ -284,7 +284,7 @@ public class ModifyDNRequestTest
             assertTrue( de instanceof ResponseCarryingException );
             Message response = ( ( ResponseCarryingException ) de ).getResponse();
             assertTrue( response instanceof ModifyDnResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( ModifyDnResponseImpl ) response ).getLdapResult()
+            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( (org.apache.directory.shared.ldap.codec.message.ModifyDnResponseImpl) response ).getLdapResult()
                 .getResultCode() );
             return;
         }

@@ -28,7 +28,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
 import org.apache.directory.shared.ldap.message.SearchRequest;
-import org.apache.directory.shared.ldap.message.SearchRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.SearchRequestImpl;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +68,7 @@ public class StoreAnyAction extends GrammarAction
         TLV tlv = ldapMessageContainer.getCurrentTLV();
 
         // Store the value.
-        SubstringFilter substringFilter = ( SubstringFilter ) ( ( SearchRequestImpl ) searchRequest )
+        SubstringFilter substringFilter = ( SubstringFilter ) ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest )
             .getTerminalFilter();
 
         if ( tlv.getLength() == 0 )

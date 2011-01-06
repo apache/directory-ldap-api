@@ -63,60 +63,39 @@ import org.apache.directory.shared.ldap.codec.actions.StoreReferenceAction;
 import org.apache.directory.shared.ldap.codec.actions.StoreTypeMatchingRuleAction;
 import org.apache.directory.shared.ldap.codec.actions.ValueAction;
 import org.apache.directory.shared.ldap.codec.controls.ControlFactory;
+import org.apache.directory.shared.ldap.codec.message.*;
 import org.apache.directory.shared.ldap.codec.search.ExtensibleMatchFilter;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
 import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.message.AbandonRequest;
-import org.apache.directory.shared.ldap.message.AbandonRequestImpl;
 import org.apache.directory.shared.ldap.message.AddRequest;
-import org.apache.directory.shared.ldap.message.AddRequestImpl;
 import org.apache.directory.shared.ldap.message.AddResponse;
-import org.apache.directory.shared.ldap.message.AddResponseImpl;
 import org.apache.directory.shared.ldap.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.message.BindRequest;
-import org.apache.directory.shared.ldap.message.BindRequestImpl;
 import org.apache.directory.shared.ldap.message.BindResponse;
-import org.apache.directory.shared.ldap.message.BindResponseImpl;
 import org.apache.directory.shared.ldap.message.CompareRequest;
-import org.apache.directory.shared.ldap.message.CompareRequestImpl;
 import org.apache.directory.shared.ldap.message.CompareResponse;
-import org.apache.directory.shared.ldap.message.CompareResponseImpl;
 import org.apache.directory.shared.ldap.message.DeleteRequest;
-import org.apache.directory.shared.ldap.message.DeleteRequestImpl;
 import org.apache.directory.shared.ldap.message.DeleteResponse;
-import org.apache.directory.shared.ldap.message.DeleteResponseImpl;
 import org.apache.directory.shared.ldap.message.ExtendedRequest;
-import org.apache.directory.shared.ldap.message.ExtendedRequestImpl;
 import org.apache.directory.shared.ldap.message.ExtendedResponse;
-import org.apache.directory.shared.ldap.message.ExtendedResponseImpl;
 import org.apache.directory.shared.ldap.message.IntermediateResponse;
-import org.apache.directory.shared.ldap.message.IntermediateResponseImpl;
 import org.apache.directory.shared.ldap.message.LdapResult;
 import org.apache.directory.shared.ldap.message.Message;
 import org.apache.directory.shared.ldap.message.ModifyDnRequest;
-import org.apache.directory.shared.ldap.message.ModifyDnRequestImpl;
 import org.apache.directory.shared.ldap.message.ModifyDnResponse;
-import org.apache.directory.shared.ldap.message.ModifyDnResponseImpl;
 import org.apache.directory.shared.ldap.message.ModifyRequest;
-import org.apache.directory.shared.ldap.message.ModifyRequestImpl;
 import org.apache.directory.shared.ldap.message.ModifyResponse;
-import org.apache.directory.shared.ldap.message.ModifyResponseImpl;
 import org.apache.directory.shared.ldap.message.Referral;
-import org.apache.directory.shared.ldap.message.ReferralImpl;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.message.ResultResponse;
 import org.apache.directory.shared.ldap.message.SearchRequest;
-import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.apache.directory.shared.ldap.message.SearchResultDone;
-import org.apache.directory.shared.ldap.message.SearchResultDoneImpl;
 import org.apache.directory.shared.ldap.message.SearchResultEntry;
-import org.apache.directory.shared.ldap.message.SearchResultEntryImpl;
 import org.apache.directory.shared.ldap.message.SearchResultReference;
-import org.apache.directory.shared.ldap.message.SearchResultReferenceImpl;
 import org.apache.directory.shared.ldap.message.UnbindRequest;
-import org.apache.directory.shared.ldap.message.UnbindRequestImpl;
 import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.ldap.name.RDN;
@@ -147,6 +126,8 @@ public final class LdapMessageGrammar extends AbstractGrammar
 
     /** The instance of grammar. LdapMessageGrammar is a singleton */
     private static Grammar instance = new LdapMessageGrammar();
+
+    private static CodecMessageFactory messageFactory = new CodecMessageFactory();
 
 
     // ~ Constructors
@@ -295,7 +276,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Create the UnbindRequest LdapMessage instance and store it in the container
-                    UnbindRequest unbindRequest = new UnbindRequestImpl( ldapMessageContainer.getMessageId() );
+                    UnbindRequest unbindRequest = messageFactory.newUnbindRequest( ldapMessageContainer.getMessageId() );
                     ldapMessageContainer.setMessage( unbindRequest );
 
                     TLV tlv = ldapMessageContainer.getCurrentTLV();
@@ -342,7 +323,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Create the DeleteRequest LdapMessage instance and store it in the container
-                    DeleteRequest delRequest = new DeleteRequestImpl( ldapMessageContainer.getMessageId() );
+                    DeleteRequest delRequest = messageFactory.newDeleteRequest( ldapMessageContainer.getMessageId() );
                     ldapMessageContainer.setMessage( delRequest );
 
                     // And store the DN into it
@@ -373,7 +354,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                                 .getLocalizedMessage() );
                             LOG.error( msg );
 
-                            DeleteResponseImpl response = new DeleteResponseImpl( delRequest.getMessageId() );
+                            DeleteResponse response = ( DeleteResponse ) messageFactory.newResponse( delRequest );
                             throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
                                 DN.EMPTY_DN, ine );
                         }
@@ -418,7 +399,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Create the AbandonRequest LdapMessage instance and store it in the container
-                    AbandonRequest abandonRequest = new AbandonRequestImpl( ldapMessageContainer.getMessageId() );
+                    AbandonRequest abandonRequest = messageFactory.newAbandonRequest( ldapMessageContainer.getMessageId() );
                     ldapMessageContainer.setMessage( abandonRequest );
 
                     // The current TLV should be a integer
@@ -491,7 +472,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Create the BindRequest LdapMessage instance and store it in the container
-                    BindRequest bindRequest = new BindRequestImpl( ldapMessageContainer.getMessageId() );
+                    BindRequest bindRequest = messageFactory.newBindRequest( ldapMessageContainer.getMessageId() );
                     ldapMessageContainer.setMessage( bindRequest );
 
                     // We will check that the request is not null
@@ -595,7 +576,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                                 + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
-                            BindResponseImpl response = new BindResponseImpl( bindRequestMessage.getMessageId() );
+                            BindResponse response = ( BindResponse ) messageFactory.newResponse( bindRequestMessage );
 
                             throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
                                 DN.EMPTY_DN, ine );
@@ -696,7 +677,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         String msg = I18n.err( I18n.ERR_04079 );
                         LOG.error( msg );
 
-                        BindResponseImpl response = new BindResponseImpl( bindRequestMessage.getMessageId() );
+                        BindResponse response = ( BindResponse ) messageFactory.newResponse( bindRequestMessage );
 
                         throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_CREDENTIALS,
                             bindRequestMessage.getName(), null );
@@ -830,7 +811,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Now, we can allocate the BindResponse Object
-                    BindResponse bindResponse = new BindResponseImpl( ldapMessageContainer.getMessageId() );
+                    BindResponse bindResponse = messageFactory.newBindResponse( ldapMessageContainer.getMessageId() );
                     ldapMessageContainer.setMessage( bindResponse );
                 }
             } );
@@ -1026,10 +1007,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
 
                     Message response = ldapMessageContainer.getMessage();
                     LdapResult ldapResult = ( ( ResultResponse ) response ).getLdapResult();
-
-                    Referral referral = new ReferralImpl();
-
-                    ldapResult.setReferral( referral );
+                    ldapResult.setReferral( messageFactory.newReferral() );
                 }
             } );
 
@@ -1095,7 +1073,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Now, we can allocate the SearchResultEntry Object
-                    SearchResultEntry searchResultEntry = new SearchResultEntryImpl( ldapMessageContainer
+                    SearchResultEntry searchResultEntry = messageFactory.newSearchResultEntry( ldapMessageContainer
                         .getMessageId() );
                     ldapMessageContainer.setMessage( searchResultEntry );
                 }
@@ -1373,7 +1351,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Now, we can allocate the SearchResultDone Object
-                    SearchResultDone searchResultDone = new SearchResultDoneImpl( ldapMessageContainer.getMessageId() );
+                    SearchResultDone searchResultDone = messageFactory.newSearchResultDone( ldapMessageContainer.getMessageId() );
                     ldapMessageContainer.setMessage( searchResultDone );
 
                     LOG.debug( "Search Result Done found" );
@@ -1411,7 +1389,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Now, we can allocate the ModifyRequest Object
-                    ModifyRequest modifyRequest = new ModifyRequestImpl( ldapMessageContainer.getMessageId() );
+                    ModifyRequest modifyRequest = new org.apache.directory.shared.ldap.codec.message.ModifyRequestImpl( ldapMessageContainer.getMessageId() );
                     ldapMessageContainer.setMessage( modifyRequest );
                 }
             } );
@@ -1458,7 +1436,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                                 + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
-                            ModifyResponseImpl response = new ModifyResponseImpl( modifyRequest.getMessageId() );
+                            org.apache.directory.shared.ldap.codec.message.ModifyResponseImpl response = new org.apache.directory.shared.ldap.codec.message.ModifyResponseImpl( modifyRequest.getMessageId() );
                             throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
                                 DN.EMPTY_DN, ine );
                         }
@@ -1536,7 +1514,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     }
 
                     // Store the current operation.
-                    ( ( ModifyRequestImpl ) modifyRequest ).setCurrentOperation( operation );
+                    ( (org.apache.directory.shared.ldap.codec.message.ModifyRequestImpl) modifyRequest ).setCurrentOperation( operation );
 
                     if ( IS_DEBUG )
                     {
@@ -1616,7 +1594,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     else
                     {
                         type = StringTools.getType( tlv.getValue().getData() );
-                        ( ( ModifyRequestImpl ) modifyRequest ).addAttributeTypeAndValues( type );
+                        ( (org.apache.directory.shared.ldap.codec.message.ModifyRequestImpl) modifyRequest ).addAttributeTypeAndValues( type );
                     }
 
                     if ( IS_DEBUG )
@@ -1822,7 +1800,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
 
                     // Now, we can allocate the AddRequest Object
                     int messageId = ldapMessageContainer.getMessageId();
-                    AddRequest addRequest = new AddRequestImpl( messageId );
+                    AddRequest addRequest = new org.apache.directory.shared.ldap.codec.message.AddRequestImpl( messageId );
                     ldapMessageContainer.setMessage( addRequest );
 
                     // We will check that the request is not null
@@ -1865,7 +1843,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         String msg = I18n.err( I18n.ERR_04085 );
                         LOG.error( msg );
 
-                        AddResponseImpl response = new AddResponseImpl( addRequest.getMessageId() );
+                        org.apache.directory.shared.ldap.codec.message.AddResponseImpl response = new org.apache.directory.shared.ldap.codec.message.AddResponseImpl( addRequest.getMessageId() );
 
                         // I guess that trying to add an entry which DN is empty is a naming violation...
                         // Not 100% sure though ...
@@ -1888,7 +1866,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                                 + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
-                            AddResponseImpl response = new AddResponseImpl( addRequest.getMessageId() );
+                            org.apache.directory.shared.ldap.codec.message.AddResponseImpl response = new org.apache.directory.shared.ldap.codec.message.AddResponseImpl( addRequest.getMessageId() );
                             throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
                                 DN.EMPTY_DN, ine );
                         }
@@ -1950,7 +1928,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         String msg = I18n.err( I18n.ERR_04086 );
                         LOG.error( msg );
 
-                        AddResponseImpl response = new AddResponseImpl( addRequest.getMessageId() );
+                        org.apache.directory.shared.ldap.codec.message.AddResponseImpl response = new org.apache.directory.shared.ldap.codec.message.AddResponseImpl( addRequest.getMessageId() );
 
                         throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX,
                             addRequest.getEntry().getDn(), null );
@@ -1967,7 +1945,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         String msg = I18n.err( I18n.ERR_04087 );
                         LOG.error( msg );
 
-                        AddResponseImpl response = new AddResponseImpl( addRequest.getMessageId() );
+                        org.apache.directory.shared.ldap.codec.message.AddResponseImpl response = new org.apache.directory.shared.ldap.codec.message.AddResponseImpl( addRequest.getMessageId() );
                         throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX,
                             addRequest.getEntry().getDn(), ne );
                     }
@@ -2050,7 +2028,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Now, we can allocate the AddResponse Object
-                    AddResponse addResponse = new AddResponseImpl( ldapMessageContainer.getMessageId() );
+                    AddResponse addResponse = new org.apache.directory.shared.ldap.codec.message.AddResponseImpl( ldapMessageContainer.getMessageId() );
                     ldapMessageContainer.setMessage( addResponse );
 
                     // We will check that the request is not null
@@ -2137,7 +2115,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Now, we can allocate the ModifyDNRequest Object
-                    ModifyDnRequest modifyDnRequest = new ModifyDnRequestImpl( ldapMessageContainer
+                    ModifyDnRequest modifyDnRequest = new org.apache.directory.shared.ldap.codec.message.ModifyDnRequestImpl( ldapMessageContainer
                         .getMessageId() );
                     ldapMessageContainer.setMessage( modifyDnRequest );
 
@@ -2190,7 +2168,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                                 + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
-                            ModifyDnResponseImpl response = new ModifyDnResponseImpl( modifyDNRequest.getMessageId() );
+                            org.apache.directory.shared.ldap.codec.message.ModifyDnResponseImpl response = new org.apache.directory.shared.ldap.codec.message.ModifyDnResponseImpl( modifyDNRequest.getMessageId() );
                             throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
                                 DN.EMPTY_DN, ine );
                         }
@@ -2238,7 +2216,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                         String msg = I18n.err( I18n.ERR_04090 );
                         LOG.error( msg );
 
-                        ModifyDnResponseImpl response = new ModifyDnResponseImpl( modifyDnRequest.getMessageId() );
+                        org.apache.directory.shared.ldap.codec.message.ModifyDnResponseImpl response = new org.apache.directory.shared.ldap.codec.message.ModifyDnResponseImpl( modifyDnRequest.getMessageId() );
                         throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
                             modifyDnRequest.getName(), null );
                     }
@@ -2258,7 +2236,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                                 + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
-                            ModifyDnResponseImpl response = new ModifyDnResponseImpl( modifyDnRequest.getMessageId() );
+                            org.apache.directory.shared.ldap.codec.message.ModifyDnResponseImpl response = new org.apache.directory.shared.ldap.codec.message.ModifyDnResponseImpl( modifyDnRequest.getMessageId() );
                             throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
                                 modifyDnRequest.getName(), ine );
                         }
@@ -2385,7 +2363,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                                 + Strings.dumpBytes(dnBytes) + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
-                            ModifyDnResponseImpl response = new ModifyDnResponseImpl( modifyDnRequest.getMessageId() );
+                            org.apache.directory.shared.ldap.codec.message.ModifyDnResponseImpl response = new org.apache.directory.shared.ldap.codec.message.ModifyDnResponseImpl( modifyDnRequest.getMessageId() );
                             throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
                                 modifyDnRequest.getName(), ine );
                         }
@@ -2444,7 +2422,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Now, we can allocate the ModifyDnResponse Object
-                    ModifyDnResponse modifyDnResponse = new ModifyDnResponseImpl( ldapMessageContainer.getMessageId() );
+                    ModifyDnResponse modifyDnResponse = new org.apache.directory.shared.ldap.codec.message.ModifyDnResponseImpl( ldapMessageContainer.getMessageId() );
                     ldapMessageContainer.setMessage( modifyDnResponse );
 
                     LOG.debug( "Modify DN response " );
@@ -2486,7 +2464,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Now, we can allocate the CompareRequest Object
-                    CompareRequest compareRequest = new CompareRequestImpl( ldapMessageContainer.getMessageId() );
+                    CompareRequest compareRequest = new org.apache.directory.shared.ldap.codec.message.CompareRequestImpl( ldapMessageContainer.getMessageId() );
                     ldapMessageContainer.setMessage( compareRequest );
 
                     LOG.debug( "Compare Request" );
@@ -2537,7 +2515,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                                 + ") is invalid";
                             LOG.error( "{} : {}", msg, ine.getMessage() );
 
-                            CompareResponseImpl response = new CompareResponseImpl( compareRequest.getMessageId() );
+                            CompareResponseImpl response = new org.apache.directory.shared.ldap.codec.message.CompareResponseImpl( compareRequest.getMessageId() );
                             throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_DN_SYNTAX,
                                 DN.EMPTY_DN, ine );
                         }
@@ -2596,7 +2574,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     {
                         String msg = I18n.err( I18n.ERR_04093 );
                         LOG.error( msg );
-                        CompareResponseImpl response = new CompareResponseImpl( compareRequest.getMessageId() );
+                        org.apache.directory.shared.ldap.codec.message.CompareResponseImpl response = new CompareResponseImpl( compareRequest.getMessageId() );
 
                         throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX,
                             compareRequest.getName(), null );
@@ -2700,7 +2678,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Now, we can allocate the CompareResponse Object
-                    CompareResponse compareResponse = new CompareResponseImpl( ldapMessageContainer.getMessageId() );
+                    CompareResponse compareResponse = new org.apache.directory.shared.ldap.codec.message.CompareResponseImpl( ldapMessageContainer.getMessageId() );
                     ldapMessageContainer.setMessage( compareResponse );
 
                     // We will check that the request is not null
@@ -2972,7 +2950,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Now, we can allocate the ExtendedResponse Object
-                    ExtendedResponse extendedResponse = new ExtendedResponseImpl( ldapMessageContainer.getMessageId() );
+                    ExtendedResponse extendedResponse = new org.apache.directory.shared.ldap.codec.message.ExtendedResponseImpl( ldapMessageContainer.getMessageId() );
                     ldapMessageContainer.setMessage( extendedResponse );
 
                     LOG.debug( "Extended Response" );
@@ -3182,7 +3160,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     LdapMessageContainer ldapMessageContainer = ( LdapMessageContainer ) container;
 
                     // Now, we can allocate the IntermediateResponse Object
-                    IntermediateResponse intermediateResponse = new IntermediateResponseImpl( ldapMessageContainer
+                    IntermediateResponse intermediateResponse = new org.apache.directory.shared.ldap.codec.message.IntermediateResponseImpl( ldapMessageContainer
                         .getMessageId() );
                     ldapMessageContainer.setMessage( intermediateResponse );
 
@@ -3590,7 +3568,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     TLV tlv = ldapMessageContainer.getCurrentTLV();
 
                     SearchRequest searchRequest = new SearchRequestImpl( ldapMessageContainer.getMessageId() );
-                    ( ( SearchRequestImpl ) searchRequest ).setTlvId( tlv.getId() );
+                    ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).setTlvId( tlv.getId() );
                     ldapMessageContainer.setMessage( searchRequest );
 
                     LOG.debug( "Search Request" );
@@ -5055,7 +5033,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
 
                         // We now have to get back to the nearest filter which
                         // is not terminal.
-                        ( ( SearchRequestImpl ) searchRequest ).setTerminalFilter( substringFilter );
+                        ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).setTerminalFilter( substringFilter );
                     }
                 }
             } );
@@ -5128,7 +5106,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
 
                     // We now have to get back to the nearest filter which is
                     // not terminal.
-                    ( ( SearchRequestImpl ) searchRequest ).unstackFilters( container );
+                    ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).unstackFilters( container );
                 }
             } );
 
@@ -6163,7 +6141,7 @@ public final class LdapMessageGrammar extends AbstractGrammar
                     TLV tlv = ldapMessageContainer.getCurrentTLV();
 
                     // Store the value.
-                    ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) ( ( SearchRequestImpl ) searchRequest )
+                    ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest )
                         .getTerminalFilter();
 
                     // We get the value. If it's a 0, it's a FALSE. If it's

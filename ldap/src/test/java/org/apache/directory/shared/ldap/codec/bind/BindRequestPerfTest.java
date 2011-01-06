@@ -36,8 +36,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.controls.ControlImpl;
 import org.apache.directory.shared.ldap.message.BindRequest;
-import org.apache.directory.shared.ldap.message.BindRequestImpl;
-import org.apache.directory.shared.ldap.message.LdapEncoder;
+import org.apache.directory.shared.ldap.codec.message.LdapEncoder;
 import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.util.Strings;
@@ -54,7 +53,7 @@ import org.junit.runner.RunWith;
 public class BindRequestPerfTest
 {
     /** The encoder instance */
-    LdapEncoder encoder = new LdapEncoder();
+    org.apache.directory.shared.ldap.codec.message.LdapEncoder encoder = new LdapEncoder();
 
 
     /**
@@ -178,7 +177,7 @@ public class BindRequestPerfTest
         for ( int i = 0; i < nbLoops; i++ )
         {
             // Check the decoded BindRequest
-            BindRequest bindRequest = new BindRequestImpl( 1 );
+            BindRequest bindRequest = new org.apache.directory.shared.ldap.codec.message.BindRequestImpl( 1 );
 
             bindRequest.setSimple( true );
             bindRequest.setName( name );

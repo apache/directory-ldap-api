@@ -23,7 +23,6 @@ package org.apache.directory.shared.dsmlv2.reponse;
 
 import org.apache.directory.shared.ldap.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.message.AddResponse;
-import org.apache.directory.shared.ldap.message.AddResponseImpl;
 import org.dom4j.Element;
 
 
@@ -39,7 +38,7 @@ public class AddResponseDsml extends AbstractResponseDsml
      */
     public AddResponseDsml()
     {
-        super( new AddResponseImpl() );
+        super( new org.apache.directory.shared.ldap.codec.message.AddResponseImpl() );
     }
 
 

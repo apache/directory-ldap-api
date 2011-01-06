@@ -22,7 +22,7 @@ package org.apache.directory.ldap.client.api.protocol;
 
 import java.nio.ByteBuffer;
 
-import org.apache.directory.shared.ldap.message.LdapEncoder;
+import org.apache.directory.shared.ldap.codec.message.LdapEncoder;
 import org.apache.directory.shared.ldap.message.Message;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
@@ -38,7 +38,7 @@ import org.apache.mina.filter.codec.ProtocolEncoderOutput;
 public class LdapProtocolEncoder implements ProtocolEncoder
 {
     /** The stateful encoder */
-    private static final LdapEncoder ENCODER = new LdapEncoder();
+    private static final org.apache.directory.shared.ldap.codec.message.LdapEncoder ENCODER = new LdapEncoder();
 
 
     /**

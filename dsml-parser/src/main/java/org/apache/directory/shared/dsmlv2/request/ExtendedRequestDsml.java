@@ -24,7 +24,6 @@ import org.apache.directory.shared.asn1.util.OID;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.message.ExtendedRequest;
-import org.apache.directory.shared.ldap.message.ExtendedRequestImpl;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
@@ -42,7 +41,7 @@ public class ExtendedRequestDsml extends AbstractRequestDsml
      */
     public ExtendedRequestDsml()
     {
-        super( new ExtendedRequestImpl() );
+        super( new org.apache.directory.shared.ldap.codec.message.ExtendedRequestImpl() );
     }
 
 

@@ -27,7 +27,6 @@ import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.search.ExtensibleMatchFilter;
 import org.apache.directory.shared.ldap.codec.search.Filter;
 import org.apache.directory.shared.ldap.message.SearchRequest;
-import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,8 +65,8 @@ public class InitExtensibleMatchFilterAction extends GrammarAction
         // We can allocate the ExtensibleMatch Filter
         Filter extensibleMatchFilter = new ExtensibleMatchFilter( ldapMessageContainer.getTlvId() );
 
-        ( ( SearchRequestImpl ) searchRequest ).addCurrentFilter( extensibleMatchFilter );
-        ( ( SearchRequestImpl ) searchRequest ).setTerminalFilter( extensibleMatchFilter );
+        ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).addCurrentFilter( extensibleMatchFilter );
+        ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).setTerminalFilter( extensibleMatchFilter );
 
         if ( IS_DEBUG )
         {

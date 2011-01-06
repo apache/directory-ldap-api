@@ -36,8 +36,7 @@ import org.apache.directory.shared.asn1.ber.Asn1Container;
 import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.ResponseCarryingException;
 import org.apache.directory.shared.ldap.message.CompareRequest;
-import org.apache.directory.shared.ldap.message.CompareResponseImpl;
-import org.apache.directory.shared.ldap.message.LdapEncoder;
+import org.apache.directory.shared.ldap.codec.message.LdapEncoder;
 import org.apache.directory.shared.ldap.message.Message;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.message.control.Control;
@@ -291,8 +290,8 @@ public class CompareRequestTest
         {
             assertTrue( de instanceof ResponseCarryingException );
             Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof CompareResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( CompareResponseImpl ) response ).getLdapResult()
+            assertTrue( response instanceof org.apache.directory.shared.ldap.codec.message.CompareResponseImpl);
+            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( (org.apache.directory.shared.ldap.codec.message.CompareResponseImpl) response ).getLdapResult()
                 .getResultCode() );
             return;
         }
@@ -339,8 +338,8 @@ public class CompareRequestTest
         {
             assertTrue( de instanceof ResponseCarryingException );
             Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof CompareResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, ( ( CompareResponseImpl ) response ).getLdapResult()
+            assertTrue( response instanceof org.apache.directory.shared.ldap.codec.message.CompareResponseImpl);
+            assertEquals( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, ( (org.apache.directory.shared.ldap.codec.message.CompareResponseImpl) response ).getLdapResult()
                 .getResultCode() );
             return;
         }

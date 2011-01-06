@@ -46,12 +46,12 @@ import org.apache.directory.shared.ldap.codec.search.controls.subentries.Subentr
 import org.apache.directory.shared.ldap.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.message.AliasDerefMode;
-import org.apache.directory.shared.ldap.message.LdapEncoder;
+import org.apache.directory.shared.ldap.codec.message.LdapEncoder;
 import org.apache.directory.shared.ldap.message.Message;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.message.SearchRequest;
-import org.apache.directory.shared.ldap.message.SearchRequestImpl;
-import org.apache.directory.shared.ldap.message.SearchResultDoneImpl;
+import org.apache.directory.shared.ldap.codec.message.SearchRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.SearchResultDoneImpl;
 import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.ldap.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.shared.ldap.schema.normalizers.OidNormalizer;
@@ -72,7 +72,7 @@ import org.junit.runner.RunWith;
 public class SearchRequestTest
 {
     /** The encoder instance */
-    LdapEncoder encoder = new LdapEncoder();
+    LdapEncoder encoder = new org.apache.directory.shared.ldap.codec.message.LdapEncoder();
 
     static Map<String, OidNormalizer> oids = new HashMap<String, OidNormalizer>();
 
@@ -685,7 +685,7 @@ public class SearchRequestTest
         assertEquals( false, searchRequest.getTypesOnly() );
 
         // (objectClass = *)
-        Filter filter = ( ( SearchRequestImpl ) searchRequest ).getCurrentFilter();
+        Filter filter = ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).getCurrentFilter();
         PresentFilter presentFilter = ( PresentFilter ) filter;
         assertNotNull( presentFilter );
         assertEquals( "objectClass", presentFilter.getAttributeDescription() );
@@ -875,7 +875,7 @@ public class SearchRequestTest
         assertEquals( false, searchRequest.getTypesOnly() );
 
         // (objectClass = *)
-        Filter filter = ( ( SearchRequestImpl ) searchRequest ).getCurrentFilter();
+        Filter filter = ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).getCurrentFilter();
         PresentFilter presentFilter = ( PresentFilter ) filter;
         assertNotNull( presentFilter );
         assertEquals( "objectClass", presentFilter.getAttributeDescription() );
@@ -1420,7 +1420,7 @@ public class SearchRequestTest
         assertEquals( 0, searchRequest.getTimeLimit() );
         assertEquals( false, searchRequest.getTypesOnly() );
 
-        Filter filter = ( ( SearchRequestImpl ) searchRequest ).getCurrentFilter();
+        Filter filter = ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).getCurrentFilter();
         assertTrue( filter instanceof PresentFilter );
         assertEquals( "objectClass", ( ( PresentFilter ) filter ).getAttributeDescription() );
 
@@ -2722,7 +2722,7 @@ public class SearchRequestTest
         assertEquals( true, searchRequest.getTypesOnly() );
 
         // >=
-        Filter filter = ( ( SearchRequestImpl ) searchRequest ).getCurrentFilter();
+        Filter filter = ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).getCurrentFilter();
         AttributeValueAssertionFilter greaterThanFilter = ( AttributeValueAssertionFilter ) filter;
         assertNotNull( greaterThanFilter );
 
@@ -2814,7 +2814,7 @@ public class SearchRequestTest
         assertEquals( true, searchRequest.getTypesOnly() );
 
         // >=
-        Filter filter = ( ( SearchRequestImpl ) searchRequest ).getCurrentFilter();
+        Filter filter = ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).getCurrentFilter();
         AttributeValueAssertionFilter greaterThanFilter = ( AttributeValueAssertionFilter ) filter;
         assertNotNull( greaterThanFilter );
 
@@ -3772,7 +3772,7 @@ public class SearchRequestTest
         assertEquals( true, searchRequest.getTypesOnly() );
 
         // (&(...
-        Filter filter = ( ( SearchRequestImpl ) searchRequest ).getCurrentFilter();
+        Filter filter = ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).getCurrentFilter();
         AndFilter andFilter = ( AndFilter ) filter;
         assertNotNull( andFilter );
 
@@ -3908,7 +3908,7 @@ public class SearchRequestTest
         assertEquals( true, searchRequest.getTypesOnly() );
 
         // (&(...
-        Filter filter = ( ( SearchRequestImpl ) searchRequest ).getCurrentFilter();
+        Filter filter = ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).getCurrentFilter();
         AndFilter andFilter = ( AndFilter ) filter;
         assertNotNull( andFilter );
 
@@ -4054,7 +4054,7 @@ public class SearchRequestTest
         assertEquals( true, searchRequest.getTypesOnly() );
 
         // (&(...
-        Filter filter = ( ( SearchRequestImpl ) searchRequest ).getCurrentFilter();
+        Filter filter = ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).getCurrentFilter();
         AndFilter andFilter = ( AndFilter ) filter;
         assertNotNull( andFilter );
 
@@ -4197,7 +4197,7 @@ public class SearchRequestTest
         assertEquals( true, searchRequest.getTypesOnly() );
 
         // (&(...
-        Filter filter = ( ( SearchRequestImpl ) searchRequest ).getCurrentFilter();
+        Filter filter = ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).getCurrentFilter();
         AndFilter andFilter = ( AndFilter ) filter;
         assertNotNull( andFilter );
 
@@ -4598,7 +4598,7 @@ public class SearchRequestTest
         assertEquals( 0, searchRequest.getTimeLimit() );
         assertEquals( false, searchRequest.getTypesOnly() );
 
-        Filter filter = ( ( SearchRequestImpl ) searchRequest ).getCurrentFilter();
+        Filter filter = ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).getCurrentFilter();
         PresentFilter presentFilter = ( PresentFilter ) filter;
         assertNotNull( presentFilter );
         assertEquals( "objectClass", presentFilter.getAttributeDescription() );
@@ -4777,7 +4777,7 @@ public class SearchRequestTest
         assertEquals( false, searchRequest.getTypesOnly() );
 
         // (&(...
-        Filter filter = ( ( SearchRequestImpl ) searchRequest ).getCurrentFilter();
+        Filter filter = ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).getCurrentFilter();
         AndFilter andFilter = ( AndFilter ) filter;
         assertNotNull( andFilter );
 

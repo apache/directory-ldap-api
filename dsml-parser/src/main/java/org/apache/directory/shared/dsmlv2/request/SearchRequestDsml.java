@@ -38,7 +38,6 @@ import org.apache.directory.shared.ldap.filter.SearchScope;
 import org.apache.directory.shared.ldap.filter.SubstringNode;
 import org.apache.directory.shared.ldap.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.message.SearchRequest;
-import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
@@ -56,7 +55,7 @@ public class SearchRequestDsml extends AbstractRequestDsml
      */
     public SearchRequestDsml()
     {
-        super( new SearchRequestImpl() );
+        super( new org.apache.directory.shared.ldap.codec.message.SearchRequestImpl() );
     }
 
 

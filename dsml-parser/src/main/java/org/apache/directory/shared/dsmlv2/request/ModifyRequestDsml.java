@@ -29,7 +29,6 @@ import org.apache.directory.shared.ldap.entry.Modification;
 import org.apache.directory.shared.ldap.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.message.ModifyRequest;
-import org.apache.directory.shared.ldap.message.ModifyRequestImpl;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
@@ -47,7 +46,7 @@ public class ModifyRequestDsml extends AbstractRequestDsml
      */
     public ModifyRequestDsml()
     {
-        super( new ModifyRequestImpl() );
+        super( new org.apache.directory.shared.ldap.codec.message.ModifyRequestImpl() );
     }
 
 

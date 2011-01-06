@@ -35,7 +35,6 @@ import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.message.CompareResponse;
-import org.apache.directory.shared.ldap.message.LdapEncoder;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.util.Strings;
@@ -53,7 +52,7 @@ import org.junit.runner.RunWith;
 public class CompareResponseTest
 {
     /** The encoder instance */
-    LdapEncoder encoder = new LdapEncoder();
+    org.apache.directory.shared.ldap.codec.message.LdapEncoder encoder = new org.apache.directory.shared.ldap.codec.message.LdapEncoder();
 
 
     /**

@@ -198,7 +198,7 @@ public final class JndiUtils
             public ExtendedResponse createExtendedResponse( String id, byte[] berValue, int offset, int length )
                 throws NamingException
             {
-                org.apache.directory.shared.ldap.message.ExtendedResponse response = new ExtendedResponseImpl( request
+                org.apache.directory.shared.ldap.message.ExtendedResponse response = new org.apache.directory.shared.ldap.codec.message.ExtendedResponseImpl( request
                     .getMessageId(), request.getRequestName() );
                 response.setResponseName( id );
                 response.setResponseValue( berValue );

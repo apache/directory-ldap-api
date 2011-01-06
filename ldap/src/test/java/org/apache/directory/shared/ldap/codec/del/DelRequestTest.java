@@ -36,9 +36,9 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.ResponseCarryingException;
 import org.apache.directory.shared.ldap.message.DeleteRequest;
-import org.apache.directory.shared.ldap.message.DeleteRequestImpl;
-import org.apache.directory.shared.ldap.message.DeleteResponseImpl;
-import org.apache.directory.shared.ldap.message.LdapEncoder;
+import org.apache.directory.shared.ldap.codec.message.DeleteRequestImpl;
+import org.apache.directory.shared.ldap.codec.message.DeleteResponseImpl;
+import org.apache.directory.shared.ldap.codec.message.LdapEncoder;
 import org.apache.directory.shared.ldap.message.Message;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.message.control.Control;
@@ -57,7 +57,7 @@ import org.junit.runner.RunWith;
 public class DelRequestTest
 {
     /** The encoder instance */
-    LdapEncoder encoder = new LdapEncoder();
+    org.apache.directory.shared.ldap.codec.message.LdapEncoder encoder = new LdapEncoder();
 
 
     /**
@@ -105,7 +105,7 @@ public class DelRequestTest
         assertEquals( "cn=testModify,ou=users,ou=system", delRequest.getName().toString() );
 
         // Check the length
-        DeleteRequest internalDeleteRequest = new DeleteRequestImpl( delRequest.getMessageId() );
+        DeleteRequest internalDeleteRequest = new org.apache.directory.shared.ldap.codec.message.DeleteRequestImpl( delRequest.getMessageId() );
         internalDeleteRequest.setName( delRequest.getName() );
 
         // Check the encoding

@@ -44,31 +44,24 @@ import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.message.AddResponse;
-import org.apache.directory.shared.ldap.message.AddResponseImpl;
+import org.apache.directory.shared.ldap.codec.message.AddResponseImpl;
 import org.apache.directory.shared.ldap.message.BindResponse;
-import org.apache.directory.shared.ldap.message.BindResponseImpl;
 import org.apache.directory.shared.ldap.message.CompareResponse;
-import org.apache.directory.shared.ldap.message.CompareResponseImpl;
 import org.apache.directory.shared.ldap.message.DeleteResponse;
-import org.apache.directory.shared.ldap.message.DeleteResponseImpl;
 import org.apache.directory.shared.ldap.message.ExtendedResponse;
-import org.apache.directory.shared.ldap.message.ExtendedResponseImpl;
 import org.apache.directory.shared.ldap.message.LdapResult;
 import org.apache.directory.shared.ldap.message.Message;
 import org.apache.directory.shared.ldap.message.ModifyDnResponse;
-import org.apache.directory.shared.ldap.message.ModifyDnResponseImpl;
+import org.apache.directory.shared.ldap.codec.message.ModifyDnResponseImpl;
 import org.apache.directory.shared.ldap.message.ModifyResponse;
-import org.apache.directory.shared.ldap.message.ModifyResponseImpl;
-import org.apache.directory.shared.ldap.message.ReferralImpl;
+import org.apache.directory.shared.ldap.codec.message.ReferralImpl;
 import org.apache.directory.shared.ldap.message.Response;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.message.ResultResponse;
 import org.apache.directory.shared.ldap.message.SearchResultDone;
-import org.apache.directory.shared.ldap.message.SearchResultDoneImpl;
 import org.apache.directory.shared.ldap.message.SearchResultEntry;
-import org.apache.directory.shared.ldap.message.SearchResultEntryImpl;
 import org.apache.directory.shared.ldap.message.SearchResultReference;
-import org.apache.directory.shared.ldap.message.SearchResultReferenceImpl;
+import org.apache.directory.shared.ldap.codec.message.SearchResultReferenceImpl;
 import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.ldap.name.DN;
 import org.apache.directory.shared.util.Base64;
@@ -833,7 +826,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGra
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            BindResponse bindResponse = new BindResponseImpl();
+            BindResponse bindResponse = new org.apache.directory.shared.ldap.codec.message.BindResponseImpl();
 
             container.getBatchResponse().addResponse( bindResponse );
 
@@ -876,7 +869,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGra
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            CompareResponse compareResponse = new CompareResponseImpl();
+            CompareResponse compareResponse = new org.apache.directory.shared.ldap.codec.message.CompareResponseImpl();
 
             container.getBatchResponse().addResponse( compareResponse );
 
@@ -918,7 +911,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGra
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            DeleteResponse delResponse = new DeleteResponseImpl();
+            DeleteResponse delResponse = new org.apache.directory.shared.ldap.codec.message.DeleteResponseImpl();
 
             container.getBatchResponse().addResponse( delResponse );
 
@@ -960,7 +953,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGra
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            ModifyResponse modifyResponse = new ModifyResponseImpl();
+            ModifyResponse modifyResponse = new org.apache.directory.shared.ldap.codec.message.ModifyResponseImpl();
 
             container.getBatchResponse().addResponse( modifyResponse );
 
@@ -1056,11 +1049,11 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGra
 
             if ( attributeValue != null )
             {
-                extendedResponse = new ExtendedResponseImpl( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
+                extendedResponse = new org.apache.directory.shared.ldap.codec.message.ExtendedResponseImpl( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             else
             {
-                extendedResponse = new ExtendedResponseImpl( -1 );
+                extendedResponse = new org.apache.directory.shared.ldap.codec.message.ExtendedResponseImpl( -1 );
             }
 
             container.getBatchResponse().addResponse( extendedResponse );
@@ -1554,7 +1547,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGra
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchResultEntry searchResultEntry = new SearchResultEntryImpl();
+            SearchResultEntry searchResultEntry = new org.apache.directory.shared.ldap.codec.message.SearchResultEntryImpl();
 
             SearchResponse searchResponse = ( SearchResponse ) container.getBatchResponse().getCurrentResponse();
 
@@ -1629,7 +1622,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements IGra
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchResultDone searchResultDone = new SearchResultDoneImpl();
+            SearchResultDone searchResultDone = new org.apache.directory.shared.ldap.codec.message.SearchResultDoneImpl();
 
             searchResultDone.getLdapResult();
 

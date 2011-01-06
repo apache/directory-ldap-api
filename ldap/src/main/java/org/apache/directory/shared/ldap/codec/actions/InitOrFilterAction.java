@@ -29,7 +29,6 @@ import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.search.Filter;
 import org.apache.directory.shared.ldap.codec.search.OrFilter;
 import org.apache.directory.shared.ldap.message.SearchRequest;
-import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +78,7 @@ public class InitOrFilterAction extends GrammarAction
         Filter orFilter = new OrFilter( ldapMessageContainer.getTlvId() );
 
         // Set the filter
-        ( ( SearchRequestImpl ) searchRequest ).addCurrentFilter( orFilter );
+        ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).addCurrentFilter( orFilter );
 
         if ( IS_DEBUG )
         {

@@ -452,7 +452,7 @@ public class Dsmlv2Engine
      */
     private void bind( int messageId ) throws LdapException, EncoderException, DecoderException, IOException
     {
-        BindRequest bindRequest = new BindRequestImpl();
+        BindRequest bindRequest = new org.apache.directory.shared.ldap.codec.message.BindRequestImpl();
         bindRequest.setSimple( true );
         bindRequest.setCredentials( Strings.getBytesUtf8(password) );
         bindRequest.setName( new DN( user ) );

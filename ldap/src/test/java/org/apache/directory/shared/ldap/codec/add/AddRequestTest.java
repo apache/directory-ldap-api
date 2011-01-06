@@ -44,8 +44,7 @@ import org.apache.directory.shared.ldap.entry.Entry;
 import org.apache.directory.shared.ldap.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.entry.Value;
 import org.apache.directory.shared.ldap.message.AddRequest;
-import org.apache.directory.shared.ldap.message.AddResponseImpl;
-import org.apache.directory.shared.ldap.message.LdapEncoder;
+import org.apache.directory.shared.ldap.codec.message.LdapEncoder;
 import org.apache.directory.shared.ldap.message.Message;
 import org.apache.directory.shared.ldap.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.message.control.Control;
@@ -64,7 +63,7 @@ import org.junit.runner.RunWith;
 public class AddRequestTest
 {
     /** The encoder instance */
-    LdapEncoder encoder = new LdapEncoder();
+    LdapEncoder encoder = new org.apache.directory.shared.ldap.codec.message.LdapEncoder();
 
 
     /**
@@ -309,8 +308,8 @@ public class AddRequestTest
         {
             assertTrue( de instanceof ResponseCarryingException );
             Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof AddResponseImpl );
-            assertEquals( ResultCodeEnum.NAMING_VIOLATION, ( ( AddResponseImpl ) response ).getLdapResult()
+            assertTrue( response instanceof org.apache.directory.shared.ldap.codec.message.AddResponseImpl);
+            assertEquals( ResultCodeEnum.NAMING_VIOLATION, ( (org.apache.directory.shared.ldap.codec.message.AddResponseImpl) response ).getLdapResult()
                 .getResultCode() );
             return;
         }
@@ -380,8 +379,8 @@ public class AddRequestTest
         {
             assertTrue( de instanceof ResponseCarryingException );
             Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof AddResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( AddResponseImpl ) response ).getLdapResult()
+            assertTrue( response instanceof org.apache.directory.shared.ldap.codec.message.AddResponseImpl);
+            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( (org.apache.directory.shared.ldap.codec.message.AddResponseImpl) response ).getLdapResult()
                 .getResultCode() );
             return;
         }
@@ -522,8 +521,8 @@ public class AddRequestTest
         {
             assertTrue( de instanceof ResponseCarryingException );
             Message response = ( ( ResponseCarryingException ) de ).getResponse();
-            assertTrue( response instanceof AddResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, ( ( AddResponseImpl ) response ).getLdapResult()
+            assertTrue( response instanceof org.apache.directory.shared.ldap.codec.message.AddResponseImpl);
+            assertEquals( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, ( (org.apache.directory.shared.ldap.codec.message.AddResponseImpl) response ).getLdapResult()
                 .getResultCode() );
             return;
         }

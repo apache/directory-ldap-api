@@ -28,7 +28,6 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.util.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.message.Referral;
-import org.apache.directory.shared.ldap.message.ReferralImpl;
 import org.apache.directory.shared.ldap.message.SearchResultReference;
 import org.apache.directory.shared.ldap.util.LdapURL;
 import org.apache.directory.shared.util.Strings;
@@ -77,7 +76,7 @@ public class StoreReferenceAction extends GrammarAction
 
         if ( referral == null )
         {
-            referral = new ReferralImpl();
+            referral = new org.apache.directory.shared.ldap.codec.message.ReferralImpl();
             searchResultReference.setReferral( referral );
         }
 

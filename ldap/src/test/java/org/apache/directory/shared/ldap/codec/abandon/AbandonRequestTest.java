@@ -36,8 +36,7 @@ import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.Asn1Container;
 import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.message.AbandonRequest;
-import org.apache.directory.shared.ldap.message.AbandonRequestImpl;
-import org.apache.directory.shared.ldap.message.LdapEncoder;
+import org.apache.directory.shared.ldap.codec.message.AbandonRequestImpl;
 import org.apache.directory.shared.ldap.message.control.Control;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
@@ -54,7 +53,7 @@ import org.junit.runner.RunWith;
 public class AbandonRequestTest
 {
     /** The encoder instance */
-    LdapEncoder encoder = new LdapEncoder();
+    org.apache.directory.shared.ldap.codec.message.LdapEncoder encoder = new org.apache.directory.shared.ldap.codec.message.LdapEncoder();
 
 
     /**

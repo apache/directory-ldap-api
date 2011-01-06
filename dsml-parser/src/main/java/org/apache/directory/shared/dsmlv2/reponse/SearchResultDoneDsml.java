@@ -23,7 +23,6 @@ package org.apache.directory.shared.dsmlv2.reponse;
 
 import org.apache.directory.shared.ldap.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.message.SearchResultDone;
-import org.apache.directory.shared.ldap.message.SearchResultDoneImpl;
 import org.dom4j.Element;
 
 
@@ -39,7 +38,7 @@ public class SearchResultDoneDsml extends AbstractResponseDsml
      */
     public SearchResultDoneDsml()
     {
-        super( new SearchResultDoneImpl() );
+        super( new org.apache.directory.shared.ldap.codec.message.SearchResultDoneImpl() );
     }
 
 

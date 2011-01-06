@@ -23,7 +23,6 @@ package org.apache.directory.shared.dsmlv2.reponse;
 
 import org.apache.directory.shared.ldap.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.message.DeleteResponse;
-import org.apache.directory.shared.ldap.message.DeleteResponseImpl;
 import org.dom4j.Element;
 
 
@@ -39,7 +38,7 @@ public class DelResponseDsml extends AbstractResponseDsml
      */
     public DelResponseDsml()
     {
-        super( new DeleteResponseImpl() );
+        super( new org.apache.directory.shared.ldap.codec.message.DeleteResponseImpl() );
     }
 
 

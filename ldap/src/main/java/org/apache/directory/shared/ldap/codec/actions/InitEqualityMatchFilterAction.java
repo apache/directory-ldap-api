@@ -28,7 +28,6 @@ import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.search.AttributeValueAssertionFilter;
 import org.apache.directory.shared.ldap.codec.search.Filter;
 import org.apache.directory.shared.ldap.message.SearchRequest;
-import org.apache.directory.shared.ldap.message.SearchRequestImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,11 +67,11 @@ public class InitEqualityMatchFilterAction extends GrammarAction
         Filter filter = new AttributeValueAssertionFilter( ldapMessageContainer.getTlvId(),
             LdapConstants.EQUALITY_MATCH_FILTER );
 
-        ( ( SearchRequestImpl ) searchRequest ).addCurrentFilter( filter );
+        ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).addCurrentFilter( filter );
 
         // Store the filter structure that still has to be
         // fulfilled
-        ( ( SearchRequestImpl ) searchRequest ).setTerminalFilter( filter );
+        ( (org.apache.directory.shared.ldap.codec.message.SearchRequestImpl) searchRequest ).setTerminalFilter( filter );
 
         if ( IS_DEBUG )
         {

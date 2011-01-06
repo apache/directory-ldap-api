@@ -28,7 +28,6 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.LdapMessageContainer;
 import org.apache.directory.shared.ldap.message.LdapResult;
 import org.apache.directory.shared.ldap.message.Referral;
-import org.apache.directory.shared.ldap.message.ReferralImpl;
 import org.apache.directory.shared.ldap.message.ResultResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +78,7 @@ public class InitReferralsAction extends GrammarAction
         ResultResponse response = ( ResultResponse ) ldapMessageContainer.getMessage();
         LdapResult ldapResult = response.getLdapResult();
 
-        Referral referral = new ReferralImpl();
+        Referral referral = new org.apache.directory.shared.ldap.codec.message.ReferralImpl();
         ldapResult.setReferral( referral );
 
         if ( IS_DEBUG )

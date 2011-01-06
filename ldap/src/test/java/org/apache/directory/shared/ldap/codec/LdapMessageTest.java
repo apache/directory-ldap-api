@@ -32,10 +32,8 @@ import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Container;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.EncoderException;
-import org.apache.directory.shared.ldap.message.LdapEncoder;
 import org.apache.directory.shared.ldap.message.Message;
 import org.apache.directory.shared.ldap.message.UnbindRequest;
-import org.apache.directory.shared.ldap.message.UnbindRequestImpl;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +49,7 @@ import org.junit.runner.RunWith;
 public class LdapMessageTest
 {
     /** The encoder instance */
-    LdapEncoder encoder = new LdapEncoder();
+    org.apache.directory.shared.ldap.codec.message.LdapEncoder encoder = new org.apache.directory.shared.ldap.codec.message.LdapEncoder();
 
 
     // ~ Methods
@@ -317,7 +315,7 @@ public class LdapMessageTest
         assertEquals( 500, message.getMessageId() );
 
         // Check the length
-        UnbindRequest internalUnbindRequest = new UnbindRequestImpl( message.getMessageId() );
+        UnbindRequest internalUnbindRequest = new org.apache.directory.shared.ldap.codec.message.UnbindRequestImpl( message.getMessageId() );
 
         try
         {
