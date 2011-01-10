@@ -19,9 +19,8 @@
  */
 package org.apache.directory.shared.ldap.entry;
 
-import org.apache.directory.shared.ldap.exception.LdapException;
-
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.ldap.exception.LdapException;
 import org.apache.directory.shared.ldap.schema.AttributeType;
 import org.apache.directory.shared.ldap.schema.LdapComparator;
 import org.apache.directory.shared.ldap.schema.MatchingRule;
@@ -122,7 +121,7 @@ public abstract class AbstractValue<T> implements Value<T>
         {
             if ( ! isValid( attributeType.getSyntax().getSyntaxChecker() ) )
             {
-                String message = I18n.err( I18n.ERR_04476, attributeType.getName(), this.attributeType.getName() );
+                String message = I18n.err( I18n.ERR_04479_INVALID_SYNTAX_VALUE, wrappedValue, attributeType.getName() );
                 LOG.info( message );
                 throw new IllegalArgumentException( message );
             }
