@@ -640,9 +640,10 @@ public class DnNode<N> implements Cloneable
         {
             parentNode.children.remove( rdn );
 
-            if ( parentNode.children.size() > 0 )
+            if ( ( parentNode.children.size() > 0 ) || ( parentNode.nodeElement != null ) )
             {
-                // We have to stop here, because the parent's node is shared with other Node.
+                // We have to stop here, because the parent's node is shared with other Node,
+                // or because this is a leaf
                 break;
             }
 
