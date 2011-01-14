@@ -29,6 +29,10 @@ import java.text.ParseException;
 
 import org.apache.directory.junit.tools.Concurrent;
 import org.apache.directory.junit.tools.ConcurrentJunitRunner;
+import org.apache.directory.shared.ldap.aci.ACIItem;
+import org.apache.directory.shared.ldap.aci.ACIItemParser;
+import org.apache.directory.shared.ldap.aci.UserFirstACIItem;
+import org.apache.directory.shared.ldap.aci.UserPermission;
 import org.apache.directory.shared.ldap.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schema.loader.ldif.JarLdifSchemaLoader;
 import org.apache.directory.shared.ldap.schema.manager.impl.DefaultSchemaManager;
@@ -109,35 +113,31 @@ public class ACIItemParserTest
             "  authenticationLevel simple  , " +
             "  itemOrUserFirst itemFirst  :" +
             "  { " +
-            "    protectedItems  " +
+            "    protectedItems  { entry  , attributeType { 2.5.4.3    , ou } , " +
+            "    attributeValue { ou=people  , cn=Ersin  }  , " +
+            "    rangeOfValues (cn=ErsinEr) , " +
+            "    classes and : { item: xyz , or:{item:X,item:Y}   }" +
+            "  }  , " +
+            "  itemPermissions " +
+            "  { " +
             "    { " +
-            "      entry  ," +
-            "      attributeType { 2.5.4.3    , ou } , " +
-            "      attributeValue { ou=people  , cn=Ersin  }  , " +
-            "      rangeOfValues (cn=ErsinEr) , " +
-            "      classes and : { item: xyz , or:{item:X,item:Y}   } " +
-            "    }  , " +
-            "    itemPermissions " +
-            "    { " +
-            "      { " +
-            "        userClasses " +
-            "          {" +
-            "            allUsers  , " +
-            "            userGroup { \"1.2=y,z=t\"  , \"a=b,c=d\" } , " +
-            "            subtree { { base \"ou=people\" } } " +
-            "          }   , " +
-            "        grantsAndDenials  {  denyCompare  , grantModify } " +
-            "      }," +
-            "      { " +
-            "        precedence 10, " +
-            "        userClasses " +
+            "      userClasses " +
             "        {" +
             "          allUsers  , " +
-            "          userGroup { \"1.2=y,z=t\"  , \"a=b,c=d\" } ," +
+            "          userGroup { \"1.2=y,z=t\"  , \"a=b,c=d\" } , " +
             "          subtree { { base \"ou=people\" } } " +
             "        }   , " +
-            "        grantsAndDenials  {  denyCompare  , grantModify } " +
-            "      } " +
+            "      grantsAndDenials  {  denyCompare  , grantModify } " +
+            "    }," +
+            "    { " +
+            "      precedence 10, " +
+            "      userClasses " +
+            "      {" +
+            "        allUsers  , " +
+            "        userGroup { \"1.2=y,z=t\"  , \"a=b,c=d\" } ," +
+            "        subtree { { base \"ou=people\" } } " +
+            "      }   , " +
+            "      grantsAndDenials  {  denyCompare  , grantModify } } " +
             "    } " +
             "  }" +
             "}";
