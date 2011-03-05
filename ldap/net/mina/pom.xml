@@ -21,12 +21,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.shared</groupId>
-    <artifactId>shared-parent</artifactId>
+    <artifactId>shared-ldap-net-parent</artifactId>
     <version>1.0.0-M2-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-ldap-protocol-codec</artifactId>
-  <name>Apache Directory Shared LDAP Protocol Codec</name>
+  <artifactId>shared-ldap-net-mina</artifactId>
+  <name>Apache Directory Shared LDAP Network MINA</name>
   <packaging>bundle</packaging>
   <description>LDAP ProtocolCodecFactory implementation based on MINA</description>
 
@@ -39,7 +39,7 @@
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-codec</artifactId>
+      <artifactId>shared-ldap-codec-core</artifactId>
     </dependency> 
 
     <dependency>
@@ -64,10 +64,10 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
-            <Bundle-SymbolicName>${project.groupId}.ldap.protocol.codec</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.groupId}.ldap.net.mina</Bundle-SymbolicName>
             <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
             <Bundle-Activator>
-              org.apache.directory.shared.ldap.codec.protocol.mina.DefaultActivator
+              org.apache.directory.shared.ldap.codec.protocol.mina.LdapProtocolCodecActivator
             </Bundle-Activator>
           </instructions>
         </configuration>
