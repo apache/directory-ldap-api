@@ -98,6 +98,8 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class NameForm extends AbstractSchemaObject
 {
+    private static final long serialVersionUID = 1L;
+
     /** The structural object class OID this rule applies to */
     private String structuralObjectClassOid;
 

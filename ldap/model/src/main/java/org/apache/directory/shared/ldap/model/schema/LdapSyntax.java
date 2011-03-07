@@ -74,6 +74,8 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringS
 @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class LdapSyntax extends AbstractSchemaObject
 {
+    private static final long serialVersionUID = 1L;
+
     /** the human readable flag */
     protected boolean isHumanReadable = false;
 

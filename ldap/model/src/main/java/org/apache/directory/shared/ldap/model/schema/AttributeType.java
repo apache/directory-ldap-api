@@ -141,6 +141,8 @@ import org.slf4j.LoggerFactory;
  */
 public class AttributeType extends AbstractSchemaObject implements Cloneable
 {
+    private static final long serialVersionUID = 1L;
+
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( AttributeType.class );
 

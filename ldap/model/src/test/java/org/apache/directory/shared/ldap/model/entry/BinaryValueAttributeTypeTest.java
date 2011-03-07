@@ -88,6 +88,8 @@ public class BinaryValueAttributeTypeTest
         mr.setLdapComparator( new ByteArrayComparator( "1.1.1" ) );
         mr.setNormalizer( new Normalizer( "1.1.1" )
         {
+            private static final long serialVersionUID = 1L;
+
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
                 if ( value.isBinary() )

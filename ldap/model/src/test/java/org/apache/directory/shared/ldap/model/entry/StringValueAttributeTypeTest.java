@@ -445,6 +445,8 @@ public class StringValueAttributeTypeTest
     @Test public void testConstrainedString()
     {
         s.setSyntaxChecker( new SyntaxChecker( "1.1.1.1" ) {
+            private static final long serialVersionUID = 1L;
+
             public boolean isValidSyntax( Object value )
             {
                 if ( value instanceof String )
@@ -459,6 +461,8 @@ public class StringValueAttributeTypeTest
         mr.setSyntax( s );
         mr.setLdapComparator( new LdapComparator<String>( mr.getOid() )
         {
+            private static final long serialVersionUID = 1L;
+
             public int compare( String o1, String o2 )
             {
                 if ( o1 == null )
