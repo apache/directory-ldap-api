@@ -17,7 +17,6 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.shared.ldap.model.schema.parsers;
 
 
@@ -32,6 +31,8 @@ import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
  */
 public class SyntaxCheckerDescription extends LoadableSchemaObject
 {
+    private static final long serialVersionUID = 1L;
+
     /**
      * Default constructor for a SyntaxCheckerDecription
      * @param oid The SyntaxChecker OID

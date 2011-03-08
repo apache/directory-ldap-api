@@ -88,6 +88,8 @@ public class BinaryValueAttributeTypeTest
         mr.setLdapComparator( new ByteArrayComparator( "1.1.1" ) );
         mr.setNormalizer( new Normalizer( "1.1.1" )
         {
+            private static final long serialVersionUID = 1L;
+
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
                 if ( value.isBinary() )
@@ -134,7 +136,7 @@ public class BinaryValueAttributeTypeTest
         try
         {
             oOut = new ObjectOutputStream( out );
-            value.serialize( oOut );
+            BinaryValue.serialize( value, oOut );
         }
         catch ( IOException ioe )
         {
@@ -172,8 +174,7 @@ public class BinaryValueAttributeTypeTest
         {
             oIn = new ObjectInputStream( in );
 
-            BinaryValue value = new BinaryValue( at );
-            value.deserialize( oIn );
+            BinaryValue value = BinaryValue.deserialize( null, oIn );
 
             return value;
         }

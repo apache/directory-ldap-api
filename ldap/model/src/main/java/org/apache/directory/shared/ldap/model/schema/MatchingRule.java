@@ -89,6 +89,8 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class MatchingRule extends AbstractSchemaObject
 {
+    private static final long serialVersionUID = 1L;
+
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( MatchingRule.class );
 

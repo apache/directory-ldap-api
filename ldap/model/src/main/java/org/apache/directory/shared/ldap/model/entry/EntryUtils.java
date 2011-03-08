@@ -62,6 +62,8 @@ public class EntryUtils
      */
     static class MR extends MatchingRule
     {
+        private static final long serialVersionUID = 1L;
+
         protected MR( String oid )
         {
             super( oid );
@@ -83,6 +85,8 @@ public class EntryUtils
     }
     static class S extends LdapSyntax
     {
+        private static final long serialVersionUID = 1L;
+
         public S( String oid, boolean humanReadible )
         {
             super( oid, "", humanReadible );
@@ -96,6 +100,8 @@ public class EntryUtils
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.1.2.1" )
         {
+            private static final long serialVersionUID = 1L;
+
             public boolean isValidSyntax( Object value )
             {
                 if ( !( value instanceof String ) )
@@ -122,6 +128,8 @@ public class EntryUtils
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
         {
+            private static final long serialVersionUID = 1L;
+
             public int compare( String o1, String o2 )
             {
                 return ( o1 == null ? 
@@ -132,6 +140,9 @@ public class EntryUtils
         
         Normalizer normalizer = new Normalizer( "1.1.1" )
         {
+            private static final long serialVersionUID = 1L;
+
+
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
                 if ( !value.isBinary() )
@@ -166,6 +177,8 @@ public class EntryUtils
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.1.2" )
         {
+            private static final long serialVersionUID = 1L;
+
             public boolean isValidSyntax( Object value )
             {
                 return ((String)value == null) || (((String)value).length() < 7) ;
@@ -178,6 +191,8 @@ public class EntryUtils
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
         {
+            private static final long serialVersionUID = 1L;
+
             public int compare( String o1, String o2 )
             {
                 return ( ( o1 == null ) ? 
@@ -202,6 +217,8 @@ public class EntryUtils
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.2.1" )
         {
+            private static final long serialVersionUID = 1L;
+
             public boolean isValidSyntax( Object value )
             {
                 return ( value == null ) || ( ((byte[])value).length < 5 );
@@ -215,6 +232,8 @@ public class EntryUtils
         
         matchingRule.setNormalizer( new Normalizer( "1.1.1" )
         {
+            private static final long serialVersionUID = 1L;
+
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
                 if ( value.isBinary() )

@@ -62,6 +62,8 @@ public class BinaryValueTest
     
     private static final Normalizer BINARY_NORMALIZER = new Normalizer( "1.1.1" )
     {
+        private static final long serialVersionUID = 1L;
+
         public Value<?> normalize( Value<?> value ) throws LdapException
         {
             if ( value.isBinary() )
@@ -94,6 +96,8 @@ public class BinaryValueTest
      */
     private static final Normalizer BINARY_NORMALIZER_EMPTY = new Normalizer( "1.1.1" )
     {
+        private static final long serialVersionUID = 1L;
+
         public Value<?> normalize( Value<?> value ) throws LdapException
         {
             if ( value.isBinary() )
@@ -113,6 +117,8 @@ public class BinaryValueTest
     
     private static final SyntaxChecker BINARY_CHECKER = new SyntaxChecker( "1.1.1" )
     {
+        private static final long serialVersionUID = 1L;
+
         public boolean isValidSyntax( Object value )
         {
             if ( value == null )

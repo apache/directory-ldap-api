@@ -84,6 +84,8 @@ import org.apache.directory.shared.util.exception.NotImplementedException;
 @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class DITStructureRule extends AbstractSchemaObject
 {
+    private static final long serialVersionUID = 1L;
+
     /** The rule ID. A DSR does not have an OID */
     private int ruleId;
 

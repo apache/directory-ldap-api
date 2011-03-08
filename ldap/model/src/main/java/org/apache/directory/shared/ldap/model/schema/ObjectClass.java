@@ -79,6 +79,8 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class ObjectClass extends AbstractSchemaObject
 {
+    private static final long serialVersionUID = 1L;
+
     /** The ObjectClass type : ABSTRACT, AUXILIARY or STRUCTURAL */
     private ObjectClassTypeEnum objectClassType = ObjectClassTypeEnum.STRUCTURAL;
 

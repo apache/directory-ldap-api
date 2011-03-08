@@ -88,6 +88,8 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class MatchingRuleUse extends AbstractSchemaObject
 {
+    private static final long serialVersionUID = 1L;
+
     /** The list of attributes types OID the matching rule applies to */
     private List<String> applicableAttributeOids;
 

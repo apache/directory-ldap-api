@@ -32,6 +32,8 @@ import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
  */
 public class NormalizerDescription extends LoadableSchemaObject
 {
+    private static final long serialVersionUID = 1L;
+
     /**
      * Default constructor for a NormalizerDecription
      * @param oid The SyntaxChecker OID

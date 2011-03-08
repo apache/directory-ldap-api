@@ -119,6 +119,8 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class DITContentRule extends AbstractSchemaObject
 {
+    private static final long serialVersionUID = 1L;
+
     /** The list of Auxiliary ObjectClass OIDs entries may belong to */
     private List<String> auxObjectClassOids;
 
