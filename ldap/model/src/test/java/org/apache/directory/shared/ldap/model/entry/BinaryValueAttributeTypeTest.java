@@ -136,7 +136,7 @@ public class BinaryValueAttributeTypeTest
         try
         {
             oOut = new ObjectOutputStream( out );
-            value.serialize( oOut );
+            BinaryValue.serialize( value, oOut );
         }
         catch ( IOException ioe )
         {
@@ -174,8 +174,7 @@ public class BinaryValueAttributeTypeTest
         {
             oIn = new ObjectInputStream( in );
 
-            BinaryValue value = new BinaryValue( at );
-            value.deserialize( oIn );
+            BinaryValue value = BinaryValue.deserialize( null, oIn );
 
             return value;
         }

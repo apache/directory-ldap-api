@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>20</version>
+    <version>21</version>
     <relativePath/>
   </parent>
 
@@ -53,12 +53,14 @@
     <mina.core.version>2.0.2</mina.core.version>
     <org.osgi.version>3.0.0</org.osgi.version>
     <org.osgi.core.version>4.2.0</org.osgi.core.version>
-    <org.apache.felix.version>3.0.2</org.apache.felix.version>
+    <org.apache.felix.version>3.0.9</org.apache.felix.version>
     <slf4j.api.version>1.6.1</slf4j.api.version>
     <slf4j.log4j12.version>1.6.1</slf4j.log4j12.version>
     <xml.apis.version>2.0.2</xml.apis.version>
     <xpp3.version>1.1.4c</xpp3.version>
-    <pax-exam.version>1.2.3</pax-exam.version>
+    <pax-exam.version>2.0.0-M1</pax-exam.version>
+    <pax-exam-container-default.version>1.2.4</pax-exam-container-default.version>
+    <pax-exam-junit.version>1.2.4</pax-exam-junit.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
   </properties>
   
@@ -113,13 +115,14 @@
               <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
               <exclude>**/dependency-reduced-pom.xml</exclude>
               <!-- Generated ldif files -->
-              <exclude>ldap-schema/src/main/resources/schema/**</exclude>
-              <exclude>ldap-schema/src/main/resources/schema-all.ldif</exclude>
+              <exclude>ldap/schema/data/src/main/resources/schema/**</exclude>
+              <exclude>ldap/schema/data/src/main/resources/schema-all.ldif</exclude>
+              <exclude>schema/data/src/main/resources/schema/**</exclude>
+              <exclude>schema/data/src/main/resources/schema-all.ldif</exclude>
+              <exclude>data/src/main/resources/schema/**</exclude>
+              <exclude>data/src/main/resources/schema-all.ldif</exclude>
               <exclude>src/main/resources/schema/**</exclude>
               <exclude>src/main/resources/schema-all.ldif</exclude>
-              <!-- Files having a Bouncy Castle license -->
-              <exclude>ldap/src/main/java/org/apache/directory/shared/asn1/der/*.java</exclude>
-              <exclude>src/main/java/org/apache/directory/shared/asn1/der/*.java</exclude>
             </excludes>
           </configuration>
          </plugin>
@@ -150,20 +153,20 @@
           <reportPlugins>
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-surefire-report-plugin</artifactId>
-              <configuration>
-                <aggregate>true</aggregate>
-              </configuration>
-            </plugin>
-      
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-jxr-plugin</artifactId>
               <configuration>
                   <aggregate>true</aggregate>
               </configuration>
             </plugin>
        
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-report-plugin</artifactId>
+              <configuration>
+                <aggregate>true</aggregate>
+              </configuration>
+            </plugin>
+      
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-pmd-plugin</artifactId>
@@ -537,14 +540,14 @@
       <dependency>
         <groupId>org.ops4j.pax.exam</groupId>
         <artifactId>pax-exam-junit</artifactId>
-        <version>${pax-exam.version}</version>
+        <version>${pax-exam-junit.version}</version>
         <scope>test</scope>
       </dependency>
 
       <dependency>
         <groupId>org.ops4j.pax.exam</groupId>
         <artifactId>pax-exam-container-default</artifactId>
-        <version>${pax-exam.version}</version>
+        <version>${pax-exam-container-default.version}</version>
         <scope>test</scope>
       </dependency>
 
