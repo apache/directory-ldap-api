@@ -79,14 +79,6 @@ public interface SchemaObject
 
 
     /**
-     * A special method used when renaming an SchemaObject: we may have to
-     * change it's OID
-     * @param oid The new OID
-     */
-    void setOid( String oid );
-
-
-    /**
      * Gets short names for this SchemaObject if any exists for it, otherwise,
      * returns an empty list.
      * 
@@ -106,46 +98,6 @@ public interface SchemaObject
 
 
     /**
-     * Inject this SchemaObject into the given registries, updating the references to
-     * other SchemaObject
-     *
-     * @param errors the errors we got
-     * @param registries the registries
-     * @throws LdapException if one of the referenced schema objects does not exist
-     */
-    void addToRegistries( List<Throwable> errors, Registries registries ) throws LdapException;
-
-
-    /**
-     * Remove this SchemaObject from the given registries, updating the references to
-     * other SchemaObject.
-     *
-     * @param errors the errors we got
-     * @param registries The registries
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException if one of the referenced schema objects does not exist
-     */
-    void removeFromRegistries( List<Throwable> errors, Registries registries ) throws LdapException;
-
-
-    /**
-     * Add a new name to the list of names for this SchemaObject. The name
-     * is lower cased and trimmed.
-     *  
-     * @param names The names to add
-     */
-    void addName( String... names );
-
-
-    /**
-     * Sets the list of names for this SchemaObject. The names are
-     * lower cased and trimmed.
-     *  
-     * @param names The list of names. Can be empty
-     */
-    void setNames( List<String> names );
-
-
-    /**
      * Gets a short description about this SchemaObject.
      * 
      * @return a short description about this SchemaObject
@@ -154,27 +106,11 @@ public interface SchemaObject
 
 
     /**
-     * Sets the SchemaObject's description
-     * 
-     * @param description The SchemaObject's description
-     */
-    void setDescription( String description );
-
-
-    /**
      * Gets the SchemaObject specification.
      * 
      * @return the SchemaObject specification
      */
     String getSpecification();
-
-
-    /**
-     * Sets the SchemaObject's specification
-     * 
-     * @param specification The SchemaObject's specification
-     */
-    void setSpecification( String specification );
 
 
     /**
@@ -195,27 +131,11 @@ public interface SchemaObject
 
 
     /**
-     * Sets the SchemaObject state, either enabled or disabled.
-     * 
-     * @param enabled The current SchemaObject state
-     */
-    void setEnabled( boolean enabled );
-
-
-    /**
      * Tells if this SchemaObject is ReadOnly.
      *  
      * @return true if the SchemaObject is not modifiable
      */
     boolean isReadOnly();
-
-
-    /**
-     * Sets the SchemaObject readOnly flag
-     * 
-     * @param isReadOnly The current SchemaObject ReadOnly status
-     */
-    void setReadOnly( boolean isReadOnly );
 
 
     /**
@@ -230,35 +150,30 @@ public interface SchemaObject
 
 
     /**
+     * @return The SchemaObject extensions, as a Map of [extension, values]
+     */
+    Map<String, List<String>> getExtensions();
+
+    
+    /**
+     * Gets the name of the schema this SchemaObject is associated with.
+     *
+     * @return the name of the schema associated with this schemaObject
+     */
+    String getSchemaName();
+
+
+    // -------------- STUFF THAT NEEDS TO GO -----------------
+
+    
+    /**
      * Sets the Obsolete flag.
      * 
      * @param obsolete The Obsolete flag state
      */
     void setObsolete( boolean obsolete );
 
-
-    /**
-     * @return The SchemaObject extensions, as a Map of [extension, values]
-     */
-    Map<String, List<String>> getExtensions();
-
-
-    /**
-     * Add an extension with its values
-     * @param key The extension key
-     * @param values The associated values
-     */
-    void addExtension( String key, List<String> values );
-
-
-    /**
-     * Add an extensions with their values. (Actually do a copy)
-     * 
-     * @param extensions The extensions map
-     */
-    void setExtensions( Map<String, List<String>> extensions );
-
-
+    
     /**
      * The SchemaObject type :
      * <li> AttributeType
@@ -279,22 +194,6 @@ public interface SchemaObject
 
 
     /**
-     * Gets the name of the schema this SchemaObject is associated with.
-     *
-     * @return the name of the schema associated with this schemaObject
-     */
-    String getSchemaName();
-
-
-    /**
-     * Sets the name of the schema this SchemaObject is associated with.
-     * 
-     * @param schemaName the new schema name
-     */
-    void setSchemaName( String schemaName );
-
-
-    /**
      * {@inheritDoc}
      */
     int hashCode();
@@ -304,16 +203,6 @@ public interface SchemaObject
      * {@inheritDoc}
      */
     boolean equals( Object o1 );
-
-
-    /**
-     * Register the given SchemaObject into the given registries' globalOidRegistry
-     *
-     * @param schemaObject the SchemaObject we want to register
-     * @param registries The registries in which we want it to be stored
-     * @throws LdapException If the OID is invalid
-     */
-    void registerOid( SchemaObject schemaObject, Registries registries ) throws LdapException;
 
 
     /**
@@ -339,7 +228,121 @@ public interface SchemaObject
      */
     void clear();
 
+    
+    /**
+     * Sets the SchemaObject readOnly flag
+     * 
+     * @param isReadOnly The current SchemaObject ReadOnly status
+     */
+    void setReadOnly( boolean isReadOnly );
 
+
+    /**
+     * Sets the SchemaObject state, either enabled or disabled.
+     * 
+     * @param enabled The current SchemaObject state
+     */
+    void setEnabled( boolean enabled );
+
+
+    /**
+     * Sets the SchemaObject's description
+     * 
+     * @param description The SchemaObject's description
+     */
+    void setDescription( String description );
+
+
+    /**
+     * A special method used when renaming an SchemaObject: we may have to
+     * change it's OID
+     * @param oid The new OID
+     */
+    void setOid( String oid );
+
+
+    /**
+     * Add a new name to the list of names for this SchemaObject. The name
+     * is lower cased and trimmed.
+     *  
+     * @param names The names to add
+     */
+    void addName( String... names );
+
+
+    /**
+     * Sets the list of names for this SchemaObject. The names are
+     * lower cased and trimmed.
+     *  
+     * @param names The list of names. Can be empty
+     */
+    void setNames( List<String> names );
+
+
+    /**
+     * Sets the SchemaObject's specification
+     * 
+     * @param specification The SchemaObject's specification
+     */
+    void setSpecification( String specification );
+
+
+    /**
+     * Add an extension with its values
+     * @param key The extension key
+     * @param values The associated values
+     */
+    void addExtension( String key, List<String> values );
+
+
+    /**
+     * Add an extensions with their values. (Actually do a copy)
+     * 
+     * @param extensions The extensions map
+     */
+    void setExtensions( Map<String, List<String>> extensions );
+
+
+    /**
+     * Sets the name of the schema this SchemaObject is associated with.
+     * 
+     * @param schemaName the new schema name
+     */
+    void setSchemaName( String schemaName );
+
+
+    /**
+     * Register the given SchemaObject into the given registries' globalOidRegistry
+     *
+     * @param schemaObject the SchemaObject we want to register
+     * @param registries The registries in which we want it to be stored
+     * @throws LdapException If the OID is invalid
+     */
+    void registerOid( SchemaObject schemaObject, Registries registries ) throws LdapException;
+
+
+    /**
+     * Inject this SchemaObject into the given registries, updating the references to
+     * other SchemaObject
+     *
+     * @param errors the errors we got
+     * @param registries the registries
+     * @throws LdapException if one of the referenced schema objects does not exist
+     */
+    void addToRegistries( List<Throwable> errors, Registries registries ) throws LdapException;
+
+
+    /**
+     * Remove this SchemaObject from the given registries, updating the references to
+     * other SchemaObject.
+     *
+     * @param errors the errors we got
+     * @param registries The registries
+     * @throws org.apache.directory.shared.ldap.model.exception.LdapException if one of the referenced schema objects does not exist
+     */
+    void removeFromRegistries( List<Throwable> errors, Registries registries ) throws LdapException;
+
+    
     /**
      * Inject the Registries into the SchemaObject
      *
