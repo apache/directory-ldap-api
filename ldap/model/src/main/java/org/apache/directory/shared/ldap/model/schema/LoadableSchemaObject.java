@@ -135,7 +135,7 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
     /**
      * {@inheritDoc}
      */
-    public void registerOid( SchemaObject schemaObject, Registries registries ) throws LdapException
+    public void registerOid( MutableSchemaObject schemaObject, Registries registries ) throws LdapException
     {
         // Do nothing : the current SchemaObject ha sthe same OID than the one it is realted to
     }

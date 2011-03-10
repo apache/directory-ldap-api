@@ -32,7 +32,7 @@ import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface SchemaObjectRegistry<T extends SchemaObject>
+public interface SchemaObjectRegistry<T extends SchemaObject> extends Iterable<T>
 {
     /**
      * Checks to see if an SchemaObject exists in the registry, by its
@@ -62,16 +62,6 @@ public interface SchemaObjectRegistry<T extends SchemaObject>
      * @return The SchemaObject, if any. Null otherwise
      */
     T get( String oid );
-
-
-    /**
-     * Modify all the SchemaObject using a schemaName when this name changes.
-     *
-     * @param originalSchemaName The original Schema name
-     * @param newSchemaName The new Schema name
-     * @throws LdapException if the schema object does not exist
-     */
-    void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException;
 
 
     /**

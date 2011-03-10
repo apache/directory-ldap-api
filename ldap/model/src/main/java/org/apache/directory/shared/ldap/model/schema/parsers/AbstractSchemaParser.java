@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.util.Strings;
 
@@ -125,7 +126,7 @@ public abstract class AbstractSchemaParser
      *
      * @param schemaObject the schema object where the name should be updated
      */
-    protected static void updateSchemaName( SchemaObject schemaObject )
+    protected static void updateSchemaName( MutableSchemaObject schemaObject )
     {
         // Update the Schema if we have the X-SCHEMA extension
         List<String> schemaExtension = schemaObject.getExtensions().get( MetaSchemaConstants.X_SCHEMA );

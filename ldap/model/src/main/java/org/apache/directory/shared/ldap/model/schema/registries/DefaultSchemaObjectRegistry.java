@@ -30,6 +30,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaExceptionCodes;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 import org.apache.directory.shared.util.Strings;
@@ -108,28 +109,6 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         String msg = I18n.err( I18n.ERR_04268, oid );
         LOG.warn( msg );
         throw new LdapException( msg );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void renameSchema( String originalSchemaName, String newSchemaName )
-    {
-        // Loop on all the SchemaObjects stored and remove those associated
-        // with the give schemaName
-        for ( T schemaObject : this )
-        {
-            if ( originalSchemaName.equalsIgnoreCase( schemaObject.getSchemaName() ) )
-            {
-                schemaObject.setSchemaName( newSchemaName );
-
-                if ( DEBUG )
-                {
-                    LOG.debug( "Renamed {} schemaName to {}", schemaObject, newSchemaName );
-                }
-            }
-        }
     }
 
 
@@ -358,8 +337,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     /**
      * {@inheritDoc}
      */
-    // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings({ "PMD.EmptyCatchBlock", "unchecked" })
+    @SuppressWarnings("unchecked")
     public SchemaObjectRegistry<T> copy( SchemaObjectRegistry<T> original )
     {
         // Fill the byName and OidRegistry maps, the type has already be copied
@@ -477,6 +455,10 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
 
     /**
      * {@inheritDoc}
+     * 
+     * @TODO akarasulu - this method also clears the SchemaObject as a side 
+     * effect, perhaps it should not and stick to only it's scope of clearing 
+     * this registry?
      */
     public void clear()
     {
@@ -486,7 +468,10 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
             // Don't clear LoadableSchemaObject
             if ( !( schemaObject instanceof LoadableSchemaObject ) )
             {
-                schemaObject.clear();
+                if ( schemaObject instanceof MutableSchemaObject )
+                {
+                    ( ( MutableSchemaObject ) schemaObject ).clear();
+                }
             }
         }
 

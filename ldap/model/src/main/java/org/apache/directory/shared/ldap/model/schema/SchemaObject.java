@@ -23,48 +23,10 @@ package org.apache.directory.shared.ldap.model.schema;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 
-
-/**
- * Most schema objects have some common attributes. This class
- * contains the minimum set of properties exposed by a SchemaObject.<br> 
- * We have 11 types of SchemaObjects :
- * <li> AttributeType
- * <li> DitCOntentRule
- * <li> DitStructureRule
- * <li> LdapComparator (specific to ADS)
- * <li> LdapSyntaxe
- * <li> MatchingRule
- * <li> MatchingRuleUse
- * <li> NameForm
- * <li> Normalizer (specific to ADS)
- * <li> ObjectClass
- * <li> SyntaxChecker (specific to ADS)
- * <br>
- * <br>
- * This class provides accessors and setters for the following attributes, 
- * which are common to all those SchemaObjects :
- * <li>oid : The numeric OID 
- * <li>description : The SchemaObject description
- * <li>obsolete : Tells if the schema object is obsolete
- * <li>extensions : The extensions, a key/Values map
- * <li>schemaObjectType : The SchemaObject type (see upper)
- * <li>schema : The schema the SchemaObject is associated with (it's an extension).
- * Can be null
- * <li>isEnabled : The SchemaObject status (it's related to the schema status)
- * <li>isReadOnly : Tells if the SchemaObject can be modified or not
- * <br><br>
- * Some of those attributes are not used by some Schema elements, even if they should
- * have been used. Here is the list :
- * <b>name</b> : LdapSyntax, Comparator, Normalizer, SyntaxChecker
- * <b>numericOid</b> : DitStructureRule, 
- * <b>obsolete</b> : LdapSyntax, Comparator, Normalizer, SyntaxChecker
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- */
 public interface SchemaObject
 {
+
     /**
      * Gets usually what is the numeric object identifier assigned to this
      * SchemaObject. All schema objects except for MatchingRuleUses have an OID
@@ -75,7 +37,7 @@ public interface SchemaObject
      * @return an OID for this SchemaObject or its MatchingRule if this
      *         SchemaObject is a MatchingRuleUse object
      */
-    String getOid();
+    public abstract String getOid();
 
 
     /**
@@ -84,7 +46,7 @@ public interface SchemaObject
      * 
      * @return the names for this SchemaObject
      */
-    List<String> getNames();
+    public abstract List<String> getNames();
 
 
     /**
@@ -94,7 +56,7 @@ public interface SchemaObject
      * @return the first of the names for this SchemaObject or the oid
      * if one does not exist
      */
-    String getName();
+    public abstract String getName();
 
 
     /**
@@ -102,7 +64,7 @@ public interface SchemaObject
      * 
      * @return a short description about this SchemaObject
      */
-    String getDescription();
+    public abstract String getDescription();
 
 
     /**
@@ -110,7 +72,7 @@ public interface SchemaObject
      * 
      * @return the SchemaObject specification
      */
-    String getSpecification();
+    public abstract String getSpecification();
 
 
     /**
@@ -119,7 +81,7 @@ public interface SchemaObject
      * @return true if the SchemaObject is enabled, or if it depends on 
      * an enabled schema
      */
-    boolean isEnabled();
+    public abstract boolean isEnabled();
 
 
     /**
@@ -127,7 +89,7 @@ public interface SchemaObject
      *  
      * @return true if the SchemaObject is disabled
      */
-    boolean isDisabled();
+    public abstract boolean isDisabled();
 
 
     /**
@@ -135,7 +97,7 @@ public interface SchemaObject
      *  
      * @return true if the SchemaObject is not modifiable
      */
-    boolean isReadOnly();
+    public abstract boolean isReadOnly();
 
 
     /**
@@ -146,34 +108,23 @@ public interface SchemaObject
      * 
      * @return true if inactive, false if active
      */
-    boolean isObsolete();
+    public abstract boolean isObsolete();
 
 
     /**
      * @return The SchemaObject extensions, as a Map of [extension, values]
      */
-    Map<String, List<String>> getExtensions();
+    public abstract Map<String, List<String>> getExtensions();
 
-    
+
     /**
      * Gets the name of the schema this SchemaObject is associated with.
      *
      * @return the name of the schema associated with this schemaObject
      */
-    String getSchemaName();
+    public abstract String getSchemaName();
 
 
-    // -------------- STUFF THAT NEEDS TO GO -----------------
-
-    
-    /**
-     * Sets the Obsolete flag.
-     * 
-     * @param obsolete The Obsolete flag state
-     */
-    void setObsolete( boolean obsolete );
-
-    
     /**
      * The SchemaObject type :
      * <li> AttributeType
@@ -190,19 +141,7 @@ public interface SchemaObject
      * 
      * @return the SchemaObject type
      */
-    SchemaObjectType getObjectType();
-
-
-    /**
-     * {@inheritDoc}
-     */
-    int hashCode();
-
-
-    /**
-     * {@inheritDoc}
-     */
-    boolean equals( Object o1 );
+    public abstract SchemaObjectType getObjectType();
 
 
     /**
@@ -210,151 +149,5 @@ public interface SchemaObject
      *
      * @return The copied SchemaObject
      */
-    SchemaObject copy();
-
-
-    /**
-     * Copies the given schema object into this schema object.
-     *
-     * @param original the original SchemaObject
-     * @return this
-     */
-    SchemaObject copy( SchemaObject original );
-
-
-    /**
-     * Clear the current SchemaObject : remove all the references to other objects, 
-     * and all the Maps. 
-     */
-    void clear();
-
-    
-    /**
-     * Sets the SchemaObject readOnly flag
-     * 
-     * @param isReadOnly The current SchemaObject ReadOnly status
-     */
-    void setReadOnly( boolean isReadOnly );
-
-
-    /**
-     * Sets the SchemaObject state, either enabled or disabled.
-     * 
-     * @param enabled The current SchemaObject state
-     */
-    void setEnabled( boolean enabled );
-
-
-    /**
-     * Sets the SchemaObject's description
-     * 
-     * @param description The SchemaObject's description
-     */
-    void setDescription( String description );
-
-
-    /**
-     * A special method used when renaming an SchemaObject: we may have to
-     * change it's OID
-     * @param oid The new OID
-     */
-    void setOid( String oid );
-
-
-    /**
-     * Add a new name to the list of names for this SchemaObject. The name
-     * is lower cased and trimmed.
-     *  
-     * @param names The names to add
-     */
-    void addName( String... names );
-
-
-    /**
-     * Sets the list of names for this SchemaObject. The names are
-     * lower cased and trimmed.
-     *  
-     * @param names The list of names. Can be empty
-     */
-    void setNames( List<String> names );
-
-
-    /**
-     * Sets the SchemaObject's specification
-     * 
-     * @param specification The SchemaObject's specification
-     */
-    void setSpecification( String specification );
-
-
-    /**
-     * Add an extension with its values
-     * @param key The extension key
-     * @param values The associated values
-     */
-    void addExtension( String key, List<String> values );
-
-
-    /**
-     * Add an extensions with their values. (Actually do a copy)
-     * 
-     * @param extensions The extensions map
-     */
-    void setExtensions( Map<String, List<String>> extensions );
-
-
-    /**
-     * Sets the name of the schema this SchemaObject is associated with.
-     * 
-     * @param schemaName the new schema name
-     */
-    void setSchemaName( String schemaName );
-
-
-    /**
-     * Register the given SchemaObject into the given registries' globalOidRegistry
-     *
-     * @param schemaObject the SchemaObject we want to register
-     * @param registries The registries in which we want it to be stored
-     * @throws LdapException If the OID is invalid
-     */
-    void registerOid( SchemaObject schemaObject, Registries registries ) throws LdapException;
-
-
-    /**
-     * Inject this SchemaObject into the given registries, updating the references to
-     * other SchemaObject
-     *
-     * @param errors the errors we got
-     * @param registries the registries
-     * @throws LdapException if one of the referenced schema objects does not exist
-     */
-    void addToRegistries( List<Throwable> errors, Registries registries ) throws LdapException;
-
-
-    /**
-     * Remove this SchemaObject from the given registries, updating the references to
-     * other SchemaObject.
-     *
-     * @param errors the errors we got
-     * @param registries The registries
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException if one of the referenced schema objects does not exist
-     */
-    void removeFromRegistries( List<Throwable> errors, Registries registries ) throws LdapException;
-
-    
-    /**
-     * Inject the Registries into the SchemaObject
-     *
-     * @param registries The Registries
-     */
-    void setRegistries( Registries registries );
-    
-    
-    /**
-     * Transform the SchemaObject to an immutable object
-     * TODO locked.
-     *
-     */
-    void lock();
+    <R extends SchemaObject> R copy();
 }

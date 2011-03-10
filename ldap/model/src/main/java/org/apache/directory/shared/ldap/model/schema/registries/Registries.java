@@ -49,6 +49,7 @@ import org.apache.directory.shared.ldap.model.schema.NameForm;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectWrapper;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
@@ -101,7 +102,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     protected NormalizerRegistry normalizerRegistry;
 
     /** The global OID registry */
-    protected OidRegistry<SchemaObject> globalOidRegistry;
+    protected OidRegistry<MutableSchemaObject> globalOidRegistry;
 
     /** The SyntaxChecker registry */
     protected SyntaxCheckerRegistry syntaxCheckerRegistry;
@@ -147,7 +148,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     public Registries( SchemaManager schemaManager )
     {
-        globalOidRegistry = new OidRegistry<SchemaObject>();
+        globalOidRegistry = new OidRegistry<MutableSchemaObject>();
         attributeTypeRegistry = new DefaultAttributeTypeRegistry();
         comparatorRegistry = new DefaultComparatorRegistry();
         ditContentRuleRegistry = new DefaultDITContentRuleRegistry();
@@ -253,7 +254,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * @return The global Oid registry
      */
-    public OidRegistry<SchemaObject> getGlobalOidRegistry()
+    public OidRegistry<MutableSchemaObject> getGlobalOidRegistry()
     {
         return globalOidRegistry;
     }
@@ -722,7 +723,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Build the SchemaObject references
      */
-    public void buildReference( List<Throwable> errors, SchemaObject schemaObject )
+    public void buildReference( List<Throwable> errors, MutableSchemaObject schemaObject )
     {
         try
         {
@@ -743,7 +744,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Unlink the SchemaObject references
      */
-    public void removeReference( List<Throwable> errors, SchemaObject schemaObject )
+    public void removeReference( List<Throwable> errors, MutableSchemaObject schemaObject )
     {
         try
         {
@@ -1358,7 +1359,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Applies the added SchemaObject to the given register
      */
-    public List<Throwable> add( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
+    public List<Throwable> add( List<Throwable> errors, MutableSchemaObject schemaObject ) throws LdapException
     {
         // Relax the registries
         boolean wasRelaxed = isRelaxed;
@@ -1405,7 +1406,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         setRelaxed();
 
         // Remove the SchemaObject from the registries
-        SchemaObject removed = unregister( errors, schemaObject );
+        MutableSchemaObject removed = unregister( errors, schemaObject );
 
         // Remove the SchemaObject from its schema
         dissociateFromSchema( errors, removed );
@@ -1502,7 +1503,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param schemaObject The schemaObject we are looking for
      * @return true if the schemaObject is present in a schema
      */
-    public boolean contains( SchemaObject schemaObject )
+    public boolean contains( MutableSchemaObject schemaObject )
     {
         String schemaName = schemaObject.getSchemaName();
 
@@ -1624,7 +1625,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param schemaObject The schemaObject to register
      * @throws LdapException If there is a problem
      */
-    public void associateWithSchema( List<Throwable> errors, SchemaObject schemaObject )
+    public void associateWithSchema( List<Throwable> errors, MutableSchemaObject schemaObject )
     {
         LOG.debug( "Registering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
@@ -1693,7 +1694,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @throws LdapException If there is a problem
      */
 
-    public void dissociateFromSchema( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
+    public void dissociateFromSchema( List<Throwable> errors, MutableSchemaObject schemaObject ) throws LdapException
     {
         LOG.debug( "Unregistering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
@@ -1758,7 +1759,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     // Remove me when TODO is implemented
     @SuppressWarnings(
         { "PMD.UnusedFormalParameter", "PMD.EmptyIfStmt" })
-    private SchemaObject unregister( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
+    private MutableSchemaObject unregister( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
     {
         LOG.debug( "Unregistering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
@@ -1778,7 +1779,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             }
         }
 
-        SchemaObject unregistered = null;
+        MutableSchemaObject unregistered = null;
 
         // First call the specific registry's register method
         switch ( schemaObject.getObjectType() )
@@ -1839,7 +1840,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param schemaObject The schemaObject to remove
      * @throws LdapException If there is a problem
      */
-    public void dissociateFromSchema( SchemaObject schemaObject ) throws LdapException
+    public void dissociateFromSchema( MutableSchemaObject schemaObject ) throws LdapException
     {
         // And unregister the schemaObject within its schema
         Set<SchemaObjectWrapper> content = schemaObjects.get( Strings.toLowerCase( schemaObject.getSchemaName() ) );
@@ -1879,7 +1880,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param schemaObject The SchemaObject we are looking for
      * @return true if there is at least one SchemaObjetc referencing the given one
      */
-    public boolean isReferenced( SchemaObject schemaObject )
+    public boolean isReferenced( MutableSchemaObject schemaObject )
     {
         SchemaObjectWrapper wrapper = new SchemaObjectWrapper( schemaObject );
 
@@ -1909,7 +1910,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param schemaObject The SchemaObject we are looking for
      * @return The Set of referencing SchemaObject, or null 
      */
-    public Set<SchemaObjectWrapper> getUsedBy( SchemaObject schemaObject )
+    public Set<SchemaObjectWrapper> getUsedBy( MutableSchemaObject schemaObject )
     {
         SchemaObjectWrapper wrapper = new SchemaObjectWrapper( schemaObject );
 
@@ -1995,7 +1996,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param schemaObject The SchemaObject we are looking for
      * @return The Set of referenced SchemaObject, or null 
      */
-    public Set<SchemaObjectWrapper> getUsing( SchemaObject schemaObject )
+    public Set<SchemaObjectWrapper> getUsing( MutableSchemaObject schemaObject )
     {
         SchemaObjectWrapper wrapper = new SchemaObjectWrapper( schemaObject );
 
@@ -2009,7 +2010,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param reference The base SchemaObject
      * @param referee The SchemaObject pointing on the reference
      */
-    private void addUsing( SchemaObject reference, SchemaObject referee )
+    private void addUsing( MutableSchemaObject reference, MutableSchemaObject referee )
     {
         if ( ( reference == null ) || ( referee == null ) )
         {
@@ -2038,7 +2039,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param base The base SchemaObject
      * @param referenced The referenced SchemaObject
      */
-    public void addReference( SchemaObject base, SchemaObject referenced )
+    public void addReference( MutableSchemaObject base, MutableSchemaObject referenced )
     {
         if ( LOG.isDebugEnabled() )
         {
@@ -2062,7 +2063,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param reference The base SchemaObject
      * @param referee The SchemaObject pointing on the reference
      */
-    private void addUsedBy( SchemaObject referee, SchemaObject reference )
+    private void addUsedBy( MutableSchemaObject referee, MutableSchemaObject reference )
     {
         if ( ( reference == null ) || ( referee == null ) )
         {
@@ -2091,7 +2092,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param reference The base SchemaObject
      * @param referee The SchemaObject pointing on the reference
      */
-    private void delUsing( SchemaObject reference, SchemaObject referee )
+    private void delUsing( MutableSchemaObject reference, MutableSchemaObject referee )
     {
         if ( ( reference == null ) || ( referee == null ) )
         {
@@ -2126,7 +2127,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param reference The base SchemaObject
      * @param referee The SchemaObject pointing on the reference
      */
-    private void delUsedBy( SchemaObject referee, SchemaObject reference )
+    private void delUsedBy( MutableSchemaObject referee, MutableSchemaObject reference )
     {
         if ( ( reference == null ) || ( referee == null ) )
         {
@@ -2161,7 +2162,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param base The base SchemaObject
      * @param referenced The referenced SchemaObject
      */
-    public void delReference( SchemaObject base, SchemaObject referenced )
+    public void delReference( MutableSchemaObject base, MutableSchemaObject referenced )
     {
         if ( LOG.isDebugEnabled() )
         {
@@ -2189,7 +2190,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     }
 
 
-    private boolean checkReferences( SchemaObject reference, SchemaObject referee, String message )
+    private boolean checkReferences( MutableSchemaObject reference, MutableSchemaObject referee, String message )
     {
         SchemaObjectWrapper referenceWrapper = new SchemaObjectWrapper( reference );
         SchemaObjectWrapper refereeWrapper = new SchemaObjectWrapper( referee );
@@ -2613,13 +2614,13 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
             for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjects.get( schemaName ) )
             {
-                SchemaObject original = schemaObjectWrapper.get();
+                MutableSchemaObject original = schemaObjectWrapper.get();
 
                 try
                 {
                     if ( !( original instanceof LoadableSchemaObject ) )
                     {
-                        SchemaObject copy = clone.globalOidRegistry.getSchemaObject( original.getOid() );
+                        MutableSchemaObject copy = clone.globalOidRegistry.getSchemaObject( original.getOid() );
                         SchemaObjectWrapper newWrapper = new SchemaObjectWrapper( copy );
                         objects.add( newWrapper );
                     }
@@ -2703,7 +2704,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param schemaObject The SchemaObject to remove
      * @return The list of SchemaObjects referencing the SchemaObjetc we want to remove
      */
-    public Set<SchemaObjectWrapper> getReferencing( SchemaObject schemaObject )
+    public Set<SchemaObjectWrapper> getReferencing( MutableSchemaObject schemaObject )
     {
         SchemaObjectWrapper schemaObjectWrapper = new SchemaObjectWrapper( schemaObject );
 

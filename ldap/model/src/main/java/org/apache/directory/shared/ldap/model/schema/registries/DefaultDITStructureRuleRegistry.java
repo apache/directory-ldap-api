@@ -27,7 +27,7 @@ import java.util.Map;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
-import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -183,7 +183,7 @@ public class DefaultDITStructureRuleRegistry extends DefaultSchemaObjectRegistry
             if ( schemaName.equalsIgnoreCase( ditStructureRule.getSchemaName() ) )
             {
                 int ruleId = ditStructureRule.getRuleId();
-                SchemaObject removed = byRuleId.remove( ruleId );
+                MutableSchemaObject removed = byRuleId.remove( ruleId );
 
                 if ( DEBUG )
                 {

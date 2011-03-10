@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.model.schema.registries;
 
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.slf4j.Logger;
@@ -69,7 +69,7 @@ public class DefaultSyntaxCheckerRegistry extends DefaultSchemaObjectRegistry<Sy
             if ( schemaName.equalsIgnoreCase( syntaxChecker.getSchemaName() ) )
             {
                 String oid = syntaxChecker.getOid();
-                SchemaObject removed = unregister( oid );
+                MutableSchemaObject removed = unregister( oid );
 
                 if ( DEBUG )
                 {

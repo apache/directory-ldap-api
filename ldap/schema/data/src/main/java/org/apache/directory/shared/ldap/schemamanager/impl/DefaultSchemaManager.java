@@ -50,6 +50,7 @@ import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectWrapper;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
@@ -280,7 +281,7 @@ public class DefaultSchemaManager implements SchemaManager
         Map<String, Set<SchemaObjectWrapper>> schemaObjects = registries.getObjectBySchemaName();
         Set<SchemaObjectWrapper> content = schemaObjects.get( Strings.toLowerCase( schema.getSchemaName() ) );
 
-        List<SchemaObject> toBeDeleted = new ArrayList<SchemaObject>();
+        List<MutableSchemaObject> toBeDeleted = new ArrayList<MutableSchemaObject>();
 
         // Buid an intermediate list to avoid concurrent modifications
         for ( SchemaObjectWrapper schemaObjectWrapper : content )
@@ -947,7 +948,7 @@ public class DefaultSchemaManager implements SchemaManager
      * @return the created schemaObject instance
      * @throws LdapException If the registering failed
      */
-    private SchemaObject addSchemaObject( Registries registries, SchemaObject schemaObject, Schema schema )
+    private SchemaObject addSchemaObject( Registries registries, MutableSchemaObject schemaObject, Schema schema )
         throws LdapException
     {
         if ( registries.isRelaxed() )
@@ -1625,7 +1626,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * Get the inner SchemaObject if it's not a C/N/SC
      */
-    private SchemaObject getSchemaObject( SchemaObject schemaObject ) throws LdapException
+    private MutableSchemaObject getSchemaObject( MutableSchemaObject schemaObject ) throws LdapException
     {
         if ( schemaObject instanceof LoadableSchemaObject )
         {
@@ -1661,9 +1662,9 @@ public class DefaultSchemaManager implements SchemaManager
     }
 
 
-    private SchemaObject copy( SchemaObject schemaObject )
+    private MutableSchemaObject copy( MutableSchemaObject schemaObject )
     {
-        SchemaObject copy = null;
+        MutableSchemaObject copy = null;
 
         if ( !( schemaObject instanceof LoadableSchemaObject ) )
         {
@@ -1695,13 +1696,13 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public boolean add( SchemaObject schemaObject ) throws LdapException
+    public boolean add( MutableSchemaObject schemaObject ) throws LdapException
     {
         // First, clear the errors
         errors.clear();
 
         // Clone the schemaObject
-        SchemaObject copy = copy( schemaObject );
+        MutableSchemaObject copy = copy( schemaObject );
 
         if ( copy == null )
         {
@@ -1820,7 +1821,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public boolean delete( SchemaObject schemaObject ) throws LdapException
+    public boolean delete( MutableSchemaObject schemaObject ) throws LdapException
     {
         // First, clear the errors
         errors.clear();
@@ -1844,7 +1845,7 @@ public class DefaultSchemaManager implements SchemaManager
             }
 
             // Get the SchemaObject to delete if it's not a LoadableSchemaObject
-            SchemaObject toDelete = getSchemaObject( schemaObject );
+            MutableSchemaObject toDelete = getSchemaObject( schemaObject );
 
             // First check that this SchemaObject does not have any referencing SchemaObjects
             Set<SchemaObjectWrapper> referencing = registries.getReferencing( toDelete );

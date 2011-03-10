@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.model.schema.registries;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
-import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +69,7 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<LdapC
             if ( schemaName.equalsIgnoreCase( comparator.getSchemaName() ) )
             {
                 String oid = comparator.getOid();
-                SchemaObject removed = unregister( oid );
+                MutableSchemaObject removed = unregister( oid );
 
                 if ( DEBUG )
                 {

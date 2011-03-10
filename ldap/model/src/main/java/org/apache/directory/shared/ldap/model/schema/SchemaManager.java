@@ -662,7 +662,7 @@ public interface SchemaManager
      * @throws LdapException if the SchemaObject is already registered or
      * the registration operation is not supported
      */
-    boolean add( SchemaObject schemaObject ) throws LdapException;
+    boolean add( MutableSchemaObject schemaObject ) throws LdapException;
 
 
     /**
@@ -676,7 +676,7 @@ public interface SchemaManager
      * @throws Exception if the SchemaObject is not registered or
      * the deletion operation is not supported
      */
-    boolean delete( SchemaObject schemaObject ) throws LdapException;
+    boolean delete( MutableSchemaObject schemaObject ) throws LdapException;
 
 
     /**

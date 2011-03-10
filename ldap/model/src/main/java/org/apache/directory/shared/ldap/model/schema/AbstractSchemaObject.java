@@ -71,7 +71,7 @@ import org.apache.directory.shared.util.Strings;
  * <b>obsolete</b> : LdapSyntax, Comparator, Normalizer, SyntaxChecker
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractSchemaObject implements SchemaObject, Serializable
+public abstract class AbstractSchemaObject implements MutableSchemaObject, Serializable
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
@@ -794,7 +794,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      * @param registries The registries in which we want it to be stored
      * @throws LdapException If the OID is invalid
      */
-    public void registerOid( SchemaObject schemaObject, Registries registries ) throws LdapException
+    public void registerOid( MutableSchemaObject schemaObject, Registries registries ) throws LdapException
     {
         // Add the SchemaObject into the globalOidRegistry
         registries.getGlobalOidRegistry().register( schemaObject );
@@ -806,7 +806,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
      *
      * @return The copied SchemaObject
      */
-    public abstract SchemaObject copy();
+    public abstract MutableSchemaObject copy();
 
 
     /**

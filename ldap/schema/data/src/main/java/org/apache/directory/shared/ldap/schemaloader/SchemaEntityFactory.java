@@ -48,6 +48,7 @@ import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
@@ -1071,7 +1072,7 @@ public class SchemaEntityFactory implements EntityFactory
      *  - isEnabled
      * @throws org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException
      */
-    private void setSchemaObjectProperties( SchemaObject schemaObject, Entry entry, Schema schema )
+    private void setSchemaObjectProperties( MutableSchemaObject schemaObject, Entry entry, Schema schema )
         throws LdapInvalidAttributeValueException
     {
         // The isObsolete field
@@ -1180,7 +1181,7 @@ public class SchemaEntityFactory implements EntityFactory
      *  - isReadOnly
      *  - isEnabled
      */
-    private void setSchemaObjectProperties( SchemaObject schemaObject, SchemaObject description, Schema schema )
+    private void setSchemaObjectProperties( MutableSchemaObject schemaObject, SchemaObject description, Schema schema )
     {
         // The isObsolete field
         schemaObject.setObsolete( description.isObsolete() );

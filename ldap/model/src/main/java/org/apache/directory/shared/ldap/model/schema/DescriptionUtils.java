@@ -837,7 +837,7 @@ public final class DescriptionUtils
     }
 
 
-    private static void getQDStrings( StringBuilder sb, List<? extends SchemaObject> schemaObjects )
+    private static void getQDStrings( StringBuilder sb, List<? extends MutableSchemaObject> schemaObjects )
     {
         if ( ( schemaObjects != null ) && ( schemaObjects.size() != 0 ) )
         {

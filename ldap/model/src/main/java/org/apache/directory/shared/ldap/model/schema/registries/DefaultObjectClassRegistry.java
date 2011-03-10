@@ -31,7 +31,7 @@ import java.util.Set;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapNoSuchAttributeException;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.SchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 
 
@@ -226,7 +226,7 @@ public class DefaultObjectClassRegistry extends DefaultSchemaObjectRegistry<Obje
     public void clear()
     {
         // Clear the contained SchemaObjects
-        for ( SchemaObject objectClass : oidRegistry )
+        for ( MutableSchemaObject objectClass : oidRegistry )
         {
             objectClass.clear();
         }
