@@ -87,7 +87,7 @@ import org.slf4j.LoggerFactory;
  */
 // super.hashCode is final
 @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
-public class MatchingRule extends AbstractSchemaObject
+public class MatchingRule extends AbstractMutableSchemaObject
 {
     private static final long serialVersionUID = 1L;
 

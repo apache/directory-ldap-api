@@ -32,12 +32,9 @@ import org.apache.directory.shared.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
-public abstract class LoadableSchemaObject extends AbstractSchemaObject
+public abstract class LoadableSchemaObject extends AbstractMutableSchemaObject
 {
-    /** The serial version UID */
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 8370373510870284033L;
 
     /** The Full Qualified Class Name */
     private String fqcn;

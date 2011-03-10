@@ -82,7 +82,7 @@ import org.apache.directory.shared.util.exception.NotImplementedException;
  */
 // super.hashCode is final
 @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
-public class DITStructureRule extends AbstractSchemaObject
+public class DITStructureRule extends AbstractMutableSchemaObject
 {
     private static final long serialVersionUID = 1L;
 

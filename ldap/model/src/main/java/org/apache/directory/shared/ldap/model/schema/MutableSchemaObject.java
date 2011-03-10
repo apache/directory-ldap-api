@@ -74,18 +74,6 @@ public interface MutableSchemaObject extends SchemaObject
 
     
     /**
-     * {@inheritDoc}
-     */
-    int hashCode();
-
-
-    /**
-     * {@inheritDoc}
-     */
-    boolean equals( Object o1 );
-
-
-    /**
      * Copies the given schema object into this schema object.
      *
      * @param original the original SchemaObject
@@ -181,16 +169,6 @@ public interface MutableSchemaObject extends SchemaObject
      * @param schemaName the new schema name
      */
     void setSchemaName( String schemaName );
-
-
-    /**
-     * Register the given SchemaObject into the given registries' globalOidRegistry
-     *
-     * @param schemaObject the SchemaObject we want to register
-     * @param registries The registries in which we want it to be stored
-     * @throws LdapException If the OID is invalid
-     */
-    void registerOid( MutableSchemaObject schemaObject, Registries registries ) throws LdapException;
 
 
     /**

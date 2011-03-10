@@ -117,7 +117,7 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
  */
 // super.hashCode is final
 @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
-public class DITContentRule extends AbstractSchemaObject
+public class DITContentRule extends AbstractMutableSchemaObject
 {
     private static final long serialVersionUID = 1L;
 

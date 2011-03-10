@@ -72,7 +72,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringS
  */
 // super.hashCode is final
 @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
-public class LdapSyntax extends AbstractSchemaObject
+public class LdapSyntax extends AbstractMutableSchemaObject
 {
     private static final long serialVersionUID = 1L;
 

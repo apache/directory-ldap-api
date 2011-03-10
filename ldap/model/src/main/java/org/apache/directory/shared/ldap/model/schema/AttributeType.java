@@ -139,7 +139,7 @@ import org.slf4j.LoggerFactory;
  * @see DescriptionUtils#getDescription(AttributeType)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AttributeType extends AbstractSchemaObject implements Cloneable
+public class AttributeType extends AbstractMutableSchemaObject implements Cloneable
 {
     private static final long serialVersionUID = 1L;
 
