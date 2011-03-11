@@ -81,6 +81,14 @@ public interface MutableSchemaObject extends SchemaObject
      */
     SchemaObject copy( SchemaObject original );
 
+    
+    /**
+     * For co-variant return type.
+     * 
+     * {@inheritDoc}
+     */
+    MutableSchemaObject copy();
+    
 
     /**
      * Clear the current SchemaObject : remove all the references to other objects, 
