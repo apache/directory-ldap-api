@@ -46,6 +46,7 @@ import org.apache.directory.shared.ldap.model.schema.EntityFactory;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableLoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -1599,7 +1600,7 @@ public class DefaultSchemaManager implements SchemaManager
      */
     private boolean checkOidExist( SchemaObject schemaObject )
     {
-        if ( !( schemaObject instanceof LoadableSchemaObject ) )
+        if ( !( schemaObject instanceof MutableLoadableSchemaObject ) )
         {
             return registries.getGlobalOidRegistry().contains( schemaObject.getOid() );
         }
@@ -1628,7 +1629,7 @@ public class DefaultSchemaManager implements SchemaManager
      */
     private MutableSchemaObject getSchemaObject( MutableSchemaObject schemaObject ) throws LdapException
     {
-        if ( schemaObject instanceof LoadableSchemaObject )
+        if ( schemaObject instanceof MutableLoadableSchemaObject )
         {
             return schemaObject;
         }
@@ -1666,7 +1667,7 @@ public class DefaultSchemaManager implements SchemaManager
     {
         MutableSchemaObject copy = null;
 
-        if ( !( schemaObject instanceof LoadableSchemaObject ) )
+        if ( !( schemaObject instanceof MutableLoadableSchemaObject ) )
         {
             copy = schemaObject.copy();
         }

@@ -910,7 +910,7 @@ public final class DescriptionUtils
     /**
      * Generate the description for Comparators, Normalizers and SyntaxCheckers.
      */
-    private static String getLoadableDescription( LoadableSchemaObject schemaObject )
+    private static String getLoadableDescription( MutableLoadableSchemaObjectImpl schemaObject )
     {
         StringBuilder buf = new StringBuilder( "( " );
         buf.append( schemaObject.getOid() );

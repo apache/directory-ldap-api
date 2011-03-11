@@ -75,8 +75,6 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
  * @see DescriptionUtils#getDescription(ObjectClass)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class ObjectClass extends AbstractMutableSchemaObject
 {
     private static final long serialVersionUID = 1L;
@@ -908,6 +906,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
 
     /**
      * Copy an ObjectClass
+     * @return 
      */
     public ObjectClass copy()
     {

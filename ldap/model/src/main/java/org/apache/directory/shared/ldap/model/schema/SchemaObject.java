@@ -37,7 +37,7 @@ public interface SchemaObject
      * @return an OID for this SchemaObject or its MatchingRule if this
      *         SchemaObject is a MatchingRuleUse object
      */
-    public abstract String getOid();
+    String getOid();
 
 
     /**
@@ -46,7 +46,7 @@ public interface SchemaObject
      * 
      * @return the names for this SchemaObject
      */
-    public abstract List<String> getNames();
+     List<String> getNames();
 
 
     /**
@@ -56,7 +56,7 @@ public interface SchemaObject
      * @return the first of the names for this SchemaObject or the oid
      * if one does not exist
      */
-    public abstract String getName();
+     String getName();
 
 
     /**
@@ -64,7 +64,7 @@ public interface SchemaObject
      * 
      * @return a short description about this SchemaObject
      */
-    public abstract String getDescription();
+     String getDescription();
 
 
     /**
@@ -72,7 +72,7 @@ public interface SchemaObject
      * 
      * @return the SchemaObject specification
      */
-    public abstract String getSpecification();
+     String getSpecification();
 
 
     /**
@@ -81,7 +81,7 @@ public interface SchemaObject
      * @return true if the SchemaObject is enabled, or if it depends on 
      * an enabled schema
      */
-    public abstract boolean isEnabled();
+     boolean isEnabled();
 
 
     /**
@@ -89,7 +89,7 @@ public interface SchemaObject
      *  
      * @return true if the SchemaObject is disabled
      */
-    public abstract boolean isDisabled();
+     boolean isDisabled();
 
 
     /**
@@ -97,7 +97,7 @@ public interface SchemaObject
      *  
      * @return true if the SchemaObject is not modifiable
      */
-    public abstract boolean isReadOnly();
+     boolean isReadOnly();
 
 
     /**
@@ -108,13 +108,13 @@ public interface SchemaObject
      * 
      * @return true if inactive, false if active
      */
-    public abstract boolean isObsolete();
+     boolean isObsolete();
 
 
     /**
      * @return The SchemaObject extensions, as a Map of [extension, values]
      */
-    public abstract Map<String, List<String>> getExtensions();
+     Map<String, List<String>> getExtensions();
 
 
     /**
@@ -122,7 +122,7 @@ public interface SchemaObject
      *
      * @return the name of the schema associated with this schemaObject
      */
-    public abstract String getSchemaName();
+     String getSchemaName();
 
 
     /**
@@ -141,7 +141,7 @@ public interface SchemaObject
      * 
      * @return the SchemaObject type
      */
-    public abstract SchemaObjectType getObjectType();
+     SchemaObjectType getObjectType();
 
 
     /**
@@ -149,5 +149,5 @@ public interface SchemaObject
      *
      * @return The copied SchemaObject
      */
-    <R extends SchemaObject> R copy();
+    SchemaObject copy();
 }

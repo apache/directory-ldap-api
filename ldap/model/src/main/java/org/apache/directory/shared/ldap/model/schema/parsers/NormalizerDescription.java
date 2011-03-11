@@ -21,7 +21,7 @@
 package org.apache.directory.shared.ldap.model.schema.parsers;
 
 
-import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableLoadableSchemaObjectImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 
 
@@ -30,7 +30,7 @@ import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class NormalizerDescription extends LoadableSchemaObject
+public class NormalizerDescription extends MutableLoadableSchemaObjectImpl
 {
     private static final long serialVersionUID = 1L;
 

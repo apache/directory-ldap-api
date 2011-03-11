@@ -42,7 +42,7 @@ import org.apache.directory.shared.ldap.model.schema.DITContentRule;
 import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableLoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.NameForm;
@@ -1544,7 +1544,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         LOG.debug( "Registering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
         // Check that the SchemaObject is not already registered
-        if ( schemaObject instanceof LoadableSchemaObject )
+        if ( schemaObject instanceof MutableLoadableSchemaObject )
         {
             // TODO : Check for existing Loadable SchemaObject
         }
@@ -1630,7 +1630,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         LOG.debug( "Registering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
         // Check that the SchemaObject is not already registered
-        if ( !( schemaObject instanceof LoadableSchemaObject ) && globalOidRegistry.contains( schemaObject.getOid() ) )
+        if ( !( schemaObject instanceof MutableLoadableSchemaObject ) && globalOidRegistry.contains( schemaObject.getOid() ) )
         {
             // TODO : throw an exception here
             String msg = I18n.err( I18n.ERR_04301, schemaObject.getObjectType(), schemaObject.getOid() );
@@ -1668,7 +1668,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
             // Update the global OidRegistry if the SchemaObject is not
             // an instance of LoadableSchemaObject
-            if ( !( schemaObject instanceof LoadableSchemaObject ) )
+            if ( !( schemaObject instanceof MutableLoadableSchemaObject ) )
             {
                 try
                 {
@@ -1699,7 +1699,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         LOG.debug( "Unregistering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
         // Check that the SchemaObject is already registered
-        if ( !( schemaObject instanceof LoadableSchemaObject ) && !globalOidRegistry.contains( schemaObject.getOid() ) )
+        if ( !( schemaObject instanceof MutableLoadableSchemaObject ) && !globalOidRegistry.contains( schemaObject.getOid() ) )
         {
             // TODO : throw an exception here
             String msg = I18n.err( I18n.ERR_04302, schemaObject.getObjectType(), schemaObject.getOid() );
@@ -1732,7 +1732,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
             // Update the global OidRegistry if the SchemaObject is not
             // an instance of LoadableSchemaObject
-            if ( !( schemaObject instanceof LoadableSchemaObject ) )
+            if ( !( schemaObject instanceof MutableLoadableSchemaObject ) )
             {
                 try
                 {
@@ -1764,7 +1764,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         LOG.debug( "Unregistering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
         // Check that the SchemaObject is present in the registries
-        if ( schemaObject instanceof LoadableSchemaObject )
+        if ( schemaObject instanceof MutableLoadableSchemaObject )
         {
             // TODO : check for an existing Loadable SchemaObject
         }
@@ -1856,7 +1856,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
                 // Update the global OidRegistry if the SchemaObject is not
                 // an instance of LoadableSchemaObject
-                if ( !( schemaObject instanceof LoadableSchemaObject ) )
+                if ( !( schemaObject instanceof MutableLoadableSchemaObject ) )
                 {
                     globalOidRegistry.unregister( schemaObject.getOid() );
                 }
@@ -2618,7 +2618,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
                 try
                 {
-                    if ( !( original instanceof LoadableSchemaObject ) )
+                    if ( !( original instanceof MutableLoadableSchemaObject ) )
                     {
                         MutableSchemaObject copy = clone.globalOidRegistry.getSchemaObject( original.getOid() );
                         SchemaObjectWrapper newWrapper = new SchemaObjectWrapper( copy );

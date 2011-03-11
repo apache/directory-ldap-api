@@ -31,7 +31,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
  */
 // super.hashCode is final
 @SuppressWarnings({ "PMD.OverrideBothEqualsAndHashcode", "serial" })
-public abstract class Normalizer extends LoadableSchemaObject
+public abstract class Normalizer extends MutableLoadableSchemaObjectImpl
 {
     /**
      * The Normalizer base constructor. We use it's MR OID to

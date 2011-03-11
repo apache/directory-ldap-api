@@ -29,7 +29,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaExceptionCodes;
-import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableLoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
@@ -346,7 +346,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
             // Clone each SchemaObject
             T value = ( ( DefaultSchemaObjectRegistry<T> ) original ).byName.get( key );
 
-            if ( value instanceof LoadableSchemaObject )
+            if ( value instanceof MutableLoadableSchemaObject )
             {
                 // Update the data structure. 
                 // Comparators, Normalizers and SyntaxCheckers aren't copied, 
@@ -466,7 +466,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         for ( SchemaObject schemaObject : oidRegistry )
         {
             // Don't clear LoadableSchemaObject
-            if ( !( schemaObject instanceof LoadableSchemaObject ) )
+            if ( !( schemaObject instanceof MutableLoadableSchemaObject ) )
             {
                 if ( schemaObject instanceof MutableSchemaObject )
                 {

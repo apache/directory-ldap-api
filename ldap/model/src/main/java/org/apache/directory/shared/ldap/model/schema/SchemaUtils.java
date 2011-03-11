@@ -973,7 +973,6 @@ public final class SchemaUtils
     /**
      * NOT FULLY IMPLEMENTED!
      */
-    @SuppressWarnings("PMD.UnusedLocalVariable") // Remove me when the TODO is fixed 
     public static StringBuffer render( DITStructureRule dsr )
     {
         StringBuffer buf = new StringBuffer();
@@ -1069,7 +1068,7 @@ public final class SchemaUtils
      * @param description The description to transform to a String
      * @return
      */
-    public static String render( LoadableSchemaObject description )
+    public static String render( MutableLoadableSchemaObjectImpl description )
     {
         StringBuffer buf = new StringBuffer();
         buf.append( "( " ).append( description.getOid() );

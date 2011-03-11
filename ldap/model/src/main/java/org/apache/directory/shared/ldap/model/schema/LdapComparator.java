@@ -30,7 +30,7 @@ import java.util.Comparator;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class LdapComparator<T> extends LoadableSchemaObject implements Comparator<T>, Serializable
+public abstract class LdapComparator<T> extends MutableLoadableSchemaObjectImpl implements Comparator<T>, Serializable
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;

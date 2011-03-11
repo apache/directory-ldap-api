@@ -17,37 +17,29 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.model.schema.parsers;
-
-
-import org.apache.directory.shared.ldap.model.schema.MutableLoadableSchemaObjectImpl;
-import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
+package org.apache.directory.shared.ldap.model.schema;
 
 
 /**
- * An ApacheDS specific schema description for a SyntaxChecker.
- * 
+ * A mutable version of the LoadableSchemaObject.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SyntaxCheckerDescription extends MutableLoadableSchemaObjectImpl
+public interface MutableLoadableSchemaObject extends LoadableSchemaObject
 {
-    private static final long serialVersionUID = 1L;
-
     /**
-     * Default constructor for a SyntaxCheckerDecription
-     * @param oid The SyntaxChecker OID
+     * Stores some bytecode representing the compiled Java class for this
+     * SchemaObject instance.
+     * 
+     * @param bytecode The bytecode to store
      */
-    public SyntaxCheckerDescription( String oid )
-    {
-        super( SchemaObjectType.SYNTAX_CHECKER, oid );
-    }
+    void setBytecode( String bytecode );
 
 
     /**
-     * {@inheritDoc}
+     * Set the Fully Qualified Class Name for this SchemaObject instance
+     * class stored in the bytecode attribute
+     * @param fqcn The Fully Qualified Class Name
      */
-    public String toString()
-    {
-        return "SyntaxChecker description : " + getDescription();
-    }
+    void setFqcn( String fqcn );
 }
