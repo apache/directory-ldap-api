@@ -26,7 +26,7 @@ import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapOtherException;
-import org.apache.directory.shared.ldap.model.schema.Normalizer;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.NumericOidSyntaxChecker;
 
@@ -40,7 +40,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.NumericOidSy
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class NameOrNumericIdNormalizer extends Normalizer
+public class NameOrNumericIdNormalizer extends AbstractNormalizer
 {
     private NumericOidSyntaxChecker checker = new NumericOidSyntaxChecker();
 

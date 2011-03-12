@@ -43,11 +43,12 @@ import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.Normalizer;
+import org.apache.directory.shared.ldap.model.schema.MutableNormalizer;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
+import org.apache.directory.shared.ldap.model.schema.AbstractSyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.shared.ldap.model.schema.comparators.BooleanComparator;
@@ -1171,7 +1172,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         String oid = "0.0.0";
-        Normalizer normalizer = new NoOpNormalizer( oid );
+        AbstractNormalizer normalizer = new NoOpNormalizer( oid );
 
         assertTrue( schemaManager.add( normalizer ) );
 
@@ -1181,7 +1182,7 @@ public class SchemaManagerAddTest
         assertEquals( nrSize + 1, schemaManager.getNormalizerRegistry().size() );
         assertEquals( goidSize, schemaManager.getGlobalOidRegistry().size() );
 
-        Normalizer added = schemaManager.lookupNormalizerRegistry( oid );
+        MutableNormalizer added = schemaManager.lookupNormalizerRegistry( oid );
 
         assertNotNull( added );
         assertEquals( normalizer.getClass().getName(), added.getFqcn() );
@@ -1196,11 +1197,11 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         String oid = "0.0.0";
-        Normalizer normalizer = new NoOpNormalizer( oid );
+        AbstractNormalizer normalizer = new NoOpNormalizer( oid );
 
         assertTrue( schemaManager.add( normalizer ) );
 
-        Normalizer added = schemaManager.lookupNormalizerRegistry( oid );
+        MutableNormalizer added = schemaManager.lookupNormalizerRegistry( oid );
 
         assertNotNull( added );
         assertEquals( normalizer.getClass().getName(), added.getFqcn() );
@@ -1210,7 +1211,7 @@ public class SchemaManagerAddTest
         assertEquals( nrSize + 1, schemaManager.getNormalizerRegistry().size() );
         assertEquals( goidSize, schemaManager.getGlobalOidRegistry().size() );
 
-        Normalizer normalizer2 = new NoOpNormalizer( oid );
+        AbstractNormalizer normalizer2 = new NoOpNormalizer( oid );
 
         assertFalse( schemaManager.add( normalizer2 ) );
 
@@ -1238,7 +1239,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         String oid = "0.0.0";
-        Normalizer normalizer = new NoOpNormalizer( oid );
+        MutableNormalizer normalizer = new NoOpNormalizer( oid );
 
         // using java.sql.ResultSet cause it is very unlikely to get loaded
         // in ADS, as the FQCN is not the one expected
@@ -1923,7 +1924,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         String oid = "0.0.0";
-        MutableSyntaxCheckerImpl syntaxChecker = new RegexSyntaxChecker( oid );
+        AbstractSyntaxChecker syntaxChecker = new RegexSyntaxChecker( oid );
 
         assertTrue( schemaManager.add( syntaxChecker ) );
 
@@ -1948,7 +1949,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         String oid = "0.0.0";
-        MutableSyntaxCheckerImpl syntaxChecker = new RegexSyntaxChecker( oid );
+        AbstractSyntaxChecker syntaxChecker = new RegexSyntaxChecker( oid );
 
         assertTrue( schemaManager.add( syntaxChecker ) );
 
@@ -1962,7 +1963,7 @@ public class SchemaManagerAddTest
         assertEquals( nrSize + 1, schemaManager.getSyntaxCheckerRegistry().size() );
         assertEquals( goidSize, schemaManager.getGlobalOidRegistry().size() );
 
-        MutableSyntaxCheckerImpl syntaxChecker2 = new RegexSyntaxChecker( oid );
+        AbstractSyntaxChecker syntaxChecker2 = new RegexSyntaxChecker( oid );
 
         assertFalse( schemaManager.add( syntaxChecker2 ) );
 
@@ -1990,7 +1991,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         String oid = "0.0.0";
-        MutableSyntaxCheckerImpl syntaxChecker = new RegexSyntaxChecker( oid );
+        AbstractSyntaxChecker syntaxChecker = new RegexSyntaxChecker( oid );
 
         // using java.sql.ResultSet cause it is very unlikely to get loaded
         // in ADS, as the FQCN is not the one expected

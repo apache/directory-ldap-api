@@ -23,7 +23,7 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.Normalizer;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.util.Strings;
 
 
@@ -36,7 +36,7 @@ import org.apache.directory.shared.util.Strings;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DefaultStringNormalizer extends Normalizer
+public class DefaultStringNormalizer extends AbstractNormalizer
 {
     /** A default String normalizer */
     private static final DefaultStringNormalizer NORMALIZER = new DefaultStringNormalizer();

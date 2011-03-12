@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.registries;
 
+
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 
@@ -28,8 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.Normalizer;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface NormalizerRegistry extends SchemaObjectRegistry<Normalizer>,
-    Iterable<Normalizer>
+public interface NormalizerRegistry<E extends Normalizer> extends SchemaObjectRegistry<E>, Iterable<E>
 {
     /**
      * Registers a new Normalizer with this registry.
@@ -38,7 +38,7 @@ public interface NormalizerRegistry extends SchemaObjectRegistry<Normalizer>,
      * @throws LdapException if the Normalizer is already registered or
      * the registration operation is not supported
      */
-    void register( Normalizer normalizer ) throws LdapException;
+    void register( E normalizer ) throws LdapException;
 
 
     /**
@@ -48,7 +48,7 @@ public interface NormalizerRegistry extends SchemaObjectRegistry<Normalizer>,
      * @param numericOid the numeric identifier
      * @throws LdapException if the numeric identifier is invalid
      */
-    Normalizer unregister( String numericOid ) throws LdapException;
+    E unregister( String numericOid ) throws LdapException;
     
     
     /**
@@ -63,5 +63,5 @@ public interface NormalizerRegistry extends SchemaObjectRegistry<Normalizer>,
     /**
      * Copy the NormalizerRegistry
      */
-    NormalizerRegistry copy();
+    NormalizerRegistry<E> copy();
 }

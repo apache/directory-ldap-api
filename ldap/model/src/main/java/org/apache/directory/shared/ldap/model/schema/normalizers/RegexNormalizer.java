@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 
 import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.entry.Value;
-import org.apache.directory.shared.ldap.model.schema.Normalizer;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 
 
 /**
@@ -34,7 +34,7 @@ import org.apache.directory.shared.ldap.model.schema.Normalizer;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class RegexNormalizer extends Normalizer
+public class RegexNormalizer extends AbstractNormalizer
 {
     /** the perl 5 regex engine */
     private final Pattern[] regexes;

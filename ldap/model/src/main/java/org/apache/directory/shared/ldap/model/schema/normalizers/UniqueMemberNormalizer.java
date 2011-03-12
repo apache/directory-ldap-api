@@ -26,7 +26,7 @@ import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.schema.Normalizer;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Strings;
 
@@ -37,7 +37,7 @@ import org.apache.directory.shared.util.Strings;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class UniqueMemberNormalizer extends Normalizer
+public class UniqueMemberNormalizer extends AbstractNormalizer
 {
     /** A reference to the schema manager used to normalize the Dn */
     private SchemaManager schemaManager;

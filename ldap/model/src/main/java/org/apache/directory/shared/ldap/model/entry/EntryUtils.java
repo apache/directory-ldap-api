@@ -25,8 +25,8 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.Normalizer;
-import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
+import org.apache.directory.shared.ldap.model.schema.AbstractSyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.shared.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.shared.util.Strings;
@@ -98,7 +98,7 @@ public class EntryUtils
         AttributeType attributeType = new AttributeType( "1.1.3.1" );
         MutableLdapSyntaxImpl syntax = new MutableLdapSyntaxImpl( "1.1.1.1", "", true );
 
-        syntax.setSyntaxChecker( new MutableSyntaxCheckerImpl( "1.1.2.1" )
+        syntax.setSyntaxChecker( new AbstractSyntaxChecker( "1.1.2.1" )
         {
             private static final long serialVersionUID = 1L;
 
@@ -122,7 +122,7 @@ public class EntryUtils
             }
 
             @Override
-            public MutableSyntaxCheckerImpl copy()
+            public AbstractSyntaxChecker copy()
             {
                 // TODO Auto-generated method stub
                 return null;
@@ -145,7 +145,7 @@ public class EntryUtils
             }
         } );
         
-        Normalizer normalizer = new Normalizer( "1.1.1" )
+        AbstractNormalizer normalizer = new AbstractNormalizer( "1.1.1" )
         {
             private static final long serialVersionUID = 1L;
 
@@ -182,7 +182,7 @@ public class EntryUtils
         attributeType.addName( "1.1" );
         MutableLdapSyntaxImpl syntax = new MutableLdapSyntaxImpl( "1.1.1", "", true );
 
-        syntax.setSyntaxChecker( new MutableSyntaxCheckerImpl( "1.1.2" )
+        syntax.setSyntaxChecker( new AbstractSyntaxChecker( "1.1.2" )
         {
             private static final long serialVersionUID = 1L;
 
@@ -192,7 +192,7 @@ public class EntryUtils
             }
 
             @Override
-            public MutableSyntaxCheckerImpl copy()
+            public AbstractSyntaxChecker copy()
             {
                 // TODO Auto-generated method stub
                 return null;
@@ -229,7 +229,7 @@ public class EntryUtils
         AttributeType attributeType = new AttributeType( "1.2" );
         MutableLdapSyntaxImpl syntax = new MutableLdapSyntaxImpl( "1.2.1", "", true );
 
-        syntax.setSyntaxChecker( new MutableSyntaxCheckerImpl( "1.2.1" )
+        syntax.setSyntaxChecker( new AbstractSyntaxChecker( "1.2.1" )
         {
             private static final long serialVersionUID = 1L;
 
@@ -239,7 +239,7 @@ public class EntryUtils
             }
 
             @Override
-            public MutableSyntaxCheckerImpl copy()
+            public AbstractSyntaxChecker copy()
             {
                 // TODO Auto-generated method stub
                 return null;
@@ -251,7 +251,7 @@ public class EntryUtils
 
         matchingRule.setLdapComparator( new ByteArrayComparator( "1.2.2" ) );
         
-        matchingRule.setNormalizer( new Normalizer( "1.1.1" )
+        matchingRule.setNormalizer( new AbstractNormalizer( "1.1.1" )
         {
             private static final long serialVersionUID = 1L;
 

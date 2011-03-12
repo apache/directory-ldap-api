@@ -17,8 +17,8 @@
  *  under the License. 
  *  
  */
-
 package org.apache.directory.shared.ldap.model.schema.normalizers;
+
 
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 

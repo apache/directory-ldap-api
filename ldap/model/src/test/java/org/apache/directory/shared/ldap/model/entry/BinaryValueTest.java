@@ -34,9 +34,10 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
-import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
+import org.apache.directory.shared.ldap.model.schema.AbstractSyntaxChecker;
 import org.apache.directory.shared.util.StringConstants;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
@@ -61,7 +62,7 @@ public class BinaryValueTest
     private static final byte[] INVALID_BYTES = new byte[]{0x01, 0x02, 0x03, 0x04, 0x05};
     private static final byte[] BYTES_MOD = new byte[]{0x11, 0x02, 0x03, 0x04};
     
-    private static final Normalizer BINARY_NORMALIZER = new Normalizer( "1.1.1" )
+    private static final Normalizer BINARY_NORMALIZER = new AbstractNormalizer( "1.1.1" )
     {
         private static final long serialVersionUID = 1L;
 
@@ -95,7 +96,7 @@ public class BinaryValueTest
     /**
      * A binary normalizer which set the normalized value to a empty byte array
      */
-    private static final Normalizer BINARY_NORMALIZER_EMPTY = new Normalizer( "1.1.1" )
+    private static final Normalizer BINARY_NORMALIZER_EMPTY = new AbstractNormalizer( "1.1.1" )
     {
         private static final long serialVersionUID = 1L;
 
@@ -116,7 +117,7 @@ public class BinaryValueTest
     };
 
     
-    private static final SyntaxChecker BINARY_CHECKER = new MutableSyntaxCheckerImpl( "1.1.1" )
+    private static final SyntaxChecker BINARY_CHECKER = new AbstractSyntaxChecker( "1.1.1" )
     {
         private static final long serialVersionUID = 1L;
 

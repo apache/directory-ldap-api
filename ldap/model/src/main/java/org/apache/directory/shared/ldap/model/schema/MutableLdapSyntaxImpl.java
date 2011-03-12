@@ -176,7 +176,7 @@ public class MutableLdapSyntaxImpl extends AbstractMutableSchemaObject implement
      *
      * @param newSyntaxChecker The associated SyntaxChecker
      */
-    public void updateSyntaxChecker( MutableSyntaxCheckerImpl newSyntaxChecker )
+    public void updateSyntaxChecker( AbstractSyntaxChecker newSyntaxChecker )
     {
         if ( locked )
         {

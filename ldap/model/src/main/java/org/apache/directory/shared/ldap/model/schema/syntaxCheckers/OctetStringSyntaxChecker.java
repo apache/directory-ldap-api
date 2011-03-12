@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
+import org.apache.directory.shared.ldap.model.schema.AbstractSyntaxChecker;
 
 
 /**
@@ -35,7 +35,7 @@ import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class OctetStringSyntaxChecker extends MutableSyntaxCheckerImpl
+public class OctetStringSyntaxChecker extends AbstractSyntaxChecker
 {
     /**
      * Creates a new instance of OctetStringSyntaxChecker.

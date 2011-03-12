@@ -20,8 +20,8 @@
 package org.apache.directory.shared.ldap.model.schema.registries;
 
 
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.Normalizer;
+import org.apache.directory.shared.ldap.model.exception.LdapException; 
+import org.apache.directory.shared.ldap.model.schema.MutableNormalizer;
 import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 import org.slf4j.Logger;
@@ -33,8 +33,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DefaultNormalizerRegistry extends DefaultSchemaObjectRegistry<Normalizer>
-    implements NormalizerRegistry
+public class DefaultNormalizerRegistry extends DefaultSchemaObjectRegistry<MutableNormalizer>
+    implements NormalizerRegistry<MutableNormalizer>
 {
     /** static class logger */
     private static final Logger LOG = LoggerFactory.getLogger( DefaultNormalizerRegistry.class );
@@ -48,7 +48,7 @@ public class DefaultNormalizerRegistry extends DefaultSchemaObjectRegistry<Norma
      */
     public DefaultNormalizerRegistry()
     {
-        super( SchemaObjectType.NORMALIZER, new OidRegistry<Normalizer>() );
+        super( SchemaObjectType.NORMALIZER, new OidRegistry<MutableNormalizer>() );
     }
 
 
@@ -64,7 +64,7 @@ public class DefaultNormalizerRegistry extends DefaultSchemaObjectRegistry<Norma
 
         // Loop on all the SchemaObjects stored and remove those associated
         // with the give schemaName
-        for ( Normalizer normalizer : this )
+        for ( MutableNormalizer normalizer : this )
         {
             if ( schemaName.equalsIgnoreCase( normalizer.getSchemaName() ) )
             {
@@ -115,7 +115,7 @@ public class DefaultNormalizerRegistry extends DefaultSchemaObjectRegistry<Norma
                 sb.append( ", " );
             }
 
-            Normalizer normalizer = byName.get( name );
+            MutableNormalizer normalizer = byName.get( name );
 
             String fqcn = normalizer.getFqcn();
             int lastDotPos = fqcn.lastIndexOf( '.' );

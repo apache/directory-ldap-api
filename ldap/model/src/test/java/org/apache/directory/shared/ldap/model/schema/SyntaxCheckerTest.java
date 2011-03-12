@@ -40,10 +40,10 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class SyntaxCheckerTest
 {
-    MutableSyntaxCheckerImpl objectClassA;
-    MutableSyntaxCheckerImpl objectClassACopy;
-    MutableSyntaxCheckerImpl objectClassB;
-    MutableSyntaxCheckerImpl objectClassC;
+    AbstractSyntaxChecker objectClassA;
+    AbstractSyntaxChecker objectClassACopy;
+    AbstractSyntaxChecker objectClassB;
+    AbstractSyntaxChecker objectClassC;
 
 
     /**

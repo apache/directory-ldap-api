@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
-import org.apache.directory.shared.ldap.model.schema.Normalizer;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
     private static final Logger LOG = LoggerFactory.getLogger( NormalizingComparator.class );
 
     /** the Normalizer to normalize values with before comparing */
-    private Normalizer normalizer;
+    private AbstractNormalizer normalizer;
 
     /** the underlying comparator to use for comparisons */
     private LdapComparator<String> comparator;
@@ -54,7 +54,7 @@ import org.slf4j.LoggerFactory;
      * @param normalizer the Normalizer to normalize values with before comparing
      * @param comparator the underlying comparator to use for comparisons
      */
-    public NormalizingComparator( String oid, Normalizer normalizer, LdapComparator<String> comparator )
+    public NormalizingComparator( String oid, AbstractNormalizer normalizer, LdapComparator<String> comparator )
     {
         super( oid );
         this.normalizer = normalizer;

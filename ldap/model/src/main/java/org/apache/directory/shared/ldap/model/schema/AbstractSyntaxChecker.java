@@ -32,7 +32,7 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class MutableSyntaxCheckerImpl extends MutableLoadableSchemaObjectImpl implements MutableSyntaxChecker
+public abstract class AbstractSyntaxChecker extends MutableLoadableSchemaObjectImpl implements MutableSyntaxChecker
 {
     private static final long serialVersionUID = -6028809434764891692L;
 
@@ -41,7 +41,7 @@ public abstract class MutableSyntaxCheckerImpl extends MutableLoadableSchemaObje
      * The SyntaxChecker base constructor
      * @param oid The associated OID
      */
-    protected MutableSyntaxCheckerImpl( String oid )
+    protected AbstractSyntaxChecker( String oid )
     {
         super( SchemaObjectType.SYNTAX_CHECKER, oid );
     }
@@ -51,15 +51,15 @@ public abstract class MutableSyntaxCheckerImpl extends MutableLoadableSchemaObje
      * The SyntaxChecker default constructor where the oid is set after 
      * instantiation.
      */
-    protected MutableSyntaxCheckerImpl()
+    protected AbstractSyntaxChecker()
     {
         super( SchemaObjectType.SYNTAX_CHECKER );
     }
     
     
-    public MutableSyntaxCheckerImpl copy()
+    public AbstractSyntaxChecker copy()
     {
-        return new MutableSyntaxCheckerImpl()
+        return new AbstractSyntaxChecker()
         {
             private static final long serialVersionUID = 1L;
 
@@ -113,7 +113,7 @@ public abstract class MutableSyntaxCheckerImpl extends MutableLoadableSchemaObje
             return false;
         }
 
-        return o instanceof MutableSyntaxCheckerImpl;
+        return o instanceof AbstractSyntaxChecker;
     }
 
 

@@ -480,7 +480,7 @@ public interface SchemaManager
      * @return The found Normalizer 
      * @throws LdapException if the OID is not found in the Normalizer registry
      */
-    Normalizer lookupNormalizerRegistry( String oid ) throws LdapException;
+    MutableNormalizer lookupNormalizerRegistry( String oid ) throws LdapException;
 
 
     /**
@@ -566,7 +566,7 @@ public interface SchemaManager
      * 
      * @return A reference to the Normalizer registry.
      */
-    NormalizerRegistry getNormalizerRegistry();
+    NormalizerRegistry<Normalizer> getNormalizerRegistry();
 
 
     /**

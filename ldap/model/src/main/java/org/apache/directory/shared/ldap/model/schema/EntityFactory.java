@@ -118,7 +118,7 @@ public interface EntityFactory
      * @return the loaded Normalizer
      * @throws LdapException if anything fails during loading
      */
-    Normalizer getNormalizer( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName )
+    AbstractNormalizer getNormalizer( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName )
         throws LdapException;
     
     
@@ -156,7 +156,7 @@ public interface EntityFactory
      * @return the loaded SyntaxChecker
      * @throws LdapException if anything fails during loading
      */
-    MutableSyntaxCheckerImpl getSyntaxChecker( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
+    AbstractSyntaxChecker getSyntaxChecker( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
     
 
     /**

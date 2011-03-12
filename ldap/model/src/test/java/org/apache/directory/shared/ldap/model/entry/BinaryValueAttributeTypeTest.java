@@ -38,7 +38,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.Normalizer;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
 import org.apache.directory.shared.util.StringConstants;
@@ -86,7 +86,7 @@ public class BinaryValueAttributeTypeTest
         mr.setSyntax( s );
         
         mr.setLdapComparator( new ByteArrayComparator( "1.1.1" ) );
-        mr.setNormalizer( new Normalizer( "1.1.1" )
+        mr.setNormalizer( new AbstractNormalizer( "1.1.1" )
         {
             private static final long serialVersionUID = 1L;
 

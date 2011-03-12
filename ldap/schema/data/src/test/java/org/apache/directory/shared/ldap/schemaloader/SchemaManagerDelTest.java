@@ -41,12 +41,13 @@ import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableSyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.MutableNormalizer;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
-import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
+import org.apache.directory.shared.ldap.model.schema.AbstractSyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.comparators.BooleanComparator;
 import org.apache.directory.shared.ldap.model.schema.normalizers.BooleanNormalizer;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.BooleanSyntaxChecker;
@@ -590,7 +591,7 @@ public class SchemaManagerDelTest
         int nrSize = schemaManager.getNormalizerRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        Normalizer nr = new BooleanNormalizer();
+        MutableNormalizer nr = new BooleanNormalizer();
         nr.setOid( "0.1.1" );
         assertTrue( schemaManager.add( nr ) );
 
@@ -624,7 +625,7 @@ public class SchemaManagerDelTest
         int nrSize = schemaManager.getNormalizerRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        Normalizer nr = new BooleanNormalizer();
+        AbstractNormalizer nr = new BooleanNormalizer();
         nr.setOid( "0.0" ); 
         assertFalse( schemaManager.delete( nr ) );
 
@@ -643,7 +644,7 @@ public class SchemaManagerDelTest
         int nrSize = schemaManager.getNormalizerRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        Normalizer nr = schemaManager.lookupNormalizerRegistry( "2.5.13.0" );
+        MutableNormalizer nr = schemaManager.lookupNormalizerRegistry( "2.5.13.0" );
         // shouldn't be deleted cause there is a MR associated with it
         assertFalse( schemaManager.delete( nr ) );
 
@@ -676,7 +677,7 @@ public class SchemaManagerDelTest
         assertTrue( isNormalizerPresent( schemaManager, OID ) );
 
         // Now try to remove the N
-        Normalizer normalizer = schemaManager.lookupNormalizerRegistry( OID );
+        MutableNormalizer normalizer = schemaManager.lookupNormalizerRegistry( OID );
         
         // shouldn't be deleted cause there is a MR associated with it
         assertFalse( schemaManager.delete( normalizer ) );
@@ -1053,7 +1054,7 @@ public class SchemaManagerDelTest
         int scrSize = schemaManager.getSyntaxCheckerRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableSyntaxCheckerImpl sc = new BooleanSyntaxChecker();
+        AbstractSyntaxChecker sc = new BooleanSyntaxChecker();
         sc.setOid( "0.0" ); 
         assertFalse( schemaManager.delete( sc ) );
 

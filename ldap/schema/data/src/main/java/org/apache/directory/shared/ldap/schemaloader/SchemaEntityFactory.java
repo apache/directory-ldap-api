@@ -44,6 +44,7 @@ import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
@@ -51,7 +52,7 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
-import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
+import org.apache.directory.shared.ldap.model.schema.AbstractSyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.shared.ldap.model.schema.parsers.NormalizerDescription;
 import org.apache.directory.shared.ldap.model.schema.registries.Registries;
@@ -259,12 +260,12 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * Class load a syntaxChecker instance
      */
-    private MutableSyntaxCheckerImpl classLoadSyntaxChecker( SchemaManager schemaManager, String oid, String className, EntryAttribute byteCode )
+    private AbstractSyntaxChecker classLoadSyntaxChecker( SchemaManager schemaManager, String oid, String className, EntryAttribute byteCode )
         throws Exception
     {
         // Try to class load the syntaxChecker
         Class<?> clazz = null;
-        MutableSyntaxCheckerImpl syntaxChecker = null;
+        AbstractSyntaxChecker syntaxChecker = null;
         String byteCodeStr = StringConstants.EMPTY;
 
         if ( byteCode == null )
@@ -279,7 +280,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Create the syntaxChecker instance
-        syntaxChecker = ( MutableSyntaxCheckerImpl ) clazz.newInstance();
+        syntaxChecker = ( AbstractSyntaxChecker ) clazz.newInstance();
 
         // Update the common fields
         syntaxChecker.setBytecode( byteCodeStr );
@@ -298,7 +299,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * {@inheritDoc}
      */
-    public MutableSyntaxCheckerImpl getSyntaxChecker( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
+    public AbstractSyntaxChecker getSyntaxChecker( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapException
     {
         checkEntry( entry, SchemaConstants.SYNTAX_CHECKER );
@@ -334,7 +335,7 @@ public class SchemaEntityFactory implements EntityFactory
         try
         {
             // Class load the syntaxChecker
-            MutableSyntaxCheckerImpl syntaxChecker = classLoadSyntaxChecker( schemaManager, oid, className, byteCode );
+            AbstractSyntaxChecker syntaxChecker = classLoadSyntaxChecker( schemaManager, oid, className, byteCode );
     
             // Update the common fields
             setSchemaObjectProperties( syntaxChecker, entry, schema );
@@ -379,7 +380,7 @@ public class SchemaEntityFactory implements EntityFactory
         EntryAttribute byteCode = getByteCode( syntaxCheckerDescription, SchemaConstants.SYNTAX_CHECKER );
 
         // Class load the SyntaxChecker
-        MutableSyntaxCheckerImpl syntaxChecker = classLoadSyntaxChecker( schemaManager, oid, fqcn, byteCode );
+        AbstractSyntaxChecker syntaxChecker = classLoadSyntaxChecker( schemaManager, oid, fqcn, byteCode );
 
         // Update the common fields
         setSchemaObjectProperties( syntaxChecker, syntaxCheckerDescription, schema );
@@ -541,12 +542,12 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * Class load a normalizer instances
      */
-    private Normalizer classLoadNormalizer( SchemaManager schemaManager, String oid, String className,
+    private AbstractNormalizer classLoadNormalizer( SchemaManager schemaManager, String oid, String className,
         EntryAttribute byteCode ) throws Exception
     {
         // Try to class load the normalizer
         Class<?> clazz = null;
-        Normalizer normalizer = null;
+        AbstractNormalizer normalizer = null;
         String byteCodeStr = StringConstants.EMPTY;
 
         if ( byteCode == null )
@@ -561,7 +562,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Create the normalizer instance
-        normalizer = ( Normalizer ) clazz.newInstance();
+        normalizer = ( AbstractNormalizer ) clazz.newInstance();
 
         // Update the common fields
         normalizer.setBytecode( byteCodeStr );
@@ -606,7 +607,7 @@ public class SchemaEntityFactory implements EntityFactory
         EntryAttribute byteCode = getByteCode( normalizerDescription, SchemaConstants.NORMALIZER );
 
         // Class load the normalizer
-        Normalizer normalizer = classLoadNormalizer( schemaManager, oid, fqcn, byteCode );
+        AbstractNormalizer normalizer = classLoadNormalizer( schemaManager, oid, fqcn, byteCode );
 
         // Update the common fields
         setSchemaObjectProperties( normalizer, normalizerDescription, schema );
@@ -618,7 +619,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * {@inheritDoc}
      */
-    public Normalizer getNormalizer( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
+    public AbstractNormalizer getNormalizer( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapException
     {
         checkEntry( entry, SchemaConstants.NORMALIZER );
@@ -654,7 +655,7 @@ public class SchemaEntityFactory implements EntityFactory
         try
         {
             // Class load the Normalizer
-            Normalizer normalizer = classLoadNormalizer( schemaManager, oid, className, byteCode );
+            AbstractNormalizer normalizer = classLoadNormalizer( schemaManager, oid, className, byteCode );
     
             // Update the common fields
             setSchemaObjectProperties( normalizer, entry, schema );

@@ -47,8 +47,10 @@ import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableLoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
+import org.apache.directory.shared.ldap.model.schema.MutableNormalizer;
 import org.apache.directory.shared.ldap.model.schema.MutableSyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.NameForm;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
@@ -102,7 +104,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     protected NameFormRegistry nameFormRegistry;
 
     /** The Normalizer registry */
-    protected NormalizerRegistry normalizerRegistry;
+    protected NormalizerRegistry<MutableNormalizer> normalizerRegistry;
 
     /** The global OID registry */
     protected OidRegistry<MutableSchemaObject> globalOidRegistry;
@@ -239,7 +241,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * @return The Normalizer registry
      */
-    public NormalizerRegistry getNormalizerRegistry()
+    public NormalizerRegistry<MutableNormalizer> getNormalizerRegistry()
     {
         return normalizerRegistry;
     }
@@ -471,7 +473,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // We start with Normalizers, Comparators and SyntaxCheckers
         // as they depend on nothing
         // Check the Normalizers
-        for ( Normalizer normalizer : normalizerRegistry )
+        for ( MutableNormalizer normalizer : normalizerRegistry )
         {
             resolve( normalizer, errors );
         }
@@ -808,7 +810,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private void buildNormalizerReferences( List<Throwable> errors )
     {
-        for ( Normalizer normalizer : normalizerRegistry )
+        for ( MutableNormalizer normalizer : normalizerRegistry )
         {
             buildReference( errors, normalizer );
         }
@@ -936,7 +938,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param normalizer the Normalizer
      * @param errors the list of errors to add exceptions to
      */
-    private void resolve( Normalizer normalizer, List<Throwable> errors )
+    private void resolve( MutableNormalizer normalizer, List<Throwable> errors )
     {
         // This is currently doing nothing.
         try
@@ -1601,7 +1603,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     break;
 
                 case NORMALIZER:
-                    normalizerRegistry.register( ( Normalizer ) schemaObject );
+                    normalizerRegistry.register( ( AbstractNormalizer ) schemaObject );
                     break;
 
                 case OBJECT_CLASS:
@@ -1819,7 +1821,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 break;
 
             case NORMALIZER:
-                unregistered = normalizerRegistry.unregister( ( Normalizer ) schemaObject );
+                unregistered = normalizerRegistry.unregister( ( MutableNormalizer ) schemaObject );
                 break;
 
             case OBJECT_CLASS:

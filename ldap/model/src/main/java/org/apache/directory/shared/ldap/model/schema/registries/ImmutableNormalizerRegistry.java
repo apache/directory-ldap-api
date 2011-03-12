@@ -35,10 +35,10 @@ import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ImmutableNormalizerRegistry implements NormalizerRegistry
+public class ImmutableNormalizerRegistry implements NormalizerRegistry<Normalizer>
 {
     /** The wrapped Normalizer registry */
-    NormalizerRegistry immutableNormalizerRegistry;
+    NormalizerRegistry<Normalizer> immutableNormalizerRegistry;
 
 
     /**

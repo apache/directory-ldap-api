@@ -17,39 +17,17 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
-
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.schema.AbstractSyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.apache.directory.shared.ldap.model.schema;
 
 
 /**
- * A SyntaxChecker which verifies that a value is an AccessPoint.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@SuppressWarnings("serial")
-public class AccessPointSyntaxChecker extends AbstractSyntaxChecker
+public interface MutableNormalizer extends MutableLoadableSchemaObject, Normalizer
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( AccessPointSyntaxChecker.class );
-
-    /**
-     * The AccessPoint SyntaxChecker constructor
-     */
-    public AccessPointSyntaxChecker()
-    {
-        super( SchemaConstants.ACCESS_POINT_SYNTAX );
-    }
-
     /**
      * {@inheritDoc}
      */
-    public boolean isValidSyntax( Object value )
-    {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
-    }
+    MutableNormalizer copy();
 }

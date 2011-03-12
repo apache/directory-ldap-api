@@ -30,7 +30,7 @@ import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.schema.Normalizer;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.PrepareString;
 import org.apache.directory.shared.util.GeneralizedTime;
 import org.apache.directory.shared.util.GeneralizedTime.Format;
@@ -51,7 +51,7 @@ import org.apache.directory.shared.util.GeneralizedTime.TimeZoneFormat;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class GeneralizedTimeNormalizer extends Normalizer
+public class GeneralizedTimeNormalizer extends AbstractNormalizer
 {
     /**
      * Creates a new instance of GeneralizedTimeNormalizer.

@@ -633,7 +633,7 @@ public final class DescriptionUtils
      *            the Normalizer to generate the description for
      * @return the NormalizerDescription string
      */
-    public static String getDescription( Normalizer normalizer )
+    public static String getDescription( AbstractNormalizer normalizer )
     {
         return getLoadableDescription( normalizer );
     }
@@ -789,7 +789,7 @@ public final class DescriptionUtils
      *            the SyntaxChecker to generate the description for
      * @return the SyntaxCheckerDescription string
      */
-    public static String getDescription( MutableSyntaxCheckerImpl syntaxChecker )
+    public static String getDescription( AbstractSyntaxChecker syntaxChecker )
     {
         return getLoadableDescription( syntaxChecker );
     }

@@ -49,6 +49,8 @@ import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MutableLoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableNormalizer;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
@@ -56,7 +58,7 @@ import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectWrapper;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
-import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
+import org.apache.directory.shared.ldap.model.schema.AbstractSyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.normalizers.OidNormalizer;
 import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ComparatorRegistry;
@@ -756,8 +758,6 @@ public class DefaultSchemaManager implements SchemaManager
      * - isRelaxed
      * - disabledAccepted
      */
-    // False positive
-    @SuppressWarnings("PMD.UnusedPrivateMethod")
     private boolean unload( Registries registries, Schema schema ) throws LdapException
     {
         if ( schema == null )
@@ -815,8 +815,6 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * Add all the Schema's DitContentRules
      */
-    // Not yet implemented, but may be used
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void addDitContentRules( Schema schema, Registries registries ) throws LdapException, IOException
     {
         if ( !schemaLoader.loadDitContentRules( schema ).isEmpty() )
@@ -829,8 +827,6 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * Add all the Schema's DitStructureRules
      */
-    // Not yet implemented, but may be used
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void addDitStructureRules( Schema schema, Registries registries ) throws LdapException, IOException
     {
         if ( !schemaLoader.loadDitStructureRules( schema ).isEmpty() )
@@ -857,8 +853,6 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * Add all the Schema's MatchingRuleUses
      */
-    // Not yet implemented, but may be used
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void addMatchingRuleUses( Schema schema, Registries registries ) throws LdapException, IOException
     {
         if ( !schemaLoader.loadMatchingRuleUses( schema ).isEmpty() )
@@ -875,8 +869,6 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * Add all the Schema's NameForms
      */
-    // Not yet implemented, but may be used
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void addNameForms( Schema schema, Registries registries ) throws LdapException, IOException
     {
         if ( !schemaLoader.loadNameForms( schema ).isEmpty() )
@@ -893,7 +885,7 @@ public class DefaultSchemaManager implements SchemaManager
     {
         for ( Entry entry : schemaLoader.loadNormalizers( schema ) )
         {
-            Normalizer normalizer = factory.getNormalizer( this, entry, registries, schema.getSchemaName() );
+            AbstractNormalizer normalizer = factory.getNormalizer( this, entry, registries, schema.getSchemaName() );
 
             addSchemaObject( registries, normalizer, schema );
         }
@@ -935,7 +927,7 @@ public class DefaultSchemaManager implements SchemaManager
     {
         for ( Entry entry : schemaLoader.loadSyntaxCheckers( schema ) )
         {
-            MutableSyntaxCheckerImpl syntaxChecker = factory.getSyntaxChecker( this, entry, registries, schema.getSchemaName() );
+            AbstractSyntaxChecker syntaxChecker = factory.getSyntaxChecker( this, entry, registries, schema.getSchemaName() );
 
             addSchemaObject( registries, syntaxChecker, schema );
         }
@@ -1485,7 +1477,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public NormalizerRegistry getNormalizerRegistry()
+    public NormalizerRegistry<Normalizer> getNormalizerRegistry()
     {
         return new ImmutableNormalizerRegistry( registries.getNormalizerRegistry() );
     }
@@ -1564,7 +1556,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public Normalizer lookupNormalizerRegistry( String oid ) throws LdapException
+    public MutableNormalizer lookupNormalizerRegistry( String oid ) throws LdapException
     {
         return registries.getNormalizerRegistry().lookup( oid );
     }

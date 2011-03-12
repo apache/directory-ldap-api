@@ -24,35 +24,16 @@ import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 
 
-/**
- * Converts attribute values to a canonical form.
- * 
- * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- */
-// super.hashCode is final
-@SuppressWarnings({ "PMD.OverrideBothEqualsAndHashcode", "serial" })
-public abstract class Normalizer extends MutableLoadableSchemaObjectImpl
+public interface Normalizer extends LoadableSchemaObject
 {
     /**
-     * The Normalizer base constructor. We use it's MR OID to
-     * initialize the SchemaObject instance
+     * Gets the normalized value.
      * 
-     * @param oid The associated OID. It's the element's MR OID
+     * @param value the value to normalize. It must *not* be null !
+     * @return the normalized form for a value
+     * @throws LdapException if an error results during normalization
      */
-    protected Normalizer( String oid )
-    {
-        super( SchemaObjectType.NORMALIZER, oid );
-    }
-
-
-    /**
-     * Use this default constructor when the Normalizer must be instantiated
-     * before setting the OID.
-     */
-    protected Normalizer()
-    {
-        super( SchemaObjectType.NORMALIZER );
-    }
+    Value<?> normalize( Value<?> value ) throws LdapException;
 
 
     /**
@@ -62,52 +43,11 @@ public abstract class Normalizer extends MutableLoadableSchemaObjectImpl
      * @return the normalized form for a value
      * @throws LdapException if an error results during normalization
      */
-    public abstract Value<?> normalize( Value<?> value ) throws LdapException;
-
-
-    /**
-     * Gets the normalized value.
-     * 
-     * @param value the value to normalize. It must *not* be null !
-     * @return the normalized form for a value
-     * @throws LdapException if an error results during normalization
-     */
-    public abstract String normalize( String value ) throws LdapException;
-
-
-    /**
-     * Store the SchemaManager in this instance. It may be necessary for some
-     * normalizer which needs to have access to the oidNormalizer Map.
-     *
-     * @param schemaManager the schemaManager to store
-     */
-    public void setSchemaManager( SchemaManager schemaManager )
-    {
-        // Do nothing (general case).
-    }
-
-
+    String normalize( String value ) throws LdapException;
+    
+    
     /**
      * {@inheritDoc}
      */
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( !super.equals( o ) )
-        {
-            return false;
-        }
-
-        return o instanceof Normalizer;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString()
-    {
-        return objectType + " " + DescriptionUtils.getDescription( this );
-    }
+    Normalizer copy();
 }

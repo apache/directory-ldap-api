@@ -85,8 +85,6 @@ import org.slf4j.LoggerFactory;
  * @see DescriptionUtils#getDescription(MatchingRule)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class MatchingRule extends AbstractMutableSchemaObject
 {
     private static final long serialVersionUID = 1L;
@@ -98,7 +96,7 @@ public class MatchingRule extends AbstractMutableSchemaObject
     protected LdapComparator<? super Object> ldapComparator;
 
     /** The associated Normalizer */
-    protected Normalizer normalizer;
+    protected MutableNormalizer normalizer;
 
     /** The associated LdapSyntax */
     protected MutableLdapSyntax ldapSyntax;
@@ -369,7 +367,7 @@ public class MatchingRule extends AbstractMutableSchemaObject
      * @return the associated normalizer
      * @throws NamingException if there is a failure resolving the object
      */
-    public Normalizer getNormalizer()
+    public MutableNormalizer getNormalizer()
     {
         return normalizer;
     }
@@ -380,7 +378,7 @@ public class MatchingRule extends AbstractMutableSchemaObject
      *
      * @param normalizer The Normalizer
      */
-    public void setNormalizer( Normalizer normalizer )
+    public void setNormalizer( AbstractNormalizer normalizer )
     {
         if ( locked )
         {
@@ -399,7 +397,7 @@ public class MatchingRule extends AbstractMutableSchemaObject
      *
      * @param normalizer The Normalizer
      */
-    public void updateNormalizer( Normalizer normalizer )
+    public void updateNormalizer( AbstractNormalizer normalizer )
     {
         if ( locked )
         {

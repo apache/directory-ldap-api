@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.model.schema.normalizers;
 
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.Normalizer;
+import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 
@@ -33,13 +33,13 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class CachingNormalizer extends Normalizer
+public class CachingNormalizer extends AbstractNormalizer
 {
     /** Cache maximum size default */
     public static final int CACHE_MAX = 250;
 
     /** The underlying decorated Normalizer */
-    protected final Normalizer normalizer;
+    protected final AbstractNormalizer normalizer;
 
 
     // ------------------------------------------------------------------------
@@ -52,7 +52,7 @@ public class CachingNormalizer extends Normalizer
      * 
      * @param normalizer the underlying Normalizer being decorated
      */
-    public CachingNormalizer( Normalizer normalizer )
+    public CachingNormalizer( AbstractNormalizer normalizer )
     {
         this( normalizer, CACHE_MAX );
     }
@@ -65,7 +65,7 @@ public class CachingNormalizer extends Normalizer
      * @param normalizer the underlying Normalizer being decorated
      * @param cacheSz the maximum size of the name cache
      */
-    public CachingNormalizer( Normalizer normalizer, int cacheSz )
+    public CachingNormalizer( AbstractNormalizer normalizer, int cacheSz )
     {
         super( normalizer.getOid() );
         this.normalizer = normalizer;
