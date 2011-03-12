@@ -48,7 +48,7 @@ import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MutableLoadableSchemaObject;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableNormalizer;
 import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
@@ -843,7 +843,7 @@ public class DefaultSchemaManager implements SchemaManager
     {
         for ( Entry entry : schemaLoader.loadMatchingRules( schema ) )
         {
-            MatchingRule matchingRule = factory.getMatchingRule( this, entry, registries, schema.getSchemaName() );
+            MutableMatchingRuleImpl matchingRule = factory.getMatchingRule( this, entry, registries, schema.getSchemaName() );
 
             addSchemaObject( registries, matchingRule, schema );
         }
@@ -1547,7 +1547,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public MatchingRule lookupMatchingRuleRegistry( String oid ) throws LdapException
+    public MutableMatchingRuleImpl lookupMatchingRuleRegistry( String oid ) throws LdapException
     {
         return registries.getMatchingRuleRegistry().lookup( Strings.toLowerCase( oid ).trim() );
     }

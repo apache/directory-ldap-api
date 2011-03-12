@@ -30,7 +30,7 @@ import java.util.Set;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapNoSuchAttributeException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 import org.apache.directory.shared.ldap.model.schema.normalizers.NoOpNormalizer;
 import org.apache.directory.shared.ldap.model.schema.normalizers.OidNormalizer;
@@ -257,7 +257,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
      */
     public void addMappingFor( AttributeType attributeType ) throws LdapException
     {
-        MatchingRule equality = attributeType.getEquality();
+        MutableMatchingRuleImpl equality = attributeType.getEquality();
         OidNormalizer oidNormalizer;
         String oid = attributeType.getOid();
 

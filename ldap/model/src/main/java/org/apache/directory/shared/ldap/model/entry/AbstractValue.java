@@ -27,7 +27,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
@@ -169,7 +169,7 @@ public abstract class AbstractValue<T> implements Value<T>
     {
         if ( attributeType != null )
         {
-            MatchingRule mr = getMatchingRule();
+            MutableMatchingRuleImpl mr = getMatchingRule();
     
             if ( mr == null )
             {
@@ -194,11 +194,11 @@ public abstract class AbstractValue<T> implements Value<T>
      * @return a matchingRule or null if one cannot be found for the attributeType
      * @throws LdapException if resolution of schema entities fail
      */
-    protected final MatchingRule getMatchingRule() throws LdapException
+    protected final MutableMatchingRuleImpl getMatchingRule() throws LdapException
     {
         if ( attributeType != null )
         {
-            MatchingRule mr = attributeType.getEquality();
+            MutableMatchingRuleImpl mr = attributeType.getEquality();
     
             if ( mr == null )
             {
@@ -230,7 +230,7 @@ public abstract class AbstractValue<T> implements Value<T>
     {
         if ( attributeType != null )
         {
-            MatchingRule mr = getMatchingRule();
+            MutableMatchingRuleImpl mr = getMatchingRule();
     
             if ( mr == null )
             {

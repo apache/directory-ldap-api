@@ -42,7 +42,7 @@ import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableNormalizer;
 import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -153,7 +153,7 @@ public class SchemaManagerAddTest
     {
         try
         {
-            MatchingRule matchingRule = schemaManager.lookupMatchingRuleRegistry( oid );
+            MutableMatchingRuleImpl matchingRule = schemaManager.lookupMatchingRuleRegistry( oid );
 
             return matchingRule != null;
         }
@@ -949,7 +949,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
+        MutableMatchingRuleImpl matchingRule = new MutableMatchingRuleImpl( "1.1.0" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
 
         // It should not fail
@@ -958,7 +958,7 @@ public class SchemaManagerAddTest
         assertTrue( isMRPresent( schemaManager, "1.1.0" ) );
 
         // The C and N must have default values
-        MatchingRule added = schemaManager.lookupMatchingRuleRegistry( "1.1.0" );
+        MutableMatchingRuleImpl added = schemaManager.lookupMatchingRuleRegistry( "1.1.0" );
 
         assertEquals( NoOpNormalizer.class.getName(), added.getNormalizer().getClass().getName() );
         assertEquals( ComparableComparator.class.getName(), added.getLdapComparator().getClass().getName() );
@@ -978,7 +978,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
+        MutableMatchingRuleImpl matchingRule = new MutableMatchingRuleImpl( "1.1.0" );
 
         // It should fail (no syntax)
         assertFalse( schemaManager.add( matchingRule ) );
@@ -1006,7 +1006,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MatchingRule matchingRule = new MatchingRule( "2.5.13.0" );
+        MutableMatchingRuleImpl matchingRule = new MutableMatchingRuleImpl( "2.5.13.0" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
 
         // It should fail (oid already registered)
@@ -1020,7 +1020,7 @@ public class SchemaManagerAddTest
 
         // Check that the existing MR has not been replaced
         assertTrue( isMRPresent( schemaManager, "2.5.13.0" ) );
-        MatchingRule existing = schemaManager.lookupMatchingRuleRegistry( "2.5.13.0" );
+        MutableMatchingRuleImpl existing = schemaManager.lookupMatchingRuleRegistry( "2.5.13.0" );
 
         assertEquals( "objectIdentifierMatch", existing.getName() );
 
@@ -1039,7 +1039,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
+        MutableMatchingRuleImpl matchingRule = new MutableMatchingRuleImpl( "1.1.0" );
         matchingRule.setNames( "Test", "objectIdentifierMatch" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
 
@@ -1067,7 +1067,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
+        MutableMatchingRuleImpl matchingRule = new MutableMatchingRuleImpl( "1.1.0" );
         matchingRule.setNames( "Test", "cn" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
 
@@ -1080,7 +1080,7 @@ public class SchemaManagerAddTest
 
         // Check that the new MR has been injected
         assertTrue( isMRPresent( schemaManager, "1.1.0" ) );
-        MatchingRule added = schemaManager.lookupMatchingRuleRegistry( "1.1.0" );
+        MutableMatchingRuleImpl added = schemaManager.lookupMatchingRuleRegistry( "1.1.0" );
 
         assertTrue( added.getNames().contains( "cn" ) );
         assertTrue( added.getNames().contains( "Test" ) );
@@ -1100,7 +1100,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
+        MutableMatchingRuleImpl matchingRule = new MutableMatchingRuleImpl( "1.1.0" );
         matchingRule.setNames( "Test" );
         matchingRule.setSyntaxOid( "1.1.1" );
 
@@ -1129,7 +1129,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
+        MutableMatchingRuleImpl matchingRule = new MutableMatchingRuleImpl( "1.1.0" );
         matchingRule.setNames( "Test" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
         matchingRule.setSchemaName( "bad" );

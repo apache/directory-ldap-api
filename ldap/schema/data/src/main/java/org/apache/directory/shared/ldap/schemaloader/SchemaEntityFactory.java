@@ -43,7 +43,7 @@ import org.apache.directory.shared.ldap.model.schema.EntityFactory;
 import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -726,7 +726,7 @@ public class SchemaEntityFactory implements EntityFactory
      * @throws LdapUnwillingToPerformException 
      * @throws LdapInvalidAttributeValueException 
      */
-    public MatchingRule getMatchingRule( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
+    public MutableMatchingRuleImpl getMatchingRule( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapUnwillingToPerformException, LdapInvalidAttributeValueException
     {
         checkEntry( entry, SchemaConstants.MATCHING_RULE );
@@ -753,7 +753,7 @@ public class SchemaEntityFactory implements EntityFactory
             schema = schemaManager.getLoadedSchema( schemaName );
         }
 
-        MatchingRule matchingRule = new MatchingRule( oid );
+        MutableMatchingRuleImpl matchingRule = new MutableMatchingRuleImpl( oid );
 
         // The syntax field
         EntryAttribute mSyntax = entry.get( MetaSchemaConstants.M_SYNTAX_AT );

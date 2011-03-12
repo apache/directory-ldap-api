@@ -91,7 +91,7 @@ public interface EntityFactory
      * @return A MatchingRule SchemaObject
      * @throws LdapException If the MatchingRule is invalid
      */
-    MatchingRule getMatchingRule( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
+    MutableMatchingRuleImpl getMatchingRule( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
 
 
     /**

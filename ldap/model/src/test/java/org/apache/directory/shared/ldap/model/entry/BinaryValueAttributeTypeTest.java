@@ -37,7 +37,7 @@ import java.util.Arrays;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
@@ -69,7 +69,7 @@ public class BinaryValueAttributeTypeTest
 {
     private MutableLdapSyntaxImpl s;
     private AttributeType at;
-    private MatchingRule mr;
+    private MutableMatchingRuleImpl mr;
     
     private static final byte[] BYTES1 = new byte[]{0x01, 0x02, 0x03, 0x04};
     private static final byte[] BYTES2 = new byte[]{(byte)0x81, (byte)0x82, (byte)0x83, (byte)0x84};

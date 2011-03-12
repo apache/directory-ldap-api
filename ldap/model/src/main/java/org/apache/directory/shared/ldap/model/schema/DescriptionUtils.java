@@ -409,7 +409,7 @@ public final class DescriptionUtils
      *            the MatchingRule to generate the description for
      * @return the MatchingRuleDescription string
      */
-    public static String getDescription( MatchingRule matchingRule )
+    public static String getDescription( MutableMatchingRuleImpl matchingRule )
     {
         StringBuilder buf = new StringBuilder( "( " );
         buf.append( matchingRule.getOid() );

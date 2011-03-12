@@ -756,7 +756,7 @@ public final class SchemaUtils
      * @throws LdapException if there are problems accessing the objects
      * associated with the MatchingRule.
      */
-    public static StringBuffer render( MatchingRule mr ) throws LdapException
+    public static StringBuffer render( MutableMatchingRuleImpl mr ) throws LdapException
     {
         StringBuffer buf = new StringBuffer();
         buf.append( "( " ).append( mr.getOid() );

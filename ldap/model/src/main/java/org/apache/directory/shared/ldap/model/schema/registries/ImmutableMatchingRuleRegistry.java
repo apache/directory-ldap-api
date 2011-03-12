@@ -27,6 +27,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 
 
@@ -109,7 +110,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public Iterator<MatchingRule> iterator()
+    public Iterator<MutableMatchingRuleImpl> iterator()
     {
         return immutableMatchingRuleRegistry.iterator();
     }
@@ -118,7 +119,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public MatchingRule lookup( String oid ) throws LdapException
+    public MutableMatchingRuleImpl lookup( String oid ) throws LdapException
     {
         return immutableMatchingRuleRegistry.lookup( oid );
     }
@@ -136,7 +137,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public void register( MatchingRule schemaObject ) throws LdapException
+    public void register( MutableMatchingRuleImpl schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04280 ) );
     }
@@ -154,7 +155,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public MatchingRule unregister( String numericOid ) throws LdapException
+    public MutableMatchingRuleImpl unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04280 ) );
     }
@@ -190,7 +191,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public MatchingRule unregister( MatchingRule schemaObject ) throws LdapException
+    public MutableMatchingRuleImpl unregister( MutableMatchingRuleImpl schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04280 ) );
     }

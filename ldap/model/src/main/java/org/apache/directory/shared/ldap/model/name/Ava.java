@@ -33,7 +33,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -211,7 +211,7 @@ public final class Ava implements Externalizable, Cloneable
             
         try
         {
-            MatchingRule equalityMatchingRule = attributeType.getEquality();
+            MutableMatchingRuleImpl equalityMatchingRule = attributeType.getEquality();
             
             if ( equalityMatchingRule != null )
             {
@@ -676,7 +676,7 @@ public final class Ava implements Externalizable, Cloneable
         {
             if ( schemaManager != null )
             {
-                MatchingRule equalityMatchingRule = attributeType.getEquality();
+                MutableMatchingRuleImpl equalityMatchingRule = attributeType.getEquality();
                 
                 if ( equalityMatchingRule != null )
                 {

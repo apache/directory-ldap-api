@@ -470,7 +470,7 @@ public interface SchemaManager
      * @return The found MatchingRule 
      * @throws LdapException if the OID is not found in the MatchingRule registry
      */
-    MatchingRule lookupMatchingRuleRegistry( String oid ) throws LdapException;
+    MutableMatchingRuleImpl lookupMatchingRuleRegistry( String oid ) throws LdapException;
 
 
     /**

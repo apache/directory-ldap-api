@@ -82,15 +82,15 @@ import org.slf4j.LoggerFactory;
  * @see <a
  *      href="http://www.ietf.org/internet-drafts/draft-ietf-ldapbis-models-11.txt">ldapbis
  *      [MODELS]</a>
- * @see DescriptionUtils#getDescription(MatchingRule)
+ * @see DescriptionUtils#getDescription(MutableMatchingRuleImpl)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class MatchingRule extends AbstractMutableSchemaObject
+public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject implements MatchingRule
 {
     private static final long serialVersionUID = 1L;
 
     /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( MatchingRule.class );
+    private static final Logger LOG = LoggerFactory.getLogger( MutableMatchingRuleImpl.class );
 
     /** The associated Comparator */
     protected AbstractLdapComparator<? super Object> ldapComparator;
@@ -110,7 +110,7 @@ public class MatchingRule extends AbstractMutableSchemaObject
      *
      * @param oid The MatchingRule OID
      */
-    public MatchingRule( String oid )
+    public MutableMatchingRuleImpl( String oid )
     {
         super( SchemaObjectType.MATCHING_RULE, oid );
     }
@@ -231,10 +231,8 @@ public class MatchingRule extends AbstractMutableSchemaObject
     }
 
 
-    /**
-     * Gets the LdapSyntax used by this MatchingRule.
-     * 
-     * @return the LdapSyntax of this MatchingRule
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.model.schema.MatchingRule#getSyntax()
      */
     public MutableLdapSyntax getSyntax()
     {
@@ -242,11 +240,8 @@ public class MatchingRule extends AbstractMutableSchemaObject
     }
 
 
-    /**
-     * Gets the LdapSyntax OID used by this MatchingRule.
-     * 
-     * @return the LdapSyntax of this MatchingRule
-     * @throws NamingException if there is a failure resolving the object
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.model.schema.MatchingRule#getSyntaxOid()
      */
     public String getSyntaxOid()
     {
@@ -310,12 +305,8 @@ public class MatchingRule extends AbstractMutableSchemaObject
     }
 
 
-    /**
-     * Gets the LdapComparator enabling the use of this MatchingRule for ORDERING
-     * and sorted indexing.
-     * 
-     * @return the ordering LdapComparator
-     * @throws NamingException if there is a failure resolving the object
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.model.schema.MatchingRule#getLdapComparator()
      */
     public AbstractLdapComparator<? super Object> getLdapComparator()
     {
@@ -360,12 +351,8 @@ public class MatchingRule extends AbstractMutableSchemaObject
     }
 
 
-    /**
-     * Gets the Normalizer enabling the use of this MatchingRule for EQUALITY
-     * matching and indexing.
-     * 
-     * @return the associated normalizer
-     * @throws NamingException if there is a failure resolving the object
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.model.schema.MatchingRule#getNormalizer()
      */
     public MutableNormalizer getNormalizer()
     {
@@ -417,12 +404,12 @@ public class MatchingRule extends AbstractMutableSchemaObject
     }
 
 
-    /**
-     * Copy an MatchingRule
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.model.schema.MatchingRule#copy()
      */
     public MatchingRule copy()
     {
-        MatchingRule copy = new MatchingRule( oid );
+        MutableMatchingRuleImpl copy = new MutableMatchingRuleImpl( oid );
 
         // Copy the SchemaObject common data
         copy.copy( this );
@@ -450,12 +437,12 @@ public class MatchingRule extends AbstractMutableSchemaObject
             return false;
         }
 
-        if ( !( o instanceof MatchingRule ) )
+        if ( !( o instanceof MutableMatchingRuleImpl ) )
         {
             return false;
         }
 
-        MatchingRule that = ( MatchingRule ) o;
+        MutableMatchingRuleImpl that = ( MutableMatchingRuleImpl ) o;
 
         // Check the Comparator
         if ( ldapComparator != null )

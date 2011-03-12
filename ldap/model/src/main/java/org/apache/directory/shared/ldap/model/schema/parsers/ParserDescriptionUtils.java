@@ -25,7 +25,7 @@ import java.util.List;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 
@@ -190,7 +190,7 @@ public final class ParserDescriptionUtils
      * @param matchingRule1 the second matchingRule to compare
      * @return true if the matchingRules match exactly, false otherwise
      */
-    public static boolean matchingRulesMatch( MatchingRule matchingRule0, MatchingRule matchingRule1 )
+    public static boolean matchingRulesMatch( MutableMatchingRuleImpl matchingRule0, MutableMatchingRuleImpl matchingRule1 )
     {
         // compare all common description parameters
         if ( ! descriptionsMatch( matchingRule0, matchingRule1 ) )

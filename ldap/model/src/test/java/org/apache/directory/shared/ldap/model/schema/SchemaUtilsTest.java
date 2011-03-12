@@ -29,7 +29,7 @@ import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,21 +54,21 @@ public class SchemaUtilsTest
     }
 
 
-    public static MatchingRule[] getMatchingRules()
+    public static MutableMatchingRuleImpl[] getMatchingRules()
     {
-        MatchingRule[] mrs = new MatchingRule[3];
+        MutableMatchingRuleImpl[] mrs = new MutableMatchingRuleImpl[3];
         
-        mrs[0] = new MatchingRule( "2.5.13.2" );
+        mrs[0] = new MutableMatchingRuleImpl( "2.5.13.2" );
         mrs[0].setSyntax( getSyntaxes()[1] );
         mrs[0].addName( "caseIgnoreMatch" );
         mrs[0].setDescription( "Ignores case in strings" );
 
-        mrs[1] = new MatchingRule( "2.5.13.4" );
+        mrs[1] = new MutableMatchingRuleImpl( "2.5.13.4" );
         mrs[0].setSyntax( getSyntaxes()[2] );
         mrs[1].addName( "caseIgnoreSubstringsMatch" );
         mrs[1].setDescription( "Ignores case in substrings" );
 
-        mrs[2] = new MatchingRule( "2.5.13.1" );
+        mrs[2] = new MutableMatchingRuleImpl( "2.5.13.1" );
         mrs[0].setSyntax( getSyntaxes()[0] );
         mrs[2].addName( "distinguishedNameMatch" );
         mrs[2].setDescription( "distinguishedNameMatch" );

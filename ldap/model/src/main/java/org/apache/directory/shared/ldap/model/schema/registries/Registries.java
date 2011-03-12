@@ -45,7 +45,7 @@ import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableLoadableSchemaObject;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.MutableNormalizer;
 import org.apache.directory.shared.ldap.model.schema.MutableSyntaxChecker;
@@ -343,7 +343,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // MatchingRule
         try
         {
-            MatchingRule matchingRule = matchingRuleRegistry.lookup( name );
+            MutableMatchingRuleImpl matchingRule = matchingRuleRegistry.lookup( name );
 
             if ( matchingRule != null )
             {
@@ -499,7 +499,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         // Step 3 :
         // Check the matchingRules
-        for ( MatchingRule matchingRule : matchingRuleRegistry )
+        for ( MutableMatchingRuleImpl matchingRule : matchingRuleRegistry )
         {
             resolve( matchingRule, errors );
         }
@@ -706,7 +706,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * MR -> N
      * MR -> S
      */
-    public void delCrossReferences( MatchingRule matchingRule )
+    public void delCrossReferences( MutableMatchingRuleImpl matchingRule )
     {
         if ( matchingRule.getLdapComparator() != null )
         {
@@ -772,7 +772,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private void buildMatchingRuleReferences( List<Throwable> errors )
     {
-        for ( MatchingRule matchingRule : matchingRuleRegistry )
+        for ( MutableMatchingRuleImpl matchingRule : matchingRuleRegistry )
         {
             buildReference( errors, matchingRule );
         }
@@ -996,7 +996,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Check if the Comparator, Normalizer and the syntax are 
      * existing for a matchingRule.
      */
-    private void resolve( MatchingRule matchingRule, List<Throwable> errors )
+    private void resolve( MutableMatchingRuleImpl matchingRule, List<Throwable> errors )
     {
         // Process the Syntax. It can't be null
         String syntaxOid = matchingRule.getSyntaxOid();
@@ -1591,7 +1591,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     break;
 
                 case MATCHING_RULE:
-                    matchingRuleRegistry.register( ( MatchingRule ) schemaObject );
+                    matchingRuleRegistry.register( ( MutableMatchingRuleImpl ) schemaObject );
                     break;
 
                 case MATCHING_RULE_USE:
@@ -1809,7 +1809,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 break;
 
             case MATCHING_RULE:
-                unregistered = matchingRuleRegistry.unregister( ( MatchingRule ) schemaObject );
+                unregistered = matchingRuleRegistry.unregister( ( MutableMatchingRuleImpl ) schemaObject );
                 break;
 
             case MATCHING_RULE_USE:
@@ -2276,7 +2276,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check the MatchingRules : check for a Normalizer, a Comparator and a Syntax
         LOG.debug( "Checking MatchingRules..." );
 
-        for ( MatchingRule matchingRule : matchingRuleRegistry )
+        for ( MutableMatchingRuleImpl matchingRule : matchingRuleRegistry )
         {
             // Check that each MatchingRule has a Normalizer
             if ( matchingRule.getNormalizer() == null )
@@ -2563,7 +2563,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             clone.globalOidRegistry.put( ditStructureRule );
         }
 
-        for ( MatchingRule matchingRule : clone.matchingRuleRegistry )
+        for ( MutableMatchingRuleImpl matchingRule : clone.matchingRuleRegistry )
         {
             clone.globalOidRegistry.put( matchingRule );
         }

@@ -156,19 +156,19 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
     private String equalityOid;
 
     /** The equality MatchingRule associated with the equalityID */
-    private MatchingRule equality;
+    private MutableMatchingRuleImpl equality;
 
     /** The substring OID associated with this AttributeType */
     private String substringOid;
 
     /** The substring MatchingRule associated with the substringID */
-    private MatchingRule substring;
+    private MutableMatchingRuleImpl substring;
 
     /** The ordering OID associated with this AttributeType */
     private String orderingOid;
 
     /** The ordering MatchingRule associated with the orderingID */
-    private MatchingRule ordering;
+    private MutableMatchingRuleImpl ordering;
 
     /** The superior AttributeType OID */
     private String superiorOid;
@@ -407,7 +407,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
         // The equality MR. It can be null
         if ( equalityOid != null )
         {
-            MatchingRule currentEquality = null;
+            MutableMatchingRuleImpl currentEquality = null;
 
             try
             {
@@ -463,7 +463,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
     {
         if ( orderingOid != null )
         {
-            MatchingRule currentOrdering = null;
+            MutableMatchingRuleImpl currentOrdering = null;
 
             try
             {
@@ -520,7 +520,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
         // The Substring MR. It can be null
         if ( substringOid != null )
         {
-            MatchingRule currentSubstring = null;
+            MutableMatchingRuleImpl currentSubstring = null;
 
             try
             {
@@ -1184,7 +1184,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @return the equality matching rule
      */
-    public MatchingRule getEquality()
+    public MutableMatchingRuleImpl getEquality()
     {
         return equality;
     }
@@ -1243,7 +1243,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @param equality The Equality MR for this AttributeType
      */
-    public void setEquality( MatchingRule equality )
+    public void setEquality( MutableMatchingRuleImpl equality )
     {
         if ( locked )
         {
@@ -1263,7 +1263,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @param newEquality The Equality MR for this AttributeType
      */
-    public void updateEquality( MatchingRule newEquality )
+    public void updateEquality( MutableMatchingRuleImpl newEquality )
     {
         if ( locked )
         {
@@ -1280,7 +1280,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @return the Ordering matching rule
      */
-    public MatchingRule getOrdering()
+    public MutableMatchingRuleImpl getOrdering()
     {
         return ordering;
     }
@@ -1339,7 +1339,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @param ordering The Ordering MR for this AttributeType
      */
-    public void setOrdering( MatchingRule ordering )
+    public void setOrdering( MutableMatchingRuleImpl ordering )
     {
         if ( locked )
         {
@@ -1359,7 +1359,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @param newOrdering The Ordering MR for this AttributeType
      */
-    public void updateOrdering( MatchingRule newOrdering )
+    public void updateOrdering( MutableMatchingRuleImpl newOrdering )
     {
         if ( locked )
         {
@@ -1376,7 +1376,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @return the Substr matching rule
      */
-    public MatchingRule getSubstring()
+    public MutableMatchingRuleImpl getSubstring()
     {
         return substring;
     }
@@ -1435,7 +1435,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @param substring The Substr MR for this AttributeType
      */
-    public void setSubstring( MatchingRule substring )
+    public void setSubstring( MutableMatchingRuleImpl substring )
     {
         if ( locked )
         {
@@ -1455,7 +1455,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @param newSubstring The Substr MR for this AttributeType
      */
-    public void updateSubstring( MatchingRule newSubstring )
+    public void updateSubstring( MutableMatchingRuleImpl newSubstring )
     {
         if ( locked )
         {

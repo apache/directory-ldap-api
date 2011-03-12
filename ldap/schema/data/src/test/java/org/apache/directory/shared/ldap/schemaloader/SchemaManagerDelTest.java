@@ -40,7 +40,7 @@ import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableNormalizer;
 import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
@@ -169,7 +169,7 @@ public class SchemaManagerDelTest
     {
         try
         {
-            MatchingRule matchingRule = schemaManager.lookupMatchingRuleRegistry( oid );
+            MutableMatchingRuleImpl matchingRule = schemaManager.lookupMatchingRuleRegistry( oid );
 
             return matchingRule != null;
         }
@@ -446,7 +446,7 @@ public class SchemaManagerDelTest
         assertTrue( errors.get( 0 ) instanceof LdapProtocolErrorException );
 
         // Now delete the using MR : it should be OK
-        MatchingRule mr = new MatchingRule( OID );
+        MutableMatchingRuleImpl mr = new MutableMatchingRuleImpl( OID );
         assertTrue( schemaManager.delete( mr ) );
 
         assertEquals( mrrSize - 1, schemaManager.getMatchingRuleRegistry().size() );
@@ -484,7 +484,7 @@ public class SchemaManagerDelTest
         int mrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
         
-        MatchingRule mr = new MatchingRule( "2.5.13.33" );
+        MutableMatchingRuleImpl mr = new MutableMatchingRuleImpl( "2.5.13.33" );
         assertTrue( schemaManager.delete( mr ) );
         
         assertEquals( mrSize - 1, schemaManager.getMatchingRuleRegistry().size() );
@@ -499,7 +499,7 @@ public class SchemaManagerDelTest
         int mrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
         
-        MatchingRule mr = new MatchingRule( "0.1.1" );
+        MutableMatchingRuleImpl mr = new MutableMatchingRuleImpl( "0.1.1" );
         assertFalse( schemaManager.delete( mr ) );
         
         assertEquals( mrSize, schemaManager.getMatchingRuleRegistry().size() );
@@ -515,7 +515,7 @@ public class SchemaManagerDelTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         // AT with OID 2.5.18.4 has syntax 1.3.6.1.4.1.1466.115.121.1.12 which is used by MR 2.5.13.1
-        MatchingRule mr = new MatchingRule( "2.5.13.1" );
+        MutableMatchingRuleImpl mr = new MutableMatchingRuleImpl( "2.5.13.1" );
         assertFalse( schemaManager.delete( mr ) );
         
         assertEquals( mrSize, schemaManager.getMatchingRuleRegistry().size() );
@@ -543,7 +543,7 @@ public class SchemaManagerDelTest
         assertTrue( isMatchingRulePresent( schemaManager, MR_OID ) );
 
         // Now try to remove the MR
-        MatchingRule matchingRule = schemaManager.lookupMatchingRuleRegistry( MR_OID );
+        MutableMatchingRuleImpl matchingRule = schemaManager.lookupMatchingRuleRegistry( MR_OID );
         
         // shouldn't be deleted cause there is a AT associated with it
         assertFalse( schemaManager.delete( matchingRule ) );
@@ -687,7 +687,7 @@ public class SchemaManagerDelTest
         assertTrue( errors.get( 0 ) instanceof LdapProtocolErrorException );
 
         // Now delete the using MR : it should be OK
-        MatchingRule mr = new MatchingRule( OID );
+        MutableMatchingRuleImpl mr = new MutableMatchingRuleImpl( OID );
         assertTrue( schemaManager.delete( mr ) );
 
         assertEquals( mrrSize - 1, schemaManager.getMatchingRuleRegistry().size() );
@@ -900,7 +900,7 @@ public class SchemaManagerDelTest
         assertTrue( errors.get( 0 ) instanceof LdapProtocolErrorException );
 
         // Now delete the using MR : it should be OK
-        MatchingRule mr = new MatchingRule( MR_OID );
+        MutableMatchingRuleImpl mr = new MutableMatchingRuleImpl( MR_OID );
         assertTrue( schemaManager.delete( mr ) );
 
         assertEquals( mrrSize - 1, schemaManager.getMatchingRuleRegistry().size() );

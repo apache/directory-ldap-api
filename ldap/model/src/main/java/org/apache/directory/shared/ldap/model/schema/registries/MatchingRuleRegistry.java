@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.model.schema.registries;
 
 
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 
 
 /**
@@ -28,8 +28,8 @@ import org.apache.directory.shared.ldap.model.schema.MatchingRule;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface MatchingRuleRegistry extends SchemaObjectRegistry<MatchingRule>,
-    Iterable<MatchingRule>
+public interface MatchingRuleRegistry extends SchemaObjectRegistry<MutableMatchingRuleImpl>,
+    Iterable<MutableMatchingRuleImpl>
 {
     /**
      * Copy the MatchingRuleRegistry
