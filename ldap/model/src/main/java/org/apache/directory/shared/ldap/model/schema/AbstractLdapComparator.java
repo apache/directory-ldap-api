@@ -20,17 +20,13 @@
 package org.apache.directory.shared.ldap.model.schema;
 
 
-import java.io.Serializable;
-import java.util.Comparator;
-
-
 /**
  * An class used for Comparator. It inherits from the general AbstractAdsSchemaObject class. It
  * also implements the Comparator interface
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractLdapComparator<T> extends MutableLoadableSchemaObjectImpl implements Comparator<T>, Serializable
+public abstract class AbstractLdapComparator<T> extends MutableLoadableSchemaObjectImpl implements MutableLdapComparator<T>
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
