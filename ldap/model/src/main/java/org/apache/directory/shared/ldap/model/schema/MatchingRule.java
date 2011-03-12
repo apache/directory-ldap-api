@@ -93,7 +93,7 @@ public class MatchingRule extends AbstractMutableSchemaObject
     private static final Logger LOG = LoggerFactory.getLogger( MatchingRule.class );
 
     /** The associated Comparator */
-    protected LdapComparator<? super Object> ldapComparator;
+    protected AbstractLdapComparator<? super Object> ldapComparator;
 
     /** The associated Normalizer */
     protected MutableNormalizer normalizer;
@@ -131,7 +131,7 @@ public class MatchingRule extends AbstractMutableSchemaObject
             try
             {
                 // Gets the associated Comparator 
-                ldapComparator = ( LdapComparator<? super Object> ) registries.getComparatorRegistry().lookup( oid );
+                ldapComparator = ( AbstractLdapComparator<? super Object> ) registries.getComparatorRegistry().lookup( oid );
             }
             catch ( LdapException ne )
             {
@@ -317,7 +317,7 @@ public class MatchingRule extends AbstractMutableSchemaObject
      * @return the ordering LdapComparator
      * @throws NamingException if there is a failure resolving the object
      */
-    public LdapComparator<? super Object> getLdapComparator()
+    public AbstractLdapComparator<? super Object> getLdapComparator()
     {
         return ldapComparator;
     }
@@ -329,7 +329,7 @@ public class MatchingRule extends AbstractMutableSchemaObject
      * @param ldapComparator The LdapComparator
      */
     @SuppressWarnings("unchecked")
-    public void setLdapComparator( LdapComparator<?> ldapComparator )
+    public void setLdapComparator( AbstractLdapComparator<?> ldapComparator )
     {
         if ( locked )
         {
@@ -338,7 +338,7 @@ public class MatchingRule extends AbstractMutableSchemaObject
 
         if ( !isReadOnly )
         {
-            this.ldapComparator = ( LdapComparator<? super Object> ) ldapComparator;
+            this.ldapComparator = ( AbstractLdapComparator<? super Object> ) ldapComparator;
         }
     }
 
@@ -349,14 +349,14 @@ public class MatchingRule extends AbstractMutableSchemaObject
      * @param ldapComparator The LdapComparator
      */
     @SuppressWarnings("unchecked")
-    public void updateLdapComparator( LdapComparator<?> ldapComparator )
+    public void updateLdapComparator( AbstractLdapComparator<?> ldapComparator )
     {
         if ( locked )
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
 
-        this.ldapComparator = ( LdapComparator<? super Object> ) ldapComparator;
+        this.ldapComparator = ( AbstractLdapComparator<? super Object> ) ldapComparator;
     }
 
 

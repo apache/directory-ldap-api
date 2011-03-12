@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.PrepareString;
 import org.apache.directory.shared.util.GeneralizedTime;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GeneralizedTimeComparator extends LdapComparator<String>
+public class GeneralizedTimeComparator extends AbstractLdapComparator<String>
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;

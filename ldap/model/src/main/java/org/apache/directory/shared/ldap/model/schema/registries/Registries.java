@@ -40,7 +40,7 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.DITContentRule;
 import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
@@ -479,7 +479,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
 
         // Check the Comparators
-        for ( LdapComparator<?> comparator : comparatorRegistry )
+        for ( AbstractLdapComparator<?> comparator : comparatorRegistry )
         {
             resolve( comparator, errors );
         }
@@ -665,7 +665,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private void buildComparatorReferences( List<Throwable> errors )
     {
-        for ( LdapComparator<?> comparator : comparatorRegistry )
+        for ( AbstractLdapComparator<?> comparator : comparatorRegistry )
         {
             buildReference( errors, comparator );
         }
@@ -958,7 +958,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param comparator the LdapComparator
      * @param errors the list of errors to add exceptions to
      */
-    private void resolve( LdapComparator<?> comparator, List<Throwable> errors )
+    private void resolve( AbstractLdapComparator<?> comparator, List<Throwable> errors )
     {
         // This is currently doing nothing.
         try
@@ -1038,7 +1038,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
 
         // Process the Comparator
-        LdapComparator<?> comparator = matchingRule.getLdapComparator();
+        AbstractLdapComparator<?> comparator = matchingRule.getLdapComparator();
 
         if ( comparator == null )
         {
@@ -1575,7 +1575,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     break;
 
                 case COMPARATOR:
-                    comparatorRegistry.register( ( LdapComparator<?> ) schemaObject );
+                    comparatorRegistry.register( ( AbstractLdapComparator<?> ) schemaObject );
                     break;
 
                 case DIT_CONTENT_RULE:
@@ -1793,7 +1793,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 break;
 
             case COMPARATOR:
-                unregistered = comparatorRegistry.unregister( ( LdapComparator<?> ) schemaObject );
+                unregistered = comparatorRegistry.unregister( ( AbstractLdapComparator<?> ) schemaObject );
                 break;
 
             case DIT_CONTENT_RULE:

@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.model.entry;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
@@ -133,7 +133,7 @@ public class EntryUtils
         matchingRule.setSyntax( syntax );
 
 
-        matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
+        matchingRule.setLdapComparator( new AbstractLdapComparator<String>( matchingRule.getOid() )
         {
             private static final long serialVersionUID = 1L;
 
@@ -203,7 +203,7 @@ public class EntryUtils
         matchingRule.setSyntax( syntax );
 
 
-        matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
+        matchingRule.setLdapComparator( new AbstractLdapComparator<String>( matchingRule.getOid() )
         {
             private static final long serialVersionUID = 1L;
 

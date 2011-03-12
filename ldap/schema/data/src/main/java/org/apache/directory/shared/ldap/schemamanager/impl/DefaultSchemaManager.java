@@ -43,7 +43,7 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.EntityFactory;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
@@ -805,7 +805,7 @@ public class DefaultSchemaManager implements SchemaManager
     {
         for ( Entry entry : schemaLoader.loadComparators( schema ) )
         {
-            LdapComparator<?> comparator = factory.getLdapComparator( this, entry, registries, schema.getSchemaName() );
+            AbstractLdapComparator<?> comparator = factory.getLdapComparator( this, entry, registries, schema.getSchemaName() );
 
             addSchemaObject( registries, comparator, schema );
         }
@@ -1538,7 +1538,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public LdapComparator<?> lookupComparatorRegistry( String oid ) throws LdapException
+    public AbstractLdapComparator<?> lookupComparatorRegistry( String oid ) throws LdapException
     {
         return registries.getComparatorRegistry().lookup( oid );
     }
@@ -1599,7 +1599,7 @@ public class DefaultSchemaManager implements SchemaManager
             return registries.getGlobalOidRegistry().contains( schemaObject.getOid() );
         }
 
-        if ( schemaObject instanceof LdapComparator<?> )
+        if ( schemaObject instanceof AbstractLdapComparator<?> )
         {
             return registries.getComparatorRegistry().contains( schemaObject.getOid() );
         }

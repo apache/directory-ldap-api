@@ -24,7 +24,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 
 
@@ -33,7 +33,7 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DnComparator extends LdapComparator<Object>
+public class DnComparator extends AbstractLdapComparator<Object>
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;

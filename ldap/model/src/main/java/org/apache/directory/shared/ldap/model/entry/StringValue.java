@@ -26,7 +26,7 @@ import java.io.ObjectOutput;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Strings;
@@ -407,7 +407,7 @@ public class StringValue extends AbstractValue<String>
         {
             try
             {
-                LdapComparator<String> comparator = getLdapComparator();
+                AbstractLdapComparator<String> comparator = getLdapComparator();
 
                 // Compare normalized values
                 if ( comparator == null )

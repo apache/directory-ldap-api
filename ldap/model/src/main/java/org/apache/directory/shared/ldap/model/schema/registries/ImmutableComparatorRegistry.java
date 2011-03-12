@@ -26,7 +26,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 
 
@@ -55,7 +55,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
-    public void register( LdapComparator<?> comparator ) throws LdapException
+    public void register( AbstractLdapComparator<?> comparator ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04276 ) );
     }
@@ -64,7 +64,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
-    public LdapComparator<?> unregister( String numericOid ) throws LdapException
+    public AbstractLdapComparator<?> unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04276 ) );
     }
@@ -136,7 +136,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
-    public Iterator<LdapComparator<?>> iterator()
+    public Iterator<AbstractLdapComparator<?>> iterator()
     {
         return immutableComparatorRegistry.iterator();
     }
@@ -145,7 +145,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
-    public LdapComparator<?> lookup( String oid ) throws LdapException
+    public AbstractLdapComparator<?> lookup( String oid ) throws LdapException
     {
         return immutableComparatorRegistry.lookup( oid );
     }
@@ -172,7 +172,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
-    public LdapComparator<?> get( String oid )
+    public AbstractLdapComparator<?> get( String oid )
     {
         return immutableComparatorRegistry.get( oid );
     }
@@ -190,7 +190,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
-    public LdapComparator<?> unregister( LdapComparator<?> schemaObject ) throws LdapException
+    public AbstractLdapComparator<?> unregister( AbstractLdapComparator<?> schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04276 ) );
     }

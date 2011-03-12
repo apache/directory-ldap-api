@@ -36,7 +36,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapProtocolErrorException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
@@ -139,7 +139,7 @@ public class SchemaManagerDelTest
     {
         try
         {
-            LdapComparator<?> comparator = schemaManager.lookupComparatorRegistry( oid );
+            AbstractLdapComparator<?> comparator = schemaManager.lookupComparatorRegistry( oid );
 
             return comparator != null;
         }
@@ -352,7 +352,7 @@ public class SchemaManagerDelTest
         int ctrSize = schemaManager.getComparatorRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        LdapComparator<?> lc = new BooleanComparator( "0.1.1" );
+        AbstractLdapComparator<?> lc = new BooleanComparator( "0.1.1" );
         assertTrue( schemaManager.add( lc ) );
 
         assertEquals( ctrSize + 1, schemaManager.getComparatorRegistry().size() );
@@ -384,7 +384,7 @@ public class SchemaManagerDelTest
         int ctrSize = schemaManager.getComparatorRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        LdapComparator<?> lc = new BooleanComparator( "0.0" );
+        AbstractLdapComparator<?> lc = new BooleanComparator( "0.0" );
         assertFalse( schemaManager.delete( lc ) );
 
         List<Throwable> errors = schemaManager.getErrors();
@@ -402,7 +402,7 @@ public class SchemaManagerDelTest
         int ctrSize = schemaManager.getComparatorRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        LdapComparator<?> lc = schemaManager.lookupComparatorRegistry( "2.5.13.0" );
+        AbstractLdapComparator<?> lc = schemaManager.lookupComparatorRegistry( "2.5.13.0" );
         
         // shouldn't be deleted cause there is a MR associated with it
         assertFalse( schemaManager.delete( lc ) );
@@ -436,7 +436,7 @@ public class SchemaManagerDelTest
         assertTrue( isComparatorPresent( schemaManager, OID ) );
 
         // Now try to remove the C
-        LdapComparator<?> lc = schemaManager.lookupComparatorRegistry( OID );
+        AbstractLdapComparator<?> lc = schemaManager.lookupComparatorRegistry( OID );
         
         // shouldn't be deleted cause there is a MR associated with it
         assertFalse( schemaManager.delete( lc ) );

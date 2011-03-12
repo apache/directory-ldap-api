@@ -40,7 +40,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformEx
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.EntityFactory;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
@@ -392,11 +392,11 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * Class load a comparator instances
      */
-    private LdapComparator<?> classLoadComparator( SchemaManager schemaManager, String oid, String className,
+    private AbstractLdapComparator<?> classLoadComparator( SchemaManager schemaManager, String oid, String className,
         EntryAttribute byteCode ) throws Exception
     {
         // Try to class load the comparator
-        LdapComparator<?> comparator = null;
+        AbstractLdapComparator<?> comparator = null;
         Class<?> clazz = null;
         String byteCodeStr = StringConstants.EMPTY;
 
@@ -417,7 +417,7 @@ public class SchemaEntityFactory implements EntityFactory
         {
             Constructor<?> constructor = clazz.getConstructor( new Class[]
                 { String.class } );
-            comparator = ( LdapComparator<?> ) constructor.newInstance( new Object[]
+            comparator = ( AbstractLdapComparator<?> ) constructor.newInstance( new Object[]
                 { oid } );
         }
         catch ( NoSuchMethodException nsme )
@@ -426,7 +426,7 @@ public class SchemaEntityFactory implements EntityFactory
             // In this case, we will have to check that the OID is the same than
             // the one we got in the Comparator entry
             clazz.getConstructor();
-            comparator = ( LdapComparator<?> ) clazz.newInstance();
+            comparator = ( AbstractLdapComparator<?> ) clazz.newInstance();
 
             if ( !comparator.getOid().equals( oid ) )
             {
@@ -449,7 +449,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * {@inheritDoc}
      */
-    public LdapComparator<?> getLdapComparator( SchemaManager schemaManager,
+    public AbstractLdapComparator<?> getLdapComparator( SchemaManager schemaManager,
         LdapComparatorDescription comparatorDescription, Registries targetRegistries, String schemaName )
         throws Exception
     {
@@ -476,7 +476,7 @@ public class SchemaEntityFactory implements EntityFactory
         EntryAttribute byteCode = getByteCode( comparatorDescription, SchemaConstants.COMPARATOR );
 
         // Class load the comparator
-        LdapComparator<?> comparator = classLoadComparator( schemaManager, oid, fqcn, byteCode );
+        AbstractLdapComparator<?> comparator = classLoadComparator( schemaManager, oid, fqcn, byteCode );
 
         // Update the common fields
         setSchemaObjectProperties( comparator, comparatorDescription, schema );
@@ -488,7 +488,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * {@inheritDoc}
      */
-    public LdapComparator<?> getLdapComparator( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
+    public AbstractLdapComparator<?> getLdapComparator( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapException
     {
         checkEntry( entry, SchemaConstants.COMPARATOR );
@@ -524,7 +524,7 @@ public class SchemaEntityFactory implements EntityFactory
         try
         {
             // Class load the comparator
-            LdapComparator<?> comparator = classLoadComparator( schemaManager, oid, fqcn, byteCode );
+            AbstractLdapComparator<?> comparator = classLoadComparator( schemaManager, oid, fqcn, byteCode );
     
             // Update the common fields
             setSchemaObjectProperties( comparator, entry, schema );

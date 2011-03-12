@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 import java.io.Serializable;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 
 
 /**
@@ -31,7 +31,7 @@ import org.apache.directory.shared.ldap.model.schema.LdapComparator;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LongComparator extends LdapComparator<Long> implements Serializable
+public class LongComparator extends AbstractLdapComparator<Long> implements Serializable
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;

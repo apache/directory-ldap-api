@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.model.schema.comparators;
 
 
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.util.Strings;
 
 
@@ -30,7 +30,7 @@ import org.apache.directory.shared.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ObjectClassTypeComparator<T> extends LdapComparator<T> 
+public class ObjectClassTypeComparator<T> extends AbstractLdapComparator<T> 
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;

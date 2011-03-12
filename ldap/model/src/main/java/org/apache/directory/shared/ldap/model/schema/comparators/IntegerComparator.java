@@ -25,7 +25,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.PrepareString;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class IntegerComparator extends LdapComparator<Object> implements Serializable
+public class IntegerComparator extends AbstractLdapComparator<Object> implements Serializable
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;

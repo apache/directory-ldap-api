@@ -28,7 +28,7 @@ import java.util.Comparator;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
@@ -324,7 +324,7 @@ public class BinaryValue extends AbstractValue<byte[]>
         {
             try
             {
-                LdapComparator<byte[]> comparator = getLdapComparator();
+                AbstractLdapComparator<byte[]> comparator = getLdapComparator();
 
                 if ( comparator != null )
                 {

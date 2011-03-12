@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.model.schema.registries;
 
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<LdapComparator<?>>
+public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<AbstractLdapComparator<?>>
     implements ComparatorRegistry
 {
     /** static class logger */
@@ -48,7 +48,7 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<LdapC
      */
     public DefaultComparatorRegistry()
     {
-        super( SchemaObjectType.COMPARATOR, new OidRegistry<LdapComparator<?>>() );
+        super( SchemaObjectType.COMPARATOR, new OidRegistry<AbstractLdapComparator<?>>() );
     }
 
 
@@ -64,7 +64,7 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<LdapC
 
         // Loop on all the SchemaObjects stored and remove those associated
         // with the give schemaName
-        for ( LdapComparator<?> comparator : this )
+        for ( AbstractLdapComparator<?> comparator : this )
         {
             if ( schemaName.equalsIgnoreCase( comparator.getSchemaName() ) )
             {
@@ -115,7 +115,7 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<LdapC
                 sb.append( ", " );
             }
 
-            LdapComparator<?> comparator = byName.get( name );
+            AbstractLdapComparator<?> comparator = byName.get( name );
 
             String fqcn = comparator.getFqcn();
             int lastDotPos = fqcn.lastIndexOf( '.' );

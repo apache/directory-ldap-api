@@ -62,7 +62,7 @@ public interface EntityFactory
      * @return A new instance of a LdapComparator
      * @throws Exception If the creation has failed
      */
-    LdapComparator<?> getLdapComparator( SchemaManager schemaManager, 
+    AbstractLdapComparator<?> getLdapComparator( SchemaManager schemaManager, 
         LdapComparatorDescription comparatorDescription,
         Registries targetRegistries, String schemaName ) throws Exception;
     
@@ -77,7 +77,7 @@ public interface EntityFactory
      * @return the loaded Comparator
      * @throws LdapException if anything fails during loading
      */
-    LdapComparator<?> getLdapComparator( SchemaManager schemaManager, Entry entry, 
+    AbstractLdapComparator<?> getLdapComparator( SchemaManager schemaManager, Entry entry, 
         Registries targetRegistries, String schemaName ) throws LdapException;
     
 

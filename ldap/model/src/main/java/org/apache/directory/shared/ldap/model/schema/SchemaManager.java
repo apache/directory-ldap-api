@@ -460,7 +460,7 @@ public interface SchemaManager
      * @return The found Comparator 
      * @throws LdapException if the OID is not found in the Comparator registry
      */
-    LdapComparator<?> lookupComparatorRegistry( String oid ) throws LdapException;
+    AbstractLdapComparator<?> lookupComparatorRegistry( String oid ) throws LdapException;
 
 
     /**

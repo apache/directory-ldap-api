@@ -38,7 +38,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
@@ -832,7 +832,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         String oid = "0.0.0";
-        LdapComparator<?> lc = new BooleanComparator( oid );
+        AbstractLdapComparator<?> lc = new BooleanComparator( oid );
 
         assertTrue( schemaManager.add( lc ) );
 
@@ -842,7 +842,7 @@ public class SchemaManagerAddTest
         assertEquals( ctrSize + 1, schemaManager.getComparatorRegistry().size() );
         assertEquals( goidSize, schemaManager.getGlobalOidRegistry().size() );
 
-        LdapComparator<?> added = schemaManager.lookupComparatorRegistry( oid );
+        AbstractLdapComparator<?> added = schemaManager.lookupComparatorRegistry( oid );
 
         assertNotNull( added );
         assertEquals( lc.getClass().getName(), added.getFqcn() );
@@ -857,11 +857,11 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         String oid = "0.0.0";
-        LdapComparator<?> bc = new BooleanComparator( oid );
+        AbstractLdapComparator<?> bc = new BooleanComparator( oid );
 
         assertTrue( schemaManager.add( bc ) );
 
-        LdapComparator<?> added = schemaManager.lookupComparatorRegistry( oid );
+        AbstractLdapComparator<?> added = schemaManager.lookupComparatorRegistry( oid );
 
         assertNotNull( added );
         assertEquals( bc.getClass().getName(), added.getFqcn() );
@@ -871,7 +871,7 @@ public class SchemaManagerAddTest
         assertEquals( ctrSize + 1, schemaManager.getComparatorRegistry().size() );
         assertEquals( goidSize, schemaManager.getGlobalOidRegistry().size() );
 
-        LdapComparator<?> lc = new CsnComparator( oid );
+        AbstractLdapComparator<?> lc = new CsnComparator( oid );
 
         assertFalse( schemaManager.add( lc ) );
 
@@ -899,7 +899,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         String oid = "0.0.0";
-        LdapComparator<?> lc = new BooleanComparator( oid );
+        AbstractLdapComparator<?> lc = new BooleanComparator( oid );
 
         // using java.sql.ResultSet cause it is very unlikely to get loaded
         // in ADS, as the FQCN is not the one expected

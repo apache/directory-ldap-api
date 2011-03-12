@@ -25,7 +25,7 @@ import java.util.Comparator;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 
 
@@ -36,7 +36,7 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SerializableComparator<E> extends LdapComparator<E> implements Serializable
+public class SerializableComparator<E> extends AbstractLdapComparator<E> implements Serializable
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
@@ -107,7 +107,7 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
             }
         }
 
-        ((LdapComparator<E>)wrapped).setSchemaManager( schemaManager );
+        ((AbstractLdapComparator<E>)wrapped).setSchemaManager( schemaManager );
         super.setSchemaManager( schemaManager );
     }
 }

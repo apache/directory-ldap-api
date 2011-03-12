@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.model.schema.comparators;
 
 
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ByteArrayComparator extends LdapComparator<byte[]>
+public class ByteArrayComparator extends AbstractLdapComparator<byte[]>
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;

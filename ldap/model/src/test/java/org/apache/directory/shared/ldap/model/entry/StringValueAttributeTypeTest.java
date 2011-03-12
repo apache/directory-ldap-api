@@ -40,7 +40,7 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.AbstractSyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.comparators.StringComparator;
 import org.apache.directory.shared.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
@@ -458,7 +458,7 @@ public class StringValueAttributeTypeTest
         });
 
         mr.setSyntax( s );
-        mr.setLdapComparator( new LdapComparator<String>( mr.getOid() )
+        mr.setLdapComparator( new AbstractLdapComparator<String>( mr.getOid() )
         {
             private static final long serialVersionUID = 1L;
 

@@ -199,7 +199,7 @@ public final class DescriptionUtils
      *            the Comparator to generate the description for
      * @return the ComparatorDescription string
      */
-    public static String getDescription( LdapComparator<?> comparator )
+    public static String getDescription( AbstractLdapComparator<?> comparator )
     {
         return getLoadableDescription( comparator );
     }

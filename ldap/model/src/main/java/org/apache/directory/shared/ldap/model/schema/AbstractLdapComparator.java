@@ -30,7 +30,7 @@ import java.util.Comparator;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class LdapComparator<T> extends MutableLoadableSchemaObjectImpl implements Comparator<T>, Serializable
+public abstract class AbstractLdapComparator<T> extends MutableLoadableSchemaObjectImpl implements Comparator<T>, Serializable
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
@@ -39,7 +39,7 @@ public abstract class LdapComparator<T> extends MutableLoadableSchemaObjectImpl 
      * Create a new instance of a Comparator
      * @param oid The associated OID
      */
-    protected LdapComparator( String oid )
+    protected AbstractLdapComparator( String oid )
     {
         super( SchemaObjectType.COMPARATOR, oid );
     }
@@ -68,7 +68,7 @@ public abstract class LdapComparator<T> extends MutableLoadableSchemaObjectImpl 
             return false;
         }
 
-        return o instanceof LdapComparator<?>;
+        return o instanceof AbstractLdapComparator<?>;
     }
 
 

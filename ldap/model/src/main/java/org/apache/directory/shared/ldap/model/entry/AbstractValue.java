@@ -26,7 +26,7 @@ import java.io.ObjectOutput;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
@@ -165,7 +165,7 @@ public abstract class AbstractValue<T> implements Value<T>
      * @throws LdapException if resolution of schema entities fail
      */
     @SuppressWarnings("unchecked")
-    protected final LdapComparator<T> getLdapComparator() throws LdapException
+    protected final AbstractLdapComparator<T> getLdapComparator() throws LdapException
     {
         if ( attributeType != null )
         {
@@ -176,7 +176,7 @@ public abstract class AbstractValue<T> implements Value<T>
                 return null;
             }
     
-            return (LdapComparator<T>)mr.getLdapComparator();
+            return (AbstractLdapComparator<T>)mr.getLdapComparator();
         }
         else
         {
