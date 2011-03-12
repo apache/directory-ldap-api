@@ -36,7 +36,7 @@ import java.util.Arrays;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
@@ -67,7 +67,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class BinaryValueAttributeTypeTest
 {
-    private LdapSyntax s;
+    private MutableLdapSyntaxImpl s;
     private AttributeType at;
     private MatchingRule mr;
     

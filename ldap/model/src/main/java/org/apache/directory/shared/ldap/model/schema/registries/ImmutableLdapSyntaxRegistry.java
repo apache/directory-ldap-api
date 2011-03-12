@@ -27,6 +27,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 
 
@@ -35,10 +36,10 @@ import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
+public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry<LdapSyntax>
 {
     /** The wrapped LdapSyntax registry */
-    LdapSyntaxRegistry immutableLdapSyntaxRegistry;
+    LdapSyntaxRegistry<LdapSyntax> immutableLdapSyntaxRegistry;
 
 
     /**
@@ -154,7 +155,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry
     /**
      * {@inheritDoc}
      */
-    public LdapSyntax unregister( String numericOid ) throws LdapException
+    public MutableLdapSyntaxImpl unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04279 ) );
     }

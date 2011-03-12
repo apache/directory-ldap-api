@@ -42,6 +42,8 @@ import org.apache.directory.shared.ldap.model.schema.DITContentRule;
 import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableLoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
@@ -109,7 +111,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     protected DefaultSyntaxCheckerRegistry syntaxCheckerRegistry;
 
     /** The LdapSyntax registry */
-    protected LdapSyntaxRegistry ldapSyntaxRegistry;
+    protected DefaultLdapSyntaxRegistry ldapSyntaxRegistry;
 
     /** A map storing all the schema objects associated with a schema */
     private Map<String, Set<SchemaObjectWrapper>> schemaObjects;
@@ -273,7 +275,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * @return The LdapSyntax registry
      */
-    public LdapSyntaxRegistry getLdapSyntaxRegistry()
+    public LdapSyntaxRegistry<MutableLdapSyntax> getLdapSyntaxRegistry()
     {
         return ldapSyntaxRegistry;
     }
@@ -488,7 +490,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         // Step 2 :
         // Check the LdapSyntaxes
-        for ( LdapSyntax ldapSyntax : ldapSyntaxRegistry )
+        for ( MutableLdapSyntax ldapSyntax : ldapSyntaxRegistry )
         {
             resolve( ldapSyntax, errors );
         }
@@ -843,7 +845,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private void buildLdapSyntaxReferences( List<Throwable> errors )
     {
-        for ( LdapSyntax syntax : ldapSyntaxRegistry )
+        for ( MutableLdapSyntax syntax : ldapSyntaxRegistry )
         {
             buildReference( errors, syntax );
         }
@@ -914,13 +916,12 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param syntax the LdapSyntax to resolve the SyntaxChecker of
      * @param errors the list of errors to add exceptions to
      */
-    private void resolve( LdapSyntax syntax, List<Throwable> errors )
+    private void resolve( MutableLdapSyntax syntax, List<Throwable> errors )
     {
-        // A LdapSyntax must point to a valid SyntaxChecker
-        // or to the OctetString SyntaxChecker
+        // A LdapSyntax must point to a valid SyntaxChecker or to the default
         try
         {
-            syntax.addToRegistries( errors, this );
+            RegistryUtils.addToRegistries( errors, syntax, this );
         }
         catch ( LdapException e )
         {
@@ -1584,7 +1585,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     break;
 
                 case LDAP_SYNTAX:
-                    ldapSyntaxRegistry.register( ( LdapSyntax ) schemaObject );
+                    ldapSyntaxRegistry.register( ( MutableLdapSyntaxImpl ) schemaObject );
                     break;
 
                 case MATCHING_RULE:
@@ -1802,7 +1803,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 break;
 
             case LDAP_SYNTAX:
-                unregistered = ldapSyntaxRegistry.unregister( ( LdapSyntax ) schemaObject );
+                unregistered = ldapSyntaxRegistry.unregister( ( MutableLdapSyntax ) schemaObject );
                 break;
 
             case MATCHING_RULE:
@@ -2245,7 +2246,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check the Syntaxes : check for a SyntaxChecker
         LOG.debug( "Checking Syntaxes" );
 
-        for ( LdapSyntax syntax : ldapSyntaxRegistry )
+        for ( MutableLdapSyntax syntax : ldapSyntaxRegistry )
         {
             // Check that each Syntax has a SyntaxChecker
             if ( syntax.getSyntaxChecker() == null )
@@ -2580,7 +2581,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             clone.globalOidRegistry.put( objectClass );
         }
 
-        for ( LdapSyntax syntax : clone.ldapSyntaxRegistry )
+        for ( MutableLdapSyntax syntax : clone.ldapSyntaxRegistry )
         {
             clone.globalOidRegistry.put( syntax );
         }

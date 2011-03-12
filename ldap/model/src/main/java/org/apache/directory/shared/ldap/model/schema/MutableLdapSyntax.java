@@ -20,27 +20,37 @@
 package org.apache.directory.shared.ldap.model.schema;
 
 
-public interface LdapSyntax extends SchemaObject
+/**
+ * The mutable LdapSyntax interface.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
+public interface MutableLdapSyntax extends MutableSchemaObject, LdapSyntax
 {
     /**
-     * Gets whether or not the Syntax is human readable.
+     * Sets the human readable flag value.
      * 
-     * @return true if the syntax can be interpreted by humans, false otherwise
+     * @param humanReadable the human readable flag value to set
      */
-    boolean isHumanReadable();
+    void setHumanReadable( boolean humanReadable );
 
 
     /**
-     * Gets the SyntaxChecker used to validate values in accordance with this
-     * Syntax.
-     * 
-     * @return the SyntaxChecker
+     * Sets the associated SyntaxChecker
+     *
+     * @param syntaxChecker The associated SyntaxChecker
      */
-    MutableSyntaxChecker getSyntaxChecker();
+    void setSyntaxChecker( MutableSyntaxChecker syntaxChecker );
 
 
     /**
      * {@inheritDoc}
      */
-    LdapSyntax copy();
+    MutableLdapSyntax copy();
+
+
+    /**
+     * {@inheritDoc}
+     */
+    void clear();
 }

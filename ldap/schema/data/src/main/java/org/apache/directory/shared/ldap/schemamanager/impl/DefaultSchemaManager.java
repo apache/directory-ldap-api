@@ -44,7 +44,8 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.EntityFactory;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MutableLoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
@@ -920,7 +921,7 @@ public class DefaultSchemaManager implements SchemaManager
     {
         for ( Entry entry : schemaLoader.loadSyntaxes( schema ) )
         {
-            LdapSyntax syntax = factory.getSyntax( this, entry, registries, schema.getSchemaName() );
+            MutableLdapSyntaxImpl syntax = factory.getSyntax( this, entry, registries, schema.getSchemaName() );
 
             addSchemaObject( registries, syntax, schema );
         }
@@ -1581,7 +1582,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public LdapSyntax lookupLdapSyntaxRegistry( String oid ) throws LdapException
+    public MutableLdapSyntax lookupLdapSyntaxRegistry( String oid ) throws LdapException
     {
         return registries.getLdapSyntaxRegistry().lookup( Strings.toLowerCase( oid ).trim() );
     }

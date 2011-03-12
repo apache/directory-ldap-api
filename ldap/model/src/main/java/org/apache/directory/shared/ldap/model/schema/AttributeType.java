@@ -150,7 +150,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
     private String syntaxOid;
 
     /** The syntax associated with the syntaxID */
-    private LdapSyntax syntax;
+    private MutableLdapSyntax syntax;
 
     /** The equality OID associated with this AttributeType */
     private String equalityOid;
@@ -336,7 +336,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
     {
         if ( syntaxOid != null )
         {
-            LdapSyntax currentSyntax = null;
+            MutableLdapSyntax currentSyntax = null;
 
             try
             {
@@ -1088,7 +1088,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @return the value syntax
      */
-    public LdapSyntax getSyntax()
+    public MutableLdapSyntax getSyntax()
     {
         return syntax;
     }
@@ -1147,7 +1147,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @param syntax The Syntax for this AttributeType
      */
-    public void setSyntax( LdapSyntax syntax )
+    public void setSyntax( MutableLdapSyntaxImpl syntax )
     {
         if ( locked )
         {
@@ -1167,7 +1167,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @param newSyntax The Syntax for this AttributeType
      */
-    public void updateSyntax( LdapSyntax newSyntax )
+    public void updateSyntax( MutableLdapSyntaxImpl newSyntax )
     {
         if ( locked )
         {

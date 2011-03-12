@@ -41,7 +41,7 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.EntityFactory;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
@@ -674,7 +674,7 @@ public class SchemaEntityFactory implements EntityFactory
      * @throws LdapInvalidAttributeValueException 
      * @throws LdapUnwillingToPerformException 
      */
-    public LdapSyntax getSyntax( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
+    public MutableLdapSyntaxImpl getSyntax( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapInvalidAttributeValueException, LdapUnwillingToPerformException
     {
         checkEntry( entry, SchemaConstants.SYNTAX );
@@ -702,7 +702,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Create the new LdapSyntax instance
-        LdapSyntax syntax = new LdapSyntax( oid );
+        MutableLdapSyntaxImpl syntax = new MutableLdapSyntaxImpl( oid );
 
         // The isHumanReadable field
         EntryAttribute mHumanReadable = entry.get( MetaSchemaConstants.X_HUMAN_READABLE_AT );

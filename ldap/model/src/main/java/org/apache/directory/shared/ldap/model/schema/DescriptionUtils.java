@@ -747,7 +747,7 @@ public final class DescriptionUtils
      *            the Syntax to generate a description for
      * @return the description in the SyntaxDescription syntax
      */
-    public static String getDescription( LdapSyntax syntax )
+    public static String getDescription( MutableLdapSyntaxImpl syntax )
     {
         StringBuilder buf = new StringBuilder( "( " );
         buf.append( syntax.getOid() );

@@ -38,6 +38,8 @@ import org.apache.directory.shared.ldap.model.exception.LdapProtocolErrorExcepti
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableSyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
@@ -780,14 +782,14 @@ public class SchemaManagerDelTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         // delete a existing syntax not used by AT and MR
-        LdapSyntax syntax = schemaManager.lookupLdapSyntaxRegistry( "1.3.6.1.4.1.1466.115.121.1.10" );
+        MutableLdapSyntax syntax = schemaManager.lookupLdapSyntaxRegistry( "1.3.6.1.4.1.1466.115.121.1.10" );
         assertTrue( schemaManager.delete( syntax ) );
         
         assertEquals( sSize - 1, schemaManager.getLdapSyntaxRegistry().size() );
         assertEquals( goidSize -1, schemaManager.getGlobalOidRegistry().size() );
 
         // add a syntax and then delete (should behave same as above )
-        syntax = new LdapSyntax( "0.1.1" );
+        syntax = new MutableLdapSyntaxImpl( "0.1.1" );
         assertTrue( schemaManager.add( syntax ) );
 
         assertEquals( sSize, schemaManager.getLdapSyntaxRegistry().size() );
@@ -818,7 +820,7 @@ public class SchemaManagerDelTest
         int sSize = schemaManager.getLdapSyntaxRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        LdapSyntax syntax = new LdapSyntax( "0.1.1" );
+        MutableLdapSyntaxImpl syntax = new MutableLdapSyntaxImpl( "0.1.1" );
         
         assertFalse( schemaManager.delete( syntax ) );
         
@@ -836,11 +838,11 @@ public class SchemaManagerDelTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         //1.3.6.1.4.1.1466.115.121.1.26 is used by MR 1.3.6.1.4.1.1466.109.114.2
-        LdapSyntax syntax = new LdapSyntax( "1.3.6.1.4.1.1466.115.121.1.26" );
+        MutableLdapSyntaxImpl syntax = new MutableLdapSyntaxImpl( "1.3.6.1.4.1.1466.115.121.1.26" );
         assertFalse( schemaManager.delete( syntax ) );
         
         // syntax 1.3.6.1.4.1.1466.115.121.1.12 is used by MR 2.5.13.1 and many AT
-        syntax = new LdapSyntax( "1.3.6.1.4.1.1466.115.121.1.12" );
+        syntax = new MutableLdapSyntaxImpl( "1.3.6.1.4.1.1466.115.121.1.12" );
         
         assertFalse( schemaManager.delete( syntax ) );
         
@@ -858,7 +860,7 @@ public class SchemaManagerDelTest
         int sSize = schemaManager.getLdapSyntaxRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        LdapSyntax syntax = new LdapSyntax( "1.3.6.1.4.1.1466.115.121.1.15" );
+        MutableLdapSyntaxImpl syntax = new MutableLdapSyntaxImpl( "1.3.6.1.4.1.1466.115.121.1.15" );
         
         assertFalse( schemaManager.delete( syntax ) );
         
@@ -887,7 +889,7 @@ public class SchemaManagerDelTest
         assertTrue( isSyntaxPresent( schemaManager, S_OID ) );
 
         // Now try to remove the S
-        LdapSyntax syntax = schemaManager.lookupLdapSyntaxRegistry( S_OID );
+        MutableLdapSyntax syntax = schemaManager.lookupLdapSyntaxRegistry( S_OID );
         
         // shouldn't be deleted cause there is a MR associated with it
         assertFalse( schemaManager.delete( syntax ) );
@@ -934,7 +936,7 @@ public class SchemaManagerDelTest
         assertTrue( isSyntaxPresent( schemaManager, S_OID ) );
 
         // Now try to remove the S
-        LdapSyntax syntax = schemaManager.lookupLdapSyntaxRegistry( S_OID );
+        MutableLdapSyntax syntax = schemaManager.lookupLdapSyntaxRegistry( S_OID );
         
         // shouldn't be deleted cause there is a AT associated with it
         assertFalse( schemaManager.delete( syntax ) );
@@ -990,7 +992,7 @@ public class SchemaManagerDelTest
         assertTrue( errors.get( 0 ) instanceof LdapProtocolErrorException );
 
         // Now delete the using S : it should be OK
-        LdapSyntax syntax = new LdapSyntax( OID );
+        MutableLdapSyntaxImpl syntax = new MutableLdapSyntaxImpl( OID );
         assertTrue( schemaManager.delete( syntax ) );
 
         assertEquals( srSize - 1, schemaManager.getLdapSyntaxRegistry().size() );

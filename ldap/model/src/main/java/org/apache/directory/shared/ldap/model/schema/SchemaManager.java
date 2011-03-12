@@ -500,7 +500,7 @@ public interface SchemaManager
      * @return The found LdapSyntax 
      * @throws LdapException if the OID is not found in the LdapSyntax registry
      */
-    LdapSyntax lookupLdapSyntaxRegistry( String oid ) throws LdapException;
+    MutableLdapSyntax lookupLdapSyntaxRegistry( String oid ) throws LdapException;
 
 
     /**
@@ -590,7 +590,7 @@ public interface SchemaManager
      * 
      * @return A reference to the LdapSyntax registry.
      */
-    LdapSyntaxRegistry getLdapSyntaxRegistry();
+    LdapSyntaxRegistry<MutableLdapSyntax> getLdapSyntaxRegistry();
 
 
     /**

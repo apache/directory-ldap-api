@@ -101,7 +101,7 @@ public class MatchingRule extends AbstractMutableSchemaObject
     protected Normalizer normalizer;
 
     /** The associated LdapSyntax */
-    protected LdapSyntax ldapSyntax;
+    protected MutableLdapSyntax ldapSyntax;
 
     /** The associated LdapSyntax OID */
     private String ldapSyntaxOid;
@@ -238,7 +238,7 @@ public class MatchingRule extends AbstractMutableSchemaObject
      * 
      * @return the LdapSyntax of this MatchingRule
      */
-    public LdapSyntax getSyntax()
+    public MutableLdapSyntax getSyntax()
     {
         return ldapSyntax;
     }
@@ -280,7 +280,7 @@ public class MatchingRule extends AbstractMutableSchemaObject
      *
      * @param ldapSyntax The Syntax
      */
-    public void setSyntax( LdapSyntax ldapSyntax )
+    public void setSyntax( MutableLdapSyntaxImpl ldapSyntax )
     {
         if ( locked )
         {
@@ -300,7 +300,7 @@ public class MatchingRule extends AbstractMutableSchemaObject
      *
      * @param ldapSyntax The Syntax
      */
-    public void updateSyntax( LdapSyntax ldapSyntax )
+    public void updateSyntax( MutableLdapSyntaxImpl ldapSyntax )
     {
         if ( locked )
         {

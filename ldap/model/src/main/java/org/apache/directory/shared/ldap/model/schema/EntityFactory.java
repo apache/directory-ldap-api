@@ -143,7 +143,7 @@ public interface EntityFactory
      * @return
      * @throws LdapException
      */
-    LdapSyntax getSyntax( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
+    MutableLdapSyntaxImpl getSyntax( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
     
     
     /**

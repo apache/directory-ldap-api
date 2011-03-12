@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.registries;
 
+
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 
 
@@ -27,11 +28,10 @@ import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface LdapSyntaxRegistry extends SchemaObjectRegistry<LdapSyntax>,
-    Iterable<LdapSyntax>
+public interface LdapSyntaxRegistry<T extends LdapSyntax> extends SchemaObjectRegistry<T>, Iterable<T>
 {
     /**
      * Copy the LdapSyntaxRegistry
      */
-    LdapSyntaxRegistry copy();
+    LdapSyntaxRegistry<T> copy();
 }

@@ -40,6 +40,8 @@ import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -1866,12 +1868,12 @@ public class SchemaManagerAddTest
         int sSize = schemaManager.getLdapSyntaxRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        LdapSyntax syntax = new LdapSyntax( "1.1.0" );
+        MutableLdapSyntaxImpl syntax = new MutableLdapSyntaxImpl( "1.1.0" );
 
         // It should not fail
         assertTrue( schemaManager.add( syntax ) );
 
-        LdapSyntax added = schemaManager.lookupLdapSyntaxRegistry( "1.1.0" );
+        MutableLdapSyntax added = schemaManager.lookupLdapSyntaxRegistry( "1.1.0" );
 
         assertNotNull( added );
         assertEquals( OctetStringSyntaxChecker.class.getName(), added.getSyntaxChecker().getClass().getName() );
@@ -1895,7 +1897,7 @@ public class SchemaManagerAddTest
         int sSize = schemaManager.getLdapSyntaxRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        LdapSyntax syntax = new LdapSyntax( "2.5.4.3" );
+        MutableLdapSyntaxImpl syntax = new MutableLdapSyntaxImpl( "2.5.4.3" );
 
         // It should fail
         assertFalse( schemaManager.add( syntax ) );

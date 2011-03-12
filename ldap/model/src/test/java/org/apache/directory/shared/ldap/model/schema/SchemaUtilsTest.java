@@ -28,7 +28,7 @@ import java.util.List;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.SchemaUtils;
 import org.junit.Test;
@@ -43,12 +43,12 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class SchemaUtilsTest
 {
-    public static LdapSyntax[] getSyntaxes()
+    public static MutableLdapSyntaxImpl[] getSyntaxes()
     {
-        LdapSyntax[] syntaxes = new LdapSyntax[3];
-        syntaxes[0] = new LdapSyntax( "1.3.6.1.4.1.1466.115.121.1.12", "Dn syntax", true );
-        syntaxes[1] = new LdapSyntax( "1.3.6.1.4.1.1466.115.121.1.15", "Directory String syntax", true );
-        syntaxes[2] = new LdapSyntax( "1.3.6.1.4.1.1466.115.121.1.58", "Substring assertion syntax", true );
+        MutableLdapSyntaxImpl[] syntaxes = new MutableLdapSyntaxImpl[3];
+        syntaxes[0] = new MutableLdapSyntaxImpl( "1.3.6.1.4.1.1466.115.121.1.12", "Dn syntax", true );
+        syntaxes[1] = new MutableLdapSyntaxImpl( "1.3.6.1.4.1.1466.115.121.1.15", "Directory String syntax", true );
+        syntaxes[2] = new MutableLdapSyntaxImpl( "1.3.6.1.4.1.1466.115.121.1.58", "Substring assertion syntax", true );
         
         return syntaxes;
     }

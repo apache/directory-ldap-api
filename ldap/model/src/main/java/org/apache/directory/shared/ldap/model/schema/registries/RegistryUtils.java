@@ -20,8 +20,13 @@
 package org.apache.directory.shared.ldap.model.schema.registries;
 
 
+import java.util.List;
+
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableSyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,6 +67,37 @@ public class RegistryUtils
                 {
                     LOG.debug( "Renamed {} schemaName to {}", schemaObject, newSchemaName );
                 }
+            }
+        }
+    }
+
+
+    /**
+     * TODO MOVE ME!
+     */
+    public static void addToRegistries( List<Throwable> errors, MutableLdapSyntax syntax, Registries registries ) throws LdapException
+    {
+        if ( registries != null )
+        {
+            MutableSyntaxChecker syntaxChecker;
+            
+            try
+            {
+                // Gets the associated SyntaxChecker
+                syntaxChecker = ( MutableSyntaxChecker ) registries.getSyntaxCheckerRegistry().lookup( syntax.getOid() );
+            }
+            catch ( LdapException ne )
+            {
+                // No SyntaxChecker ? Associate the Syntax to a catch all SyntaxChecker
+                syntaxChecker = new OctetStringSyntaxChecker( syntax.getOid() );
+            }
+    
+            // Add the references for S :
+            // S -> SC
+            if ( syntaxChecker != null )
+            {
+                syntax.setSyntaxChecker( syntaxChecker );
+                registries.addReference( syntax, syntaxChecker );
             }
         }
     }

@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
@@ -214,7 +215,7 @@ public final class ParserDescriptionUtils
      * @param ldapSyntax1 the second ldapSyntax to compare
      * @return true if the syntaxes match exactly, false otherwise
      */
-    public static boolean syntaxesMatch( LdapSyntax ldapSyntax0, LdapSyntax ldapSyntax1 )
+    public static boolean syntaxesMatch( MutableLdapSyntaxImpl ldapSyntax0, MutableLdapSyntaxImpl ldapSyntax1 )
     {
         return descriptionsMatch( ldapSyntax0, ldapSyntax1 );
     }

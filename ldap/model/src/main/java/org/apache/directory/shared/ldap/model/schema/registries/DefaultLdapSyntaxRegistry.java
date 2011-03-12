@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.model.schema.registries;
 
 
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 
 
@@ -29,15 +29,15 @@ import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DefaultLdapSyntaxRegistry extends DefaultSchemaObjectRegistry<LdapSyntax>
-    implements LdapSyntaxRegistry
+public class DefaultLdapSyntaxRegistry extends DefaultSchemaObjectRegistry<MutableLdapSyntax>
+    implements LdapSyntaxRegistry<MutableLdapSyntax>
 {
     /**
      * Creates a new default LdapSyntaxRegistry instance.
      */
     public DefaultLdapSyntaxRegistry()
     {
-        super( SchemaObjectType.LDAP_SYNTAX, new OidRegistry<LdapSyntax>() );
+        super( SchemaObjectType.LDAP_SYNTAX, new OidRegistry<MutableLdapSyntax>() );
     }
 
 
