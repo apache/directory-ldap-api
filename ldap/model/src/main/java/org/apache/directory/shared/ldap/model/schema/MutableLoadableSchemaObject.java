@@ -25,8 +25,10 @@ package org.apache.directory.shared.ldap.model.schema;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface MutableLoadableSchemaObject extends LoadableSchemaObject
+public interface MutableLoadableSchemaObject extends LoadableSchemaObject, MutableSchemaObject
 {
+    MutableLoadableSchemaObject copy();
+    
     /**
      * Stores some bytecode representing the compiled Java class for this
      * SchemaObject instance.

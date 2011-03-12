@@ -31,7 +31,7 @@ package org.apache.directory.shared.ldap.model.schema;
 public class SchemaObjectWrapper
 {
     /** The internal schemaObject */
-    private MutableSchemaObject schemaObject;
+    private SchemaObject schemaObject;
 
 
     /**
@@ -39,7 +39,7 @@ public class SchemaObjectWrapper
      *
      * @param schemaObject The contained SchemaObject
      */
-    public SchemaObjectWrapper( MutableSchemaObject schemaObject )
+    public SchemaObjectWrapper( SchemaObject schemaObject )
     {
         this.schemaObject = schemaObject;
     }
@@ -84,7 +84,7 @@ public class SchemaObjectWrapper
     /**
      *  @return The interned SchemaObject
      */
-    public MutableSchemaObject get()
+    public SchemaObject get()
     {
         return schemaObject;
     }

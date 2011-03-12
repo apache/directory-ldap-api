@@ -55,6 +55,7 @@ import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectWrapper;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
 import org.apache.directory.shared.ldap.model.schema.normalizers.OidNormalizer;
 import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ComparatorRegistry;
@@ -282,7 +283,7 @@ public class DefaultSchemaManager implements SchemaManager
         Map<String, Set<SchemaObjectWrapper>> schemaObjects = registries.getObjectBySchemaName();
         Set<SchemaObjectWrapper> content = schemaObjects.get( Strings.toLowerCase( schema.getSchemaName() ) );
 
-        List<MutableSchemaObject> toBeDeleted = new ArrayList<MutableSchemaObject>();
+        List<SchemaObject> toBeDeleted = new ArrayList<SchemaObject>();
 
         // Buid an intermediate list to avoid concurrent modifications
         for ( SchemaObjectWrapper schemaObjectWrapper : content )
@@ -933,7 +934,7 @@ public class DefaultSchemaManager implements SchemaManager
     {
         for ( Entry entry : schemaLoader.loadSyntaxCheckers( schema ) )
         {
-            SyntaxChecker syntaxChecker = factory.getSyntaxChecker( this, entry, registries, schema.getSchemaName() );
+            MutableSyntaxCheckerImpl syntaxChecker = factory.getSyntaxChecker( this, entry, registries, schema.getSchemaName() );
 
             addSchemaObject( registries, syntaxChecker, schema );
         }
@@ -1510,7 +1511,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public SyntaxCheckerRegistry getSyntaxCheckerRegistry()
+    public SyntaxCheckerRegistry<SyntaxChecker> getSyntaxCheckerRegistry()
     {
         return new ImmutableSyntaxCheckerRegistry( registries.getSyntaxCheckerRegistry() );
     }
@@ -1627,7 +1628,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * Get the inner SchemaObject if it's not a C/N/SC
      */
-    private MutableSchemaObject getSchemaObject( MutableSchemaObject schemaObject ) throws LdapException
+    private SchemaObject getSchemaObject( SchemaObject schemaObject ) throws LdapException
     {
         if ( schemaObject instanceof MutableLoadableSchemaObject )
         {
@@ -1822,7 +1823,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public boolean delete( MutableSchemaObject schemaObject ) throws LdapException
+    public boolean delete( SchemaObject schemaObject ) throws LdapException
     {
         // First, clear the errors
         errors.clear();
@@ -1846,7 +1847,7 @@ public class DefaultSchemaManager implements SchemaManager
             }
 
             // Get the SchemaObject to delete if it's not a LoadableSchemaObject
-            MutableSchemaObject toDelete = getSchemaObject( schemaObject );
+            SchemaObject toDelete = getSchemaObject( schemaObject );
 
             // First check that this SchemaObject does not have any referencing SchemaObjects
             Set<SchemaObjectWrapper> referencing = registries.getReferencing( toDelete );

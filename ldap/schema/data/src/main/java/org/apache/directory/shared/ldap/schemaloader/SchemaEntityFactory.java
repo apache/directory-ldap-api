@@ -51,6 +51,7 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.shared.ldap.model.schema.parsers.NormalizerDescription;
 import org.apache.directory.shared.ldap.model.schema.registries.Registries;
@@ -258,12 +259,12 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * Class load a syntaxChecker instance
      */
-    private SyntaxChecker classLoadSyntaxChecker( SchemaManager schemaManager, String oid, String className, EntryAttribute byteCode )
+    private MutableSyntaxCheckerImpl classLoadSyntaxChecker( SchemaManager schemaManager, String oid, String className, EntryAttribute byteCode )
         throws Exception
     {
         // Try to class load the syntaxChecker
         Class<?> clazz = null;
-        SyntaxChecker syntaxChecker = null;
+        MutableSyntaxCheckerImpl syntaxChecker = null;
         String byteCodeStr = StringConstants.EMPTY;
 
         if ( byteCode == null )
@@ -278,7 +279,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Create the syntaxChecker instance
-        syntaxChecker = ( SyntaxChecker ) clazz.newInstance();
+        syntaxChecker = ( MutableSyntaxCheckerImpl ) clazz.newInstance();
 
         // Update the common fields
         syntaxChecker.setBytecode( byteCodeStr );
@@ -297,7 +298,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * {@inheritDoc}
      */
-    public SyntaxChecker getSyntaxChecker( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
+    public MutableSyntaxCheckerImpl getSyntaxChecker( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapException
     {
         checkEntry( entry, SchemaConstants.SYNTAX_CHECKER );
@@ -333,7 +334,7 @@ public class SchemaEntityFactory implements EntityFactory
         try
         {
             // Class load the syntaxChecker
-            SyntaxChecker syntaxChecker = classLoadSyntaxChecker( schemaManager, oid, className, byteCode );
+            MutableSyntaxCheckerImpl syntaxChecker = classLoadSyntaxChecker( schemaManager, oid, className, byteCode );
     
             // Update the common fields
             setSchemaObjectProperties( syntaxChecker, entry, schema );
@@ -378,7 +379,7 @@ public class SchemaEntityFactory implements EntityFactory
         EntryAttribute byteCode = getByteCode( syntaxCheckerDescription, SchemaConstants.SYNTAX_CHECKER );
 
         // Class load the SyntaxChecker
-        SyntaxChecker syntaxChecker = classLoadSyntaxChecker( schemaManager, oid, fqcn, byteCode );
+        MutableSyntaxCheckerImpl syntaxChecker = classLoadSyntaxChecker( schemaManager, oid, fqcn, byteCode );
 
         // Update the common fields
         setSchemaObjectProperties( syntaxChecker, syntaxCheckerDescription, schema );

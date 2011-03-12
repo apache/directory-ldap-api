@@ -156,7 +156,7 @@ public interface EntityFactory
      * @return the loaded SyntaxChecker
      * @throws LdapException if anything fails during loading
      */
-    SyntaxChecker getSyntaxChecker( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
+    MutableSyntaxCheckerImpl getSyntaxChecker( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
     
 
     /**

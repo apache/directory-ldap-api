@@ -789,7 +789,7 @@ public final class DescriptionUtils
      *            the SyntaxChecker to generate the description for
      * @return the SyntaxCheckerDescription string
      */
-    public static String getDescription( SyntaxChecker syntaxChecker )
+    public static String getDescription( MutableSyntaxCheckerImpl syntaxChecker )
     {
         return getLoadableDescription( syntaxChecker );
     }

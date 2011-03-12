@@ -17,40 +17,22 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
-
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package org.apache.directory.shared.ldap.model.schema;
 
 
 /**
- * A SyntaxChecker which verifies that a value is a supplier information according to RFC 2252.
+ * Used to validate values of a particular syntax. This interface does not
+ * correlate to any LDAP or X.500 construct. It has been created as a means to
+ * enforce a syntax within the Eve server.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@SuppressWarnings("serial")
-public class SupplierInformationSyntaxChecker extends MutableSyntaxCheckerImpl
+public interface MutableSyntaxChecker extends MutableLoadableSchemaObject, SyntaxChecker
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( SupplierInformationSyntaxChecker.class );
-
     /**
-     * Creates an instance of SupplierInformationSyntaxChecker
-     */
-    public SupplierInformationSyntaxChecker()
-    {
-        super( SchemaConstants.SUPPLIER_INFORMATION_SYNTAX );
-    }
-
-    
-    /**
+     * For covariant return type.
+     * 
      * {@inheritDoc}
      */
-    public boolean isValidSyntax( Object value )
-    {
-        LOG.debug( "Syntax valid for '{}'", value );
-        return true;
-    }
+    MutableSyntaxChecker copy();
 }

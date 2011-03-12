@@ -29,29 +29,9 @@ import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface SyntaxCheckerRegistry extends SchemaObjectRegistry<SyntaxChecker>,
-    Iterable<SyntaxChecker>
+public interface SyntaxCheckerRegistry<R extends SyntaxChecker> 
+    extends SchemaObjectRegistry<R>, Iterable<R>
 {
-    /**
-     * Registers a new SyntaxChecker with this registry.
-     *
-     * @param syntaxChecker the SyntaxChecker to register
-     * @throws LdapException if the SyntaxChecker is already registered or
-     * the registration operation is not supported
-     */
-    void register( SyntaxChecker syntaxChecker ) throws LdapException;
-
-
-    /**
-     * Removes the SyntaxChecker registered with this registry, using its
-     * numeric OID.
-     * 
-     * @param numericOid the numeric identifier
-     * @throws LdapException if the numeric identifier is invalid
-     */
-    SyntaxChecker unregister( String numericOid ) throws LdapException;
-    
-    
     /**
      * Unregisters all SyntaxCheckers defined for a specific schema from
      * this registry.
@@ -64,5 +44,5 @@ public interface SyntaxCheckerRegistry extends SchemaObjectRegistry<SyntaxChecke
     /**
      * Copy the SyntaxCheckerRegistry
      */
-    SyntaxCheckerRegistry copy();
+    SyntaxCheckerRegistry<R> copy();
 }

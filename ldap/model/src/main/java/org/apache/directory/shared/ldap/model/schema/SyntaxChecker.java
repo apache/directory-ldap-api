@@ -21,8 +21,6 @@ package org.apache.directory.shared.ldap.model.schema;
 
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
-import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 
 
 /**
@@ -32,38 +30,23 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class SyntaxChecker extends MutableLoadableSchemaObjectImpl
+public interface SyntaxChecker extends LoadableSchemaObject
 {
-    private static final long serialVersionUID = -6028809434764891692L;
-
-
     /**
-     * The SyntaxChecker base constructor
-     * @param oid The associated OID
+     * For covariant return type.
+     * 
+     * {@inheritDoc}
      */
-    protected SyntaxChecker( String oid )
-    {
-        super( SchemaObjectType.SYNTAX_CHECKER, oid );
-    }
-
-
-    /**
-     * The SyntaxChecker default constructor where the oid is set after 
-     * instantiation.
-     */
-    protected SyntaxChecker()
-    {
-        super( SchemaObjectType.SYNTAX_CHECKER );
-    }
-
-
+    SyntaxChecker copy();
+    
+    
     /**
      * Determines if the attribute's value conforms to the attribute syntax.
      * 
      * @param value the value of some attribute with the syntax
      * @return true if the value is in the valid syntax, false otherwise
      */
-    public abstract boolean isValidSyntax( Object value );
+    boolean isValidSyntax( Object value );
 
 
     /**
@@ -73,48 +56,5 @@ public abstract class SyntaxChecker extends MutableLoadableSchemaObjectImpl
      * @param value the value of some attribute with the syntax
      * @throws LdapException if the value does not conform to the attribute syntax.
      */
-    public void assertSyntax( Object value ) throws LdapException
-    {
-        if ( !isValidSyntax( value ) )
-        {
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX );
-        }
-    }
-
-
-    /**
-     * Store the SchemaManager in this instance. It may be necessary for some
-     * syntaxChecker which needs to have access to the oidNormalizer Map.
-     *
-     * @param schemaManager the schemaManager to store
-     */
-    public void setSchemaManager( SchemaManager schemaManager )
-    {
-        // Do nothing (general case).
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( !super.equals( o ) )
-        {
-            return false;
-        }
-
-        return o instanceof SyntaxChecker;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString()
-    {
-        return objectType + " " + DescriptionUtils.getDescription( this );
-    }
+    void assertSyntax( Object value ) throws LdapException;
 }

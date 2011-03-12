@@ -39,10 +39,12 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableSyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
 import org.apache.directory.shared.ldap.model.schema.comparators.BooleanComparator;
 import org.apache.directory.shared.ldap.model.schema.normalizers.BooleanNormalizer;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.BooleanSyntaxChecker;
@@ -1016,14 +1018,14 @@ public class SchemaManagerDelTest
         int scrSize = schemaManager.getSyntaxCheckerRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        SyntaxChecker sc = new BooleanSyntaxChecker();
+        BooleanSyntaxChecker sc = new BooleanSyntaxChecker();
         sc.setOid( "0.1.1" );
         assertTrue( schemaManager.add( sc ) );
 
         assertEquals( scrSize + 1, schemaManager.getSyntaxCheckerRegistry().size() );
         assertEquals( goidSize, schemaManager.getGlobalOidRegistry().size() );
 
-        sc = schemaManager.lookupSyntaxCheckerRegistry( "0.1.1" );
+        sc = ( BooleanSyntaxChecker ) schemaManager.lookupSyntaxCheckerRegistry( "0.1.1" );
         assertNotNull( sc );
         assertTrue( schemaManager.delete( sc ) );
 
@@ -1049,7 +1051,7 @@ public class SchemaManagerDelTest
         int scrSize = schemaManager.getSyntaxCheckerRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        SyntaxChecker sc = new BooleanSyntaxChecker();
+        MutableSyntaxCheckerImpl sc = new BooleanSyntaxChecker();
         sc.setOid( "0.0" ); 
         assertFalse( schemaManager.delete( sc ) );
 

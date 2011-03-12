@@ -45,6 +45,7 @@ import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
+import org.apache.directory.shared.ldap.model.schema.MutableSyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.NameForm;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -105,7 +106,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     protected OidRegistry<MutableSchemaObject> globalOidRegistry;
 
     /** The SyntaxChecker registry */
-    protected SyntaxCheckerRegistry syntaxCheckerRegistry;
+    protected DefaultSyntaxCheckerRegistry syntaxCheckerRegistry;
 
     /** The LdapSyntax registry */
     protected LdapSyntaxRegistry ldapSyntaxRegistry;
@@ -263,7 +264,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * @return The SyntaxChecker registry
      */
-    public SyntaxCheckerRegistry getSyntaxCheckerRegistry()
+    public SyntaxCheckerRegistry<? extends SyntaxChecker> getSyntaxCheckerRegistry()
     {
         return syntaxCheckerRegistry;
     }
@@ -482,7 +483,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check the SyntaxCheckers
         for ( SyntaxChecker syntaxChecker : syntaxCheckerRegistry )
         {
-            resolve( syntaxChecker, errors );
+            resolve( ( MutableSyntaxChecker ) syntaxChecker, errors );
         }
 
         // Step 2 :
@@ -856,7 +857,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     {
         for ( SyntaxChecker syntaxChecker : syntaxCheckerRegistry )
         {
-            buildReference( errors, syntaxChecker );
+            buildReference( errors, ( MutableSyntaxChecker ) syntaxChecker );
         }
     }
 
@@ -974,7 +975,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param normalizer the SyntaxChecker
      * @param errors the list of errors to add exceptions to
      */
-    private void resolve( SyntaxChecker syntaxChecker, List<Throwable> errors )
+    private void resolve( MutableSyntaxChecker syntaxChecker, List<Throwable> errors )
     {
         // This is currently doing nothing.
         try
@@ -1607,7 +1608,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     break;
 
                 case SYNTAX_CHECKER:
-                    syntaxCheckerRegistry.register( ( SyntaxChecker ) schemaObject );
+                    syntaxCheckerRegistry.register( ( MutableSyntaxChecker ) schemaObject );
                     break;
             }
         }
@@ -1625,7 +1626,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param schemaObject The schemaObject to register
      * @throws LdapException If there is a problem
      */
-    public void associateWithSchema( List<Throwable> errors, MutableSchemaObject schemaObject )
+    public void associateWithSchema( List<Throwable> errors, SchemaObject schemaObject )
     {
         LOG.debug( "Registering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
@@ -1672,7 +1673,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             {
                 try
                 {
-                    globalOidRegistry.register( schemaObject );
+                    globalOidRegistry.register( ( MutableSchemaObject ) schemaObject );
                 }
                 catch ( LdapException ne )
                 {
@@ -1825,7 +1826,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 break;
 
             case SYNTAX_CHECKER:
-                unregistered = syntaxCheckerRegistry.unregister( ( SyntaxChecker ) schemaObject );
+                unregistered = syntaxCheckerRegistry.unregister( ( MutableSyntaxChecker ) schemaObject );
                 break;
         }
 
@@ -2614,7 +2615,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
             for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjects.get( schemaName ) )
             {
-                MutableSchemaObject original = schemaObjectWrapper.get();
+                SchemaObject original = schemaObjectWrapper.get();
 
                 try
                 {
@@ -2704,7 +2705,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param schemaObject The SchemaObject to remove
      * @return The list of SchemaObjects referencing the SchemaObjetc we want to remove
      */
-    public Set<SchemaObjectWrapper> getReferencing( MutableSchemaObject schemaObject )
+    public Set<SchemaObjectWrapper> getReferencing( SchemaObject schemaObject )
     {
         SchemaObjectWrapper schemaObjectWrapper = new SchemaObjectWrapper( schemaObject );
 

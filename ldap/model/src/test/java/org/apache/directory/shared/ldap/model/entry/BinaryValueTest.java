@@ -36,6 +36,7 @@ import java.util.Arrays;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
 import org.apache.directory.shared.util.StringConstants;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
@@ -115,7 +116,7 @@ public class BinaryValueTest
     };
 
     
-    private static final SyntaxChecker BINARY_CHECKER = new SyntaxChecker( "1.1.1" )
+    private static final SyntaxChecker BINARY_CHECKER = new MutableSyntaxCheckerImpl( "1.1.1" )
     {
         private static final long serialVersionUID = 1L;
 

@@ -41,7 +41,7 @@ import java.util.List;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
-import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
 import org.apache.directory.shared.ldap.model.schema.comparators.StringComparator;
 import org.apache.directory.shared.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.shared.ldap.model.schema.normalizers.NoOpNormalizer;
@@ -443,7 +443,7 @@ public class StringValueAttributeTypeTest
      */
     @Test public void testConstrainedString()
     {
-        s.setSyntaxChecker( new SyntaxChecker( "1.1.1.1" ) {
+        s.setSyntaxChecker( new MutableSyntaxCheckerImpl( "1.1.1.1" ) {
             private static final long serialVersionUID = 1L;
 
             public boolean isValidSyntax( Object value )

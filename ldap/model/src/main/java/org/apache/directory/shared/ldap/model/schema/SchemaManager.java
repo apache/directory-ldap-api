@@ -598,7 +598,7 @@ public interface SchemaManager
      * 
      * @return A reference to the SyntaxChecker registry.
      */
-    SyntaxCheckerRegistry getSyntaxCheckerRegistry();
+    SyntaxCheckerRegistry<? extends SyntaxChecker> getSyntaxCheckerRegistry();
 
 
     /**
@@ -676,7 +676,7 @@ public interface SchemaManager
      * @throws Exception if the SchemaObject is not registered or
      * the deletion operation is not supported
      */
-    boolean delete( MutableSchemaObject schemaObject ) throws LdapException;
+    boolean delete( SchemaObject schemaObject ) throws LdapException;
 
 
     /**

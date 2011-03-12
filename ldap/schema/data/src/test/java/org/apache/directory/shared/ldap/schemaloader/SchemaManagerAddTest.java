@@ -45,6 +45,7 @@ import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
+import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.shared.ldap.model.schema.comparators.BooleanComparator;
@@ -1920,7 +1921,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         String oid = "0.0.0";
-        SyntaxChecker syntaxChecker = new RegexSyntaxChecker( oid );
+        MutableSyntaxCheckerImpl syntaxChecker = new RegexSyntaxChecker( oid );
 
         assertTrue( schemaManager.add( syntaxChecker ) );
 
@@ -1945,7 +1946,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         String oid = "0.0.0";
-        SyntaxChecker syntaxChecker = new RegexSyntaxChecker( oid );
+        MutableSyntaxCheckerImpl syntaxChecker = new RegexSyntaxChecker( oid );
 
         assertTrue( schemaManager.add( syntaxChecker ) );
 
@@ -1959,7 +1960,7 @@ public class SchemaManagerAddTest
         assertEquals( nrSize + 1, schemaManager.getSyntaxCheckerRegistry().size() );
         assertEquals( goidSize, schemaManager.getGlobalOidRegistry().size() );
 
-        SyntaxChecker syntaxChecker2 = new RegexSyntaxChecker( oid );
+        MutableSyntaxCheckerImpl syntaxChecker2 = new RegexSyntaxChecker( oid );
 
         assertFalse( schemaManager.add( syntaxChecker2 ) );
 
@@ -1987,7 +1988,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         String oid = "0.0.0";
-        SyntaxChecker syntaxChecker = new RegexSyntaxChecker( oid );
+        MutableSyntaxCheckerImpl syntaxChecker = new RegexSyntaxChecker( oid );
 
         // using java.sql.ResultSet cause it is very unlikely to get loaded
         // in ADS, as the FQCN is not the one expected

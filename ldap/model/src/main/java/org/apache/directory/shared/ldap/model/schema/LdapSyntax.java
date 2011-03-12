@@ -70,8 +70,6 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringS
  * @see DescriptionUtils#getDescription(Syntax)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class LdapSyntax extends AbstractMutableSchemaObject
 {
     private static final long serialVersionUID = 1L;
@@ -80,7 +78,7 @@ public class LdapSyntax extends AbstractMutableSchemaObject
     protected boolean isHumanReadable = false;
 
     /** The associated SyntaxChecker */
-    protected SyntaxChecker syntaxChecker;
+    protected MutableSyntaxChecker syntaxChecker;
 
 
     /**
@@ -158,7 +156,7 @@ public class LdapSyntax extends AbstractMutableSchemaObject
      * 
      * @return the SyntaxChecker
      */
-    public SyntaxChecker getSyntaxChecker()
+    public MutableSyntaxChecker getSyntaxChecker()
     {
         return syntaxChecker;
     }
@@ -169,7 +167,7 @@ public class LdapSyntax extends AbstractMutableSchemaObject
      *
      * @param syntaxChecker The associated SyntaxChecker
      */
-    public void setSyntaxChecker( SyntaxChecker syntaxChecker )
+    public void setSyntaxChecker( MutableSyntaxCheckerImpl syntaxChecker )
     {
         if ( locked )
         {
@@ -188,7 +186,7 @@ public class LdapSyntax extends AbstractMutableSchemaObject
      *
      * @param newSyntaxChecker The associated SyntaxChecker
      */
-    public void updateSyntaxChecker( SyntaxChecker newSyntaxChecker )
+    public void updateSyntaxChecker( MutableSyntaxCheckerImpl newSyntaxChecker )
     {
         if ( locked )
         {
@@ -219,7 +217,7 @@ public class LdapSyntax extends AbstractMutableSchemaObject
             try
             {
                 // Gets the associated SyntaxChecker
-                syntaxChecker = registries.getSyntaxCheckerRegistry().lookup( oid );
+                syntaxChecker = ( MutableSyntaxChecker ) registries.getSyntaxCheckerRegistry().lookup( oid );
             }
             catch ( LdapException ne )
             {
@@ -240,13 +238,11 @@ public class LdapSyntax extends AbstractMutableSchemaObject
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD.CollapsibleIfStatements")
-    // Used because of comments
     public void removeFromRegistries( List<Throwable> errors, Registries registries ) throws LdapException
     {
         if ( registries != null )
         {
-            /**
+            /*
              * Remove the Syntax references (using and usedBy) : 
              * S -> SC
              */

@@ -23,7 +23,7 @@ import java.text.ParseException;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
 import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecificationChecker;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
+public class SubtreeSpecificationSyntaxChecker extends MutableSyntaxCheckerImpl
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( SubtreeSpecificationSyntaxChecker.class );

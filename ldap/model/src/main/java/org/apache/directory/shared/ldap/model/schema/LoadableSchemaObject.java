@@ -27,6 +27,8 @@ package org.apache.directory.shared.ldap.model.schema;
  */
 public interface LoadableSchemaObject extends SchemaObject
 {
+    LoadableSchemaObject copy();
+    
     /**
      * Gets the base64 encoded bytecode associated with this 
      * LoadableSchemaObject.

@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 import java.text.ParseException;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl;
 import org.apache.directory.shared.ldap.model.schema.parsers.DITContentRuleDescriptionSchemaParser;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -50,7 +50,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DITContentRuleDescriptionSyntaxChecker extends SyntaxChecker
+public class DITContentRuleDescriptionSyntaxChecker extends MutableSyntaxCheckerImpl
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DITContentRuleDescriptionSyntaxChecker.class );

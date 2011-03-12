@@ -21,9 +21,8 @@ package org.apache.directory.shared.ldap.model.schema.registries;
 
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableSyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
-import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,8 +32,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DefaultSyntaxCheckerRegistry extends DefaultSchemaObjectRegistry<SyntaxChecker>
-    implements SyntaxCheckerRegistry
+public class DefaultSyntaxCheckerRegistry extends DefaultSchemaObjectRegistry<MutableSyntaxChecker>
+    implements SyntaxCheckerRegistry<MutableSyntaxChecker>
 {
     /** static class logger */
     private static final Logger LOG = LoggerFactory.getLogger( DefaultSyntaxCheckerRegistry.class );
@@ -48,7 +47,7 @@ public class DefaultSyntaxCheckerRegistry extends DefaultSchemaObjectRegistry<Sy
      */
     public DefaultSyntaxCheckerRegistry()
     {
-        super( SchemaObjectType.SYNTAX_CHECKER, new OidRegistry<SyntaxChecker>() );
+        super( SchemaObjectType.SYNTAX_CHECKER, new OidRegistry<MutableSyntaxChecker>() );
     }
 
 
@@ -64,12 +63,12 @@ public class DefaultSyntaxCheckerRegistry extends DefaultSchemaObjectRegistry<Sy
 
         // Loop on all the SchemaObjects stored and remove those associated
         // with the give schemaName
-        for ( SyntaxChecker syntaxChecker : this )
+        for ( MutableSyntaxChecker syntaxChecker : this )
         {
             if ( schemaName.equalsIgnoreCase( syntaxChecker.getSchemaName() ) )
             {
                 String oid = syntaxChecker.getOid();
-                MutableSchemaObject removed = unregister( oid );
+                MutableSyntaxChecker removed = unregister( oid );
 
                 if ( DEBUG )
                 {
@@ -115,7 +114,7 @@ public class DefaultSyntaxCheckerRegistry extends DefaultSchemaObjectRegistry<Sy
                 sb.append( ", " );
             }
 
-            SyntaxChecker syntaxChecker = byName.get( name );
+            MutableSyntaxChecker syntaxChecker = byName.get( name );
 
             String fqcn = syntaxChecker.getFqcn();
             int lastDotPos = fqcn.lastIndexOf( '.' );

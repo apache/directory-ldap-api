@@ -1068,7 +1068,7 @@ public final class SchemaUtils
      * @param description The description to transform to a String
      * @return
      */
-    public static String render( MutableLoadableSchemaObjectImpl description )
+    public static String render( LoadableSchemaObject description )
     {
         StringBuffer buf = new StringBuffer();
         buf.append( "( " ).append( description.getOid() );
