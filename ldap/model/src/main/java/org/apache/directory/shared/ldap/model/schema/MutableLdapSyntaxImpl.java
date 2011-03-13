@@ -154,8 +154,8 @@ public class MutableLdapSyntaxImpl extends AbstractMutableSchemaObject implement
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax#setSyntaxChecker(org.apache.directory.shared.ldap.model.schema.MutableSyntaxCheckerImpl)
+    /**
+     * {@inheritDoc}
      */
     public void setSyntaxChecker( MutableSyntaxChecker syntaxChecker )
     {

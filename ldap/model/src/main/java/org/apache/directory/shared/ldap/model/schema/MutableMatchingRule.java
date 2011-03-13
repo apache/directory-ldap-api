@@ -21,38 +21,64 @@ package org.apache.directory.shared.ldap.model.schema;
 
 
 /**
- * An immutable interface for SchemaObjects that are class loaded.
- *
+ * 
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface LoadableSchemaObject extends SchemaObject
+public interface MutableMatchingRule extends MutableSchemaObject, MatchingRule
 {
+    /**
+     * Sets the Syntax's OID
+     *
+     * @param oid The Syntax's OID
+     */
+    void setSyntaxOid( String oid );
+
+
+    /**
+     * Sets the Syntax
+     *
+     * @param ldapSyntax The Syntax
+     */
+    void setSyntax( MutableLdapSyntax ldapSyntax );
+    
+    
     /**
      * {@inheritDoc}
      */
-    LoadableSchemaObject copy();
+    MutableLdapSyntax getSyntax();
+
     
     /**
-     * Gets the base64 encoded bytecode associated with this 
-     * LoadableSchemaObject.
-     * 
-     * @return The based64 encoded bytecode of this LoadableSchemaObject 
-     * instance
-     */
-    String getBytecode();
-
-
-    /**
-     * @return The chemaObject instance Fully Qualified Class Name
-     */
-    String getFqcn();
-
-
-    /**
-     * Test that the FQCN is equal to the instance's name. If the FQCN is
-     * empty, fill it with the instance's name
+     * Sets the LdapComparator
      *
-     * @return true if the FQCN is correctly set
+     * @param ldapComparator The LdapComparator
      */
-    boolean isValid();
+    void setLdapComparator( MutableLdapComparator<?> ldapComparator );
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    MutableLdapComparator<Object> getLdapComparator();
+
+    
+    /**
+     * Sets the Normalizer
+     *
+     * @param normalizer The Normalizer
+     */
+    void setNormalizer( MutableNormalizer normalizer );
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    MutableNormalizer getNormalizer();
+    
+
+    /**
+     * {@inheritDoc}
+     */
+    MutableMatchingRule copy();
 }

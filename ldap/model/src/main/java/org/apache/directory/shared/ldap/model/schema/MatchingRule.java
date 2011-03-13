@@ -17,21 +17,27 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.model.schema.registries;
-
-
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+package org.apache.directory.shared.ldap.model.schema;
 
 
 /**
- * An AttributeType registry service interface.
- *
+ * The interface for an immutable MatchingRule.
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface MatchingRuleRegistry<E extends MatchingRule> extends SchemaObjectRegistry<E>, Iterable<E>
+public interface MatchingRule extends SchemaObject
 {
-    /**
-     * Copy the MatchingRuleRegistry
-     */
-    MatchingRuleRegistry<E> copy();
+    LdapSyntax getSyntax();
+
+
+    String getSyntaxOid();
+
+
+    LdapComparator<Object> getLdapComparator();
+
+    
+    Normalizer getNormalizer();
+
+
+    MatchingRule copy();
 }

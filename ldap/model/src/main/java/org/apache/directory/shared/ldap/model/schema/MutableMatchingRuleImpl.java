@@ -22,8 +22,6 @@ package org.apache.directory.shared.ldap.model.schema;
 
 import java.util.List;
 
-import javax.naming.NamingException;
-
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
@@ -85,7 +83,7 @@ import org.slf4j.LoggerFactory;
  * @see DescriptionUtils#getDescription(MutableMatchingRuleImpl)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject implements MatchingRule
+public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject implements MutableMatchingRule
 {
     private static final long serialVersionUID = 1L;
 
@@ -93,7 +91,7 @@ public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject impleme
     private static final Logger LOG = LoggerFactory.getLogger( MutableMatchingRuleImpl.class );
 
     /** The associated Comparator */
-    protected AbstractLdapComparator<? super Object> ldapComparator;
+    protected MutableLdapComparator<? super Object> ldapComparator;
 
     /** The associated Normalizer */
     protected MutableNormalizer normalizer;
@@ -231,8 +229,8 @@ public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject impleme
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.model.schema.MatchingRule#getSyntax()
+    /**
+     * {@inheritDoc}
      */
     public MutableLdapSyntax getSyntax()
     {
@@ -240,8 +238,8 @@ public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject impleme
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.model.schema.MatchingRule#getSyntaxOid()
+    /**
+     * {@inheritDoc}
      */
     public String getSyntaxOid()
     {
@@ -249,10 +247,8 @@ public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject impleme
     }
 
 
-    /**
-     * Sets the Syntax's OID
-     *
-     * @param oid The Syntax's OID
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.model.schema.MutableMatchingRule#setSyntaxOid(java.lang.String)
      */
     public void setSyntaxOid( String oid )
     {
@@ -268,12 +264,10 @@ public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject impleme
     }
 
 
-    /**
-     * Sets the Syntax
-     *
-     * @param ldapSyntax The Syntax
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.model.schema.MutableMatchingRule#setSyntax(org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl)
      */
-    public void setSyntax( MutableLdapSyntaxImpl ldapSyntax )
+    public void setSyntax( MutableLdapSyntax ldapSyntax )
     {
         if ( locked )
         {
@@ -305,22 +299,20 @@ public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject impleme
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.model.schema.MatchingRule#getLdapComparator()
+    /**
+     * {@inheritDoc}
      */
-    public AbstractLdapComparator<? super Object> getLdapComparator()
+    public MutableLdapComparator<? super Object> getLdapComparator()
     {
         return ldapComparator;
     }
 
 
-    /**
-     * Sets the LdapComparator
-     *
-     * @param ldapComparator The LdapComparator
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.model.schema.MutableMatchingRule#setLdapComparator(org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator)
      */
     @SuppressWarnings("unchecked")
-    public void setLdapComparator( AbstractLdapComparator<?> ldapComparator )
+    public void setLdapComparator( MutableLdapComparator<?> ldapComparator )
     {
         if ( locked )
         {
@@ -351,8 +343,8 @@ public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject impleme
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.model.schema.MatchingRule#getNormalizer()
+    /**
+     * {@inheritDoc}
      */
     public MutableNormalizer getNormalizer()
     {
@@ -361,11 +353,9 @@ public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject impleme
 
 
     /**
-     * Sets the Normalizer
-     *
-     * @param normalizer The Normalizer
+     * {@inheritDoc}
      */
-    public void setNormalizer( AbstractNormalizer normalizer )
+    public void setNormalizer( MutableNormalizer normalizer )
     {
         if ( locked )
         {
@@ -404,10 +394,10 @@ public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject impleme
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.model.schema.MatchingRule#copy()
+    /**
+     * {@inheritDoc}
      */
-    public MatchingRule copy()
+    public MutableMatchingRuleImpl copy()
     {
         MutableMatchingRuleImpl copy = new MutableMatchingRuleImpl( oid );
 
@@ -502,8 +492,8 @@ public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject impleme
     }
 
 
-    /**
-     * {@inheritDoc}
+    /* (non-Javadoc)
+     * @see org.apache.directory.shared.ldap.model.schema.MutableMatchingRule#clear()
      */
     public void clear()
     {

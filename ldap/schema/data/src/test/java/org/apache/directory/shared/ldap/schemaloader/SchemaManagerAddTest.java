@@ -39,9 +39,12 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
+import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableNormalizer;
 import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
@@ -153,7 +156,7 @@ public class SchemaManagerAddTest
     {
         try
         {
-            MutableMatchingRuleImpl matchingRule = schemaManager.lookupMatchingRuleRegistry( oid );
+            MatchingRule matchingRule = schemaManager.lookupMatchingRuleRegistry( oid );
 
             return matchingRule != null;
         }
@@ -842,7 +845,7 @@ public class SchemaManagerAddTest
         assertEquals( ctrSize + 1, schemaManager.getComparatorRegistry().size() );
         assertEquals( goidSize, schemaManager.getGlobalOidRegistry().size() );
 
-        AbstractLdapComparator<?> added = schemaManager.lookupComparatorRegistry( oid );
+        LdapComparator<?> added = schemaManager.lookupComparatorRegistry( oid );
 
         assertNotNull( added );
         assertEquals( lc.getClass().getName(), added.getFqcn() );
@@ -861,7 +864,7 @@ public class SchemaManagerAddTest
 
         assertTrue( schemaManager.add( bc ) );
 
-        AbstractLdapComparator<?> added = schemaManager.lookupComparatorRegistry( oid );
+        LdapComparator<?> added = schemaManager.lookupComparatorRegistry( oid );
 
         assertNotNull( added );
         assertEquals( bc.getClass().getName(), added.getFqcn() );
@@ -958,7 +961,7 @@ public class SchemaManagerAddTest
         assertTrue( isMRPresent( schemaManager, "1.1.0" ) );
 
         // The C and N must have default values
-        MutableMatchingRuleImpl added = schemaManager.lookupMatchingRuleRegistry( "1.1.0" );
+        MatchingRule added = schemaManager.lookupMatchingRuleRegistry( "1.1.0" );
 
         assertEquals( NoOpNormalizer.class.getName(), added.getNormalizer().getClass().getName() );
         assertEquals( ComparableComparator.class.getName(), added.getLdapComparator().getClass().getName() );
@@ -1020,7 +1023,7 @@ public class SchemaManagerAddTest
 
         // Check that the existing MR has not been replaced
         assertTrue( isMRPresent( schemaManager, "2.5.13.0" ) );
-        MutableMatchingRuleImpl existing = schemaManager.lookupMatchingRuleRegistry( "2.5.13.0" );
+        MutableMatchingRule existing = schemaManager.lookupMatchingRuleRegistry( "2.5.13.0" );
 
         assertEquals( "objectIdentifierMatch", existing.getName() );
 
@@ -1039,7 +1042,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MutableMatchingRuleImpl matchingRule = new MutableMatchingRuleImpl( "1.1.0" );
+        MutableMatchingRule matchingRule = new MutableMatchingRuleImpl( "1.1.0" );
         matchingRule.setNames( "Test", "objectIdentifierMatch" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
 
@@ -1080,7 +1083,7 @@ public class SchemaManagerAddTest
 
         // Check that the new MR has been injected
         assertTrue( isMRPresent( schemaManager, "1.1.0" ) );
-        MutableMatchingRuleImpl added = schemaManager.lookupMatchingRuleRegistry( "1.1.0" );
+        MutableMatchingRule added = schemaManager.lookupMatchingRuleRegistry( "1.1.0" );
 
         assertTrue( added.getNames().contains( "cn" ) );
         assertTrue( added.getNames().contains( "Test" ) );

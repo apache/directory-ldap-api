@@ -26,7 +26,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
+import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 
 
@@ -35,10 +35,10 @@ import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ImmutableComparatorRegistry implements ComparatorRegistry
+public class ImmutableComparatorRegistry implements ComparatorRegistry<LdapComparator<?>>
 {
     /** The wrapped LdapComparator registry */
-    ComparatorRegistry immutableComparatorRegistry;
+    ComparatorRegistry<LdapComparator<?>> immutableComparatorRegistry;
 
 
     /**
@@ -46,7 +46,8 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
      * 
      * @param comparatorRegistry The wrapped LdapComparator registry 
      */
-    public ImmutableComparatorRegistry( ComparatorRegistry comparatorRegistry )
+    @SuppressWarnings("unchecked")
+    public ImmutableComparatorRegistry( @SuppressWarnings("rawtypes") ComparatorRegistry comparatorRegistry )
     {
         immutableComparatorRegistry = comparatorRegistry;
     }
@@ -55,7 +56,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
-    public void register( AbstractLdapComparator<?> comparator ) throws LdapException
+    public void register( LdapComparator<?> comparator ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04276 ) );
     }
@@ -64,7 +65,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
-    public AbstractLdapComparator<?> unregister( String numericOid ) throws LdapException
+    public LdapComparator<?> unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04276 ) );
     }
@@ -136,7 +137,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
-    public Iterator<AbstractLdapComparator<?>> iterator()
+    public Iterator<LdapComparator<?>> iterator()
     {
         return immutableComparatorRegistry.iterator();
     }
@@ -145,7 +146,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
-    public AbstractLdapComparator<?> lookup( String oid ) throws LdapException
+    public LdapComparator<?> lookup( String oid ) throws LdapException
     {
         return immutableComparatorRegistry.lookup( oid );
     }
@@ -172,7 +173,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
-    public AbstractLdapComparator<?> get( String oid )
+    public LdapComparator<?> get( String oid )
     {
         return immutableComparatorRegistry.get( oid );
     }
@@ -190,7 +191,7 @@ public class ImmutableComparatorRegistry implements ComparatorRegistry
     /**
      * {@inheritDoc}
      */
-    public AbstractLdapComparator<?> unregister( AbstractLdapComparator<?> schemaObject ) throws LdapException
+    public LdapComparator<?> unregister( LdapComparator<?> schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04276 ) );
     }

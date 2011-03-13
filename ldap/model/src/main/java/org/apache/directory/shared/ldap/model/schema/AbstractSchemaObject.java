@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public abstract class AbstractSchemaObject
+public abstract class AbstractSchemaObject implements SchemaObject
 {
 
     /** The serial version UID */
@@ -53,11 +53,7 @@ public abstract class AbstractSchemaObject
     /** The hashcode for this schemaObject */
     protected int h;
 
-    public AbstractSchemaObject()
-    {
-        super();
-    }
-
+    
     /**
      * Gets usually what is the numeric object identifier assigned to this
      * SchemaObject. All schema objects except for MatchingRuleUses have an OID
@@ -384,8 +380,9 @@ public abstract class AbstractSchemaObject
      *
      * @return The copied SchemaObject
      */
-    public abstract MutableSchemaObject copy();
-
+    public abstract SchemaObject copy();
+    
+    
     /**
      * Compare two oids, and return true if they are both null or equal.
      *

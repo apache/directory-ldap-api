@@ -29,7 +29,7 @@ public interface LdapSyntax extends SchemaObject
      */
     boolean isHumanReadable();
 
-
+    
     /**
      * Gets the SyntaxChecker used to validate values in accordance with this
      * Syntax.

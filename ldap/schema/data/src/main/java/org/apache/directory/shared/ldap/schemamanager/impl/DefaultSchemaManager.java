@@ -44,10 +44,15 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.EntityFactory;
 import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
+import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MutableLoadableSchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableNormalizer;
 import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
@@ -1423,7 +1428,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public ComparatorRegistry getComparatorRegistry()
+    public ComparatorRegistry<LdapComparator<?>> getComparatorRegistry()
     {
         return new ImmutableComparatorRegistry( registries.getComparatorRegistry() );
     }
@@ -1450,7 +1455,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public MatchingRuleRegistry getMatchingRuleRegistry()
+    public MatchingRuleRegistry<MatchingRule> getMatchingRuleRegistry()
     {
         return new ImmutableMatchingRuleRegistry( registries.getMatchingRuleRegistry() );
     }
@@ -1495,7 +1500,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public LdapSyntaxRegistry getLdapSyntaxRegistry()
+    public LdapSyntaxRegistry<LdapSyntax> getLdapSyntaxRegistry()
     {
         return new ImmutableLdapSyntaxRegistry( registries.getLdapSyntaxRegistry() );
     }
@@ -1538,7 +1543,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public AbstractLdapComparator<?> lookupComparatorRegistry( String oid ) throws LdapException
+    public MutableLdapComparator<?> lookupComparatorRegistry( String oid ) throws LdapException
     {
         return registries.getComparatorRegistry().lookup( oid );
     }
@@ -1547,7 +1552,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public MutableMatchingRuleImpl lookupMatchingRuleRegistry( String oid ) throws LdapException
+    public MutableMatchingRule lookupMatchingRuleRegistry( String oid ) throws LdapException
     {
         return registries.getMatchingRuleRegistry().lookup( Strings.toLowerCase( oid ).trim() );
     }

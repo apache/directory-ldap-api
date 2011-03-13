@@ -460,7 +460,7 @@ public interface SchemaManager
      * @return The found Comparator 
      * @throws LdapException if the OID is not found in the Comparator registry
      */
-    AbstractLdapComparator<?> lookupComparatorRegistry( String oid ) throws LdapException;
+    MutableLdapComparator<?> lookupComparatorRegistry( String oid ) throws LdapException;
 
 
     /**
@@ -470,7 +470,7 @@ public interface SchemaManager
      * @return The found MatchingRule 
      * @throws LdapException if the OID is not found in the MatchingRule registry
      */
-    MutableMatchingRuleImpl lookupMatchingRuleRegistry( String oid ) throws LdapException;
+    MutableMatchingRule lookupMatchingRuleRegistry( String oid ) throws LdapException;
 
 
     /**
@@ -526,7 +526,7 @@ public interface SchemaManager
      * 
      * @return A reference to the Comparator registry.
      */
-    ComparatorRegistry getComparatorRegistry();
+    ComparatorRegistry<LdapComparator<?>> getComparatorRegistry();
 
 
     /**
@@ -550,7 +550,7 @@ public interface SchemaManager
      * 
      * @return A reference to the MatchingRule registry.
      */
-    MatchingRuleRegistry getMatchingRuleRegistry();
+    MatchingRuleRegistry<MatchingRule> getMatchingRuleRegistry();
 
 
     /**
@@ -590,7 +590,7 @@ public interface SchemaManager
      * 
      * @return A reference to the LdapSyntax registry.
      */
-    LdapSyntaxRegistry<MutableLdapSyntax> getLdapSyntaxRegistry();
+    LdapSyntaxRegistry<LdapSyntax> getLdapSyntaxRegistry();
 
 
     /**

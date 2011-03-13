@@ -37,9 +37,13 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapProtocolErrorException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
+import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableNormalizer;
 import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
@@ -139,7 +143,7 @@ public class SchemaManagerDelTest
     {
         try
         {
-            AbstractLdapComparator<?> comparator = schemaManager.lookupComparatorRegistry( oid );
+            LdapComparator<?> comparator = schemaManager.lookupComparatorRegistry( oid );
 
             return comparator != null;
         }
@@ -169,7 +173,7 @@ public class SchemaManagerDelTest
     {
         try
         {
-            MutableMatchingRuleImpl matchingRule = schemaManager.lookupMatchingRuleRegistry( oid );
+            MatchingRule matchingRule = schemaManager.lookupMatchingRuleRegistry( oid );
 
             return matchingRule != null;
         }
@@ -352,7 +356,7 @@ public class SchemaManagerDelTest
         int ctrSize = schemaManager.getComparatorRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AbstractLdapComparator<?> lc = new BooleanComparator( "0.1.1" );
+        MutableLdapComparator<?> lc = new BooleanComparator( "0.1.1" );
         assertTrue( schemaManager.add( lc ) );
 
         assertEquals( ctrSize + 1, schemaManager.getComparatorRegistry().size() );
@@ -402,7 +406,7 @@ public class SchemaManagerDelTest
         int ctrSize = schemaManager.getComparatorRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AbstractLdapComparator<?> lc = schemaManager.lookupComparatorRegistry( "2.5.13.0" );
+        MutableLdapComparator<?> lc = schemaManager.lookupComparatorRegistry( "2.5.13.0" );
         
         // shouldn't be deleted cause there is a MR associated with it
         assertFalse( schemaManager.delete( lc ) );
@@ -436,7 +440,7 @@ public class SchemaManagerDelTest
         assertTrue( isComparatorPresent( schemaManager, OID ) );
 
         // Now try to remove the C
-        AbstractLdapComparator<?> lc = schemaManager.lookupComparatorRegistry( OID );
+        MutableLdapComparator<?> lc = schemaManager.lookupComparatorRegistry( OID );
         
         // shouldn't be deleted cause there is a MR associated with it
         assertFalse( schemaManager.delete( lc ) );
@@ -543,7 +547,7 @@ public class SchemaManagerDelTest
         assertTrue( isMatchingRulePresent( schemaManager, MR_OID ) );
 
         // Now try to remove the MR
-        MutableMatchingRuleImpl matchingRule = schemaManager.lookupMatchingRuleRegistry( MR_OID );
+        MutableMatchingRule matchingRule = schemaManager.lookupMatchingRuleRegistry( MR_OID );
         
         // shouldn't be deleted cause there is a AT associated with it
         assertFalse( schemaManager.delete( matchingRule ) );

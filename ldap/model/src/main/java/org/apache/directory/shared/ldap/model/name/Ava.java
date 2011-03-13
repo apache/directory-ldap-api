@@ -33,7 +33,8 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
+import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -211,7 +212,7 @@ public final class Ava implements Externalizable, Cloneable
             
         try
         {
-            MutableMatchingRuleImpl equalityMatchingRule = attributeType.getEquality();
+            MatchingRule equalityMatchingRule = attributeType.getEquality();
             
             if ( equalityMatchingRule != null )
             {
@@ -676,11 +677,15 @@ public final class Ava implements Externalizable, Cloneable
         {
             if ( schemaManager != null )
             {
-                MutableMatchingRuleImpl equalityMatchingRule = attributeType.getEquality();
+                MatchingRule equalityMatchingRule = attributeType.getEquality();
                 
                 if ( equalityMatchingRule != null )
                 {
-                    return equalityMatchingRule.getLdapComparator().compare( normValue.get(), instance.normValue.get() ) == 0;
+                    Object o1 = normValue.get();
+                    Object o2 = instance.normValue.get();
+                    @SuppressWarnings("unchecked")
+                    LdapComparator<Object> comparator = ( LdapComparator<Object> ) equalityMatchingRule.getLdapComparator();
+                    return comparator.compare( o1, o2 ) == 0;
                 }
                 
                 return false;

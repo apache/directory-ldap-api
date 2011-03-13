@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.model.schema.registries;
 
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 import org.slf4j.Logger;
@@ -33,8 +33,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<AbstractLdapComparator<?>>
-    implements ComparatorRegistry
+public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<MutableLdapComparator<?>>
+    implements ComparatorRegistry<MutableLdapComparator<?>>
 {
     /** static class logger */
     private static final Logger LOG = LoggerFactory.getLogger( DefaultComparatorRegistry.class );
@@ -48,7 +48,7 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<Abstr
      */
     public DefaultComparatorRegistry()
     {
-        super( SchemaObjectType.COMPARATOR, new OidRegistry<AbstractLdapComparator<?>>() );
+        super( SchemaObjectType.COMPARATOR, new OidRegistry<MutableLdapComparator<?>>() );
     }
 
 
@@ -64,7 +64,7 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<Abstr
 
         // Loop on all the SchemaObjects stored and remove those associated
         // with the give schemaName
-        for ( AbstractLdapComparator<?> comparator : this )
+        for ( MutableLdapComparator<?> comparator : this )
         {
             if ( schemaName.equalsIgnoreCase( comparator.getSchemaName() ) )
             {
@@ -115,7 +115,7 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<Abstr
                 sb.append( ", " );
             }
 
-            AbstractLdapComparator<?> comparator = byName.get( name );
+            MutableLdapComparator<?> comparator = byName.get( name );
 
             String fqcn = comparator.getFqcn();
             int lastDotPos = fqcn.lastIndexOf( '.' );

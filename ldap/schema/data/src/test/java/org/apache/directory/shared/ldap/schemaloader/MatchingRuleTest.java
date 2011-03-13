@@ -32,12 +32,10 @@ import org.apache.commons.io.FileUtils;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
+import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.comparators.*;
-import org.apache.directory.shared.ldap.model.schema.comparators.GeneralizedTimeComparator;
-import org.apache.directory.shared.ldap.model.schema.comparators.NumericStringComparator;
-import org.apache.directory.shared.ldap.model.schema.comparators.TelephoneNumberComparator;
 import org.apache.directory.shared.ldap.model.schema.normalizers.GeneralizedTimeNormalizer;
 import org.apache.directory.shared.ldap.model.schema.normalizers.NumericNormalizer;
 import org.apache.directory.shared.ldap.model.schema.normalizers.TelephoneNumberNormalizer;
@@ -111,19 +109,23 @@ public class MatchingRuleTest
     @Test
     public void testTelephoneNumberMatch() throws Exception
     {
+        LdapComparator<Object> comparator;
+        
         // matching rule: telephoneNumberMatch
-        MutableMatchingRuleImpl mr1 = schemaManager.lookupMatchingRuleRegistry( "telephoneNumberMatch" );
+        MatchingRule mr1 = schemaManager.lookupMatchingRuleRegistry( "telephoneNumberMatch" );
         assertEquals( TelephoneNumberNormalizer.class.getName(), mr1.getNormalizer().getClass().getName() );
         assertEquals( "+1234567890", mr1.getNormalizer().normalize( " +1 234-567 890 " ) );
         assertEquals( TelephoneNumberComparator.class.getName(), mr1.getLdapComparator().getClass().getName() );
-        assertEquals( 0, mr1.getLdapComparator().compare( " +1 234-567 890 ", "+1234567890" ) );
+        comparator = mr1.getLdapComparator();
+        assertEquals( 0, comparator.compare( " +1 234-567 890 ", "+1234567890" ) );
 
         // matching rule: telephoneNumberSubstringsMatch
-        MutableMatchingRuleImpl mr2 = schemaManager.lookupMatchingRuleRegistry( "telephoneNumberSubstringsMatch" );
+        MatchingRule mr2 = schemaManager.lookupMatchingRuleRegistry( "telephoneNumberSubstringsMatch" );
         assertEquals( TelephoneNumberNormalizer.class.getName(), mr2.getNormalizer().getClass().getName() );
         assertEquals( "+1234567890", mr2.getNormalizer().normalize( " +1 234-567 890 " ) );
         assertEquals( TelephoneNumberComparator.class.getName(), mr2.getLdapComparator().getClass().getName() );
-        assertEquals( 0, mr2.getLdapComparator().compare( " +1 234-567 890 ", "+1234567890" ) );
+        comparator = mr2.getLdapComparator();
+        assertEquals( 0, comparator.compare( " +1 234-567 890 ", "+1234567890" ) );
 
         // test a real attribute: telephoneNumber
         AttributeType at = schemaManager.lookupAttributeTypeRegistry( "telephoneNumber" );
@@ -132,7 +134,8 @@ public class MatchingRuleTest
         assertEquals( "+1234567890", at.getEquality().getNormalizer().normalize( " +1 234-567 890 " ) );
         assertEquals( TelephoneNumberComparator.class.getName(), at.getEquality().getLdapComparator().getClass()
             .getName() );
-        assertEquals( 0, at.getEquality().getLdapComparator().compare( " +1 234-567 890 ", "+1234567890" ) );
+        comparator = at.getEquality().getLdapComparator();
+        assertEquals( 0, comparator.compare( " +1 234-567 890 ", "+1234567890" ) );
         assertNotNull( at.getSubstring() );
         assertEquals( TelephoneNumberNormalizer.class.getName(), at.getEquality().getNormalizer().getClass().getName() );
         assertEquals( "+1234567890", at.getSubstring().getNormalizer().normalize( " +1 234-567 890 " ) );
@@ -143,19 +146,23 @@ public class MatchingRuleTest
     @Test
     public void testIntegerMatch() throws Exception
     {
-        MutableMatchingRuleImpl mr1 = schemaManager.lookupMatchingRuleRegistry( "integerMatch" );
+        LdapComparator<Object> comparator;
+        
+        MatchingRule mr1 = schemaManager.lookupMatchingRuleRegistry( "integerMatch" );
         assertEquals( NumericNormalizer.class.getName(), mr1.getNormalizer().getClass().getName() );
         assertEquals( "1234567890", mr1.getNormalizer().normalize( " 1 234 567 890 " ) );
         //assertEquals( IntegerComparator.class.getName(), mr1.getLdapComparator().getClass().getName() );
         //assertEquals( 0, mr1.getLdapComparator().compare( " 1 234 567 890 ", "1234567890" ) );
 
-        MutableMatchingRuleImpl mr2 = schemaManager.lookupMatchingRuleRegistry( "integerOrderingMatch" );
+        MatchingRule mr2 = schemaManager.lookupMatchingRuleRegistry( "integerOrderingMatch" );
         assertEquals( NumericNormalizer.class.getName(), mr2.getNormalizer().getClass().getName() );
         assertEquals( "1234567890", mr2.getNormalizer().normalize( " 1 234 567 890 " ) );
         assertEquals( IntegerComparator.class.getName(), mr2.getLdapComparator().getClass().getName() );
-        assertEquals( 0, mr2.getLdapComparator().compare( 1234567890L, 1234567890L ) );
-        assertTrue( mr2.getLdapComparator().compare( 123L, 234L ) < 0 );
-        assertTrue( mr2.getLdapComparator().compare( 1234L, 234L ) > 0 );
+        
+        comparator = mr2.getLdapComparator();
+        assertEquals( 0, comparator.compare( 1234567890L, 1234567890L ) );
+        assertTrue( comparator.compare( 123L, 234L ) < 0 );
+        assertTrue( comparator.compare( 1234L, 234L ) > 0 );
 
         // test a real attribute type: uidNumber
         AttributeType at = schemaManager.lookupAttributeTypeRegistry( "uidNumber" );
@@ -171,32 +178,40 @@ public class MatchingRuleTest
     @Test
     public void testNumericStringMatch() throws Exception
     {
-        MutableMatchingRuleImpl mr1 = schemaManager.lookupMatchingRuleRegistry( "numericStringMatch" );
+        LdapComparator<Object> comparator;
+        
+        MatchingRule mr1 = schemaManager.lookupMatchingRuleRegistry( "numericStringMatch" );
         assertEquals( NumericNormalizer.class.getName(), mr1.getNormalizer().getClass().getName() );
         assertEquals( "1234567890", mr1.getNormalizer().normalize( " 1 234 567 890 " ) );
         assertEquals( NumericStringComparator.class.getName(), mr1.getLdapComparator().getClass().getName() );
-        assertEquals( 0, mr1.getLdapComparator().compare( " 1 234 567 890 ", "1234567890" ) );
+        comparator = mr1.getLdapComparator();
+        assertEquals( 0, comparator.compare( " 1 234 567 890 ", "1234567890" ) );
 
-        MutableMatchingRuleImpl mr2 = schemaManager.lookupMatchingRuleRegistry( "numericStringSubstringsMatch" );
+        MatchingRule mr2 = schemaManager.lookupMatchingRuleRegistry( "numericStringSubstringsMatch" );
+        comparator = mr2.getLdapComparator();
         assertEquals( NumericNormalizer.class.getName(), mr2.getNormalizer().getClass().getName() );
         assertEquals( "1234567890", mr2.getNormalizer().normalize( " 1 234 567 890 " ) );
         assertEquals( NumericStringComparator.class.getName(), mr2.getLdapComparator().getClass().getName() );
-        assertEquals( 0, mr2.getLdapComparator().compare( " 1 234 567 890 ", "1234567890" ) );
+        assertEquals( 0, comparator.compare( " 1 234 567 890 ", "1234567890" ) );
 
-        MutableMatchingRuleImpl mr3 = schemaManager.lookupMatchingRuleRegistry( "numericStringOrderingMatch" );
+        MatchingRule mr3 = schemaManager.lookupMatchingRuleRegistry( "numericStringOrderingMatch" );
         assertEquals( NumericNormalizer.class.getName(), mr3.getNormalizer().getClass().getName() );
         assertEquals( "1234567890", mr3.getNormalizer().normalize( " 1 234 567 890 " ) );
         assertEquals( NumericStringComparator.class.getName(), mr3.getLdapComparator().getClass().getName() );
-        assertEquals( 0, mr3.getLdapComparator().compare( " 1 234 567 890 ", "1234567890" ) );
-        assertTrue( mr3.getLdapComparator().compare( " 1 2 3  ", " 2 3 4" ) < 0 );
-        assertTrue( mr3.getLdapComparator().compare( " 1 2 3 4 ", " 2 3 4" ) < 0 );
+        
+        comparator = mr2.getLdapComparator();
+        assertEquals( 0, comparator.compare( " 1 234 567 890 ", "1234567890" ) );
+        assertTrue( comparator.compare( " 1 2 3  ", " 2 3 4" ) < 0 );
+        assertTrue( comparator.compare( " 1 2 3 4 ", " 2 3 4" ) < 0 );
     }
 
 
     @Test
     public void testGeneralizedTimeStringMatch() throws Exception
     {
-        MutableMatchingRuleImpl mr1 = schemaManager.lookupMatchingRuleRegistry( "generalizedTimeMatch" );
+        LdapComparator<Object> c;
+
+        MatchingRule mr1 = schemaManager.lookupMatchingRuleRegistry( "generalizedTimeMatch" );
         assertEquals( GeneralizedTimeNormalizer.class.getName(), mr1.getNormalizer().getClass().getName() );
 
         String normalized = mr1.getNormalizer().normalize( "2010031415Z" );
@@ -206,12 +221,13 @@ public class MatchingRuleTest
         assertEquals( GeneralizedTimeComparator.class.getName(), mr1.getLdapComparator().getClass().getName() );
 
         // Deal with +HH:30 and +HH:45 TZ
-        int compare1 = mr1.getLdapComparator().compare( "2010031415Z", "20100314150000.000+0000" );
-        int compare2 = mr1.getLdapComparator().compare( "2010031415Z", "20100314153000.000+0000" );
-        int compare3 = mr1.getLdapComparator().compare( "2010031415Z", "20100314154500.000+0000" );
+        c = mr1.getLdapComparator();
+        int compare1 = c.compare( "2010031415Z", "20100314150000.000+0000" );
+        int compare2 = c.compare( "2010031415Z", "20100314153000.000+0000" );
+        int compare3 = c.compare( "2010031415Z", "20100314154500.000+0000" );
         assertTrue( ( compare1 == 0 ) || ( compare2 == 0 ) || ( compare3 == 0 ) );
 
-        MutableMatchingRuleImpl mr2 = schemaManager.lookupMatchingRuleRegistry( "generalizedTimeOrderingMatch" );
+        MatchingRule mr2 = schemaManager.lookupMatchingRuleRegistry( "generalizedTimeOrderingMatch" );
         assertEquals( GeneralizedTimeNormalizer.class.getName(), mr2.getNormalizer().getClass().getName() );
         normalized = mr2.getNormalizer().normalize( "2010031415Z" );
         assertTrue( "20100314150000.000Z".equals( normalized ) || "20100314153000.000Z".equals( normalized )
@@ -220,11 +236,12 @@ public class MatchingRuleTest
         assertEquals( GeneralizedTimeComparator.class.getName(), mr2.getLdapComparator().getClass().getName() );
 
         // Deal with +HH:30 and +HH:45 TZ
-        compare1 = mr2.getLdapComparator().compare( "2010031415Z", "20100314150000.000+0000" );
-        compare2 = mr2.getLdapComparator().compare( "2010031415Z", "20100314153000.000+0000" );
-        compare3 = mr2.getLdapComparator().compare( "2010031415Z", "20100314154500.000+0000" );
+        c = mr2.getLdapComparator();
+        compare1 = c.compare( "2010031415Z", "20100314150000.000+0000" );
+        compare2 = c.compare( "2010031415Z", "20100314153000.000+0000" );
+        compare3 = c.compare( "2010031415Z", "20100314154500.000+0000" );
         assertTrue( ( compare1 == 0 ) || ( compare2 == 0 ) || ( compare3 == 0 ) );
-        assertTrue( mr2.getLdapComparator().compare( "2010031415Z", "2010031414Z" ) > 0 );
-        assertTrue( mr2.getLdapComparator().compare( "2010031415Z", "2010031416Z" ) < 0 );
+        assertTrue( c.compare( "2010031415Z", "2010031414Z" ) > 0 );
+        assertTrue( c.compare( "2010031415Z", "2010031416Z" ) < 0 );
     }
 }

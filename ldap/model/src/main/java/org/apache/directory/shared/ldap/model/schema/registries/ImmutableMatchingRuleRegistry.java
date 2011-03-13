@@ -27,7 +27,6 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 
 
@@ -36,10 +35,10 @@ import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
+public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry<MatchingRule>
 {
     /** The wrapped MatchingRule registry */
-    MatchingRuleRegistry immutableMatchingRuleRegistry;
+    MatchingRuleRegistry<MatchingRule> immutableMatchingRuleRegistry;
 
 
     /**
@@ -47,7 +46,8 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
      *
      * @param matchingRuleRegistry The wrapped MatchingRule registry
      */
-    public ImmutableMatchingRuleRegistry( MatchingRuleRegistry matchingRuleRegistry )
+    @SuppressWarnings("unchecked")
+    public ImmutableMatchingRuleRegistry( @SuppressWarnings("rawtypes") MatchingRuleRegistry matchingRuleRegistry )
     {
         immutableMatchingRuleRegistry = matchingRuleRegistry;
     }
@@ -110,7 +110,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public Iterator<MutableMatchingRuleImpl> iterator()
+    public Iterator<MatchingRule> iterator()
     {
         return immutableMatchingRuleRegistry.iterator();
     }
@@ -119,7 +119,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public MutableMatchingRuleImpl lookup( String oid ) throws LdapException
+    public MatchingRule lookup( String oid ) throws LdapException
     {
         return immutableMatchingRuleRegistry.lookup( oid );
     }
@@ -137,7 +137,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public void register( MutableMatchingRuleImpl schemaObject ) throws LdapException
+    public void register( MatchingRule schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04280 ) );
     }
@@ -155,7 +155,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public MutableMatchingRuleImpl unregister( String numericOid ) throws LdapException
+    public MatchingRule unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04280 ) );
     }
@@ -191,7 +191,7 @@ public class ImmutableMatchingRuleRegistry implements MatchingRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public MutableMatchingRuleImpl unregister( MutableMatchingRuleImpl schemaObject ) throws LdapException
+    public MatchingRule unregister( MatchingRule schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04280 ) );
     }

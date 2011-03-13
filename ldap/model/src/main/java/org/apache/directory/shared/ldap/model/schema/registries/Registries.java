@@ -42,9 +42,11 @@ import org.apache.directory.shared.ldap.model.schema.DITContentRule;
 import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
 import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableLoadableSchemaObject;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.MutableNormalizer;
@@ -86,7 +88,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     protected ObjectClassRegistry objectClassRegistry;
 
     /** The LdapSyntax registry */
-    protected ComparatorRegistry comparatorRegistry;
+    protected ComparatorRegistry<MutableLdapComparator<?>> comparatorRegistry;
 
     /** The DitContentRule registry */
     protected DITContentRuleRegistry ditContentRuleRegistry;
@@ -95,7 +97,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     protected DITStructureRuleRegistry ditStructureRuleRegistry;
 
     /** The MatchingRule registry */
-    protected MatchingRuleRegistry matchingRuleRegistry;
+    protected MatchingRuleRegistry<MutableMatchingRule> matchingRuleRegistry;
 
     /** The MatchingRuleUse registry */
     protected MatchingRuleUseRegistry matchingRuleUseRegistry;
@@ -140,11 +142,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     protected Map<SchemaObjectWrapper, Set<SchemaObjectWrapper>> using;
 
-    /** A reference on the schema Manager */
-    @SuppressWarnings({ "PMD.UnusedPrivateField", "unused" })
-    // False positive 
-    private SchemaManager schemaManager;
-
 
     /**
      * Creates a new instance of Registries.
@@ -171,7 +168,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         isRelaxed = STRICT;
         disabledAccepted = false;
-        this.schemaManager = schemaManager;
     }
 
 
@@ -187,7 +183,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * @return The Comparator registry
      */
-    public ComparatorRegistry getComparatorRegistry()
+    public ComparatorRegistry<MutableLdapComparator<?>> getComparatorRegistry()
     {
         return comparatorRegistry;
     }
@@ -214,7 +210,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * @return The MatchingRule registry
      */
-    public MatchingRuleRegistry getMatchingRuleRegistry()
+    public MatchingRuleRegistry<MutableMatchingRule> getMatchingRuleRegistry()
     {
         return matchingRuleRegistry;
     }
@@ -290,8 +286,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param name The name we are looking at
      * @return The associated OID
      */
-    // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     public String getOid( String name )
     {
         // we have many possible Registries to look at.
@@ -343,7 +337,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // MatchingRule
         try
         {
-            MutableMatchingRuleImpl matchingRule = matchingRuleRegistry.lookup( name );
+            MutableMatchingRule matchingRule = matchingRuleRegistry.lookup( name );
 
             if ( matchingRule != null )
             {
@@ -479,7 +473,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
 
         // Check the Comparators
-        for ( AbstractLdapComparator<?> comparator : comparatorRegistry )
+        for ( MutableLdapComparator<?> comparator : comparatorRegistry )
         {
             resolve( comparator, errors );
         }
@@ -499,7 +493,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         // Step 3 :
         // Check the matchingRules
-        for ( MutableMatchingRuleImpl matchingRule : matchingRuleRegistry )
+        for ( MutableMatchingRule matchingRule : matchingRuleRegistry )
         {
             resolve( matchingRule, errors );
         }
@@ -665,7 +659,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private void buildComparatorReferences( List<Throwable> errors )
     {
-        for ( AbstractLdapComparator<?> comparator : comparatorRegistry )
+        for ( MutableLdapComparator<?> comparator : comparatorRegistry )
         {
             buildReference( errors, comparator );
         }
@@ -675,8 +669,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Build the DitContentRule references
      */
-    // Remove me when TODO is implemented
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void buildDitContentRuleReferences( List<Throwable> errors )
     {
         for ( @SuppressWarnings("unused") DITContentRule ditContentRule : ditContentRuleRegistry )
@@ -689,8 +681,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Build the DitStructureRule references
      */
-    // Remove me when TODO is implemented
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void buildDitStructureRuleReferences( List<Throwable> errors )
     {
         for ( @SuppressWarnings("unused") DITStructureRule ditStructureRule : ditStructureRuleRegistry )
@@ -772,7 +762,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private void buildMatchingRuleReferences( List<Throwable> errors )
     {
-        for ( MutableMatchingRuleImpl matchingRule : matchingRuleRegistry )
+        for ( MutableMatchingRule matchingRule : matchingRuleRegistry )
         {
             buildReference( errors, matchingRule );
         }
@@ -794,8 +784,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Build the NameForm references
      */
-    // Remove me when TODO is implemented
-    @SuppressWarnings("PMD.UnusedFormalParameter")
     private void buildNameFormReferences( List<Throwable> errors )
     {
         for ( @SuppressWarnings("unused") NameForm nameFormRule : nameFormRegistry )
@@ -958,7 +946,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param comparator the LdapComparator
      * @param errors the list of errors to add exceptions to
      */
-    private void resolve( AbstractLdapComparator<?> comparator, List<Throwable> errors )
+    private void resolve( MutableLdapComparator<?> comparator, List<Throwable> errors )
     {
         // This is currently doing nothing.
         try
@@ -996,7 +984,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Check if the Comparator, Normalizer and the syntax are 
      * existing for a matchingRule.
      */
-    private void resolve( MutableMatchingRuleImpl matchingRule, List<Throwable> errors )
+    private void resolve( MutableMatchingRule matchingRule, List<Throwable> errors )
     {
         // Process the Syntax. It can't be null
         String syntaxOid = matchingRule.getSyntaxOid();
@@ -1038,7 +1026,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
 
         // Process the Comparator
-        AbstractLdapComparator<?> comparator = matchingRule.getLdapComparator();
+        MutableLdapComparator<?> comparator = matchingRule.getLdapComparator();
 
         if ( comparator == null )
         {
@@ -1267,8 +1255,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
     }
 
 
-    // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     private void resolveRecursive( ObjectClass objectClass, Set<String> processed, List<Throwable> errors )
     {
         // Process the Superiors, if any
@@ -1377,9 +1363,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         // Build the SchemaObject references
         buildReference( errors, schemaObject );
-
-        // Lock the SchemaObject
-        schemaObject.lock();
 
         if ( errors.isEmpty() )
         {
@@ -1541,8 +1524,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Register the given SchemaObject into the associated Registry
      */
-    // Remove SuppressWarnings when TODO is fixed
-    @SuppressWarnings("PMD.EmptyIfStmt")
     private void register( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
     {
         LOG.debug( "Registering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
@@ -1760,9 +1741,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * @param schemaObject The SchemaObject we want to deregister
      * @throws LdapException If the removal failed
      */
-    // Remove me when TODO is implemented
-    @SuppressWarnings(
-        { "PMD.UnusedFormalParameter", "PMD.EmptyIfStmt" })
     private MutableSchemaObject unregister( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
     {
         LOG.debug( "Unregistering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
@@ -2276,7 +2254,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check the MatchingRules : check for a Normalizer, a Comparator and a Syntax
         LOG.debug( "Checking MatchingRules..." );
 
-        for ( MutableMatchingRuleImpl matchingRule : matchingRuleRegistry )
+        for ( MutableMatchingRule matchingRule : matchingRuleRegistry )
         {
             // Check that each MatchingRule has a Normalizer
             if ( matchingRule.getNormalizer() == null )
@@ -2524,8 +2502,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * - first clone the SchemaObjetc registries
      * - second restore the relation between them
      */
-    // False positive
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     public Registries clone() throws CloneNotSupportedException
     {
         // First clone the structure
@@ -2563,7 +2539,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             clone.globalOidRegistry.put( ditStructureRule );
         }
 
-        for ( MutableMatchingRuleImpl matchingRule : clone.matchingRuleRegistry )
+        for ( MutableMatchingRule matchingRule : clone.matchingRuleRegistry )
         {
             clone.globalOidRegistry.put( matchingRule );
         }

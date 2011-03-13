@@ -75,7 +75,8 @@ public abstract class AbstractMutableSchemaObject extends AbstractSchemaObject i
     private static final long serialVersionUID = 1L;
 
     /** A locked to avoid modifications when set to true */
-    protected volatile boolean locked;
+    protected volatile boolean locked = false;
+    
     
     /**
      * A constructor for a SchemaObject instance. It must be

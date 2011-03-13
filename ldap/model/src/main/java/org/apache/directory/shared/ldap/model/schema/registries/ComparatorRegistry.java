@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.model.schema.registries;
 
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
+import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 
 
 /**
@@ -29,8 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface ComparatorRegistry extends SchemaObjectRegistry<AbstractLdapComparator<?>>,
-    Iterable<AbstractLdapComparator<?>>
+public interface ComparatorRegistry<E extends LdapComparator<?>> extends SchemaObjectRegistry<E>, Iterable<E>
 {
     /**
      * Registers a new LdapComparator with this registry.
@@ -39,7 +38,7 @@ public interface ComparatorRegistry extends SchemaObjectRegistry<AbstractLdapCom
      * @throws LdapException if the LdapComparator is already registered or
      * the registration operation is not supported
      */
-    void register( AbstractLdapComparator<?> comparator ) throws LdapException;
+    void register( E comparator ) throws LdapException;
 
 
     /**
@@ -49,7 +48,7 @@ public interface ComparatorRegistry extends SchemaObjectRegistry<AbstractLdapCom
      * @param numericOid the numeric identifier
      * @throws LdapException if the numeric identifier is invalid
      */
-    AbstractLdapComparator<?> unregister( String numericOid ) throws LdapException;
+    E unregister( String numericOid ) throws LdapException;
     
     
     /**
@@ -64,5 +63,5 @@ public interface ComparatorRegistry extends SchemaObjectRegistry<AbstractLdapCom
     /**
      * Copy the ComparatorRegistry
      */
-    ComparatorRegistry copy();
+    ComparatorRegistry<E> copy();
 }

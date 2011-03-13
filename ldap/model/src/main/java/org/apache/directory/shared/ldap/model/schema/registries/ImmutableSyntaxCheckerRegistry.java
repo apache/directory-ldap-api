@@ -35,10 +35,10 @@ import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ImmutableSyntaxCheckerRegistry<R extends SyntaxChecker> implements SyntaxCheckerRegistry<R>
+public class ImmutableSyntaxCheckerRegistry implements SyntaxCheckerRegistry<SyntaxChecker>
 {
     /** The wrapped SyntaxChecker registry */
-    SyntaxCheckerRegistry<R> immutableSyntaxCheckerRegistry;
+    SyntaxCheckerRegistry<SyntaxChecker> immutableSyntaxCheckerRegistry;
 
 
     /**
@@ -46,7 +46,8 @@ public class ImmutableSyntaxCheckerRegistry<R extends SyntaxChecker> implements 
      *
      * @param syntaxCheckerRegistry The wrapped SyntaxChecker registry
      */
-    public ImmutableSyntaxCheckerRegistry( SyntaxCheckerRegistry<R> syntaxCheckerRegistry )
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public ImmutableSyntaxCheckerRegistry( SyntaxCheckerRegistry syntaxCheckerRegistry )
     {
         immutableSyntaxCheckerRegistry = syntaxCheckerRegistry;
     }
@@ -64,7 +65,7 @@ public class ImmutableSyntaxCheckerRegistry<R extends SyntaxChecker> implements 
     /**
      * {@inheritDoc}
      */
-    public R unregister( String numericOid ) throws LdapException
+    public SyntaxChecker unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04285 ) );
     }
@@ -82,9 +83,9 @@ public class ImmutableSyntaxCheckerRegistry<R extends SyntaxChecker> implements 
     /**
      * {@inheritDoc}
      */
-    public ImmutableSyntaxCheckerRegistry<R> copy()
+    public ImmutableSyntaxCheckerRegistry copy()
     {
-        return new ImmutableSyntaxCheckerRegistry<R>( immutableSyntaxCheckerRegistry );
+        return new ImmutableSyntaxCheckerRegistry( immutableSyntaxCheckerRegistry );
     }
 
 
@@ -136,7 +137,7 @@ public class ImmutableSyntaxCheckerRegistry<R extends SyntaxChecker> implements 
     /**
      * {@inheritDoc}
      */
-    public Iterator<R> iterator()
+    public Iterator<SyntaxChecker> iterator()
     {
         return immutableSyntaxCheckerRegistry.iterator();
     }
@@ -145,7 +146,7 @@ public class ImmutableSyntaxCheckerRegistry<R extends SyntaxChecker> implements 
     /**
      * {@inheritDoc}
      */
-    public R lookup( String oid ) throws LdapException
+    public SyntaxChecker lookup( String oid ) throws LdapException
     {
         return immutableSyntaxCheckerRegistry.lookup( oid );
     }
@@ -172,7 +173,7 @@ public class ImmutableSyntaxCheckerRegistry<R extends SyntaxChecker> implements 
     /**
      * {@inheritDoc}
      */
-    public R get( String oid )
+    public SyntaxChecker get( String oid )
     {
         return immutableSyntaxCheckerRegistry.get( oid );
     }
@@ -190,7 +191,7 @@ public class ImmutableSyntaxCheckerRegistry<R extends SyntaxChecker> implements 
     /**
      * {@inheritDoc}
      */
-    public R unregister( SyntaxChecker schemaObject ) throws LdapException
+    public SyntaxChecker unregister( SyntaxChecker schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04285 ) );
     }

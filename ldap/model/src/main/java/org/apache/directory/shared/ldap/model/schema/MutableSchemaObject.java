@@ -87,7 +87,7 @@ public interface MutableSchemaObject extends SchemaObject
      * 
      * {@inheritDoc}
      */
-    MutableSchemaObject copy();
+    MutableSchemaObject copyMutable();
     
 
     /**
@@ -145,6 +145,15 @@ public interface MutableSchemaObject extends SchemaObject
      * @param names The list of names. Can be empty
      */
     void setNames( List<String> names );
+
+
+    /**
+     * Sets the list of names for this SchemaObject. The names are
+     * lower cased and trimmed.
+     *  
+     * @param names The list of names. Can be empty
+     */
+    void setNames( String...names );
 
 
     /**
