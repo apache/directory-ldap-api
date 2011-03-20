@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
@@ -191,12 +192,11 @@ public class OsgiUtils
                 return null;
             }
             
-            Attributes attrs = manifest.getMainAttributes();
-            for ( Object key : attrs.keySet() )
+            for (Map.Entry<Object, Object> attr : manifest.getMainAttributes().entrySet() )
             {
-                if ( key.toString().equals( "Export-Package" ) )
+                if ( attr.getKey().toString().equals( "Export-Package" ) )
                 {
-                    return attrs.get( key ).toString();
+                    return attr.getValue().toString();
                 }
             }
             
