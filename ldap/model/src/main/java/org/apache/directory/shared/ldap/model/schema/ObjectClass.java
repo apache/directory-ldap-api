@@ -92,13 +92,13 @@ public class ObjectClass extends AbstractMutableSchemaObject
     private List<String> mayAttributeTypeOids;
 
     /** The list of allowed AttributeTypes */
-    private List<AttributeType> mayAttributeTypes;
+    private List<MutableAttributeTypeImpl> mayAttributeTypes;
 
     /** The list of required AttributeType OIDs */
     private List<String> mustAttributeTypeOids;
 
     /** The list of required AttributeTypes */
-    private List<AttributeType> mustAttributeTypes;
+    private List<MutableAttributeTypeImpl> mustAttributeTypes;
 
 
     /**
@@ -113,8 +113,8 @@ public class ObjectClass extends AbstractMutableSchemaObject
         mustAttributeTypeOids = new ArrayList<String>();
         superiorOids = new ArrayList<String>();
 
-        mayAttributeTypes = new ArrayList<AttributeType>();
-        mustAttributeTypes = new ArrayList<AttributeType>();
+        mayAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
+        mustAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
         superiors = new ArrayList<ObjectClass>();
         objectClassType = ObjectClassTypeEnum.STRUCTURAL;
     }
@@ -208,13 +208,13 @@ public class ObjectClass extends AbstractMutableSchemaObject
 
         if ( mayAttributeTypeOids != null )
         {
-            mayAttributeTypes = new ArrayList<AttributeType>( mayAttributeTypeOids.size() );
+            mayAttributeTypes = new ArrayList<MutableAttributeTypeImpl>( mayAttributeTypeOids.size() );
 
             for ( String mayAttributeTypeName : mayAttributeTypeOids )
             {
                 try
                 {
-                    AttributeType attributeType = atRegistry.lookup( mayAttributeTypeName );
+                    MutableAttributeTypeImpl attributeType = atRegistry.lookup( mayAttributeTypeName );
 
                     if ( attributeType.isCollective() )
                     {
@@ -267,13 +267,13 @@ public class ObjectClass extends AbstractMutableSchemaObject
 
         if ( mustAttributeTypeOids != null )
         {
-            mustAttributeTypes = new ArrayList<AttributeType>( mustAttributeTypeOids.size() );
+            mustAttributeTypes = new ArrayList<MutableAttributeTypeImpl>( mustAttributeTypeOids.size() );
 
             for ( String mustAttributeTypeName : mustAttributeTypeOids )
             {
                 try
                 {
-                    AttributeType attributeType = atRegistry.lookup( mustAttributeTypeName );
+                    MutableAttributeTypeImpl attributeType = atRegistry.lookup( mustAttributeTypeName );
 
                     if ( attributeType.isCollective() )
                     {
@@ -363,12 +363,12 @@ public class ObjectClass extends AbstractMutableSchemaObject
              * OC -> AT (MAY and MUST)
              * OC -> OC (SUPERIORS)
              */
-            for ( AttributeType mayAttributeType : mayAttributeTypes )
+            for ( MutableAttributeTypeImpl mayAttributeType : mayAttributeTypes )
             {
                 registries.addReference( this, mayAttributeType );
             }
 
-            for ( AttributeType mustAttributeType : mustAttributeTypes )
+            for ( MutableAttributeTypeImpl mustAttributeType : mustAttributeTypes )
             {
                 registries.addReference( this, mustAttributeType );
             }
@@ -408,7 +408,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
              */
             if ( mayAttributeTypes != null )
             {
-                for ( AttributeType may : mayAttributeTypes )
+                for ( MutableAttributeTypeImpl may : mayAttributeTypes )
                 {
                     registries.delReference( this, may );
                 }
@@ -416,7 +416,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
 
             if ( mustAttributeTypes != null )
             {
-                for ( AttributeType must : mustAttributeTypes )
+                for ( MutableAttributeTypeImpl must : mustAttributeTypes )
                 {
                     registries.delReference( this, must );
                 }
@@ -445,7 +445,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
     /**
      * @return the mayAttributeTypes
      */
-    public List<AttributeType> getMayAttributeTypes()
+    public List<MutableAttributeTypeImpl> getMayAttributeTypes()
     {
         return mayAttributeTypes;
     }
@@ -478,7 +478,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
      *
      * @param attributeTypes The attributeTypes
      */
-    public void addMayAttributeTypes( AttributeType... attributeTypes )
+    public void addMayAttributeTypes( MutableAttributeTypeImpl... attributeTypes )
     {
         if ( locked )
         {
@@ -487,7 +487,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
 
         if ( !isReadOnly )
         {
-            for ( AttributeType attributeType : attributeTypes )
+            for ( MutableAttributeTypeImpl attributeType : attributeTypes )
             {
                 if ( !mayAttributeTypeOids.contains( attributeType.getOid() ) )
                 {
@@ -521,7 +521,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
      *
      * @param mayAttributeTypes the list of allowed AttributeTypes
      */
-    public void setMayAttributeTypes( List<AttributeType> mayAttributeTypes )
+    public void setMayAttributeTypes( List<MutableAttributeTypeImpl> mayAttributeTypes )
     {
         if ( locked )
         {
@@ -535,7 +535,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
             // update the OIDS now
             mayAttributeTypeOids.clear();
 
-            for ( AttributeType may : mayAttributeTypes )
+            for ( MutableAttributeTypeImpl may : mayAttributeTypes )
             {
                 mayAttributeTypeOids.add( may.getOid() );
             }
@@ -548,7 +548,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
      *
      * @param mayAttributeTypes the list of allowed AttributeTypes
      */
-    public void updateMayAttributeTypes( List<AttributeType> mayAttributeTypes )
+    public void updateMayAttributeTypes( List<MutableAttributeTypeImpl> mayAttributeTypes )
     {
         this.mayAttributeTypes.clear();
         this.mayAttributeTypes.addAll( mayAttributeTypes );
@@ -556,7 +556,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
         // update the OIDS now
         mayAttributeTypeOids.clear();
 
-        for ( AttributeType may : mayAttributeTypes )
+        for ( MutableAttributeTypeImpl may : mayAttributeTypes )
         {
             mayAttributeTypeOids.add( may.getOid() );
         }
@@ -575,7 +575,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
     /**
      * @return the mustAttributeTypes
      */
-    public List<AttributeType> getMustAttributeTypes()
+    public List<MutableAttributeTypeImpl> getMustAttributeTypes()
     {
         return mustAttributeTypes;
     }
@@ -608,7 +608,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
      *
      * @param attributeTypes The attributeTypse
      */
-    public void addMustAttributeTypes( AttributeType... attributeTypes )
+    public void addMustAttributeTypes( MutableAttributeTypeImpl... attributeTypes )
     {
         if ( locked )
         {
@@ -617,7 +617,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
 
         if ( !isReadOnly )
         {
-            for ( AttributeType attributeType : attributeTypes )
+            for ( MutableAttributeTypeImpl attributeType : attributeTypes )
             {
                 if ( !mustAttributeTypeOids.contains( attributeType.getOid() ) )
                 {
@@ -651,7 +651,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
      *
      * @param mustAttributeTypes the list of required AttributeTypes
      */
-    public void setMustAttributeTypes( List<AttributeType> mustAttributeTypes )
+    public void setMustAttributeTypes( List<MutableAttributeTypeImpl> mustAttributeTypes )
     {
         if ( locked )
         {
@@ -665,7 +665,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
             // update the OIDS now
             mustAttributeTypeOids.clear();
 
-            for ( AttributeType may : mustAttributeTypes )
+            for ( MutableAttributeTypeImpl may : mustAttributeTypes )
             {
                 mustAttributeTypeOids.add( may.getOid() );
             }
@@ -678,7 +678,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
      *
      * @param mustAttributeTypes the list of allowed AttributeTypes
      */
-    public void updateMustAttributeTypes( List<AttributeType> mustAttributeTypes )
+    public void updateMustAttributeTypes( List<MutableAttributeTypeImpl> mustAttributeTypes )
     {
         this.mustAttributeTypes.clear();
         this.mustAttributeTypes.addAll( mustAttributeTypes );
@@ -686,7 +686,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
         // update the OIDS now
         mustAttributeTypeOids.clear();
 
-        for ( AttributeType must : mustAttributeTypes )
+        for ( MutableAttributeTypeImpl must : mustAttributeTypes )
         {
             mustAttributeTypeOids.add( must.getOid() );
         }
@@ -947,7 +947,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
         }
 
         // Copy the MAY AttributeTypes ( will be empty )
-        copy.mayAttributeTypes = new ArrayList<AttributeType>();
+        copy.mayAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
 
         // Copy the MUST AttributeTypes OIDs
         copy.mustAttributeTypeOids = new ArrayList<String>();
@@ -958,7 +958,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
         }
 
         // Copy the MUST AttributeTypes ( will be empty )
-        copy.mustAttributeTypes = new ArrayList<AttributeType>();
+        copy.mustAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
 
         return copy;
     }
@@ -1067,7 +1067,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
         }
 
         // One way
-        for ( AttributeType oid : mayAttributeTypes )
+        for ( MutableAttributeTypeImpl oid : mayAttributeTypes )
         {
             if ( !that.mayAttributeTypes.contains( oid ) )
             {
@@ -1076,7 +1076,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
         }
 
         // The other way
-        for ( AttributeType oid : that.mayAttributeTypes )
+        for ( MutableAttributeTypeImpl oid : that.mayAttributeTypes )
         {
             if ( !mayAttributeTypes.contains( oid ) )
             {
@@ -1115,7 +1115,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
         }
 
         // One way
-        for ( AttributeType oid : mustAttributeTypes )
+        for ( MutableAttributeTypeImpl oid : mustAttributeTypes )
         {
             if ( !that.mustAttributeTypes.contains( oid ) )
             {
@@ -1124,7 +1124,7 @@ public class ObjectClass extends AbstractMutableSchemaObject
         }
 
         // The other way
-        for ( AttributeType oid : that.mustAttributeTypes )
+        for ( MutableAttributeTypeImpl oid : that.mustAttributeTypes )
         {
             if ( !mustAttributeTypes.contains( oid ) )
             {

@@ -354,7 +354,7 @@ public final class SchemaUtils
      *            the attributeTypes to list
      * @return a buffer which contains the rendered list
      */
-    public static StringBuffer render( AttributeType[] ats )
+    public static StringBuffer render( MutableAttributeTypeImpl[] ats )
     {
         StringBuffer buf = new StringBuffer();
         return render( buf, ats );
@@ -371,7 +371,7 @@ public final class SchemaUtils
      *            the attributeTypes to list
      * @return a buffer which contains the rendered list
      */
-    public static StringBuffer render( StringBuffer buf, AttributeType[] ats )
+    public static StringBuffer render( StringBuffer buf, MutableAttributeTypeImpl[] ats )
     {
         if ( ats == null || ats.length == 0 )
         {
@@ -573,7 +573,7 @@ public final class SchemaUtils
      * @throws LdapException if there are problems accessing the objects
      * associated with the attribute type.
      */
-    public static StringBuffer render( AttributeType at ) throws LdapException
+    public static StringBuffer render( MutableAttributeTypeImpl at ) throws LdapException
     {
         StringBuffer buf = new StringBuffer();
         buf.append( "( " ).append( at.getOid() );

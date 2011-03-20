@@ -31,7 +31,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
 import org.apache.directory.shared.util.Unicode;
@@ -53,7 +53,7 @@ public class DefaultEntryAttribute implements EntryAttribute
     private static final Logger LOG = LoggerFactory.getLogger( DefaultEntryAttribute.class );
 
     /** The associated AttributeType */
-    private AttributeType attributeType;
+    private MutableAttributeTypeImpl attributeType;
     
     /** The set of contained values */
     private Set<Value<?>> values = new LinkedHashSet<Value<?>>();
@@ -74,7 +74,7 @@ public class DefaultEntryAttribute implements EntryAttribute
     //-------------------------------------------------------------------------
     // Helper methods
     //-------------------------------------------------------------------------
-    private Value<String> createStringValue( AttributeType attributeType, String value )
+    private Value<String> createStringValue( MutableAttributeTypeImpl attributeType, String value )
     {
         Value<String> stringValue = null;
         
@@ -109,7 +109,7 @@ public class DefaultEntryAttribute implements EntryAttribute
     }
 
 
-    private Value<byte[]> createBinaryValue( AttributeType attributeType, byte[] value )
+    private Value<byte[]> createBinaryValue( MutableAttributeTypeImpl attributeType, byte[] value )
     {
         Value<byte[]> binaryValue = null;
         
@@ -161,7 +161,7 @@ public class DefaultEntryAttribute implements EntryAttribute
     /**
      * Create a new instance of a EntryAttribute, without ID nor value.
      */
-    /* No qualifier */ DefaultEntryAttribute( AttributeType attributeType, String upId, String normId, boolean isHR, int hashCode, Value<?>... values)
+    /* No qualifier */ DefaultEntryAttribute( MutableAttributeTypeImpl attributeType, String upId, String normId, boolean isHR, int hashCode, Value<?>... values)
     {
         this.attributeType = attributeType;
         this.upId = upId;
@@ -184,7 +184,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * 
      * @param attributeType the attributeType for the empty attribute added into the entry
      */
-    public DefaultEntryAttribute( AttributeType attributeType )
+    public DefaultEntryAttribute( MutableAttributeTypeImpl attributeType )
     {
         if ( attributeType == null )
         {
@@ -212,7 +212,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param upId the ID for the added attributeType
      * @param attributeType the added AttributeType
      */
-    public DefaultEntryAttribute( String upId, AttributeType attributeType )
+    public DefaultEntryAttribute( String upId, MutableAttributeTypeImpl attributeType )
     {
         if ( attributeType == null ) 
         {
@@ -270,7 +270,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType The attributeType added on creation
      * @param vals The added value for this attribute
      */
-    public DefaultEntryAttribute( AttributeType attributeType, String... vals )
+    public DefaultEntryAttribute( MutableAttributeTypeImpl attributeType, String... vals )
     {
         this( null, attributeType, vals );
     }
@@ -283,7 +283,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType The attributeType added on creation
      * @param vals the added values for this attribute
      */
-    public DefaultEntryAttribute( String upId, AttributeType attributeType, String... vals )
+    public DefaultEntryAttribute( String upId, MutableAttributeTypeImpl attributeType, String... vals )
     {
         if ( attributeType == null )
         {
@@ -311,7 +311,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType the attribute type according to the schema
      * @param vals an initial set of values for this attribute
      */
-    public DefaultEntryAttribute( String upId, AttributeType attributeType, Value<?>... vals )
+    public DefaultEntryAttribute( String upId, MutableAttributeTypeImpl attributeType, Value<?>... vals )
     {
         if ( attributeType == null )
         {
@@ -336,7 +336,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType the attribute type according to the schema
      * @param vals an initial set of values for this attribute
      */
-    public DefaultEntryAttribute( AttributeType attributeType, Value<?>... vals )
+    public DefaultEntryAttribute( MutableAttributeTypeImpl attributeType, Value<?>... vals )
     {
         this( null, attributeType, vals );
     }
@@ -368,7 +368,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType The attributeType added on creation
      * @param vals The value for the added attribute
      */
-    public DefaultEntryAttribute( AttributeType attributeType, byte[]... vals )
+    public DefaultEntryAttribute( MutableAttributeTypeImpl attributeType, byte[]... vals )
     {
         this( null, attributeType, vals );
     }
@@ -381,7 +381,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType the AttributeType to be added
      * @param vals the values for the added attribute
      */
-    public DefaultEntryAttribute( String upId, AttributeType attributeType, byte[]... vals )
+    public DefaultEntryAttribute( String upId, MutableAttributeTypeImpl attributeType, byte[]... vals )
     {
         if ( attributeType == null )
         {
@@ -403,7 +403,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType The attribute's type 
      * @param attribute The attribute to be copied
      */
-    public DefaultEntryAttribute( AttributeType attributeType, EntryAttribute attribute )
+    public DefaultEntryAttribute( MutableAttributeTypeImpl attributeType, EntryAttribute attribute )
     {
         // Copy the common values. isHR is only available on a ServerAttribute 
         this.attributeType = attributeType;
@@ -667,7 +667,7 @@ public class DefaultEntryAttribute implements EntryAttribute
     /**
      * Check that the upId is either a name or the OID of a given AT
      */
-    private boolean areCompatible( String id, AttributeType attributeType )
+    private boolean areCompatible( String id, MutableAttributeTypeImpl attributeType )
     {
         // First, get rid of the options, if any
         int optPos = id.indexOf( ";" );
@@ -712,7 +712,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param upId The attribute ID
      * @param attributeType The associated attributeType
      */
-    public void setUpId( String upId, AttributeType attributeType )
+    public void setUpId( String upId, MutableAttributeTypeImpl attributeType )
     {
         String trimmed = Strings.trim(upId);
 
@@ -2126,7 +2126,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      *
      * @return the attributeType associated with this entry attribute
      */
-    public AttributeType getAttributeType()
+    public MutableAttributeTypeImpl getAttributeType()
     {
         return attributeType;
     }
@@ -2144,7 +2144,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      *
      * @param attributeType the attributeType associated with this entry attribute
      */
-    public void setAttributeType( AttributeType attributeType )
+    public void setAttributeType( MutableAttributeTypeImpl attributeType )
     {
         if ( attributeType == null )
         {

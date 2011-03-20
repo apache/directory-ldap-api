@@ -84,7 +84,7 @@ public final class DescriptionUtils
      * @return the AttributeTypeDescription Syntax for the attributeType in a
      *         pretty formated string
      */
-    public static String getDescription( AttributeType attributeType )
+    public static String getDescription( MutableAttributeTypeImpl attributeType )
     {
         StringBuilder buf = new StringBuilder( "( " );
         buf.append( attributeType.getOid() );
@@ -263,7 +263,7 @@ public final class DescriptionUtils
             getQDStrings( buf, aux );
         }
 
-        List<AttributeType> must = dITContentRule.getMustAttributeTypes();
+        List<MutableAttributeTypeImpl> must = dITContentRule.getMustAttributeTypes();
 
         if ( ( must != null ) && ( must.size() > 0 ) )
         {
@@ -271,7 +271,7 @@ public final class DescriptionUtils
             getQDStrings( buf, must );
         }
 
-        List<AttributeType> may = dITContentRule.getMayAttributeTypes();
+        List<MutableAttributeTypeImpl> may = dITContentRule.getMayAttributeTypes();
 
         if ( ( may != null ) && ( may.size() > 0 ) )
         {
@@ -279,7 +279,7 @@ public final class DescriptionUtils
             getQDStrings( buf, may );
         }
 
-        List<AttributeType> not = dITContentRule.getNotAttributeTypes();
+        List<MutableAttributeTypeImpl> not = dITContentRule.getNotAttributeTypes();
 
         if ( ( not != null ) && ( not.size() > 0 ) )
         {
@@ -500,7 +500,7 @@ public final class DescriptionUtils
         }
 
         buf.append( " APPLIES " );
-        List<AttributeType> attributeTypes = matchingRuleUse.getApplicableAttributes();
+        List<MutableAttributeTypeImpl> attributeTypes = matchingRuleUse.getApplicableAttributes();
 
         if ( attributeTypes.size() == 1 )
         {
@@ -513,7 +513,7 @@ public final class DescriptionUtils
 
             boolean isFirst = true;
 
-            for ( AttributeType attributeType : attributeTypes )
+            for ( MutableAttributeTypeImpl attributeType : attributeTypes )
             {
                 if ( isFirst )
                 {
@@ -592,11 +592,11 @@ public final class DescriptionUtils
         buf.append( '\n' );
 
         buf.append( " MUST\n" );
-        List<AttributeType> must = nameForm.getMustAttributeTypes();
+        List<MutableAttributeTypeImpl> must = nameForm.getMustAttributeTypes();
 
         getQDStrings( buf, must );
 
-        List<AttributeType> may = nameForm.getMayAttributeTypes();
+        List<MutableAttributeTypeImpl> may = nameForm.getMayAttributeTypes();
 
         if ( ( may != null ) && ( may.size() > 0 ) )
         {
@@ -702,7 +702,7 @@ public final class DescriptionUtils
             buf.append( '\n' );
         }
 
-        List<AttributeType> must = objectClass.getMustAttributeTypes();
+        List<MutableAttributeTypeImpl> must = objectClass.getMustAttributeTypes();
 
         if ( ( must != null ) && ( must.size() > 0 ) )
         {
@@ -710,7 +710,7 @@ public final class DescriptionUtils
             getQDStrings( buf, must );
         }
 
-        List<AttributeType> may = objectClass.getMayAttributeTypes();
+        List<MutableAttributeTypeImpl> may = objectClass.getMayAttributeTypes();
 
         if ( ( may != null ) && ( may.size() > 0 ) )
         {

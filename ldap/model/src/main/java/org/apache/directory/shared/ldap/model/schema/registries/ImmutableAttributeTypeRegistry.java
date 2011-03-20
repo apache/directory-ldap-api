@@ -28,7 +28,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapNoSuchAttributeException;
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 import org.apache.directory.shared.ldap.model.schema.normalizers.OidNormalizer;
 
@@ -76,7 +76,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
-    public boolean hasDescendants( AttributeType ancestor ) throws LdapException
+    public boolean hasDescendants( MutableAttributeTypeImpl ancestor ) throws LdapException
     {
         return immutableAttributeTypeRegistry.hasDescendants( ancestor );
     }
@@ -85,7 +85,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
-    public Iterator<AttributeType> descendants( String ancestorId ) throws LdapException
+    public Iterator<MutableAttributeTypeImpl> descendants( String ancestorId ) throws LdapException
     {
         return immutableAttributeTypeRegistry.descendants( ancestorId );
     }
@@ -94,7 +94,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
-    public Iterator<AttributeType> descendants( AttributeType ancestor ) throws LdapException
+    public Iterator<MutableAttributeTypeImpl> descendants( MutableAttributeTypeImpl ancestor ) throws LdapException
     {
         return immutableAttributeTypeRegistry.descendants( ancestor );
     }
@@ -103,7 +103,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
-    public void register( AttributeType attributeType ) throws LdapException
+    public void register( MutableAttributeTypeImpl attributeType ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
     }
@@ -112,7 +112,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
-    public void registerDescendants( AttributeType attributeType, AttributeType ancestor ) throws LdapException
+    public void registerDescendants( MutableAttributeTypeImpl attributeType, MutableAttributeTypeImpl ancestor ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
     }
@@ -121,7 +121,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
-    public void unregisterDescendants( AttributeType attributeType, AttributeType ancestor ) throws LdapException
+    public void unregisterDescendants( MutableAttributeTypeImpl attributeType, MutableAttributeTypeImpl ancestor ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
     }
@@ -130,7 +130,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
-    public AttributeType unregister( String numericOid ) throws LdapException
+    public MutableAttributeTypeImpl unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION,
             "Cannot modify the AttributeTypeRegistry copy" );
@@ -140,7 +140,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
-    public void addMappingFor( AttributeType attributeType ) throws LdapException
+    public void addMappingFor( MutableAttributeTypeImpl attributeType ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
     }
@@ -149,7 +149,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
-    public void removeMappingFor( AttributeType attributeType ) throws LdapException
+    public void removeMappingFor( MutableAttributeTypeImpl attributeType ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
     }
@@ -158,7 +158,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
-    public AttributeType lookup( String oid ) throws LdapException
+    public MutableAttributeTypeImpl lookup( String oid ) throws LdapException
     {
         return immutableAttributeTypeRegistry.lookup( oid );
     }
@@ -194,7 +194,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
-    public Iterator<AttributeType> iterator()
+    public Iterator<MutableAttributeTypeImpl> iterator()
     {
         return immutableAttributeTypeRegistry.iterator();
     }
@@ -273,7 +273,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
-    public AttributeType get( String oid )
+    public MutableAttributeTypeImpl get( String oid )
     {
         return immutableAttributeTypeRegistry.get( oid );
     }
@@ -291,7 +291,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
     /**
      * {@inheritDoc}
      */
-    public AttributeType unregister( AttributeType schemaObject ) throws LdapException
+    public MutableAttributeTypeImpl unregister( MutableAttributeTypeImpl schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04275 ) );
     }

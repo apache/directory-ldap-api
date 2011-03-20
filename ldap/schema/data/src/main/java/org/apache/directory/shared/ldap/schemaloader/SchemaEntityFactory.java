@@ -38,7 +38,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.EntityFactory;
 import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
@@ -872,7 +872,7 @@ public class SchemaEntityFactory implements EntityFactory
      * @throws LdapInvalidAttributeValueException 
      * @throws LdapUnwillingToPerformException 
      */
-    public AttributeType getAttributeType( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
+    public MutableAttributeTypeImpl getAttributeType( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapInvalidAttributeValueException, LdapUnwillingToPerformException
     {
         checkEntry( entry, SchemaConstants.ATTRIBUTE_TYPE );
@@ -900,7 +900,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Create the new AttributeType
-        AttributeType attributeType = new AttributeType( oid );
+        MutableAttributeTypeImpl attributeType = new MutableAttributeTypeImpl( oid );
 
         // Syntax
         EntryAttribute mSyntax = entry.get( MetaSchemaConstants.M_SYNTAX_AT );

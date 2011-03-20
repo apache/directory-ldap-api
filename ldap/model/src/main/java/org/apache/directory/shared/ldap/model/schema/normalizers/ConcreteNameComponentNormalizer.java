@@ -26,7 +26,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.entry.BinaryValue;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.name.NameComponentNormalizer;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
@@ -109,7 +109,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
      */
     public Object normalizeByName( String name, String value ) throws LdapException
     {
-        AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( name );
+        MutableAttributeTypeImpl attributeType = schemaManager.lookupAttributeTypeRegistry( name );
         
         if ( attributeType.getSyntax().isHumanReadable() )
         {
@@ -140,7 +140,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
      */
     public Object normalizeByName( String name, byte[] value ) throws LdapException
     {
-        AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( name );
+        MutableAttributeTypeImpl attributeType = schemaManager.lookupAttributeTypeRegistry( name );
         
         if ( !attributeType.getSyntax().isHumanReadable() )
         {
@@ -194,7 +194,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
      */
     private Normalizer lookup( String id ) throws LdapException
     {
-        AttributeType type = schemaManager.lookupAttributeTypeRegistry( id );
+        MutableAttributeTypeImpl type = schemaManager.lookupAttributeTypeRegistry( id );
         MatchingRule mrule = type.getEquality();
         
         if ( mrule == null )

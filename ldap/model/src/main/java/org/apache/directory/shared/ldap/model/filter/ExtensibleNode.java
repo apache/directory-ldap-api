@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.model.filter;
 
 
 import org.apache.directory.shared.ldap.model.entry.Value;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 
 
 /**
@@ -46,7 +46,7 @@ public class ExtensibleNode extends LeafNode
      * 
      * @param attributeType the attributeType associated with this node
      */
-    public ExtensibleNode( AttributeType attributeType )
+    public ExtensibleNode( MutableAttributeTypeImpl attributeType )
     {
         super( attributeType, AssertionType.EXTENSIBLE );
         
@@ -75,7 +75,7 @@ public class ExtensibleNode extends LeafNode
      * @param matchingRuleId the OID of the matching rule
      * @param dnAttributes the dn attributes
      */
-    public ExtensibleNode( AttributeType attributeType, Value<?> value, String matchingRuleId, boolean dnAttributes )
+    public ExtensibleNode( MutableAttributeTypeImpl attributeType, Value<?> value, String matchingRuleId, boolean dnAttributes )
     {
         super( attributeType, AssertionType.EXTENSIBLE );
 

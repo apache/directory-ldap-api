@@ -19,7 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.filter;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 
 
 /**
@@ -30,7 +30,7 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 public class LeafNode extends AbstractExprNode
 {
     /** attributeType on which this leaf is based */
-    protected AttributeType attributeType;
+    protected MutableAttributeTypeImpl attributeType;
     
     /** attribute on which this leaf is based */
     protected String attribute;
@@ -42,7 +42,7 @@ public class LeafNode extends AbstractExprNode
      * @param attributeType the attribute this node is based on
      * @param assertionType the type of this leaf node
      */
-    protected LeafNode( AttributeType attributeType, AssertionType assertionType )
+    protected LeafNode( MutableAttributeTypeImpl attributeType, AssertionType assertionType )
     {
         super( assertionType );
         this.attributeType = attributeType;
@@ -86,7 +86,7 @@ public class LeafNode extends AbstractExprNode
      * 
      * @return the attributeType asserted
      */
-    public final AttributeType getAttributeType()
+    public final MutableAttributeTypeImpl getAttributeType()
     {
         return attributeType;
     }
@@ -108,7 +108,7 @@ public class LeafNode extends AbstractExprNode
      * 
      * @param attributeType the attributeType that is asserted by this filter node
      */
-    public void setAttributeType( AttributeType attributeType )
+    public void setAttributeType( MutableAttributeTypeImpl attributeType )
     {
         this.attributeType = attributeType;
         

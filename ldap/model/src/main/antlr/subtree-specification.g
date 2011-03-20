@@ -49,7 +49,7 @@ import org.apache.directory.shared.util.OptionalComponentsMonitor;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,7 +98,7 @@ options
     private SchemaManager schemaManager;
     
     /** The ObjectClass AT */
-    AttributeType OBJECT_CLASS_AT;
+    MutableAttributeTypeImpl OBJECT_CLASS_AT;
     
     private ComponentsMonitor subtreeSpecificationComponentsMonitor = null;
     

@@ -32,7 +32,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.registries.DefaultSchema;
 import org.apache.directory.shared.ldap.model.schema.registries.Schema;
@@ -528,7 +528,7 @@ public class SchemaManagerLoadTest
         assertTrue( schemaManager.load( "cosine" ) );
         assertFalse( schemaManager.load( "nis" ) );
         
-        AttributeType at = schemaManager.getAttributeType( "uidNumber" );
+        MutableAttributeTypeImpl at = schemaManager.getAttributeType( "uidNumber" );
         // if nis schema was loaded then the at will not be null
         assertNull( at );
 
@@ -798,7 +798,7 @@ public class SchemaManagerLoadTest
 
         assertFalse( schemaManager.getErrors().isEmpty() );
         
-        AttributeType at = schemaManager.getAttributeType( "uidNumber" );
+        MutableAttributeTypeImpl at = schemaManager.getAttributeType( "uidNumber" );
         // if nis schema was loaded then the at will not be null
         assertNotNull( at );
     }

@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.aci.protectedItem;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 
 
 /**
@@ -29,10 +29,10 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 public class RestrictedByElem
 {
     /** The AttributeType on which the restriction is applied */
-    private AttributeType attributeType;
+    private MutableAttributeTypeImpl attributeType;
 
     /** The list of allowed AttributeType values */
-    private AttributeType valuesIn;
+    private MutableAttributeTypeImpl valuesIn;
 
 
     /**
@@ -41,7 +41,7 @@ public class RestrictedByElem
      * @param attributeType the attribute type to restrict
      * @param valuesIn the attribute type only whose values are allowed in <tt>attributeType</tt>.
      */
-    public RestrictedByElem( AttributeType attributeType, AttributeType valuesIn )
+    public RestrictedByElem( MutableAttributeTypeImpl attributeType, MutableAttributeTypeImpl valuesIn )
     {
         this.attributeType = attributeType;
         this.valuesIn = valuesIn;
@@ -53,7 +53,7 @@ public class RestrictedByElem
      *
      * @return the attribute type
      */
-    public AttributeType getAttributeType()
+    public MutableAttributeTypeImpl getAttributeType()
     {
         return attributeType;
     }
@@ -65,7 +65,7 @@ public class RestrictedByElem
      *
      * @return the list of allowed AttributeType values
      */
-    public AttributeType getValuesIn()
+    public MutableAttributeTypeImpl getValuesIn()
     {
         return valuesIn;
     }

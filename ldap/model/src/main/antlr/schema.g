@@ -37,7 +37,7 @@ import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.NameForm;
 import org.apache.directory.shared.ldap.model.schema.parsers.NormalizerDescription;
 import org.apache.directory.shared.ldap.model.schema.parsers.ParserMonitor;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.SyntaxCheckerDescription;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OpenLdapObjectIdentifierMacro;
@@ -245,7 +245,7 @@ options    {
 
 openLdapSchema returns [List<Object> list = new ArrayList<Object>()]
     {
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
         ObjectClass objectClass = null;
         OpenLdapObjectIdentifierMacro oloid = null;
     }
@@ -288,7 +288,7 @@ openLdapObjectClass returns [ObjectClass objectClass]
     ;
     
     
-openLdapAttributeType returns [AttributeType attributeType]
+openLdapAttributeType returns [MutableAttributeTypeImpl attributeType]
     {
         matchedProduction( "openLdapAttributeType()" );
     }
@@ -389,13 +389,13 @@ objectClassDescription returns [ObjectClass objectClass]
      * xstring = "X" HYPHEN 1*( ALPHA / HYPHEN / USCORE ) 
      * </pre>
     */
-attributeTypeDescription returns [AttributeType attributeType]
+attributeTypeDescription returns [MutableAttributeTypeImpl attributeType]
     {
         matchedProduction( "attributeTypeDescription()" );
         ElementTracker et = new ElementTracker();
     }
     :
-    ( oid:STARTNUMERICOID { attributeType = new AttributeType(numericoid(oid.getText())); } )
+    ( oid:STARTNUMERICOID { attributeType = new MutableAttributeTypeImpl(numericoid(oid.getText())); } )
     (
         ( name:NAME { et.track("NAME", name); attributeType.setNames(qdescrs(name.getText())); } )
         |

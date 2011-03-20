@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.model.schema.parsers;
 import java.text.ParseException;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,7 +83,7 @@ public class AttributeTypeDescriptionSchemaParser extends AbstractSchemaParser
      * @return the parsed AttributeTypeDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized AttributeType parseAttributeTypeDescription( String attributeTypeDescription )
+    public synchronized MutableAttributeTypeImpl parseAttributeTypeDescription( String attributeTypeDescription )
         throws ParseException
     {
 
@@ -99,7 +99,7 @@ public class AttributeTypeDescriptionSchemaParser extends AbstractSchemaParser
 
         try
         {
-            AttributeType attributeType = parser.attributeTypeDescription();
+            MutableAttributeTypeImpl attributeType = parser.attributeTypeDescription();
             
             // Update the schemaName
             updateSchemaName( attributeType );
@@ -135,7 +135,7 @@ public class AttributeTypeDescriptionSchemaParser extends AbstractSchemaParser
      * @return An instance of AttributeType
      * @throws ParseException {@inheritDoc}
      */
-    public AttributeType parse( String schemaDescription ) throws ParseException
+    public MutableAttributeTypeImpl parse( String schemaDescription ) throws ParseException
     {
         return parseAttributeTypeDescription( schemaDescription );
     }

@@ -39,7 +39,7 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.DnSerializer;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.name.RdnSerializer;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Strings;
 import org.apache.directory.shared.util.Unicode;
@@ -71,7 +71,7 @@ public class DefaultEntry implements Entry
     private Map<String, EntryAttribute> attributes = new HashMap<String, EntryAttribute>();
 
     /** A speedup to get the ObjectClass attribute */
-    private static AttributeType objectClassAttributeType;
+    private static MutableAttributeTypeImpl objectClassAttributeType;
 
     /** The SchemaManager */
     private SchemaManager schemaManager;
@@ -218,7 +218,7 @@ public class DefaultEntry implements Entry
             try
             {
                 // First get the AttributeType
-                AttributeType attributeType = attribute.getAttributeType();
+                MutableAttributeTypeImpl attributeType = attribute.getAttributeType();
 
                 if ( attributeType == null )
                 {
@@ -382,7 +382,7 @@ public class DefaultEntry implements Entry
      * @param dn The Dn for this serverEntry. Can be null.
      * @param attributeTypes The list of attributes to create, without value.
      */
-    public DefaultEntry( SchemaManager schemaManager, Dn dn, AttributeType... attributeTypes )
+    public DefaultEntry( SchemaManager schemaManager, Dn dn, MutableAttributeTypeImpl... attributeTypes )
     {
         this.schemaManager = schemaManager;
 
@@ -425,7 +425,7 @@ public class DefaultEntry implements Entry
      * @param attributeType The attribute to create, without value.
      * @param upId The User Provided ID fro this AttributeType
      */
-    public DefaultEntry( SchemaManager schemaManager, Dn dn, AttributeType attributeType, String upId )
+    public DefaultEntry( SchemaManager schemaManager, Dn dn, MutableAttributeTypeImpl attributeType, String upId )
     {
         this.schemaManager = schemaManager;
 
@@ -508,7 +508,7 @@ public class DefaultEntry implements Entry
      * 
      * @param upId The ID
      */
-    private static String getUpId( String upId, AttributeType attributeType )
+    private static String getUpId( String upId, MutableAttributeTypeImpl attributeType )
     {
         String normUpId = Strings.trim(upId);
 
@@ -541,7 +541,7 @@ public class DefaultEntry implements Entry
      *
      * Updates the AttributeMap.
      */
-    protected void createAttribute( String upId, AttributeType attributeType, byte[]... values )
+    protected void createAttribute( String upId, MutableAttributeTypeImpl attributeType, byte[]... values )
     {
         EntryAttribute attribute = new DefaultEntryAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
@@ -555,7 +555,7 @@ public class DefaultEntry implements Entry
      *
      * Updates the AttributeMap.
      */
-    protected void createAttribute( String upId, AttributeType attributeType, String... values )
+    protected void createAttribute( String upId, MutableAttributeTypeImpl attributeType, String... values )
     {
         EntryAttribute attribute = new DefaultEntryAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
@@ -569,7 +569,7 @@ public class DefaultEntry implements Entry
      *
      * Updates the AttributeMap.
      */
-    protected void createAttribute( String upId, AttributeType attributeType, Value<?>... values )
+    protected void createAttribute( String upId, MutableAttributeTypeImpl attributeType, Value<?>... values )
     {
         EntryAttribute attribute = new DefaultEntryAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
@@ -580,7 +580,7 @@ public class DefaultEntry implements Entry
     /**
      * Returns the attributeType from an Attribute ID.
      */
-    protected AttributeType getAttributeType( String upId ) throws LdapException
+    protected MutableAttributeTypeImpl getAttributeType( String upId ) throws LdapException
     {
         if ( Strings.isEmpty(Strings.trim(upId)) )
         {
@@ -599,7 +599,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( AttributeType attributeType, byte[]... values ) throws LdapException
+    public void add( MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -644,7 +644,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( AttributeType attributeType, String... values ) throws LdapException
+    public void add( MutableAttributeTypeImpl attributeType, String... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -674,7 +674,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public void add( MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -704,7 +704,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
+    public void add( String upId, MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException
     {
         // ObjectClass with binary values are not allowed
         if ( attributeType.equals( objectClassAttributeType ) )
@@ -737,7 +737,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
+    public void add( String upId, MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -767,7 +767,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, AttributeType attributeType, String... values ) throws LdapException
+    public void add( String upId, MutableAttributeTypeImpl attributeType, String... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -804,7 +804,7 @@ public class DefaultEntry implements Entry
         // Loop on all the added attributes
         for ( EntryAttribute attribute : attributes )
         {
-            AttributeType attributeType = attribute.getAttributeType();
+            MutableAttributeTypeImpl attributeType = attribute.getAttributeType();
 
             if ( attributeType != null )
             {
@@ -1064,7 +1064,7 @@ public class DefaultEntry implements Entry
                     return this.attributes.size() == 0;
                 }
 
-                AttributeType attributeType = entryAttribute.getAttributeType();
+                MutableAttributeTypeImpl attributeType = entryAttribute.getAttributeType();
 
                 if ( ( entryAttribute == null ) || !this.attributes.containsKey( attributeType.getOid() ) )
                 {
@@ -1149,7 +1149,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean containsAttribute( AttributeType attributeType )
+    public boolean containsAttribute( MutableAttributeTypeImpl attributeType )
     {
         if ( attributeType == null )
         {
@@ -1163,7 +1163,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean contains( AttributeType attributeType, byte[]... values )
+    public boolean contains( MutableAttributeTypeImpl attributeType, byte[]... values )
     {
         if ( attributeType == null )
         {
@@ -1186,7 +1186,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean contains( AttributeType attributeType, String... values )
+    public boolean contains( MutableAttributeTypeImpl attributeType, String... values )
     {
         if ( attributeType == null )
         {
@@ -1209,7 +1209,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean contains( AttributeType attributeType, Value<?>... values )
+    public boolean contains( MutableAttributeTypeImpl attributeType, Value<?>... values )
     {
         if ( attributeType == null )
         {
@@ -1347,7 +1347,7 @@ public class DefaultEntry implements Entry
             {
                 try
                 {
-                    AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( id );
+                    MutableAttributeTypeImpl attributeType = schemaManager.lookupAttributeTypeRegistry( id );
 
                     return attributes.get( attributeType.getOid() );
                 }
@@ -1374,7 +1374,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute get( AttributeType attributeType )
+    public EntryAttribute get( MutableAttributeTypeImpl attributeType )
     {
         if ( attributeType != null )
         {
@@ -1390,9 +1390,9 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Set<AttributeType> getAttributeTypes()
+    public Set<MutableAttributeTypeImpl> getAttributeTypes()
     {
-        Set<AttributeType> attributeTypes = new HashSet<AttributeType>();
+        Set<MutableAttributeTypeImpl> attributeTypes = new HashSet<MutableAttributeTypeImpl>();
 
         for ( EntryAttribute attribute : attributes.values() )
         {
@@ -1575,7 +1575,7 @@ public class DefaultEntry implements Entry
                 }
 
                 // Search for the corresponding AttributeType, based on the upID
-                AttributeType attributeType = null;
+                MutableAttributeTypeImpl attributeType = null;
 
                 try
                 {
@@ -1616,12 +1616,12 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      **/
-    public List<EntryAttribute> set( AttributeType... attributeTypes )
+    public List<EntryAttribute> set( MutableAttributeTypeImpl... attributeTypes )
     {
         List<EntryAttribute> removed = new ArrayList<EntryAttribute>();
 
         // Now, loop on all the attributeType to add
-        for ( AttributeType attributeType : attributeTypes )
+        for ( MutableAttributeTypeImpl attributeType : attributeTypes )
         {
             if ( attributeType == null )
             {
@@ -1688,7 +1688,7 @@ public class DefaultEntry implements Entry
 
                 if ( attribute.getAttributeType() == null )
                 {
-                    AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( attribute.getId() );
+                    MutableAttributeTypeImpl attributeType = schemaManager.lookupAttributeTypeRegistry( attribute.getId() );
                     attribute.setAttributeType( attributeType );
                 }
 
@@ -1709,7 +1709,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( AttributeType attributeType, byte[]... values ) throws LdapException
+    public EntryAttribute put( MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException
     {
         return put( null, attributeType, values );
     }
@@ -1718,7 +1718,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( AttributeType attributeType, String... values ) throws LdapException
+    public EntryAttribute put( MutableAttributeTypeImpl attributeType, String... values ) throws LdapException
     {
         return put( null, attributeType, values );
     }
@@ -1727,7 +1727,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public EntryAttribute put( MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException
     {
         return put( null, attributeType, values );
     }
@@ -1736,7 +1736,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
+    public EntryAttribute put( String upId, MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -1755,7 +1755,7 @@ public class DefaultEntry implements Entry
         {
             if ( !Strings.isEmpty(upId) )
             {
-                AttributeType tempAT = getAttributeType( upId );
+                MutableAttributeTypeImpl tempAT = getAttributeType( upId );
 
                 if ( !tempAT.equals( attributeType ) )
                 {
@@ -1786,7 +1786,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( String upId, AttributeType attributeType, String... values ) throws LdapException
+    public EntryAttribute put( String upId, MutableAttributeTypeImpl attributeType, String... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -1805,7 +1805,7 @@ public class DefaultEntry implements Entry
         {
             if ( !Strings.isEmpty(upId) )
             {
-                AttributeType tempAT = getAttributeType( upId );
+                MutableAttributeTypeImpl tempAT = getAttributeType( upId );
 
                 if ( !tempAT.equals( attributeType ) )
                 {
@@ -1829,7 +1829,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
+    public EntryAttribute put( String upId, MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -1848,7 +1848,7 @@ public class DefaultEntry implements Entry
         {
             if ( !Strings.isEmpty(upId) )
             {
-                AttributeType tempAT = getAttributeType( upId );
+                MutableAttributeTypeImpl tempAT = getAttributeType( upId );
 
                 if ( !tempAT.equals( attributeType ) )
                 {
@@ -1891,7 +1891,7 @@ public class DefaultEntry implements Entry
         {
             for ( EntryAttribute attribute : attributes )
             {
-                AttributeType attributeType = attribute.getAttributeType();
+                MutableAttributeTypeImpl attributeType = attribute.getAttributeType();
 
                 if ( attributeType == null )
                 {
@@ -1915,7 +1915,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean remove( AttributeType attributeType, byte[]... values ) throws LdapException
+    public boolean remove( MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -1958,7 +1958,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean remove( AttributeType attributeType, String... values ) throws LdapException
+    public boolean remove( MutableAttributeTypeImpl attributeType, String... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -2001,7 +2001,7 @@ public class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean remove( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public boolean remove( MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -2056,7 +2056,7 @@ public class DefaultEntry implements Entry
      * @param attributes the AttributeTypes to be removed
      * @return the removed attributes, if any, as a list; otherwise <code>null</code>
      */
-    public List<EntryAttribute> removeAttributes( AttributeType... attributes )
+    public List<EntryAttribute> removeAttributes( MutableAttributeTypeImpl... attributes )
     {
         if ( ( attributes == null ) || ( attributes.length == 0 ) || ( schemaManager == null ) )
         {
@@ -2065,7 +2065,7 @@ public class DefaultEntry implements Entry
 
         List<EntryAttribute> removed = new ArrayList<EntryAttribute>( attributes.length );
 
-        for ( AttributeType attributeType : attributes )
+        for ( MutableAttributeTypeImpl attributeType : attributes )
         {
             if ( attributeType == null )
             {
@@ -2125,7 +2125,7 @@ public class DefaultEntry implements Entry
         {
             for ( String attribute : attributes )
             {
-                AttributeType attributeType = null;
+                MutableAttributeTypeImpl attributeType = null;
 
                 try
                 {
@@ -2219,7 +2219,7 @@ public class DefaultEntry implements Entry
         {
             try
             {
-                AttributeType attributeType = getAttributeType( upId );
+                MutableAttributeTypeImpl attributeType = getAttributeType( upId );
 
                 return remove( attributeType, values );
             }
@@ -2299,7 +2299,7 @@ public class DefaultEntry implements Entry
         {
             try
             {
-                AttributeType attributeType = getAttributeType( upId );
+                MutableAttributeTypeImpl attributeType = getAttributeType( upId );
 
                 return remove( attributeType, values );
             }
@@ -2378,7 +2378,7 @@ public class DefaultEntry implements Entry
         {
             try
             {
-                AttributeType attributeType = getAttributeType( upId );
+                MutableAttributeTypeImpl attributeType = getAttributeType( upId );
 
                 return remove( attributeType, values );
             }
@@ -2561,7 +2561,7 @@ public class DefaultEntry implements Entry
             {
                 try
                 {
-                    AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( attribute.getId() );
+                    MutableAttributeTypeImpl attributeType = schemaManager.lookupAttributeTypeRegistry( attribute.getId() );
 
                     attributes.put( attributeType.getOid(), attribute );
                 }
@@ -2617,7 +2617,7 @@ public class DefaultEntry implements Entry
             // here, to be able to restore it in the readExternal :
             // we need access to the registries, which are not available
             // in the ServerAttribute class.
-            for ( AttributeType attributeType : getAttributeTypes() )
+            for ( MutableAttributeTypeImpl attributeType : getAttributeTypes() )
             {
                 // Write the oid to be able to restore the AttributeType when deserializing
                 // the attribute
@@ -2684,7 +2684,7 @@ public class DefaultEntry implements Entry
 
                 try
                 {
-                    AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( oid );
+                    MutableAttributeTypeImpl attributeType = schemaManager.lookupAttributeTypeRegistry( oid );
 
                     // Create the attribute we will read
                     EntryAttribute attribute = new DefaultEntryAttribute( attributeType );
@@ -2925,7 +2925,7 @@ public class DefaultEntry implements Entry
 
                 if ( schemaManager != null )
                 {
-                    AttributeType attributeType = schemaManager.getAttributeType( id );
+                    MutableAttributeTypeImpl attributeType = schemaManager.getAttributeType( id );
 
                     if ( attributeType != objectClassAttributeType )
                     {

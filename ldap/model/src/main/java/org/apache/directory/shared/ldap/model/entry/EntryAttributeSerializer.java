@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -118,7 +118,7 @@ public class EntryAttributeSerializer
             }
         }
         
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
         
         if ( schemaManager != null )
         {

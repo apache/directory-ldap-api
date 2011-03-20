@@ -38,7 +38,7 @@ import org.apache.directory.shared.util.Strings;
 public class AttributeTypeOptions
 {
     /** The attributeType */
-    private AttributeType attributeType;
+    private MutableAttributeTypeImpl attributeType;
 
     /** The options, if any */
     private Set<String> options;
@@ -50,7 +50,7 @@ public class AttributeTypeOptions
      *
      * @param attributeType The associated AttributeType
      */
-    public AttributeTypeOptions( AttributeType attributeType )
+    public AttributeTypeOptions( MutableAttributeTypeImpl attributeType )
     {
         this.attributeType = attributeType;
     }
@@ -63,7 +63,7 @@ public class AttributeTypeOptions
      * @param attributeType the associated AttributeType
      * @param options the associated options
      */
-    public AttributeTypeOptions( AttributeType attributeType, Set<String> options )
+    public AttributeTypeOptions( MutableAttributeTypeImpl attributeType, Set<String> options )
     {
         this.attributeType = attributeType;
         this.options = options;
@@ -73,7 +73,7 @@ public class AttributeTypeOptions
     /**
      * @return the inner attributeType
      */
-    public AttributeType getAttributeType()
+    public MutableAttributeTypeImpl getAttributeType()
     {
         return attributeType;
     }

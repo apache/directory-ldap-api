@@ -34,7 +34,7 @@ import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -216,7 +216,7 @@ public class LdifAttributesReader extends LdifReader
         int colonIndex = line.indexOf( ':' );
 
         String attributeName = lowerLine.substring( 0, colonIndex );
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
 
         // We should *not* have a Dn twice
         if ( attributeName.equals( "dn" ) )

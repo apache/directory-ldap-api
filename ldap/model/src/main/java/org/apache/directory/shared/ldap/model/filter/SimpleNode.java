@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.model.filter;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Value;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 
 
 /**
@@ -64,7 +64,7 @@ public abstract class SimpleNode<T> extends LeafNode
      * @param value the value to test for
      * @param assertionType the type of assertion represented by this ExprNode
      */
-    protected SimpleNode( AttributeType attributeType, Value<T> value, AssertionType assertionType )
+    protected SimpleNode( MutableAttributeTypeImpl attributeType, Value<T> value, AssertionType assertionType )
     {
         super( attributeType, assertionType );
         this.value = value;

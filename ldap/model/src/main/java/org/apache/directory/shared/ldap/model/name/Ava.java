@@ -32,7 +32,7 @@ import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
@@ -74,7 +74,7 @@ public final class Ava implements Externalizable, Cloneable
     private String normType;
     
     /** The attributeType if the Ava is schemaAware */
-    private AttributeType attributeType;
+    private MutableAttributeTypeImpl attributeType;
 
     /** The user provided Name type */
     private String upType;

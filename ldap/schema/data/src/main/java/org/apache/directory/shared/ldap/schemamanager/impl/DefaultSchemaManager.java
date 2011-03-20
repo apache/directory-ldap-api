@@ -41,7 +41,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapSchemaExceptionCodes
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.EntityFactory;
 import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
@@ -796,7 +796,7 @@ public class DefaultSchemaManager implements SchemaManager
     {
         for ( Entry entry : schemaLoader.loadAttributeTypes( schema ) )
         {
-            AttributeType attributeType = factory.getAttributeType( this, entry, registries, schema.getSchemaName() );
+            MutableAttributeTypeImpl attributeType = factory.getAttributeType( this, entry, registries, schema.getSchemaName() );
 
             addSchemaObject( registries, attributeType, schema );
         }
@@ -1518,7 +1518,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public AttributeType lookupAttributeTypeRegistry( String oid ) throws LdapException
+    public MutableAttributeTypeImpl lookupAttributeTypeRegistry( String oid ) throws LdapException
     {
         return registries.getAttributeTypeRegistry().lookup( Strings.toLowerCase( oid ).trim() );
     }
@@ -1527,7 +1527,7 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public AttributeType getAttributeType( String oid )
+    public MutableAttributeTypeImpl getAttributeType( String oid )
     {
         try
         {

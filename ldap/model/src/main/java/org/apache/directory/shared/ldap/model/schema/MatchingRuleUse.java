@@ -92,7 +92,7 @@ public class MatchingRuleUse extends AbstractMutableSchemaObject
     private List<String> applicableAttributeOids;
 
     /** The list of attributes types the matching rule applies to */
-    private List<AttributeType> applicableAttributes;
+    private List<MutableAttributeTypeImpl> applicableAttributes;
 
 
     /**
@@ -103,7 +103,7 @@ public class MatchingRuleUse extends AbstractMutableSchemaObject
         super( SchemaObjectType.MATCHING_RULE_USE, oid );
 
         applicableAttributeOids = new ArrayList<String>();
-        applicableAttributes = new ArrayList<AttributeType>();
+        applicableAttributes = new ArrayList<MutableAttributeTypeImpl>();
     }
 
 
@@ -127,7 +127,7 @@ public class MatchingRuleUse extends AbstractMutableSchemaObject
 
             if ( applicableAttributeOids != null )
             {
-                applicableAttributes = new ArrayList<AttributeType>( applicableAttributeOids.size() );
+                applicableAttributes = new ArrayList<MutableAttributeTypeImpl>( applicableAttributeOids.size() );
 
                 for ( String oid : applicableAttributeOids )
                 {
@@ -150,7 +150,7 @@ public class MatchingRuleUse extends AbstractMutableSchemaObject
     /**
      * @return The matchingRule's list of AttributeType OIDs the MRU applies to
      */
-    public List<AttributeType> getApplicableAttributes()
+    public List<MutableAttributeTypeImpl> getApplicableAttributes()
     {
         return applicableAttributes;
     }
@@ -180,7 +180,7 @@ public class MatchingRuleUse extends AbstractMutableSchemaObject
      *
      * @param applicableAttributes The AttributeType list
      */
-    public void setApplicableAttributes( List<AttributeType> applicableAttributes )
+    public void setApplicableAttributes( List<MutableAttributeTypeImpl> applicableAttributes )
     {
         if ( locked )
         {
@@ -194,7 +194,7 @@ public class MatchingRuleUse extends AbstractMutableSchemaObject
             // update the OIDS now
             applicableAttributeOids.clear();
 
-            for ( AttributeType at : applicableAttributes )
+            for ( MutableAttributeTypeImpl at : applicableAttributes )
             {
                 applicableAttributeOids.add( at.getOid() );
             }
@@ -226,7 +226,7 @@ public class MatchingRuleUse extends AbstractMutableSchemaObject
      *
      * @param attributeType A matchingRule's AttributeType the MRU applies to
      */
-    public void addApplicableAttribute( AttributeType attributeType )
+    public void addApplicableAttribute( MutableAttributeTypeImpl attributeType )
     {
         if ( locked )
         {
@@ -279,7 +279,7 @@ public class MatchingRuleUse extends AbstractMutableSchemaObject
         }
 
         // Copy the APPLIES list (will be empty)
-        copy.applicableAttributes = new ArrayList<AttributeType>();
+        copy.applicableAttributes = new ArrayList<MutableAttributeTypeImpl>();
 
         return copy;
     }

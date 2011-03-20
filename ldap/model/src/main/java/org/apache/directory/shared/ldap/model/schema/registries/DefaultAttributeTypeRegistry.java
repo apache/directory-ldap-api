@@ -29,7 +29,7 @@ import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapNoSuchAttributeException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 import org.apache.directory.shared.ldap.model.schema.normalizers.NoOpNormalizer;
@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<AttributeType> implements
+public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<MutableAttributeTypeImpl> implements
     AttributeTypeRegistry
 {
     /** static class logger */
@@ -53,7 +53,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     private Map<String, OidNormalizer> oidNormalizerMap;
 
     /** maps OIDs to a Set of descendants for that OID */
-    private Map<String, Set<AttributeType>> oidToDescendantSet;
+    private Map<String, Set<MutableAttributeTypeImpl>> oidToDescendantSet;
 
 
     /**
@@ -61,9 +61,9 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
      */
     public DefaultAttributeTypeRegistry()
     {
-        super( SchemaObjectType.ATTRIBUTE_TYPE, new OidRegistry<AttributeType>() );
+        super( SchemaObjectType.ATTRIBUTE_TYPE, new OidRegistry<MutableAttributeTypeImpl>() );
         oidNormalizerMap = new HashMap<String, OidNormalizer>();
-        oidToDescendantSet = new HashMap<String, Set<AttributeType>>();
+        oidToDescendantSet = new HashMap<String, Set<MutableAttributeTypeImpl>>();
     }
 
 
@@ -84,7 +84,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         try
         {
             String oid = getOidByName( ancestorId );
-            Set<AttributeType> descendants = oidToDescendantSet.get( oid );
+            Set<MutableAttributeTypeImpl> descendants = oidToDescendantSet.get( oid );
             return ( descendants != null ) && !descendants.isEmpty();
         }
         catch ( LdapException ne )
@@ -97,10 +97,10 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
-    public boolean hasDescendants( AttributeType ancestor ) throws LdapException
+    public boolean hasDescendants( MutableAttributeTypeImpl ancestor ) throws LdapException
     {
         String oid = ancestor.getOid();
-        Set<AttributeType> descendants = oidToDescendantSet.get( oid );
+        Set<MutableAttributeTypeImpl> descendants = oidToDescendantSet.get( oid );
         return ( descendants != null ) && !descendants.isEmpty();
     }
 
@@ -109,12 +109,12 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public Iterator<AttributeType> descendants( String ancestorId ) throws LdapException
+    public Iterator<MutableAttributeTypeImpl> descendants( String ancestorId ) throws LdapException
     {
         try
         {
             String oid = getOidByName( ancestorId );
-            Set<AttributeType> descendants = oidToDescendantSet.get( oid );
+            Set<MutableAttributeTypeImpl> descendants = oidToDescendantSet.get( oid );
 
             if ( descendants == null )
             {
@@ -134,10 +134,10 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public Iterator<AttributeType> descendants( AttributeType ancestor ) throws LdapException
+    public Iterator<MutableAttributeTypeImpl> descendants( MutableAttributeTypeImpl ancestor ) throws LdapException
     {
         String oid = ancestor.getOid();
-        Set<AttributeType> descendants = oidToDescendantSet.get( oid );
+        Set<MutableAttributeTypeImpl> descendants = oidToDescendantSet.get( oid );
 
         if ( descendants == null )
         {
@@ -151,7 +151,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
-    public void registerDescendants( AttributeType attributeType, AttributeType ancestor ) throws LdapException
+    public void registerDescendants( MutableAttributeTypeImpl attributeType, MutableAttributeTypeImpl ancestor ) throws LdapException
     {
         // add this attribute to descendant list of other attributes in superior chain
         if ( ancestor == null )
@@ -160,12 +160,12 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         }
 
         // Get the ancestor's descendant, if any
-        Set<AttributeType> descendants = oidToDescendantSet.get( ancestor.getOid() );
+        Set<MutableAttributeTypeImpl> descendants = oidToDescendantSet.get( ancestor.getOid() );
 
         // Initialize the descendant Set to store the descendants for the attributeType
         if ( descendants == null )
         {
-            descendants = new HashSet<AttributeType>( 1 );
+            descendants = new HashSet<MutableAttributeTypeImpl>( 1 );
             oidToDescendantSet.put( ancestor.getOid(), descendants );
         }
 
@@ -189,7 +189,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
-    public void unregisterDescendants( AttributeType attributeType, AttributeType ancestor ) throws LdapException
+    public void unregisterDescendants( MutableAttributeTypeImpl attributeType, MutableAttributeTypeImpl ancestor ) throws LdapException
     {
         // add this attribute to descendant list of other attributes in superior chain
         if ( ancestor == null )
@@ -198,7 +198,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         }
 
         // Get the ancestor's descendant, if any
-        Set<AttributeType> descendants = oidToDescendantSet.get( ancestor.getOid() );
+        Set<MutableAttributeTypeImpl> descendants = oidToDescendantSet.get( ancestor.getOid() );
 
         if ( descendants != null )
         {
@@ -227,11 +227,11 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
-    public AttributeType unregister( String numericOid ) throws LdapException
+    public MutableAttributeTypeImpl unregister( String numericOid ) throws LdapException
     {
         try
         {
-            AttributeType removed = super.unregister( numericOid );
+            MutableAttributeTypeImpl removed = super.unregister( numericOid );
 
             removeMappingFor( removed );
 
@@ -255,7 +255,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
-    public void addMappingFor( AttributeType attributeType ) throws LdapException
+    public void addMappingFor( MutableAttributeTypeImpl attributeType ) throws LdapException
     {
         MatchingRule equality = attributeType.getEquality();
         OidNormalizer oidNormalizer;
@@ -285,7 +285,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * Remove the AttributeType normalizer from the OidNormalizer map 
      */
-    public void removeMappingFor( AttributeType attributeType ) throws LdapException
+    public void removeMappingFor( MutableAttributeTypeImpl attributeType ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -305,7 +305,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
-    public AttributeType lookup( String oid ) throws LdapException
+    public MutableAttributeTypeImpl lookup( String oid ) throws LdapException
     {
         try
         {
@@ -346,7 +346,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         // and clear the descendant
         for ( String oid : oidToDescendantSet.keySet() )
         {
-            Set<AttributeType> descendants = oidToDescendantSet.get( oid );
+            Set<MutableAttributeTypeImpl> descendants = oidToDescendantSet.get( oid );
 
             if ( descendants != null )
             {

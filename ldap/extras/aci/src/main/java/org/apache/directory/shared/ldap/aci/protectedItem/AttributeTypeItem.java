@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.aci.protectedItem;
 
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 
 
 /**
@@ -36,7 +36,7 @@ public class AttributeTypeItem extends AbstractAttributeTypeProtectedItem
      * 
      * @param attributeTypes the collection of attribute IDs.
      */
-    public AttributeTypeItem( Set<AttributeType> attributeTypes )
+    public AttributeTypeItem( Set<MutableAttributeTypeImpl> attributeTypes )
     {
         super( attributeTypes );
     }

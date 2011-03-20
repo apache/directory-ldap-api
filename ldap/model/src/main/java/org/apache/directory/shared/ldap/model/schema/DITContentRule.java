@@ -129,19 +129,19 @@ public class DITContentRule extends AbstractMutableSchemaObject
     private List<String> mayAttributeTypeOids;
 
     /** The list of allowed AttributeTypes */
-    private List<AttributeType> mayAttributeTypes;
+    private List<MutableAttributeTypeImpl> mayAttributeTypes;
 
     /** The list of required AttributeType OIDs */
     private List<String> mustAttributeTypeOids;
 
     /** The list of required AttributeTypes */
-    private List<AttributeType> mustAttributeTypes;
+    private List<MutableAttributeTypeImpl> mustAttributeTypes;
 
     /** The list of precluded AttributeType OIDs */
     private List<String> notAttributeTypeOids;
 
     /** The list of precluded AttributeTypes */
-    private List<AttributeType> notAttributeTypes;
+    private List<MutableAttributeTypeImpl> notAttributeTypes;
 
 
     /**
@@ -158,9 +158,9 @@ public class DITContentRule extends AbstractMutableSchemaObject
         notAttributeTypeOids = new ArrayList<String>();
         auxObjectClassOids = new ArrayList<String>();
 
-        mayAttributeTypes = new ArrayList<AttributeType>();
-        mustAttributeTypes = new ArrayList<AttributeType>();
-        notAttributeTypes = new ArrayList<AttributeType>();
+        mayAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
+        mustAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
+        notAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
         auxObjectClasses = new ArrayList<ObjectClass>();
     }
 
@@ -297,7 +297,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
      *
      * @param attributeType The attributeType
      */
-    public void addMayAttributeTypes( AttributeType attributeType )
+    public void addMayAttributeTypes( MutableAttributeTypeImpl attributeType )
     {
         if ( locked )
         {
@@ -334,7 +334,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
      *
      * @param mayAttributeTypes the list of allowed AttributeTypes
      */
-    public void setMayAttributeTypes( List<AttributeType> mayAttributeTypes )
+    public void setMayAttributeTypes( List<MutableAttributeTypeImpl> mayAttributeTypes )
     {
         if ( locked )
         {
@@ -348,7 +348,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
             // update the OIDS now
             mayAttributeTypeOids.clear();
 
-            for ( AttributeType may : mayAttributeTypes )
+            for ( MutableAttributeTypeImpl may : mayAttributeTypes )
             {
                 mayAttributeTypeOids.add( may.getOid() );
             }
@@ -359,7 +359,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
     /**
      * @return the mayAttributeTypes
      */
-    public List<AttributeType> getMayAttributeTypes()
+    public List<MutableAttributeTypeImpl> getMayAttributeTypes()
     {
         return mayAttributeTypes;
     }
@@ -398,7 +398,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
      *
      * @param attributeType The attributeType
      */
-    public void addMustAttributeTypes( AttributeType attributeType )
+    public void addMustAttributeTypes( MutableAttributeTypeImpl attributeType )
     {
         if ( locked )
         {
@@ -435,7 +435,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
      *
      * @param mustAttributeTypes the list of required AttributeTypes
      */
-    public void setMustAttributeTypes( List<AttributeType> mustAttributeTypes )
+    public void setMustAttributeTypes( List<MutableAttributeTypeImpl> mustAttributeTypes )
     {
         if ( locked )
         {
@@ -449,7 +449,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
             // update the OIDS now
             mustAttributeTypeOids.clear();
 
-            for ( AttributeType may : mustAttributeTypes )
+            for ( MutableAttributeTypeImpl may : mustAttributeTypes )
             {
                 mustAttributeTypeOids.add( may.getOid() );
             }
@@ -460,7 +460,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
     /**
      * @return the mustAttributeTypes
      */
-    public List<AttributeType> getMustAttributeTypes()
+    public List<MutableAttributeTypeImpl> getMustAttributeTypes()
     {
         return mustAttributeTypes;
     }
@@ -499,7 +499,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
      *
      * @param attributeType The attributeType
      */
-    public void addNotAttributeTypes( AttributeType attributeType )
+    public void addNotAttributeTypes( MutableAttributeTypeImpl attributeType )
     {
         if ( locked )
         {
@@ -536,7 +536,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
      *
      * @param notAttributeTypes the list of precluded AttributeTypes
      */
-    public void setNotAttributeTypes( List<AttributeType> notAttributeTypes )
+    public void setNotAttributeTypes( List<MutableAttributeTypeImpl> notAttributeTypes )
     {
         if ( locked )
         {
@@ -550,7 +550,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
             // update the OIDS now
             notAttributeTypeOids.clear();
 
-            for ( AttributeType not : notAttributeTypes )
+            for ( MutableAttributeTypeImpl not : notAttributeTypes )
             {
                 notAttributeTypeOids.add( not.getOid() );
             }
@@ -561,7 +561,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
     /**
      * @return the notAttributeTypes
      */
-    public List<AttributeType> getNotAttributeTypes()
+    public List<MutableAttributeTypeImpl> getNotAttributeTypes()
     {
         return notAttributeTypes;
     }
@@ -583,7 +583,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
 
             if ( mayAttributeTypeOids != null )
             {
-                mayAttributeTypes = new ArrayList<AttributeType>( mayAttributeTypeOids.size() );
+                mayAttributeTypes = new ArrayList<MutableAttributeTypeImpl>( mayAttributeTypeOids.size() );
 
                 for ( String oid : mayAttributeTypeOids )
                 {
@@ -593,7 +593,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
 
             if ( mustAttributeTypeOids != null )
             {
-                mustAttributeTypes = new ArrayList<AttributeType>( mustAttributeTypeOids.size() );
+                mustAttributeTypes = new ArrayList<MutableAttributeTypeImpl>( mustAttributeTypeOids.size() );
 
                 for ( String oid : mustAttributeTypeOids )
                 {
@@ -603,7 +603,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
 
             if ( notAttributeTypeOids != null )
             {
-                notAttributeTypes = new ArrayList<AttributeType>( notAttributeTypeOids.size() );
+                notAttributeTypes = new ArrayList<MutableAttributeTypeImpl>( notAttributeTypeOids.size() );
 
                 for ( String oid : notAttributeTypeOids )
                 {
@@ -672,7 +672,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
         }
 
         // Clone the MAY AttributeTypes ( will be empty )
-        copy.mayAttributeTypes = new ArrayList<AttributeType>();
+        copy.mayAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
 
         // Clone the MUST AttributeTypes OIDs
         copy.mustAttributeTypeOids = new ArrayList<String>();
@@ -683,7 +683,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
         }
 
         // Clone the MUST AttributeTypes ( will be empty )
-        copy.mustAttributeTypes = new ArrayList<AttributeType>();
+        copy.mustAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
 
         // Clone the NOT AttributeTypes OIDs
         copy.notAttributeTypeOids = new ArrayList<String>();
@@ -694,7 +694,7 @@ public class DITContentRule extends AbstractMutableSchemaObject
         }
 
         // Clone the NOT AttributeTypes ( will be empty )
-        copy.notAttributeTypes = new ArrayList<AttributeType>();
+        copy.notAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
 
         return copy;
     }

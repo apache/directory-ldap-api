@@ -37,7 +37,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapSchemaExceptionCodes
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaViolationException;
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.DITContentRule;
 import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
 import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
@@ -292,7 +292,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // AttributeType
         try
         {
-            AttributeType attributeType = attributeTypeRegistry.lookup( name );
+            MutableAttributeTypeImpl attributeType = attributeTypeRegistry.lookup( name );
 
             if ( attributeType != null )
             {
@@ -500,7 +500,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         // Step 4 :
         // Check the AttributeTypes
-        for ( AttributeType attributeType : attributeTypeRegistry )
+        for ( MutableAttributeTypeImpl attributeType : attributeTypeRegistry )
         {
             resolve( attributeType, errors );
         }
@@ -534,7 +534,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * AT -> S
      * AT -> AT
      */
-    public void delCrossReferences( AttributeType attributeType )
+    public void delCrossReferences( MutableAttributeTypeImpl attributeType )
     {
         if ( attributeType.getEquality() != null )
         {
@@ -644,7 +644,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private void buildAttributeTypeReferences( List<Throwable> errors )
     {
-        for ( AttributeType attributeType : attributeTypeRegistry )
+        for ( MutableAttributeTypeImpl attributeType : attributeTypeRegistry )
         {
             if ( ( getUsing( attributeType ) == null ) || getUsing( attributeType ).isEmpty() )
             {
@@ -1041,12 +1041,12 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Check AttributeType referential integrity
      */
-    private void resolveRecursive( AttributeType attributeType, Set<String> processed, List<Throwable> errors )
+    private void resolveRecursive( MutableAttributeTypeImpl attributeType, Set<String> processed, List<Throwable> errors )
     {
         // Process the Superior, if any
         String superiorOid = attributeType.getSuperiorOid();
 
-        AttributeType superior = null;
+        MutableAttributeTypeImpl superior = null;
 
         if ( superiorOid != null )
         {
@@ -1174,7 +1174,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Check the inheritance, and the existence of MatchingRules and LdapSyntax
      * for an attribute 
      */
-    private void resolve( AttributeType attributeType, List<Throwable> errors )
+    private void resolve( MutableAttributeTypeImpl attributeType, List<Throwable> errors )
     {
         // This set is used to avoid having more than one error
         // for an AttributeType. It's mandatory when processing
@@ -1189,7 +1189,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     }
 
 
-    private List<AttributeType> getMustRecursive( List<AttributeType> musts, Set<ObjectClass> processed,
+    private List<MutableAttributeTypeImpl> getMustRecursive( List<MutableAttributeTypeImpl> musts, Set<ObjectClass> processed,
         ObjectClass objectClass )
     {
         if ( objectClass != null )
@@ -1203,7 +1203,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
             processed.add( objectClass );
 
-            for ( AttributeType must : objectClass.getMustAttributeTypes() )
+            for ( MutableAttributeTypeImpl must : objectClass.getMustAttributeTypes() )
             {
                 musts.add( must );
             }
@@ -1233,12 +1233,12 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         // Check that the MAY and MUST AT are consistent (no AT in MAY and in MUST
         // in one of its superior
-        List<AttributeType> musts = getMustRecursive( new ArrayList<AttributeType>(), new HashSet<ObjectClass>(),
+        List<MutableAttributeTypeImpl> musts = getMustRecursive( new ArrayList<MutableAttributeTypeImpl>(), new HashSet<ObjectClass>(),
             objectClass );
 
         if ( musts != null )
         {
-            for ( AttributeType may : objectClass.getMayAttributeTypes() )
+            for ( MutableAttributeTypeImpl may : objectClass.getMayAttributeTypes() )
             {
                 if ( musts.contains( may ) )
                 {
@@ -1552,7 +1552,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             switch ( schemaObject.getObjectType() )
             {
                 case ATTRIBUTE_TYPE:
-                    attributeTypeRegistry.register( ( AttributeType ) schemaObject );
+                    attributeTypeRegistry.register( ( MutableAttributeTypeImpl ) schemaObject );
                     break;
 
                 case COMPARATOR:
@@ -1767,7 +1767,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         switch ( schemaObject.getObjectType() )
         {
             case ATTRIBUTE_TYPE:
-                unregistered = attributeTypeRegistry.unregister( ( AttributeType ) schemaObject );
+                unregistered = attributeTypeRegistry.unregister( ( MutableAttributeTypeImpl ) schemaObject );
                 break;
 
             case COMPARATOR:
@@ -2332,7 +2332,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Check that each ObjectClass has all the MAY AttributeTypes
             if ( objectClass.getMayAttributeTypes() != null )
             {
-                for ( AttributeType may : objectClass.getMayAttributeTypes() )
+                for ( MutableAttributeTypeImpl may : objectClass.getMayAttributeTypes() )
                 {
                     if ( !attributeTypeRegistry.contains( may.getOid() ) )
                     {
@@ -2352,7 +2352,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Check that each ObjectClass has all the MUST AttributeTypes
             if ( objectClass.getMustAttributeTypes() != null )
             {
-                for ( AttributeType must : objectClass.getMustAttributeTypes() )
+                for ( MutableAttributeTypeImpl must : objectClass.getMustAttributeTypes() )
                 {
                     if ( !attributeTypeRegistry.contains( must.getOid() ) )
                     {
@@ -2394,7 +2394,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Check the AttributeTypes : check for MatchingRules, Syntaxes
         LOG.debug( "Checking AttributeTypes..." );
 
-        for ( AttributeType attributeType : attributeTypeRegistry )
+        for ( MutableAttributeTypeImpl attributeType : attributeTypeRegistry )
         {
             // Check that each AttributeType has a SYNTAX 
             if ( attributeType.getSyntax() == null )
@@ -2475,7 +2475,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Check the SUP
             if ( attributeType.getSuperior() != null )
             {
-                AttributeType superior = attributeType.getSuperior();
+                MutableAttributeTypeImpl superior = attributeType.getSuperior();
 
                 if ( !attributeTypeRegistry.contains( superior.getOid() ) )
                 {
@@ -2524,7 +2524,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         clone.syntaxCheckerRegistry = syntaxCheckerRegistry.copy();
 
         // Store all the SchemaObjects into the globalOid registry
-        for ( AttributeType attributeType : clone.attributeTypeRegistry )
+        for ( MutableAttributeTypeImpl attributeType : clone.attributeTypeRegistry )
         {
             clone.globalOidRegistry.put( attributeType );
         }

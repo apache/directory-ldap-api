@@ -108,13 +108,13 @@ public class NameForm extends AbstractMutableSchemaObject
     private List<String> mustAttributeTypeOids;
 
     /** The set of required AttributeTypes for this name form */
-    private List<AttributeType> mustAttributeTypes;
+    private List<MutableAttributeTypeImpl> mustAttributeTypes;
 
     /** The set of allowed attribute OIDs for this name form */
     private List<String> mayAttributeTypeOids;
 
     /** The set of allowed AttributeTypes for this name form */
-    private List<AttributeType> mayAttributeTypes;
+    private List<MutableAttributeTypeImpl> mayAttributeTypes;
 
 
     /**
@@ -129,8 +129,8 @@ public class NameForm extends AbstractMutableSchemaObject
         mustAttributeTypeOids = new ArrayList<String>();
         mayAttributeTypeOids = new ArrayList<String>();
 
-        mustAttributeTypes = new ArrayList<AttributeType>();
-        mayAttributeTypes = new ArrayList<AttributeType>();
+        mustAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
+        mayAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
     }
 
 
@@ -150,7 +150,7 @@ public class NameForm extends AbstractMutableSchemaObject
 
             if ( mayAttributeTypeOids != null )
             {
-                mayAttributeTypes = new ArrayList<AttributeType>( mayAttributeTypeOids.size() );
+                mayAttributeTypes = new ArrayList<MutableAttributeTypeImpl>( mayAttributeTypeOids.size() );
 
                 for ( String oid : mayAttributeTypeOids )
                 {
@@ -160,7 +160,7 @@ public class NameForm extends AbstractMutableSchemaObject
 
             if ( mustAttributeTypeOids != null )
             {
-                mustAttributeTypes = new ArrayList<AttributeType>( mustAttributeTypeOids.size() );
+                mustAttributeTypes = new ArrayList<MutableAttributeTypeImpl>( mustAttributeTypeOids.size() );
 
                 for ( String oid : mustAttributeTypeOids )
                 {
@@ -256,7 +256,7 @@ public class NameForm extends AbstractMutableSchemaObject
      * 
      * @return the AttributeTypes of the must use attributes
      */
-    public List<AttributeType> getMustAttributeTypes()
+    public List<MutableAttributeTypeImpl> getMustAttributeTypes()
     {
         return Collections.unmodifiableList( mustAttributeTypes );
     }
@@ -286,7 +286,7 @@ public class NameForm extends AbstractMutableSchemaObject
      *
      * @param mustAttributeTypes the list of required AttributeTypes
      */
-    public void setMustAttributeTypes( List<AttributeType> mustAttributeTypes )
+    public void setMustAttributeTypes( List<MutableAttributeTypeImpl> mustAttributeTypes )
     {
         if ( locked )
         {
@@ -300,7 +300,7 @@ public class NameForm extends AbstractMutableSchemaObject
             // update the OIDS now
             mustAttributeTypeOids.clear();
 
-            for ( AttributeType may : mustAttributeTypes )
+            for ( MutableAttributeTypeImpl may : mustAttributeTypes )
             {
                 mustAttributeTypeOids.add( may.getOid() );
             }
@@ -332,7 +332,7 @@ public class NameForm extends AbstractMutableSchemaObject
      *
      * @param attributeType The attributeType
      */
-    public void addMustAttributeTypes( AttributeType attributeType )
+    public void addMustAttributeTypes( MutableAttributeTypeImpl attributeType )
     {
         if ( locked )
         {
@@ -368,7 +368,7 @@ public class NameForm extends AbstractMutableSchemaObject
      * 
      * @return the AttributeTypes of the may use attributes
      */
-    public List<AttributeType> getMayAttributeTypes()
+    public List<MutableAttributeTypeImpl> getMayAttributeTypes()
     {
         return Collections.unmodifiableList( mayAttributeTypes );
     }
@@ -398,7 +398,7 @@ public class NameForm extends AbstractMutableSchemaObject
      *
      * @param mayAttributeTypes the list of allowed AttributeTypes
      */
-    public void setMayAttributeTypes( List<AttributeType> mayAttributeTypes )
+    public void setMayAttributeTypes( List<MutableAttributeTypeImpl> mayAttributeTypes )
     {
         if ( locked )
         {
@@ -412,7 +412,7 @@ public class NameForm extends AbstractMutableSchemaObject
             // update the OIDS now
             mayAttributeTypeOids.clear();
 
-            for ( AttributeType may : mayAttributeTypes )
+            for ( MutableAttributeTypeImpl may : mayAttributeTypes )
             {
                 mayAttributeTypeOids.add( may.getOid() );
             }
@@ -444,7 +444,7 @@ public class NameForm extends AbstractMutableSchemaObject
      *
      * @param attributeType The attributeType
      */
-    public void addMayAttributeTypes( AttributeType attributeType )
+    public void addMayAttributeTypes( MutableAttributeTypeImpl attributeType )
     {
         if ( locked )
         {
@@ -496,7 +496,7 @@ public class NameForm extends AbstractMutableSchemaObject
         }
 
         // Copy the MAY AttributeTypes (will be empty)
-        copy.mayAttributeTypes = new ArrayList<AttributeType>();
+        copy.mayAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
 
         // Copy the MUST AttributeTypes OIDs
         copy.mustAttributeTypeOids = new ArrayList<String>();
@@ -507,7 +507,7 @@ public class NameForm extends AbstractMutableSchemaObject
         }
 
         // Copy the MUST AttributeTypes ( will be empty )
-        copy.mustAttributeTypes = new ArrayList<AttributeType>();
+        copy.mustAttributeTypes = new ArrayList<MutableAttributeTypeImpl>();
 
         // Copy the Structural ObjectClass OID
         copy.structuralObjectClassOid = structuralObjectClassOid;

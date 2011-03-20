@@ -49,7 +49,7 @@ public interface EntityFactory
      * @return An AttributeType SchemaObject
      * @throws LdapException If the AttributeType is invalid
      */
-    AttributeType getAttributeType( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
+    MutableAttributeTypeImpl getAttributeType( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
 
     
     /**

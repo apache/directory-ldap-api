@@ -29,7 +29,7 @@ import java.util.Set;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.util.exception.NotImplementedException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 
 
 /**
@@ -68,7 +68,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( AttributeType attributeType, byte[]... values ) throws LdapException
+    public void add( MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -78,7 +78,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( AttributeType attributeType, String... values ) throws LdapException
+    public void add( MutableAttributeTypeImpl attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -88,7 +88,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public void add( MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -98,7 +98,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
+    public void add( String upId, MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -108,7 +108,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
+    public void add( String upId, MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -118,7 +118,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, AttributeType attributeType, String... values ) throws LdapException
+    public void add( String upId, MutableAttributeTypeImpl attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
@@ -206,7 +206,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean containsAttribute( AttributeType attributeType )
+    public boolean containsAttribute( MutableAttributeTypeImpl attributeType )
     {
         return entry.containsAttribute( attributeType );
     }
@@ -215,7 +215,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean contains( AttributeType attributeType, byte[]... values )
+    public boolean contains( MutableAttributeTypeImpl attributeType, byte[]... values )
     {
         return entry.contains( attributeType, values );
     }
@@ -224,7 +224,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean contains( AttributeType attributeType, String... values )
+    public boolean contains( MutableAttributeTypeImpl attributeType, String... values )
     {
         return entry.contains( attributeType, values );
     }
@@ -233,7 +233,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean contains( AttributeType attributeType, Value<?>... values )
+    public boolean contains( MutableAttributeTypeImpl attributeType, Value<?>... values )
     {
         return entry.contains( attributeType, values );
     }
@@ -278,7 +278,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute get( AttributeType attributeType )
+    public EntryAttribute get( MutableAttributeTypeImpl attributeType )
     {
         return entry.get( attributeType );
     }
@@ -287,7 +287,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Set<AttributeType> getAttributeTypes()
+    public Set<MutableAttributeTypeImpl> getAttributeTypes()
     {
         return entry.getAttributeTypes();
     }
@@ -336,7 +336,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}     
      **/
-    public List<EntryAttribute> set( AttributeType... attributeTypes )
+    public List<EntryAttribute> set( MutableAttributeTypeImpl... attributeTypes )
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot set a value : the entry " + entry.getDn() + " is immutable." );
@@ -356,7 +356,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( AttributeType attributeType, byte[]... values ) throws LdapException
+    public EntryAttribute put( MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
@@ -366,7 +366,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( AttributeType attributeType, String... values ) throws LdapException
+    public EntryAttribute put( MutableAttributeTypeImpl attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
@@ -376,7 +376,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public EntryAttribute put( MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
@@ -386,7 +386,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
+    public EntryAttribute put( String upId, MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
@@ -396,7 +396,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( String upId, AttributeType attributeType, String... values ) throws LdapException
+    public EntryAttribute put( String upId, MutableAttributeTypeImpl attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
@@ -406,7 +406,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
+    public EntryAttribute put( String upId, MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot put a value : the entry " + entry.getDn() + " is immutable." );
@@ -426,7 +426,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean remove( AttributeType attributeType, byte[]... values ) throws LdapException
+    public boolean remove( MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
@@ -436,7 +436,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean remove( AttributeType attributeType, String... values ) throws LdapException
+    public boolean remove( MutableAttributeTypeImpl attributeType, String... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
@@ -446,7 +446,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean remove( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public boolean remove( MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
@@ -468,7 +468,7 @@ public class ImmutableEntry implements Entry
      * @param attributes the AttributeTypes to be removed
      * @return the removed attributes, if any, as a list; otherwise <code>null</code>
      */
-    public List<EntryAttribute> removeAttributes( AttributeType... attributes )
+    public List<EntryAttribute> removeAttributes( MutableAttributeTypeImpl... attributes )
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );

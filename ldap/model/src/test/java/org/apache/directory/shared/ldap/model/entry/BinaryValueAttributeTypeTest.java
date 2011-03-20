@@ -35,7 +35,7 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.AbstractNormalizer;
@@ -68,7 +68,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 public class BinaryValueAttributeTypeTest
 {
     private MutableLdapSyntaxImpl s;
-    private AttributeType at;
+    private MutableAttributeTypeImpl at;
     private MutableMatchingRuleImpl mr;
     
     private static final byte[] BYTES1 = new byte[]{0x01, 0x02, 0x03, 0x04};
@@ -117,7 +117,7 @@ public class BinaryValueAttributeTypeTest
             }
         });
         
-        at = new AttributeType( "1.1.3.1" );
+        at = new MutableAttributeTypeImpl( "1.1.3.1" );
         at.setEquality( mr );
         at.setOrdering( mr );
         at.setSubstring( mr );
@@ -165,7 +165,7 @@ public class BinaryValueAttributeTypeTest
     /**
      * Deserialize a BinaryValue
      */
-    private BinaryValue deserializeValue( ByteArrayOutputStream out, AttributeType at ) throws IOException, ClassNotFoundException
+    private BinaryValue deserializeValue( ByteArrayOutputStream out, MutableAttributeTypeImpl at ) throws IOException, ClassNotFoundException
     {
         ObjectInputStream oIn = null;
         ByteArrayInputStream in = new ByteArrayInputStream( out.toByteArray() );
@@ -215,7 +215,7 @@ public class BinaryValueAttributeTypeTest
         }
         
         // create a AT without any syntax
-        AttributeType attribute = new AttributeType( "1.1.3.1" );
+        MutableAttributeTypeImpl attribute = new MutableAttributeTypeImpl( "1.1.3.1" );
         
         try
         {
@@ -234,7 +234,7 @@ public class BinaryValueAttributeTypeTest
      */
     @Test public void testServerBinaryValueNullValue()
     {
-        AttributeType attribute = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getBytesAttributeType();
         
         BinaryValue value = new BinaryValue( attribute, null );
         
@@ -248,7 +248,7 @@ public class BinaryValueAttributeTypeTest
      */
     @Test public void testServerBinaryValueEmptyValue()
     {
-        AttributeType attribute = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getBytesAttributeType();
         
         BinaryValue value = new BinaryValue( attribute, StringConstants.EMPTY_BYTES );
         
@@ -262,7 +262,7 @@ public class BinaryValueAttributeTypeTest
      */
     @Test public void testServerBinaryValueNoValue()
     {
-        AttributeType attribute = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getBytesAttributeType();
         byte[] val = new byte[]{0x01};
         BinaryValue bv = new BinaryValue( attribute );
         
@@ -278,7 +278,7 @@ public class BinaryValueAttributeTypeTest
      */
     @Test public void testServerBinaryValue()
     {
-        AttributeType attribute = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getBytesAttributeType();
         byte[] val = new byte[]{0x01};
         BinaryValue value = new BinaryValue( attribute, val );
         
@@ -294,7 +294,7 @@ public class BinaryValueAttributeTypeTest
     @Test
     public void testClone() throws LdapException
     {
-        AttributeType at1 = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl at1 = EntryUtils.getBytesAttributeType();
         BinaryValue bv = new BinaryValue( at1, null );
         BinaryValue bv1 = bv.clone();
         
@@ -323,7 +323,7 @@ public class BinaryValueAttributeTypeTest
      */
     @Test public void testEquals()
     {
-        AttributeType at1 = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl at1 = EntryUtils.getBytesAttributeType();
         
         BinaryValue value1 = new BinaryValue( at1, new byte[]{0x01, (byte)0x02} );
         BinaryValue value2 = new BinaryValue( at1, new byte[]{0x01, (byte)0x02} );
@@ -352,7 +352,7 @@ public class BinaryValueAttributeTypeTest
      */
     @Test public void testGetNormalizedValue()
     {
-        AttributeType attribute = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getBytesAttributeType();
         
         BinaryValue value = new BinaryValue( attribute, null );
         assertNull( value.getNormalizedValue() );
@@ -370,7 +370,7 @@ public class BinaryValueAttributeTypeTest
      */
     @Test public void testGetNormalizedValueCopy()
     {
-        AttributeType attribute = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getBytesAttributeType();
         
         BinaryValue value = new BinaryValue( attribute, null );
         assertNull( value.getNormalizedValue() );
@@ -388,7 +388,7 @@ public class BinaryValueAttributeTypeTest
      */
     @Test public void testGetNormalizedValueReference()
     {
-        AttributeType attribute = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getBytesAttributeType();
         
         BinaryValue value = new BinaryValue( attribute, null );
         assertNull( value.getNormalizedValueReference() );
@@ -407,7 +407,7 @@ public class BinaryValueAttributeTypeTest
     @Test
     public void testgetAttributeType()
     {
-        AttributeType attribute = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getBytesAttributeType();
         BinaryValue sbv = new BinaryValue( attribute );
         
         assertEquals( attribute, sbv.getAttributeType() );
@@ -421,7 +421,7 @@ public class BinaryValueAttributeTypeTest
      */
     @Test public void testIsValid()
     {
-        AttributeType attribute = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getBytesAttributeType();
         
         BinaryValue value = new BinaryValue( attribute, null );
         assertTrue( value.isValid() );
@@ -450,7 +450,7 @@ public class BinaryValueAttributeTypeTest
      */
     @Test public void testHashCode()
     {
-        AttributeType attribute = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getBytesAttributeType();
         BinaryValue v0 = new BinaryValue( attribute, new byte[]{0x01, 0x02} );
         BinaryValue v1 = new BinaryValue( attribute, new byte[]{(byte)0x81, (byte)0x82} );
         BinaryValue v2 = new BinaryValue( attribute, new byte[]{0x01, 0x02} );
@@ -478,7 +478,7 @@ public class BinaryValueAttributeTypeTest
     @Test
     public void testSame() throws LdapException
     {
-        AttributeType attribute = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getBytesAttributeType();
         BinaryValue bv = new BinaryValue( attribute );
 
         bv.normalize();
@@ -504,7 +504,7 @@ public class BinaryValueAttributeTypeTest
     @Test
     public void testInstanceOf() throws LdapException
     {
-        AttributeType attribute = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getBytesAttributeType();
         BinaryValue sbv = new BinaryValue( attribute );
         
         assertTrue( sbv.instanceOf( attribute ) );
@@ -521,7 +521,7 @@ public class BinaryValueAttributeTypeTest
     @Test
     public void testNormalize() throws LdapException
     {
-        AttributeType attribute = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getBytesAttributeType();
         BinaryValue bv = new BinaryValue( attribute );
 
         bv.normalize();
@@ -543,7 +543,7 @@ public class BinaryValueAttributeTypeTest
     @Test
     public void testCompareTo()
     {
-        AttributeType at1 = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl at1 = EntryUtils.getBytesAttributeType();
         BinaryValue v0 = new BinaryValue( at1, BYTES1 );
         BinaryValue v1 = new BinaryValue( at1, BYTES2 );
         

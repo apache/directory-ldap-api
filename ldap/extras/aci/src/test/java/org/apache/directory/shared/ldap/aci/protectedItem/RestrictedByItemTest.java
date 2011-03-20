@@ -29,7 +29,7 @@ import java.util.Set;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.filter.UndefinedNode;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,22 +62,22 @@ public class RestrictedByItemTest
     public void initNames() throws Exception
     {
         elemsA = new HashSet<RestrictedByElem>();
-        elemsA.add( new RestrictedByElem( new AttributeType("aa"), new AttributeType("aa") ) );
-        elemsA.add( new RestrictedByElem( new AttributeType("aa"), new AttributeType("bb") ) );
-        elemsA.add( new RestrictedByElem( new AttributeType("aa"), new AttributeType("cc") ) );
+        elemsA.add( new RestrictedByElem( new MutableAttributeTypeImpl("aa"), new MutableAttributeTypeImpl("aa") ) );
+        elemsA.add( new RestrictedByElem( new MutableAttributeTypeImpl("aa"), new MutableAttributeTypeImpl("bb") ) );
+        elemsA.add( new RestrictedByElem( new MutableAttributeTypeImpl("aa"), new MutableAttributeTypeImpl("cc") ) );
         // Sets aren't ordered, so adding order must not matter
         elemsB = new HashSet<RestrictedByElem>();
-        elemsB.add( new RestrictedByElem( new AttributeType("aa"), new AttributeType("bb") ) );
-        elemsB.add( new RestrictedByElem( new AttributeType("aa"), new AttributeType("cc") ) );
-        elemsB.add( new RestrictedByElem( new AttributeType("aa"), new AttributeType("aa") ) );
+        elemsB.add( new RestrictedByElem( new MutableAttributeTypeImpl("aa"), new MutableAttributeTypeImpl("bb") ) );
+        elemsB.add( new RestrictedByElem( new MutableAttributeTypeImpl("aa"), new MutableAttributeTypeImpl("cc") ) );
+        elemsB.add( new RestrictedByElem( new MutableAttributeTypeImpl("aa"), new MutableAttributeTypeImpl("aa") ) );
         elemsC = new HashSet<RestrictedByElem>();
-        elemsC.add( new RestrictedByElem( new AttributeType("aa"), new AttributeType("aa") ) );
-        elemsC.add( new RestrictedByElem( new AttributeType("bb"), new AttributeType("bb") ) );
-        elemsC.add( new RestrictedByElem( new AttributeType("aa"), new AttributeType("cc") ) );
+        elemsC.add( new RestrictedByElem( new MutableAttributeTypeImpl("aa"), new MutableAttributeTypeImpl("aa") ) );
+        elemsC.add( new RestrictedByElem( new MutableAttributeTypeImpl("bb"), new MutableAttributeTypeImpl("bb") ) );
+        elemsC.add( new RestrictedByElem( new MutableAttributeTypeImpl("aa"), new MutableAttributeTypeImpl("cc") ) );
         elemsD = new HashSet<RestrictedByElem>();
-        elemsD.add( new RestrictedByElem( new AttributeType("aa"), new AttributeType("aa") ) );
-        elemsD.add( new RestrictedByElem( new AttributeType("aa"), new AttributeType("bb") ) );
-        elemsD.add( new RestrictedByElem( new AttributeType("aa"), new AttributeType("dd") ) );
+        elemsD.add( new RestrictedByElem( new MutableAttributeTypeImpl("aa"), new MutableAttributeTypeImpl("aa") ) );
+        elemsD.add( new RestrictedByElem( new MutableAttributeTypeImpl("aa"), new MutableAttributeTypeImpl("bb") ) );
+        elemsD.add( new RestrictedByElem( new MutableAttributeTypeImpl("aa"), new MutableAttributeTypeImpl("dd") ) );
         restrictedByItemA = new RestrictedByItem( elemsA );
         restrictedByItemACopy = new RestrictedByItem( elemsA );
         restrictedByItemB = new RestrictedByItem( elemsB );

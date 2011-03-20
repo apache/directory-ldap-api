@@ -136,15 +136,15 @@ import org.slf4j.LoggerFactory;
  * @see <a
  *      href="http://www.ietf.org/internet-drafts/draft-ietf-ldapbis-models-11.txt">
  *      ldapbis [MODELS]</a>
- * @see DescriptionUtils#getDescription(AttributeType)
+ * @see DescriptionUtils#getDescription(MutableAttributeTypeImpl)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AttributeType extends AbstractMutableSchemaObject implements Cloneable
+public class MutableAttributeTypeImpl extends AbstractMutableSchemaObject implements Cloneable
 {
     private static final long serialVersionUID = 1L;
 
     /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( AttributeType.class );
+    private static final Logger LOG = LoggerFactory.getLogger( MutableAttributeTypeImpl.class );
 
     /** The syntax OID associated with this AttributeType */
     private String syntaxOid;
@@ -174,7 +174,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
     private String superiorOid;
 
     /** The superior AttributeType */
-    private AttributeType superior;
+    private MutableAttributeTypeImpl superior;
 
     /** whether or not this type is single valued */
     private boolean isSingleValued = false;
@@ -197,7 +197,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @param oid the OID for this AttributeType
      */
-    public AttributeType( String oid )
+    public MutableAttributeTypeImpl( String oid )
     {
         super( SchemaObjectType.ATTRIBUTE_TYPE, oid );
     }
@@ -208,7 +208,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      */
     private boolean buildSuperior( List<Throwable> errors, Registries registries )
     {
-        AttributeType currentSuperior = null;
+        MutableAttributeTypeImpl currentSuperior = null;
         AttributeTypeRegistry attributeTypeRegistry = registries.getAttributeTypeRegistry();
 
         if ( superiorOid != null )
@@ -274,7 +274,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
                 // Check for cycles now
                 Set<String> superiors = new HashSet<String>();
                 superiors.add( oid );
-                AttributeType tmp = currentSuperior;
+                MutableAttributeTypeImpl tmp = currentSuperior;
                 boolean isOk = true;
 
                 while ( tmp != null )
@@ -973,7 +973,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @return the superior AttributeType for this AttributeType
      */
-    public AttributeType getSuperior()
+    public MutableAttributeTypeImpl getSuperior()
     {
         return superior;
     }
@@ -1032,7 +1032,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @param superior The superior for this AttributeType
      */
-    public void setSuperior( AttributeType superior )
+    public void setSuperior( MutableAttributeTypeImpl superior )
     {
         if ( locked )
         {
@@ -1071,7 +1071,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      *
      * @param newSuperior The superior for this AttributeType
      */
-    public void updateSuperior( AttributeType newSuperior )
+    public void updateSuperior( MutableAttributeTypeImpl newSuperior )
     {
         if ( locked )
         {
@@ -1474,7 +1474,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      * @param descendant the perspective descendant to check
      * @return true if the descendant is truly a derived from this AttributeType
      */
-    public boolean isAncestorOf( AttributeType descendant )
+    public boolean isAncestorOf( MutableAttributeTypeImpl descendant )
     {
         if ( ( descendant == null ) || this.equals( descendant ) )
         {
@@ -1492,7 +1492,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      * @param ancestor the perspective ancestor to check
      * @return true if this AttributeType truly descends from the ancestor
      */
-    public boolean isDescendantOf( AttributeType ancestor )
+    public boolean isDescendantOf( MutableAttributeTypeImpl ancestor )
     {
         if ( ( ancestor == null ) || equals( ancestor ) )
         {
@@ -1512,7 +1512,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
      * @return true if the ancestor equals the descendant or if the descendant is really
      * a subtype of the ancestor. otherwise false
      */
-    private boolean isAncestorOrEqual( AttributeType ancestor, AttributeType descendant )
+    private boolean isAncestorOrEqual( MutableAttributeTypeImpl ancestor, MutableAttributeTypeImpl descendant )
     {
         if ( ( ancestor == null ) || ( descendant == null ) )
         {
@@ -1540,9 +1540,9 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
     /**
      * {@inheritDoc}
      */
-    public AttributeType copy()
+    public MutableAttributeTypeImpl copy()
     {
-        AttributeType copy = new AttributeType( oid );
+        MutableAttributeTypeImpl copy = new MutableAttributeTypeImpl( oid );
 
         // Copy the SchemaObject common data
         copy.copy( this );
@@ -1589,7 +1589,7 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
     /**
      * {@inheritDoc}
      */
-    public AttributeType copyMutable()
+    public MutableAttributeTypeImpl copyMutable()
     {
         return copy();
     }
@@ -1622,12 +1622,12 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
             return false;
         }
 
-        if ( !( o instanceof AttributeType ) )
+        if ( !( o instanceof MutableAttributeTypeImpl ) )
         {
             return false;
         }
 
-        AttributeType that = ( AttributeType ) o;
+        MutableAttributeTypeImpl that = ( MutableAttributeTypeImpl ) o;
 
         // The COLLECTIVE
         if ( isCollective != that.isCollective )

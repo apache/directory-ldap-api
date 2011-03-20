@@ -30,7 +30,7 @@ import java.io.ObjectOutputStream;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.EntryAttributeSerializer;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.junit.BeforeClass;
@@ -53,8 +53,8 @@ public class SchemaAwareEntryAttributeSerializerTest
     private static byte[] data2 = new byte[] {0x05, 0x06, 0x07, 0x08};
     private static byte[] data3 = new byte[] {0x09, 0x0A, 0x0B, 0x0C};
     
-    private static AttributeType cn = null;
-    private static AttributeType userCertificate = null;
+    private static MutableAttributeTypeImpl cn = null;
+    private static MutableAttributeTypeImpl userCertificate = null;
 
     private static SchemaManager schemaManager;
 

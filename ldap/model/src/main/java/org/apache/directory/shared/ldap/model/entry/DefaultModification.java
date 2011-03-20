@@ -25,7 +25,7 @@ import java.io.ObjectOutput;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Unicode;
 import org.slf4j.Logger;
@@ -75,7 +75,7 @@ public class DefaultModification implements Modification
         
         try
         {
-            AttributeType at = modAttribute.getAttributeType();
+            MutableAttributeTypeImpl at = modAttribute.getAttributeType();
             
             if ( at == null )
             {
@@ -240,7 +240,7 @@ public class DefaultModification implements Modification
         // Write the operation
         out.writeInt( operation.getValue() );
         
-        AttributeType at = attribute.getAttributeType();
+        MutableAttributeTypeImpl at = attribute.getAttributeType();
         
         // Write the attribute's oid
         Unicode.writeUTF(out, at.getOid());
@@ -270,7 +270,7 @@ public class DefaultModification implements Modification
         String oid = Unicode.readUTF(in);
         
         // Lookup for tha associated AttributeType
-        AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( oid );
+        MutableAttributeTypeImpl attributeType = schemaManager.lookupAttributeTypeRegistry( oid );
         
         attribute = new DefaultEntryAttribute( attributeType );
         

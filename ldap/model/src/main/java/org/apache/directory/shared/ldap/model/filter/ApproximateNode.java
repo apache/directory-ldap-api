@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.model.filter;
 
 import org.apache.directory.shared.ldap.model.entry.Value;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 
 /**
  * A simple assertion value node.
@@ -35,7 +35,7 @@ public class ApproximateNode<T> extends SimpleNode<T>
      * @param attributeType the attribute type
      * @param value the value to test for
      */
-    public ApproximateNode( AttributeType attributeType, Value<T> value )
+    public ApproximateNode( MutableAttributeTypeImpl attributeType, Value<T> value )
     {
         super( attributeType, value, AssertionType.APPROXIMATE );
     }

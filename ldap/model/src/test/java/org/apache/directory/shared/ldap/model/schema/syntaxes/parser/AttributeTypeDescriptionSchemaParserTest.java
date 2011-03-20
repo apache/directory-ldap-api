@@ -31,7 +31,7 @@ import java.text.ParseException;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.shared.ldap.model.schema.parsers.ConsoleParserMonitor;
 import org.apache.directory.shared.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
@@ -125,7 +125,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testSuperType() throws ParseException
     {
         String value = null;
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
 
         // no SUP
         value = "( 1.1 SYNTAX 1.1 )";
@@ -212,7 +212,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testEquality() throws ParseException
     {
         String value = null;
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
 
         // no EQUALITY
         value = "( 1.1 SYNTAX 1.1 )";
@@ -258,7 +258,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testOrdering() throws ParseException
     {
         String value = null;
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
 
         // no ORDERING
         value = "( 1.1 SYNTAX 1.1 )";
@@ -304,7 +304,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testSubstring() throws ParseException
     {
         String value = null;
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
 
         // no SUBSTR
         value = "( 1.1 SYNTAX 1.1 )";
@@ -349,7 +349,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testSyntax() throws ParseException
     {
         String value = null;
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
 
         // no SYNTAX
         value = "( 1.1 SUP 1.1 )";
@@ -476,7 +476,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testSingleValue() throws ParseException
     {
         String value = null;
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
 
         // not single-value
         value = "( 1.1 SYNTAX 1.1 NAME 'test' DESC 'Descripton' )";
@@ -516,7 +516,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testCollective() throws ParseException
     {
         String value = null;
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
 
         // not collective
         value = "( 1.1 SYNTAX 1.1 NAME 'test' DESC 'Descripton' )";
@@ -556,7 +556,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testNoUserModification() throws ParseException
     {
         String value = null;
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
 
         // not NO-USER-MODIFICATION
         value = "( 1.1 SYNTAX 1.1 NAME 'test' DESC 'Descripton' )";
@@ -596,7 +596,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testUsage() throws ParseException
     {
         String value = null;
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
 
         // DEFAULT is userApplications
         value = "( 1.1 SYNTAX 1.1 )";
@@ -663,7 +663,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testFull() throws ParseException
     {
         String value = null;
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
 
         value = "( 1.2.3.4.5.6.7.8.9.0 NAME ( 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' 'test' ) DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' OBSOLETE SUP abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 EQUALITY 2.3.4.5.6.7.8.9.0.1 ORDERING 3.4.5.6.7.8.9.0.1.2 SUBSTR 4.5.6.7.8.9.0.1.2.3 SYNTAX 5.6.7.8.9.0.1.2.3.4{1234567890} SINGLE-VALUE NO-USER-MODIFICATION USAGE dSAOperation X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )";
         attributeType = parser.parseAttributeTypeDescription( value );
@@ -730,7 +730,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testRequiredElements() throws ParseException
     {
         String value = null;
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
 
         value = "( 1.2.3.4.5.6.7.8.9.0 SYNTAX 1.1 SUP 1.1 )";
         attributeType = parser.parseAttributeTypeDescription( value );
@@ -773,7 +773,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testCollecitveConstraint() throws ParseException
     {
         String value = null;
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
 
         value = "( 1.1 SYNTAX 1.1 COLLECTIVE )";
         attributeType = parser.parseAttributeTypeDescription( value );
@@ -833,7 +833,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testNoUserModificatonConstraint() throws ParseException
     {
         String value = null;
-        AttributeType attributeType = null;
+        MutableAttributeTypeImpl attributeType = null;
 
         value = "( 1.1 SYNTAX 1.1 NO-USER-MODIFICATION USAGE directoryOperation )";
         attributeType = parser.parseAttributeTypeDescription( value );
@@ -886,7 +886,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testIgnoreElementOrder() throws ParseException
     {
         String value = "( 2.5.4.3 SUP name SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications DESC 'RFC2256: common name(s) for which the entity is known by'  EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch NAME ( 'cn' 'commonName' )  )";
-        AttributeType attributeType = parser.parseAttributeTypeDescription( value );
+        MutableAttributeTypeImpl attributeType = parser.parseAttributeTypeDescription( value );
 
         assertEquals( "2.5.4.3", attributeType.getOid() );
         assertEquals( 2, attributeType.getNames().size() );
@@ -910,7 +910,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     public void testRfcUid() throws ParseException
     {
         String value = "( 0.9.2342.19200300.100.1.1 NAME ( 'uid' 'userid' ) DESC 'RFC1274: user identifier' EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} USAGE userApplications )";
-        AttributeType attributeType = parser.parseAttributeTypeDescription( value );
+        MutableAttributeTypeImpl attributeType = parser.parseAttributeTypeDescription( value );
 
         assertEquals( "0.9.2342.19200300.100.1.1", attributeType.getOid() );
         assertEquals( 2, attributeType.getNames().size() );
@@ -943,7 +943,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     {
         String substrate = "( 1.3.6.1.4.1.18060.0.4.0.2.10000 NAME ( 'bogus' 'bogusName' ) "
             + "DESC 'bogus description' SUP name SINGLE-VALUE )";
-        AttributeType desc = parser.parseAttributeTypeDescription( substrate );
+        MutableAttributeTypeImpl desc = parser.parseAttributeTypeDescription( substrate );
         assertEquals( "1.3.6.1.4.1.18060.0.4.0.2.10000", desc.getOid() );
         assertEquals( "bogus", desc.getNames().get( 0 ) );
         assertEquals( "bogusName", desc.getNames().get( 1 ) );
@@ -961,7 +961,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     {
         String substrate = "( 1.3.6.1.4.1.18060.0.4.0.2.10000 NAME ( 'bogus' 'bogusName' ) "
             + "DESC 'bogus description' SUP name SINGLE-VALUE X-SCHEMA 'blah' )";
-        AttributeType desc = parser.parseAttributeTypeDescription( substrate );
+        MutableAttributeTypeImpl desc = parser.parseAttributeTypeDescription( substrate );
         assertEquals( "1.3.6.1.4.1.18060.0.4.0.2.10000", desc.getOid() );
         assertEquals( "bogus", desc.getNames().get( 0 ) );
         assertEquals( "bogusName", desc.getNames().get( 1 ) );
@@ -999,7 +999,7 @@ public class AttributeTypeDescriptionSchemaParserTest
         try
         {
             String value = null;
-            AttributeType attributeType = null;
+            MutableAttributeTypeImpl attributeType = null;
 
             parser.setQuirksMode( true );
 
@@ -1083,7 +1083,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     {
         String value = "( 2.5.4.58 NAME 'attributeCertificateAttribute' " + "DESC 'attribute certificate use ;binary' "
             + "SYNTAX 1.3.6.1.4.1.1466.115.121.1.8 ) ";
-        AttributeType attributeType = parser.parseAttributeTypeDescription( value );
+        MutableAttributeTypeImpl attributeType = parser.parseAttributeTypeDescription( value );
 
         assertEquals( "2.5.4.58", attributeType.getOid() );
         assertEquals( 1, attributeType.getNames().size() );
@@ -1107,7 +1107,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     {
         String value = "( 1.3.18.0.2.4.216 NAME 'SAFDfpDataClass' DESC '  ' " +
             "EQUALITY 2.5.13.2 SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )";
-        AttributeType attributeType = parser.parseAttributeTypeDescription( value );
+        MutableAttributeTypeImpl attributeType = parser.parseAttributeTypeDescription( value );
 
         assertEquals( "1.3.18.0.2.4.216", attributeType.getOid() );
         assertEquals( 1, attributeType.getNames().size() );

@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.model.filter;
 
 
 import org.apache.directory.shared.ldap.model.entry.Value;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 
 
 /**
@@ -37,7 +37,7 @@ public class EqualityNode<T> extends SimpleNode<T>
      * @param attributeType the attributeType
      * @param value the value to test for
      */
-    public EqualityNode( AttributeType attributeType, Value<T> value )
+    public EqualityNode( MutableAttributeTypeImpl attributeType, Value<T> value )
     {
         super( attributeType, value, AssertionType.EQUALITY );
     }

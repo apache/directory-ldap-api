@@ -27,7 +27,7 @@ import java.util.regex.PatternSyntaxException;
 
 import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 
 
@@ -55,7 +55,7 @@ public class SubstringNode extends LeafNode
      * @param initialPattern the initial fragment
      * @param finalPattern the final fragment
      */
-    public SubstringNode( AttributeType attributeType, String initialPattern, String finalPattern )
+    public SubstringNode( MutableAttributeTypeImpl attributeType, String initialPattern, String finalPattern )
     {
         super( attributeType, AssertionType.SUBSTRING );
 
@@ -88,7 +88,7 @@ public class SubstringNode extends LeafNode
      * 
      * @param attribute the name of the attribute to substring assert
      */
-    public SubstringNode( AttributeType attribute )
+    public SubstringNode( MutableAttributeTypeImpl attribute )
     {
         super( attribute, AssertionType.SUBSTRING );
 
@@ -122,7 +122,7 @@ public class SubstringNode extends LeafNode
      * @param initialPattern the initial fragment
      * @param finalPattern the final fragment
      */
-    public SubstringNode( List<String> anyPattern, AttributeType attributeType, String initialPattern, String finalPattern )
+    public SubstringNode( List<String> anyPattern, MutableAttributeTypeImpl attributeType, String initialPattern, String finalPattern )
     {
         super( attributeType, AssertionType.SUBSTRING );
 

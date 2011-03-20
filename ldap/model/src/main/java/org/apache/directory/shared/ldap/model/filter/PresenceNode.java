@@ -19,7 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.filter;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 
 
 /**
@@ -35,7 +35,7 @@ public final class PresenceNode extends LeafNode
      * 
      * @param attributeType the attributeType to assert the presence of
      */
-    public PresenceNode( AttributeType attributeType )
+    public PresenceNode( MutableAttributeTypeImpl attributeType )
     {
         super( attributeType, AssertionType.PRESENCE );
     }

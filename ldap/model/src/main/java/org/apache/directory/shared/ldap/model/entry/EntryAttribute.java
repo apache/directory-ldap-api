@@ -26,7 +26,7 @@ import java.util.Iterator;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 
 
@@ -207,7 +207,7 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      *
      * @return the attributeType associated with this entry attribute
      */
-    AttributeType getAttributeType();
+    MutableAttributeTypeImpl getAttributeType();
 
     
     /**
@@ -222,7 +222,7 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      *
      * @param attributeType the attributeType associated with this entry attribute
      */
-    void setAttributeType( AttributeType attributeType );
+    void setAttributeType( MutableAttributeTypeImpl attributeType );
 
     
     /**
@@ -475,7 +475,7 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      * @param upId The attribute ID
      * @param attributeType The associated attributeType
      */
-    void setUpId( String upId, AttributeType attributeType );
+    void setUpId( String upId, MutableAttributeTypeImpl attributeType );
 
     
     /**

@@ -27,7 +27,7 @@ import java.util.List;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaUtils;
@@ -77,11 +77,11 @@ public class SchemaUtilsTest
     }
 
 
-    public AttributeType[] getAttributeTypes()
+    public MutableAttributeTypeImpl[] getAttributeTypes()
     {
-        AttributeType[] ats = new AttributeType[5];
+        MutableAttributeTypeImpl[] ats = new MutableAttributeTypeImpl[5];
 
-        ats[0] = new AttributeType( "2.5.4.41" );
+        ats[0] = new MutableAttributeTypeImpl( "2.5.4.41" );
         ats[0].addName( "name" );
         ats[0].setSyntax(  getSyntaxes()[1] );
         ats[0].setSyntaxLength( 32768 );
@@ -89,24 +89,24 @@ public class SchemaUtilsTest
         ats[0].setSubstring( getMatchingRules()[1] );
 
         // ( 2.5.4.3 NAME 'cn' SUP name )
-        ats[1] = new AttributeType( "2.5.4.3" );
+        ats[1] = new MutableAttributeTypeImpl( "2.5.4.3" );
         ats[1].addName( "cn", "commonName" );
 
-        ats[2] = new AttributeType( "2.5.4.41" );
+        ats[2] = new MutableAttributeTypeImpl( "2.5.4.41" );
         ats[2].addName( "name" );
         ats[2].setSyntax( getSyntaxes()[1] );
         ats[2].setSyntaxLength( 32768 );
         ats[2].setEquality( getMatchingRules()[0] );
         ats[2].setSubstring( getMatchingRules()[1] );
 
-        ats[3] = new AttributeType( "2.5.4.41" );
+        ats[3] = new MutableAttributeTypeImpl( "2.5.4.41" );
         ats[3].addName( "name" );
         ats[3].setSyntax( getSyntaxes()[1] );
         ats[3].setSyntaxLength( 32768 );
         ats[3].setEquality( getMatchingRules()[0] );
         ats[3].setSubstring( getMatchingRules()[1] );
 
-        ats[4] = new AttributeType( "2.5.4.41" );
+        ats[4] = new MutableAttributeTypeImpl( "2.5.4.41" );
         ats[4].addName( "name" );
         ats[4].setSyntax( getSyntaxes()[1] );
         ats[4].setSyntaxLength( 32768 );

@@ -30,7 +30,7 @@ import java.io.ObjectOutputStream;
 import org.apache.directory.shared.ldap.model.entry.BinaryValue;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.apache.directory.shared.util.StringConstants;
@@ -74,8 +74,8 @@ public class SchemaAwareValueSerializerTest
     public static void setup() throws Exception
     {
         schemaManager = new DefaultSchemaManager();
-        AttributeType cn = schemaManager.getAttributeType( "cn" );
-        AttributeType userCertificate = schemaManager.getAttributeType( "userCertificate" );
+        MutableAttributeTypeImpl cn = schemaManager.getAttributeType( "cn" );
+        MutableAttributeTypeImpl userCertificate = schemaManager.getAttributeType( "userCertificate" );
         
         bv1 = new BinaryValue( userCertificate, data );
         bv2 = new BinaryValue( userCertificate, StringConstants.EMPTY_BYTES );

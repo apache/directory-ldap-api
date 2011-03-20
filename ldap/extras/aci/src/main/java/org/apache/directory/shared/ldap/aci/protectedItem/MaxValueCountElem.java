@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.aci.protectedItem;
 
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 
 
 /**
@@ -29,7 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 public class MaxValueCountElem
 {
     /** The targeted AttributeType */
-    private AttributeType attributeType;
+    private MutableAttributeTypeImpl attributeType;
 
     /** The maximum number of accepted values for this attributeType */
     private int maxCount;
@@ -42,7 +42,7 @@ public class MaxValueCountElem
      * @param maxCount the maximum count of the attribute allowed
      */
 
-    public MaxValueCountElem( AttributeType attributeType, int maxCount )
+    public MaxValueCountElem( MutableAttributeTypeImpl attributeType, int maxCount )
     {
         this.attributeType = attributeType;
         this.maxCount = maxCount;
@@ -54,7 +54,7 @@ public class MaxValueCountElem
      *
      * @return the attribute type
      */
-    public AttributeType getAttributeType()
+    public MutableAttributeTypeImpl getAttributeType()
     {
         return attributeType;
     }

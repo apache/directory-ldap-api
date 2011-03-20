@@ -35,7 +35,7 @@ import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapProtocolErrorException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
@@ -128,7 +128,7 @@ public class SchemaManagerDelTest
     {
         try
         {
-            AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( oid );
+            MutableAttributeTypeImpl attributeType = schemaManager.lookupAttributeTypeRegistry( oid );
 
             return attributeType != null;
         }
@@ -234,7 +234,7 @@ public class SchemaManagerDelTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeTypeImpl attributeType = new MutableAttributeTypeImpl( "1.1.0" );
         attributeType.setEqualityOid( "2.5.13.1" );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -261,7 +261,7 @@ public class SchemaManagerDelTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "generationQualifier" );
+        MutableAttributeTypeImpl attributeType = new MutableAttributeTypeImpl( "generationQualifier" );
         attributeType.setOid( "2.5.4.44" );
 
         // It should not fail
@@ -286,7 +286,7 @@ public class SchemaManagerDelTest
 
         // Try to delete an AT which is referenced by at least one OC
         // (modifiersName has one descendant : schemaModifiersName)
-        AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( "cn" );
+        MutableAttributeTypeImpl attributeType = schemaManager.lookupAttributeTypeRegistry( "cn" );
 
         // It should fail
         assertFalse( schemaManager.delete( attributeType ) );
@@ -309,7 +309,7 @@ public class SchemaManagerDelTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         // Try to delete an AT which is contained by a disabled schema
-        AttributeType attributeType = new AttributeType( "gecos" );
+        MutableAttributeTypeImpl attributeType = new MutableAttributeTypeImpl( "gecos" );
         attributeType.setOid( "1.3.6.1.1.1.1.2" );
 
         // It should fail
@@ -334,7 +334,7 @@ public class SchemaManagerDelTest
 
         // Try to delete an AT which has descendant 
         // (modifiersName has one descendant : schemaModifiersName)
-        AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( "modifiersName" );
+        MutableAttributeTypeImpl attributeType = schemaManager.lookupAttributeTypeRegistry( "modifiersName" );
 
         // It should fail
         assertFalse( schemaManager.delete( attributeType ) );
@@ -557,7 +557,7 @@ public class SchemaManagerDelTest
         assertTrue( errors.get( 0 ) instanceof LdapProtocolErrorException );
 
         // Now delete the using AT : it should be OK
-        AttributeType at = new AttributeType( AT_OID );
+        MutableAttributeTypeImpl at = new MutableAttributeTypeImpl( AT_OID );
         assertTrue( schemaManager.delete( at ) );
 
         assertEquals( atrSize - 1, schemaManager.getAttributeTypeRegistry().size() );
@@ -951,7 +951,7 @@ public class SchemaManagerDelTest
         assertTrue( errors.get( 0 ) instanceof LdapProtocolErrorException);
 
         // Now delete the using AT : it should be OK
-        AttributeType at = new AttributeType( AT_OID );
+        MutableAttributeTypeImpl at = new MutableAttributeTypeImpl( AT_OID );
         assertTrue( schemaManager.delete( at ) );
 
         assertEquals( atrSize - 1, schemaManager.getAttributeTypeRegistry().size() );

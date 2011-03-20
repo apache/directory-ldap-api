@@ -27,7 +27,7 @@ import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.BinaryValue;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.*;
 
@@ -60,7 +60,7 @@ public class FilterParser
         
         if ( schemaManager != null )
         {
-            AttributeType attributeType = schemaManager.getAttributeType( attribute );
+            MutableAttributeTypeImpl attributeType = schemaManager.getAttributeType( attribute );
             
             if ( attributeType != null )
             {
@@ -306,7 +306,7 @@ public class FilterParser
             
             if ( schemaManager != null )
             {
-                AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( attribute );
+                MutableAttributeTypeImpl attributeType = schemaManager.lookupAttributeTypeRegistry( attribute );
                 
                 if ( attributeType != null )
                 {
@@ -416,7 +416,7 @@ public class FilterParser
                 // This is a present node
                 if ( schemaManager != null )
                 {
-                    AttributeType attributeType = schemaManager.getAttributeType( attribute );
+                    MutableAttributeTypeImpl attributeType = schemaManager.getAttributeType( attribute );
                     
                     if ( attributeType != null )
                     {
@@ -445,7 +445,7 @@ public class FilterParser
             // An empty equality Node
             if ( schemaManager != null )
             {
-                AttributeType attributeType = schemaManager.getAttributeType( attribute );
+                MutableAttributeTypeImpl attributeType = schemaManager.getAttributeType( attribute );
                 
                 if ( attributeType != null )
                 {
@@ -473,7 +473,7 @@ public class FilterParser
                 // This is an equality node
                 if ( schemaManager != null )
                 {
-                    AttributeType attributeType = schemaManager.getAttributeType( attribute );
+                    MutableAttributeTypeImpl attributeType = schemaManager.getAttributeType( attribute );
                     
                     if ( attributeType != null )
                     {
@@ -558,7 +558,7 @@ public class FilterParser
                     }
                     else
                     {
-                        AttributeType attributeType = schemaManager.getAttributeType( attribute );
+                        MutableAttributeTypeImpl attributeType = schemaManager.getAttributeType( attribute );
                         
                         if ( attributeType != null )
                         {
@@ -589,7 +589,7 @@ public class FilterParser
                     }
                     else
                     {
-                        AttributeType attributeType = schemaManager.getAttributeType( attribute );
+                        MutableAttributeTypeImpl attributeType = schemaManager.getAttributeType( attribute );
                         
                         if ( attributeType != null )
                         {
@@ -620,7 +620,7 @@ public class FilterParser
                     }
                     else
                     {
-                        AttributeType attributeType = schemaManager.getAttributeType( attribute );
+                        MutableAttributeTypeImpl attributeType = schemaManager.getAttributeType( attribute );
                         
                         if ( attributeType != null )
                         {

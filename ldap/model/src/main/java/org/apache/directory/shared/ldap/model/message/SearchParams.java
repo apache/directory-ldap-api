@@ -27,7 +27,7 @@ import javax.naming.directory.SearchControls;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.filter.SearchScope;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.AttributeTypeOptions;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.SchemaUtils;
@@ -207,7 +207,7 @@ public class SearchParams
                 String id = SchemaUtils.stripOptions( returnAttribute );
                 Set<String> options = SchemaUtils.getOptions( returnAttribute );
 
-                AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( id );
+                MutableAttributeTypeImpl attributeType = schemaManager.lookupAttributeTypeRegistry( id );
                 AttributeTypeOptions attrOptions = new AttributeTypeOptions( attributeType, options );
 
                 returningAttributes.add( attrOptions );

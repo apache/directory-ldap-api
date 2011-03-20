@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.model.entry;
 import java.io.Externalizable;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 
@@ -41,7 +41,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      *
      * @param attributeType The AttributeType to apply
      */
-    void apply( AttributeType attributeType );
+    void apply( MutableAttributeTypeImpl attributeType );
     
 
     /**
@@ -63,7 +63,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * 
      * @return The AttributeType
      */
-    AttributeType getAttributeType();
+    MutableAttributeTypeImpl getAttributeType();
 
     
     /**
@@ -77,7 +77,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * @return <code>true</code> if the value is associated with the given
      * attributeType or one of its ascendant
      */
-    boolean instanceOf( AttributeType attributeType ) throws LdapException;
+    boolean instanceOf( MutableAttributeTypeImpl attributeType ) throws LdapException;
 
     
     /**

@@ -27,7 +27,7 @@ import java.util.Set;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 
 
 /**
@@ -117,7 +117,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param attributeType the AttributeType we are looking for
      * @return the associated attribute
      */
-    EntryAttribute get( AttributeType attributeType );
+    EntryAttribute get( MutableAttributeTypeImpl attributeType );
 
 
     /**
@@ -125,7 +125,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      *
      * @return The combined set of all the attributes.
      */
-    Set<AttributeType> getAttributeTypes();
+    Set<MutableAttributeTypeImpl> getAttributeTypes();
     
     
     /**
@@ -157,7 +157,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param attributeTypes The AttributeTypes to add.
      * @return A list of replaced Attributes, of <code>null</code> if no attribute are removed.
      */
-    List<EntryAttribute> set( AttributeType... attributeTypes );
+    List<EntryAttribute> set( MutableAttributeTypeImpl... attributeTypes );
 
 
     /**
@@ -241,7 +241,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param values The list of binary values to inject. It can be empty.
      * @throws LdapException If the attribute does not exist
      */
-    void add( AttributeType attributeType, byte[]... values ) throws LdapException;
+    void add( MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException;
 
     
     /**
@@ -262,7 +262,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param values The list of binary values to inject. It can be empty
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException If the attribute does not exist
      */
-    void add( AttributeType attributeType, String... values ) throws LdapException;
+    void add( MutableAttributeTypeImpl attributeType, String... values ) throws LdapException;
 
     
     /**
@@ -283,7 +283,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param values The list of binary values to inject. It can be empty
      * @throws LdapException If the attribute does not exist
      */
-    void add( AttributeType attributeType, Value<?>... values ) throws LdapException;
+    void add( MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException;
 
     
     /**
@@ -305,7 +305,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param values The list of binary values to add. It can be empty.
      * @throws LdapException If the attribute does not exist
      */
-    void add( String upId, AttributeType attributeType, byte[]... values ) throws LdapException;
+    void add( String upId, MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException;
 
     
     /**
@@ -327,7 +327,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param values The list of binary values to add. It can be empty.
      * @throws LdapException If the attribute does not exist
      */
-    void add( String upId, AttributeType attributeType, String... values ) throws LdapException;
+    void add( String upId, MutableAttributeTypeImpl attributeType, String... values ) throws LdapException;
 
     
     /**
@@ -349,7 +349,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param values The list of values to add. It can be empty.
      * @throws LdapException If the attribute does not exist
      */
-    void add( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException;
+    void add( String upId, MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException;
 
 
     /**
@@ -422,7 +422,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * <code>null</code>
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException if there are failures
      */
-    EntryAttribute put( AttributeType attributeType, byte[]... values ) throws LdapException;
+    EntryAttribute put( MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException;
 
 
     /**
@@ -444,7 +444,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * <code>null</code>
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException if there are failures
      */
-    EntryAttribute put( AttributeType attributeType, String... values ) throws LdapException;
+    EntryAttribute put( MutableAttributeTypeImpl attributeType, String... values ) throws LdapException;
 
 
     /**
@@ -466,7 +466,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * <code>null</code>
      * @throws LdapException if there are failures
      */
-    EntryAttribute put( AttributeType attributeType, Value<?>... values ) throws LdapException;
+    EntryAttribute put( MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException;
 
 
     /**
@@ -491,7 +491,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * <code>null</code>
      * @throws LdapException if there are failures.
      */
-    EntryAttribute put( String upId, AttributeType attributeType, byte[]... values ) throws LdapException;
+    EntryAttribute put( String upId, MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException;
 
 
     /**
@@ -517,7 +517,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * <code>null</code>
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException if there are failures.
      */
-    EntryAttribute put( String upId, AttributeType attributeType, String... values ) throws LdapException;
+    EntryAttribute put( String upId, MutableAttributeTypeImpl attributeType, String... values ) throws LdapException;
 
 
     /**
@@ -543,7 +543,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * <code>null</code>
      * @throws LdapException if there are failures.
      */
-    EntryAttribute put( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException;
+    EntryAttribute put( String upId, MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException;
 
 
     /**
@@ -615,7 +615,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist. 
      */
-    boolean remove( AttributeType attributeType, byte[]... values ) throws LdapException;
+    boolean remove( MutableAttributeTypeImpl attributeType, byte[]... values ) throws LdapException;
 
     
     /**
@@ -639,7 +639,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist. 
      */
-    boolean remove( AttributeType attributeType, String... values ) throws LdapException;
+    boolean remove( MutableAttributeTypeImpl attributeType, String... values ) throws LdapException;
 
     
     /**
@@ -663,7 +663,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist. 
      */
-    boolean remove( AttributeType attributeType, Value<?>... values ) throws LdapException;
+    boolean remove( MutableAttributeTypeImpl attributeType, Value<?>... values ) throws LdapException;
 
     
     /**
@@ -692,7 +692,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param attributes the AttributeTypes to be removed
      * @return the removed attributes, if any, as a list; otherwise <code>null</code>
      */
-    List<EntryAttribute> removeAttributes( AttributeType... attributes );
+    List<EntryAttribute> removeAttributes( MutableAttributeTypeImpl... attributes );
 
 
     /**
@@ -807,7 +807,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @return <code>true</code> if all the values are found within the attribute,
      * <code>false</code> otherwise, or if the attributes does not exist.
      */
-    boolean contains( AttributeType attributeType, byte[]... values );
+    boolean contains( MutableAttributeTypeImpl attributeType, byte[]... values );
 
 
     /**
@@ -818,7 +818,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @return <code>true</code> if all the values are found within the attribute,
      * <code>false</code> otherwise, or if the attributes does not exist.
      */
-    boolean contains( AttributeType attributeType, String... values );
+    boolean contains( MutableAttributeTypeImpl attributeType, String... values );
 
 
     /**
@@ -829,7 +829,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @return <code>true</code> if all the values are found within the attribute,
      * <code>false</code> otherwise, or if the attributes does not exist.
      */
-    boolean contains( AttributeType attributeType, Value<?>... values );
+    boolean contains( MutableAttributeTypeImpl attributeType, Value<?>... values );
 
 
     /**
@@ -838,7 +838,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param attributeType The AttributeType to look for.
      * @return <code>true</code> if the attribute is found within the entry.
      */
-    boolean containsAttribute( AttributeType attributeType );
+    boolean containsAttribute( MutableAttributeTypeImpl attributeType );
 
     
     /**

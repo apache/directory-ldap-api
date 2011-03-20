@@ -25,7 +25,7 @@ import java.io.ObjectOutput;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
@@ -70,7 +70,7 @@ public class StringValue extends AbstractValue<String>
      *
      * @param attributeType the schema type associated with this StringValue
      */
-    public StringValue( AttributeType attributeType )
+    public StringValue( MutableAttributeTypeImpl attributeType )
     {
         if ( attributeType == null )
         {
@@ -113,7 +113,7 @@ public class StringValue extends AbstractValue<String>
      * @param attributeType the schema type associated with this StringValue
      * @param value the value to wrap which can be null
      */
-    public StringValue( AttributeType attributeType, String value )
+    public StringValue( MutableAttributeTypeImpl attributeType, String value )
     {
         this( attributeType );
         this.wrappedValue = value;

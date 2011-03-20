@@ -27,7 +27,7 @@ import java.util.Comparator;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
@@ -73,7 +73,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      *
      * @param attributeType the schema type associated with this BinaryValue
      */
-    public BinaryValue( AttributeType attributeType )
+    public BinaryValue( MutableAttributeTypeImpl attributeType )
     {
         if ( attributeType == null )
         {
@@ -125,7 +125,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      * @param attributeType the schema type associated with this BinaryValue
      * @param value the binary value to wrap which may be null, or a zero length byte array
      */
-    public BinaryValue( AttributeType attributeType, byte[] value )
+    public BinaryValue( MutableAttributeTypeImpl attributeType, byte[] value )
     {
         this( attributeType );
         SyntaxChecker syntaxChecker = attributeType.getSyntax().getSyntaxChecker();

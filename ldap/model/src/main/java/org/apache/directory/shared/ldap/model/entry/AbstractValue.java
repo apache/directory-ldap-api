@@ -25,7 +25,7 @@ import java.io.ObjectOutput;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
@@ -47,7 +47,7 @@ public abstract class AbstractValue<T> implements Value<T>
     private static final Logger LOG = LoggerFactory.getLogger( AbstractValue.class );
 
     /** reference to the attributeType zssociated with the value */
-    protected transient AttributeType attributeType;
+    protected transient MutableAttributeTypeImpl attributeType;
 
     /** the wrapped binary value */
     protected T wrappedValue;
@@ -97,7 +97,7 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
-    public AttributeType getAttributeType()
+    public MutableAttributeTypeImpl getAttributeType()
     {
         return attributeType;
     }
@@ -106,7 +106,7 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
-    public void apply( AttributeType attributeType )
+    public void apply( MutableAttributeTypeImpl attributeType )
     {
         if ( this.attributeType != null ) 
         {
@@ -249,7 +249,7 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
-    public boolean instanceOf( AttributeType attributeType ) throws LdapException
+    public boolean instanceOf( MutableAttributeTypeImpl attributeType ) throws LdapException
     {
         if ( ( attributeType != null ) && this.attributeType.equals( attributeType ) )
         {

@@ -439,7 +439,7 @@ public interface SchemaManager
      * @return The found AttributeType 
      * @throws LdapException if the OID is not found in the AttributeType registry
      */
-    AttributeType lookupAttributeTypeRegistry( String oid ) throws LdapException;
+    MutableAttributeTypeImpl lookupAttributeTypeRegistry( String oid ) throws LdapException;
 
 
     /**
@@ -450,7 +450,7 @@ public interface SchemaManager
      * @param oid the OID we are looking for
      * @return The found AttributeType, or null if not found
      */
-    AttributeType getAttributeType( String oid );
+    MutableAttributeTypeImpl getAttributeType( String oid );
 
 
     /**

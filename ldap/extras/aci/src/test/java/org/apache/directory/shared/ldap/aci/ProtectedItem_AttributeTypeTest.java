@@ -29,7 +29,7 @@ import java.util.Set;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.aci.protectedItem.AttributeTypeItem;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,18 +56,18 @@ public class ProtectedItem_AttributeTypeTest
     @Before
     public void initNames() throws Exception
     {
-        Set<AttributeType> colA = new HashSet<AttributeType>();
-        colA.add( new AttributeType( "aa" ) );
-        colA.add( new AttributeType( "bb" ) );
-        colA.add( new AttributeType( "cc" ) );
-        Set<AttributeType> colB = new HashSet<AttributeType>();
-        colB.add( new AttributeType( "aa" ) );
-        colB.add( new AttributeType( "bb" ) );
-        colB.add( new AttributeType( "cc" ) );
-        Set<AttributeType> colC = new HashSet<AttributeType>();
-        colC.add( new AttributeType( "bb" ) );
-        colC.add( new AttributeType( "cc" ) );
-        colC.add( new AttributeType( "dd" ) );
+        Set<MutableAttributeTypeImpl> colA = new HashSet<MutableAttributeTypeImpl>();
+        colA.add( new MutableAttributeTypeImpl( "aa" ) );
+        colA.add( new MutableAttributeTypeImpl( "bb" ) );
+        colA.add( new MutableAttributeTypeImpl( "cc" ) );
+        Set<MutableAttributeTypeImpl> colB = new HashSet<MutableAttributeTypeImpl>();
+        colB.add( new MutableAttributeTypeImpl( "aa" ) );
+        colB.add( new MutableAttributeTypeImpl( "bb" ) );
+        colB.add( new MutableAttributeTypeImpl( "cc" ) );
+        Set<MutableAttributeTypeImpl> colC = new HashSet<MutableAttributeTypeImpl>();
+        colC.add( new MutableAttributeTypeImpl( "bb" ) );
+        colC.add( new MutableAttributeTypeImpl( "cc" ) );
+        colC.add( new MutableAttributeTypeImpl( "dd" ) );
 
         attributeTypeA = new AttributeTypeItem( colA );
         attributeTypeACopy = new AttributeTypeItem( colA );

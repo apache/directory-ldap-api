@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.model.schema.parsers;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
 import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
@@ -111,7 +111,7 @@ public final class ParserDescriptionUtils
      * @param at1 the second attributeType to compare
      * @return true if both attributeTypes match exactly, false otherwise
      */
-    public static boolean attributeTypesMatch( AttributeType at0, AttributeType at1 )
+    public static boolean attributeTypesMatch( MutableAttributeTypeImpl at0, MutableAttributeTypeImpl at1 )
     {
         // compare all common description parameters
         if ( ! descriptionsMatch( at0, at1 ) )

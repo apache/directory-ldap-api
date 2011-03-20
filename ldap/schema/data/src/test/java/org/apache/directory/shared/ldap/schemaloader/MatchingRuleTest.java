@@ -31,7 +31,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
@@ -128,7 +128,7 @@ public class MatchingRuleTest
         assertEquals( 0, comparator.compare( " +1 234-567 890 ", "+1234567890" ) );
 
         // test a real attribute: telephoneNumber
-        AttributeType at = schemaManager.lookupAttributeTypeRegistry( "telephoneNumber" );
+        MutableAttributeTypeImpl at = schemaManager.lookupAttributeTypeRegistry( "telephoneNumber" );
         assertNotNull( at.getEquality() );
         assertEquals( TelephoneNumberNormalizer.class.getName(), at.getEquality().getNormalizer().getClass().getName() );
         assertEquals( "+1234567890", at.getEquality().getNormalizer().normalize( " +1 234-567 890 " ) );
@@ -165,7 +165,7 @@ public class MatchingRuleTest
         assertTrue( comparator.compare( 1234L, 234L ) > 0 );
 
         // test a real attribute type: uidNumber
-        AttributeType at = schemaManager.lookupAttributeTypeRegistry( "uidNumber" );
+        MutableAttributeTypeImpl at = schemaManager.lookupAttributeTypeRegistry( "uidNumber" );
         assertNotNull( at.getEquality() );
         assertEquals( NumericNormalizer.class.getName(), at.getEquality().getNormalizer().getClass().getName() );
         assertEquals( "123", at.getEquality().getNormalizer().normalize( " 1 2 3 " ) );

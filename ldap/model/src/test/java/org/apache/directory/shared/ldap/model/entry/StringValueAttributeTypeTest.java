@@ -39,7 +39,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.AbstractLdapComparator;
 import org.apache.directory.shared.ldap.model.schema.AbstractSyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.comparators.StringComparator;
@@ -175,7 +175,7 @@ public class StringValueAttributeTypeTest
     @Test 
     public void testClientStringValueNullValue()
     {
-        AttributeType attribute = EntryUtils.getIA5StringAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getIA5StringAttributeType();
         
         StringValue value = new StringValue( attribute, null );
         
@@ -189,7 +189,7 @@ public class StringValueAttributeTypeTest
      */
     @Test public void testGetNormalizedValue()
     {
-        AttributeType attribute = EntryUtils.getIA5StringAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getIA5StringAttributeType();
         
         StringValue sv = new StringValue( attribute, null );
         
@@ -216,7 +216,7 @@ public class StringValueAttributeTypeTest
      */
     @Test public void testIsValid()
     {
-        AttributeType attribute = EntryUtils.getIA5StringAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getIA5StringAttributeType();
         
         StringValue sv = new StringValue( attribute, null );
         assertTrue( sv.isValid() );
@@ -238,7 +238,7 @@ public class StringValueAttributeTypeTest
     @Test
     public void testNormalize() throws LdapException
     {
-        AttributeType attribute = EntryUtils.getIA5StringAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getIA5StringAttributeType();
         StringValue sv = new StringValue( attribute );
 
         sv.normalize();
@@ -260,7 +260,7 @@ public class StringValueAttributeTypeTest
     @Test
     public void testInstanceOf() throws LdapException
     {
-        AttributeType attribute = EntryUtils.getIA5StringAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getIA5StringAttributeType();
         StringValue ssv = new StringValue( attribute );
         
         assertTrue( ssv.instanceOf( attribute ) );
@@ -277,7 +277,7 @@ public class StringValueAttributeTypeTest
     @Test
     public void testgetAttributeType()
     {
-        AttributeType attribute = EntryUtils.getIA5StringAttributeType();
+        MutableAttributeTypeImpl attribute = EntryUtils.getIA5StringAttributeType();
         StringValue ssv = new StringValue( attribute );
         
         assertEquals( attribute, ssv.getAttributeType() );
@@ -289,8 +289,8 @@ public class StringValueAttributeTypeTest
      */
     @Test public void testEquals()
     {
-        AttributeType at1 = EntryUtils.getIA5StringAttributeType();
-        AttributeType at2 = EntryUtils.getBytesAttributeType();
+        MutableAttributeTypeImpl at1 = EntryUtils.getIA5StringAttributeType();
+        MutableAttributeTypeImpl at2 = EntryUtils.getBytesAttributeType();
         
         StringValue value1 = new StringValue( at1, "test" );
         StringValue value2 = new StringValue( at1, "test" );
@@ -337,7 +337,7 @@ public class StringValueAttributeTypeTest
         }
         
         // create a AT without any syntax
-        AttributeType attribute = new EntryUtils.AT( "1.1.3.1" );
+        MutableAttributeTypeImpl attribute = new EntryUtils.AT( "1.1.3.1" );
         
         try
         {
@@ -357,7 +357,7 @@ public class StringValueAttributeTypeTest
      */
     @Test public void testHashCode()
     {
-        AttributeType at1 = EntryUtils.getCaseIgnoringAttributeNoNumbersType();
+        MutableAttributeTypeImpl at1 = EntryUtils.getCaseIgnoringAttributeNoNumbersType();
         StringValue v0 = new StringValue( at1, "Alex" );
         StringValue v1 = new StringValue( at1, "ALEX" );
         StringValue v2 = new StringValue( at1, "alex" );
@@ -391,7 +391,7 @@ public class StringValueAttributeTypeTest
     @Test
     public void testCompareTo()
     {
-        AttributeType at1 = EntryUtils.getCaseIgnoringAttributeNoNumbersType();
+        MutableAttributeTypeImpl at1 = EntryUtils.getCaseIgnoringAttributeNoNumbersType();
         StringValue v0 = new StringValue( at1, "Alex" );
         StringValue v1 = new StringValue( at1, "ALEX" );
         
@@ -411,7 +411,7 @@ public class StringValueAttributeTypeTest
     @Test
     public void testClone() throws LdapException
     {
-        AttributeType at1 = EntryUtils.getCaseIgnoringAttributeNoNumbersType();
+        MutableAttributeTypeImpl at1 = EntryUtils.getCaseIgnoringAttributeNoNumbersType();
         StringValue sv = new StringValue( at1, "Test" );
         
         StringValue sv1 = sv.clone();

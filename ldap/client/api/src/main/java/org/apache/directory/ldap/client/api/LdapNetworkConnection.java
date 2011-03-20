@@ -126,7 +126,7 @@ import org.apache.directory.shared.ldap.model.message.extended.NoticeOfDisconnec
 import org.apache.directory.shared.ldap.model.message.extended.SearchNoDResponse;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
@@ -3286,9 +3286,9 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             olsp.setQuirksMode( true );
             olsp.parse( schemaFile );
 
-            List<AttributeType> atList = olsp.getAttributeTypes();
+            List<MutableAttributeTypeImpl> atList = olsp.getAttributeTypes();
             AttributeTypeRegistry atRegistry = schemaManager.getRegistries().getAttributeTypeRegistry();
-            for ( AttributeType atType : atList )
+            for ( MutableAttributeTypeImpl atType : atList )
             {
                 atRegistry.addMappingFor( atType );
             }
@@ -3470,7 +3470,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
                 {
                     try
                     {
-                        AttributeType type = schemaManager.lookupAttributeTypeRegistry( id );
+                        MutableAttributeTypeImpl type = schemaManager.lookupAttributeTypeRegistry( id );
                         return !type.getSyntax().isHumanReadable();
                     }
                     catch ( Exception e )

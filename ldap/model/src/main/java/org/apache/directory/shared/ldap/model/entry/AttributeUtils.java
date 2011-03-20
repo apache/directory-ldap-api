@@ -37,7 +37,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeTypeException;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.normalizers.NoOpNormalizer;
@@ -70,7 +70,7 @@ public final class AttributeUtils
      * @param entry the entry to remove the attribute from 
      * @return the Attribute that is removed
      */
-    public static Attribute removeAttribute( AttributeType type, Attributes entry )
+    public static Attribute removeAttribute( MutableAttributeTypeImpl type, Attributes entry )
     {
         Attribute attr = entry.get( type.getOid() );
 
@@ -208,7 +208,7 @@ public final class AttributeUtils
      * @param type the attribute type specification
      * @return an Attribute with matching the attributeType spec or null
      */
-    public static Attribute getAttribute( Attributes attrs, AttributeType type )
+    public static Attribute getAttribute( Attributes attrs, MutableAttributeTypeImpl type )
     {
         // check if the attribute's OID is used
         Attribute attr = attrs.get( type.getOid() );
@@ -253,7 +253,7 @@ public final class AttributeUtils
      * @return <code>true</code> if the value exists in the attribute
      * @throws LdapException If something went wrong while accessing the data
      */
-    public static boolean containsValue( Attribute attr, Value<?> compared, AttributeType type ) throws LdapException
+    public static boolean containsValue( Attribute attr, Value<?> compared, MutableAttributeTypeImpl type ) throws LdapException
     {
         // quick bypass test
         if ( attr.contains( compared ) )

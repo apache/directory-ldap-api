@@ -33,7 +33,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OpenLdapObjectIdentifierMacro;
@@ -54,7 +54,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser
     private List<Object> schemaDescriptions;
 
     /** The list of attribute type, initialized by splitParsedSchemaDescriptions() */
-    private List<AttributeType> attributeTypes;
+    private List<MutableAttributeTypeImpl> attributeTypes;
 
     /** The list of object classes, initialized by splitParsedSchemaDescriptions()*/
     private List<ObjectClass> objectClasses;
@@ -91,7 +91,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser
      * 
      * @return the attribute types
      */
-    public List<AttributeType> getAttributeTypes()
+    public List<MutableAttributeTypeImpl> getAttributeTypes()
     {
         return attributeTypes;
     }
@@ -128,7 +128,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser
     private void afterParse() throws ParseException
     {
         objectClasses = new ArrayList<ObjectClass>();
-        attributeTypes = new ArrayList<AttributeType>();
+        attributeTypes = new ArrayList<MutableAttributeTypeImpl>();
         objectIdentifierMacros = new HashMap<String, OpenLdapObjectIdentifierMacro>();
 
         // split parsed schema descriptions
@@ -139,9 +139,9 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser
                 OpenLdapObjectIdentifierMacro oid = (OpenLdapObjectIdentifierMacro) obj;
                 objectIdentifierMacros.put( oid.getName(), oid );
             }
-            else if ( obj instanceof AttributeType )
+            else if ( obj instanceof MutableAttributeTypeImpl )
             {
-                AttributeType attributeType = ( AttributeType ) obj;
+                MutableAttributeTypeImpl attributeType = ( MutableAttributeTypeImpl ) obj;
 
                 attributeTypes.add( attributeType );
             }
@@ -168,7 +168,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser
             }
 
             // apply object identifier macros to attribute types
-            for ( AttributeType attributeType : attributeTypes )
+            for ( MutableAttributeTypeImpl attributeType : attributeTypes )
             {
                 attributeType.setOid( getResolveOid( attributeType.getOid() ) );
                 attributeType.setSyntaxOid( getResolveOid( attributeType.getSyntaxOid() ) );

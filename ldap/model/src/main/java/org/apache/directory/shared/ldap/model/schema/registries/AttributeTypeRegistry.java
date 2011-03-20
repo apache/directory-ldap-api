@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.normalizers.OidNormalizer;
 
 
@@ -33,7 +33,7 @@ import org.apache.directory.shared.ldap.model.schema.normalizers.OidNormalizer;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface AttributeTypeRegistry extends SchemaObjectRegistry<AttributeType>, Iterable<AttributeType>
+public interface AttributeTypeRegistry extends SchemaObjectRegistry<MutableAttributeTypeImpl>, Iterable<MutableAttributeTypeImpl>
 {
     /**
      * Gets an oid/name to normalizer mapping used to normalize distinguished 
@@ -65,7 +65,7 @@ public interface AttributeTypeRegistry extends SchemaObjectRegistry<AttributeTyp
      * @throws LdapException if the ancestor attributeType cannot be 
      * discerned from the ancestorId supplied
      */
-    boolean hasDescendants( AttributeType ancestor ) throws LdapException;
+    boolean hasDescendants( MutableAttributeTypeImpl ancestor ) throws LdapException;
 
 
     /**
@@ -78,7 +78,7 @@ public interface AttributeTypeRegistry extends SchemaObjectRegistry<AttributeTyp
      * @throws LdapException if the ancestor attributeType cannot be 
      * discerned from the ancestorId supplied
      */
-    Iterator<AttributeType> descendants( String ancestorId ) throws LdapException;
+    Iterator<MutableAttributeTypeImpl> descendants( String ancestorId ) throws LdapException;
 
 
     /**
@@ -91,7 +91,7 @@ public interface AttributeTypeRegistry extends SchemaObjectRegistry<AttributeTyp
      * @throws LdapException if the ancestor attributeType cannot be 
      * discerned from the ancestorId supplied
      */
-    Iterator<AttributeType> descendants( AttributeType ancestor ) throws LdapException;
+    Iterator<MutableAttributeTypeImpl> descendants( MutableAttributeTypeImpl ancestor ) throws LdapException;
 
 
     /**
@@ -101,7 +101,7 @@ public interface AttributeTypeRegistry extends SchemaObjectRegistry<AttributeTyp
      * @param attributeType The attributeType to register
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException If something went wrong
      */
-    void registerDescendants( AttributeType attributeType, AttributeType ancestor ) throws LdapException;
+    void registerDescendants( MutableAttributeTypeImpl attributeType, MutableAttributeTypeImpl ancestor ) throws LdapException;
 
 
     /**
@@ -112,19 +112,19 @@ public interface AttributeTypeRegistry extends SchemaObjectRegistry<AttributeTyp
      * @param ancestor its ancestor 
      * @throws LdapException If something went wrong
      */
-    void unregisterDescendants( AttributeType attributeType, AttributeType ancestor ) throws LdapException;
+    void unregisterDescendants( MutableAttributeTypeImpl attributeType, MutableAttributeTypeImpl ancestor ) throws LdapException;
 
 
     /**
      * Add a new Oid/Normalizer couple in the OidNormalizer map
      */
-    void addMappingFor( AttributeType attributeType ) throws LdapException;
+    void addMappingFor( MutableAttributeTypeImpl attributeType ) throws LdapException;
 
 
     /**
      * Remove a new Oid/Normalizer couple in the OidNormalizer map
      */
-    void removeMappingFor( AttributeType attributeType ) throws LdapException;
+    void removeMappingFor( MutableAttributeTypeImpl attributeType ) throws LdapException;
 
 
     /**

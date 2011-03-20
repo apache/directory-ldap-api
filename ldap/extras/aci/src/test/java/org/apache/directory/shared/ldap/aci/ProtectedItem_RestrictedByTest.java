@@ -30,7 +30,7 @@ import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.aci.protectedItem.RestrictedByElem;
 import org.apache.directory.shared.ldap.aci.protectedItem.RestrictedByItem;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,10 +57,10 @@ public class ProtectedItem_RestrictedByTest
     @Before
     public void initNames() throws Exception
     {
-        RestrictedByElem rbiA = new RestrictedByElem( new AttributeType( "aa" ), new AttributeType( "aa" ) );
-        RestrictedByElem rbiB = new RestrictedByElem( new AttributeType( "bb" ), new AttributeType( "bb" ) );
-        RestrictedByElem rbiC = new RestrictedByElem( new AttributeType( "cc" ), new AttributeType( "cc" ) );
-        RestrictedByElem rbiD = new RestrictedByElem( new AttributeType( "dd" ), new AttributeType( "dd" ) );
+        RestrictedByElem rbiA = new RestrictedByElem( new MutableAttributeTypeImpl( "aa" ), new MutableAttributeTypeImpl( "aa" ) );
+        RestrictedByElem rbiB = new RestrictedByElem( new MutableAttributeTypeImpl( "bb" ), new MutableAttributeTypeImpl( "bb" ) );
+        RestrictedByElem rbiC = new RestrictedByElem( new MutableAttributeTypeImpl( "cc" ), new MutableAttributeTypeImpl( "cc" ) );
+        RestrictedByElem rbiD = new RestrictedByElem( new MutableAttributeTypeImpl( "dd" ), new MutableAttributeTypeImpl( "dd" ) );
 
         Set<RestrictedByElem> colA = new HashSet<RestrictedByElem>();
         colA.add( rbiA );

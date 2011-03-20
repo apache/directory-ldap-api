@@ -50,7 +50,7 @@ import org.apache.directory.shared.util.NoDuplicateKeysMap;
 import org.apache.directory.shared.util.OptionalComponentsMonitor;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeTypeImpl;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.AuthenticationLevel;
@@ -450,7 +450,7 @@ allUserAttributeTypes
 attributeType
 {
     log.debug( "entered attributeType()" );
-    Set<AttributeType> attributeTypeSet = null;
+    Set<MutableAttributeTypeImpl> attributeTypeSet = null;
 }
     :
     ID_attributeType ( SP )+ attributeTypeSet=attributeTypeSet
@@ -462,7 +462,7 @@ attributeType
 allAttributeValues
 {
     log.debug( "entered allAttributeValues()" );
-    Set<AttributeType> attributeTypeSet = null;
+    Set<MutableAttributeTypeImpl> attributeTypeSet = null;
 }
     :
     ID_allAttributeValues ( SP )+ attributeTypeSet=attributeTypeSet
@@ -524,7 +524,7 @@ attributeValue
 selfValue
 {
     log.debug( "entered selfValue()" );
-    Set<AttributeType> attributeTypeSet = null;
+    Set<MutableAttributeTypeImpl> attributeTypeSet = null;
 }
     :
     ID_selfValue ( SP )+ attributeTypeSet=attributeTypeSet
@@ -582,7 +582,7 @@ aMaxValueCount returns [ MaxValueCountElem maxValueCount ]
     maxValueCount = null;
     String oid = null;
     Token token = null;
-    AttributeType attributeType = null;
+    MutableAttributeTypeImpl attributeType = null;
 }
     :
     OPEN_CURLY ( SP )*
@@ -654,8 +654,8 @@ restrictedValue returns [ RestrictedByElem restrictedValue ]
     String typeOid = null;
     String valuesInOid = null;
     restrictedValue = null;
-    AttributeType attributeType = null;
-    AttributeType valueInAttributeType = null;
+    MutableAttributeTypeImpl attributeType = null;
+    MutableAttributeTypeImpl valueInAttributeType = null;
 }
     :
     OPEN_CURLY ( SP )*
@@ -682,12 +682,12 @@ restrictedValue returns [ RestrictedByElem restrictedValue ]
     }
     ;
 
-attributeTypeSet returns [ Set<AttributeType> attributeTypeSet ]
+attributeTypeSet returns [ Set<MutableAttributeTypeImpl> attributeTypeSet ]
 {
     log.debug( "entered attributeTypeSet()" );
     String oid = null;
-    attributeTypeSet = new HashSet<AttributeType>();
-    AttributeType attributeType = null;
+    attributeTypeSet = new HashSet<MutableAttributeTypeImpl>();
+    MutableAttributeTypeImpl attributeType = null;
 }
     :
     OPEN_CURLY ( SP )*
