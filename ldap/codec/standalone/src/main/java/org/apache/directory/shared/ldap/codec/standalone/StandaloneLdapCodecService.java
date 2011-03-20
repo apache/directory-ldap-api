@@ -247,7 +247,12 @@ public class StandaloneLdapCodecService implements LdapCodecService
         }
         else if ( ! this.pluginDirectory.exists() )
         {
-            this.pluginDirectory.mkdirs();
+            if ( ! this.pluginDirectory.mkdirs() )
+            {
+                String msg = "The provided plugin directory is not creatable:" + this.pluginDirectory.getAbsolutePath();
+                LOG.error( msg );
+                throw new IllegalArgumentException( msg );
+            }
         }
         
         if ( this.pluginDirectory == null )
