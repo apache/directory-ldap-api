@@ -1668,7 +1668,7 @@ public class DefaultSchemaManager implements SchemaManager
 
         if ( !( schemaObject instanceof MutableLoadableSchemaObject ) )
         {
-            copy = schemaObject.copy();
+            copy = schemaObject.copyMutable();
         }
         else
         {
