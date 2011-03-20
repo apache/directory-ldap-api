@@ -195,6 +195,8 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredPr
     /**
      * {@inheritDoc}
      */
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings( value = "BC_IMPOSSIBLE_INSTANCEOF",
+    		justification = "False positive")
     public Object getParameterTypeString( int index )
     {
         if ( ! language.equals( "java" ) )
@@ -236,6 +238,8 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredPr
     /**
      * {@inheritDoc}
      */
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings( value = "BC_IMPOSSIBLE_INSTANCEOF",
+    		justification = "False positive")
     public Object getParameterValueString( int index )
     {
         if ( ! language.equals( "java" ) )
