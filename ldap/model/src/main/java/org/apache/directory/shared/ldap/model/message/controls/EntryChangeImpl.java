@@ -93,7 +93,7 @@ public class EntryChangeImpl extends AbstractControl implements EntryChange
     {
         int h = super.hashCode();
 
-        h = h * 37 + new Long( changeNumber ).intValue();
+        h = h * 37 + Long.valueOf( changeNumber ).intValue();
         h = h * 37 + ( changeType == null ? 0 : changeType.hashCode() );
         h = h * 37 + ( previousDn == null ? 0 : previousDn.hashCode() );
 

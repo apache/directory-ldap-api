@@ -96,7 +96,7 @@ public class AbstractAbandonableRequest extends AbstractRequest implements Aband
 
 
     // False positive
-    class RequestObservable extends Observable
+    static class RequestObservable extends Observable
     {
         @Override
         public void setChanged()

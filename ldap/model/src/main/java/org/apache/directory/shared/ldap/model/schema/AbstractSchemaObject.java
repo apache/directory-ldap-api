@@ -551,16 +551,16 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             this.extensions = new HashMap<String, List<String>>();
 
-            for ( String key : extensions.keySet() )
+            for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
             {
                 List<String> values = new ArrayList<String>();
 
-                for ( String value : extensions.get( key ) )
+                for ( String value : entry.getValue() )
                 {
                     values.add( value );
                 }
 
-                this.extensions.put( key, values );
+                this.extensions.put( entry.getKey(), values );
             }
 
         }

@@ -674,11 +674,11 @@ public final class SchemaUtils
             return buf;
         }
 
-        for ( String key : extensions.keySet() )
+        for ( Map.Entry<String, List<String>>entry : extensions.entrySet() )
         {
-            buf.append( " " ).append( key ).append( " " );
+            buf.append( " " ).append( entry.getKey() ).append( " " );
 
-            List<String> values = extensions.get( key );
+            List<String> values = entry.getValue();
 
             // For extensions without values like X-IS-HUMAN-READIBLE
             if ( values == null || values.isEmpty() )

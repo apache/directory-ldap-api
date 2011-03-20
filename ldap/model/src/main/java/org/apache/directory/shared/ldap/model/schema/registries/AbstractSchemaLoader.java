@@ -59,7 +59,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * a map implementation which converts the keys to lower case before inserting
      */
-    private class LowerCaseKeyMap extends HashMap<String,Schema>
+    private static class LowerCaseKeyMap extends HashMap<String,Schema>
     {
         private static final long serialVersionUID = 1L;
 

@@ -136,7 +136,7 @@ public class BranchNormalizedVisitor implements FilterVisitor
         return result.toString().trim();
     }
 
-    class NodeComparator implements Comparator<ExprNode>
+    static class NodeComparator implements Comparator<ExprNode>
     {
         public int compare( ExprNode o1, ExprNode o2 )
         {
