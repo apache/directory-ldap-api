@@ -84,8 +84,6 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
  *      [SYNTAXES]</a>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class MatchingRuleUse extends AbstractMutableSchemaObject
 {
     private static final long serialVersionUID = 1L;
@@ -253,6 +251,15 @@ public class MatchingRuleUse extends AbstractMutableSchemaObject
 
 
     /**
+     * {@inheritDoc}
+     */
+    public MatchingRuleUse copyMutable()
+    {
+        return copy();
+    }
+    
+    
+    /**
      * Copy an MatchingRuleUse
      */
     public MatchingRuleUse copy()
@@ -282,7 +289,6 @@ public class MatchingRuleUse extends AbstractMutableSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    @SuppressWarnings("PMD.UnusedLocalVariable") // Remove me when the TODO is fixed 
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )

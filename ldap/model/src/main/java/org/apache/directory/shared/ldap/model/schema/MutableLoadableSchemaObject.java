@@ -27,12 +27,17 @@ package org.apache.directory.shared.ldap.model.schema;
  */
 public interface MutableLoadableSchemaObject extends LoadableSchemaObject, MutableSchemaObject
 {
+    /**
+     * {@inheritDoc}
+     */
     LoadableSchemaObject copy();
+    
     
     /**
      * {@inheritDoc}
      */
     MutableLoadableSchemaObject copyMutable();
+    
     
     /**
      * Stores some bytecode representing the compiled Java class for this

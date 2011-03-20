@@ -29,8 +29,10 @@ import java.util.Map;
 import org.apache.directory.shared.ldap.model.schema.parsers.LdapComparatorDescription;
 import org.apache.directory.shared.ldap.model.schema.DITContentRule;
 import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.NameForm;
 import org.apache.directory.shared.ldap.model.schema.parsers.NormalizerDescription;
@@ -474,13 +476,13 @@ attributeTypeDescription returns [AttributeType attributeType]
      *    extensions WSP RPAREN      ; extensions
      * </pre>
     */
-ldapSyntaxDescription returns [LdapSyntax ldapSyntax]
+ldapSyntaxDescription returns [MutableLdapSyntax ldapSyntax]
     {
         matchedProduction( "ldapSyntaxDescription()" );
         ElementTracker et = new ElementTracker();
     }
     :
-    ( oid:STARTNUMERICOID { ldapSyntax = new LdapSyntax(numericoid(oid.getText())); } )
+    ( oid:STARTNUMERICOID { ldapSyntax = new MutableLdapSyntaxImpl(numericoid(oid.getText())); } )
     (
         ( name:NAME { et.track("NAME", name); ldapSyntax.setNames(qdescrs(name.getText())); } )
         |
@@ -511,13 +513,13 @@ ldapSyntaxDescription returns [LdapSyntax ldapSyntax]
      *    extensions WSP RPAREN      ; extensions
      * </pre>
     */
-matchingRuleDescription returns [MatchingRule matchingRule]
+matchingRuleDescription returns [MutableMatchingRule matchingRule]
     {
         matchedProduction( "matchingRuleDescription()" );
         ElementTracker et = new ElementTracker();
     }
     :
-    ( oid:STARTNUMERICOID { matchingRule = new MatchingRule(numericoid(oid.getText())); } )
+    ( oid:STARTNUMERICOID { matchingRule = new MutableMatchingRuleImpl(numericoid(oid.getText())); } )
     (
         ( name:NAME { et.track("NAME", name); matchingRule.setNames(qdescrs(name.getText())); } )
         |

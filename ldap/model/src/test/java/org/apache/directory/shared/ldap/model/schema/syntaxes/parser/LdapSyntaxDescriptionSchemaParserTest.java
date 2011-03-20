@@ -27,7 +27,8 @@ import java.text.ParseException;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
+
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.parsers.LdapSyntaxDescriptionSchemaParser;
 import org.junit.After;
 import org.junit.Before;
@@ -118,7 +119,7 @@ public class LdapSyntaxDescriptionSchemaParserTest
     public void testFull() throws ParseException
     {
         String value = null;
-        MutableLdapSyntaxImpl ldapSyntax = null;
+        MutableLdapSyntax ldapSyntax = null;
 
         value = "( 1.2.3.4.5.6.7.8.9.0 DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )";
         ldapSyntax = parser.parseLdapSyntaxDescription( value );
@@ -160,7 +161,7 @@ public class LdapSyntaxDescriptionSchemaParserTest
     public void testRfcBinary() throws ParseException
     {
         String value = "( 1.3.6.1.4.1.1466.115.121.1.5 DESC 'Binary' X-NOT-HUMAN-READABLE 'TRUE' )";
-        MutableLdapSyntaxImpl ldapSyntax = parser.parseLdapSyntaxDescription( value );
+        MutableLdapSyntax ldapSyntax = parser.parseLdapSyntaxDescription( value );
 
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.5", ldapSyntax.getOid() );
         assertEquals( "Binary", ldapSyntax.getDescription() );
@@ -179,7 +180,7 @@ public class LdapSyntaxDescriptionSchemaParserTest
     public void testSyntaxWithExtensions() throws ParseException
     {
         String substrate = "( 1.3.6.1.4.1.18060.0.4.0.2.10000 DESC 'bogus description' X-SCHEMA 'blah' X-IS-HUMAN-READABLE 'true' )";
-        MutableLdapSyntaxImpl ldapSyntax = parser.parseLdapSyntaxDescription( substrate );
+        MutableLdapSyntax ldapSyntax = parser.parseLdapSyntaxDescription( substrate );
         assertEquals( "1.3.6.1.4.1.18060.0.4.0.2.10000", ldapSyntax.getOid() );
         assertEquals( "bogus description", ldapSyntax.getDescription() );
         assertNotNull( ldapSyntax.getExtensions().get( "X-IS-HUMAN-READABLE" ) );

@@ -35,7 +35,7 @@ import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.parsers.MatchingRuleDescriptionSchemaParser;
 import org.junit.After;
 import org.junit.Before;
@@ -176,7 +176,7 @@ public class MatchingRuleDescriptionSchemaParserTest
     public void testFull() throws ParseException, NamingException
     {
         String value = null;
-        MutableMatchingRuleImpl matchingRule = null;
+        MutableMatchingRule matchingRule = null;
 
         value = "( 1.2.3.4.5.6.7.8.9.0 NAME ( 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' 'test' ) DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' OBSOLETE SYNTAX 0.1.2.3.4.5.6.7.8.9 X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )";
         matchingRule = parser.parseMatchingRuleDescription( value );
@@ -255,7 +255,7 @@ public class MatchingRuleDescriptionSchemaParserTest
     public void testRfc1() throws ParseException, NamingException
     {
         String value = "( 2.5.13.5 NAME 'caseExactMatch' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )";
-        MutableMatchingRuleImpl matchingRule = parser.parseMatchingRuleDescription( value );
+        MutableMatchingRule matchingRule = parser.parseMatchingRuleDescription( value );
 
         assertEquals( "2.5.13.5", matchingRule.getOid() );
         assertEquals( 1, matchingRule.getNames().size() );
@@ -271,7 +271,7 @@ public class MatchingRuleDescriptionSchemaParserTest
     public void testSun1() throws ParseException, NamingException
     {
         String value = "( 2.5.13.5 NAME 'caseExactMatch' DESC 'Case Exact Matching on Directory String [defined in X.520]' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )";
-        MutableMatchingRuleImpl matchingRule = parser.parseMatchingRuleDescription( value );
+        MutableMatchingRule matchingRule = parser.parseMatchingRuleDescription( value );
 
         assertEquals( "2.5.13.5", matchingRule.getOid() );
         assertEquals( 1, matchingRule.getNames().size() );
@@ -305,7 +305,7 @@ public class MatchingRuleDescriptionSchemaParserTest
         }
         else
         {
-            MutableMatchingRuleImpl matchingRule = parser.parseMatchingRuleDescription( value );
+            MutableMatchingRule matchingRule = parser.parseMatchingRuleDescription( value );
             assertEquals( "1.3.6.1.4.1.42.2.27.9.4.34.3.6", matchingRule.getOid() );
             assertEquals( 1, matchingRule.getNames().size() );
             assertEquals( "caseExactSubstringMatch-2.16.840.1.113730.3.3.2.11.3", matchingRule.getNames().get( 0 ) );

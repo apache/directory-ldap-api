@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.model.schema.parsers;
 import java.text.ParseException;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRuleImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,7 +70,7 @@ public class MatchingRuleDescriptionSchemaParser extends AbstractSchemaParser
      * @return the parsed MatchingRuleDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized MutableMatchingRuleImpl parseMatchingRuleDescription( String matchingRuleDescription )
+    public synchronized MutableMatchingRule parseMatchingRuleDescription( String matchingRuleDescription )
         throws ParseException
     {
         LOG.debug( "Parsing a MatchingRule : {}", matchingRuleDescription );
@@ -85,7 +85,7 @@ public class MatchingRuleDescriptionSchemaParser extends AbstractSchemaParser
 
         try
         {
-            MutableMatchingRuleImpl matchingRule = parser.matchingRuleDescription();
+            MutableMatchingRule matchingRule = parser.matchingRuleDescription();
 
             // Update the schemaName
             updateSchemaName( matchingRule );
@@ -114,7 +114,7 @@ public class MatchingRuleDescriptionSchemaParser extends AbstractSchemaParser
      * @return An instance of MatchingRule
      * @throws ParseException {@inheritDoc}
      */
-    public MutableMatchingRuleImpl parse( String schemaDescription ) throws ParseException
+    public MutableMatchingRule parse( String schemaDescription ) throws ParseException
     {
         return parseMatchingRuleDescription( schemaDescription );
     }

@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.model.schema.parsers;
 import java.text.ParseException;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntaxImpl;
+import org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +64,7 @@ public class LdapSyntaxDescriptionSchemaParser extends AbstractSchemaParser
      * @return the parsed LdapSyntax bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized MutableLdapSyntaxImpl parseLdapSyntaxDescription( String ldapSyntaxDescription )
+    public synchronized MutableLdapSyntax parseLdapSyntaxDescription( String ldapSyntaxDescription )
         throws ParseException
     {
         LOG.debug( "Parsing a LdapSyntax : {}", ldapSyntaxDescription );
@@ -79,7 +79,7 @@ public class LdapSyntaxDescriptionSchemaParser extends AbstractSchemaParser
 
         try
         {
-            MutableLdapSyntaxImpl ldapSyntax = parser.ldapSyntaxDescription();
+            MutableLdapSyntax ldapSyntax = parser.ldapSyntaxDescription();
             ldapSyntax.setSpecification( ldapSyntaxDescription );
 
             // Update the schemaName
@@ -109,7 +109,7 @@ public class LdapSyntaxDescriptionSchemaParser extends AbstractSchemaParser
      * @return An instance of LdapSyntax
      * @throws ParseException {@inheritDoc}
      */
-    public MutableLdapSyntaxImpl parse( String schemaDescription ) throws ParseException
+    public MutableLdapSyntax parse( String schemaDescription ) throws ParseException
     {
         return parseLdapSyntaxDescription( schemaDescription );
     }

@@ -94,8 +94,6 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
  * @see DescriptionUtils#getDescription(NameForm)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class NameForm extends AbstractMutableSchemaObject
 {
     private static final long serialVersionUID = 1L;
@@ -471,6 +469,15 @@ public class NameForm extends AbstractMutableSchemaObject
 
 
     /**
+     * {@inheritDoc}
+     */
+    public NameForm copyMutable()
+    {
+        return copy();
+    }
+    
+    
+    /**
      * Copy a NameForm
      */
     public NameForm copy()
@@ -516,8 +523,6 @@ public class NameForm extends AbstractMutableSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    @SuppressWarnings("PMD.UnusedLocalVariable")
-    // Remove me when the TODO is fixed 
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )

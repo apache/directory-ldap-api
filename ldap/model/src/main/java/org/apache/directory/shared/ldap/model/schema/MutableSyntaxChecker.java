@@ -34,5 +34,11 @@ public interface MutableSyntaxChecker extends MutableLoadableSchemaObject, Synta
      * 
      * {@inheritDoc}
      */
-    MutableSyntaxChecker copy();
+    SyntaxChecker copy();
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    MutableSyntaxChecker copyMutable();
 }

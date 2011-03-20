@@ -1589,6 +1589,15 @@ public class AttributeType extends AbstractMutableSchemaObject implements Clonea
     /**
      * {@inheritDoc}
      */
+    public AttributeType copyMutable()
+    {
+        return copy();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public void clear()
     {
         // Clear the common elements

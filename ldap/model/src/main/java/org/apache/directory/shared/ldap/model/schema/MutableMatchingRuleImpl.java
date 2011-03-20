@@ -392,12 +392,12 @@ public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject impleme
     {
         return objectType + " " + DescriptionUtils.getDescription( this );
     }
-
-
+    
+    
     /**
      * {@inheritDoc}
      */
-    public MutableMatchingRuleImpl copy()
+    public MutableMatchingRule copyMutable()
     {
         MutableMatchingRuleImpl copy = new MutableMatchingRuleImpl( oid );
 
@@ -413,6 +413,15 @@ public class MutableMatchingRuleImpl extends AbstractMutableSchemaObject impleme
         copy.ldapSyntaxOid = ldapSyntaxOid;
 
         return copy;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public MatchingRule copy()
+    {
+        return copyMutable();
     }
 
 

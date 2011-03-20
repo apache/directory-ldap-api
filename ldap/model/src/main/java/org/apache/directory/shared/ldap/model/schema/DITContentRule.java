@@ -115,8 +115,6 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
  * @see DescriptionUtils#getDescription(DITContentRule)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class DITContentRule extends AbstractMutableSchemaObject
 {
     private static final long serialVersionUID = 1L;
@@ -634,6 +632,15 @@ public class DITContentRule extends AbstractMutableSchemaObject
         return objectType + " " + DescriptionUtils.getDescription( this );
     }
 
+    
+    /**
+     * {@inheritDoc}
+     */
+    public DITContentRule copyMutable()
+    {
+        return copy();
+    }
+    
 
     /**
      * Copy a DITContentRule
@@ -697,7 +704,6 @@ public class DITContentRule extends AbstractMutableSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    @SuppressWarnings("PMD.UnusedLocalVariable") // Remove me when the TODO is fixed 
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )

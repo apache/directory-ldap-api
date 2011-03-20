@@ -80,5 +80,11 @@ public interface MutableMatchingRule extends MutableSchemaObject, MatchingRule
     /**
      * {@inheritDoc}
      */
-    MutableMatchingRule copy();
+    MatchingRule copy();
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    MutableMatchingRule copyMutable();
 }

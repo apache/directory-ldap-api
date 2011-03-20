@@ -141,6 +141,15 @@ public abstract class MutableLoadableSchemaObjectImpl extends AbstractMutableSch
         return null;
     }
 
+    
+    /**
+     * {@inheritDoc}
+     */
+    public MutableLoadableSchemaObject copyMutable()
+    {
+        return null;
+    }
+    
 
     /**
      * {@inheritDoc}

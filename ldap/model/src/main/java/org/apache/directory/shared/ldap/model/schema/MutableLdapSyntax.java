@@ -46,7 +46,13 @@ public interface MutableLdapSyntax extends MutableSchemaObject, LdapSyntax
     /**
      * {@inheritDoc}
      */
-    MutableLdapSyntax copy();
+    MutableLdapSyntax copyMutable();
+
+
+    /**
+     * {@inheritDoc}
+     */
+    LdapSyntax copy();
 
 
     /**

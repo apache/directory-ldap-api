@@ -905,6 +905,15 @@ public class ObjectClass extends AbstractMutableSchemaObject
 
 
     /**
+     * {@inheritDoc}
+     */
+    public ObjectClass copyMutable()
+    {
+        return copy();
+    }
+    
+    
+    /**
      * Copy an ObjectClass
      * @return 
      */

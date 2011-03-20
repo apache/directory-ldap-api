@@ -216,13 +216,30 @@ public class MutableLdapSyntaxImpl extends AbstractMutableSchemaObject implement
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.model.schema.LdapSyntax#copy()
+    /**
+     * {@inheritDoc}
      */
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.model.schema.MutableLdapSyntax#copy()
+    public LdapSyntax copy()
+    {
+        MutableLdapSyntaxImpl copy = new MutableLdapSyntaxImpl( oid );
+
+        // Copy the SchemaObject common data
+        copy.copy( this );
+
+        // Copy the HR flag
+        copy.isHumanReadable = isHumanReadable;
+
+        // All the references to other Registries object are set to null.
+        copy.syntaxChecker = null;
+
+        return copy;
+    }
+
+
+    /**
+     * {@inheritDoc}
      */
-    public MutableLdapSyntaxImpl copy()
+    public MutableLdapSyntax copyMutable()
     {
         MutableLdapSyntaxImpl copy = new MutableLdapSyntaxImpl( oid );
 

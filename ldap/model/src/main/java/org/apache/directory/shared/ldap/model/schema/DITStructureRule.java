@@ -80,8 +80,6 @@ import org.apache.directory.shared.util.exception.NotImplementedException;
  * @see DescriptionUtils#getDescription(DITStructureRule)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class DITStructureRule extends AbstractMutableSchemaObject
 {
     private static final long serialVersionUID = 1L;
@@ -233,6 +231,15 @@ public class DITStructureRule extends AbstractMutableSchemaObject
     /**
      * {@inheritDoc}
      */
+    public DITStructureRule copyMutable()
+    {
+        return copy();
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
     public DITStructureRule copy()
     {
         DITStructureRule copy = new DITStructureRule( ruleId );
@@ -259,8 +266,6 @@ public class DITStructureRule extends AbstractMutableSchemaObject
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("PMD.UnusedLocalVariable")
-    // Remove me when the TODO is fixed 
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )

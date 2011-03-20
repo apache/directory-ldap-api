@@ -29,5 +29,11 @@ public interface MutableNormalizer extends MutableLoadableSchemaObject, Normaliz
     /**
      * {@inheritDoc}
      */
-    MutableNormalizer copy();
+    Normalizer copy();
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    MutableNormalizer copyMutable();
 }

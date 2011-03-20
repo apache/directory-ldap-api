@@ -39,5 +39,8 @@ public interface MatchingRule extends SchemaObject
     Normalizer getNormalizer();
 
 
+    /**
+     * {@inheritDoc}
+     */
     MatchingRule copy();
 }

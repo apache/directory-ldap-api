@@ -80,7 +80,36 @@ public abstract class AbstractNormalizer extends MutableLoadableSchemaObjectImpl
     }
 
     
-    public AbstractNormalizer copy()
+    /**
+     * {@inheritDoc}
+     */
+    public Normalizer copy()
+    {
+        return new AbstractNormalizer( oid )
+        {
+            private static final long serialVersionUID = 6617568248114910428L;
+
+
+            @Override
+            public String normalize( String value ) throws LdapException
+            {
+                return normalize( value );
+            }
+            
+        
+            @Override
+            public Value<?> normalize( Value<?> value ) throws LdapException
+            {
+                return normalize( value );
+            }
+        };
+    }
+    
+
+    /**
+     * {@inheritDoc}
+     */
+    public MutableNormalizer copyMutable()
     {
         return new AbstractNormalizer( oid )
         {

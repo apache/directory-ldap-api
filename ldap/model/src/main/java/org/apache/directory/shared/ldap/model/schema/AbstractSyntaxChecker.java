@@ -57,7 +57,10 @@ public abstract class AbstractSyntaxChecker extends MutableLoadableSchemaObjectI
     }
     
     
-    public AbstractSyntaxChecker copy()
+    /**
+     * {@inheritDoc}
+     */
+    public SyntaxChecker copy()
     {
         return new AbstractSyntaxChecker()
         {
@@ -71,16 +74,28 @@ public abstract class AbstractSyntaxChecker extends MutableLoadableSchemaObjectI
         };
     }
 
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.model.schema.SyntaxChecker#isValidSyntax(java.lang.Object)
+    
+    /**
+     * {@inheritDoc}
      */
+    public MutableSyntaxChecker copyMutable()
+    {
+        return new AbstractSyntaxChecker()
+        {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public boolean isValidSyntax( Object value )
+            {
+                return this.isValidSyntax( value );
+            }
+        };
+    }
+    
+
     public abstract boolean isValidSyntax( Object value );
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.shared.ldap.model.schema.SyntaxChecker#assertSyntax(java.lang.Object)
-     */
     public void assertSyntax( Object value ) throws LdapException
     {
         if ( !isValidSyntax( value ) )
