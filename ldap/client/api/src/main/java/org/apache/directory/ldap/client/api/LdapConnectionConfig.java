@@ -22,6 +22,8 @@ package org.apache.directory.ldap.client.api;
 
 
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import javax.net.ssl.KeyManager;
@@ -120,9 +122,13 @@ public class LdapConnectionConfig
                 }
             }
         }
-        catch( Exception e )
+        catch( NoSuchAlgorithmException e )
         {
             LOG.warn( "couldn't find any default X509 TrustManager with algorithm {}", trustMgmtAlgo );
+        }
+        catch( KeyStoreException e )
+        {
+            LOG.warn( "couldn't initialize TrustManagerFactory with keystore {}", KeyStore.getDefaultType() );
         }
     }
     

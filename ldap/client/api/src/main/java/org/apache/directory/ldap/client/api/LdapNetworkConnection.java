@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -586,7 +587,11 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
                             ( ( SearchFuture ) responseFuture ).set( SearchNoDResponse.PROTOCOLERROR );
                         }
                     }
-                    catch ( Exception e )
+                    catch ( ExecutionException e )
+                    {
+                        LOG.error( "Error while processing the NoD for {}", responseFuture );
+                    }
+                    catch ( InterruptedException e )
                     {
                         LOG.error( "Error while processing the NoD for {}", responseFuture );
                     }
