@@ -46,6 +46,7 @@ public class ImmutableNormalizerRegistry implements NormalizerRegistry<Normalize
      * 
      * @param normalizerRegistry The wrapped Normalizer registry 
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public ImmutableNormalizerRegistry( NormalizerRegistry normalizerRegistry )
     {
         immutableNormalizerRegistry = normalizerRegistry;

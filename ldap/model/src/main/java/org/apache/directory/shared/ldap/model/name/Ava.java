@@ -683,7 +683,6 @@ public final class Ava implements Externalizable, Cloneable
                 {
                     Object o1 = normValue.get();
                     Object o2 = instance.normValue.get();
-                    @SuppressWarnings("unchecked")
                     LdapComparator<Object> comparator = ( LdapComparator<Object> ) equalityMatchingRule.getLdapComparator();
                     return comparator.compare( o1, o2 ) == 0;
                 }

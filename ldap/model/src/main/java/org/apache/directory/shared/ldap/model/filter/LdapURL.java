@@ -362,8 +362,6 @@ public class LdapURL
      *         apply to the byte buffer TODO check that the topLabel is valid
      *         (it must start with an alpha)
      */
-    @SuppressWarnings("PMD.CollapsibleIfStatements")
-    // Used because of comments
     private int parseHost( char[] chars, int pos )
     {
 

@@ -2456,8 +2456,6 @@ public class DefaultEntryAttribute implements EntryAttribute
     /**
      * {@inheritDoc}
      */
-    // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     public void deserialize( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         // Read the ID and the UPId

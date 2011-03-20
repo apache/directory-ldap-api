@@ -437,8 +437,6 @@ public class LdifAttributesReader extends LdifReader
      * @return A list of Attributes, or an empty List
      * @throws LdapLdifException If something went wrong
      */
-    // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     public Attributes parseAttributes( String ldif ) throws LdapLdifException
     {
         lines = new ArrayList<String>();
@@ -500,8 +498,6 @@ public class LdifAttributesReader extends LdifReader
      * @return An entry
      * @throws LdapLdifException If something went wrong
      */
-    // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     public Entry parseEntry( String ldif ) throws LdapLdifException
     {
         lines = new ArrayList<String>();
@@ -565,8 +561,6 @@ public class LdifAttributesReader extends LdifReader
      * @return An entry
      * @throws LdapLdifException If something went wrong
      */
-    // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     public Entry parseEntry( SchemaManager schemaManager, String ldif ) throws LdapLdifException
     {
         lines = new ArrayList<String>();

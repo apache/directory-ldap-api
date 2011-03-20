@@ -21,7 +21,6 @@ package org.apache.directory.shared.ldap.model.exception;
 
 
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.directory.shared.ldap.model.schema.MutableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 
 

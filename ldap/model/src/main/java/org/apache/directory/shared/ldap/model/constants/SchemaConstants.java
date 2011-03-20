@@ -28,7 +28,6 @@ package org.apache.directory.shared.ldap.model.constants;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@SuppressWarnings("PMD.AvoidUsingHardCodedIP")
 public final class SchemaConstants
 {
     /**

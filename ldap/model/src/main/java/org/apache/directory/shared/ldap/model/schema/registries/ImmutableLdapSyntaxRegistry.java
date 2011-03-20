@@ -47,6 +47,7 @@ public class ImmutableLdapSyntaxRegistry implements LdapSyntaxRegistry<LdapSynta
      *
      * @param ldapSyntaxRegistry The wrapped LdapSyntax registry
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public ImmutableLdapSyntaxRegistry( LdapSyntaxRegistry ldapSyntaxRegistry )
     {
         immutableLdapSyntaxRegistry = ldapSyntaxRegistry;
