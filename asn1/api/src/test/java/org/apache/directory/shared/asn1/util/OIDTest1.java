@@ -34,19 +34,19 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
- * Test the OID primitive
+ * Test the Oid primitive
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class OIDTest
+public class OIDTest1
 {
     // ~ Methods
     // ------------------------------------------------------------------------------------
 
     /**
-     * Test a null OID
+     * Test a null Oid
      */
     @Test
     public void testOidNull()
@@ -67,7 +67,7 @@ public class OIDTest
 
 
     /**
-     * Test an empty OID
+     * Test an empty Oid
      */
     @Test
     public void testOidEmpty()
@@ -89,7 +89,7 @@ public class OIDTest
 
 
     /**
-     * Test itu-t OID tree
+     * Test itu-t Oid tree
      */
     @Test
     public void testOidItuT()
@@ -149,7 +149,7 @@ public class OIDTest
 
 
     /**
-     * Test iso OID tree
+     * Test iso Oid tree
      */
     @Test
     public void testOidIso()
@@ -188,7 +188,7 @@ public class OIDTest
 
 
     /**
-     * Test joint-iso-itu-t OID tree
+     * Test joint-iso-itu-t Oid tree
      */
     @Test
     public void testOidJointIsoItuT()
@@ -239,7 +239,7 @@ public class OIDTest
 
 
     /**
-     * Test valid String OIDs
+     * Test valid String Oids
      */
     @Test
     public void testOidStringGood()
@@ -272,7 +272,7 @@ public class OIDTest
 
 
     /**
-     * Test invalid String OIDs
+     * Test invalid String Oids
      */
     @Test
     public void testOidStringBad()
@@ -291,7 +291,7 @@ public class OIDTest
 
 
     /**
-     * Test Spnego OID
+     * Test Spnego Oid
      */
     @Test
     public void testOidSpnego()
@@ -314,7 +314,7 @@ public class OIDTest
 
 
     /**
-     * Test Kerberos V5 OID
+     * Test Kerberos V5 Oid
      */
     @Test
     public void testOidKerberosV5()
@@ -337,7 +337,7 @@ public class OIDTest
 
 
     /**
-     * Test OIDs bytes
+     * Test Oids bytes
      */
     @Test
     public void testOidBytes()
@@ -374,7 +374,7 @@ public class OIDTest
     }
 
     /**
-     * Test OID Equals
+     * Test Oid Equals
      */
     @Test
     public void testOidEquals() throws DecoderException
@@ -389,7 +389,7 @@ public class OIDTest
     }
 
     /**
-     * Test OID Equals
+     * Test Oid Equals
      */
     @Test
     public void testOidEqualsPerf() throws DecoderException
