@@ -87,6 +87,9 @@ public final class Ava implements Externalizable, Cloneable
 
     /** the schema manager */
     private SchemaManager schemaManager;
+    
+    /** The computed hashcode */
+    private int h;
 
     /**
      * Constructs an empty Ava
@@ -121,7 +124,7 @@ public final class Ava implements Externalizable, Cloneable
      * to an empty string after having trimmed it. 
      *
      * @param upType The User Provided type
-     * @param upValue The User Provided value
+     * @param upValue The User Provided binary value
      * 
      * @throws LdapInvalidAvaException If the given type or value are invalid
      */
@@ -140,7 +143,7 @@ public final class Ava implements Externalizable, Cloneable
      *
      * @param schemaManager The SchemaManager instance
      * @param upType The User Provided type
-     * @param upValue The User Provided value
+     * @param upValue The User Provided binary value
      * 
      * @throws LdapInvalidAvaException If the given type or value are invalid
      */
@@ -175,7 +178,7 @@ public final class Ava implements Externalizable, Cloneable
      * to an empty string after having trimmed it. 
      *
      * @param upType The User Provided type
-     * @param upValue The User Provided value
+     * @param upValue The User Provided String value
      * 
      * @throws LdapInvalidAvaException If the given type or value are invalid
      */
@@ -193,7 +196,7 @@ public final class Ava implements Externalizable, Cloneable
      *
      * @param schemaManager The SchemaManager instance
      * @param upType The User Provided type
-     * @param upValue The User Provided value
+     * @param upValue The User Provided String value
      * 
      * @throws LdapInvalidAvaException If the given type or value are invalid
      */
@@ -262,6 +265,7 @@ public final class Ava implements Externalizable, Cloneable
         this.upValue = upValue;
         
         upName = this.upType + '=' + ( this.upValue == null ? "" : this.upValue.getString() );
+        hashCode();
     }
 
     
@@ -295,31 +299,7 @@ public final class Ava implements Externalizable, Cloneable
      * to an empty string after having trimmed it. 
      *
      * @param upType The User Provided type
-     * @param normType The normalized type
      * @param upValue The User Provided value
-     * @param normValue The normalized value
-     * 
-     * @throws LdapInvalidAvaException If the given type or value are invalid
-     */
-    /* No qualifier */ Ava( SchemaManager schemaManager, String upType, String normType, byte[] upValue, byte[] normValue ) 
-        throws LdapInvalidAvaException
-    {
-        this( schemaManager, upType, normType, new BinaryValue( upValue ), new BinaryValue( normValue ) );
-    }
-    
-    
-    /**
-     * Construct an Ava. The type and value are normalized :
-     * <li> the type is trimmed and lowercased </li>
-     * <li> the value is trimmed </li>
-     * <p>
-     * Note that the upValue should <b>not</b> be null or empty, or resolved
-     * to an empty string after having trimmed it. 
-     *
-     * @param upType The User Provided type
-     * @param normType The normalized type
-     * @param upValue The User Provided value
-     * @param normValue The normalized value
      * 
      * @throws LdapInvalidAvaException If the given type or value are invalid
      */
@@ -360,6 +340,7 @@ public final class Ava implements Externalizable, Cloneable
         this.upValue = upValue;
         
         upName = this.upType + '=' + ( this.upValue == null ? "" : this.upValue.getString() );
+        hashCode();
     }
 
 
@@ -371,6 +352,7 @@ public final class Ava implements Externalizable, Cloneable
      * Note that the upValue should <b>not</b> be null or empty, or resolved
      * to an empty string after having trimmed it. 
      *
+     * @param schemaManager The SchemaManager
      * @param upType The User Provided type
      * @param normType The normalized type
      * @param upValue The User Provided value
@@ -391,6 +373,8 @@ public final class Ava implements Externalizable, Cloneable
         {
             applySchemaManager( schemaManager );
         }
+
+        hashCode();
     }
 
 
@@ -413,8 +397,8 @@ public final class Ava implements Externalizable, Cloneable
     /* No qualifier */ Ava( String upType, String normType, Value<?> upValue, Value<?> normValue, String upName )
         throws LdapInvalidAvaException
     {
-        String upTypeTrimmed = Strings.trim(upType);
-        String normTypeTrimmed = Strings.trim(normType);
+        String upTypeTrimmed = Strings.trim( upType );
+        String normTypeTrimmed = Strings.trim( normType );
 
         if ( Strings.isEmpty(upTypeTrimmed) )
         {
@@ -447,6 +431,7 @@ public final class Ava implements Externalizable, Cloneable
         this.normValue = normValue;
         this.upValue = upValue;
         this.upName = upName;
+        hashCode();
     }
 
     
@@ -458,8 +443,6 @@ public final class Ava implements Externalizable, Cloneable
      * @param schemaManager The SchemaManager instance to use
      * @throws LdapInvalidAvaException If the Ava can't be normalized accordingly
      * to the given SchemaManager
-     * 
-     * @throws LdapInvalidAvaException If the given type or value are invalid
      */
     public void applySchemaManager( SchemaManager schemaManager ) throws LdapInvalidAvaException
     {
@@ -500,6 +483,8 @@ public final class Ava implements Externalizable, Cloneable
                 LOG.error( message );
                 throw new LdapInvalidAvaException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
             }
+            
+            hashCode();
         }
     }
     
@@ -559,7 +544,7 @@ public final class Ava implements Externalizable, Cloneable
     /**
      * Get the user provided form of this attribute type and value
      *
-     * @return The user provided form of this atav
+     * @return The user provided form of this ava
      */
     public String getUpName()
     {
@@ -610,7 +595,13 @@ public final class Ava implements Externalizable, Cloneable
         };
     
     
-    public String normalizeValue()
+    /**
+     * Normalize the value in order to be able to use it in a DN as a String. Some
+     * characters will be escaped (prefixed with '\'), 
+     * 
+     * @return The normalized Ava
+     */
+    private String normalizeValue()
     {
         // The result will be gathered in a stringBuilder
         StringBuilder sb = new StringBuilder();
@@ -678,11 +669,13 @@ public final class Ava implements Externalizable, Cloneable
 
     /**
      * A Normalized String representation of a Ava :
-     * - type is trimed and lowercased 
-     * - value is trimed and lowercased, and special characters
+     * <ul>
+     * <li>type is trimed and lowercased</li> 
+     * <li>value is trimed and lowercased, and special characters</li>
+     * </ul>
      * are escaped if needed.
      *
-     * @return A normalized string representing a Ava
+     * @return A normalized string representing an Ava
      */
     public String normalize()
     {
@@ -719,12 +712,15 @@ public final class Ava implements Externalizable, Cloneable
      */
     public int hashCode()
     {
-        int result = 37;
+        if ( h == 0 )
+        {
+            h = 37;
+    
+            h = h*17 + ( normType != null ? normType.hashCode() : 0 );
+            h = h*17 + ( normValue != null ? normValue.hashCode() : 0 );
+        }
 
-        result = result*17 + ( normType != null ? normType.hashCode() : 0 );
-        result = result*17 + ( normValue != null ? normValue.hashCode() : 0 );
-
-        return result;
+        return h;
     }
     
 
@@ -844,9 +840,9 @@ public final class Ava implements Externalizable, Cloneable
      */
     public void writeExternal( ObjectOutput out ) throws IOException
     {
-        if ( Strings.isEmpty(upName)
-            || Strings.isEmpty(upType)
-            || Strings.isEmpty(normType)
+        if ( Strings.isEmpty( upName )
+            || Strings.isEmpty( upType )
+            || Strings.isEmpty( normType )
             || ( upValue.isNull() )
             || ( normValue.isNull() ) )
         {
@@ -914,6 +910,9 @@ public final class Ava implements Externalizable, Cloneable
         upValue.writeExternal( out );
         normValue.writeExternal( out );
         
+        // Write the hashCode
+        out.writeInt( h );
+        
         out.flush();
     }
     
@@ -978,6 +977,8 @@ public final class Ava implements Externalizable, Cloneable
 
         upValue.readExternal( in );
         normValue.readExternal( in );
+        
+        h = in.readInt();
 
         if ( schemaManager != null )
         {
