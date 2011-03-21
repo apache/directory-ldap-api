@@ -188,6 +188,9 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
 
     /** the schema manager */
     private SchemaManager schemaManager;
+    
+    /** The computed hashcode */
+    private volatile int h;
 
 
     /**
@@ -214,6 +217,7 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
         upName = "";
         normName = "";
         normalized = false;
+        h = 0;
     }
 
 
@@ -253,6 +257,8 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
             normName = "";
             normalized = false;
         }
+
+        hashCode();
     }
 
 
@@ -300,6 +306,8 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
             // As strange as it seems, the Rdn is *not* normalized against the schema at this point
             normalized = false;
         }
+
+        hashCode();
     }
 
 
@@ -334,10 +342,14 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
         switch ( rdn.size() )
         {
             case 0:
+                hashCode();
+
                 return;
 
             case 1:
                 this.ava = (Ava) rdn.ava.clone();
+                hashCode();
+
                 return;
 
             default:
@@ -350,6 +362,8 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                     avas.add( (Ava) currentAva.clone() );
                     avaTypes.put( currentAva.getNormType(), currentAva );
                 }
+
+                hashCode();
 
                 return;
         }
@@ -411,6 +425,8 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 normName = sb.toString();
                 break;
         }
+
+        hashCode();
     }
 
 
@@ -435,6 +451,7 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
         this.upName = savedUpName;
         normalized = true;
         this.schemaManager = schemaManager;
+        hashCode();
 
         return this;
     }
@@ -480,6 +497,8 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 ava = new Ava( schemaManager, upType, normalizedType, upValue, normalizedValue );
                 nbAvas = 1;
                 avaType = normalizedType;
+                hashCode();
+
                 return;
 
             case 1:
@@ -503,9 +522,10 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 Ava newAva = new Ava( schemaManager, upType, normalizedType, upValue, normalizedValue );
                 avas.add( newAva );
                 avaTypes.put( normalizedType, newAva );
-
                 nbAvas++;
-                break;
+                hashCode();
+
+                return;
 
         }
     }
@@ -531,6 +551,8 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 ava = value;
                 nbAvas = 1;
                 avaType = normalizedType;
+                hashCode();
+
                 return;
 
             case 1:
@@ -553,8 +575,9 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 // add a new Ava
                 avas.add( value );
                 avaTypes.put( normalizedType, value );
-
                 nbAvas++;
+                hashCode();
+
                 break;
         }
     }
@@ -576,6 +599,7 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
         normName = "";
         upName = "";
         normalized = false;
+        h = 0;
     }
 
 
@@ -1324,31 +1348,34 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
       */
     public int hashCode()
     {
-        int result = 37;
-
-        switch ( nbAvas )
+        if ( h == 0 )
         {
-            case 0:
-                // An empty Rdn
-                break;
-
-            case 1:
-                // We have a single Ava
-                result = result * 17 + ava.hashCode();
-                break;
-
-            default:
-                // We have more than one Ava
-
-                for ( Ava ata : avas )
-                {
-                    result = result * 17 + ata.hashCode();
-                }
-
-                break;
+            h = 37;
+    
+            switch ( nbAvas )
+            {
+                case 0:
+                    // An empty Rdn
+                    break;
+    
+                case 1:
+                    // We have a single Ava
+                    h = h * 17 + ava.hashCode();
+                    break;
+    
+                default:
+                    // We have more than one Ava
+    
+                    for ( Ava ata : avas )
+                    {
+                        h = h * 17 + ata.hashCode();
+                    }
+    
+                    break;
+            }
         }
 
-        return result;
+        return h;
     }
 
 
@@ -1424,6 +1451,8 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 break;
         }
         
+        out.writeInt( h );
+        
         out.flush();
     }
 
@@ -1485,6 +1514,8 @@ public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
 
                 break;
         }
+        
+        h = in.readInt();
     }
     
     
