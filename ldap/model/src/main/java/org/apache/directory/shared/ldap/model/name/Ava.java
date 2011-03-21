@@ -270,27 +270,6 @@ public final class Ava implements Externalizable, Cloneable
 
     
     /**
-     * Construct a schema aware Ava with a String value.
-     * <p>
-     * Note that the upValue should <b>not</b> be null or empty, or resolved
-     * to an empty string after having trimmed it. 
-     *
-     * @param schemaManager The SchemaManager instance
-     * @param upType The User Provided type
-     * @param normType The normalized type
-     * @param upValue The User Provided value
-     * @param normValue The normalized value
-     * 
-     * @throws LdapInvalidAvaException If the given type or value are invalid
-     */
-    /* No qualifier */ Ava( SchemaManager schemaManager, String upType, String normType, String upValue, String normValue ) 
-        throws LdapInvalidAvaException
-    {
-        this( schemaManager, upType, normType, new StringValue( upValue ), new StringValue( normValue ) );
-    }
-
-    
-    /**
      * Construct an Ava. The type and value are normalized :
      * <li> the type is trimmed and lowercased </li>
      * <li> the value is trimmed </li>
