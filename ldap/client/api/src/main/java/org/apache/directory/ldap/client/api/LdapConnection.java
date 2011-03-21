@@ -23,7 +23,7 @@ package org.apache.directory.ldap.client.api;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.Entry;
@@ -549,7 +549,7 @@ public interface LdapConnection
      * @param oid the object identifier of the extended operation
      * @return extended operation's response
      * @throws LdapException if some error occurred
-     * @see #extended(org.apache.directory.shared.asn1.util.OID, byte[])
+     * @see #extended(org.apache.directory.shared.asn1.util.Oid, byte[])
      */
     ExtendedResponse extended( String oid ) throws LdapException;
 
@@ -561,7 +561,7 @@ public interface LdapConnection
      * @param value value to be used by the extended operation, can be a null value
      * @return extended operation's response
      * @throws LdapException if some error occurred
-     * @see #extended(org.apache.directory.shared.asn1.util.OID, byte[])
+     * @see #extended(org.apache.directory.shared.asn1.util.Oid, byte[])
      */
     ExtendedResponse extended( String oid, byte[] value ) throws LdapException;
 
@@ -572,9 +572,9 @@ public interface LdapConnection
      * @param oid the object identifier of the extended operation
      * @return extended operation's response
      * @throws LdapException if some error occurred
-     * @see #extended(org.apache.directory.shared.asn1.util.OID, byte[])
+     * @see #extended(org.apache.directory.shared.asn1.util.Oid, byte[])
      */
-    ExtendedResponse extended( OID oid ) throws LdapException;
+    ExtendedResponse extended( Oid oid ) throws LdapException;
 
 
     /**
@@ -585,7 +585,7 @@ public interface LdapConnection
      * @return extended operation's response
      * @throws LdapException if some error occurred
      */
-    ExtendedResponse extended( OID oid, byte[] value ) throws LdapException;
+    ExtendedResponse extended( Oid oid, byte[] value ) throws LdapException;
 
 
     /**

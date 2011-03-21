@@ -26,7 +26,7 @@ import java.nio.ByteBuffer;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.util.Asn1StringUtils;
 import org.apache.directory.shared.asn1.util.BitString;
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.i18n.I18n;
 
 
@@ -741,7 +741,7 @@ public class Value
      * @throws EncoderException if the PDU in which the value should be encoded is
      * two small
      */
-    public static void encode( ByteBuffer buffer, OID oid ) throws EncoderException
+    public static void encode( ByteBuffer buffer, Oid oid ) throws EncoderException
     {
         if ( buffer == null )
         {
@@ -751,11 +751,11 @@ public class Value
         try
         {
             buffer.put( UniversalTag.OCTET_STRING.getValue() );
-            buffer.put( TLV.getBytes( oid.getOIDLength() ) );
+            buffer.put( TLV.getBytes( oid.getOidLength() ) );
 
-            if ( oid.getOIDLength() != 0 )
+            if ( oid.getOidLength() != 0 )
             {
-                buffer.put( oid.getOID() );
+                buffer.put( oid.getOid() );
             }
         }
         catch ( BufferOverflowException boe )

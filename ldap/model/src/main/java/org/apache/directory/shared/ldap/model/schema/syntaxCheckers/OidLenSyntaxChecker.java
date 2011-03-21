@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
 
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
@@ -102,7 +102,7 @@ public class OidLenSyntaxChecker extends SyntaxChecker
         if ( pos < 0 )
         {
             // Not found ... but it may still be a valid OID
-            boolean result = OID.isOID(strValue);
+            boolean result = Oid.isOid(strValue);
             
             if ( result )
             {
@@ -120,7 +120,7 @@ public class OidLenSyntaxChecker extends SyntaxChecker
             // we should have a len value. First check that the OID is valid
             String oid = strValue.substring( 0, pos );
             
-            if ( !OID.isOID( oid ) )
+            if ( !Oid.isOid( oid ) )
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;

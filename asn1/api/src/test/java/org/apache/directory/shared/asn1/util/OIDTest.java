@@ -52,11 +52,11 @@ public class OIDTest
     public void testOidNull()
     {
 
-        OID oid = new OID();
+        Oid oid = new Oid();
 
         try
         {
-            oid.setOID( ( byte[] ) null );
+            oid.setOid( ( byte[] ) null );
             fail( "Should not reach this point ..." );
         }
         catch ( DecoderException de )
@@ -73,11 +73,11 @@ public class OIDTest
     public void testOidEmpty()
     {
 
-        OID oid = new OID();
+        Oid oid = new Oid();
 
         try
         {
-            oid.setOID( new byte[]
+            oid.setOid( new byte[]
                 {} );
             fail( "Should not reach this point ..." );
         }
@@ -95,7 +95,7 @@ public class OIDTest
     public void testOidItuT()
     {
 
-        OID oid = new OID();
+        Oid oid = new Oid();
 
         try
         {
@@ -103,20 +103,20 @@ public class OIDTest
             // itu-t(0), recommendation(0), series a-z (0..26)
             for ( int i = 1; i < 27; i++ )
             {
-                oid.setOID( new byte[]
+                oid.setOid( new byte[]
                     { 0x00, ( byte ) i } );
                 assertEquals( "0.0." + i, oid.toString() );
             }
 
             // itu-t(0), question(1)
-            oid.setOID( new byte[]
+            oid.setOid( new byte[]
                 { 0x01 } );
             assertEquals( "0.1", oid.toString() );
 
             // itu-t(0), administration(2), country(202 .. 748)
             for ( int i = 202; i < 748; i++ )
             {
-                oid.setOID( new byte[]
+                oid.setOid( new byte[]
                     { 0x02, ( byte ) ( ( i / 128 ) | 0x0080 ), ( byte ) ( i % 128 ) } );
                 assertEquals( "0.2." + i, oid.toString() );
             }
@@ -127,13 +127,13 @@ public class OIDTest
 
                 if ( i < ( 128 * 128 ) )
                 {
-                    oid.setOID( new byte[]
+                    oid.setOid( new byte[]
                         { 0x03, ( byte ) ( ( i / 128 ) | 0x0080 ), ( byte ) ( i % 128 ) } );
                     assertEquals( "0.3." + i, oid.toString() );
                 }
                 else
                 {
-                    oid.setOID( new byte[]
+                    oid.setOid( new byte[]
                         { 0x03, ( byte ) ( ( i / ( 128 * 128 ) ) | 0x0080 ),
                             ( byte ) ( ( ( i / 128 ) % 128 ) | 0x0080 ), ( byte ) ( i % 128 ) } );
                     assertEquals( "0.3." + i, oid.toString() );
@@ -155,28 +155,28 @@ public class OIDTest
     public void testOidIso()
     {
 
-        OID oid = new OID();
+        Oid oid = new Oid();
 
         try
         {
 
             // iso(1), standard(0)
-            oid.setOID( new byte[]
+            oid.setOid( new byte[]
                 { 40 + 0 } );
             assertEquals( "1.0", oid.toString() );
 
             // iso(1), registration-authority(1)
-            oid.setOID( new byte[]
+            oid.setOid( new byte[]
                 { 40 + 1 } );
             assertEquals( "1.1", oid.toString() );
 
             // iso(1), member-body(2)
-            oid.setOID( new byte[]
+            oid.setOid( new byte[]
                 { 40 + 2 } );
             assertEquals( "1.2", oid.toString() );
 
             // iso(1), identified-organization(3) | org(3) | organization(3)
-            oid.setOID( new byte[]
+            oid.setOid( new byte[]
                 { 40 + 3 } );
             assertEquals( "1.3", oid.toString() );
         }
@@ -194,40 +194,40 @@ public class OIDTest
     public void testOidJointIsoItuT()
     {
 
-        OID oid = new OID();
+        Oid oid = new Oid();
 
         try
         {
 
             // joint-iso-itu-t(2), presentation(0)
-            oid.setOID( new byte[]
+            oid.setOid( new byte[]
                 { 80 + 0 } );
             assertEquals( "2.0", oid.toString() );
 
             // joint-iso-itu-t(2), asn1(1)
-            oid.setOID( new byte[]
+            oid.setOid( new byte[]
                 { 80 + 1 } );
             assertEquals( "2.1", oid.toString() );
 
             // joint-iso-itu-t(2), association-control(2)
-            oid.setOID( new byte[]
+            oid.setOid( new byte[]
                 { 80 + 2 } );
             assertEquals( "2.2", oid.toString() );
 
             // joint-iso-itu-t(2), reliable-transfer(3)
-            oid.setOID( new byte[]
+            oid.setOid( new byte[]
                 { 80 + 3 } );
             assertEquals( "2.3", oid.toString() );
 
             // ...
             // joint-iso-itu-t(2), upu(40)
-            oid.setOID( new byte[]
+            oid.setOid( new byte[]
                 { 80 + 40 } );
             assertEquals( "2.40", oid.toString() );
 
             // ...
             // joint-iso-itu-t(2), xxx(100)
-            oid.setOID( new byte[]
+            oid.setOid( new byte[]
                 { ( byte ) ( 0x81 ), 0x34 } );
             assertEquals( "2.100", oid.toString() );
         }
@@ -245,23 +245,23 @@ public class OIDTest
     public void testOidStringGood()
     {
 
-        OID oid = new OID();
+        Oid oid = new Oid();
 
         try
         {
-            oid.setOID( "0.0" );
+            oid.setOid( "0.0" );
             assertEquals( "0.0", oid.toString() );
 
-            oid.setOID( "0.0.0.0.0" );
+            oid.setOid( "0.0.0.0.0" );
             assertEquals( "0.0.0.0.0", oid.toString() );
 
-            oid.setOID( "0.1.2.3.4" );
+            oid.setOid( "0.1.2.3.4" );
             assertEquals( "0.1.2.3.4", oid.toString() );
 
-            oid.setOID( "2.123456" );
+            oid.setOid( "2.123456" );
             assertEquals( "2.123456", oid.toString() );
 
-            oid.setOID( "1.2.840.113554.1.2.2" );
+            oid.setOid( "1.2.840.113554.1.2.2" );
             assertEquals( "1.2.840.113554.1.2.2", oid.toString() );
         }
         catch ( DecoderException de )
@@ -277,16 +277,16 @@ public class OIDTest
     @Test
     public void testOidStringBad()
     {
-        assertFalse( OID.isOID( "0" ) );
-        assertFalse( OID.isOID( "0." ) );
-        assertFalse( OID.isOID( "." ) );
-        assertFalse( OID.isOID( "0.1.2." ) );
-        assertFalse( OID.isOID( "3.1" ) );
-        assertFalse( OID.isOID( "0..1" ) );
-        assertFalse( OID.isOID( "0..12" ) );
-        assertFalse( OID.isOID( "0.a.2" ) );
-        assertTrue( OID.isOID( "0.123456" ) );
-        assertTrue( OID.isOID( "1.123456" ) );
+        assertFalse( Oid.isOid( "0" ) );
+        assertFalse( Oid.isOid( "0." ) );
+        assertFalse( Oid.isOid( "." ) );
+        assertFalse( Oid.isOid( "0.1.2." ) );
+        assertFalse( Oid.isOid( "3.1" ) );
+        assertFalse( Oid.isOid( "0..1" ) );
+        assertFalse( Oid.isOid( "0..12" ) );
+        assertFalse( Oid.isOid( "0.a.2" ) );
+        assertTrue( Oid.isOid( "0.123456" ) );
+        assertTrue( Oid.isOid( "1.123456" ) );
     }
 
 
@@ -297,11 +297,11 @@ public class OIDTest
     public void testOidSpnego()
     {
 
-        OID oid = new OID();
+        Oid oid = new Oid();
 
         try
         {
-            oid.setOID( new byte[]
+            oid.setOid( new byte[]
                 { 0x2b, 0x06, 0x01, 0x05, 0x05, 0x02 } );
 
             assertEquals( "1.3.6.1.5.5.2", oid.toString() );
@@ -320,11 +320,11 @@ public class OIDTest
     public void testOidKerberosV5()
     {
 
-        OID oid = new OID();
+        Oid oid = new Oid();
 
         try
         {
-            oid.setOID( new byte[]
+            oid.setOid( new byte[]
                 { 0x2a, ( byte ) 0x86, 0x48, ( byte ) 0x86, ( byte ) 0xf7, 0x12, 0x01, 0x02, 0x02 } );
 
             assertEquals( "1.2.840.113554.1.2.2", oid.toString() );
@@ -342,29 +342,29 @@ public class OIDTest
     @Test
     public void testOidBytes()
     {
-        OID oid = new OID();
-        OID oid2 = new OID();
+        Oid oid = new Oid();
+        Oid oid2 = new Oid();
 
         try
         {
-            oid.setOID( "0.0" );
-            oid2.setOID( oid.getOID() );
+            oid.setOid( "0.0" );
+            oid2.setOid( oid.getOid() );
             assertEquals( oid.toString(), oid2.toString() );
 
-            oid.setOID( "0.0.0.0.0" );
-            oid2.setOID( oid.getOID() );
+            oid.setOid( "0.0.0.0.0" );
+            oid2.setOid( oid.getOid() );
             assertEquals( oid.toString(), oid2.toString() );
 
-            oid.setOID( "0.1.2.3.4" );
-            oid2.setOID( oid.getOID() );
+            oid.setOid( "0.1.2.3.4" );
+            oid2.setOid( oid.getOid() );
             assertEquals( oid.toString(), oid2.toString() );
 
-            oid.setOID( "2.123456" );
-            oid2.setOID( oid.getOID() );
+            oid.setOid( "2.123456" );
+            oid2.setOid( oid.getOid() );
             assertEquals( oid.toString(), oid2.toString() );
 
-            oid.setOID( "1.2.840.113554.1.2.2" );
-            oid2.setOID( oid.getOID() );
+            oid.setOid( "1.2.840.113554.1.2.2" );
+            oid2.setOid( oid.getOid() );
             assertEquals( oid.toString(), oid2.toString() );
         }
         catch ( DecoderException de )
@@ -379,9 +379,9 @@ public class OIDTest
     @Test
     public void testOidEquals() throws DecoderException
     {
-        OID oid1 = new OID();
-        OID oid2 = new OID();
-        OID oid3 = new OID( "1.1" );
+        Oid oid1 = new Oid();
+        Oid oid2 = new Oid();
+        Oid oid3 = new Oid( "1.1" );
 
         assertTrue( oid1.equals( oid2 ) );
         assertFalse( oid1.equals( oid3 ) );
@@ -398,9 +398,9 @@ public class OIDTest
         String s2 = "1.2.840.113554.1.2.2.1.2.840.113554.1.2.2.1.2.840.113554.1.2.2";
         String s3 = "1.3.6.1.5.5.2";
         
-        OID oid1 = new OID( s1 );
-        OID oid2 = new OID( s2 );
-        OID oid3 = new OID( s3 );
+        Oid oid1 = new Oid( s1 );
+        Oid oid2 = new Oid( s2 );
+        Oid oid3 = new Oid( s3 );
         
         assertTrue( oid1.equals( oid2 ) );
         assertFalse( oid1.equals( oid3 ) );

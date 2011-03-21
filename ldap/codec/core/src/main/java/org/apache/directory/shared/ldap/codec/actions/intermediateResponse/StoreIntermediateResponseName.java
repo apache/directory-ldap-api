@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.codec.actions.intermediateResponse;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.IntermediateResponseDecorator;
@@ -85,9 +85,9 @@ public class StoreIntermediateResponseName extends GrammarAction<LdapMessageCont
 
             String oidStr = Strings.utf8ToString(responseNameBytes);
 
-            if ( OID.isOID( oidStr ) )
+            if ( Oid.isOid( oidStr ) )
             {
-                OID.isOID( oidStr );
+                Oid.isOid( oidStr );
                 intermediateResponse.setResponseName( oidStr );
             }
             else

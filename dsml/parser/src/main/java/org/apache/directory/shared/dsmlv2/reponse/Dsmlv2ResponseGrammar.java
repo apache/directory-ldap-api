@@ -27,16 +27,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.dsmlv2.AbstractDsmlMessageDecorator;
 import org.apache.directory.shared.dsmlv2.AbstractGrammar;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Container;
 import org.apache.directory.shared.dsmlv2.Dsmlv2StatesEnum;
+import org.apache.directory.shared.dsmlv2.Grammar;
 import org.apache.directory.shared.dsmlv2.GrammarAction;
 import org.apache.directory.shared.dsmlv2.GrammarTransition;
-import org.apache.directory.shared.dsmlv2.Grammar;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.dsmlv2.Tag;
 import org.apache.directory.shared.dsmlv2.reponse.ErrorResponse.ErrorResponseType;
@@ -1203,7 +1203,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
         if ( attributeValue != null )
         {
-            if ( !OID.isOID(attributeValue) )
+            if ( !Oid.isOid(attributeValue) )
             {
                 throw new XmlPullParserException( I18n.err( I18n.ERR_03006 ), xpp, null );
             }
@@ -1842,7 +1842,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
                 if ( !nextText.equals( "" ) )
                 {
-                    extendedResponse.setResponseName( new OID( nextText.trim() ).toString() );
+                    extendedResponse.setResponseName( new Oid( nextText.trim() ).toString() );
                 }
 
             }

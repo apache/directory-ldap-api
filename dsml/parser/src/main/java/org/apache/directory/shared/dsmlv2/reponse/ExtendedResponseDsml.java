@@ -20,7 +20,7 @@
 package org.apache.directory.shared.dsmlv2.reponse;
 
 
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
@@ -146,7 +146,7 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
      * 
      * @param responseName The name to set.
      */
-    public void setResponseName( OID responseName )
+    public void setResponseName( Oid responseName )
     {
         getDecorated().setResponseName( responseName.toString() );
     }

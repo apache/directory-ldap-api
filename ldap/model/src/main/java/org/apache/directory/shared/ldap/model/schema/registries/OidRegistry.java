@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
@@ -187,7 +187,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
         String oid = schemaObject.getOid();
 
-        if ( !OID.isOID( oid ) )
+        if ( !Oid.isOid( oid ) )
         {
             String message = I18n.err( I18n.ERR_04290 );
 

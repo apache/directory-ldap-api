@@ -26,14 +26,14 @@ import java.lang.reflect.Array;
 import java.util.HashMap;
 
 import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.dsmlv2.AbstractGrammar;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Container;
 import org.apache.directory.shared.dsmlv2.Dsmlv2StatesEnum;
+import org.apache.directory.shared.dsmlv2.Grammar;
 import org.apache.directory.shared.dsmlv2.GrammarAction;
 import org.apache.directory.shared.dsmlv2.GrammarTransition;
-import org.apache.directory.shared.dsmlv2.Grammar;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.dsmlv2.Tag;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml.OnError;
@@ -1577,7 +1577,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     String oid = nextText.trim();
 
-                    if ( OID.isOID( oid ) )
+                    if ( Oid.isOid( oid ) )
                     {
                         extendedRequest.setRequestName( nextText.trim() );
                     }
@@ -2760,7 +2760,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
             if ( attributeValue != null )
             {
-                if ( !OID.isOID( attributeValue ) )
+                if ( !Oid.isOid( attributeValue ) )
                 {
                     throw new XmlPullParserException( I18n.err( I18n.ERR_03034 ), xpp, null );
                 }

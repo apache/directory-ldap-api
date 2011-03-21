@@ -23,11 +23,11 @@ package org.apache.directory.shared.ldap.codec.actions.extendedRequest;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.shared.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.shared.ldap.model.message.ExtendedRequest;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -87,7 +87,7 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
             {
                 String requestName = Strings.utf8ToString(requestNameBytes);
 
-                if ( !OID.isOID( requestName ) )
+                if ( !Oid.isOid( requestName ) )
                 {
 
                     String msg = "The Request name is not a valid OID : "

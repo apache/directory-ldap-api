@@ -27,11 +27,11 @@ import org.apache.directory.shared.i18n.I18n;
 
 
 /**
- * This class implement an OID (Object Identifier).<br/>
+ * This class implement an Oid (Object Identifier).<br/>
  * <br/>
- * An OID is encoded as a list of bytes representing integers.<br/>
+ * An Oid is encoded as a list of bytes representing integers.<br/>
  * <br/>
- * An OID has a numeric representation where number are separated with dots :<br/>
+ * An Oid has a numeric representation where number are separated with dots :<br/>
  * SPNEGO Oid = 1.3.6.1.5.5.2<br/>
  * <br/>
  * Translating from a byte list to a dot separated list of number follows the rules :<br/>
@@ -63,9 +63,9 @@ import org.apache.directory.shared.i18n.I18n;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class Oid1
+public class Oid
 {
-    /** The OID as a array of int */
+    /** The Oid as a array of int */
     private long[] oidValues;
 
     /** The hashcode, computed only once */
@@ -73,9 +73,9 @@ public class Oid1
 
 
     /**
-     * Creates a new OID object.
+     * Creates a new Oid object.
      */
-    public Oid1()
+    public Oid()
     {
         // We should not create this kind of object directly, it must
         // be created through the factory.
@@ -84,41 +84,41 @@ public class Oid1
 
 
     /**
-     * Create a new OID object from a byte array
+     * Create a new Oid object from a byte array
      *
-     * @param oid the byte array containing the OID
+     * @param oid the byte array containing the Oid
      * @throws org.apache.directory.shared.asn1.DecoderException if the byte array does not contain a
-     * valid OID
+     * valid Oid
      */
-    public Oid1( byte[] oid ) throws DecoderException
+    public Oid( byte[] oid ) throws DecoderException
     {
-        setOID( oid );
+        setOid( oid );
         hash = computeHashCode();
     }
 
 
     /**
-     * Create a new OID object from a String
+     * Create a new Oid object from a String
      *
-     * @param oid The String which is supposed to be an OID
+     * @param oid The String which is supposed to be an Oid
      * @throws DecoderException if the byte array does not contain a
-     * valid OID
+     * valid Oid
      */
-    public Oid1( String oid ) throws DecoderException
+    public Oid( String oid ) throws DecoderException
     {
-        setOID( oid );
+        setOid( oid );
         hash = computeHashCode();
     }
 
 
     /**
-     * Set the OID. It will be translated from a byte array to an internal
+     * Set the Oid. It will be translated from a byte array to an internal
      * representation.
      *
-     * @param oid The bytes containing the OID
-     * @throws org.apache.directory.shared.asn1.DecoderException if the byte array does not contains a valid OID
+     * @param oid The bytes containing the Oid
+     * @throws org.apache.directory.shared.asn1.DecoderException if the byte array does not contains a valid Oid
      */
-    public void setOID( byte[] oid ) throws DecoderException
+    public void setOid( byte[] oid ) throws DecoderException
     {
         if ( oid == null )
         {
@@ -206,16 +206,16 @@ public class Oid1
 
 
     /**
-     * Set the OID. It will be translated from a String to an internal
+     * Set the Oid. It will be translated from a String to an internal
      * representation.
      *
      * The syntax will be controled in respect with this rule :
-     * OID = ( [ '0' | '1' ] '.' [ 0 .. 39 ] | '2' '.' int) ( '.' int )*
+     * Oid = ( [ '0' | '1' ] '.' [ 0 .. 39 ] | '2' '.' int) ( '.' int )*
      *
-     * @param oid The String containing the OID
-     * @throws org.apache.directory.shared.asn1.DecoderException if the byte array does not contains a valid OID
+     * @param oid The String containing the Oid
+     * @throws org.apache.directory.shared.asn1.DecoderException if the byte array does not contains a valid Oid
      */
-    public void setOID( String oid ) throws DecoderException
+    public void setOid( String oid ) throws DecoderException
     {
         if ( ( oid == null ) || ( oid.length() == 0 ) )
         {
@@ -327,11 +327,11 @@ public class Oid1
 
 
     /**
-     * Get an array of long from the OID
+     * Get an array of long from the Oid
      *
-     * @return An array of long representing the OID
+     * @return An array of long representing the Oid
      */
-    public long[] getOIDValues()
+    public long[] getOidValues()
     {
         long[] copy = new long[oidValues.length];
 
@@ -342,11 +342,11 @@ public class Oid1
 
 
     /**
-     * Get the number of bytes necessary to store the OID
+     * Get the number of bytes necessary to store the Oid
      *
-     * @return An int representing the length of the OID
+     * @return An int representing the length of the Oid
      */
-    public int getOIDLength()
+    public int getOidLength()
     {
         long value = oidValues[0] * 40 + oidValues[1];
         int nbBytes = 0;
@@ -403,16 +403,16 @@ public class Oid1
 
 
     /**
-     * Get an array of bytes from the OID
+     * Get an array of bytes from the Oid
      *
-     * @return An array of int representing the OID
+     * @return An array of int representing the Oid
      */
-    public byte[] getOID()
+    public byte[] getOid()
     {
         long value = oidValues[0] * 40 + oidValues[1];
         long firstValues = value;
 
-        byte[] bytes = new byte[getOIDLength()];
+        byte[] bytes = new byte[getOidLength()];
         int pos = 0;
 
         if ( oidValues[0] < 2 )
@@ -495,10 +495,10 @@ public class Oid1
 
     /**
      * Compute the hash code for this object. No need to compute
-     * it live when calling the hashCode() method, as an OID
+     * it live when calling the hashCode() method, as an Oid
      * never change.
      *
-     * @return the OID's hash code
+     * @return the Oid's hash code
      */
     private int computeHashCode()
     {
@@ -517,11 +517,11 @@ public class Oid1
 
 
     /**
-     * Check that an OID is valid
+     * Check that an Oid is valid
      * @param oid The oid to be checked
-     * @return <code>true</code> if the OID is valid
+     * @return <code>true</code> if the Oid is valid
      */
-    public static boolean isOID( String oid )
+    public static boolean isOid( String oid )
     {
         if ( ( oid == null ) || ( oid.length() == 0 ) )
         {
@@ -628,9 +628,9 @@ public class Oid1
 
 
     /**
-     * Get the OID as a String
+     * Get the Oid as a String
      *
-     * @return A String representing the OID
+     * @return A String representing the Oid
      */
     @Override
     public String toString()
@@ -682,7 +682,7 @@ public class Oid1
             return false;
         }
 
-        Oid1 instance = ( Oid1 ) oid;
+        Oid instance = ( Oid ) oid;
 
         if ( instance.hash != hash )
         {

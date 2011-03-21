@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
 
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Chars;
@@ -101,7 +101,7 @@ public class OidSyntaxChecker extends SyntaxChecker
         // checked to make sure there are no other chars except '.' and digits.
         if ( Chars.isDigit(strValue.charAt(0)) )
         {
-            if ( ! OID.isOID(strValue) )
+            if ( ! Oid.isOid(strValue) )
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;

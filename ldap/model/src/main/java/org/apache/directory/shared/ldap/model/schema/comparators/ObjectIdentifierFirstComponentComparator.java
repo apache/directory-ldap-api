@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.model.schema.comparators;
 
 
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.util.Chars;
 import org.apache.directory.shared.util.Strings;
@@ -78,7 +78,7 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
         
         String numericOid = s.substring( start, pos );
         
-        if ( OID.isOID(numericOid) )
+        if ( Oid.isOid(numericOid) )
         {
             return numericOid;
         }

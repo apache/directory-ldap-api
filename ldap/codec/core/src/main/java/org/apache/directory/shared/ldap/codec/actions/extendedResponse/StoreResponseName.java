@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.codec.actions.extendedResponse;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.ExtendedResponseDecorator;
@@ -83,7 +83,7 @@ public class StoreResponseName extends GrammarAction<LdapMessageContainer<Extend
         }
         else
         {
-            extendedResponse.setResponseName( new OID( Strings.asciiBytesToString(tlv.getValue().getData()) )
+            extendedResponse.setResponseName( new Oid( Strings.asciiBytesToString(tlv.getValue().getData()) )
                 .toString() );
         }
 

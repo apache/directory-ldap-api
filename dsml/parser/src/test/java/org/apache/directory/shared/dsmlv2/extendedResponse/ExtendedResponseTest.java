@@ -32,7 +32,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.dsmlv2.AbstractResponseTest;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.Dsmlv2ResponseParser;
@@ -570,7 +570,7 @@ public class ExtendedResponseTest extends AbstractResponseTest
 
         try
         {
-            assertEquals( new OID( "1.2.3.4.5.6.7.8.9.0" ).toString(), extendedResponse.getResponseName().toString() );
+            assertEquals( new Oid( "1.2.3.4.5.6.7.8.9.0" ).toString(), extendedResponse.getResponseName().toString() );
         }
         catch ( DecoderException e )
         {
@@ -724,7 +724,7 @@ public class ExtendedResponseTest extends AbstractResponseTest
 
         try
         {
-            assertEquals( new OID( "1.2.3.4.5.6.7.8.9.0" ).toString(), extendedResponse.getResponseName().toString() );
+            assertEquals( new Oid( "1.2.3.4.5.6.7.8.9.0" ).toString(), extendedResponse.getResponseName().toString() );
         }
         catch ( DecoderException e )
         {

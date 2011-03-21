@@ -41,7 +41,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
@@ -759,7 +759,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         // Create and check the OID
         String oidString = lowerLine.substring( 0, pos );
 
-        if ( !OID.isOID(oidString) )
+        if ( !Oid.isOid(oidString) )
         {
             String message = I18n.err( I18n.ERR_12031_INVALID_OID, oidString );
             LOG.error( message );

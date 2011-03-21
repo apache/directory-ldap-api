@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
 
 
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
@@ -92,7 +92,7 @@ public class NumericOidSyntaxChecker extends SyntaxChecker
         }
 
         // Just check that the value is a valid OID
-        boolean result = ( OID.isOID( strValue ) );
+        boolean result = ( Oid.isOid( strValue ) );
         
         if ( result )
         {

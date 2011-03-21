@@ -20,7 +20,7 @@
 package org.apache.directory.shared.dsmlv2.request;
 
 
-import org.apache.directory.shared.asn1.util.OID;
+import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.model.message.ExtendedRequest;
@@ -109,7 +109,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends Extende
      * 
      * @param requestName The request name to set.
      */
-    public void setRequestName( OID requestName )
+    public void setRequestName( Oid requestName )
     {
         getDecorated().setRequestName( requestName.toString() );
     }
