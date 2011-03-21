@@ -63,7 +63,7 @@ import org.apache.directory.shared.i18n.I18n;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OID
+public class Oid1
 {
     /** The OID as a array of int */
     private long[] oidValues;
@@ -75,7 +75,7 @@ public class OID
     /**
      * Creates a new OID object.
      */
-    public OID()
+    public Oid1()
     {
         // We should not create this kind of object directly, it must
         // be created through the factory.
@@ -90,7 +90,7 @@ public class OID
      * @throws org.apache.directory.shared.asn1.DecoderException if the byte array does not contain a
      * valid OID
      */
-    public OID( byte[] oid ) throws DecoderException
+    public Oid1( byte[] oid ) throws DecoderException
     {
         setOID( oid );
         hash = computeHashCode();
@@ -104,7 +104,7 @@ public class OID
      * @throws DecoderException if the byte array does not contain a
      * valid OID
      */
-    public OID( String oid ) throws DecoderException
+    public Oid1( String oid ) throws DecoderException
     {
         setOID( oid );
         hash = computeHashCode();
@@ -682,7 +682,7 @@ public class OID
             return false;
         }
 
-        OID instance = ( OID ) oid;
+        Oid1 instance = ( Oid1 ) oid;
 
         if ( instance.hash != hash )
         {
