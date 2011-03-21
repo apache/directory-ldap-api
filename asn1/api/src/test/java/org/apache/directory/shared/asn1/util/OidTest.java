@@ -40,7 +40,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class OIDTest1
+public class OidTest
 {
     // ~ Methods
     // ------------------------------------------------------------------------------------
