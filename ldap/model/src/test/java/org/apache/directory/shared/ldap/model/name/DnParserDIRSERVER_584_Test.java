@@ -20,17 +20,12 @@
 package org.apache.directory.shared.ldap.model.name;
 
 
-import java.util.ArrayList;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.name.DnParser;
-import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.fail;
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -46,18 +41,10 @@ public class DnParserDIRSERVER_584_Test
    /**
     * Need this testa() to run first to mess up the state of the static parser.
     */
-    @Test
+    @Test( expected=LdapException.class )
     public void testa() throws Exception
    {
-       try
-       {
-           DnParser.parseInternal( "ou=test+testing", new ArrayList<Rdn>() );
-           fail( "should never get here" );
-       }
-       catch ( LdapException e )
-       {
-           // Nothing to do
-       }
+       new Dn( "ou=test+testing"  );
    }
 
 
@@ -68,6 +55,6 @@ public class DnParserDIRSERVER_584_Test
     @Test
     public void testb() throws Exception
    {
-       DnParser.parseInternal("ou=system", new ArrayList<Rdn>());
+       new Dn( "ou=system" );
    }
 }

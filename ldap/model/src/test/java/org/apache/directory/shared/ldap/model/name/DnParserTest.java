@@ -44,16 +44,15 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class DnParserTest
 {
-    // CONSTRUCTOR functions --------------------------------------------------
     /**
      * test an empty Dn
      */
     @Test
     public void testLdapDNEmpty() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
+        Dn dn = new Dn( "" );
 
-        assertEquals( "", ( (Dn) dnParser.parse( "" ) ).getName() );
+        assertEquals( "", dn.getName() );
     }
 
 
@@ -63,10 +62,10 @@ public class DnParserTest
     @Test
     public void testLdapDNSimple() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
+        Dn dn = new Dn( "a = b" );
 
-        assertEquals( "a = b", ( (Dn) dnParser.parse( "a = b" ) ).getName() );
-        assertEquals( "a=b", ( (Dn) dnParser.parse( "a = b" ) ).getNormName() );
+        assertEquals( "a = b", dn.getName() );
+        assertEquals( "a=b", dn.getNormName() );
     }
 
 
@@ -76,8 +75,8 @@ public class DnParserTest
     @Test
     public void testLdapDNComposite() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "a = b, c = d" );
+        Dn dn = new Dn( "a = b, c = d"  );
+
         assertEquals( "a=b,c=d", dn.getNormName() );
         assertEquals( "a = b, c = d", dn.getName() );
     }
@@ -89,8 +88,7 @@ public class DnParserTest
     @Test
     public void testLdapDNCompositeWithSpace() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "a=b, a =b, a= b, a = b, a  =  b" );
+        Dn dn = new Dn( "a=b, a =b, a= b, a = b, a  =  b" );
         assertEquals( "a=b,a=b,a=b,a=b,a=b", dn.getNormName() );
         assertEquals( "a=b, a =b, a= b, a = b, a  =  b", dn.getName() );
     }
@@ -103,8 +101,7 @@ public class DnParserTest
     @Test
     public void testLdapDNCompositeSepators() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "a=b;c=d,e=f" );
+        Dn dn = new Dn( "a=b;c=d,e=f" );
         assertEquals( "a=b,c=d,e=f", dn.getNormName() );
         assertEquals( "a=b;c=d,e=f", dn.getName() );
     }
@@ -116,8 +113,7 @@ public class DnParserTest
     @Test
     public void testLdapDNSimpleMultivaluedAttribute() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "a = b + c = d" );
+        Dn dn = new Dn( "a = b + c = d" );
         assertEquals( "a=b+c=d", dn.getNormName() );
         assertEquals( "a = b + c = d", dn.getName() );
     }
@@ -130,8 +126,7 @@ public class DnParserTest
     @Test
     public void testLdapDNCompositeMultivaluedAttribute() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "a=b+c=d, e=f + g=h + i=j" );
+        Dn dn = new Dn( "a=b+c=d, e=f + g=h + i=j" );
         assertEquals( "a=b+c=d,e=f+g=h+i=j", dn.getNormName() );
         assertEquals( "a=b+c=d, e=f + g=h + i=j", dn.getName() );
     }
@@ -143,8 +138,7 @@ public class DnParserTest
     @Test
     public void testLdapDNOidUpper() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "OID.12.34.56 = azerty" );
+        Dn dn = new Dn( "OID.12.34.56 = azerty" );
         assertEquals( "oid.12.34.56=azerty", dn.getNormName() );
         assertEquals( "OID.12.34.56 = azerty", dn.getName() );
     }
@@ -156,8 +150,7 @@ public class DnParserTest
     @Test
     public void testLdapDNOidLower() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "oid.12.34.56 = azerty" );
+        Dn dn = new Dn( "oid.12.34.56 = azerty" );
         assertEquals( "oid.12.34.56=azerty", dn.getNormName() );
         assertEquals( "oid.12.34.56 = azerty", dn.getName() );
     }
@@ -170,8 +163,7 @@ public class DnParserTest
     @Test
     public void testLdapDNOidWithoutPrefix() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "12.34.56 = azerty" );
+        Dn dn = new Dn( "12.34.56 = azerty" );
         assertEquals( "12.34.56=azerty", dn.getNormName() );
         assertEquals( "12.34.56 = azerty", dn.getName() );
     }
@@ -184,8 +176,7 @@ public class DnParserTest
     @Test
     public void testLdapDNCompositeOidWithoutPrefix() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "12.34.56 = azerty; 7.8 = test" );
+        Dn dn = new Dn( "12.34.56 = azerty; 7.8 = test" );
         assertEquals( "12.34.56=azerty,7.8=test", dn.getNormName() );
         assertEquals( "12.34.56 = azerty; 7.8 = test", dn.getName() );
     }
@@ -197,12 +188,11 @@ public class DnParserTest
     @Test
     public void testLdapDNPairCharAttributeValue() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C3\\A9" );
+        Dn dn = new Dn( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C3\\A9" );
         assertEquals( "a=\\,=\\+\\<\\>#\\;\\\\\\\"\u00e9", dn.getNormName() );
         assertEquals( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C3\\A9", dn.getName() );
 
-        dn = (Dn) dnParser.parse( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\u00e9" );
+        dn = new Dn( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\u00e9" );
         assertEquals( "a=\\,=\\+\\<\\>#\\;\\\\\\\"\u00e9", dn.getNormName() );
         assertEquals( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\u00e9", dn.getName() );
     }
@@ -214,8 +204,7 @@ public class DnParserTest
     @Test
     public void testLdapDNHexStringAttributeValue() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "a = #0010A0AAFF" );
+        Dn dn = new Dn( "a = #0010A0AAFF" );
         assertEquals( "a=#0010A0AAFF", dn.getNormName() );
         assertEquals( "a = #0010A0AAFF", dn.getName() );
     }
@@ -229,8 +218,7 @@ public class DnParserTest
     {
         try
         {
-            DnParser dnParser = DnParser.getNameParser();
-            dnParser.parse( "a=#zz" );
+            new Dn( "a=#zz" );
             fail();
         }
         catch ( LdapInvalidDnException ine )
@@ -246,12 +234,11 @@ public class DnParserTest
     @Test
     public void testLdapDNQuotedAttributeValue() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "a = quoted \\\"value" );
+        Dn dn = new Dn( "a = quoted \\\"value" );
         assertEquals( "a=quoted \\\"value", dn.getNormName() );
         assertEquals( "a = quoted \\\"value", dn.getName() );
         
-        dn = (Dn) dnParser.parse( "cn=Mackie \\\"The Knife\\\" Messer" );
+        dn = new Dn( "cn=Mackie \\\"The Knife\\\" Messer" );
         assertEquals( "cn=Mackie \\\"The Knife\\\" Messer", dn.getNormName() );
         assertEquals( "cn=Mackie \\\"The Knife\\\" Messer", dn.getName() );
     }
@@ -263,8 +250,7 @@ public class DnParserTest
     @Test
     public void testLdapDNBackslashInAttributeValue() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "a = AC\\\\DC" );
+        Dn dn = new Dn( "a = AC\\\\DC" );
         assertEquals( "a=AC\\\\DC", dn.getNormName() );
         assertEquals( "a = AC\\\\DC", dn.getName() );
     }
@@ -276,8 +262,7 @@ public class DnParserTest
     @Test
     public void testNameToBytes() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "cn = John, ou = People, OU = Marketing" );
+        Dn dn = new Dn( "cn = John, ou = People, OU = Marketing" );
 
         byte[] bytes = Dn.getBytes(dn);
 
@@ -293,8 +278,7 @@ public class DnParserTest
                 {'C', 'N', ' ', '=', ' ', 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', ' ', 'L', (byte) 0xc3,
                         (byte) 0xa9, 'c', 'h', 'a', 'r', 'n', 'y'});
 
-        DnParser dnParser = DnParser.getNameParser();
-        Dn name = (Dn) dnParser.parse( dn );
+        Dn name = new Dn( dn );
 
         assertEquals( dn, name.getName() );
         assertEquals( "cn=Emmanuel  L\u00e9charny", name.getNormName() );
@@ -307,8 +291,7 @@ public class DnParserTest
         String dn = Strings.utf8ToString(new byte[]
                 {'C', '=', ' ', 'E', (byte) 0xc3, (byte) 0xa9, 'c'});
 
-        DnParser dnParser = DnParser.getNameParser();
-        Dn name = (Dn) dnParser.parse( dn );
+        Dn name = new Dn( dn );
 
         assertEquals( dn, name.getName() );
         assertEquals( "c=E\u00e9c", name.getNormName() );
@@ -318,9 +301,7 @@ public class DnParserTest
     @Test
     public void testVsldapExtras() throws LdapException
     {
-        DnParser dnParser = DnParser.getNameParser();
-        Dn name = (Dn) dnParser
-            .parse( "cn=Billy Bakers, OID.2.5.4.11=Corporate Tax, ou=Fin-Accounting, ou=Americas, ou=Search, o=IMC, c=US" );
+        Dn name = new Dn( "cn=Billy Bakers, OID.2.5.4.11=Corporate Tax, ou=Fin-Accounting, ou=Americas, ou=Search, o=IMC, c=US" );
 
         assertEquals(
             "cn=Billy Bakers, OID.2.5.4.11=Corporate Tax, ou=Fin-Accounting, ou=Americas, ou=Search, o=IMC, c=US", name
@@ -331,34 +312,17 @@ public class DnParserTest
     }
 
 
-    // ~ Methods
-    // ----------------------------------------------------------------
-
-    /**
-     * Class under test for void DnParser()
-     *
-     * @throws LdapException
-     *             if anything goes wrong
-     */
-    public final void testDnParser()
-    {
-        DnParser parser = DnParser.getNameParser();
-
-        assertNotNull( parser );
-    }
-
-
     /**
      * Class under test for Name parse(String)
      *
      * @throws LdapException
      *             if anything goes wrong
      */
+    @Test
     public final void testParseStringEmpty() throws LdapException
     {
-        DnParser parser = DnParser.getNameParser();
 
-        Dn nameEmpty = parser.parse( "" );
+        Dn nameEmpty = new Dn( "" );
 
         assertNotNull( nameEmpty );
     }
@@ -370,11 +334,10 @@ public class DnParserTest
      * @throws LdapException
      *             if anything goes wrong
      */
+    @Test
     public final void testParseStringNull() throws LdapException
     {
-        DnParser parser = DnParser.getNameParser();
-
-        Dn nameNull = parser.parse( null );
+        Dn nameNull = new Dn( (String)null );
 
         assertEquals( "Null Dn are legal : ", "", nameNull.toString() );
     }
@@ -386,18 +349,16 @@ public class DnParserTest
      * @throws LdapException
      *             if anything goes wrong
      */
+    @Test
     public final void testParseStringRFC1779_1() throws LdapException
     {
-        DnParser parser = DnParser.getNameParser();
-
-        Dn nameRFC1779_1 = parser
-            .parse( "CN=Marshall T. Rose, O=Dover Beach Consulting, L=Santa Clara, ST=California, C=US" );
+        Dn nameRFC1779_1 = new Dn( "CN=Marshall T. Rose, O=Dover Beach Consulting, L=Santa Clara, ST=California, C=US" );
 
         assertEquals( "RFC1779_1 : ",
             "CN=Marshall T. Rose, O=Dover Beach Consulting, L=Santa Clara, ST=California, C=US",
             ( (Dn) nameRFC1779_1 ).getName() );
         assertEquals( "RFC1779_1 : ", "cn=Marshall T. Rose,o=Dover Beach Consulting,l=Santa Clara,st=California,c=US",
-            nameRFC1779_1.toString() );
+            nameRFC1779_1.getNormName() );
     }
 
 
@@ -407,11 +368,10 @@ public class DnParserTest
      * @throws LdapException
      *             if anything goes wrong
      */
+    @Test
     public final void testParseStringRFC2253_1() throws LdapException
     {
-        DnParser parser = DnParser.getNameParser();
-
-        Dn nameRFC2253_1 = parser.parse( "CN=Steve Kille,O=Isode limited,C=GB" );
+        Dn nameRFC2253_1 = new Dn( "CN=Steve Kille,O=Isode limited,C=GB" );
 
         assertEquals( "RFC2253_1 : ", "CN=Steve Kille,O=Isode limited,C=GB", ( (Dn) nameRFC2253_1 ).getName() );
     }
@@ -423,15 +383,14 @@ public class DnParserTest
      * @throws LdapException
      *             if anything goes wrong
      */
+    @Test
     public final void testParseStringRFC2253_2() throws LdapException
     {
-        DnParser parser = DnParser.getNameParser();
-
-        Dn nameRFC2253_2 = parser.parse( "CN = Sales + CN =   J. Smith , O = Widget Inc. , C = US" );
+        Dn nameRFC2253_2 = new Dn( "CN = Sales + CN =   J. Smith , O = Widget Inc. , C = US" );
 
         assertEquals( "RFC2253_2 : ", "CN = Sales + CN =   J. Smith , O = Widget Inc. , C = US",
             ( (Dn) nameRFC2253_2 ).getName() );
-        assertEquals( "RFC2253_2 : ", "cn=J. Smith+cn=Sales,o=Widget Inc.,c=US", nameRFC2253_2.toString() );
+        assertEquals( "RFC2253_2 : ", "cn=Sales+cn=J. Smith,o=Widget Inc.,c=US", nameRFC2253_2.getNormName() );
     }
 
 
@@ -441,15 +400,14 @@ public class DnParserTest
      * @throws LdapException
      *             if anything goes wrong
      */
+    @Test
     public final void testParseStringRFC2253_3() throws LdapException
     {
-        DnParser parser = DnParser.getNameParser();
-
-        Dn nameRFC2253_3 = parser.parse( "CN=L. Eagle,   O=Sue\\, Grabbit and Runn, C=GB" );
+        Dn nameRFC2253_3 = new Dn( "CN=L. Eagle,   O=Sue\\, Grabbit and Runn, C=GB" );
 
         assertEquals( "RFC2253_3 : ", "CN=L. Eagle,   O=Sue\\, Grabbit and Runn, C=GB", ( (Dn) nameRFC2253_3 )
             .getName() );
-        assertEquals( "RFC2253_3 : ", "cn=L. Eagle,o=Sue\\, Grabbit and Runn,c=GB", nameRFC2253_3.toString() );
+        assertEquals( "RFC2253_3 : ", "cn=L. Eagle,o=Sue\\, Grabbit and Runn,c=GB", nameRFC2253_3.getNormName() );
     }
 
 
@@ -459,11 +417,10 @@ public class DnParserTest
      * @throws LdapException
      *             if anything goes wrong
      */
+    @Test
     public final void testParseStringRFC2253_4() throws LdapException
     {
-        DnParser parser = DnParser.getNameParser();
-
-        Dn nameRFC2253_4 = parser.parse( "CN=Before\\0DAfter,O=Test,C=GB" );
+        Dn nameRFC2253_4 = new Dn( "CN=Before\\0DAfter,O=Test,C=GB" );
         assertEquals( "RFC2253_4 : ", "CN=Before\\0DAfter,O=Test,C=GB", ( (Dn) nameRFC2253_4 ).getName() );
     }
 
@@ -474,11 +431,10 @@ public class DnParserTest
      * @throws LdapException
      *             if anything goes wrong
      */
+    @Test
     public final void testParseStringRFC2253_5() throws LdapException
     {
-        DnParser parser = DnParser.getNameParser();
-
-        Dn nameRFC2253_5 = parser.parse( "1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB" );
+        Dn nameRFC2253_5 = new Dn( "1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB" );
 
         assertEquals( "RFC2253_5 : ", "1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB", ( (Dn) nameRFC2253_5 )
             .getName() );
@@ -491,11 +447,10 @@ public class DnParserTest
      * @throws LdapException
      *             if anything goes wrong
      */
+    @Test
     public final void testParseStringRFC2253_6() throws LdapException
     {
-        DnParser parser = DnParser.getNameParser();
-
-        Dn nameRFC2253_6 = parser.parse( "SN=Lu\\C4\\8Di\\C4\\87" );
+        Dn nameRFC2253_6 = new Dn( "SN=Lu\\C4\\8Di\\C4\\87" );
 
         assertEquals( "RFC2253_6 : ", "SN=Lu\\C4\\8Di\\C4\\87", ( (Dn) nameRFC2253_6 ).getName() );
     }
@@ -507,13 +462,12 @@ public class DnParserTest
      * @throws LdapException
      *             if anything goes wrong
      */
+    @Test
     public final void testParseInvalidString()
     {
-        DnParser parser = DnParser.getNameParser();
-
         try
         {
-            parser.parse( "&#347;=&#347;rasulu,dc=example,dc=com" );
+            new Dn( "&#347;=&#347;rasulu,dc=example,dc=com" );
             fail( "the invalid name should never succeed in a parse" );
         }
         catch ( Exception e )
@@ -532,11 +486,11 @@ public class DnParserTest
      * @throws LdapException
      *             if anything goes wrong on parse()
      */
+    @Test
     public final void testPreserveSpaceAfterEscape() throws LdapException
     {
-        DnParser parser = DnParser.getNameParser();
         String input = "ou=some test\\,  something else";
-        String result = parser.parse( input ).toString();
+        String result = new Dn( input ).toString();
         assertEquals( "ou=some test\\,  something else", result );
     }
 
@@ -546,10 +500,9 @@ public class DnParserTest
     {
         // '\' should be escaped as stated in RFC 2253
         String path = "windowsFilePath=C:\\\\cygwin";
-        DnParser parser = DnParser.getNameParser();
-        Dn result = parser.parse( path );
-        assertEquals( path, ( (Dn) result ).getName() );
-        assertEquals( "windowsfilepath=C:\\\\cygwin", ((Dn)result).getNormName() );
+        Dn result = new Dn( path );
+        assertEquals( path, result.getName() );
+        assertEquals( "windowsfilepath=C:\\\\cygwin", result.getNormName() );
     }
 
 
@@ -560,8 +513,7 @@ public class DnParserTest
             { 'c', 'n', '=', 0x4A, ( byte ) 0xC3, ( byte ) 0xA9, 0x72, ( byte ) 0xC3, ( byte ) 0xB4, 0x6D, 0x65 },
             "UTF-8" );
 
-        DnParser parser = DnParser.getNameParser();
-        String result = parser.parse( cn ).toString();
+        String result = new Dn( cn ).toString();
 
         assertEquals( "cn=J\u00e9r\u00f4me", result.toString() );
     }
@@ -575,8 +527,7 @@ public class DnParserTest
                 ( byte ) 0xC3, ( byte ) 0x9F, ( byte ) 0xC3, ( byte ) 0xA4, ( byte ) 0xC3, ( byte ) 0xB6,
                 ( byte ) 0xC3, ( byte ) 0xBC }, "UTF-8" );
 
-        DnParser parser = DnParser.getNameParser();
-        String result = parser.parse( cn ).toString();
+        String result = new Dn( cn ).toString();
 
         assertEquals( "cn=\u00C4\u00D6\u00DC\u00DF\u00E4\u00F6\u00FC", result.toString() );
     }
@@ -591,8 +542,7 @@ public class DnParserTest
                 ( byte ) 0xC3, ( byte ) 0x9C, ( byte ) 0xC3, ( byte ) 0xBC, ( byte ) 0xC4, ( byte ) 0x9E,
                 ( byte ) 0xC4, ( byte ) 0x9F }, "UTF-8" );
 
-        DnParser parser = DnParser.getNameParser();
-        String result = parser.parse( cn ).toString();
+        String result = new Dn( cn ).toString();
 
         assertEquals( "cn=\u0130\u0131\u015E\u015F\u00D6\u00F6\u00DC\u00FC\u011E\u011F", result.toString() );
     }
@@ -604,8 +554,7 @@ public class DnParserTest
         String cn = new String( new byte[] { 'c', 'n', '=', (byte)0xC3, (byte)0x84, 0x5C, 0x32, 0x42 }, "UTF-8" );
 
 
-        DnParser parser = DnParser.getNameParser();
-        String result = ((Dn)parser.parse( cn )).getNormName();
+        String result = new Dn( cn ).getNormName();
         
         assertEquals( "cn=\u00c4\\+", result );
     }
@@ -616,8 +565,7 @@ public class DnParserTest
     {
         String cn = new String( new byte[] { 'c', 'n', '=', (byte)0xC3, (byte)0x84, '\\', '+' }, "UTF-8" );
         
-        DnParser parser = DnParser.getNameParser();
-        String result = parser.parse( cn ).toString();
+        String result = new Dn( cn ).toString();
         
         assertEquals( "cn=\u00c4\\+", result );
     }
@@ -630,14 +578,14 @@ public class DnParserTest
      * @throws LdapException
      *             if anything goes wrong on parse()
      */
+    @Test
     public final void testNonEscapedChars()
     {
-        DnParser parser = DnParser.getNameParser();
         String input = "ou=ou+test";
 
         try
         {
-            parser.parse( input ).toString();
+            new Dn( input ).toString();
             fail( "Should never rech this point" );
         }
         catch ( LdapException ne )

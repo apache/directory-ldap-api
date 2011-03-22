@@ -1228,7 +1228,7 @@ public class DnTest
                 {'C', 'N', ' ', '=', ' ', 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', ' ', 'L', (byte) 0xc3,
                         (byte) 0xa9, 'c', 'h', 'a', 'r', 'n', 'y'});
 
-        Dn name = DnParser.getNameParser().parse( dn );
+        Dn name = new Dn( dn );
 
         assertEquals( dn, ( name ).getName() );
         assertEquals( "cn=Emmanuel  L\u00E9charny", ( name ).getNormName() );

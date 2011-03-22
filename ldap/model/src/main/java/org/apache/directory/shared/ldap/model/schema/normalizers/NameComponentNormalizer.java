@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.shared.ldap.model.name;
+package org.apache.directory.shared.ldap.model.schema.normalizers;
 
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;

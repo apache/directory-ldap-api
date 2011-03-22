@@ -39,7 +39,7 @@ import org.apache.directory.shared.ldap.model.filter.ExprNode;
 import org.apache.directory.shared.ldap.model.filter.LeafNode;
 import org.apache.directory.shared.ldap.model.filter.EqualityNode;
 import org.apache.directory.shared.ldap.model.filter.FilterParser;
-import org.apache.directory.shared.ldap.model.name.NameComponentNormalizer;
+import org.apache.directory.shared.ldap.model.schema.normalizers.NameComponentNormalizer;
 import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecification;
 import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecificationModifier;
 import org.apache.directory.shared.util.ComponentsMonitor;

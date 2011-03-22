@@ -106,6 +106,7 @@ public enum DnParser
     public static boolean validateInternal( String name )
     {
         Dn dn = new Dn();
+        
         try
         {
             parseInternal( name, dn.rdns );

@@ -50,8 +50,6 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.name.DnParser;
-import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.util.Base64;
 import org.apache.directory.shared.util.Chars;
 import org.apache.directory.shared.util.Strings;
@@ -543,14 +541,11 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         }
 
         // Check that the Dn is valid. If not, an exception will be thrown
-        try
+        if ( !Dn.isValid( dn ) )
         {
-            DnParser.parseInternal(dn, new ArrayList<Rdn>());
-        }
-        catch ( LdapInvalidDnException ine )
-        {
-            LOG.error( I18n.err( I18n.ERR_12017_INVALID_DN, dn ) );
-            throw new LdapLdifException( ine.getMessage() );
+            String message = I18n.err( I18n.ERR_12017_INVALID_DN, dn );
+            LOG.error( message );
+            throw new LdapLdifException( message );
         }
 
         return dn;
