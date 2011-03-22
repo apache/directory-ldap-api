@@ -37,20 +37,9 @@ import org.apache.directory.shared.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public enum FastDnParser
+/* No protection*/ enum FastDnParser
 {
     INSTANCE;
-
-    /**
-     * Gets the name parser singleton instance.
-     * 
-     * @return the name parser
-     *
-    public static FastDnParser getNameParser()
-    {
-        return INSTANCE;
-    }
-
 
     /**
      * Parses a Dn from a String
@@ -59,7 +48,7 @@ public enum FastDnParser
      * @return A valid Dn
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException If the Dn was invalid
      */
-    public static Dn parse( String name ) throws LdapException
+    /* No protection*/ static Dn parse( String name ) throws LdapException
     {
         Dn dn = new Dn();
         parseDn( name, dn );
@@ -75,7 +64,7 @@ public enum FastDnParser
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    public static void parseDn( String name, Dn dn ) throws LdapInvalidDnException
+    /* No protection*/ static void parseDn( String name, Dn dn ) throws LdapInvalidDnException
     {
         parseDn(name, dn.rdns);
         dn.setUpName( name );
@@ -83,7 +72,7 @@ public enum FastDnParser
     }
     
     
-    public static void parseDn( String name, List<Rdn> rdns ) throws LdapInvalidDnException
+    /* No protection*/ static void parseDn( String name, List<Rdn> rdns ) throws LdapInvalidDnException
     {
         if ( ( name == null ) || ( name.trim().length() == 0 ) )
         {
@@ -129,7 +118,7 @@ public enum FastDnParser
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    public static void parseRdn( String name, Rdn rdn ) throws LdapInvalidDnException
+    /* No protection*/ static void parseRdn( String name, Rdn rdn ) throws LdapInvalidDnException
     {
         if ( name == null || name.length() == 0 )
         {

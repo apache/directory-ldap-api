@@ -32,7 +32,7 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ComplexDnParser
+/* No protection*/ class ComplexDnParser
 {
 
     /**
@@ -43,7 +43,7 @@ public class ComplexDnParser
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    public void parseDn( String name, List<Rdn> rdns ) throws LdapInvalidDnException
+    /* No protection*/ void parseDn( String name, List<Rdn> rdns ) throws LdapInvalidDnException
     {
         AntlrDnParser dnParser = new AntlrDnParser( new AntlrDnLexer( new StringReader( name ) ) );
         
@@ -68,7 +68,7 @@ public class ComplexDnParser
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    public void parseRdn( String name, Rdn rdn ) throws LdapInvalidDnException
+    /* No protection*/ void parseRdn( String name, Rdn rdn ) throws LdapInvalidDnException
     {
         AntlrDnParser dnParser = new AntlrDnParser( new AntlrDnLexer( new StringReader( name ) ) );
         
