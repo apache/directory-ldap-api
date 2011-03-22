@@ -114,7 +114,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class Rdn implements Cloneable, Externalizable, Iterable<Ava>
+public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
 {
     /** The LoggerFactory used by this class */
     protected static final Logger LOG = LoggerFactory.getLogger( Rdn.class );

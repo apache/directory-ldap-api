@@ -53,7 +53,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class Ava implements Externalizable, Cloneable
+public class Ava implements Externalizable, Cloneable
 {
     /**
      * Declares the Serial Version Uid.

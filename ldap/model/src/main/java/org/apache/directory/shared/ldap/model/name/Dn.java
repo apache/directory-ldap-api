@@ -63,7 +63,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class Dn implements Iterable<Rdn>, Externalizable
+public class Dn implements Iterable<Rdn>, Externalizable
 {
     /** The LoggerFactory used by this class */
     protected static final Logger LOG = LoggerFactory.getLogger( Dn.class );
