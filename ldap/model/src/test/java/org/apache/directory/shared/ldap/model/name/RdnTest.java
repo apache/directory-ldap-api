@@ -268,26 +268,6 @@ public class RdnTest
 
     /**
      * Test the clone method for a Rdn.
-     */
-    @Test
-    public void testParseRDNNull()
-    {
-        Rdn rdn = null;
-
-        try
-        {
-            RdnParser.parse( "c=d", rdn );
-            fail();
-        }
-        catch ( LdapException ine )
-        {
-            assertTrue( true );
-        }
-    }
-
-
-    /**
-     * Test the clone method for a Rdn.
      * 
      * @throws LdapException
      */
@@ -298,7 +278,7 @@ public class RdnTest
 
         Rdn rdnClone = (Rdn) rdn.clone();
 
-        RdnParser.parse( "c=d", rdn );
+        rdn = new Rdn( "c=d" );
 
         assertEquals( "b", rdnClone.getValue( "a" ) );
     }
@@ -331,7 +311,7 @@ public class RdnTest
         Rdn rdnClone = (Rdn) rdn.clone();
 
         rdn.clear();
-        RdnParser.parse( "c=d", rdn );
+        rdn = new Rdn( "c=d" );
 
         assertEquals( "b", rdnClone.getValue( "a" ) );
         assertEquals( "bb", rdnClone.getValue( "aa" ) );
@@ -1134,8 +1114,8 @@ public class RdnTest
     @Test
     public void testRdnWithEmptyValue() throws LdapException
     {
-        assertTrue( RdnParser.isValid("a=") );
-        assertTrue( RdnParser.isValid( "a=\"\"" ) );
+        assertTrue( Rdn.isValid( "a=" ) );
+        assertTrue( Rdn.isValid( "a=\"\"" ) );
         assertEquals( "a=", new Rdn( "a=\"\"" ).getNormName() );
         assertEquals( "a=", new Rdn( "a=" ).getNormName() );
     }
@@ -1147,14 +1127,14 @@ public class RdnTest
     @Test
     public void testRdnWithEscapedComa() throws LdapException
     {
-        assertTrue( RdnParser.isValid( "a=b\\,c" ) );
+        assertTrue( Rdn.isValid( "a=b\\,c" ) );
         assertEquals( "a=b\\,c", new Rdn( "a=b\\,c" ).getNormName() );
 
-        assertTrue( RdnParser.isValid( "a=\"b,c\"" ) );
+        assertTrue( Rdn.isValid( "a=\"b,c\"" ) );
         assertEquals( "a=b\\,c", new Rdn( "a=\"b,c\"" ).getNormName() );
         assertEquals( "a=\"b,c\"", new Rdn( "a=\"b,c\"" ).getName() );
 
-        assertTrue( RdnParser.isValid( "a=\"b\\,c\"" ) );
+        assertTrue( Rdn.isValid( "a=\"b\\,c\"" ) );
         Rdn rdn = new Rdn( "a=\"b\\,c\"" );
         assertEquals( "a=\"b\\,c\"", rdn.getName() );
         assertEquals( "a=b\\,c", rdn.getNormName() );

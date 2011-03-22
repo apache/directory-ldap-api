@@ -20,20 +20,18 @@
 package org.apache.directory.shared.ldap.model.name;
 
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.name.FastDnParser;
-import org.apache.directory.shared.ldap.model.name.TooComplexException;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertNotNull;
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 /**
  * Tests the fast Dn parser.
@@ -54,8 +52,7 @@ public class FastDnParserTest
     @Test
     public void testLdapDNEmpty() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
-        assertEquals( "", ( (Dn) dnParser.parse( "" ) ).getName() );
+        assertEquals( "", ( (Dn) FastDnParser.parse( "" ) ).getName() );
     }
 
 
@@ -66,15 +63,13 @@ public class FastDnParserTest
     @Test
     public void testLdapDNIncomplete() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
-
         // empty Dn is ok
-        dnParser.parse( " " );
+        FastDnParser.parse( " " );
 
         // test DNs starting with an descr
         try
         {
-            dnParser.parse( " a" );
+            FastDnParser.parse( " a" );
             fail();
         }
         catch ( LdapException ine )
@@ -83,7 +78,7 @@ public class FastDnParserTest
         }
         try
         {
-            dnParser.parse( " a " );
+            FastDnParser.parse( " a " );
             fail();
         }
         catch ( LdapException ine )
@@ -92,21 +87,21 @@ public class FastDnParserTest
         }
         try
         {
-            dnParser.parse( " a- " );
+            FastDnParser.parse( " a- " );
             fail();
         }
         catch ( LdapException ine )
         {
             // expected
         }
-        dnParser.parse( " a =" );
-        dnParser.parse( " a = " );
-        dnParser.parse( " a = b" );
+        FastDnParser.parse( " a =" );
+        FastDnParser.parse( " a = " );
+        FastDnParser.parse( " a = b" );
 
         // test DNs starting with an OID
         try
         {
-            dnParser.parse( " 1 = b " );
+            FastDnParser.parse( " 1 = b " );
             fail( "OID must contain at least on dot." );
         }
         catch ( LdapException ine )
@@ -115,7 +110,7 @@ public class FastDnParserTest
         }
         try
         {
-            dnParser.parse( " 0" );
+            FastDnParser.parse( " 0" );
             fail();
         }
         catch ( LdapException ine )
@@ -124,7 +119,7 @@ public class FastDnParserTest
         }
         try
         {
-            dnParser.parse( " 0." );
+            FastDnParser.parse( " 0." );
             fail();
         }
         catch ( LdapException ine )
@@ -133,7 +128,7 @@ public class FastDnParserTest
         }
         try
         {
-            dnParser.parse( " 0.5" );
+            FastDnParser.parse( " 0.5" );
             fail();
         }
         catch ( LdapException ine )
@@ -142,7 +137,7 @@ public class FastDnParserTest
         }
         try
         {
-            dnParser.parse( " 0.5 " );
+            FastDnParser.parse( " 0.5 " );
             fail();
         }
         catch ( LdapException ine )
@@ -150,9 +145,9 @@ public class FastDnParserTest
             // expected
         }
         
-        dnParser.parse( " 0.5=" );
-        dnParser.parse( " 0.5 = " );
-        dnParser.parse( " 0.5 = b" );
+        FastDnParser.parse( " 0.5=" );
+        FastDnParser.parse( " 0.5 = " );
+        FastDnParser.parse( " 0.5 = b" );
     }
 
 
@@ -162,8 +157,7 @@ public class FastDnParserTest
     @Test
     public void testLdapDNSimple() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "a = b" );
+        Dn dn = FastDnParser.parse( "a = b" );
 
         assertEquals( "a = b", dn.getName() );
         assertEquals( "a=b", dn.getNormName() );
@@ -188,8 +182,7 @@ public class FastDnParserTest
     @Test
     public void testLdapDNComposite() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "a = b, c = d" );
+        Dn dn = FastDnParser.parse( "a = b, c = d" );
         assertEquals( "a=b,c=d", dn.getNormName() );
         assertEquals( "a = b, c = d", dn.getName() );
     }
@@ -201,8 +194,7 @@ public class FastDnParserTest
     @Test
     public void testLdapDNCompositeWithSpace() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "a=b, a =b, a= b, a = b, a  =  b" );
+        Dn dn = FastDnParser.parse( "a=b, a =b, a= b, a = b, a  =  b" );
         assertEquals( "a=b,a=b,a=b,a=b,a=b", dn.getNormName() );
         assertEquals( "a=b, a =b, a= b, a = b, a  =  b", dn.getName() );
     }
@@ -215,8 +207,7 @@ public class FastDnParserTest
     @Test
     public void testLdapDNCompositeSepators() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "a=b;c=d,e=f" );
+        Dn dn = FastDnParser.parse( "a=b;c=d,e=f" );
         assertEquals( "a=b,c=d,e=f", dn.getNormName() );
         assertEquals( "a=b;c=d,e=f", dn.getName() );
     }
@@ -228,10 +219,9 @@ public class FastDnParserTest
     @Test
     public void testLdapDNSimpleMultivaluedAttribute() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
         try
         {
-            dnParser.parse( "a = b + c = d" );
+            FastDnParser.parse( "a = b + c = d" );
             fail( "Multivalued Rdn not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -248,10 +238,9 @@ public class FastDnParserTest
     @Test
     public void testLdapDNCompositeMultivaluedAttribute() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
         try
         {
-            dnParser.parse( "a=b+c=d, e=f + g=h + i=j" );
+            FastDnParser.parse( "a=b+c=d, e=f + g=h + i=j" );
             fail( "Multivalued Rdn not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -267,10 +256,9 @@ public class FastDnParserTest
     @Test
     public void testLdapDNOidUpper() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
         try
         {
-            dnParser.parse( "OID.12.34.56 = azerty" );
+            FastDnParser.parse( "OID.12.34.56 = azerty" );
             fail( "OID prefix not supported by fast parser" );
         }
         catch ( Exception e )
@@ -286,10 +274,9 @@ public class FastDnParserTest
     @Test
     public void testLdapDNOidLower() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
         try
         {
-            dnParser.parse( "oid.12.34.56 = azerty" );
+            FastDnParser.parse( "oid.12.34.56 = azerty" );
             fail( "OID prefix not supported by fast parser" );
         }
         catch ( Exception e )
@@ -306,8 +293,7 @@ public class FastDnParserTest
     @Test
     public void testLdapDNOidWithoutPrefix() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "12.34.56 = azerty" );
+        Dn dn = FastDnParser.parse( "12.34.56 = azerty" );
         assertEquals( "12.34.56=azerty", dn.getNormName() );
         assertEquals( "12.34.56 = azerty", dn.getName() );
     }
@@ -320,8 +306,7 @@ public class FastDnParserTest
     @Test
     public void testLdapDNCompositeOidWithoutPrefix() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "12.34.56 = azerty; 7.8 = test" );
+        Dn dn = FastDnParser.parse( "12.34.56 = azerty; 7.8 = test" );
         assertEquals( "12.34.56=azerty,7.8=test", dn.getNormName() );
         assertEquals( "12.34.56 = azerty; 7.8 = test", dn.getName() );
     }
@@ -333,10 +318,9 @@ public class FastDnParserTest
     @Test
     public void testLdapDNPairCharAttributeValue() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
         try
         {
-            dnParser.parse( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C3\\A9" );
+            FastDnParser.parse( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C3\\A9" );
             fail( "Complex DNs not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -352,10 +336,9 @@ public class FastDnParserTest
     @Test
     public void testLdapDNHexStringAttributeValue() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
         try
         {
-            dnParser.parse( "a = #0010A0AAFF" );
+            FastDnParser.parse( "a = #0010A0AAFF" );
             fail( "Hex DNs not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -373,8 +356,7 @@ public class FastDnParserTest
     {
         try
         {
-            FastDnParser dnParser = FastDnParser.getNameParser();
-            dnParser.parse( "a=#zz" );
+            FastDnParser.parse( "a=#zz" );
             fail( "Hex DNs not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -390,10 +372,9 @@ public class FastDnParserTest
     @Test
     public void testLdapDNQuotedAttributeValue() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
         try
         {
-            dnParser.parse( "a = quoted \\\"value" );
+            FastDnParser.parse( "a = quoted \\\"value" );
             fail( "Quotes not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -409,8 +390,7 @@ public class FastDnParserTest
     @Test
     public void testNameToBytes() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
-        Dn dn = (Dn) dnParser.parse( "cn = John, ou = People, OU = Marketing" );
+        Dn dn = FastDnParser.parse( "cn = John, ou = People, OU = Marketing" );
 
         byte[] bytes = Dn.getBytes(dn);
 
@@ -426,8 +406,7 @@ public class FastDnParserTest
                 {'C', 'N', ' ', '=', ' ', 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', ' ', 'L', (byte) 0xc3,
                         (byte) 0xa9, 'c', 'h', 'a', 'r', 'n', 'y'});
 
-        FastDnParser dnParser = FastDnParser.getNameParser();
-        Dn name = (Dn) dnParser.parse( dn );
+        Dn name = FastDnParser.parse( dn );
 
         assertEquals( dn, name.getName() );
         assertEquals( "cn=Emmanuel  L\u00e9charny", name.getNormName() );
@@ -440,8 +419,7 @@ public class FastDnParserTest
         String dn = Strings.utf8ToString(new byte[]
                 {'C', '=', ' ', 'E', (byte) 0xc3, (byte) 0xa9, 'c'});
 
-        FastDnParser dnParser = FastDnParser.getNameParser();
-        Dn name = (Dn) dnParser.parse( dn );
+        Dn name = FastDnParser.parse( dn );
 
         assertEquals( dn, name.getName() );
         assertEquals( "c=E\u00e9c", name.getNormName() );
@@ -451,10 +429,9 @@ public class FastDnParserTest
     @Test
     public void testVsldapExtras() throws LdapException
     {
-        FastDnParser dnParser = FastDnParser.getNameParser();
         try
         {
-            dnParser
+            FastDnParser
                 .parse( "cn=Billy Bakers, OID.2.5.4.11=Corporate Tax, ou=Fin-Accounting, ou=Americas, ou=Search, o=IMC, c=US" );
             fail( "OID prefix not supported by fast parser" );
         }
@@ -462,21 +439,6 @@ public class FastDnParserTest
         {
             // expected
         }
-    }
-
-
-    /**
-     * Class under test for void FastDnParser()
-     *
-     * @throws LdapException
-     *             if anything goes wrong
-     */
-    @Test
-    public final void testDnParser()
-    {
-        FastDnParser parser = FastDnParser.getNameParser();
-
-        assertNotNull( parser );
     }
 
 
@@ -489,9 +451,7 @@ public class FastDnParserTest
     @Test
     public final void testParseStringEmpty() throws LdapException
     {
-        FastDnParser parser = FastDnParser.getNameParser();
-
-        Dn nameEmpty = parser.parse( "" );
+        Dn nameEmpty = FastDnParser.parse( "" );
 
         assertNotNull( nameEmpty );
     }
@@ -506,9 +466,7 @@ public class FastDnParserTest
     @Test
     public final void testParseStringNull() throws LdapException
     {
-        FastDnParser parser = FastDnParser.getNameParser();
-
-        Dn nameNull = parser.parse( null );
+        Dn nameNull = FastDnParser.parse( null );
 
         assertEquals( "Null Dn are legal : ", "", nameNull.toString() );
     }
@@ -523,16 +481,14 @@ public class FastDnParserTest
     @Test
     public final void testParseStringRFC1779_1() throws LdapException
     {
-        FastDnParser parser = FastDnParser.getNameParser();
-
-        Dn nameRFC1779_1 = parser
+        Dn nameRFC1779_1 = FastDnParser
             .parse( "CN=Marshall T. Rose, O=Dover Beach Consulting, L=Santa Clara, ST=California, C=US" );
 
         assertEquals( "RFC1779_1 : ",
             "CN=Marshall T. Rose, O=Dover Beach Consulting, L=Santa Clara, ST=California, C=US",
-            ( (Dn) nameRFC1779_1 ).getName() );
+            nameRFC1779_1 .getName() );
         assertEquals( "RFC1779_1 : ", "cn=Marshall T. Rose,o=Dover Beach Consulting,l=Santa Clara,st=California,c=US",
-            ((Dn)nameRFC1779_1).getNormName() );
+            nameRFC1779_1.getNormName() );
     }
 
 
@@ -545,9 +501,7 @@ public class FastDnParserTest
     @Test
     public final void testParseStringRFC2253_1() throws LdapException
     {
-        FastDnParser parser = FastDnParser.getNameParser();
-
-        Dn nameRFC2253_1 = parser.parse( "CN=Steve Kille,O=Isode limited,C=GB" );
+        Dn nameRFC2253_1 = FastDnParser.parse( "CN=Steve Kille,O=Isode limited,C=GB" );
 
         assertEquals( "RFC2253_1 : ", "CN=Steve Kille,O=Isode limited,C=GB", ( (Dn) nameRFC2253_1 ).getName() );
     }
@@ -562,11 +516,9 @@ public class FastDnParserTest
     @Test
     public final void testParseStringRFC2253_2() throws LdapException
     {
-        FastDnParser parser = FastDnParser.getNameParser();
-
         try
         {
-            parser.parse( "CN = Sales + CN =   J. Smith , O = Widget Inc. , C = US" );
+            FastDnParser.parse( "CN = Sales + CN =   J. Smith , O = Widget Inc. , C = US" );
             fail( "Multivalued Rdn not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -585,11 +537,9 @@ public class FastDnParserTest
     @Test
     public final void testParseStringRFC2253_3() throws LdapException
     {
-        FastDnParser parser = FastDnParser.getNameParser();
-
         try
         {
-            parser.parse( "CN=L. Eagle,   O=Sue\\, Grabbit and Runn, C=GB" );
+            FastDnParser.parse( "CN=L. Eagle,   O=Sue\\, Grabbit and Runn, C=GB" );
             fail( "Complex DNs not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -608,11 +558,9 @@ public class FastDnParserTest
     @Test
     public final void testParseStringRFC2253_4() throws LdapException
     {
-        FastDnParser parser = FastDnParser.getNameParser();
-
         try
         {
-            parser.parse( "CN=Before\\0DAfter,O=Test,C=GB" );
+            FastDnParser.parse( "CN=Before\\0DAfter,O=Test,C=GB" );
             fail( "Complex DNs not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -631,11 +579,9 @@ public class FastDnParserTest
     @Test
     public final void testParseStringRFC2253_5() throws LdapException
     {
-        FastDnParser parser = FastDnParser.getNameParser();
-
         try
         {
-            parser.parse( "1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB" );
+            FastDnParser.parse( "1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB" );
             fail( "Hex DNs not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -654,11 +600,9 @@ public class FastDnParserTest
     @Test
     public final void testParseStringRFC2253_6() throws LdapException
     {
-        FastDnParser parser = FastDnParser.getNameParser();
-
         try
         {
-            parser.parse( "SN=Lu\\C4\\8Di\\C4\\87" );
+            FastDnParser.parse( "SN=Lu\\C4\\8Di\\C4\\87" );
             fail( "Complex DNs not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -677,11 +621,9 @@ public class FastDnParserTest
     @Test
     public final void testParseInvalidString()
     {
-        FastDnParser parser = FastDnParser.getNameParser();
-
         try
         {
-            parser.parse( "&#347;=&#347;rasulu,dc=example,dc=com" );
+            FastDnParser.parse( "&#347;=&#347;rasulu,dc=example,dc=com" );
             fail( "the invalid name should never succeed in a parse" );
         }
         catch ( LdapException e )
@@ -703,11 +645,11 @@ public class FastDnParserTest
     @Test
     public final void testPreserveSpaceAfterEscape() throws LdapException
     {
-        FastDnParser parser = FastDnParser.getNameParser();
         String input = "ou=some test\\,  something else";
+        
         try
         {
-            parser.parse( input ).toString();
+            FastDnParser.parse( input ).toString();
             fail( "Complex DNs not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -722,10 +664,9 @@ public class FastDnParserTest
     {
         // '\' should be escaped as stated in RFC 2253
         String path = "windowsFilePath=C:\\\\cygwin";
-        FastDnParser parser = FastDnParser.getNameParser();
         try
         {
-            parser.parse( path );
+            FastDnParser.parse( path );
             fail( "Complex DNs not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -742,8 +683,7 @@ public class FastDnParserTest
             { 'c', 'n', '=', 0x4A, ( byte ) 0xC3, ( byte ) 0xA9, 0x72, ( byte ) 0xC3, ( byte ) 0xB4, 0x6D, 0x65 },
             "UTF-8" );
 
-        FastDnParser parser = FastDnParser.getNameParser();
-        String result = parser.parse( cn ).toString();
+        String result = FastDnParser.parse( cn ).toString();
 
         assertEquals( "cn=J\u00e9r\u00f4me", result );
 
@@ -758,8 +698,7 @@ public class FastDnParserTest
                 ( byte ) 0xC3, ( byte ) 0x9F, ( byte ) 0xC3, ( byte ) 0xA4, ( byte ) 0xC3, ( byte ) 0xB6,
                 ( byte ) 0xC3, ( byte ) 0xBC }, "UTF-8" );
 
-        FastDnParser parser = FastDnParser.getNameParser();
-        String result = parser.parse( cn ).toString();
+        String result = FastDnParser.parse( cn ).toString();
 
         assertEquals( "cn=\u00C4\u00D6\u00DC\u00DF\u00E4\u00F6\u00FC", result );
     }
@@ -774,8 +713,7 @@ public class FastDnParserTest
                 ( byte ) 0xC3, ( byte ) 0x9C, ( byte ) 0xC3, ( byte ) 0xBC, ( byte ) 0xC4, ( byte ) 0x9E,
                 ( byte ) 0xC4, ( byte ) 0x9F }, "UTF-8" );
 
-        FastDnParser parser = FastDnParser.getNameParser();
-        String result = parser.parse( cn ).toString();
+        String result = FastDnParser.parse( cn ).toString();
 
         assertEquals( "cn=\u0130\u0131\u015E\u015F\u00D6\u00F6\u00DC\u00FC\u011E\u011F", result );
 
@@ -787,10 +725,9 @@ public class FastDnParserTest
     {
         String cn = new String( new byte[]
             { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0x84, 0x5C, 0x32, 0x42 }, "UTF-8" );
-        FastDnParser parser = FastDnParser.getNameParser();
         try
         {
-            parser.parse( cn ).toString();
+            FastDnParser.parse( cn ).toString();
             fail( "DNs with special characters not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -806,10 +743,9 @@ public class FastDnParserTest
         String cn = new String( new byte[]
             { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0x84, '\\', '+' }, "UTF-8" );
 
-        FastDnParser parser = FastDnParser.getNameParser();
         try
         {
-            parser.parse( cn ).toString();
+            FastDnParser.parse( cn ).toString();
             fail( "DNs with special characters not supported by fast parser" );
         }
         catch ( TooComplexException tce )
@@ -829,12 +765,11 @@ public class FastDnParserTest
     @Test
     public final void testNonEscapedChars() throws LdapException
     {
-        FastDnParser parser = FastDnParser.getNameParser();
         String input = "ou=ou+test";
 
         try
         {
-            parser.parse( input ).toString();
+            FastDnParser.parse( input ).toString();
             fail( "Should never reach this point" );
         }
         catch ( TooComplexException tce )

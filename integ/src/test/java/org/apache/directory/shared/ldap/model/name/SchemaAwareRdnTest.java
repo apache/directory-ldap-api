@@ -277,26 +277,6 @@ public class SchemaAwareRdnTest
 
     /**
      * Test the clone method for a Rdn.
-     */
-    @Test
-    public void testParseRDNNull()
-    {
-        Rdn rdn = null;
-
-        try
-        {
-            RdnParser.parse( "cn=d", rdn );
-            fail();
-        }
-        catch ( LdapException ine )
-        {
-            assertTrue( true );
-        }
-    }
-
-
-    /**
-     * Test the clone method for a Rdn.
      * 
      * @throws LdapException
      */
@@ -307,14 +287,14 @@ public class SchemaAwareRdnTest
 
         Rdn rdnClone = (Rdn) rdn.clone();
 
-        RdnParser.parse( "cn=d", rdn );
+        rdn = new Rdn( schemaManager, "cn=d" );
 
         assertEquals( "b", rdnClone.getValue( "Cn" ) );
     }
 
 
     /**
-     * Test teh creation of a new Rdn
+     * Test the creation of a new Rdn
      * 
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException
      */
@@ -340,7 +320,7 @@ public class SchemaAwareRdnTest
         Rdn rdnClone = (Rdn) rdn.clone();
 
         rdn.clear();
-        RdnParser.parse( "l=d", rdn );
+         rdn = new Rdn( schemaManager, "l=d" );
 
         assertEquals( "b", rdnClone.getValue( "2.5.4.3" ) );
         assertEquals( "bb", rdnClone.getValue( "SN" ) );
@@ -1151,8 +1131,8 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnWithEmptyValue() throws LdapException
     {
-        assertTrue( RdnParser.isValid("cn=") );
-        assertTrue( RdnParser.isValid( "cn=\"\"" ) );
+        assertTrue( Rdn.isValid("cn=") );
+        assertTrue( Rdn.isValid( "cn=\"\"" ) );
         assertEquals( "2.5.4.3=", new Rdn( schemaManager,  "cn=\"\"" ).getNormName() );
         assertEquals( "2.5.4.3=", new Rdn( schemaManager,  "cn=" ).getNormName() );
     }
@@ -1164,14 +1144,14 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnWithEscapedComa() throws LdapException
     {
-        assertTrue( RdnParser.isValid( "cn=b\\,c" ) );
+        assertTrue( Rdn.isValid( "cn=b\\,c" ) );
         assertEquals( "2.5.4.3=b\\,c", new Rdn( schemaManager,  "cn=b\\,c" ).getNormName() );
 
-        assertTrue( RdnParser.isValid( "cn=\"b,c\"" ) );
+        assertTrue( Rdn.isValid( "cn=\"b,c\"" ) );
         assertEquals( "2.5.4.3=b\\,c", new Rdn( schemaManager,  "cn=\"b,c\"" ).getNormName() );
         assertEquals( "cn=\"b,c\"", new Rdn( schemaManager,  "cn=\"b,c\"" ).getName() );
 
-        assertTrue( RdnParser.isValid( "cn=\"b\\,c\"" ) );
+        assertTrue( Rdn.isValid( "cn=\"b\\,c\"" ) );
         Rdn rdn = new Rdn( schemaManager,  "cn=\"b\\,c\"" );
         assertEquals( "cn=\"b\\,c\"", rdn.getName() );
         assertEquals( "2.5.4.3=b\\,c", rdn.getNormName() );

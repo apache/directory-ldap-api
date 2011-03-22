@@ -279,7 +279,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         // Stores the representations of a Dn : internal (as a string and as a
         // byte[]) and external.
         upName = sb.toString();
-        DnParser.parseInternal( upName, rdns );
+        parseInternal( upName, rdns );
 
         if ( schemaManager != null )
         {
@@ -1631,19 +1631,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * Check if a DistinguishedName is syntactically valid.
-     *
-     * @param dn The Dn to validate
-     * @return <code>true></code> if the Dn is valid, <code>false</code>
-     * otherwise
-     */
-    public static boolean isValid( String dn )
-    {
-        return DnParser.validateInternal( dn );
-    }
-
-
-    /**
      * Tells if the Dn has already been normalized or not
      *
      * @return <code>true</code> if the Dn is already normalized.
@@ -1698,6 +1685,50 @@ public class Dn implements Iterable<Rdn>, Externalizable
     }
     
     
+    /**
+     * Check if a DistinguishedName is syntactically valid.
+     *
+     * @param dn The Dn to validate
+     * @return <code>true></code> if the Dn is valid, <code>false</code>
+     * otherwise
+     */
+    public static boolean isValid( String name )
+    {
+        Dn dn = new Dn();
+        
+        try
+        {
+            parseInternal( name, dn.rdns );
+            return true;
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            return false;
+        }
+    }
+
+    
+    /**
+     * Parse a Dn.
+     *
+     * @param name The Dn to be parsed
+     * @param rdns The list that will contain the RDNs
+     * @throws LdapInvalidDnException If the Dn is invalid
+     */
+    private static void parseInternal( String name, List<Rdn> rdns ) throws LdapInvalidDnException
+    {
+        try
+        {
+            FastDnParser.parseDn( name, rdns );
+        }
+        catch ( TooComplexException e )
+        {
+            rdns.clear();
+            new ComplexDnParser().parseDn( name, rdns );
+        }
+    }
+
+
     public void readExternal( ObjectInput in ) throws IOException, ClassNotFoundException
     {
         // Read the UPName

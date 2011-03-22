@@ -233,7 +233,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
         if ( Strings.isNotEmpty(rdn) )
         {
             // Parse the string. The Rdn will be updated.
-            RdnParser.parse( rdn, this );
+            parse( rdn, this );
 
             // create the internal normalized form
             // and store the user provided form
@@ -1337,6 +1337,57 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
     public boolean isSchemaAware()
     {
         return schemaManager != null;
+    }
+
+
+    /**
+     * Validate a NameComponent : <br>
+     * <p>
+     * &lt;name-component&gt; ::= &lt;attributeType&gt; &lt;spaces&gt; '='
+     * &lt;spaces&gt; &lt;attributeValue&gt; &lt;nameComponents&gt;
+     * </p>
+     *
+     * @param dn The string to parse
+     * @return <code>true</code> if the Rdn is valid
+     */
+    public static boolean isValid( String dn )
+    {
+        Rdn rdn = new Rdn();
+        try
+        {
+            parse( dn, rdn );
+            return true;
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            return false;
+        }
+    }
+
+    
+    /**
+     * Parse a NameComponent : <br>
+     * <p>
+     * &lt;name-component&gt; ::= &lt;attributeType&gt; &lt;spaces&gt; '='
+     * &lt;spaces&gt; &lt;attributeValue&gt; &lt;nameComponents&gt;
+     * </p>
+     *
+     * @param dn The String to parse
+     * @param rdn The Rdn to fill. Beware that if the Rdn is not empty, the new
+     *            AttributeTypeAndValue will be added.
+     * @throws LdapInvalidDnException If the NameComponent is invalid
+     */
+    private static void parse( String dn, Rdn rdn ) throws LdapInvalidDnException
+    {
+        try
+        {
+            FastDnParser.INSTANCE.parseRdn( dn, rdn );
+        }
+        catch ( TooComplexException e )
+        {
+            rdn.clear();
+            new ComplexDnParser().parseRdn( dn, rdn );
+        }
     }
 
 
