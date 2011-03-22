@@ -29,14 +29,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+
 
 /**
- * Tests the StringTools class methods.
+ * Tests the Strings class methods.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -197,5 +198,129 @@ public class StringsTest
         byte[] bytes = Strings.uuidToBytes(uuid.toString());
         String string = Strings.uuidToString(bytes);
         assertEquals( uuid.toString(), string );
+    }
+    /**
+     * Test the DnUtils AreEquals method
+     */
+    @Test
+    public void testAreEqualsFull()
+    {
+        // Full compare
+        assertEquals( 6, Strings.areEquals("azerty".getBytes(), 0, "azerty") );
+    }
+
+
+    /**
+     * Test the DnUtils AreEquals method
+     */
+    @Test
+    public void testAreEqualsDiff()
+    {
+        // First character is !=
+        assertEquals( -1, Strings.areEquals( "azerty".getBytes(), 0, "Azerty" ) );
+    }
+
+
+    /**
+     * Test the DnUtils AreEquals method
+     */
+    @Test
+    public void testAreEqualsEmpty()
+    {
+        // Compare to an empty string
+        assertEquals( -1, Strings.areEquals( "azerty".getBytes(), 0, "" ) );
+    }
+
+
+    /**
+     * Test the DnUtils AreEquals method
+     */
+    @Test
+    public void testAreEqualsFirstCharDiff()
+    {
+        // First character is !=
+        assertEquals( -1, Strings.areEquals( "azerty".getBytes(), 0, "Azerty" ) );
+    }
+
+
+    /**
+     * Test the DnUtils AreEquals method
+     */
+    @Test
+    public void testAreEqualsMiddleCharDiff()
+    {
+        // First character is !=
+        assertEquals( -1, Strings.areEquals( "azerty".getBytes(), 0, "azeRty" ) );
+    }
+
+
+    /**
+     * Test the DnUtils AreEquals method
+     */
+    @Test
+    public void testAreEqualsLastCharDiff()
+    {
+        // First character is !=
+        assertEquals( -1, Strings.areEquals( "azerty".getBytes(), 0, "azertY" ) );
+    }
+
+
+    /**
+     * Test the DnUtils AreEquals method
+     */
+    @Test
+    public void testAreEqualsCharByChar()
+    {
+        // Index must be incremented after each comparison
+        assertEquals( 1, Strings.areEquals( "azerty".getBytes(), 0, "a" ) );
+        assertEquals( 2, Strings.areEquals( "azerty".getBytes(), 1, "z" ) );
+        assertEquals( 3, Strings.areEquals( "azerty".getBytes(), 2, "e" ) );
+        assertEquals( 4, Strings.areEquals( "azerty".getBytes(), 3, "r" ) );
+        assertEquals( 5, Strings.areEquals( "azerty".getBytes(), 4, "t" ) );
+        assertEquals( 6, Strings.areEquals( "azerty".getBytes(), 5, "y" ) );
+    }
+
+
+    /**
+     * Test the DnUtils AreEquals method
+     */
+    @Test
+    public void testAreEqualsTooShort()
+    {
+        // length too short
+        assertEquals( -1, Strings.areEquals( "azerty".getBytes(), 0, "azertyiop" ) );
+    }
+
+
+    /**
+     * Test the DnUtils AreEquals method
+     */
+    @Test
+    public void testAreEqualsTooShortMiddle()
+    {
+        // length too short
+        assertEquals( -1, Strings.areEquals( "azerty".getBytes(), 0, "ertyiop" ) );
+    }
+
+
+    /**
+     * Test the DnUtils AreEquals method
+     */
+    @Test
+    public void testAreEqualsLastChar()
+    {
+        // last character
+        assertEquals( 6, Strings.areEquals( "azerty".getBytes(), 5, "y" ) );
+    }
+
+
+    /**
+     * Test the DnUtils AreEquals method
+     */
+    @Test
+    public void testAreEqualsMiddle()
+    {
+        // In the middle
+        assertEquals( 4, Strings.areEquals( "azerty".getBytes(), 2, "er" ) );
     }
 }

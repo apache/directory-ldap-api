@@ -505,7 +505,7 @@ attributeValue
         for ( Rdn rdn : attributeTypeAndValueSetAsDn )
         {
             attributeTypeAndValue = rdn.getNormName();
-            attributeType = DnUtils.getRdnAttribute( attributeTypeAndValue );
+            attributeType = DnUtils.getRdnAttributeType( attributeTypeAndValue );
             attributeValue = DnUtils.getRdnValue( attributeTypeAndValue );
             
             attributeSet.add( new DefaultEntryAttribute( attributeType, attributeValue ) );
