@@ -1803,7 +1803,7 @@ public class DnTest
 
         name = name.add( "ou=East" );
 
-        assertFalse( name.isNormalized() );
+        assertTrue( name.isNormalized() );
 
         assertEquals( name4, name );
 
@@ -2078,12 +2078,10 @@ public class DnTest
     @Test
     public void testLdapNameHashCode() throws Exception
     {
-        Dn name1 = Dn
-            .normalize( schemaManager,
+        Dn name1 = new Dn( schemaManager,
                     "2.5.4.11= Some   People   + domainComponent=  And   Some anImAls,DomainComponent = eXample,0.9.2342.19200300.100.1.25= cOm" );
 
-        Dn name2 = Dn
-            .normalize( schemaManager,
+        Dn name2 = new Dn( schemaManager,
                     "2.5.4.11=some people+domainComponent=and some animals,DomainComponent=example,0.9.2342.19200300.100.1.25=com" );
 
         assertEquals( name1.hashCode(), name2.hashCode() );

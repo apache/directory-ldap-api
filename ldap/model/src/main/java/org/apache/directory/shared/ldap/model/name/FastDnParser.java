@@ -68,7 +68,7 @@ import org.apache.directory.shared.util.Strings;
     {
         parseDn(name, dn.rdns);
         dn.setUpName( name );
-        dn.normalizeInternal();
+        dn.normalize( null );
     }
     
     

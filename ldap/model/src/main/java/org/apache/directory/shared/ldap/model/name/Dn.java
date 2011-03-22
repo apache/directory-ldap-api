@@ -281,16 +281,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         upName = sb.toString();
         parseInternal( upName, rdns );
 
-        if ( schemaManager != null )
-        {
-            this.schemaManager = schemaManager;
-            normalize( schemaManager );
-        }
-        else
-        {
-            normalized = false;
-            normalizeInternal();
-        }
+        normalize( schemaManager );
     }
 
 
@@ -320,7 +311,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *
      * @param rdns the list of Rdns to be used for the Dn
      */
-    public Dn( Rdn... rdns )
+    public Dn( Rdn... rdns ) throws LdapInvalidDnException
     {
         if ( rdns == null )
         {
@@ -332,7 +323,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             this.rdns.add( rdn.clone() );
         }
 
-        normalizeInternal();
+        normalize( null );
         toUpName();
         normalized = false;
     }
@@ -357,21 +348,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         
         rdns.add( rdn );
         
-        schemaManager = dn.schemaManager;
-
-        if ( schemaManager != null )
-        {
-            normalize( schemaManager );
-        }
-        else
-        {
-            normalized = false;
-
-            // Stores the representations of a Dn : internal (as a string and as a
-            // byte[]) and external.
-            normalizeInternal();
-        }
-
+        normalize( dn.schemaManager );
         toUpName();
     }
 
@@ -393,21 +370,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             rdns.add( rdnParent );
         }
         
-        this.schemaManager = schemaManager;
-
-        if ( schemaManager != null )
-        {
-            normalize( schemaManager );
-        }
-        else
-        {
-            normalized = false;
-
-            // Stores the representations of a Dn : internal (as a string and as a
-            // byte[]) and external.
-            normalizeInternal();
-        }
-
+        normalize( schemaManager );
         toUpName();
     }
 
@@ -418,7 +381,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *  @param schemaManager The SchemaManager to use
      * @param rdns the list of Rdns to be used for the Dn
      */
-    public Dn( SchemaManager schemaManager, Rdn... rdns )
+    public Dn( SchemaManager schemaManager, Rdn... rdns ) throws LdapInvalidDnException
     {
         if ( rdns == null )
         {
@@ -430,65 +393,13 @@ public class Dn implements Iterable<Rdn>, Externalizable
             this.rdns.add( rdn.clone() );
         }
 
-        try
-        {
-            normalized = false;
-            
-            if ( this.schemaManager == null )
-            {
-                this.schemaManager = schemaManager;
-            }
-
-            normalize( this.schemaManager );
-            toUpName();
-        }
-        catch( LdapInvalidDnException lide )
-        {
-            throw new IllegalArgumentException( lide.getMessage() );
-        }
-    }
-
-
-    /**
-     * Static factory which creates a normalized Dn from a String and a Map of OIDs.
-     * <br>
-     * This method is for test purpose only, and as it's package protected, won't be usable
-     * out of this scope.
-     *
-     * @param name The Dn as a String
-     * @param oidsMap The OID mapping
-     * @return A valid Dn
-     * @throws LdapInvalidNameException If the Dn is invalid.
-     * @throws LdapInvalidDnException If something went wrong.
-     */
-    public static Dn normalize( SchemaManager schemaManager, String name )
-        throws LdapInvalidDnException
-    {
-        if ( ( name == null ) || ( name.length() == 0 ) || ( schemaManager == null ) )
-        {
-            return Dn.EMPTY_DN;
-        }
-
-        Dn newDn = new Dn( name );
-
-        for ( Rdn rdn : newDn.rdns )
-        {
-            String upName = rdn.getName();
-            rdnOidToName( rdn, schemaManager );
-            rdn.normalize();
-            rdn.setUpName( upName );
-        }
-
-        newDn.normalizeInternal();
-        newDn.normalized = true;
-
-        return newDn;
+        normalize( schemaManager );
     }
 
 
     /**
      * Normalize the Dn by triming useless spaces and lowercasing names.
-     */
+     *
     void normalizeInternal()
     {
         normName = toNormName();
@@ -499,7 +410,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * Build the normalized Dn as a String,
      *
      * @return A String representing the normalized Dn
-     */
+     *
     private String toNormName()
     {
         if ( rdns.size() == 0 )
@@ -768,11 +679,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public String getNormName()
     {
-        if ( normName == null )
-        {
-            normName = toNormName();
-        }
-
         return normName;
     }
 
@@ -1065,8 +971,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
 
         newDn.toUpName();
-        newDn.toNormName();
-        newDn.normalized = normalized;
+        newDn.normalize( schemaManager );
 
         return newDn;
     }
@@ -1147,8 +1052,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
 
         newDn.toUpName();
-        newDn.toNormName();
-        newDn.normalized = normalized;
+        newDn.normalize( schemaManager );
 
         return newDn;
     }
@@ -1179,7 +1083,15 @@ public class Dn implements Iterable<Rdn>, Externalizable
             newDn.rdns.add( rdns.get( i ).clone() );
         }
 
-        newDn.normName = newDn.toNormName();
+        try
+        {
+            newDn.normalize( schemaManager );
+        }
+        catch ( LdapInvalidDnException lide )
+        {
+            // Do nothing
+        }
+        
         newDn.upName = getUpNameSuffix( posn );
 
         return newDn;
@@ -1278,18 +1190,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
         else
         {
-            if ( schemaManager != null )
-            {
-                clonedDn.normalize( schemaManager );
-
-                normalizeInternal();
-            }
-            else
-            {
-                clonedDn.normalizeInternal();
-                clonedDn.normalized = false;
-            }
-
+            clonedDn.normalize( schemaManager );
             clonedDn.toUpName();
         }
 
@@ -1314,18 +1215,9 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         clonedDn.rdns.add( 0, newRdn );
 
-        if ( schemaManager != null )
-        {
-            clonedDn.normalize( schemaManager );
-        }
-        else
-        {
-            clonedDn.normalizeInternal();
-            clonedDn.normalized = false;
-        }
+        clonedDn.normalize( schemaManager );
 
         clonedDn.toUpName();
-        clonedDn.toNormName();
 
         return clonedDn;
     }
@@ -1348,22 +1240,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         // instead this method should throw the LdapInvalidDnException
         try
         {
-            if ( clonedDn.isNormalized() && newRdn.isSchemaAware() )
-            {
-                clonedDn.normalizeInternal();
-            }
-            else
-            {
-                if ( schemaManager != null )
-                {
-                    clonedDn.normalize( schemaManager );
-                }
-                else
-                {
-                    clonedDn.normalizeInternal();
-                    clonedDn.normalized = false;
-                }
-            }
+            clonedDn.normalize( schemaManager );
         }
         catch ( LdapInvalidDnException e )
         {
@@ -1429,7 +1306,15 @@ public class Dn implements Iterable<Rdn>, Externalizable
             newDn.rdns.add( rdns.get( i ).clone() );
         }
 
-        newDn.normName = newDn.toNormName();
+        try
+        {
+            newDn.normalize( schemaManager );
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            LOG.error( e.getMessage(), e );
+        }
+
         newDn.upName = getUpNamePrefix( posn );
         newDn.normalized = normalized;
 
@@ -1591,40 +1476,88 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public Dn normalize( SchemaManager schemaManager ) throws LdapInvalidDnException
     {
-        if ( this.schemaManager == null )
-        {
-            this.schemaManager = schemaManager;
-        }
+        this.schemaManager = schemaManager;
 
         if ( this.schemaManager != null )
         {
-            if ( normalized )
-            {
-                return this;
-            }
-
             synchronized ( this )
             {
                 if ( size() == 0 )
                 {
                     normalized = true;
+                    bytes = null;
+                    normName = "";
+                    
                     return this;
                 }
+
+                StringBuffer sb = new StringBuffer();
+                boolean isFirst = true;
 
                 for ( Rdn rdn : rdns )
                 {
                     rdn.applySchemaManager( schemaManager );
+
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        sb.append( ',' );
+                    }
+
+                    sb.append( rdn.getNormName() );
                 }
 
-                normalizeInternal();
+                String newNormName = sb.toString();
+
+                if ( ( normName == null ) || !normName.equals( newNormName ) )
+                {
+                    bytes = Strings.getBytesUtf8(newNormName);
+                    normName = newNormName;
+                }
 
                 normalized = true;
 
                 return this;
             }
         }
+        else
+        {
+            if ( rdns.size() == 0 )
+            {
+                bytes = null;
+                normName = "";
+            }
+            else
+            {
+                StringBuffer sb = new StringBuffer();
+                boolean isFirst = true;
 
-        normalizeInternal();
+                for ( Rdn rdn : rdns )
+                {
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        sb.append( ',' );
+                    }
+
+                    sb.append( rdn.getNormName() );
+                }
+
+                String newNormName = sb.toString();
+
+                if ( ( normName == null ) || !normName.equals( newNormName ) )
+                {
+                    bytes = Strings.getBytesUtf8(newNormName);
+                    normName = newNormName;
+                }
+            }
+        }
 
         return this;
     }
