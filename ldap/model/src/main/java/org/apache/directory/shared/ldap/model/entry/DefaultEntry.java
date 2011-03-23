@@ -545,7 +545,7 @@ public final class DefaultEntry implements Entry
      */
     private void normalizeDN( Dn dn )
     {
-        if ( !dn.isNormalized() )
+        if ( !dn.isSchemaAware() )
         {
             try
             {
@@ -2766,7 +2766,7 @@ public final class DefaultEntry implements Entry
         sb.append( "Entry\n" );
         sb.append( "    dn" );
 
-        if ( dn.isNormalized() )
+        if ( dn.isSchemaAware() )
         {
             sb.append( "[n]" );
         }

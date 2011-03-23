@@ -88,7 +88,7 @@ public class MultiThreadedTest
         assertTrue( sharedRdn.isSchemaAware() );
 
         sharedDn.normalize( schemaManager );
-        assertTrue( sharedDn.isNormalized() );
+        assertTrue( sharedDn.isSchemaAware() );
     }
 
 

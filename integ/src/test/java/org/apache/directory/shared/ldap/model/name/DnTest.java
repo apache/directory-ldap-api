@@ -1788,34 +1788,33 @@ public class DnTest
     /**
      * Class to test for Dn add(String)
      *
-     * @throws Exception
-     *             when something goes wrong
+     * @throws Exception when something goes wrong
      */
     @Test
     public void testAddString() throws Exception
     {
-        Dn name = new Dn();
+        Dn name = new Dn( schemaManager );
         assertEquals( name, new Dn( "" ) );
 
-        Dn name4 = new Dn( "ou=East" );
+        Dn name4 = new Dn( schemaManager, "ou=East" );
 
-        assertTrue( name.isNormalized() );
+        assertTrue( name.isSchemaAware() );
 
         name = name.add( "ou=East" );
 
-        assertTrue( name.isNormalized() );
+        assertTrue( name.isSchemaAware() );
 
         assertEquals( name4, name );
 
-        Dn name3 = new Dn( "ou=Marketing,ou=East" );
+        Dn name3 = new Dn( schemaManager, "ou=Marketing,ou=East" );
         name = name.add( "ou=Marketing" );
         assertEquals( name3, name );
 
-        Dn name2 = new Dn( "cn=John,ou=Marketing,ou=East" );
+        Dn name2 = new Dn( schemaManager, "cn=John,ou=Marketing,ou=East" );
         name = name.add( "cn=John" );
         assertEquals( name2, name );
 
-        Dn name0 = new Dn( "cn=HomeDir,cn=John,ou=Marketing,ou=East" );
+        Dn name0 = new Dn( schemaManager, "cn=HomeDir,cn=John,ou=Marketing,ou=East" );
         name = name.add( "cn=HomeDir" );
         assertEquals( name0, name );
     }
@@ -1891,7 +1890,7 @@ public class DnTest
 
         Dn two = new Dn( "cn=test,o=acme" );
         assertNotNull( two.getParent() );
-        assertFalse( two.getParent().isNormalized() );
+        assertFalse( two.getParent().isSchemaAware() );
         assertFalse( two.getParent().isEmpty() );
         assertEquals( "o=acme", two.getParent().getName() );
 
@@ -1899,7 +1898,7 @@ public class DnTest
         three.normalize( schemaManager );
         Dn threeParent = three.getParent();
         assertNotNull( threeParent );
-        assertTrue( threeParent.isNormalized() );
+        assertTrue( threeParent.isSchemaAware() );
         assertFalse( threeParent.isEmpty() );
         assertEquals( "dc=example,dc=com", threeParent.getName() );
         assertEquals( 2, threeParent.getRdns().size() );
@@ -1907,7 +1906,7 @@ public class DnTest
         Dn five = new Dn( "uid=user1,ou=sales,ou=users,dc=example,dc=com" );
         Dn fiveParent = five.getParent();
         assertNotNull( fiveParent );
-        assertFalse( fiveParent.isNormalized() );
+        assertFalse( fiveParent.isSchemaAware() );
         assertFalse( fiveParent.isEmpty() );
         assertEquals( "ou=sales,ou=users,dc=example,dc=com", fiveParent.getName() );
         assertEquals( 4, fiveParent.getRdns().size() );
@@ -2937,16 +2936,16 @@ public class DnTest
     public void testNormalize() throws Exception
     {
         Dn dn = new Dn( "ou=system" );
-        assertFalse( dn.isNormalized() );
+        assertFalse( dn.isSchemaAware() );
 
         dn = dn.add( "ou=users" );
-        assertFalse( dn.isNormalized() );
+        assertFalse( dn.isSchemaAware() );
 
         dn.normalize( schemaManager );
-        assertTrue( dn.isNormalized() );
+        assertTrue( dn.isSchemaAware() );
 
         dn = dn.add( "ou=x" );
-        assertTrue( dn.isNormalized() );
+        assertTrue( dn.isSchemaAware() );
 
         assertEquals( "2.5.4.11=x,2.5.4.11=users,2.5.4.11=system", dn.getNormName() );
         assertEquals( "ou=x,ou=users,ou=system", dn.getName() );
@@ -2957,21 +2956,21 @@ public class DnTest
 
         Rdn rdn = new Rdn( "ou=system" );
         dn = new Dn();
-        assertTrue( dn.isNormalized() );
+        assertFalse( dn.isSchemaAware() );
 
         dn = dn.add( rdn );
-        assertFalse( dn.isNormalized() );
+        assertFalse( dn.isSchemaAware() );
 
         dn.normalize( schemaManager );
-        assertTrue( dn.isNormalized() );
+        assertTrue( dn.isSchemaAware() );
 
         Dn anotherDn = new Dn( "ou=x,ou=users" );
 
         dn = dn.addAll( anotherDn );
-        assertTrue( dn.isNormalized() );
+        assertTrue( dn.isSchemaAware() );
 
         dn.normalize( schemaManager );
-        assertTrue( dn.isNormalized() );
+        assertTrue( dn.isSchemaAware() );
     }
 
 

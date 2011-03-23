@@ -293,7 +293,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * @param normName the normalized name
      * @param bytes the name as a byte[]
      */
-    Dn( SchemaManager schemaManager, String upName, String normName, Rdn... rdns )
+    /* No protection */ Dn( SchemaManager schemaManager, String upName, String normName, Rdn... rdns )
     {
         this.schemaManager = schemaManager;
         
@@ -1179,7 +1179,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         clonedDn.rdns.addAll( clonedDn.size() - posn, dn.rdns );
 
         // Regenerate the normalized name and the original string
-        if ( clonedDn.isNormalized() && dn.isNormalized() )
+        if ( clonedDn.isSchemaAware() && dn.isSchemaAware() )
         {
             if ( clonedDn.size() != 0 )
             {
@@ -1568,9 +1568,9 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *
      * @return <code>true</code> if the Dn is already normalized.
      */
-    public boolean isNormalized()
+    public boolean isSchemaAware()
     {
-        return normalized;
+        return schemaManager != null;
     }
 
 
