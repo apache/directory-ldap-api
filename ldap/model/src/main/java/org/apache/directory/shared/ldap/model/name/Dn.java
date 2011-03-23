@@ -462,30 +462,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
     
     
     /**
-     * Tells if the Dn is schema aware.
-     * 
-     * @return <code>true</code> If the Dn has a schemaManager
-     */
-    public boolean hasSchemaManager()
-    {
-        return schemaManager != null;
-    }
-
-
-    /**
-     * Return the user provided Dn as a String. It returns the same value as the
-     * getName method
-     *
-     * @return A String representing the user provided Dn
-     */
-    @Override
-    public String toString()
-    {
-        return getName();
-    }
-
-
-    /**
      * Return the User Provided Dn as a String,
      *
      * @return A String representing the User Provided Dn
@@ -674,8 +650,14 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * Dn dn = new Dn( schemaManager, "ou = Example , ou = com" );
      * assert( "2.5.4.11=example,2.5.4.11=com".equals( dn.getNormName ) );
      * </pre>
+     * Otherwise, it will return a Dn with the AttributeType in lower case
+     * and the value trimmed : <br/>
+     * <pre>
+     * Dn dn = new Dn( " CN = A   Test " );
+     * assertEquals( "cn=A   Test", dn.getNormName() );
+     * </pre>
      *
-     * @return The Dn as a String
+     * @return The normalized Dn as a String
      */
     public String getNormName()
     {
@@ -769,7 +751,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         try
         {
-            return isDescendantOf( new Dn( dn ) );
+            return isDescendantOf( new Dn( schemaManager, dn ) );
         }
         catch ( LdapInvalidDnException lide )
         {
@@ -1727,5 +1709,18 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
         
         out.flush();
+    }
+    
+    
+    /**
+     * Return the user provided Dn as a String. It returns the same value as the
+     * getName method
+     *
+     * @return A String representing the user provided Dn
+     */
+    @Override
+    public String toString()
+    {
+        return getName();
     }
 }
