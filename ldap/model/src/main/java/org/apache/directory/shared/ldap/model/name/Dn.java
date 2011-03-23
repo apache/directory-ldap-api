@@ -1041,46 +1041,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * {@inheritDoc}
-     */
-    public Dn getSuffix( int posn )
-    {
-        if ( rdns.size() == 0 )
-        {
-            return EMPTY_DN;
-        }
-
-        if ( ( posn < 0 ) || ( posn > rdns.size() ) )
-        {
-            String message = I18n.err( I18n.ERR_04206, posn, rdns.size() );
-            LOG.error( message );
-            throw new ArrayIndexOutOfBoundsException( message );
-        }
-
-        Dn newDn = new Dn();
-
-        for ( int i = 0; i < size() - posn; i++ )
-        {
-            // Don't forget to clone the rdns !
-            newDn.rdns.add( rdns.get( i ).clone() );
-        }
-
-        try
-        {
-            newDn.normalize( schemaManager );
-        }
-        catch ( LdapInvalidDnException lide )
-        {
-            // Do nothing
-        }
-        
-        newDn.upName = getUpNameSuffix( posn );
-
-        return newDn;
-    }
-
-
-    /**
      * Adds the components of a name -- in order -- at a specified position
      * within this name. Components of this name at or after the index of the
      * first new component are shifted up (away from 0) to accommodate the new

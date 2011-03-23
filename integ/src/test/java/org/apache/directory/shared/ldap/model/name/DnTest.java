@@ -926,7 +926,7 @@ public class DnTest
     public void testDnGetSuffixPos0() throws LdapException
     {
         Dn dn = new Dn( "a=b, c=d,e = f" );
-        Dn newDn = ( dn.getSuffix( 0 ) );
+        Dn newDn = ( dn.getDescendantOf( "" ) );
         assertEquals( "a=b, c=d,e = f", newDn.getName() );
     }
 
@@ -938,7 +938,7 @@ public class DnTest
     public void testDnGetSuffixPos1() throws LdapException
     {
         Dn dn = new Dn( "a=b, c=d,e = f" );
-        Dn newDn = ( dn.getSuffix( 1 ) );
+        Dn newDn = ( dn.getDescendantOf( "e=f" ) );
         assertEquals( "a=b, c=d", newDn.getName() );
     }
 
@@ -950,7 +950,7 @@ public class DnTest
     public void testDnGetSuffixPos2() throws LdapException
     {
         Dn dn = new Dn( "a=b, c=d,e = f" );
-        Dn newDn = ( dn.getSuffix( 2 ) );
+        Dn newDn = ( dn.getDescendantOf( "c=d,e=f" ) );
         assertEquals( "a=b", newDn.getName() );
     }
 
@@ -962,7 +962,7 @@ public class DnTest
     public void testDnGetSuffixPos3() throws LdapException
     {
         Dn dn = new Dn( "a=b, c=d,e = f" );
-        Dn newDn = ( dn.getSuffix( 3 ) );
+        Dn newDn = ( dn.getDescendantOf( "a=b, c=d, e=f" ) );
         assertEquals( "", newDn.getName() );
     }
 
@@ -977,7 +977,7 @@ public class DnTest
 
         try
         {
-            dn.getSuffix( 4 );
+            dn.getDescendantOf( "i=j, a=b, c=d, e=f" );
             // We should not reach this point.
             fail();
         }
@@ -990,7 +990,7 @@ public class DnTest
 
     /**
      * Get the suffix of an empty LdapName
-     */
+     *
     @Test
     public void testDnGetSuffixEmptyDN()
     {
@@ -1593,11 +1593,11 @@ public class DnTest
     public void testGetXSuffix() throws Exception
     {
         Dn name = new Dn( "cn=HomeDir,cn=John,ou=Marketing,ou=East" );
-        assertEquals( "", name.getSuffix( 4 ).toString() );
-        assertEquals( "cn=HomeDir", name.getSuffix( 3 ).toString() );
-        assertEquals( "cn=HomeDir,cn=John", name.getSuffix( 2 ).toString() );
-        assertEquals( "cn=HomeDir,cn=John,ou=Marketing", name.getSuffix( 1 ).toString() );
-        assertEquals( "cn=HomeDir,cn=John,ou=Marketing,ou=East", name.getSuffix( 0 ).toString() );
+        assertEquals( "", name.getDescendantOf( "cn=HomeDir,cn=John,ou=Marketing,ou=East" ).toString() );
+        assertEquals( "cn=HomeDir", name.getDescendantOf( "cn=John,ou=Marketing,ou=East" ).toString() );
+        assertEquals( "cn=HomeDir,cn=John", name.getDescendantOf( "ou=Marketing,ou=East" ).toString() );
+        assertEquals( "cn=HomeDir,cn=John,ou=Marketing", name.getDescendantOf( "ou=East" ).toString() );
+        assertEquals( "cn=HomeDir,cn=John,ou=Marketing,ou=East", name.getDescendantOf( "" ).toString() );
     }
 
 
@@ -2127,11 +2127,11 @@ public class DnTest
         LdapName jName = new LdapName( "cn=four,cn=three,cn=two,cn=one" );
         Dn aName = new Dn( "cn=four,cn=three,cn=two,cn=one" );
 
-        assertEquals( jName.getSuffix( 0 ).toString(), aName.getSuffix( 0 ).toString() );
-        assertEquals( jName.getSuffix( 1 ).toString(), aName.getSuffix( 1 ).toString() );
-        assertEquals( jName.getSuffix( 2 ).toString(), aName.getSuffix( 2 ).toString() );
-        assertEquals( jName.getSuffix( 3 ).toString(), aName.getSuffix( 3 ).toString() );
-        assertEquals( jName.getSuffix( 4 ).toString(), aName.getSuffix( 4 ).toString() );
+        assertEquals( jName.getSuffix( 0 ).toString(), aName.getDescendantOf( "" ).toString() );
+        assertEquals( jName.getSuffix( 1 ).toString(), aName.getDescendantOf( "cn=one" ).toString() );
+        assertEquals( jName.getSuffix( 2 ).toString(), aName.getDescendantOf( "cn=two,cn=one" ).toString() );
+        assertEquals( jName.getSuffix( 3 ).toString(), aName.getDescendantOf( "cn=three,cn=two,cn=one" ).toString() );
+        assertEquals( jName.getSuffix( 4 ).toString(), aName.getDescendantOf( "cn=four,cn=three,cn=two,cn=one" ).toString() );
     }
 
 
