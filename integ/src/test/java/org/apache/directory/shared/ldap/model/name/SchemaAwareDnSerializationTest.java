@@ -28,7 +28,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.junit.BeforeClass;
@@ -135,7 +134,7 @@ public class SchemaAwareDnSerializationTest
     public void testNameSerialization() throws Exception
     {
         Dn dn = new Dn( "ou= Some   People   + dc=  And   Some anImAls,dc = eXample,dc= cOm" );
-        dn.normalize( schemaManager );
+        dn.applySchemaManager( schemaManager );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -181,7 +180,7 @@ public class SchemaAwareDnSerializationTest
     public void testNameStaticSerialization() throws Exception
     {
         Dn dn = new Dn( "ou= Some   People   + dc=  And   Some anImAls,dc = eXample,dc= cOm" );
-        dn.normalize( schemaManager );
+        dn.applySchemaManager( schemaManager );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -202,7 +201,7 @@ public class SchemaAwareDnSerializationTest
     @Test public void testSerializationPerfs() throws Exception
     {
         Dn dn = new Dn( "ou= Some   People   + dc=  And   Some anImAls,dc = eXample,dc= cOm" );
-        dn.normalize( schemaManager );
+        dn.applySchemaManager( schemaManager );
 
         long t0 = System.currentTimeMillis();
 
@@ -239,7 +238,7 @@ public class SchemaAwareDnSerializationTest
             Dn dn1 = new Dn( schemaManager );
             dn1.readExternal( in );
 
-            dn.normalize( schemaManager );
+            dn.applySchemaManager( schemaManager );
         }
 
         long t3 = System.currentTimeMillis();

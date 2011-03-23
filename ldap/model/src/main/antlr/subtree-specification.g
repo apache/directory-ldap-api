@@ -350,7 +350,7 @@ distinguishedName returns [ Dn name ]
     token:SAFEUTF8STRING
     {
         name = new Dn( token.getText() );
-        name.normalize( schemaManager );
+        name.applySchemaManager( schemaManager );
         
         log.debug( "recognized a DistinguishedName: " + token.getText() );
     }

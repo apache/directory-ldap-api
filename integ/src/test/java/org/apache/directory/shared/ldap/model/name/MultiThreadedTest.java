@@ -24,9 +24,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.directory.junit.tools.MultiThreadedMultiInvoker;
-import org.apache.directory.shared.ldap.model.name.Ava;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.junit.BeforeClass;
@@ -65,9 +62,9 @@ public class MultiThreadedTest
         schemaManager = new DefaultSchemaManager();
 
         referenceDn = new Dn( "dc=example,dc=com" );
-        referenceDn.normalize( schemaManager );
+        referenceDn.applySchemaManager( schemaManager );
         sharedDn = new Dn( "dc=example,dc=com" );
-        sharedDn.normalize( schemaManager );
+        sharedDn.applySchemaManager( schemaManager );
 
         referenceRdn = new Rdn( "ou=system" );
         referenceRdn.applySchemaManager( schemaManager );
@@ -87,7 +84,7 @@ public class MultiThreadedTest
         sharedRdn.applySchemaManager( schemaManager );
         assertTrue( sharedRdn.isSchemaAware() );
 
-        sharedDn.normalize( schemaManager );
+        sharedDn.applySchemaManager( schemaManager );
         assertTrue( sharedDn.isSchemaAware() );
     }
 
@@ -100,7 +97,7 @@ public class MultiThreadedTest
         sharedRdn.applySchemaManager( schemaManager );
         assertEquals( referenceRdn.hashCode(), sharedRdn.hashCode() );
 
-        sharedDn.normalize( schemaManager );
+        sharedDn.applySchemaManager( schemaManager );
         assertEquals( referenceDn.hashCode(), sharedDn.hashCode() );
     }
 
@@ -117,7 +114,7 @@ public class MultiThreadedTest
         assertTrue( referenceRdn.equals( sharedRdn ) );
         assertTrue( sharedRdn.equals( referenceRdn ) );
 
-        sharedDn.normalize( schemaManager );
+        sharedDn.applySchemaManager( schemaManager );
         assertEquals( referenceDn, sharedDn );
         assertTrue( referenceDn.equals( sharedDn ) );
         assertTrue( sharedDn.equals( referenceDn ) );

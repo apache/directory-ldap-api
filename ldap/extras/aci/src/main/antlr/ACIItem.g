@@ -499,7 +499,7 @@ attributeValue
         
         if ( schemaManager != null )
         {        
-          attributeTypeAndValueSetAsDn.normalize( schemaManager );
+          attributeTypeAndValueSetAsDn.applySchemaManager( schemaManager );
         }
         
         for ( Rdn rdn : attributeTypeAndValueSetAsDn )
@@ -1224,7 +1224,7 @@ distinguishedName returns [ Dn name ]
         name = new Dn( token.getText() );
         if ( schemaManager != null )
         {
-            name.normalize( schemaManager );
+            name.applySchemaManager( schemaManager );
         }
         log.debug( "recognized a DistinguishedName: " + token.getText() );
     }
