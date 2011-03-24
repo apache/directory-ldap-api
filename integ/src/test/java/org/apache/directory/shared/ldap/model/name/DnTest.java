@@ -220,8 +220,8 @@ public class DnTest
         Dn dn = new Dn( "cn=Kate Bush+sn=Bush,ou=system" );
         Dn target = new Dn();
 
-        assertTrue( Dn.isValid("cn=Kate Bush+sn=Bush,ou=system") );
-        target = target.addAll( target.size(), dn );
+        assertTrue( Dn.isValid( "cn=Kate Bush+sn=Bush,ou=system" ) );
+        target = target.addAll( dn );
         assertEquals( "cn=Kate Bush+sn=Bush,ou=system", target.toString() );
         assertEquals( "cn=Kate Bush+sn=Bush,ou=system", target.getName() );
     }
@@ -779,7 +779,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = b" );
         Dn dn2 = new Dn( "c = d" );
-        dn = dn.addAll( 0, dn2 );
+        dn = dn2.addAll( dn );
         assertEquals( "a = b,c = d", dn.getName() );
     }
 
@@ -794,23 +794,8 @@ public class DnTest
     {
         Dn dn = new Dn( "a = b" );
         Dn dn2 = new Dn( "c = d" );
-        dn = dn.addAll( 1, dn2 );
+        dn = dn.addAll( dn2 );
         assertEquals( "c = d,a = b", dn.getName() );
-    }
-
-
-    /**
-     * Test AddAll at the middle
-     *
-     * @throws LdapException
-     */
-    @Test
-    public void testDnAtTheMiddleAddAll() throws LdapException
-    {
-        Dn dn = new Dn( "a = b, c = d" );
-        Dn dn2 = new Dn( "e = f" );
-        dn = dn.addAll( 1, dn2 );
-        assertEquals( "a = b,e = f, c = d", dn.getName() );
     }
 
 
@@ -824,7 +809,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = b" );
         Dn dn2 = new Dn();
-        dn = dn.addAll( 0, dn2 );
+        dn = dn.addAll( dn2 );
         assertEquals( "a=b", dn.getNormName() );
         assertEquals( "a = b", dn.getName() );
     }
@@ -840,7 +825,7 @@ public class DnTest
     {
         Dn dn = new Dn();
         Dn dn2 = new Dn( "a = b" );
-        dn = dn.addAll( 0, dn2 );
+        dn = dn.addAll( dn2 );
         assertEquals( "a = b", dn.getName() );
     }
 
@@ -1748,40 +1733,7 @@ public class DnTest
 
         name = name.addAll( name0 );
         assertTrue( name0.equals( name ) );
-        assertTrue( name2.equals( name.addAll( 2, name1 ) ) );
-    }
-
-
-    /**
-     * Class to test for Dn addAll(int, Dn)
-     *
-     * @throws Exception
-     *             when something goes wrong
-     */
-    @Test
-    public void testAddAllintName1() throws Exception
-    {
-        Dn name = new Dn();
-        Dn name0 = new Dn( "cn=HomeDir,ou=Marketing,ou=East" );
-        Dn name1 = new Dn( "cn=John" );
-        Dn name2 = new Dn( "cn=HomeDir,cn=John,ou=Marketing,ou=East" );
-
-        name = name.addAll( name0 );
-        assertTrue( name0.equals( name ) );
-
-        name = name.addAll( 2, name1 );
-        assertTrue( name2.equals( name ) );
-
-        Dn name3 = new Dn( "cn=Airport" );
-        Dn name4 = new Dn( "cn=Airport,cn=HomeDir,cn=John,ou=Marketing,ou=East" );
-
-        name = name.addAll( 4, name3 );
-        assertTrue( name4.equals( name ) );
-
-        Dn name5 = new Dn( "cn=ABC123" );
-        Dn name6 = new Dn( "cn=Airport,cn=HomeDir,cn=ABC123,cn=John,ou=Marketing,ou=East" );
-
-        assertTrue( name6.equals( name.addAll( 3, name5 ) ) );
+        assertTrue( name2.equals( name.addAll( name1 ) ) );
     }
 
 
@@ -2176,15 +2128,15 @@ public class DnTest
         Dn aName = new Dn( "cn=four,cn=three,cn=two,cn=one" );
 
         assertSame( jName, jName.addAll( 0, new LdapName( "cn=zero,cn=zero.5" ) ) );
-        assertNotSame( aName, aName.addAll( 0, new Dn( "cn=zero,cn=zero.5" ) ) );
+        assertNotSame( aName, aName.addAll( new Dn( "cn=zero,cn=zero.5" ) ) );
         assertNotSame( jName.toString(), aName.toString() );
 
         assertSame( jName, jName.addAll( 2, new LdapName( "cn=zero,cn=zero.5" ) ) );
-        assertNotSame( aName, aName.addAll( 2, new Dn( "cn=zero,cn=zero.5" ) ) );
+        assertNotSame( aName, aName.addAll( new Dn( "cn=zero,cn=zero.5" ) ) );
         assertNotSame( jName.toString(), aName.toString() );
 
         assertSame( jName, jName.addAll( jName.size(), new LdapName( "cn=zero,cn=zero.5" ) ) );
-        assertNotSame( aName, aName.addAll( aName.size(), new Dn( "cn=zero,cn=zero.5" ) ) );
+        assertNotSame( aName, aName.addAll( new Dn( "cn=zero,cn=zero.5" ) ) );
         assertNotSame( jName.toString(), aName.toString() );
     }
 

@@ -343,11 +343,11 @@ public class Dn implements Iterable<Rdn>, Externalizable
         
         for ( Rdn rdnParent : dn )
         {
-            rdns.add( rdnParent );
+            rdns.add( 0, rdnParent );
         }
         
-        rdns.add( rdn );
-        
+        rdns.add( 0, rdn );
+
         applySchemaManager( dn.schemaManager );
         toUpName();
     }
@@ -1088,29 +1088,9 @@ public class Dn implements Iterable<Rdn>, Externalizable
     /**
      * {@inheritDoc}
      */
-    public Dn addAll( Dn suffix )
+    public Dn addAll( Dn suffix ) throws LdapInvalidDnException
     {
-        Dn result = null;
-        
-        try
-        {
-            result = addAll( rdns.size(), suffix );
-        }
-        catch ( LdapInvalidDnException lie )
-        {
-            // Do nothing, 
-        }
-
-        return result;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public Dn addAll( int posn, Dn dn ) throws LdapInvalidDnException
-    {
-        if ( ( dn == null ) || ( dn.size() == 0 ) )
+        if ( ( suffix == null ) || ( suffix.size() == 0 ) )
         {
             return this;
         }
@@ -1118,16 +1098,16 @@ public class Dn implements Iterable<Rdn>, Externalizable
         Dn clonedDn = copy();
 
         // Concatenate the rdns
-        clonedDn.rdns.addAll( clonedDn.size() - posn, dn.rdns );
+        clonedDn.rdns.addAll( 0, suffix.rdns );
 
         // Regenerate the normalized name and the original string
-        if ( clonedDn.isSchemaAware() && dn.isSchemaAware() )
+        if ( clonedDn.isSchemaAware() && suffix.isSchemaAware() )
         {
             if ( clonedDn.size() != 0 )
             {
-                clonedDn.normName = dn.getNormName() + "," + normName;
+                clonedDn.normName = suffix.getNormName() + "," + normName;
                 clonedDn.bytes = Strings.getBytesUtf8(normName);
-                clonedDn.upName = dn.getName() + "," + upName;
+                clonedDn.upName = suffix.getName() + "," + upName;
             }
         }
         else
