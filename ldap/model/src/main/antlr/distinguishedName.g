@@ -179,10 +179,34 @@ distinguishedName [Dn dn]
     }
     :
     (
-        rdn = relativeDistinguishedName[new Rdn()] { dn.add( rdn ); rdn=null; }
+        rdn = relativeDistinguishedName[new Rdn()] 
+        { 
+            try
+            { 
+                dn.add( rdn ); 
+            }
+            catch ( LdapInvalidDnException lide )
+            {
+                // Do nothing, can't get an exception here
+            } 
+                
+            rdn=null; 
+        }
         (
             ( COMMA | SEMI )
-            rdn = relativeDistinguishedName[new Rdn()] { dn.add( rdn ); rdn=null; }
+            rdn = relativeDistinguishedName[new Rdn()] 
+            { 
+                try
+                { 
+                    dn.add( rdn ); 
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    // Do nothing, can't get an exception here
+                } 
+
+                rdn=null;
+            }
         )*
         EOF
     )?
@@ -217,10 +241,16 @@ relativeDistinguishedNames [List<Rdn> rdns]
     }
     :
     (
-        rdn = relativeDistinguishedName[new Rdn()] { rdns.add( rdn ); }
+        rdn = relativeDistinguishedName[new Rdn()] 
+        { 
+            rdns.add( rdn );
+        }
         (
             ( COMMA | SEMI )
-            rdn = relativeDistinguishedName[new Rdn()] { rdns.add( rdn ); }
+            rdn = relativeDistinguishedName[new Rdn()] 
+            { 
+                rdns.add( rdn ); 
+            }
         )*
         EOF
     )?
