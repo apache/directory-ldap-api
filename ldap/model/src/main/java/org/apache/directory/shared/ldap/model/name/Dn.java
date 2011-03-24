@@ -554,52 +554,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * Return the User Provided suffix representation of the Dn starting at the
-     * posn position.
-     * If posn = 0, return an empty string.
-     *
-     * for Dn : sn=smith, dc=apache, dc=org
-     * getUpname(0) -> "sn=smith, dc=apache, dc=org"
-     * getUpName(1) -> "sn=smith, dc=apache"
-     * getUpname(3) -> "sn=smith"
-     * getUpName(4) -> ""
-     *
-     * Warning ! The returned String is not exactly the user
-     * provided Dn, as spaces before and after each RDNs have been trimmed.
-     *
-     * @param posn The starting position
-     * @return The truncated Dn
-     */
-    private String getUpNameSuffix( int posn )
-    {
-        if ( posn > rdns.size() )
-        {
-            return "";
-        }
-
-        int end = rdns.size() - posn;
-        StringBuffer sb = new StringBuffer();
-        boolean isFirst = true;
-
-        for ( int i = 0; i < end; i++ )
-        {
-            if ( isFirst )
-            {
-                isFirst = false;
-            }
-            else
-            {
-                sb.append( ',' );
-            }
-
-            sb.append( rdns.get( i ).getName() );
-        }
-
-        return sb.toString();
-    }
-
-
-    /**
      * Gets the hash code of this name.
      *
      * @see java.lang.Object#hashCode()
@@ -1041,51 +995,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * Adds the components of a name -- in order -- at a specified position
-     * within this name. Components of this name at or after the index of the
-     * first new component are shifted up (away from 0) to accommodate the new
-     * components. Compoenents are supposed to be normalized.
-     *
-     * @param posn the index in this name at which to add the new components.
-     *            Must be in the range [0,size()]. Note this is from the opposite end as rnds.get(posn)
-     * @param dn the components to add
-     * @return a cloned and updated Dn of the original Dn, if no changes were applied the original Dn will be returned
-     * @throws ArrayIndexOutOfBoundsException
-     *             if posn is outside the specified range
-     * @throws LdapInvalidDnException
-     *             if <tt>n</tt> is not a valid name, or if the addition of
-     *             the components would violate the syntax rules of this name
-     */
-    public Dn addAllNormalized( int posn, Dn dn ) throws LdapInvalidDnException
-    {
-        if ( ( dn == null ) || ( dn.size() == 0 ) )
-        {
-            return this;
-        }
-
-        Dn clonedDn = copy();
-
-        // Concatenate the rdns
-        clonedDn.rdns.addAll( clonedDn.size() - posn, dn.rdns );
-
-        if ( Strings.isEmpty(normName) )
-        {
-            clonedDn.normName = dn.normName;
-            clonedDn.bytes = dn.bytes;
-            clonedDn.upName = dn.upName;
-        }
-        else
-        {
-            clonedDn.normName = dn.normName + "," + normName;
-            clonedDn.bytes = Strings.getBytesUtf8(normName);
-            clonedDn.upName = dn.upName + "," + upName;
-        }
-
-        return clonedDn;
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public Dn addAll( Dn suffix ) throws LdapInvalidDnException
@@ -1171,31 +1080,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
         clonedDn.toUpName();
 
         return clonedDn;
-    }
-
-
-    /**
-     * used only for deserialization.
-     * 
-     * {@inheritDoc}
-     */
-    /* No qualifier */ Dn addInternal( int posn, Rdn rdn )
-    {
-        if ( ( posn < 0 ) || ( posn > size() ) )
-        {
-            String message = I18n.err( I18n.ERR_04206, posn, rdns.size() );
-            LOG.error( message );
-            throw new ArrayIndexOutOfBoundsException( message );
-        }
-
-        // We have to parse the nameComponent which is given as an argument
-        Rdn newRdn = rdn.clone();
-
-        int realPos = size() - posn;
-        rdns.add( realPos, newRdn );
-        toUpName();
-
-        return this;
     }
 
 
