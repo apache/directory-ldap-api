@@ -58,7 +58,7 @@ import org.slf4j.LoggerFactory;
  * A Dn is formed of RDNs, in a specific order :<br/>
  *  Rdn[n], Rdn[n-1], ... Rdn[1], Rdn[0]<br/>
  *
- * It represents a tree, in which the root is the last Rdn (Rdn[0]) and the leaf
+ * It represents a position in a hierarchy, in which the root is the last Rdn (Rdn[0]) and the leaf
  * is the first Rdn (Rdn[n]).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -87,14 +87,16 @@ public class Dn implements Iterable<Rdn>, Externalizable
     private boolean normalized;
 
     /**
-     *  The RDNs that are elements of the Dn
-     * NOTE THAT THESE ARE IN THE OPPOSITE ORDER FROM THAT IMPLIED BY THE JAVADOC!
+     *  The RDNs that are elements of the Dn<br/>
+     * NOTE THAT THESE ARE IN THE OPPOSITE ORDER FROM THAT IMPLIED BY THE JAVADOC!<br/>
      * Rdn[0] is rdns.get(n) and Rdn[n] is rdns.get(0)
      * <br>
      * For instance,if the Dn is "dc=c, dc=b, dc=a", then the RDNs are stored as :
-     * [0] : dc=c
-     * [1] : dc=b
-     * [2] : dc=a
+     * <ul>
+     * <li>[0] : dc=c</li>
+     * <li>[1] : dc=b</li>
+     * <li>[2] : dc=a</li>
+     * </ul>
      */
     protected List<Rdn> rdns = new ArrayList<Rdn>( 5 );
 
@@ -115,6 +117,9 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /** the schema manager */
     private SchemaManager schemaManager;
+    
+    /** The computed hashcode */
+    private volatile int h;
 
     /**
      * An iterator over RDNs
@@ -123,7 +128,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         // The current index
         int index;
-
 
         private RdnIterator()
         {
@@ -179,6 +183,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         upName = "";
         normName = "";
         normalized = true;
+        hashCode();
     }
 
 
@@ -200,9 +205,10 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *     "ou", exampleName,
      *     baseDn);
      * </pre>
+     * 
      * @param schemaManager the schema manager
-     * @param upRdns
-     * @throws LdapInvalidDnException
+     * @param upRdns The list of String composing the Dn
+     * @throws LdapInvalidDnException If the resulting Dn is invalid
      */
     public Dn(String... upRdns) throws LdapInvalidDnException
     {
@@ -211,7 +217,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * Creates a new instance of Dn, using varargs to declare the RDNs. Each
+     * Creates a new instance of schema aware Dn, using varargs to declare the RDNs. Each
      * String is either a full Rdn, or a couple of AttributeType DI and a value.
      * If the String contains a '=' symbol, the the constructor will assume that
      * the String arg contains afull Rdn, otherwise, it will consider that the
@@ -228,9 +234,10 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *     "ou", exampleName,
      *     baseDn);
      * </pre>
+     * 
      * @param schemaManager the schema manager
-     * @param upRdns
-     * @throws LdapInvalidDnException
+     * @param upRdns The list of String composing the Dn
+     * @throws LdapInvalidDnException If the resulting Dn is invalid
      */
     public Dn( SchemaManager schemaManager, String... upRdns ) throws LdapInvalidDnException
     {
@@ -282,16 +289,20 @@ public class Dn implements Iterable<Rdn>, Externalizable
         parseInternal( upName, rdns );
 
         applySchemaManager( schemaManager );
+        
+        hashCode();
     }
 
 
     /**
-     * Create a Dn while deserializing it.
-     *
+     * Create a schema aware Dn while deserializing it.
+     * <br/>
      * Note : this constructor is used only by the deserialization method.
+     * 
+     * @param schemaManager the schema manager
      * @param upName The user provided name
      * @param normName the normalized name
-     * @param bytes the name as a byte[]
+     * @param rdns the list of RDNs for this Dn
      */
     /* No protection */ Dn( SchemaManager schemaManager, String upName, String normName, Rdn... rdns )
     {
@@ -310,6 +321,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * Creates a Dn from a list of Rdns.
      *
      * @param rdns the list of Rdns to be used for the Dn
+     * @throws LdapInvalidDnException If the resulting Dn is invalid
      */
     public Dn( Rdn... rdns ) throws LdapInvalidDnException
     {
@@ -326,13 +338,16 @@ public class Dn implements Iterable<Rdn>, Externalizable
         applySchemaManager( null );
         toUpName();
         normalized = false;
+        hashCode();
     }
 
 
     /**
      * Creates a Dn concatenating a Rdn and a Dn.
      *
-     * @param rdns the list of Rdns to be used for the Dn
+     * @param rdn the Rdn to add to the Dn
+     * @param dn the Dn 
+     * @throws LdapInvalidDnException If the resulting Dn is invalid
      */
     public Dn( Rdn rdn, Dn dn ) throws LdapInvalidDnException
     {
@@ -350,13 +365,16 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         applySchemaManager( dn.schemaManager );
         toUpName();
+        hashCode();
     }
 
 
     /**
-     * Creates a Dn concatenating a Rdn and a Dn.
+     * Creates a schema aware Dn copying an existing Dn
      *
-     * @param rdns the list of Rdns to be used for the Dn
+     * @param schemaManager the schema manager
+     * @param dn the Dn to copy
+     * @throws LdapInvalidDnException If the resulting Dn is invalid
      */
     public Dn( SchemaManager schemaManager, Dn dn ) throws LdapInvalidDnException
     {
@@ -372,14 +390,16 @@ public class Dn implements Iterable<Rdn>, Externalizable
         
         applySchemaManager( schemaManager );
         toUpName();
+        hashCode();
     }
 
 
     /**
      * Creates a Schema aware Dn from a list of Rdns.
      *
-     *  @param schemaManager The SchemaManager to use
+     * @param schemaManager The SchemaManager to use
      * @param rdns the list of Rdns to be used for the Dn
+     * @throws LdapInvalidDnException If the resulting Dn is invalid
      */
     public Dn( SchemaManager schemaManager, Rdn... rdns ) throws LdapInvalidDnException
     {
@@ -394,62 +414,10 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
 
         applySchemaManager( schemaManager );
+        hashCode();
     }
 
 
-    /**
-     * Normalize the Dn by triming useless spaces and lowercasing names.
-     *
-    void normalizeInternal()
-    {
-        normName = toNormName();
-    }
-
-
-    /**
-     * Build the normalized Dn as a String,
-     *
-     * @return A String representing the normalized Dn
-     *
-    private String toNormName()
-    {
-        if ( rdns.size() == 0 )
-        {
-            bytes = null;
-            return "";
-        }
-        else
-        {
-            StringBuffer sb = new StringBuffer();
-            boolean isFirst = true;
-
-            for ( Rdn rdn : rdns )
-            {
-                if ( isFirst )
-                {
-                    isFirst = false;
-                }
-                else
-                {
-                    sb.append( ',' );
-                }
-
-                sb.append( rdn.getNormName() );
-            }
-
-            String newNormName = sb.toString();
-
-            if ( ( normName == null ) || !normName.equals( newNormName ) )
-            {
-                bytes = Strings.getBytesUtf8(newNormName);
-                normName = newNormName;
-            }
-
-            return normName;
-        }
-    }
-    
-    
     /**
      * Get the associated SchemaManager if any.
      * 
@@ -500,23 +468,24 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Return the User Provided prefix representation of the Dn starting at the
-     * posn position.
-     *
-     * If posn = 0, return an empty string.
-     *
+     * posn position.<br/>
+     * <br/>
+     * If posn = 0, return an empty string.<br/>
+     * <br/>
      * for Dn : sn=smith, dc=apache, dc=org
-     * getUpname(0) -> ""
-     * getUpName(1) -> "dc=org"
-     * getUpname(3) -> "sn=smith, dc=apache, dc=org"
-     * getUpName(4) -> ArrayOutOfBoundException
-     *
+     * <ul>
+     * <li>getUpname(0) -> ""</li>
+     * <li>getUpName(1) -> "dc=org"</li>
+     * <li>getUpname(3) -> "sn=smith, dc=apache, dc=org"</li>
+     * <li>getUpName(4) -> ArrayOutOfBoundException</li>
+     * </ul>
+     *<br/>
      * Warning ! The returned String is not exactly the
      * user provided Dn, as spaces before and after each RDNs have been trimmed.
      *
-     * @param posn
-     *            The starting position
+     * @param posn The starting position
      * @return The truncated Dn
-     */
+     *
     private String getUpNamePrefix( int posn )
     {
         if ( posn == 0 )
@@ -778,8 +747,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     /**
      * Retrieves a component of this name.
      *
-     * @param posn
-     *            the 0-based index of the component to retrieve. Must be in the
+     * @param posn the 0-based index of the component to retrieve. Must be in the
      *            range [0,size()).
      * @return the component at index posn
      * @throws ArrayIndexOutOfBoundsException
@@ -1120,8 +1088,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             LOG.error( e.getMessage(), e );
         }
 
-        newDn.upName = getUpNamePrefix( posn );
-        newDn.normalized = normalized;
+        newDn.toUpName();
 
         return newDn;
     }
