@@ -701,14 +701,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public Rdn getRdn()
     {
-        if ( rdns.size() == 0 )
+        if ( isNullOrEmpty( this ) )
         {
-            return null;
+            return Rdn.EMPTY_RDN;
         }
-        else
-        {
-            return rdns.get( 0 ).clone();
-        }
+        
+        return rdns.get( 0 ).clone();
     }
 
 
@@ -891,7 +889,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     /**
      * {@inheritDoc}
      */
-    public Dn addAll( Dn suffix ) throws LdapInvalidDnException
+    public Dn add( Dn suffix ) throws LdapInvalidDnException
     {
         if ( ( suffix == null ) || ( suffix.size() == 0 ) )
         {
@@ -979,14 +977,9 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public Dn getParent()
     {
-        if ( isEmpty() )
+        if ( isNullOrEmpty( this ) )
         {
-            return null;
-        }
-
-        if ( rdns.size() == 0 )
-        {
-            return EMPTY_DN;
+            return this;
         }
         
         int posn = rdns.size() - 1;
@@ -1299,12 +1292,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public static boolean isNullOrEmpty( Dn dn )
     {
-        if ( dn != null )
-        {
-            return dn.isEmpty();
-        }
-
-        return true;
+        return ( dn == null ) || dn.isEmpty();
     }
     
     

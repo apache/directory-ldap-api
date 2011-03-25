@@ -221,7 +221,7 @@ public class DnTest
         Dn target = new Dn();
 
         assertTrue( Dn.isValid( "cn=Kate Bush+sn=Bush,ou=system" ) );
-        target = target.addAll( dn );
+        target = target.add( dn );
         assertEquals( "cn=Kate Bush+sn=Bush,ou=system", target.toString() );
         assertEquals( "cn=Kate Bush+sn=Bush,ou=system", target.getName() );
     }
@@ -733,7 +733,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = b" );
         Dn dn2 = new Dn( "c = d" );
-        dn = dn.addAll( dn2 );
+        dn = dn.add( dn2 );
         assertEquals( "c = d,a = b", dn.getName() );
     }
 
@@ -748,7 +748,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = b" );
         Dn dn2 = new Dn();
-        dn = dn.addAll( dn2 );
+        dn = dn.add( dn2 );
         assertEquals( "a=b", dn.getNormName() );
         assertEquals( "a = b", dn.getName() );
     }
@@ -764,7 +764,7 @@ public class DnTest
     {
         Dn dn = new Dn();
         Dn dn2 = new Dn( "a = b" );
-        dn = dn.addAll( dn2 );
+        dn = dn.add( dn2 );
         assertEquals( "a = b", dn.getName() );
     }
 
@@ -779,7 +779,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = b" );
         Dn dn2 = new Dn( "c = d" );
-        dn = dn2.addAll( dn );
+        dn = dn2.add( dn );
         assertEquals( "a = b,c = d", dn.getName() );
     }
 
@@ -794,7 +794,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = b" );
         Dn dn2 = new Dn( "c = d" );
-        dn = dn.addAll( dn2 );
+        dn = dn.add( dn2 );
         assertEquals( "c = d,a = b", dn.getName() );
     }
 
@@ -809,7 +809,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = b" );
         Dn dn2 = new Dn();
-        dn = dn.addAll( dn2 );
+        dn = dn.add( dn2 );
         assertEquals( "a=b", dn.getNormName() );
         assertEquals( "a = b", dn.getName() );
     }
@@ -825,7 +825,7 @@ public class DnTest
     {
         Dn dn = new Dn();
         Dn dn2 = new Dn( "a = b" );
-        dn = dn.addAll( dn2 );
+        dn = dn.add( dn2 );
         assertEquals( "a = b", dn.getName() );
     }
 
@@ -1677,7 +1677,7 @@ public class DnTest
     {
         Dn name = new Dn();
         Dn name0 = new Dn( "cn=HomeDir,cn=John,ou=Marketing,ou=East" );
-        assertTrue( name0.equals( name.addAll( name0 ) ) );
+        assertTrue( name0.equals( name.add( name0 ) ) );
     }
 
 
@@ -1693,7 +1693,7 @@ public class DnTest
         Dn name1 = new Dn( "ou=Marketing,ou=East" );
         Dn name2 = new Dn( "cn=HomeDir,cn=John" );
         Dn nameAdded = new Dn( "cn=HomeDir,cn=John, ou=Marketing,ou=East" );
-        assertTrue( nameAdded.equals( name1.addAll( name2 ) ) );
+        assertTrue( nameAdded.equals( name1.add( name2 ) ) );
     }
 
 
@@ -1711,9 +1711,9 @@ public class DnTest
         Dn name1 = new Dn( "cn=HomeDir,cn=John" );
         Dn name2 = new Dn( "cn=HomeDir,cn=John,ou=Marketing,ou=East" );
 
-        name = name.addAll( name0 );
+        name = name.add( name0 );
         assertTrue( name0.equals( name ) );
-        assertTrue( name2.equals( name.addAll( name1 ) ) );
+        assertTrue( name2.equals( name.add( name1 ) ) );
     }
 
 
@@ -1731,9 +1731,9 @@ public class DnTest
         Dn name1 = new Dn( "cn=HomeDir,cn=John" );
         Dn name2 = new Dn( "cn=HomeDir,cn=John,ou=Marketing,ou=East" );
 
-        name = name.addAll( name0 );
+        name = name.add( name0 );
         assertTrue( name0.equals( name ) );
-        assertTrue( name2.equals( name.addAll( name1 ) ) );
+        assertTrue( name2.equals( name.add( name1 ) ) );
     }
 
 
@@ -2113,7 +2113,7 @@ public class DnTest
         Dn aName = new Dn( "cn=four,cn=three,cn=two,cn=one" );
 
         assertSame( jName, jName.addAll( new LdapName( "cn=seven,cn=six" ) ) );
-        assertNotSame( aName, aName.addAll( new Dn( "cn=seven,cn=six" ) ) );
+        assertNotSame( aName, aName.add( new Dn( "cn=seven,cn=six" ) ) );
         assertNotSame( jName.toString(), aName.toString() );
     }
 
@@ -2128,15 +2128,15 @@ public class DnTest
         Dn aName = new Dn( "cn=four,cn=three,cn=two,cn=one" );
 
         assertSame( jName, jName.addAll( 0, new LdapName( "cn=zero,cn=zero.5" ) ) );
-        assertNotSame( aName, aName.addAll( new Dn( "cn=zero,cn=zero.5" ) ) );
+        assertNotSame( aName, aName.add( new Dn( "cn=zero,cn=zero.5" ) ) );
         assertNotSame( jName.toString(), aName.toString() );
 
         assertSame( jName, jName.addAll( 2, new LdapName( "cn=zero,cn=zero.5" ) ) );
-        assertNotSame( aName, aName.addAll( new Dn( "cn=zero,cn=zero.5" ) ) );
+        assertNotSame( aName, aName.add( new Dn( "cn=zero,cn=zero.5" ) ) );
         assertNotSame( jName.toString(), aName.toString() );
 
         assertSame( jName, jName.addAll( jName.size(), new LdapName( "cn=zero,cn=zero.5" ) ) );
-        assertNotSame( aName, aName.addAll( new Dn( "cn=zero,cn=zero.5" ) ) );
+        assertNotSame( aName, aName.add( new Dn( "cn=zero,cn=zero.5" ) ) );
         assertNotSame( jName.toString(), aName.toString() );
     }
 
@@ -2918,7 +2918,7 @@ public class DnTest
 
         Dn anotherDn = new Dn( "ou=x,ou=users" );
 
-        dn = dn.addAll( anotherDn );
+        dn = dn.add( anotherDn );
         assertTrue( dn.isSchemaAware() );
 
         dn.applySchemaManager( schemaManager );
