@@ -98,7 +98,7 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
             try
             {
                 Dn dn = new Dn( dnStr );
-                newRdn = dn.getRdn( 0 );
+                newRdn = dn.getRdn( dn.size() - 1 );
             }
             catch ( LdapInvalidDnException ine )
             {

@@ -21,7 +21,6 @@ package org.apache.directory.shared.ldap.model.name;
 
 
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
@@ -1540,10 +1539,10 @@ public class DnTest
     public void testGetRdn() throws Exception
     {
         Dn name = new Dn( "cn=HomeDir,cn=John,ou=Marketing,ou=East" );
-        assertEquals( "cn=HomeDir", name.getRdn( 3 ).getName() );
-        assertEquals( "cn=John", name.getRdn( 2 ).getName() );
-        assertEquals( "ou=Marketing", name.getRdn( 1 ).getName() );
-        assertEquals( "ou=East", name.getRdn( 0 ).getName() );
+        assertEquals( "cn=HomeDir", name.getRdn( 0 ).getName() );
+        assertEquals( "cn=John", name.getRdn( 1 ).getName() );
+        assertEquals( "ou=Marketing", name.getRdn( 2 ).getName() );
+        assertEquals( "ou=East", name.getRdn( 3 ).getName() );
     }
 
 
@@ -1834,7 +1833,7 @@ public class DnTest
     public void testGetParent() throws Exception
     {
         Dn empty = new Dn();
-        assertNull( empty.getParent() );
+        assertEquals( Dn.EMPTY_DN, empty.getParent() );
 
         Dn one = new Dn( "cn=test" );
         assertNotNull( one.getParent() );

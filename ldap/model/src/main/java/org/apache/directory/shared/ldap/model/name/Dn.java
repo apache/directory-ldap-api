@@ -685,12 +685,15 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             return null;
         }
-        else
+        
+        if ( ( posn < 0 ) || ( posn >= rdns.size() ) )
         {
-            Rdn rdn = rdns.get( rdns.size() - posn - 1 );
-
-            return rdn.clone();
+            throw new IllegalArgumentException( "Invalid position : " + posn );
         }
+
+        Rdn rdn = rdns.get( posn );
+
+        return rdn.clone();
     }
 
 
