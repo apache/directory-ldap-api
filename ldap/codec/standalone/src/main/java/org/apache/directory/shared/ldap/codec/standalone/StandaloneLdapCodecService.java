@@ -21,6 +21,7 @@ package org.apache.directory.shared.ldap.codec.standalone;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -294,7 +295,11 @@ public class StandaloneLdapCodecService implements LdapCodecService
         }
         else if ( ! this.cacheDirectory.exists() )
         {
-            this.cacheDirectory.mkdirs();
+            if ( ! this.cacheDirectory.mkdirs() ) {
+                String msg = "The provided cache directory can't be created:" + this.cacheDirectory.getAbsolutePath();
+                LOG.error( msg );
+                throw new IllegalArgumentException( msg );
+            }
         }
         
         if ( this.cacheDirectory == null )
