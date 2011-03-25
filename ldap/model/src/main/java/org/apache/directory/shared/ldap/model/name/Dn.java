@@ -1040,7 +1040,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         if ( obj instanceof String )
         {
-            return normName.equals( obj );
+            return normName.equals( (String) obj );
         }
         else if ( obj instanceof Dn)
         {
