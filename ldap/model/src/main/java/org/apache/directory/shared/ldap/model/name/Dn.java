@@ -1035,12 +1035,14 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * @see java.lang.Object#equals(java.lang.Object)
      * @return <code>true</code> if the two instances are equals
      */
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS",
+    		justification = "String is a special case")
     @Override
     public boolean equals( Object obj )
     {
         if ( obj instanceof String )
         {
-            return normName.equals( (String) obj );
+            return normName.equals( obj );
         }
         else if ( obj instanceof Dn)
         {
