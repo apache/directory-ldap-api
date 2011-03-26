@@ -454,7 +454,7 @@ public class DefaultEntryAttributeTest
      * Test method iterator()
      */
     @Test
-    public void testIterator()
+    public void testIterator() throws LdapException
     {
         EntryAttribute attr = new DefaultEntryAttribute();
         attr.add(  "a", "b", "c" );
@@ -916,7 +916,7 @@ public class DefaultEntryAttributeTest
      * Test method getAll()
      */
     @Test
-    public void testGetAll()
+    public void testGetAll() throws LdapException
     {
         EntryAttribute attr = new DefaultEntryAttribute( "test" );
         
@@ -1397,7 +1397,7 @@ public class DefaultEntryAttributeTest
      * Test method testEquals()
      */
     @Test
-    public void testEquals()
+    public void testEquals() throws LdapException
     {
         EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
         
@@ -1459,7 +1459,7 @@ public class DefaultEntryAttributeTest
      * Test method testClone()
      */
     @Test
-    public void testClone()
+    public void testClone() throws LdapException
     {
         EntryAttribute attr = new DefaultEntryAttribute( "test" );
         
@@ -1502,7 +1502,6 @@ public class DefaultEntryAttributeTest
         assertEquals( "test1", dcaSer.getString() );
         assertTrue( dcaSer.contains( "test2", "test1" ) );
         assertTrue( dcaSer.isHR() );
-        assertFalse( dcaSer.isValid() );
     }
     
     
@@ -1545,7 +1544,6 @@ public class DefaultEntryAttributeTest
         assertEquals( 1, dcaSer.size() );
         assertTrue( dcaSer.contains( (String)null ) );
         assertTrue( dcaSer.isHR() );
-        assertFalse( dcaSer.isValid() );
     }
     
     
@@ -1568,6 +1566,5 @@ public class DefaultEntryAttributeTest
         assertEquals( 1, dcaSer.size() );
         assertTrue( dcaSer.contains( password ) );
         assertFalse( dcaSer.isHR() );
-        assertFalse( dcaSer.isValid() );
     }
 }

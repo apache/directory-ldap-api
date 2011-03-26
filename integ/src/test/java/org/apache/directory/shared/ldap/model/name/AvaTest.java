@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.name.Ava;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.junit.BeforeClass;
@@ -108,25 +107,25 @@ public class AvaTest
     @Test
     public void testAttributeTypeAndValueValidType() throws LdapException
     {
-        Ava atav = new Ava( schemaManager, "CN", (String)null );
-        assertEquals( "CN=", atav.toString() );
-        assertEquals( "2.5.4.3=", atav.getNormName() );
-        assertEquals( "CN=", atav.getUpName() );
+        Ava ava = new Ava( schemaManager, "CN", " " );
+        assertEquals( "CN= ", ava.toString() );
+        assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
+        assertEquals( "CN= ", ava.getUpName() );
         
-        atav = new Ava( schemaManager, "  CN  ", (String)null );
-        assertEquals( "  CN  =", atav.toString() );
-        assertEquals( "2.5.4.3=", atav.getNormName() );
-        assertEquals( "  CN  =", atav.getUpName() );
+        ava = new Ava( schemaManager, "  CN  ", " " );
+        assertEquals( "  CN  = ", ava.toString() );
+        assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
+        assertEquals( "  CN  = ", ava.getUpName() );
 
-        atav = new Ava( schemaManager, "cn", (String)null );
-        assertEquals( "cn=", atav.toString() );
-        assertEquals( "2.5.4.3=", atav.getNormName() );
-        assertEquals( "cn=", atav.getUpName() );
+        ava = new Ava( schemaManager, "cn", " " );
+        assertEquals( "cn= ", ava.toString() );
+        assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
+        assertEquals( "cn= ", ava.getUpName() );
         
-        atav = new Ava( schemaManager, "  cn  ", (String)null );
-        assertEquals( "  cn  =", atav.toString() );
-        assertEquals( "2.5.4.3=", atav.getNormName() );
-        assertEquals( "  cn  =", atav.getUpName() );
+        ava = new Ava( schemaManager, "  cn  ", " " );
+        assertEquals( "  cn  = ", ava.toString() );
+        assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
+        assertEquals( "  cn  = ", ava.getUpName() );
     }
 
     /**

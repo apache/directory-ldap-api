@@ -31,7 +31,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.name.Ava;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.apache.directory.shared.util.Strings;
@@ -137,7 +136,7 @@ public class SchemaAwareAvaSerializationTest
     @Test
     public void testNullUpValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Ava atav = new Ava( schemaManager, "uid", (String)null );
+        Ava atav = new Ava( schemaManager, "dc", (String)null );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -158,7 +157,7 @@ public class SchemaAwareAvaSerializationTest
     @Test
     public void testEmptyNormValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Ava atav = new Ava( schemaManager, "CN", "" );
+        Ava atav = new Ava( schemaManager, "DC", "" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -252,7 +251,7 @@ public class SchemaAwareAvaSerializationTest
     @Test( expected = IOException.class )
     public void testNullNormValueStaticSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Ava atav = new Ava( schemaManager, "UID", (String)null );
+        Ava atav = new Ava( schemaManager, "DC", (String)null );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -265,7 +264,7 @@ public class SchemaAwareAvaSerializationTest
     @Test
     public void testEmptyNormValueStaticSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Ava atav = new Ava( schemaManager, "UID", (String)"" );
+        Ava atav = new Ava( schemaManager, "DC", (String)"" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );

@@ -39,6 +39,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
@@ -79,7 +80,8 @@ public class StringValueAttributeTypeTest
      * Initialize an AttributeType and the associated MatchingRule 
      * and Syntax
      */
-    @Before public void initAT()
+    @Before
+    public void initAT()
     {
         s = new EntryUtils.S( "1.1.1.1", false );
         s.setSyntaxChecker( new OctetStringSyntaxChecker() );
@@ -175,7 +177,7 @@ public class StringValueAttributeTypeTest
      * Test the constructor with a null value
      */
     @Test 
-    public void testClientStringValueNullValue()
+    public void testClientStringValueNullValue() throws LdapInvalidAttributeValueException
     {
         AttributeType attribute = EntryUtils.getIA5StringAttributeType();
         
@@ -187,27 +189,27 @@ public class StringValueAttributeTypeTest
     
     
     /**
-     * Test the getNormalizedValue method
+     * Test the getNormValue method
      */
-    @Test public void testGetNormalizedValue()
+    @Test 
+    public void testGetNormalizedValue() throws LdapInvalidAttributeValueException
     {
         AttributeType attribute = EntryUtils.getIA5StringAttributeType();
         
         StringValue sv = new StringValue( attribute, null );
         
-        assertFalse( sv.isNormalized() );
-        assertNull( sv.getNormalizedValue() );
-        assertTrue( sv.isNormalized() );
+        assertTrue( sv.isSchemaAware() );
+        assertNull( sv.getNormValue() );
+        assertTrue( sv.isSchemaAware() );
 
         sv = new StringValue( attribute, "" );
-        assertFalse( sv.isNormalized() );
-        assertEquals( "", sv.getNormalizedValue() );
-        assertTrue( sv.isNormalized() );
+        assertTrue( sv.isSchemaAware() );
+        assertEquals( "", sv.getNormValue() );
+        assertTrue( sv.isSchemaAware() );
 
         sv = new StringValue( attribute, "TEST" );
-        assertFalse( sv.isNormalized() );
-        assertEquals( "test", sv.getNormalizedValue() );
-        assertTrue( sv.isNormalized() );
+        assertTrue( sv.isSchemaAware() );
+        assertEquals( "test", sv.getNormValue() );
     }
     
 
@@ -216,21 +218,24 @@ public class StringValueAttributeTypeTest
      * 
      * The SyntaxChecker does not accept values longer than 5 chars.
      */
-    @Test public void testIsValid()
+    @Test 
+    public void testIsValid() throws LdapInvalidAttributeValueException
     {
         AttributeType attribute = EntryUtils.getIA5StringAttributeType();
         
-        StringValue sv = new StringValue( attribute, null );
-        assertTrue( sv.isValid() );
+        new StringValue( attribute, null );
+        new StringValue( attribute, "" );
+        new StringValue( attribute, "TEST" );
 
-        sv = new StringValue( attribute, "" );
-        assertTrue( sv.isValid() );
-
-        sv = new StringValue( attribute, "TEST" );
-        assertTrue( sv.isValid() );
-
-        sv = new StringValue( attribute, "testlong" );
-        assertFalse( sv.isValid() );
+        try
+        {
+            new StringValue( attribute, "testlong" );
+            fail();
+        }
+        catch ( LdapInvalidAttributeValueException liave )
+        {
+            assertTrue( true );
+        }
     }
     
     
@@ -238,21 +243,20 @@ public class StringValueAttributeTypeTest
      * Test the normalize method
      */
     @Test
-    public void testNormalize() throws LdapException
+    public void testApply() throws LdapException
     {
         AttributeType attribute = EntryUtils.getIA5StringAttributeType();
         StringValue sv = new StringValue( attribute );
 
-        sv.normalize();
-        assertEquals( null, sv.getNormalizedValue() );
+        sv.apply( at );
+        assertEquals( null, sv.getNormValue() );
         
         sv = new StringValue( attribute, "" );
-        sv.normalize();
-        assertEquals( "", sv.getNormalizedValue() );
+        sv.apply( at );
+        assertEquals( "", sv.getNormValue() );
 
-        sv = new StringValue( attribute, "  This is    a   TEST  " );
-        sv.normalize();
-        assertEquals( "this is a test", sv.getNormalizedValue() );
+        sv = new StringValue( attribute, "  A   TEST  " );
+        assertEquals( "a test", sv.getNormValue() );
     }
     
 
@@ -289,7 +293,8 @@ public class StringValueAttributeTypeTest
     /**
      * Test the equals method
      */
-    @Test public void testEquals()
+    @Test 
+    public void testEquals() throws LdapInvalidAttributeValueException
     {
         AttributeType at1 = EntryUtils.getIA5StringAttributeType();
         AttributeType at2 = EntryUtils.getBytesAttributeType();
@@ -318,7 +323,8 @@ public class StringValueAttributeTypeTest
     /**
      * Test the constructor with bad AttributeType
      */
-    @Test public void testBadConstructor()
+    @Test 
+    public void testBadConstructor()
     {
         // create a AT without any syntax
         AttributeType attribute = new EntryUtils.AT( "1.1.3.1" );
@@ -339,7 +345,8 @@ public class StringValueAttributeTypeTest
      * Tests to make sure the hashCode method is working properly.
      * @throws Exception on errors
      */
-    @Test public void testHashCode()
+    @Test 
+    public void testHashCode() throws LdapInvalidAttributeValueException
     {
         AttributeType at1 = EntryUtils.getCaseIgnoringAttributeNoNumbersType();
         StringValue v0 = new StringValue( at1, "Alex" );
@@ -354,13 +361,8 @@ public class StringValueAttributeTypeTest
         assertEquals( v0, v2 );
         assertEquals( v1, v2 );
         
-        assertTrue( v0.isValid() );
-        assertTrue( v1.isValid() );
-        assertTrue( v2.isValid() );
-
         StringValue v3 = new StringValue( at1, "Timber" );
         
-        assertTrue( v3.isValid() );
         assertNotSame( v0.hashCode(), v3.hashCode() );
 
         StringValue v4 = new StringValue( at, "Alex" );
@@ -373,7 +375,7 @@ public class StringValueAttributeTypeTest
      * Test the compareTo method
      */
     @Test
-    public void testCompareTo()
+    public void testCompareTo() throws LdapInvalidAttributeValueException
     {
         AttributeType at1 = EntryUtils.getCaseIgnoringAttributeNoNumbersType();
         StringValue v0 = new StringValue( at1, "Alex" );
@@ -411,9 +413,6 @@ public class StringValueAttributeTypeTest
         sv1 = sv.clone();
         
         assertEquals( sv, sv1 );
-        
-        sv.normalize();
-        
         assertEquals( sv, sv1 );
     }
     
@@ -425,7 +424,8 @@ public class StringValueAttributeTypeTest
      *
      * @throws Exception on errors
      */
-    @Test public void testConstrainedString()
+    @Test 
+    public void testConstrainedString() throws LdapInvalidAttributeValueException
     {
         s.setSyntaxChecker( new SyntaxChecker( "1.1.1.1" ) {
             public boolean isValidSyntax( Object value )
@@ -486,32 +486,27 @@ public class StringValueAttributeTypeTest
         // check that normalization and syntax checks work as expected
         StringValue value = new StringValue( at, "HIGH" );
         assertEquals( value.get(), value.get() );
-        assertTrue( value.isValid() );
-        value = new StringValue( at, "high" );
-        assertFalse( value.isValid() );
+        
+        try
+        {  
+            new StringValue( at, "high" );
+            fail();
+        }
+        catch ( LdapInvalidAttributeValueException liave )
+        {
+            // expected
+        }
 
         // create a bunch to best tested for equals and in containers
         StringValue v0 = new StringValue( at, "LOW" );
-        assertTrue( v0.isValid() );
         StringValue v1 = new StringValue( at, "LOW" );
-        assertTrue( v1.isValid() );
         StringValue v2 = new StringValue( at, "MEDIUM" );
-        assertTrue( v2.isValid() );
         StringValue v3 = new StringValue( at, "HIGH" );
-        assertTrue( v3.isValid() );
-        StringValue v4 = new StringValue( at );
-        assertFalse( v4.isValid() );
-        StringValue v5 = new StringValue( at );
-        assertFalse( v5.isValid() );
 
         // check equals
         assertTrue( v0.equals( v1 ) );
         assertTrue( v1.equals( v0 ) );
         assertEquals( 0, v0.compareTo( v1 ) );
-
-        assertTrue( v4.equals( v5 ) );
-        assertTrue( v5.equals( v4 ) );
-        assertEquals( 0, v4.compareTo( v5 ) );
 
         assertFalse( v2.equals( v3 ) );
         assertFalse( v3.equals( v2 ) );
@@ -523,40 +518,28 @@ public class StringValueAttributeTypeTest
         set.add( v0 );
         set.add( v2 );
         set.add( v3 );
-        set.add( v4 );
 
         // check contains method
         assertTrue( "since v1.equals( v0 ) and v0 was added then this should be true", set.contains( v1 ) );
-        assertTrue( "since v4.equals( v5 ) and v4 was added then this should be true", set.contains( v5 ) );
 
         // check ordering based on the comparator
         List<Value<String>> list = new ArrayList<Value<String>>();
         list.add( v1 );
         list.add( v3 );
-        list.add( v5 );
         list.add( v0 );
         list.add( v2 );
-        list.add( v4 );
 
         Collections.sort( list );
 
-        // null ones are at first 2 indices
-        assertTrue( "since v4 equals v5 and has no value either could be at index 0 & 1", list.get( 0 ).equals( v4 ) );
-        assertTrue( "since v4 equals v5 and has no value either could be at index 0 & 1", list.get( 0 ).equals( v5 ) );
-        assertTrue( "since v4 equals v5 and has no value either could be at index 0 & 1", list.get( 1 ).equals( v4 ) );
-        assertTrue( "since v4 equals v5 and has no value either could be at index 0 & 1", list.get( 1 ).equals( v5 ) );
-
         // low ones are at the 3rd and 4th indices
-        assertTrue( "since v0 equals v1 either could be at index 2 & 3", list.get( 2 ).equals( v0 ) );
-        assertTrue( "since v0 equals v1 either could be at index 2 & 3", list.get( 2 ).equals( v1 ) );
-        assertTrue( "since v0 equals v1 either could be at index 2 & 3", list.get( 3 ).equals( v0 ) );
-        assertTrue( "since v0 equals v1 either could be at index 2 & 3", list.get( 3 ).equals( v1 ) );
+        assertTrue( "since v0 equals v1 either could be at index 0 & 1", list.get( 0 ).equals( v0 ) );
+        assertTrue( "since v0 equals v1 either could be at index 0 & 1", list.get( 1 ).equals( v1 ) );
 
         // medium then high next
-        assertTrue( "since v2 \"MEDIUM\" should be at index 4", list.get( 4 ).equals( v2 ) );
-        assertTrue( "since v3 \"HIGH\" should be at index 5", list.get( 5 ).equals( v3 ) );
+        assertTrue( "since v2 \"MEDIUM\" should be at index 2", list.get( 2 ).equals( v2 ) );
+        assertTrue( "since v3 \"HIGH\" should be at index 3", list.get( 3 ).equals( v3 ) );
 
-        assertEquals( 6, list.size() );
+        assertEquals( 4, list.size() );
     }
 
 
@@ -568,12 +551,12 @@ public class StringValueAttributeTypeTest
      * is still OK.
      * @throws Exception on errors
      */
-    @Test public void testAcceptAllNoNormalization()
+    @Test 
+    public void testAcceptAllNoNormalization() throws LdapInvalidAttributeValueException
     {
         // check that normalization and syntax checks work as expected
         StringValue value = new StringValue( at, "hello" );
         assertEquals( value.get(), value.get() );
-        assertTrue( value.isValid() );
 
         // create a bunch to best tested for equals and in containers
         StringValue v0 = new StringValue( at, "hello" );
@@ -663,13 +646,13 @@ public class StringValueAttributeTypeTest
     /**
      * Test serialization of a StringValue which has a normalized value
      */
-    @Test public void testNormalizedStringValueSerialization() throws LdapException, IOException, ClassNotFoundException
+    @Test 
+    public void testNormalizedStringValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         // First check with a value which will be normalized
         StringValue ssv = new StringValue( at, "  Test   Test  " );
         
-        ssv.normalize();
-        String normalized = ssv.getNormalizedValue();
+        String normalized = ssv.getNormValue();
         
         assertEquals( "test test", normalized );
         assertEquals( "  Test   Test  ", ssv.getString() );
@@ -683,13 +666,13 @@ public class StringValueAttributeTypeTest
     /**
      * Test serialization of a StringValue which does not have a normalized value
      */
-    @Test public void testNoNormalizedStringValueSerialization() throws LdapException, IOException, ClassNotFoundException
+    @Test 
+    public void testNoNormalizedStringValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         // First check with a value which will be normalized
         StringValue ssv = new StringValue( at, "test" );
         
-        ssv.normalize();
-        String normalized = ssv.getNormalizedValue();
+        String normalized = ssv.getNormValue();
         
         assertEquals( "test", normalized );
         assertEquals( "test", ssv.getString() );
@@ -703,13 +686,13 @@ public class StringValueAttributeTypeTest
     /**
      * Test serialization of a null StringValue
      */
-    @Test public void testNullStringValueSerialization() throws LdapException, IOException, ClassNotFoundException
+    @Test 
+    public void testNullStringValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         // First check with a value which will be normalized
         StringValue ssv = new StringValue( at );
         
-        ssv.normalize();
-        String normalized = ssv.getNormalizedValue();
+        String normalized = ssv.getNormValue();
         
         assertNull( normalized );
         assertNull( ssv.get() );
@@ -723,13 +706,13 @@ public class StringValueAttributeTypeTest
     /**
      * Test serialization of an empty StringValue
      */
-    @Test public void testEmptyStringValueSerialization() throws LdapException, IOException, ClassNotFoundException
+    @Test 
+    public void testEmptyStringValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         // First check with a value which will be normalized
         StringValue ssv = new StringValue( at, "" );
         
-        ssv.normalize();
-        String normalized = ssv.getNormalizedValue();
+        String normalized = ssv.getNormValue();
         
         assertEquals( "", normalized );
         assertEquals( "", ssv.getString() );
@@ -743,7 +726,8 @@ public class StringValueAttributeTypeTest
     /**
      * Test serialization of an empty StringValue
      */
-    @Test public void testStringValueEmptyNormalizedSerialization() throws LdapException, IOException, ClassNotFoundException
+    @Test 
+    public void testStringValueEmptyNormalizedSerialization() throws LdapException, IOException, ClassNotFoundException
     {
         // First check with a value which will be normalized
         StringValue ssv = new StringValue( "  " );

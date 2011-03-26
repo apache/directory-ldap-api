@@ -314,7 +314,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
         sb.append( "        Attribute description : '" ).append( attrId ).append( "'\n" );
         sb.append( "        Attribute value : '" );
 
-        if ( !attrVal.isBinary() )
+        if ( attrVal.isHR() )
         {
             sb.append( attrVal.get() );
         }

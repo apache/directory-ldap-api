@@ -201,7 +201,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
      * 
      * @param value The added value
      */
-    public void addAttributeValue( Object value )
+    public void addAttributeValue( Object value ) throws LdapException
     {
         if ( value instanceof String )
         {
@@ -455,7 +455,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
                     {
                         for ( org.apache.directory.shared.ldap.model.entry.Value<?> value : attribute )
                         {
-                            if ( !value.isBinary() )
+                            if ( value.isHR() )
                             {
                                 Value.encode( buffer, value.getString() );
                             }

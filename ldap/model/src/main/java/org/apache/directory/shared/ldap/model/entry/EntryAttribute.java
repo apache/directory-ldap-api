@@ -71,7 +71,7 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      * @param vals some new values to be added which may be null
      * @return the number of added values, or 0 if none has been added
      */
-    int add( String... vals );
+    int add( String... vals ) throws LdapInvalidAttributeValueException;
 
 
     /**
@@ -102,7 +102,7 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      * @param vals some new values to be added which may be null
      * @return the number of added values, or 0 if none has been added
      */
-    int add( byte[]... vals );
+    int add( byte[]... vals ) throws LdapInvalidAttributeValueException;
 
 
     /**
@@ -143,7 +143,7 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      * @param val some new values to be added which may be null
      * @return the number of added values, or 0 if none has been added
      */
-    int add( Value<?>... val );
+    int add( Value<?>... val ) throws LdapInvalidAttributeValueException;
     
     
     /**
@@ -221,7 +221,7 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      *
      * @param attributeType the attributeType associated with this entry attribute
      */
-    void setAttributeType( AttributeType attributeType );
+    void setAttributeType( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
 
     
     /**
@@ -492,5 +492,5 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
     /**
      * Apply the give SchemaManager to make this EntryAttribute Schema aware
      */
-    void applySchemaManager( SchemaManager schemaManager );
+    void applySchemaManager( SchemaManager schemaManager ) throws LdapInvalidAttributeValueException;
 }

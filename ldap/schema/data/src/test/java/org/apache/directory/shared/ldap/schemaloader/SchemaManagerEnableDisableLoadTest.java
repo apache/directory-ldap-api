@@ -33,8 +33,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.registries.Schema;
@@ -46,6 +44,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -159,9 +160,9 @@ public class SchemaManagerEnableDisableLoadTest
         assertEquals( 48, schemaManager.getMatchingRuleRegistry().size() );
         assertEquals( 48, schemaManager.getNormalizerRegistry().size() );
         assertEquals( 122, schemaManager.getObjectClassRegistry().size() );
-        assertEquals( 66, schemaManager.getSyntaxCheckerRegistry().size() );
-        assertEquals( 71, schemaManager.getLdapSyntaxRegistry().size() );
-        assertEquals( 666, schemaManager.getGlobalOidRegistry().size() );
+        assertEquals( 68, schemaManager.getSyntaxCheckerRegistry().size() );
+        assertEquals( 73, schemaManager.getLdapSyntaxRegistry().size() );
+        assertEquals( 668, schemaManager.getGlobalOidRegistry().size() );
 
         assertEquals( 12, schemaManager.getRegistries().getLoadedSchemas().size() );
         assertNull( schemaManager.getRegistries().getLoadedSchema( "nis" ) );
@@ -204,9 +205,9 @@ public class SchemaManagerEnableDisableLoadTest
         assertEquals( 49, schemaManager.getMatchingRuleRegistry().size() );
         assertEquals( 49, schemaManager.getNormalizerRegistry().size() );
         assertEquals( 135, schemaManager.getObjectClassRegistry().size() );
-        assertEquals( 68, schemaManager.getSyntaxCheckerRegistry().size() );
-        assertEquals( 73, schemaManager.getLdapSyntaxRegistry().size() );
-        assertEquals( 709, schemaManager.getGlobalOidRegistry().size() );
+        assertEquals( 70, schemaManager.getSyntaxCheckerRegistry().size() );
+        assertEquals( 75, schemaManager.getLdapSyntaxRegistry().size() );
+        assertEquals( 711, schemaManager.getGlobalOidRegistry().size() );
 
         assertEquals( 13, schemaManager.getRegistries().getLoadedSchemas().size() );
         assertNotNull( schemaManager.getRegistries().getLoadedSchema( "nis" ) );
@@ -244,9 +245,9 @@ public class SchemaManagerEnableDisableLoadTest
         assertEquals( 48, schemaManager.getMatchingRuleRegistry().size() );
         assertEquals( 48, schemaManager.getNormalizerRegistry().size() );
         assertEquals( 122, schemaManager.getObjectClassRegistry().size() );
-        assertEquals( 66, schemaManager.getSyntaxCheckerRegistry().size() );
-        assertEquals( 71, schemaManager.getLdapSyntaxRegistry().size() );
-        assertEquals( 666, schemaManager.getGlobalOidRegistry().size() );
+        assertEquals( 68, schemaManager.getSyntaxCheckerRegistry().size() );
+        assertEquals( 73, schemaManager.getLdapSyntaxRegistry().size() );
+        assertEquals( 668, schemaManager.getGlobalOidRegistry().size() );
 
         assertEquals( 12, schemaManager.getRegistries().getLoadedSchemas().size() );
         assertNull( schemaManager.getRegistries().getLoadedSchema( "nis" ) );
@@ -296,9 +297,9 @@ public class SchemaManagerEnableDisableLoadTest
         assertEquals( 49, schemaManager.getMatchingRuleRegistry().size() );
         assertEquals( 49, schemaManager.getNormalizerRegistry().size() );
         assertEquals( 146, schemaManager.getObjectClassRegistry().size() );
-        assertEquals( 68, schemaManager.getSyntaxCheckerRegistry().size() );
-        assertEquals( 73, schemaManager.getLdapSyntaxRegistry().size() );
-        assertEquals( 757, schemaManager.getGlobalOidRegistry().size() );
+        assertEquals( 70, schemaManager.getSyntaxCheckerRegistry().size() );
+        assertEquals( 75, schemaManager.getLdapSyntaxRegistry().size() );
+        assertEquals( 759, schemaManager.getGlobalOidRegistry().size() );
 
         assertEquals( 14, schemaManager.getRegistries().getLoadedSchemas().size() );
         assertNotNull( schemaManager.getRegistries().getLoadedSchema( "samba" ) );

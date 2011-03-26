@@ -726,6 +726,12 @@ public final class SchemaConstants
     // SyntaxChecker Syntax
     public final static String SYNTAX_CHECKER_SYNTAX                          = "1.3.6.1.4.1.18060.0.4.1.0.7";
 
+    // SearchScope Syntax
+    public final static String SEARCH_SCOPE_SYNTAX                            = "1.3.6.1.4.1.18060.0.4.1.0.10";
+
+    // DerefAlias Syntax
+    public final static String DEREF_ALIAS_SYNTAX                             = "1.3.6.1.4.1.18060.0.4.1.0.11";
+
     //-------------------------------------------------------------------------
     // ---- MatchingRules -----------------------------------------------------
     //-------------------------------------------------------------------------

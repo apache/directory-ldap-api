@@ -29,19 +29,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.message.Control;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -61,7 +62,7 @@ public class ModifyRequestImplTest
      * 
      * @return the ModifyRequest to use for tests
      */
-    private ModifyRequestImpl getRequest()
+    private ModifyRequestImpl getRequest() throws LdapException
     {
         // Construct the Modify request to test
         ModifyRequestImpl req = new ModifyRequestImpl( 45 );
@@ -101,7 +102,7 @@ public class ModifyRequestImplTest
      * Tests the same object reference for equality.
      */
     @Test
-    public void testEqualsSameObj()
+    public void testEqualsSameObj() throws LdapException
     {
         ModifyRequestImpl req = getRequest();
         assertTrue( req.equals( req ) );
@@ -112,7 +113,7 @@ public class ModifyRequestImplTest
      * Tests for equality using exact copies.
      */
     @Test
-    public void testEqualsExactCopy()
+    public void testEqualsExactCopy() throws LdapException
     {
         ModifyRequestImpl req0 = getRequest();
         ModifyRequestImpl req1 = getRequest();
@@ -124,7 +125,7 @@ public class ModifyRequestImplTest
      * Tests the same object reference for equal hashCode.
      */
     @Test
-    public void testHashCodeSameObj()
+    public void testHashCodeSameObj() throws LdapException
     {
         ModifyRequestImpl req = getRequest();
         assertTrue( req.hashCode() == req.hashCode() );
@@ -135,7 +136,7 @@ public class ModifyRequestImplTest
      * Tests for equal hashCode using exact copies.
      */
     @Test
-    public void testHashCodeExactCopy()
+    public void testHashCodeExactCopy() throws LdapException
     {
         ModifyRequestImpl req0 = getRequest();
         ModifyRequestImpl req1 = getRequest();
@@ -181,7 +182,7 @@ public class ModifyRequestImplTest
      * Test for inequality when only the mods ops are different.
      */
     @Test
-    public void testNotEqualDiffModOps()
+    public void testNotEqualDiffModOps() throws LdapException
     {
         ModifyRequestImpl req0 = getRequest();
         EntryAttribute attr = new DefaultEntryAttribute( "attr3" );
@@ -208,7 +209,7 @@ public class ModifyRequestImplTest
      * Test for inequality when only the number of mods are different.
      */
     @Test
-    public void testNotEqualDiffModCount()
+    public void testNotEqualDiffModCount() throws LdapException
     {
         ModifyRequestImpl req0 = getRequest();
         EntryAttribute attr = new DefaultEntryAttribute( "attr3" );
@@ -229,7 +230,7 @@ public class ModifyRequestImplTest
      * Test for inequality when only the mods attribute Id's are different.
      */
     @Test
-    public void testNotEqualDiffModIds()
+    public void testNotEqualDiffModIds() throws LdapException
     {
         ModifyRequestImpl req0 = getRequest();
         EntryAttribute attr = new DefaultEntryAttribute( "attr3" );
@@ -256,7 +257,7 @@ public class ModifyRequestImplTest
      * Test for inequality when only the mods attribute values are different.
      */
     @Test
-    public void testNotEqualDiffModValues()
+    public void testNotEqualDiffModValues() throws LdapException
     {
         ModifyRequestImpl req0 = getRequest();
         EntryAttribute attr = new DefaultEntryAttribute( "attr3" );
@@ -284,30 +285,38 @@ public class ModifyRequestImplTest
      * Tests for equality even when another BindRequest implementation is used.
      */
     @Test
-    public void testEqualsDiffImpl()
+    public void testEqualsDiffImpl() throws LdapException
     {
         ModifyRequest req0 = new ModifyRequest()
         {
             public Collection<Modification> getModifications()
             {
                 List<Modification> list = new ArrayList<Modification>();
-                EntryAttribute attr = new DefaultEntryAttribute( "attr0" );
-                attr.add( "val0" );
-                attr.add( "val1" );
-                attr.add( "val2" );
-                Modification item = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attr );
-                list.add( item );
-
-                attr = new DefaultEntryAttribute( "attr1" );
-                attr.add( "val3" );
-                item = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attr );
-                list.add( item );
-
-                attr = new DefaultEntryAttribute( "attr2" );
-                attr.add( "val4" );
-                attr.add( "val5" );
-                item = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attr );
-                list.add( item );
+                
+                try
+                { 
+                    EntryAttribute attr = new DefaultEntryAttribute( "attr0" );
+                    attr.add( "val0" );
+                    attr.add( "val1" );
+                    attr.add( "val2" );
+                    Modification item = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attr );
+                    list.add( item );
+    
+                    attr = new DefaultEntryAttribute( "attr1" );
+                    attr.add( "val3" );
+                    item = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attr );
+                    list.add( item );
+    
+                    attr = new DefaultEntryAttribute( "attr2" );
+                    attr.add( "val4" );
+                    attr.add( "val5" );
+                    item = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attr );
+                    list.add( item );
+                }
+                catch ( LdapInvalidAttributeValueException liave )
+                {
+                    // Can't happen
+                }
 
                 return list;
             }

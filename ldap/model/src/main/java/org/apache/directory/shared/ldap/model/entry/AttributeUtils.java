@@ -36,6 +36,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeTypeException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
@@ -298,7 +299,7 @@ public final class AttributeUtils
         {
             byte[] comparedBytes = null;
 
-            if ( !compared.isBinary() )
+            if ( compared.isHR() )
             {
                 if ( compared.getString().length() < 3 )
                 {
@@ -1119,7 +1120,7 @@ public final class AttributeUtils
      * @param attribute the BasicAttributes or AttributesImpl instance to convert
      * @return An instance of a ClientEntry object
      */
-    public static EntryAttribute toClientAttribute( Attribute attribute )
+    public static EntryAttribute toClientAttribute( Attribute attribute ) throws LdapInvalidAttributeValueException
     {
         if ( attribute == null )
         {
@@ -1134,6 +1135,7 @@ public final class AttributeUtils
             {
                 Object value = values.nextElement();
 
+                
                 if ( value instanceof String )
                 {
                     clientAttribute.add( ( String ) value );

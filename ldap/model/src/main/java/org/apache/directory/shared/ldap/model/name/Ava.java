@@ -30,6 +30,7 @@ import org.apache.directory.shared.ldap.model.entry.BinaryValue;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
@@ -162,7 +163,16 @@ public class Ava implements Externalizable, Cloneable
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
             }
             
-            createAva( schemaManager, upType, new BinaryValue( attributeType, upValue ) );
+            try
+            { 
+                createAva( schemaManager, upType, new BinaryValue( attributeType, upValue ) );
+            }
+            catch ( LdapInvalidAttributeValueException liave )
+            {
+                String message =  I18n.err( I18n.ERR_04188 );
+                LOG.error( message );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
+            }
         }
         else
         {
@@ -215,7 +225,16 @@ public class Ava implements Externalizable, Cloneable
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
             }
             
-            createAva( schemaManager, upType, new StringValue( attributeType, upValue ) );
+            try
+            { 
+                createAva( schemaManager, upType, new StringValue( attributeType, upValue ) );
+            }
+            catch ( LdapInvalidAttributeValueException liave )
+            {
+                String message =  I18n.err( I18n.ERR_04188 );
+                LOG.error( message );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
+            }
         }
         else
         {
@@ -664,7 +683,7 @@ public class Ava implements Externalizable, Cloneable
      */
     public String normalize()
     {
-        if ( !normValue.isBinary() )
+        if ( normValue.isHR() )
         {
             // The result will be gathered in a stringBuilder
             StringBuilder sb = new StringBuilder();
@@ -888,7 +907,7 @@ public class Ava implements Externalizable, Cloneable
             out.writeBoolean( false);
         }
         
-        boolean isHR = !normValue.isBinary();
+        boolean isHR = normValue.isHR();
         
         out.writeBoolean( isHR );
         

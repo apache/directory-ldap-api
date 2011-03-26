@@ -82,7 +82,7 @@ public class RegexNormalizer extends Normalizer
             return null;
         }
 
-        if ( !value.isBinary() )
+        if ( value.isHR() )
         {
             String str = value.getString();
 

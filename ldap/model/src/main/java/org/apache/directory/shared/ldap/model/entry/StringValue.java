@@ -25,6 +25,7 @@ import java.io.ObjectOutput;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
@@ -53,7 +54,6 @@ public class StringValue extends AbstractValue<String>
      */
     public StringValue()
     {
-        normalized = false;
         valid = null;
     }
 
@@ -91,7 +91,7 @@ public class StringValue extends AbstractValue<String>
     public StringValue( String value )
     {
         this.wrappedValue = value;
-        normalized = false;
+        this.normalizedValue = value;
         valid = null;
     }
 
@@ -101,11 +101,13 @@ public class StringValue extends AbstractValue<String>
      *
      * @param attributeType the schema type associated with this StringValue
      * @param value the value to wrap which can be null
+     * @throws LdapInvalidAttributeValueException If the added value is invalid accordingly 
+     * to the schema
      */
-    public StringValue( AttributeType attributeType, String value )
+    public StringValue( AttributeType attributeType, String value ) throws LdapInvalidAttributeValueException
     {
-        this( attributeType );
-        this.wrappedValue = value;
+        this( value );
+        apply( attributeType );
     }
 
 
@@ -135,87 +137,16 @@ public class StringValue extends AbstractValue<String>
      *
      * @return gets the normalized value
      */
-    public String getNormalizedValue()
+    public String getNormValue()
     {
         if ( isNull() )
         {
-            normalized = true;
             return null;
-        }
-
-        if ( !normalized )
-        {
-            try
-            {
-                normalize();
-            }
-            catch ( LdapException ne )
-            {
-                String message = "Cannot normalize the value :" + ne.getLocalizedMessage();
-                LOG.info( message );
-                normalized = false;
-            }
-        }
-        
-        if ( normalizedValue == null )
-        {
-            return wrappedValue;
         }
 
         return normalizedValue;
     }
     
-    
-    /**
-     * Compute the normalized (canonical) representation for the wrapped string.
-     * If the wrapped String is null, the normalized form will be null too.  
-     *
-     * @throws LdapException if the value cannot be properly normalized
-     */
-    public void normalize() throws LdapException
-    {
-        // If the value is already normalized, get out.
-        if ( normalized )
-        {
-            return;
-        }
-        
-        if ( attributeType != null )
-        {
-            Normalizer normalizer = getNormalizer();
-    
-            if ( normalizer == null )
-            {
-                normalizedValue = wrappedValue;
-            }
-            else
-            {
-                normalizedValue = ( String ) normalizer.normalize( wrappedValue );
-            }
-    
-            normalized = true;
-        }
-    }
-
-    
-    /**
-     * Normalize the value. For a client String value, applies the given normalizer.
-     * 
-     * It supposes that the client has access to the schema in order to select the
-     * appropriate normalizer.
-     * 
-     * @param normalizer The normalizer to apply to the value
-     * @exception LdapException If the value cannot be normalized
-     */
-    public final void normalize( Normalizer normalizer ) throws LdapException
-    {
-        if ( normalizer != null )
-        {
-            normalizedValue = (String)normalizer.normalize( wrappedValue );
-            normalized = true;
-        }
-    }
-
     
     // -----------------------------------------------------------------------
     // Comparable<String> Methods
@@ -256,7 +187,7 @@ public class StringValue extends AbstractValue<String>
         {
             if ( stringValue.getAttributeType() == null )
             {
-                return getNormalizedValue().compareTo( stringValue.getNormalizedValue() );
+                return getNormValue().compareTo( stringValue.getNormValue() );
             }
             else
             {
@@ -270,12 +201,12 @@ public class StringValue extends AbstractValue<String>
         }
         else 
         {
-            return getNormalizedValue().compareTo( stringValue.getNormalizedValue() );
+            return getNormValue().compareTo( stringValue.getNormValue() );
         }
             
         try
         {
-            return getLdapComparator().compare( getNormalizedValue(), stringValue.getNormalizedValue() );
+            return getLdapComparator().compare( getNormValue(), stringValue.getNormValue() );
         }
         catch ( LdapException e )
         {
@@ -322,7 +253,7 @@ public class StringValue extends AbstractValue<String>
             // which cannot be null at this point.
             // If the normalized value is null, will default to wrapped
             // which cannot be null at this point.
-            String normalized = getNormalizedValue();
+            String normalized = getNormValue();
             
             if ( normalized != null )
             {
@@ -388,12 +319,12 @@ public class StringValue extends AbstractValue<String>
             }
             else
             {
-                return this.getNormalizedValue().equals( other.getNormalizedValue() );
+                return this.getNormValue().equals( other.getNormValue() );
             }
         }
         else if ( other.attributeType != null )
         {
-            return this.getNormalizedValue().equals( other.getNormalizedValue() );
+            return this.getNormValue().equals( other.getNormValue() );
         }
 
         // Shortcut : compare the values without normalization
@@ -414,13 +345,13 @@ public class StringValue extends AbstractValue<String>
                 // Compare normalized values
                 if ( comparator == null )
                 {
-                    return getNormalizedValue().equals( other.getNormalizedValue() );
+                    return getNormValue().equals( other.getNormValue() );
                 }
                 else
                 {
-                    if ( isNormalized() )
+                    if ( isSchemaAware() )
                     {
-                        return comparator.compare( getNormalizedValue(), other.getNormalizedValue() ) == 0;
+                        return comparator.compare( getNormValue(), other.getNormValue() ) == 0;
                     }
                     else
                     {
@@ -436,19 +367,17 @@ public class StringValue extends AbstractValue<String>
         }
         else
         {
-            return this.getNormalizedValue().equals( other.getNormalizedValue() );
+            return this.getNormValue().equals( other.getNormValue() );
         }
     }
     
     
     /**
-     * Tells if the current value is Binary or String
-     * 
-     * @return <code>true</code> if the value is Binary, <code>false</code> otherwise
+     * {@inheritDoc}
      */
-    public boolean isBinary()
+    public boolean isHR()
     {
-        return false;
+        return true;
     }
 
     
@@ -502,7 +431,7 @@ public class StringValue extends AbstractValue<String>
         }
         
         // Read the isNormalized flag
-        normalized = in.readBoolean();
+        boolean normalized = in.readBoolean();
         
         if ( normalized ) 
         {
@@ -542,7 +471,7 @@ public class StringValue extends AbstractValue<String>
         }
         
         // Write the isNormalized flag
-        if ( normalized )
+        if ( attributeType != null )
         {
             // This flag is present to tell that we have a normalized value different 
             // from the upValue

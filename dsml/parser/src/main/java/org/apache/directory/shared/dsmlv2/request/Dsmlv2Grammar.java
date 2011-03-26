@@ -1286,13 +1286,20 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 String nextText = xpp.nextText();
                 if ( !nextText.equals( "" ) )
                 {
-                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    try
                     {
-                        addRequest.addAttributeValue( Base64.decode( nextText.trim().toCharArray() ) );
+                        if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                        {
+                            addRequest.addAttributeValue( Base64.decode( nextText.trim().toCharArray() ) );
+                        }
+                        else
+                        {
+                            addRequest.addAttributeValue( nextText.trim() );
+                        }
                     }
-                    else
+                    catch ( LdapException le )
                     {
-                        addRequest.addAttributeValue( nextText.trim() );
+                        throw new XmlPullParserException( le.getMessage() );
                     }
                 }
             }
@@ -1868,13 +1875,20 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 String nextText = xpp.nextText();
                 // We are testing if nextText equals "" since a modification can be "".
 
-                if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                try
                 {
-                    modifyRequest.addAttributeValue( Base64.decode(nextText.trim().toCharArray()) );
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        modifyRequest.addAttributeValue( Base64.decode(nextText.trim().toCharArray()) );
+                    }
+                    else
+                    {
+                        modifyRequest.addAttributeValue( nextText.trim() );
+                    }
                 }
-                else
+                catch ( LdapException le )
                 {
-                    modifyRequest.addAttributeValue( nextText.trim() );
+                    throw new XmlPullParserException( le.getMessage() );
                 }
             }
             catch ( IOException e )

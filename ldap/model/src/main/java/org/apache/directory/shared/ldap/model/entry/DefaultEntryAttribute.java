@@ -80,23 +80,12 @@ public class DefaultEntryAttribute implements EntryAttribute
         
         if ( attributeType != null )
         {
-            stringValue = new StringValue( attributeType, value );
-            
             try
             {
-                stringValue.normalize();
+                stringValue = new StringValue( attributeType, value );
             }
-            catch( LdapException ne )
+            catch ( LdapInvalidAttributeValueException iae )
             {
-                // The value can't be normalized : we don't add it.
-                LOG.error( I18n.err( I18n.ERR_04449, value ) );
-                return null;
-            }
-    
-            if ( !stringValue.isValid() )
-            {
-                // The value is not valid : we don't add it.
-                LOG.error( I18n.err( I18n.ERR_04450, value ) );
                 return null;
             }
         }
@@ -109,31 +98,13 @@ public class DefaultEntryAttribute implements EntryAttribute
     }
 
 
-    private Value<byte[]> createBinaryValue( AttributeType attributeType, byte[] value )
+    private Value<byte[]> createBinaryValue( AttributeType attributeType, byte[] value ) throws LdapInvalidAttributeValueException
     {
         Value<byte[]> binaryValue = null;
         
         if ( attributeType != null )
         {
             binaryValue = new BinaryValue( attributeType, value );
-            
-            try
-            {
-                binaryValue.normalize();
-            }
-            catch( LdapException ne )
-            {
-                // The value can't be normalized : we don't add it.
-                LOG.error( I18n.err( I18n.ERR_04449, value ) );
-                return null;
-            }
-            
-            if ( !binaryValue.isValid() )
-            {
-                // The value is not valid : we don't add it.
-                LOG.error( I18n.err( I18n.ERR_04450, value ) );
-                return null;
-            }
         }
         else
         {
@@ -188,7 +159,14 @@ public class DefaultEntryAttribute implements EntryAttribute
     {
         if ( attributeType != null )
         {
-            setAttributeType( attributeType );
+            try
+            {
+                setAttributeType( attributeType );
+            }
+            catch ( LdapInvalidAttributeValueException liave )
+            {
+                // Do nothing, it can't happen, there is no value
+            }
         }
     }
 
@@ -217,7 +195,15 @@ public class DefaultEntryAttribute implements EntryAttribute
             throw new IllegalArgumentException( message );
         }
 
-        setAttributeType( attributeType );
+        try
+        { 
+            setAttributeType( attributeType );
+        }
+        catch ( LdapInvalidAttributeValueException liave )
+        {
+            // Do nothing, it can't happen, there is no value
+        }
+            
         setUpId( upId, attributeType );
     }
 
@@ -243,7 +229,7 @@ public class DefaultEntryAttribute implements EntryAttribute
         {
             for ( Value<?> val:vals )
             {
-                if ( ( val instanceof StringValue) || ( val.isBinary() ) )
+                if ( ( val instanceof StringValue) || ( !val.isHR() ) )
                 {
                     add( val );
                 }
@@ -266,7 +252,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType The attributeType added on creation
      * @param vals The added value for this attribute
      */
-    public DefaultEntryAttribute( AttributeType attributeType, String... vals )
+    public DefaultEntryAttribute( AttributeType attributeType, String... vals ) throws LdapInvalidAttributeValueException
     {
         this( null, attributeType, vals );
     }
@@ -279,7 +265,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType The attributeType added on creation
      * @param vals the added values for this attribute
      */
-    public DefaultEntryAttribute( String upId, AttributeType attributeType, String... vals )
+    public DefaultEntryAttribute( String upId, AttributeType attributeType, String... vals ) throws LdapInvalidAttributeValueException
     {
         if ( attributeType == null )
         {
@@ -307,7 +293,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType the attribute type according to the schema
      * @param vals an initial set of values for this attribute
      */
-    public DefaultEntryAttribute( String upId, AttributeType attributeType, Value<?>... vals )
+    public DefaultEntryAttribute( String upId, AttributeType attributeType, Value<?>... vals ) throws LdapInvalidAttributeValueException
     {
         if ( attributeType == null )
         {
@@ -332,7 +318,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType the attribute type according to the schema
      * @param vals an initial set of values for this attribute
      */
-    public DefaultEntryAttribute( AttributeType attributeType, Value<?>... vals )
+    public DefaultEntryAttribute( AttributeType attributeType, Value<?>... vals ) throws LdapInvalidAttributeValueException
     {
         this( null, attributeType, vals );
     }
@@ -343,7 +329,15 @@ public class DefaultEntryAttribute implements EntryAttribute
      */
     public DefaultEntryAttribute( String upId, String... vals )
     {
-        add( vals );
+        try
+        {
+            add( vals );
+        }
+        catch ( LdapInvalidAttributeValueException liave )
+        {
+            // Do nothing, it can't happen
+        }
+        
         setUpId( upId );
     }
 
@@ -353,7 +347,15 @@ public class DefaultEntryAttribute implements EntryAttribute
      */
     public DefaultEntryAttribute( String upId, byte[]... vals )
     {
-        add( vals );
+        try
+        { 
+            add( vals );
+        }
+        catch ( LdapInvalidAttributeValueException liave )
+        {
+            // Do nothing, this can't happen
+        }
+        
         setUpId( upId );
     }
 
@@ -364,7 +366,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType The attributeType added on creation
      * @param vals The value for the added attribute
      */
-    public DefaultEntryAttribute( AttributeType attributeType, byte[]... vals )
+    public DefaultEntryAttribute( AttributeType attributeType, byte[]... vals ) throws LdapInvalidAttributeValueException
     {
         this( null, attributeType, vals );
     }
@@ -377,7 +379,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType the AttributeType to be added
      * @param vals the values for the added attribute
      */
-    public DefaultEntryAttribute( String upId, AttributeType attributeType, byte[]... vals )
+    public DefaultEntryAttribute( String upId, AttributeType attributeType, byte[]... vals ) throws LdapInvalidAttributeValueException
     {
         if ( attributeType == null )
         {
@@ -399,7 +401,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType The attribute's type 
      * @param attribute The attribute to be copied
      */
-    public DefaultEntryAttribute( AttributeType attributeType, EntryAttribute attribute )
+    public DefaultEntryAttribute( AttributeType attributeType, EntryAttribute attribute ) throws LdapException
     {
         // Copy the common values. isHR is only available on a ServerAttribute 
         this.attributeType = attributeType;
@@ -476,16 +478,14 @@ public class DefaultEntryAttribute implements EntryAttribute
     {
         Value<?> value = get();
         
-        if ( value.isBinary() )
-        {
-            return value.getBytes();
-        }
-        else
+        if ( value.isHR() )
         {
             String message = I18n.err( I18n.ERR_04130 );
             LOG.error( message );
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
         }
+
+        return value.getBytes();
     }
 
 
@@ -753,14 +753,6 @@ public class DefaultEntryAttribute implements EntryAttribute
             }
         }
 
-        for ( Value<?> value:values )
-        {
-            if ( !value.isValid() )
-            {
-                return false;
-            }
-        }
-
         return true;
     }
 
@@ -840,25 +832,39 @@ public class DefaultEntryAttribute implements EntryAttribute
                 {
                     if ( ( val == null ) || val.isNull() )
                     {
-                        Value<String> nullSV = new StringValue( attributeType, (String)null );
-                        
-                        if ( values.add( nullSV ) )
+                        try
+                        {        
+                            Value<String> nullSV = new StringValue( attributeType, (String)null );
+                            
+                            if ( values.add( nullSV ) )
+                            {
+                                nbAdded++;
+                            }
+                        }
+                        catch ( LdapInvalidAttributeValueException iae )
                         {
-                            nbAdded++;
+                            continue;
                         }
                     }
                     else if ( val instanceof StringValue)
                     {
                         StringValue stringValue = (StringValue)val;
                         
-                        if ( stringValue.getAttributeType() == null )
-                        {
-                            stringValue.apply( attributeType );
+                        try
+                        { 
+                            if ( stringValue.getAttributeType() == null )
+                            {
+                                stringValue.apply( attributeType );
+                            }
+                            
+                            if ( values.add( val ) )
+                            {
+                                nbAdded++;
+                            }
                         }
-                        
-                        if ( values.add( val ) )
+                        catch ( LdapInvalidAttributeValueException iae )
                         {
-                            nbAdded++;
+                            continue;
                         }
                     }
                     else
@@ -873,11 +879,18 @@ public class DefaultEntryAttribute implements EntryAttribute
                     {
                         if ( attributeType.getSyntax().getSyntaxChecker().isValidSyntax( val ) )
                         {
-                            Value<byte[]> nullSV = new BinaryValue( attributeType, (byte[])null );
-                            
-                            if ( values.add( nullSV ) )
+                            try
                             {
-                                nbAdded++;
+                                Value<byte[]> nullSV = new BinaryValue( attributeType, (byte[])null );
+                                
+                                if ( values.add( nullSV ) )
+                                {
+                                    nbAdded++;
+                                }
+                            }
+                            catch ( LdapInvalidAttributeValueException iae )
+                            {
+                                continue;
                             }
                         }
                         else
@@ -892,14 +905,21 @@ public class DefaultEntryAttribute implements EntryAttribute
                         {
                             BinaryValue binaryValue = (BinaryValue)val;
                             
-                            if ( binaryValue.getAttributeType() == null )
+                            try
                             {
-                                binaryValue = new BinaryValue( attributeType, val.getBytes() ); 
+                                if ( binaryValue.getAttributeType() == null )
+                                {
+                                    binaryValue = new BinaryValue( attributeType, val.getBytes() ); 
+                                }
+            
+                                if ( values.add( binaryValue ) )
+                                {
+                                    nbAdded++;
+                                }
                             }
-        
-                            if ( values.add( binaryValue ) )
+                            catch ( LdapInvalidAttributeValueException iae )
                             {
-                                nbAdded++;
+                                continue;
                             }
                         }
                         else
@@ -1054,7 +1074,7 @@ public class DefaultEntryAttribute implements EntryAttribute
     /**
      * @see EntryAttribute#add(String...)
      */
-    public int add( String... vals )
+    public int add( String... vals ) throws LdapInvalidAttributeValueException
     {
         int nbAdded = 0;
         
@@ -1209,7 +1229,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param vals some new values to be added which may be null
      * @return the number of added values, or 0 if none has been added
      */
-    public int add( byte[]... vals )
+    public int add( byte[]... vals ) throws LdapInvalidAttributeValueException
     {
         int nbAdded = 0;
         
@@ -1232,18 +1252,7 @@ public class DefaultEntryAttribute implements EntryAttribute
                 }
                 else
                 {
-                    value = new BinaryValue( attributeType, val );
-                    
-                    try
-                    {
-                        value.normalize();
-                    }
-                    catch( LdapException ne )
-                    {
-                        // The value can't be normalized : we don't add it.
-                        LOG.error( I18n.err( I18n.ERR_04449, Strings.dumpBytes(val) ) );
-                        return 0;
-                    }
+                    value = createBinaryValue( attributeType, val );
                 }
                 
                 if ( add( value ) != 0 )
@@ -1331,19 +1340,19 @@ public class DefaultEntryAttribute implements EntryAttribute
                 // contained in the object
                 for ( Value<?> val:vals )
                 {
-                    if ( val.isBinary() )
+                    if ( val.isHR() )
                     {
-                        if ( !values.contains( val ) )
+                        String stringVal = val.getString();
+                        
+                        // We have to convert the binary value to a String
+                        if ( ! values.contains( new BinaryValue( Strings.getBytesUtf8(stringVal) ) ) )
                         {
                             return false;
                         }
                     }
                     else
                     {
-                        String stringVal = val.getString();
-                        
-                        // We have to convert the binary value to a String
-                        if ( ! values.contains( new BinaryValue( Strings.getBytesUtf8(stringVal) ) ) )
+                        if ( !values.contains( val ) )
                         {
                             return false;
                         }
@@ -1364,9 +1373,16 @@ public class DefaultEntryAttribute implements EntryAttribute
                     {
                         StringValue stringValue = (StringValue)val;
                         
-                        if ( stringValue.getAttributeType() == null )
+                        try
                         {
-                            stringValue.apply( attributeType );
+                            if ( stringValue.getAttributeType() == null )
+                            {
+                                stringValue.apply( attributeType );
+                            }
+                        }
+                        catch ( LdapInvalidAttributeValueException liave )
+                        {
+                            return false;
                         }
                         
                         if ( !values.contains( val ) )
@@ -1430,8 +1446,14 @@ public class DefaultEntryAttribute implements EntryAttribute
             {
                 for ( String val:vals )
                 {
-                    
-                    if ( !contains( new StringValue( val ) ) )
+                    try
+                    {
+                        if ( !contains( new StringValue( val ) ) )
+                        {
+                            return false;
+                        }
+                    }
+                    catch ( IllegalArgumentException iae )
                     {
                         return false;
                     }
@@ -1462,9 +1484,16 @@ public class DefaultEntryAttribute implements EntryAttribute
                 // don't find one in the values
                 for ( String val:vals )
                 {
-                    StringValue value = new StringValue( attributeType, val );
-                    
-                    if ( !values.contains( value ) )
+                    try
+                    {
+                        StringValue value = new StringValue( attributeType, val );
+                        
+                        if ( !values.contains( value ) )
+                        {
+                            return false;
+                        }
+                    }
+                    catch ( LdapInvalidAttributeValueException liave )
                     {
                         return false;
                     }
@@ -1540,18 +1569,16 @@ public class DefaultEntryAttribute implements EntryAttribute
                 // don't find one in the values
                 for ( byte[] val:vals )
                 {
-                    BinaryValue value = new BinaryValue( attributeType, val );
-                    
                     try
-                    {
-                        value.normalize();
-                    }
-                    catch ( LdapException ne )
-                    {
-                        return false;
-                    }
+                    {   
+                        BinaryValue value = new BinaryValue( attributeType, val );
                     
-                    if ( !values.contains( value ) )
+                        if ( !values.contains( value ) )
+                        {
+                            return false;
+                        }
+                    }
+                    catch ( LdapInvalidAttributeValueException liave )
                     {
                         return false;
                     }
@@ -1787,12 +1814,19 @@ public class DefaultEntryAttribute implements EntryAttribute
                     {
                         StringValue stringValue = (StringValue)val;
                         
-                        if ( stringValue.getAttributeType() == null )
+                        try
                         {
-                            stringValue.apply( attributeType );
-                        }
+                            if ( stringValue.getAttributeType() == null )
+                            {
+                                stringValue.apply( attributeType );
+                            }
                         
-                        removed &= values.remove( stringValue );
+                            removed &= values.remove( stringValue );
+                        }
+                        catch ( LdapInvalidAttributeValueException liave )
+                        {
+                            removed = false;
+                        }
                     }
                     else
                     {
@@ -1806,14 +1840,21 @@ public class DefaultEntryAttribute implements EntryAttribute
                 {
                     if ( val instanceof BinaryValue )
                     {
-                        BinaryValue binaryValue = (BinaryValue)val;
-                        
-                        if ( binaryValue.getAttributeType() == null )
+                        try
                         {
-                            binaryValue.apply( attributeType );
+                            BinaryValue binaryValue = (BinaryValue)val;
+                            
+                            if ( binaryValue.getAttributeType() == null )
+                            {
+                                binaryValue.apply( attributeType );
+                            }
+                            
+                            removed &= values.remove( binaryValue );
                         }
-                        
-                        removed &= values.remove( binaryValue );
+                        catch ( LdapInvalidAttributeValueException liave )
+                        {
+                            removed = false;
+                        }
                     }
                     else
                     {
@@ -1878,10 +1919,17 @@ public class DefaultEntryAttribute implements EntryAttribute
         {
             if ( !isHR ) 
             {
-                for ( byte[] val:vals )
+                try
                 {
-                    BinaryValue value = new BinaryValue( attributeType, val );
-                    removed &= values.remove( value );
+                    for ( byte[] val:vals )
+                    {
+                        BinaryValue value = new BinaryValue( attributeType, val );
+                        removed &= values.remove( value );
+                    }
+                }
+                catch ( LdapInvalidAttributeValueException liave )
+                {
+                    removed = false;
                 }
             }
             else
@@ -1945,8 +1993,15 @@ public class DefaultEntryAttribute implements EntryAttribute
             {
                 for ( String val:vals )
                 {
-                    StringValue value = new StringValue( attributeType, val );
-                    removed &= values.remove( value );
+                    try
+                    {
+                        StringValue value = new StringValue( attributeType, val );
+                        removed &= values.remove( value );
+                    }
+                    catch ( LdapInvalidAttributeValueException liave )
+                    {
+                        removed = false;
+                    }
                 }
             }
             else
@@ -1993,7 +2048,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      *
      * @param attributeType the attributeType associated with this entry attribute
      */
-    public void setAttributeType( AttributeType attributeType )
+    public void setAttributeType( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
         if ( attributeType == null )
         {
@@ -2332,7 +2387,7 @@ public class DefaultEntryAttribute implements EntryAttribute
     /**
      * {@inheritDoc}
      */
-    public void applySchemaManager( SchemaManager schemaManager )
+    public void applySchemaManager( SchemaManager schemaManager ) throws LdapInvalidAttributeValueException
     {
         AttributeType attributeType = null;
         

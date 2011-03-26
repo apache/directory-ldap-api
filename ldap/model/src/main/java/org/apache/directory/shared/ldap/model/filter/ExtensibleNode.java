@@ -183,7 +183,7 @@ public class ExtensibleNode extends LeafNode
      */
     public Value<?> getEscapedValue()
     {
-        if ( !value.isBinary() )
+        if ( value.isHR() )
         {
             return escapeFilterValue( value );
         }

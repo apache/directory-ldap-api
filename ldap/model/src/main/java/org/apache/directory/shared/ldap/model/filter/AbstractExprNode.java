@@ -153,7 +153,7 @@ public abstract class AbstractExprNode implements ExprNode
         StringBuilder sb = null;
         String val;
 
-        if ( value.isBinary() )
+        if ( !value.isHR() )
         {
             sb = new StringBuilder( ((BinaryValue)value).getReference().length * 3 );
             

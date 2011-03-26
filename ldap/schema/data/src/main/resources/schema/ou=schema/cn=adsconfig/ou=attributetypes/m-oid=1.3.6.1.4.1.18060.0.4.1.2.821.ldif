@@ -7,7 +7,7 @@ m-description: the search scope of the replication
 objectclass: metaAttributeType
 objectclass: metaTop
 objectclass: top
-m-syntax: 1.3.6.1.4.1.1466.115.121.1.27
+m-syntax: 1.3.6.1.4.1.18060.0.4.1.0.10
 m-name: ads-replSearchScope
 creatorsname: uid=admin,ou=system
 m-equality: integerMatch

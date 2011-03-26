@@ -98,6 +98,11 @@ public class EntryUtils
         {
             public boolean isValidSyntax( Object value )
             {
+                if ( value == null )
+                {
+                    return true;
+                }
+                
                 if ( !( value instanceof String ) )
                 {
                     return false;
@@ -134,7 +139,7 @@ public class EntryUtils
         {
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
-                if ( !value.isBinary() )
+                if ( value.isHR() )
                 {
                     return new StringValue( value.getString().toLowerCase() );
                 }
@@ -145,7 +150,7 @@ public class EntryUtils
             
             public String normalize( String value ) throws LdapException
             {
-                return value.toLowerCase();
+                return Strings.toLowerCase( value );
             }
         };
         
@@ -217,7 +222,7 @@ public class EntryUtils
         {
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
-                if ( value.isBinary() )
+                if ( !value.isHR() )
                 {
                     byte[] val = value.getBytes();
                     

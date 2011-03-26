@@ -34,10 +34,16 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
+import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
 import org.apache.directory.shared.util.StringConstants;
 import org.apache.directory.shared.util.Strings;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -59,34 +65,57 @@ public class BinaryValueTest
     private static final byte[] BYTES2 = new byte[]{(byte)0x81, (byte)0x82, (byte)0x83, (byte)0x84};
     private static final byte[] INVALID_BYTES = new byte[]{0x01, 0x02, 0x03, 0x04, 0x05};
     private static final byte[] BYTES_MOD = new byte[]{0x11, 0x02, 0x03, 0x04};
+    private LdapSyntax s;
+    private AttributeType at;
+    private MatchingRule mr;
     
-    private static final Normalizer BINARY_NORMALIZER = new Normalizer( "1.1.1" )
+    /**
+     * Initialize an AttributeType and the associated MatchingRule 
+     * and Syntax
+     */
+    @Before public void initAT()
     {
-        public Value<?> normalize( Value<?> value ) throws LdapException
+        s = EntryUtils.syntaxFactory( "1.1.1.1", false );
+        s.setSyntaxChecker( new OctetStringSyntaxChecker() );
+        mr = EntryUtils.matchingRuleFactory( "1.1.2.1" );
+        mr.setSyntax( s );
+        
+        mr.setLdapComparator( new ByteArrayComparator( "1.1.1" ) );
+        mr.setNormalizer( new Normalizer( "1.1.1" )
         {
-            if ( value.isBinary() )
+            public Value<?> normalize( Value<?> value ) throws LdapException
             {
-                byte[] val = value.getBytes();
-                // each byte will be changed to be > 0, and spaces will be trimmed
-                byte[] newVal = new byte[ val.length ];
-                int i = 0;
-                
-                for ( byte b:val )
+                if ( !value.isHR() )
                 {
-                    newVal[i++] = (byte)(b & 0x007F); 
+                    byte[] val = value.getBytes();
+                    // each byte will be changed to be > 0, and spaces will be trimmed
+                    byte[] newVal = new byte[ val.length ];
+                    int i = 0;
+                    
+                    for ( byte b:val )
+                    {
+                        newVal[i++] = (byte)(b & 0x007F); 
+                    }
+                    
+                    return new BinaryValue( Strings.trim(newVal) );
                 }
-                
-                return new BinaryValue( Strings.trim(newVal) );
+
+                throw new IllegalStateException( "expected byte[] to normalize" );
             }
 
-            throw new IllegalStateException( "expected byte[] to normalize" );
-        }
-
-        public String normalize( String value ) throws LdapException
-        {
-            throw new IllegalStateException( "expected byte[] to normalize" );
-        }
-};
+        
+            public String normalize( String value ) throws LdapException
+            {
+                throw new IllegalStateException( "expected byte[] to normalize" );
+            }
+        });
+        
+        at = new AttributeType( "1.1.3.1" );
+        at.setEquality( mr );
+        at.setOrdering( mr );
+        at.setSubstring( mr );
+        at.setSyntax( s );
+    }
 
     
     /**
@@ -96,7 +125,7 @@ public class BinaryValueTest
     {
         public Value<?> normalize( Value<?> value ) throws LdapException
         {
-            if ( value.isBinary() )
+            if ( !value.isHR() )
             {
                 return new BinaryValue( StringConstants.EMPTY_BYTES );
             }
@@ -165,7 +194,7 @@ public class BinaryValueTest
     /**
      * Deserialize a BinaryValue
      */
-    private BinaryValue deserializeValue( ByteArrayOutputStream out ) throws IOException, ClassNotFoundException
+    private BinaryValue deserializeValue( AttributeType at, ByteArrayOutputStream out ) throws IOException, ClassNotFoundException
     {
         ObjectInputStream oIn = null;
         ByteArrayInputStream in = new ByteArrayInputStream( out.toByteArray() );
@@ -174,7 +203,7 @@ public class BinaryValueTest
         {
             oIn = new ObjectInputStream( in );
 
-            BinaryValue value = new BinaryValue();
+            BinaryValue value = new BinaryValue( at );
             value.readExternal( oIn );
             
             return value;
@@ -222,10 +251,10 @@ public class BinaryValueTest
         BinaryValue cbv = new BinaryValue( (byte[])null );
         
         assertNull( cbv.get() );
-        assertFalse( cbv.isNormalized() );
+        assertFalse( cbv.isSchemaAware() );
         assertTrue( cbv.isValid( BINARY_CHECKER ) );
         assertTrue( cbv.isNull() );
-        assertNull( cbv.getNormalizedValue() );
+        assertNull( cbv.getNormValue() );
     }
 
 
@@ -237,12 +266,12 @@ public class BinaryValueTest
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getBytes() ) );
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.get() ) );
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getReference() ) );
-        assertFalse( cbv.isNormalized() );
+        assertFalse( cbv.isSchemaAware() );
         assertTrue( cbv.isValid( BINARY_CHECKER ) );
         assertFalse( cbv.isNull() );
-        assertNotNull( cbv.getNormalizedValue() );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getNormalizedValue() ) );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getNormalizedValueReference() ) );
+        assertNotNull( cbv.getNormValue() );
+        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getNormValue() ) );
+        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getNormReference() ) );
     }
 
 
@@ -254,11 +283,11 @@ public class BinaryValueTest
         assertTrue( Arrays.equals( BYTES1, cbv.getBytes() ) );
         assertTrue( Arrays.equals( BYTES1, cbv.get() ) );
         assertTrue( Arrays.equals( BYTES1, cbv.getReference() ) );
-        assertFalse( cbv.isNormalized() );
+        assertFalse( cbv.isSchemaAware() );
         assertTrue( cbv.isValid( BINARY_CHECKER ) );
         assertFalse( cbv.isNull() );
-        assertNotNull( cbv.getNormalizedValue() );
-        assertTrue( Arrays.equals( BYTES1, cbv.getNormalizedValue() ) );
+        assertNotNull( cbv.getNormValue() );
+        assertTrue( Arrays.equals( BYTES1, cbv.getNormValue() ) );
     }
 
 
@@ -272,11 +301,11 @@ public class BinaryValueTest
         assertTrue( Arrays.equals( BYTES1, bv.getBytes() ) );
         assertTrue( Arrays.equals( BYTES1, bv.get() ) );
         assertTrue( Arrays.equals( BYTES1, bv.getReference() ) );
-        assertFalse( bv.isNormalized() );
+        assertFalse( bv.isSchemaAware() );
         assertTrue( bv.isValid( BINARY_CHECKER ) );
         assertFalse( bv.isNull() );
-        assertNotNull( bv.getNormalizedValue() );
-        assertTrue( Arrays.equals( BYTES1, bv.getNormalizedValue() ) );
+        assertNotNull( bv.getNormValue() );
+        assertTrue( Arrays.equals( BYTES1, bv.getNormValue() ) );
     }
 
 
@@ -288,16 +317,16 @@ public class BinaryValueTest
         assertTrue( Arrays.equals( BYTES2, cbv.getBytes() ) );
         assertTrue( Arrays.equals( BYTES2, cbv.get() ) );
         assertTrue( Arrays.equals( BYTES2, cbv.getReference() ) );
-        assertFalse( cbv.isNormalized() );
+        assertFalse( cbv.isSchemaAware() );
         assertTrue( cbv.isValid( BINARY_CHECKER ) );
         assertFalse( cbv.isNull() );
-        assertNotNull( cbv.getNormalizedValue() );
-        assertTrue( Arrays.equals( BYTES2, cbv.getNormalizedValue() ) );
+        assertNotNull( cbv.getNormValue() );
+        assertTrue( Arrays.equals( BYTES2, cbv.getNormValue() ) );
         
-        cbv.normalize( BINARY_NORMALIZER );
-        byte[] copy = cbv.getNormalizedValue();
+        cbv.apply( at );
+        byte[] copy = cbv.getNormValue();
         assertTrue( Arrays.equals( BYTES1, copy ) );
-        cbv.getNormalizedValueReference()[0]=0x11;
+        cbv.getNormReference()[0]=0x11;
         assertTrue( Arrays.equals( BYTES1, copy ) );
     }
 
@@ -307,27 +336,27 @@ public class BinaryValueTest
     {
         BinaryValue bv = new BinaryValue();
         
-        bv.normalize( BINARY_NORMALIZER );
-        assertTrue( bv.isNormalized() );
-        assertEquals( null, bv.getNormalizedValue() );
+        bv.apply( at );
+        assertTrue( bv.isSchemaAware() );
+        assertEquals( null, bv.getNormValue() );
         
         bv = new BinaryValue( StringConstants.EMPTY_BYTES );
-        bv.normalize( BINARY_NORMALIZER );
-        assertTrue( bv.isNormalized() );
+        bv.apply( at );
+        assertTrue( bv.isSchemaAware() );
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getBytes() ) );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getNormalizedValue() ) );
+        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getNormValue() ) );
         
         bv = new BinaryValue( BYTES1 );
-        bv.normalize( BINARY_NORMALIZER );
-        assertTrue( bv.isNormalized() );
+        bv.apply( at );
+        assertTrue( bv.isSchemaAware() );
         assertTrue( Arrays.equals( BYTES1, bv.getBytes() ) );
-        assertTrue( Arrays.equals( BYTES1, bv.getNormalizedValue() ) );
+        assertTrue( Arrays.equals( BYTES1, bv.getNormValue() ) );
 
         bv = new BinaryValue( BYTES2 );
-        bv.normalize( BINARY_NORMALIZER );
-        assertTrue( bv.isNormalized() );
+        bv.apply( at );
+        assertTrue( bv.isSchemaAware() );
         assertTrue( Arrays.equals( BYTES2, bv.getBytes() ) );
-        assertTrue( Arrays.equals( BYTES1, bv.getNormalizedValue() ) );
+        assertTrue( Arrays.equals( BYTES1, bv.getNormValue() ) );
     }
 
 
@@ -345,7 +374,7 @@ public class BinaryValueTest
         bv2 = new BinaryValue( BYTES2 );
         assertEquals( 1, bv1.compareTo( bv2 ) );
         
-        bv2.normalize( BINARY_NORMALIZER );
+        bv2.apply( at );
         assertEquals( 0, bv1.compareTo( bv2 ) );
         
         bv1 = new BinaryValue( BYTES2 );
@@ -367,7 +396,7 @@ public class BinaryValueTest
         bv2 = new BinaryValue( BYTES2 );
         assertNotSame( bv1, bv2 );
         
-        bv2.normalize( BINARY_NORMALIZER );
+        bv2.apply( at );
         assertEquals( bv1, bv2 );
         
         bv1 = new BinaryValue( BYTES2 );
@@ -436,7 +465,7 @@ public class BinaryValueTest
         // Now check that the equals method works on normalized values.
         bv1 = new BinaryValue( BYTES2 );
         bv2 = new BinaryValue( BYTES1 );
-        bv1.normalize( BINARY_NORMALIZER );
+        bv1.apply( at );
         assertEquals( 0, bv1.compareTo( bv2 ) );
         
         bv1 = new BinaryValue( BYTES1 );
@@ -513,18 +542,18 @@ public class BinaryValueTest
     {
         BinaryValue bv = new BinaryValue();
         
-        assertFalse( bv.isNormalized() );
+        assertFalse( bv.isSchemaAware() );
 
-        bv.normalize( BINARY_NORMALIZER );
-        byte[] value = bv.getNormalizedValue();
+        bv.apply( at );
+        byte[] value = bv.getNormValue();
         assertNull( value );
-        assertTrue( bv.isNormalized() );
+        assertTrue( bv.isSchemaAware() );
         
         bv = new BinaryValue( BYTES2 );
-        bv.normalize( BINARY_NORMALIZER );
-        value = bv.getNormalizedValue();
+        bv.apply( at );
+        value = bv.getNormValue();
         assertTrue( Arrays.equals( BYTES1, value ) );
-        bv.getNormalizedValueReference()[0]=0x11;
+        bv.getNormReference()[0]=0x11;
         assertFalse( Arrays.equals( BYTES_MOD, value ) );
     }
 
@@ -534,18 +563,18 @@ public class BinaryValueTest
     {
         BinaryValue bv = new BinaryValue();
         
-        assertFalse( bv.isNormalized() );
+        assertFalse( bv.isSchemaAware() );
 
-        bv.normalize( BINARY_NORMALIZER );
-        byte[] value = bv.getNormalizedValueReference();
+        bv.apply( at );
+        byte[] value = bv.getNormReference();
         assertNull( value );
-        assertTrue( bv.isNormalized() );
+        assertTrue( bv.isSchemaAware() );
         
         bv = new BinaryValue( BYTES2 );
-        bv.normalize( BINARY_NORMALIZER );
-        value = bv.getNormalizedValueReference();
+        bv.apply( at );
+        value = bv.getNormReference();
         assertTrue( Arrays.equals( BYTES1, value ) );
-        bv.getNormalizedValueReference()[0]=0x11;
+        bv.getNormReference()[0]=0x11;
         assertTrue( Arrays.equals( BYTES_MOD, value ) );
     }
 
@@ -570,24 +599,18 @@ public class BinaryValueTest
     {
         BinaryValue bv = new BinaryValue();
         
-        assertFalse( bv.isValid() );
-        bv.isValid( BINARY_CHECKER );
-        assertTrue( bv.isValid() );
+        assertTrue( bv.isValid( BINARY_CHECKER ) );
         
         bv = new BinaryValue( StringConstants.EMPTY_BYTES );
-        assertFalse( bv.isValid() );
-        bv.isValid( BINARY_CHECKER );
-        assertTrue( bv.isValid() );
+        assertTrue( bv.isValid( BINARY_CHECKER ) );
         
         bv = new BinaryValue( BYTES1 );
         assertFalse( bv.isNull() );
-        bv.isValid( BINARY_CHECKER );
-        assertTrue( bv.isValid() );
+        assertTrue( bv.isValid( BINARY_CHECKER ) );
 
         bv = new BinaryValue( INVALID_BYTES );
         assertFalse( bv.isNull() );
-        bv.isValid( BINARY_CHECKER );
-        assertFalse( bv.isValid() );
+        assertFalse( bv.isValid( BINARY_CHECKER ) );
     }
 
 
@@ -614,19 +637,20 @@ public class BinaryValueTest
     {
         BinaryValue bv = new BinaryValue();
         
-        bv.normalize();
-        assertTrue( bv.isNormalized() );
-        assertEquals( null, bv.getNormalizedValue() );
+        bv.apply( at );
+        assertTrue( bv.isSchemaAware() );
+        assertEquals( null, bv.getNormValue() );
         
         bv = new BinaryValue( StringConstants.EMPTY_BYTES );
-        bv.normalize();
-        assertTrue( bv.isNormalized() );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getNormalizedValue() ) );
+        bv.apply( at );
+        assertTrue( bv.isSchemaAware() );
+        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getNormValue() ) );
         
         bv = new BinaryValue( BYTES2 );
-        bv.normalize();
-        assertTrue( bv.isNormalized() );
-        assertTrue( Arrays.equals( BYTES2, bv.getNormalizedValue() ) );
+        bv.apply( at );
+        assertTrue( bv.isSchemaAware() );
+        assertTrue( Arrays.equals( BYTES2, bv.get() ) );
+        assertTrue( Arrays.equals( BYTES1, bv.getNormValue() ) );
     }
 
 
@@ -636,21 +660,21 @@ public class BinaryValueTest
         BinaryValue bv = new BinaryValue( (byte[])null );
         
         assertNull( bv.get() );
-        assertFalse( bv.isNormalized() );
+        assertFalse( bv.isSchemaAware() );
         assertTrue( bv.isValid( BINARY_CHECKER ) );
         assertTrue( bv.isNull() );
 
         bv = new BinaryValue( StringConstants.EMPTY_BYTES );
         assertNotNull( bv.get() );
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getBytes() ) );
-        assertFalse( bv.isNormalized() );
+        assertFalse( bv.isSchemaAware() );
         assertTrue( bv.isValid( BINARY_CHECKER ) );
         assertFalse( bv.isNull() );
 
         bv = new BinaryValue( BYTES1 );
         assertNotNull( bv.get() );
         assertTrue( Arrays.equals( BYTES1, bv.getBytes() ) );
-        assertFalse( bv.isNormalized() );
+        assertFalse( bv.isSchemaAware() );
         assertTrue( bv.isValid( BINARY_CHECKER ) );
         assertFalse( bv.isNull() );
     }
@@ -660,21 +684,21 @@ public class BinaryValueTest
     public void testIsNormalized() throws LdapException
     {
         BinaryValue bv = new BinaryValue();
-        assertFalse( bv.isNormalized() );
+        assertFalse( bv.isSchemaAware() );
         
         bv = new BinaryValue( BYTES2 );
-        assertFalse( bv.isNormalized() );
+        assertFalse( bv.isSchemaAware() );
         
-        bv.normalize( BINARY_NORMALIZER );
+        bv.apply( at );
         
-        assertTrue( Arrays.equals( BYTES1, bv.getNormalizedValue() ) );
-        assertTrue( bv.isNormalized() );
+        assertTrue( Arrays.equals( BYTES1, bv.getNormValue() ) );
+        assertTrue( bv.isSchemaAware() );
         
         bv = new BinaryValue( BYTES2 );
-        assertFalse( bv.isNormalized() );
+        assertFalse( bv.isSchemaAware() );
 
         bv = new BinaryValue( BYTES_MOD );
-        assertFalse( bv.isNormalized() );
+        assertFalse( bv.isSchemaAware() );
     }
 
 
@@ -683,24 +707,17 @@ public class BinaryValueTest
     {
         BinaryValue bv = new BinaryValue();
         
-        assertFalse( bv.isNormalized() );
-        
-        bv.setNormalized( true );
-        assertTrue( bv.isNormalized() );
+        assertFalse( bv.isSchemaAware() );
         
         bv = new BinaryValue( BYTES2 );
-        assertFalse( bv.isNormalized() );
+        assertFalse( bv.isSchemaAware() );
         
-        bv.normalize( BINARY_NORMALIZER );
+        bv.apply( at );
         
-        assertTrue( Arrays.equals( BYTES1, bv.getNormalizedValue() ) );
-        assertTrue( bv.isNormalized() );
+        assertTrue( Arrays.equals( BYTES1, bv.getNormValue() ) );
+        assertTrue( bv.isSchemaAware() );
         
-        bv.setNormalized( false );
-        assertTrue( Arrays.equals( BYTES2, bv.getNormalizedValue() ) );
-        assertTrue( bv.isNormalized() );
-
-        bv.normalize( BINARY_NORMALIZER );
+        assertTrue( Arrays.equals( BYTES2, bv.get() ) );
     }
     
     
@@ -711,17 +728,15 @@ public class BinaryValueTest
     public void testSerializeStandard() throws LdapException, IOException, ClassNotFoundException
     {
         BinaryValue bv = new BinaryValue();
-        bv.setNormalized( true );
         bv = new BinaryValue( BYTES2 );
-        bv.normalize( BINARY_NORMALIZER );
-        bv.isValid( BINARY_CHECKER );
+        bv.apply( at );
+        assertTrue( bv.isValid( BINARY_CHECKER ) );
 
-        BinaryValue cbvSer = deserializeValue( serializeValue( bv ) );
+        BinaryValue cbvSer = deserializeValue( at, serializeValue( bv ) );
         assertNotSame( bv, cbvSer );
         assertTrue( Arrays.equals( bv.getReference(), cbvSer.getReference() ) );
-        assertTrue( Arrays.equals( bv.getNormalizedValueReference(), cbvSer.getNormalizedValueReference() ) );
-        assertTrue( cbvSer.isNormalized() );
-        assertFalse( cbvSer.isValid() );
+        assertTrue( Arrays.equals( bv.getNormReference(), cbvSer.getNormReference() ) );
+        assertTrue( cbvSer.isSchemaAware() );
     }
     
     
@@ -732,16 +747,14 @@ public class BinaryValueTest
     public void testSerializeNotNormalized() throws LdapException, IOException, ClassNotFoundException
     {
         BinaryValue bv = new BinaryValue();
-        bv.setNormalized( false );
         bv = new BinaryValue( BYTES2 );
         bv.isValid( BINARY_CHECKER );
 
-        BinaryValue cbvSer = deserializeValue( serializeValue( bv ) );
-         assertNotSame( bv, cbvSer );
-         assertTrue( Arrays.equals( bv.getReference(), cbvSer.getReference() ) );
-         assertTrue( Arrays.equals( bv.getReference(), cbvSer.getNormalizedValueReference() ) );
-         assertTrue( cbvSer.isNormalized() );
-         assertFalse( cbvSer.isValid() );
+        BinaryValue cbvSer = deserializeValue( null, serializeValue( bv ) );
+        assertNotSame( bv, cbvSer );
+        assertTrue( Arrays.equals( bv.getReference(), cbvSer.getReference() ) );
+        assertTrue( Arrays.equals( bv.getReference(), cbvSer.getNormReference() ) );
+        assertFalse( cbvSer.isSchemaAware() );
     }
     
     
@@ -752,17 +765,15 @@ public class BinaryValueTest
     public void testSerializeEmptyNormalized() throws LdapException, IOException, ClassNotFoundException
     {
         BinaryValue bv = new BinaryValue();
-        bv.setNormalized( true );
         bv = new BinaryValue( BYTES2 );
         bv.isValid( BINARY_CHECKER );
-        bv.normalize( BINARY_NORMALIZER_EMPTY );
+        bv.apply( at );
 
-        BinaryValue cbvSer = deserializeValue( serializeValue( bv ) );
-         assertNotSame( bv, cbvSer );
-         assertTrue( Arrays.equals( bv.getReference(), cbvSer.getReference() ) );
-         assertTrue( Arrays.equals( bv.getNormalizedValueReference(), cbvSer.getNormalizedValueReference() ) );
-         assertTrue( cbvSer.isNormalized() );
-         assertFalse( cbvSer.isValid() );
+        BinaryValue cbvSer = deserializeValue( at, serializeValue( bv ) );
+        assertNotSame( bv, cbvSer );
+        assertTrue( Arrays.equals( bv.getReference(), cbvSer.getReference() ) );
+        assertTrue( Arrays.equals( bv.getNormReference(), cbvSer.getNormReference() ) );
+        assertTrue( cbvSer.isSchemaAware() );
     }
     
     
@@ -773,17 +784,15 @@ public class BinaryValueTest
     public void testSerializeNullValue() throws LdapException, IOException, ClassNotFoundException
     {
         BinaryValue bv = new BinaryValue();
-        bv.setNormalized( true );
         bv = new BinaryValue( (byte[])null );
         bv.isValid( BINARY_CHECKER );
-        bv.normalize( BINARY_NORMALIZER );
+        bv.apply( at );
 
-        BinaryValue cbvSer = deserializeValue( serializeValue( bv ) );
-         assertNotSame( bv, cbvSer );
-         assertTrue( Arrays.equals( bv.getReference(), cbvSer.getReference() ) );
-         assertTrue( Arrays.equals( bv.getNormalizedValueReference(), cbvSer.getNormalizedValueReference() ) );
-         assertTrue( cbvSer.isNormalized() );
-         assertFalse( cbvSer.isValid() );
+        BinaryValue cbvSer = deserializeValue( at, serializeValue( bv ) );
+        assertNotSame( bv, cbvSer );
+        assertTrue( Arrays.equals( bv.getReference(), cbvSer.getReference() ) );
+        assertTrue( Arrays.equals( bv.getNormReference(), cbvSer.getNormReference() ) );
+        assertTrue( cbvSer.isSchemaAware() );
     }
     
     
@@ -794,17 +803,15 @@ public class BinaryValueTest
     public void testSerializeEmptyValue() throws LdapException, IOException, ClassNotFoundException
     {
         BinaryValue bv = new BinaryValue();
-        bv.setNormalized( true );
         bv = new BinaryValue( StringConstants.EMPTY_BYTES );
         bv.isValid( BINARY_CHECKER );
-        bv.normalize( BINARY_NORMALIZER );
+        bv.apply( at );
 
-        BinaryValue cbvSer = deserializeValue( serializeValue( bv ) );
-         assertNotSame( bv, cbvSer );
-         assertTrue( Arrays.equals( bv.getReference(), cbvSer.getReference() ) );
-         assertTrue( Arrays.equals( bv.getNormalizedValueReference(), cbvSer.getNormalizedValueReference() ) );
-         assertTrue( cbvSer.isNormalized() );
-         assertFalse( cbvSer.isValid() );
+        BinaryValue cbvSer = deserializeValue( at, serializeValue( bv ) );
+        assertNotSame( bv, cbvSer );
+        assertTrue( Arrays.equals( bv.getReference(), cbvSer.getReference() ) );
+        assertTrue( Arrays.equals( bv.getNormReference(), cbvSer.getNormReference() ) );
+        assertTrue( cbvSer.isSchemaAware() );
     }
     
     
@@ -815,15 +822,13 @@ public class BinaryValueTest
     public void testSerializeEmptyValueNotNormalized() throws LdapException, IOException, ClassNotFoundException
     {
         BinaryValue bv = new BinaryValue();
-        bv.setNormalized( false );
         bv = new BinaryValue( StringConstants.EMPTY_BYTES );
         bv.isValid( BINARY_CHECKER );
 
-        BinaryValue cbvSer = deserializeValue( serializeValue( bv ) );
-         assertNotSame( bv, cbvSer );
-         assertTrue( Arrays.equals( bv.getReference(), cbvSer.getReference() ) );
-         assertTrue( Arrays.equals( bv.getNormalizedValueReference(), cbvSer.getNormalizedValueReference() ) );
-         assertTrue( cbvSer.isNormalized() );
-         assertFalse( cbvSer.isValid() );
+        BinaryValue cbvSer = deserializeValue( null, serializeValue( bv ) );
+        assertNotSame( bv, cbvSer );
+        assertTrue( Arrays.equals( bv.getReference(), cbvSer.getReference() ) );
+        assertTrue( Arrays.equals( bv.getNormReference(), cbvSer.getNormReference() ) );
+        assertFalse( cbvSer.isSchemaAware() );
     }
 }

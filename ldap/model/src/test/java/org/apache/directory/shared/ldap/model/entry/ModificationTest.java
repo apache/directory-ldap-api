@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -121,7 +122,7 @@ public class ModificationTest
     
     
     @Test 
-    public void testCreateServerModification()
+    public void testCreateServerModification() throws LdapException
     {
         EntryAttribute attribute = new DefaultEntryAttribute( "cn" );
         attribute.add( "test1", "test2" );
@@ -143,7 +144,7 @@ public class ModificationTest
     
     
     @Test
-    public void testSerializationModificationADD() throws ClassNotFoundException, IOException
+    public void testSerializationModificationADD() throws ClassNotFoundException, IOException, LdapException
     {
         EntryAttribute attribute = new DefaultEntryAttribute( "cn" );
         attribute.add( "test1", "test2" );
@@ -157,7 +158,7 @@ public class ModificationTest
     
     
     @Test
-    public void testSerializationModificationREPLACE() throws ClassNotFoundException, IOException
+    public void testSerializationModificationREPLACE() throws ClassNotFoundException, IOException, LdapException
     {
         EntryAttribute attribute = new DefaultEntryAttribute( "cn" );
         attribute.add( "test1", "test2" );
@@ -171,7 +172,7 @@ public class ModificationTest
     
     
     @Test
-    public void testSerializationModificationREMOVE() throws ClassNotFoundException, IOException
+    public void testSerializationModificationREMOVE() throws ClassNotFoundException, IOException, LdapException
     {
         EntryAttribute attribute = new DefaultEntryAttribute( "cn" );
         attribute.add( "test1", "test2" );

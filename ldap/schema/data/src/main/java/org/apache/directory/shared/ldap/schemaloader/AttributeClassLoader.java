@@ -76,15 +76,13 @@ public class AttributeClassLoader extends ClassLoader
 
         Value<?> value = attribute.get();
 
-        if ( value.isBinary() )
-        {
-            classBytes = value.getBytes();
-
-            return defineClass( name, classBytes, 0, classBytes.length );
-        }
-        else
+        if ( value.isHR() )
         {
             throw new ClassNotFoundException( I18n.err( I18n.ERR_10002 ) );
         }
+        
+        classBytes = value.getBytes();
+
+        return defineClass( name, classBytes, 0, classBytes.length );
     }
 }

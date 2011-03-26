@@ -34,6 +34,7 @@ import java.util.Set;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
@@ -186,7 +187,7 @@ public final class DefaultEntry implements Entry
      * @param schemaManager The reference to the schemaManager
      * @param entry the entry to copy
      */
-    public DefaultEntry( SchemaManager schemaManager, Entry entry )
+    public DefaultEntry( SchemaManager schemaManager, Entry entry ) throws LdapException
     {
         this.schemaManager = schemaManager;
 
@@ -230,6 +231,7 @@ public final class DefaultEntry implements Entry
             {
                 // Just log a warning
                 LOG.warn( "The attribute '" + attribute.getId() + "' cannot be stored" );
+                throw ne;
             }
         }
     }
@@ -436,16 +438,8 @@ public final class DefaultEntry implements Entry
 
         // Initialize the ObjectClass object
         initObjectClassAT();
-
-        try
-        {
-            put( upId, attributeType, ( String ) null );
-        }
-        catch ( LdapException ne )
-        {
-            // Just discard the AttributeType
-            LOG.error( I18n.err( I18n.ERR_04459, upId, ne.getLocalizedMessage() ) );
-        }
+        set( attributeType );
+        set( upId );
     }
 
 
@@ -591,7 +585,7 @@ public final class DefaultEntry implements Entry
      *
      * Updates the AttributeMap.
      */
-    protected void createAttribute( String upId, AttributeType attributeType, byte[]... values )
+    protected void createAttribute( String upId, AttributeType attributeType, byte[]... values ) throws LdapInvalidAttributeValueException
     {
         EntryAttribute attribute = new DefaultEntryAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
@@ -605,7 +599,7 @@ public final class DefaultEntry implements Entry
      *
      * Updates the AttributeMap.
      */
-    protected void createAttribute( String upId, AttributeType attributeType, String... values )
+    protected void createAttribute( String upId, AttributeType attributeType, String... values ) throws LdapInvalidAttributeValueException
     {
         EntryAttribute attribute = new DefaultEntryAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
@@ -619,7 +613,7 @@ public final class DefaultEntry implements Entry
      *
      * Updates the AttributeMap.
      */
-    protected void createAttribute( String upId, AttributeType attributeType, Value<?>... values )
+    protected void createAttribute( String upId, AttributeType attributeType, Value<?>... values ) throws LdapInvalidAttributeValueException
     {
         EntryAttribute attribute = new DefaultEntryAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
@@ -2649,10 +2643,14 @@ public final class DefaultEntry implements Entry
      */
     public boolean hasObjectClass( String objectClass )
     {
+        if ( Strings.isEmpty( objectClass ) )
+        {
+            return false;
+        }
+        
         if ( schemaManager != null )
         {
             return contains( objectClassAttributeType, objectClass );
-
         }
         else
         {

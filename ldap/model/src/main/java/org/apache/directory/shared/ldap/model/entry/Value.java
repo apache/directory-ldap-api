@@ -23,8 +23,8 @@ package org.apache.directory.shared.ldap.model.entry;
 import java.io.Externalizable;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 
 
@@ -36,7 +36,7 @@ import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
  */
 public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>>
 {
-    /** Two flags used to tll if the value is HR or not in serialization */
+    /** Two flags used to tell if the value is HR or not in serialization */
     public static final boolean STRING = true;
     public static final boolean BINARY = false;
 
@@ -44,11 +44,15 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * Apply an AttributeType to the current Value, normalizing it.
      *
      * @param attributeType The AttributeType to apply
+     * @throws LdapInvalidAttributeValueException If the value is not valid accordingly
+     * to the schema
      */
-    void apply( AttributeType attributeType );
+    void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
     
 
     /**
+     * Clone a Value
+     * 
      * @return A cloned value
      */
     Value<T> clone();
@@ -112,11 +116,11 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
     
     
     /**
-     * Gets a reference to the wrapped binary value.
+     * Gets a reference to the wrapped value.
      * 
      * Warning ! The value is not copied !!!
      *
-     * @return a direct handle on the binary value that is wrapped
+     * @return a direct handle on the value that is wrapped
      */
     T getReference();
     
@@ -126,20 +130,8 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      *
      * @return <code>true</code> if the value has already been normalized.
      */
-    boolean isNormalized();
+    boolean isSchemaAware();
     
-    
-    /** 
-     * Uses the syntaxChecker associated with the attributeType to check if the
-     * value is valid.  Repeated calls to this method do not attempt to re-check
-     * the syntax of the wrapped value every time if the wrapped value does not
-     * change. Syntax checks only result on the first check, and when the wrapped
-     * value changes.
-     *
-     * @return <code>true</code> if the value is valid
-     */
-    boolean isValid();
-
     
     /**
      * Uses the syntaxChecker associated with the attributeType to check if the
@@ -159,7 +151,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * Set the normalized flag.
      * 
      * @param normalized the value : true or false
-     */
+     *
     void setNormalized( boolean normalized );
 
     
@@ -173,7 +165,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      *
      * @return gets the normalized value
      */
-    T getNormalizedValue();
+    T getNormValue();
     
     
     /**
@@ -182,7 +174,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      *
      * @return gets a reference to the normalized value
      */
-    T getNormalizedValueReference();
+    T getNormReference();
 
     
     /**
@@ -190,7 +182,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * must be schema aware.
      * 
      * @exception LdapException if the value cannot be normalized
-     */
+     *
     void normalize() throws LdapException;
 
     
@@ -202,16 +194,16 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * 
      * @param normalizer the normalizer to apply to the value
      * @exception LdapException if the value cannot be normalized
-     */
+     *
     void normalize( Normalizer normalizer ) throws LdapException;
     
     
     /**
-     * Tells if the current value is Binary or String
+     * Tells if the current value is Human Readable
      * 
      * @return <code>true</code> if the value is Binary, <code>false</code> otherwise
      */
-    boolean isBinary();
+    boolean isHR();
     
     
     /**

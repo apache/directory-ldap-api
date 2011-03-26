@@ -33,6 +33,8 @@ import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
@@ -108,7 +110,7 @@ public class SchemaAwareModificationSerializationTest
     /**
      * Deserialize a DefaultModification
      */
-    private Modification deserializeValue( ByteArrayOutputStream out ) throws IOException, ClassNotFoundException
+    private Modification deserializeValue( ByteArrayOutputStream out ) throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
         ObjectInputStream oIn = null;
         ByteArrayInputStream in = new ByteArrayInputStream( out.toByteArray() );
@@ -152,7 +154,7 @@ public class SchemaAwareModificationSerializationTest
     
     
     @Test 
-    public void testCreateServerModification()
+    public void testCreateServerModification() throws LdapException
     {
         EntryAttribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
@@ -174,7 +176,7 @@ public class SchemaAwareModificationSerializationTest
     
     
     @Test
-    public void testSerializationModificationADD() throws ClassNotFoundException, IOException
+    public void testSerializationModificationADD() throws ClassNotFoundException, IOException, LdapInvalidAttributeValueException
     {
         EntryAttribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
@@ -188,7 +190,7 @@ public class SchemaAwareModificationSerializationTest
     
     
     @Test
-    public void testSerializationModificationREPLACE() throws ClassNotFoundException, IOException
+    public void testSerializationModificationREPLACE() throws ClassNotFoundException, IOException, LdapInvalidAttributeValueException
     {
         EntryAttribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
@@ -202,7 +204,7 @@ public class SchemaAwareModificationSerializationTest
     
     
     @Test
-    public void testSerializationModificationREMOVE() throws ClassNotFoundException, IOException
+    public void testSerializationModificationREMOVE() throws ClassNotFoundException, IOException, LdapInvalidAttributeValueException
     {
         EntryAttribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
@@ -216,7 +218,7 @@ public class SchemaAwareModificationSerializationTest
     
     
     @Test
-    public void testSerializationModificationNoAttribute() throws ClassNotFoundException, IOException
+    public void testSerializationModificationNoAttribute() throws ClassNotFoundException, IOException, LdapInvalidAttributeValueException
     {
         DefaultModification mod = new DefaultModification();
         

@@ -23,17 +23,17 @@ package org.apache.directory.shared.ldap.model.message;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.message.SearchResultEntryImpl;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -52,7 +52,7 @@ public class SearchResultEntryImplTest
      * @param id the id for the attribute
      * @return the EntryAttribute assembled for testing
      */
-    private EntryAttribute getEntry( String id )
+    private EntryAttribute getEntry( String id ) throws LdapException
     {
         EntryAttribute attr = new DefaultEntryAttribute( id );
         attr.add( "value0" );

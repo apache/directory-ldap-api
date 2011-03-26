@@ -38,6 +38,7 @@ import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.ModifyRequest;
 import org.apache.directory.shared.ldap.model.message.ModifyResponse;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -214,7 +215,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
      * 
      * @param value The value to add
      */
-    public void addAttributeValue( byte[] value )
+    public void addAttributeValue( byte[] value ) throws LdapException
     {
         currentAttribute.add( value );
     }
@@ -225,7 +226,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
      * 
      * @param value The value to add
      */
-    public void addAttributeValue( String value )
+    public void addAttributeValue( String value ) throws LdapException
     {
         currentAttribute.add( value );
     }
@@ -574,7 +575,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
                     {
                         for ( org.apache.directory.shared.ldap.model.entry.Value<?> value : modification.getAttribute() )
                         {
-                            if ( !value.isBinary() )
+                            if ( value.isHR() )
                             {
                                 Value.encode( buffer, value.getString() );
                             }

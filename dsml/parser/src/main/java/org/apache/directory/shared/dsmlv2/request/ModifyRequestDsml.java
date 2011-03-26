@@ -31,6 +31,7 @@ import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.entry.Value;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.message.ModifyRequest;
 import org.apache.directory.shared.ldap.model.message.ModifyRequestImpl;
@@ -118,7 +119,7 @@ public class ModifyRequestDsml
      * 
      * @param value The value to add
      */
-    public void addAttributeValue( byte[] value )
+    public void addAttributeValue( byte[] value ) throws LdapException
     {
         currentAttribute.add( value );
     }
@@ -129,7 +130,7 @@ public class ModifyRequestDsml
      * 
      * @param value The value to add
      */
-    public void addAttributeValue( String value )
+    public void addAttributeValue( String value ) throws LdapException
     {
         currentAttribute.add( value );
     }

@@ -29,7 +29,14 @@ import java.io.ObjectOutputStream;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.Normalizer;
+import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
+import org.apache.directory.shared.ldap.model.schema.comparators.StringComparator;
+import org.apache.directory.shared.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
+import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
 import org.apache.directory.shared.util.StringConstants;
+import org.apache.directory.shared.util.Strings;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -59,6 +66,75 @@ public class ValueSerializationTest
     StringValue sv2n = new StringValue( "" );
     StringValue sv3n = new StringValue();
     
+    private EntryUtils.S sb;
+    private EntryUtils.AT atb;
+    private EntryUtils.MR mrb;
+
+    private EntryUtils.S ss;
+    private EntryUtils.AT ats;
+    private EntryUtils.MR mrs;
+
+    /**
+     * Initialize an AttributeType and the associated MatchingRule 
+     * and Syntax
+     */
+    @Before
+    public void initAT()
+    {
+        sb = new EntryUtils.S( "1.1.1.1", false );
+        sb.setSyntaxChecker( new OctetStringSyntaxChecker() );
+        mrb = new EntryUtils.MR( "1.1.2.1" );
+        mrb.setSyntax( sb );
+        
+        mrb.setLdapComparator( new ByteArrayComparator( "1.1.1" ) );
+        mrb.setNormalizer( new Normalizer( "1.1.1" )
+        {
+            public Value<?> normalize( Value<?> value ) throws LdapException
+            {
+                if ( !value.isHR() )
+                {
+                    byte[] val = value.getBytes();
+                    // each byte will be changed to be > 0, and spaces will be trimmed
+                    byte[] newVal = new byte[ val.length ];
+                    int i = 0;
+                    
+                    for ( byte b:val )
+                    {
+                        newVal[i++] = (byte)(b & 0x007F); 
+                    }
+                    
+                    return new BinaryValue( Strings.trim(newVal) );
+                }
+
+                throw new IllegalStateException( "expected byte[] to normalize" );
+            }
+
+        
+            public String normalize( String value ) throws LdapException
+            {
+                throw new IllegalStateException( "expected byte[] to normalize" );
+            }
+        });
+        
+        atb = new EntryUtils.AT( "1.1.3.1" );
+        atb.setEquality( mrb );
+        atb.setOrdering( mrb );
+        atb.setSubstring( mrb );
+        atb.setSyntax( sb );
+        
+        ss = new EntryUtils.S( "1.1.1.1", false );
+        ss.setSyntaxChecker( new OctetStringSyntaxChecker() );
+        mrs = new EntryUtils.MR( "1.1.2.1" );
+        mrs.setSyntax( ss );
+        mrs.setLdapComparator( new StringComparator( "1.1.2.1" ) );
+        mrs.setNormalizer( new DeepTrimToLowerNormalizer( "1.1.2.1" ) );
+        ats = new EntryUtils.AT( "1.1.3.1" );
+        ats.setEquality( mrs );
+        ats.setOrdering( mrs );
+        ats.setSubstring( mrs );
+        ats.setSyntax( ss );
+    }
+
     
     @Test
     public void testBinaryValueWithDataSerialization() throws IOException, ClassNotFoundException
@@ -185,7 +261,7 @@ public class ValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        bv1n.normalize();
+        bv1n.apply( atb );
 
         bv1n.writeExternal( out );
         
@@ -206,7 +282,7 @@ public class ValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        bv2n.normalize();
+        bv2n.apply( atb );
 
         bv2n.writeExternal( out );
         
@@ -227,7 +303,7 @@ public class ValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        bv3n.normalize();
+        bv3n.apply( atb );
 
         bv3n.writeExternal( out );
         
@@ -248,7 +324,7 @@ public class ValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        sv1n.normalize();
+        sv1n.apply( ats );
 
         sv1n.writeExternal( out );
         
@@ -269,7 +345,7 @@ public class ValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        sv2n.normalize();
+        sv2n.apply( ats );
 
         sv2n.writeExternal( out );
         
@@ -290,7 +366,7 @@ public class ValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        sv3n.normalize();
+        sv3n.apply( ats );
 
         sv3n.writeExternal( out );
         

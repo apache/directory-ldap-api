@@ -34,6 +34,7 @@ import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Strings;
@@ -284,13 +285,20 @@ public class LdifAttributesReader extends LdifReader
         }
         else
         {
-            if ( attributeValue instanceof String )
+            try
             {
-                attribute.add( ( String ) attributeValue );
+                if ( attributeValue instanceof String )
+                {
+                    attribute.add( ( String ) attributeValue );
+                }
+                else
+                {
+                    attribute.add( ( byte[] ) attributeValue );
+                }
             }
-            else
+            catch ( LdapInvalidAttributeValueException liave )
             {
-                attribute.add( ( byte[] ) attributeValue );
+                throw new LdapLdifException( liave.getMessage() );
             }
         }
     }

@@ -26,8 +26,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
@@ -37,6 +35,9 @@ import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -58,7 +59,7 @@ public class AddRequestImplTest
      *            the id for the attribute
      * @return the AttributeImpl assembled for testing
      */
-    private EntryAttribute getAttribute( String id )
+    private EntryAttribute getAttribute( String id ) throws LdapException
     {
         EntryAttribute attr = new DefaultEntryAttribute( id );
         attr.add( "value0" );

@@ -47,6 +47,7 @@ import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -1105,13 +1106,20 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
                 Object attributeValue = parseValue( line, colonIndex );
 
-                if ( attributeValue instanceof String )
-                {
-                    attribute.add( ( String ) attributeValue );
+                try
+                {  
+                    if ( attributeValue instanceof String )
+                    {
+                        attribute.add( ( String ) attributeValue );
+                    }
+                    else
+                    {
+                        attribute.add( ( byte[] ) attributeValue );
+                    }
                 }
-                else
+                catch ( LdapInvalidAttributeValueException liave )
                 {
-                    attribute.add( ( byte[] ) attributeValue );
+                    throw new LdapLdifException( liave.getMessage() );
                 }
 
                 isEmptyValue = false;

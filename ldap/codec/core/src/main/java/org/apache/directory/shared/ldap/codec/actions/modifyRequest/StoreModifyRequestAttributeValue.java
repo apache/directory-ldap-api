@@ -24,6 +24,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.ModifyRequestDecorator;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.util.StringConstants;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -65,22 +66,29 @@ public class StoreModifyRequestAttributeValue extends GrammarAction<LdapMessageC
         // Store the value. It can't be null
         byte[] value = StringConstants.EMPTY_BYTES;
 
-        if ( tlv.getLength() == 0 )
+        try
         {
-            modifyRequestDecorator.addAttributeValue( "" );
-        }
-        else
-        {
-            value = tlv.getValue().getData();
-
-            if ( container.isBinary( modifyRequestDecorator.getCurrentAttributeType() ) )
+            if ( tlv.getLength() == 0 )
             {
-                modifyRequestDecorator.addAttributeValue( value );
+                modifyRequestDecorator.addAttributeValue( "" );
             }
             else
             {
-                modifyRequestDecorator.addAttributeValue( Strings.utf8ToString((byte[]) value) );
+                value = tlv.getValue().getData();
+    
+                if ( container.isBinary( modifyRequestDecorator.getCurrentAttributeType() ) )
+                {
+                    modifyRequestDecorator.addAttributeValue( value );
+                }
+                else
+                {
+                    modifyRequestDecorator.addAttributeValue( Strings.utf8ToString((byte[]) value) );
+                }
             }
+        }
+        catch ( LdapException le )
+        {
+            // Just swallow the exception, it can't occur here
         }
 
         // We can have an END transition

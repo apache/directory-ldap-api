@@ -21,6 +21,8 @@ package org.apache.directory.shared.ldap.model.entry;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
@@ -50,7 +52,7 @@ public abstract class AbstractValue<T> implements Value<T>
     protected T normalizedValue;
 
     /** A flag set when the value has been normalized */
-    protected boolean normalized;
+    //protected boolean normalized;
 
     /** cached results of the isValid() method call */
     protected Boolean valid;
@@ -100,50 +102,61 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
-    public void apply( AttributeType attributeType )
+    public void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
-        if ( this.attributeType != null ) 
+        if ( attributeType == null )
         {
-            if ( !attributeType.equals( this.attributeType ) )
-            {
-                String message = I18n.err( I18n.ERR_04476, attributeType.getName(), this.attributeType.getName() );
-                LOG.info( message );
-                throw new IllegalArgumentException( message );
-            }
-            else
-            {
-                return;
-            }
-        }
-        
-        // First, check that the value is syntaxically correct
-        try
-        {
-            if ( ! isValid( attributeType.getSyntax().getSyntaxChecker() ) )
-            {
-                String message = I18n.err( I18n.ERR_04476, attributeType.getName(), this.attributeType.getName() );
-                LOG.info( message );
-                throw new IllegalArgumentException( message );
-            }
-        }
-        catch ( LdapException le )
-        {
-            String message = I18n.err( I18n.ERR_04447, le.getLocalizedMessage() );
-            LOG.info( message );
-            normalized = false;
+            normalizedValue = wrappedValue;
+            return;
         }
         
         this.attributeType = attributeType;
         
         try
         {
-            normalize();
+            MatchingRule equality = attributeType.getEquality();
+            
+            if ( equality != null )
+            {
+                Normalizer normalizer = equality.getNormalizer();
+                
+                if ( normalizer != null )
+                {
+                    if ( wrappedValue != null )
+                    {
+                        if ( isHR() )
+                        {     
+                            normalizedValue = (T)normalizer.normalize( (String)wrappedValue );
+                        }
+                        else
+                        {
+                            normalizedValue = (T)normalizer.normalize( new BinaryValue( (byte[])wrappedValue ) ).getNormReference();
+                        }
+                    }
+                }
+            }
         }
         catch ( LdapException ne )
         {
-            String message = I18n.err( I18n.ERR_04447, ne.getLocalizedMessage() );
+            String message = I18n.err( I18n.ERR_04447_CANNOT_NORMALIZE_VALUE, ne.getLocalizedMessage() );
             LOG.info( message );
-            normalized = false;
+        }
+        
+        // and checks that the value is syntaxically correct
+        try
+        {
+            if ( ! isValid( attributeType.getSyntax().getSyntaxChecker() ) )
+            {
+                String message = I18n.err( I18n.ERR_04473_NOT_VALID_VALUE, wrappedValue );
+                LOG.info( message );
+                throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
+            }
+        }
+        catch ( LdapException le )
+        {
+            String message = I18n.err( I18n.ERR_04447_CANNOT_NORMALIZE_VALUE, le.getLocalizedMessage() );
+            LOG.info( message );
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
         }
         
         h=0;
@@ -262,7 +275,7 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
-    public T getNormalizedValueReference()
+    public T getNormReference()
     {
         if ( isNull() )
         {
@@ -275,7 +288,6 @@ public abstract class AbstractValue<T> implements Value<T>
         }
 
         return normalizedValue;
-
     }
 
     
@@ -285,42 +297,6 @@ public abstract class AbstractValue<T> implements Value<T>
     public final boolean isNull()
     {
         return wrappedValue == null; 
-    }
-    
-    
-    /**
-     * This method is only used for serialization/deserialization
-     * 
-     * @return Tells if the wrapped value and the normalized value are the same 
-     */
-    /* no qualifier */ final boolean isSame()
-    {
-        return same;
-    }
-
-    
-    /**
-     * {@inheritDoc}
-     */
-    public final boolean isValid()
-    {
-        if ( valid != null )
-        {
-            return valid;
-        }
-
-        if ( attributeType != null )
-        {
-            SyntaxChecker syntaxChecker = attributeType.getSyntax().getSyntaxChecker();
-            T value = getNormalizedValue();
-            valid = syntaxChecker.isValidSyntax( value );
-        }
-        else
-        {
-            valid = false;
-        }
-        
-        return valid;
     }
     
     
@@ -336,7 +312,7 @@ public abstract class AbstractValue<T> implements Value<T>
             throw new LdapException( message );
         }
         
-        valid = syntaxChecker.isValidSyntax( getReference() );
+        valid = syntaxChecker.isValidSyntax( normalizedValue );
         
         return valid;
     }
@@ -345,242 +321,8 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
-    public void normalize() throws LdapException
+    public final boolean isSchemaAware()
     {
-        normalized = true;
-        normalizedValue = wrappedValue;
-        h = 0;
-        hashCode();
+        return attributeType != null;
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public final boolean isNormalized()
-    {
-        return normalized;
-    }
-
-    
-    /**
-     * {@inheritDoc}
-     */
-    public final void setNormalized( boolean normalized )
-    {
-        this.normalized = normalized;
-    }
-
-
-    /**
-     * Serializes a Value instance.
-     * 
-     * @param value The Value instance to serialize
-     * @param out The stream into which we will write the serialized instance
-     * @throws IOException If the stream can't be written
-     *
-    @SuppressWarnings("unchecked")
-    public static void serialize( Value<?> value, ObjectOutput out ) throws IOException
-    {
-        // The Value type
-        out.writeBoolean( value.isBinary() );
-
-        // The AttributeType's OID if we have one
-        if ( value.getAttributeType() != null )
-        {
-            out.writeBoolean( true );
-            out.writeUTF( value.getAttributeType().getOid() );
-        }
-        else
-        {
-            out.writeBoolean( false );
-        }
-        
-        // The UP value and norm value
-        if ( value.isBinary() )
-        {
-            byte[] upValue = (byte[])value.getReference();
-            
-            if ( upValue == null )
-            {
-                out.writeInt( -1 );
-            }
-            else
-            {
-                out.writeInt( upValue.length );
-                
-                if ( upValue.length > 0 )
-                {
-                    out.write( upValue );
-                }
-            }
-
-            byte[] normValue = (byte[])value.getNormalizedValueReference();
-            
-            if ( normValue == null )
-            {
-                out.writeInt( -1 );
-            }
-            else
-            {
-                out.writeInt( normValue.length );
-                
-                if ( normValue.length > 0 )
-                {
-                    out.write( normValue );
-                }
-            }
-        }
-        else
-        {
-            if ( ((AbstractValue<String>)value).wrappedValue != null )
-            {
-                out.writeBoolean( true );
-                out.writeUTF( ((AbstractValue<String>)value).wrappedValue );
-            }
-            else
-            {
-                out.writeBoolean( false );
-            }
-            
-            if ( ((AbstractValue<String>)value).normalizedValue != null )
-            {
-                out.writeBoolean( true );
-                out.writeUTF( ((AbstractValue<String>)value).normalizedValue );
-            }
-            else
-            {
-                out.writeBoolean( false );
-            }
-        }
-        
-        // The normalized flag
-        out.writeBoolean( value.isNormalized() );
-        
-        // The valid flag
-        out.writeBoolean( value.isValid() );
-        
-        // The same flag
-        if ( value.isBinary() )
-        {   
-            out.writeBoolean( ((BinaryValue)value).isSame() );
-        }
-        else
-        {
-            out.writeBoolean( ((StringValue)value).isSame() );
-        }
-
-        // The computed hashCode
-        out.writeInt( value.hashCode() );
-        
-        out.flush();
-    }
-
-
-    /**
-     * Deserializes a Value instance.
-     * 
-     * @param schemaManager The schemaManager instance
-     * @param in The input stream from which the Value is read
-     * @return a deserialized Value
-     * @throws IOException If the stream can't be read
-     *
-    @SuppressWarnings("unchecked")
-    public static Value<?> deserialize( SchemaManager schemaManager, ObjectInput in ) throws IOException
-    {
-        // The value type
-        boolean isBinary = in.readBoolean();
-        
-        Value<?> value = null;
-
-        if ( isBinary )
-        {
-            value = new BinaryValue();
-        }
-        else
-        {
-            value = new StringValue();
-        }
-
-        // The attributeType presence's flag
-        boolean hasAttributeType = in.readBoolean();
-        
-        if ( hasAttributeType )
-        {
-            String oid = in.readUTF();
-            
-            if ( schemaManager != null )
-            {
-                ((AbstractValue<?>)value).attributeType = schemaManager.getAttributeType( oid );
-            }
-        }
-        
-        if ( isBinary )
-        {
-            int upValueSize = in.readInt();
-            
-            switch ( upValueSize )
-            {
-                case -1 :
-                    break;
-                    
-                case 0 :
-                    ((AbstractValue<byte[]>)value).wrappedValue = StringConstants.EMPTY_BYTES;
-                    break;
-                    
-                default :
-                    ((AbstractValue<byte[]>)value).wrappedValue = new byte[upValueSize];
-                    in.read( ((AbstractValue<byte[]>)value).wrappedValue );
-                    break;
-            }
-
-            int normValueSize = in.readInt();
-            
-            switch ( normValueSize )
-            {
-                case -1 :
-                    break;
-                    
-                case 0 :
-                    ((AbstractValue<byte[]>)value).normalizedValue = StringConstants.EMPTY_BYTES;
-                    break;
-                   
-                default :
-                    ((AbstractValue<byte[]>)value).normalizedValue = new byte[normValueSize];
-                    in.read( ((AbstractValue<byte[]>)value).normalizedValue );
-                    break;
-            }
-        }
-        else
-        {
-            boolean notNull = in.readBoolean();
-            
-            if ( notNull )
-            {
-                ((AbstractValue<String>)value).wrappedValue = in.readUTF();
-            }
-
-            notNull = in.readBoolean();
-            
-            if ( notNull )
-            {
-                ((AbstractValue<String>)value).normalizedValue = in.readUTF();
-            }
-        }
-
-        // The normalized flag
-        ((AbstractValue<?>)value).normalized = in.readBoolean();
-        
-        // The valid flag
-        ((AbstractValue<?>)value).valid = in.readBoolean();
-        
-        // The same flag
-        ((AbstractValue<?>)value).same = in.readBoolean();
-
-        // The computed hashCode
-        ((AbstractValue<?>)value).h = in.readInt();
-        
-        return value;
-    }
-    */
 }

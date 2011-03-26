@@ -1757,13 +1757,20 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 // Getting the value
                 String nextText = xpp.nextText();
 
-                if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                try
                 {
-                    searchResultEntry.addAttributeValue( Base64.decode( nextText.toCharArray() ) );
+                    if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
+                    {
+                        searchResultEntry.addAttributeValue( Base64.decode( nextText.toCharArray() ) );
+                    }
+                    else
+                    {
+                        searchResultEntry.addAttributeValue( nextText );
+                    }
                 }
-                else
+                catch ( LdapException le )
                 {
-                    searchResultEntry.addAttributeValue( nextText );
+                    throw new XmlPullParserException( le.getMessage() );
                 }
             }
             catch ( IOException e )

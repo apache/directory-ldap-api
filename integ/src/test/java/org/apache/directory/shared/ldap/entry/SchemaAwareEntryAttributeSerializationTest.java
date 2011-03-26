@@ -29,6 +29,7 @@ import java.io.ObjectOutputStream;
 
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
@@ -70,7 +71,7 @@ public class SchemaAwareEntryAttributeSerializationTest
     
     
     @Test
-    public void testEntryAttributeNoStringValueSerialization() throws IOException, ClassNotFoundException
+    public void testEntryAttributeNoStringValueSerialization() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
         EntryAttribute attribute1 = new DefaultEntryAttribute( cn );
         
@@ -93,7 +94,7 @@ public class SchemaAwareEntryAttributeSerializationTest
     
     
     @Test
-    public void testEntryAttributeOneStringValueSerialization() throws IOException, ClassNotFoundException
+    public void testEntryAttributeOneStringValueSerialization() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
         EntryAttribute attribute1 = new DefaultEntryAttribute( "CommonName", cn, "test" );
         
@@ -117,7 +118,7 @@ public class SchemaAwareEntryAttributeSerializationTest
     
     
     @Test
-    public void testEntryAttributeManyStringValuesSerialization() throws IOException, ClassNotFoundException
+    public void testEntryAttributeManyStringValuesSerialization() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
         EntryAttribute attribute1 = new DefaultEntryAttribute( "CN", cn, "test1", "test2", "test3" );
         
@@ -141,7 +142,7 @@ public class SchemaAwareEntryAttributeSerializationTest
 
 
     @Test
-    public void testEntryAttributeNoBinaryValueSerialization() throws IOException, ClassNotFoundException
+    public void testEntryAttributeNoBinaryValueSerialization() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException, LdapInvalidAttributeValueException
     {
         EntryAttribute attribute1 = new DefaultEntryAttribute( userCertificate );
         
@@ -164,7 +165,7 @@ public class SchemaAwareEntryAttributeSerializationTest
     
     
     @Test
-    public void testEntryAttributeOneBinaryValueSerialization() throws IOException, ClassNotFoundException
+    public void testEntryAttributeOneBinaryValueSerialization() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
         EntryAttribute attribute1 = new DefaultEntryAttribute( userCertificate, data1 );
         
@@ -187,7 +188,7 @@ public class SchemaAwareEntryAttributeSerializationTest
     
     
     @Test
-    public void testEntryAttributeManyBinaryValuesSerialization() throws IOException, ClassNotFoundException
+    public void testEntryAttributeManyBinaryValuesSerialization() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
         EntryAttribute attribute1 = new DefaultEntryAttribute( "UserCertificate", userCertificate, data1, data2, data3 );
         

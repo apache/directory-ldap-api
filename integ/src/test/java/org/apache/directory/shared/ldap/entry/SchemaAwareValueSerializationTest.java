@@ -66,6 +66,7 @@ public class SchemaAwareValueSerializationTest
     
     private static SchemaManager schemaManager;
     private static AttributeType cn = null;
+    private static AttributeType dc = null;
     private static AttributeType userCertificate = null;
 
     /**
@@ -76,6 +77,7 @@ public class SchemaAwareValueSerializationTest
     {
         schemaManager = new DefaultSchemaManager();
         cn = schemaManager.getAttributeType( "cn" );
+        dc = schemaManager.getAttributeType( "dc" );
         userCertificate = schemaManager.getAttributeType( "userCertificate" );
         
         bv1 = new BinaryValue( userCertificate, data );
@@ -85,11 +87,11 @@ public class SchemaAwareValueSerializationTest
         bv2n = new BinaryValue( userCertificate, StringConstants.EMPTY_BYTES );
         bv3n = new BinaryValue( userCertificate );
         sv1 = new StringValue( cn, "test" );
-        sv2 = new StringValue( cn, "" );
+        sv2 = new StringValue( dc, "" );
         sv3 = new StringValue( cn );
         sv1n = new StringValue( cn, "test" );
-        sv2n = new StringValue( cn, "" );
-        sv3n = new StringValue( cn );
+        sv2n = new StringValue( dc, "" );
+        sv3n = new StringValue( dc );
     }
 
     
@@ -218,7 +220,7 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        bv1n.normalize();
+        bv1n.apply( userCertificate );
 
         bv1n.writeExternal( out );
         
@@ -239,7 +241,7 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        bv2n.normalize();
+        bv2n.apply( userCertificate );
 
         bv2n.writeExternal( out );
         
@@ -260,7 +262,7 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        bv3n.normalize();
+        bv3n.apply( userCertificate );
 
         bv3n.writeExternal( out );
         
@@ -281,7 +283,7 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        sv1n.normalize();
+        sv1n.apply( cn );
 
         sv1n.writeExternal( out );
         
@@ -302,7 +304,7 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        sv2n.normalize();
+        sv2n.apply( dc );
 
         sv2n.writeExternal( out );
         
@@ -323,7 +325,7 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        sv3n.normalize();
+        sv3n.apply( dc );
 
         sv3n.writeExternal( out );
         

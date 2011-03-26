@@ -450,7 +450,7 @@ public class AddRequestTest extends AbstractTest
         Iterator<Value<?>> valueIterator = attribute.iterator();
         assertTrue( valueIterator.hasNext() );
         Value<?> value = valueIterator.next();
-        assertTrue( value.isBinary() );
+        assertFalse( value.isHR() );
         assertEquals( "DSMLv2.0 rocks!!", value.getString() );
     }
 

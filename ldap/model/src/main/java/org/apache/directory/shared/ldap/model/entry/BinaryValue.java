@@ -27,12 +27,10 @@ import java.util.Comparator;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
-import org.apache.directory.shared.ldap.model.schema.Normalizer;
-import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
-import org.apache.directory.shared.util.StringConstants;
 import org.apache.directory.shared.util.Strings;
 
 
@@ -55,7 +53,6 @@ public class BinaryValue extends AbstractValue<byte[]>
     public BinaryValue()
     {
         wrappedValue = null;
-        normalized = false;
         valid = null;
         normalizedValue = null;
     }
@@ -95,16 +92,17 @@ public class BinaryValue extends AbstractValue<byte[]>
         if ( value != null )
         {
             this.wrappedValue = new byte[value.length];
+            this.normalizedValue = new byte[value.length];
             System.arraycopy( value, 0, this.wrappedValue, 0, value.length );
+            System.arraycopy( value, 0, this.normalizedValue, 0, value.length );
         }
         else
         {
             this.wrappedValue = null;
+            this.normalizedValue = null;
         }
 
-        normalized = false;
         valid = null;
-        normalizedValue = null;
     }
 
 
@@ -113,33 +111,13 @@ public class BinaryValue extends AbstractValue<byte[]>
      *
      * @param attributeType the schema type associated with this BinaryValue
      * @param value the binary value to wrap which may be null, or a zero length byte array
+     * @throws LdapInvalidAttributeValueException If the added value is invalid accordingly 
+     * to the schema
      */
-    public BinaryValue( AttributeType attributeType, byte[] value )
+    public BinaryValue( AttributeType attributeType, byte[] value ) throws LdapInvalidAttributeValueException
     {
-        this( attributeType );
-        
-        if ( attributeType != null )
-        {
-            SyntaxChecker syntaxChecker = attributeType.getSyntax().getSyntaxChecker();
-    
-            if ( syntaxChecker != null )
-            {
-                if ( syntaxChecker.isValidSyntax( value ) )
-                {
-                    this.wrappedValue = value;
-                }
-                else
-                {
-                    String msg = I18n.err( I18n.ERR_04479_INVALID_SYNTAX_VALUE, value, attributeType.getName() );
-                    LOG.info( msg );
-                    throw new IllegalArgumentException( msg );
-                }
-            }
-        }
-        else
-        {
-            this.wrappedValue = value;
-        }
+        this( value );
+        apply( attributeType );
     }
 
 
@@ -152,37 +130,16 @@ public class BinaryValue extends AbstractValue<byte[]>
      * @return the normalized version of the wrapped value
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException if schema entity resolution fails or normalization fails
      */
-    public byte[] getNormalizedValue()
+    public byte[] getNormValue()
     {
         if ( isNull() )
         {
             return null;
         }
 
-        if ( !normalized )
-        {
-            try
-            {
-                normalize();
-            }
-            catch ( LdapException ne )
-            {
-                String message = "Cannot normalize the value :" + ne.getLocalizedMessage();
-                LOG.warn( message );
-                normalized = false;
-            }
-        }
-
-        if ( normalizedValue != null )
-        {
-            byte[] copy = new byte[normalizedValue.length];
-            System.arraycopy( normalizedValue, 0, copy, 0, normalizedValue.length );
-            return copy;
-        }
-        else
-        {
-            return StringConstants.EMPTY_BYTES;
-        }
+        byte[] copy = new byte[normalizedValue.length];
+        System.arraycopy( normalizedValue, 0, copy, 0, normalizedValue.length );
+        return copy;
     }
 
 
@@ -203,88 +160,7 @@ public class BinaryValue extends AbstractValue<byte[]>
             return null;
         }
 
-        if ( !isNormalized() )
-        {
-            try
-            {
-                normalize();
-            }
-            catch ( LdapException ne )
-            {
-                String message = "Cannot normalize the value :" + ne.getLocalizedMessage();
-                LOG.warn( message );
-                normalized = false;
-            }
-        }
-
-        if ( normalizedValue != null )
-        {
-            return normalizedValue;
-        }
-        else
-        {
-            return wrappedValue;
-        }
-    }
-
-
-    /**
-     * Normalize the value. For a client String value, applies the given normalizer.
-     * 
-     * It supposes that the client has access to the schema in order to select the
-     * appropriate normalizer.
-     * 
-     * @param normalizer The normalizer to apply to the value
-     * @exception LdapException If the value cannot be normalized
-     */
-    public final void normalize( Normalizer normalizer ) throws LdapException
-    {
-        if ( normalizer != null )
-        {
-            if ( wrappedValue == null )
-            {
-                normalizedValue = wrappedValue;
-                normalized = true;
-                same = true;
-            }
-            else
-            {
-                normalizedValue = normalizer.normalize( this ).getBytes();
-                normalized = true;
-                same = Arrays.equals( wrappedValue, normalizedValue );
-            }
-        }
-        else
-        {
-            normalizedValue = wrappedValue;
-            normalized = false;
-            same = true;
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void normalize() throws LdapException
-    {
-        if ( isNormalized() )
-        {
-            // Bypass the normalization if it has already been done. 
-            return;
-        }
-
-        if ( attributeType != null )
-        {
-            Normalizer normalizer = getNormalizer();
-            normalize( normalizer );
-        }
-        else
-        {
-            normalizedValue = wrappedValue;
-            normalized = true;
-            same = true;
-        }
+        return normalizedValue;
     }
 
 
@@ -343,7 +219,7 @@ public class BinaryValue extends AbstractValue<byte[]>
         }
         else
         {
-            return new ByteArrayComparator( null ).compare( getNormalizedValue(), binaryValue.getNormalizedValue() );
+            return new ByteArrayComparator( null ).compare( getNormValue(), binaryValue.getNormValue() );
         }
     }
 
@@ -504,13 +380,13 @@ public class BinaryValue extends AbstractValue<byte[]>
 
 
     /**
-     * Tells if the current value is Binary or String
+     * Tells if the current value is Human Readable
      * 
-     * @return <code>true</code> if the value is Binary, <code>false</code> otherwise
+     * @return <code>true</code> if the value is HR, <code>false</code> otherwise
      */
-    public boolean isBinary()
+    public boolean isHR()
     {
-        return true;
+        return false;
     }
 
 
@@ -542,7 +418,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      */
     public String getString()
     {
-        return Strings.utf8ToString(wrappedValue);
+        return Strings.utf8ToString( wrappedValue );
     }
 
 
@@ -572,7 +448,7 @@ public class BinaryValue extends AbstractValue<byte[]>
         }
 
         // Read the isNormalized flag
-        normalized = in.readBoolean();
+        boolean normalized = in.readBoolean();
 
         if ( normalized )
         {
@@ -628,7 +504,7 @@ public class BinaryValue extends AbstractValue<byte[]>
         }
 
         // Write the isNormalized flag
-        if ( normalized )
+        if ( attributeType != null )
         {
             out.writeBoolean( true );
 

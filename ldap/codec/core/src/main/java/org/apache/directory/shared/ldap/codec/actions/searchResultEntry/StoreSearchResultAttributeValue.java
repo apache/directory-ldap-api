@@ -24,6 +24,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.SearchResultEntryDecorator;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,31 +71,38 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
         // Store the value
         Object value = null;
 
-        if ( tlv.getLength() == 0 )
+        try
         {
-            searchResultEntry.addAttributeValue( "" );
-
-            LOG.debug( "The attribute value is null" );
-        }
-        else
-        {
-            if ( container.isBinary( searchResultEntry.getCurrentAttribute().getId() ) )
+            if ( tlv.getLength() == 0 )
             {
-                value = tlv.getValue().getData();
-
-                if ( IS_DEBUG )
-                {
-                    LOG.debug( "Attribute value {}", Strings.dumpBytes((byte[]) value) );
-                }
+                searchResultEntry.addAttributeValue( "" );
+    
+                LOG.debug( "The attribute value is null" );
             }
             else
             {
-                value = Strings.utf8ToString(tlv.getValue().getData());
-
-                LOG.debug( "Attribute value {}", value );
+                if ( container.isBinary( searchResultEntry.getCurrentAttribute().getId() ) )
+                {
+                    value = tlv.getValue().getData();
+    
+                    if ( IS_DEBUG )
+                    {
+                        LOG.debug( "Attribute value {}", Strings.dumpBytes((byte[]) value) );
+                    }
+                }
+                else
+                {
+                    value = Strings.utf8ToString(tlv.getValue().getData());
+    
+                    LOG.debug( "Attribute value {}", value );
+                }
+    
+                searchResultEntry.addAttributeValue( value );
             }
-
-            searchResultEntry.addAttributeValue( value );
+        }
+        catch ( LdapException le )
+        {
+            // Just swallow the exception, it can't occur here
         }
 
         // We can have an END transition

@@ -23,9 +23,9 @@ package org.apache.directory.shared.ldap.codec.search;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 
+import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
-import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
@@ -221,13 +221,13 @@ public class AttributeValueAssertionFilter extends Filter
         Value.encode( buffer, assertion.getAttributeDesc() );
 
         // The assertion desc
-        if ( assertion.getAssertionValue().isBinary() )
+        if ( assertion.getAssertionValue().isHR() )
         {
-            Value.encode( buffer, assertion.getAssertionValue().getString() );
+            Value.encode( buffer, assertion.getAssertionValue().getBytes() );
         }
         else
         {
-            Value.encode( buffer, assertion.getAssertionValue().getBytes() );
+            Value.encode( buffer, assertion.getAssertionValue().getString() );
         }
 
         return buffer;

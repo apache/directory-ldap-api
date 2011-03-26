@@ -24,6 +24,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.AddRequestDecorator;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,35 +71,41 @@ public class AddAttributeValue extends GrammarAction<LdapMessageContainer<AddReq
         // Store the value. It can't be null
         Object value = null;
 
-        if ( tlv.getLength() == 0 )
+        try
         {
-            addRequest.addAttributeValue( "" );
-        }
-        else
-        {
-            if ( container.isBinary( addRequest.getCurrentAttributeType() ) )
+            if ( tlv.getLength() == 0 )
             {
-                value = tlv.getValue().getData();
-
-                if ( IS_DEBUG )
-                {
-                    LOG.debug( "Adding value {}", Strings.dumpBytes((byte[]) value) );
-                }
-
-                addRequest.addAttributeValue( ( byte[] ) value );
+                addRequest.addAttributeValue( "" );
             }
             else
             {
-                value = Strings.utf8ToString(tlv.getValue().getData());
-
-                if ( IS_DEBUG )
+                if ( container.isBinary( addRequest.getCurrentAttributeType() ) )
                 {
-                    LOG.debug( "Adding value {}" + value );
+                    value = tlv.getValue().getData();
+    
+                    if ( IS_DEBUG )
+                    {
+                        LOG.debug( "Adding value {}", Strings.dumpBytes((byte[]) value) );
+                    }
+    
+                    addRequest.addAttributeValue( ( byte[] ) value );
                 }
-
-                addRequest.addAttributeValue( ( String ) value );
+                else
+                {
+                    value = Strings.utf8ToString(tlv.getValue().getData());
+    
+                    if ( IS_DEBUG )
+                    {
+                        LOG.debug( "Adding value {}" + value );
+                    }
+    
+                    addRequest.addAttributeValue( ( String ) value );
+                }
             }
-
+        }
+        catch ( LdapException le )
+        {
+            // Just swallow the exception, it can't occur here
         }
 
         // We can have an END transition

@@ -21,6 +21,7 @@ package org.apache.directory.shared.ldap.model.entry;
 
 import java.io.Externalizable;
 
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 
 /**
@@ -80,5 +81,5 @@ public interface Modification extends Cloneable, Externalizable
      * 
      * @param AttributeType the injected AttributeType
      */
-    void applyAttributeType( AttributeType attributeType );
+    void applyAttributeType( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
 }

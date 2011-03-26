@@ -559,14 +559,7 @@ public final class LdifUtils
             {
                 lineBuffer.append( ':' );
             }
-            else if ( value.isBinary() )
-            {
-                // It is binary, so we have to encode it using Base64 before adding it
-                char[] encoded = Base64.encode( value.getBytes() );
-
-                lineBuffer.append( ":: " + new String( encoded ) );
-            }
-            else if ( !value.isBinary() )
+            else if ( value.isHR() )
             {
                 // It's a String but, we have to check if encoding isn't required
                 String str = value.getString();
@@ -584,6 +577,13 @@ public final class LdifUtils
                         lineBuffer.append( " " ).append( str );
                     }
                 }
+            }
+            else
+            {
+                // It is binary, so we have to encode it using Base64 before adding it
+                char[] encoded = Base64.encode( value.getBytes() );
+
+                lineBuffer.append( ":: " + new String( encoded ) );
             }
 
             lineBuffer.append( "\n" );

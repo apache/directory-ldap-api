@@ -25,6 +25,7 @@ import java.io.ObjectOutput;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.slf4j.Logger;
@@ -177,7 +178,7 @@ public class DefaultModification implements Modification
     /**
      * {@inheritDoc}
      */
-    public void applyAttributeType( AttributeType attributeType )
+    public void applyAttributeType( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
         this.attributeType = attributeType;
         

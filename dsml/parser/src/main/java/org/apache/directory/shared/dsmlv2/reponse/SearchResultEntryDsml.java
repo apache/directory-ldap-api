@@ -20,7 +20,7 @@
 package org.apache.directory.shared.dsmlv2.reponse;
 
 
-import org.apache.directory.shared.dsmlv2.ParserUtils; 
+import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
@@ -97,7 +97,7 @@ public class SearchResultEntryDsml
      * 
      * @param value The added value
      */
-    public void addAttributeValue( Object value )
+    public void addAttributeValue( Object value ) throws LdapException
     {
         if ( value instanceof String )
         {
