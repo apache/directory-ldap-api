@@ -97,6 +97,14 @@ public class BatchRequestDsml
     
     
     /**
+     * flag to indicate to store the request objects present in 
+     * this batch request. Default is true
+     */
+    private boolean storeReq = true;
+
+    private DsmlDecorator currentReq;
+    
+    /**
      * Creates a new instance of BatchResponseDsml.
      */
     public BatchRequestDsml()
@@ -116,7 +124,7 @@ public class BatchRequestDsml
      */
     public DsmlDecorator<? extends Request> getCurrentRequest()
     {
-        return requests.get( requests.size() - 1 );
+        return currentReq;
     }
 
     
@@ -130,7 +138,16 @@ public class BatchRequestDsml
      */
     public boolean addRequest( DsmlDecorator<? extends Request> request )
     {
-        return requests.add( request );
+        currentReq = request;
+        
+        if ( storeReq )
+        {
+            return requests.add( request );
+        }
+        else
+        {
+            return true;
+        }
     }
 
 
@@ -296,6 +313,29 @@ public class BatchRequestDsml
         }
 
         return ParserUtils.styleDocument( document ).asXML();
+    }
+
+
+    /**
+     * @return true if the request objects are stored, false otherwise
+     */
+    public boolean isStoringRequests()
+    {
+        return storeReq;
+    }
+
+
+    /**
+     * set the storeReq flag to turn on/off storing of request objects
+     * 
+     * Note: it is better to set this flag to false while processing large DSML 
+     * batch requests
+     *   
+     * @param storeReq
+     */
+    public void setStoreReq( boolean storeReq )
+    {
+        this.storeReq = storeReq;
     }
 
 

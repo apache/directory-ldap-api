@@ -38,7 +38,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 /**
  * This class represents the DSMLv2 Parser.
- * It can be used to parse a DSMLv2 Request input.
+ * It can be used to parse a plain DSMLv2 Request input document or the one inside a SOAP envelop.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -46,9 +46,51 @@ public class Dsmlv2Parser
 {
     /** The associated DSMLv2 container */
     private Dsmlv2Container container;
+
+    /**
+     * flag to indicate if the batch request should maintain a list of all the 
+     * operation request objects present in the DSML document. Default is true
+     */
+    private boolean storeMsgInBatchReq = true;
+
     
     /** The thread safe DSMLv2 Grammar */
     private Dsmlv2Grammar grammar;
+
+
+    /**
+     * Creates a new instance of Dsmlv2Parser.
+     *
+     * @throws XmlPullParserException
+     *      if an error occurs while the initialization of the parser
+     */
+    public Dsmlv2Parser() throws XmlPullParserException
+    {
+        this( true );
+    }
+    
+    /**
+     * 
+     * Creates a new instance of Dsmlv2Parser.
+     *
+     * @param storeMsgInBatchReq flag to set if the parsed requests should b stored
+     * @throws XmlPullParserException
+     */
+    public Dsmlv2Parser( boolean storeMsgInBatchReq ) throws XmlPullParserException
+    {
+        this.storeMsgInBatchReq = storeMsgInBatchReq;
+        
+        this.grammar = new Dsmlv2Grammar();
+        this.container = new Dsmlv2Container( grammar.getLdapCodecService() );
+
+        this.container.setGrammar( grammar );
+
+        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+        factory.setNamespaceAware( true );
+        XmlPullParser xpp = factory.newPullParser();
+
+        container.setParser( xpp );
+    }
 
 
     /**
@@ -120,7 +162,7 @@ public class Dsmlv2Parser
 
     /**
      * Launches the parsing on the input
-     * 
+     * This method will parse the whole DSML document, without considering the flag {@link #storeMsgInBatchReq} 
      * @throws XmlPullParserException 
      *      when an unrecoverable error occurs
      * @throws IOException
@@ -171,6 +213,13 @@ public class Dsmlv2Parser
             }
         }
         while ( container.getState() != Dsmlv2StatesEnum.BATCHREQUEST_START_TAG );
+        
+        BatchRequestDsml br = container.getBatchRequest();
+        
+        if ( br != null )
+        {
+            br.setStoreReq( storeMsgInBatchReq );
+        }
     }
 
 
