@@ -1026,6 +1026,54 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, substringsFilterClose ) );
 
+        
+        //------------------------------------------ handle SOAP envelopes --------------------------
+        super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
+        super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_START_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
+        super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_END_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
+        super.transitions[Dsmlv2StatesEnum.SOAP_BODY_START_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
+        super.transitions[Dsmlv2StatesEnum.SOAP_BODY_END_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
+        
+        super.transitions[Dsmlv2StatesEnum.GRAMMAR_END.ordinal()] = new HashMap<Tag, GrammarTransition>();
+        
+        // State: [INIT_GRAMMAR_STATE] - Tag: <envelope>
+        super.transitions[Dsmlv2StatesEnum.INIT_GRAMMAR_STATE.ordinal()].put( new Tag( "envelope", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE, Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG,
+                null ) );
+        
+        // state: [SOAP_ENVELOPE_START_TAG] -> Tag: <header>
+        super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()].put( new Tag( "header", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG, Dsmlv2StatesEnum.SOAP_HEADER_START_TAG, readSoapHeader ) );
+
+        // state: [SOAP_HEADER_START_TAG] -> Tag: </header>
+        super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_START_TAG.ordinal()].put( new Tag( "header", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SOAP_HEADER_START_TAG, Dsmlv2StatesEnum.SOAP_HEADER_END_TAG, null ) );
+
+        // state: [SOAP_HEADER_END_TAG] -> Tag: <body>
+        super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_END_TAG.ordinal()].put( new Tag( "body", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SOAP_HEADER_END_TAG, Dsmlv2StatesEnum.SOAP_BODY_START_TAG, null ) );
+
+        // state: [SOAP_BODY_START_TAG] -> Tag: <batchRequest>
+        super.transitions[Dsmlv2StatesEnum.SOAP_BODY_START_TAG.ordinal()].put( new Tag( "batchRequest", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SOAP_BODY_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, batchRequestCreation ) );
+
+        // the optional transition if no soap header is present
+        // state: [SOAP_ENVELOPE_START_TAG] -> Tag: <body>
+        super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()].put( new Tag( "body", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG, Dsmlv2StatesEnum.SOAP_BODY_START_TAG, null ) );
+
+        // the below two transitions are a bit unconventional, technically the container's state is set to GRAMMAR_END
+        // when the </batchRequest> tag is encountered by the parser and the corresponding action gets executed but in
+        // a SOAP envelop we still have two more end tags(</body> and </envelope>) are left so we set those corresponding
+        // current and next transition states always to GRAMMAR_END
+        super.transitions[Dsmlv2StatesEnum.GRAMMAR_END.ordinal()].put( new Tag( "body", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.GRAMMAR_END, Dsmlv2StatesEnum.GRAMMAR_END, null ) );
+
+        super.transitions[Dsmlv2StatesEnum.GRAMMAR_END.ordinal()].put( new Tag( "envelope", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.GRAMMAR_END, Dsmlv2StatesEnum.GRAMMAR_END, null ) );
+
+        //------------------------------------------
+
     } // End of the constructor
 
     
@@ -2845,6 +2893,56 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
             }
+        }
+    };
+
+
+    /**
+     * GrammarAction that reads the SOAP header data
+     */
+    private final GrammarAction readSoapHeader = new GrammarAction( "Reads SOAP header" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            try
+            {
+                XmlPullParser xpp = container.getParser();
+                StringBuilder sb = new StringBuilder();
+                
+                String startTag = xpp.getText();
+                sb.append( startTag );
+
+                // string '<' and '>'
+                startTag = startTag.substring( 1, startTag.length() - 1 );
+                
+                int tagType = -1;
+                String endTag = "";
+                
+                // continue parsing till we get to the end tag of SOAP header
+                // and match the tag values including the namespace
+                while( !startTag.equals( endTag ) )
+                {
+                    tagType = xpp.next();
+                    endTag = xpp.getText();
+                    sb.append( endTag );
+                    
+                    if ( tagType == XmlPullParser.END_TAG )
+                    {
+                        // strip '<', '/' and '>'
+                        endTag = endTag.substring( 2, endTag.length() - 1 );
+                    }
+                }
+                
+                // change the state to header end
+                container.setState( Dsmlv2StatesEnum.SOAP_HEADER_END_TAG );
+                
+                //System.out.println( sb );
+            }
+            catch( IOException e )
+            {
+                e.printStackTrace();
+            }
+            
         }
     };
 }
