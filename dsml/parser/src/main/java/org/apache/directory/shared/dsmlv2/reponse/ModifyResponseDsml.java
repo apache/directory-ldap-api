@@ -25,6 +25,7 @@ import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.message.ModifyResponse;
 import org.apache.directory.shared.ldap.model.message.ModifyResponseImpl;
 import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
 
 
 /**
@@ -35,6 +36,9 @@ import org.dom4j.Element;
 public class ModifyResponseDsml extends AbstractResultResponseDsml<ModifyResponse>
     implements ModifyResponse
 {
+    private static final String MODIFY_RESPONSE_TAG = "modifyResponse";
+
+
     /**
      * Creates a new getDecoratedMessage() of ModifyResponseDsml.
      */
@@ -70,7 +74,16 @@ public class ModifyResponseDsml extends AbstractResultResponseDsml<ModifyRespons
      */
     public Element toDsml( Element root )
     {
-        Element element = root.addElement( "modifyResponse" );
+        Element element = null;
+
+        if ( root != null )
+        {
+            element = root.addElement( MODIFY_RESPONSE_TAG );
+        }
+        else
+        {
+            element = new DefaultElement( MODIFY_RESPONSE_TAG );
+        }
 
         LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(), 
             getDecorated().getLdapResult(), getDecorated() );

@@ -26,6 +26,7 @@ import org.apache.directory.shared.ldap.model.message.CompareResponse;
 import org.apache.directory.shared.ldap.model.message.CompareResponseImpl;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
 
 
 /**
@@ -35,6 +36,9 @@ import org.dom4j.Element;
  */
 public class CompareResponseDsml extends AbstractResultResponseDsml<CompareResponse> implements CompareResponse
 {
+    private static final String COMPARE_RESPONSE_TAG = "compareResponse";
+
+
     /**
      * Creates a new getDecoratedMessage() of CompareResponseDsml.
      */
@@ -70,7 +74,16 @@ public class CompareResponseDsml extends AbstractResultResponseDsml<CompareRespo
      */
     public Element toDsml( Element root )
     {
-        Element element = root.addElement( "compareResponse" );
+        Element element = null;
+
+        if ( root != null )
+        {
+            element = root.addElement( COMPARE_RESPONSE_TAG );
+        }
+        else
+        {
+            element = new DefaultElement( COMPARE_RESPONSE_TAG );
+        }
 
         LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(), 
             getDecorated().getLdapResult(), getDecorated() );

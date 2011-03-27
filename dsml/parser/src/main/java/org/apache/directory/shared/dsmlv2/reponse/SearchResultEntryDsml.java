@@ -34,6 +34,7 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
+import org.dom4j.tree.DefaultElement;
 
 
 /**
@@ -45,7 +46,9 @@ public class SearchResultEntryDsml
     extends AbstractResponseDsml<SearchResultEntry>
     implements SearchResultEntry
 {
-    
+
+    private static final String SEARCH_RESULT_ENTRY_TAG = "searchResultEntry";
+
     /** The current attribute being processed */
     private EntryAttribute currentAttribute;
     
@@ -124,7 +127,17 @@ public class SearchResultEntryDsml
      */
     public Element toDsml( Element root )
     {
-        Element element = root.addElement( "searchResultEntry" );
+        Element element = null;
+
+        if ( root != null )
+        {
+            element = root.addElement( SEARCH_RESULT_ENTRY_TAG );
+        }
+        else
+        {
+            element = new DefaultElement( SEARCH_RESULT_ENTRY_TAG );
+        }
+
         SearchResultEntry searchResultEntry = ( SearchResultEntry ) getDecorated();
         element.addAttribute( "dn", searchResultEntry.getObjectName().getName() );
 

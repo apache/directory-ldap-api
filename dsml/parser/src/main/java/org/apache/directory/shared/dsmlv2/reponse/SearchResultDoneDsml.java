@@ -25,6 +25,7 @@ import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.message.SearchResultDone;
 import org.apache.directory.shared.ldap.model.message.SearchResultDoneImpl;
 import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
 
 
 /**
@@ -35,6 +36,9 @@ import org.dom4j.Element;
 public class SearchResultDoneDsml extends AbstractResultResponseDsml<SearchResultDone>
     implements SearchResultDone
 {
+    private static final String SEARCH_RESULT_DONE_TAG = "searchResultDone";
+
+
     /**
      * Creates a new getDecoratedMessage() of SearchResultDoneDsml.
      */
@@ -70,7 +74,16 @@ public class SearchResultDoneDsml extends AbstractResultResponseDsml<SearchResul
      */
     public Element toDsml( Element root )
     {
-        Element element = root.addElement( "searchResultDone" );
+        Element element = null;
+
+        if ( root != null )
+        {
+            element = root.addElement( SEARCH_RESULT_DONE_TAG );
+        }
+        else
+        {
+            element = new DefaultElement( SEARCH_RESULT_DONE_TAG );
+        }
 
         LdapResultDsml ldapResultDsml = 
             new LdapResultDsml( getCodecService(), getDecorated().getLdapResult(), getDecorated() );

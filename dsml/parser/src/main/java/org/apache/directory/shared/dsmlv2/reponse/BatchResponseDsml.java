@@ -139,6 +139,10 @@ public class BatchResponseDsml
         Document document = DocumentHelper.createDocument();
         Element element = document.addElement( "batchResponse" );
 
+        element.add( ParserUtils.DSML_NAMESPACE );
+        element.add( ParserUtils.XSD_NAMESPACE );
+        element.add( ParserUtils.XSI_NAMESPACE );
+        
         // RequestID
         if ( requestID != 0 )
         {

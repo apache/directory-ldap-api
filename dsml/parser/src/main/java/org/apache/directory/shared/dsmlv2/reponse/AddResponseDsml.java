@@ -25,6 +25,7 @@ import org.apache.directory.shared.ldap.model.message.AddResponse;
 import org.apache.directory.shared.ldap.model.message.AddResponseImpl;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
 
 
 /**
@@ -35,6 +36,9 @@ import org.dom4j.Element;
 public class AddResponseDsml extends AbstractResultResponseDsml<AddResponse> 
     implements AddResponse
 {
+    private static final String ADD_RESPONSE_TAG = "addResponse";
+
+
     /**
      * Creates a new getDecoratedMessage() of AddResponseDsml.
      */
@@ -70,7 +74,16 @@ public class AddResponseDsml extends AbstractResultResponseDsml<AddResponse>
      */
     public Element toDsml( Element root )
     {
-        Element element = root.addElement( "addResponse" );
+        Element element = null;
+        
+        if ( root != null )
+        {
+            element = root.addElement( ADD_RESPONSE_TAG );
+        }
+        else
+        {
+            element = new DefaultElement( ADD_RESPONSE_TAG );           
+        }
 
         LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(), 
             getDecorated().getLdapResult(), getDecorated() );

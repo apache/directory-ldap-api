@@ -30,6 +30,7 @@ import org.apache.directory.shared.util.Strings;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
+import org.dom4j.tree.DefaultElement;
 
 
 /**
@@ -40,6 +41,7 @@ import org.dom4j.QName;
 public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedResponse>
     implements ExtendedResponse
 {
+    private static final String EXTENDED_RESPONSE_TAG = "extendedResponse";
     private static final long serialVersionUID = -3989420095112650346L;
     private byte[] response;
 
@@ -79,7 +81,17 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
      */
     public Element toDsml( Element root )
     {
-        Element element = root.addElement( "extendedResponse" );
+        Element element = null;
+
+        if ( root != null )
+        {
+            element = root.addElement( EXTENDED_RESPONSE_TAG );
+        }
+        else
+        {
+            element = new DefaultElement( EXTENDED_RESPONSE_TAG );
+        }
+        
         ExtendedResponse extendedResponse = ( ExtendedResponse ) getDecorated();
 
         // LDAP Result

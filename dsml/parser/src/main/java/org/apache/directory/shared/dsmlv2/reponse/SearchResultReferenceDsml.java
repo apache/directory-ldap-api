@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.message.Referral;
 import org.apache.directory.shared.ldap.model.message.SearchResultReference;
 import org.apache.directory.shared.ldap.model.message.SearchResultReferenceImpl;
 import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
 
 
 /**
@@ -40,6 +41,9 @@ public class SearchResultReferenceDsml
     extends AbstractResponseDsml<SearchResultReference>
     implements SearchResultReference
 {
+    private static final String SEARCH_RESULT_REFERENCE_TAG = "searchResultReference";
+
+
     /**
      * Creates a new getDecoratedMessage() of SearchResultReferenceDsml.
      */
@@ -75,7 +79,17 @@ public class SearchResultReferenceDsml
      */
     public Element toDsml( Element root )
     {
-        Element element = root.addElement( "searchResultReference" );
+        Element element = null;
+
+        if ( root != null )
+        {
+            element = root.addElement( SEARCH_RESULT_REFERENCE_TAG );
+        }
+        else
+        {
+            element = new DefaultElement( SEARCH_RESULT_REFERENCE_TAG );
+        }
+
 
         // Adding References
         for ( String url : getDecorated().getReferral().getLdapUrls() )

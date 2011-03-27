@@ -25,6 +25,7 @@ import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.message.ModifyDnResponse;
 import org.apache.directory.shared.ldap.model.message.ModifyDnResponseImpl;
 import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
 
 
 /**
@@ -35,6 +36,9 @@ import org.dom4j.Element;
 public class ModDNResponseDsml extends AbstractResultResponseDsml<ModifyDnResponse>
     implements ModifyDnResponse
 {
+    private static final String MOD_DN_RESPONSE_TAG = "modDNResponse";
+
+
     /**
      * Creates a new getDecoratedMessage() of ModDNResponseDsml.
      */
@@ -70,7 +74,16 @@ public class ModDNResponseDsml extends AbstractResultResponseDsml<ModifyDnRespon
      */
     public Element toDsml( Element root )
     {
-        Element element = root.addElement( "modDNResponse" );
+        Element element = null;
+
+        if ( root != null )
+        {
+            element = root.addElement( MOD_DN_RESPONSE_TAG );
+        }
+        else
+        {
+            element = new DefaultElement( MOD_DN_RESPONSE_TAG );
+        }
 
         LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(), 
             getDecorated().getLdapResult(), getDecorated() );

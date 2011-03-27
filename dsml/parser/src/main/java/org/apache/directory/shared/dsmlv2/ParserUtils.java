@@ -71,6 +71,12 @@ public final class ParserUtils
     /** XSD namespace prefix. */
     public static final String XSD = "xsd";
 
+    public static final Namespace DSML_NAMESPACE = new Namespace( null, "urn:oasis:names:tc:DSML:2:0:core" );
+
+    public static final Namespace XSD_NAMESPACE = new Namespace( XSD, XML_SCHEMA_URI );
+
+    public static final Namespace XSI_NAMESPACE = new Namespace( XSI, XML_SCHEMA_INSTANCE_URI );
+
 
     /**
      * Private contstructor.
@@ -245,14 +251,12 @@ public final class ParserUtils
                 {
                     if ( ParserUtils.needsBase64Encoding( value ) )
                     {
-                        Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
-                        Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
-                        element.getDocument().getRootElement().add( xsdNamespace );
-                        element.getDocument().getRootElement().add( xsiNamespace );
+                        element.getDocument().getRootElement().add( XSD_NAMESPACE );
+                        element.getDocument().getRootElement().add( XSI_NAMESPACE );
 
                         Element valueElement = controlElement.addElement( "controlValue" ).addText(
                             ParserUtils.base64Encode( value ) );
-                        valueElement.addAttribute( new QName( "type", xsiNamespace ), ParserUtils.XSD + ":"
+                        valueElement.addAttribute( new QName( "type", XSI_NAMESPACE ), ParserUtils.XSD + ":"
                             + ParserUtils.BASE64BINARY );
                     }
                     else

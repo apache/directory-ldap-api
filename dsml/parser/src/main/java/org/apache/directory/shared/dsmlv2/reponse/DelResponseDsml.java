@@ -26,6 +26,7 @@ import org.apache.directory.shared.ldap.model.message.DeleteResponse;
 import org.apache.directory.shared.ldap.model.message.DeleteResponseImpl;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
 
 
 /**
@@ -36,6 +37,9 @@ import org.dom4j.Element;
 public class DelResponseDsml extends AbstractResultResponseDsml<DeleteResponse>
     implements DeleteResponse
 {
+    private static final String DEL_RESPONSE_TAG = "delResponse";
+
+
     /**
      * Creates a new getDecoratedMessage() of DelResponseDsml.
      */
@@ -71,7 +75,17 @@ public class DelResponseDsml extends AbstractResultResponseDsml<DeleteResponse>
      */
     public Element toDsml( Element root )
     {
-        Element element = root.addElement( "delResponse" );
+        Element element = null;
+
+        if ( root != null )
+        {
+            element = root.addElement( DEL_RESPONSE_TAG );
+        }
+        else
+        {
+            element = new DefaultElement( DEL_RESPONSE_TAG );
+        }
+        
 
         LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(), 
             getDecorated().getLdapResult(), getDecorated() );

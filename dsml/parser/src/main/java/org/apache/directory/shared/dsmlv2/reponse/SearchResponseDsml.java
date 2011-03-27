@@ -31,6 +31,7 @@ import org.apache.directory.shared.ldap.model.message.SearchResultDone;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.model.message.SearchResultReference;
 import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
 
 
 /**
@@ -42,6 +43,8 @@ import org.dom4j.Element;
  */
 public class SearchResponseDsml extends AbstractResponseDsml<Response>
 {
+    private static final String SEARCH_RESPONSE_TAG = "searchResponse";
+
     /** The responses */
     private List<DsmlDecorator<? extends Response>> responses = 
         new ArrayList<DsmlDecorator<? extends Response>>();
@@ -120,7 +123,17 @@ public class SearchResponseDsml extends AbstractResponseDsml<Response>
      */
     public Element toDsml( Element root )
     {
-        Element element = root.addElement( "searchResponse" );
+        Element element = null;
+
+        if ( root != null )
+        {
+            element = root.addElement( SEARCH_RESPONSE_TAG );
+        }
+        else
+        {
+            element = new DefaultElement( SEARCH_RESPONSE_TAG );
+        }
+
 
         // RequestID
         if ( getDecorated() != null )

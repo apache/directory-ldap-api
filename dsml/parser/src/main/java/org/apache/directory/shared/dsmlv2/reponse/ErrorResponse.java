@@ -26,6 +26,7 @@ import org.apache.directory.shared.ldap.model.message.AbstractResponse;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.message.Response;
 import org.dom4j.Element;
+import org.dom4j.tree.DefaultElement;
 
 
 /**
@@ -50,6 +51,9 @@ import org.dom4j.Element;
  */
 public class ErrorResponse extends AbstractResponse implements Response, DsmlDecorator<Response>
 {
+    private static final String ERROR_RESPONSE_TAG = "errorResponse";
+
+
     /**
      * This enum represents the different types of error response
      *
@@ -121,8 +125,17 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
      */
     public Element toDsml( Element root )
     {
-        Element element = root.addElement( "errorResponse" );
+        Element element = null;
 
+        if ( root != null )
+        {
+            element = root.addElement( ERROR_RESPONSE_TAG );
+        }
+        else
+        {
+            element = new DefaultElement( ERROR_RESPONSE_TAG );
+        }
+        
         // RequestID
         if ( requestID != 0 )
         {
