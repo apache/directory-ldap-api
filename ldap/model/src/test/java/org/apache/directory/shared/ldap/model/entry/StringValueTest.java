@@ -145,7 +145,7 @@ public class StringValueTest
     @Test
     public void testCloneEmptyValue() throws LdapException
     {
-        StringValue sv = new StringValue();
+        StringValue sv = new StringValue( (String)null );
         
         StringValue sv1 = (StringValue)sv.clone();
         
@@ -195,7 +195,7 @@ public class StringValueTest
         int hash = "test".hashCode();
         assertEquals( hash, csv.hashCode() );
         
-        csv = new StringValue();
+        csv = new StringValue( (String)null );
         hash = "".hashCode();
         assertEquals( hash, csv.hashCode() );
     }
@@ -207,7 +207,7 @@ public class StringValueTest
     @Test
     public void testClientStringValueNull() throws LdapException
     {
-        StringValue csv = new StringValue();
+        StringValue csv = new StringValue( (String)null );
         
         assertNull( csv.get() );
         assertFalse( csv.isSchemaAware() );
@@ -350,7 +350,7 @@ public class StringValueTest
     @Test
     public void testSetNormalized() throws LdapException
     {
-        StringValue sv = new StringValue();
+        StringValue sv = new StringValue( (String)null );
         
         assertFalse( sv.isSchemaAware() );
         
@@ -370,7 +370,7 @@ public class StringValueTest
     @Test
     public void testGetNormalizedValue() throws LdapException
     {
-        StringValue sv = new StringValue();
+        StringValue sv = new StringValue( (String)null );
         
         assertEquals( null, sv.getNormValue() );
         
@@ -389,7 +389,7 @@ public class StringValueTest
     @Test
     public void getNormValueCopy() throws LdapException
     {
-        StringValue sv = new StringValue();
+        StringValue sv = new StringValue( (String)null );
         
         assertEquals( null, sv.getNormValue() );
         
@@ -408,7 +408,7 @@ public class StringValueTest
     @Test
     public void testNormalize() throws LdapException
     {
-        StringValue sv = new StringValue();
+        StringValue sv = new StringValue( (String)null );
 
         sv.apply( at );
         assertEquals( null, sv.getNormValue() );
@@ -447,8 +447,8 @@ public class StringValueTest
     @Test
     public void testCompareTo() throws LdapException
     {
-        StringValue sv1 = new StringValue();
-        StringValue sv2 = new StringValue();
+        StringValue sv1 = new StringValue( (String)null );
+        StringValue sv2 = new StringValue( (String)null );
         
         assertEquals( 0, sv1.compareTo( sv2 ) );
         
@@ -481,8 +481,8 @@ public class StringValueTest
     @Test
     public void testEquals() throws LdapException
     {
-        StringValue sv1 = new StringValue();
-        StringValue sv2 = new StringValue();
+        StringValue sv1 = new StringValue( (String)null );
+        StringValue sv2 = new StringValue( (String)null );
         
         assertEquals( sv1, sv2 );
         
@@ -506,7 +506,7 @@ public class StringValueTest
     @Test
     public void testToString()
     {
-        StringValue sv = new StringValue();
+        StringValue sv = new StringValue( (String)null );
         
         assertEquals( "null", sv.toString() );
 

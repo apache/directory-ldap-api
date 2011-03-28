@@ -49,20 +49,10 @@ public class BinaryValue extends AbstractValue<byte[]>
 
     /**
      * Creates a BinaryValue without an initial wrapped value.
-     */
-    public BinaryValue()
-    {
-        wrappedValue = null;
-        normalizedValue = null;
-    }
-
-
-    /**
-     * Creates a BinaryValue without an initial wrapped value.
      *
      * @param attributeType the schema type associated with this BinaryValue
      */
-    public BinaryValue( AttributeType attributeType )
+    /* No protection */ BinaryValue( AttributeType attributeType )
     {
         if ( attributeType != null )
         {
@@ -395,6 +385,42 @@ public class BinaryValue extends AbstractValue<byte[]>
     }
 
 
+    /**
+     * Deserialize a BinaryValue. It will return a new BinaryValue instance.
+     * 
+     * @param attributeType The AttributeType associated with the Value. Can be null
+     * @param in The input stream
+     * @return A new StringValue instance
+     * @throws IOException If the stream can't be read
+     * @throws ClassNotFoundException If we can't instanciate a BinaryValue
+     */
+    public static BinaryValue deserialize( ObjectInput in ) throws IOException, ClassNotFoundException
+    {
+        BinaryValue value = new BinaryValue( (AttributeType)null );
+        value.readExternal( in );
+
+        return value;
+    }
+
+
+    /**
+     * Deserialize a schema aware BinaryValue. It will return a new BinaryValue instance.
+     * 
+     * @param attributeType The AttributeType associated with the Value. Can be null
+     * @param in The input stream
+     * @return A new StringValue instance
+     * @throws IOException If the stream can't be read
+     * @throws ClassNotFoundException If we can't instanciate a BinaryValue
+     */
+    public static BinaryValue deserialize( AttributeType attributeType, ObjectInput in ) throws IOException, ClassNotFoundException
+    {
+        BinaryValue value = new BinaryValue( attributeType );
+        value.readExternal( in );
+
+        return value;
+    }
+    
+    
     /**
      * {@inheritDoc}
      */

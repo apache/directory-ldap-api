@@ -51,18 +51,10 @@ public class StringValue extends AbstractValue<String>
     // -----------------------------------------------------------------------
     /**
      * Creates a StringValue without an initial wrapped value.
-     */
-    public StringValue()
-    {
-    }
-
-
-    /**
-     * Creates a StringValue without an initial wrapped value.
      *
      * @param attributeType the schema attribute type associated with this StringValue
      */
-    public StringValue( AttributeType attributeType )
+    /* No protection*/ StringValue( AttributeType attributeType )
     {
         if ( attributeType != null )
         {
@@ -391,6 +383,41 @@ public class StringValue extends AbstractValue<String>
     public String getString()
     {
         return wrappedValue != null ? wrappedValue : "";
+    }
+    
+    
+    /**
+     * Deserialize a StringValue. It will return a new StringValue instance.
+     * 
+     * @param in The input stream
+     * @return A new StringValue instance
+     * @throws IOException If the stream can't be read
+     * @throws ClassNotFoundException If we can't instanciate a StringValue
+     */
+    public static StringValue deserialize( ObjectInput in ) throws IOException, ClassNotFoundException
+    {
+        StringValue value = new StringValue( (AttributeType)null );
+        value.readExternal( in );
+
+        return value;
+    }
+    
+    
+    /**
+     * Deserialize a schemaAware StringValue. It will return a new StringValue instance.
+     * 
+     * @param attributeType The AttributeType associated with the Value. Can be null
+     * @param in The input stream
+     * @return A new StringValue instance
+     * @throws IOException If the stream can't be read
+     * @throws ClassNotFoundException If we can't instanciate a StringValue
+     */
+    public static StringValue deserialize( AttributeType attributeType, ObjectInput in ) throws IOException, ClassNotFoundException
+    {
+        StringValue value = new StringValue( attributeType );
+        value.readExternal( in );
+
+        return value;
     }
     
     

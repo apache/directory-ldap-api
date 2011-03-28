@@ -82,16 +82,16 @@ public class SchemaAwareValueSerializationTest
         
         bv1 = new BinaryValue( userCertificate, data );
         bv2 = new BinaryValue( userCertificate, StringConstants.EMPTY_BYTES );
-        bv3 = new BinaryValue( userCertificate );
+        bv3 = new BinaryValue( userCertificate, null );
         bv1n = new BinaryValue( userCertificate, data );
         bv2n = new BinaryValue( userCertificate, StringConstants.EMPTY_BYTES );
-        bv3n = new BinaryValue( userCertificate );
+        bv3n = new BinaryValue( userCertificate, null );
         sv1 = new StringValue( cn, "test" );
         sv2 = new StringValue( dc, "" );
-        sv3 = new StringValue( cn );
+        sv3 = new StringValue( dc, (String)null );
         sv1n = new StringValue( cn, "test" );
         sv2n = new StringValue( dc, "" );
-        sv3n = new StringValue( dc );
+        sv3n = new StringValue( dc, (String)null );
     }
 
     
@@ -108,8 +108,7 @@ public class SchemaAwareValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        BinaryValue bvDeser = new BinaryValue( (AttributeType)null );
-        bvDeser.readExternal( in );
+        BinaryValue bvDeser = BinaryValue.deserialize( in );
 
         assertEquals( bv1, bvDeser );
     }
@@ -128,8 +127,7 @@ public class SchemaAwareValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        BinaryValue bvDeser = new BinaryValue( (AttributeType)null );
-        bvDeser.readExternal( in );
+        BinaryValue bvDeser = BinaryValue.deserialize( in );
 
         assertEquals( bv2, bvDeser );
     }
@@ -148,8 +146,7 @@ public class SchemaAwareValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        BinaryValue bvDeser = new BinaryValue( (AttributeType)null );
-        bvDeser.readExternal( in );
+        BinaryValue bvDeser = BinaryValue.deserialize( in );
 
         assertEquals( bv3, bvDeser );
     }
@@ -168,8 +165,7 @@ public class SchemaAwareValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( (AttributeType)null );
-        svDeser.readExternal( in );
+        StringValue svDeser = StringValue.deserialize( in );
 
         assertEquals( sv1, svDeser );
     }
@@ -188,8 +184,7 @@ public class SchemaAwareValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( (AttributeType)null );
-        svDeser.readExternal( in );
+        StringValue svDeser = StringValue.deserialize( in );
 
         assertEquals( sv2, svDeser );
     }
@@ -208,8 +203,7 @@ public class SchemaAwareValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( (AttributeType)null );
-        svDeser.readExternal( in );
+        StringValue svDeser = StringValue.deserialize( in );
 
         assertEquals( sv3, svDeser );
     }
@@ -229,8 +223,7 @@ public class SchemaAwareValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        BinaryValue bvDeser = new BinaryValue( userCertificate );
-        bvDeser.readExternal( in );
+        BinaryValue bvDeser = BinaryValue.deserialize( userCertificate, in );
 
         assertEquals( bv1n, bvDeser );
     }
@@ -250,8 +243,7 @@ public class SchemaAwareValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        BinaryValue bvDeser = new BinaryValue( userCertificate );
-        bvDeser.readExternal( in );
+        BinaryValue bvDeser = BinaryValue.deserialize( userCertificate, in );
 
         assertEquals( bv2n, bvDeser );
     }
@@ -271,8 +263,7 @@ public class SchemaAwareValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        BinaryValue bvDeser = new BinaryValue( userCertificate );
-        bvDeser.readExternal( in );
+        BinaryValue bvDeser = BinaryValue.deserialize( userCertificate, in );
 
         assertEquals( bv3n, bvDeser );
     }
@@ -292,8 +283,7 @@ public class SchemaAwareValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( cn );
-        svDeser.readExternal( in );
+        StringValue svDeser = StringValue.deserialize( cn, in );
 
         assertEquals( sv1n, svDeser );
     }
@@ -313,8 +303,7 @@ public class SchemaAwareValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( cn );
-        svDeser.readExternal( in );
+        StringValue svDeser = StringValue.deserialize( cn, in );
 
         assertEquals( sv2n, svDeser );
     }
@@ -334,8 +323,7 @@ public class SchemaAwareValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = new StringValue( cn );
-        svDeser.readExternal( in );
+        StringValue svDeser = StringValue.deserialize( cn, in );
 
         assertEquals( sv3n, svDeser );
     }

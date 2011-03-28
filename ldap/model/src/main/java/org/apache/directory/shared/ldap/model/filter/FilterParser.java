@@ -29,7 +29,11 @@ import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.directory.shared.util.*;
+import org.apache.directory.shared.util.Chars;
+import org.apache.directory.shared.util.Hex;
+import org.apache.directory.shared.util.Position;
+import org.apache.directory.shared.util.Strings;
+import org.apache.directory.shared.util.Unicode;
 
 
 /**
@@ -288,7 +292,7 @@ public class FilterParser
         }
         else
         {
-            return new BinaryValue();
+            return new BinaryValue( (byte[])null );
         }
     }
 
@@ -449,7 +453,7 @@ public class FilterParser
                 
                 if ( attributeType != null )
                 {
-                    return new EqualityNode( attributeType, new BinaryValue() );
+                    return new EqualityNode( attributeType, new BinaryValue( (byte[])null ) );
                 }
                 
                 else
@@ -459,7 +463,7 @@ public class FilterParser
             }
             else
             {
-                return new EqualityNode( attribute, new BinaryValue() );
+                return new EqualityNode( attribute, new BinaryValue( (byte[])null ) );
             }
         }
         else

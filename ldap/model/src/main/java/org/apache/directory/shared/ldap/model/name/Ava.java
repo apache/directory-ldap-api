@@ -970,18 +970,15 @@ public class Ava implements Externalizable, Cloneable
 
         if ( isHR )
         {
-            upValue = new StringValue( attributeType );
-            normValue = new StringValue( attributeType );
+            upValue = StringValue.deserialize( attributeType, in );
+            normValue = StringValue.deserialize( attributeType, in );
         }
         else
         {
-            upValue = new BinaryValue( attributeType );
-            normValue = new BinaryValue( attributeType );
+            upValue = BinaryValue.deserialize( attributeType, in );
+            normValue = BinaryValue.deserialize( attributeType, in );
         }
 
-        upValue.readExternal( in );
-        normValue.readExternal( in );
-        
         h = in.readInt();
 
         if ( schemaManager != null )

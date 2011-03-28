@@ -223,7 +223,7 @@ public class DefaultEntryAttribute implements EntryAttribute
         // The value can be null, this is a valid value.
         if ( vals[0] == null )
         {
-             add( new StringValue() );
+             add( new StringValue( (String)null ) );
         }
         else
         {
