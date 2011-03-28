@@ -1185,7 +1185,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
                 for ( Rdn rdn : rdns )
                 {
-                    rdn.applySchemaManager( schemaManager );
+                    rdn.apply( schemaManager );
 
                     if ( isFirst )
                     {

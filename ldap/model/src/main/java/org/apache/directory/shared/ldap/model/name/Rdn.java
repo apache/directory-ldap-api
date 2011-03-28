@@ -240,7 +240,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
             if ( schemaManager != null )
             {
                 this.schemaManager = schemaManager;
-                applySchemaManager( schemaManager );
+                apply( schemaManager );
                 normalized = true;
             }
             else
@@ -295,7 +295,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
         if( schemaManager != null )
         {
             this.schemaManager = schemaManager;
-            applySchemaManager( schemaManager );
+            apply( schemaManager );
             normalized = true;
         }
         else
@@ -438,7 +438,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
      * @return this Rdn, normalized
      * @throws LdapInvalidDnException if the Rdn is invalid
      */
-    public Rdn applySchemaManager( SchemaManager schemaManager ) throws LdapInvalidDnException
+    public Rdn apply( SchemaManager schemaManager ) throws LdapInvalidDnException
     {
         if ( normalized )
         {

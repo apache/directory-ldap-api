@@ -1213,7 +1213,7 @@ public class SchemaAwareRdnTest
         
         assertFalse( rdn.isSchemaAware() );
 
-        rdn.applySchemaManager( schemaManager );
+        rdn.apply( schemaManager );
 
         assertTrue( rdn.isSchemaAware() );
     }
