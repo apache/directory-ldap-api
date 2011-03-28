@@ -25,6 +25,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValu
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
@@ -51,15 +52,6 @@ public abstract class AbstractValue<T> implements Value<T>
     /** the canonical representation of the wrapped value */
     protected T normalizedValue;
 
-    /** A flag set when the value has been normalized */
-    //protected boolean normalized;
-
-    /** cached results of the isValid() method call */
-    protected Boolean valid;
-
-    /** A flag set if the normalized data is different from the wrapped data */
-    protected boolean same;
-    
     /** The computed hashcode. We don't want to compute it each time the hashcode() method is called */
     protected volatile int h;
     
@@ -106,23 +98,27 @@ public abstract class AbstractValue<T> implements Value<T>
     {
         if ( attributeType == null )
         {
+            // No attributeType : the normalized value and the user provided value are the same
             normalizedValue = wrappedValue;
             return;
         }
         
         this.attributeType = attributeType;
         
-        try
+        // We first have to normalize the value before we can check its syntax
+        // Get the Aequality matchingRule, if we have one
+        MatchingRule equality = attributeType.getEquality();
+        
+        if ( equality != null )
         {
-            MatchingRule equality = attributeType.getEquality();
+            // If we have an Equality MR, we *must* have a normalizer
+            Normalizer normalizer = equality.getNormalizer();
             
-            if ( equality != null )
+            if ( normalizer != null )
             {
-                Normalizer normalizer = equality.getNormalizer();
-                
-                if ( normalizer != null )
+                if ( wrappedValue != null )
                 {
-                    if ( wrappedValue != null )
+                    try
                     {
                         if ( isHR() )
                         {     
@@ -133,23 +129,42 @@ public abstract class AbstractValue<T> implements Value<T>
                             normalizedValue = (T)normalizer.normalize( new BinaryValue( (byte[])wrappedValue ) ).getNormReference();
                         }
                     }
+                    catch ( LdapException ne )
+                    {
+                        String message = I18n.err( I18n.ERR_04447_CANNOT_NORMALIZE_VALUE, ne.getLocalizedMessage() );
+                        LOG.info( message );
+                    }
                 }
             }
+            else
+            {
+                String message = "The '" + attributeType.getName() + "' AttributeType does not have" +
+                    " a normalizer";
+                LOG.error( message );
+                throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
+            }
         }
-        catch ( LdapException ne )
+        else
         {
-            String message = I18n.err( I18n.ERR_04447_CANNOT_NORMALIZE_VALUE, ne.getLocalizedMessage() );
-            LOG.info( message );
+            // No MatchingRule, there is nothing we can do but make the normalized value
+            // to be a reference on the user provided value
+            normalizedValue = wrappedValue;
         }
         
-        // and checks that the value is syntaxically correct
+        // and checks that the value syntax is valid
         try
         {
-            if ( ! isValid( attributeType.getSyntax().getSyntaxChecker() ) )
+            LdapSyntax syntax = attributeType.getSyntax();
+            
+            if ( syntax != null )
             {
-                String message = I18n.err( I18n.ERR_04473_NOT_VALID_VALUE, wrappedValue );
-                LOG.info( message );
-                throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
+                // Check the syntax
+                if ( ! isValid( syntax.getSyntaxChecker() ) )
+                {
+                    String message = I18n.err( I18n.ERR_04473_NOT_VALID_VALUE, wrappedValue, attributeType );
+                    LOG.info( message );
+                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
+                }
             }
         }
         catch ( LdapException le )
@@ -159,6 +174,7 @@ public abstract class AbstractValue<T> implements Value<T>
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
         }
         
+        // Rehash the Value now
         h=0;
         hashCode();
     }
@@ -176,99 +192,26 @@ public abstract class AbstractValue<T> implements Value<T>
     {
         if ( attributeType != null )
         {
-            MatchingRule mr = getMatchingRule();
-    
-            if ( mr == null )
-            {
-                return null;
-            }
-    
-            return (LdapComparator<T>)mr.getLdapComparator();
-        }
-        else
-        {
-            return null;
-        }
-    }
-    
-    
-    /**
-     * Find a matchingRule to use for normalization and comparison.  If an equality
-     * matchingRule cannot be found it checks to see if other matchingRules are
-     * available: SUBSTR, and ORDERING.  If a matchingRule cannot be found null is
-     * returned.
-     *
-     * @return a matchingRule or null if one cannot be found for the attributeType
-     * @throws LdapException if resolution of schema entities fail
-     */
-    protected final MatchingRule getMatchingRule() throws LdapException
-    {
-        if ( attributeType != null )
-        {
             MatchingRule mr = attributeType.getEquality();
     
-            if ( mr == null )
+            if ( mr != null )
             {
-                mr = attributeType.getOrdering();
+                return (LdapComparator<T>)mr.getLdapComparator();
             }
-    
-            if ( mr == null )
-            {
-                mr = attributeType.getSubstring();
-            }
-    
-            return mr;
         }
-        else
-        {
-            return null;
-        }
-    }
 
-
-    /**
-     * Gets a normalizer using getMatchingRule() to resolve the matchingRule
-     * that the normalizer is extracted from.
-     *
-     * @return a normalizer associated with the attributeType or null if one cannot be found
-     * @throws LdapException if resolution of schema entities fail
-     */
-    protected final Normalizer getNormalizer() throws LdapException
-    {
-        if ( attributeType != null )
-        {
-            MatchingRule mr = getMatchingRule();
-    
-            if ( mr == null )
-            {
-                return null;
-            }
-    
-            return mr.getNormalizer();
-        }
-        else
-        {
-            return null;
-        }
+        return null;
     }
 
     
     /**
      * {@inheritDoc}
      */
-    public boolean instanceOf( AttributeType attributeType ) throws LdapException
+    public boolean instanceOf( AttributeType attributeType )
     {
-        if ( ( attributeType != null ) && this.attributeType.equals( attributeType ) )
-        {
-            if ( this.attributeType.equals( attributeType ) )
-            {
-                return true;
-            }
-            
-            return this.attributeType.isDescendantOf( attributeType );
-        }
-
-        return false;
+        return ( attributeType != null ) && 
+               ( this.attributeType.equals( attributeType ) || 
+                 this.attributeType.isDescendantOf( attributeType ) ); 
     }
 
 
@@ -312,9 +255,7 @@ public abstract class AbstractValue<T> implements Value<T>
             throw new LdapException( message );
         }
         
-        valid = syntaxChecker.isValidSyntax( normalizedValue );
-        
-        return valid;
+        return syntaxChecker.isValidSyntax( normalizedValue );
     }
 
 

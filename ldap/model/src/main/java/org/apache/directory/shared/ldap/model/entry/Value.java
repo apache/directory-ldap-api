@@ -85,7 +85,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * @return <code>true</code> if the value is associated with the given
      * attributeType or one of its ascendant
      */
-    boolean instanceOf( AttributeType attributeType ) throws LdapException;
+    boolean instanceOf( AttributeType attributeType );
 
     
     /**
@@ -126,19 +126,16 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
     
     
     /**
-     * Tells if the value has already be normalized or not.
+     * Tells if the value is schema aware or not.
      *
-     * @return <code>true</code> if the value has already been normalized.
+     * @return <code>true</code> if the value is sxhema aware
      */
     boolean isSchemaAware();
     
     
     /**
      * Uses the syntaxChecker associated with the attributeType to check if the
-     * value is valid.  Repeated calls to this method do not attempt to re-check
-     * the syntax of the wrapped value every time if the wrapped value does not
-     * change. Syntax checks only result on the first check, and when the wrapped
-     * value changes.
+     * value is valid.
      * 
      * @param checker the SyntaxChecker to use to validate the value
      * @return <code>true</code> if the value is valid
@@ -148,20 +145,10 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
 
     
     /**
-     * Set the normalized flag.
-     * 
-     * @param normalized the value : true or false
-     *
-    void setNormalized( boolean normalized );
-
-    
-    /**
      * Gets the normalized (canonical) representation for the wrapped string.
      * If the wrapped String is null, null is returned, otherwise the normalized
      * form is returned.  If the normalizedValue is null, then this method
-     * will attempt to generate it from the wrapped value: repeated calls to
-     * this method do not unnecessarily normalize the wrapped value.  Only changes
-     * to the wrapped value result in attempts to normalize the wrapped value.
+     * will attempt to generate it from the wrapped value.
      *
      * @return gets the normalized value
      */
@@ -178,30 +165,9 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
 
     
     /**
-     * Normalize the value. In order to use this method, the Value
-     * must be schema aware.
-     * 
-     * @exception LdapException if the value cannot be normalized
-     *
-    void normalize() throws LdapException;
-
-    
-    /**
-     * Normalize the value. For a client String value, applies the given normalizer.
-     * 
-     * It supposes that the client has access to the schema in order to select the
-     * appropriate normalizer.
-     * 
-     * @param normalizer the normalizer to apply to the value
-     * @exception LdapException if the value cannot be normalized
-     *
-    void normalize( Normalizer normalizer ) throws LdapException;
-    
-    
-    /**
      * Tells if the current value is Human Readable
      * 
-     * @return <code>true</code> if the value is Binary, <code>false</code> otherwise
+     * @return <code>true</code> if the value is a String, <code>false</code> otherwise
      */
     boolean isHR();
     

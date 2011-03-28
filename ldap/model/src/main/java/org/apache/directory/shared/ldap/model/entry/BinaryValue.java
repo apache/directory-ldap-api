@@ -53,7 +53,6 @@ public class BinaryValue extends AbstractValue<byte[]>
     public BinaryValue()
     {
         wrappedValue = null;
-        valid = null;
         normalizedValue = null;
     }
 
@@ -67,6 +66,7 @@ public class BinaryValue extends AbstractValue<byte[]>
     {
         if ( attributeType != null )
         {
+            // We must have a Syntax
             if ( attributeType.getSyntax() == null )
             {
                 throw new IllegalArgumentException( I18n.err( I18n.ERR_04445 ) );
@@ -101,8 +101,6 @@ public class BinaryValue extends AbstractValue<byte[]>
             this.wrappedValue = null;
             this.normalizedValue = null;
         }
-
-        valid = null;
     }
 
 
@@ -128,7 +126,6 @@ public class BinaryValue extends AbstractValue<byte[]>
      * determine how to properly normalize the wrapped value.
      *
      * @return the normalized version of the wrapped value
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException if schema entity resolution fails or normalization fails
      */
     public byte[] getNormValue()
     {
@@ -144,31 +141,8 @@ public class BinaryValue extends AbstractValue<byte[]>
 
 
     /**
-     * Gets the normalized (canonical) representation for the wrapped string.
-     * If the wrapped String is null, null is returned, otherwise the normalized
-     * form is returned.  If no the normalizedValue is null, then this method
-     * will attempt to generate it from the wrapped value: repeated calls to
-     * this method do not unnecessarily normalize the wrapped value.  Only changes
-     * to the wrapped value result in attempts to normalize the wrapped value.
-     *
-     * @return a reference to the normalized version of the wrapped value
-     */
-    public byte[] getNormalizedValueReference()
-    {
-        if ( isNull() )
-        {
-            return null;
-        }
-
-        return normalizedValue;
-    }
-
-
-    /**
      *
      * @see ServerValue#compareTo(Value)
-     * @throws IllegalStateException on failures to extract the comparator, or the
-     * normalizers needed to perform the required comparisons based on the schema
      */
     public int compareTo( Value<byte[]> value )
     {
@@ -202,12 +176,12 @@ public class BinaryValue extends AbstractValue<byte[]>
                 if ( comparator != null )
                 {
                     return comparator
-                        .compare( getNormalizedValueReference(), binaryValue.getNormalizedValueReference() );
+                        .compare( getNormReference(), binaryValue.getNormReference() );
                 }
                 else
                 {
-                    return new ByteArrayComparator( null ).compare( getNormalizedValueReference(), binaryValue
-                        .getNormalizedValueReference() );
+                    return new ByteArrayComparator( null ).compare( getNormReference(), binaryValue
+                        .getNormReference() );
                 }
             }
             catch ( LdapException e )
@@ -242,7 +216,7 @@ public class BinaryValue extends AbstractValue<byte[]>
                 return 0;
             }
 
-            byte[] normalizedValue = getNormalizedValueReference();
+            byte[] normalizedValue = getNormReference();
             h = Arrays.hashCode( normalizedValue );
         }
 
@@ -255,8 +229,6 @@ public class BinaryValue extends AbstractValue<byte[]>
      *
      * This equals implementation overrides the BinaryValue implementation which
      * is not schema aware.
-     * @throws IllegalStateException on failures to extract the comparator, or the
-     * normalizers needed to perform the required comparisons based on the schema
      */
     public boolean equals( Object obj )
     {
@@ -315,11 +287,11 @@ public class BinaryValue extends AbstractValue<byte[]>
                 // Compare normalized values
                 if ( comparator == null )
                 {
-                    return Arrays.equals( getNormalizedValueReference(), other.getNormalizedValueReference() );
+                    return Arrays.equals( getNormReference(), other.getNormReference() );
                 }
                 else
                 {
-                    return comparator.compare( getNormalizedValueReference(), other.getNormalizedValueReference() ) == 0;
+                    return comparator.compare( getNormReference(), other.getNormReference() ) == 0;
                 }
             }
             catch ( LdapException ne )
@@ -331,21 +303,22 @@ public class BinaryValue extends AbstractValue<byte[]>
         else
         {
             // now unlike regular values we have to compare the normalized values
-            return Arrays.equals( getNormalizedValueReference(), other.getNormalizedValueReference() );
+            return Arrays.equals( getNormReference(), other.getNormReference() );
         }
     }
 
 
     // -----------------------------------------------------------------------
-    // Private Helper Methods (might be put into abstract base class)
+    // Cloneable methods
     // -----------------------------------------------------------------------
     /**
-     * @return a copy of the current value
+     * {@inheritDoc}
      */
     public BinaryValue clone()
     {
         BinaryValue clone = ( BinaryValue ) super.clone();
 
+        // We have to copy the byte[], they are just referenced by suoer.clone()
         if ( normalizedValue != null )
         {
             clone.normalizedValue = new byte[normalizedValue.length];

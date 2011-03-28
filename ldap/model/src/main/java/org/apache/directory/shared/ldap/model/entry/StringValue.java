@@ -54,19 +54,19 @@ public class StringValue extends AbstractValue<String>
      */
     public StringValue()
     {
-        valid = null;
     }
 
 
     /**
      * Creates a StringValue without an initial wrapped value.
      *
-     * @param attributeType the schema type associated with this StringValue
+     * @param attributeType the schema attribute type associated with this StringValue
      */
     public StringValue( AttributeType attributeType )
     {
         if ( attributeType != null )
         {
+            // We must have a Syntax
             if ( attributeType.getSyntax() == null )
             {
                 throw new IllegalArgumentException( I18n.err( I18n.ERR_04445 ) );
@@ -92,15 +92,14 @@ public class StringValue extends AbstractValue<String>
     {
         this.wrappedValue = value;
         this.normalizedValue = value;
-        valid = null;
     }
 
 
     /**
-     * Creates a StringValue with an initial wrapped String value.
+     * Creates a schema aware StringValue with an initial wrapped String value.
      *
      * @param attributeType the schema type associated with this StringValue
-     * @param value the value to wrap which can be null
+     * @param value the value to wrap
      * @throws LdapInvalidAttributeValueException If the added value is invalid accordingly 
      * to the schema
      */
@@ -115,9 +114,7 @@ public class StringValue extends AbstractValue<String>
     // Value<String> Methods
     // -----------------------------------------------------------------------
     /**
-     * Get a copy of the stored value.
-     *
-     * @return A copy of the stored value.
+     * {@inheritDoc}
      */
     public String get()
     {
@@ -128,22 +125,10 @@ public class StringValue extends AbstractValue<String>
     
     
     /**
-     * Gets the normalized (canonical) representation for the wrapped string.
-     * If the wrapped String is null, null is returned, otherwise the normalized
-     * form is returned.  If the normalizedValue is null, then this method
-     * will attempt to generate it from the wrapped value: repeated calls to
-     * this method do not unnecessarily normalize the wrapped value.  Only changes
-     * to the wrapped value result in attempts to normalize the wrapped value.
-     *
-     * @return gets the normalized value
+     * {@inheritDoc}
      */
     public String getNormValue()
     {
-        if ( isNull() )
-        {
-            return null;
-        }
-
         return normalizedValue;
     }
     
@@ -221,9 +206,7 @@ public class StringValue extends AbstractValue<String>
     // Cloneable methods
     // -----------------------------------------------------------------------
     /**
-     * Get a clone of the Client Value
-     * 
-     * @return a copy of the current value
+     * {@inheritDoc}
      */
     public StringValue clone()
     {
@@ -396,7 +379,7 @@ public class StringValue extends AbstractValue<String>
      */
     public byte[] getBytes()
     {
-        return Strings.getBytesUtf8(wrappedValue);
+        return Strings.getBytesUtf8( wrappedValue );
     }
     
     
