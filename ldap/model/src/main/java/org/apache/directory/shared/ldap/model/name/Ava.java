@@ -372,7 +372,7 @@ public class Ava implements Externalizable, Cloneable
         
         if ( schemaManager != null )
         {
-            applySchemaManager( schemaManager );
+            apply( schemaManager );
         }
 
         hashCode();
@@ -448,7 +448,7 @@ public class Ava implements Externalizable, Cloneable
      * @throws LdapInvalidDnException If the Ava can't be normalized accordingly
      * to the given SchemaManager
      */
-    public void applySchemaManager( SchemaManager schemaManager ) throws LdapInvalidDnException
+    public void apply( SchemaManager schemaManager ) throws LdapInvalidDnException
     {
         if ( schemaManager != null )
         { 
