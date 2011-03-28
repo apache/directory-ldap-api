@@ -544,7 +544,7 @@ public final class DefaultEntry implements Entry
             try
             {
                 // The dn must be normalized
-                dn.applySchemaManager( schemaManager );
+                dn.apply( schemaManager );
             }
             catch ( LdapException ne )
             {

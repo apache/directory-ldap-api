@@ -62,9 +62,9 @@ public class MultiThreadedTest
         schemaManager = new DefaultSchemaManager();
 
         referenceDn = new Dn( "dc=example,dc=com" );
-        referenceDn.applySchemaManager( schemaManager );
+        referenceDn.apply( schemaManager );
         sharedDn = new Dn( "dc=example,dc=com" );
-        sharedDn.applySchemaManager( schemaManager );
+        sharedDn.apply( schemaManager );
 
         referenceRdn = new Rdn( "ou=system" );
         referenceRdn.apply( schemaManager );
@@ -84,7 +84,7 @@ public class MultiThreadedTest
         sharedRdn.apply( schemaManager );
         assertTrue( sharedRdn.isSchemaAware() );
 
-        sharedDn.applySchemaManager( schemaManager );
+        sharedDn.apply( schemaManager );
         assertTrue( sharedDn.isSchemaAware() );
     }
 
@@ -97,7 +97,7 @@ public class MultiThreadedTest
         sharedRdn.apply( schemaManager );
         assertEquals( referenceRdn.hashCode(), sharedRdn.hashCode() );
 
-        sharedDn.applySchemaManager( schemaManager );
+        sharedDn.apply( schemaManager );
         assertEquals( referenceDn.hashCode(), sharedDn.hashCode() );
     }
 
@@ -114,7 +114,7 @@ public class MultiThreadedTest
         assertTrue( referenceRdn.equals( sharedRdn ) );
         assertTrue( sharedRdn.equals( referenceRdn ) );
 
-        sharedDn.applySchemaManager( schemaManager );
+        sharedDn.apply( schemaManager );
         assertEquals( referenceDn, sharedDn );
         assertTrue( referenceDn.equals( sharedDn ) );
         assertTrue( sharedDn.equals( referenceDn ) );

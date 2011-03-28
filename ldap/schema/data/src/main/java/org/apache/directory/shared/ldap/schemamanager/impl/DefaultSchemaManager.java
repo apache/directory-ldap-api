@@ -1394,7 +1394,7 @@ public class DefaultSchemaManager implements SchemaManager
         try
         {
             schemaModificationAttributesDn = new Dn( SchemaConstants.SCHEMA_MODIFICATIONS_DN );
-            schemaModificationAttributesDn.applySchemaManager( new DefaultSchemaManager() );
+            schemaModificationAttributesDn.apply( new DefaultSchemaManager() );
         }
         catch ( LdapInvalidDnException e )
         {

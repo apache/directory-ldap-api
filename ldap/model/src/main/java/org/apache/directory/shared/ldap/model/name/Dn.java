@@ -280,7 +280,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         upName = sb.toString();
         parseInternal( upName, rdns );
 
-        applySchemaManager( schemaManager );
+        apply( schemaManager );
     }
 
 
@@ -322,7 +322,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             this.rdns.add( rdn.clone() );
         }
 
-        applySchemaManager( null );
+        apply( null );
         toUpName();
     }
 
@@ -348,7 +348,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         
         rdns.add( 0, rdn );
 
-        applySchemaManager( dn.schemaManager );
+        apply( dn.schemaManager );
         toUpName();
     }
 
@@ -372,7 +372,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             rdns.add( rdnParent );
         }
         
-        applySchemaManager( schemaManager );
+        apply( schemaManager );
         toUpName();
     }
 
@@ -396,7 +396,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             this.rdns.add( rdn.clone() );
         }
 
-        applySchemaManager( schemaManager );
+        apply( schemaManager );
     }
 
 
@@ -802,7 +802,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
 
         newDn.toUpName();
-        newDn.applySchemaManager( schemaManager );
+        newDn.apply( schemaManager );
 
         return newDn;
     }
@@ -883,7 +883,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
 
         newDn.toUpName();
-        newDn.applySchemaManager( schemaManager );
+        newDn.apply( schemaManager );
 
         return newDn;
     }
@@ -916,7 +916,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
         else
         {
-            clonedDn.applySchemaManager( schemaManager );
+            clonedDn.apply( schemaManager );
             clonedDn.toUpName();
         }
 
@@ -941,7 +941,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         clonedDn.rdns.add( 0, newRdn );
 
-        clonedDn.applySchemaManager( schemaManager );
+        clonedDn.apply( schemaManager );
         clonedDn.toUpName();
 
         return clonedDn;
@@ -964,7 +964,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         Dn clonedDn = copy();
 
         clonedDn.rdns.add( 0, newRdn.clone() );
-        clonedDn.applySchemaManager( schemaManager );
+        clonedDn.apply( schemaManager );
         clonedDn.toUpName();
 
         return clonedDn;
@@ -997,7 +997,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         try
         {
-            newDn.applySchemaManager( schemaManager );
+            newDn.apply( schemaManager );
         }
         catch ( LdapInvalidDnException e )
         {
@@ -1160,11 +1160,11 @@ public class Dn implements Iterable<Rdn>, Externalizable
     /**
      * Normalizes the Dn using the given the schema manager
      *
-     * @param schemaManager The schemaManager to use to normalize the Dn
+     * @param schemaManager The schemaManagerto use to normalize the Dn
      * @return The normalized Dn
      * @throws LdapInvalidDnException If the Dn is invalid.
      */
-    public Dn applySchemaManager( SchemaManager schemaManager ) throws LdapInvalidDnException
+    public Dn apply( SchemaManager schemaManager ) throws LdapInvalidDnException
     {
         this.schemaManager = schemaManager;
 

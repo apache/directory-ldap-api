@@ -1259,7 +1259,7 @@ public class EntryTest
     {
         Dn dn = new Dn( "ou=system" );
         
-        dn.applySchemaManager( schemaManager );
+        dn.apply( schemaManager );
         
         byte[] password = Strings.getBytesUtf8("secret");
         Entry entry = new DefaultEntry( dn);
@@ -1313,7 +1313,7 @@ public class EntryTest
     {
         Dn dn = new Dn( "ou=system" );
         
-        dn.applySchemaManager( schemaManager );
+        dn.apply( schemaManager );
         
         Entry entry = new DefaultEntry( dn );
 

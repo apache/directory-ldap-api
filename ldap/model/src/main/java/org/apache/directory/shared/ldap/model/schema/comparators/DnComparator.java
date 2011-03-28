@@ -86,7 +86,7 @@ public class DnComparator extends LdapComparator<Object>
         {
             dn = (Dn)obj;
             
-            dn = ( dn.isSchemaAware() ? dn : dn.applySchemaManager( schemaManager ) );
+            dn = ( dn.isSchemaAware() ? dn : dn.apply( schemaManager ) );
         }
         else if ( obj instanceof String )
         {
