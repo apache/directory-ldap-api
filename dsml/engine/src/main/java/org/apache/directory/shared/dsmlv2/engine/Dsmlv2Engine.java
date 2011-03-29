@@ -21,9 +21,14 @@
 package org.apache.directory.shared.dsmlv2.engine;
 
 
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 import org.apache.directory.ldap.client.api.LdapConnection;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
@@ -31,6 +36,7 @@ import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
+import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.dsmlv2.reponse.AddResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.BatchResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.BindResponseDsml;
@@ -42,6 +48,7 @@ import org.apache.directory.shared.dsmlv2.reponse.ExtendedResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModDNResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.ModifyResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.SearchResponseDsml;
+import org.apache.directory.shared.dsmlv2.reponse.SearchResultDoneDsml;
 import org.apache.directory.shared.dsmlv2.reponse.SearchResultEntryDsml;
 import org.apache.directory.shared.dsmlv2.reponse.SearchResultReferenceDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
@@ -50,7 +57,7 @@ import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml.Processing;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml.ResponseOrder;
 import org.apache.directory.shared.dsmlv2.request.Dsmlv2Grammar;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.cursor.Cursor;
+import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.AbandonRequest;
 import org.apache.directory.shared.ldap.model.message.AddRequest;
@@ -73,10 +80,15 @@ import org.apache.directory.shared.ldap.model.message.Request;
 import org.apache.directory.shared.ldap.model.message.Response;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.message.SearchRequest;
+import org.apache.directory.shared.ldap.model.message.SearchResultDone;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.model.message.SearchResultReference;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.util.Strings;
+import org.dom4j.Element;
+import org.dom4j.Namespace;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParserException;
 
 
@@ -110,11 +122,15 @@ public class Dsmlv2Engine
     private BatchRequestDsml batchRequest;
 
     /** The batch response. */
-    private BatchResponseDsml batchResponse;
+    private BatchResponseDsml batchResponse = new BatchResponseDsml();
     
     private Dsmlv2Grammar grammar = new Dsmlv2Grammar();
 
-    
+    /** flag to indicate to generate the response in a SOAP envelope */
+    private boolean generateSoapResp = false;
+
+    private static final Logger LOG = LoggerFactory.getLogger( Dsmlv2Engine.class );
+
     /**
      * Creates a new instance of Dsmlv2Engine.
      * 
@@ -173,6 +189,22 @@ public class Dsmlv2Engine
 
 
     /**
+     * process the given file and optionally writing the output to the
+     * output stream(if not null)
+     *
+     * @param file the DSML file
+     * @param respStream the output stream to which response will be written, skipped if null
+     * @throws Exception
+     */
+    public void processDSMLFile( File file, OutputStream respStream ) throws Exception
+    {
+        parser = new Dsmlv2Parser();
+        parser.setInputFile( file.getAbsolutePath() );
+
+        processDSML( respStream );
+    }
+
+    /**
      * Processes the file given and return the result of the operations
      * 
      * @param inputStream 
@@ -199,7 +231,60 @@ public class Dsmlv2Engine
      */
     private String processDSML()
     {
-        batchResponse = new BatchResponseDsml();
+        try
+        {
+            ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+            processDSML( byteOut );
+            return new String( byteOut.toByteArray(), "UTF-8" );
+        }
+        catch( IOException e )
+        {
+            LOG.error( "Failed to process the DSML", e );
+        }
+        
+        return null;
+    }
+
+
+    /**
+     * processes the DSML batch request and writes the response of each operation will be
+     * written to the given response stream if it is not null
+     *
+     * @param outStream the stream to which the responses will be written, can be null
+     * @throws IOException
+     */
+    protected void processDSML( OutputStream outStream ) throws IOException
+    {
+        BufferedWriter respWriter = null;
+       
+        if ( outStream != null )
+        {
+            respWriter = new BufferedWriter( new OutputStreamWriter( outStream ) );
+
+            if ( generateSoapResp )
+            {
+                respWriter.write( "<Envelope " );
+                
+                Namespace soapNs = new Namespace( null, "http://www.w3.org/2001/12/soap-envelope" );
+                soapNs.write( respWriter );
+
+                respWriter.write( "><Body>" );
+            }
+            
+            respWriter.write( "<batchResponse " );
+            
+            ParserUtils.DSML_NAMESPACE.write( respWriter );
+            
+            respWriter.write( " " ); // a space to separate the namespace declarations
+            
+            ParserUtils.XSD_NAMESPACE.write( respWriter );
+            
+            respWriter.write( " " ); // a space to separate the namespace declarations
+            
+            ParserUtils.XSI_NAMESPACE.write( respWriter );
+            
+            respWriter.write( '>' ); // the end tag
+        }
 
         // Binding to LDAP Server
         try
@@ -212,8 +297,17 @@ public class Dsmlv2Engine
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.COULD_NOT_CONNECT, e
                 .getLocalizedMessage() );
-            batchResponse.addResponse( errorResponse );
-            return batchResponse.toDsml();
+            if ( respWriter != null )
+            {
+                writeResponse( respWriter, errorResponse );
+                respWriter.write( "</batchResponse>" );
+            }
+            else
+            {
+                batchResponse.addResponse( errorResponse );
+            }
+            
+            return;
         }
 
         // Processing BatchRequest:
@@ -228,8 +322,18 @@ public class Dsmlv2Engine
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
                 I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
-            batchResponse.addResponse( errorResponse );
-            return batchResponse.toDsml();
+
+            if ( respWriter != null )
+            {
+                writeResponse( respWriter, errorResponse );
+                respWriter.write( "</batchResponse>" );
+            }
+            else
+            {
+                batchResponse.addResponse( errorResponse );
+            }
+            
+            return;
         }
 
         // Processing each request:
@@ -249,8 +353,17 @@ public class Dsmlv2Engine
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
                 I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
-            batchResponse.addResponse( errorResponse );
-            return batchResponse.toDsml();
+            if ( respWriter != null )
+            {
+                writeResponse( respWriter, errorResponse );
+                respWriter.write( "</batchResponse>" );
+            }
+            else
+            {
+                batchResponse.addResponse( errorResponse );
+            }
+            
+            return;
         }
 
         while ( request != null ) // (Request == null when there's no more request to process)
@@ -263,21 +376,38 @@ public class Dsmlv2Engine
                 // Then we have to send an errorResponse
                 ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, I18n
                     .err( I18n.ERR_03002 ) );
-                batchResponse.addResponse( errorResponse );
-                return batchResponse.toDsml();
+
+                if ( respWriter != null )
+                {
+                    writeResponse( respWriter, errorResponse );
+                }
+                else
+                {
+                    batchResponse.addResponse( errorResponse );
+                }
+                
+                break;
             }
 
             try
             {
-                processRequest( request );
+                processRequest( request, respWriter );
             }
             catch ( Exception e )
             {
                 // We create a new ErrorResponse and return the XML response.
                 ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.GATEWAY_INTERNAL_ERROR, I18n.err(
                     I18n.ERR_03003, e.getMessage() ) );
-                batchResponse.addResponse( errorResponse );
-                return batchResponse.toDsml();
+                if ( respWriter != null )
+                {
+                    writeResponse( respWriter, errorResponse );
+                }
+                else
+                {
+                    batchResponse.addResponse( errorResponse );
+                }
+                
+                break;
             }
 
             // Checking if we need to exit processing (if an error has occurred if onError == Exit)
@@ -296,12 +426,65 @@ public class Dsmlv2Engine
                 // We create a new ErrorResponse and return the XML response.
                 ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
                     I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
-                batchResponse.addResponse( errorResponse );
-                return batchResponse.toDsml();
+                if ( respWriter != null )
+                {
+                    writeResponse( respWriter, errorResponse );
+                }
+                else
+                {
+                    batchResponse.addResponse( errorResponse );
+                }
+                
+                break;
             }
         }
 
-        return batchResponse.toDsml();
+        if ( respWriter != null )
+        {
+            respWriter.write( "</batchResponse>" );
+            
+            if ( generateSoapResp )
+            {
+                respWriter.write( "</Body>" );
+                respWriter.write( "</Envelope>" );
+            }
+
+            respWriter.flush();
+        }
+    }
+    
+    
+    /**
+     * write the response to the writer of the underlying output stream
+     * @param respWriter
+     * @param respDsml
+     * @throws IOException
+     */
+    protected void writeResponse( BufferedWriter respWriter, DsmlDecorator respDsml ) throws IOException
+    {
+        if( respWriter != null )
+        {
+            Element xml = respDsml.toDsml( null );
+            xml.write( respWriter );
+        }
+    }
+    
+
+    /**
+     * @return the generateSoapResp
+     */
+    public boolean isGenerateSoapResp()
+    {
+        return generateSoapResp;
+    }
+
+
+    /**
+     * @param generateSoapResp the generateSoapResp to set
+     */
+    public void setGenerateSoapResp( boolean generateSoapResp )
+    {
+        this.generateSoapResp = generateSoapResp;
     }
 
 
@@ -310,7 +493,7 @@ public class Dsmlv2Engine
      * 
      * @param request the request to process
      */
-    private void processRequest( DsmlDecorator<? extends Request> request ) throws Exception
+    private void processRequest( DsmlDecorator<? extends Request> request, BufferedWriter respWriter  ) throws Exception
     {
         ResultCodeEnum resultCode = null;
 
@@ -322,62 +505,86 @@ public class Dsmlv2Engine
 
             case ADD_REQUEST:
                 AddResponse response = connection.add( ( AddRequest ) request );
+                resultCode = response.getLdapResult().getResultCode();
                 AddResponseDsml addResponseDsml = new AddResponseDsml( connection.getCodecService(), response );
-                batchResponse.addResponse( addResponseDsml );
+                writeResponse( respWriter, addResponseDsml );
 
                 break;
 
             case BIND_REQUEST:
                 BindResponse bindResponse = connection.bind( ( BindRequest ) request );
+                resultCode = bindResponse.getLdapResult().getResultCode();
                 BindResponseDsml authResponseDsml = new BindResponseDsml( connection.getCodecService(), bindResponse );
-                batchResponse.addResponse( authResponseDsml );
+                writeResponse( respWriter, authResponseDsml );
 
                 break;
 
             case COMPARE_REQUEST:
                 CompareResponse compareResponse = connection.compare( ( CompareRequest ) request );
+                resultCode = compareResponse.getLdapResult().getResultCode();
                 CompareResponseDsml compareResponseDsml = new CompareResponseDsml( connection.getCodecService(), compareResponse );
-                batchResponse.addResponse( compareResponseDsml );
+                writeResponse( respWriter, compareResponseDsml );
 
                 break;
 
             case DEL_REQUEST:
                 DeleteResponse delResponse = connection.delete( ( DeleteRequest ) request );
+                resultCode = delResponse.getLdapResult().getResultCode();
                 DelResponseDsml delResponseDsml = new DelResponseDsml( connection.getCodecService(), delResponse );
-                batchResponse.addResponse( delResponseDsml );
+                writeResponse( respWriter, delResponseDsml );
 
                 break;
 
             case EXTENDED_REQUEST:
                 ExtendedResponse extendedResponse = connection.extended( ( ExtendedRequest<?> ) request );
+                resultCode = extendedResponse.getLdapResult().getResultCode();
                 ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml( connection.getCodecService(), extendedResponse );
-                batchResponse.addResponse( extendedResponseDsml );
+                writeResponse( respWriter, extendedResponseDsml );
 
                 break;
 
             case MODIFY_REQUEST:
                 ModifyResponse modifyResponse = connection.modify( ( ModifyRequest ) request );
+                resultCode = modifyResponse.getLdapResult().getResultCode();
                 ModifyResponseDsml modifyResponseDsml = new ModifyResponseDsml( connection.getCodecService(), modifyResponse );
-                batchResponse.addResponse( modifyResponseDsml );
-
+                writeResponse( respWriter, modifyResponseDsml );
+                
                 break;
 
             case MODIFYDN_REQUEST:
                 ModifyDnResponse modifyDnResponse = connection.modifyDn( ( ModifyDnRequest ) request );
+                resultCode = modifyDnResponse.getLdapResult().getResultCode();
                 ModDNResponseDsml modDNResponseDsml = new ModDNResponseDsml( connection.getCodecService(), modifyDnResponse );
-                batchResponse.addResponse( modDNResponseDsml );
-
+                writeResponse( respWriter, modDNResponseDsml );
+                
                 break;
 
             case SEARCH_REQUEST:
-                Cursor<Response> searchResponses = connection.search( ( SearchRequest ) request );
+                SearchCursor searchResponses = connection.search( ( SearchRequest ) request );
+                
+                if ( respWriter != null )
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append( "<searchResponse" );
+                    
+                    if ( request.getDecorated().getMessageId() > 0 )
+                    {
+                        sb.append( " requestID=\"" );
+                        sb.append( request.getDecorated().getMessageId() );
+                        sb.append( '"' );
+                    }
+                    
+                    sb.append( '>' );
+                    
+                    respWriter.write( sb.toString() );
+                }
 
+                SearchResponseDsml searchResponseDsml = new SearchResponseDsml( connection.getCodecService() );
+                searchResponseDsml.setMessageId( request.getDecorated().getMessageId() );
+                
                 while ( searchResponses.next() )
                 {
                     Response searchResponse = searchResponses.get();
-                    SearchResponseDsml searchResponseDsml = null;
-
-                    int requestID = searchResponse.getMessageId();
 
                     if ( searchResponse.getType() == MessageTypeEnum.SEARCH_RESULT_ENTRY )
                     {
@@ -387,12 +594,14 @@ public class Dsmlv2Engine
                             connection.getCodecService(), searchResultEntry );
                         searchResponseDsml = new SearchResponseDsml( connection.getCodecService(), searchResultEntryDsml );
 
-                        if ( requestID > 0 )
+                        if ( respWriter != null )
                         {
-                            searchResponseDsml.setMessageId( requestID );
+                            writeResponse( respWriter, searchResultEntryDsml );
                         }
-
-                        searchResponseDsml.addResponse( searchResultEntryDsml );
+                        else
+                        {
+                            searchResponseDsml.addResponse( searchResultEntryDsml );
+                        }
                     }
                     else if ( searchResponse.getType() == MessageTypeEnum.SEARCH_RESULT_REFERENCE )
                     {
@@ -402,17 +611,32 @@ public class Dsmlv2Engine
                             connection.getCodecService(), searchResultReference );
                         searchResponseDsml = new SearchResponseDsml( connection.getCodecService(), searchResultReferenceDsml );
 
-                        if ( requestID > 0 )
+                        if ( respWriter != null )
                         {
-                            searchResponseDsml.setMessageId( requestID );
+                            writeResponse( respWriter, searchResultReferenceDsml );
                         }
-
-                        searchResponseDsml.addResponse( searchResultReferenceDsml );
+                        else
+                        {
+                            searchResponseDsml.addResponse( searchResultReferenceDsml );
+                        }
                     }
-
-                    batchResponse.addResponse( searchResponseDsml );
                 }
 
+                SearchResultDone srDone = searchResponses.getSearchResultDone();
+                resultCode = srDone.getLdapResult().getResultCode();
+                
+                SearchResultDoneDsml srdDsml = new SearchResultDoneDsml( connection.getCodecService(), srDone );
+                writeResponse( respWriter, srdDsml);
+
+                if ( respWriter != null )
+                {
+                    respWriter.write( "</searchResponse>" );
+                }
+                else
+                {
+                    batchResponse.addResponse( searchResponseDsml );
+                }
+                
                 break;
 
             case UNBIND_REQUEST:
@@ -423,7 +647,7 @@ public class Dsmlv2Engine
                 throw new IllegalStateException( "Unexpected request tpye " + request.getDecorated().getType() );
         }
 
-        if ( ( !continueOnError ) && ( resultCode != ResultCodeEnum.SUCCESS )
+        if ( ( !continueOnError ) && ( resultCode != null ) && ( resultCode != ResultCodeEnum.SUCCESS )
             && ( resultCode != ResultCodeEnum.COMPARE_TRUE ) && ( resultCode != ResultCodeEnum.COMPARE_FALSE )
             && ( resultCode != ResultCodeEnum.REFERRAL ) )
         {
@@ -462,7 +686,10 @@ public class Dsmlv2Engine
 
         if ( batchRequest.getRequestID() != 0 )
         {
-            batchResponse.setRequestID( batchRequest.getRequestID() );
+            if ( batchResponse != null )
+            {
+                batchResponse.setRequestID( batchRequest.getRequestID() );
+            }
         }
     }
 
@@ -477,6 +704,11 @@ public class Dsmlv2Engine
      */
     private void bind( int messageId ) throws LdapException, EncoderException, DecoderException, IOException
     {
+        if ( ( connection != null ) && connection.isAuthenticated() )
+        {
+            return;
+        }
+        
         BindRequest bindRequest = new BindRequestImpl();
         bindRequest.setSimple( true );
         bindRequest.setCredentials( Strings.getBytesUtf8(password) );
@@ -488,7 +720,7 @@ public class Dsmlv2Engine
 
         if ( bindResponse.getLdapResult().getResultCode() != ResultCodeEnum.SUCCESS )
         {
-            System.err.println( "Error : " + bindResponse.getLdapResult().getErrorMessage() );
+            LOG.warn( "Error : {}", bindResponse.getLdapResult().getErrorMessage() );
         }
     }
 }
