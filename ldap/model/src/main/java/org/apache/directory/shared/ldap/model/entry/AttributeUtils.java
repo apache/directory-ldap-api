@@ -1104,7 +1104,7 @@ public final class AttributeUtils
             for ( Iterator<Value<?>> valueIterator = entryAttribute.iterator(); valueIterator.hasNext(); )
             {
                 Value<?> value = valueIterator.next();
-                attribute.add( value.get() );
+                attribute.add( value.getValue() );
             }
 
             return attribute;

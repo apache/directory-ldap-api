@@ -328,7 +328,7 @@ public class CompareRequestTest extends AbstractTest
 
         assertEquals( "sn", compareRequest.getAttributeId() );
 
-        assertEquals( "Johnson", compareRequest.getAssertionValue().get() );
+        assertEquals( "Johnson", compareRequest.getAssertionValue().getValue() );
     }
 
 

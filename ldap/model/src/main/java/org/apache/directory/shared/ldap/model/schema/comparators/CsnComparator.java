@@ -85,7 +85,7 @@ public class CsnComparator extends LdapComparator<Object>
         
         if ( csnObj1 instanceof StringValue )
         {
-            csnStr1 = ( ( StringValue ) csnObj1 ).get();
+            csnStr1 = ( ( StringValue ) csnObj1 ).getValue();
         }
         else
         {
@@ -94,7 +94,7 @@ public class CsnComparator extends LdapComparator<Object>
 
         if ( csnObj2 instanceof StringValue )
         {
-            csnStr2 = ( (StringValue) csnObj2 ).get();
+            csnStr2 = ( (StringValue) csnObj2 ).getValue();
         }
         else
         {

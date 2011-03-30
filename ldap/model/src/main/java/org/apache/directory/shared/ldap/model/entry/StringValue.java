@@ -108,7 +108,7 @@ public class StringValue extends AbstractValue<String>
     /**
      * {@inheritDoc}
      */
-    public String get()
+    public String getValue()
     {
         // The String is immutable, we can safely return the internal
         // object without copying it.
@@ -331,7 +331,7 @@ public class StringValue extends AbstractValue<String>
                     else
                     {
                         Normalizer normalizer = attributeType.getEquality().getNormalizer();
-                        return comparator.compare( normalizer.normalize( get() ), normalizer.normalize( other.get() ) ) == 0;
+                        return comparator.compare( normalizer.normalize( getValue() ), normalizer.normalize( other.getValue() ) ) == 0;
                     }
                 }
             }

@@ -328,7 +328,7 @@ public class BinaryValue extends AbstractValue<byte[]>
     /**
      * {@inheritDoc}
      */
-    public byte[] get()
+    public byte[] getValue()
     {
         if ( wrappedValue == null )
         {
@@ -370,7 +370,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      */
     public byte[] getBytes()
     {
-        return get();
+        return getValue();
     }
 
 

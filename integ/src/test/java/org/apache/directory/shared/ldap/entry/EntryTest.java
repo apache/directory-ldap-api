@@ -336,7 +336,7 @@ public class EntryTest
         EntryAttribute attributePWD = entry.get( "userPassword" );
         assertEquals( 1, attributePWD.size() );
         assertNotNull( attributePWD.get() );
-        assertNull( attributePWD.get().get() );
+        assertNull( attributePWD.get().getValue() );
         
         entry.add( "jpegPhoto", BYTES1, BYTES1, BYTES2 );
         assertEquals( 2, entry.size() );
@@ -361,7 +361,7 @@ public class EntryTest
         EntryAttribute attributeCN = entry.get( "cn" );
         assertEquals( 1, attributeCN.size() );
         assertNotNull( attributeCN.get() );
-        assertNull( attributeCN.get().get() );
+        assertNull( attributeCN.get().getValue() );
         
         entry.add( "sn", "test", "test", "TEST" );
         assertEquals( 2, entry.size() );
@@ -388,7 +388,7 @@ public class EntryTest
         EntryAttribute attributeCN = entry.get( "cn" );
         assertEquals( 1, attributeCN.size() );
         assertNotNull( attributeCN.get() );
-        assertNull( attributeCN.get().get() );
+        assertNull( attributeCN.get().getValue() );
         
         Value<String> value1 = new StringValue( "test1" );
         Value<String> value2 = new StringValue( "test2" );
@@ -861,7 +861,7 @@ public class EntryTest
         assertEquals( 1, entry.size() );
         assertNotNull( entry.get( "userPassword" ) );
         assertEquals( 1, entry.get( "userPassword" ).size() );
-        assertNull( entry.get( "userPassword" ).get().get() );
+        assertNull( entry.get( "userPassword" ).get().getValue() );
         
         entry.put(  "jpegPhoto", BYTES1, BYTES2, BYTES1 );
         assertEquals( 2, entry.size() );
@@ -907,7 +907,7 @@ public class EntryTest
         assertEquals( 1, entry.size() );
         assertNotNull( "sn", entry.get( "sn" ) );
         assertEquals( 1, entry.get( "sn" ).size() );
-        assertNull( entry.get( "sn" ).get().get() );
+        assertNull( entry.get( "sn" ).get().getValue() );
         
         entry.put(  "ObjectClass", "top", "person", "top" );
         assertEquals( 2, entry.size() );
@@ -963,7 +963,7 @@ public class EntryTest
         assertEquals( 1, entry.size() );
         assertNotNull( "sn", entry.get( "sn" ) );
         assertEquals( 1, entry.get( "sn" ).size() );
-        assertNull( entry.get( "sn" ).get().get() );
+        assertNull( entry.get( "sn" ).get().getValue() );
         
         entry.clear();
         
@@ -984,7 +984,7 @@ public class EntryTest
         assertEquals( 1, entry.size() );
         assertNotNull( "userpassword", entry.get( "userpassword" ) );
         assertEquals( 1, entry.get( "userpassword" ).size() );
-        assertNull( entry.get( "userpassword" ).get().get() );
+        assertNull( entry.get( "userpassword" ).get().getValue() );
         
         entry.clear();
         

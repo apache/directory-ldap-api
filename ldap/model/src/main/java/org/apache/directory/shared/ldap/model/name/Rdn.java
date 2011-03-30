@@ -634,7 +634,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
             case 1:
                 if ( Strings.equals( ava.getNormType(), normalizedType ) )
                 {
-                    return ava.getNormValue().get();
+                    return ava.getNormValue().getValue();
                 }
 
                 return "";

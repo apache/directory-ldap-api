@@ -183,7 +183,7 @@ public class StringValueAttributeTypeTest
         
         StringValue value = new StringValue( attribute, null );
         
-        assertNull( value.get() );
+        assertNull( value.getValue() );
         assertTrue( value.isNull() );
     }
     
@@ -485,7 +485,7 @@ public class StringValueAttributeTypeTest
 
         // check that normalization and syntax checks work as expected
         StringValue value = new StringValue( at, "HIGH" );
-        assertEquals( value.get(), value.get() );
+        assertEquals( value.getValue(), value.getValue() );
         
         try
         {  
@@ -556,7 +556,7 @@ public class StringValueAttributeTypeTest
     {
         // check that normalization and syntax checks work as expected
         StringValue value = new StringValue( at, "hello" );
-        assertEquals( value.get(), value.get() );
+        assertEquals( value.getValue(), value.getValue() );
 
         // create a bunch to best tested for equals and in containers
         StringValue v0 = new StringValue( at, "hello" );
@@ -695,7 +695,7 @@ public class StringValueAttributeTypeTest
         String normalized = ssv.getNormValue();
         
         assertNull( normalized );
-        assertNull( ssv.get() );
+        assertNull( ssv.getValue() );
         
         StringValue ssvSer = deserializeValue( serializeValue( ssv ) );
         

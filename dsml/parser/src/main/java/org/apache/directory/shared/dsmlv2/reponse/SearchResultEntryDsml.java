@@ -150,7 +150,7 @@ public class SearchResultEntryDsml
 
             for ( Value<?> value : attribute )
             {
-                if ( ParserUtils.needsBase64Encoding( value.get() ) )
+                if ( ParserUtils.needsBase64Encoding( value.getValue() ) )
                 {
                     Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
                     Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
@@ -158,7 +158,7 @@ public class SearchResultEntryDsml
                     attributeElement.getDocument().getRootElement().add( xsiNamespace );
 
                     Element valueElement = attributeElement.addElement( "value" ).addText(
-                        ParserUtils.base64Encode( value.get() ) );
+                        ParserUtils.base64Encode( value.getValue() ) );
                     valueElement.addAttribute( new QName( "type", xsiNamespace ), ParserUtils.XSD + ":"
                         + ParserUtils.BASE64BINARY );
                 }

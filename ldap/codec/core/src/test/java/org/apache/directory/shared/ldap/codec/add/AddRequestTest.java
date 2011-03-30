@@ -162,9 +162,9 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         for ( Value<?> value : attribute )
         {
-            assertTrue( vals.contains( value.get() ) );
+            assertTrue( vals.contains( value.getValue() ) );
 
-            vals.remove( value.get() );
+            vals.remove( value.getValue() );
         }
 
         attribute = entry.get( "attrs" );
@@ -175,9 +175,9 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         for ( Value<?> value : attribute )
         {
-            assertTrue( vals.contains( value.get() ) );
+            assertTrue( vals.contains( value.getValue() ) );
 
-            vals.remove( value.get() );
+            vals.remove( value.getValue() );
         }
 
         // Check the encoding

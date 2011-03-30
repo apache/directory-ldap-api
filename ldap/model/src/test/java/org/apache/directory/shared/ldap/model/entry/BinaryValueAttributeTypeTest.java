@@ -259,7 +259,7 @@ public class BinaryValueAttributeTypeTest
         bv = new BinaryValue( val );
         assertTrue( Arrays.equals( val, bv.getReference() ) );
         assertFalse( bv.isNull() );
-        assertTrue( Arrays.equals( val, bv.get() ) );
+        assertTrue( Arrays.equals( val, bv.getValue() ) );
     }
     
     
@@ -274,7 +274,7 @@ public class BinaryValueAttributeTypeTest
         
         assertTrue( Arrays.equals( val, value.getReference() ) );
         assertFalse( value.isNull() );
-        assertTrue( Arrays.equals( val, value.get() ) );
+        assertTrue( Arrays.equals( val, value.getValue() ) );
     }
     
     
@@ -587,7 +587,7 @@ public class BinaryValueAttributeTypeTest
         byte[] normalized = sbv.getNormReference();
         
         assertEquals( null, normalized );
-        assertEquals( null, sbv.get() );
+        assertEquals( null, sbv.getValue() );
         
         BinaryValue sbvSer = deserializeValue( serializeValue( sbv ), at );
         

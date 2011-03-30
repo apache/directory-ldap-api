@@ -70,11 +70,11 @@ public class AttributeValueAssertion
             }
             else if ( object instanceof StringValue)
             {
-                return ( (StringValue) object ).get();
+                return ( (StringValue) object ).getValue();
             }
             else if ( object instanceof BinaryValue )
             {
-                return Strings.dumpBytes(((BinaryValue) object).get());
+                return Strings.dumpBytes(((BinaryValue) object).getValue());
             }
             else
             {

@@ -93,7 +93,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      *
      * @return a copy of the wrapped value
      */
-    T get();
+    T getValue();
     
     
     /**

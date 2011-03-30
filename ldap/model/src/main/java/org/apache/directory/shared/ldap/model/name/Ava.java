@@ -774,7 +774,7 @@ public class Ava implements Externalizable, Cloneable
                 
                 if ( equalityMatchingRule != null )
                 {
-                    return equalityMatchingRule.getLdapComparator().compare( normValue.get(), instance.normValue.get() ) == 0;
+                    return equalityMatchingRule.getLdapComparator().compare( normValue.getValue(), instance.normValue.getValue() ) == 0;
                 }
                 
                 return false;

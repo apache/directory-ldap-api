@@ -316,7 +316,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
 
         if ( attrVal.isHR() )
         {
-            sb.append( attrVal.get() );
+            sb.append( attrVal.getValue() );
         }
         else
         {

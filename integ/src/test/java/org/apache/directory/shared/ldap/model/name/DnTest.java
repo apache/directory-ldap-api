@@ -2556,7 +2556,7 @@ public class DnTest
         assertEquals( "cn=loopback+iphostnumber=127.0.0.1,ou=Hosts,dc=mygfs,dc=com", dn1.getNormName() );
         assertEquals( "cn=loopback+ipHostNumber=127.0.0.1", dn1.getRdn().getName() );
         assertEquals( "cn=loopback+iphostnumber=127.0.0.1", dn1.getRdn().getNormName() );
-        assertEquals( "127.0.0.1", dn1.getRdn().getAva( "ipHostNumber" ).getUpValue().get() );
+        assertEquals( "127.0.0.1", dn1.getRdn().getAva( "ipHostNumber" ).getUpValue().getValue() );
 
         // numeric OID with suffix
         Dn dn2 = new Dn( "cn=loopback+ipHostNumber=X127.0.0.1,ou=Hosts,dc=mygfs,dc=com" );
@@ -2602,10 +2602,10 @@ public class DnTest
 
         assertEquals( "2.5.4.11=example", atav.getNormName() );
         assertEquals( "2.5.4.11", atav.getNormType() );
-        assertEquals( "example", atav.getNormValue().get() );
+        assertEquals( "example", atav.getNormValue().getValue() );
 
         assertEquals( "ou", atav.getUpType() );
-        assertEquals( "Example", atav.getUpValue().get() );
+        assertEquals( "Example", atav.getUpValue().getValue() );
 
         assertEquals( "  ou  =  Example ", atav.getUpName() );
     }
@@ -2633,10 +2633,10 @@ public class DnTest
 
         assertEquals( "2.5.4.11=example", atav.getNormName() );
         assertEquals( "2.5.4.11", atav.getNormType() );
-        assertEquals( "example", atav.getNormValue().get() );
+        assertEquals( "example", atav.getNormValue().getValue() );
 
         assertEquals( "ou", atav.getUpType() );
-        assertEquals( "Example", atav.getUpValue().get() );
+        assertEquals( "Example", atav.getUpValue().getValue() );
 
         assertEquals( "  ou  =  Example ", atav.getUpName() );
 
@@ -2645,7 +2645,7 @@ public class DnTest
         // The second ATAV
         for ( Ava ava : rdn )
         {
-            if ( "example".equals( ava.getNormValue().get() ) )
+            if ( "example".equals( ava.getNormValue().getValue() ) )
             {
                 // Skip the first one
                 continue;
@@ -2653,10 +2653,10 @@ public class DnTest
 
             assertEquals( "2.5.4.11=test", ava.getNormName() );
             assertEquals( "2.5.4.11", ava.getNormType() );
-            assertEquals( "test", ava.getNormValue().get() );
+            assertEquals( "test", ava.getNormValue().getValue() );
 
             assertEquals( "ou", ava.getUpType() );
-            assertEquals( "TEST", ava.getUpValue().get() );
+            assertEquals( "TEST", ava.getUpValue().getValue() );
             assertEquals( " ou = TEST ", ava.getUpName() );
         }
     }
@@ -2683,10 +2683,10 @@ public class DnTest
 
         assertEquals( "2.5.4.11=ex\\+mple", atav.getNormName() );
         assertEquals( "2.5.4.11", atav.getNormType() );
-        assertEquals( "ex+mple", atav.getNormValue().get() );
+        assertEquals( "ex+mple", atav.getNormValue().getValue() );
 
         assertEquals( "ou", atav.getUpType() );
-        assertEquals( "Ex+mple", atav.getUpValue().get() );
+        assertEquals( "Ex+mple", atav.getUpValue().getValue() );
 
         assertEquals( "  ou  =  Ex\\+mple ", atav.getUpName() );
     }
@@ -2722,15 +2722,15 @@ public class DnTest
         assertEquals( "ou", atav.getNormType() );
         assertEquals( "OU", atav.getUpType() );
 
-        assertEquals( "Ex+mple", atav.getUpValue().get() );
-        assertEquals( "Ex+mple", atav.getNormValue().get() );
+        assertEquals( "Ex+mple", atav.getUpValue().getValue() );
+        assertEquals( "Ex+mple", atav.getNormValue().getValue() );
 
         assertEquals( 2, rdn.size() );
 
         // The second ATAV
         for ( Ava ava : rdn )
         {
-            if ( "Ex+mple".equals( ava.getNormValue().get() ) )
+            if ( "Ex+mple".equals( ava.getNormValue().getValue() ) )
             {
                 // Skip the first one
                 continue;
@@ -2742,8 +2742,8 @@ public class DnTest
             assertEquals( "ou", ava.getUpType() );
             assertEquals( "ou", ava.getNormType() );
 
-            assertEquals( "T+ST ", ava.getUpValue().get() );
-            assertEquals( "T+ST ", ava.getNormValue().get() );
+            assertEquals( "T+ST ", ava.getUpValue().getValue() );
+            assertEquals( "T+ST ", ava.getNormValue().getValue() );
         }
 
         // ------------------------------------------------------------------
@@ -2773,15 +2773,15 @@ public class DnTest
         assertEquals( "2.5.4.11", atav.getNormType() );
         assertEquals( "OU", atav.getUpType() );
 
-        assertEquals( "Ex+mple", atav.getUpValue().get() );
-        assertEquals( "ex+mple", atav.getNormValue().get() );
+        assertEquals( "Ex+mple", atav.getUpValue().getValue() );
+        assertEquals( "ex+mple", atav.getNormValue().getValue() );
 
         assertEquals( 2, rdn.size() );
 
         // The second ATAV
         for ( Ava ava : rdn )
         {
-            if ( "ex+mple".equals( ava.getNormValue().get() ) )
+            if ( "ex+mple".equals( ava.getNormValue().getValue() ) )
             {
                 // Skip the first one
                 continue;
@@ -2793,8 +2793,8 @@ public class DnTest
             assertEquals( "ou", ava.getUpType() );
             assertEquals( "2.5.4.11", ava.getNormType() );
 
-            assertEquals( "T+ST ", ava.getUpValue().get() );
-            assertEquals( "t+st", ava.getNormValue().get() );
+            assertEquals( "T+ST ", ava.getUpValue().getValue() );
+            assertEquals( "t+st", ava.getNormValue().getValue() );
         }
     }
 

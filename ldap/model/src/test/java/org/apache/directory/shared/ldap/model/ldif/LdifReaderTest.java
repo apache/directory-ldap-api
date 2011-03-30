@@ -532,10 +532,10 @@ public class LdifReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "dependencies" );
-        assertNull( attr.get().get() );
+        assertNull( attr.get().getValue() );
 
         attr = entry.get( "envvars" );
-        assertNull( attr.get().get() );
+        assertNull( attr.get().getValue() );
     }
 
 
@@ -578,10 +578,10 @@ public class LdifReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "dependencies" );
-        assertNull( attr.get().get() );
+        assertNull( attr.get().getValue() );
 
         attr = entry.get( "envvars" );
-        assertNull( attr.get().get() );
+        assertNull( attr.get().getValue() );
     }
 
 
@@ -624,10 +624,10 @@ public class LdifReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "dependencies" );
-        assertNull( attr.get().get() );
+        assertNull( attr.get().getValue() );
 
         attr = entry.get( "envvars" );
-        assertNull( attr.get().get() );
+        assertNull( attr.get().getValue() );
     }
 
 
@@ -669,10 +669,10 @@ public class LdifReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "dependencies" );
-        assertNull( attr.get().get() );
+        assertNull( attr.get().getValue() );
 
         attr = entry.get( "envvars" );
-        assertNull( attr.get().get() );
+        assertNull( attr.get().getValue() );
     }
 
 
@@ -715,10 +715,10 @@ public class LdifReaderTest
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "dependencies" );
-        assertNull( attr.get().get() );
+        assertNull( attr.get().getValue() );
 
         attr = entry.get( "envvars" );
-        assertNull( attr.get().get() );
+        assertNull( attr.get().getValue() );
     }
 
 

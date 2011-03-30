@@ -250,7 +250,7 @@ public class BinaryValueTest
     {
         BinaryValue cbv = new BinaryValue( (byte[])null );
         
-        assertNull( cbv.get() );
+        assertNull( cbv.getValue() );
         assertFalse( cbv.isSchemaAware() );
         assertTrue( cbv.isValid( BINARY_CHECKER ) );
         assertTrue( cbv.isNull() );
@@ -264,7 +264,7 @@ public class BinaryValueTest
         BinaryValue cbv = new BinaryValue( StringConstants.EMPTY_BYTES );
         
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getBytes() ) );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.get() ) );
+        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getValue() ) );
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, cbv.getReference() ) );
         assertFalse( cbv.isSchemaAware() );
         assertTrue( cbv.isValid( BINARY_CHECKER ) );
@@ -281,7 +281,7 @@ public class BinaryValueTest
         BinaryValue cbv = new BinaryValue( BYTES1 );
         
         assertTrue( Arrays.equals( BYTES1, cbv.getBytes() ) );
-        assertTrue( Arrays.equals( BYTES1, cbv.get() ) );
+        assertTrue( Arrays.equals( BYTES1, cbv.getValue() ) );
         assertTrue( Arrays.equals( BYTES1, cbv.getReference() ) );
         assertFalse( cbv.isSchemaAware() );
         assertTrue( cbv.isValid( BINARY_CHECKER ) );
@@ -299,7 +299,7 @@ public class BinaryValueTest
         bv = new BinaryValue( BYTES1 );
         
         assertTrue( Arrays.equals( BYTES1, bv.getBytes() ) );
-        assertTrue( Arrays.equals( BYTES1, bv.get() ) );
+        assertTrue( Arrays.equals( BYTES1, bv.getValue() ) );
         assertTrue( Arrays.equals( BYTES1, bv.getReference() ) );
         assertFalse( bv.isSchemaAware() );
         assertTrue( bv.isValid( BINARY_CHECKER ) );
@@ -315,7 +315,7 @@ public class BinaryValueTest
         BinaryValue cbv = new BinaryValue( BYTES2 );
         
         assertTrue( Arrays.equals( BYTES2, cbv.getBytes() ) );
-        assertTrue( Arrays.equals( BYTES2, cbv.get() ) );
+        assertTrue( Arrays.equals( BYTES2, cbv.getValue() ) );
         assertTrue( Arrays.equals( BYTES2, cbv.getReference() ) );
         assertFalse( cbv.isSchemaAware() );
         assertTrue( cbv.isValid( BINARY_CHECKER ) );
@@ -430,14 +430,14 @@ public class BinaryValueTest
     {
         BinaryValue bv = new BinaryValue( (byte[])null );
         
-        assertNull( bv.get() );
+        assertNull( bv.getValue() );
         
         bv = new BinaryValue( StringConstants.EMPTY_BYTES );
-        assertNotNull( bv.get() );
-        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.get() ) );
+        assertNotNull( bv.getValue() );
+        assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getValue() ) );
         
         bv = new BinaryValue( BYTES1 );
-        byte[] copy = bv.get();
+        byte[] copy = bv.getValue();
         
         assertTrue( Arrays.equals( BYTES1, copy ) );
 
@@ -520,10 +520,10 @@ public class BinaryValueTest
     {
         BinaryValue bv = new BinaryValue( (byte[])null );
         
-        assertNull( bv.get() );
+        assertNull( bv.getValue() );
         
         bv = new BinaryValue( StringConstants.EMPTY_BYTES );
-        assertNotNull( bv.get() );
+        assertNotNull( bv.getValue() );
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getBytes() ) );
         
         bv = new BinaryValue( BYTES1 );
@@ -649,7 +649,7 @@ public class BinaryValueTest
         bv = new BinaryValue( BYTES2 );
         bv.apply( at );
         assertTrue( bv.isSchemaAware() );
-        assertTrue( Arrays.equals( BYTES2, bv.get() ) );
+        assertTrue( Arrays.equals( BYTES2, bv.getValue() ) );
         assertTrue( Arrays.equals( BYTES1, bv.getNormValue() ) );
     }
 
@@ -659,20 +659,20 @@ public class BinaryValueTest
     {
         BinaryValue bv = new BinaryValue( (byte[])null );
         
-        assertNull( bv.get() );
+        assertNull( bv.getValue() );
         assertFalse( bv.isSchemaAware() );
         assertTrue( bv.isValid( BINARY_CHECKER ) );
         assertTrue( bv.isNull() );
 
         bv = new BinaryValue( StringConstants.EMPTY_BYTES );
-        assertNotNull( bv.get() );
+        assertNotNull( bv.getValue() );
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, bv.getBytes() ) );
         assertFalse( bv.isSchemaAware() );
         assertTrue( bv.isValid( BINARY_CHECKER ) );
         assertFalse( bv.isNull() );
 
         bv = new BinaryValue( BYTES1 );
-        assertNotNull( bv.get() );
+        assertNotNull( bv.getValue() );
         assertTrue( Arrays.equals( BYTES1, bv.getBytes() ) );
         assertFalse( bv.isSchemaAware() );
         assertTrue( bv.isValid( BINARY_CHECKER ) );
@@ -717,7 +717,7 @@ public class BinaryValueTest
         assertTrue( Arrays.equals( BYTES1, bv.getNormValue() ) );
         assertTrue( bv.isSchemaAware() );
         
-        assertTrue( Arrays.equals( BYTES2, bv.get() ) );
+        assertTrue( Arrays.equals( BYTES2, bv.getValue() ) );
     }
     
     
