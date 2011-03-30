@@ -237,7 +237,7 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      * @return True if the current attribute is of the expected attributeType
      * @throws LdapInvalidAttributeValueException If there is no AttributeType
      */
-    boolean instanceOf( String attributeId ) throws LdapInvalidAttributeValueException;
+    boolean isInstanceOf( String attributeId ) throws LdapInvalidAttributeValueException;
 
     
     /**

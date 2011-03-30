@@ -2083,7 +2083,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @return True if the current attribute is of the expected attributeType
      * @throws LdapInvalidAttributeValueException If there is no AttributeType
      */
-    public boolean instanceOf( String attributeId ) throws LdapInvalidAttributeValueException
+    public boolean isInstanceOf( String attributeId ) throws LdapInvalidAttributeValueException
     {
         String trimmedId = Strings.trim(attributeId);
         
