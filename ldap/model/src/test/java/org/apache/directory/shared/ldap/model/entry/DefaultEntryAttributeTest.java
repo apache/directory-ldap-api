@@ -166,7 +166,7 @@ public class DefaultEntryAttributeTest
     {
         EntryAttribute attr = new DefaultEntryAttribute();
         
-        assertFalse( attr.isHR() );
+        assertFalse( attr.isHumanReadable() );
         assertEquals( 0, attr.size() );
         assertNull( attr.getId() );
         assertNull( attr.getUpId() );
@@ -181,7 +181,7 @@ public class DefaultEntryAttributeTest
     {
         EntryAttribute attr = new DefaultEntryAttribute( "TEST" );
         
-        assertFalse( attr.isHR() );
+        assertFalse( attr.isHumanReadable() );
         assertEquals( 0, attr.size() );
         assertEquals( "test", attr.getId() );
         assertEquals( "TEST", attr.getUpId() );
@@ -196,7 +196,7 @@ public class DefaultEntryAttributeTest
     {
         EntryAttribute attr = new DefaultEntryAttribute( "Test", STR_VALUE1, STR_VALUE2 );
         
-        assertTrue( attr.isHR() );
+        assertTrue( attr.isHumanReadable() );
         assertEquals( 2, attr.size() );
         assertTrue( attr.contains( "a" ) );
         assertTrue( attr.contains( "b" ) );
@@ -213,7 +213,7 @@ public class DefaultEntryAttributeTest
     {
         EntryAttribute attr = new DefaultEntryAttribute( "Test", "a", "b" );
         
-        assertTrue( attr.isHR() );
+        assertTrue( attr.isHumanReadable() );
         assertEquals( 2, attr.size() );
         assertTrue( attr.contains( "a" ) );
         assertTrue( attr.contains( "b" ) );
@@ -230,7 +230,7 @@ public class DefaultEntryAttributeTest
     {
         EntryAttribute attr = new DefaultEntryAttribute( "Test", BYTES1, BYTES2 );
         
-        assertFalse( attr.isHR() );
+        assertFalse( attr.isHumanReadable() );
         assertEquals( 2, attr.size() );
         assertTrue( attr.contains( BYTES1 ) );
         assertTrue( attr.contains( BYTES2 ) );
@@ -484,21 +484,21 @@ public class DefaultEntryAttributeTest
         
         int nbAdded = attr1.add( new StringValue( (String)null ) );
         assertEquals( 1, nbAdded );
-        assertTrue( attr1.isHR() );
+        assertTrue( attr1.isHumanReadable() );
         assertEquals( NULL_STRING_VALUE, attr1.get() );
         
         EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr2.add( new BinaryValue( (byte[])null ) );
         assertEquals( 1, nbAdded );
-        assertFalse( attr2.isHR() );
+        assertFalse( attr2.isHumanReadable() );
         assertEquals( NULL_BINARY_VALUE, attr2.get() );
         
         EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr3.add( new StringValue( "a" ), new StringValue( "b" ) );
         assertEquals( 2, nbAdded );
-        assertTrue( attr3.isHR() );
+        assertTrue( attr3.isHumanReadable() );
         assertTrue( attr3.contains( "a" ) );
         assertTrue( attr3.contains( "b" ) );
         
@@ -506,7 +506,7 @@ public class DefaultEntryAttributeTest
         
         nbAdded = attr4.add( new BinaryValue( BYTES1 ), new BinaryValue( BYTES2 ) );
         assertEquals( 2, nbAdded );
-        assertFalse( attr4.isHR() );
+        assertFalse( attr4.isHumanReadable() );
         assertTrue( attr4.contains( BYTES1 ) );
         assertTrue( attr4.contains( BYTES2 ) );
         
@@ -514,7 +514,7 @@ public class DefaultEntryAttributeTest
         
         nbAdded = attr5.add( new StringValue( "c" ), new BinaryValue( BYTES1 ) );
         assertEquals( 2, nbAdded );
-        assertTrue( attr5.isHR() );
+        assertTrue( attr5.isHumanReadable() );
         assertTrue( attr5.contains( "ab" ) );
         assertTrue( attr5.contains( "c" ) );
 
@@ -522,7 +522,7 @@ public class DefaultEntryAttributeTest
         
         nbAdded = attr6.add( new BinaryValue( BYTES1 ), new StringValue( "c" ) );
         assertEquals( 2, nbAdded );
-        assertFalse( attr6.isHR() );
+        assertFalse( attr6.isHumanReadable() );
         assertTrue( attr6.contains( BYTES1 ) );
         assertTrue( attr6.contains( BYTES3 ) );
 
@@ -530,7 +530,7 @@ public class DefaultEntryAttributeTest
         
         nbAdded = attr7.add( new BinaryValue( (byte[])null ), new StringValue( "c" ) );
         assertEquals( 2, nbAdded );
-        assertFalse( attr7.isHR() );
+        assertFalse( attr7.isHumanReadable() );
         assertTrue( attr7.contains( NULL_BINARY_VALUE ) );
         assertTrue( attr7.contains( BYTES3 ) );
 
@@ -538,7 +538,7 @@ public class DefaultEntryAttributeTest
         
         nbAdded = attr8.add( new StringValue( (String)null ), new BinaryValue( BYTES1 ) );
         assertEquals( 2, nbAdded );
-        assertTrue( attr8.isHR() );
+        assertTrue( attr8.isHumanReadable() );
         assertTrue( attr8.contains( NULL_STRING_VALUE ) );
         assertTrue( attr8.contains( "ab" ) );
     }
@@ -554,28 +554,28 @@ public class DefaultEntryAttributeTest
         
         int nbAdded = attr1.add( (String)null );
         assertEquals( 1, nbAdded );
-        assertTrue( attr1.isHR() );
+        assertTrue( attr1.isHumanReadable() );
         assertEquals( NULL_STRING_VALUE, attr1.get() );
         
         EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr2.add( "" );
         assertEquals( 1, nbAdded );
-        assertTrue( attr2.isHR() );
+        assertTrue( attr2.isHumanReadable() );
         assertEquals( "", attr2.getString() );
         
         EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr3.add( "t" );
         assertEquals( 1, nbAdded );
-        assertTrue( attr3.isHR() );
+        assertTrue( attr3.isHumanReadable() );
         assertEquals( "t", attr3.getString() );
         
         EntryAttribute attr4 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr4.add( "a", "b", "c", "d" );
         assertEquals( 4, nbAdded );
-        assertTrue( attr4.isHR() );
+        assertTrue( attr4.isHumanReadable() );
         assertEquals( "a", attr4.getString() );
         assertTrue( attr4.contains( "a" ) );
         assertTrue( attr4.contains( "b" ) );
@@ -584,7 +584,7 @@ public class DefaultEntryAttributeTest
         
         nbAdded = attr4.add( "e" );
         assertEquals( 1, nbAdded );
-        assertTrue( attr4.isHR() );
+        assertTrue( attr4.isHumanReadable() );
         assertEquals( "a", attr4.getString() );
         assertTrue( attr4.contains( "a" ) );
         assertTrue( attr4.contains( "b" ) );
@@ -594,7 +594,7 @@ public class DefaultEntryAttributeTest
         
         nbAdded = attr4.add( BYTES1 );
         assertEquals( 0, nbAdded );
-        assertTrue( attr4.isHR() );
+        assertTrue( attr4.isHumanReadable() );
         assertEquals( "a", attr4.getString() );
         assertTrue( attr4.contains( "a" ) );
         assertTrue( attr4.contains( "b" ) );
@@ -607,7 +607,7 @@ public class DefaultEntryAttributeTest
         
         nbAdded = attr5.add( "a", "b", (String)null, "d" );
         assertEquals( 4, nbAdded );
-        assertTrue( attr5.isHR() );
+        assertTrue( attr5.isHumanReadable() );
         assertTrue( attr5.contains( "a" ) );
         assertTrue( attr5.contains( "b" ) );
         assertTrue( attr5.contains( (String)null ) );
@@ -618,7 +618,7 @@ public class DefaultEntryAttributeTest
         attr6.setHR( false );
         nbAdded = attr6.add( "a", (String)null );
         assertEquals( 2, nbAdded );
-        assertFalse( attr6.isHR() );
+        assertFalse( attr6.isHumanReadable() );
         assertTrue( attr6.contains( new byte[]{'a'} ) );
         assertTrue( attr6.contains( (byte[])null ) );
         
@@ -643,28 +643,28 @@ public class DefaultEntryAttributeTest
         
         int nbAdded = attr1.add( (byte[])null );
         assertEquals( 1, nbAdded );
-        assertFalse( attr1.isHR() );
+        assertFalse( attr1.isHumanReadable() );
         assertTrue( Arrays.equals( NULL_BINARY_VALUE.getBytes(), attr1.getBytes() ) );
         
         EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr2.add( StringConstants.EMPTY_BYTES );
         assertEquals( 1, nbAdded );
-        assertFalse( attr2.isHR() );
+        assertFalse( attr2.isHumanReadable() );
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, attr2.getBytes() ) );
         
         EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr3.add( BYTES1 );
         assertEquals( 1, nbAdded );
-        assertFalse( attr3.isHR() );
+        assertFalse( attr3.isHumanReadable() );
         assertTrue( Arrays.equals( BYTES1, attr3.getBytes() ) );
         
         EntryAttribute attr4 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr4.add( BYTES1, BYTES2, BYTES3, BYTES4 );
         assertEquals( 4, nbAdded );
-        assertFalse( attr4.isHR() );
+        assertFalse( attr4.isHumanReadable() );
         assertTrue( attr4.contains( BYTES1 ) );
         assertTrue( attr4.contains( BYTES2 ) );
         assertTrue( attr4.contains( BYTES3 ) );
@@ -674,7 +674,7 @@ public class DefaultEntryAttributeTest
         
         nbAdded = attr5.add( BYTES1, BYTES2, (byte[])null, BYTES3 );
         assertEquals( 4, nbAdded );
-        assertFalse( attr5.isHR() );
+        assertFalse( attr5.isHumanReadable() );
         assertTrue( attr5.contains( BYTES1 ) );
         assertTrue( attr5.contains( BYTES2 ) );
         assertTrue( attr5.contains( (byte[])null ) );
@@ -685,7 +685,7 @@ public class DefaultEntryAttributeTest
         attr6.setHR( true );
         nbAdded = attr6.add( BYTES1, (byte[])null );
         assertEquals( 0, nbAdded );
-        assertTrue( attr6.isHR() );
+        assertTrue( attr6.isHumanReadable() );
         assertFalse( attr6.contains( "ab" ) );
         assertFalse( attr6.contains( (String)null ) );
     }
@@ -703,17 +703,17 @@ public class DefaultEntryAttributeTest
         
         attr1.add( (String)null );
         assertEquals( 1, attr1.size() );
-        assertTrue( attr1.isHR() );
+        assertTrue( attr1.isHumanReadable() );
         attr1.clear();
-        assertTrue( attr1.isHR() );
+        assertTrue( attr1.isHumanReadable() );
         assertEquals( 0, attr1.size() );
 
         EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
         attr2.add( BYTES1, BYTES2 );
         assertEquals( 2, attr2.size() );
-        assertFalse( attr2.isHR() );
+        assertFalse( attr2.isHumanReadable() );
         attr2.clear();
-        assertFalse( attr2.isHR() );
+        assertFalse( attr2.isHumanReadable() );
         assertEquals( 0, attr2.size() );
     }
 
@@ -1135,28 +1135,28 @@ public class DefaultEntryAttributeTest
         
         int nbAdded = attr1.add( (String)null );
         assertEquals( 1, nbAdded );
-        assertTrue( attr1.isHR() );
+        assertTrue( attr1.isHumanReadable() );
         assertEquals( NULL_STRING_VALUE, attr1.get() );
         
         EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr2.add( "" );
         assertEquals( 1, nbAdded );
-        assertTrue( attr2.isHR() );
+        assertTrue( attr2.isHumanReadable() );
         assertEquals( "", attr2.getString() );
         
         EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr3.add( "t" );
         assertEquals( 1, nbAdded );
-        assertTrue( attr3.isHR() );
+        assertTrue( attr3.isHumanReadable() );
         assertEquals( "t", attr3.getString() );
         
         EntryAttribute attr4 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr4.add( "a", "b", "c", "d" );
         assertEquals( 4, nbAdded );
-        assertTrue( attr4.isHR() );
+        assertTrue( attr4.isHumanReadable() );
         assertTrue( attr4.contains( "a" ) );
         assertTrue( attr4.contains( "b" ) );
         assertTrue( attr4.contains( "c" ) );
@@ -1166,7 +1166,7 @@ public class DefaultEntryAttributeTest
         
         nbAdded = attr5.add( "a", "b", (String)null, "d" );
         assertEquals( 4, nbAdded );
-        assertTrue( attr5.isHR() );
+        assertTrue( attr5.isHumanReadable() );
         assertTrue( attr5.contains( "a" ) );
         assertTrue( attr5.contains( "b" ) );
         assertTrue( attr5.contains( (String)null ) );
@@ -1177,7 +1177,7 @@ public class DefaultEntryAttributeTest
         attr6.setHR( false );
         nbAdded = attr6.add( "a", (String)null );
         assertEquals( 2, nbAdded );
-        assertFalse( attr6.isHR() );
+        assertFalse( attr6.isHumanReadable() );
         assertTrue( attr6.contains( new byte[]{'a'} ) );
         assertTrue( attr6.contains( (byte[])null ) );
     }
@@ -1193,34 +1193,34 @@ public class DefaultEntryAttributeTest
         
         int nbAdded = attr1.add( (byte[])null );
         assertEquals( 1, nbAdded );
-        assertFalse( attr1.isHR() );
+        assertFalse( attr1.isHumanReadable() );
         assertTrue( Arrays.equals( NULL_BINARY_VALUE.getBytes(), attr1.getBytes() ) );
         
         EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr2.add( StringConstants.EMPTY_BYTES );
         assertEquals( 1, nbAdded );
-        assertFalse( attr2.isHR() );
+        assertFalse( attr2.isHumanReadable() );
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, attr2.getBytes() ) );
         
         EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr3.add( BYTES1 );
         assertEquals( 1, nbAdded );
-        assertFalse( attr3.isHR() );
+        assertFalse( attr3.isHumanReadable() );
         assertTrue( Arrays.equals( BYTES1, attr3.getBytes() ) );
         
         EntryAttribute attr4 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr4.add( BYTES1, BYTES2 );
         assertEquals( 2, nbAdded );
-        assertFalse( attr4.isHR() );
+        assertFalse( attr4.isHumanReadable() );
         assertTrue( attr4.contains( BYTES1 ) );
         assertTrue( attr4.contains( BYTES2 ) );
         
         nbAdded = attr4.add( BYTES3, BYTES4 );
         assertEquals( 2, nbAdded );
-        assertFalse( attr4.isHR() );
+        assertFalse( attr4.isHumanReadable() );
         assertTrue( attr4.contains( BYTES3 ) );
         assertTrue( attr4.contains( BYTES4 ) );
         
@@ -1228,7 +1228,7 @@ public class DefaultEntryAttributeTest
         
         nbAdded = attr5.add( BYTES1, BYTES2, (byte[])null, BYTES3 );
         assertEquals( 4, nbAdded );
-        assertFalse( attr5.isHR() );
+        assertFalse( attr5.isHumanReadable() );
         assertTrue( attr5.contains( BYTES1 ) );
         assertTrue( attr5.contains( BYTES2 ) );
         assertTrue( attr5.contains( (byte[])null ) );
@@ -1239,7 +1239,7 @@ public class DefaultEntryAttributeTest
         attr6.setHR( true );
         nbAdded = attr6.add( BYTES1, (byte[])null );
         assertEquals( 0, nbAdded );
-        assertTrue( attr6.isHR() );
+        assertTrue( attr6.isHumanReadable() );
         assertFalse( attr6.contains( "ab" ) );
         assertFalse( attr6.contains( (String)null ) );
     }
@@ -1501,7 +1501,7 @@ public class DefaultEntryAttributeTest
         assertEquals( "CN", dcaSer.getUpId() );
         assertEquals( "test1", dcaSer.getString() );
         assertTrue( dcaSer.contains( "test2", "test1" ) );
-        assertTrue( dcaSer.isHR() );
+        assertTrue( dcaSer.isHumanReadable() );
     }
     
     
@@ -1520,7 +1520,7 @@ public class DefaultEntryAttributeTest
         assertEquals( "cn", dcaSer.getId() );
         assertEquals( "CN", dcaSer.getUpId() );
         assertEquals( 0, dcaSer.size() );
-        assertTrue( dcaSer.isHR() );
+        assertTrue( dcaSer.isHumanReadable() );
     }
     
     
@@ -1542,7 +1542,7 @@ public class DefaultEntryAttributeTest
         assertEquals( "", dcaSer.getString() );
         assertEquals( 1, dcaSer.size() );
         assertTrue( dcaSer.contains( (String)null ) );
-        assertTrue( dcaSer.isHR() );
+        assertTrue( dcaSer.isHumanReadable() );
     }
     
     
@@ -1564,6 +1564,6 @@ public class DefaultEntryAttributeTest
         assertTrue( Arrays.equals( dca.getBytes(), dcaSer.getBytes() ) );
         assertEquals( 1, dcaSer.size() );
         assertTrue( dcaSer.contains( password ) );
-        assertFalse( dcaSer.isHR() );
+        assertFalse( dcaSer.isHumanReadable() );
     }
 }

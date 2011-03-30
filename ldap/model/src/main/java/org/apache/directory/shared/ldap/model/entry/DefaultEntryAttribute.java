@@ -410,7 +410,7 @@ public class DefaultEntryAttribute implements EntryAttribute
 
         if ( attributeType == null )
         {
-            isHR = attribute.isHR();
+            isHR = attribute.isHumanReadable();
 
             // Copy all the values
             for ( Value<?> value:attribute )
@@ -723,7 +723,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * </p> 
      * @return
      */
-    public boolean isHR()
+    public boolean isHumanReadable()
     {
         return isHR != null ? isHR : false; 
     }
@@ -2197,7 +2197,7 @@ public class DefaultEntryAttribute implements EntryAttribute
             }
         }
         
-        if ( isHR() !=  other.isHR() )
+        if ( isHumanReadable() !=  other.isHumanReadable() )
         {
             return false;
         }

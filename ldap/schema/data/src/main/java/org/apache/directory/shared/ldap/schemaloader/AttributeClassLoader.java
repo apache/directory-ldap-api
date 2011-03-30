@@ -57,7 +57,7 @@ public class AttributeClassLoader extends ClassLoader
      */
     public void setAttribute( EntryAttribute attribute ) throws LdapException
     {
-        if ( attribute.isHR() )
+        if ( attribute.isHumanReadable() )
         {
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.CONSTRAINT_VIOLATION,
                 I18n.err( I18n.ERR_10001 ) );

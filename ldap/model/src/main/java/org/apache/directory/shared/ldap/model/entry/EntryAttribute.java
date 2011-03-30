@@ -338,7 +338,7 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      * </p> 
      * @return true if the attribute is human readable
      */
-    boolean isHR();
+    boolean isHumanReadable();
 
     
     /**
