@@ -81,7 +81,29 @@ public abstract class AbstractValue<T> implements Value<T>
         return wrappedValue;
     }
 
-    
+
+    /**
+     * Get the wrapped value as a String.
+     *
+     * @return the wrapped value as a String
+     */
+    public String getString()
+    {
+        throw new UnsupportedOperationException( "Cannot call this method on a binary value");
+    }
+
+
+    /**
+     * Get the wrapped value as a byte[].
+     *
+     * @return the wrapped value as a byte[]
+     */
+    public byte[] getBytes()
+    {
+        throw new UnsupportedOperationException( "Cannot call this method on a String value");
+    }
+
+
     /**
      * {@inheritDoc}
      */
