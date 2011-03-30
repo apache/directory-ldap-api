@@ -183,7 +183,7 @@ public class ExtensibleNode extends LeafNode
      */
     public Value<?> getEscapedValue()
     {
-        if ( value.isHR() )
+        if ( value.isHumanReadable() )
         {
             return escapeFilterValue( value );
         }

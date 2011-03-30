@@ -142,7 +142,7 @@ public abstract class AbstractValue<T> implements Value<T>
                 {
                     try
                     {
-                        if ( isHR() )
+                        if ( isHumanReadable() )
                         {     
                             normalizedValue = (T)normalizer.normalize( (String)wrappedValue );
                         }
@@ -229,7 +229,7 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
-    public boolean instanceOf( AttributeType attributeType )
+    public boolean isInstanceOf( AttributeType attributeType )
     {
         return ( attributeType != null ) && 
                ( this.attributeType.equals( attributeType ) || 

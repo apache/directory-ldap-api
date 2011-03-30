@@ -391,7 +391,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
             case 1:
                 // We have a single Ava
                 // We will trim and lowercase type and value.
-                if ( ava.getNormValue().isHR() )
+                if ( ava.getNormValue().isHumanReadable() )
                 {
                     normName = ava.getNormName();
                 }

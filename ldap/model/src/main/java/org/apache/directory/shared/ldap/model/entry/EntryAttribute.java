@@ -30,8 +30,7 @@ import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 
 
 /**
- * A generic interface mocking the Attribute JNDI interface. This interface
- * will be the base interface for the ServerAttribute and ClientAttribute.
+ * A generic interface used to store the LDAP Attributes.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

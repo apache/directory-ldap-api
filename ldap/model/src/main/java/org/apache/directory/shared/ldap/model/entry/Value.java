@@ -85,7 +85,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * @return <code>true</code> if the value is associated with the given
      * attributeType or one of its ascendant
      */
-    boolean instanceOf( AttributeType attributeType );
+    boolean isInstanceOf( AttributeType attributeType );
 
     
     /**
@@ -169,7 +169,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * 
      * @return <code>true</code> if the value is a String, <code>false</code> otherwise
      */
-    boolean isHR();
+    boolean isHumanReadable();
     
     
     /**

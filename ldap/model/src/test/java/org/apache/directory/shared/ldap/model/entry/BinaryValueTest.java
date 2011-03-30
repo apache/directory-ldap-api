@@ -85,7 +85,7 @@ public class BinaryValueTest
         {
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
-                if ( !value.isHR() )
+                if ( !value.isHumanReadable() )
                 {
                     byte[] val = value.getBytes();
                     // each byte will be changed to be > 0, and spaces will be trimmed
@@ -125,7 +125,7 @@ public class BinaryValueTest
     {
         public Value<?> normalize( Value<?> value ) throws LdapException
         {
-            if ( !value.isHR() )
+            if ( !value.isHumanReadable() )
             {
                 return new BinaryValue( StringConstants.EMPTY_BYTES );
             }

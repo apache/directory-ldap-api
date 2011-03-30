@@ -229,7 +229,7 @@ public class DefaultEntryAttribute implements EntryAttribute
         {
             for ( Value<?> val:vals )
             {
-                if ( ( val instanceof StringValue) || ( !val.isHR() ) )
+                if ( ( val instanceof StringValue) || ( !val.isHumanReadable() ) )
                 {
                     add( val );
                 }
@@ -478,7 +478,7 @@ public class DefaultEntryAttribute implements EntryAttribute
     {
         Value<?> value = get();
         
-        if ( value.isHR() )
+        if ( value.isHumanReadable() )
         {
             String message = I18n.err( I18n.ERR_04130 );
             LOG.error( message );
@@ -1340,7 +1340,7 @@ public class DefaultEntryAttribute implements EntryAttribute
                 // contained in the object
                 for ( Value<?> val:vals )
                 {
-                    if ( val.isHR() )
+                    if ( val.isHumanReadable() )
                     {
                         String stringVal = val.getString();
                         

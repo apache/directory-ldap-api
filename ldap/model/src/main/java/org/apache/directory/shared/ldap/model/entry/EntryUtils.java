@@ -139,7 +139,7 @@ public class EntryUtils
         {
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
-                if ( value.isHR() )
+                if ( value.isHumanReadable() )
                 {
                     return new StringValue( value.getString().toLowerCase() );
                 }
@@ -222,7 +222,7 @@ public class EntryUtils
         {
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
-                if ( !value.isHR() )
+                if ( !value.isHumanReadable() )
                 {
                     byte[] val = value.getBytes();
                     

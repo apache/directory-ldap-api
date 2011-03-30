@@ -91,7 +91,7 @@ public class BinaryValueAttributeTypeTest
         {
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
-                if ( !value.isHR() )
+                if ( !value.isHumanReadable() )
                 {
                     byte[] val = value.getBytes();
                     // each byte will be changed to be > 0, and spaces will be trimmed
@@ -462,11 +462,11 @@ public class BinaryValueAttributeTypeTest
         AttributeType attribute = EntryUtils.getBytesAttributeType();
         BinaryValue sbv = new BinaryValue( attribute );
         
-        assertTrue( sbv.instanceOf( attribute ) );
+        assertTrue( sbv.isInstanceOf( attribute ) );
         
         attribute = EntryUtils.getIA5StringAttributeType();
         
-        assertFalse( sbv.instanceOf( attribute ) );
+        assertFalse( sbv.isInstanceOf( attribute ) );
     }    
     
 

@@ -221,7 +221,7 @@ public class AttributeValueAssertionFilter extends Filter
         Value.encode( buffer, assertion.getAttributeDesc() );
 
         // The assertion desc
-        if ( assertion.getAssertionValue().isHR() )
+        if ( assertion.getAssertionValue().isHumanReadable() )
         {
             Value.encode( buffer, assertion.getAssertionValue().getBytes() );
         }

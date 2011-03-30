@@ -2767,7 +2767,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         compareRequest.setName( dn );
         compareRequest.setAttributeId( attributeName );
 
-        if ( value.isHR() )
+        if ( value.isHumanReadable() )
         {
             compareRequest.setAssertionValue( value.getString() );
         }

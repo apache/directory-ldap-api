@@ -559,7 +559,7 @@ public final class LdifUtils
             {
                 lineBuffer.append( ':' );
             }
-            else if ( value.isHR() )
+            else if ( value.isHumanReadable() )
             {
                 // It's a String but, we have to check if encoding isn't required
                 String str = value.getString();

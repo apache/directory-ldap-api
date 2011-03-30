@@ -450,7 +450,7 @@ public class AddRequestTest extends AbstractTest
         Iterator<Value<?>> valueIterator = attribute.iterator();
         assertTrue( valueIterator.hasNext() );
         Value<?> value = valueIterator.next();
-        assertFalse( value.isHR() );
+        assertFalse( value.isHumanReadable() );
         assertEquals( "DSMLv2.0 rocks!!", value.getString() );
     }
 

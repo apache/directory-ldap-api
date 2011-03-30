@@ -299,7 +299,7 @@ public final class AttributeUtils
         {
             byte[] comparedBytes = null;
 
-            if ( compared.isHR() )
+            if ( compared.isHumanReadable() )
             {
                 if ( compared.getString().length() < 3 )
                 {

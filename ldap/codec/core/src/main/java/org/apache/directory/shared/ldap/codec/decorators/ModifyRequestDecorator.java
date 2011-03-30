@@ -575,7 +575,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
                     {
                         for ( org.apache.directory.shared.ldap.model.entry.Value<?> value : modification.getAttribute() )
                         {
-                            if ( value.isHR() )
+                            if ( value.isHumanReadable() )
                             {
                                 Value.encode( buffer, value.getString() );
                             }

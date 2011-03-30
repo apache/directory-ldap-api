@@ -76,7 +76,7 @@ public class AttributeClassLoader extends ClassLoader
 
         Value<?> value = attribute.get();
 
-        if ( value.isHR() )
+        if ( value.isHumanReadable() )
         {
             throw new ClassNotFoundException( I18n.err( I18n.ERR_10002 ) );
         }

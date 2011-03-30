@@ -683,7 +683,7 @@ public class Ava implements Externalizable, Cloneable
      */
     public String normalize()
     {
-        if ( normValue.isHR() )
+        if ( normValue.isHumanReadable() )
         {
             // The result will be gathered in a stringBuilder
             StringBuilder sb = new StringBuilder();
@@ -907,7 +907,7 @@ public class Ava implements Externalizable, Cloneable
             out.writeBoolean( false);
         }
         
-        boolean isHR = normValue.isHR();
+        boolean isHR = normValue.isHumanReadable();
         
         out.writeBoolean( isHR );
         

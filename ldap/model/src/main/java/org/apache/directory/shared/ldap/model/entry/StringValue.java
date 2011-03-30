@@ -350,7 +350,7 @@ public class StringValue extends AbstractValue<String>
     /**
      * {@inheritDoc}
      */
-    public boolean isHR()
+    public boolean isHumanReadable()
     {
         return true;
     }

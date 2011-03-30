@@ -427,7 +427,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
                     {
                         for ( org.apache.directory.shared.ldap.model.entry.Value<?> value : attribute )
                         {
-                            if ( value.isHR() )
+                            if ( value.isHumanReadable() )
                             {
                                 org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, value.getString() );
                             }

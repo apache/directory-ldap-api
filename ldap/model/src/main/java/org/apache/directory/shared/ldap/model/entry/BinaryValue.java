@@ -347,7 +347,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      * 
      * @return <code>true</code> if the value is HR, <code>false</code> otherwise
      */
-    public boolean isHR()
+    public boolean isHumanReadable()
     {
         return false;
     }

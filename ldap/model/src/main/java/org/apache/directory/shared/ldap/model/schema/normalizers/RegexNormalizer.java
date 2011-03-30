@@ -82,7 +82,7 @@ public class RegexNormalizer extends Normalizer
             return null;
         }
 
-        if ( value.isHR() )
+        if ( value.isHumanReadable() )
         {
             String str = value.getString();
 

@@ -269,11 +269,11 @@ public class StringValueAttributeTypeTest
         AttributeType attribute = EntryUtils.getIA5StringAttributeType();
         StringValue ssv = new StringValue( attribute );
         
-        assertTrue( ssv.instanceOf( attribute ) );
+        assertTrue( ssv.isInstanceOf( attribute ) );
         
         attribute = EntryUtils.getBytesAttributeType();
         
-        assertFalse( ssv.instanceOf( attribute ) );
+        assertFalse( ssv.isInstanceOf( attribute ) );
     }    
     
 
