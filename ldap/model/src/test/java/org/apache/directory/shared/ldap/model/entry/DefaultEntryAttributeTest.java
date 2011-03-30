@@ -1521,7 +1521,6 @@ public class DefaultEntryAttributeTest
         assertEquals( "CN", dcaSer.getUpId() );
         assertEquals( 0, dcaSer.size() );
         assertTrue( dcaSer.isHR() );
-        assertTrue( dcaSer.isValid() );
     }
     
     

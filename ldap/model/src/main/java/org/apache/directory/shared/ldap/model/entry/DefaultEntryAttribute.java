@@ -735,36 +735,14 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @return true if the attribute and it's values are valid, false otherwise
      * @throws LdapException if there is a failure to check syntaxes of values
      */
-    public boolean isValid() throws LdapException
-    {
-        if ( attributeType != null )
-        {
-            // First check if the attribute has more than one value
-            // if the attribute is supposed to be SINGLE_VALUE
-            if ( attributeType.isSingleValued() && ( values.size() > 1 ) )
-            {
-                return false;
-            }
-
-            // Check that we can have no value for this attributeType
-            if ( values.size() == 0 )
-            {
-                return attributeType.getSyntax().getSyntaxChecker().isValidSyntax( null );
-            }
-        }
-
-        return true;
-    }
-
-
-    /**
-     * Checks to see if this attribute is valid along with the values it contains.
-     *
-     * @return true if the attribute and it's values are valid, false otherwise
-     * @throws LdapException if there is a failure to check syntaxes of values
-     */
     public boolean isValid( SyntaxChecker checker ) throws LdapException
     {
+        // Check that we can have no value for this attributeType
+        if ( values.size() == 0 )
+        {
+            return checker.isValidSyntax( null );
+        }
+
         for ( Value<?> value : values )
         {
             if ( !value.isValid( checker ) )
@@ -1143,6 +1121,12 @@ public class DefaultEntryAttribute implements EntryAttribute
         }
         else
         {
+            if ( attributeType.isSingleValued() && ( values.size() + vals.length > 1 ) )
+            {
+                LOG.error( I18n.err( I18n.ERR_04487_ATTRIBUTE_IS_SINGLE_VALUED, attributeType.getName() ) );
+                return 0;
+            }
+            
             if ( isHR )
             {
                 for ( String val:vals )

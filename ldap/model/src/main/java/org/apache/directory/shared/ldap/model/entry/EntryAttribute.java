@@ -464,21 +464,6 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
     
     
     /**
-     * <p>
-     * Checks to see if this attribute is valid along with the values it contains.
-     * </p>
-     * <p>
-     * An attribute is valid if :
-     * <li>All of its values are valid with respect to the attributeType's syntax checker</li>
-     * <li>If the attributeType is SINGLE-VALUE, then no more than a value should be present</li>
-     *</p>
-     * @return true if the attribute and it's values are valid, false otherwise
-     * @throws LdapException  if there is a failure to check syntaxes of values
-     */
-    boolean isValid() throws LdapException;
-
-
-    /**
      * Checks to see if this attribute is valid along with the values it contains.
      *
      * @param checker The syntax checker
