@@ -304,8 +304,8 @@
                   <!-- Missing license header in dependency reduced pom, see http://jira.codehaus.org/browse/MSHADE-48 -->
                   <exclude>**/dependency-reduced-pom.xml</exclude>
                   <!-- Generated ldif files -->
-                  <exclude>ldap-schema/src/main/resources/schema/**</exclude>
-                  <exclude>ldap-schema/src/main/resources/schema-all.ldif</exclude>
+                  <exclude>ldap/schema/data/src/main/resources/schema/**</exclude>
+                  <exclude>ldap/schema/data/src/main/resources/schema-all.ldif</exclude>
                   <exclude>src/main/resources/schema/**</exclude>
                   <exclude>src/main/resources/schema-all.ldif</exclude>
                   <!-- Files having a Bouncy Castle license -->
