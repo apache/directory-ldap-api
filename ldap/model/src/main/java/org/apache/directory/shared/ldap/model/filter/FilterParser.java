@@ -874,9 +874,4 @@ public class FilterParser
             throw new ParseException( le.getMessage(), pos.start );
         }
     }
-
-    
-    public void setFilterParserMonitor( FilterParserMonitor monitor )
-    {
-    }
 }
