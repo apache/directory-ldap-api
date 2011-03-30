@@ -30,19 +30,20 @@ import static org.junit.Assert.fail;
 import java.util.Collection;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.dsmlv2.AbstractResponseTest;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.Dsmlv2ResponseParser;
 import org.apache.directory.shared.dsmlv2.reponse.SearchResponse;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.SearchResultReference;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -275,7 +276,7 @@ public class SearchResultReferenceTest extends AbstractResponseTest
 
         try
         {
-            assertTrue( references.contains( new LdapURL( "ldap://localhost" ).toString() ) );
+            assertTrue( references.contains( new LdapUrl( "ldap://localhost" ).toString() ) );
         }
         catch ( LdapURLEncodingException e )
         {
@@ -344,7 +345,7 @@ public class SearchResultReferenceTest extends AbstractResponseTest
 
         try
         {
-            assertTrue( references.contains( new LdapURL( "ldap://localhost" ).toString() ) );
+            assertTrue( references.contains( new LdapUrl( "ldap://localhost" ).toString() ) );
         }
         catch ( LdapURLEncodingException e )
         {
@@ -353,7 +354,7 @@ public class SearchResultReferenceTest extends AbstractResponseTest
 
         try
         {
-            assertTrue( references.contains( new LdapURL( "ldap://www.apache.org" ).toString() ) );
+            assertTrue( references.contains( new LdapUrl( "ldap://www.apache.org" ).toString() ) );
         }
         catch ( LdapURLEncodingException e )
         {

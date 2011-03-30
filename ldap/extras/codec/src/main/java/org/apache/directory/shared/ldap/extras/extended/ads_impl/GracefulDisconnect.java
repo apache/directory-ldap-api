@@ -28,7 +28,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 
 
 /**
@@ -49,7 +49,7 @@ public class GracefulDisconnect extends GracefulAction
 {
     /** List of the alternate servers to use */
     // Two urls will be enough, generally
-    private List<LdapURL> replicatedContexts = new ArrayList<LdapURL>( 2 );
+    private List<LdapUrl> replicatedContexts = new ArrayList<LdapUrl>( 2 );
 
     /** Length of the sequence */
     private int gracefulDisconnectSequenceLength;
@@ -84,7 +84,7 @@ public class GracefulDisconnect extends GracefulAction
      * 
      * @return The list of replicated servers
      */
-    public List<LdapURL> getReplicatedContexts()
+    public List<LdapUrl> getReplicatedContexts()
     {
         return replicatedContexts;
     }
@@ -95,7 +95,7 @@ public class GracefulDisconnect extends GracefulAction
      * 
      * @param replicatedContext The replictaed server to add.
      */
-    public void addReplicatedContexts( LdapURL replicatedContext )
+    public void addReplicatedContexts( LdapUrl replicatedContext )
     {
         replicatedContexts.add( replicatedContext );
     }
@@ -131,7 +131,7 @@ public class GracefulDisconnect extends GracefulAction
             replicatedContextsLength = 0;
 
             // We may have more than one reference.
-            for ( LdapURL replicatedContext:replicatedContexts )
+            for ( LdapUrl replicatedContext:replicatedContexts )
             {
                 int ldapUrlLength = replicatedContext.getNbBytes();
                 replicatedContextsLength += 1 + TLV.getNbBytes( ldapUrlLength ) + ldapUrlLength;
@@ -177,7 +177,7 @@ public class GracefulDisconnect extends GracefulAction
             bb.put( TLV.getBytes( replicatedContextsLength ) );
 
             // We may have more than one reference.
-            for ( LdapURL replicatedContext:replicatedContexts )
+            for ( LdapUrl replicatedContext:replicatedContexts )
             {
                 Value.encode( bb, replicatedContext.getBytesReference() );
             }
@@ -203,7 +203,7 @@ public class GracefulDisconnect extends GracefulAction
             sb.append( "    Replicated contexts :" );
 
             // We may have more than one reference.
-            for ( LdapURL url:replicatedContexts )
+            for ( LdapUrl url:replicatedContexts )
             {
                 sb.append( "\n        " ).append( url );
             }

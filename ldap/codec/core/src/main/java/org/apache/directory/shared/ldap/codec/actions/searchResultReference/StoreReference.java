@@ -27,10 +27,10 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.SearchResultReferenceDecorator;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.message.Referral;
 import org.apache.directory.shared.ldap.model.message.ReferralImpl;
 import org.apache.directory.shared.ldap.model.message.SearchResultReference;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,7 +82,7 @@ public class StoreReference extends GrammarAction<LdapMessageContainer<SearchRes
         }
 
         // We have to handle the special case of a 0 length list of referrals
-        LdapURL url = LdapURL.EMPTY_URL;
+        LdapUrl url = LdapUrl.EMPTY_URL;
 
         if ( tlv.getLength() == 0 )
         {
@@ -94,7 +94,7 @@ public class StoreReference extends GrammarAction<LdapMessageContainer<SearchRes
 
             try
             {
-                url = new LdapURL( urlStr );
+                url = new LdapUrl( urlStr );
                 referral.addLdapUrl( urlStr );
             }
             catch ( LdapURLEncodingException luee )

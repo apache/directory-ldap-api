@@ -32,10 +32,10 @@ import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.extras.extended.GracefulDisconnectResponse;
 import org.apache.directory.shared.ldap.extras.extended.GracefulDisconnectResponseImpl;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.message.Referral;
 import org.apache.directory.shared.ldap.model.message.ReferralImpl;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,9 +91,9 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
             getDecorated().setTimeOffline( codec.getTimeOffline() );
             getDecorated().setDelay( codec.getDelay() );
             getDecorated().getLdapResult().setResultCode( ResultCodeEnum.SUCCESS );
-            List<LdapURL> contexts = codec.getReplicatedContexts();
+            List<LdapUrl> contexts = codec.getReplicatedContexts();
 
-            for ( LdapURL ldapUrl : contexts )
+            for ( LdapUrl ldapUrl : contexts )
             {
                 getDecorated().getLdapResult().getReferral().addLdapUrl( ldapUrl.toString() );
             }
@@ -115,11 +115,11 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
 
         for ( String ldapUrlStr : getDecorated().getLdapResult().getReferral().getLdapUrls() )
         {
-            LdapURL ldapUrl = null;
+            LdapUrl ldapUrl = null;
 
             try
             {
-                ldapUrl = new LdapURL( ldapUrlStr );
+                ldapUrl = new LdapUrl( ldapUrlStr );
             }
             catch ( LdapURLEncodingException e )
             {
@@ -200,7 +200,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
         getDecorated().setDelay( codec.getDelay() );
         getDecorated().setTimeOffline( codec.getTimeOffline() );
 
-        for ( LdapURL ldapUrl : codec.getReplicatedContexts() )
+        for ( LdapUrl ldapUrl : codec.getReplicatedContexts() )
         {
             getDecorated().getLdapResult().getReferral().addLdapUrl( ldapUrl.toString() );
         }

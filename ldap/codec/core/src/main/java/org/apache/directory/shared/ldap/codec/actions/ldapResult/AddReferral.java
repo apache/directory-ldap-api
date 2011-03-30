@@ -27,12 +27,12 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.message.LdapResult;
 import org.apache.directory.shared.ldap.model.message.Message;
 import org.apache.directory.shared.ldap.model.message.Referral;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.message.ResultResponse;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,7 +85,7 @@ public class AddReferral extends GrammarAction<LdapMessageContainer<MessageDecor
             {
                 try
                 {
-                    referral.addLdapUrl( new LdapURL( tlv.getValue().getData() ).toString() );
+                    referral.addLdapUrl( new LdapUrl( tlv.getValue().getData() ).toString() );
                 }
                 catch ( LdapURLEncodingException luee )
                 {
@@ -97,7 +97,7 @@ public class AddReferral extends GrammarAction<LdapMessageContainer<MessageDecor
             else
             {
                 LOG.warn( "The Referral error message is not allowed when havind an error code no equals to REFERRAL" );
-                referral.addLdapUrl( LdapURL.EMPTY_URL.toString() );
+                referral.addLdapUrl( LdapUrl.EMPTY_URL.toString() );
             }
         }
 

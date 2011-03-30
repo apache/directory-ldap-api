@@ -23,11 +23,11 @@ package org.apache.directory.shared.dsmlv2.reponse;
 import java.util.Collection;
 
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.message.Referral;
 import org.apache.directory.shared.ldap.model.message.SearchResultReference;
 import org.apache.directory.shared.ldap.model.message.SearchResultReferenceImpl;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
@@ -106,7 +106,7 @@ public class SearchResultReferenceDsml
      * 
      * @param searchResultReference The search result reference
      */
-    public void addSearchResultReference( LdapURL searchResultReference )
+    public void addSearchResultReference( LdapUrl searchResultReference )
     {
         getDecorated().getReferral().addLdapUrl( searchResultReference.toString() );
     }

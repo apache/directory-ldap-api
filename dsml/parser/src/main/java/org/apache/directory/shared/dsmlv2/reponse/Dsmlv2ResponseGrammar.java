@@ -45,7 +45,6 @@ import org.apache.directory.shared.ldap.codec.api.CodecControl;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.message.AddResponseImpl;
 import org.apache.directory.shared.ldap.model.message.BindResponseImpl;
 import org.apache.directory.shared.ldap.model.message.CompareResponseImpl;
@@ -67,6 +66,7 @@ import org.apache.directory.shared.ldap.model.message.SearchResultReference;
 import org.apache.directory.shared.ldap.model.message.SearchResultReferenceImpl;
 import org.apache.directory.shared.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.shared.util.Base64;
 import org.apache.directory.shared.util.Strings;
 import org.xmlpull.v1.XmlPullParser;
@@ -1527,7 +1527,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                     try
                     {
                         String urlStr = nextText.trim();
-                        LdapURL ldapUrl = new LdapURL( urlStr );
+                        LdapUrl ldapUrl = new LdapUrl( urlStr );
                         ldapResult.getReferral().addLdapUrl( ldapUrl.toString() );
                     }
                     catch ( LdapURLEncodingException e )
@@ -1800,7 +1800,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
                 if ( !nextText.equals( "" ) )
                 {
-                    LdapURL ldapUrl = new LdapURL( nextText );
+                    LdapUrl ldapUrl = new LdapUrl( nextText );
 
                     searchResultReference.getReferral().addLdapUrl( ldapUrl.toString() );
                 }

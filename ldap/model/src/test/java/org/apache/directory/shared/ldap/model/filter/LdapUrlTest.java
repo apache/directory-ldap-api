@@ -32,9 +32,10 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.filter.LdapURL.Extension;
 import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
+import org.apache.directory.shared.ldap.model.url.LdapUrl.Extension;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -43,7 +44,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
- * Test the class LdapURL
+ * Test the class LdapUrl
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -54,55 +55,55 @@ public class LdapUrlTest
     // ~ Methods
     // ------------------------------------------------------------------------------------
     /**
-     * Test a null LdapURL
+     * Test a null LdapUrl
      */
     @Test
     public void testLdapUrlNull()
     {
-        assertEquals( "ldap:///", new LdapURL().toString() );
+        assertEquals( "ldap:///", new LdapUrl().toString() );
     }
 
 
     /**
-     * test an empty LdapURL
+     * test an empty LdapUrl
      */
     @Test
     public void testDnEmpty() throws LdapURLEncodingException
     {
-        assertEquals( "ldap:///", new LdapURL( "" ).toString() );
+        assertEquals( "ldap:///", new LdapUrl( "" ).toString() );
     }
 
 
     /**
-     * test a simple LdapURL
+     * test a simple LdapUrl
      */
     @Test
     public void testDnSimple() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://directory.apache.org:80/", new LdapURL( "ldap://directory.apache.org:80/" )
+        assertEquals( "ldap://directory.apache.org:80/", new LdapUrl( "ldap://directory.apache.org:80/" )
             .toString() );
     }
 
 
     /**
-     * test a LdapURL host 1
+     * test a LdapUrl host 1
      */
     @Test
     public void testDnWithMinus() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://d-a.org:80/", new LdapURL( "ldap://d-a.org:80/" ).toString() );
+        assertEquals( "ldap://d-a.org:80/", new LdapUrl( "ldap://d-a.org:80/" ).toString() );
     }
 
 
     /**
-     * test a LdapURL with a bad port
+     * test a LdapUrl with a bad port
      */
     @Test
     public void testDnBadPort()
     {
         try
         {
-            new LdapURL( "ldap://directory.apache.org:/" );
+            new LdapUrl( "ldap://directory.apache.org:/" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -115,14 +116,14 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a bad port 2
+     * test a LdapUrl with a bad port 2
      */
     @Test
     public void testDnBadPort2()
     {
         try
         {
-            new LdapURL( "ldap://directory.apache.org:-1/" );
+            new LdapUrl( "ldap://directory.apache.org:-1/" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -135,14 +136,14 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a bad port 3
+     * test a LdapUrl with a bad port 3
      */
     @Test
     public void testDnBadPort3()
     {
         try
         {
-            new LdapURL( "ldap://directory.apache.org:abc/" );
+            new LdapUrl( "ldap://directory.apache.org:abc/" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -155,14 +156,14 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a bad port 4
+     * test a LdapUrl with a bad port 4
      */
     @Test
     public void testDnBadPort4()
     {
         try
         {
-            new LdapURL( "ldap://directory.apache.org:65536/" );
+            new LdapUrl( "ldap://directory.apache.org:65536/" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -175,24 +176,24 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no host
+     * test a LdapUrl with no host
      */
     @Test
     public void testDnBadHost1() throws LdapURLEncodingException
     {
-        assertEquals( "ldap:///", new LdapURL( "ldap:///" ).toString() );
+        assertEquals( "ldap:///", new LdapUrl( "ldap:///" ).toString() );
     }
 
 
     /**
-     * test a LdapURL with a bad host 2
+     * test a LdapUrl with a bad host 2
      */
     @Test
     public void testDnBadHost2()
     {
         try
         {
-            new LdapURL( "ldap://./" );
+            new LdapUrl( "ldap://./" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -205,14 +206,14 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a bad host 3
+     * test a LdapUrl with a bad host 3
      */
     @Test
     public void testDnBadHost3()
     {
         try
         {
-            new LdapURL( "ldap://a..b/" );
+            new LdapUrl( "ldap://a..b/" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -225,14 +226,14 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a bad host 4
+     * test a LdapUrl with a bad host 4
      */
     @Test
     public void testDnBadHost4()
     {
         try
         {
-            new LdapURL( "ldap://-/" );
+            new LdapUrl( "ldap://-/" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -245,14 +246,14 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a bad host 5
+     * test a LdapUrl with a bad host 5
      */
     @Test
     public void testDnBadHost5()
     {
         try
         {
-            new LdapURL( "ldap://a.b.c-/" );
+            new LdapUrl( "ldap://a.b.c-/" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -265,14 +266,14 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a bad host 6
+     * test a LdapUrl with a bad host 6
      */
     @Test
     public void testDnBadHost6()
     {
         try
         {
-            new LdapURL( "ldap://a.b.-c/" );
+            new LdapUrl( "ldap://a.b.-c/" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -285,14 +286,14 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a bad host 7
+     * test a LdapUrl with a bad host 7
      */
     @Test
     public void testDnBadHost7()
     {
         try
         {
-            new LdapURL( "ldap://a.-.c/" );
+            new LdapUrl( "ldap://a.-.c/" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -305,34 +306,34 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL IP host
+     * test a LdapUrl IP host
      */
     @Test
     public void testDnIPHost() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://1.2.3.4/", new LdapURL( "ldap://1.2.3.4/" ).toString() );
+        assertEquals( "ldap://1.2.3.4/", new LdapUrl( "ldap://1.2.3.4/" ).toString() );
     }
 
 
     /**
-     * test a LdapURL IP host and port
+     * test a LdapUrl IP host and port
      */
     @Test
     public void testDnIPHostPort() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://1.2.3.4:80/", new LdapURL( "ldap://1.2.3.4:80/" ).toString() );
+        assertEquals( "ldap://1.2.3.4:80/", new LdapUrl( "ldap://1.2.3.4:80/" ).toString() );
     }
 
 
     /**
-     * test a LdapURL with a bad IP host 1
+     * test a LdapUrl with a bad IP host 1
      */
     @Test
     public void testDnBadHostIP1()
     {
         try
         {
-            new LdapURL( "ldap://1.1.1/" );
+            new LdapUrl( "ldap://1.1.1/" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -345,14 +346,14 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a bad IP host 2
+     * test a LdapUrl with a bad IP host 2
      */
     @Test
     public void testDnBadHostIP2()
     {
         try
         {
-            new LdapURL( "ldap://1.1.1./" );
+            new LdapUrl( "ldap://1.1.1./" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -365,14 +366,14 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a bad IP host 3
+     * test a LdapUrl with a bad IP host 3
      */
     @Test
     public void testDnBadHostIP3()
     {
         try
         {
-            new LdapURL( "ldap://1.1.1.100000/" );
+            new LdapUrl( "ldap://1.1.1.100000/" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -385,14 +386,14 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a bad IP host 4
+     * test a LdapUrl with a bad IP host 4
      */
     @Test
     public void testDnBadHostIP4()
     {
         try
         {
-            new LdapURL( "ldap://1.1.1.1.1/" );
+            new LdapUrl( "ldap://1.1.1.1.1/" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -405,57 +406,57 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a valid host hich is not an IP
+     * test a LdapUrl with a valid host hich is not an IP
      */
     @Test
     public void testDnNotAnIP() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://1.1.1.100000.a/", new LdapURL( "ldap://1.1.1.100000.a/" ).toString() );
+        assertEquals( "ldap://1.1.1.100000.a/", new LdapUrl( "ldap://1.1.1.100000.a/" ).toString() );
     }
 
 
     /**
-     * test a LdapURL with valid simpleDN
+     * test a LdapUrl with valid simpleDN
      */
     @Test
     public void testDnSimpleDN() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://directory.apache.org:389/dc=example,dc=org/", new LdapURL(
+        assertEquals( "ldap://directory.apache.org:389/dc=example,dc=org/", new LdapUrl(
             "ldap://directory.apache.org:389/dc=example,dc=org/" ).toString() );
     }
 
 
     /**
-     * test a LdapURL with valid simpleDN 2
+     * test a LdapUrl with valid simpleDN 2
      */
     @Test
     public void testDnSimpleDN2() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://directory.apache.org:389/dc=example", new LdapURL(
+        assertEquals( "ldap://directory.apache.org:389/dc=example", new LdapUrl(
             "ldap://directory.apache.org:389/dc=example" ).toString() );
     }
 
 
     /**
-     * test a LdapURL with a valid encoded Dn
+     * test a LdapUrl with a valid encoded Dn
      */
     @Test
     public void testDnSimpleDNEncoded() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://directory.apache.org:389/dc=example%202,dc=org", new LdapURL(
+        assertEquals( "ldap://directory.apache.org:389/dc=example%202,dc=org", new LdapUrl(
             "ldap://directory.apache.org:389/dc=example%202,dc=org" ).toString() );
     }
 
 
     /**
-     * test a LdapURL with an invalid Dn
+     * test a LdapUrl with an invalid Dn
      */
     @Test
     public void testDnInvalidDN()
     {
         try
         {
-            new LdapURL( "ldap://directory.apache.org:389/dc=example%202,dc : org" );
+            new LdapUrl( "ldap://directory.apache.org:389/dc=example%202,dc : org" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -466,14 +467,14 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with an invalid Dn 2
+     * test a LdapUrl with an invalid Dn 2
      */
     @Test
     public void testDnInvalidDN2()
     {
         try
         {
-            new LdapURL( "ldap://directory.apache.org:389/dc=example%202,dc = org," );
+            new LdapUrl( "ldap://directory.apache.org:389/dc=example%202,dc = org," );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -484,47 +485,47 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with valid unique attributes
+     * test a LdapUrl with valid unique attributes
      */
     @Test
     public void testDnUniqueAttribute() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://directory.apache.org:389/dc=example,dc=org?ou", new LdapURL(
+        assertEquals( "ldap://directory.apache.org:389/dc=example,dc=org?ou", new LdapUrl(
             "ldap://directory.apache.org:389/dc=example,dc=org?ou" ).toString() );
     }
 
 
     /**
-     * test a LdapURL with valid attributes
+     * test a LdapUrl with valid attributes
      */
     @Test
     public void testDnAttributes() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://directory.apache.org:389/dc=example,dc=org?ou,objectclass,dc", new LdapURL(
+        assertEquals( "ldap://directory.apache.org:389/dc=example,dc=org?ou,objectclass,dc", new LdapUrl(
             "ldap://directory.apache.org:389/dc=example,dc=org?ou,objectclass,dc" ).toString() );
     }
 
 
     /**
-     * test a LdapURL with valid duplicated attributes
+     * test a LdapUrl with valid duplicated attributes
      */
     @Test
     public void testDnDuplicatedAttributes() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://directory.apache.org:389/dc=example,dc=org?ou,dc", new LdapURL(
+        assertEquals( "ldap://directory.apache.org:389/dc=example,dc=org?ou,dc", new LdapUrl(
             "ldap://directory.apache.org:389/dc=example,dc=org?ou,dc,ou" ).toString() );
     }
 
 
     /**
-     * test a LdapURL with invalid attributes
+     * test a LdapUrl with invalid attributes
      */
     @Test
     public void testLdapInvalideAttributes()
     {
         try
         {
-            new LdapURL( "ldap://directory.apache.org:389/dc=example,dc=org?ou=,dc" );
+            new LdapUrl( "ldap://directory.apache.org:389/dc=example,dc=org?ou=,dc" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -535,14 +536,14 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with attributes but no Dn
+     * test a LdapUrl with attributes but no Dn
      */
     @Test
     public void testLdapNoDNAttributes()
     {
         try
         {
-            new LdapURL( "ldap://directory.apache.org:389/?ou,dc" );
+            new LdapUrl( "ldap://directory.apache.org:389/?ou,dc" );
         }
         catch ( LdapURLEncodingException luee )
         {
@@ -553,121 +554,121 @@ public class LdapUrlTest
 
 
     /**
-     * test 1 from RFC 2255 LdapURL
+     * test 1 from RFC 2255 LdapUrl
      */
     @Test
     public void testLdapRFC2255_1() throws LdapURLEncodingException
     {
-        assertEquals( "ldap:///o=University%20of%20Michigan,c=US", new LdapURL(
+        assertEquals( "ldap:///o=University%20of%20Michigan,c=US", new LdapUrl(
             "ldap:///o=University%20of%20Michigan,c=US" ).toString() );
     }
 
 
     /**
-     * test 2 from RFC 2255 LdapURL
+     * test 2 from RFC 2255 LdapUrl
      */
     @Test
     public void testLdapRFC2255_2() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://ldap.itd.umich.edu/o=University%20of%20Michigan,c=US", new LdapURL(
+        assertEquals( "ldap://ldap.itd.umich.edu/o=University%20of%20Michigan,c=US", new LdapUrl(
             "ldap://ldap.itd.umich.edu/o=University%20of%20Michigan,c=US" ).toString() );
     }
 
 
     /**
-     * test 3 from RFC 2255 LdapURL
+     * test 3 from RFC 2255 LdapUrl
      */
     @Test
     public void testLdapRFC2255_3() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://ldap.itd.umich.edu/o=University%20of%20Michigan,c=US?postalAddress", new LdapURL(
+        assertEquals( "ldap://ldap.itd.umich.edu/o=University%20of%20Michigan,c=US?postalAddress", new LdapUrl(
             "ldap://ldap.itd.umich.edu/o=University%20of%20Michigan,c=US?postalAddress" ).toString() );
     }
 
 
     /**
-     * test 4 from RFC 2255 LdapURL
+     * test 4 from RFC 2255 LdapUrl
      */
     @Test
     public void testLdapRFC2255_4() throws LdapURLEncodingException
     {
         assertEquals( "ldap://host.com:6666/o=University%20of%20Michigan,c=US??sub?(cn=Babs%20Jensen)",
-            new LdapURL( "ldap://host.com:6666/o=University%20of%20Michigan,c=US??sub?(cn=Babs%20Jensen)" ).toString() );
+            new LdapUrl( "ldap://host.com:6666/o=University%20of%20Michigan,c=US??sub?(cn=Babs%20Jensen)" ).toString() );
     }
 
 
     /**
-     * test 5 from RFC 2255 LdapURL
+     * test 5 from RFC 2255 LdapUrl
      */
     @Test
     public void testLdapRFC2255_5() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://ldap.itd.umich.edu/c=GB?objectClass?one", new LdapURL(
+        assertEquals( "ldap://ldap.itd.umich.edu/c=GB?objectClass?one", new LdapUrl(
             "ldap://ldap.itd.umich.edu/c=GB?objectClass?one" ).toString() );
     }
 
 
     /**
-     * test 6 from RFC 2255 LdapURL
+     * test 6 from RFC 2255 LdapUrl
      */
     @Test
     public void testLdapRFC2255_6() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://ldap.question.com/o=Question%3F,c=US?mail", new LdapURL(
+        assertEquals( "ldap://ldap.question.com/o=Question%3F,c=US?mail", new LdapUrl(
             "ldap://ldap.question.com/o=Question%3f,c=US?mail" ).toString() );
     }
 
 
     /**
-     * test 7 from RFC 2255 LdapURL
+     * test 7 from RFC 2255 LdapUrl
      */
     @Test
     public void testLdapRFC2255_7() throws LdapURLEncodingException
     {
-        assertEquals( "ldap://ldap.netscape.com/o=Babsco,c=US???(int=%5C00%5C00%5C00%5C04)", new LdapURL(
+        assertEquals( "ldap://ldap.netscape.com/o=Babsco,c=US???(int=%5C00%5C00%5C00%5C04)", new LdapUrl(
             "ldap://ldap.netscape.com/o=Babsco,c=US???(int=%5c00%5c00%5c00%5c04)" ).toString() );
     }
 
 
     /**
-     * test 8 from RFC 2255 LdapURL
+     * test 8 from RFC 2255 LdapUrl
      */
     @Test
     public void testLdapRFC2255_8() throws LdapURLEncodingException
     {
-        assertEquals( "ldap:///??sub??bindname=cn=Manager%2co=Foo", new LdapURL(
+        assertEquals( "ldap:///??sub??bindname=cn=Manager%2co=Foo", new LdapUrl(
             "ldap:///??sub??bindname=cn=Manager%2co=Foo" ).toString() );
     }
 
 
     /**
-     * test 9 from RFC 2255 LdapURL
+     * test 9 from RFC 2255 LdapUrl
      */
     @Test
     public void testLdapRFC2255_9() throws LdapURLEncodingException
     {
-        assertEquals( "ldap:///??sub??!bindname=cn=Manager%2co=Foo", new LdapURL(
+        assertEquals( "ldap:///??sub??!bindname=cn=Manager%2co=Foo", new LdapUrl(
             "ldap:///??sub??!bindname=cn=Manager%2co=Foo" ).toString() );
     }
 
 
     /**
-     * test an empty ldaps:// LdapURL
+     * test an empty ldaps:// LdapUrl
      */
     @Test
     public void testDnEmptyLdaps() throws LdapURLEncodingException
     {
-        assertEquals( "ldaps:///", new LdapURL( "ldaps:///" ).toString() );
+        assertEquals( "ldaps:///", new LdapUrl( "ldaps:///" ).toString() );
     }
 
 
     /**
-     * test an simple ldaps:// LdapURL
+     * test an simple ldaps:// LdapUrl
      */
     @Test
     public void testDnSimpleLdaps() throws LdapURLEncodingException
     {
-        assertEquals( "ldaps://directory.apache.org:80/", new LdapURL( "ldaps://directory.apache.org:80/" )
+        assertEquals( "ldaps://directory.apache.org:80/", new LdapUrl( "ldaps://directory.apache.org:80/" )
             .toString() );
     }
 
@@ -678,7 +679,7 @@ public class LdapUrlTest
     @Test
     public void testDnSetScheme() throws LdapURLEncodingException
     {
-        LdapURL url = new LdapURL();
+        LdapUrl url = new LdapUrl();
         assertEquals( "ldap://", url.getScheme() );
 
         url.setScheme( "invalid" );
@@ -701,7 +702,7 @@ public class LdapUrlTest
     @Test
     public void testDnSetHost() throws LdapURLEncodingException
     {
-        LdapURL url = new LdapURL();
+        LdapUrl url = new LdapUrl();
         assertNull( url.getHost() );
 
         url.setHost( "ldap.apache.org" );
@@ -720,7 +721,7 @@ public class LdapUrlTest
     @Test
     public void testDnSetPort() throws LdapURLEncodingException
     {
-        LdapURL url = new LdapURL();
+        LdapUrl url = new LdapUrl();
         assertEquals( -1, url.getPort() );
 
         url.setPort( 389 );
@@ -743,7 +744,7 @@ public class LdapUrlTest
     @Test
     public void testDnSetDn() throws LdapURLEncodingException, LdapInvalidDnException
     {
-        LdapURL url = new LdapURL();
+        LdapUrl url = new LdapUrl();
         assertNull( url.getDn() );
 
         Dn dn = new Dn( "dc=example,dc=com" );
@@ -763,7 +764,7 @@ public class LdapUrlTest
     @Test
     public void testDnSetAttributes() throws LdapURLEncodingException, LdapInvalidDnException
     {
-        LdapURL url = new LdapURL();
+        LdapUrl url = new LdapUrl();
         assertNotNull( url.getAttributes() );
         assertTrue( url.getAttributes().isEmpty() );
 
@@ -795,7 +796,7 @@ public class LdapUrlTest
     @Test
     public void testDnSetScope() throws LdapURLEncodingException, LdapInvalidDnException
     {
-        LdapURL url = new LdapURL();
+        LdapUrl url = new LdapUrl();
         assertEquals( SearchScope.OBJECT, url.getScope() );
 
         url.setDn( new Dn( "dc=example,dc=com" ) );
@@ -820,7 +821,7 @@ public class LdapUrlTest
     @Test
     public void testDnSetFilter() throws LdapURLEncodingException, LdapInvalidDnException
     {
-        LdapURL url = new LdapURL();
+        LdapUrl url = new LdapUrl();
         assertNull( url.getFilter() );
 
         url.setDn( new Dn( "dc=example,dc=com" ) );
@@ -840,7 +841,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL without a scheme
+     * test a LdapUrl without a scheme
      *
      */
     @Test
@@ -848,7 +849,7 @@ public class LdapUrlTest
     {
         try
         {
-            new LdapURL( "/ou=system" );
+            new LdapUrl( "/ou=system" );
             fail();
         }
         catch ( LdapURLEncodingException luee )
@@ -859,7 +860,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL without a host but with a Dn
+     * test a LdapUrl without a host but with a Dn
      *
      */
     @Test
@@ -867,7 +868,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap:///ou=system" );
+            LdapUrl url = new LdapUrl( "ldap:///ou=system" );
 
             assertEquals( "ldap:///ou=system", url.toString() );
 
@@ -880,7 +881,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a host, no port, and a Dn
+     * test a LdapUrl with a host, no port, and a Dn
      *
      */
     @Test
@@ -888,7 +889,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost/ou=system" );
+            LdapUrl url = new LdapUrl( "ldap://localhost/ou=system" );
 
             assertEquals( "ldap://localhost/ou=system", url.toString() );
         }
@@ -900,7 +901,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no host, a port, and a Dn
+     * test a LdapUrl with no host, a port, and a Dn
      *
      */
     @Test
@@ -908,7 +909,7 @@ public class LdapUrlTest
     {
         try
         {
-            new LdapURL( "ldap://:123/ou=system" );
+            new LdapUrl( "ldap://:123/ou=system" );
 
             fail();
         }
@@ -920,7 +921,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn
+     * test a LdapUrl with no Dn
      *
      */
     @Test
@@ -928,7 +929,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/" );
 
             assertEquals( "ldap://localhost:123/", url.toString() );
         }
@@ -940,7 +941,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn and no attributes
+     * test a LdapUrl with no Dn and no attributes
      *
      */
     @Test
@@ -948,7 +949,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/?" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/?" );
 
             assertEquals( "ldap://localhost:123/", url.toString() );
         }
@@ -960,7 +961,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes and no scope
+     * test a LdapUrl with no Dn, no attributes and no scope
      *
      */
     @Test
@@ -968,7 +969,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/??" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/??" );
 
             assertEquals( "ldap://localhost:123/", url.toString() );
         }
@@ -980,7 +981,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes, no scope and no filter
+     * test a LdapUrl with no Dn, no attributes, no scope and no filter
      *
      */
     @Test
@@ -988,7 +989,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/???" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/???" );
 
             assertEquals( "ldap://localhost:123/", url.toString() );
         }
@@ -1000,7 +1001,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn and attributes
+     * test a LdapUrl with no Dn and attributes
      *
      */
     @Test
@@ -1008,7 +1009,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system" );
 
             assertEquals( "ldap://localhost:123/ou=system", url.toString() );
         }
@@ -1020,7 +1021,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn and attributes
+     * test a LdapUrl with a Dn and attributes
      *
      */
     @Test
@@ -1028,7 +1029,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system?ou,dc,cn" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system?ou,dc,cn" );
 
             assertEquals( "ldap://localhost:123/ou=system?ou,dc,cn", url.toString() );
         }
@@ -1040,7 +1041,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn and attributes
+     * test a LdapUrl with no Dn and attributes
      *
      */
     @Test
@@ -1048,7 +1049,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/?ou,dc,cn" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/?ou,dc,cn" );
 
             assertEquals( "ldap://localhost:123/?ou,dc,cn", url.toString() );
         }
@@ -1060,7 +1061,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes an scope
+     * test a LdapUrl with no Dn, no attributes an scope
      *
      */
     @Test
@@ -1068,7 +1069,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/??sub" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/??sub" );
 
             assertEquals( "ldap://localhost:123/??sub", url.toString() );
         }
@@ -1080,7 +1081,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes an scope base
+     * test a LdapUrl with no Dn, no attributes an scope base
      *
      */
     @Test
@@ -1088,7 +1089,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/??base" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/??base" );
 
             assertEquals( "ldap://localhost:123/", url.toString() );
         }
@@ -1100,7 +1101,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes an default scope
+     * test a LdapUrl with no Dn, no attributes an default scope
      *
      */
     @Test
@@ -1108,7 +1109,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/??" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/??" );
 
             assertEquals( "ldap://localhost:123/", url.toString() );
         }
@@ -1120,7 +1121,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, no attributes an scope
+     * test a LdapUrl with a Dn, no attributes an scope
      *
      */
     @Test
@@ -1128,7 +1129,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system??sub" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system??sub" );
 
             assertEquals( "ldap://localhost:123/ou=system??sub", url.toString() );
         }
@@ -1140,7 +1141,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, no attributes an scope base
+     * test a LdapUrl with a Dn, no attributes an scope base
      *
      */
     @Test
@@ -1148,7 +1149,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system??base" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system??base" );
 
             assertEquals( "ldap://localhost:123/ou=system", url.toString() );
         }
@@ -1160,7 +1161,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, no attributes an default scope
+     * test a LdapUrl with a Dn, no attributes an default scope
      *
      */
     @Test
@@ -1168,7 +1169,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system??" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system??" );
 
             assertEquals( "ldap://localhost:123/ou=system", url.toString() );
         }
@@ -1180,7 +1181,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, some attributes an scope
+     * test a LdapUrl with no Dn, some attributes an scope
      *
      */
     @Test
@@ -1188,7 +1189,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/?ou,cn?sub" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/?ou,cn?sub" );
 
             assertEquals( "ldap://localhost:123/?ou,cn?sub", url.toString() );
         }
@@ -1200,7 +1201,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, some attributes an scope base
+     * test a LdapUrl with no Dn, some attributes an scope base
      *
      */
     @Test
@@ -1208,7 +1209,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/?ou,cn?base" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/?ou,cn?base" );
 
             assertEquals( "ldap://localhost:123/?ou,cn", url.toString() );
         }
@@ -1220,7 +1221,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, some attributes an default scope
+     * test a LdapUrl with no Dn, some attributes an default scope
      *
      */
     @Test
@@ -1228,7 +1229,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/?ou,cn?" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/?ou,cn?" );
 
             assertEquals( "ldap://localhost:123/?ou,cn", url.toString() );
         }
@@ -1240,7 +1241,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, some attributes an scope
+     * test a LdapUrl with a Dn, some attributes an scope
      *
      */
     @Test
@@ -1248,7 +1249,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system?ou,cn?sub" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system?ou,cn?sub" );
 
             assertEquals( "ldap://localhost:123/ou=system?ou,cn?sub", url.toString() );
         }
@@ -1260,7 +1261,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, some attributes an scope base
+     * test a LdapUrl with a Dn, some attributes an scope base
      *
      */
     @Test
@@ -1268,7 +1269,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system?ou,cn?base" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system?ou,cn?base" );
 
             assertEquals( "ldap://localhost:123/ou=system?ou,cn", url.toString() );
         }
@@ -1280,7 +1281,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, some attributes an default scope
+     * test a LdapUrl with a Dn, some attributes an default scope
      *
      */
     @Test
@@ -1288,7 +1289,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system?ou,cn?" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system?ou,cn?" );
 
             assertEquals( "ldap://localhost:123/ou=system?ou,cn", url.toString() );
         }
@@ -1300,7 +1301,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes, no scope and filter
+     * test a LdapUrl with no Dn, no attributes, no scope and filter
      *
      */
     @Test
@@ -1308,7 +1309,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/???(cn=test)" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/???(cn=test)" );
 
             assertEquals( "ldap://localhost:123/???(cn=test)", url.toString() );
         }
@@ -1320,7 +1321,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, no attributes, no scope and filter
+     * test a LdapUrl with a Dn, no attributes, no scope and filter
      *
      */
     @Test
@@ -1328,7 +1329,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system???(cn=test)" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system???(cn=test)" );
 
             assertEquals( "ldap://localhost:123/ou=system???(cn=test)", url.toString() );
         }
@@ -1340,7 +1341,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, some attributes, no scope and filter
+     * test a LdapUrl with no Dn, some attributes, no scope and filter
      *
      */
     @Test
@@ -1348,7 +1349,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/?cn,ou,dc??(cn=test)" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/?cn,ou,dc??(cn=test)" );
 
             assertEquals( "ldap://localhost:123/?cn,ou,dc??(cn=test)", url.toString() );
         }
@@ -1360,7 +1361,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes, a scope and filter
+     * test a LdapUrl with no Dn, no attributes, a scope and filter
      *
      */
     @Test
@@ -1368,7 +1369,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/??sub?(cn=test)" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/??sub?(cn=test)" );
 
             assertEquals( "ldap://localhost:123/??sub?(cn=test)", url.toString() );
         }
@@ -1380,7 +1381,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes, a base scope, and filter
+     * test a LdapUrl with no Dn, no attributes, a base scope, and filter
      *
      */
     @Test
@@ -1388,7 +1389,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/??base?(cn=test)" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/??base?(cn=test)" );
 
             assertEquals( "ldap://localhost:123/???(cn=test)", url.toString() );
         }
@@ -1400,7 +1401,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, some attributes, a scope and filter
+     * test a LdapUrl with no Dn, some attributes, a scope and filter
      *
      */
     @Test
@@ -1408,7 +1409,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/?cn,ou,dc?sub?(cn=test)" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/?cn,ou,dc?sub?(cn=test)" );
 
             assertEquals( "ldap://localhost:123/?cn,ou,dc?sub?(cn=test)", url.toString() );
         }
@@ -1420,7 +1421,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, some attributes, a base scope, and filter
+     * test a LdapUrl with no Dn, some attributes, a base scope, and filter
      *
      */
     @Test
@@ -1428,7 +1429,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/?cn,ou,dc?base?(cn=test)" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/?cn,ou,dc?base?(cn=test)" );
 
             assertEquals( "ldap://localhost:123/?cn,ou,dc??(cn=test)", url.toString() );
         }
@@ -1440,7 +1441,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, no attributes, a scope and filter
+     * test a LdapUrl with a Dn, no attributes, a scope and filter
      *
      */
     @Test
@@ -1448,7 +1449,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system??sub?(cn=test)" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system??sub?(cn=test)" );
 
             assertEquals( "ldap://localhost:123/ou=system??sub?(cn=test)", url.toString() );
         }
@@ -1460,7 +1461,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, no attributes, a base scope, and filter
+     * test a LdapUrl with a Dn, no attributes, a base scope, and filter
      *
      */
     @Test
@@ -1468,7 +1469,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system??base?(cn=test)" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system??base?(cn=test)" );
 
             assertEquals( "ldap://localhost:123/ou=system???(cn=test)", url.toString() );
         }
@@ -1480,7 +1481,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, some attributes, no scope and filter
+     * test a LdapUrl with a Dn, some attributes, no scope and filter
      *
      */
     @Test
@@ -1488,7 +1489,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system?cn,dc,ou??(cn=test)" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system?cn,dc,ou??(cn=test)" );
 
             assertEquals( "ldap://localhost:123/ou=system?cn,dc,ou??(cn=test)", url.toString() );
         }
@@ -1500,7 +1501,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, some attributes, a scope and filter
+     * test a LdapUrl with a Dn, some attributes, a scope and filter
      *
      */
     @Test
@@ -1508,7 +1509,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system?cn,ou,dc?sub?(cn=test)" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system?cn,ou,dc?sub?(cn=test)" );
 
             assertEquals( "ldap://localhost:123/ou=system?cn,ou,dc?sub?(cn=test)", url.toString() );
         }
@@ -1520,7 +1521,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, some attributes, a base scope, and filter
+     * test a LdapUrl with a Dn, some attributes, a base scope, and filter
      *
      */
     @Test
@@ -1528,7 +1529,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system?cn,ou,dc?base?(cn=test)" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system?cn,ou,dc?base?(cn=test)" );
 
             assertEquals( "ldap://localhost:123/ou=system?cn,ou,dc??(cn=test)", url.toString() );
         }
@@ -1540,7 +1541,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes, no scope, no filter and no extension
+     * test a LdapUrl with no Dn, no attributes, no scope, no filter and no extension
      *
      */
     @Test
@@ -1548,7 +1549,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/????" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/????" );
 
             assertEquals( "ldap://localhost:123/", url.toString() );
         }
@@ -1560,7 +1561,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes, no scope, no filter and some extensions
+     * test a LdapUrl with no Dn, no attributes, no scope, no filter and some extensions
      *
      */
     @Test
@@ -1568,7 +1569,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/????!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/????!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/????!a=b,!c", url.toString() );
         }
@@ -1580,7 +1581,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes, no scope, a filter and some extensions
+     * test a LdapUrl with no Dn, no attributes, no scope, a filter and some extensions
      *
      */
     @Test
@@ -1588,7 +1589,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/???(cn=test)?!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/???(cn=test)?!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/???(cn=test)?!a=b,!c", url.toString() );
         }
@@ -1600,7 +1601,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes, a scope, no filter and some extensions
+     * test a LdapUrl with no Dn, no attributes, a scope, no filter and some extensions
      *
      */
     @Test
@@ -1608,7 +1609,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/??sub??!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/??sub??!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/??sub??!a=b,!c", url.toString() );
         }
@@ -1620,7 +1621,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes, a base scope, no filter and some extensions
+     * test a LdapUrl with no Dn, no attributes, a base scope, no filter and some extensions
      *
      */
     @Test
@@ -1628,7 +1629,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/??base??!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/??base??!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/????!a=b,!c", url.toString() );
         }
@@ -1640,7 +1641,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes, a scope, a filter and some extensions
+     * test a LdapUrl with no Dn, no attributes, a scope, a filter and some extensions
      *
      */
     @Test
@@ -1648,7 +1649,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/??sub?(cn=test)?!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/??sub?(cn=test)?!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/??sub?(cn=test)?!a=b,!c", url.toString() );
         }
@@ -1660,7 +1661,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, no attributes, a base scope, a filter and some extensions
+     * test a LdapUrl with no Dn, no attributes, a base scope, a filter and some extensions
      *
      */
     @Test
@@ -1668,7 +1669,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/??base?(cn=test)?!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/??base?(cn=test)?!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/???(cn=test)?!a=b,!c", url.toString() );
         }
@@ -1680,7 +1681,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, some attributes, no scope, no filter and some extensions
+     * test a LdapUrl with no Dn, some attributes, no scope, no filter and some extensions
      *
      */
     @Test
@@ -1688,7 +1689,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/?cn,dc,ou???!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/?cn,dc,ou???!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/?cn,dc,ou???!a=b,!c", url.toString() );
         }
@@ -1700,7 +1701,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, some attributes, no scope, a filter and some extensions
+     * test a LdapUrl with no Dn, some attributes, no scope, a filter and some extensions
      *
      */
     @Test
@@ -1708,7 +1709,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/?cn,dc,ou??(cn=test)?!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/?cn,dc,ou??(cn=test)?!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/?cn,dc,ou??(cn=test)?!a=b,!c", url.toString() );
         }
@@ -1720,7 +1721,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, some attributes, a scope, no filter and some extensions
+     * test a LdapUrl with no Dn, some attributes, a scope, no filter and some extensions
      *
      */
     @Test
@@ -1728,7 +1729,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/?cn,dc,ou?sub??!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/?cn,dc,ou?sub??!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/?cn,dc,ou?sub??!a=b,!c", url.toString() );
         }
@@ -1740,7 +1741,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, some attributes, a base scope, no filter and some extensions
+     * test a LdapUrl with no Dn, some attributes, a base scope, no filter and some extensions
      *
      */
     @Test
@@ -1748,7 +1749,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/?cn,dc,ou?base??!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/?cn,dc,ou?base??!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/?cn,dc,ou???!a=b,!c", url.toString() );
         }
@@ -1760,7 +1761,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, some attributes, a scope, a filter and some extensions
+     * test a LdapUrl with no Dn, some attributes, a scope, a filter and some extensions
      *
      */
     @Test
@@ -1768,7 +1769,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/?cn,dc,ou?sub?(cn=test)?!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/?cn,dc,ou?sub?(cn=test)?!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/?cn,dc,ou?sub?(cn=test)?!a=b,!c", url.toString() );
         }
@@ -1780,7 +1781,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with no Dn, some attributes, a base scope, a filter and some extensions
+     * test a LdapUrl with no Dn, some attributes, a base scope, a filter and some extensions
      *
      */
     @Test
@@ -1788,7 +1789,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/?cn,dc,ou?base?(cn=test)?!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/?cn,dc,ou?base?(cn=test)?!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/?cn,dc,ou??(cn=test)?!a=b,!c", url.toString() );
         }
@@ -1800,7 +1801,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, no attributes, no scope, no filter and some extensions
+     * test a LdapUrl with a Dn, no attributes, no scope, no filter and some extensions
      *
      */
     @Test
@@ -1808,7 +1809,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system????!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system????!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/ou=system????!a=b,!c", url.toString() );
         }
@@ -1820,7 +1821,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, no attributes, no scope, a filter and some extensions
+     * test a LdapUrl with a Dn, no attributes, no scope, a filter and some extensions
      *
      */
     @Test
@@ -1828,7 +1829,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system???(cn=test)?!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system???(cn=test)?!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/ou=system???(cn=test)?!a=b,!c", url.toString() );
         }
@@ -1840,7 +1841,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, no attributes, a scope, no filter and some extensions
+     * test a LdapUrl with a Dn, no attributes, a scope, no filter and some extensions
      *
      */
     @Test
@@ -1848,7 +1849,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system??sub??!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system??sub??!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/ou=system??sub??!a=b,!c", url.toString() );
         }
@@ -1860,7 +1861,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, no attributes, a base scope, no filter and some extensions
+     * test a LdapUrl with a Dn, no attributes, a base scope, no filter and some extensions
      *
      */
     @Test
@@ -1868,7 +1869,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system??base??!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system??base??!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/ou=system????!a=b,!c", url.toString() );
         }
@@ -1880,7 +1881,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, no attributes, a scope, a filter and some extensions
+     * test a LdapUrl with a Dn, no attributes, a scope, a filter and some extensions
      *
      */
     @Test
@@ -1888,7 +1889,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system??sub?(cn=test)?!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system??sub?(cn=test)?!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/ou=system??sub?(cn=test)?!a=b,!c", url.toString() );
         }
@@ -1900,7 +1901,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, no attributes, a base scope, a filter and some extensions
+     * test a LdapUrl with a Dn, no attributes, a base scope, a filter and some extensions
      *
      */
     @Test
@@ -1908,7 +1909,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system??base?(cn=test)?!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system??base?(cn=test)?!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/ou=system???(cn=test)?!a=b,!c", url.toString() );
         }
@@ -1920,7 +1921,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, some attributes, no scope, no filter and some extensions
+     * test a LdapUrl with a Dn, some attributes, no scope, no filter and some extensions
      *
      */
     @Test
@@ -1928,7 +1929,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system?cn,ou,dc???!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system?cn,ou,dc???!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/ou=system?cn,ou,dc???!a=b,!c", url.toString() );
         }
@@ -1940,7 +1941,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, some attributes, no scope, a filter and some extensions
+     * test a LdapUrl with a Dn, some attributes, no scope, a filter and some extensions
      *
      */
     @Test
@@ -1948,7 +1949,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system?cn,ou,dc??(cn=test)?!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system?cn,ou,dc??(cn=test)?!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/ou=system?cn,ou,dc??(cn=test)?!a=b,!c", url.toString() );
         }
@@ -1960,7 +1961,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, some attributes, a scope, no filter and some extensions
+     * test a LdapUrl with a Dn, some attributes, a scope, no filter and some extensions
      *
      */
     @Test
@@ -1968,7 +1969,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system?cn,ou,dc?sub??!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system?cn,ou,dc?sub??!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/ou=system?cn,ou,dc?sub??!a=b,!c", url.toString() );
         }
@@ -1980,7 +1981,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, some attributes, a base scope, no filter and some extensions
+     * test a LdapUrl with a Dn, some attributes, a base scope, no filter and some extensions
      *
      */
     @Test
@@ -1988,7 +1989,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system?cn,ou,dc?base??!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system?cn,ou,dc?base??!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/ou=system?cn,ou,dc???!a=b,!c", url.toString() );
         }
@@ -2000,7 +2001,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, some attributes, a scope, a filter and some extensions
+     * test a LdapUrl with a Dn, some attributes, a scope, a filter and some extensions
      *
      */
     @Test
@@ -2008,7 +2009,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system?cn,ou,dc?sub?(cn=test)?!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system?cn,ou,dc?sub?(cn=test)?!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/ou=system?cn,ou,dc?sub?(cn=test)?!a=b,!c", url.toString() );
         }
@@ -2020,7 +2021,7 @@ public class LdapUrlTest
 
 
     /**
-     * test a LdapURL with a Dn, some attributes, a base scope, a filter and some extensions
+     * test a LdapUrl with a Dn, some attributes, a base scope, a filter and some extensions
      *
      */
     @Test
@@ -2028,7 +2029,7 @@ public class LdapUrlTest
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/ou=system?cn,ou,dc?base?(cn=test)?!a=b,!c" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/ou=system?cn,ou,dc?base?(cn=test)?!a=b,!c" );
 
             assertEquals( "ldap://localhost:123/ou=system?cn,ou,dc??(cn=test)?!a=b,!c", url.toString() );
         }
@@ -2040,14 +2041,14 @@ public class LdapUrlTest
 
 
     /**
-     * Test a LdapURL with an extension after an empty extension.
+     * Test a LdapUrl with an extension after an empty extension.
      */
     @Test
     public void testLdapURLExtensionAfterEmptyExtension()
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/????!a=b,!c,d=e" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/????!a=b,!c,d=e" );
 
             assertEquals( "ldap://localhost:123/????!a=b,!c,d=e", url.toString() );
         }
@@ -2059,14 +2060,14 @@ public class LdapUrlTest
 
 
     /**
-     * Test the extension order of an LdapURL.
+     * Test the extension order of an LdapUrl.
      */
     @Test
     public void testLdapURLExtensionOrder()
     {
         try
         {
-            LdapURL url = new LdapURL( "ldap://localhost:123/????!a=b,!c,!x,d=e,f=g,!h=i" );
+            LdapUrl url = new LdapUrl( "ldap://localhost:123/????!a=b,!c,!x,d=e,f=g,!h=i" );
 
             assertEquals( "ldap://localhost:123/????!a=b,!c,!x,d=e,f=g,!h=i", url.toString() );
 
@@ -2115,7 +2116,7 @@ public class LdapUrlTest
                     ( byte ) 0xC3, ( byte ) 0x9F, ( byte ) 0xC3, ( byte ) 0xA4, ( byte ) 0xC3, ( byte ) 0xB6,
                     ( byte ) 0xC3, ( byte ) 0xBC }, "UTF-8" );
 
-        LdapURL url1 = new LdapURL();
+        LdapUrl url1 = new LdapUrl();
         url1.setHost( "localhost" );
         url1.setPort( 123 );
         url1.setDn( Dn.EMPTY_DN );
@@ -2123,7 +2124,7 @@ public class LdapUrlTest
         assertEquals( "ldap://localhost:123/????X-CONNECTION-NAME=%C3%84%C3%96%C3%9C%C3%9F%C3%A4%C3%B6%C3%BC", url1
             .toString() );
 
-        LdapURL url2 = new LdapURL(
+        LdapUrl url2 = new LdapUrl(
             "ldap://localhost:123/????X-CONNECTION-NAME=%c3%84%c3%96%c3%9c%c3%9f%c3%a4%c3%b6%c3%bc" );
         assertEquals( germanChars, url1.getExtensionValue( "X-CONNECTION-NAME" ) );
         assertEquals( "ldap://localhost:123/????X-CONNECTION-NAME=%C3%84%C3%96%C3%9C%C3%9F%C3%A4%C3%B6%C3%BC", url2
@@ -2137,14 +2138,14 @@ public class LdapUrlTest
     @Test
     public void testLdapURLExtensionWithCommaValue() throws Exception
     {
-        LdapURL url1 = new LdapURL();
+        LdapUrl url1 = new LdapUrl();
         url1.setHost( "localhost" );
         url1.setPort( 123 );
         url1.setDn( Dn.EMPTY_DN );
         url1.getExtensions().add( new Extension( false, "X-CONNECTION-NAME", "," ) );
         assertEquals( "ldap://localhost:123/????X-CONNECTION-NAME=%2c", url1.toString() );
 
-        LdapURL url2 = new LdapURL( "ldap://localhost:123/????X-CONNECTION-NAME=%2c" );
+        LdapUrl url2 = new LdapUrl( "ldap://localhost:123/????X-CONNECTION-NAME=%2c" );
         assertEquals( ",", url1.getExtensionValue( "X-CONNECTION-NAME" ) );
         assertEquals( "ldap://localhost:123/????X-CONNECTION-NAME=%2c", url2.toString() );
     }
@@ -2164,14 +2165,14 @@ public class LdapUrlTest
     @Test
     public void testLdapURLExtensionWithRFC3986ReservedCharsAndRFC4616Exception() throws Exception
     {
-        LdapURL url1 = new LdapURL();
+        LdapUrl url1 = new LdapUrl();
         url1.setHost( "localhost" );
         url1.setPort( 123 );
         url1.setDn( Dn.EMPTY_DN );
         url1.getExtensions().add( new Extension( false, "X-CONNECTION-NAME", ":/?#[]@!$&'()*+,;=" ) );
         assertEquals( "ldap://localhost:123/????X-CONNECTION-NAME=:/%3F#[]@!$&'()*+%2c;=", url1.toString() );
 
-        LdapURL url2 = new LdapURL( "ldap://localhost:123/????X-CONNECTION-NAME=:/%3f#[]@!$&'()*+%2c;=" );
+        LdapUrl url2 = new LdapUrl( "ldap://localhost:123/????X-CONNECTION-NAME=:/%3f#[]@!$&'()*+%2c;=" );
         assertEquals( ":/?#[]@!$&'()*+,;=", url1.getExtensionValue( "X-CONNECTION-NAME" ) );
         assertEquals( "ldap://localhost:123/????X-CONNECTION-NAME=:/%3F#[]@!$&'()*+%2c;=", url2.toString() );
     }
@@ -2185,7 +2186,7 @@ public class LdapUrlTest
     @Test
     public void testLdapURLExtensionWithRFC3986UnreservedChars() throws Exception
     {
-        LdapURL url1 = new LdapURL();
+        LdapUrl url1 = new LdapUrl();
         url1.setHost( "localhost" );
         url1.setPort( 123 );
         url1.setDn( Dn.EMPTY_DN );
@@ -2196,7 +2197,7 @@ public class LdapUrlTest
             "ldap://localhost:123/????X-CONNECTION-NAME=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~",
             url1.toString() );
 
-        LdapURL url2 = new LdapURL(
+        LdapUrl url2 = new LdapUrl(
             "ldap://localhost:123/????X-CONNECTION-NAME=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~" );
         assertEquals( "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~", url1
             .getExtensionValue( "X-CONNECTION-NAME" ) );

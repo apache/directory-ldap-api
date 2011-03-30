@@ -31,21 +31,22 @@ import static org.junit.Assert.fail;
 import java.util.Collection;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.dsmlv2.AbstractResponseTest;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.Dsmlv2ResponseParser;
 import org.apache.directory.shared.dsmlv2.reponse.SearchResponse;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.LdapResult;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.message.SearchResultDone;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -385,7 +386,7 @@ public class SearchResultDoneTest extends AbstractResponseTest
 
         try
         {
-            assertTrue( referrals.contains( new LdapURL( "ldap://www.apache.org/" ).toString() ) );
+            assertTrue( referrals.contains( new LdapUrl( "ldap://www.apache.org/" ).toString() ) );
         }
         catch ( LdapURLEncodingException e )
         {
@@ -459,7 +460,7 @@ public class SearchResultDoneTest extends AbstractResponseTest
 
         try
         {
-            assertTrue( referrals.contains( new LdapURL( "ldap://www.apache.org/" ).toString() ) );
+            assertTrue( referrals.contains( new LdapUrl( "ldap://www.apache.org/" ).toString() ) );
         }
         catch ( LdapURLEncodingException e )
         {
@@ -468,7 +469,7 @@ public class SearchResultDoneTest extends AbstractResponseTest
 
         try
         {
-            assertTrue( referrals.contains( new LdapURL( "ldap://www.apple.com/" ).toString() ) );
+            assertTrue( referrals.contains( new LdapUrl( "ldap://www.apple.com/" ).toString() ) );
         }
         catch ( LdapURLEncodingException e )
         {
@@ -509,7 +510,7 @@ public class SearchResultDoneTest extends AbstractResponseTest
 
         try
         {
-            assertTrue( referrals.contains( new LdapURL( "ldap://www.apache.org/" ).toString() ) );
+            assertTrue( referrals.contains( new LdapUrl( "ldap://www.apache.org/" ).toString() ) );
         }
         catch ( LdapURLEncodingException e )
         {

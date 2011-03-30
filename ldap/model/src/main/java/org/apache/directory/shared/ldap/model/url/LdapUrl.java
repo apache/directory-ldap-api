@@ -17,7 +17,7 @@
  *  under the License.
  *
  */
-package org.apache.directory.shared.ldap.model.filter;
+package org.apache.directory.shared.ldap.model.url;
 
 
 import java.io.ByteArrayOutputStream;
@@ -33,6 +33,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.model.exception.LdapUriException;
 import org.apache.directory.shared.ldap.model.exception.UrlDecoderException;
+import org.apache.directory.shared.ldap.model.filter.FilterParser;
 import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.util.Chars;
@@ -64,7 +65,7 @@ import org.apache.directory.shared.util.Unicode;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapURL
+public class LdapUrl
 {
 
     // ~ Static fields/initializers
@@ -76,8 +77,8 @@ public class LdapURL
     /** The constant for "ldap://" scheme. */
     public static final String LDAP_SCHEME = "ldap://";
 
-    /** A null LdapURL */
-    public static final LdapURL EMPTY_URL = new LdapURL();
+    /** A null LdapUrl */
+    public static final LdapUrl EMPTY_URL = new LdapUrl();
 
     // ~ Instance fields
     // ----------------------------------------------------------------------------
@@ -106,23 +107,20 @@ public class LdapURL
     /** The extensions. */
     private List<Extension> extensionList;
 
-    /** Stores the LdapURL as a String */
+    /** Stores the LdapUrl as a String */
     private String string;
 
-    /** Stores the LdapURL as a byte array */
+    /** Stores the LdapUrl as a byte array */
     private byte[] bytes;
 
     /** modal parameter that forces explicit scope rendering in toString */
     private boolean forceScopeRendering;
 
 
-    // ~ Constructors
-    // -------------------------------------------------------------------------------
-
     /**
-     * Construct an empty LdapURL
+     * Construct an empty LdapUrl
      */
-    public LdapURL()
+    public LdapUrl()
     {
         scheme = LDAP_SCHEME;
         host = null;
@@ -136,7 +134,7 @@ public class LdapURL
 
 
     /**
-     * Parse a LdapURL
+     * Parse a LdapUrl
      * @param chars The chars containing the URL
      * @throws org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException If the URL is invalid
      */
@@ -294,12 +292,12 @@ public class LdapURL
 
 
     /**
-     * Create a new LdapURL from a String after having parsed it.
+     * Create a new LdapUrl from a String after having parsed it.
      *
-     * @param string TheString that contains the LDAPURL
+     * @param string TheString that contains the LdapUrl
      * @throws LdapURLEncodingException If the String does not comply with RFC 2255
      */
-    public LdapURL( String string ) throws LdapURLEncodingException
+    public LdapUrl( String string ) throws LdapURLEncodingException
     {
         if ( string == null )
         {
@@ -320,12 +318,12 @@ public class LdapURL
 
 
     /**
-     * Create a new LdapURL after having parsed it.
+     * Create a new LdapUrl after having parsed it.
      *
      * @param bytes The byte buffer that contains the LDAPURL
      * @throws LdapURLEncodingException If the byte array does not comply with RFC 2255
      */
-    public LdapURL( byte[] bytes ) throws LdapURLEncodingException
+    public LdapUrl( byte[] bytes ) throws LdapURLEncodingException
     {
         if ( ( bytes == null ) || ( bytes.length == 0 ) )
         {
@@ -1316,10 +1314,10 @@ public class LdapURL
 
 
     /**
-     * Get a string representation of a LdapURL.
+     * Get a string representation of a LdapUrl.
      *
-     * @return A LdapURL string
-     * @see LdapURL#forceScopeRendering
+     * @return A LdapUrl string
+     * @see LdapUrl#forceScopeRendering
      */
     @Override
     public String toString()
@@ -1558,7 +1556,7 @@ public class LdapURL
 
 
     /**
-     * @return the number of bytes for this LdapURL
+     * @return the number of bytes for this LdapUrl
      */
     public int getNbBytes()
     {
@@ -1567,7 +1565,7 @@ public class LdapURL
 
 
     /**
-     * @return a reference on the interned bytes representing this LdapURL
+     * @return a reference on the interned bytes representing this LdapUrl
      */
     public byte[] getBytesReference()
     {
@@ -1576,7 +1574,7 @@ public class LdapURL
 
 
     /**
-     * @return a copy of the bytes representing this LdapURL
+     * @return a copy of the bytes representing this LdapUrl
      */
     public byte[] getBytesCopy()
     {
@@ -1594,7 +1592,7 @@ public class LdapURL
 
 
     /**
-     * @return the LdapURL as a String
+     * @return the LdapUrl as a String
      */
     public String getString()
     {
@@ -1631,7 +1629,7 @@ public class LdapURL
             return false;
         }
 
-        final LdapURL other = ( LdapURL ) obj;
+        final LdapUrl other = ( LdapUrl ) obj;
         return this.toString().equals( other.toString() );
     }
 

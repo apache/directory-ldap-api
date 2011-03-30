@@ -26,12 +26,12 @@ import java.util.List;
 import org.apache.directory.shared.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
-import org.apache.directory.shared.ldap.model.filter.LdapURL;
 import org.apache.directory.shared.ldap.model.message.LdapResult;
 import org.apache.directory.shared.ldap.model.message.Message;
 import org.apache.directory.shared.ldap.model.message.Referral;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.dom4j.Element;
 
 
@@ -185,7 +185,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
      * 
      * @param referral The referral to add.
      */
-    public void addReferral( LdapURL referral )
+    public void addReferral( LdapUrl referral )
     {
         result.getReferral().addLdapUrl( referral.toString() );
     }
