@@ -215,7 +215,7 @@ public class Dsmlv2Engine
      */
     public void processDSMLFile( File file, OutputStream respStream ) throws Exception
     {
-        parser = new Dsmlv2Parser();
+        parser = new Dsmlv2Parser(grammar);
         parser.setInputFile( file.getAbsolutePath() );
 
         processDSML( respStream );
@@ -244,7 +244,7 @@ public class Dsmlv2Engine
      */
     public void processDSML( InputStream inputStream, String inputEncoding, OutputStream out ) throws Exception
     {
-        parser = new Dsmlv2Parser();
+        parser = new Dsmlv2Parser(grammar);
         parser.setInput( inputStream, inputEncoding );
         processDSML( out );
     }
@@ -606,28 +606,35 @@ public class Dsmlv2Engine
             case SEARCH_REQUEST:
                 SearchCursor searchResponses = connection.search( ( SearchRequest ) request );
                 
-                if ( respWriter != null )
-                {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append( "<searchResponse" );
-                    
-                    if ( request.getDecorated().getMessageId() > 0 )
-                    {
-                        sb.append( " requestID=\"" );
-                        sb.append( request.getDecorated().getMessageId() );
-                        sb.append( '"' );
-                    }
-                    
-                    sb.append( '>' );
-                    
-                    respWriter.write( sb.toString() );
-                }
-
                 SearchResponseDsml searchResponseDsml = new SearchResponseDsml( connection.getCodecService() );
                 searchResponseDsml.setMessageId( request.getDecorated().getMessageId() );
                 
+                boolean first = true;
+                
                 while ( searchResponses.next() )
                 {
+                    if( first )
+                    {
+                        if ( respWriter != null )
+                        {
+                            StringBuilder sb = new StringBuilder();
+                            sb.append( "<searchResponse" );
+                            
+                            if ( request.getDecorated().getMessageId() > 0 )
+                            {
+                                sb.append( " requestID=\"" );
+                                sb.append( request.getDecorated().getMessageId() );
+                                sb.append( '"' );
+                            }
+                            
+                            sb.append( '>' );
+                            
+                            respWriter.write( sb.toString() );
+                        }
+                        
+                        first = false;
+                    }
+                    
                     Response searchResponse = searchResponses.get();
 
                     if ( searchResponse.getType() == MessageTypeEnum.SEARCH_RESULT_ENTRY )
@@ -667,18 +674,22 @@ public class Dsmlv2Engine
                 }
 
                 SearchResultDone srDone = searchResponses.getSearchResultDone();
-                resultCode = srDone.getLdapResult().getResultCode();
-                
-                SearchResultDoneDsml srdDsml = new SearchResultDoneDsml( connection.getCodecService(), srDone );
-                writeResponse( respWriter, srdDsml);
 
-                if ( respWriter != null )
+                if ( srDone != null )
                 {
-                    respWriter.write( "</searchResponse>" );
-                }
-                else
-                {
-                    batchResponse.addResponse( searchResponseDsml );
+                    resultCode = srDone.getLdapResult().getResultCode();
+                    
+                    SearchResultDoneDsml srdDsml = new SearchResultDoneDsml( connection.getCodecService(), srDone );
+                    writeResponse( respWriter, srdDsml);
+                    
+                    if ( respWriter != null )
+                    {
+                        respWriter.write( "</searchResponse>" );
+                    }
+                    else
+                    {
+                        batchResponse.addResponse( searchResponseDsml );
+                    }
                 }
                 
                 break;
