@@ -204,26 +204,35 @@ public class Dsmlv2Engine
         processDSML( respStream );
     }
 
+
     /**
-     * Processes the file given and return the result of the operations
+     * uses the default UTF-8 encoding for processing the DSML
      * 
-     * @param inputStream 
-     *      contains a raw byte input stream of possibly unknown encoding (when inputEncoding is null).
-     * @param inputEncoding 
-     *      if not null it MUST be used as encoding for inputStream
-     * @return 
-     *      the XML response in DSMLv2 Format
-     * @throws XmlPullParserException
-     *      if an error occurs in the parser
+     * @see #processDSML(InputStream, String, OutputStream) 
      */
-    public String processDSML( InputStream inputStream, String inputEncoding ) throws XmlPullParserException
+    public void processDSML( InputStream inputStream, OutputStream out ) throws Exception
     {
-        parser = new Dsmlv2Parser( grammar );
-        parser.setInput( inputStream, inputEncoding );
-        return processDSML();
+        processDSML( inputStream, "UTF-8", out );
     }
 
 
+    /**
+     * process the DSML request(s) from the given input stream with the specified encoding 
+     * and writes the response to the output stream
+     * 
+     * @param inputStream the input stream for DSML batch request
+     * @param inputEncoding encoding to be used while reading the DSML request data
+     * @param out the output stream to which DSML response will be written
+     * @throws Exception
+     */
+    public void processDSML( InputStream inputStream, String inputEncoding, OutputStream out ) throws Exception
+    {
+        parser = new Dsmlv2Parser();
+        parser.setInput( inputStream, inputEncoding );
+        processDSML( out );
+    }
+
+    
     /**
      * Processes the Request document
      * 
