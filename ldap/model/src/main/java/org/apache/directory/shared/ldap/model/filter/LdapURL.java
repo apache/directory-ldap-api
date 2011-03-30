@@ -33,6 +33,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.model.exception.LdapUriException;
 import org.apache.directory.shared.ldap.model.exception.UrlDecoderException;
+import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.util.Chars;
 import org.apache.directory.shared.util.StringConstants;

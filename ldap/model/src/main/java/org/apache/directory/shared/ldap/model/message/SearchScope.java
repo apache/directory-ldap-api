@@ -17,7 +17,7 @@
  *   under the License.
  *
  */
-package org.apache.directory.shared.ldap.model.filter;
+package org.apache.directory.shared.ldap.model.message;
 
 import org.apache.directory.shared.i18n.I18n;
 

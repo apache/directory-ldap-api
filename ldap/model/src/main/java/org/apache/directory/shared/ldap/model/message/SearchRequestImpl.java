@@ -31,7 +31,6 @@ import org.apache.directory.shared.ldap.model.exception.LdapProtocolErrorExcepti
 import org.apache.directory.shared.ldap.model.filter.BranchNormalizedVisitor;
 import org.apache.directory.shared.ldap.model.filter.ExprNode;
 import org.apache.directory.shared.ldap.model.filter.FilterParser;
-import org.apache.directory.shared.ldap.model.filter.SearchScope;
 import org.apache.directory.shared.ldap.model.name.Dn;
 
 
