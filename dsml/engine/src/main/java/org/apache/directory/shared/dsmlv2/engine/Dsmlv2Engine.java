@@ -101,33 +101,33 @@ import org.xmlpull.v1.XmlPullParserException;
 public class Dsmlv2Engine
 {
     /** The user. */
-    private String user;
+    protected String user;
 
     /** The password. */
-    private String password;
+    protected String password;
 
     /** The LDAP connection */
-    private LdapConnection connection;
+    protected LdapConnection connection;
 
     /** The DSVMv2 parser. */
-    private Dsmlv2Parser parser;
+    protected Dsmlv2Parser parser;
 
     /** The continue on error flag. */
-    private boolean continueOnError;
+    protected boolean continueOnError;
 
     /** The exit flag. */
-    private boolean exit = false;
+    protected boolean exit = false;
 
     /** The batch request. */
-    private BatchRequestDsml batchRequest;
+    protected BatchRequestDsml batchRequest;
 
     /** The batch response. */
-    private BatchResponseDsml batchResponse = new BatchResponseDsml();
+    protected BatchResponseDsml batchResponse = new BatchResponseDsml();
     
-    private Dsmlv2Grammar grammar = new Dsmlv2Grammar();
+    protected Dsmlv2Grammar grammar = new Dsmlv2Grammar();
 
     /** flag to indicate to generate the response in a SOAP envelope */
-    private boolean generateSoapResp = false;
+    protected boolean generateSoapResp = false;
 
     private static final Logger LOG = LoggerFactory.getLogger( Dsmlv2Engine.class );
 
@@ -148,6 +148,23 @@ public class Dsmlv2Engine
     }
 
 
+    /**
+     * 
+     * Creates a new instance of Dsmlv2Engine.
+     *
+     * @param connection an unbound active connection 
+     * @param user the user name to be used to bind this connection to the server
+     * @param password user's credentials
+     */
+    public Dsmlv2Engine( LdapConnection connection, String user, String password )
+    {
+        this.user = user;
+        this.password = password;
+
+        this.connection = connection;
+    }
+
+    
     /**
      * Processes the file given and return the result of the operations
      * 
@@ -496,13 +513,31 @@ public class Dsmlv2Engine
         this.generateSoapResp = generateSoapResp;
     }
 
+    
+    /**
+     * @return the batchResponse
+     */
+    public BatchResponseDsml getBatchResponse()
+    {
+        return batchResponse;
+    }
 
+    
+    /**
+     * @return the connection
+     */
+    public LdapConnection getConnection()
+    {
+        return connection;
+    }
+
+    
     /**
      * Processes a single request
      * 
      * @param request the request to process
      */
-    private void processRequest( DsmlDecorator<? extends Request> request, BufferedWriter respWriter  ) throws Exception
+    protected void processRequest( DsmlDecorator<? extends Request> request, BufferedWriter respWriter  ) throws Exception
     {
         ResultCodeEnum resultCode = null;
 
@@ -676,7 +711,7 @@ public class Dsmlv2Engine
      * @throws XmlPullParserException
      *      if an error occurs in the parser
      */
-    private void processBatchRequest() throws XmlPullParserException
+    protected void processBatchRequest() throws XmlPullParserException
     {
         // Parsing BatchRequest
         parser.parseBatchRequest();
@@ -711,7 +746,7 @@ public class Dsmlv2Engine
      * @throws DecoderException
      * @throws IOException
      */
-    private void bind( int messageId ) throws LdapException, EncoderException, DecoderException, IOException
+    protected void bind( int messageId ) throws LdapException, EncoderException, DecoderException, IOException
     {
         if ( ( connection != null ) && connection.isAuthenticated() )
         {
