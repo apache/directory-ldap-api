@@ -491,5 +491,5 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
     /**
      * Apply the give SchemaManager to make this EntryAttribute Schema aware
      */
-    void applySchemaManager( SchemaManager schemaManager ) throws LdapInvalidAttributeValueException;
+    void apply( SchemaManager schemaManager ) throws LdapInvalidAttributeValueException;
 }

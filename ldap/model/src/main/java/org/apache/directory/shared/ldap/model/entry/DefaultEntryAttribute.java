@@ -2387,7 +2387,7 @@ public class DefaultEntryAttribute implements EntryAttribute
     /**
      * {@inheritDoc}
      */
-    public void applySchemaManager( SchemaManager schemaManager ) throws LdapInvalidAttributeValueException
+    public void apply( SchemaManager schemaManager ) throws LdapInvalidAttributeValueException
     {
         AttributeType attributeType = null;
         

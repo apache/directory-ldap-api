@@ -87,7 +87,7 @@ public class SchemaAwareEntryAttributeSerializationTest
 
         EntryAttribute attribute2 = new DefaultEntryAttribute();
         attribute2.readExternal( in );
-        attribute2.applySchemaManager( schemaManager );
+        attribute2.apply( schemaManager );
 
         assertEquals( attribute1, attribute2 );
     }
@@ -110,7 +110,7 @@ public class SchemaAwareEntryAttributeSerializationTest
 
         EntryAttribute attribute2 = new DefaultEntryAttribute();
         attribute2.readExternal( in );
-        attribute2.applySchemaManager( schemaManager );
+        attribute2.apply( schemaManager );
 
         assertEquals( attribute1, attribute2 );
         assertEquals( "CommonName", attribute2.getUpId() );
@@ -134,7 +134,7 @@ public class SchemaAwareEntryAttributeSerializationTest
 
         EntryAttribute attribute2 = new DefaultEntryAttribute();
         attribute2.readExternal( in );
-        attribute2.applySchemaManager( schemaManager );
+        attribute2.apply( schemaManager );
 
         assertEquals( attribute1, attribute2 );
         assertEquals( "CN", attribute2.getUpId() );
@@ -158,7 +158,7 @@ public class SchemaAwareEntryAttributeSerializationTest
 
         EntryAttribute attribute2 = new DefaultEntryAttribute();
         attribute2.readExternal( in );
-        attribute2.applySchemaManager( schemaManager );
+        attribute2.apply( schemaManager );
 
         assertEquals( attribute1, attribute2 );
     }
@@ -181,7 +181,7 @@ public class SchemaAwareEntryAttributeSerializationTest
 
         EntryAttribute attribute2 = new DefaultEntryAttribute();
         attribute2.readExternal( in );
-        attribute2.applySchemaManager( schemaManager );
+        attribute2.apply( schemaManager );
 
         assertEquals( attribute1, attribute2 );
     }
@@ -204,7 +204,7 @@ public class SchemaAwareEntryAttributeSerializationTest
 
         EntryAttribute attribute2 = new DefaultEntryAttribute();
         attribute2.readExternal( in );
-        attribute2.applySchemaManager( schemaManager );
+        attribute2.apply( schemaManager );
 
         assertEquals( attribute1, attribute2 );
         assertEquals( "UserCertificate", attribute2.getUpId() );
