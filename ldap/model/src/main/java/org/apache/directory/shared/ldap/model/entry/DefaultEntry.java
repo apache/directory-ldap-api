@@ -1733,7 +1733,7 @@ public final class DefaultEntry implements Entry
                 if ( attribute.getAttributeType() == null )
                 {
                     AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( attribute.getId() );
-                    attribute.setAttributeType( attributeType );
+                    attribute.apply( attributeType );
                 }
 
                 EntryAttribute removed = this.attributes.put( attribute.getAttributeType().getOid(), attribute );
@@ -2601,7 +2601,7 @@ public final class DefaultEntry implements Entry
                 try
                 {
                     AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( attribute.getId() );
-                    attribute.setAttributeType( attributeType );
+                    attribute.apply( attributeType );
 
                     attributes.put( attributeType.getOid(), attribute );
                 }

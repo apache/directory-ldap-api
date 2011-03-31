@@ -184,7 +184,7 @@ public class DefaultModification implements Modification
         
         if ( attribute != null )
         {
-            attribute.setAttributeType( attributeType );
+            attribute.apply( attributeType );
         }
     }
 
