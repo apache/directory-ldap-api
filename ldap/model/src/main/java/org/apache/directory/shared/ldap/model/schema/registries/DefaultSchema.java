@@ -151,7 +151,7 @@ public class DefaultSchema implements Schema
         if ( dependenciesToAdd != null )
         {
             this.dependencies = new String[dependenciesToAdd.length];
-            System.arraycopy( this.dependencies, 0, dependenciesToAdd, 0, dependenciesToAdd.length );
+            System.arraycopy( dependenciesToAdd, 0, dependencies, 0, dependenciesToAdd.length );
         }
     }
 
