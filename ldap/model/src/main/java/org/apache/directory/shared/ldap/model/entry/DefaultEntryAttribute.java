@@ -542,27 +542,6 @@ public class DefaultEntryAttribute implements EntryAttribute
 
 
     /**
-     * <p>
-     * Set the attribute to Human Readable or to Binary. 
-     * </p>
-     * @param isHR <code>true</code> for a Human Readable attribute, 
-     * <code>false</code> for a Binary attribute.
-     */
-    public void setHR( boolean isHR )
-    {
-        //TODO : deal with the values, we may have to convert them.
-
-        if ( attributeType == null )
-        {
-            this.isHR = isHR;
-            
-            // Compute the hashCode
-            rehash();
-        }
-    }
-
-    
-    /**
      * Get's the user provided identifier for this entry.  This is the value
      * that will be used as the identifier for the attribute within the
      * entry.  If this is a commonName attribute for example and the user

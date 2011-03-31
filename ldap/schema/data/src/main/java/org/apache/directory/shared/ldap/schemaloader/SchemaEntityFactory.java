@@ -904,7 +904,6 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( ( mSyntax != null ) && ( mSyntax.get() != null ) )
         {
-            mSyntax.setHR( true );
             attributeType.setSyntaxOid( mSyntax.getString() );
         }
 
@@ -913,7 +912,6 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mSyntaxLength != null )
         {
-            mSyntaxLength.setHR( true );
             attributeType.setSyntaxLength( Integer.parseInt( mSyntaxLength.getString() ) );
         }
 
@@ -922,7 +920,6 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mEquality != null )
         {
-            mEquality.setHR( true );
             attributeType.setEqualityOid( mEquality.getString() );
         }
 
@@ -931,7 +928,6 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mOrdering != null )
         {
-            mOrdering.setHR( true );
             attributeType.setOrderingOid( mOrdering.getString() );
         }
 
@@ -940,7 +936,6 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mSubstr != null )
         {
-            mSubstr.setHR( true );
             attributeType.setSubstringOid( mSubstr.getString() );
         }
 
@@ -949,7 +944,6 @@ public class SchemaEntityFactory implements EntityFactory
         // Sup
         if ( mSupAttributeType != null )
         {
-            mSupAttributeType.setHR( true );
             attributeType.setSuperiorOid( mSupAttributeType.getString() );
         }
 
@@ -958,7 +952,6 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mCollective != null )
         {
-            mCollective.setHR( true );
             String val = mCollective.getString();
             attributeType.setCollective( val.equalsIgnoreCase( "TRUE" ) );
         }
@@ -968,7 +961,6 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mSingleValued != null )
         {
-            mSingleValued.setHR( true );
             String val = mSingleValued.getString();
             attributeType.setSingleValued( val.equalsIgnoreCase( "TRUE" ) );
         }
@@ -978,7 +970,6 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mNoUserModification != null )
         {
-            mNoUserModification.setHR( true );
             String val = mNoUserModification.getString();
             attributeType.setUserModifiable( !val.equalsIgnoreCase( "TRUE" ) );
         }
@@ -988,7 +979,6 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mUsage != null )
         {
-            mUsage.setHR( true );
             attributeType.setUsage( UsageEnum.getUsage( mUsage.getString() ) );
         }
 
@@ -1079,7 +1069,6 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mObsolete != null )
         {
-            mObsolete.setHR( true );
             String val = mObsolete.getString();
             schemaObject.setObsolete( val.equalsIgnoreCase( "TRUE" ) );
         }
@@ -1089,7 +1078,6 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mDescription != null )
         {
-            mDescription.setHR( true );
             schemaObject.setDescription( mDescription.getString() );
         }
 
@@ -1098,7 +1086,6 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( names != null )
         {
-            names.setHR( true );
             List<String> values = new ArrayList<String>();
 
             for ( Value<?> name : names )
@@ -1116,7 +1103,6 @@ public class SchemaEntityFactory implements EntityFactory
         // Otherwise, inherit it from the schema
         if ( mDisabled != null )
         {
-            mDisabled.setHR( true );
             String val = mDisabled.getString();
             schemaObject.setEnabled( !val.equalsIgnoreCase( "TRUE" ) );
         }
@@ -1130,7 +1116,6 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mIsReadOnly != null )
         {
-            mIsReadOnly.setHR( true );
             String val = mIsReadOnly.getString();
             schemaObject.setReadOnly( val.equalsIgnoreCase( "TRUE" ) );
         }

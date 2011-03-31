@@ -615,12 +615,11 @@ public class DefaultEntryAttributeTest
 
         EntryAttribute attr6 = new DefaultEntryAttribute( "test" );
         
-        attr6.setHR( false );
         nbAdded = attr6.add( "a", (String)null );
         assertEquals( 2, nbAdded );
-        assertFalse( attr6.isHumanReadable() );
-        assertTrue( attr6.contains( new byte[]{'a'} ) );
-        assertTrue( attr6.contains( (byte[])null ) );
+        assertTrue( attr6.isHumanReadable() );
+        assertTrue( attr6.contains( "a" ) );
+        assertTrue( attr6.contains( (String)null ) );
         
         EntryAttribute attr7 = new DefaultEntryAttribute( "test" );
         
@@ -682,12 +681,11 @@ public class DefaultEntryAttributeTest
 
         EntryAttribute attr6 = new DefaultEntryAttribute( "test" );
         
-        attr6.setHR( true );
         nbAdded = attr6.add( BYTES1, (byte[])null );
-        assertEquals( 0, nbAdded );
-        assertTrue( attr6.isHumanReadable() );
-        assertFalse( attr6.contains( "ab" ) );
-        assertFalse( attr6.contains( (String)null ) );
+        assertEquals( 2, nbAdded );
+        assertFalse( attr6.isHumanReadable() );
+        assertTrue( attr6.contains( "ab" ) );
+        assertTrue( attr6.contains( (byte[])null ) );
     }
 
 
@@ -976,8 +974,6 @@ public class DefaultEntryAttributeTest
         EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
 
         assertFalse( attr1.remove( STR_VALUE1 ) );
-
-        attr1.setHR( true );
         assertFalse( attr1.remove( STR_VALUE1 ) );
         
         attr1.add( "a", "b", "c" );
@@ -1008,16 +1004,13 @@ public class DefaultEntryAttributeTest
         EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
 
         assertFalse( attr2.remove( BIN_VALUE1 ) );
-
-        attr2.setHR( true );
-        assertFalse( attr2.remove( BIN_VALUE1 ) );
         
         attr2.clear();
         attr2.add( BYTES1, BYTES2, BYTES3 );
-        assertFalse( attr2.remove( BIN_VALUE1 ) );
-        assertEquals( 0, attr2.size() );
+        assertTrue( attr2.remove( BIN_VALUE1 ) );
+        assertEquals( 2, attr2.size() );
         
-        assertFalse( attr2.remove( BIN_VALUE2, BIN_VALUE3 ) );
+        assertTrue( attr2.remove( BIN_VALUE2, BIN_VALUE3 ) );
         assertEquals( 0, attr2.size() );
         
         assertFalse( attr2.remove( BIN_VALUE4 ) );
@@ -1025,19 +1018,19 @@ public class DefaultEntryAttributeTest
         attr2.clear();
         attr2.add( BYTES1, BYTES2, BYTES3 );
         assertFalse( attr2.remove( BIN_VALUE2, STR_VALUE4 ) );
-        assertEquals( 0, attr2.size() );
+        assertEquals( 2, attr2.size() );
         
         attr2.clear();
         attr2.add( BYTES1, (byte[])null, BYTES3 );
         assertFalse( attr2.remove( NULL_STRING_VALUE, BIN_VALUE1 ) );
-        assertEquals( 0, attr2.size() );
+        assertEquals( 2, attr2.size() );
         
         attr2.clear();
         attr2.add( BYTES1, (byte[])null, BYTES2 );
         attr2.add( "c" );
-        assertEquals( 1, attr2.size() );
+        assertEquals( 4, attr2.size() );
         assertFalse( attr2.remove( NULL_STRING_VALUE, BIN_VALUE1, STR_VALUE3 ) );
-        assertEquals( 0, attr2.size() );
+        assertEquals( 3, attr2.size() );
     }
 
 
@@ -1049,9 +1042,6 @@ public class DefaultEntryAttributeTest
     {
         EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
 
-        assertFalse( attr1.remove( BYTES1 ) );
-
-        attr1.setHR( false );
         assertFalse( attr1.remove( BYTES1 ) );
         
         attr1.add( BYTES1, BYTES2, BYTES3 );
@@ -1091,9 +1081,6 @@ public class DefaultEntryAttributeTest
     {
         EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
 
-        assertFalse( attr1.remove( "a" ) );
-
-        attr1.setHR( true );
         assertFalse( attr1.remove( "a" ) );
         
         attr1.add( "a", "b", "c" );
@@ -1174,12 +1161,11 @@ public class DefaultEntryAttributeTest
 
         EntryAttribute attr6 = new DefaultEntryAttribute( "test" );
         
-        attr6.setHR( false );
         nbAdded = attr6.add( "a", (String)null );
         assertEquals( 2, nbAdded );
-        assertFalse( attr6.isHumanReadable() );
-        assertTrue( attr6.contains( new byte[]{'a'} ) );
-        assertTrue( attr6.contains( (byte[])null ) );
+        assertTrue( attr6.isHumanReadable() );
+        assertTrue( attr6.contains( "a" ) );
+        assertTrue( attr6.contains( (String)null ) );
     }
 
 
@@ -1236,12 +1222,11 @@ public class DefaultEntryAttributeTest
 
         EntryAttribute attr6 = new DefaultEntryAttribute( "test" );
         
-        attr6.setHR( true );
         nbAdded = attr6.add( BYTES1, (byte[])null );
-        assertEquals( 0, nbAdded );
-        assertTrue( attr6.isHumanReadable() );
-        assertFalse( attr6.contains( "ab" ) );
-        assertFalse( attr6.contains( (String)null ) );
+        assertEquals( 2, nbAdded );
+        assertFalse( attr6.isHumanReadable() );
+        assertTrue( attr6.contains( "ab" ) );
+        assertTrue( attr6.contains( (byte[])null ) );
     }
 
 
@@ -1338,12 +1323,6 @@ public class DefaultEntryAttributeTest
     {
         EntryAttribute attr = new DefaultEntryAttribute();
         assertEquals( 37, attr.hashCode() );
-        
-        attr.setHR( true );
-        assertEquals( 37*17 + 1231, attr.hashCode() );
-        
-        attr.setHR(  false );
-        assertEquals( 37*17 + 1237, attr.hashCode() );
 
         EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
         EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
@@ -1420,9 +1399,7 @@ public class DefaultEntryAttributeTest
         attr2.add( "c", "b", "a" );
         assertTrue( attr1.equals( attr2 ) );
         
-        attr1.setHR( true );
-        attr2.setHR( false );
-        assertFalse( attr1.equals( attr2 ) );
+        assertTrue( attr1.equals( attr2 ) );
         
         EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
         EntryAttribute attr4 = new DefaultEntryAttribute( "test" );
@@ -1478,9 +1455,6 @@ public class DefaultEntryAttributeTest
         
         clone = attr.clone();
         assertEquals( attr, clone );
-
-        attr.setHR( false );
-        assertNotSame( attr, clone );
     }
     
     
@@ -1491,7 +1465,6 @@ public class DefaultEntryAttributeTest
     public void testSerializeCompleteAttribute() throws LdapException, IOException, ClassNotFoundException
     {
         DefaultEntryAttribute dca = new DefaultEntryAttribute( "CommonName" );
-        dca.setHR( true );
         dca.setUpId( "CN" );
         dca.add( "test1", "test2" );
 
@@ -1512,7 +1485,6 @@ public class DefaultEntryAttributeTest
     public void testSerializeAttributeWithNoValue() throws LdapException, IOException, ClassNotFoundException
     {
         DefaultEntryAttribute dca = new DefaultEntryAttribute( "CommonName" );
-        dca.setHR( true );
         dca.setUpId( "CN" );
 
         DefaultEntryAttribute dcaSer = deserializeValue( serializeValue( dca ) );
@@ -1520,7 +1492,7 @@ public class DefaultEntryAttributeTest
         assertEquals( "cn", dcaSer.getId() );
         assertEquals( "CN", dcaSer.getUpId() );
         assertEquals( 0, dcaSer.size() );
-        assertTrue( dcaSer.isHumanReadable() );
+        assertFalse( dcaSer.isHumanReadable() );
     }
     
     
@@ -1531,7 +1503,6 @@ public class DefaultEntryAttributeTest
     public void testSerializeAttributeNullValue() throws LdapException, IOException, ClassNotFoundException
     {
         DefaultEntryAttribute dca = new DefaultEntryAttribute( "CommonName" );
-        dca.setHR( true );
         dca.setUpId( "CN" );
         dca.add( (String)null );
 
@@ -1553,7 +1524,6 @@ public class DefaultEntryAttributeTest
     public void testSerializeAttributeBinaryValue() throws LdapException, IOException, ClassNotFoundException
     {
         DefaultEntryAttribute dca = new DefaultEntryAttribute( "UserPassword" );
-        dca.setHR( false );
         byte[] password = Strings.getBytesUtf8("secret");
         dca.add( password );
 

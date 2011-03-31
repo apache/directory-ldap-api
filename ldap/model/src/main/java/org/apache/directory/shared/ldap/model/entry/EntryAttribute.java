@@ -411,16 +411,6 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
 
     
     /**
-     * <p>
-     * Set the attribute to Human Readable or to Binary. 
-     * </p>
-     * @param isHR <code>true</code> for a Human Readable attribute, 
-     * <code>false</code> for a Binary attribute.
-     */
-    void setHR( boolean isHR );
-
-    
-    /**
      * Set the user provided ID. It will also set the ID, normalizing
      * the upId (removing spaces before and after, and lower casing it)
      *
