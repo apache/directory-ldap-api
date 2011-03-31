@@ -228,7 +228,7 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      * than the given attributeType
      *
      * @param attributeType The AttributeType to check
-     * @return True if the current attribute is of the expected attributeType
+     * @return true if the current attribute is of the expected attributeType or a descendant of it
      * @throws LdapInvalidAttributeValueException If there is no AttributeType
      */
     boolean isInstanceOf( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
@@ -238,10 +238,6 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      * <p>
      * Get the first value of this attribute. If there is none, 
      * null is returned.
-     * </p>
-     * <p>
-     * Note : even if we are storing values into a Set, one can assume
-     * the values are ordered following the insertion order.
      * </p>
      * <p> 
      * This method is meant to be used if the attribute hold only one value.
@@ -257,9 +253,6 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      * <p>
      * The effect on the returned enumeration of adding or removing values of
      * the attribute is not specified.
-     * </p>
-     * <p>
-     * This method will throw any <code>NamingException</code> that occurs.
      * </p>
      *
      * @return an enumeration of all values of the attribute
@@ -283,9 +276,9 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
     
     
     /**
-     * Get's the attribute identifier for this entry.  This is the value
+     * Get's the attribute identifier for this entry. This is the value
      * that will be used as the identifier for the attribute within the
-     * entry.  
+     * entry.
      *
      * @return the identifier for this attribute
      */
