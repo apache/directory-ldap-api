@@ -165,7 +165,7 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      * </p>
      *
      * @param vals the values
-     * @return true if this attribute contains all the values, otherwise false
+     * @return true if this attribute contains all the given values, otherwise false
      */
     boolean contains( String... vals );
 
@@ -179,7 +179,7 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      * </p>
      *
      * @param vals the values
-     * @return true if this attribute contains all the values, otherwise false
+     * @return true if this attribute contains all the given values, otherwise false
      */
     boolean contains( byte[]... vals );
 
@@ -194,13 +194,13 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
      * </p>
      *
      * @param vals the values
-     * @return true if this attribute contains all the values, otherwise false
+     * @return true if this attribute contains all the given values, otherwise false
      */
     boolean contains( Value<?>... vals );
 
 
     /**
-     * Get the attribute type associated with this ServerAttribute.
+     * Get the attribute type associated with this EntryAttribute.
      *
      * @return the attributeType associated with this entry attribute
      */
@@ -209,7 +209,7 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
     
     /**
      * <p>
-     * Set the attribute type associated with this ServerAttribute.
+     * Set the attribute type associated with this EntryAttribute.
      * </p>
      * <p>
      * The current attributeType will be replaced. It is the responsibility of
@@ -224,19 +224,14 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
     
     /**
      * <p>
-     * Check if the current attribute type is of the expected attributeType
-     * </p>
-     * <p>
-     * This method won't tell if the current attribute is a descendant of 
-     * the attributeType. For instance, the "CN" serverAttribute will return
-     * false if we ask if it's an instance of "Name". 
-     * </p> 
+     * Check if the current attribute type has the same type (or is a descendant of)
+     * than the given attributeType
      *
-     * @param attributeId The AttributeType ID to check
+     * @param attributeType The AttributeType to check
      * @return True if the current attribute is of the expected attributeType
      * @throws LdapInvalidAttributeValueException If there is no AttributeType
      */
-    boolean isInstanceOf( String attributeId ) throws LdapInvalidAttributeValueException;
+    boolean isInstanceOf( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
 
     
     /**

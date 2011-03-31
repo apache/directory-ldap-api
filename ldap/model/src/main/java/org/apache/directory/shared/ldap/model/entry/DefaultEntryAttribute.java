@@ -1959,30 +1959,15 @@ public class DefaultEntryAttribute implements EntryAttribute
      * false if we ask if it's an instance of "Name". 
      * </p> 
      *
-     * @param attributeId The AttributeType ID to check
+     * @param attributeType The AttributeType to check
      * @return True if the current attribute is of the expected attributeType
      * @throws LdapInvalidAttributeValueException If there is no AttributeType
      */
-    public boolean isInstanceOf( String attributeId ) throws LdapInvalidAttributeValueException
+    public boolean isInstanceOf( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
-        String trimmedId = Strings.trim(attributeId);
-        
-        if ( Strings.isEmpty(trimmedId) )
-        {
-            return false;
-        }
-        
-        String normId = Strings.lowerCaseAscii(trimmedId);
-        
-        for ( String name:attributeType.getNames() )
-        {
-            if ( normId.equalsIgnoreCase( name ) )
-            {
-                return true;
-            }
-        }
-        
-        return normId.equalsIgnoreCase( attributeType.getOid() );
+        return ( attributeType != null ) && 
+                ( this.attributeType.equals( attributeType ) || 
+                  this.attributeType.isDescendantOf( attributeType ) ); 
     }
 
 
