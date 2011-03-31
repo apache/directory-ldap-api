@@ -122,7 +122,7 @@ public class AttributeValueItem extends ProtectedItem
 
             buf.append( attribute.getId() );
             buf.append( '=' );
-            buf.append( attribute.get( 0 ) );
+            buf.append( attribute.get() );
         }
 
         buf.append( " }" );

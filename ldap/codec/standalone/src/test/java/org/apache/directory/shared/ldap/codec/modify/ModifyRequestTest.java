@@ -570,19 +570,15 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
         assertEquals( "l", attributeValue.getUpId().toLowerCase() );
 
-        String attrValue = attributeValue.getString();
-        assertEquals( "Paris", attrValue );
-
-        attrValue = attributeValue.get( 1 ).getString();
-        assertEquals( "London", attrValue );
+        assertTrue( attributeValue.contains( "Paris" ) );
+        assertTrue( attributeValue.contains( "London" ) );
 
         modification = ( Modification ) modifications[1];
         attributeValue = modification.getAttribute();
 
         assertEquals( "attrs", attributeValue.getUpId().toLowerCase() );
 
-        attrValue = attributeValue.getString();
-        assertEquals( "test", attrValue );
+        assertTrue( attributeValue.contains( "test" ) );
 
         // Check the encoding
         try
@@ -1281,11 +1277,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         assertEquals( "l", attributeValue.getUpId().toLowerCase() );
         assertEquals( 2, attributeValue.size() );
 
-        String attrValue = attributeValue.getString();
-        assertEquals( "a", attrValue );
-
-        attrValue = attributeValue.get( 1 ).getString();
-        assertEquals( "b", attrValue );
+        assertTrue( attributeValue.contains( "a", "b" ) );
 
         // Check the encoding
         try
