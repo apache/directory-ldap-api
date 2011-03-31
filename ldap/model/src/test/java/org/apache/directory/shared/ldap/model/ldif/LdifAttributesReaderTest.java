@@ -33,20 +33,20 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -156,7 +156,7 @@ public class LdifAttributesReaderTest
         assertEquals( 1, reader.getVersion() );
         assertNotNull( entry );
 
-        EntryAttribute attr = entry.get( "displayname" );
+        Attribute attr = entry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
     }
 
@@ -177,7 +177,7 @@ public class LdifAttributesReaderTest
         Entry entry = reader.parseEntry( ldif );
         assertNotNull( entry );
 
-        EntryAttribute attr = entry.get( "displayname" );
+        Attribute attr = entry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
 
     }
@@ -194,7 +194,7 @@ public class LdifAttributesReaderTest
 
         assertNotNull( entry );
 
-        EntryAttribute attr = entry.get( "cn" );
+        Attribute attr = entry.get( "cn" );
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "objectclass" );
@@ -224,7 +224,7 @@ public class LdifAttributesReaderTest
 
         assertNotNull( entry );
 
-        EntryAttribute attr = entry.get( "cn" );
+        Attribute attr = entry.get( "cn" );
         assertTrue( attr.contains( "app1#another comment" ) );
 
         attr = entry.get( "objectclass" );
@@ -254,7 +254,7 @@ public class LdifAttributesReaderTest
 
         assertNotNull( entry );
 
-        EntryAttribute attr = entry.get( "cn" );
+        Attribute attr = entry.get( "cn" );
         assertTrue( attr.contains( "app1#another comment" ) );
 
         attr = entry.get( "objectclass" );
@@ -284,7 +284,7 @@ public class LdifAttributesReaderTest
 
         assertNotNull( entry );
 
-        EntryAttribute attr = entry.get( "cn" );
+        Attribute attr = entry.get( "cn" );
         assertTrue( attr.contains( "Emmanuel L\u00e9charny".getBytes( "UTF-8" ) ) );
 
         attr = entry.get( "objectclass" );
@@ -314,7 +314,7 @@ public class LdifAttributesReaderTest
 
         assertNotNull( entry );
 
-        EntryAttribute attr = entry.get( "cn" );
+        Attribute attr = entry.get( "cn" );
         assertTrue( attr.contains( "Emmanuel L\u00e9charny  ".getBytes( "UTF-8" ) ) );
 
         attr = entry.get( "objectclass" );
@@ -342,7 +342,7 @@ public class LdifAttributesReaderTest
         LdifAttributesReader reader = new LdifAttributesReader();
         Entry entry = reader.parseEntry( ldif );
 
-        EntryAttribute attr = entry.get( "objectclass" );
+        Attribute attr = entry.get( "objectclass" );
         assertTrue( attr.contains( "top" ) );
         assertTrue( attr.contains( "person" ) );
         assertTrue( attr.contains( "organizationalPerson" ) );
@@ -379,7 +379,7 @@ public class LdifAttributesReaderTest
         LdifAttributesReader reader = new LdifAttributesReader();
         Entry entry = reader.parseEntry( ldif );
 
-        EntryAttribute attr = entry.get( "objectclass" );
+        Attribute attr = entry.get( "objectclass" );
         assertTrue( attr.contains( "top" ) );
         assertTrue( attr.contains( "person" ) );
         assertTrue( attr.contains( "organizationalPerson" ) );
@@ -421,7 +421,7 @@ public class LdifAttributesReaderTest
         LdifAttributesReader reader = new LdifAttributesReader();
         Attributes attributes = reader.parseAttributes( ldif );
 
-        Attribute attr = attributes.get( "objectclass" );
+        javax.naming.directory.Attribute attr = attributes.get( "objectclass" );
         assertTrue( attr.contains( "top" ) );
         assertTrue( attr.contains( "person" ) );
         assertTrue( attr.contains( "organizationalPerson" ) );
@@ -459,7 +459,7 @@ public class LdifAttributesReaderTest
         LdifAttributesReader reader = new LdifAttributesReader();
         Attributes attributes = reader.parseAttributes( ldif );
 
-        Attribute attr = attributes.get( "objectclass" );
+        javax.naming.directory.Attribute attr = attributes.get( "objectclass" );
         assertTrue( attr.contains( "top" ) );
         assertTrue( attr.contains( "person" ) );
         assertTrue( attr.contains( "organizationalPerson" ) );
@@ -510,7 +510,7 @@ public class LdifAttributesReaderTest
 
         for ( int j = 0; j < values.length; j++ )
         {
-            Attribute attr = attributes.get( values[j][0] );
+            javax.naming.directory.Attribute attr = attributes.get( values[j][0] );
 
             if ( attr.contains( values[j][1] ) )
             {
@@ -550,12 +550,12 @@ public class LdifAttributesReaderTest
         {
             if ( "jpegphoto".equalsIgnoreCase( values[i][0] ) )
             {
-                Attribute attr = attributes.get( values[i][0] );
+                javax.naming.directory.Attribute attr = attributes.get( values[i][0] );
                 assertEquals( Strings.dumpBytes(data), Strings.dumpBytes((byte[]) attr.get()) );
             }
             else
             {
-                Attribute attr = attributes.get( values[i][0] );
+                javax.naming.directory.Attribute attr = attributes.get( values[i][0] );
 
                 if ( attr.contains( values[i][1] ) )
                 {
@@ -619,7 +619,7 @@ public class LdifAttributesReaderTest
 
         Attributes attributes = reader.parseAttributes( ldif );
 
-        Attribute attr = attributes.get( "objectclass" );
+        javax.naming.directory.Attribute attr = attributes.get( "objectclass" );
         assertTrue( attr.contains( "top" ) );
         assertTrue( attr.contains( "organizationalunit" ) );
 
@@ -672,7 +672,7 @@ public class LdifAttributesReaderTest
         LdifAttributesReader reader = new LdifAttributesReader();
         Attributes attributes = reader.parseAttributes( ldif );
 
-        Attribute attr = attributes.get( "objectClass" );
+        javax.naming.directory.Attribute attr = attributes.get( "objectClass" );
         assertTrue( attr.contains( "top" ) );
         assertTrue( attr.contains( SchemaConstants.SUBENTRY_OC ) );
         assertTrue( attr.contains( "accessControlSubentry" ) );

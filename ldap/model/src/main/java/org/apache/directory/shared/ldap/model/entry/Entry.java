@@ -43,7 +43,7 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
  *</p>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizable
+public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 {
     /**
      * Remove all the attributes for this entry. The Dn is not reset
@@ -82,7 +82,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @return <code>true</code> if the ObjectClass value is present 
      * in the ObjectClass attribute
      */
-    boolean hasObjectClass( EntryAttribute objectClass );
+    boolean hasObjectClass( Attribute objectClass );
 
     
     /**
@@ -98,7 +98,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param alias an aliased name of the attribute identifier
      * @return the attribute associated with the alias
      */
-    EntryAttribute get( String alias );
+    Attribute get( String alias );
 
     
     /**
@@ -116,7 +116,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param attributeType the AttributeType we are looking for
      * @return the associated attribute
      */
-    EntryAttribute get( AttributeType attributeType );
+    Attribute get( AttributeType attributeType );
 
 
     /**
@@ -140,7 +140,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param upIds The user provided IDs of the AttributeTypes to add.
      * @return A list of replaced Attributes.
      */
-    List<EntryAttribute> set( String... upIds );
+    List<Attribute> set( String... upIds );
 
 
     /**
@@ -156,7 +156,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param attributeTypes The AttributeTypes to add.
      * @return A list of replaced Attributes, of <code>null</code> if no attribute are removed.
      */
-    List<EntryAttribute> set( AttributeType... attributeTypes );
+    List<Attribute> set( AttributeType... attributeTypes );
 
 
     /**
@@ -200,7 +200,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @return true if the entry, it's attributes and their values are consistent
      * with the objectClass
      */
-    boolean isValid( EntryAttribute objectClass );
+    boolean isValid( Attribute objectClass );
 
 
     /**
@@ -210,7 +210,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      *
      * @return an enumeration of all contained attributes
      */
-    Iterator<EntryAttribute> iterator();
+    Iterator<Attribute> iterator();
 
 
     /**
@@ -219,7 +219,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param attributes The attributes to add
      * @throws LdapException If we can't add any of the attributes
      */
-    void add( EntryAttribute... attributes ) throws LdapException;
+    void add( Attribute... attributes ) throws LdapException;
 
 
     /**
@@ -399,7 +399,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      *         <code>null</code>
      * @exception LdapException if the operation fails
      */
-    List<EntryAttribute> put( EntryAttribute... attributes ) throws LdapException;
+    List<Attribute> put( Attribute... attributes ) throws LdapException;
 
 
     /**
@@ -421,7 +421,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * <code>null</code>
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException if there are failures
      */
-    EntryAttribute put( AttributeType attributeType, byte[]... values ) throws LdapException;
+    Attribute put( AttributeType attributeType, byte[]... values ) throws LdapException;
 
 
     /**
@@ -443,7 +443,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * <code>null</code>
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException if there are failures
      */
-    EntryAttribute put( AttributeType attributeType, String... values ) throws LdapException;
+    Attribute put( AttributeType attributeType, String... values ) throws LdapException;
 
 
     /**
@@ -465,7 +465,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * <code>null</code>
      * @throws LdapException if there are failures
      */
-    EntryAttribute put( AttributeType attributeType, Value<?>... values ) throws LdapException;
+    Attribute put( AttributeType attributeType, Value<?>... values ) throws LdapException;
 
 
     /**
@@ -490,7 +490,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * <code>null</code>
      * @throws LdapException if there are failures.
      */
-    EntryAttribute put( String upId, AttributeType attributeType, byte[]... values ) throws LdapException;
+    Attribute put( String upId, AttributeType attributeType, byte[]... values ) throws LdapException;
 
 
     /**
@@ -516,7 +516,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * <code>null</code>
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException if there are failures.
      */
-    EntryAttribute put( String upId, AttributeType attributeType, String... values ) throws LdapException;
+    Attribute put( String upId, AttributeType attributeType, String... values ) throws LdapException;
 
 
     /**
@@ -542,7 +542,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * <code>null</code>
      * @throws LdapException if there are failures.
      */
-    EntryAttribute put( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException;
+    Attribute put( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException;
 
 
     /**
@@ -558,7 +558,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param values The list of binary values to put. It can be empty.
      * @return The replaced attribute
      */
-    EntryAttribute put( String upId, byte[]... values );
+    Attribute put( String upId, byte[]... values );
 
 
     /**
@@ -574,7 +574,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param values The list of String values to put. It can be empty.
      * @return The replaced attribute
      */
-    EntryAttribute put( String upId, String... values );
+    Attribute put( String upId, String... values );
 
 
     /**
@@ -590,7 +590,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param values The list of values to put. It can be empty.
      * @return The replaced attribute
      */
-    EntryAttribute put( String upId, Value<?>... values );
+    Attribute put( String upId, Value<?>... values );
 
 
     /**
@@ -673,7 +673,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param attributes the attributes to be removed
      * @return the removed attribute, if exists; otherwise <code>null</code>
      */
-    List<EntryAttribute> remove( EntryAttribute... attributes ) throws LdapException;
+    List<Attribute> remove( Attribute... attributes ) throws LdapException;
     
 
     /**
@@ -691,7 +691,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * @param attributes the AttributeTypes to be removed
      * @return the removed attributes, if any, as a list; otherwise <code>null</code>
      */
-    List<EntryAttribute> removeAttributes( AttributeType... attributes );
+    List<Attribute> removeAttributes( AttributeType... attributes );
 
 
     /**
@@ -782,7 +782,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
       * @param attributes an aliased name of the attribute to be removed
       * @return the removed attributes, if any, as a list; otherwise <code>null</code>
       */
-    List<EntryAttribute> removeAttributes( String... attributes );
+    List<Attribute> removeAttributes( String... attributes );
 
 
     // -----------------------------------------------------------------------
@@ -854,7 +854,7 @@ public interface Entry extends Cloneable, Iterable<EntryAttribute>, Externalizab
      * the entry, <code>false</code> if at least one of them is not present.
      * @throws LdapException If the attribute does not exist
      */
-    boolean contains( EntryAttribute... attributes ) throws LdapException;
+    boolean contains( Attribute... attributes ) throws LdapException;
 
 
     /**

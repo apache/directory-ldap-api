@@ -64,7 +64,7 @@ public final class DefaultEntry implements Entry
     private Dn dn;
 
     /** A map containing all the attributes for this entry */
-    private Map<String, EntryAttribute> attributes = new HashMap<String, EntryAttribute>();
+    private Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 
     /** A speedup to get the ObjectClass attribute */
     private static AttributeType objectClassAttributeType;
@@ -206,10 +206,10 @@ public final class DefaultEntry implements Entry
         }
 
         // Init the attributes map
-        attributes = new HashMap<String, EntryAttribute>( entry.size() );
+        attributes = new HashMap<String, Attribute>( entry.size() );
 
         // and copy all the attributes
-        for ( EntryAttribute attribute : entry )
+        for ( Attribute attribute : entry )
         {
             try
             {
@@ -222,7 +222,7 @@ public final class DefaultEntry implements Entry
                 }
 
                 // Create a new ServerAttribute.
-                EntryAttribute serverAttribute = new DefaultEntryAttribute( attributeType, attribute );
+                Attribute serverAttribute = new DefaultEntryAttribute( attributeType, attribute );
 
                 // And store it
                 add( serverAttribute );
@@ -279,11 +279,11 @@ public final class DefaultEntry implements Entry
      * @param dn The Dn for this serverEntry. Can be null
      * @param attributes The list of attributes to create
      */
-    public DefaultEntry( Dn dn, EntryAttribute... attributes )
+    public DefaultEntry( Dn dn, Attribute... attributes )
     {
         this.dn = dn;
 
-        for ( EntryAttribute attribute : attributes )
+        for ( Attribute attribute : attributes )
         {
             if ( attribute == null )
             {
@@ -309,7 +309,7 @@ public final class DefaultEntry implements Entry
      * @param dn The Dn for this serverEntry. Can be null
      * @param attributes The list of attributes to create
      */
-    public DefaultEntry( SchemaManager schemaManager, Dn dn, EntryAttribute... attributes )
+    public DefaultEntry( SchemaManager schemaManager, Dn dn, Attribute... attributes )
     {
         this.schemaManager = schemaManager;
         
@@ -327,7 +327,7 @@ public final class DefaultEntry implements Entry
         {
             if ( attributes != null )
             {
-                for ( EntryAttribute attribute : attributes )
+                for ( Attribute attribute : attributes )
                 {
                     if ( attribute == null )
                     {
@@ -345,7 +345,7 @@ public final class DefaultEntry implements Entry
     
             if ( attributes != null )
             {
-                for ( EntryAttribute attribute : attributes )
+                for ( Attribute attribute : attributes )
                 {
                     // Store a new ServerAttribute
                     try
@@ -587,7 +587,7 @@ public final class DefaultEntry implements Entry
      */
     protected void createAttribute( String upId, AttributeType attributeType, byte[]... values ) throws LdapInvalidAttributeValueException
     {
-        EntryAttribute attribute = new DefaultEntryAttribute( attributeType, values );
+        Attribute attribute = new DefaultEntryAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
         attributes.put( attributeType.getOid(), attribute );
     }
@@ -601,7 +601,7 @@ public final class DefaultEntry implements Entry
      */
     protected void createAttribute( String upId, AttributeType attributeType, String... values ) throws LdapInvalidAttributeValueException
     {
-        EntryAttribute attribute = new DefaultEntryAttribute( attributeType, values );
+        Attribute attribute = new DefaultEntryAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
         attributes.put( attributeType.getOid(), attribute );
     }
@@ -615,7 +615,7 @@ public final class DefaultEntry implements Entry
      */
     protected void createAttribute( String upId, AttributeType attributeType, Value<?>... values ) throws LdapInvalidAttributeValueException
     {
-        EntryAttribute attribute = new DefaultEntryAttribute( attributeType, values );
+        Attribute attribute = new DefaultEntryAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
         attributes.put( attributeType.getOid(), attribute );
     }
@@ -667,7 +667,7 @@ public final class DefaultEntry implements Entry
             throw new UnsupportedOperationException( message );
         }
 
-        EntryAttribute attribute = attributes.get( attributeType.getOid() );
+        Attribute attribute = attributes.get( attributeType.getOid() );
 
         if ( attribute != null )
         {
@@ -697,7 +697,7 @@ public final class DefaultEntry implements Entry
             throw new IllegalArgumentException( message );
         }
 
-        EntryAttribute attribute = attributes.get( attributeType.getOid() );
+        Attribute attribute = attributes.get( attributeType.getOid() );
 
         if ( attribute != null )
         {
@@ -727,7 +727,7 @@ public final class DefaultEntry implements Entry
             throw new IllegalArgumentException( message );
         }
 
-        EntryAttribute attribute = attributes.get( attributeType.getOid() );
+        Attribute attribute = attributes.get( attributeType.getOid() );
 
         if ( attribute != null )
         {
@@ -758,7 +758,7 @@ public final class DefaultEntry implements Entry
             throw new UnsupportedOperationException( message );
         }
 
-        EntryAttribute attribute = attributes.get( attributeType.getOid() );
+        Attribute attribute = attributes.get( attributeType.getOid() );
 
         upId = getUpId( upId, attributeType );
 
@@ -792,7 +792,7 @@ public final class DefaultEntry implements Entry
 
         upId = getUpId( upId, attributeType );
 
-        EntryAttribute attribute = attributes.get( attributeType.getOid() );
+        Attribute attribute = attributes.get( attributeType.getOid() );
 
         if ( attribute != null )
         {
@@ -822,7 +822,7 @@ public final class DefaultEntry implements Entry
 
         upId = getUpId( upId, attributeType );
 
-        EntryAttribute attribute = attributes.get( attributeType.getOid() );
+        Attribute attribute = attributes.get( attributeType.getOid() );
 
         if ( attribute != null )
         {
@@ -843,10 +843,10 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( EntryAttribute... attributes ) throws LdapException
+    public void add( Attribute... attributes ) throws LdapException
     {
         // Loop on all the added attributes
-        for ( EntryAttribute attribute : attributes )
+        for ( Attribute attribute : attributes )
         {
             AttributeType attributeType = attribute.getAttributeType();
 
@@ -858,7 +858,7 @@ public final class DefaultEntry implements Entry
                 {
                     // We already have an attribute with the same AttributeType
                     // Just add the new values into it.
-                    EntryAttribute existingAttribute = this.attributes.get( oid );
+                    Attribute existingAttribute = this.attributes.get( oid );
 
                     for ( Value<?> value : attribute )
                     {
@@ -879,7 +879,7 @@ public final class DefaultEntry implements Entry
                 // If the attribute already exist, we will add the new values.
                 if ( contains( attribute ) )
                 {
-                    EntryAttribute existingAttribute = get( attribute.getId() );
+                    Attribute existingAttribute = get( attribute.getId() );
 
                     // Loop on all the values, and add them to the existing attribute
                     for ( Value<?> value : attribute )
@@ -919,7 +919,7 @@ public final class DefaultEntry implements Entry
         else
         {
             // Now, check to see if we already have such an attribute
-            EntryAttribute attribute = attributes.get( id );
+            Attribute attribute = attributes.get( id );
 
             if ( attribute != null )
             {
@@ -961,7 +961,7 @@ public final class DefaultEntry implements Entry
         else
         {
             // Now, check to see if we already have such an attribute
-            EntryAttribute attribute = attributes.get( id );
+            Attribute attribute = attributes.get( id );
 
             if ( attribute != null )
             {
@@ -1003,7 +1003,7 @@ public final class DefaultEntry implements Entry
         else
         {
             // Now, check to see if we already have such an attribute
-            EntryAttribute attribute = attributes.get( id );
+            Attribute attribute = attributes.get( id );
 
             if ( attribute != null )
             {
@@ -1046,7 +1046,7 @@ public final class DefaultEntry implements Entry
             clone.dn = dn; // note that Dn is immutable now
 
             // then clone the ClientAttribute Map.
-            clone.attributes = ( Map<String, EntryAttribute> ) ( ( ( HashMap<String, EntryAttribute> ) attributes )
+            clone.attributes = ( Map<String, Attribute> ) ( ( ( HashMap<String, Attribute> ) attributes )
                 .clone() );
 
             // now clone all the attributes
@@ -1054,7 +1054,7 @@ public final class DefaultEntry implements Entry
 
             if ( schemaManager != null )
             {
-                for ( EntryAttribute attribute : attributes.values() )
+                for ( Attribute attribute : attributes.values() )
                 {
                     String oid = attribute.getAttributeType().getOid();
                     clone.attributes.put( oid, attribute.clone() );
@@ -1062,7 +1062,7 @@ public final class DefaultEntry implements Entry
             }
             else
             {
-                for ( EntryAttribute attribute : attributes.values() )
+                for ( Attribute attribute : attributes.values() )
                 {
                     clone.attributes.put( attribute.getId(), attribute.clone() );
                 }
@@ -1082,11 +1082,11 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean contains( EntryAttribute... attributes ) throws LdapException
+    public boolean contains( Attribute... attributes ) throws LdapException
     {
         if ( schemaManager == null )
         {
-            for ( EntryAttribute attribute : attributes )
+            for ( Attribute attribute : attributes )
             {
                 if ( attribute == null )
                 {
@@ -1101,7 +1101,7 @@ public final class DefaultEntry implements Entry
         }
         else
         {
-            for ( EntryAttribute entryAttribute : attributes )
+            for ( Attribute entryAttribute : attributes )
             {
                 if ( entryAttribute == null )
                 {
@@ -1214,7 +1214,7 @@ public final class DefaultEntry implements Entry
             return false;
         }
 
-        EntryAttribute attribute = attributes.get( attributeType.getOid() );
+        Attribute attribute = attributes.get( attributeType.getOid() );
 
         if ( attribute != null )
         {
@@ -1237,7 +1237,7 @@ public final class DefaultEntry implements Entry
             return false;
         }
 
-        EntryAttribute attribute = attributes.get( attributeType.getOid() );
+        Attribute attribute = attributes.get( attributeType.getOid() );
 
         if ( attribute != null )
         {
@@ -1260,7 +1260,7 @@ public final class DefaultEntry implements Entry
             return false;
         }
 
-        EntryAttribute attribute = attributes.get( attributeType.getOid() );
+        Attribute attribute = attributes.get( attributeType.getOid() );
 
         if ( attribute != null )
         {
@@ -1297,7 +1297,7 @@ public final class DefaultEntry implements Entry
             }
         }
 
-        EntryAttribute attribute = attributes.get( id );
+        Attribute attribute = attributes.get( id );
 
         if ( attribute == null )
         {
@@ -1332,7 +1332,7 @@ public final class DefaultEntry implements Entry
             }
         }
 
-        EntryAttribute attribute = attributes.get( id );
+        Attribute attribute = attributes.get( id );
 
         if ( attribute == null )
         {
@@ -1367,7 +1367,7 @@ public final class DefaultEntry implements Entry
             }
         }
 
-        EntryAttribute attribute = attributes.get( id );
+        Attribute attribute = attributes.get( id );
 
         if ( attribute == null )
         {
@@ -1381,7 +1381,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute get( String alias )
+    public Attribute get( String alias )
     {
         try
         {
@@ -1418,7 +1418,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute get( AttributeType attributeType )
+    public Attribute get( AttributeType attributeType )
     {
         if ( attributeType != null )
         {
@@ -1438,7 +1438,7 @@ public final class DefaultEntry implements Entry
     {
         Set<AttributeType> attributeTypes = new HashSet<AttributeType>();
 
-        for ( EntryAttribute attribute : attributes.values() )
+        for ( Attribute attribute : attributes.values() )
         {
             if ( attribute.getAttributeType() != null )
             {
@@ -1453,7 +1453,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( String upId, byte[]... values )
+    public Attribute put( String upId, byte[]... values )
     {
         if ( Strings.isEmpty(upId) )
         {
@@ -1468,7 +1468,7 @@ public final class DefaultEntry implements Entry
             String id = getId( upId );
 
             // Create a new attribute
-            EntryAttribute clientAttribute = new DefaultEntryAttribute( upId, values );
+            Attribute clientAttribute = new DefaultEntryAttribute( upId, values );
 
             // Replace the previous one, and return it back
             return attributes.put( id, clientAttribute );
@@ -1492,7 +1492,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( String upId, String... values )
+    public Attribute put( String upId, String... values )
     {
         if ( Strings.isEmpty(upId) )
         {
@@ -1507,7 +1507,7 @@ public final class DefaultEntry implements Entry
             String id = getId( upId );
 
             // Create a new attribute
-            EntryAttribute clientAttribute = new DefaultEntryAttribute( upId, values );
+            Attribute clientAttribute = new DefaultEntryAttribute( upId, values );
 
             // Replace the previous one, and return it back
             return attributes.put( id, clientAttribute );
@@ -1531,7 +1531,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( String upId, Value<?>... values )
+    public Attribute put( String upId, Value<?>... values )
     {
         if ( Strings.isEmpty(upId) )
         {
@@ -1546,7 +1546,7 @@ public final class DefaultEntry implements Entry
             String id = getId( upId );
 
             // Create a new attribute
-            EntryAttribute clientAttribute = new DefaultEntryAttribute( upId, values );
+            Attribute clientAttribute = new DefaultEntryAttribute( upId, values );
 
             // Replace the previous one, and return it back
             return attributes.put( id, clientAttribute );
@@ -1570,7 +1570,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public List<EntryAttribute> set( String... upIds )
+    public List<Attribute> set( String... upIds )
     {
         if ( ( upIds == null ) || ( upIds.length == 0 ) )
         {
@@ -1579,7 +1579,7 @@ public final class DefaultEntry implements Entry
             throw new IllegalArgumentException( message );
         }
 
-        List<EntryAttribute> removed = new ArrayList<EntryAttribute>();
+        List<Attribute> removed = new ArrayList<Attribute>();
         boolean added = false;
 
         if ( schemaManager == null )
@@ -1602,7 +1602,7 @@ public final class DefaultEntry implements Entry
                     removed.add( attributes.remove( id ) );
                 }
 
-                EntryAttribute newAttribute = new DefaultEntryAttribute( upId );
+                Attribute newAttribute = new DefaultEntryAttribute( upId );
                 attributes.put( id, newAttribute );
                 added = true;
             }
@@ -1660,9 +1660,9 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      **/
-    public List<EntryAttribute> set( AttributeType... attributeTypes )
+    public List<Attribute> set( AttributeType... attributeTypes )
     {
-        List<EntryAttribute> removed = new ArrayList<EntryAttribute>();
+        List<Attribute> removed = new ArrayList<Attribute>();
 
         // Now, loop on all the attributeType to add
         for ( AttributeType attributeType : attributeTypes )
@@ -1674,7 +1674,7 @@ public final class DefaultEntry implements Entry
                 continue;
             }
 
-            EntryAttribute attribute = attributes.put( attributeType.getOid(),
+            Attribute attribute = attributes.put( attributeType.getOid(),
                 new DefaultEntryAttribute( attributeType ) );
 
             if ( attribute != null )
@@ -1697,14 +1697,14 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public List<EntryAttribute> put( EntryAttribute... attributes ) throws LdapException
+    public List<Attribute> put( Attribute... attributes ) throws LdapException
     {
         // First, get the existing attributes
-        List<EntryAttribute> previous = new ArrayList<EntryAttribute>();
+        List<Attribute> previous = new ArrayList<Attribute>();
 
         if ( schemaManager == null )
         {
-            for ( EntryAttribute attribute : attributes )
+            for ( Attribute attribute : attributes )
             {
                 String id = attribute.getId();
 
@@ -1721,7 +1721,7 @@ public final class DefaultEntry implements Entry
         }
         else
         {
-            for ( EntryAttribute attribute : attributes )
+            for ( Attribute attribute : attributes )
             {
                 if ( attribute == null )
                 {
@@ -1736,7 +1736,7 @@ public final class DefaultEntry implements Entry
                     attribute.apply( attributeType );
                 }
 
-                EntryAttribute removed = this.attributes.put( attribute.getAttributeType().getOid(), attribute );
+                Attribute removed = this.attributes.put( attribute.getAttributeType().getOid(), attribute );
 
                 if ( removed != null )
                 {
@@ -1753,7 +1753,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( AttributeType attributeType, byte[]... values ) throws LdapException
+    public Attribute put( AttributeType attributeType, byte[]... values ) throws LdapException
     {
         return put( null, attributeType, values );
     }
@@ -1762,7 +1762,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( AttributeType attributeType, String... values ) throws LdapException
+    public Attribute put( AttributeType attributeType, String... values ) throws LdapException
     {
         return put( null, attributeType, values );
     }
@@ -1771,7 +1771,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public Attribute put( AttributeType attributeType, Value<?>... values ) throws LdapException
     {
         return put( null, attributeType, values );
     }
@@ -1780,7 +1780,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
+    public Attribute put( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -1821,7 +1821,7 @@ public final class DefaultEntry implements Entry
             throw new UnsupportedOperationException( message );
         }
 
-        EntryAttribute attribute = new DefaultEntryAttribute( upId, attributeType, values );
+        Attribute attribute = new DefaultEntryAttribute( upId, attributeType, values );
 
         return attributes.put( attributeType.getOid(), attribute );
     }
@@ -1830,7 +1830,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( String upId, AttributeType attributeType, String... values ) throws LdapException
+    public Attribute put( String upId, AttributeType attributeType, String... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -1864,7 +1864,7 @@ public final class DefaultEntry implements Entry
             }
         }
 
-        EntryAttribute attribute = new DefaultEntryAttribute( upId, attributeType, values );
+        Attribute attribute = new DefaultEntryAttribute( upId, attributeType, values );
 
         return attributes.put( attributeType.getOid(), attribute );
     }
@@ -1873,7 +1873,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute put( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
+    public Attribute put( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -1907,7 +1907,7 @@ public final class DefaultEntry implements Entry
             }
         }
 
-        EntryAttribute attribute = new DefaultEntryAttribute( upId, attributeType, values );
+        Attribute attribute = new DefaultEntryAttribute( upId, attributeType, values );
 
         return attributes.put( attributeType.getOid(), attribute );
     }
@@ -1916,13 +1916,13 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public List<EntryAttribute> remove( EntryAttribute... attributes ) throws LdapException
+    public List<Attribute> remove( Attribute... attributes ) throws LdapException
     {
-        List<EntryAttribute> removedAttributes = new ArrayList<EntryAttribute>();
+        List<Attribute> removedAttributes = new ArrayList<Attribute>();
 
         if ( schemaManager == null )
         {
-            for ( EntryAttribute attribute : attributes )
+            for ( Attribute attribute : attributes )
             {
                 if ( contains( attribute.getId() ) )
                 {
@@ -1933,7 +1933,7 @@ public final class DefaultEntry implements Entry
         }
         else
         {
-            for ( EntryAttribute attribute : attributes )
+            for ( Attribute attribute : attributes )
             {
                 AttributeType attributeType = attribute.getAttributeType();
 
@@ -1968,7 +1968,7 @@ public final class DefaultEntry implements Entry
 
         try
         {
-            EntryAttribute attribute = attributes.get( attributeType.getOid() );
+            Attribute attribute = attributes.get( attributeType.getOid() );
 
             if ( attribute == null )
             {
@@ -2011,7 +2011,7 @@ public final class DefaultEntry implements Entry
 
         try
         {
-            EntryAttribute attribute = attributes.get( attributeType.getOid() );
+            Attribute attribute = attributes.get( attributeType.getOid() );
 
             if ( attribute == null )
             {
@@ -2054,7 +2054,7 @@ public final class DefaultEntry implements Entry
 
         try
         {
-            EntryAttribute attribute = attributes.get( attributeType.getOid() );
+            Attribute attribute = attributes.get( attributeType.getOid() );
 
             if ( attribute == null )
             {
@@ -2100,14 +2100,14 @@ public final class DefaultEntry implements Entry
      * @param attributes the AttributeTypes to be removed
      * @return the removed attributes, if any, as a list; otherwise <code>null</code>
      */
-    public List<EntryAttribute> removeAttributes( AttributeType... attributes )
+    public List<Attribute> removeAttributes( AttributeType... attributes )
     {
         if ( ( attributes == null ) || ( attributes.length == 0 ) || ( schemaManager == null ) )
         {
             return null;
         }
 
-        List<EntryAttribute> removed = new ArrayList<EntryAttribute>( attributes.length );
+        List<Attribute> removed = new ArrayList<Attribute>( attributes.length );
 
         for ( AttributeType attributeType : attributes )
         {
@@ -2116,7 +2116,7 @@ public final class DefaultEntry implements Entry
                 continue;
             }
 
-            EntryAttribute attr = this.attributes.remove( attributeType.getOid() );
+            Attribute attr = this.attributes.remove( attributeType.getOid() );
 
             if ( attr != null )
             {
@@ -2138,20 +2138,20 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public List<EntryAttribute> removeAttributes( String... attributes )
+    public List<Attribute> removeAttributes( String... attributes )
     {
         if ( attributes.length == 0 )
         {
             return null;
         }
 
-        List<EntryAttribute> removed = new ArrayList<EntryAttribute>( attributes.length );
+        List<Attribute> removed = new ArrayList<Attribute>( attributes.length );
 
         if ( schemaManager == null )
         {
             for ( String attribute : attributes )
             {
-                EntryAttribute attr = get( attribute );
+                Attribute attr = get( attribute );
 
                 if ( attr != null )
                 {
@@ -2182,7 +2182,7 @@ public final class DefaultEntry implements Entry
                     continue;
                 }
 
-                EntryAttribute attr = this.attributes.remove( attributeType.getOid() );
+                Attribute attr = this.attributes.remove( attributeType.getOid() );
 
                 if ( attr != null )
                 {
@@ -2236,7 +2236,7 @@ public final class DefaultEntry implements Entry
         {
             String id = getId( upId );
 
-            EntryAttribute attribute = get( id );
+            Attribute attribute = get( id );
 
             if ( attribute == null )
             {
@@ -2316,7 +2316,7 @@ public final class DefaultEntry implements Entry
         {
             String id = getId( upId );
 
-            EntryAttribute attribute = get( id );
+            Attribute attribute = get( id );
 
             if ( attribute == null )
             {
@@ -2395,7 +2395,7 @@ public final class DefaultEntry implements Entry
         {
             String id = getId( upId );
 
-            EntryAttribute attribute = get( id );
+            Attribute attribute = get( id );
 
             if ( attribute == null )
             {
@@ -2481,7 +2481,7 @@ public final class DefaultEntry implements Entry
      *
      * @return an enumeration of all contained attributes
      */
-    public Iterator<EntryAttribute> iterator()
+    public Iterator<Attribute> iterator()
     {
         return Collections.unmodifiableMap( attributes ).values().iterator();
     }
@@ -2500,7 +2500,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean isValid( EntryAttribute objectClass )
+    public boolean isValid( Attribute objectClass )
     {
         // @TODO Implement me !
         throw new NotImplementedException();
@@ -2566,7 +2566,7 @@ public final class DefaultEntry implements Entry
         out.writeInt( attributes.size() );
 
         // Iterate through the keys.
-        for ( EntryAttribute attribute : attributes.values() )
+        for ( Attribute attribute : attributes.values() )
         {
             // Store the attribute
             attribute.writeExternal( out );
@@ -2593,7 +2593,7 @@ public final class DefaultEntry implements Entry
         for ( int i = 0; i < nbAttributes; i++ )
         {
             // Read each attribute
-            EntryAttribute attribute = new DefaultEntryAttribute();
+            Attribute attribute = new DefaultEntryAttribute();
             attribute.readExternal( in );
 
             if ( schemaManager != null )
@@ -2662,7 +2662,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean hasObjectClass( EntryAttribute objectClass )
+    public boolean hasObjectClass( Attribute objectClass )
     {
         if ( objectClass == null )
         {
@@ -2675,7 +2675,7 @@ public final class DefaultEntry implements Entry
             return false;
         }
 
-        EntryAttribute attribute = attributes.get( objectClassAttributeType.getOid() );
+        Attribute attribute = attributes.get( objectClassAttributeType.getOid() );
 
         if ( attribute == null )
         {
@@ -2779,7 +2779,7 @@ public final class DefaultEntry implements Entry
             // First dump the ObjectClass attribute
             if ( containsAttribute( objectClassAttributeType.getOid() ) )
             {
-                EntryAttribute objectClass = get( objectClassAttributeType );
+                Attribute objectClass = get( objectClassAttributeType );
 
                 sb.append( objectClass );
             }
@@ -2788,7 +2788,7 @@ public final class DefaultEntry implements Entry
         {
             if ( containsAttribute( "objectClass" ) )
             {
-                EntryAttribute objectClass = get( "objectclass" );
+                Attribute objectClass = get( "objectclass" );
 
                 sb.append( objectClass );
             }
@@ -2796,7 +2796,7 @@ public final class DefaultEntry implements Entry
 
         if ( attributes.size() != 0 )
         {
-            for ( EntryAttribute attribute : attributes.values() )
+            for ( Attribute attribute : attributes.values() )
             {
                 String id = attribute.getId();
 

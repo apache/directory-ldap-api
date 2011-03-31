@@ -29,7 +29,7 @@ import java.util.UUID;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -76,9 +76,9 @@ public final class SchemaUtils
                     break;
 
                 case ADD_ATTRIBUTE :
-                    EntryAttribute combined = mod.getAttribute().clone();
-                    EntryAttribute toBeAdded = mod.getAttribute();
-                    EntryAttribute existing = entry.get( id );
+                    Attribute combined = mod.getAttribute().clone();
+                    Attribute toBeAdded = mod.getAttribute();
+                    Attribute existing = entry.get( id );
 
                     if ( existing != null )
                     {
@@ -97,7 +97,7 @@ public final class SchemaUtils
                     break;
 
                 case REMOVE_ATTRIBUTE :
-                    EntryAttribute toBeRemoved = mod.getAttribute();
+                    Attribute toBeRemoved = mod.getAttribute();
 
                     if ( toBeRemoved.size() == 0 )
                     {

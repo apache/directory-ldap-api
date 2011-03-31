@@ -24,7 +24,7 @@ import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.AddRequest;
@@ -48,7 +48,7 @@ public class AddRequestDsml
 {
 
     /** The current attribute being decoded */
-    private EntryAttribute currentAttribute;
+    private Attribute currentAttribute;
     
     
     /**
@@ -162,7 +162,7 @@ public class AddRequestDsml
         Entry entry = getDecorated().getEntry();
         if ( entry != null )
         {
-            for ( EntryAttribute attribute : entry )
+            for ( Attribute attribute : entry )
             {
                 Element attributeElement = element.addElement( "attr" );
                 attributeElement.addAttribute( "name", attribute.getId() );

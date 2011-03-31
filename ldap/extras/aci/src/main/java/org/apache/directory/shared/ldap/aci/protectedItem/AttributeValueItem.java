@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.aci.ProtectedItem;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 
 
 /**
@@ -34,26 +34,26 @@ import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
 public class AttributeValueItem extends ProtectedItem
 {
     /** The protected Attributes */
-    private final Set<EntryAttribute> attributes;
+    private final Set<Attribute> attributes;
 
 
     /**
      * Creates a new instance.
      * 
-     * @param attributes the collection of {@link EntryAttribute}s.
+     * @param attributes the collection of {@link Attribute}s.
      */
-    public AttributeValueItem( Set<EntryAttribute> attributes )
+    public AttributeValueItem( Set<Attribute> attributes )
     {
         this.attributes = Collections.unmodifiableSet( attributes );
     }
 
 
     /**
-     * Returns an iterator of all {@link org.apache.directory.shared.ldap.model.entry.EntryAttribute}s.
+     * Returns an iterator of all {@link org.apache.directory.shared.ldap.model.entry.Attribute}s.
      *
      * @return the iterator
      */
-    public Iterator<EntryAttribute> iterator()
+    public Iterator<Attribute> iterator()
     {
         return attributes.iterator();
     }
@@ -109,7 +109,7 @@ public class AttributeValueItem extends ProtectedItem
 
         boolean isFirst = true;
 
-        for ( EntryAttribute attribute : attributes )
+        for ( Attribute attribute : attributes )
         {
             if ( isFirst )
             {

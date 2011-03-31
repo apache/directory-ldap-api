@@ -29,7 +29,7 @@ import java.util.Set;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.filter.UndefinedNode;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,10 +50,10 @@ public class AttributeValueItemTest
     AttributeValueItem attributeValueItemB;
     AttributeValueItem attributeValueItemC;
     AttributeValueItem attributeValueItemD;
-    Set<EntryAttribute> attributeA;
-    Set<EntryAttribute> attributeB;
-    Set<EntryAttribute> attributeC;
-    Set<EntryAttribute> attributeD;
+    Set<Attribute> attributeA;
+    Set<Attribute> attributeB;
+    Set<Attribute> attributeC;
+    Set<Attribute> attributeD;
 
 
     /**
@@ -62,20 +62,20 @@ public class AttributeValueItemTest
     @Before
     public void initNames() throws Exception
     {
-        attributeA = new HashSet<EntryAttribute>();
+        attributeA = new HashSet<Attribute>();
         attributeA.add( new DefaultEntryAttribute( "aa", "aa" ) );
         attributeA.add( new DefaultEntryAttribute( "aa", "bb" ) );
         attributeA.add( new DefaultEntryAttribute( "aa", "cc" ) );
         // Sets aren't ordered, so adding order must not matter
-        attributeB = new HashSet<EntryAttribute>();
+        attributeB = new HashSet<Attribute>();
         attributeB.add( new DefaultEntryAttribute( "aa", "bb" ) );
         attributeB.add( new DefaultEntryAttribute( "aa", "cc" ) );
         attributeB.add( new DefaultEntryAttribute( "aa", "aa" ) );
-        attributeC = new HashSet<EntryAttribute>();
+        attributeC = new HashSet<Attribute>();
         attributeC.add( new DefaultEntryAttribute( "aa", "aa" ) );
         attributeC.add( new DefaultEntryAttribute( "bb", "bb" ) );
         attributeC.add( new DefaultEntryAttribute( "aa", "cc" ) );
-        attributeD = new HashSet<EntryAttribute>();
+        attributeD = new HashSet<Attribute>();
         attributeD.add( new DefaultEntryAttribute( "aa", "aa" ) );
         attributeD.add( new DefaultEntryAttribute( "aa", "bb" ) );
         attributeD.add( new DefaultEntryAttribute( "aa", "dd" ) );

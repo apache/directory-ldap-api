@@ -37,7 +37,7 @@ import javax.naming.NamingException;
 import org.apache.directory.shared.dsmlv2.AbstractTest;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.message.Control;
@@ -310,7 +310,7 @@ public class ModifyRequestTest extends AbstractTest
 
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
 
-        EntryAttribute attribute = modification.getAttribute();
+        Attribute attribute = modification.getAttribute();
 
         assertEquals( "directreport", attribute.getId() );
         assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get().getString() );
@@ -346,7 +346,7 @@ public class ModifyRequestTest extends AbstractTest
         assertEquals( 1, modifications.size() );
 
         Modification modification = modifications.iterator().next();
-        EntryAttribute attribute = modification.getAttribute();
+        Attribute attribute = modification.getAttribute();
 
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
 
@@ -393,7 +393,7 @@ public class ModifyRequestTest extends AbstractTest
         Modification modification = iter.next();
 
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
-        EntryAttribute attribute = modification.getAttribute();
+        Attribute attribute = modification.getAttribute();
         assertEquals( "directreport", attribute.getId() );
 
         assertEquals( "CN=John Smith, DC=microsoft, DC=com", attribute.get().getString() );
@@ -568,7 +568,7 @@ public class ModifyRequestTest extends AbstractTest
         Modification modification = modifications.iterator().next();
 
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
-        EntryAttribute attribute = modification.getAttribute();
+        Attribute attribute = modification.getAttribute();
 
         assertEquals( "directreport", attribute.getId() );
         assertEquals( 0, attribute.size() );
@@ -605,7 +605,7 @@ public class ModifyRequestTest extends AbstractTest
         Modification modification = modifications.iterator().next();
 
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
-        EntryAttribute attribute = modification.getAttribute();
+        Attribute attribute = modification.getAttribute();
 
         assertEquals( "directreport", attribute.getId() );
 
@@ -646,7 +646,7 @@ public class ModifyRequestTest extends AbstractTest
         Modification modification = modifications.iterator().next();
 
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
-        EntryAttribute attribute = modification.getAttribute();
+        Attribute attribute = modification.getAttribute();
 
         assertEquals( "directreport", attribute.getId() );
 

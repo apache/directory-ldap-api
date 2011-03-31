@@ -33,7 +33,7 @@ import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.AddRequest;
@@ -61,7 +61,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     private List<Integer> valuesLength;
 
     /** The current attribute being decoded */
-    private EntryAttribute currentAttribute;
+    private Attribute currentAttribute;
 
     
     /**
@@ -318,7 +318,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
             List<Integer> valuesLength = new LinkedList<Integer>();
 
             // Compute the attributes length
-            for ( EntryAttribute attribute : entry )
+            for ( Attribute attribute : entry )
             {
                 int localAttributeLength = 0;
                 int localValuesLength = 0;
@@ -408,7 +408,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
                 int attributeNumber = 0;
 
                 // Compute the attributes length
-                for ( EntryAttribute attribute : entry )
+                for ( Attribute attribute : entry )
                 {
                     // The attributes list sequence
                     buffer.put( UniversalTag.SEQUENCE.getValue() );

@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.model.message;
 
 import java.util.Collection;
 
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -174,10 +174,10 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
      *
      * @param attr the attribute to be added
      */
-    void remove( EntryAttribute attr );
+    void remove( Attribute attr );
 
 
-    void addModification( EntryAttribute attr, ModificationOperation modOp );
+    void addModification( Attribute attr, ModificationOperation modOp );
 
 
     /**
@@ -201,7 +201,7 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
      *
      * @param attr the attribute to be added
      */
-    void add( EntryAttribute attr );
+    void add( Attribute attr );
 
 
     /**
@@ -231,5 +231,5 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
      *
      * @param attr the attribute to be added
      */
-    void replace( EntryAttribute attr );
+    void replace( Attribute attr );
 }

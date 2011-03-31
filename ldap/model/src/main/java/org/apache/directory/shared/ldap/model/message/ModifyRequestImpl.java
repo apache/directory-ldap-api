@@ -28,7 +28,7 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -128,19 +128,19 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
 
     private void addModification( ModificationOperation modOp, String attributeName, byte[]... attributeValue )
     {
-        EntryAttribute attr = new DefaultEntryAttribute( attributeName, attributeValue );
+        Attribute attr = new DefaultEntryAttribute( attributeName, attributeValue );
         addModification( attr, modOp );
     }
 
 
     private void addModification( ModificationOperation modOp, String attributeName, String... attributeValue )
     {
-        EntryAttribute attr = new DefaultEntryAttribute( attributeName, attributeValue );
+        Attribute attr = new DefaultEntryAttribute( attributeName, attributeValue );
         addModification( attr, modOp );
     }
 
 
-    public void addModification( EntryAttribute attr, ModificationOperation modOp )
+    public void addModification( Attribute attr, ModificationOperation modOp )
     {
         mods.add( new DefaultModification( modOp, attr ) );
     }
@@ -175,7 +175,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
      *
      * @param attr the attribute to be added
      */
-    public void add( EntryAttribute attr )
+    public void add( Attribute attr )
     {
         addModification( attr, ModificationOperation.ADD_ATTRIBUTE );
     }
@@ -219,7 +219,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
      *
      * @param attr the attribute to be added
      */
-    public void replace( EntryAttribute attr )
+    public void replace( Attribute attr )
     {
         addModification( attr, ModificationOperation.REPLACE_ATTRIBUTE );
     }
@@ -264,7 +264,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
      *
      * @param attr the attribute to be added
      */
-    public void remove( EntryAttribute attr )
+    public void remove( Attribute attr )
     {
         addModification( attr, ModificationOperation.REMOVE_ATTRIBUTE );
     }

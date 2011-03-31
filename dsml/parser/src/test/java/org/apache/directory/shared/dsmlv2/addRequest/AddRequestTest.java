@@ -34,7 +34,7 @@ import org.apache.directory.shared.dsmlv2.AbstractTest;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.message.AddRequest;
 import org.apache.directory.shared.ldap.model.message.Control;
@@ -329,8 +329,8 @@ public class AddRequestTest extends AbstractTest
         assertEquals( 1, entry.size() );
 
         // Getting the Attribute  
-        Iterator<EntryAttribute> attributeIterator = entry.iterator();
-        EntryAttribute attribute = attributeIterator.next();
+        Iterator<Attribute> attributeIterator = entry.iterator();
+        Attribute attribute = attributeIterator.next();
         assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
@@ -366,8 +366,8 @@ public class AddRequestTest extends AbstractTest
         assertEquals( 1, entry.size() );
 
         // Getting the Attribute       
-        Iterator<EntryAttribute> attributeIterator = entry.iterator();
-        EntryAttribute attribute = attributeIterator.next();
+        Iterator<Attribute> attributeIterator = entry.iterator();
+        Attribute attribute = attributeIterator.next();
         assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
@@ -403,8 +403,8 @@ public class AddRequestTest extends AbstractTest
         assertEquals( 1, entry.size() );
 
         // Getting the Attribute       
-        Iterator<EntryAttribute> attributeIterator = entry.iterator();
-        EntryAttribute attribute = attributeIterator.next();
+        Iterator<Attribute> attributeIterator = entry.iterator();
+        Attribute attribute = attributeIterator.next();
         assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
@@ -442,8 +442,8 @@ public class AddRequestTest extends AbstractTest
         assertEquals( 1, entry.size() );
 
         // Getting the Attribute       
-        Iterator<EntryAttribute> attributeIterator = entry.iterator();
-        EntryAttribute attribute = attributeIterator.next();
+        Iterator<Attribute> attributeIterator = entry.iterator();
+        Attribute attribute = attributeIterator.next();
         assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
@@ -482,8 +482,8 @@ public class AddRequestTest extends AbstractTest
         assertEquals( 1, entry.size() );
 
         // Getting the Attribute       
-        Iterator<EntryAttribute> attributeIterator = entry.iterator();
-        EntryAttribute attribute = attributeIterator.next();
+        Iterator<Attribute> attributeIterator = entry.iterator();
+        Attribute attribute = attributeIterator.next();
         assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value
@@ -535,8 +535,8 @@ public class AddRequestTest extends AbstractTest
         assertEquals( 1, entry.size() );
 
         // Getting the Attribute       
-        Iterator<EntryAttribute> attributeIterator = entry.iterator();
-        EntryAttribute attribute = attributeIterator.next();
+        Iterator<Attribute> attributeIterator = entry.iterator();
+        Attribute attribute = attributeIterator.next();
         assertEquals( "objectclass", attribute.getUpId() );
 
         // Getting the Value

@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DefaultEntryAttribute implements EntryAttribute
+public class DefaultEntryAttribute implements Attribute
 {
     /** logger for reporting errors that might not be handled properly upstream */
     private static final Logger LOG = LoggerFactory.getLogger( DefaultEntryAttribute.class );
@@ -122,8 +122,9 @@ public class DefaultEntryAttribute implements EntryAttribute
     // an initial value as a string or a byte[]
     /**
      * Create a new instance of a EntryAttribute, without ID nor value.
+     * Used by the serializer
      */
-    public DefaultEntryAttribute()
+    /* No protection */ DefaultEntryAttribute()
     {
     }
 
@@ -400,7 +401,7 @@ public class DefaultEntryAttribute implements EntryAttribute
      * @param attributeType The attribute's type 
      * @param attribute The attribute to be copied
      */
-    public DefaultEntryAttribute( AttributeType attributeType, EntryAttribute attribute ) throws LdapException
+    public DefaultEntryAttribute( AttributeType attributeType, Attribute attribute ) throws LdapException
     {
         // Copy the common values. isHR is only available on a ServerAttribute 
         this.attributeType = attributeType;
@@ -1798,12 +1799,12 @@ public class DefaultEntryAttribute implements EntryAttribute
             return true;
         }
         
-        if ( ! (obj instanceof EntryAttribute ) )
+        if ( ! (obj instanceof Attribute ) )
         {
             return false;
         }
         
-        EntryAttribute other = (EntryAttribute)obj;
+        Attribute other = (Attribute)obj;
         
         if ( id == null )
         {
@@ -1864,7 +1865,7 @@ public class DefaultEntryAttribute implements EntryAttribute
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute clone()
+    public Attribute clone()
     {
         try
         {

@@ -35,7 +35,7 @@ import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
@@ -359,7 +359,7 @@ public class LdifEntry implements Cloneable, Externalizable
      * 
      * @param attr The attribute to be added
      */
-    public void addModificationItem( ModificationOperation modOp, EntryAttribute attr )
+    public void addModificationItem( ModificationOperation modOp, Attribute attr )
     {
         if ( changeType == ChangeType.Modify )
         {
@@ -387,7 +387,7 @@ public class LdifEntry implements Cloneable, Externalizable
     {
         if ( changeType == ChangeType.Modify )
         {
-            EntryAttribute attr;
+            Attribute attr;
 
             if ( value == null )
             {
@@ -396,7 +396,7 @@ public class LdifEntry implements Cloneable, Externalizable
             }
             else
             {
-                attr = ( EntryAttribute ) value;
+                attr = ( Attribute ) value;
             }
 
             Modification item = new DefaultModification( modOp, attr );
@@ -412,7 +412,7 @@ public class LdifEntry implements Cloneable, Externalizable
      * @param attr The attribute to be added
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException if something went wrong
      */
-    public void addAttribute( EntryAttribute attr ) throws LdapException
+    public void addAttribute( Attribute attr ) throws LdapException
     {
         entry.put( attr );
     }
@@ -455,7 +455,7 @@ public class LdifEntry implements Cloneable, Externalizable
      * @param ids The Attributes to remove
      * @return The list of removed EntryAttributes
      */
-    public List<EntryAttribute> removeAttribute( String... ids )
+    public List<Attribute> removeAttribute( String... ids )
     {
         if ( entry.containsAttribute( ids ) )
         {
@@ -553,7 +553,7 @@ public class LdifEntry implements Cloneable, Externalizable
      *            The attribute Id
      * @return The attribute if it exists
      */
-    public EntryAttribute get( String attributeId )
+    public Attribute get( String attributeId )
     {
         if ( "dn".equalsIgnoreCase( attributeId ) )
         {

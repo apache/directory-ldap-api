@@ -44,7 +44,7 @@ import java.util.NoSuchElementException;
 import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
@@ -857,7 +857,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * @param line The line to parse
      * @return the parsed Attribute
      */
-    public static EntryAttribute parseAttributeValue( String line )
+    public static Attribute parseAttributeValue( String line )
     {
         int colonIndex = line.indexOf( ':' );
 
@@ -1002,7 +1002,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         int state = MOD_SPEC;
         String modified = null;
         ModificationOperation modificationType = ModificationOperation.ADD_ATTRIBUTE;
-        EntryAttribute attribute = null;
+        Attribute attribute = null;
 
         // The following flag is used to deal with empty modifications
         boolean isEmptyValue = true;

@@ -43,7 +43,7 @@ public class DefaultModification implements Modification
     private ModificationOperation operation;
     
     /** The attribute which contains the modification */
-    private EntryAttribute attribute;
+    private Attribute attribute;
     
     /** The AtributeType */
     private AttributeType attributeType;
@@ -74,7 +74,7 @@ public class DefaultModification implements Modification
      * @param operation The modification operation
      * @param attribute The associated attribute 
      */
-    public DefaultModification( ModificationOperation operation, EntryAttribute attribute )
+    public DefaultModification( ModificationOperation operation, Attribute attribute )
     {
         this.operation = operation;
         this.attribute = attribute;
@@ -87,7 +87,7 @@ public class DefaultModification implements Modification
      * @param operation The modification operation
      * @param attribute The associated attribute 
      */
-    public DefaultModification( AttributeType attributeType, ModificationOperation operation, EntryAttribute attribute )
+    public DefaultModification( AttributeType attributeType, ModificationOperation operation, Attribute attribute )
     {
         this.attributeType = attributeType;
         this.operation = operation;
@@ -105,7 +105,7 @@ public class DefaultModification implements Modification
     {
         operation = modification.getOperation();
         
-        EntryAttribute modAttribute = modification.getAttribute();
+        Attribute modAttribute = modification.getAttribute();
         
         try
         {
@@ -158,7 +158,7 @@ public class DefaultModification implements Modification
     /**
      * {@inheritDoc}
      */
-    public EntryAttribute getAttribute()
+    public Attribute getAttribute()
     {
         return attribute;
     }
@@ -169,7 +169,7 @@ public class DefaultModification implements Modification
      *
      * @param attribute The modified attribute 
      */
-    public void setAttribute( EntryAttribute attribute )
+    public void setAttribute( Attribute attribute )
     {
         this.attribute = attribute;
     }

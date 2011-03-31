@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.schemaloader;
 
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
@@ -37,7 +37,7 @@ public class AttributeClassLoader extends ClassLoader
 {
 
     /** The attribute. */
-    private EntryAttribute attribute;
+    private Attribute attribute;
 
 
     /**
@@ -55,7 +55,7 @@ public class AttributeClassLoader extends ClassLoader
      * @param attribute the new attribute
      * @throws LdapException if the attribute is not binary.
      */
-    public void setAttribute( EntryAttribute attribute ) throws LdapException
+    public void setAttribute( Attribute attribute ) throws LdapException
     {
         if ( attribute.isHumanReadable() )
         {

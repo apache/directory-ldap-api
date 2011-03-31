@@ -36,7 +36,7 @@ import java.util.List;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.message.Control;
@@ -207,7 +207,7 @@ public class LdifReaderTest
 
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
 
-        EntryAttribute attr = entry.get( "displayname" );
+        Attribute attr = entry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
     }
 
@@ -267,7 +267,7 @@ public class LdifReaderTest
 
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
 
-        EntryAttribute attr = entry.get( "displayname" );
+        Attribute attr = entry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
 
     }
@@ -317,7 +317,7 @@ public class LdifReaderTest
 
         List<Modification> mods = entry.getModificationItems();
         assertTrue( mods.size() == 1 );
-        EntryAttribute attr = mods.get( 0 ).getAttribute();
+        Attribute attr = mods.get( 0 ).getAttribute();
         assertTrue( attr.getId().equals( "administrativerole" ) );
         assertEquals( attr.getString(), "accessControlSpecificArea" );
     }
@@ -521,7 +521,7 @@ public class LdifReaderTest
 
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
 
-        EntryAttribute attr = entry.get( "cn" );
+        Attribute attr = entry.get( "cn" );
         assertTrue( attr.contains( "app1" ) );
 
         attr = entry.get( "objectclass" );
@@ -567,7 +567,7 @@ public class LdifReaderTest
 
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
 
-        EntryAttribute attr = entry.get( "cn" );
+        Attribute attr = entry.get( "cn" );
         assertTrue( attr.contains( "app1#another comment" ) );
 
         attr = entry.get( "objectclass" );
@@ -613,7 +613,7 @@ public class LdifReaderTest
 
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
 
-        EntryAttribute attr = entry.get( "cn" );
+        Attribute attr = entry.get( "cn" );
         assertTrue( attr.contains( "app1#another comment" ) );
 
         attr = entry.get( "objectclass" );
@@ -658,7 +658,7 @@ public class LdifReaderTest
 
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
 
-        EntryAttribute attr = entry.get( "cn" );
+        Attribute attr = entry.get( "cn" );
         assertTrue( attr.contains( "Emmanuel L\u00e9charny".getBytes( "UTF-8" ) ) );
 
         attr = entry.get( "objectclass" );
@@ -704,7 +704,7 @@ public class LdifReaderTest
 
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
 
-        EntryAttribute attr = entry.get( "cn" );
+        Attribute attr = entry.get( "cn" );
         assertTrue( attr.contains( "Emmanuel L\u00e9charny  ".getBytes( "UTF-8" ) ) );
 
         attr = entry.get( "objectclass" );
@@ -759,7 +759,7 @@ public class LdifReaderTest
 
         assertEquals( "cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com", entry.getDn().getName() );
 
-        EntryAttribute attr = entry.get( "objectclass" );
+        Attribute attr = entry.get( "objectclass" );
         assertTrue( attr.contains( "top" ) );
         assertTrue( attr.contains( "person" ) );
         assertTrue( attr.contains( "organizationalPerson" ) );
@@ -835,7 +835,7 @@ public class LdifReaderTest
 
         assertEquals( "cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com", entry.getDn().getName() );
 
-        EntryAttribute attr = entry.get( "objectclass" );
+        Attribute attr = entry.get( "objectclass" );
         assertTrue( attr.contains( "top" ) );
         assertTrue( attr.contains( "person" ) );
         assertTrue( attr.contains( "organizationalPerson" ) );
@@ -894,7 +894,7 @@ public class LdifReaderTest
 
         assertEquals( "cn=Gern Jensen, ou=Product Testing, dc=airius, dc=com", entry.getDn().getName() );
 
-        EntryAttribute attr = entry.get( "objectclass" );
+        Attribute attr = entry.get( "objectclass" );
         assertTrue( attr.contains( "top" ) );
         assertTrue( attr.contains( "person" ) );
         assertTrue( attr.contains( "organizationalPerson" ) );
@@ -950,7 +950,7 @@ public class LdifReaderTest
 
         assertEquals( "cn=Gern Jensen, ou=Product Testing, dc=airius, dc=com", entry.getDn().getName() );
 
-        EntryAttribute attr = entry.get( "objectclass" );
+        Attribute attr = entry.get( "objectclass" );
         assertTrue( attr.contains( "top" ) );
         assertTrue( attr.contains( "person" ) );
         assertTrue( attr.contains( "organizationalPerson" ) );
@@ -1092,7 +1092,7 @@ public class LdifReaderTest
                 }
                 else
                 {
-                    EntryAttribute attr = entry.get( values[i][j][0] );
+                    Attribute attr = entry.get( values[i][j][0] );
 
                     if ( attr.contains( values[i][j][1] ) )
                     {
@@ -1157,12 +1157,12 @@ public class LdifReaderTest
             }
             else if ( "jpegphoto".equalsIgnoreCase( values[i][0] ) )
             {
-                EntryAttribute attr = entry.get( values[i][0] );
+                Attribute attr = entry.get( values[i][0] );
                 assertEquals( Strings.dumpBytes(data), Strings.dumpBytes(attr.getBytes()) );
             }
             else
             {
-                EntryAttribute attr = entry.get( values[i][0] );
+                Attribute attr = entry.get( values[i][0] );
 
                 if ( attr.contains( values[i][1] ) )
                 {
@@ -1349,12 +1349,12 @@ public class LdifReaderTest
             }
             else if ( "jpegphoto".equalsIgnoreCase( values[0][i][0] ) )
             {
-                EntryAttribute attr = entry.get( values[0][i][0] );
+                Attribute attr = entry.get( values[0][i][0] );
                 assertEquals( Strings.dumpBytes(data), Strings.dumpBytes(attr.getBytes()) );
             }
             else
             {
-                EntryAttribute attr = entry.get( values[0][i][0] );
+                Attribute attr = entry.get( values[0][i][0] );
 
                 if ( attr.contains( values[0][i][1] ) )
                 {
@@ -1640,7 +1640,7 @@ public class LdifReaderTest
 
         assertEquals( "ou=Users, dc=example, dc=com", entry.getDn().getName() );
 
-        EntryAttribute attr = entry.get( "objectclass" );
+        Attribute attr = entry.get( "objectclass" );
         assertTrue( attr.contains( "top" ) );
         assertTrue( attr.contains( "organizationalunit" ) );
 
@@ -1699,7 +1699,7 @@ public class LdifReaderTest
         LdifEntry entry = entries.get( 0 );
 
         assertEquals( "cn=browseRootAci,dc=example,dc=com", entry.getDn().getName() );
-        EntryAttribute attr = entry.get( "objectClass" );
+        Attribute attr = entry.get( "objectClass" );
         assertTrue( attr.contains( "top" ) );
         assertTrue( attr.contains( SchemaConstants.SUBENTRY_OC ) );
         assertTrue( attr.contains( "accessControlSubentry" ) );
@@ -1768,7 +1768,7 @@ public class LdifReaderTest
 
         assertEquals( 1, entry.getEntry().size() );
 
-        EntryAttribute attr = entry.get( "attr1" );
+        Attribute attr = entry.get( "attr1" );
         assertTrue( attr.contains( "ATTR1" ) );
     }
     
@@ -1799,7 +1799,7 @@ public class LdifReaderTest
 
         assertEquals( 1, entry.getEntry().size() );
 
-        EntryAttribute attr = entry.get( "attr1" );
+        Attribute attr = entry.get( "attr1" );
         assertEquals( 2, attr.size() );
         assertTrue( attr.contains( "ATTR1" ) );
         assertTrue( attr.contains( "ATTR2" ) );
@@ -1833,12 +1833,12 @@ public class LdifReaderTest
 
         assertEquals( 2, entry.getEntry().size() );
 
-        EntryAttribute attr = entry.get( "attr1" );
+        Attribute attr = entry.get( "attr1" );
         assertEquals( 2, attr.size() );
         assertTrue( attr.contains( "ATTR1" ) );
         assertTrue( attr.contains( "ATTR2" ) );
 
-        EntryAttribute attr2 = entry.get( "attr2" );
+        Attribute attr2 = entry.get( "attr2" );
         assertEquals( 1, attr2.size() );
         assertTrue( attr2.contains( "ATTR1" ) );
     }

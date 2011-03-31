@@ -27,7 +27,6 @@ import java.util.List;
 
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
@@ -71,9 +70,9 @@ public final class AttributeUtils
      * @param entry the entry to remove the attribute from 
      * @return the Attribute that is removed
      */
-    public static Attribute removeAttribute( AttributeType type, Attributes entry )
+    public static javax.naming.directory.Attribute removeAttribute( AttributeType type, Attributes entry )
     {
-        Attribute attr = entry.get( type.getOid() );
+        javax.naming.directory.Attribute attr = entry.get( type.getOid() );
 
         if ( attr == null )
         {
@@ -170,7 +169,7 @@ public final class AttributeUtils
      * @param attribute The attribute to transform
      * @return A instance of AttributeImpl
      */
-    public static Attribute toBasicAttribute( Attribute attribute )
+    public static javax.naming.directory.Attribute toBasicAttribute( javax.naming.directory.Attribute attribute )
     {
         if ( attribute instanceof BasicAttribute )
         {
@@ -180,7 +179,7 @@ public final class AttributeUtils
         else
         {
             // Create a new AttributeImpl from the original attribute
-            Attribute newAttribute = new BasicAttribute( attribute.getID() );
+            javax.naming.directory.Attribute newAttribute = new BasicAttribute( attribute.getID() );
 
             try
             {
@@ -209,10 +208,10 @@ public final class AttributeUtils
      * @param type the attribute type specification
      * @return an Attribute with matching the attributeType spec or null
      */
-    public static Attribute getAttribute( Attributes attrs, AttributeType type )
+    public static javax.naming.directory.Attribute getAttribute( Attributes attrs, AttributeType type )
     {
         // check if the attribute's OID is used
-        Attribute attr = attrs.get( type.getOid() );
+        javax.naming.directory.Attribute attr = attrs.get( type.getOid() );
 
         if ( attr != null )
         {
@@ -254,7 +253,7 @@ public final class AttributeUtils
      * @return <code>true</code> if the value exists in the attribute
      * @throws LdapException If something went wrong while accessing the data
      */
-    public static boolean containsValue( Attribute attr, Value<?> compared, AttributeType type ) throws LdapException
+    public static boolean containsValue( javax.naming.directory.Attribute attr, Value<?> compared, AttributeType type ) throws LdapException
     {
         // quick bypass test
         if ( attr.contains( compared ) )
@@ -391,7 +390,7 @@ public final class AttributeUtils
      * @param value The value to look for
      * @return true if the value is present in the attribute
      */
-    public static boolean containsValueCaseIgnore( Attribute attr, Object value )
+    public static boolean containsValueCaseIgnore( javax.naming.directory.Attribute attr, Object value )
     {
         // quick bypass test
         if ( attr.contains( value ) )
@@ -458,7 +457,7 @@ public final class AttributeUtils
      * @throws NamingException
      *             if there are problems accessing attribute values
      */
-    public static Attribute getDifference( Attribute attr0, Attribute attr1 ) throws NamingException
+    public static javax.naming.directory.Attribute getDifference( javax.naming.directory.Attribute attr0, javax.naming.directory.Attribute attr1 ) throws NamingException
     {
         String id;
 
@@ -472,7 +471,7 @@ public final class AttributeUtils
         }
         else if ( attr1 == null )
         {
-            return ( Attribute ) attr0.clone();
+            return ( javax.naming.directory.Attribute ) attr0.clone();
         }
         else if ( !attr0.getID().equalsIgnoreCase( attr1.getID() ) )
         {
@@ -483,7 +482,7 @@ public final class AttributeUtils
             id = attr0.getID();
         }
 
-        Attribute attr = new BasicAttribute( id );
+        javax.naming.directory.Attribute attr = new BasicAttribute( id );
 
         for ( int ii = 0; ii < attr0.size(); ii++ )
         {
@@ -515,7 +514,7 @@ public final class AttributeUtils
      * @throws NamingException
      *             if there are problems accessing attribute values
      */
-    public static Attribute getUnion( Attribute attr0, Attribute attr1 ) throws NamingException
+    public static javax.naming.directory.Attribute getUnion( javax.naming.directory.Attribute attr0, javax.naming.directory.Attribute attr1 ) throws NamingException
     {
         String id;
 
@@ -540,7 +539,7 @@ public final class AttributeUtils
             id = attr0.getID();
         }
 
-        Attribute attr = new BasicAttribute( id );
+        javax.naming.directory.Attribute attr = new BasicAttribute( id );
 
         if ( attr0 != null )
         {
@@ -596,7 +595,7 @@ public final class AttributeUtils
                     // Iterate through the attributes now
                     while ( attrs.hasMoreElements() )
                     {
-                        newAttrs.put( ( Attribute ) attrs.nextElement() );
+                        newAttrs.put( ( javax.naming.directory.Attribute ) attrs.nextElement() );
                     }
                 }
 
@@ -621,7 +620,7 @@ public final class AttributeUtils
      *            The attribute to print
      * @return A string
      */
-    public static String toString( String tabs, Attribute attribute )
+    public static String toString( String tabs, javax.naming.directory.Attribute attribute )
     {
         StringBuffer sb = new StringBuffer();
 
@@ -679,7 +678,7 @@ public final class AttributeUtils
      *            The attribute to print
      * @return A string
      */
-    public static String toString( Attribute attribute )
+    public static String toString( javax.naming.directory.Attribute attribute )
     {
         return toString( "", attribute );
     }
@@ -706,7 +705,7 @@ public final class AttributeUtils
 
             while ( attributesIterator.hasMoreElements() )
             {
-                Attribute attribute = ( Attribute ) attributesIterator.nextElement();
+                javax.naming.directory.Attribute attribute = ( javax.naming.directory.Attribute ) attributesIterator.nextElement();
                 sb.append( tabs ).append( attribute.toString() );
             }
         }
@@ -930,13 +929,13 @@ public final class AttributeUtils
      */
     public static void applyModification( Entry entry, Modification modification ) throws LdapException
     {
-        EntryAttribute modAttr = modification.getAttribute();
+        Attribute modAttr = modification.getAttribute();
         String modificationId = modAttr.getId();
 
         switch ( modification.getOperation() )
         {
             case ADD_ATTRIBUTE:
-                EntryAttribute modifiedAttr = entry.get( modificationId );
+                Attribute modifiedAttr = entry.get( modificationId );
 
                 if ( modifiedAttr == null )
                 {
@@ -1031,11 +1030,11 @@ public final class AttributeUtils
             {
                 Entry entry = new DefaultEntry( dn );
 
-                for ( NamingEnumeration<? extends Attribute> attrs = attributes.getAll(); attrs.hasMoreElements(); )
+                for ( NamingEnumeration<? extends javax.naming.directory.Attribute> attrs = attributes.getAll(); attrs.hasMoreElements(); )
                 {
-                    Attribute attr = attrs.nextElement();
+                    javax.naming.directory.Attribute attr = attrs.nextElement();
 
-                    EntryAttribute entryAttribute = toClientAttribute( attr );
+                    Attribute entryAttribute = toClientAttribute( attr );
 
                     if ( entryAttribute != null )
                     {
@@ -1072,9 +1071,9 @@ public final class AttributeUtils
             Attributes attributes = new BasicAttributes( true );
 
             // Looping on attributes
-            for ( Iterator<EntryAttribute> attributeIterator = entry.iterator(); attributeIterator.hasNext(); )
+            for ( Iterator<Attribute> attributeIterator = entry.iterator(); attributeIterator.hasNext(); )
             {
-                EntryAttribute entryAttribute = ( EntryAttribute ) attributeIterator.next();
+                Attribute entryAttribute = ( Attribute ) attributeIterator.next();
 
                 attributes.put( toAttribute( entryAttribute ) );
             }
@@ -1087,18 +1086,18 @@ public final class AttributeUtils
 
 
     /**
-     * Converts an {@link EntryAttribute} to an {@link Attribute}.
+     * Converts an {@link Attribute} to an {@link Attribute}.
      *
      * @param entryAttribute
-     *      the {@link EntryAttribute} to convert
+     *      the {@link Attribute} to convert
      * @return
      *      the equivalent {@link Attribute}
      */
-    public static Attribute toAttribute( EntryAttribute entryAttribute )
+    public static javax.naming.directory.Attribute toAttribute( Attribute entryAttribute )
     {
         if ( entryAttribute != null )
         {
-            Attribute attribute = new BasicAttribute( entryAttribute.getId() );
+            javax.naming.directory.Attribute attribute = new BasicAttribute( entryAttribute.getId() );
 
             // Looping on values
             for ( Iterator<Value<?>> valueIterator = entryAttribute.iterator(); valueIterator.hasNext(); )
@@ -1120,7 +1119,7 @@ public final class AttributeUtils
      * @param attribute the BasicAttributes or AttributesImpl instance to convert
      * @return An instance of a ClientEntry object
      */
-    public static EntryAttribute toClientAttribute( Attribute attribute ) throws LdapInvalidAttributeValueException
+    public static Attribute toClientAttribute( javax.naming.directory.Attribute attribute ) throws LdapInvalidAttributeValueException
     {
         if ( attribute == null )
         {
@@ -1129,7 +1128,7 @@ public final class AttributeUtils
 
         try
         {
-            EntryAttribute clientAttribute = new DefaultEntryAttribute( attribute.getID() );
+            Attribute clientAttribute = new DefaultEntryAttribute( attribute.getID() );
 
             for ( NamingEnumeration<?> values = attribute.getAll(); values.hasMoreElements(); )
             {

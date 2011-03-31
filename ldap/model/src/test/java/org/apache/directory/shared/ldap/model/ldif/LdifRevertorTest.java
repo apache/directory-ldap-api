@@ -38,7 +38,7 @@ import org.apache.directory.shared.ldap.model.entry.*;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -102,7 +102,7 @@ public class LdifRevertorTest
         
         Entry deletedEntry = new DefaultEntry( dn );
         
-        EntryAttribute oc = new DefaultEntryAttribute( "objectClass" );
+        Attribute oc = new DefaultEntryAttribute( "objectClass" );
         oc.add( "top", "person" );
         
         deletedEntry.put( oc );
@@ -129,7 +129,7 @@ public class LdifRevertorTest
     {
         Entry modifiedEntry = buildEntry();
         
-        EntryAttribute ou = new DefaultEntryAttribute( "ou" );
+        Attribute ou = new DefaultEntryAttribute( "ou" );
         ou.add( "apache", "acme corp" );
         modifiedEntry.put( ou );
 
@@ -156,7 +156,7 @@ public class LdifRevertorTest
         
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modif.getOperation() );
 
-        EntryAttribute attr = modif.getAttribute();
+        Attribute attr = modif.getAttribute();
         
         assertNotNull( attr );
 
@@ -173,7 +173,7 @@ public class LdifRevertorTest
     {
         Entry modifiedEntry = buildEntry();
         
-        EntryAttribute ou = new DefaultEntryAttribute( "ou" );
+        Attribute ou = new DefaultEntryAttribute( "ou" );
         ou.add( "apache", "acme corp" );
         modifiedEntry.put( ou );
 
@@ -201,7 +201,7 @@ public class LdifRevertorTest
         
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modif.getOperation() );
 
-        EntryAttribute attr = modif.getAttribute();
+        Attribute attr = modif.getAttribute();
         
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
@@ -218,7 +218,7 @@ public class LdifRevertorTest
     {
         Entry modifiedEntry = buildEntry();
 
-        EntryAttribute ou = new DefaultEntryAttribute( "ou", "apache", "acme corp" );
+        Attribute ou = new DefaultEntryAttribute( "ou", "apache", "acme corp" );
         modifiedEntry.put( ou );
         
         Dn dn = new Dn( "cn=test, ou=system" );
@@ -244,7 +244,7 @@ public class LdifRevertorTest
         
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modif.getOperation() );
 
-        EntryAttribute attr = modif.getAttribute();
+        Attribute attr = modif.getAttribute();
         
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
@@ -261,13 +261,13 @@ public class LdifRevertorTest
     {
         Entry modifiedEntry = buildEntry();
         
-        EntryAttribute ou = new DefaultEntryAttribute( "ou" );
+        Attribute ou = new DefaultEntryAttribute( "ou" );
         ou.add( "apache", "acme corp" );
         modifiedEntry.put( ou );
 
         Dn dn = new Dn( "cn=test, ou=system" );
 
-        EntryAttribute ouModified = new DefaultEntryAttribute( "ou" );
+        Attribute ouModified = new DefaultEntryAttribute( "ou" );
         ouModified.add( "directory" );
         ouModified.add( "BigCompany inc." );
         
@@ -293,7 +293,7 @@ public class LdifRevertorTest
         
         assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, modif.getOperation() );
 
-        EntryAttribute attr = modif.getAttribute();
+        Attribute attr = modif.getAttribute();
         
         assertNotNull( attr );
         assertEquals( ou, attr );
@@ -310,7 +310,7 @@ public class LdifRevertorTest
         
         Dn dn = new Dn( "cn=test, ou=system" );
         
-        EntryAttribute newOu = new DefaultEntryAttribute( "ou" );
+        Attribute newOu = new DefaultEntryAttribute( "ou" );
         newOu.add( "apache" );
         newOu.add( "acme corp" );
 
@@ -335,7 +335,7 @@ public class LdifRevertorTest
         
         assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, modif.getOperation() );
 
-        EntryAttribute attr = modif.getAttribute();
+        Attribute attr = modif.getAttribute();
         
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
@@ -352,7 +352,7 @@ public class LdifRevertorTest
     {
         Entry modifiedEntry = buildEntry();
 
-        EntryAttribute ou = new DefaultEntryAttribute( "ou" );
+        Attribute ou = new DefaultEntryAttribute( "ou" );
         ou.add( "apache" );
         ou.add( "acme corp" );
         modifiedEntry.put( ou );
@@ -379,7 +379,7 @@ public class LdifRevertorTest
         
         assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, modif.getOperation() );
 
-        EntryAttribute attr = modif.getAttribute();
+        Attribute attr = modif.getAttribute();
         
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
@@ -555,7 +555,7 @@ public class LdifRevertorTest
     {
         Entry modifiedEntry = buildEntry();
 
-        EntryAttribute ou = new DefaultEntryAttribute( "ou" );
+        Attribute ou = new DefaultEntryAttribute( "ou" );
         ou.add( "apache" );
         ou.add( "acme corp" );
         modifiedEntry.put( ou );
@@ -581,7 +581,7 @@ public class LdifRevertorTest
         
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, modif.getOperation() );
 
-        EntryAttribute attr = modif.getAttribute();
+        Attribute attr = modif.getAttribute();
         
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
@@ -618,7 +618,7 @@ public class LdifRevertorTest
 
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, modif.getOperation() );
 
-        EntryAttribute attr = modif.getAttribute();
+        Attribute attr = modif.getAttribute();
         
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );

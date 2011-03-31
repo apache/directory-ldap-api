@@ -32,7 +32,7 @@ import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
@@ -101,7 +101,7 @@ public class SchemaEntityFactory implements EntityFactory
     private String getOid( Entry entry, String objectType ) throws LdapInvalidAttributeValueException
     {
         // The OID
-        EntryAttribute mOid = entry.get( MetaSchemaConstants.M_OID_AT );
+        Attribute mOid = entry.get( MetaSchemaConstants.M_OID_AT );
 
         if ( mOid == null )
         {
@@ -240,7 +240,7 @@ public class SchemaEntityFactory implements EntityFactory
         if ( entry.get( MetaSchemaConstants.M_DEPENDENCIES_AT ) != null )
         {
             Set<String> depsSet = new HashSet<String>();
-            EntryAttribute depsAttr = entry.get( MetaSchemaConstants.M_DEPENDENCIES_AT );
+            Attribute depsAttr = entry.get( MetaSchemaConstants.M_DEPENDENCIES_AT );
 
             for ( Value<?> value : depsAttr )
             {
@@ -257,7 +257,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * Class load a syntaxChecker instance
      */
-    private SyntaxChecker classLoadSyntaxChecker( SchemaManager schemaManager, String oid, String className, EntryAttribute byteCode )
+    private SyntaxChecker classLoadSyntaxChecker( SchemaManager schemaManager, String oid, String className, Attribute byteCode )
         throws Exception
     {
         // Try to class load the syntaxChecker
@@ -327,7 +327,7 @@ public class SchemaEntityFactory implements EntityFactory
         String className = getFqcn( entry, SchemaConstants.SYNTAX_CHECKER );
 
         // The ByteCode
-        EntryAttribute byteCode = entry.get( MetaSchemaConstants.M_BYTECODE_AT );
+        Attribute byteCode = entry.get( MetaSchemaConstants.M_BYTECODE_AT );
 
         try
         {
@@ -374,7 +374,7 @@ public class SchemaEntityFactory implements EntityFactory
         String fqcn = getFqcn( syntaxCheckerDescription, SchemaConstants.SYNTAX_CHECKER );
 
         // get the byteCode
-        EntryAttribute byteCode = getByteCode( syntaxCheckerDescription, SchemaConstants.SYNTAX_CHECKER );
+        Attribute byteCode = getByteCode( syntaxCheckerDescription, SchemaConstants.SYNTAX_CHECKER );
 
         // Class load the SyntaxChecker
         SyntaxChecker syntaxChecker = classLoadSyntaxChecker( schemaManager, oid, fqcn, byteCode );
@@ -390,7 +390,7 @@ public class SchemaEntityFactory implements EntityFactory
      * Class load a comparator instances
      */
     private LdapComparator<?> classLoadComparator( SchemaManager schemaManager, String oid, String className,
-        EntryAttribute byteCode ) throws Exception
+        Attribute byteCode ) throws Exception
     {
         // Try to class load the comparator
         LdapComparator<?> comparator = null;
@@ -470,7 +470,7 @@ public class SchemaEntityFactory implements EntityFactory
         String fqcn = getFqcn( comparatorDescription, SchemaConstants.COMPARATOR );
 
         // get the byteCode
-        EntryAttribute byteCode = getByteCode( comparatorDescription, SchemaConstants.COMPARATOR );
+        Attribute byteCode = getByteCode( comparatorDescription, SchemaConstants.COMPARATOR );
 
         // Class load the comparator
         LdapComparator<?> comparator = classLoadComparator( schemaManager, oid, fqcn, byteCode );
@@ -516,7 +516,7 @@ public class SchemaEntityFactory implements EntityFactory
         String fqcn = getFqcn( entry, SchemaConstants.COMPARATOR );
 
         // The ByteCode
-        EntryAttribute byteCode = entry.get( MetaSchemaConstants.M_BYTECODE_AT );
+        Attribute byteCode = entry.get( MetaSchemaConstants.M_BYTECODE_AT );
 
         try
         {
@@ -540,7 +540,7 @@ public class SchemaEntityFactory implements EntityFactory
      * Class load a normalizer instances
      */
     private Normalizer classLoadNormalizer( SchemaManager schemaManager, String oid, String className,
-        EntryAttribute byteCode ) throws Exception
+        Attribute byteCode ) throws Exception
     {
         // Try to class load the normalizer
         Class<?> clazz = null;
@@ -601,7 +601,7 @@ public class SchemaEntityFactory implements EntityFactory
         String fqcn = getFqcn( normalizerDescription, SchemaConstants.NORMALIZER );
 
         // get the byteCode
-        EntryAttribute byteCode = getByteCode( normalizerDescription, SchemaConstants.NORMALIZER );
+        Attribute byteCode = getByteCode( normalizerDescription, SchemaConstants.NORMALIZER );
 
         // Class load the normalizer
         Normalizer normalizer = classLoadNormalizer( schemaManager, oid, fqcn, byteCode );
@@ -647,7 +647,7 @@ public class SchemaEntityFactory implements EntityFactory
         String className = getFqcn( entry, SchemaConstants.NORMALIZER );
 
         // The ByteCode
-        EntryAttribute byteCode = entry.get( MetaSchemaConstants.M_BYTECODE_AT );
+        Attribute byteCode = entry.get( MetaSchemaConstants.M_BYTECODE_AT );
 
         try
         {
@@ -703,7 +703,7 @@ public class SchemaEntityFactory implements EntityFactory
         LdapSyntax syntax = new LdapSyntax( oid );
 
         // The isHumanReadable field
-        EntryAttribute mHumanReadable = entry.get( MetaSchemaConstants.X_HUMAN_READABLE_AT );
+        Attribute mHumanReadable = entry.get( MetaSchemaConstants.X_HUMAN_READABLE_AT );
 
         if ( mHumanReadable != null )
         {
@@ -753,7 +753,7 @@ public class SchemaEntityFactory implements EntityFactory
         MatchingRule matchingRule = new MatchingRule( oid );
 
         // The syntax field
-        EntryAttribute mSyntax = entry.get( MetaSchemaConstants.M_SYNTAX_AT );
+        Attribute mSyntax = entry.get( MetaSchemaConstants.M_SYNTAX_AT );
 
         if ( mSyntax != null )
         {
@@ -773,7 +773,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * Create a list of string from a multivalued attribute's values
      */
-    private List<String> getStrings( EntryAttribute attr )
+    private List<String> getStrings( Attribute attr )
     {
         if ( attr == null )
         {
@@ -825,7 +825,7 @@ public class SchemaEntityFactory implements EntityFactory
         ObjectClass oc = new ObjectClass( oid );
 
         // The Sup field
-        EntryAttribute mSuperiors = entry.get( MetaSchemaConstants.M_SUP_OBJECT_CLASS_AT );
+        Attribute mSuperiors = entry.get( MetaSchemaConstants.M_SUP_OBJECT_CLASS_AT );
 
         if ( mSuperiors != null )
         {
@@ -833,7 +833,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // The May field
-        EntryAttribute mMay = entry.get( MetaSchemaConstants.M_MAY_AT );
+        Attribute mMay = entry.get( MetaSchemaConstants.M_MAY_AT );
 
         if ( mMay != null )
         {
@@ -841,7 +841,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // The Must field
-        EntryAttribute mMust = entry.get( MetaSchemaConstants.M_MUST_AT );
+        Attribute mMust = entry.get( MetaSchemaConstants.M_MUST_AT );
 
         if ( mMust != null )
         {
@@ -849,7 +849,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // The objectClassType field
-        EntryAttribute mTypeObjectClass = entry.get( MetaSchemaConstants.M_TYPE_OBJECT_CLASS_AT );
+        Attribute mTypeObjectClass = entry.get( MetaSchemaConstants.M_TYPE_OBJECT_CLASS_AT );
 
         if ( mTypeObjectClass != null )
         {
@@ -900,7 +900,7 @@ public class SchemaEntityFactory implements EntityFactory
         AttributeType attributeType = new AttributeType( oid );
 
         // Syntax
-        EntryAttribute mSyntax = entry.get( MetaSchemaConstants.M_SYNTAX_AT );
+        Attribute mSyntax = entry.get( MetaSchemaConstants.M_SYNTAX_AT );
 
         if ( ( mSyntax != null ) && ( mSyntax.get() != null ) )
         {
@@ -908,7 +908,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Syntax Length
-        EntryAttribute mSyntaxLength = entry.get( MetaSchemaConstants.M_LENGTH_AT );
+        Attribute mSyntaxLength = entry.get( MetaSchemaConstants.M_LENGTH_AT );
 
         if ( mSyntaxLength != null )
         {
@@ -916,7 +916,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Equality
-        EntryAttribute mEquality = entry.get( MetaSchemaConstants.M_EQUALITY_AT );
+        Attribute mEquality = entry.get( MetaSchemaConstants.M_EQUALITY_AT );
 
         if ( mEquality != null )
         {
@@ -924,7 +924,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Ordering
-        EntryAttribute mOrdering = entry.get( MetaSchemaConstants.M_ORDERING_AT );
+        Attribute mOrdering = entry.get( MetaSchemaConstants.M_ORDERING_AT );
 
         if ( mOrdering != null )
         {
@@ -932,14 +932,14 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Substr
-        EntryAttribute mSubstr = entry.get( MetaSchemaConstants.M_SUBSTR_AT );
+        Attribute mSubstr = entry.get( MetaSchemaConstants.M_SUBSTR_AT );
 
         if ( mSubstr != null )
         {
             attributeType.setSubstringOid( mSubstr.getString() );
         }
 
-        EntryAttribute mSupAttributeType = entry.get( MetaSchemaConstants.M_SUP_ATTRIBUTE_TYPE_AT );
+        Attribute mSupAttributeType = entry.get( MetaSchemaConstants.M_SUP_ATTRIBUTE_TYPE_AT );
 
         // Sup
         if ( mSupAttributeType != null )
@@ -948,7 +948,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // isCollective
-        EntryAttribute mCollective = entry.get( MetaSchemaConstants.M_COLLECTIVE_AT );
+        Attribute mCollective = entry.get( MetaSchemaConstants.M_COLLECTIVE_AT );
 
         if ( mCollective != null )
         {
@@ -957,7 +957,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // isSingleValued
-        EntryAttribute mSingleValued = entry.get( MetaSchemaConstants.M_SINGLE_VALUE_AT );
+        Attribute mSingleValued = entry.get( MetaSchemaConstants.M_SINGLE_VALUE_AT );
 
         if ( mSingleValued != null )
         {
@@ -966,7 +966,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // isReadOnly
-        EntryAttribute mNoUserModification = entry.get( MetaSchemaConstants.M_NO_USER_MODIFICATION_AT );
+        Attribute mNoUserModification = entry.get( MetaSchemaConstants.M_NO_USER_MODIFICATION_AT );
 
         if ( mNoUserModification != null )
         {
@@ -975,7 +975,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Usage
-        EntryAttribute mUsage = entry.get( MetaSchemaConstants.M_USAGE_AT );
+        Attribute mUsage = entry.get( MetaSchemaConstants.M_USAGE_AT );
 
         if ( mUsage != null )
         {
@@ -996,7 +996,7 @@ public class SchemaEntityFactory implements EntityFactory
     private String getFqcn( Entry entry, String objectType ) throws LdapInvalidAttributeValueException
     {
         // The FQCN
-        EntryAttribute mFqcn = entry.get( MetaSchemaConstants.M_FQCN_AT );
+        Attribute mFqcn = entry.get( MetaSchemaConstants.M_FQCN_AT );
 
         if ( mFqcn == null )
         {
@@ -1031,7 +1031,7 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * Process the ByteCode attribute
      */
-    private EntryAttribute getByteCode( LoadableSchemaObject description, String objectType )
+    private Attribute getByteCode( LoadableSchemaObject description, String objectType )
     {
         String byteCodeString = description.getBytecode();
 
@@ -1043,7 +1043,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         byte[] bytecode = Base64.decode( byteCodeString.toCharArray() );
-        EntryAttribute attr = new DefaultEntryAttribute( MetaSchemaConstants.M_BYTECODE_AT, bytecode );
+        Attribute attr = new DefaultEntryAttribute( MetaSchemaConstants.M_BYTECODE_AT, bytecode );
 
         return attr;
     }
@@ -1065,7 +1065,7 @@ public class SchemaEntityFactory implements EntityFactory
         throws LdapInvalidAttributeValueException
     {
         // The isObsolete field
-        EntryAttribute mObsolete = entry.get( MetaSchemaConstants.M_OBSOLETE_AT );
+        Attribute mObsolete = entry.get( MetaSchemaConstants.M_OBSOLETE_AT );
 
         if ( mObsolete != null )
         {
@@ -1074,7 +1074,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // The description field
-        EntryAttribute mDescription = entry.get( MetaSchemaConstants.M_DESCRIPTION_AT );
+        Attribute mDescription = entry.get( MetaSchemaConstants.M_DESCRIPTION_AT );
 
         if ( mDescription != null )
         {
@@ -1082,7 +1082,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // The names field
-        EntryAttribute names = entry.get( MetaSchemaConstants.M_NAME_AT );
+        Attribute names = entry.get( MetaSchemaConstants.M_NAME_AT );
 
         if ( names != null )
         {
@@ -1097,7 +1097,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // The isEnabled field
-        EntryAttribute mDisabled = entry.get( MetaSchemaConstants.M_DISABLED_AT );
+        Attribute mDisabled = entry.get( MetaSchemaConstants.M_DISABLED_AT );
 
         // If the SchemaObject has an explicit m-disabled attribute, then use it.
         // Otherwise, inherit it from the schema
@@ -1112,7 +1112,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // The isReadOnly field
-        EntryAttribute mIsReadOnly = entry.get( MetaSchemaConstants.M_NO_USER_MODIFICATION_AT );
+        Attribute mIsReadOnly = entry.get( MetaSchemaConstants.M_NO_USER_MODIFICATION_AT );
 
         if ( mIsReadOnly != null )
         {

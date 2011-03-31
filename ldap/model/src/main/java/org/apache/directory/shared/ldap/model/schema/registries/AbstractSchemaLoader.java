@@ -32,7 +32,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.util.StringConstants;
 import org.apache.directory.shared.util.Strings;
@@ -177,7 +177,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
             throw new IllegalArgumentException( I18n.err( I18n.ERR_04261 ) );
         }
 
-        EntryAttribute objectClasses = entry.get( SchemaConstants.OBJECT_CLASS_AT );
+        Attribute objectClasses = entry.get( SchemaConstants.OBJECT_CLASS_AT );
         boolean isSchema = false;
 
         for ( Value<?> value : objectClasses )
@@ -224,7 +224,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
         if ( entry.get( MetaSchemaConstants.M_DEPENDENCIES_AT ) != null )
         {
             Set<String> depsSet = new HashSet<String>();
-            EntryAttribute depsAttr = entry.get( MetaSchemaConstants.M_DEPENDENCIES_AT );
+            Attribute depsAttr = entry.get( MetaSchemaConstants.M_DEPENDENCIES_AT );
 
             for ( Value<?> value : depsAttr )
             {

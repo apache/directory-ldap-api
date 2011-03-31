@@ -45,7 +45,7 @@ import org.apache.directory.shared.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.shared.ldap.codec.decorators.AddRequestDecorator;
 import org.apache.directory.shared.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.message.*;
 import org.apache.directory.shared.util.Strings;
@@ -154,7 +154,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
         lVal2.add( "test3" );
         typesVals.put( "attrs", lVal2 );
 
-        EntryAttribute attribute = entry.get( "l" );
+        Attribute attribute = entry.get( "l" );
 
         assertTrue( expectedTypes.contains( attribute.getId().toLowerCase() ) );
 
@@ -676,7 +676,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, entry.size() );
 
-        EntryAttribute attribute = entry.get( "l" );
+        Attribute attribute = entry.get( "l" );
 
         assertEquals( "l", attribute.getId().toLowerCase() );
 
@@ -768,7 +768,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, entry.size() );
 
-        EntryAttribute attribute = entry.get( "l" );
+        Attribute attribute = entry.get( "l" );
 
         assertEquals( "l", attribute.getId().toLowerCase() );
 

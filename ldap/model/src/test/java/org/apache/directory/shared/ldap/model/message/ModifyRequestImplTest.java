@@ -31,7 +31,7 @@ import java.util.Map;
 
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -76,7 +76,7 @@ public class ModifyRequestImplTest
             // do nothing
         }
 
-        EntryAttribute attr = new DefaultEntryAttribute( "attr0" );
+        Attribute attr = new DefaultEntryAttribute( "attr0" );
         attr.add( "val0" );
         attr.add( "val1" );
         attr.add( "val2" );
@@ -185,7 +185,7 @@ public class ModifyRequestImplTest
     public void testNotEqualDiffModOps() throws LdapException
     {
         ModifyRequestImpl req0 = getRequest();
-        EntryAttribute attr = new DefaultEntryAttribute( "attr3" );
+        Attribute attr = new DefaultEntryAttribute( "attr3" );
         attr.add( "val0" );
         attr.add( "val1" );
         attr.add( "val2" );
@@ -212,7 +212,7 @@ public class ModifyRequestImplTest
     public void testNotEqualDiffModCount() throws LdapException
     {
         ModifyRequestImpl req0 = getRequest();
-        EntryAttribute attr = new DefaultEntryAttribute( "attr3" );
+        Attribute attr = new DefaultEntryAttribute( "attr3" );
         attr.add( "val0" );
         attr.add( "val1" );
         attr.add( "val2" );
@@ -233,7 +233,7 @@ public class ModifyRequestImplTest
     public void testNotEqualDiffModIds() throws LdapException
     {
         ModifyRequestImpl req0 = getRequest();
-        EntryAttribute attr = new DefaultEntryAttribute( "attr3" );
+        Attribute attr = new DefaultEntryAttribute( "attr3" );
         attr.add( "val0" );
         attr.add( "val1" );
         attr.add( "val2" );
@@ -260,7 +260,7 @@ public class ModifyRequestImplTest
     public void testNotEqualDiffModValues() throws LdapException
     {
         ModifyRequestImpl req0 = getRequest();
-        EntryAttribute attr = new DefaultEntryAttribute( "attr3" );
+        Attribute attr = new DefaultEntryAttribute( "attr3" );
         attr.add( "val0" );
         attr.add( "val1" );
         attr.add( "val2" );
@@ -295,7 +295,7 @@ public class ModifyRequestImplTest
                 
                 try
                 { 
-                    EntryAttribute attr = new DefaultEntryAttribute( "attr0" );
+                    Attribute attr = new DefaultEntryAttribute( "attr0" );
                     attr.add( "val0" );
                     attr.add( "val1" );
                     attr.add( "val2" );
@@ -447,7 +447,7 @@ public class ModifyRequestImplTest
             }
 
 
-            public void addModification( EntryAttribute attr, ModificationOperation modOp )
+            public void addModification( Attribute attr, ModificationOperation modOp )
             {
             }
 
@@ -467,7 +467,7 @@ public class ModifyRequestImplTest
             }
 
 
-            public void replace( EntryAttribute attr )
+            public void replace( Attribute attr )
             {
             }
 
@@ -482,7 +482,7 @@ public class ModifyRequestImplTest
             }
 
 
-            public void add( EntryAttribute attr )
+            public void add( Attribute attr )
             {
             }
 
@@ -497,7 +497,7 @@ public class ModifyRequestImplTest
             }
 
 
-            public void remove( EntryAttribute attr )
+            public void remove( Attribute attr )
             {
             }
         };

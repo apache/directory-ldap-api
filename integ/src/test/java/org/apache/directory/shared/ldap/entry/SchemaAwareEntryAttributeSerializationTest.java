@@ -27,8 +27,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
@@ -73,7 +73,7 @@ public class SchemaAwareEntryAttributeSerializationTest
     @Test
     public void testEntryAttributeNoStringValueSerialization() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
-        EntryAttribute attribute1 = new DefaultEntryAttribute( cn );
+        Attribute attribute1 = new DefaultEntryAttribute( cn );
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -85,7 +85,7 @@ public class SchemaAwareEntryAttributeSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        EntryAttribute attribute2 = new DefaultEntryAttribute();
+        Attribute attribute2 = new DefaultEntryAttribute( cn );
         attribute2.readExternal( in );
         attribute2.apply( cn );
 
@@ -96,7 +96,7 @@ public class SchemaAwareEntryAttributeSerializationTest
     @Test
     public void testEntryAttributeOneStringValueSerialization() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
-        EntryAttribute attribute1 = new DefaultEntryAttribute( "CommonName", cn, "test" );
+        Attribute attribute1 = new DefaultEntryAttribute( "CommonName", cn, "test" );
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -108,7 +108,7 @@ public class SchemaAwareEntryAttributeSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        EntryAttribute attribute2 = new DefaultEntryAttribute();
+        Attribute attribute2 = new DefaultEntryAttribute( cn );
         attribute2.readExternal( in );
         attribute2.apply( cn );
 
@@ -120,7 +120,7 @@ public class SchemaAwareEntryAttributeSerializationTest
     @Test
     public void testEntryAttributeManyStringValuesSerialization() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
-        EntryAttribute attribute1 = new DefaultEntryAttribute( "CN", cn, "test1", "test2", "test3" );
+        Attribute attribute1 = new DefaultEntryAttribute( "CN", cn, "test1", "test2", "test3" );
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -132,7 +132,7 @@ public class SchemaAwareEntryAttributeSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        EntryAttribute attribute2 = new DefaultEntryAttribute();
+        Attribute attribute2 = new DefaultEntryAttribute( cn );
         attribute2.readExternal( in );
         attribute2.apply( cn );
 
@@ -144,7 +144,7 @@ public class SchemaAwareEntryAttributeSerializationTest
     @Test
     public void testEntryAttributeNoBinaryValueSerialization() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException, LdapInvalidAttributeValueException
     {
-        EntryAttribute attribute1 = new DefaultEntryAttribute( userCertificate );
+        Attribute attribute1 = new DefaultEntryAttribute( userCertificate );
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -156,7 +156,7 @@ public class SchemaAwareEntryAttributeSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        EntryAttribute attribute2 = new DefaultEntryAttribute();
+        Attribute attribute2 = new DefaultEntryAttribute( userCertificate );
         attribute2.readExternal( in );
         attribute2.apply( userCertificate );
 
@@ -167,7 +167,7 @@ public class SchemaAwareEntryAttributeSerializationTest
     @Test
     public void testEntryAttributeOneBinaryValueSerialization() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
-        EntryAttribute attribute1 = new DefaultEntryAttribute( userCertificate, data1 );
+        Attribute attribute1 = new DefaultEntryAttribute( userCertificate, data1 );
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -179,7 +179,7 @@ public class SchemaAwareEntryAttributeSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        EntryAttribute attribute2 = new DefaultEntryAttribute();
+        Attribute attribute2 = new DefaultEntryAttribute( userCertificate );
         attribute2.readExternal( in );
         attribute2.apply( userCertificate );
 
@@ -190,7 +190,7 @@ public class SchemaAwareEntryAttributeSerializationTest
     @Test
     public void testEntryAttributeManyBinaryValuesSerialization() throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
     {
-        EntryAttribute attribute1 = new DefaultEntryAttribute( "UserCertificate", userCertificate, data1, data2, data3 );
+        Attribute attribute1 = new DefaultEntryAttribute( "UserCertificate", userCertificate, data1, data2, data3 );
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -202,7 +202,7 @@ public class SchemaAwareEntryAttributeSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        EntryAttribute attribute2 = new DefaultEntryAttribute();
+        Attribute attribute2 = new DefaultEntryAttribute( userCertificate );
         attribute2.readExternal( in );
         attribute2.apply( userCertificate );
 

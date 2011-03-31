@@ -36,7 +36,7 @@ import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -66,7 +66,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     private List<Integer> valsLength;
     
     /** The current attribute being processed */
-    private EntryAttribute currentAttribute;
+    private Attribute currentAttribute;
 
 
     /**
@@ -177,7 +177,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     }
     
     
-    public EntryAttribute getCurrentAttribute()
+    public Attribute getCurrentAttribute()
     {
         return currentAttribute;
     }
@@ -325,7 +325,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
             setValsLength( valsLength );
 
             // Compute the attributes length
-            for ( EntryAttribute attribute : entry )
+            for ( Attribute attribute : entry )
             {
                 int localAttributeLength = 0;
                 int localValuesLength = 0;
@@ -436,7 +436,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
                 int attributeNumber = 0;
 
                 // Compute the attributes length
-                for ( EntryAttribute attribute : entry )
+                for ( Attribute attribute : entry )
                 {
                     // The partial attribute list sequence
                     buffer.put( UniversalTag.SEQUENCE.getValue() );

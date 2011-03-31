@@ -30,7 +30,7 @@ import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.aci.protectedItem.AttributeValueItem;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,24 +58,24 @@ public class ProtectedItem_AttributeValueTest
     public void initNames() throws Exception
     {
 
-        EntryAttribute attrA = new DefaultEntryAttribute( "aa" );
+        Attribute attrA = new DefaultEntryAttribute( "aa" );
         attrA.add( "aa" );
-        EntryAttribute attrB = new DefaultEntryAttribute( "bb" );
+        Attribute attrB = new DefaultEntryAttribute( "bb" );
         attrB.add( "bb" );
-        EntryAttribute attrC = new DefaultEntryAttribute( "cc" );
+        Attribute attrC = new DefaultEntryAttribute( "cc" );
         attrC.add( "cc" );
-        EntryAttribute attrD = new DefaultEntryAttribute( "dd" );
+        Attribute attrD = new DefaultEntryAttribute( "dd" );
         attrD.add( "dd" );
 
-        Set<EntryAttribute> colA = new HashSet<EntryAttribute>();
+        Set<Attribute> colA = new HashSet<Attribute>();
         colA.add( attrA );
         colA.add( attrB );
         colA.add( attrC );
-        Set<EntryAttribute> colB = new HashSet<EntryAttribute>();
+        Set<Attribute> colB = new HashSet<Attribute>();
         colB.add( attrA );
         colB.add( attrB );
         colB.add( attrC );
-        Set<EntryAttribute> colC = new HashSet<EntryAttribute>();
+        Set<Attribute> colC = new HashSet<Attribute>();
         colC.add( attrB );
         colC.add( attrC );
         colC.add( attrD );

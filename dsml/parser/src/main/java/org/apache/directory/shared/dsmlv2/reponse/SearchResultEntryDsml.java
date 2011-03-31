@@ -24,7 +24,7 @@ import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
@@ -50,7 +50,7 @@ public class SearchResultEntryDsml
     private static final String SEARCH_RESULT_ENTRY_TAG = "searchResultEntry";
 
     /** The current attribute being processed */
-    private EntryAttribute currentAttribute;
+    private Attribute currentAttribute;
     
     
     /**
@@ -76,7 +76,7 @@ public class SearchResultEntryDsml
     
     
     
-    public EntryAttribute getCurrentAttribute()
+    public Attribute getCurrentAttribute()
     {
         return currentAttribute;
     }
@@ -142,7 +142,7 @@ public class SearchResultEntryDsml
         element.addAttribute( "dn", searchResultEntry.getObjectName().getName() );
 
         Entry entry = searchResultEntry.getEntry();
-        for ( EntryAttribute attribute : entry )
+        for ( Attribute attribute : entry )
         {
 
             Element attributeElement = element.addElement( "attr" );

@@ -30,7 +30,7 @@ import java.io.ObjectOutputStream;
 
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -121,7 +121,7 @@ public class SchemaAwareModificationSerializationTest
             Modification modification = new DefaultModification();
             modification.readExternal( oIn );
 
-            EntryAttribute attribute = modification.getAttribute();
+            Attribute attribute = modification.getAttribute();
             
             if ( ( attribute != null ) && ( schemaManager != null ) )
             {
@@ -156,7 +156,7 @@ public class SchemaAwareModificationSerializationTest
     @Test 
     public void testCreateServerModification() throws LdapException
     {
-        EntryAttribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
+        Attribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
         
         Modification mod = new DefaultModification( CN_AT, ModificationOperation.ADD_ATTRIBUTE, attribute );
@@ -164,7 +164,7 @@ public class SchemaAwareModificationSerializationTest
         
         attribute.remove( "test2" );
         
-        EntryAttribute clonedAttribute = clone.getAttribute();
+        Attribute clonedAttribute = clone.getAttribute();
         
         assertEquals( 1, mod.getAttribute().size() );
         assertTrue( mod.getAttribute().contains( "test1" ) );
@@ -178,7 +178,7 @@ public class SchemaAwareModificationSerializationTest
     @Test
     public void testSerializationModificationADD() throws ClassNotFoundException, IOException, LdapInvalidAttributeValueException
     {
-        EntryAttribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
+        Attribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
         
         DefaultModification mod = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attribute );
@@ -192,7 +192,7 @@ public class SchemaAwareModificationSerializationTest
     @Test
     public void testSerializationModificationREPLACE() throws ClassNotFoundException, IOException, LdapInvalidAttributeValueException
     {
-        EntryAttribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
+        Attribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
         
         DefaultModification mod = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attribute );
@@ -206,7 +206,7 @@ public class SchemaAwareModificationSerializationTest
     @Test
     public void testSerializationModificationREMOVE() throws ClassNotFoundException, IOException, LdapInvalidAttributeValueException
     {
-        EntryAttribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
+        Attribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
         
         DefaultModification mod = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attribute );

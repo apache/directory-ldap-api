@@ -27,7 +27,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
@@ -112,7 +112,7 @@ public class LdifEntryTest
         assertTrue( ldifEntry.isLdifContent() );
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldifEntry.getDn().getName() );
 
-        EntryAttribute attr = ldifEntry.get( "displayname" );
+        Attribute attr = ldifEntry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
     }
     
@@ -260,7 +260,7 @@ public class LdifEntryTest
         assertFalse( ldifEntry.hasControls() );
         assertTrue( ldifEntry.isLdifChange() );
 
-        EntryAttribute attr = ldifEntry.get( "displayname" );
+        Attribute attr = ldifEntry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
     }
     
@@ -290,7 +290,7 @@ public class LdifEntryTest
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldifEntry.getDn().getName() );
         assertTrue( ldifEntry.isLdifChange() );
 
-        EntryAttribute attr = ldifEntry.get( "displayname" );
+        Attribute attr = ldifEntry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
         assertTrue( ldifEntry.hasControls() );
         
@@ -328,7 +328,7 @@ public class LdifEntryTest
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldifEntry.getDn().getName() );
         assertTrue( ldifEntry.isLdifChange() );
 
-        EntryAttribute attr = ldifEntry.get( "displayname" );
+        Attribute attr = ldifEntry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
         assertTrue( ldifEntry.hasControls() );
         
@@ -529,7 +529,7 @@ public class LdifEntryTest
         for ( Modification modification : ldifEntry.getModificationItems() )
         {
             assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
-            EntryAttribute attribute = modification.getAttribute();
+            Attribute attribute = modification.getAttribute();
 
             assertNotNull( attribute );
             assertEquals( "cn", attribute.getId() );
@@ -597,7 +597,7 @@ public class LdifEntryTest
         for ( Modification modification : ldifEntry.getModificationItems() )
         {
             assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
-            EntryAttribute attribute = modification.getAttribute();
+            Attribute attribute = modification.getAttribute();
 
             assertNotNull( attribute );
             assertEquals( "cn", attribute.getId() );
@@ -668,7 +668,7 @@ public class LdifEntryTest
         for ( Modification modification : ldifEntry.getModificationItems() )
         {
             assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
-            EntryAttribute attribute = modification.getAttribute();
+            Attribute attribute = modification.getAttribute();
 
             assertNotNull( attribute );
             assertEquals( "cn", attribute.getId() );

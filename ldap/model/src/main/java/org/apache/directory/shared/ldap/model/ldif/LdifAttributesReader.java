@@ -25,14 +25,13 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 
-import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttributes;
 
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
@@ -189,7 +188,7 @@ public class LdifAttributesReader extends LdifReader
         Object attributeValue = parseValue( line, colonIndex );
 
         // Update the entry
-        Attribute attribute = attributes.get( attributeType );
+        javax.naming.directory.Attribute attribute = attributes.get( attributeType );
 
         if ( attribute == null )
         {
@@ -240,7 +239,7 @@ public class LdifAttributesReader extends LdifReader
         Object attributeValue = parseValue( line, colonIndex );
 
         // Update the entry
-        EntryAttribute attribute = null;
+        Attribute attribute = null;
 
         if ( schemaManager == null )
         {

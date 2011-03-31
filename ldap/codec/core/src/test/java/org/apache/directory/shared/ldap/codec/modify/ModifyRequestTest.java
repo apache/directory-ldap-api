@@ -36,7 +36,7 @@ import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.shared.ldap.codec.decorators.ModifyRequestDecorator;
 import org.apache.directory.shared.ldap.codec.osgi.AbstractCodecServiceTest;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.Control;
@@ -134,7 +134,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
 
         for ( Modification modification : modifications )
         {
-            EntryAttribute attribute = modification.getAttribute();
+            Attribute attribute = modification.getAttribute();
 
             if ( "l".equalsIgnoreCase( attribute.getUpId() ) )
             {
@@ -304,7 +304,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         assertEquals( 2, modifications.length );
 
         Modification modification = ( Modification ) modifications[0];
-        EntryAttribute attributeValue = modification.getAttribute();
+        Attribute attributeValue = modification.getAttribute();
 
         assertEquals( "telephonenumber", attributeValue.getId().toLowerCase() );
 
@@ -438,7 +438,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         assertEquals( 3, modifications.length );
 
         Modification modification = ( Modification ) modifications[0];
-        EntryAttribute attributeValue = modification.getAttribute();
+        Attribute attributeValue = modification.getAttribute();
 
         assertEquals( "description", attributeValue.getUpId().toLowerCase() );
         assertEquals( 0, attributeValue.size() );
@@ -566,7 +566,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         assertEquals( 2, modifications.length );
 
         Modification modification = ( Modification ) modifications[0];
-        EntryAttribute attributeValue = modification.getAttribute();
+        Attribute attributeValue = modification.getAttribute();
 
         assertEquals( "l", attributeValue.getUpId().toLowerCase() );
 
@@ -1104,7 +1104,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         assertEquals( 1, modifications.length );
 
         Modification modification = ( Modification ) modifications[0];
-        EntryAttribute attributeValue = modification.getAttribute();
+        Attribute attributeValue = modification.getAttribute();
 
         assertEquals( "l", attributeValue.getUpId().toLowerCase() );
         assertEquals( 0, attributeValue.size() );
@@ -1185,7 +1185,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         assertEquals( 1, modifications.length );
 
         Modification modification = ( Modification ) modifications[0];
-        EntryAttribute attributeValue = modification.getAttribute();
+        Attribute attributeValue = modification.getAttribute();
 
         assertEquals( "l", attributeValue.getUpId().toLowerCase() );
         assertEquals( 0, attributeValue.size() );
@@ -1273,7 +1273,7 @@ public class ModifyRequestTest extends AbstractCodecServiceTest
         assertEquals( 1, modifications.length );
 
         Modification modification = ( Modification ) modifications[0];
-        EntryAttribute attributeValue = modification.getAttribute();
+        Attribute attributeValue = modification.getAttribute();
 
         assertEquals( "l", attributeValue.getUpId().toLowerCase() );
         assertEquals( 2, attributeValue.size() );

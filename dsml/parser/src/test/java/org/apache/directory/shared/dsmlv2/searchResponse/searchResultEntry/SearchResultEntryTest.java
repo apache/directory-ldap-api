@@ -38,7 +38,7 @@ import org.apache.directory.shared.dsmlv2.Dsmlv2ResponseParser;
 import org.apache.directory.shared.dsmlv2.reponse.SearchResponse;
 import org.apache.directory.shared.dsmlv2.reponse.SearchResponseDsml;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
@@ -349,8 +349,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         Entry entry = searchResultEntry.getEntry();
         assertEquals( 1, entry.size() );
 
-        Iterator<EntryAttribute> attributeIterator = entry.iterator();
-        EntryAttribute attribute = attributeIterator.next();
+        Iterator<Attribute> attributeIterator = entry.iterator();
+        Attribute attribute = attributeIterator.next();
         assertEquals( "dc", attribute.getUpId() );
     }
 
@@ -382,8 +382,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         Entry entry = searchResultEntry.getEntry();
         assertEquals( 1, entry.size() );
 
-        Iterator<EntryAttribute> attributeIterator = entry.iterator();
-        EntryAttribute attribute = attributeIterator.next();
+        Iterator<Attribute> attributeIterator = entry.iterator();
+        Attribute attribute = attributeIterator.next();
         assertEquals( "dc", attribute.getUpId() );
 
         Iterator<Value<?>> valueIterator = attribute.iterator();
@@ -421,8 +421,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         Entry entry = searchResultEntry.getEntry();
         assertEquals( 1, entry.size() );
 
-        Iterator<EntryAttribute> attributeIterator = entry.iterator();
-        EntryAttribute attribute = attributeIterator.next();
+        Iterator<Attribute> attributeIterator = entry.iterator();
+        Attribute attribute = attributeIterator.next();
         assertEquals( "cn", attribute.getUpId() );
         assertEquals( 1, attribute.size() );
 
@@ -464,8 +464,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         Entry entry = searchResultEntry.getEntry();
         assertEquals( 1, entry.size() );
 
-        Iterator<EntryAttribute> attributeIterator = entry.iterator();
-        EntryAttribute attribute = attributeIterator.next();
+        Iterator<Attribute> attributeIterator = entry.iterator();
+        Attribute attribute = attributeIterator.next();
         assertEquals( "dc", attribute.getUpId() );
         assertEquals( 1, attribute.size() );
 
@@ -503,8 +503,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
         Entry entry = searchResultEntry.getEntry();
         assertEquals( 1, entry.size() );
 
-        Iterator<EntryAttribute> attributeIterator = entry.iterator();
-        EntryAttribute attribute = attributeIterator.next();
+        Iterator<Attribute> attributeIterator = entry.iterator();
+        Attribute attribute = attributeIterator.next();
         assertEquals( "objectclass", attribute.getUpId() );
         assertEquals( 2, attribute.size() );
 
@@ -546,7 +546,7 @@ public class SearchResultEntryTest extends AbstractResponseTest
         Entry entry = searchResultEntry.getEntry();
         assertEquals( 2, entry.size() );
 
-        EntryAttribute objectClassAttribute = entry.get( "objectclass" );
+        Attribute objectClassAttribute = entry.get( "objectclass" );
         assertEquals( 1, objectClassAttribute.size() );
 
         Iterator<Value<?>> valueIterator = objectClassAttribute.iterator();
@@ -555,7 +555,7 @@ public class SearchResultEntryTest extends AbstractResponseTest
         assertEquals( "top", value.getString() );
         assertFalse( valueIterator.hasNext() );
 
-        EntryAttribute dcAttribute = entry.get( "dc" );
+        Attribute dcAttribute = entry.get( "dc" );
         assertEquals( 1, objectClassAttribute.size() );
 
         valueIterator = dcAttribute.iterator();

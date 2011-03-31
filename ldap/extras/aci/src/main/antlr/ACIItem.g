@@ -55,7 +55,7 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.AuthenticationLevel;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.aci.protectedItem.AllAttributeValuesItem;
@@ -488,7 +488,7 @@ attributeValue
     String attributeTypeAndValue = null;
     String attributeType = null;
     String attributeValue = null;
-    Set<EntryAttribute> attributeSet = new HashSet<EntryAttribute>();
+    Set<Attribute> attributeSet = new HashSet<Attribute>();
 }
     :
     token:ATTRIBUTE_VALUE_CANDIDATE // ate the identifier for subordinate dn parser workaround

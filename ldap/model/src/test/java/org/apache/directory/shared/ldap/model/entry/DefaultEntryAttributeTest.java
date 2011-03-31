@@ -164,7 +164,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testDefaultClientAttribute()
     {
-        EntryAttribute attr = new DefaultEntryAttribute();
+        Attribute attr = new DefaultEntryAttribute();
         
         assertFalse( attr.isHumanReadable() );
         assertEquals( 0, attr.size() );
@@ -179,7 +179,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testDefaultClientAttributeString()
     {
-        EntryAttribute attr = new DefaultEntryAttribute( "TEST" );
+        Attribute attr = new DefaultEntryAttribute( "TEST" );
         
         assertFalse( attr.isHumanReadable() );
         assertEquals( 0, attr.size() );
@@ -194,7 +194,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testDefaultClientAttributeStringValueArray()
     {
-        EntryAttribute attr = new DefaultEntryAttribute( "Test", STR_VALUE1, STR_VALUE2 );
+        Attribute attr = new DefaultEntryAttribute( "Test", STR_VALUE1, STR_VALUE2 );
         
         assertTrue( attr.isHumanReadable() );
         assertEquals( 2, attr.size() );
@@ -211,7 +211,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testDefaultClientAttributeStringStringArray()
     {
-        EntryAttribute attr = new DefaultEntryAttribute( "Test", "a", "b" );
+        Attribute attr = new DefaultEntryAttribute( "Test", "a", "b" );
         
         assertTrue( attr.isHumanReadable() );
         assertEquals( 2, attr.size() );
@@ -228,7 +228,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testDefaultClientAttributeStringBytesArray()
     {
-        EntryAttribute attr = new DefaultEntryAttribute( "Test", BYTES1, BYTES2 );
+        Attribute attr = new DefaultEntryAttribute( "Test", BYTES1, BYTES2 );
         
         assertFalse( attr.isHumanReadable() );
         assertEquals( 2, attr.size() );
@@ -245,17 +245,17 @@ public class DefaultEntryAttributeTest
     @Test
     public void testGetBytes() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         attr1.add( (byte[])null );
         assertNull( attr1.getBytes() );
 
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         
         attr2.add( BYTES1, BYTES2 );
         assertTrue( Arrays.equals( BYTES1, attr2.getBytes() ) );
         
-        EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
+        Attribute attr3 = new DefaultEntryAttribute( "test" );
         
         attr3.add( "a", "b" );
         
@@ -277,17 +277,17 @@ public class DefaultEntryAttributeTest
     @Test
     public void testGetString() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         attr1.add( (String)null );
         assertEquals( "", attr1.getString() );
 
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         
         attr2.add( "a", "b" );
         assertEquals( "a", attr2.getString() );
         
-        EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
+        Attribute attr3 = new DefaultEntryAttribute( "test" );
         
         attr3.add( BYTES1, BYTES2 );
         
@@ -309,7 +309,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testGetId()
     {
-        EntryAttribute attr = new DefaultEntryAttribute();
+        Attribute attr = new DefaultEntryAttribute();
 
         assertNull( attr.getId() );
         
@@ -327,7 +327,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testSetId()
     {
-        EntryAttribute attr = new DefaultEntryAttribute();
+        Attribute attr = new DefaultEntryAttribute();
 
         try
         {
@@ -373,7 +373,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testGetUpId()
     {
-        EntryAttribute attr = new DefaultEntryAttribute();
+        Attribute attr = new DefaultEntryAttribute();
 
         assertNull( attr.getUpId() );
         
@@ -391,7 +391,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testSetUpId()
     {
-        EntryAttribute attr = new DefaultEntryAttribute();
+        Attribute attr = new DefaultEntryAttribute();
 
         try
         {
@@ -439,7 +439,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testIsValidSyntaxChecker() throws LdapException
     {
-        EntryAttribute attr = new DefaultEntryAttribute( "test" );
+        Attribute attr = new DefaultEntryAttribute( "test" );
         
         attr.add( "test", "another test" );
         
@@ -456,7 +456,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testIterator() throws LdapException
     {
-        EntryAttribute attr = new DefaultEntryAttribute();
+        Attribute attr = new DefaultEntryAttribute();
         attr.add(  "a", "b", "c" );
         
         Iterator<Value<?>> iter = attr.iterator();
@@ -480,21 +480,21 @@ public class DefaultEntryAttributeTest
     @Test
     public void testAddValueArray() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         int nbAdded = attr1.add( new StringValue( (String)null ) );
         assertEquals( 1, nbAdded );
         assertTrue( attr1.isHumanReadable() );
         assertEquals( NULL_STRING_VALUE, attr1.get() );
         
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr2.add( new BinaryValue( (byte[])null ) );
         assertEquals( 1, nbAdded );
         assertFalse( attr2.isHumanReadable() );
         assertEquals( NULL_BINARY_VALUE, attr2.get() );
         
-        EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
+        Attribute attr3 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr3.add( new StringValue( "a" ), new StringValue( "b" ) );
         assertEquals( 2, nbAdded );
@@ -502,7 +502,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr3.contains( "a" ) );
         assertTrue( attr3.contains( "b" ) );
         
-        EntryAttribute attr4 = new DefaultEntryAttribute( "test" );
+        Attribute attr4 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr4.add( new BinaryValue( BYTES1 ), new BinaryValue( BYTES2 ) );
         assertEquals( 2, nbAdded );
@@ -510,7 +510,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr4.contains( BYTES1 ) );
         assertTrue( attr4.contains( BYTES2 ) );
         
-        EntryAttribute attr5 = new DefaultEntryAttribute( "test" );
+        Attribute attr5 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr5.add( new StringValue( "c" ), new BinaryValue( BYTES1 ) );
         assertEquals( 2, nbAdded );
@@ -518,7 +518,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr5.contains( "ab" ) );
         assertTrue( attr5.contains( "c" ) );
 
-        EntryAttribute attr6 = new DefaultEntryAttribute( "test" );
+        Attribute attr6 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr6.add( new BinaryValue( BYTES1 ), new StringValue( "c" ) );
         assertEquals( 2, nbAdded );
@@ -526,7 +526,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr6.contains( BYTES1 ) );
         assertTrue( attr6.contains( BYTES3 ) );
 
-        EntryAttribute attr7 = new DefaultEntryAttribute( "test" );
+        Attribute attr7 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr7.add( new BinaryValue( (byte[])null ), new StringValue( "c" ) );
         assertEquals( 2, nbAdded );
@@ -534,7 +534,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr7.contains( NULL_BINARY_VALUE ) );
         assertTrue( attr7.contains( BYTES3 ) );
 
-        EntryAttribute attr8 = new DefaultEntryAttribute( "test" );
+        Attribute attr8 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr8.add( new StringValue( (String)null ), new BinaryValue( BYTES1 ) );
         assertEquals( 2, nbAdded );
@@ -550,28 +550,28 @@ public class DefaultEntryAttributeTest
     @Test
     public void testAddStringArray() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         int nbAdded = attr1.add( (String)null );
         assertEquals( 1, nbAdded );
         assertTrue( attr1.isHumanReadable() );
         assertEquals( NULL_STRING_VALUE, attr1.get() );
         
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr2.add( "" );
         assertEquals( 1, nbAdded );
         assertTrue( attr2.isHumanReadable() );
         assertEquals( "", attr2.getString() );
         
-        EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
+        Attribute attr3 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr3.add( "t" );
         assertEquals( 1, nbAdded );
         assertTrue( attr3.isHumanReadable() );
         assertEquals( "t", attr3.getString() );
         
-        EntryAttribute attr4 = new DefaultEntryAttribute( "test" );
+        Attribute attr4 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr4.add( "a", "b", "c", "d" );
         assertEquals( 4, nbAdded );
@@ -603,7 +603,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr4.contains( "e" ) );
         assertFalse( attr4.contains( "ab" ) );
         
-        EntryAttribute attr5 = new DefaultEntryAttribute( "test" );
+        Attribute attr5 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr5.add( "a", "b", (String)null, "d" );
         assertEquals( 4, nbAdded );
@@ -613,7 +613,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr5.contains( (String)null ) );
         assertTrue( attr5.contains( "d" ) );
 
-        EntryAttribute attr6 = new DefaultEntryAttribute( "test" );
+        Attribute attr6 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr6.add( "a", (String)null );
         assertEquals( 2, nbAdded );
@@ -621,7 +621,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr6.contains( "a" ) );
         assertTrue( attr6.contains( (String)null ) );
         
-        EntryAttribute attr7 = new DefaultEntryAttribute( "test" );
+        Attribute attr7 = new DefaultEntryAttribute( "test" );
         
         attr7.add( "a", "b" );
         assertEquals( 2, attr7.size() );
@@ -638,28 +638,28 @@ public class DefaultEntryAttributeTest
     @Test
     public void testAddByteArray() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         int nbAdded = attr1.add( (byte[])null );
         assertEquals( 1, nbAdded );
         assertFalse( attr1.isHumanReadable() );
         assertTrue( Arrays.equals( NULL_BINARY_VALUE.getBytes(), attr1.getBytes() ) );
         
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr2.add( StringConstants.EMPTY_BYTES );
         assertEquals( 1, nbAdded );
         assertFalse( attr2.isHumanReadable() );
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, attr2.getBytes() ) );
         
-        EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
+        Attribute attr3 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr3.add( BYTES1 );
         assertEquals( 1, nbAdded );
         assertFalse( attr3.isHumanReadable() );
         assertTrue( Arrays.equals( BYTES1, attr3.getBytes() ) );
         
-        EntryAttribute attr4 = new DefaultEntryAttribute( "test" );
+        Attribute attr4 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr4.add( BYTES1, BYTES2, BYTES3, BYTES4 );
         assertEquals( 4, nbAdded );
@@ -669,7 +669,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr4.contains( BYTES3 ) );
         assertTrue( attr4.contains( BYTES4 ) );
         
-        EntryAttribute attr5 = new DefaultEntryAttribute( "test" );
+        Attribute attr5 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr5.add( BYTES1, BYTES2, (byte[])null, BYTES3 );
         assertEquals( 4, nbAdded );
@@ -679,7 +679,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr5.contains( (byte[])null ) );
         assertTrue( attr5.contains( BYTES3 ) );
 
-        EntryAttribute attr6 = new DefaultEntryAttribute( "test" );
+        Attribute attr6 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr6.add( BYTES1, (byte[])null );
         assertEquals( 2, nbAdded );
@@ -695,7 +695,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testClear() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         assertEquals( 0, attr1.size() );
         
@@ -706,7 +706,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr1.isHumanReadable() );
         assertEquals( 0, attr1.size() );
 
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         attr2.add( BYTES1, BYTES2 );
         assertEquals( 2, attr2.size() );
         assertFalse( attr2.isHumanReadable() );
@@ -722,7 +722,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testContainsValueArray() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         assertEquals( 0, attr1.size() );
         assertFalse( attr1.contains( STR_VALUE1 ) );
@@ -746,7 +746,7 @@ public class DefaultEntryAttributeTest
         assertFalse( attr1.contains( NULL_STRING_VALUE ) );
         assertTrue( attr1.contains( STR_VALUE1, BIN_VALUE2 ) );
 
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         assertEquals( 0, attr2.size() );
         assertFalse( attr2.contains( BYTES1 ) );
         assertFalse( attr2.contains( NULL_BINARY_VALUE ) );
@@ -775,7 +775,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testContainsStringArray() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         assertEquals( 0, attr1.size() );
         assertFalse( attr1.contains( "a" ) );
@@ -797,7 +797,7 @@ public class DefaultEntryAttributeTest
         assertFalse( attr1.contains( "e" ) );
         assertFalse( attr1.contains( (String)null ) );
 
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         assertEquals( 0, attr2.size() );
         assertFalse( attr2.contains( BYTES1 ) );
         assertFalse( attr2.contains( (byte[])null ) );
@@ -825,7 +825,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testContainsByteArray() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         assertEquals( 0, attr1.size() );
         assertFalse( attr1.contains( BYTES1 ) );
@@ -847,7 +847,7 @@ public class DefaultEntryAttributeTest
         assertFalse( attr1.contains( BYTES4 ) );
         assertFalse( attr1.contains( (byte[])null ) );
 
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         assertEquals( 0, attr2.size() );
         assertFalse( attr2.contains( "a" ) );
         assertFalse( attr2.contains( (String)null ) );
@@ -875,12 +875,12 @@ public class DefaultEntryAttributeTest
     @Test
     public void testGet() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         attr1.add( (String)null );
         assertEquals( NULL_STRING_VALUE,attr1.get() );
 
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         
         attr2.add( "a", "b", "c" );
         assertEquals( "a", attr2.get().getString() );
@@ -894,7 +894,7 @@ public class DefaultEntryAttributeTest
         attr2.remove( "c" );
         assertNull( attr2.get() );
 
-        EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
+        Attribute attr3 = new DefaultEntryAttribute( "test" );
         
         attr3.add( BYTES1, BYTES2, BYTES3 );
         assertTrue( Arrays.equals( BYTES1, attr3.get().getBytes() ) );
@@ -916,7 +916,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testGetAll() throws LdapException
     {
-        EntryAttribute attr = new DefaultEntryAttribute( "test" );
+        Attribute attr = new DefaultEntryAttribute( "test" );
         
         Iterator<Value<?>> iterator = attr.getAll(); 
         assertFalse( iterator.hasNext() );
@@ -948,14 +948,14 @@ public class DefaultEntryAttributeTest
     @Test
     public void testSize() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
 
         assertEquals( 0, attr1.size() );
         
         attr1.add( (String)null );
         assertEquals( 1, attr1.size() );
 
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         
         attr2.add( "a", "b" );
         assertEquals( 2, attr2.size() );
@@ -971,7 +971,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testRemoveValueArray() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
 
         assertFalse( attr1.remove( STR_VALUE1 ) );
         assertFalse( attr1.remove( STR_VALUE1 ) );
@@ -1001,7 +1001,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr1.remove( NULL_STRING_VALUE, STR_VALUE1 ) );
         assertEquals( 1, attr1.size() );
         
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
 
         assertFalse( attr2.remove( BIN_VALUE1 ) );
         
@@ -1040,7 +1040,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testRemoveByteArray() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
 
         assertFalse( attr1.remove( BYTES1 ) );
         
@@ -1063,7 +1063,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr1.remove( (byte[])null, BYTES1 ) );
         assertEquals( 1, attr1.size() );
         
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         
         attr2.add( "ab", "b", "c" );
         
@@ -1079,7 +1079,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testRemoveStringArray() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
 
         assertFalse( attr1.remove( "a" ) );
         
@@ -1102,7 +1102,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr1.remove( (String )null, "a" ) );
         assertEquals( 1, attr1.size() );
         
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         
         attr2.add( BYTES1, BYTES2, BYTES3 );
         
@@ -1118,28 +1118,28 @@ public class DefaultEntryAttributeTest
     @Test
     public void testPutStringArray() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         int nbAdded = attr1.add( (String)null );
         assertEquals( 1, nbAdded );
         assertTrue( attr1.isHumanReadable() );
         assertEquals( NULL_STRING_VALUE, attr1.get() );
         
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr2.add( "" );
         assertEquals( 1, nbAdded );
         assertTrue( attr2.isHumanReadable() );
         assertEquals( "", attr2.getString() );
         
-        EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
+        Attribute attr3 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr3.add( "t" );
         assertEquals( 1, nbAdded );
         assertTrue( attr3.isHumanReadable() );
         assertEquals( "t", attr3.getString() );
         
-        EntryAttribute attr4 = new DefaultEntryAttribute( "test" );
+        Attribute attr4 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr4.add( "a", "b", "c", "d" );
         assertEquals( 4, nbAdded );
@@ -1149,7 +1149,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr4.contains( "c" ) );
         assertTrue( attr4.contains( "d" ) );
         
-        EntryAttribute attr5 = new DefaultEntryAttribute( "test" );
+        Attribute attr5 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr5.add( "a", "b", (String)null, "d" );
         assertEquals( 4, nbAdded );
@@ -1159,7 +1159,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr5.contains( (String)null ) );
         assertTrue( attr5.contains( "d" ) );
 
-        EntryAttribute attr6 = new DefaultEntryAttribute( "test" );
+        Attribute attr6 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr6.add( "a", (String)null );
         assertEquals( 2, nbAdded );
@@ -1175,28 +1175,28 @@ public class DefaultEntryAttributeTest
     @Test
     public void testPutByteArray() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         int nbAdded = attr1.add( (byte[])null );
         assertEquals( 1, nbAdded );
         assertFalse( attr1.isHumanReadable() );
         assertTrue( Arrays.equals( NULL_BINARY_VALUE.getBytes(), attr1.getBytes() ) );
         
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr2.add( StringConstants.EMPTY_BYTES );
         assertEquals( 1, nbAdded );
         assertFalse( attr2.isHumanReadable() );
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, attr2.getBytes() ) );
         
-        EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
+        Attribute attr3 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr3.add( BYTES1 );
         assertEquals( 1, nbAdded );
         assertFalse( attr3.isHumanReadable() );
         assertTrue( Arrays.equals( BYTES1, attr3.getBytes() ) );
         
-        EntryAttribute attr4 = new DefaultEntryAttribute( "test" );
+        Attribute attr4 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr4.add( BYTES1, BYTES2 );
         assertEquals( 2, nbAdded );
@@ -1210,7 +1210,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr4.contains( BYTES3 ) );
         assertTrue( attr4.contains( BYTES4 ) );
         
-        EntryAttribute attr5 = new DefaultEntryAttribute( "test" );
+        Attribute attr5 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr5.add( BYTES1, BYTES2, (byte[])null, BYTES3 );
         assertEquals( 4, nbAdded );
@@ -1220,7 +1220,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr5.contains( (byte[])null ) );
         assertTrue( attr5.contains( BYTES3 ) );
 
-        EntryAttribute attr6 = new DefaultEntryAttribute( "test" );
+        Attribute attr6 = new DefaultEntryAttribute( "test" );
         
         nbAdded = attr6.add( BYTES1, (byte[])null );
         assertEquals( 2, nbAdded );
@@ -1236,7 +1236,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testPutValueArray() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         assertEquals( 0, attr1.size() );
         
@@ -1266,7 +1266,7 @@ public class DefaultEntryAttributeTest
         assertTrue( attr1.contains( STR_VALUE3 ) );
         
 
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         assertEquals( 0, attr2.size() );
         
         attr2.add( NULL_BINARY_VALUE );
@@ -1295,7 +1295,7 @@ public class DefaultEntryAttributeTest
     @Test
     public void testToString() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         assertEquals( "    test: (null)\n", attr1.toString() );
         
@@ -1305,7 +1305,7 @@ public class DefaultEntryAttributeTest
         attr1.add( "b" );
         assertEquals( "    test: a\n    test: b\n", attr1.toString() );
 
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
 
         attr2.add( BYTES1 );
         assertEquals( "    test: '0x61 0x62 '\n", attr2.toString() );
@@ -1321,11 +1321,11 @@ public class DefaultEntryAttributeTest
     @Test
     public void testHashCode() throws InvalidAttributeValueException, LdapException
     {
-        EntryAttribute attr = new DefaultEntryAttribute();
+        Attribute attr = new DefaultEntryAttribute();
         assertEquals( 37, attr.hashCode() );
 
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         
         assertEquals( attr1.hashCode(), attr2.hashCode() );
         
@@ -1348,8 +1348,8 @@ public class DefaultEntryAttributeTest
         attr2.add( "c", "b", "a" );
         assertNotSame( attr1.hashCode(), attr2.hashCode() );
         
-        EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
-        EntryAttribute attr4 = new DefaultEntryAttribute( "test" );
+        Attribute attr3 = new DefaultEntryAttribute( "test" );
+        Attribute attr4 = new DefaultEntryAttribute( "test" );
         
         attr3.add( BYTES1, BYTES2 );
         attr4.add( BYTES1, BYTES2 );
@@ -1378,11 +1378,11 @@ public class DefaultEntryAttributeTest
     @Test
     public void testEquals() throws LdapException
     {
-        EntryAttribute attr1 = new DefaultEntryAttribute( "test" );
+        Attribute attr1 = new DefaultEntryAttribute( "test" );
         
         assertFalse( attr1.equals( null ) );
         
-        EntryAttribute attr2 = new DefaultEntryAttribute( "test" );
+        Attribute attr2 = new DefaultEntryAttribute( "test" );
         
         assertTrue( attr1.equals( attr2 ) );
         
@@ -1401,29 +1401,29 @@ public class DefaultEntryAttributeTest
         
         assertTrue( attr1.equals( attr2 ) );
         
-        EntryAttribute attr3 = new DefaultEntryAttribute( "test" );
-        EntryAttribute attr4 = new DefaultEntryAttribute( "test" );
+        Attribute attr3 = new DefaultEntryAttribute( "test" );
+        Attribute attr4 = new DefaultEntryAttribute( "test" );
         
         attr3.add( NULL_BINARY_VALUE );
         attr4.add( NULL_BINARY_VALUE );
         assertTrue( attr3.equals( attr4 ) );
         
-        EntryAttribute attr5 = new DefaultEntryAttribute( "test" );
-        EntryAttribute attr6 = new DefaultEntryAttribute( "test" );
+        Attribute attr5 = new DefaultEntryAttribute( "test" );
+        Attribute attr6 = new DefaultEntryAttribute( "test" );
         
         attr5.add( NULL_BINARY_VALUE );
         attr6.add( NULL_STRING_VALUE );
         assertFalse( attr5.equals( attr6 ) );
 
-        EntryAttribute attr7 = new DefaultEntryAttribute( "test" );
-        EntryAttribute attr8 = new DefaultEntryAttribute( "test" );
+        Attribute attr7 = new DefaultEntryAttribute( "test" );
+        Attribute attr8 = new DefaultEntryAttribute( "test" );
         
         attr7.add( "a" );
         attr8.add( BYTES2 );
         assertFalse( attr7.equals( attr8 ) );
 
-        EntryAttribute attr9 = new DefaultEntryAttribute( "test" );
-        EntryAttribute attr10 = new DefaultEntryAttribute( "test" );
+        Attribute attr9 = new DefaultEntryAttribute( "test" );
+        Attribute attr10 = new DefaultEntryAttribute( "test" );
         
         attr7.add( "a" );
         attr7.add( BYTES2 );
@@ -1438,9 +1438,9 @@ public class DefaultEntryAttributeTest
     @Test
     public void testClone() throws LdapException
     {
-        EntryAttribute attr = new DefaultEntryAttribute( "test" );
+        Attribute attr = new DefaultEntryAttribute( "test" );
         
-        EntryAttribute clone = attr.clone();
+        Attribute clone = attr.clone();
         
         assertEquals( attr, clone );
         attr.setUpId( "new" );

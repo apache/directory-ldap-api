@@ -49,7 +49,7 @@ public class EntryAttributeSerializationTest
     @Test
     public void testEntryAttributeNoStringValueSerialization() throws IOException, ClassNotFoundException
     {
-        EntryAttribute attribute1 = new DefaultEntryAttribute( "CN" );
+        Attribute attribute1 = new DefaultEntryAttribute( "CN" );
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -61,7 +61,7 @@ public class EntryAttributeSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        EntryAttribute attribute2 = new DefaultEntryAttribute();
+        Attribute attribute2 = new DefaultEntryAttribute();
         attribute2.readExternal( in );
 
         assertEquals( attribute1, attribute2 );
@@ -71,7 +71,7 @@ public class EntryAttributeSerializationTest
     @Test
     public void testEntryAttributeOneStringValueSerialization() throws IOException, ClassNotFoundException
     {
-        EntryAttribute attribute1 = new DefaultEntryAttribute( "CN", "test" );
+        Attribute attribute1 = new DefaultEntryAttribute( "CN", "test" );
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -83,7 +83,7 @@ public class EntryAttributeSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        EntryAttribute attribute2 = new DefaultEntryAttribute();
+        Attribute attribute2 = new DefaultEntryAttribute();
         attribute2.readExternal( in );
 
         assertEquals( attribute1, attribute2 );
@@ -93,7 +93,7 @@ public class EntryAttributeSerializationTest
     @Test
     public void testEntryAttributeManyStringValuesSerialization() throws IOException, ClassNotFoundException
     {
-        EntryAttribute attribute1 = new DefaultEntryAttribute( "CN", "test1", "test2", "test3" );
+        Attribute attribute1 = new DefaultEntryAttribute( "CN", "test1", "test2", "test3" );
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -105,7 +105,7 @@ public class EntryAttributeSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        EntryAttribute attribute2 = new DefaultEntryAttribute();
+        Attribute attribute2 = new DefaultEntryAttribute();
         attribute2.readExternal( in );
 
         assertEquals( attribute1, attribute2 );
@@ -115,7 +115,7 @@ public class EntryAttributeSerializationTest
     @Test
     public void testEntryAttributeNoBinaryValueSerialization() throws IOException, ClassNotFoundException
     {
-        EntryAttribute attribute1 = new DefaultEntryAttribute( "UserCertificate" );
+        Attribute attribute1 = new DefaultEntryAttribute( "UserCertificate" );
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -127,7 +127,7 @@ public class EntryAttributeSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        EntryAttribute attribute2 = new DefaultEntryAttribute();
+        Attribute attribute2 = new DefaultEntryAttribute();
         attribute2.readExternal( in );
 
         assertEquals( attribute1, attribute2 );
@@ -137,7 +137,7 @@ public class EntryAttributeSerializationTest
     @Test
     public void testEntryAttributeOneBinaryValueSerialization() throws IOException, ClassNotFoundException
     {
-        EntryAttribute attribute1 = new DefaultEntryAttribute( "UserCertificate", data1 );
+        Attribute attribute1 = new DefaultEntryAttribute( "UserCertificate", data1 );
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -149,7 +149,7 @@ public class EntryAttributeSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        EntryAttribute attribute2 = new DefaultEntryAttribute();
+        Attribute attribute2 = new DefaultEntryAttribute();
         attribute2.readExternal( in );
 
         assertEquals( attribute1, attribute2 );
@@ -159,7 +159,7 @@ public class EntryAttributeSerializationTest
     @Test
     public void testEntryAttributeManyBinaryValuesSerialization() throws IOException, ClassNotFoundException
     {
-        EntryAttribute attribute1 = new DefaultEntryAttribute( "UserCertificate", data1, data2, data3 );
+        Attribute attribute1 = new DefaultEntryAttribute( "UserCertificate", data1, data2, data3 );
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -171,7 +171,7 @@ public class EntryAttributeSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        EntryAttribute attribute2 = new DefaultEntryAttribute();
+        Attribute attribute2 = new DefaultEntryAttribute();
         attribute2.readExternal( in );
 
         assertEquals( attribute1, attribute2 );

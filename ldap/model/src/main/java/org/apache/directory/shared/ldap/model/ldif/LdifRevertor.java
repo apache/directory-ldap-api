@@ -30,7 +30,7 @@ import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -94,7 +94,7 @@ public final class LdifRevertor
         entry.setDn( dn );
         entry.setChangeType( ChangeType.Add );
 
-        for ( EntryAttribute attribute : deletedEntry )
+        for ( Attribute attribute : deletedEntry )
         {
             entry.addAttribute( attribute );
         }
@@ -146,9 +146,9 @@ public final class LdifRevertor
             switch ( modification.getOperation() )
             {
                 case ADD_ATTRIBUTE:
-                    EntryAttribute mod = modification.getAttribute();
+                    Attribute mod = modification.getAttribute();
 
-                    EntryAttribute previous = clonedEntry.get( mod.getId() );
+                    Attribute previous = clonedEntry.get( mod.getId() );
 
                     if ( mod.equals( previous ) )
                     {
@@ -214,7 +214,7 @@ public final class LdifRevertor
 
                     if ( previous == null )
                     {
-                        EntryAttribute emptyAttribute = new DefaultEntryAttribute( mod.getId() );
+                        Attribute emptyAttribute = new DefaultEntryAttribute( mod.getId() );
                         reverseModification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
                             emptyAttribute );
                         reverseModifications.add( 0, reverseModification );

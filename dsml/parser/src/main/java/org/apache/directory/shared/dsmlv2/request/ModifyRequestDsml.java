@@ -27,7 +27,7 @@ import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.entry.Value;
@@ -53,7 +53,7 @@ public class ModifyRequestDsml
 {
 
     /** The current attribute being decoded */
-    private EntryAttribute currentAttribute;
+    private Attribute currentAttribute;
 
     /** A local storage for the operation */
     private ModificationOperation currentOperation;
@@ -290,7 +290,7 @@ public class ModifyRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void remove( EntryAttribute attr )
+    public void remove( Attribute attr )
     {
         getDecorated().remove( attr );
     }
@@ -299,7 +299,7 @@ public class ModifyRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void addModification( EntryAttribute attr, ModificationOperation modOp )
+    public void addModification( Attribute attr, ModificationOperation modOp )
     {
         getDecorated().addModification( attr, modOp );
     }
@@ -326,7 +326,7 @@ public class ModifyRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void add( EntryAttribute attr )
+    public void add( Attribute attr )
     {
         getDecorated().add( attr );
     }
@@ -362,7 +362,7 @@ public class ModifyRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void replace( EntryAttribute attr )
+    public void replace( Attribute attr )
     {
         getDecorated().replace( attr );
     }

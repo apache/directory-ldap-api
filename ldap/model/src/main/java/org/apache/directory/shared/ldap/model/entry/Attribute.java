@@ -33,7 +33,7 @@ import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externalizable
+public interface Attribute extends Iterable<Value<?>>, Cloneable, Externalizable
 {
     /**
      * Adds some values to this attribute. If the new values are already present in
@@ -153,7 +153,7 @@ public interface EntryAttribute extends Iterable<Value<?>>, Cloneable, Externali
     /**
      * @return A clone of the current object
      */
-    EntryAttribute clone();
+    Attribute clone();
 
 
     /**

@@ -69,7 +69,7 @@ import org.apache.directory.shared.ldap.model.cursor.Cursor;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.entry.Value;
@@ -2035,7 +2035,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         ModifyRequest modReq = new ModifyRequestImpl();
         modReq.setName( entry.getDn() );
 
-        Iterator<EntryAttribute> itr = entry.iterator();
+        Iterator<Attribute> itr = entry.iterator();
         while ( itr.hasNext() )
         {
             modReq.addModification( itr.next(), modOp );
@@ -3195,7 +3195,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
         supportedControls = new ArrayList<String>();
 
-        EntryAttribute attr = rootDSE.get( SchemaConstants.SUPPORTED_CONTROL_AT );
+        Attribute attr = rootDSE.get( SchemaConstants.SUPPORTED_CONTROL_AT );
 
         for ( Value<?> value : attr )
         {

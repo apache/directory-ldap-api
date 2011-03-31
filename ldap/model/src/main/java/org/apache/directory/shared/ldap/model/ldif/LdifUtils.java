@@ -28,7 +28,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -302,7 +302,7 @@ public final class LdifUtils
         }
 
         // Then all the attributes
-        for ( EntryAttribute attribute : entry )
+        for ( Attribute attribute : entry )
         {
             sb.append( convertToLdif( attribute, length ) );
         }
@@ -324,7 +324,7 @@ public final class LdifUtils
         StringBuilder sb = new StringBuilder();
 
         // Then all the attributes
-        for ( EntryAttribute attribute : entry )
+        for ( Attribute attribute : entry )
         {
             sb.append( convertToLdif( attribute, length ) );
         }
@@ -416,7 +416,7 @@ public final class LdifUtils
                 }
 
                 // Now, iterate through all the attributes
-                for ( EntryAttribute attribute : entry.getEntry() )
+                for ( Attribute attribute : entry.getEntry() )
                 {
                     sb.append( convertToLdif( attribute, length ) );
                 }
@@ -439,7 +439,7 @@ public final class LdifUtils
                 }
 
                 // Stores the new Rdn
-                EntryAttribute newRdn = new DefaultEntryAttribute( "newrdn", entry.getNewRdn() );
+                Attribute newRdn = new DefaultEntryAttribute( "newrdn", entry.getNewRdn() );
                 sb.append( convertToLdif( newRdn, length ) );
 
                 // Stores the deleteoldrdn flag
@@ -459,7 +459,7 @@ public final class LdifUtils
                 // Stores the optional newSuperior
                 if ( !Strings.isEmpty(entry.getNewSuperior()) )
                 {
-                    EntryAttribute newSuperior = new DefaultEntryAttribute( "newsuperior", entry.getNewSuperior() );
+                    Attribute newSuperior = new DefaultEntryAttribute( "newsuperior", entry.getNewSuperior() );
                     sb.append( convertToLdif( newSuperior, length ) );
                 }
 
@@ -530,7 +530,7 @@ public final class LdifUtils
      * @return the corresponding LDIF code as a String
      * @throws LdapException If a naming exception is encountered.
      */
-    public static String convertToLdif( EntryAttribute attr ) throws LdapException
+    public static String convertToLdif( Attribute attr ) throws LdapException
     {
         return convertToLdif( attr, DEFAULT_LINE_LENGTH );
     }
@@ -544,7 +544,7 @@ public final class LdifUtils
      * @return the corresponding LDIF code as a String
      * @throws LdapException If a naming exception is encountered.
      */
-    public static String convertToLdif( EntryAttribute attr, int length ) throws LdapException
+    public static String convertToLdif( Attribute attr, int length ) throws LdapException
     {
         StringBuilder sb = new StringBuilder();
 

@@ -37,7 +37,7 @@ import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.SearchResultEntryDecorator;
 import org.apache.directory.shared.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.EntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
 import org.apache.directory.shared.util.Strings;
@@ -122,7 +122,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
         for ( int i = 0; i < entry.size(); i++ )
         {
-            EntryAttribute attribute = entry.get( "objectclass" );
+            Attribute attribute = entry.get( "objectclass" );
 
             assertEquals( "objectClass".toLowerCase(), attribute.getUpId().toLowerCase() );
 
@@ -226,7 +226,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
         for ( int i = 0; i < expectedAttributes.length; i++ )
         {
-            EntryAttribute attribute = entry.get( expectedAttributes[i] );
+            Attribute attribute = entry.get( expectedAttributes[i] );
 
             assertEquals( expectedAttributes[i].toLowerCase(), attribute.getUpId().toLowerCase() );
 
@@ -334,7 +334,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
         for ( int i = 0; i < entry.size(); i++ )
         {
-            EntryAttribute attribute = entry.get( "objectclass" );
+            Attribute attribute = entry.get( "objectclass" );
 
             assertEquals( "objectClass".toLowerCase(), attribute.getUpId().toLowerCase() );
 
@@ -835,7 +835,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
         for ( int i = 0; i < entry.size(); i++ )
         {
-            EntryAttribute attribute = entry.get( "objectclass" );
+            Attribute attribute = entry.get( "objectclass" );
 
             assertEquals( "objectClass".toLowerCase(), attribute.getUpId().toLowerCase() );
             assertEquals( 0, attribute.size() );
@@ -920,7 +920,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
         assertEquals( 2, entry.size() );
 
-        EntryAttribute attribute = entry.get( "objectclass" );
+        Attribute attribute = entry.get( "objectclass" );
         assertEquals( "objectClass".toLowerCase(), attribute.getUpId().toLowerCase() );
         assertEquals( 0, attribute.size() );
 
@@ -1012,7 +1012,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
         for ( int i = 0; i < entry.size(); i++ )
         {
-            EntryAttribute attribute = entry.get( "objectclass" );
+            Attribute attribute = entry.get( "objectclass" );
 
             assertEquals( "objectClass".toLowerCase(), attribute.getUpId().toLowerCase() );
 
@@ -1110,7 +1110,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
         for ( int i = 0; i < entry.size(); i++ )
         {
-            EntryAttribute attribute = entry.get( "objectclass" );
+            Attribute attribute = entry.get( "objectclass" );
 
             assertEquals( "objectClass".toLowerCase(), attribute.getUpId().toLowerCase() );
 
@@ -1204,7 +1204,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
         for ( int i = 0; i < entry.size(); i++ )
         {
-            EntryAttribute attribute = entry.get( "objectclass" );
+            Attribute attribute = entry.get( "objectclass" );
 
             assertEquals( "objectClass".toLowerCase(), attribute.getUpId().toLowerCase() );
 
