@@ -128,7 +128,8 @@ public class DefaultSchemaManager implements SchemaManager
 
     /** Two flags for RELAXED and STRICT, this is RELAXED */
     public static final boolean RELAXED = true;
-    
+
+
     /**
      * Creates a new instance of DefaultSchemaManager with the default schema schemaLoader
      *
@@ -993,8 +994,9 @@ public class DefaultSchemaManager implements SchemaManager
      */
     public boolean loadAllEnabledRelaxed() throws Exception
     {
-        // TODO Auto-generated method stub
-        return false;
+        Schema[] schemas = schemaLoader.getAllEnabled().toArray( new Schema[0] );
+
+        return loadWithDepsRelaxed( schemas );
     }
 
 
@@ -1203,8 +1205,21 @@ public class DefaultSchemaManager implements SchemaManager
      */
     public boolean loadWithDepsRelaxed( Schema... schemas ) throws Exception
     {
-        // TODO Auto-generated method stub
-        return false;
+        registries.setRelaxed();
+
+        // Load the schemas
+        for ( Schema schema : schemas )
+        {
+            loadDepsFirstRelaxed( schema );
+        }
+
+        // Build the cross references
+        errors = registries.buildReferences();
+
+        // Check the registries now
+        errors = registries.checkRefInteg();
+
+        return true;
     }
 
 
@@ -1213,8 +1228,73 @@ public class DefaultSchemaManager implements SchemaManager
      */
     public boolean loadWithDepsRelaxed( String... schemas ) throws Exception
     {
-        // TODO Auto-generated method stub
-        return false;
+        return loadWithDepsRelaxed( toArray( schemas ) );
+    }
+
+
+    /**
+     * Recursive method which loads schema's with their dependent schemas first
+     * and tracks what schemas it has seen so the recursion does not go out of
+     * control with dependency cycle detection.
+     *
+     * @param schema the current schema we are attempting to load
+     * @throws Exception if there is a cycle detected and/or another
+     * failure results while loading, producing and or registering schema objects
+     */
+    private void loadDepsFirstRelaxed( Schema schema ) throws Exception
+    {
+        if ( schema == null )
+        {
+            LOG.info( "The schema is null" );
+            return;
+        }
+
+        if ( schema.isDisabled() && !registries.isDisabledAccepted() )
+        {
+            LOG.info( "The schema is disabled and the registries does not accepted disabled schema" );
+            return;
+        }
+
+        String schemaName = schema.getSchemaName();
+
+        if ( registries.isSchemaLoaded( schemaName ) )
+        {
+            LOG.info( "{} schema has already been loaded" + schema.getSchemaName() );
+            return;
+        }
+
+        String[] deps = schema.getDependencies();
+
+        // if no deps then load this guy and return
+        if ( ( deps == null ) || ( deps.length == 0 ) )
+        {
+            load( registries, schema );
+
+            return;
+        }
+
+        /*
+         * We got deps and need to load them before this schema.  We go through
+         * all deps loading them with their deps first if they have not been
+         * loaded.
+         */
+        for ( String depName : deps )
+        {
+            if ( registries.isSchemaLoaded( schemaName ) )
+            {
+                // The schema is already loaded. Loop on the next schema
+                continue;
+            }
+            else
+            {
+                // Call recursively this method
+                Schema schemaDep = schemaLoader.getSchema( depName );
+                loadDepsFirstRelaxed( schemaDep );
+            }
+        }
+
+        // Now load the current schema
+        load( registries, schema );
     }
 
 
