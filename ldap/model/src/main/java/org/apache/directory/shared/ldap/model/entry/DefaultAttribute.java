@@ -124,7 +124,7 @@ public class DefaultAttribute implements Attribute
      * Create a new instance of a Attribute, without ID nor value.
      * Used by the serializer
      */
-    DefaultAttribute()
+    /* No protection*/ DefaultAttribute()
     {
     }
 

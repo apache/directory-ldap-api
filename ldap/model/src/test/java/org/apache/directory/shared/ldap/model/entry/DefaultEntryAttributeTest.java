@@ -86,7 +86,7 @@ public class DefaultEntryAttributeTest
         try
         {
             oOut = new ObjectOutputStream( out );
-            oOut.writeObject( value );
+            value.writeExternal( oOut );
         }
         catch ( IOException ioe )
         {
@@ -124,7 +124,8 @@ public class DefaultEntryAttributeTest
         {
             oIn = new ObjectInputStream( in );
 
-            DefaultAttribute value = ( DefaultAttribute ) oIn.readObject();
+            DefaultAttribute value = new DefaultAttribute();
+            value.readExternal( oIn );
 
             return value;
         }
