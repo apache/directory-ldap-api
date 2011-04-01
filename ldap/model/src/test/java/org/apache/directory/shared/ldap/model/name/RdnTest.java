@@ -1202,7 +1202,6 @@ public class RdnTest
         
         for ( Ava ava : rdn )
         {
-            System.out.println( ava.toString() );
             assertEquals( expected[i], ava.toString() );
             i++;
         }
