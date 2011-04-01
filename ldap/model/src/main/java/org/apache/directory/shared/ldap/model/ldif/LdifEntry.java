@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
@@ -392,7 +392,7 @@ public class LdifEntry implements Cloneable, Externalizable
             if ( value == null )
             {
                 value = new StringValue( ( String ) null );
-                attr = new DefaultEntryAttribute( id, ( Value<?> ) value );
+                attr = new DefaultAttribute( id, ( Value<?> ) value );
             }
             else
             {
@@ -557,7 +557,7 @@ public class LdifEntry implements Cloneable, Externalizable
     {
         if ( "dn".equalsIgnoreCase( attributeId ) )
         {
-            return new DefaultEntryAttribute( "dn", entry.getDn().getName() );
+            return new DefaultAttribute( "dn", entry.getDn().getName() );
         }
 
         return entry.get( attributeId );

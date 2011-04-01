@@ -30,7 +30,7 @@ import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
@@ -1043,7 +1043,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         byte[] bytecode = Base64.decode( byteCodeString.toCharArray() );
-        Attribute attr = new DefaultEntryAttribute( MetaSchemaConstants.M_BYTECODE_AT, bytecode );
+        Attribute attr = new DefaultAttribute( MetaSchemaConstants.M_BYTECODE_AT, bytecode );
 
         return attr;
     }

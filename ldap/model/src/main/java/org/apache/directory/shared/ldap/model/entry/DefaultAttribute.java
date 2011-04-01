@@ -46,10 +46,10 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DefaultEntryAttribute implements Attribute
+public class DefaultAttribute implements Attribute
 {
     /** logger for reporting errors that might not be handled properly upstream */
-    private static final Logger LOG = LoggerFactory.getLogger( DefaultEntryAttribute.class );
+    private static final Logger LOG = LoggerFactory.getLogger( DefaultAttribute.class );
 
     /** The associated AttributeType */
     private AttributeType attributeType;
@@ -121,18 +121,18 @@ public class DefaultEntryAttribute implements Attribute
     // maybe have some additional convenience constructors which take
     // an initial value as a string or a byte[]
     /**
-     * Create a new instance of a EntryAttribute, without ID nor value.
+     * Create a new instance of a Attribute, without ID nor value.
      * Used by the serializer
      */
-    /* No protection */ DefaultEntryAttribute()
+    DefaultAttribute()
     {
     }
 
 
     /**
-     * Create a new instance of a EntryAttribute, without ID nor value.
+     * Create a new instance of a Attribute, without ID nor value.
      */
-    /* No qualifier */ DefaultEntryAttribute( AttributeType attributeType, String upId, String normId, boolean isHR, int hashCode, Value<?>... values)
+    DefaultAttribute( AttributeType attributeType, String upId, String normId, boolean isHR, int hashCode, Value<?>... values)
     {
         this.attributeType = attributeType;
         this.upId = upId;
@@ -151,11 +151,11 @@ public class DefaultEntryAttribute implements Attribute
 
 
     /**
-     * Create a new instance of a EntryAttribute, without ID nor value.
+     * Create a new instance of a Attribute, without ID nor value.
      * 
      * @param attributeType the attributeType for the empty attribute added into the entry
      */
-    public DefaultEntryAttribute( AttributeType attributeType )
+    public DefaultAttribute( AttributeType attributeType )
     {
         if ( attributeType != null )
         {
@@ -172,21 +172,21 @@ public class DefaultEntryAttribute implements Attribute
 
 
     /**
-     * Create a new instance of a EntryAttribute, without value.
+     * Create a new instance of a Attribute, without value.
      */
-    public DefaultEntryAttribute( String upId )
+    public DefaultAttribute( String upId )
     {
         setUpId( upId );
     }
 
 
     /**
-     * Create a new instance of a EntryAttribute, without value.
+     * Create a new instance of a Attribute, without value.
      * 
      * @param upId the ID for the added attributeType
      * @param attributeType the added AttributeType
      */
-    public DefaultEntryAttribute( String upId, AttributeType attributeType )
+    public DefaultAttribute( String upId, AttributeType attributeType )
     {
         if ( attributeType == null ) 
         {
@@ -218,7 +218,7 @@ public class DefaultEntryAttribute implements Attribute
      * @param upId
      * @param vals an initial set of values for this attribute
      */
-    public DefaultEntryAttribute( String upId, Value<?>... vals )
+    public DefaultAttribute( String upId, Value<?>... vals )
     {
         // The value can be null, this is a valid value.
         if ( vals[0] == null )
@@ -247,25 +247,25 @@ public class DefaultEntryAttribute implements Attribute
 
 
     /**
-     * Create a new instance of a EntryAttribute, without ID but with some values.
+     * Create a new instance of a Attribute, without ID but with some values.
      * 
      * @param attributeType The attributeType added on creation
      * @param vals The added value for this attribute
      */
-    public DefaultEntryAttribute( AttributeType attributeType, String... vals ) throws LdapInvalidAttributeValueException
+    public DefaultAttribute( AttributeType attributeType, String... vals ) throws LdapInvalidAttributeValueException
     {
         this( null, attributeType, vals );
     }
 
 
     /**
-     * Create a new instance of a EntryAttribute.
+     * Create a new instance of a Attribute.
      * 
      * @param upId the ID for the added attribute
      * @param attributeType The attributeType added on creation
      * @param vals the added values for this attribute
      */
-    public DefaultEntryAttribute( String upId, AttributeType attributeType, String... vals ) throws LdapInvalidAttributeValueException
+    public DefaultAttribute( String upId, AttributeType attributeType, String... vals ) throws LdapInvalidAttributeValueException
     {
         if ( attributeType == null )
         {
@@ -293,7 +293,7 @@ public class DefaultEntryAttribute implements Attribute
      * @param attributeType the attribute type according to the schema
      * @param vals an initial set of values for this attribute
      */
-    public DefaultEntryAttribute( String upId, AttributeType attributeType, Value<?>... vals ) throws LdapInvalidAttributeValueException
+    public DefaultAttribute( String upId, AttributeType attributeType, Value<?>... vals ) throws LdapInvalidAttributeValueException
     {
         if ( attributeType == null )
         {
@@ -318,16 +318,16 @@ public class DefaultEntryAttribute implements Attribute
      * @param attributeType the attribute type according to the schema
      * @param vals an initial set of values for this attribute
      */
-    public DefaultEntryAttribute( AttributeType attributeType, Value<?>... vals ) throws LdapInvalidAttributeValueException
+    public DefaultAttribute( AttributeType attributeType, Value<?>... vals ) throws LdapInvalidAttributeValueException
     {
         this( null, attributeType, vals );
     }
 
 
     /**
-     * Create a new instance of a EntryAttribute.
+     * Create a new instance of a Attribute.
      */
-    public DefaultEntryAttribute( String upId, String... vals )
+    public DefaultAttribute( String upId, String... vals )
     {
         try
         {
@@ -343,9 +343,9 @@ public class DefaultEntryAttribute implements Attribute
 
 
     /**
-     * Create a new instance of a EntryAttribute, with some byte[] values.
+     * Create a new instance of a Attribute, with some byte[] values.
      */
-    public DefaultEntryAttribute( String upId, byte[]... vals )
+    public DefaultAttribute( String upId, byte[]... vals )
     {
         try
         { 
@@ -361,25 +361,25 @@ public class DefaultEntryAttribute implements Attribute
 
 
     /**
-     * Create a new instance of a EntryAttribute, with some byte[] values.
+     * Create a new instance of a Attribute, with some byte[] values.
      * 
      * @param attributeType The attributeType added on creation
      * @param vals The value for the added attribute
      */
-    public DefaultEntryAttribute( AttributeType attributeType, byte[]... vals ) throws LdapInvalidAttributeValueException
+    public DefaultAttribute( AttributeType attributeType, byte[]... vals ) throws LdapInvalidAttributeValueException
     {
         this( null, attributeType, vals );
     }
 
 
     /**
-     * Create a new instance of a EntryAttribute, with some byte[] values.
+     * Create a new instance of a Attribute, with some byte[] values.
      * 
      * @param upId the ID for the added attribute
      * @param attributeType the AttributeType to be added
      * @param vals the values for the added attribute
      */
-    public DefaultEntryAttribute( String upId, AttributeType attributeType, byte[]... vals ) throws LdapInvalidAttributeValueException
+    public DefaultAttribute( String upId, AttributeType attributeType, byte[]... vals ) throws LdapInvalidAttributeValueException
     {
         if ( attributeType == null )
         {
@@ -401,7 +401,7 @@ public class DefaultEntryAttribute implements Attribute
      * @param attributeType The attribute's type 
      * @param attribute The attribute to be copied
      */
-    public DefaultEntryAttribute( AttributeType attributeType, Attribute attribute ) throws LdapException
+    public DefaultAttribute( AttributeType attributeType, Attribute attribute ) throws LdapException
     {
         // Copy the common values. isHR is only available on a ServerAttribute 
         this.attributeType = attributeType;
@@ -1869,7 +1869,7 @@ public class DefaultEntryAttribute implements Attribute
     {
         try
         {
-            DefaultEntryAttribute attribute = (DefaultEntryAttribute)super.clone();
+            DefaultAttribute attribute = (DefaultAttribute)super.clone();
             attribute.setUpId( upId );
             
             attribute.values = new LinkedHashSet<Value<?>>( values.size() );

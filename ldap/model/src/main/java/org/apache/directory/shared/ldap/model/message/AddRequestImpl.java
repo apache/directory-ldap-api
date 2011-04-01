@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.model.message;
 
 
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
@@ -89,7 +89,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
         }
 
         // fix this to use AttributeImpl(type.getString().toLowerCase())
-        currentAttribute = new DefaultEntryAttribute( type );
+        currentAttribute = new DefaultAttribute( type );
         entry.put( currentAttribute );
     }
 

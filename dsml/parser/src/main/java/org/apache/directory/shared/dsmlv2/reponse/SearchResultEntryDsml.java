@@ -22,7 +22,7 @@ package org.apache.directory.shared.dsmlv2.reponse;
 
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
@@ -89,7 +89,7 @@ public class SearchResultEntryDsml
      */
     public void addAttribute( String type ) throws LdapException
     {
-        currentAttribute = new DefaultEntryAttribute( type );
+        currentAttribute = new DefaultAttribute( type );
 
         getDecorated().getEntry().put( currentAttribute );
     }

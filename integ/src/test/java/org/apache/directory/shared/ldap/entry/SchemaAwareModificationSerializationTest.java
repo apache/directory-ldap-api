@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
@@ -156,7 +156,7 @@ public class SchemaAwareModificationSerializationTest
     @Test 
     public void testCreateServerModification() throws LdapException
     {
-        Attribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
+        Attribute attribute = new DefaultAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
         
         Modification mod = new DefaultModification( CN_AT, ModificationOperation.ADD_ATTRIBUTE, attribute );
@@ -178,7 +178,7 @@ public class SchemaAwareModificationSerializationTest
     @Test
     public void testSerializationModificationADD() throws ClassNotFoundException, IOException, LdapInvalidAttributeValueException
     {
-        Attribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
+        Attribute attribute = new DefaultAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
         
         DefaultModification mod = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attribute );
@@ -192,7 +192,7 @@ public class SchemaAwareModificationSerializationTest
     @Test
     public void testSerializationModificationREPLACE() throws ClassNotFoundException, IOException, LdapInvalidAttributeValueException
     {
-        Attribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
+        Attribute attribute = new DefaultAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
         
         DefaultModification mod = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attribute );
@@ -206,7 +206,7 @@ public class SchemaAwareModificationSerializationTest
     @Test
     public void testSerializationModificationREMOVE() throws ClassNotFoundException, IOException, LdapInvalidAttributeValueException
     {
-        Attribute attribute = new DefaultEntryAttribute( "cn", CN_AT );
+        Attribute attribute = new DefaultAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
         
         DefaultModification mod = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attribute );

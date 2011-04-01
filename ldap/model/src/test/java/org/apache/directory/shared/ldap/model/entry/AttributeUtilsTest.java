@@ -73,7 +73,7 @@ public class AttributeUtilsTest
     public void testApplyAddModificationToEmptyEntry() throws LdapException
     {
         Entry entry = new DefaultEntry();
-        Attribute attr = new DefaultEntryAttribute( "cn", "test" );
+        Attribute attr = new DefaultAttribute( "cn", "test" );
         Modification modification = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attr );
         AttributeUtils.applyModification( entry, modification );
         assertNotNull( entry.get(  "cn" ) );
@@ -92,7 +92,7 @@ public class AttributeUtilsTest
         entry.add( "dc", "apache" );
         assertEquals( 1, entry.size() );
 
-        Attribute attr = new DefaultEntryAttribute( "cn", "test" );
+        Attribute attr = new DefaultAttribute( "cn", "test" );
         Modification modification = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attr );
 
         AttributeUtils.applyModification( entry, modification );
@@ -113,7 +113,7 @@ public class AttributeUtilsTest
         entry.put( "cn", "apache" );
         assertEquals( 1, entry.size() );
 
-        Attribute attr = new DefaultEntryAttribute( "cn", "test" );
+        Attribute attr = new DefaultAttribute( "cn", "test" );
         Modification modification = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attr );
         AttributeUtils.applyModification( entry, modification );
         assertNotNull( entry.get(  "cn" ) );
@@ -151,7 +151,7 @@ public class AttributeUtilsTest
         entry.put( "cn", "test", "apache" );
         assertEquals( 1, entry.size() );
 
-        Attribute attr = new DefaultEntryAttribute( "cn", "test" );
+        Attribute attr = new DefaultAttribute( "cn", "test" );
         Modification modification = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attr );
         AttributeUtils.applyModification( entry, modification );
         assertNotNull( entry.get( "cn" ) );
@@ -186,7 +186,7 @@ public class AttributeUtilsTest
     {
         Entry entry = new DefaultEntry();
 
-        Attribute attr = new DefaultEntryAttribute( "cn", "test" );
+        Attribute attr = new DefaultAttribute( "cn", "test" );
 
         Modification modification = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attr );
         AttributeUtils.applyModification( entry, modification );
@@ -203,10 +203,10 @@ public class AttributeUtilsTest
     {
         Entry entry = new DefaultEntry();
 
-        Attribute dc = new DefaultEntryAttribute( "dc", "apache" );
+        Attribute dc = new DefaultAttribute( "dc", "apache" );
         entry.put( dc );
         
-        Attribute cn = new DefaultEntryAttribute( "cn", "test" );
+        Attribute cn = new DefaultAttribute( "cn", "test" );
         
         Modification modification = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, cn );
         
@@ -228,10 +228,10 @@ public class AttributeUtilsTest
     {
         Entry entry = new DefaultEntry();
 
-        Attribute cn = new DefaultEntryAttribute( "cn", "apache" );
+        Attribute cn = new DefaultAttribute( "cn", "apache" );
         entry.put( cn );
         
-        Attribute attr = new DefaultEntryAttribute( "cn", "test" );
+        Attribute attr = new DefaultAttribute( "cn", "test" );
         
         Modification modification = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attr );
         
@@ -254,7 +254,7 @@ public class AttributeUtilsTest
         Entry entry = new DefaultEntry();
         entry.put( "cn", "test" );
         
-        Attribute attr = new DefaultEntryAttribute( "cn", "test" );
+        Attribute attr = new DefaultAttribute( "cn", "test" );
 
         Modification modification = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attr );
         
@@ -277,7 +277,7 @@ public class AttributeUtilsTest
         Entry entry = new DefaultEntry();
         entry.put( "cn", "test", "apache" );
         
-        Attribute attr = new DefaultEntryAttribute( "cn", "test" );
+        Attribute attr = new DefaultAttribute( "cn", "test" );
         
         Modification modification = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attr );
         
@@ -313,7 +313,7 @@ public class AttributeUtilsTest
     {
         Entry entry = new DefaultEntry();
         
-        Attribute attr = new DefaultEntryAttribute( "cn", "test" );
+        Attribute attr = new DefaultAttribute( "cn", "test" );
 
         
         Modification modification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attr );
@@ -335,7 +335,7 @@ public class AttributeUtilsTest
     {
         Entry entry = new DefaultEntry();
         
-        Attribute attr = new DefaultEntryAttribute( "cn" );
+        Attribute attr = new DefaultAttribute( "cn" );
 
         Modification modification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attr );
         AttributeUtils.applyModification( entry, modification );
@@ -358,7 +358,7 @@ public class AttributeUtilsTest
         entry.put( "cn", "test" );
         entry.put( "ou", "apache", "acme corp" );
         
-        Attribute newOu = new DefaultEntryAttribute( "ou", "Big Company", "directory" );
+        Attribute newOu = new DefaultAttribute( "ou", "Big Company", "directory" );
         
         Modification modification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, newOu );
         
@@ -402,7 +402,7 @@ public class AttributeUtilsTest
         entry.put(  "cn", "test" );
         entry.put( "ou", "apache", "acme corp" );
         
-        Attribute newOu = new DefaultEntryAttribute( "ou" );
+        Attribute newOu = new DefaultAttribute( "ou" );
         
         Modification modification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, newOu );
         

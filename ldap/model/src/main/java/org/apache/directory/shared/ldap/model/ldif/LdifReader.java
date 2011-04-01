@@ -43,7 +43,7 @@ import java.util.NoSuchElementException;
 
 import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -869,11 +869,11 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             // Create an attribute
             if ( attributeValue instanceof String )
             {
-                return new DefaultEntryAttribute( attributeType, ( String ) attributeValue );
+                return new DefaultAttribute( attributeType, ( String ) attributeValue );
             }
             else
             {
-                return new DefaultEntryAttribute( attributeType, ( byte[] ) attributeValue );
+                return new DefaultAttribute( attributeType, ( byte[] ) attributeValue );
             }
         }
         else
@@ -1046,7 +1046,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
                 modified = Strings.trim( line.substring( "add:".length() ) );
                 modificationType = ModificationOperation.ADD_ATTRIBUTE;
-                attribute = new DefaultEntryAttribute( modified );
+                attribute = new DefaultAttribute( modified );
 
                 state = ATTRVAL_SPEC;
             }
@@ -1060,7 +1060,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
                 modified = Strings.trim(line.substring("delete:".length()));
                 modificationType = ModificationOperation.REMOVE_ATTRIBUTE;
-                attribute = new DefaultEntryAttribute( modified );
+                attribute = new DefaultAttribute( modified );
 
                 state = ATTRVAL_SPEC_OR_SEP;
             }
@@ -1074,7 +1074,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
                 modified = Strings.trim(line.substring("replace:".length()));
                 modificationType = ModificationOperation.REPLACE_ATTRIBUTE;
-                attribute = new DefaultEntryAttribute( modified );
+                attribute = new DefaultAttribute( modified );
 
                 state = ATTRVAL_SPEC_OR_SEP;
             }

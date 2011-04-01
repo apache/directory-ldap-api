@@ -34,7 +34,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -190,7 +190,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
      */
     public void addAttribute( String type ) throws LdapException
     {
-        currentAttribute = new DefaultEntryAttribute( type );
+        currentAttribute = new DefaultAttribute( type );
 
         getDecorated().getEntry().put( currentAttribute );
     }

@@ -26,7 +26,7 @@ import javax.naming.directory.Attributes;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
@@ -439,7 +439,7 @@ public final class LdifUtils
                 }
 
                 // Stores the new Rdn
-                Attribute newRdn = new DefaultEntryAttribute( "newrdn", entry.getNewRdn() );
+                Attribute newRdn = new DefaultAttribute( "newrdn", entry.getNewRdn() );
                 sb.append( convertToLdif( newRdn, length ) );
 
                 // Stores the deleteoldrdn flag
@@ -459,7 +459,7 @@ public final class LdifUtils
                 // Stores the optional newSuperior
                 if ( !Strings.isEmpty(entry.getNewSuperior()) )
                 {
-                    Attribute newSuperior = new DefaultEntryAttribute( "newsuperior", entry.getNewSuperior() );
+                    Attribute newSuperior = new DefaultAttribute( "newsuperior", entry.getNewSuperior() );
                     sb.append( convertToLdif( newSuperior, length ) );
                 }
 

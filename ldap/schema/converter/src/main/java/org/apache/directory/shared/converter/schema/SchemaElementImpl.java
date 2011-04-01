@@ -21,7 +21,7 @@ package org.apache.directory.shared.converter.schema;
 
 
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -171,7 +171,7 @@ public abstract class SchemaElementImpl implements SchemaElement
         else
         {
             Entry entry = new DefaultEntry();
-            Attribute attribute = new DefaultEntryAttribute( "m-name" );
+            Attribute attribute = new DefaultAttribute( "m-name" );
 
             for ( String name : names )
             {
@@ -198,7 +198,7 @@ public abstract class SchemaElementImpl implements SchemaElement
         else
         {
             Entry entry = new DefaultEntry();
-            Attribute attribute = new DefaultEntryAttribute( "m-description", description );
+            Attribute attribute = new DefaultAttribute( "m-description", description );
 
             entry.put( attribute );
 
@@ -230,7 +230,7 @@ public abstract class SchemaElementImpl implements SchemaElement
         StringBuilder sb = new StringBuilder();
 
         Entry entry = new DefaultEntry();
-        Attribute attribute = new DefaultEntryAttribute( id );
+        Attribute attribute = new DefaultAttribute( id );
 
         for ( String extension : extensions.keySet() )
         {

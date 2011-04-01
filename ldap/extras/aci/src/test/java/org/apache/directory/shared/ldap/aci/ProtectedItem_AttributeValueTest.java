@@ -29,7 +29,7 @@ import java.util.Set;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.aci.protectedItem.AttributeValueItem;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.junit.Before;
 import org.junit.Test;
@@ -58,13 +58,13 @@ public class ProtectedItem_AttributeValueTest
     public void initNames() throws Exception
     {
 
-        Attribute attrA = new DefaultEntryAttribute( "aa" );
+        Attribute attrA = new DefaultAttribute( "aa" );
         attrA.add( "aa" );
-        Attribute attrB = new DefaultEntryAttribute( "bb" );
+        Attribute attrB = new DefaultAttribute( "bb" );
         attrB.add( "bb" );
-        Attribute attrC = new DefaultEntryAttribute( "cc" );
+        Attribute attrC = new DefaultAttribute( "cc" );
         attrC.add( "cc" );
-        Attribute attrD = new DefaultEntryAttribute( "dd" );
+        Attribute attrD = new DefaultAttribute( "dd" );
         attrD.add( "dd" );
 
         Set<Attribute> colA = new HashSet<Attribute>();

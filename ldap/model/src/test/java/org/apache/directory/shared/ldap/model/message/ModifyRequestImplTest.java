@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
@@ -76,19 +76,19 @@ public class ModifyRequestImplTest
             // do nothing
         }
 
-        Attribute attr = new DefaultEntryAttribute( "attr0" );
+        Attribute attr = new DefaultAttribute( "attr0" );
         attr.add( "val0" );
         attr.add( "val1" );
         attr.add( "val2" );
         Modification item = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attr );
         req.addModification( item );
 
-        attr = new DefaultEntryAttribute( "attr1" );
+        attr = new DefaultAttribute( "attr1" );
         attr.add( "val3" );
         item = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attr );
         req.addModification( item );
 
-        attr = new DefaultEntryAttribute( "attr2" );
+        attr = new DefaultAttribute( "attr2" );
         attr.add( "val4" );
         attr.add( "val5" );
         item = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attr );
@@ -185,7 +185,7 @@ public class ModifyRequestImplTest
     public void testNotEqualDiffModOps() throws LdapException
     {
         ModifyRequestImpl req0 = getRequest();
-        Attribute attr = new DefaultEntryAttribute( "attr3" );
+        Attribute attr = new DefaultAttribute( "attr3" );
         attr.add( "val0" );
         attr.add( "val1" );
         attr.add( "val2" );
@@ -193,7 +193,7 @@ public class ModifyRequestImplTest
         req0.addModification( item );
 
         ModifyRequestImpl req1 = getRequest();
-        attr = new DefaultEntryAttribute( "attr3" );
+        attr = new DefaultAttribute( "attr3" );
         attr.add( "val0" );
         attr.add( "val1" );
         attr.add( "val2" );
@@ -212,7 +212,7 @@ public class ModifyRequestImplTest
     public void testNotEqualDiffModCount() throws LdapException
     {
         ModifyRequestImpl req0 = getRequest();
-        Attribute attr = new DefaultEntryAttribute( "attr3" );
+        Attribute attr = new DefaultAttribute( "attr3" );
         attr.add( "val0" );
         attr.add( "val1" );
         attr.add( "val2" );
@@ -233,7 +233,7 @@ public class ModifyRequestImplTest
     public void testNotEqualDiffModIds() throws LdapException
     {
         ModifyRequestImpl req0 = getRequest();
-        Attribute attr = new DefaultEntryAttribute( "attr3" );
+        Attribute attr = new DefaultAttribute( "attr3" );
         attr.add( "val0" );
         attr.add( "val1" );
         attr.add( "val2" );
@@ -241,7 +241,7 @@ public class ModifyRequestImplTest
         req0.addModification( item );
 
         ModifyRequestImpl req1 = getRequest();
-        attr = new DefaultEntryAttribute( "attr4" );
+        attr = new DefaultAttribute( "attr4" );
         attr.add( "val0" );
         attr.add( "val1" );
         attr.add( "val2" );
@@ -260,7 +260,7 @@ public class ModifyRequestImplTest
     public void testNotEqualDiffModValues() throws LdapException
     {
         ModifyRequestImpl req0 = getRequest();
-        Attribute attr = new DefaultEntryAttribute( "attr3" );
+        Attribute attr = new DefaultAttribute( "attr3" );
         attr.add( "val0" );
         attr.add( "val1" );
         attr.add( "val2" );
@@ -268,7 +268,7 @@ public class ModifyRequestImplTest
         req0.addModification( item );
 
         ModifyRequestImpl req1 = getRequest();
-        attr = new DefaultEntryAttribute( "attr3" );
+        attr = new DefaultAttribute( "attr3" );
         attr.add( "val0" );
         attr.add( "val1" );
         attr.add( "val2" );
@@ -295,19 +295,19 @@ public class ModifyRequestImplTest
                 
                 try
                 { 
-                    Attribute attr = new DefaultEntryAttribute( "attr0" );
+                    Attribute attr = new DefaultAttribute( "attr0" );
                     attr.add( "val0" );
                     attr.add( "val1" );
                     attr.add( "val2" );
                     Modification item = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attr );
                     list.add( item );
     
-                    attr = new DefaultEntryAttribute( "attr1" );
+                    attr = new DefaultAttribute( "attr1" );
                     attr.add( "val3" );
                     item = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attr );
                     list.add( item );
     
-                    attr = new DefaultEntryAttribute( "attr2" );
+                    attr = new DefaultAttribute( "attr2" );
                     attr.add( "val4" );
                     attr.add( "val5" );
                     item = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attr );

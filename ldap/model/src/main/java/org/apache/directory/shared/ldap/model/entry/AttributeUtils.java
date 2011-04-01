@@ -1128,7 +1128,7 @@ public final class AttributeUtils
 
         try
         {
-            Attribute clientAttribute = new DefaultEntryAttribute( attribute.getID() );
+            Attribute clientAttribute = new DefaultAttribute( attribute.getID() );
 
             for ( NamingEnumeration<?> values = attribute.getAll(); values.hasMoreElements(); )
             {

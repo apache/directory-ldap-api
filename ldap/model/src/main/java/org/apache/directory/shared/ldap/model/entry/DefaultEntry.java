@@ -222,7 +222,7 @@ public final class DefaultEntry implements Entry
                 }
 
                 // Create a new ServerAttribute.
-                Attribute serverAttribute = new DefaultEntryAttribute( attributeType, attribute );
+                Attribute serverAttribute = new DefaultAttribute( attributeType, attribute );
 
                 // And store it
                 add( serverAttribute );
@@ -587,7 +587,7 @@ public final class DefaultEntry implements Entry
      */
     protected void createAttribute( String upId, AttributeType attributeType, byte[]... values ) throws LdapInvalidAttributeValueException
     {
-        Attribute attribute = new DefaultEntryAttribute( attributeType, values );
+        Attribute attribute = new DefaultAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
         attributes.put( attributeType.getOid(), attribute );
     }
@@ -601,7 +601,7 @@ public final class DefaultEntry implements Entry
      */
     protected void createAttribute( String upId, AttributeType attributeType, String... values ) throws LdapInvalidAttributeValueException
     {
-        Attribute attribute = new DefaultEntryAttribute( attributeType, values );
+        Attribute attribute = new DefaultAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
         attributes.put( attributeType.getOid(), attribute );
     }
@@ -615,7 +615,7 @@ public final class DefaultEntry implements Entry
      */
     protected void createAttribute( String upId, AttributeType attributeType, Value<?>... values ) throws LdapInvalidAttributeValueException
     {
-        Attribute attribute = new DefaultEntryAttribute( attributeType, values );
+        Attribute attribute = new DefaultAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
         attributes.put( attributeType.getOid(), attribute );
     }
@@ -933,7 +933,7 @@ public final class DefaultEntry implements Entry
             {
                 // We have to create a new Attribute and set the values
                 // and the upId
-                attributes.put( id, new DefaultEntryAttribute( upId, values ) );
+                attributes.put( id, new DefaultAttribute( upId, values ) );
             }
         }
     }
@@ -975,7 +975,7 @@ public final class DefaultEntry implements Entry
             {
                 // We have to create a new Attribute and set the values
                 // and the upId
-                attributes.put( id, new DefaultEntryAttribute( upId, values ) );
+                attributes.put( id, new DefaultAttribute( upId, values ) );
             }
         }
     }
@@ -1017,7 +1017,7 @@ public final class DefaultEntry implements Entry
             {
                 // We have to create a new Attribute and set the values
                 // and the upId
-                attributes.put( id, new DefaultEntryAttribute( upId, values ) );
+                attributes.put( id, new DefaultAttribute( upId, values ) );
             }
         }
     }
@@ -1468,7 +1468,7 @@ public final class DefaultEntry implements Entry
             String id = getId( upId );
 
             // Create a new attribute
-            Attribute clientAttribute = new DefaultEntryAttribute( upId, values );
+            Attribute clientAttribute = new DefaultAttribute( upId, values );
 
             // Replace the previous one, and return it back
             return attributes.put( id, clientAttribute );
@@ -1507,7 +1507,7 @@ public final class DefaultEntry implements Entry
             String id = getId( upId );
 
             // Create a new attribute
-            Attribute clientAttribute = new DefaultEntryAttribute( upId, values );
+            Attribute clientAttribute = new DefaultAttribute( upId, values );
 
             // Replace the previous one, and return it back
             return attributes.put( id, clientAttribute );
@@ -1546,7 +1546,7 @@ public final class DefaultEntry implements Entry
             String id = getId( upId );
 
             // Create a new attribute
-            Attribute clientAttribute = new DefaultEntryAttribute( upId, values );
+            Attribute clientAttribute = new DefaultAttribute( upId, values );
 
             // Replace the previous one, and return it back
             return attributes.put( id, clientAttribute );
@@ -1602,7 +1602,7 @@ public final class DefaultEntry implements Entry
                     removed.add( attributes.remove( id ) );
                 }
 
-                Attribute newAttribute = new DefaultEntryAttribute( upId );
+                Attribute newAttribute = new DefaultAttribute( upId );
                 attributes.put( id, newAttribute );
                 added = true;
             }
@@ -1643,7 +1643,7 @@ public final class DefaultEntry implements Entry
                     removed.add( attributes.get( oid ) );
                 }
 
-                attributes.put( oid, new DefaultEntryAttribute( upId, attributeType ) );
+                attributes.put( oid, new DefaultAttribute( upId, attributeType ) );
                 added = true;
             }
         }
@@ -1675,7 +1675,7 @@ public final class DefaultEntry implements Entry
             }
 
             Attribute attribute = attributes.put( attributeType.getOid(),
-                new DefaultEntryAttribute( attributeType ) );
+                new DefaultAttribute( attributeType ) );
 
             if ( attribute != null )
             {
@@ -1821,7 +1821,7 @@ public final class DefaultEntry implements Entry
             throw new UnsupportedOperationException( message );
         }
 
-        Attribute attribute = new DefaultEntryAttribute( upId, attributeType, values );
+        Attribute attribute = new DefaultAttribute( upId, attributeType, values );
 
         return attributes.put( attributeType.getOid(), attribute );
     }
@@ -1864,7 +1864,7 @@ public final class DefaultEntry implements Entry
             }
         }
 
-        Attribute attribute = new DefaultEntryAttribute( upId, attributeType, values );
+        Attribute attribute = new DefaultAttribute( upId, attributeType, values );
 
         return attributes.put( attributeType.getOid(), attribute );
     }
@@ -1907,7 +1907,7 @@ public final class DefaultEntry implements Entry
             }
         }
 
-        Attribute attribute = new DefaultEntryAttribute( upId, attributeType, values );
+        Attribute attribute = new DefaultAttribute( upId, attributeType, values );
 
         return attributes.put( attributeType.getOid(), attribute );
     }
@@ -2593,7 +2593,7 @@ public final class DefaultEntry implements Entry
         for ( int i = 0; i < nbAttributes; i++ )
         {
             // Read each attribute
-            Attribute attribute = new DefaultEntryAttribute();
+            Attribute attribute = new DefaultAttribute();
             attribute.readExternal( in );
 
             if ( schemaManager != null )

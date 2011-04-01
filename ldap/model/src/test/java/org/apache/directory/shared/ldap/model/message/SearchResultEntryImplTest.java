@@ -24,7 +24,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -54,7 +54,7 @@ public class SearchResultEntryImplTest
      */
     private Attribute getEntry( String id ) throws LdapException
     {
-        Attribute attr = new DefaultEntryAttribute( id );
+        Attribute attr = new DefaultAttribute( id );
         attr.add( "value0" );
         attr.add( "value1" );
         attr.add( "value2" );

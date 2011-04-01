@@ -25,7 +25,7 @@ import java.util.Iterator;
 
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
@@ -107,7 +107,7 @@ public class ModifyRequestDsml
      */
     public void addAttributeTypeAndValues( String type )
     {
-        currentAttribute = new DefaultEntryAttribute( type );
+        currentAttribute = new DefaultAttribute( type );
 
         Modification modification = new DefaultModification( currentOperation, currentAttribute );
         getDecorated().addModification( modification );

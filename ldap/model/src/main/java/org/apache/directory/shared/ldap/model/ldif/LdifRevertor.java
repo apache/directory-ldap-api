@@ -27,7 +27,7 @@ import java.util.Set;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
@@ -199,7 +199,7 @@ public final class LdifRevertor
                     if ( ( mod.get() == null ) && ( previous == null ) )
                     {
                         reverseModification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
-                            new DefaultEntryAttribute( mod.getId() ) );
+                            new DefaultAttribute( mod.getId() ) );
                         reverseModifications.add( 0, reverseModification );
                         continue;
                     }
@@ -214,7 +214,7 @@ public final class LdifRevertor
 
                     if ( previous == null )
                     {
-                        Attribute emptyAttribute = new DefaultEntryAttribute( mod.getId() );
+                        Attribute emptyAttribute = new DefaultAttribute( mod.getId() );
                         reverseModification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE,
                             emptyAttribute );
                         reverseModifications.add( 0, reverseModification );
@@ -364,7 +364,7 @@ public final class LdifRevertor
             {
                 // Create the modification, which is an Remove
                 Modification modification = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE,
-                    new DefaultEntryAttribute( ava.getUpType(), ava.getUpValue().getString() ) );
+                    new DefaultAttribute( ava.getUpType(), ava.getUpValue().getString() ) );
 
                 restored.addModificationItem( modification );
             }

@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
@@ -128,14 +128,14 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
 
     private void addModification( ModificationOperation modOp, String attributeName, byte[]... attributeValue )
     {
-        Attribute attr = new DefaultEntryAttribute( attributeName, attributeValue );
+        Attribute attr = new DefaultAttribute( attributeName, attributeValue );
         addModification( attr, modOp );
     }
 
 
     private void addModification( ModificationOperation modOp, String attributeName, String... attributeValue )
     {
-        Attribute attr = new DefaultEntryAttribute( attributeName, attributeValue );
+        Attribute attr = new DefaultAttribute( attributeName, attributeValue );
         addModification( attr, modOp );
     }
 

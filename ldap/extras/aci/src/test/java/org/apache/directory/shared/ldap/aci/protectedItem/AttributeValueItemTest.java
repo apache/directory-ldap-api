@@ -28,7 +28,7 @@ import java.util.Set;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.filter.UndefinedNode;
 import org.junit.Before;
@@ -63,22 +63,22 @@ public class AttributeValueItemTest
     public void initNames() throws Exception
     {
         attributeA = new HashSet<Attribute>();
-        attributeA.add( new DefaultEntryAttribute( "aa", "aa" ) );
-        attributeA.add( new DefaultEntryAttribute( "aa", "bb" ) );
-        attributeA.add( new DefaultEntryAttribute( "aa", "cc" ) );
+        attributeA.add( new DefaultAttribute( "aa", "aa" ) );
+        attributeA.add( new DefaultAttribute( "aa", "bb" ) );
+        attributeA.add( new DefaultAttribute( "aa", "cc" ) );
         // Sets aren't ordered, so adding order must not matter
         attributeB = new HashSet<Attribute>();
-        attributeB.add( new DefaultEntryAttribute( "aa", "bb" ) );
-        attributeB.add( new DefaultEntryAttribute( "aa", "cc" ) );
-        attributeB.add( new DefaultEntryAttribute( "aa", "aa" ) );
+        attributeB.add( new DefaultAttribute( "aa", "bb" ) );
+        attributeB.add( new DefaultAttribute( "aa", "cc" ) );
+        attributeB.add( new DefaultAttribute( "aa", "aa" ) );
         attributeC = new HashSet<Attribute>();
-        attributeC.add( new DefaultEntryAttribute( "aa", "aa" ) );
-        attributeC.add( new DefaultEntryAttribute( "bb", "bb" ) );
-        attributeC.add( new DefaultEntryAttribute( "aa", "cc" ) );
+        attributeC.add( new DefaultAttribute( "aa", "aa" ) );
+        attributeC.add( new DefaultAttribute( "bb", "bb" ) );
+        attributeC.add( new DefaultAttribute( "aa", "cc" ) );
         attributeD = new HashSet<Attribute>();
-        attributeD.add( new DefaultEntryAttribute( "aa", "aa" ) );
-        attributeD.add( new DefaultEntryAttribute( "aa", "bb" ) );
-        attributeD.add( new DefaultEntryAttribute( "aa", "dd" ) );
+        attributeD.add( new DefaultAttribute( "aa", "aa" ) );
+        attributeD.add( new DefaultAttribute( "aa", "bb" ) );
+        attributeD.add( new DefaultAttribute( "aa", "dd" ) );
         attributeValueItemA = new AttributeValueItem( attributeA );
         attributeValueItemACopy = new AttributeValueItem( attributeA );
         attributeValueItemB = new AttributeValueItem( attributeB );

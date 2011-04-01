@@ -124,7 +124,7 @@ public class ModificationTest
     @Test 
     public void testCreateServerModification() throws LdapException
     {
-        Attribute attribute = new DefaultEntryAttribute( "cn" );
+        Attribute attribute = new DefaultAttribute( "cn" );
         attribute.add( "test1", "test2" );
         
         Modification mod = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attribute );
@@ -146,7 +146,7 @@ public class ModificationTest
     @Test
     public void testSerializationModificationADD() throws ClassNotFoundException, IOException, LdapException
     {
-        Attribute attribute = new DefaultEntryAttribute( "cn" );
+        Attribute attribute = new DefaultAttribute( "cn" );
         attribute.add( "test1", "test2" );
         
         DefaultModification mod = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attribute );
@@ -160,7 +160,7 @@ public class ModificationTest
     @Test
     public void testSerializationModificationREPLACE() throws ClassNotFoundException, IOException, LdapException
     {
-        Attribute attribute = new DefaultEntryAttribute( "cn" );
+        Attribute attribute = new DefaultAttribute( "cn" );
         attribute.add( "test1", "test2" );
         
         DefaultModification mod = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attribute );
@@ -174,7 +174,7 @@ public class ModificationTest
     @Test
     public void testSerializationModificationREMOVE() throws ClassNotFoundException, IOException, LdapException
     {
-        Attribute attribute = new DefaultEntryAttribute( "cn" );
+        Attribute attribute = new DefaultAttribute( "cn" );
         attribute.add( "test1", "test2" );
         
         DefaultModification mod = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attribute );

@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -61,7 +61,7 @@ public class AddRequestImplTest
      */
     private Attribute getAttribute( String id ) throws LdapException
     {
-        Attribute attr = new DefaultEntryAttribute( id );
+        Attribute attr = new DefaultAttribute( id );
         attr.add( "value0" );
         attr.add( "value1" );
         attr.add( "value2" );

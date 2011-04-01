@@ -116,7 +116,7 @@ public class DefaultModification implements Modification
                 at = schemaManager.lookupAttributeTypeRegistry( modAttribute.getId() );
             }
             
-            attribute = new DefaultEntryAttribute( at, modAttribute );
+            attribute = new DefaultAttribute( at, modAttribute );
         }
         catch ( LdapException ne )
         {
@@ -261,7 +261,7 @@ public class DefaultModification implements Modification
         
         if ( hasAttribute )
         {
-            attribute = new DefaultEntryAttribute();
+            attribute = new DefaultAttribute();
             attribute.readExternal( in );
         }
     }
