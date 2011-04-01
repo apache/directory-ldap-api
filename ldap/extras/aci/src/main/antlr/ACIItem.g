@@ -56,7 +56,7 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.AuthenticationLevel;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntryAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.aci.protectedItem.AllAttributeValuesItem;
 import org.apache.directory.shared.ldap.aci.protectedItem.AttributeTypeItem;
@@ -508,7 +508,7 @@ attributeValue
             attributeType = DnUtils.getRdnAttributeType( attributeTypeAndValue );
             attributeValue = DnUtils.getRdnValue( attributeTypeAndValue );
             
-            attributeSet.add( new DefaultEntryAttribute( attributeType, attributeValue ) );
+            attributeSet.add( new DefaultAttribute( attributeType, attributeValue ) );
             log.debug( "An attributeTypeAndValue from the set: " + attributeType + "=" +  attributeValue);
         }
         
