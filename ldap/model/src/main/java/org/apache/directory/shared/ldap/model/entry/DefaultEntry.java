@@ -39,7 +39,6 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Strings;
-import org.apache.directory.shared.util.exception.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -2456,36 +2455,6 @@ public final class DefaultEntry implements Entry
     public Iterator<Attribute> iterator()
     {
         return Collections.unmodifiableMap( attributes ).values().iterator();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isValid()
-    {
-        // @TODO Implement me !
-        throw new NotImplementedException();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isValid( Attribute objectClass )
-    {
-        // @TODO Implement me !
-        throw new NotImplementedException();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isValid( String objectClass )
-    {
-        // @TODO Implement me !
-        throw new NotImplementedException();
     }
 
 

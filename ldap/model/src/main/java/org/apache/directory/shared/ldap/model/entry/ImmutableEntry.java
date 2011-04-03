@@ -607,36 +607,6 @@ public class ImmutableEntry implements Entry
 
 
     /**
-     * {@inheritDoc}
-     */
-    public boolean isValid()
-    {
-        new Exception().printStackTrace();
-        throw new NotImplementedException();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isValid( Attribute objectClass )
-    {
-        new Exception().printStackTrace();
-        throw new NotImplementedException();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isValid( String objectClass )
-    {
-        new Exception().printStackTrace();
-        throw new NotImplementedException();
-    }
-
-
-    /**
      * Returns the number of attributes.
      *
      * @return the number of attributes

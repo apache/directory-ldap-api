@@ -168,42 +168,6 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
 
     /**
-     * Fail fast check performed to determine entry consistency according to schema
-     * characteristics.
-     *
-     * @return true if the entry, it's attributes and their values are consistent
-     * with the schema
-     */
-    boolean isValid();
-
-
-    /**
-     * Check performed to determine entry consistency according to the schema
-     * requirements of a particular objectClass.  The entry must be of that objectClass
-     * to return true: meaning if the entry's objectClass attribute does not contain
-     * the objectClass argument, then false should be returned.
-     *
-     * @param objectClass the objectClass to use while checking for validity
-     * @return true if the entry, it's attributes and their values are consistent
-     * with the objectClass
-     */
-    boolean isValid( String objectClass );
-
-    
-    /**
-     * Check performed to determine entry consistency according to the schema
-     * requirements of a particular objectClass.  The entry must be of that objectClass
-     * to return true: meaning if the entry's objectClass attribute does not contain
-     * the objectClass argument, then false should be returned.
-     *
-     * @param objectClass the objectClass to use while checking for validity
-     * @return true if the entry, it's attributes and their values are consistent
-     * with the objectClass
-     */
-    boolean isValid( Attribute objectClass );
-
-
-    /**
      * Returns an enumeration containing the zero or more attributes in the
      * collection. The behavior of the enumeration is not specified if the
      * attribute collection is changed.
