@@ -789,16 +789,6 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
     // Container (contains/get/put/remove) Methods
     // -----------------------------------------------------------------------
     /**
-     * Checks that the current entry contain an a attribute type given its ID.
-     * 
-     * @param upId the attribute we are looking for
-     * @return true if this entry contains the attribute type
-     * @throws LdapException if the attribute does not exists
-     */
-    boolean contains( String upId ) throws LdapException;
-    
-    
-    /**
      * Checks if an entry contains an attribute with some given binary values.
      *
      * @param attributeType The Attribute we are looking for.

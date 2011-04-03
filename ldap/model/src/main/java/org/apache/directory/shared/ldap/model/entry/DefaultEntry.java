@@ -1124,34 +1124,6 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean contains( String upId ) throws LdapException
-    {
-        if ( Strings.isEmpty(upId) )
-        {
-            return false;
-        }
-
-        String id = getId( upId );
-
-        if ( schemaManager != null )
-        {
-            try
-            {
-                return containsAttribute( schemaManager.lookupAttributeTypeRegistry( id ) );
-            }
-            catch ( LdapException le )
-            {
-                return false;
-            }
-        }
-
-        return attributes.containsKey( id );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public boolean containsAttribute( String... attributes )
     {
         if ( schemaManager == null )
@@ -1708,7 +1680,7 @@ public final class DefaultEntry implements Entry
             {
                 String id = attribute.getId();
 
-                if ( contains( id ) )
+                if ( containsAttribute( id ) )
                 {
                     // Store the attribute and remove it from the list
                     previous.add( get( id ) );
@@ -1924,7 +1896,7 @@ public final class DefaultEntry implements Entry
         {
             for ( Attribute attribute : attributes )
             {
-                if ( contains( attribute.getId() ) )
+                if ( containsAttribute( attribute.getId() ) )
                 {
                     this.attributes.remove( attribute.getId() );
                     removedAttributes.add( attribute );

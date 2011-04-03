@@ -28,8 +28,8 @@ import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.util.exception.NotImplementedException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.util.exception.NotImplementedException;
 
 
 /**
@@ -182,15 +182,6 @@ public class ImmutableEntry implements Entry
     public boolean contains( Attribute... attributes ) throws LdapException
     {
         return entry.contains( attributes );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean contains( String upId ) throws LdapException
-    {
-        return entry.contains( upId );
     }
 
 
