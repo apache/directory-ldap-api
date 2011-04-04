@@ -21,7 +21,6 @@ package org.apache.directory.shared.ldap.model.entry;
 
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -29,12 +28,13 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -412,48 +412,6 @@ public class AttributeUtilsTest
         
         assertNotNull( entry.get( "cn" ) );
         assertNull( entry.get( "ou" ) );
-    }
-
-    @Test
-    public void testEqualsNull() throws Exception
-    {
-        assertFalse( AttributeUtils.equals( byteArrayA, null ) );
-        assertFalse( AttributeUtils.equals( null, byteArrayA ) );
-        assertTrue( AttributeUtils.equals( null, null ) );
-    }
-
-
-    @Test
-    public void testEqualsReflexive() throws Exception
-    {
-        assertTrue( AttributeUtils.equals( byteArrayA, byteArrayA ) );
-    }
-
-
-    @Test
-    public void testEqualsSymmetric() throws Exception
-    {
-        assertTrue( AttributeUtils.equals( byteArrayA, byteArrayACopy ) );
-        assertTrue( AttributeUtils.equals( byteArrayACopy, byteArrayA ) );
-    }
-
-
-    @Test
-    public void testEqualsTransitive() throws Exception
-    {
-        assertTrue( AttributeUtils.equals( byteArrayA, byteArrayACopy ) );
-        assertTrue( AttributeUtils.equals(byteArrayACopy, byteArrayB) );
-        assertTrue( AttributeUtils.equals( byteArrayA, byteArrayB ) );
-    }
-
-
-    @Test
-    public void testNotEqualDiffValue() throws Exception
-    {
-        assertFalse( AttributeUtils.equals( byteArrayA, byteArrayC ) );
-        assertFalse( AttributeUtils.equals( byteArrayC, byteArrayA ) );
-        assertFalse( AttributeUtils.equals( byteArrayA, "otherObject" ) );
-        assertFalse( AttributeUtils.equals( byteArrayA, "otherObject" ) );
     }
 }
 

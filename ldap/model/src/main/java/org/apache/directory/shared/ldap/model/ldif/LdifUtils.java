@@ -165,7 +165,7 @@ public final class LdifUtils
      */
     public static String convertToLdif( Attributes attrs ) throws LdapException
     {
-        return convertAttributesToLdif( AttributeUtils.toClientEntry( attrs, null ), DEFAULT_LINE_LENGTH );
+        return convertAttributesToLdif( AttributeUtils.toEntry( attrs, null ), DEFAULT_LINE_LENGTH );
     }
 
 
@@ -179,7 +179,7 @@ public final class LdifUtils
      */
     public static String convertToLdif( Attributes attrs, int length ) throws LdapException
     {
-        return convertAttributesToLdif( AttributeUtils.toClientEntry(attrs, null), length );
+        return convertAttributesToLdif( AttributeUtils.toEntry(attrs, null), length );
     }
 
 
@@ -194,7 +194,7 @@ public final class LdifUtils
      */
     public static String convertToLdif( Attributes attrs, Dn dn, int length ) throws LdapException
     {
-        return convertEntryToLdif( AttributeUtils.toClientEntry( attrs, dn ), length );
+        return convertEntryToLdif( AttributeUtils.toEntry( attrs, dn ), length );
     }
 
 
@@ -208,7 +208,7 @@ public final class LdifUtils
      */
     public static String convertToLdif( Attributes attrs, Dn dn ) throws LdapException
     {
-        return convertEntryToLdif( AttributeUtils.toClientEntry( attrs, dn ), DEFAULT_LINE_LENGTH );
+        return convertEntryToLdif( AttributeUtils.toEntry( attrs, dn ), DEFAULT_LINE_LENGTH );
     }
 
 
