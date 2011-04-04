@@ -228,6 +228,38 @@ public enum AliasDerefMode
     }
 
 
+    /**
+     * get the AliasDerefMode corresponding to the string value {@link  #jndiValue} passed
+     *
+     * @param val the AliasDerefMode's string value
+     * @return the AliasDerefMode whose value is equivalent to the given string value
+     */
+    public static AliasDerefMode getDerefMode( String val )
+    {
+        if ( val.equals( NEVER_DEREF_ALIASES.jndiValue ) )
+        {
+            return NEVER_DEREF_ALIASES;
+        }
+
+        if ( val.equals( DEREF_IN_SEARCHING.jndiValue ) )
+        {
+            return DEREF_IN_SEARCHING;
+        }
+
+        if ( val.equals( DEREF_FINDING_BASE_OBJ.jndiValue ) )
+        {
+            return DEREF_FINDING_BASE_OBJ;
+        }
+
+        if ( val.equals( DEREF_ALWAYS.jndiValue ) )
+        {
+            return DEREF_ALWAYS;
+        }
+
+        throw new IllegalArgumentException( "Unknown derefmode " + val );
+    }
+
+
     public String getJndiValue()
     {
         return jndiValue;
