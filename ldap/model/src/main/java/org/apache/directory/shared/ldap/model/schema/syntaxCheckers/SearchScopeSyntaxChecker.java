@@ -82,6 +82,6 @@ public class SearchScopeSyntaxChecker extends SyntaxChecker
 
         strValue = Strings.trim( Strings.toLowerCase( strValue ) );
         
-        return ( "object".equals( strValue ) || "one".equals(  strValue ) || "subtree".equals( strValue ) );
+        return ( "base".equals( strValue ) || "one".equals(  strValue ) || "sub".equals( strValue ) );
     }
 }
