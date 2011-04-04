@@ -1720,10 +1720,15 @@ public class DefaultAttribute implements Attribute
         
         if ( values != null )
         {
+            Set<Value<?>> newValues = new LinkedHashSet<Value<?>>( values.size() );
+
             for ( Value<?> value : values )
             {
                 value.apply( attributeType );
+                newValues.add( value );
             }
+            
+            values = newValues;
         }
         
         isHR = attributeType.getSyntax().isHumanReadable();
