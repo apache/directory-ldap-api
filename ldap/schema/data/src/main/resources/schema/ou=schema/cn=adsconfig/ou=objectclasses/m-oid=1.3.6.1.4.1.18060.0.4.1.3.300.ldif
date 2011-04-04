@@ -16,8 +16,7 @@ m-may: ads-saslPrincipal
 m-may: ads-saslRealms
 m-may: ads-keystoreFile
 m-may: ads-certificatePassword
-m-may: ads-replProvider
-m-may: ads-replConsumer
+m-may: ads-replReqHandler
 m-may: ads-saslMechHandlers
 m-may: ads-extendedOpHandlers
-m-may: ads-enableReplProvider
+m-may: ads-replConsumers
