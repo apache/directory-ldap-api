@@ -144,22 +144,6 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
 
     /**
-     * <p>
-     * Put some new attributes using the attributeTypes. 
-     * No value is inserted. 
-     * </p>
-     * <p>
-     * If an existing Attribute is found, it will be replaced by an
-     * empty attribute, and returned to the caller.
-     * </p>
-     * 
-     * @param attributeTypes The AttributeTypes to add.
-     * @return A list of replaced Attributes, of <code>null</code> if no attribute are removed.
-     */
-    List<Attribute> set( AttributeType... attributeTypes );
-
-
-    /**
      * Set this entry's Dn.
      *
      * @param dn The Dn associated with this entry
