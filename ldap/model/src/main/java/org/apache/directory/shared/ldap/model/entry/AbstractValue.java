@@ -140,6 +140,16 @@ public abstract class AbstractValue<T> implements Value<T>
             {
                 if ( wrappedValue != null )
                 {
+                    boolean isHR = attributeType.getSyntax().isHumanReadable();
+                    
+                    if ( isHR != isHumanReadable() )
+                    {
+                        String message = "The '" + attributeType.getName() + "' AttributeType and values must " +
+                            "both be String or binary";
+                        LOG.error( message );
+                        throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
+                    }
+                        
                     try
                     {
                         if ( isHumanReadable() )

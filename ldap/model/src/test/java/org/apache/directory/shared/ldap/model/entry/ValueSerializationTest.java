@@ -122,7 +122,7 @@ public class ValueSerializationTest
         atb.setSubstring( mrb );
         atb.setSyntax( sb );
         
-        ss = new EntryUtils.S( "1.1.1.1", false );
+        ss = new EntryUtils.S( "1.1.1.1", true );
         ss.setSyntaxChecker( new OctetStringSyntaxChecker() );
         mrs = new EntryUtils.MR( "1.1.2.1" );
         mrs.setSyntax( ss );

@@ -66,7 +66,7 @@ public class StringValueTest
     @BeforeClass 
     public static void initAT()
     {
-        s = new EntryUtils.S( "1.1.1.1", false );
+        s = new EntryUtils.S( "1.1.1.1", true );
         s.setSyntaxChecker( new OctetStringSyntaxChecker() );
         mr = new EntryUtils.MR( "1.1.2.1" );
         mr.setSyntax( s );

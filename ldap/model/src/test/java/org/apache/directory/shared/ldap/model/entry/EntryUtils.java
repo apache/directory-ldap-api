@@ -203,7 +203,7 @@ public class EntryUtils
     /* No protection */ static AttributeType getBytesAttributeType()
     {
         AttributeType attributeType = new AttributeType( "1.2" );
-        LdapSyntax syntax = new LdapSyntax( "1.2.1", "", true );
+        LdapSyntax syntax = new LdapSyntax( "1.2.1", "", false );
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.2.1" )
         {
