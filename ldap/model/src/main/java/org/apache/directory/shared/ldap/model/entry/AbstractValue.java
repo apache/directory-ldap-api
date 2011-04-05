@@ -278,13 +278,13 @@ public abstract class AbstractValue<T> implements Value<T>
     /**
      * {@inheritDoc}
      */
-    public final boolean isValid( SyntaxChecker syntaxChecker ) throws LdapException
+    public final boolean isValid( SyntaxChecker syntaxChecker ) throws LdapInvalidAttributeValueException
     {
         if ( syntaxChecker == null )
         {
             String message = I18n.err( I18n.ERR_04139, toString() );
             LOG.error( message );
-            throw new LdapException( message );
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
         }
         
         return syntaxChecker.isValidSyntax( normalizedValue );

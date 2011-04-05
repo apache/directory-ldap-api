@@ -32,6 +32,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -651,17 +652,49 @@ public class DefaultAttribute implements Attribute
     /**
      * {@inheritDoc}
      */
-    public boolean isValid( SyntaxChecker checker ) throws LdapException
+    public boolean isValid( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
+        LdapSyntax syntax = attributeType.getSyntax();
+        
+        if ( syntax == null )
+        {
+            return false;
+        }
+        
+        SyntaxChecker syntaxChecker = syntax.getSyntaxChecker();
+        
+        if ( syntaxChecker == null )
+        {
+            return false;
+        }
+        
+        
         // Check that we can have no value for this attributeType
         if ( values.size() == 0 )
         {
-            return checker.isValidSyntax( null );
+            return syntaxChecker.isValidSyntax( null );
+        }
+        
+        // Check that we can't have more than one value if the AT is single-value
+        if ( attributeType.isSingleValued() )
+        {
+            if ( values.size() > 1 )
+            {
+                return false;
+            }
         }
 
+        // Now check the values
         for ( Value<?> value : values )
         {
-            if ( !value.isValid( checker ) )
+            try
+            {
+                if ( !value.isValid( syntaxChecker ) )
+                {
+                    return false;
+                }
+            }
+            catch ( LdapException le )
             {
                 return false;
             }

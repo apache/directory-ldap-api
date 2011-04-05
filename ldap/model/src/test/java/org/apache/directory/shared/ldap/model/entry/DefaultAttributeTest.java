@@ -37,7 +37,6 @@ import javax.naming.directory.InvalidAttributeValueException;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
-import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.Ia5StringSyntaxChecker;
 import org.apache.directory.shared.util.StringConstants;
 import org.apache.directory.shared.util.Strings;
 import org.junit.BeforeClass;
@@ -431,23 +430,6 @@ public class DefaultAttributeTest
         attr.setUpId( " Test " );
         assertEquals( " Test ", attr.getUpId() );
         assertEquals( "test", attr.getId() );
-    }
-
-
-    /**
-     * Test method isValid( SyntaxChecker ) 
-     */
-    @Test
-    public void testIsValidSyntaxChecker() throws LdapException
-    {
-        Attribute attr = new DefaultAttribute( "test" );
-        
-        attr.add( "test", "another test" );
-        
-        assertTrue( attr.isValid( new Ia5StringSyntaxChecker() ) );
-        
-        attr.add( "é" );
-        assertFalse( attr.isValid( new Ia5StringSyntaxChecker() ) );
     }
 
 

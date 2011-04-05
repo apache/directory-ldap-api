@@ -22,7 +22,6 @@ package org.apache.directory.shared.ldap.model.entry;
 
 import java.io.Externalizable;
 
-import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
@@ -139,9 +138,9 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * 
      * @param checker the SyntaxChecker to use to validate the value
      * @return <code>true</code> if the value is valid
-     * @exception LdapException if the value cannot be validated
+     * @exception LdapInvalidAttributeValueException if the value cannot be validated
      */
-    boolean isValid( SyntaxChecker checker ) throws LdapException;
+    boolean isValid( SyntaxChecker checker ) throws LdapInvalidAttributeValueException;
 
     
     /**

@@ -22,10 +22,8 @@ package org.apache.directory.shared.ldap.model.entry;
 import java.io.Externalizable;
 import java.util.Iterator;
 
-import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 
 
 /**
@@ -426,9 +424,9 @@ public interface Attribute extends Iterable<Value<?>>, Cloneable, Externalizable
     /**
      * Checks to see if this attribute is valid along with the values it contains.
      *
-     * @param checker The syntax checker
+     * @param attributeType The AttributeType
      * @return true if the attribute and it's values are valid, false otherwise
-     * @throws LdapException if there is a failure to check syntaxes of values
+     * @throws LdapInvalidAttributeValueException if there is a failure to check syntaxes of values
      */
-    boolean isValid( SyntaxChecker checker) throws LdapException;
+    boolean isValid( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
 }
