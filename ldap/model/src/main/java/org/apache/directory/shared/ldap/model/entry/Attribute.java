@@ -30,7 +30,7 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface Attribute extends Iterable<Value<?>>, Cloneable, Externalizable
+public interface Attribute extends Iterable<Value<?>>, Externalizable
 {
     /**
      * Adds some values to this attribute. If the new values are already present in

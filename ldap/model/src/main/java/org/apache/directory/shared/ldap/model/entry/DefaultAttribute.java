@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DefaultAttribute implements Attribute
+public class DefaultAttribute implements Attribute, Cloneable
 {
     /** logger for reporting errors that might not be handled properly upstream */
     private static final Logger LOG = LoggerFactory.getLogger( DefaultAttribute.class );
@@ -494,15 +494,12 @@ public class DefaultAttribute implements Attribute
         }
         else
         {
-            if ( isHR )
+            if ( isHR && ( value != null ) )
             {
                 // Try to convert the value from a byte[] to a String
-                if ( value != null )
-                {
-                    String valueStr = Strings.utf8ToString((byte[]) value.getReference());
-                
-                    return valueStr;
-                }
+                String valueStr = Strings.utf8ToString((byte[]) value.getReference());
+            
+                return valueStr;
             }
             
             String message = I18n.err( I18n.ERR_04131 );
@@ -545,7 +542,7 @@ public class DefaultAttribute implements Attribute
     private boolean areCompatible( String id, AttributeType attributeType )
     {
         // First, get rid of the options, if any
-        int optPos = id.indexOf( ";" );
+        int optPos = id.indexOf( ';' );
         String idNoOption = id;
         
         if ( optPos != -1 )

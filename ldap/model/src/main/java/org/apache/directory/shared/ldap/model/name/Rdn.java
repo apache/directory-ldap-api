@@ -1003,7 +1003,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                         }
                     }
 
-                    if ( equals == false )
+                    if ( !equals )
                     {
                         return false;
                     }
@@ -1494,9 +1494,9 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 break;
 
             default:
-                for ( Ava ava : avas )
+                for ( Ava localAva : avas )
                 {
-                    ava.writeExternal( out );
+                    localAva.writeExternal( out );
                 }
 
                 break;

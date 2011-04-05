@@ -465,7 +465,7 @@ public final class DefaultEntry implements Entry
 
 
     /**
-     * Get the UpId if it was null.
+     * Get the UpId if it is null.
      * 
      * @param upId The ID
      */
@@ -481,18 +481,24 @@ public final class DefaultEntry implements Entry
                 LOG.error( message );
                 throw new IllegalArgumentException( message );
             }
+            
+            return upId;
         }
         else if ( Strings.isEmpty( normUpId ) )
         {
-            upId = attributeType.getName();
+            String id = attributeType.getName();
 
-            if ( Strings.isEmpty( upId ) )
+            if ( Strings.isEmpty( id ) )
             {
-                upId = attributeType.getOid();
+                id = attributeType.getOid();
             }
+            
+            return id;
         }
-
-        return upId;
+        else
+        {     
+            return upId;
+        }
     }
 
 
@@ -516,11 +522,11 @@ public final class DefaultEntry implements Entry
         
         try
         {
-            if ( objectClassAttributeType == null )
+            synchronized ( MUTEX )
             {
-                synchronized ( MUTEX )
+                if ( objectClassAttributeType == null )
                 {
-                    objectClassAttributeType = schemaManager.lookupAttributeTypeRegistry( SchemaConstants.OBJECT_CLASS_AT );
+                        objectClassAttributeType = schemaManager.lookupAttributeTypeRegistry( SchemaConstants.OBJECT_CLASS_AT );
                 }
             }
         }
@@ -759,20 +765,20 @@ public final class DefaultEntry implements Entry
 
         Attribute attribute = attributes.get( attributeType.getOid() );
 
-        upId = getUpId( upId, attributeType );
+        String id = getUpId( upId, attributeType );
 
         if ( attribute != null )
         {
             // This Attribute already exist, we add the values
             // into it
             attribute.add( values );
-            attribute.setUpId( upId, attributeType );
+            attribute.setUpId( id, attributeType );
         }
         else
         {
             // We have to create a new Attribute and set the values
             // and the upId
-            createAttribute( upId, attributeType, values );
+            createAttribute( id, attributeType, values );
         }
     }
 
@@ -789,7 +795,7 @@ public final class DefaultEntry implements Entry
             throw new IllegalArgumentException( message );
         }
 
-        upId = getUpId( upId, attributeType );
+        String id = getUpId( upId, attributeType );
 
         Attribute attribute = attributes.get( attributeType.getOid() );
 
@@ -798,11 +804,11 @@ public final class DefaultEntry implements Entry
             // This Attribute already exist, we add the values
             // into it
             attribute.add( values );
-            attribute.setUpId( upId, attributeType );
+            attribute.setUpId( id, attributeType );
         }
         else
         {
-            createAttribute( upId, attributeType, values );
+            createAttribute( id, attributeType, values );
         }
     }
 
@@ -819,7 +825,7 @@ public final class DefaultEntry implements Entry
             throw new IllegalArgumentException( message );
         }
 
-        upId = getUpId( upId, attributeType );
+        String id = getUpId( upId, attributeType );
 
         Attribute attribute = attributes.get( attributeType.getOid() );
 
@@ -828,13 +834,13 @@ public final class DefaultEntry implements Entry
             // This Attribute already exist, we add the values
             // into it
             attribute.add( values );
-            attribute.setUpId( upId, attributeType );
+            attribute.setUpId( id, attributeType );
         }
         else
         {
             // We have to create a new Attribute and set the values
             // and the upId
-            createAttribute( upId, attributeType, values );
+            createAttribute( id, attributeType, values );
         }
     }
 
@@ -2745,7 +2751,7 @@ public final class DefaultEntry implements Entry
                 {
                     AttributeType attributeType = schemaManager.getAttributeType( id );
 
-                    if ( attributeType != objectClassAttributeType )
+                    if ( !attributeType.equals( objectClassAttributeType ) )
                     {
                         sb.append( attribute );
                         continue;
