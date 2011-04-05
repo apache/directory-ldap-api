@@ -21,13 +21,12 @@ package org.apache.directory.shared.dsmlv2.request;
 
 
 import java.util.Collection;
-import java.util.Iterator;
 
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.entry.Value;
@@ -162,12 +161,8 @@ public class ModifyRequestDsml
             {
                 modElement.addAttribute( "name", modification.getAttribute().getId() );
 
-                Iterator<Value<?>> iterator = modification.getAttribute().getAll();
-
-                while ( iterator.hasNext() )
+                for ( Value<?> value : modification.getAttribute() )
                 {
-                    Value<?> value = iterator.next();
-
                     if ( value.getValue() != null )
                     {
                         if ( ParserUtils.needsBase64Encoding( value.getValue() ) )

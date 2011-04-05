@@ -20,7 +20,6 @@ package org.apache.directory.shared.ldap.model.entry;
 
 
 import java.io.Externalizable;
-import java.util.Iterator;
 
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
@@ -244,18 +243,6 @@ public interface Attribute extends Iterable<Value<?>>, Cloneable, Externalizable
      *  @return The first value for this attribute.
      */
     Value<?> get();
-
-
-    /**
-     * Returns an iterator over all the attribute's values.
-     * <p>
-     * The effect on the returned enumeration of adding or removing values of
-     * the attribute is not specified.
-     * </p>
-     *
-     * @return an enumeration of all values of the attribute
-     */
-    Iterator<Value<?>> getAll();
 
 
     /**

@@ -1461,15 +1461,6 @@ public class DefaultAttribute implements Attribute
     /**
      * {@inheritDoc}
      */
-    public Iterator<Value<?>> getAll()
-    {
-        return iterator();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public int size()
     {
         return values.size();
