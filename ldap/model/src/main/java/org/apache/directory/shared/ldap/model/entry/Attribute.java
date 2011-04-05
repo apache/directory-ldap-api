@@ -65,6 +65,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      *
      * @param vals some new values to be added which may be null
      * @return the number of added values, or 0 if none has been added
+     * @throws LdapInvalidAttributeValueException if some of the added values are not valid
      */
     int add( String... vals ) throws LdapInvalidAttributeValueException;
 
@@ -96,6 +97,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      *
      * @param vals some new values to be added which may be null
      * @return the number of added values, or 0 if none has been added
+     * @throws LdapInvalidAttributeValueException if some of the added values are not valid
      */
     int add( byte[]... vals ) throws LdapInvalidAttributeValueException;
 
@@ -137,6 +139,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      * </p>
      * @param val some new values to be added which may be null
      * @return the number of added values, or 0 if none has been added
+     * @throws LdapInvalidAttributeValueException if some of the added values are not valid
      */
     int add( Value<?>... val ) throws LdapInvalidAttributeValueException;
     
@@ -215,6 +218,8 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      * </p>
      *
      * @param attributeType the attributeType associated with this entry attribute
+     * @throws LdapInvalidAttributeValueException if the contained values are not valid accordingly
+     * to the added AttributeType
      */
     void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
 

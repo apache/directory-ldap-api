@@ -40,10 +40,8 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * A client side entry attribute. The client is not aware of the schema,
- * so we can't tell if the stored value will be String or Binary. We will
- * default to Binary.<p>
- * To define the kind of data stored, the client must set the isHR flag.
+ * An LDAP attribute.<p>
+ * To define the kind of data stored, the client must set the isHR flag, or inject an AttributeType.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -131,9 +129,10 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * Create a new instance of a Attribute, without ID nor value.
+     * Create a new instance of a schema aware Attribute, without ID nor value.
+     * Used by the serializer
      */
-    DefaultAttribute( AttributeType attributeType, String upId, String normId, boolean isHR, int hashCode, Value<?>... values)
+    /* No protection*/ DefaultAttribute( AttributeType attributeType, String upId, String normId, boolean isHR, int hashCode, Value<?>... values)
     {
         this.attributeType = attributeType;
         this.upId = upId;
@@ -152,7 +151,7 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * Create a new instance of a Attribute, without ID nor value.
+     * Create a new instance of a schema aware Attribute, without ID nor value.
      * 
      * @param attributeType the attributeType for the empty attribute added into the entry
      */
@@ -173,7 +172,8 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * Create a new instance of a Attribute, without value.
+     * Create a new instance of an Attribute, without value.
+     * @param upId The user provided ID
      */
     public DefaultAttribute( String upId )
     {
@@ -182,7 +182,7 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * Create a new instance of a Attribute, without value.
+     * Create a new instance of a schema aware Attribute, without value.
      * 
      * @param upId the ID for the added attributeType
      * @param attributeType the added AttributeType
@@ -210,13 +210,14 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
+     * Create a new instance of an Attribute, with some values, and a user provided ID.<br>
      * If the value does not correspond to the same attributeType, then it's
      * wrapped value is copied into a new ClientValue which uses the specified
      * attributeType.
-     * 
+     * <p>
      * Otherwise, the value is stored, but as a reference. It's not a copy.
-     *
-     * @param upId
+     * </p>
+     * @param upId the attributeType ID
      * @param vals an initial set of values for this attribute
      */
     public DefaultAttribute( String upId, Value<?>... vals )
@@ -248,10 +249,12 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * Create a new instance of a Attribute, without ID but with some values.
+     * Create a new instance of a schema aware Attribute, without ID but with some values.
      * 
      * @param attributeType The attributeType added on creation
      * @param vals The added value for this attribute
+     * @throws LdapInvalidAttributeValueException If any of the
+     * added values is not valid
      */
     public DefaultAttribute( AttributeType attributeType, String... vals ) throws LdapInvalidAttributeValueException
     {
@@ -260,11 +263,13 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * Create a new instance of a Attribute.
+     * Create a new instance of a schema aware Attribute, with some values, and a user provided ID.
      * 
-     * @param upId the ID for the added attribute
+     * @param upId the ID for the created attribute
      * @param attributeType The attributeType added on creation
      * @param vals the added values for this attribute
+     * @throws LdapInvalidAttributeValueException If any of the
+     * added values is not valid
      */
     public DefaultAttribute( String upId, AttributeType attributeType, String... vals ) throws LdapInvalidAttributeValueException
     {
@@ -282,17 +287,18 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * Doc me more!
-     *
+     * Create a new instance of a schema aware Attribute, with some values, and a user provided ID.<br>
      * If the value does not correspond to the same attributeType, then it's
      * wrapped value is copied into a new Value which uses the specified
      * attributeType.
-     * 
+     * <p>
      * Otherwise, the value is stored, but as a reference. It's not a copy.
-     *
-     * @param upId the ID of the added attribute
+     * </p>
+     * @param upId the ID of the created attribute
      * @param attributeType the attribute type according to the schema
      * @param vals an initial set of values for this attribute
+     * @throws LdapInvalidAttributeValueException If any of the
+     * added values is not valid
      */
     public DefaultAttribute( String upId, AttributeType attributeType, Value<?>... vals ) throws LdapInvalidAttributeValueException
     {
@@ -310,12 +316,12 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * Doc me more!
-     *
+     * Create a new instance of a schema aware Attribute, with some values.
+     * <p>
      * If the value does not correspond to the same attributeType, then it's
      * wrapped value is copied into a new Value which uses the specified
      * attributeType.
-     *
+     * </p>
      * @param attributeType the attribute type according to the schema
      * @param vals an initial set of values for this attribute
      */
@@ -326,7 +332,10 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * Create a new instance of a Attribute.
+     * Create a new instance of an Attribute, with some String values, and a user provided ID.
+     * 
+     * @param upId the ID of the created attribute
+     * @param vals an initial set of String values for this attribute
      */
     public DefaultAttribute( String upId, String... vals )
     {
@@ -344,7 +353,10 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * Create a new instance of a Attribute, with some byte[] values.
+     * Create a new instance of an Attribute, with some binary values, and a user provided ID.
+     * 
+     * @param upId the ID of the created attribute
+     * @param vals an initial set of binary values for this attribute
      */
     public DefaultAttribute( String upId, byte[]... vals )
     {
@@ -362,10 +374,12 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * Create a new instance of a Attribute, with some byte[] values.
+     * Create a new instance of a schema aware Attribute, with some byte[] values.
      * 
      * @param attributeType The attributeType added on creation
-     * @param vals The value for the added attribute
+     * @param vals The added binary values
+     * @throws LdapInvalidAttributeValueException If any of the
+     * added values is not valid
      */
     public DefaultAttribute( AttributeType attributeType, byte[]... vals ) throws LdapInvalidAttributeValueException
     {
@@ -374,11 +388,14 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * Create a new instance of a Attribute, with some byte[] values.
+     * Create a new instance of a schema aware Attribute, with some byte[] values, and
+     * a user provided ID.
      * 
      * @param upId the ID for the added attribute
      * @param attributeType the AttributeType to be added
-     * @param vals the values for the added attribute
+     * @param vals the binary values for the added attribute
+     * @throws LdapInvalidAttributeValueException If any of the
+     * added values is not valid
      */
     public DefaultAttribute( String upId, AttributeType attributeType, byte[]... vals ) throws LdapInvalidAttributeValueException
     {
@@ -394,10 +411,9 @@ public class DefaultAttribute implements Attribute, Cloneable
     
     
     /**
-     * 
-     * Creates a new instance of DefaultServerAttribute, by copying
-     * another attribute, which can be a ClientAttribute. If the other
-     * attribute is a ServerAttribute, it will be copied.
+     * Creates a new instance of schema aware Attribute, by copying another attribute.
+     * If the initial Attribute is not schema aware, the copy will be if the attributeType
+     * argument is not null.
      *
      * @param attributeType The attribute's type 
      * @param attribute The attribute to be copied
@@ -417,6 +433,11 @@ public class DefaultAttribute implements Attribute, Cloneable
             for ( Value<?> value:attribute )
             {
                 add( value.clone() );
+            }
+
+            if ( attribute.getAttributeType() != null )
+            {
+                apply( attribute.getAttributeType() );
             }
         }
         else
@@ -470,14 +491,14 @@ public class DefaultAttribute implements Attribute, Cloneable
     {
         Value<?> value = get();
         
-        if ( value.isHumanReadable() )
+        if ( !isHR && ( value != null ) )
         {
-            String message = I18n.err( I18n.ERR_04130 );
-            LOG.error( message );
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
+            return value.getBytes();
         }
 
-        return value.getBytes();
+        String message = I18n.err( I18n.ERR_04130 );
+        LOG.error( message );
+        throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
     }
 
 
@@ -488,24 +509,14 @@ public class DefaultAttribute implements Attribute, Cloneable
     {
         Value<?> value = get();
         
-        if ( value instanceof StringValue)
+        if ( isHR && ( value != null ) )
         {
             return value.getString();
         }
-        else
-        {
-            if ( isHR && ( value != null ) )
-            {
-                // Try to convert the value from a byte[] to a String
-                String valueStr = Strings.utf8ToString((byte[]) value.getReference());
-            
-                return valueStr;
-            }
-            
-            String message = I18n.err( I18n.ERR_04131 );
-            LOG.error( message );
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
-        }
+        
+        String message = I18n.err( I18n.ERR_04131 );
+        LOG.error( message );
+        throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
     }
 
 
@@ -1951,8 +1962,6 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * This is the place where we serialize attributes, and all theirs
      * elements. 
-     * 
-     * The inner structure is :
      * 
      * {@inheritDoc}
      */
