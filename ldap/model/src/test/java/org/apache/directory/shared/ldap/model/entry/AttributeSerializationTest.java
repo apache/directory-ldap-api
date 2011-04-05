@@ -40,7 +40,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class EntryAttributeSerializationTest
+public class AttributeSerializationTest
 {
     private static byte[] data1 = new byte[] {0x01, 0x02, 0x03, 0x04};
     private static byte[] data2 = new byte[] {0x05, 0x06, 0x07, 0x08};
