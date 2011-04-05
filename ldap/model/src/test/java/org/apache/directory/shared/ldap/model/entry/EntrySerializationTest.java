@@ -29,7 +29,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.ldif.LdifUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -48,7 +47,7 @@ public class EntrySerializationTest
     @Test
     public void testEntryFullSerialization() throws IOException, LdapException, ClassNotFoundException
     {
-        Entry entry1 = LdifUtils.createEntry( 
+        Entry entry1 = new DefaultEntry( 
             "dc=example, dc=com", 
             "ObjectClass: top",
             "ObjectClass: domain",
@@ -76,7 +75,7 @@ public class EntrySerializationTest
     @Test
     public void testEntryNoDnSerialization() throws IOException, LdapException, ClassNotFoundException
     {
-        Entry entry1 = LdifUtils.createEntry( 
+        Entry entry1 = new DefaultEntry( 
             "", 
             "ObjectClass: top",
             "ObjectClass: domain",
@@ -105,7 +104,7 @@ public class EntrySerializationTest
     @Test
     public void testEntryNoAttributesSerialization() throws IOException, LdapException, ClassNotFoundException
     {
-        Entry entry1 = LdifUtils.createEntry( "dc=example, dc=com" ); 
+        Entry entry1 = new DefaultEntry( "dc=example, dc=com" ); 
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -128,7 +127,7 @@ public class EntrySerializationTest
     @Test
     public void testEntryNoAttributesNoDnSerialization() throws IOException, LdapException, ClassNotFoundException
     {
-        Entry entry1 = LdifUtils.createEntry( "" ); 
+        Entry entry1 = new DefaultEntry( "" ); 
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );

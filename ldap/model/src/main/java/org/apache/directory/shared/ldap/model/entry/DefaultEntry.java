@@ -35,9 +35,12 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.shared.ldap.model.ldif.LdifAttributesReader;
+import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
+import org.apache.directory.shared.util.Base64;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -171,6 +174,93 @@ public final class DefaultEntry implements Entry
             // Add a new AttributeType without value
             set( upId );
         }
+    }
+
+
+    /**
+     * Creates a new instance of DefaultEntry, with a
+     * Dn and a list of IDs.
+     *
+     * @param dn The Dn for this serverEntry. Can be null.
+     * @param upIds The list of attributes to create.
+     */
+    public DefaultEntry( String dn, Object... elements ) throws LdapException
+    {
+        this( null, dn, elements );
+    }
+
+
+    /**
+     * Creates a new instance of DefaultEntry, with a
+     * Dn and a list of IDs.
+     *
+     * @param dn The Dn for this serverEntry. Can be null.
+     * @param upIds The list of attributes to create.
+     */
+    public DefaultEntry( SchemaManager schemaManager, String dn, Object... elements ) throws LdapException
+    {
+        StringBuilder sb = new StringBuilder();
+        int pos = 0;
+        boolean valueExpected = false;
+
+        for ( Object element : elements )
+        {
+            if ( !valueExpected )
+            {
+                if ( !( element instanceof String ) )
+                {
+                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                        I18n.ERR_12085, ( pos + 1 ) ) );
+                }
+
+                String attribute = ( String ) element;
+                sb.append( attribute );
+
+                if ( attribute.indexOf( ':' ) != -1 )
+                {
+                    sb.append( '\n' );
+                }
+                else
+                {
+                    valueExpected = true;
+                }
+            }
+            else
+            {
+                if ( element instanceof String )
+                {
+                    sb.append( ": " ).append( ( String ) element ).append( '\n' );
+                }
+                else if ( element instanceof byte[] )
+                {
+                    sb.append( ":: " );
+                    sb.append( new String( Base64.encode( ( byte[] ) element ) ) );
+                    sb.append( '\n' );
+                }
+                else
+                {
+                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                        I18n.ERR_12086, ( pos + 1 ) ) );
+                }
+
+                valueExpected = false;
+            }
+        }
+
+        if ( valueExpected )
+        {
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n
+                .err( I18n.ERR_12087 ) );
+        }
+
+        LdifAttributesReader reader = new LdifAttributesReader();
+        DefaultEntry entry = (DefaultEntry)reader.parseEntry( schemaManager, sb.toString() );
+        this.dn = new Dn( schemaManager, dn );
+        this.attributes = entry.attributes;
+        this.schemaManager = schemaManager;
+        
+        // Initialize the ObjectClass object
+        initObjectClassAT();
     }
 
 

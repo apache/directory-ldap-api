@@ -31,7 +31,6 @@ import java.io.ObjectOutputStream;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.ldif.LdifUtils;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.junit.BeforeClass;
@@ -65,7 +64,7 @@ public class SchemaAwareEntrySerializationTest
     @Test
     public void testEntryFullSerialization() throws IOException, LdapException, ClassNotFoundException
     {
-        Entry entry1 = LdifUtils.createEntry( 
+        Entry entry1 = new DefaultEntry( 
             schemaManager,
             "dc=example, dc=com", 
             "ObjectClass: top",
@@ -94,7 +93,7 @@ public class SchemaAwareEntrySerializationTest
     @Test
     public void testEntryNoDnSerialization() throws IOException, LdapException, ClassNotFoundException
     {
-        Entry entry1 = LdifUtils.createEntry( 
+        Entry entry1 = new DefaultEntry( 
             schemaManager,
             "", 
             "ObjectClass: top",
@@ -124,7 +123,7 @@ public class SchemaAwareEntrySerializationTest
     @Test
     public void testEntryNoAttributesSerialization() throws IOException, LdapException, ClassNotFoundException
     {
-        Entry entry1 = LdifUtils.createEntry( schemaManager, "dc=example, dc=com" ); 
+        Entry entry1 = new DefaultEntry( schemaManager, "dc=example, dc=com" ); 
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -147,7 +146,7 @@ public class SchemaAwareEntrySerializationTest
     @Test
     public void testEntryNoAttributesNoDnSerialization() throws IOException, LdapException, ClassNotFoundException
     {
-        Entry entry1 = LdifUtils.createEntry( schemaManager, "" ); 
+        Entry entry1 = new DefaultEntry( schemaManager, "" ); 
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );

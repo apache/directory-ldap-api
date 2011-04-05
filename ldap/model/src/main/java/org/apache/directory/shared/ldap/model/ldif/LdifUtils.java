@@ -25,17 +25,16 @@ import java.io.UnsupportedEncodingException;
 import javax.naming.directory.Attributes;
 
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Base64;
 import org.apache.directory.shared.util.Strings;
 
@@ -730,165 +729,5 @@ public final class LdifUtils
         Attributes attributes = AttributeUtils.toAttributes( reader.parseEntry( sb.toString() ) );
 
         return attributes;
-    }
-
-
-    /**
-     * Build a new Entry instance from a LDIF list of lines. The values can be
-     * either a complete Ava, or a couple of AttributeType ID and a value (a String or
-     * a byte[]). The following sample shows the three cases :
-     *
-     * <pre>
-     * Entry entry = LdifUtils.createEntry(
-     *     new Dn( "cn=test" ),
-     *     "objectclass: top",
-     *     "cn", "My name",
-     *     "jpegPhoto", new byte[]{0x01, 0x02} );
-     * </pre>
-     *
-     * @param dn The Entry's Dn
-     * @param avas The AttributeType and Values, using a ldif format, or a couple of
-     * Attribute ID/Value
-     * @return An Entry instance
-     * @throws LdapException If the data are invalid
-     */
-    public static Entry createEntry( Dn dn, Object... avas ) throws LdapException
-    {
-        return createEntry( null, dn, avas );
-    }
-
-
-    /**
-     * Build a new Entry instance from a LDIF list of lines. The values can be
-     * either a complete Ava, or a couple of AttributeType ID and a value (a String or
-     * a byte[]). The following sample shows the three cases :
-     *
-     * <pre>
-     * Entry entry = LdifUtils.createEntry(
-     *     new Dn( "cn=test" ),
-     *     "objectclass: top",
-     *     "cn", "My name",
-     *     "jpegPhoto", new byte[]{0x01, 0x02} );
-     * </pre>
-     *
-     * @param dn The entry's Dn as a String
-     * @param avas The AttributeType and Values, using a ldif format, or a couple of
-     * Attribute ID/Value
-     * @return An Entry instance
-     * @throws LdapException If the data are invalid
-     */
-    public static Entry createEntry( String dn, Object... avas ) throws LdapException
-    {
-        return createEntry( null, new Dn( dn ), avas );
-    }
-
-
-    /**
-     * Build a new Entry instance from a LDIF list of lines. The values can be
-     * either a complete Ava, or a couple of AttributeType ID and a value (a String or
-     * a byte[]). The following sample shows the three cases :
-     *
-     * <pre>
-     * Entry entry = LdifUtils.createEntry(
-     *     new Dn( "cn=test" ),
-     *     "objectclass: top",
-     *     "cn", "My name",
-     *     "jpegPhoto", new byte[]{0x01, 0x02} );
-     * </pre>
-     *
-     * @param schemaManager The SchemaManager instance
-     * @param dn The entry's Dn
-     * @param avas The AttributeType and Values, using a ldif format, or a couple of
-     * Attribute ID/Value
-     * @return An Entry instance
-     * @throws LdapException If the data are invalid
-     */
-    public static Entry createEntry( SchemaManager schemaManager, String dn, Object... avas ) throws LdapException
-    {
-        return createEntry( schemaManager, new Dn( dn ), avas );
-    }
-
-
-    /**
-     * Build a new Entry instance from a LDIF list of lines. The values can be
-     * either a complete Ava, or a couple of AttributeType ID and a value (a String or
-     * a byte[]). The following sample shows the three cases :
-     *
-     * <pre>
-     * Entry entry = LdifUtils.createEntry(
-     *     new Dn( "cn=test" ),
-     *     "objectclass: top",
-     *     "cn", "My name",
-     *     "jpegPhoto", new byte[]{0x01, 0x02} );
-     * </pre>
-     *
-     * @param schemaManager The SchemaManager instance
-     * @param dn The entry's Dn
-     * @param avas The AttributeType and Values, using a ldif format, or a couple of
-     * Attribute ID/Value
-     * @return An Entry instance
-     * @throws LdapException If the data are invalid
-     */
-    public static Entry createEntry( SchemaManager schemaManager, Dn dn, Object... avas ) throws LdapException
-    {
-        StringBuilder sb = new StringBuilder();
-        int pos = 0;
-        boolean valueExpected = false;
-
-        for ( Object ava : avas )
-        {
-            if ( !valueExpected )
-            {
-                if ( !( ava instanceof String ) )
-                {
-                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12085, ( pos + 1 ) ) );
-                }
-
-                String attribute = ( String ) ava;
-                sb.append( attribute );
-
-                if ( attribute.indexOf( ':' ) != -1 )
-                {
-                    sb.append( '\n' );
-                }
-                else
-                {
-                    valueExpected = true;
-                }
-            }
-            else
-            {
-                if ( ava instanceof String )
-                {
-                    sb.append( ": " ).append( ( String ) ava ).append( '\n' );
-                }
-                else if ( ava instanceof byte[] )
-                {
-                    sb.append( ":: " );
-                    sb.append( new String( Base64.encode( ( byte[] ) ava ) ) );
-                    sb.append( '\n' );
-                }
-                else
-                {
-                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12086, ( pos + 1 ) ) );
-                }
-
-                valueExpected = false;
-            }
-        }
-
-        if ( valueExpected )
-        {
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n
-                .err( I18n.ERR_12087 ) );
-        }
-
-        LdifAttributesReader reader = new LdifAttributesReader();
-        Entry entry = reader.parseEntry( schemaManager, sb.toString() );
-        entry.setDn( dn );
-
-        return entry;
     }
 }

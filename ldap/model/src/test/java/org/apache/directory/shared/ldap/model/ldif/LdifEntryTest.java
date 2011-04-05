@@ -26,8 +26,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
+import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
@@ -65,7 +66,7 @@ public class LdifEntryTest
     @Test
     public void testLdifEntryEmptyDn() throws Exception
     {
-        Entry entry = LdifUtils.createEntry( "", "cn: test" );
+        Entry entry = new DefaultEntry( "", "cn: test" );
         LdifEntry ldifEntry = new LdifEntry( "", "cn: test" );
         
         assertNotNull( ldifEntry );
@@ -81,7 +82,7 @@ public class LdifEntryTest
     @Test
     public void testLdifEntryNullDn() throws Exception
     {
-        Entry entry = LdifUtils.createEntry( "", "cn: test" );
+        Entry entry = new DefaultEntry( "", "cn: test" );
         LdifEntry ldifEntry = new LdifEntry( (Dn)null, "cn: test" );
         
         assertNotNull( ldifEntry );

@@ -37,11 +37,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.directory.shared.ldap.model.entry.BinaryValue;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
-import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
+import org.apache.directory.shared.ldap.model.entry.BinaryValue;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
+import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -194,6 +194,28 @@ public class EntryTest
         assertNotNull( entry );
         assertEquals( Dn.EMPTY_DN, entry.getDn() );
         assertEquals( 0, entry.size() );
+    }
+
+
+    /**
+     * Test method for DefaultEntry()
+     */
+    @Test
+    public void testDefaultClientEntryLdif() throws Exception
+    {
+        Entry entry = new DefaultEntry( 
+            "ou=example, dc=com",
+            "ObjectClass: top",
+            "ObjectClass: person",
+            "cn: test",
+            "sn: test" );
+        
+        assertNotNull( entry );
+        assertEquals( "ou=example, dc=com", entry.getDn().toString() );
+        assertEquals( 3, entry.size() );
+        assertTrue( entry.contains( "objectClass", "top", "person" ) );
+        assertTrue( entry.contains( "cn", "test" ) );
+        assertTrue( entry.contains( "sn", "test" ) );
     }
 
 
