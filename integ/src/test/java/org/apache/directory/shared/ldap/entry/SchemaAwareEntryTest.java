@@ -1099,36 +1099,6 @@ public class SchemaAwareEntryTest
     
     
     /**
-     * Test method for set( String... )
-     */
-    @Test
-    public void testSet() throws LdapException
-    {
-        Entry entry = new DefaultEntry( EXAMPLE_DN );
-
-        entry.add( "ObjectClass", "top", "person" );
-        entry.add( "cn", "test1", "test2" );
-        entry.add( "sn", "Test" );
-        
-        List<Attribute> removed = entry.set( "objectClass", "CN", "givenName" );
-        
-        assertEquals( 4, entry.size() );
-        assertNotNull( entry.get( "objectclass" ) );
-        assertNotNull( entry.get( "cn" ) );
-        assertNotNull( entry.get( "givenname" ) );
-        assertNotNull( entry.get( "sn" ) );
-        
-        assertNull( entry.get( "objectclass" ).get() );
-        assertNull( entry.get( "cn" ).get() );
-        assertNull( entry.get( "givenname" ).get() );
-        assertNotNull( entry.get( "sn" ).get() );
-        
-        assertNotNull( removed );
-        assertEquals( 2, removed.size() );
-    }
-
-
-    /**
      * Test method for setDN( Dn )
      */
     @Test

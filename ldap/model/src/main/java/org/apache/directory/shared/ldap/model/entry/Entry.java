@@ -128,22 +128,6 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
     
     
     /**
-     * <p>
-     * Put some new ClientAttribute using the User Provided ID. 
-     * No value is inserted. 
-     * </p>
-     * <p>
-     * If an existing Attribute is found, it will be replaced by an
-     * empty attribute, and returned to the caller.
-     * </p>
-     * 
-     * @param upIds The user provided IDs of the AttributeTypes to add.
-     * @return A list of replaced Attributes.
-     */
-    List<Attribute> set( String... upIds );
-
-
-    /**
      * Set this entry's Dn.
      *
      * @param dn The Dn associated with this entry

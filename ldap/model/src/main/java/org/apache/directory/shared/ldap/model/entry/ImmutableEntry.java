@@ -317,26 +317,6 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public List<Attribute> set( String... upIds )
-    {
-        new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot set a value : the entry " + entry.getDn() + " is immutable." );
-    }
-
-
-    /**
-     * {@inheritDoc}     
-     **/
-    public List<Attribute> set( AttributeType... attributeTypes )
-    {
-        new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot set a value : the entry " + entry.getDn() + " is immutable." );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public List<Attribute> put( Attribute... attributes ) throws LdapException
     {
         new Exception().printStackTrace();
