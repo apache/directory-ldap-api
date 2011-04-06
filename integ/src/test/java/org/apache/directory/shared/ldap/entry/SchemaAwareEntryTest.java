@@ -63,7 +63,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class EntryTest
+public class SchemaAwareEntryTest
 {
     private static Dn EXAMPLE_DN;
     private static final byte[] BYTES1 = new byte[]{ 'a', 'b' };
