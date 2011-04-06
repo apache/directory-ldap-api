@@ -35,6 +35,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.shared.ldap.model.ldif.LdapLdifException;
 import org.apache.directory.shared.ldap.model.ldif.LdifAttributesReader;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -91,8 +92,7 @@ public final class DefaultEntry implements Entry
      */
     public DefaultEntry()
     {
-        schemaManager = null;
-        dn = Dn.EMPTY_DN;
+        this( (SchemaManager)null );
     }
 
 
@@ -112,7 +112,10 @@ public final class DefaultEntry implements Entry
         dn = Dn.EMPTY_DN;
 
         // Initialize the ObjectClass object
-        initObjectClassAT();
+        if ( schemaManager != null )
+        {
+            initObjectClassAT();
+        }
     }
 
 
@@ -165,25 +168,6 @@ public final class DefaultEntry implements Entry
      * @param dn The Dn for this serverEntry. Can be null.
      * @param upIds The list of attributes to create.
      */
-    public DefaultEntry( Dn dn, String... upIds )
-    {
-        this.dn = dn;
-
-        for ( String upId : upIds )
-        {
-            // Add a new AttributeType without value
-            set( upId );
-        }
-    }
-
-
-    /**
-     * Creates a new instance of DefaultEntry, with a
-     * Dn and a list of IDs.
-     *
-     * @param dn The Dn for this serverEntry. Can be null.
-     * @param upIds The list of attributes to create.
-     */
     public DefaultEntry( String dn, Object... elements ) throws LdapException
     {
         this( null, dn, elements );
@@ -199,68 +183,30 @@ public final class DefaultEntry implements Entry
      */
     public DefaultEntry( SchemaManager schemaManager, String dn, Object... elements ) throws LdapException
     {
-        StringBuilder sb = new StringBuilder();
-        int pos = 0;
-        boolean valueExpected = false;
+        this( schemaManager, new Dn( schemaManager, dn ), elements );
+    }
 
-        for ( Object element : elements )
-        {
-            if ( !valueExpected )
-            {
-                if ( !( element instanceof String ) )
-                {
-                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12085, ( pos + 1 ) ) );
-                }
 
-                String attribute = ( String ) element;
-                sb.append( attribute );
-
-                if ( attribute.indexOf( ':' ) != -1 )
-                {
-                    sb.append( '\n' );
-                }
-                else
-                {
-                    valueExpected = true;
-                }
-            }
-            else
-            {
-                if ( element instanceof String )
-                {
-                    sb.append( ": " ).append( ( String ) element ).append( '\n' );
-                }
-                else if ( element instanceof byte[] )
-                {
-                    sb.append( ":: " );
-                    sb.append( new String( Base64.encode( ( byte[] ) element ) ) );
-                    sb.append( '\n' );
-                }
-                else
-                {
-                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
-                        I18n.ERR_12086, ( pos + 1 ) ) );
-                }
-
-                valueExpected = false;
-            }
-        }
-
-        if ( valueExpected )
-        {
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n
-                .err( I18n.ERR_12087 ) );
-        }
-
-        LdifAttributesReader reader = new LdifAttributesReader();
-        DefaultEntry entry = (DefaultEntry)reader.parseEntry( schemaManager, sb.toString() );
-        this.dn = new Dn( schemaManager, dn );
+    /**
+     * Creates a new instance of DefaultEntry, with a
+     * Dn and a list of IDs.
+     *
+     * @param dn The Dn for this serverEntry. Can be null.
+     * @param upIds The list of attributes to create.
+     */
+    public DefaultEntry( SchemaManager schemaManager, Dn dn, Object... elements ) throws LdapException
+    {
+        DefaultEntry entry = (DefaultEntry)createEntry( schemaManager, elements );
+        
+        this.dn = dn;
         this.attributes = entry.attributes;
         this.schemaManager = schemaManager;
         
-        // Initialize the ObjectClass object
-        initObjectClassAT();
+        if ( schemaManager != null )
+        {
+            this.dn.apply( schemaManager );
+            initObjectClassAT();
+        }
     }
 
 
@@ -326,134 +272,71 @@ public final class DefaultEntry implements Entry
     }
 
 
-    /**
-     * Creates a new instance of DefaultEntry, with a
-     * Dn, a list of ID and schema aware.
-     * <p>
-     * No attributes will be created except the ObjectClass attribute,
-     * which will contains "top".
-     * <p>
-     * If any of the AttributeType does not exist, they are simply discarded.
-     *
-     * @param schemaManager The reference to the schemaManager
-     * @param dn The Dn for this serverEntry. Can be null.
-     * @param upIds The list of attributes to create.
-     */
-    public DefaultEntry( SchemaManager schemaManager, Dn dn, String... upIds )
-    {
-        this.schemaManager = schemaManager;
-
-        if ( dn == null )
-        {
-            this.dn = Dn.EMPTY_DN;
-        }
-        else
-        {
-            this.dn = dn;
-            normalizeDN( this.dn );
-        }
-
-        initObjectClassAT();
-
-        set( upIds );
-    }
-
-
-    /**
-     * <p>
-     * Creates a new instance of DefaultEntry, with a
-     * Dn and a list of EntryAttributes.
-     * </p>
-     *
-     * @param dn The Dn for this serverEntry. Can be null
-     * @param attributes The list of attributes to create
-     */
-    public DefaultEntry( Dn dn, Attribute... attributes )
-    {
-        this.dn = dn;
-
-        for ( Attribute attribute : attributes )
-        {
-            if ( attribute == null )
-            {
-                continue;
-            }
-
-            // Store a new ClientAttribute
-            this.attributes.put( attribute.getId(), attribute );
-        }
-    }
-
-
-    /**
-     * Creates a new instance of DefaultEntry, with a
-     * Dn, a list of ServerAttributes and schema aware.
-     * <p>
-     * No attributes will be created except the ObjectClass attribute,
-     * which will contains "top".
-     * <p>
-     * If any of the AttributeType does not exist, they are simply discarded.
-     *
-     * @param schemaManager The reference to the schemaManager
-     * @param dn The Dn for this serverEntry. Can be null
-     * @param attributes The list of attributes to create
-     */
-    public DefaultEntry( SchemaManager schemaManager, Dn dn, Attribute... attributes )
-    {
-        this.schemaManager = schemaManager;
-        
-        if ( dn == null )
-        {
-            this.dn = Dn.EMPTY_DN;
-        }
-        else
-        {
-            this.dn = dn;
-            normalizeDN( this.dn );
-        }
-
-        if ( schemaManager == null )
-        {
-            if ( attributes != null )
-            {
-                for ( Attribute attribute : attributes )
-                {
-                    if ( attribute == null )
-                    {
-                        continue;
-                    }
-    
-                    // Store a new ClientAttribute
-                    this.attributes.put( attribute.getId(), attribute );
-                }
-            }
-        }
-        else
-        {
-            initObjectClassAT();
-    
-            if ( attributes != null )
-            {
-                for ( Attribute attribute : attributes )
-                {
-                    // Store a new ServerAttribute
-                    try
-                    {
-                        put( attribute );
-                    }
-                    catch ( LdapException ne )
-                    {
-                        LOG.warn( "The ServerAttribute '{}' does not exist. It has been discarded", attribute );
-                    }
-                }
-            }
-        }
-    }
-
-
     //-------------------------------------------------------------------------
     // Helper methods
     //-------------------------------------------------------------------------
+    private Entry createEntry( SchemaManager schemaManager, Object... elements ) throws LdapInvalidAttributeValueException, LdapLdifException
+    {
+        StringBuilder sb = new StringBuilder();
+        int pos = 0;
+        boolean valueExpected = false;
+
+        for ( Object element : elements )
+        {
+            if ( !valueExpected )
+            {
+                if ( !( element instanceof String ) )
+                {
+                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                        I18n.ERR_12085, ( pos + 1 ) ) );
+                }
+
+                String attribute = ( String ) element;
+                sb.append( attribute );
+
+                if ( attribute.indexOf( ':' ) != -1 )
+                {
+                    sb.append( '\n' );
+                }
+                else
+                {
+                    valueExpected = true;
+                }
+            }
+            else
+            {
+                if ( element instanceof String )
+                {
+                    sb.append( ": " ).append( ( String ) element ).append( '\n' );
+                }
+                else if ( element instanceof byte[] )
+                {
+                    sb.append( ":: " );
+                    sb.append( new String( Base64.encode( ( byte[] ) element ) ) );
+                    sb.append( '\n' );
+                }
+                else
+                {
+                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                        I18n.ERR_12086, ( pos + 1 ) ) );
+                }
+
+                valueExpected = false;
+            }
+        }
+
+        if ( valueExpected )
+        {
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n
+                .err( I18n.ERR_12087 ) );
+        }
+
+        LdifAttributesReader reader = new LdifAttributesReader();
+        Entry entry = reader.parseEntry( schemaManager, sb.toString() );
+        
+        return entry;
+    }
+    
     /**
      * Get the trimmed and lower cased entry ID
      */
@@ -2597,58 +2480,81 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean hasObjectClass( String objectClass )
+    public boolean hasObjectClass( String... objectClasses )
     {
-        if ( Strings.isEmpty( objectClass ) )
+        if ( ( objectClasses == null ) || ( objectClasses.length == 0 ) || ( objectClasses[0] == null ) )
         {
             return false;
         }
         
-        if ( schemaManager != null )
+        for ( String objectClass : objectClasses )
         {
-            return contains( objectClassAttributeType, objectClass );
+            if ( schemaManager != null )
+            {
+                if ( !contains( objectClassAttributeType, objectClass ) )
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if ( !contains( "objectclass", objectClass ) )
+                {
+                    return false;
+                }
+            }
         }
-        else
-        {
-            return contains( "objectclass", objectClass );
-        }
+        
+        return true;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public boolean hasObjectClass( Attribute objectClass )
+    public boolean hasObjectClass( Attribute... objectClasses )
     {
-        if ( objectClass == null )
+        if ( ( objectClasses == null ) || ( objectClasses.length == 0 ) || ( objectClasses[0] == null ) )
         {
             return false;
         }
-
-        // We have to check that we are checking the ObjectClass attributeType
-        if ( !objectClass.getAttributeType().equals( objectClassAttributeType ) )
+        
+        for ( Attribute objectClass:objectClasses )
         {
-            return false;
-        }
-
-        Attribute attribute = attributes.get( objectClassAttributeType.getOid() );
-
-        if ( attribute == null )
-        {
-            // The entry does not have an ObjectClass attribute
-            return false;
-        }
-
-        for ( Value<?> value : objectClass )
-        {
-            // Loop on all the values, and check if they are present
-            if ( !attribute.contains( value.getString() ) )
+            // We have to check that we are checking the ObjectClass attributeType
+            if ( !objectClass.getAttributeType().equals( objectClassAttributeType ) )
             {
                 return false;
+            }
+    
+            Attribute attribute = attributes.get( objectClassAttributeType.getOid() );
+    
+            if ( attribute == null )
+            {
+                // The entry does not have an ObjectClass attribute
+                return false;
+            }
+    
+            for ( Value<?> value : objectClass )
+            {
+                // Loop on all the values, and check if they are present
+                if ( !attribute.contains( value.getString() ) )
+                {
+                    return false;
+                }
             }
         }
 
         return true;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isSchemaAware()
+    {
+        return schemaManager != null;
     }
 
 

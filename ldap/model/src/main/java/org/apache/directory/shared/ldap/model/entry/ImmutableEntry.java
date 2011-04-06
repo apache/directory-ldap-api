@@ -703,21 +703,30 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean hasObjectClass( String objectClass )
+    public boolean hasObjectClass( String... objectClasses )
     {
-        return entry.hasObjectClass( objectClass );
+        return entry.hasObjectClass( objectClasses );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public boolean hasObjectClass( Attribute objectClass )
+    public boolean hasObjectClass( Attribute... objectClasses )
     {
-        return entry.hasObjectClass( objectClass );
+        return entry.hasObjectClass( objectClasses );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isSchemaAware()
+    {
+        return entry.isSchemaAware();
+    }
+    
+    
     /**
      * @see Object#equals(Object)
      */

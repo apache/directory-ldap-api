@@ -66,23 +66,23 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
 
     /**
-     * Tells if an entry as a specific ObjectClass value
+     * Tells if an entry as some specific ObjectClasses values
      * 
-     * @param objectClass The ObjectClassw we want to check
-     * @return <code>true</code> if the ObjectClass value is present 
+     * @param objectClasses The ObjectClasses we want to check
+     * @return <code>true</code> if all the ObjectClasses value are present 
      * in the ObjectClass attribute
      */
-    boolean hasObjectClass( String objectClass );
+    boolean hasObjectClass( String... objectClasses );
 
 
     /**
-     * Tells if an entry has a specific ObjectClass Attribute
+     * Tells if an entry has some specific ObjectClasses Attributes
      * 
-     * @param objectClass The ObjectClass we want to check
-     * @return <code>true</code> if the ObjectClass value is present 
+     * @param objectClasses The ObjectClasses we want to check
+     * @return <code>true</code> if the ObjectClasses Attribute are present 
      * in the ObjectClass attribute
      */
-    boolean hasObjectClass( Attribute objectClass );
+    boolean hasObjectClass( Attribute... objectClasses );
 
     
     /**
@@ -843,4 +843,11 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @return the number of attributes
      */
     int size();
+    
+    
+    /**
+     * Tells if the Entry is schema aware
+     * @return true if the Entry is schema aware
+     */
+    boolean isSchemaAware();
 }

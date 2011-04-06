@@ -325,16 +325,7 @@ public class LdifAttributesReader extends LdifReader
             return null;
         }
 
-        Entry entry = null;
-
-        if ( schemaManager != null )
-        {
-            entry = new DefaultEntry( schemaManager );
-        }
-        else
-        {
-            entry = new DefaultEntry();
-        }
+        Entry entry = new DefaultEntry( schemaManager );
 
         // Now, let's iterate through the other lines
         for ( String line : lines )
@@ -583,7 +574,7 @@ public class LdifAttributesReader extends LdifReader
 
         if ( Strings.isEmpty(ldif) )
         {
-            return new DefaultEntry();
+            return new DefaultEntry( schemaManager );
         }
 
         StringReader strIn = new StringReader( ldif );
