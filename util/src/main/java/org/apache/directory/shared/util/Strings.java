@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.directory.shared.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1988,14 +1989,65 @@ public final class Strings
      */
     public static byte[] copy( byte[] value )
     {
-    	if ( isEmpty( value ) )
-    	{
-    		return StringConstants.EMPTY_BYTES;
-    	}
+        if ( isEmpty( value ) )
+        {
+            return StringConstants.EMPTY_BYTES;
+        }
 
-    	byte[] copy = new byte[value.length];
-    	System.arraycopy( value, 0, copy, 0, value.length );
+        byte[] copy = new byte[value.length];
+        System.arraycopy( value, 0, copy, 0, value.length );
 
-    	return copy;
+        return copy;
+    }
+    
+    
+    /**
+     * From commons-httpclients. Converts the byte array of HTTP content
+     * characters to a string. If the specified charset is not supported,
+     * default system encoding is used.
+     *
+     * @param data the byte array to be encoded
+     * @param offset the index of the first byte to encode
+     * @param length the number of bytes to encode
+     * @param charset the desired character encoding
+     * @return The result of the conversion.
+     * @since 3.0
+     */
+    public static String getString( final byte[] data, int offset, int length, String charset )
+    {
+        if ( data == null )
+        {
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04411 ) );
+        }
+
+        if ( ( charset == null ) || ( charset.length() == 0 ) )
+        {
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04412 ) );
+        }
+
+        try
+        {
+            return new String( data, offset, length, charset );
+        }
+        catch ( UnsupportedEncodingException e )
+        {
+            return new String( data, offset, length );
+        }
+    }
+
+
+    /**
+     * From commons-httpclients. Converts the byte array of HTTP content
+     * characters to a string. If the specified charset is not supported,
+     * default system encoding is used.
+     *
+     * @param data the byte array to be encoded
+     * @param charset the desired character encoding
+     * @return The result of the conversion.
+     * @since 3.0
+     */
+    public static String getString( final byte[] data, String charset )
+    {
+        return getString( data, 0, data.length, charset );
     }
 }

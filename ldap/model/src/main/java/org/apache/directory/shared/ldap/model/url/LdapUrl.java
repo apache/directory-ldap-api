@@ -67,10 +67,6 @@ import org.apache.directory.shared.util.Unicode;
  */
 public class LdapUrl
 {
-
-    // ~ Static fields/initializers
-    // -----------------------------------------------------------------
-
     /** The constant for "ldaps://" scheme. */
     public static final String LDAPS_SCHEME = "ldaps://";
 
@@ -79,9 +75,6 @@ public class LdapUrl
 
     /** A null LdapUrl */
     public static final LdapUrl EMPTY_URL = new LdapUrl();
-
-    // ~ Instance fields
-    // ----------------------------------------------------------------------------
 
     /** The scheme */
     private String scheme;
@@ -134,11 +127,12 @@ public class LdapUrl
 
 
     /**
-     * Parse a LdapUrl
+     * Parse a LdapUrl.
+     * 
      * @param chars The chars containing the URL
      * @throws org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException If the URL is invalid
      */
-    public void parse( char[] chars ) throws LdapURLEncodingException
+    private void parse( char[] chars ) throws LdapURLEncodingException
     {
         scheme = LDAP_SCHEME;
         host = null;
@@ -159,7 +153,6 @@ public class LdapUrl
         // [dn ["?" [attributes] ["?" [scope]
         // ["?" [filter] ["?" extensions]]]]]]
         // scheme = "ldap"
-
         int pos = 0;
 
         // The scheme
@@ -316,31 +309,6 @@ public class LdapUrl
         }
     }
 
-
-    /**
-     * Create a new LdapUrl after having parsed it.
-     *
-     * @param bytes The byte buffer that contains the LDAPURL
-     * @throws LdapURLEncodingException If the byte array does not comply with RFC 2255
-     */
-    public LdapUrl( byte[] bytes ) throws LdapURLEncodingException
-    {
-        if ( ( bytes == null ) || ( bytes.length == 0 ) )
-        {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04410 ) );
-        }
-
-        string = Strings.utf8ToString(bytes);
-
-        this.bytes = new byte[bytes.length];
-        System.arraycopy( bytes, 0, this.bytes, 0, bytes.length );
-
-        parse( string.toCharArray() );
-    }
-
-
-    // ~ Methods
-    // ------------------------------------------------------------------------------------
 
     /**
      * Parse this rule : <br>
@@ -579,59 +547,8 @@ public class LdapUrl
 
         return pos;
     }
-
-
-    /**
-     * From commons-httpclients. Converts the byte array of HTTP content
-     * characters to a string. If the specified charset is not supported,
-     * default system encoding is used.
-     *
-     * @param data the byte array to be encoded
-     * @param offset the index of the first byte to encode
-     * @param length the number of bytes to encode
-     * @param charset the desired character encoding
-     * @return The result of the conversion.
-     * @since 3.0
-     */
-    public static String getString( final byte[] data, int offset, int length, String charset )
-    {
-        if ( data == null )
-        {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04411 ) );
-        }
-
-        if ( ( charset == null ) || ( charset.length() == 0 ) )
-        {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04412 ) );
-        }
-
-        try
-        {
-            return new String( data, offset, length, charset );
-        }
-        catch ( UnsupportedEncodingException e )
-        {
-            return new String( data, offset, length );
-        }
-    }
-
-
-    /**
-     * From commons-httpclients. Converts the byte array of HTTP content
-     * characters to a string. If the specified charset is not supported,
-     * default system encoding is used.
-     *
-     * @param data the byte array to be encoded
-     * @param charset the desired character encoding
-     * @return The result of the conversion.
-     * @since 3.0
-     */
-    public static String getString( final byte[] data, String charset )
-    {
-        return getString( data, 0, data.length, charset );
-    }
-
-
+    
+    
     /**
      * Converts the specified string to byte array of ASCII characters.
      *
@@ -639,7 +556,7 @@ public class LdapUrl
      * @return The string as a byte array.
      * @throws org.apache.directory.shared.ldap.model.exception.UrlDecoderException if encoding is not supported
      */
-    public static byte[] getAsciiBytes( final String data ) throws UrlDecoderException
+    private static byte[] getAsciiBytes( final String data ) throws UrlDecoderException
     {
 
         if ( data == null )
@@ -722,7 +639,7 @@ public class LdapUrl
         try
         {
             byte[] rawdata = decodeUrl( getAsciiBytes( escaped ) );
-            return getString( rawdata, "UTF-8" );
+            return Strings.getString( rawdata, "UTF-8" );
         }
         catch ( UrlDecoderException e )
         {
@@ -1365,7 +1282,6 @@ public class LdapUrl
 
                 sb.append( scope.getLdapUrlValue() );
             }
-
             else
             {
                 if ( ( scope != SearchScope.OBJECT ) || ( filter != null ) || ( extensionList.size() != 0 ) )
@@ -1776,18 +1692,6 @@ public class LdapUrl
 
 
     /**
-     * If set to true forces the toString method to render the scope
-     * regardless of optional nature.  Use this when you want explicit
-     * search URL scope rendering.
-     *
-     * @return the forceScopeRendering
-     */
-    public boolean isForceScopeRendering()
-    {
-        return forceScopeRendering;
-    }
-
-    /**
      * An inner bean to hold extension information.
      *
      * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -1880,5 +1784,4 @@ public class LdapUrl
             this.value = value;
         }
     }
-
 }
