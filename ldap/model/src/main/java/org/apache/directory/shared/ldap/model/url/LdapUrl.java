@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
@@ -109,6 +111,8 @@ public class LdapUrl
     /** modal parameter that forces explicit scope rendering in toString */
     private boolean forceScopeRendering;
 
+    /** A regexp for attributes */
+    private static final Pattern ATTRIBUTE = Pattern.compile( "(?:(?:\\d|[1-9]\\d*)(?:\\.(?:\\d|[1-9]\\d*))+)|(?:[a-zA-Z][a-zA-Z0-9-]*)" );
 
     /**
      * Construct an empty LdapUrl
@@ -292,7 +296,7 @@ public class LdapUrl
      */
     public LdapUrl( String string ) throws LdapURLEncodingException
     {
-        if ( string == null )
+        if (string == null )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04408 ) );
         }
@@ -668,7 +672,8 @@ public class LdapUrl
 
         try
         {
-            dn = new Dn( decode( new String( chars, pos, end - pos ) ) );
+            String dnStr = new String( chars, pos, end - pos );
+            dn = new Dn( decode( dnStr ) );
         }
         catch ( LdapUriException ue )
         {
@@ -682,6 +687,29 @@ public class LdapUrl
         return end;
     }
 
+    /**
+     * Parse the following rule :
+     * <pre>
+     * oid ::= numericOid | descr
+     * descr ::= keystring
+     * keystring ::= leadkeychar *keychar
+     * leadkeychar ::= [a-zA-Z]
+     * keychar ::= [a-zA-Z0-0-]
+     * numericOid ::= number 1*( DOT number )
+     * number ::= 0 | [1-9][0-9]* 
+     * 
+     * @param attribute
+     * @throws LdapURLEncodingException
+     */
+    private void validateAttribute( String attribute ) throws LdapURLEncodingException
+    {
+        Matcher matcher = ATTRIBUTE.matcher( attribute );
+        
+        if ( !matcher.matches() )
+        {
+            throw new LdapURLEncodingException( "Attribute " + attribute + " is invalid" );
+        }
+    }
 
     /**
      * Parse the attributes part
@@ -692,7 +720,6 @@ public class LdapUrl
      */
     private int parseAttributes( char[] chars, int pos )
     {
-
         int start = pos;
         int end = pos;
         Set<String> hAttributes = new HashSet<String>();
@@ -722,6 +749,16 @@ public class LdapUrl
                         attribute = new String( chars, start, end - start ).trim();
 
                         if ( attribute.length() == 0 )
+                        {
+                            return -1;
+                        }
+                        
+                        // Check that the attribute is valid
+                        try
+                        {
+                            validateAttribute( attribute );
+                        }
+                        catch ( LdapURLEncodingException luee )
                         {
                             return -1;
                         }

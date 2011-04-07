@@ -112,13 +112,22 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
 
             try
             {
-                LdapUrl url = new LdapUrl( value.getData() );
-                container.getGracefulDisconnect().addReplicatedContexts( url );
+                if ( Strings.isEmpty( value.getData() ) )
+                {
+                    String msg = "failed to decode a null URL";
+                    LOG.error( msg );
+                    throw new DecoderException( msg );
+                }
+                
+                String url = Strings.utf8ToString( value.getData() );
+                
+                LdapUrl ldapUrl = new LdapUrl( url );
+                container.getGracefulDisconnect().addReplicatedContexts( ldapUrl );
                 container.setGrammarEndAllowed( true );
                 
                 if ( IS_DEBUG )
                 {
-                    LOG.debug( "Stores a referral : {}", url );
+                    LOG.debug( "Stores a referral : {}", ldapUrl );
                 }
             }
             catch ( LdapURLEncodingException e )

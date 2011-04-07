@@ -85,7 +85,8 @@ public class AddReferral extends GrammarAction<LdapMessageContainer<MessageDecor
             {
                 try
                 {
-                    referral.addLdapUrl( new LdapUrl( tlv.getValue().getData() ).toString() );
+                    String url = Strings.utf8ToString( tlv.getValue().getData() );
+                    referral.addLdapUrl( new LdapUrl( url ).toString() );
                 }
                 catch ( LdapURLEncodingException luee )
                 {
