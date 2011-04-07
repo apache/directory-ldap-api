@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.util.exception.NotImplementedException;
@@ -552,11 +553,19 @@ public class ImmutableEntry implements Entry
 
 
     /**
-     * Set this entry's Dn.
-     *
-     * @param dn The Dn associated with this entry
+     * {@inheritDoc}
      */
     public void setDn( Dn dn )
+    {
+        new Exception().printStackTrace();
+        throw new NotImplementedException( "Cannot rename the entry " + entry.getDn() + " is immutable." );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setDn( String dn ) throws LdapInvalidDnException
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot rename the entry " + entry.getDn() + " is immutable." );

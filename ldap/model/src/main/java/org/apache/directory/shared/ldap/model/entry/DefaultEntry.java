@@ -35,6 +35,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.ldif.LdapLdifException;
 import org.apache.directory.shared.ldap.model.ldif.LdifAttributesReader;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
@@ -2231,9 +2232,7 @@ public final class DefaultEntry implements Entry
 
 
     /**
-     * Set this entry's Dn.
-     *
-     * @param dn The Dn associated with this entry
+     * {@inheritDoc}
      */
     public void setDn( Dn dn )
     {
@@ -2241,6 +2240,15 @@ public final class DefaultEntry implements Entry
 
         // Resash the object
         rehash();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setDn( String dn ) throws LdapInvalidDnException
+    {
+        setDn( new Dn( dn ) );
     }
 
 

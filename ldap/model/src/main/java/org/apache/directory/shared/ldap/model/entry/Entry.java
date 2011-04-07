@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 
@@ -133,6 +134,15 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param dn The Dn associated with this entry
      */
     void setDn( Dn dn );
+    
+    
+    /**
+     * Set this entry's Dn.
+     *
+     * @param dn The Dn associated with this entry
+     * @throws LdapInvalidDnException if the provided Dn is invalid
+     */
+    void setDn( String dn ) throws LdapInvalidDnException;
 
 
     /**
