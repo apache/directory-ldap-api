@@ -180,7 +180,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean contains( Attribute... attributes ) throws LdapException
+    public boolean contains( Attribute... attributes )
     {
         return entry.contains( attributes );
     }

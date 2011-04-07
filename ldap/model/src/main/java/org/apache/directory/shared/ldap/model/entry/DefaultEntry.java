@@ -121,14 +121,56 @@ public final class DefaultEntry implements Entry
 
 
     /**
-     * Creates a new instance of DefaultEntry, with a
-     * Dn.
+     * Creates a new instance of DefaultEntry, with a Dn.
+     *
+     * @param dn The String Dn for this serverEntry. Can be null.
+     * @throws LdapInvalidDnException If the Dn is invalid
+     */
+    public DefaultEntry( String dn ) throws LdapInvalidDnException
+    {
+        this.dn = new Dn( dn );
+    }
+
+
+    /**
+     * Creates a new instance of DefaultEntry, with a Dn.
      *
      * @param dn The Dn for this serverEntry. Can be null.
      */
     public DefaultEntry( Dn dn )
     {
         this.dn = dn;
+    }
+
+
+    /**
+     * <p>
+     * Creates a new instance of DefaultEntry, schema aware.
+     * </p>
+     * <p>
+     * No attributes will be created.
+     * </p>
+     *
+     * @param schemaManager The reference to the schemaManager
+     * @param dn The String Dn for this serverEntry. Can be null.
+     * @throws LdapInvalidDnException If the Dn is invalid
+     */
+    public DefaultEntry( SchemaManager schemaManager, String dn ) throws LdapInvalidDnException
+    {
+        this.schemaManager = schemaManager;
+
+        if ( Strings.isEmpty( dn ) )
+        {
+            this.dn = Dn.EMPTY_DN;
+        }
+        else
+        {
+            this.dn = new Dn( dn );
+            normalizeDN( this.dn );
+        }
+
+        // Initialize the ObjectClass object
+        initObjectClassAT();
     }
 
 
@@ -980,7 +1022,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public boolean contains( Attribute... attributes ) throws LdapException
+    public boolean contains( Attribute... attributes )
     {
         if ( schemaManager == null )
         {

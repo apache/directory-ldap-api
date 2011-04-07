@@ -20,17 +20,16 @@
 package org.apache.directory.shared.converter.schema;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.ldif.LdifUtils;
-import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -221,7 +220,7 @@ public class ObjectClassHolder extends SchemaElementImpl
             + Rdn.escapeValue(schemaName) + ", ou=schema";
 
         // First dump the Dn only
-        Entry entry = new DefaultEntry( new Dn( dn ) );
+        Entry entry = new DefaultEntry( dn );
         sb.append( LdifUtils.convertEntryToLdif(entry) );
 
         return sb.toString();

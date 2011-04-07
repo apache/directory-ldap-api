@@ -103,15 +103,6 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
     
     /**
-     * <p>
-     * Returns the attribute with the specified AttributeType. The return value
-     * is <code>null</code> if no match is found.  
-     * </p>
-     *
-     * @param attributeType The attributeType we are looking for.
-     * @return the attribute associated with the AttributeType.
-     */
-    /**
      * Returns the attribute associated with an AttributeType
      * 
      * @param attributeType the AttributeType we are looking for
@@ -139,18 +130,16 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
     /**
      * Set this entry's Dn.
      *
-     * @param dn The Dn associated with this entry
+     * @param dn The String Dn associated with this entry
      * @throws LdapInvalidDnException if the provided Dn is invalid
      */
     void setDn( String dn ) throws LdapInvalidDnException;
 
 
     /**
-     * Returns an enumeration containing the zero or more attributes in the
-     * collection. The behavior of the enumeration is not specified if the
-     * attribute collection is changed.
+     * Returns an iterator on the attributes for this entry.
      *
-     * @return an enumeration of all contained attributes
+     * @return an iterator on top of all contained attributes
      */
     Iterator<Attribute> iterator();
 
@@ -265,7 +254,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      *
      * @param upId The user provided ID for the added AttributeType
      * @param attributeType The attribute Type.
-     * @param values The list of binary values to add. It can be empty.
+     * @param values The list of String values to add. It can be empty.
      * @throws LdapException If the attribute does not exist
      */
     void add( String upId, AttributeType attributeType, String... values ) throws LdapException;
@@ -337,8 +326,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      *</p>
      *
      * @param attributes the attributes to be put
-     * @return the old attributes with the same OID, if exist; otherwise
-     *         <code>null</code>
+     * @return the old attributes with the same OID, if exist; otherwise <code>null</code>
      * @exception LdapException if the operation fails
      */
     List<Attribute> put( Attribute... attributes ) throws LdapException;
@@ -653,7 +641,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * </p> 
      *
      * @param upId The attribute ID  
-     * @param values the attributes to be removed
+     * @param values the attribute's values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist. 
      */
@@ -677,7 +665,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * </p> 
      *
      * @param upId The attribute ID  
-     * @param values the attributes to be removed
+     * @param values the attribute's values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if no values have been removed or if the attribute does not exist. 
      */
@@ -701,7 +689,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * </p> 
      *
      * @param upId The attribute ID  
-     * @param values the attributes to be removed
+     * @param values the attribute's values to be removed
      * @return <code>true</code> if at least a value is removed, <code>false</code>
      * if not all the values have been removed or if the attribute does not exist. 
      * @throws LdapException if the attribute does not exists
@@ -734,7 +722,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * Checks if an entry contains an attribute with some given binary values.
      *
      * @param attributeType The Attribute we are looking for.
-     * @param values The searched values.
+     * @param values The searched binary values.
      * @return <code>true</code> if all the values are found within the attribute,
      * <code>false</code> otherwise, or if the attributes does not exist.
      */
@@ -745,7 +733,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * Checks if an entry contains an attribute with some given String values.
      *
      * @param attributeType The Attribute we are looking for.
-     * @param values The searched values.
+     * @param values The searched String values.
      * @return <code>true</code> if all the values are found within the attribute,
      * <code>false</code> otherwise, or if the attributes does not exist.
      */
@@ -784,9 +772,8 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param attributes The Attributes to look for
      * @return <code>true</code> if all the attributes are found within 
      * the entry, <code>false</code> if at least one of them is not present.
-     * @throws LdapException If the attribute does not exist
      */
-    boolean contains( Attribute... attributes ) throws LdapException;
+    boolean contains( Attribute... attributes );
 
 
     /**
