@@ -17,7 +17,7 @@
  *  under the License.
  *
  */
-package org.apache.directory.shared.ldap.model.filter;
+package org.apache.directory.shared.ldap.model.url;
 
 
 import static org.junit.Assert.assertEquals;
