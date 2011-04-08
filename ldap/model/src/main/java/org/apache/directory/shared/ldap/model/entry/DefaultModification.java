@@ -62,14 +62,6 @@ public class DefaultModification implements Modification
     
     /**
      * Creates a new instance of DefaultModification.
-     */
-    public DefaultModification( AttributeType attributeType )
-    {
-        this.attributeType = attributeType;
-    }
-
-    /**
-     * Creates a new instance of DefaultModification.
      *
      * @param operation The modification operation
      * @param attribute The associated attribute 
@@ -80,21 +72,6 @@ public class DefaultModification implements Modification
         this.attribute = attribute;
     }
 
-    /**
-     * Creates a new instance of DefaultModification.
-     *
-     * @param attributeType The attributeType 
-     * @param operation The modification operation
-     * @param attribute The associated attribute 
-     */
-    public DefaultModification( AttributeType attributeType, ModificationOperation operation, Attribute attribute )
-    {
-        this.attributeType = attributeType;
-        this.operation = operation;
-        this.attribute = attribute;
-    }
-    
-    
     /**
      * Creates a new instance of DefaultModification.
      *
@@ -136,9 +113,7 @@ public class DefaultModification implements Modification
     
     
     /**
-     * Store the modification operation
-     *
-     * @param operation The DirContext value to assign
+     * {@inheritDoc}
      */
     public void setOperation( int operation )
     {
@@ -165,9 +140,7 @@ public class DefaultModification implements Modification
     
     
     /**
-     * Set the attribute's modification
-     *
-     * @param attribute The modified attribute 
+     * {@inheritDoc}
      */
     public void setAttribute( Attribute attribute )
     {
@@ -190,7 +163,7 @@ public class DefaultModification implements Modification
 
 
     /**
-     * @return the attributeType
+     * {@inheritDoc}
      */
     public AttributeType getAttributeType()
     {
@@ -291,9 +264,7 @@ public class DefaultModification implements Modification
     
     
     /**
-     * Clone a modification
-     * 
-     * @return  a copied instance of the current modification
+     * {@inheritDoc}
      */
     public DefaultModification clone()
     {

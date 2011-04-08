@@ -28,9 +28,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -159,7 +159,7 @@ public class SchemaAwareModificationSerializationTest
         Attribute attribute = new DefaultAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
         
-        Modification mod = new DefaultModification( CN_AT, ModificationOperation.ADD_ATTRIBUTE, attribute );
+        Modification mod = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attribute );
         Modification clone = mod.clone();
         
         attribute.remove( "test2" );
@@ -167,7 +167,7 @@ public class SchemaAwareModificationSerializationTest
         Attribute clonedAttribute = clone.getAttribute();
         
         assertEquals( 1, mod.getAttribute().size() );
-        assertTrue( mod.getAttribute().contains( "test1" ) );
+        assertTrue( mod.getAttribute().contains( "TEST1" ) );
 
         assertEquals( 2, clonedAttribute.size() );
         assertTrue( clone.getAttribute().contains( "test1" ) );
