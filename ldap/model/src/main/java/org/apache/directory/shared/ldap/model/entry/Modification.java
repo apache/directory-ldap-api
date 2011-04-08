@@ -81,5 +81,5 @@ public interface Modification extends Cloneable, Externalizable
      * 
      * @param AttributeType the injected AttributeType
      */
-    void applyAttributeType( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
+    void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
 }

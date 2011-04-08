@@ -127,7 +127,7 @@ public class SchemaAwareModificationSerializationTest
             {
                 AttributeType attributeType = schemaManager.getAttributeType( attribute.getId() );
                 
-                modification.applyAttributeType( attributeType );
+                modification.apply( attributeType );
             }
 
             return modification;

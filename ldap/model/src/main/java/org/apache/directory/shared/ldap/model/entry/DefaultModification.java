@@ -151,7 +151,7 @@ public class DefaultModification implements Modification
     /**
      * {@inheritDoc}
      */
-    public void applyAttributeType( AttributeType attributeType ) throws LdapInvalidAttributeValueException
+    public void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
         this.attributeType = attributeType;
         
