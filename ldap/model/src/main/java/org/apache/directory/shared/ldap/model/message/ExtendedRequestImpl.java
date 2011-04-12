@@ -46,18 +46,6 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
     }
 
 
-    /**
-     * Creates an ExtendedRequest implementing object used to perform
-     * extended protocol operation on the server.
-     * 
-     * @param id the sequential message identifier
-     */
-    public ExtendedRequestImpl( final int id )
-    {
-        super( id, TYPE, true );
-    }
-
-
     // -----------------------------------------------------------------------
     // ExtendedRequest Interface Method Implementations
     // -----------------------------------------------------------------------

@@ -28,6 +28,7 @@ import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.shared.ldap.codec.decorators.DeleteRequestDecorator;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.model.message.DeleteRequest;
 import org.apache.directory.shared.ldap.model.message.DeleteRequestImpl;
 import org.apache.directory.shared.ldap.model.message.DeleteResponseImpl;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
@@ -70,8 +71,10 @@ public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteReq
     public void action( LdapMessageContainer<DeleteRequestDecorator> container ) throws DecoderException
     {
         // Create the DeleteRequest LdapMessage instance and store it in the container
+        DeleteRequest internaldelRequest = new DeleteRequestImpl();
+        internaldelRequest.setMessageId( container.getMessageId() );
         DeleteRequestDecorator delRequest = new DeleteRequestDecorator(
-            container.getLdapCodecService(), new DeleteRequestImpl( container.getMessageId() ) );
+            container.getLdapCodecService(), internaldelRequest );
         container.setMessage( delRequest );
 
         // And store the Dn into it

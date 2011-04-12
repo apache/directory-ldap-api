@@ -71,6 +71,9 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     private SearchResultDone response;
 
 
+    // -----------------------------------------------------------------------
+    // Constructors
+    // -----------------------------------------------------------------------
     /**
      * Creates a SearcRequest implementing object used to search the
      * DIT.
@@ -78,18 +81,6 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     public SearchRequestImpl()
     {
         super( -1, MessageTypeEnum.SEARCH_REQUEST );
-    }
-
-
-    /**
-     * Creates a Lockable SearcRequest implementing object used to search the
-     * DIT.
-     * 
-     * @param id the sequential message identifier
-     */
-    public SearchRequestImpl( final int id )
-    {
-        super( id, MessageTypeEnum.SEARCH_REQUEST );
     }
 
 

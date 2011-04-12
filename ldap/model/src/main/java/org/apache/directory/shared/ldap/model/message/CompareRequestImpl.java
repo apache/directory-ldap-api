@@ -62,18 +62,6 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     }
 
 
-    /**
-     * Creates an CompareRequest implementation to compare a named entry with an
-     * attribute value assertion pair.
-     * 
-     * @param id the sequence identifier of the CompareRequest message.
-     */
-    public CompareRequestImpl( final int id )
-    {
-        super( id, TYPE );
-    }
-
-
     // ------------------------------------------------------------------------
     // ComparisonRequest Interface Method Implementations
     // ------------------------------------------------------------------------

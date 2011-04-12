@@ -26,6 +26,7 @@ import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.AddRequestDecorator;
+import org.apache.directory.shared.ldap.model.message.AddRequest;
 import org.apache.directory.shared.ldap.model.message.AddRequestImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,8 +61,10 @@ public class InitAddRequest extends GrammarAction<LdapMessageContainer<AddReques
     {
         // Now, we can allocate the AddRequest Object
         int messageId = container.getMessageId();
+        AddRequest internalAddRequest = new AddRequestImpl();
+        internalAddRequest.setMessageId( messageId );
         AddRequestDecorator addRequest = new AddRequestDecorator(
-            container.getLdapCodecService(), new AddRequestImpl( messageId ) );
+            container.getLdapCodecService(), internalAddRequest );
         container.setMessage( addRequest );
 
         // We will check that the request is not null

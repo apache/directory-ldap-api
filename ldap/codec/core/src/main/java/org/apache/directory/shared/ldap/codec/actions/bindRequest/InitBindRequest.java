@@ -26,6 +26,7 @@ import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.BindRequestDecorator;
+import org.apache.directory.shared.ldap.model.message.BindRequest;
 import org.apache.directory.shared.ldap.model.message.BindRequestImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +60,10 @@ public class InitBindRequest extends GrammarAction<LdapMessageContainer<BindRequ
     public void action( LdapMessageContainer<BindRequestDecorator> container ) throws DecoderException
     {
         // Create the BindRequest LdapMessage instance and store it in the container
+        BindRequest internalBindRequest = new BindRequestImpl();
+        internalBindRequest.setMessageId( container.getMessageId() );
         BindRequestDecorator bindRequest = new BindRequestDecorator(
-            container.getLdapCodecService(), new BindRequestImpl( container.getMessageId() ) );
+            container.getLdapCodecService(), internalBindRequest );
         container.setMessage( bindRequest );
 
         // We will check that the request is not null

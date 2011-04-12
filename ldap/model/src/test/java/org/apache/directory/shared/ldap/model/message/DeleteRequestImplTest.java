@@ -26,13 +26,14 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -53,7 +54,8 @@ public class DeleteRequestImplTest
     @Test
     public void testEqualsSameObj()
     {
-        DeleteRequestImpl req = new DeleteRequestImpl( 5 );
+        DeleteRequestImpl req = new DeleteRequestImpl();
+        req.setMessageId( 5 );
         assertTrue( req.equals( req ) );
     }
 
@@ -64,10 +66,12 @@ public class DeleteRequestImplTest
     @Test
     public void testEqualsExactCopy() throws LdapException
     {
-        DeleteRequestImpl req0 = new DeleteRequestImpl( 5 );
+        DeleteRequestImpl req0 = new DeleteRequestImpl();
+        req0.setMessageId( 5 );
         req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
 
-        DeleteRequestImpl req1 = new DeleteRequestImpl( 5 );
+        DeleteRequestImpl req1 = new DeleteRequestImpl();
+        req1.setMessageId( 5 );
         req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
 
         assertTrue( req0.equals( req1 ) );
@@ -80,7 +84,8 @@ public class DeleteRequestImplTest
     @Test
     public void testHashCodeSameObj()
     {
-        DeleteRequestImpl req = new DeleteRequestImpl( 5 );
+        DeleteRequestImpl req = new DeleteRequestImpl();
+        req.setMessageId( 5 );
         assertTrue( req.hashCode() == req.hashCode() );
     }
 
@@ -91,10 +96,12 @@ public class DeleteRequestImplTest
     @Test
     public void testHashCodeExactCopy() throws LdapException
     {
-        DeleteRequestImpl req0 = new DeleteRequestImpl( 5 );
+        DeleteRequestImpl req0 = new DeleteRequestImpl();
+        req0.setMessageId( 5 );
         req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
 
-        DeleteRequestImpl req1 = new DeleteRequestImpl( 5 );
+        DeleteRequestImpl req1 = new DeleteRequestImpl();
+        req1.setMessageId( 5 );
         req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
 
         assertTrue( req0.hashCode() == req1.hashCode() );
@@ -107,10 +114,12 @@ public class DeleteRequestImplTest
     @Test
     public void testNotEqualDiffId() throws LdapException
     {
-        DeleteRequestImpl req0 = new DeleteRequestImpl( 7 );
+        DeleteRequestImpl req0 = new DeleteRequestImpl();
+        req0.setMessageId( 7 );
         req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
 
-        DeleteRequestImpl req1 = new DeleteRequestImpl( 5 );
+        DeleteRequestImpl req1 = new DeleteRequestImpl();
+        req1.setMessageId( 5 );
         req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
 
         assertFalse( req0.equals( req1 ) );
@@ -123,10 +132,12 @@ public class DeleteRequestImplTest
     @Test
     public void testNotEqualDiffName() throws LdapException
     {
-        DeleteRequestImpl req0 = new DeleteRequestImpl( 5 );
+        DeleteRequestImpl req0 = new DeleteRequestImpl();
+        req0.setMessageId( 5 );
         req0.setName( new Dn( "uid=akarasulu,dc=example,dc=com" ) );
 
-        DeleteRequestImpl req1 = new DeleteRequestImpl( 5 );
+        DeleteRequestImpl req1 = new DeleteRequestImpl();
+        req1.setMessageId( 5 );
         req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
 
         assertFalse( req0.equals( req1 ) );
@@ -249,7 +260,8 @@ public class DeleteRequestImplTest
             }
         };
 
-        DeleteRequestImpl req1 = new DeleteRequestImpl( 5 );
+        DeleteRequestImpl req1 = new DeleteRequestImpl();
+        req1.setMessageId( 5 );
         assertTrue( req1.equals( req0 ) );
     }
 }

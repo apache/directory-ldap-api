@@ -26,12 +26,10 @@ import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.asn1.DecoderException;
+import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Container;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
-import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.codec.decorators.UnbindRequestDecorator;
@@ -42,6 +40,9 @@ import org.apache.directory.shared.ldap.model.message.UnbindRequestImpl;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -318,7 +319,8 @@ public class LdapMessageTest extends AbstractCodecServiceTest
         assertEquals( 500, message.getMessageId() );
 
         // Check the length
-        UnbindRequest internalUnbindRequest = new UnbindRequestImpl( message.getMessageId() );
+        UnbindRequest internalUnbindRequest = new UnbindRequestImpl();
+        internalUnbindRequest.setMessageId( message.getMessageId() );
 
         try
         {

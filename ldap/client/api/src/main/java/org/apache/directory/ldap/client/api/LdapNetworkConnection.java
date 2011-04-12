@@ -1571,7 +1571,8 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         int newId = messageId.incrementAndGet();
 
         // Create the UnbindRequest
-        UnbindRequest unbindRequest = new UnbindRequestImpl( newId );
+        UnbindRequest unbindRequest = new UnbindRequestImpl();
+        unbindRequest.setMessageId( newId );
 
         LOG.debug( "-----------------------------------------------------------------" );
         LOG.debug( "Sending Unbind request \n{}", unbindRequest );
@@ -3676,7 +3677,9 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             else
             {
                 // Copy the bindRequest without setting the credentials
-                BindRequest bindRequestCopy = new BindRequestImpl( newId );
+                BindRequest bindRequestCopy = new BindRequestImpl();
+                bindRequestCopy.setMessageId( newId );
+
                 bindRequestCopy.setName( bindRequest.getName() );
                 bindRequestCopy.setSaslMechanism( bindRequest.getSaslMechanism() );
                 bindRequestCopy.setSimple( bindRequest.isSimple() );

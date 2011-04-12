@@ -40,9 +40,9 @@ public class UnbindRequestImpl extends AbstractRequest implements UnbindRequest
      * 
      * @param id the sequential message identifier.
      */
-    public UnbindRequestImpl( final int id )
+    public UnbindRequestImpl()
     {
-        super( id, TYPE, false );
+        super( -1, TYPE, false );
     }
 
 

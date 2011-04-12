@@ -27,8 +27,6 @@ import static org.junit.Assert.fail;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
@@ -42,6 +40,9 @@ import org.apache.directory.shared.ldap.model.message.UnbindRequestImpl;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -88,7 +89,8 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         assertEquals( 1, unbindRequest.getMessageId() );
 
         // Check the encoding
-        UnbindRequest internalUnbindRequest = new UnbindRequestImpl( unbindRequest.getMessageId() );
+        UnbindRequest internalUnbindRequest = new UnbindRequestImpl();
+        internalUnbindRequest.setMessageId( unbindRequest.getMessageId() );
 
         try
         {
@@ -162,7 +164,8 @@ public class UnBindRequestTest extends AbstractCodecServiceTest
         assertEquals( "", Strings.dumpBytes((byte[]) control.getValue()) );
 
         // Check the encoding
-        UnbindRequest internalUnbindRequest = new UnbindRequestImpl( unbindRequest.getMessageId() );
+        UnbindRequest internalUnbindRequest = new UnbindRequestImpl();
+        internalUnbindRequest.setMessageId( unbindRequest.getMessageId() );
         internalUnbindRequest.addControl( control );
 
         try

@@ -26,14 +26,14 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.MessageException;
-import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -55,7 +55,8 @@ public class BindRequestImplTest
     @Test
     public void testEqualsSameObj()
     {
-        BindRequestImpl req = new BindRequestImpl( 5 );
+        BindRequestImpl req = new BindRequestImpl();
+        req.setMessageId( 5 );
         assertTrue( req.equals( req ) );
     }
 
@@ -66,13 +67,15 @@ public class BindRequestImplTest
     @Test
     public void testEqualsExactCopy() throws LdapException
     {
-        BindRequestImpl req0 = new BindRequestImpl( 5 );
+        BindRequestImpl req0 = new BindRequestImpl();
+        req0.setMessageId( 5 );
         req0.setCredentials( "password".getBytes() );
         req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req0.setSimple( true );
         req0.setVersion3( true );
 
-        BindRequestImpl req1 = new BindRequestImpl( 5 );
+        BindRequestImpl req1 = new BindRequestImpl();
+        req1.setMessageId( 5 );
         req1.setCredentials( "password".getBytes() );
         req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setSimple( true );
@@ -88,13 +91,15 @@ public class BindRequestImplTest
     @Test
     public void testNotEqualDiffId() throws LdapException
     {
-        BindRequestImpl req0 = new BindRequestImpl( 7 );
+        BindRequestImpl req0 = new BindRequestImpl();
+        req0.setMessageId( 7 );
         req0.setCredentials( "password".getBytes() );
         req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req0.setSimple( true );
         req0.setVersion3( true );
 
-        BindRequestImpl req1 = new BindRequestImpl( 5 );
+        BindRequestImpl req1 = new BindRequestImpl();
+        req1.setMessageId( 5 );
         req1.setCredentials( "password".getBytes() );
         req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setSimple( true );
@@ -110,13 +115,15 @@ public class BindRequestImplTest
     @Test
     public void testNotEqualDiffCreds() throws LdapException
     {
-        BindRequestImpl req0 = new BindRequestImpl( 5 );
+        BindRequestImpl req0 = new BindRequestImpl();
+        req0.setMessageId( 5 );
         req0.setCredentials( "abcdefg".getBytes() );
         req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req0.setSimple( true );
         req0.setVersion3( true );
 
-        BindRequestImpl req1 = new BindRequestImpl( 5 );
+        BindRequestImpl req1 = new BindRequestImpl();
+        req1.setMessageId( 5 );
         req1.setCredentials( "password".getBytes() );
         req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setSimple( true );
@@ -132,13 +139,15 @@ public class BindRequestImplTest
     @Test
     public void testNotEqualDiffName() throws LdapException
     {
-        BindRequestImpl req0 = new BindRequestImpl( 5 );
+        BindRequestImpl req0 = new BindRequestImpl();
+        req0.setMessageId( 5 );
         req0.setCredentials( "password".getBytes() );
         req0.setName( new Dn( "uid=akarasulu,dc=example,dc=com" ) );
         req0.setSimple( true );
         req0.setVersion3( true );
 
-        BindRequestImpl req1 = new BindRequestImpl( 5 );
+        BindRequestImpl req1 = new BindRequestImpl();
+        req1.setMessageId( 5 );
         req1.setCredentials( "password".getBytes() );
         req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setSimple( true );
@@ -154,13 +163,15 @@ public class BindRequestImplTest
     @Test
     public void testNotEqualDiffSimple() throws LdapException
     {
-        BindRequestImpl req0 = new BindRequestImpl( 5 );
+        BindRequestImpl req0 = new BindRequestImpl();
+        req0.setMessageId( 5 );
         req0.setCredentials( "password".getBytes() );
         req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req0.setSimple( false );
         req0.setVersion3( true );
 
-        BindRequestImpl req1 = new BindRequestImpl( 5 );
+        BindRequestImpl req1 = new BindRequestImpl();
+        req1.setMessageId( 5 );
         req1.setCredentials( "password".getBytes() );
         req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setSimple( true );
@@ -176,13 +187,15 @@ public class BindRequestImplTest
     @Test
     public void testNotEqualDiffVersion() throws LdapException
     {
-        BindRequestImpl req0 = new BindRequestImpl( 5 );
+        BindRequestImpl req0 = new BindRequestImpl();
+        req0.setMessageId( 5 );
         req0.setCredentials( "password".getBytes() );
         req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req0.setSimple( true );
         req0.setVersion3( false );
 
-        BindRequestImpl req1 = new BindRequestImpl( 5 );
+        BindRequestImpl req1 = new BindRequestImpl();
+        req1.setMessageId( 5 );
         req1.setCredentials( "password".getBytes() );
         req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setSimple( true );
@@ -368,7 +381,8 @@ public class BindRequestImplTest
             }
         };
 
-        BindRequestImpl req1 = new BindRequestImpl( 5 );
+        BindRequestImpl req1 = new BindRequestImpl();
+        req1.setMessageId( 5 );
         assertTrue( req1.equals( req0 ) );
     }
 }

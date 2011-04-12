@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.codec.actions.compareRequest;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.CompareRequestDecorator;
+import org.apache.directory.shared.ldap.model.message.CompareRequest;
 import org.apache.directory.shared.ldap.model.message.CompareRequestImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,8 +59,10 @@ public class InitCompareRequest extends GrammarAction<LdapMessageContainer<Compa
     public void action( LdapMessageContainer<CompareRequestDecorator> container )
     {
         // Now, we can allocate the CompareRequest Object
+        CompareRequest internalCompareRequest = new CompareRequestImpl();
+        internalCompareRequest.setMessageId( container.getMessageId() );
         CompareRequestDecorator compareRequest = new CompareRequestDecorator(
-            container.getLdapCodecService(), new CompareRequestImpl( container.getMessageId() ) );
+            container.getLdapCodecService(), internalCompareRequest );
         container.setMessage( compareRequest );
 
         LOG.debug( "Compare Request" );

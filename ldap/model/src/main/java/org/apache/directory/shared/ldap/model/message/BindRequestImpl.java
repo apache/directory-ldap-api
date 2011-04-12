@@ -65,19 +65,6 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     // ------------------------------------------------------------------------
     // Constructors
     // ------------------------------------------------------------------------
-
-    /**
-     * Creates an BindRequest implementation to bind to an LDAP server.
-     * 
-     * @param id the sequence identifier of the BindRequest message.
-     */
-    public BindRequestImpl( final int id )
-    {
-        super( id, TYPE );
-        hCredentials = 0;
-    }
-
-
     /**
      * Creates an BindRequest implementation to bind to an LDAP server.
      */

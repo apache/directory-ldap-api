@@ -26,6 +26,7 @@ import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.UnbindRequestDecorator;
+import org.apache.directory.shared.ldap.model.message.UnbindRequest;
 import org.apache.directory.shared.ldap.model.message.UnbindRequestImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +60,10 @@ public class InitUnbindRequest extends GrammarAction<LdapMessageContainer<Unbind
     public void action( LdapMessageContainer<UnbindRequestDecorator> container ) throws DecoderException
     {
         // Create the UnbindRequest LdapMessage instance and store it in the container
+        UnbindRequest unbindRequestInternal = new UnbindRequestImpl();
+        unbindRequestInternal.setMessageId( container.getMessageId() );
         UnbindRequestDecorator unbindRequest = new UnbindRequestDecorator(
-            container.getLdapCodecService(), new UnbindRequestImpl( container.getMessageId() ) );
+            container.getLdapCodecService(),unbindRequestInternal );
         container.setMessage( unbindRequest );
 
         TLV tlv = container.getCurrentTLV();

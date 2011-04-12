@@ -26,15 +26,15 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.MessageException;
-import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -55,7 +55,8 @@ public class CompareRequestImplTest
     @Test
     public void testEqualsSameObj()
     {
-        CompareRequestImpl req = new CompareRequestImpl( 5 );
+        CompareRequestImpl req = new CompareRequestImpl();
+        req.setMessageId( 5 );
         assertTrue( req.equals( req ) );
     }
 
@@ -66,12 +67,14 @@ public class CompareRequestImplTest
     @Test
     public void testEqualsExactCopy() throws LdapException
     {
-        CompareRequestImpl req0 = new CompareRequestImpl( 5 );
+        CompareRequestImpl req0 = new CompareRequestImpl();
+        req0.setMessageId( 5 );
         req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req0.setAttributeId( "objectClass" );
         req0.setAssertionValue( "top" );
 
-        CompareRequestImpl req1 = new CompareRequestImpl( 5 );
+        CompareRequestImpl req1 = new CompareRequestImpl();
+        req1.setMessageId( 5 );
         req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setAttributeId( "objectClass" );
         req1.setAssertionValue( "top" );
@@ -87,7 +90,8 @@ public class CompareRequestImplTest
     @Test
     public void testHashCodeSameObj()
     {
-        CompareRequestImpl req = new CompareRequestImpl( 5 );
+        CompareRequestImpl req = new CompareRequestImpl();
+        req.setMessageId( 5 );
         assertTrue( req.hashCode() == req.hashCode() );
     }
 
@@ -98,12 +102,14 @@ public class CompareRequestImplTest
     @Test
     public void testHashCodeExactCopy() throws LdapException
     {
-        CompareRequestImpl req0 = new CompareRequestImpl( 5 );
+        CompareRequestImpl req0 = new CompareRequestImpl();
+        req0.setMessageId( 5 );
         req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req0.setAttributeId( "objectClass" );
         req0.setAssertionValue( "top" );
 
-        CompareRequestImpl req1 = new CompareRequestImpl( 5 );
+        CompareRequestImpl req1 = new CompareRequestImpl();
+        req1.setMessageId( 5 );
         req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setAttributeId( "objectClass" );
         req1.setAssertionValue( "top" );
@@ -118,10 +124,12 @@ public class CompareRequestImplTest
     @Test
     public void testNotEqualDiffId() throws LdapException
     {
-        CompareRequestImpl req0 = new CompareRequestImpl( 7 );
+        CompareRequestImpl req0 = new CompareRequestImpl();
+        req0.setMessageId( 7 );
         req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
 
-        CompareRequestImpl req1 = new CompareRequestImpl( 5 );
+        CompareRequestImpl req1 = new CompareRequestImpl();
+        req1.setMessageId( 5 );
         req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
 
         assertFalse( req0.equals( req1 ) );
@@ -135,12 +143,14 @@ public class CompareRequestImplTest
     @Test
     public void testNotEqualDiffAttributeIds() throws LdapException
     {
-        CompareRequestImpl req0 = new CompareRequestImpl( 5 );
+        CompareRequestImpl req0 = new CompareRequestImpl();
+        req0.setMessageId( 5 );
         req0.setName( new Dn( "cn=admin,dc=apache,dc=org" ) );
         req0.setAttributeId( "dc" );
         req0.setAssertionValue( "apache.org" );
 
-        CompareRequestImpl req1 = new CompareRequestImpl( 5 );
+        CompareRequestImpl req1 = new CompareRequestImpl();
+        req1.setMessageId( 5 );
         req1.setName( new Dn( "cn=admin,dc=apache,dc=org" ) );
         req1.setAttributeId( "nisDomain" );
         req1.setAssertionValue( "apache.org" );
@@ -156,12 +166,14 @@ public class CompareRequestImplTest
     @Test
     public void testNotEqualDiffValue() throws LdapException
     {
-        CompareRequestImpl req0 = new CompareRequestImpl( 5 );
+        CompareRequestImpl req0 = new CompareRequestImpl();
+        req0.setMessageId( 5 );
         req0.setName( new Dn( "cn=admin,dc=apache,dc=org" ) );
         req0.setAttributeId( "dc" );
         req0.setAssertionValue( "apache.org" );
 
-        CompareRequestImpl req1 = new CompareRequestImpl( 5 );
+        CompareRequestImpl req1 = new CompareRequestImpl();
+        req1.setMessageId( 5 );
         req1.setName( new Dn( "cn=admin,dc=apache,dc=org" ) );
         req1.setAttributeId( "dc" );
         req1.setAssertionValue( "nagoya.apache.org" );
@@ -317,7 +329,8 @@ public class CompareRequestImplTest
             }
         };
 
-        CompareRequestImpl req1 = new CompareRequestImpl( 5 );
+        CompareRequestImpl req1 = new CompareRequestImpl();
+        req1.setMessageId( 5 );
         assertTrue( req1.equals( req0 ) );
         assertFalse( req0.equals( req1 ) );
     }

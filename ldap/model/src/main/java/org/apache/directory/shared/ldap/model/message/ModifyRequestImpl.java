@@ -26,9 +26,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -53,6 +53,9 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /** The associated response */
     private ModifyResponse response;
 
+    // -----------------------------------------------------------------------
+    // Constructors
+    // -----------------------------------------------------------------------
     /**
      * Creates a ModifyRequest implementing object used to modify the
      * attributes of an entry.
@@ -60,18 +63,6 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequestImpl()
     {
         super( -1, TYPE );
-    }
-
-
-    /**
-     * Creates a ModifyRequest implementing object used to modify the
-     * attributes of an entry.
-     * 
-     * @param id the sequential message identifier
-     */
-    public ModifyRequestImpl( final int id )
-    {
-        super( id, TYPE );
     }
 
 

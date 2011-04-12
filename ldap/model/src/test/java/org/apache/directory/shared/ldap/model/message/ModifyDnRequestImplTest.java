@@ -26,15 +26,15 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.MessageException;
-import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -57,7 +57,8 @@ public class ModifyDnRequestImplTest
     private ModifyDnRequestImpl getRequest()
     {
         // Construct the ModifyDn request to test
-        ModifyDnRequestImpl request = new ModifyDnRequestImpl( 45 );
+        ModifyDnRequestImpl request = new ModifyDnRequestImpl();
+        request.setMessageId( 45 );
         request.setDeleteOldRdn( true );
 
         try
@@ -81,7 +82,8 @@ public class ModifyDnRequestImplTest
     @Test
     public void testEqualsSameObj()
     {
-        ModifyDnRequestImpl req = new ModifyDnRequestImpl( 5 );
+        ModifyDnRequestImpl req = new ModifyDnRequestImpl();
+        req.setMessageId( 5 );
         assertTrue( req.equals( req ) );
     }
 
@@ -120,7 +122,8 @@ public class ModifyDnRequestImplTest
     @Test
     public void testHashCodeSameObj()
     {
-        ModifyDnRequestImpl req = new ModifyDnRequestImpl( 5 );
+        ModifyDnRequestImpl req = new ModifyDnRequestImpl();
+        req.setMessageId( 5 );
         assertTrue( req.hashCode() == req.hashCode() );
     }
 
@@ -159,8 +162,10 @@ public class ModifyDnRequestImplTest
     @Test
     public void testNotEqualDiffId()
     {
-        ModifyDnRequestImpl req0 = new ModifyDnRequestImpl( 4 );
-        ModifyDnRequestImpl req1 = new ModifyDnRequestImpl( 5 );
+        ModifyDnRequestImpl req0 = new ModifyDnRequestImpl();
+        req0.setMessageId( 4 );
+        ModifyDnRequestImpl req1 = new ModifyDnRequestImpl();
+        req1.setMessageId( 5 );
 
         assertFalse( req0.equals( req1 ) );
     }

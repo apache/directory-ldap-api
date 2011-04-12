@@ -42,7 +42,6 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
     // ------------------------------------------------------------------------
     // Constructors
     // ------------------------------------------------------------------------
-
     /**
      * Creates a DeleteRequest implementing object used to delete a
      * leaf entry from the DIT.
@@ -50,18 +49,6 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
     public DeleteRequestImpl()
     {
         super( -1, TYPE );
-    }
-
-
-    /**
-     * Creates a DeleteRequest implementing object used to delete a
-     * leaf entry from the DIT.
-     * 
-     * @param id the sequential message identifier
-     */
-    public DeleteRequestImpl( final int id )
-    {
-        super( id, TYPE );
     }
 
 

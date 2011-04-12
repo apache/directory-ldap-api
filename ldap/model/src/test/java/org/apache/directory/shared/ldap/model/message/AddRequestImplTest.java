@@ -26,10 +26,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
-import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
+import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -99,7 +99,8 @@ public class AddRequestImplTest
     @Test
     public void testEqualsSameObj()
     {
-        AddRequestImpl req = new AddRequestImpl( 5 );
+        AddRequestImpl req = new AddRequestImpl();
+        req.setMessageId( 5 );
         assertTrue( req.equals( req ) );
     }
 
@@ -110,11 +111,13 @@ public class AddRequestImplTest
     @Test
     public void testEqualsExactCopy() throws LdapException
     {
-        AddRequestImpl req0 = new AddRequestImpl( 5 );
+        AddRequestImpl req0 = new AddRequestImpl();
+        req0.setMessageId( 5 );
         req0.setEntryDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req0.setEntry( getEntry() );
 
-        AddRequestImpl req1 = new AddRequestImpl( 5 );
+        AddRequestImpl req1 = new AddRequestImpl();
+        req1.setMessageId( 5 );
         req1.setEntryDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setEntry( getEntry() );
 
@@ -128,11 +131,13 @@ public class AddRequestImplTest
     @Test
     public void testNotEqualDiffId() throws LdapException
     {
-        AddRequestImpl req0 = new AddRequestImpl( 7 );
+        AddRequestImpl req0 = new AddRequestImpl();
+        req0.setMessageId( 7 );
         req0.setEntryDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req0.setEntry( getEntry() );
 
-        AddRequestImpl req1 = new AddRequestImpl( 5 );
+        AddRequestImpl req1 = new AddRequestImpl();
+        req1.setMessageId( 5 );
         req1.setEntryDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setEntry( getEntry() );
 
@@ -146,11 +151,13 @@ public class AddRequestImplTest
     @Test
     public void testNotEqualDiffName() throws LdapException
     {
-        AddRequestImpl req0 = new AddRequestImpl( 5 );
+        AddRequestImpl req0 = new AddRequestImpl();
+        req0.setMessageId( 5 );
         req0.setEntry( getEntry() );
         req0.setEntryDn( new Dn( "cn=admin,dc=example,dc=com" ) );
 
-        AddRequestImpl req1 = new AddRequestImpl( 5 );
+        AddRequestImpl req1 = new AddRequestImpl();
+        req1.setMessageId( 5 );
         req1.setEntry( getEntry() );
         req1.setEntryDn( new Dn( "cn=admin,dc=apache,dc=org" ) );
 
@@ -164,12 +171,14 @@ public class AddRequestImplTest
     @Test
     public void testNotEqualDiffAttributes() throws LdapException
     {
-        AddRequestImpl req0 = new AddRequestImpl( 5 );
+        AddRequestImpl req0 = new AddRequestImpl();
+        req0.setMessageId( 5 );
         Entry entry0 = getEntry();
         entry0.setDn( new Dn( "cn=admin,dc=apache,dc=org" ) );
         req0.setEntry( entry0 );
 
-        AddRequestImpl req1 = new AddRequestImpl( 5 );
+        AddRequestImpl req1 = new AddRequestImpl();
+        req1.setMessageId( 5 );
         req1.setEntryDn( new Dn( "cn=admin,dc=apache,dc=org" ) );
 
         assertTrue( req0.equals( req1 ) );
@@ -315,7 +324,8 @@ public class AddRequestImplTest
             }
         };
 
-        AddRequestImpl req1 = new AddRequestImpl( 5 );
+        AddRequestImpl req1 = new AddRequestImpl();
+        req1.setMessageId( 5 );
         req1.setEntry( getEntry() );
         assertTrue( req1.equals( req0 ) );
     }

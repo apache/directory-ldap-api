@@ -19,19 +19,16 @@
  */
 package org.apache.directory.shared.ldap.model.message;
 
-
 import org.apache.directory.shared.i18n.I18n;
 
 
 /**
- * Implementation of an AbandonRequest.
+ * Implementation of an AbandonRequest message.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class AbandonRequestImpl extends AbstractRequest implements AbandonRequest
 {
-    static final long serialVersionUID = -4688193359792740969L;
-
     /** Sequence identifier of the outstanding request message to abandon */
     private int abandonId;
 
@@ -48,11 +45,12 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
     /**
      * Creates an AbandonRequest implementation for an outstanding request.
      * 
-     * @param id the sequence identifier of the AbandonRequest message.
+     * @param abdandonnedId the sequence identifier of the AbandonRequest message.
      */
-    public AbandonRequestImpl( final int id )
+    public AbandonRequestImpl( final int abdandonnedId )
     {
-        super( id, TYPE, false );
+        super( -1, TYPE, false );
+        abandonId = abdandonnedId;
     }
 
 
@@ -70,8 +68,7 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
     /**
      * Sets the id of the request operation to terminate.
      * 
-     * @param abandonId
-     *            the sequence id of the request message to abandon
+     * @param abandonId the sequence id of the request message to abandon
      */
     public void setAbandoned( int abandonId )
     {
@@ -80,13 +77,22 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
 
 
     /**
+     * RFC 2251 [Section 4.11]: Abandon, Bind, Unbind, and StartTLS operations
+     * cannot be abandoned.
+     */
+    public void abandon()
+    {
+        throw new UnsupportedOperationException( I18n.err( I18n.ERR_04185 ) );
+    }
+
+
+    /**
      * Checks for equality first by asking the super method which should compare
      * all but the Abandoned request's Id. It then compares this to determine
      * equality.
      * 
-     * @param obj
-     *            the object to test for equality to this AbandonRequest
-     * @return true if the obj equals this request false otherwise
+     * @param obj the object to test for equality to this AbandonRequest
+     * @return true if the obj equals this request, false otherwise
      */
     public boolean equals( Object obj )
     {
@@ -122,16 +128,6 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
         hash = hash * 17 + super.hashCode();
 
         return hash;
-    }
-
-
-    /**
-     * RFC 2251 [Section 4.11]: Abandon, Bind, Unbind, and StartTLS operations
-     * cannot be abandoned.
-     */
-    public void abandon()
-    {
-        throw new UnsupportedOperationException( I18n.err( I18n.ERR_04185 ) );
     }
 
 

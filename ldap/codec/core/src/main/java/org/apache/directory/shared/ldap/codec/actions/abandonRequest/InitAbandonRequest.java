@@ -29,6 +29,7 @@ import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.AbandonRequestDecorator;
+import org.apache.directory.shared.ldap.model.message.AbandonRequest;
 import org.apache.directory.shared.ldap.model.message.AbandonRequestImpl;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -66,8 +67,10 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
     public void action( LdapMessageContainer<AbandonRequestDecorator> container ) throws DecoderException
     {
         // Create the AbandonRequest LdapMessage instance and store it in the container
+        AbandonRequest internalAbandonRequest = new AbandonRequestImpl();
+        internalAbandonRequest.setMessageId( container.getMessageId() );
         AbandonRequestDecorator abandonRequest = new AbandonRequestDecorator(
-            container.getLdapCodecService(), new AbandonRequestImpl( container.getMessageId() ) );
+            container.getLdapCodecService(), internalAbandonRequest );
         container.setMessage( abandonRequest );
 
         // The current TLV should be a integer

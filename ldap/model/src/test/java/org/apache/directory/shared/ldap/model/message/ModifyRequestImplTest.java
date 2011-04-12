@@ -29,9 +29,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -65,7 +65,8 @@ public class ModifyRequestImplTest
     private ModifyRequestImpl getRequest() throws LdapException
     {
         // Construct the Modify request to test
-        ModifyRequestImpl req = new ModifyRequestImpl( 45 );
+        ModifyRequestImpl req = new ModifyRequestImpl();
+        req.setMessageId( 45 );
 
         try
         {
@@ -150,8 +151,10 @@ public class ModifyRequestImplTest
     @Test
     public void testNotEqualDiffId()
     {
-        ModifyRequestImpl req0 = new ModifyRequestImpl( 7 );
-        ModifyRequestImpl req1 = new ModifyRequestImpl( 5 );
+        ModifyRequestImpl req0 = new ModifyRequestImpl();
+        req0.setMessageId( 7 );
+        ModifyRequestImpl req1 = new ModifyRequestImpl();
+        req1.setMessageId( 5 );
         assertFalse( req0.equals( req1 ) );
     }
 

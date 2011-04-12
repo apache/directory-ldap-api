@@ -43,8 +43,7 @@ public interface AbandonRequest extends Request
     /**
      * Sets the id of the request operation to terminate.
      * 
-     * @param requestId
-     *            the sequence id of the request message to abandon
+     * @param requestId the sequence id of the request message to abandon
      */
     void setAbandoned( int requestId );
 }

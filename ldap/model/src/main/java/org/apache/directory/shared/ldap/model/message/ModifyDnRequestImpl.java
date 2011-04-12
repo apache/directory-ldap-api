@@ -62,18 +62,6 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     }
 
 
-    /**
-     * Creates a Lockable ModifyDnRequest implementing object used to perform a
-     * dn change on an entry potentially resulting in an entry move.
-     * 
-     * @param id the sequence id of this message
-     */
-    public ModifyDnRequestImpl( final int id )
-    {
-        super( id, TYPE );
-    }
-
-
     // -----------------------------------------------------------------------
     // ModifyDnRequest Interface Method Implementations
     // -----------------------------------------------------------------------

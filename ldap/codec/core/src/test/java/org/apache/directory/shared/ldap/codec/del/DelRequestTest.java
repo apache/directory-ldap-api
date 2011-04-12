@@ -27,8 +27,6 @@ import static org.junit.Assert.fail;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
@@ -37,10 +35,18 @@ import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.shared.ldap.codec.decorators.DeleteRequestDecorator;
 import org.apache.directory.shared.ldap.codec.osgi.AbstractCodecServiceTest;
-import org.apache.directory.shared.ldap.model.message.*;
+import org.apache.directory.shared.ldap.model.message.Control;
+import org.apache.directory.shared.ldap.model.message.DeleteRequest;
+import org.apache.directory.shared.ldap.model.message.DeleteRequestImpl;
+import org.apache.directory.shared.ldap.model.message.DeleteResponseImpl;
+import org.apache.directory.shared.ldap.model.message.Message;
+import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -97,7 +103,8 @@ public class DelRequestTest extends AbstractCodecServiceTest
         assertEquals( "cn=testModify,ou=users,ou=system", delRequest.getName().toString() );
 
         // Check the length
-        DeleteRequest internalDeleteRequest = new DeleteRequestImpl( delRequest.getMessageId() );
+        DeleteRequest internalDeleteRequest = new DeleteRequestImpl();
+        internalDeleteRequest.setMessageId( delRequest.getMessageId() );
         internalDeleteRequest.setName( delRequest.getName() );
 
         // Check the encoding
@@ -259,7 +266,8 @@ public class DelRequestTest extends AbstractCodecServiceTest
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
-        DeleteRequest internalDeleteRequest = new DeleteRequestImpl( delRequest.getMessageId() );
+        DeleteRequest internalDeleteRequest = new DeleteRequestImpl();
+        internalDeleteRequest.setMessageId( delRequest.getMessageId() );
         internalDeleteRequest.setName( delRequest.getName() );
         internalDeleteRequest.addControl( control );
 

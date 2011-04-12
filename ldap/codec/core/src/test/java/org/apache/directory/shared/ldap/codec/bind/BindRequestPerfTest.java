@@ -27,11 +27,9 @@ import static org.junit.Assert.fail;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
-import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.ldap.codec.api.CodecControl;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.BindRequestDecorator;
@@ -45,6 +43,9 @@ import org.apache.directory.shared.util.Strings;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -177,7 +178,8 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
         for ( int i = 0; i < nbLoops; i++ )
         {
             // Check the decoded BindRequest
-            BindRequest bindRequest = new BindRequestImpl( 1 );
+            BindRequest bindRequest = new BindRequestImpl();
+            bindRequest.setMessageId( 1 );
 
             bindRequest.setSimple( true );
             bindRequest.setName( name );

@@ -28,12 +28,10 @@ import static org.junit.Assert.fail;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.asn1.ber.Asn1Decoder;
-import org.apache.directory.shared.asn1.ber.Asn1Container;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
+import org.apache.directory.shared.asn1.ber.Asn1Container;
+import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.ldap.codec.api.CodecControl;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
@@ -46,6 +44,9 @@ import org.apache.directory.shared.ldap.model.message.Message;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 @RunWith(ConcurrentJunitRunner.class)
@@ -108,8 +109,8 @@ public class LdapControlTest extends AbstractCodecServiceTest
         AbandonRequestDecorator abandonRequest = ldapMessageContainer.getMessage();
 
         // Copy the message
-        AbandonRequest internalAbandonRequest = new AbandonRequestImpl( abandonRequest.getMessageId() );
-        internalAbandonRequest.setAbandoned( abandonRequest.getAbandoned() );
+        AbandonRequest internalAbandonRequest = new AbandonRequestImpl( abandonRequest.getAbandoned() );
+        internalAbandonRequest.setMessageId( abandonRequest.getMessageId() );
 
         assertEquals( 3, abandonRequest.getMessageId() );
         assertEquals( 2, abandonRequest.getAbandoned() );

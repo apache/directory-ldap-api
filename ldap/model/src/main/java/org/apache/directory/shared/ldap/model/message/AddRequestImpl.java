@@ -20,10 +20,10 @@
 package org.apache.directory.shared.ldap.model.message;
 
 
-import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
-import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
+import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -58,18 +58,6 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     public AddRequestImpl()
     {
         super( -1, TYPE );
-        entry = new DefaultEntry();
-    }
-
-
-    /**
-     * Creates an AddRequest implementation to create a new entry.
-     * 
-     * @param id the sequence identifier of the AddRequest message.
-     */
-    public AddRequestImpl( final int id )
-    {
-        super( id, TYPE );
         entry = new DefaultEntry();
     }
 
@@ -284,7 +272,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     {
         StringBuilder sb = new StringBuilder();
 
-        sb.append( "    Add Request :\n" );
+        sb.append( "    Add Request[" ).append( getMessageId() ).append( "] :\n" );
 
         if ( entry == null )
         {

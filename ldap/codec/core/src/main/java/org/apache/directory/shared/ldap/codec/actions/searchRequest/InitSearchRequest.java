@@ -24,6 +24,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.SearchRequestDecorator;
+import org.apache.directory.shared.ldap.model.message.SearchRequest;
 import org.apache.directory.shared.ldap.model.message.SearchRequestImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +60,10 @@ public class InitSearchRequest extends GrammarAction<LdapMessageContainer<Search
         // Now, we can allocate the SearchRequest Object
         TLV tlv = container.getCurrentTLV();
 
+        SearchRequest internalSearchRequest = new SearchRequestImpl();
+        internalSearchRequest.setMessageId( container.getMessageId() );
         SearchRequestDecorator searchRequest = new SearchRequestDecorator(
-            container.getLdapCodecService(), new SearchRequestImpl( container.getMessageId() ) );
+            container.getLdapCodecService(), internalSearchRequest );
 
         searchRequest.setTlvId( tlv.getId());
         container.setMessage( searchRequest );

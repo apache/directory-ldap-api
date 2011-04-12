@@ -26,11 +26,12 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -51,7 +52,8 @@ public class ExtendedRequestImplTest
     @Test
     public void testEqualsSameObj()
     {
-        ExtendedRequestImpl req = new ExtendedRequestImpl( 5 );
+        ExtendedRequestImpl req = new ExtendedRequestImpl();
+        req.setMessageId( 5 );
         assertTrue( req.equals( req ) );
     }
 
@@ -62,10 +64,12 @@ public class ExtendedRequestImplTest
     @Test
     public void testEqualsExactCopy()
     {
-        ExtendedRequestImpl req0 = new ExtendedRequestImpl( 5 );
+        ExtendedRequestImpl req0 = new ExtendedRequestImpl();
+        req0.setMessageId( 5 );
         req0.setRequestName( "1.1.1.1" );
 
-        ExtendedRequestImpl req1 = new ExtendedRequestImpl( 5 );
+        ExtendedRequestImpl req1 = new ExtendedRequestImpl();
+        req1.setMessageId( 5 );
         req1.setRequestName( "1.1.1.1" );
 
         assertTrue( req0.equals( req1 ) );
@@ -79,7 +83,8 @@ public class ExtendedRequestImplTest
     @Test
     public void testHashCodeSameObj()
     {
-        ExtendedRequestImpl req = new ExtendedRequestImpl( 5 );
+        ExtendedRequestImpl req = new ExtendedRequestImpl();
+        req.setMessageId( 5 );
         assertTrue( req.hashCode() == req.hashCode() );
     }
 
@@ -90,10 +95,12 @@ public class ExtendedRequestImplTest
     @Test
     public void testHashCodeExactCopy()
     {
-        ExtendedRequestImpl req0 = new ExtendedRequestImpl( 5 );
+        ExtendedRequestImpl req0 = new ExtendedRequestImpl();
+        req0.setMessageId( 5 );
         req0.setRequestName( "1.1.1.1" );
 
-        ExtendedRequestImpl req1 = new ExtendedRequestImpl( 5 );
+        ExtendedRequestImpl req1 = new ExtendedRequestImpl();
+        req1.setMessageId( 5 );
         req1.setRequestName( "1.1.1.1" );
 
         assertTrue( req0.hashCode() == req1.hashCode() );
@@ -106,8 +113,10 @@ public class ExtendedRequestImplTest
     @Test
     public void testNotEqualDiffId()
     {
-        ExtendedRequestImpl req0 = new ExtendedRequestImpl( 7 );
-        ExtendedRequestImpl req1 = new ExtendedRequestImpl( 5 );
+        ExtendedRequestImpl req0 = new ExtendedRequestImpl();
+        req0.setMessageId( 7 );
+        ExtendedRequestImpl req1 = new ExtendedRequestImpl();
+        req1.setMessageId( 5 );
 
         assertFalse( req0.equals( req1 ) );
         assertFalse( req1.equals( req0 ) );
@@ -120,10 +129,12 @@ public class ExtendedRequestImplTest
     @Test
     public void testNotEqualDiffOID()
     {
-        ExtendedRequestImpl req0 = new ExtendedRequestImpl( 5 );
+        ExtendedRequestImpl req0 = new ExtendedRequestImpl();
+        req0.setMessageId( 5 );
         req0.setRequestName( "1.1.1.1" );
 
-        ExtendedRequestImpl req1 = new ExtendedRequestImpl( 5 );
+        ExtendedRequestImpl req1 = new ExtendedRequestImpl();
+        req1.setMessageId( 5 );
         req0.setRequestName( "1.2.2.1" );
 
         assertFalse( req0.equals( req1 ) );
@@ -137,10 +148,12 @@ public class ExtendedRequestImplTest
     @Test
     public void testNotEqualDiffValue()
     {
-        ExtendedRequestImpl req0 = new ExtendedRequestImpl( 5 );
+        ExtendedRequestImpl req0 = new ExtendedRequestImpl();
+        req0.setMessageId( 5 );
         req0.setRequestName( "1.1.1.1" );
 
-        ExtendedRequestImpl req1 = new ExtendedRequestImpl( 5 );
+        ExtendedRequestImpl req1 = new ExtendedRequestImpl();
+        req1.setMessageId( 5 );
         req0.setRequestName( "1.1.1.1" );
 
         assertFalse( req0.equals( req1 ) );
@@ -251,7 +264,8 @@ public class ExtendedRequestImplTest
             }
         };
 
-        ExtendedRequestImpl req1 = new ExtendedRequestImpl( 5 );
+        ExtendedRequestImpl req1 = new ExtendedRequestImpl();
+        req1.setMessageId( 5 );
         assertTrue( req1.equals( req0 ) );
         assertFalse( req0.equals( req1 ) );
     }

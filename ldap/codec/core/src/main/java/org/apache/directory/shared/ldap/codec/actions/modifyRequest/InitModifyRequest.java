@@ -52,9 +52,10 @@ public class InitModifyRequest extends GrammarAction<LdapMessageContainer<Modify
     public void action( LdapMessageContainer<ModifyRequestDecorator> container )
     {
         // Now, we can allocate the ModifyRequest Object
-        ModifyRequest modifyRequest = new ModifyRequestImpl( container.getMessageId() );
+        ModifyRequest internalModifyRequest = new ModifyRequestImpl();
+        internalModifyRequest.setMessageId( container.getMessageId() );
         ModifyRequestDecorator modifyRequestDecorator = new ModifyRequestDecorator(
-            container.getLdapCodecService(), modifyRequest );
+            container.getLdapCodecService(), internalModifyRequest );
         container.setMessage( modifyRequestDecorator );
     }
 }

@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.codec.actions.modifyDnRequest;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.ModifyDnRequestDecorator;
+import org.apache.directory.shared.ldap.model.message.ModifyDnRequest;
 import org.apache.directory.shared.ldap.model.message.ModifyDnRequestImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,8 +57,10 @@ public class InitModifyDnRequest extends GrammarAction<LdapMessageContainer<Modi
     public void action( LdapMessageContainer<ModifyDnRequestDecorator> container )
     {
         // Now, we can allocate the ModifyDNRequest Object
+        ModifyDnRequest internalModifyDnRequest = new ModifyDnRequestImpl();
+        internalModifyDnRequest.setMessageId( container.getMessageId() );
         ModifyDnRequestDecorator modifyDnRequest = new ModifyDnRequestDecorator(
-            container.getLdapCodecService(), new ModifyDnRequestImpl( container.getMessageId() ) );
+            container.getLdapCodecService(), internalModifyDnRequest );
         container.setMessage( modifyDnRequest );
 
         LOG.debug( "ModifyDn request" );
