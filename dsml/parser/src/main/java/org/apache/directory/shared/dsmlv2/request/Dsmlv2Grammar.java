@@ -706,6 +706,11 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "control", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG, controlCreation ) );
+        
+        // State: [SEARCH_REQUEST_FILTER_END_TAG] - Tag: </searchRequest>
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "searchRequest", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,
+                storeFilter ) );
 
         // State: [SEARCH_REQUEST_ATTRIBUTES_START_TAG] - Tag: </attributes>
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG.ordinal()].put( new Tag( "attributes", Tag.END ),
@@ -735,7 +740,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
         // State: [SEARCH_REQUEST_ATTRIBUTES_END_TAG] - Tag: </searchRequest>
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG.ordinal()].put( new Tag( "searchRequest", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG,
-                Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
+                Dsmlv2StatesEnum.BATCHREQUEST_LOOP, storeFilter ) );
 
         //====================================================
         //  Transitions concerning : FILTER
@@ -2693,6 +2698,11 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 container.getBatchRequest().getCurrentRequest();
             SearchRequest searchRequest = searchRequestDecorator.getDecorated();
 
+            if ( searchRequestDecorator.getFilterNode() == null )
+            {
+                throw new IllegalStateException( "No filter element present in the DSML search request" );
+            }
+            
             searchRequest.setFilter( searchRequestDecorator.getFilterNode() );
         }
     };

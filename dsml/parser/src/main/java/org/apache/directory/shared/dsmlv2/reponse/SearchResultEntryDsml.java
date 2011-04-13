@@ -22,15 +22,16 @@ package org.apache.directory.shared.dsmlv2.reponse;
 
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntryImpl;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;
@@ -154,8 +155,14 @@ public class SearchResultEntryDsml
                 {
                     Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
                     Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
-                    attributeElement.getDocument().getRootElement().add( xsdNamespace );
-                    attributeElement.getDocument().getRootElement().add( xsiNamespace );
+                    Document doc = attributeElement.getDocument();
+                    
+                    if ( doc !=null )
+                    {
+                        Element docRoot = doc.getRootElement();
+                        docRoot.add( xsdNamespace );
+                        docRoot.add( xsiNamespace );
+                    }
 
                     Element valueElement = attributeElement.addElement( "value" ).addText(
                         ParserUtils.base64Encode( value.getValue() ) );

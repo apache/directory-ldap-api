@@ -80,6 +80,11 @@ public abstract class AbstractTest
             assertTrue( e.getMessage(), true );
             return;
         }
+        catch ( IllegalStateException e )
+        {
+            assertTrue( e.getMessage(), true );
+            return;
+        }
         catch ( Exception e )
         {
             fail( e.getMessage() );

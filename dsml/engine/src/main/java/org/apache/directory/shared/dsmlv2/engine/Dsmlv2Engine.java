@@ -319,6 +319,8 @@ public class Dsmlv2Engine
         }
         catch ( Exception e )
         {
+            LOG.warn( "Failed to bind", e );
+            
             // Unable to connect to server
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.COULD_NOT_CONNECT, e
@@ -376,8 +378,16 @@ public class Dsmlv2Engine
         }
         catch ( XmlPullParserException e )
         {
+            LOG.warn( "Failed while getting next request", e );
+            
+            int reqId = 0;
+            if ( request != null )
+            {
+                reqId = request.getDecorated().getMessageId();
+            }
+            
             // We create a new ErrorResponse and return the XML response.
-            ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
+            ErrorResponse errorResponse = new ErrorResponse( reqId, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
                 I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
             if ( respWriter != null )
             {
@@ -421,8 +431,10 @@ public class Dsmlv2Engine
             }
             catch ( Exception e )
             {
+                LOG.warn( "Failed to process request", e );
+                
                 // We create a new ErrorResponse and return the XML response.
-                ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.GATEWAY_INTERNAL_ERROR, I18n.err(
+                ErrorResponse errorResponse = new ErrorResponse( request.getDecorated().getMessageId(), ErrorResponseType.GATEWAY_INTERNAL_ERROR, I18n.err(
                     I18n.ERR_03003, e.getMessage() ) );
                 if ( respWriter != null )
                 {
@@ -607,7 +619,6 @@ public class Dsmlv2Engine
                 SearchCursor searchResponses = connection.search( ( SearchRequest ) request );
                 
                 SearchResponseDsml searchResponseDsml = new SearchResponseDsml( connection.getCodecService() );
-                searchResponseDsml.setMessageId( request.getDecorated().getMessageId() );
                 
                 boolean first = true;
                 
