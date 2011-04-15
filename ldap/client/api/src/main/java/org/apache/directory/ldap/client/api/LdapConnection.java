@@ -31,7 +31,24 @@ import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.message.*;
+import org.apache.directory.shared.ldap.model.message.AbandonRequest;
+import org.apache.directory.shared.ldap.model.message.AddRequest;
+import org.apache.directory.shared.ldap.model.message.AddResponse;
+import org.apache.directory.shared.ldap.model.message.BindRequest;
+import org.apache.directory.shared.ldap.model.message.BindResponse;
+import org.apache.directory.shared.ldap.model.message.CompareRequest;
+import org.apache.directory.shared.ldap.model.message.CompareResponse;
+import org.apache.directory.shared.ldap.model.message.Control;
+import org.apache.directory.shared.ldap.model.message.DeleteRequest;
+import org.apache.directory.shared.ldap.model.message.DeleteResponse;
+import org.apache.directory.shared.ldap.model.message.ExtendedRequest;
+import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
+import org.apache.directory.shared.ldap.model.message.ModifyDnRequest;
+import org.apache.directory.shared.ldap.model.message.ModifyDnResponse;
+import org.apache.directory.shared.ldap.model.message.ModifyRequest;
+import org.apache.directory.shared.ldap.model.message.ModifyResponse;
+import org.apache.directory.shared.ldap.model.message.SearchRequest;
+import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
@@ -135,6 +152,18 @@ public interface LdapConnection
 
 
     /**
+     * Unauthenticated authentication bind
+     *
+     * @param name The name we use to authenticate the user. It must be a
+     * valid Dn
+     * @return The BindResponse LdapResponse
+     * @throws LdapException if some error occurred
+     * @throws IOException if an I/O exception occurred
+     */
+    BindResponse bind( String name ) throws LdapException, IOException;
+
+
+    /**
      * Simple Bind on a server.
      *
      * @param name The name we use to authenticate the user. It must be a
@@ -145,6 +174,18 @@ public interface LdapConnection
      * @throws IOException if an I/O exception occurred
      */
     BindResponse bind( String name, String credentials ) throws LdapException, IOException;
+
+
+    /**
+     * Unauthenticated authentication Bind on a server.
+     *
+     * @param name The name we use to authenticate the user. It must be a
+     * valid Dn
+     * @return The BindResponse LdapResponse
+     * @throws LdapException if some error occurred
+     * @throws IOException if an I/O exception occurred
+     */
+    BindResponse bind( Dn name ) throws LdapException, IOException;
 
 
     /**

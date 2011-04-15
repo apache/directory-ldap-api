@@ -272,7 +272,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     {
         StringBuilder sb = new StringBuilder();
 
-        sb.append( "    Add Request[" ).append( getMessageId() ).append( "] :\n" );
+        sb.append( "    Add Request :\n" );
 
         if ( entry == null )
         {

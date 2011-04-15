@@ -35,8 +35,6 @@ import org.apache.directory.shared.util.Strings;
  */
 public class BindRequestImpl extends AbstractAbandonableRequest implements BindRequest
 {
-    static final long serialVersionUID = 7945504184130380071L;
-
     /**
      * Distinguished name identifying the name of the authenticating subject -
      * defaults to the empty string
@@ -80,10 +78,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     // -----------------------------------------------------------------------
 
     /**
-     * Checks to see if the authentication mechanism is simple and not SASL
-     * based.
-     * 
-     * @return true if the mechanism is simple false if it is SASL based.
+     * {@inheritDoc}
      */
     public boolean isSimple()
     {
@@ -92,10 +87,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
 
 
     /**
-     * Checks to see if the authentication mechanism is simple and not SASL
-     * based.
-     * 
-     * @return true if the mechanism is simple false if it is SASL based.
+     * {@inheritDoc}
      */
     public boolean getSimple()
     {
@@ -104,11 +96,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
 
 
     /**
-     * Sets the authentication mechanism to simple or to SASL based
-     * authentication.
-     * 
-     * @param simple
-     *            true if authentication is simple, false otherwise.
+     * {@inheritDoc}
      */
     public void setSimple( boolean simple )
     {
@@ -117,10 +105,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
 
 
     /**
-     * Gets the simple credentials associated with a simple authentication
-     * attempt or null if this request uses SASL authentication mechanisms.
-     * 
-     * @return null if the mechanism is SASL or the credentials if it is simple.
+     * {@inheritDoc}
      */
     public byte[] getCredentials()
     {
@@ -170,9 +155,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
 
 
     /**
-     * Gets the mechanism if this request uses SASL authentication mechanisms.
-     * 
-     * @return The mechanism if SASL.
+     * {@inheritDoc}
      */
     public String getSaslMechanism()
     {
@@ -181,25 +164,17 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
 
 
     /**
-     * Sets the mechanism associated with a SASL authentication
-     * 
-     * @param saslMechanism
-     *            the SASL mechanism
+     * {@inheritDoc}
      */
     public void setSaslMechanism( String saslMechanism )
     {
+        this.isSimple = false;
         this.mechanism = saslMechanism;
     }
 
 
     /**
-     * Gets the distinguished name of the subject in this authentication
-     * request. This field may take on a null value (a zero length string) for
-     * the purposes of anonymous binds, when authentication has been performed
-     * at a lower layer, or when using SASL credentials with a mechanism that
-     * includes the Dn in the credentials.
-     * 
-     * @return the Dn of the authenticating user.
+     * {@inheritDoc}
      */
     public Dn getName()
     {
@@ -208,15 +183,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
 
 
     /**
-     * Sets the distinguished name of the subject in this authentication
-     * request. This field may take on a null value (or a zero length string)
-     * for the purposes of anonymous binds, when authentication has been
-     * performed at a lower layer, or when using SASL credentials with a
-     * mechanism that includes the Dn in the credentials.
-     * 
-     * @param name
-     *            the Dn of the authenticating user - leave null for annonymous
-     *            user.
+     * {@inheritDoc}
      */
     public void setName( Dn name )
     {
@@ -225,15 +192,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
 
 
     /**
-     * Checks to see if the Ldap v3 protocol is used. Normally this would
-     * extract a version number from the bind request sent by the client
-     * indicating the version of the protocol to be used in this protocol
-     * session. The integer is either a 2 or a 3 at the moment. We thought it
-     * was better to just check if the protocol used is 3 or not rather than use
-     * an type-safe enumeration type for a binary value. If an LDAPv4 comes out
-     * then we shall convert the return type to a type safe enumeration.
-     * 
-     * @return true if client using version 3 false if it is version 2.
+     * {@inheritDoc}
      */
     public boolean isVersion3()
     {
@@ -242,15 +201,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
 
 
     /**
-     * Gets whether or not the Ldap v3 protocol is used. Normally this would
-     * extract a version number from the bind request sent by the client
-     * indicating the version of the protocol to be used in this protocol
-     * session. The integer is either a 2 or a 3 at the moment. We thought it
-     * was better to just check if the protocol used is 3 or not rather than use
-     * an type-safe enumeration type for a binary value. If an LDAPv4 comes out
-     * then we shall convert the return type to a type safe enumeration.
-     * 
-     * @return true if client using version 3 false if it is version 2.
+     * {@inheritDoc}
      */
     public boolean getVersion3()
     {
@@ -259,17 +210,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
 
 
     /**
-     * Sets whether or not the LDAP v3 or v2 protocol is used. Normally this
-     * would extract a version number from the bind request sent by the client
-     * indicating the version of the protocol to be used in this protocol
-     * session. The integer is either a 2 or a 3 at the moment. We thought it
-     * was better to just check if the protocol used is 3 or not rather than use
-     * an type-safe enumeration type for a binary value. If an LDAPv4 comes out
-     * then we shall convert the return type to a type safe enumeration.
-     * 
-     * @param version3
-     *            if true the client will be exhibiting version 3 bind behavoir,
-     *            if false is used version 2 behavoir will be exhibited.
+     * {@inheritDoc}
      */
     public void setVersion3( boolean version3 )
     {
@@ -354,16 +295,16 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
         Dn dn1 = req.getName();
         Dn dn2 = getName();
 
-        if ( dn1 == null )
+        if ( Dn.isNullOrEmpty( dn1) )
         {
-            if ( dn2 != null )
+            if ( !Dn.isNullOrEmpty( dn2 ) )
             {
                 return false;
             }
         }
         else
         {
-            if ( dn2 == null )
+            if ( Dn.isNullOrEmpty( dn2 ) )
             {
                 return false;
             }
@@ -371,7 +312,6 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
             {
                 return false;
             }
-
         }
 
         return Arrays.equals( req.getCredentials(), getCredentials() );
@@ -409,7 +349,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
         sb.append( "    BindRequest\n" );
         sb.append( "        Version : '" ).append( isVersion3 ? "3" : "2" ).append( "'\n" );
 
-        if ( Strings.isEmpty(name.getNormName()) && isSimple )
+        if ( ( (name == null ) || Strings.isEmpty(name.getNormName() ) ) && isSimple )
         {
             sb.append( "        Name : anonymous\n" );
         }

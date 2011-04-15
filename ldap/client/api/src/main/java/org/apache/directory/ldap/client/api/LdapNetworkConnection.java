@@ -74,6 +74,7 @@ import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.entry.Value;
+import org.apache.directory.shared.ldap.model.exception.LdapAuthenticationException;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.exception.LdapNoPermissionException;
@@ -915,14 +916,55 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public BindResponse bind( String name, String credentials ) throws LdapException, IOException
+    public BindResponse bind( String name ) throws LdapException, IOException
     {
         LOG.debug( "Bind request : {}", name );
 
         // Create the BindRequest
+        BindRequest bindRequest = createBindRequest( name, StringConstants.EMPTY_BYTES );
+
+        return bind( bindRequest );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public BindResponse bind( String name, String credentials ) throws LdapException, IOException
+    {
+        LOG.debug( "Bind request : {}", name );
+
+        // The password must not be empty or null
+        if ( Strings.isEmpty( credentials ) && Strings.isNotEmpty( name ) )
+        {
+            LOG.debug( "The password is missing" );
+            throw new LdapAuthenticationException( "The password is missing" );
+        }
+        
+        // Create the BindRequest
         BindRequest bindRequest = createBindRequest( name, Strings.getBytesUtf8( credentials ) );
 
         return bind( bindRequest );
+    }
+
+
+    /**
+     * Asynchronous unauthenticated authentication bind
+     *
+     * @param name The name we use to authenticate the user. It must be a
+     * valid Dn
+     * @return The BindResponse LdapResponse
+     * @throws LdapException if some error occurred
+     * @throws IOException if an I/O exception occurred
+     */
+    public BindFuture bindAsync( String name ) throws LdapException, IOException
+    {
+        LOG.debug( "Bind request : {}", name );
+
+        // Create the BindRequest
+        BindRequest bindRequest = createBindRequest( name, StringConstants.EMPTY_BYTES );
+
+        return bindAsync( bindRequest );
     }
 
 
@@ -932,6 +974,13 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     public BindFuture bindAsync( String name, String credentials ) throws LdapException, IOException
     {
         LOG.debug( "Bind request : {}", name );
+
+        // The password must not be empty or null
+        if ( Strings.isEmpty( credentials ) && Strings.isNotEmpty( name ) )
+        {
+            LOG.debug( "The password is missing" );
+            throw new LdapAuthenticationException( "The password is missing" );
+        }
 
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( name, Strings.getBytesUtf8( credentials ) );
@@ -943,9 +992,30 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
+    public BindResponse bind( Dn name ) throws LdapException, IOException
+    {
+        LOG.debug( "Unauthenticated authentication Bind request : {}", name );
+
+        // Create the BindRequest
+        BindRequest bindRequest = createBindRequest( name, StringConstants.EMPTY_BYTES, null );
+
+        return bind( bindRequest );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public BindResponse bind( Dn name, String credentials ) throws LdapException, IOException
     {
         LOG.debug( "Bind request : {}", name );
+
+        // The password must not be empty or null
+        if ( Strings.isEmpty( credentials ) && ( !Dn.EMPTY_DN.equals( name ) ) )
+        {
+            LOG.debug( "The password is missing" );
+            throw new LdapAuthenticationException( "The password is missing" );
+        }
 
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( name, Strings.getBytesUtf8( credentials ), null );
@@ -955,11 +1025,38 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
 
     /**
+     * Asynchronous unauthenticated authentication Bind on a server.
+     *
+     * @param name The name we use to authenticate the user. It must be a
+     * valid Dn
+     * @return The BindResponse LdapResponse
+     * @throws LdapException if some error occurred
+     * @throws IOException if an I/O exception occurred
+     */
+    public BindFuture bindAsync( Dn name ) throws LdapException, IOException
+    {
+        LOG.debug( "Bind request : {}", name );
+
+        // Create the BindRequest
+        BindRequest bindRequest = createBindRequest( name, StringConstants.EMPTY_BYTES );
+
+        return bindAsync( bindRequest );
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     public BindFuture bindAsync( Dn name, String credentials ) throws LdapException, IOException
     {
         LOG.debug( "Bind request : {}", name );
+
+        // The password must not be empty or null
+        if ( Strings.isEmpty( credentials ) && (! Dn.EMPTY_DN.equals( name ) ) )
+        {
+            LOG.debug( "The password is missing" );
+            throw new LdapAuthenticationException( "The password is missing" );
+        }
 
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( name, Strings.getBytesUtf8( credentials ) );

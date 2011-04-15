@@ -60,8 +60,7 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * Sets the authentication mechanism to simple or to SASL based
      * authentication.
      * 
-     * @param isSimple
-     *            true if authentication is simple, false otherwise.
+     * @param isSimple true if authentication is simple, false otherwise.
      */
     void setSimple( boolean isSimple );
 
@@ -70,25 +69,25 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * Gets the simple credentials associated with a simple authentication
      * attempt or null if this request uses SASL authentication mechanisms.
      * 
-     * @return null if the mechanism is SASL or the credentials if it is simple.
+     * @return null if the mechanism is SASL, or the credentials if it is simple.
      */
     byte[] getCredentials();
 
 
     /**
      * Sets the simple credentials associated with a simple authentication
-     * attempt ignored if this request uses SASL authentication mechanisms.
+     * attempt. Ignored if this request uses SASL authentication mechanisms.
      * 
-     * @param credentials the credentials if authentication is simple, null otherwise
+     * @param credentials the credentials if authentication is simple
      */
     void setCredentials( String credentials );
 
 
     /**
      * Sets the simple credentials associated with a simple authentication
-     * attempt ignored if this request uses SASL authentication mechanisms.
+     * attempt. Ignored if this request uses SASL authentication mechanisms.
      * 
-     * @param credentials the credentials if authentication is simple, null otherwise
+     * @param credentials the credentials if authentication is simple
      */
     void setCredentials( byte[] credentials );
 
@@ -112,9 +111,7 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * performed at a lower layer, or when using SASL credentials with a
      * mechanism that includes the Dn in the credentials.
      * 
-     * @param name
-     *            the Dn of the authenticating user - leave null for annonymous
-     *            user.
+     * @param name the Dn of the authenticating user - leave null for annonymous user.
      */
     void setName( Dn name );
 
@@ -156,9 +153,8 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * an type-safe enumeration type for a binary value. If an LDAPv4 comes out
      * then we shall convert the return type to a type safe enumeration.
      * 
-     * @param isVersion3
-     *            if true the client will be exhibiting version 3 bind behavoir,
-     *            if false is used version 2 behavoir will be exhibited.
+     * @param isVersion3 if true the client will be exhibiting version 3 bind behavior,
+     *  If false is used version 2 behavior will be exhibited.
      */
     void setVersion3( boolean isVersion3 );
 
@@ -167,7 +163,7 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * Gets the SASL mechanism String associated with this BindRequest if the
      * bind operation is using SASL.
      * 
-     * @return the SASL mechanism or null if the bind op is simple
+     * @return the SASL mechanism or null if the bind operation is simple
      */
     String getSaslMechanism();
 
@@ -176,8 +172,7 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * Sets the SASL mechanism String associated with this BindRequest if the
      * bind operation is using SASL.
      * 
-     * @param saslMechanism
-     *            the SASL mechanism
+     * @param saslMechanism the SASL mechanism
      */
     void setSaslMechanism( String saslMechanism );
 }

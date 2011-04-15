@@ -266,10 +266,17 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     public int computeLength()
     {
         int bindRequestLength = 1 + 1 + 1; // Initialized with version
-
+        
+        Dn name = getName();
+        
         // The name
-        bindRequestLength += 1 + TLV.getNbBytes( Dn.getNbBytes( getName() ) )
-            + Dn.getNbBytes( getName() );
+        if ( name == null )
+        { 
+            name = Dn.EMPTY_DN;
+        }
+
+        bindRequestLength += 1 + TLV.getNbBytes( Dn.getNbBytes( name ) )
+            + Dn.getNbBytes( name );
 
         byte[] credentials = getCredentials();
 
@@ -347,7 +354,15 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
         Value.encode( buffer, 3 );
 
         // The name
-        Value.encode( buffer, Dn.getBytes( getName() ) );
+        Dn name = getName();
+        
+        // The name
+        if ( name == null )
+        { 
+            name = Dn.EMPTY_DN;
+        }
+
+        Value.encode( buffer, Dn.getBytes( name ) );
 
         byte[] credentials = getCredentials();
 
