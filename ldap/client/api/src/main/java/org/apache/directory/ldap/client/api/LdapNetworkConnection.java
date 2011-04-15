@@ -28,6 +28,7 @@ import java.net.SocketAddress;
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -1389,30 +1390,52 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     public BindFuture bindAsync( GssApiRequest request )
         throws LdapException, IOException
     {
-        System.clearProperty( "java.security.krb5.conf" );
-        String krbConfPath = createKrbConfFile( request.getRealmName(), request.getKdcHost(), request.getKdcPort() );
-        System.setProperty( "java.security.krb5.conf", krbConfPath );
+        // Krb5.conf file
+        if ( request.getKrb5ConfFilePath() != null )
+        {
+            // Using the krb5.conf file provided by the user
+            System.setProperty( "java.security.krb5.conf", request.getKrb5ConfFilePath() );
+        }
+        else if ( ( request.getRealmName() != null ) && ( request.getKdcHost() != null )
+                        && ( request.getKdcPort() != 0 ) )
+        {
+            // Using a custom krb5.conf we create from the settings provided by the user
+            String krb5ConfPath = createKrb5ConfFile( request.getRealmName(), request.getKdcHost(), request.getKdcPort() );
+            System.setProperty( "java.security.krb5.conf", krb5ConfPath );
+        }
+        else
+        {
+            // Using the system Kerberos configuration
+            System.clearProperty( "java.security.krb5.conf" );
+        }
 
-        Configuration.setConfiguration( new Krb5LoginConfiguration() );
-        System.setProperty( "javax.security.auth.useSubjectCredsOnly", "true" );
+        // Login Module configuration
+        if ( request.getLoginModuleConfiguration() != null )
+        {
+            // Using the configuration provided by the user
+            Configuration.setConfiguration( request.getLoginModuleConfiguration() );
+        }
+        else
+        {
+            // Using the default configuration
+            Configuration.setConfiguration( new Krb5LoginConfiguration() );
+        }
 
         try
         {
             System.setProperty( "javax.security.auth.useSubjectCredsOnly", "true" );
             LoginContext loginContext = new LoginContext( "ldapnetworkconnection",
-                        new SaslCallbackHandler( request ) );
+                                    new SaslCallbackHandler( request ) );
             loginContext.login();
 
             final GssApiRequest requetFinal = request;
-
-            return ( BindFuture ) Subject.doAs( loginContext.getSubject(),
-                        new PrivilegedExceptionAction<Object>()
+            return ( BindFuture ) Subject.doAs( loginContext.getSubject(), new PrivilegedExceptionAction<Object>()
+                {
+                    public Object run() throws Exception
                     {
-                        public Object run() throws Exception
-                        {
-                            return bindSasl( requetFinal );
-                        }
-                    } );
+                        return bindSasl( requetFinal );
+                    }
+                } );
         }
         catch ( Exception e )
         {
@@ -3633,6 +3656,28 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             byte[] response = null;
             ResultCodeEnum result = null;
 
+            // Creating a map for SASL properties
+            Map<String, Object> properties = new HashMap<String, Object>();
+
+            // Quality of Protection SASL property
+            if ( saslRequest.getQualityOfProtection() != null )
+            {
+
+                properties.put( Sasl.QOP, saslRequest.getQualityOfProtection().getValue() );
+            }
+
+            // Security Strength SASL property
+            if ( saslRequest.getSecurityStrength() != null )
+            {
+                properties.put( Sasl.STRENGTH, saslRequest.getSecurityStrength().getValue() );
+            }
+
+            // Mutual Authentication SASL property
+            if ( saslRequest.isMutualAuthentication() )
+            {
+                properties.put( Sasl.SERVER_AUTH, "true" );
+            }
+
             // Creating a SASL Client
             SaslClient sc = Sasl.createSaslClient(
                 new String[]
@@ -3640,7 +3685,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
                 saslRequest.getAuthorizationId(),
                 "ldap",
                 config.getLdapHost(),
-                null,
+                properties,
                 new SaslCallbackHandler( saslRequest ) );
 
             // If the SaslClient wasn't created, that means we can't create the SASL client
@@ -3791,7 +3836,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      *
      * @return the full path of the config file
      */
-    private String createKrbConfFile( String realmName, String kdcHost, int kdcPort ) throws IOException
+    private String createKrb5ConfFile( String realmName, String kdcHost, int kdcPort ) throws IOException
     {
         StringBuilder sb = new StringBuilder();
 
@@ -3819,10 +3864,10 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         fw.write( sb.toString() );
         fw.close();
 
-        String krbConfPath = krb5Conf.getAbsolutePath();
+        String krb5ConfPath = krb5Conf.getAbsolutePath();
 
-        LOG.debug( "krb config file created at {}", krbConfPath );
+        LOG.debug( "krb 5 config file created at {}", krb5ConfPath );
 
-        return krbConfPath;
+        return krb5ConfPath;
     }
 }
