@@ -50,7 +50,16 @@ public class PasswordPolicyContainer extends AbstractContainer
     public PasswordPolicyContainer( LdapCodecService codec, PasswordPolicy ppolicyResponse )
     {
         super();
-        control = new PasswordPolicyDecorator( codec, ppolicyResponse );
+        
+        if( ppolicyResponse instanceof PasswordPolicyDecorator )
+        {
+            this.control = ( PasswordPolicyDecorator ) ppolicyResponse;
+        }
+        else
+        {
+            control = new PasswordPolicyDecorator( codec, ppolicyResponse );
+        }
+        
         stateStack = new int[1];
         grammar = PasswordPolicyGrammar.getInstance();
         setTransition( PasswordPolicyStates.START_STATE );

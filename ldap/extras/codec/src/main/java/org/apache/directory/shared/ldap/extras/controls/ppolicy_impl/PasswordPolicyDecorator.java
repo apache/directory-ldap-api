@@ -96,6 +96,13 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
     @Override
     public int computeLength()
     {
+        // reset the length values
+        valueLength = 0;
+        ppolicySeqLength = 0;
+        warningLength = 0;
+        timeBeforeExpirationTagLength = 0;
+        graceAuthNsRemainingTagLength = 0;
+
         if ( ! hasResponse() )
         {
             return 0;
