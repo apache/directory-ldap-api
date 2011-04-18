@@ -21,7 +21,6 @@ package org.apache.directory.shared.ldap.codec.standalone;
 
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -116,6 +115,7 @@ public class StandaloneLdapCodecService implements LdapCodecService
         "org.apache.directory.shared.ldap.model.message.controls; version=1.0.0",
         "org.apache.directory.shared.ldap.codec.controls; version=1.0.0",
         "org.apache.directory.shared.ldap.codec.api; version=1.0.0",
+        "org.apache.directory.shared.ldap.model.url; version=1.0.0",
         "org.apache.directory.shared.ldap.extras.controls",
         "org.apache.directory.shared.ldap.extras.extended"
     };
@@ -417,6 +417,7 @@ public class StandaloneLdapCodecService implements LdapCodecService
 
         // Load defaults from command line properties if it exists
         String sysProp = System.getProperty( FelixConstants.FRAMEWORK_SYSTEMPACKAGES_EXTRA );
+        
         if ( sysProp != null )
         {
             OsgiUtils.splitIntoPackages( sysProp, pkgs );
@@ -430,11 +431,12 @@ public class StandaloneLdapCodecService implements LdapCodecService
         
         StringBuilder sb = new StringBuilder();
         Iterator<String> i = pkgs.iterator();
-        while ( i.hasNext() )
+        
+        for ( String pkg :  pkgs )
         {
-            String pkg = i.next();
             sb.append( pkg );
             LOG.debug( "Adding system extras package: {}", pkg );
+
             if ( i.hasNext() )
             {
                 sb.append( ',' );
@@ -488,6 +490,7 @@ public class StandaloneLdapCodecService implements LdapCodecService
         
         // instantiate and start up felix
         felix = new Felix( config );
+        
         try
         {
             felix.start();
