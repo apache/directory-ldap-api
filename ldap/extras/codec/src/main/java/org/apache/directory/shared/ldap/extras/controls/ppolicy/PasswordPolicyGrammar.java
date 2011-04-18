@@ -18,7 +18,7 @@
  *
  */
 
-package org.apache.directory.shared.ldap.extras.controls.ppolicy_impl;
+package org.apache.directory.shared.ldap.extras.controls.ppolicy;
 
 
 import org.apache.directory.shared.asn1.ber.grammar.AbstractGrammar;

@@ -18,7 +18,7 @@
  *
  */
 
-package org.apache.directory.shared.ldap.extras.controls;
+package org.apache.directory.shared.ldap.extras.controls.ppolicy;
 
 
 /**

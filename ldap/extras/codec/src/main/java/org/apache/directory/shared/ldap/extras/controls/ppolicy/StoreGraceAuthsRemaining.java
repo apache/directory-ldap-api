@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.extras.controls.ppolicy_impl;
+package org.apache.directory.shared.ldap.extras.controls.ppolicy;
 
 
 import org.apache.directory.shared.asn1.actions.AbstractReadInteger;

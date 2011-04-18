@@ -18,7 +18,7 @@
  *
  */
 
-package org.apache.directory.shared.ldap.extras.controls.ppolicy_impl;
+package org.apache.directory.shared.ldap.extras.controls.ppolicy;
 
 
 import static org.junit.Assert.assertEquals;
@@ -28,7 +28,8 @@ import static org.junit.Assert.assertTrue;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.ldap.codec.osgi.AbstractCodecServiceTest;
-import org.apache.directory.shared.ldap.extras.controls.PasswordPolicy;
+import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicy;
+import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicyDecorator;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 
