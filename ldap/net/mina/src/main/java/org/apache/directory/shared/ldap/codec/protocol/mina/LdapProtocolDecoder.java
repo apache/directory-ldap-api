@@ -63,7 +63,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
     {
         @SuppressWarnings("unchecked")
         LdapMessageContainer<MessageDecorator<? extends Message>> messageContainer =
-            (org.apache.directory.shared.ldap.codec.api.LdapMessageContainer<MessageDecorator<? extends Message>> ) 
+            (LdapMessageContainer<MessageDecorator<? extends Message>> ) 
             session.getAttribute( "messageContainer" );
 
         if ( session.containsAttribute( "maxPDUSize" ) )
