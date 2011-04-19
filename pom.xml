@@ -46,19 +46,19 @@
     <commons.collections.version>3.2.1</commons.collections.version>
     <commons.io.version>2.0.1</commons.io.version>
     <commons.lang.version>2.6</commons.lang.version>
-    <commons.pool.version>1.5.5</commons.pool.version>
+    <commons.pool.version>1.5.6</commons.pool.version>
     <dom4j.version>1.6.1</dom4j.version>
     <junit.version>4.8.2</junit.version>
     <log4j.version>1.2.16</log4j.version>
     <mina.core.version>2.0.3</mina.core.version>
     <org.osgi.version>3.0.0</org.osgi.version>
     <org.osgi.core.version>4.2.0</org.osgi.core.version>
-    <org.apache.felix.version>3.0.9</org.apache.felix.version>
+    <org.apache.felix.version>3.2.0</org.apache.felix.version>
     <slf4j.api.version>1.6.1</slf4j.api.version>
     <slf4j.log4j12.version>1.6.1</slf4j.log4j12.version>
     <xml.apis.version>2.0.2</xml.apis.version>
     <xpp3.version>1.1.4c</xpp3.version>
-    <pax-exam.version>2.0.0-M1</pax-exam.version>
+    <pax-exam.version>2.0.0-RC1</pax-exam.version>
     <pax-exam-container-default.version>1.2.4</pax-exam-container-default.version>
     <pax-exam-junit.version>1.2.4</pax-exam-junit.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
@@ -83,6 +83,7 @@
     <module>all</module>
     <module>ldap</module>
     <module>dsml</module>
+    <module>integ</module>
     <module>distribution</module>
   </modules>
 
@@ -651,17 +652,6 @@
   </scm>
 
   <profiles>
-    <profile>
-      <id>integration</id>
-      <activation>
-        <property>
-          <name>integration</name>
-        </property>
-      </activation>
-      <modules>
-        <module>integ</module>
-      </modules>
-    </profile>
     <profile>
       <id>apache-release</id>
       <build>
