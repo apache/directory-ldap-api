@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.naming.NamingException;
+import javax.naming.ldap.BasicControl;
 
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
@@ -142,10 +143,90 @@ public class StandaloneLdapCodecService implements LdapCodecService
     private Felix felix;
 
     /** Felix's bundle cache directory */
-    private final File cacheDirectory;
+    private File cacheDirectory;
     
     /** The plugin (bundle) containing directory to load codec extensions from */
-    private final File pluginDirectory;
+    private File pluginDirectory;
+    
+    
+    private void initPluginDirectory( File pluginDirectory )
+    {
+        // Use the given directory if not null, or use the default one
+        if ( pluginDirectory == null )
+        {
+            this.pluginDirectory = getPluginDirectoryDefault();
+            LOG.info( "Null plugin directory provided, using default instead: {}", this.pluginDirectory );
+        }
+        else
+        {
+            this.pluginDirectory = pluginDirectory;
+            LOG.info( "Valid plugin directory provided: {}", this.pluginDirectory );
+        }
+        
+        // Now, if we have a plugin directory, check that it's a directory and that it's readable
+        if ( this.pluginDirectory != null )
+        {
+            if ( ( ! this.pluginDirectory.exists() ) && ! this.pluginDirectory.mkdirs() )
+            {
+                String msg = "The provided plugin directory is not creatable:" + this.pluginDirectory.getAbsolutePath();
+                LOG.error( msg );
+                throw new IllegalArgumentException( msg );
+            }
+
+            if ( ! this.pluginDirectory.isDirectory() )
+            {
+                String msg = "The provided plugin directory is not a directory:" + this.pluginDirectory.getAbsolutePath();
+                LOG.error( msg );
+                throw new IllegalArgumentException( msg );
+            }
+            else if ( ! this.pluginDirectory.canRead() )
+            {
+                String msg = "The provided plugin directory is not readable:" + this.pluginDirectory.getAbsolutePath();
+                LOG.error( msg );
+                throw new IllegalArgumentException( msg );
+            }
+        }
+    }
+    
+    
+    private void initCacheDirectory( File cacheDirectory )
+    {
+        // Use the given directory if not null, or use the default one
+        if ( cacheDirectory == null )
+        {
+            this.cacheDirectory = getCacheDirectoryDefault();
+            LOG.info( "Null cache directory provided, using default instead: {}", this.cacheDirectory );
+        }
+        else
+        {
+            this.cacheDirectory = cacheDirectory;
+            LOG.info( "Valid cache directory provided: {}", this.cacheDirectory );
+        }
+        
+        // Now, if we have a cache directory, check that it's a directory and that it's readable
+        if ( this.cacheDirectory != null )
+        {
+            if ( ! this.cacheDirectory.exists() &&  ( ! this.cacheDirectory.mkdirs() ) )
+            {
+                String msg = "The provided cache directory can't be created:" + this.cacheDirectory.getAbsolutePath();
+                LOG.error( msg );
+                throw new IllegalArgumentException( msg );
+            }
+            
+            if ( ! this.cacheDirectory.isDirectory() )
+            {
+                String msg = "The provided cache directory is not a directory:" + this.cacheDirectory.getAbsolutePath();
+                LOG.error( msg );
+                throw new IllegalArgumentException( msg );
+            }
+            else if ( ! this.cacheDirectory.canRead() )
+            {
+                String msg = "The provided cache directory is not readable:" + this.cacheDirectory.getAbsolutePath();
+                LOG.error( msg );
+                throw new IllegalArgumentException( msg );
+            }
+        }
+    }
     
     
     /**
@@ -230,96 +311,17 @@ public class StandaloneLdapCodecService implements LdapCodecService
         // -------------------------------------------------------------------
         // Handle plugin directory
         // -------------------------------------------------------------------
-
-        if ( pluginDirectory == null )
-        {
-            this.pluginDirectory = getPluginDirectoryDefault();
-            LOG.info( "Null plugin directory provided, using default instead: {}", this.pluginDirectory );
-        }
-        else
-        {
-            this.pluginDirectory = pluginDirectory;
-            LOG.info( "Valid plugin directory provided: {}", this.pluginDirectory );
-        }
-        
-        if ( this.pluginDirectory == null )
-        {
-            // do nothing
-        }
-        else if ( ! this.pluginDirectory.exists() )
-        {
-            if ( ! this.pluginDirectory.mkdirs() )
-            {
-                String msg = "The provided plugin directory is not creatable:" + this.pluginDirectory.getAbsolutePath();
-                LOG.error( msg );
-                throw new IllegalArgumentException( msg );
-            }
-        }
-        
-        if ( this.pluginDirectory == null )
-        {
-            // do nothing
-        }
-        else if ( ! this.pluginDirectory.isDirectory() )
-        {
-            String msg = "The provided plugin directory is not a directory:" + this.pluginDirectory.getAbsolutePath();
-            LOG.error( msg );
-            throw new IllegalArgumentException( msg );
-        }
-        else if ( ! this.pluginDirectory.canRead() )
-        {
-            String msg = "The provided plugin directory is not readable:" + this.pluginDirectory.getAbsolutePath();
-            LOG.error( msg );
-            throw new IllegalArgumentException( msg );
-        }
-
+        initPluginDirectory( pluginDirectory );
         
         // -------------------------------------------------------------------
         // Handle cache directory
         // -------------------------------------------------------------------
+        initCacheDirectory( cacheDirectory );
         
-        if ( cacheDirectory == null )
-        {
-            this.cacheDirectory = getCacheDirectoryDefault();
-            LOG.info( "Null cache directory provided, using default instead: {}", this.cacheDirectory );
-        }
-        else
-        {
-            this.cacheDirectory = cacheDirectory;
-            LOG.info( "Valid cache directory provided: {}", this.cacheDirectory );
-        }
-        
-        if ( this.cacheDirectory == null )
-        {
-            // do nothing
-        }
-        else if ( ! this.cacheDirectory.exists() )
-        {
-            if ( ! this.cacheDirectory.mkdirs() ) {
-                String msg = "The provided cache directory can't be created:" + this.cacheDirectory.getAbsolutePath();
-                LOG.error( msg );
-                throw new IllegalArgumentException( msg );
-            }
-        }
-        
-        if ( this.cacheDirectory == null )
-        {
-            // do nothing
-        }
-        else if ( ! this.cacheDirectory.isDirectory() )
-        {
-            String msg = "The provided cache directory is not a directory:" + this.cacheDirectory.getAbsolutePath();
-            LOG.error( msg );
-            throw new IllegalArgumentException( msg );
-        }
-        else if ( ! this.cacheDirectory.canRead() )
-        {
-            String msg = "The provided cache directory is not readable:" + this.cacheDirectory.getAbsolutePath();
-            LOG.error( msg );
-            throw new IllegalArgumentException( msg );
-        }
-        
+        // Load the default controls
         loadStockControls();
+        
+        // Start the Felix container
         setupFelix();
         
         if ( protocolCodecFactory == null )
@@ -356,17 +358,20 @@ public class StandaloneLdapCodecService implements LdapCodecService
 
         try
         {
-            if ( frameworkStorage == null && felixCacheRootdir == null )
+            if ( frameworkStorage == null )
             {
-                return new File( File.createTempFile( "dummy", null ).getParentFile(), 
-                    "osgi-cache-" + Integer.toString( this.hashCode() ) );
-            }
-            else if ( frameworkStorage == null && felixCacheRootdir != null )
-            {
-                return new File( new File ( felixCacheRootdir ), 
-                    "osgi-cache-" + Integer.toString( this.hashCode() ) );
-            }
-            else if ( frameworkStorage != null && felixCacheRootdir == null )
+                if ( felixCacheRootdir == null )
+                {
+                    return new File( File.createTempFile( "dummy", null ).getParentFile(), 
+                        "osgi-cache-" + Integer.toString( this.hashCode() ) );
+                }
+                else
+                {
+                    return new File( new File ( felixCacheRootdir ), 
+                        "osgi-cache-" + Integer.toString( this.hashCode() ) );
+                }
+            } 
+            else if ( felixCacheRootdir == null )
             {
                 return new File( frameworkStorage + "-" + Integer.toString( this.hashCode() ) );
             }
@@ -430,17 +435,21 @@ public class StandaloneLdapCodecService implements LdapCodecService
         Collections.addAll( pkgs, SYSTEM_PACKAGES );
         
         StringBuilder sb = new StringBuilder();
-        Iterator<String> i = pkgs.iterator();
+        boolean isFirst = true;
         
         for ( String pkg :  pkgs )
         {
-            sb.append( pkg );
-            LOG.debug( "Adding system extras package: {}", pkg );
-
-            if ( i.hasNext() )
+            if ( isFirst )
+            {
+                isFirst = false;
+            }
+            else
             {
                 sb.append( ',' );
             }
+            
+            sb.append( pkg );
+            LOG.debug( "Adding system extras package: {}", pkg );
         }
         
         return sb.toString();
@@ -553,14 +562,11 @@ public class StandaloneLdapCodecService implements LdapCodecService
         factory = new SubentriesFactory( this );
         controlFactories.put( factory.getOid(), factory );
         LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
-}
+    }
     
-
     //-------------------------------------------------------------------------
     // LdapCodecService implementation methods
     //-------------------------------------------------------------------------
-    
-    
     /**
      * {@inheritDoc}
      */
@@ -689,8 +695,8 @@ public class StandaloneLdapCodecService implements LdapCodecService
         ByteBuffer bb = ByteBuffer.allocate( decorator.computeLength() );
         decorator.encode( bb );
         bb.flip();
-        javax.naming.ldap.BasicControl jndiControl = 
-            new javax.naming.ldap.BasicControl( control.getOid(), control.isCritical(), bb.array() );
+        BasicControl jndiControl = 
+            new BasicControl( control.getOid(), control.isCritical(), bb.array() );
         return jndiControl;
     }
 
@@ -718,6 +724,7 @@ public class StandaloneLdapCodecService implements LdapCodecService
         ourControl.setCritical( control.isCritical() );
         ourControl.setValue( control.getEncodedValue() );
         ourControl.decode( control.getEncodedValue() );
+        
         return ourControl;
     }
 
@@ -769,24 +776,6 @@ public class StandaloneLdapCodecService implements LdapCodecService
     public javax.naming.ldap.ExtendedResponse toJndi( final ExtendedResponse modelResponse ) throws EncoderException
     {
         throw new NotImplementedException( "Figure out how to transform" );
-
-//        final byte[] encodedValue = new byte[ modelResponse.getEncodedValue().length ];
-//        System.arraycopy( modelResponse.getEncodedValue(), 0, encodedValue, 0, modelResponse.getEncodedValue().length );
-//        
-//        return new javax.naming.ldap.ExtendedResponse()
-//        {
-//            private static final long serialVersionUID = 2955142105375495493L;
-//
-//            public String getID()
-//            {
-//                return modelResponse.getID();
-//            }
-//
-//            public byte[] getEncodedValue()
-//            {
-//                return encodedValue;
-//            }
-//        };
     }
     
 
@@ -796,26 +785,6 @@ public class StandaloneLdapCodecService implements LdapCodecService
     public ExtendedResponse fromJndi( javax.naming.ldap.ExtendedResponse jndiResponse ) throws DecoderException
     {   
         throw new NotImplementedException( "Figure out how to transform" );
-
-//        ExtendedResponse modelResponse;
-//        ExtendedRequestFactory<?,?> extendedRequestFactory = extReqFactories.get( jndiResponse.getID() );
-//        UnsolicitedResponseFactory<?> unsolicitedResponseFactory = unsolicitedFactories.get( jndiResponse.getID() );
-//        
-//        if ( unsolicitedResponseFactory != null )
-//        {
-//            modelResponse = unsolicitedResponseFactory.newResponse( jndiResponse.getEncodedValue() );
-//        }
-//        else if ( extendedRequestFactory != null )
-//        {
-//            modelResponse = extendedRequestFactory.newResponse( jndiResponse.getEncodedValue() );
-//        }
-//        else
-//        {
-//            modelResponse = new ExtendedResponseImpl( jndiResponse.getID() );
-//            modelResponse.setResponseValue( jndiResponse.getEncodedValue() );
-//        }
-//        
-//        return modelResponse;
     }
 
 
@@ -933,6 +902,7 @@ public class StandaloneLdapCodecService implements LdapCodecService
         ExtendedResponseDecorator<ExtendedResponse> resp;
         
         ExtendedRequestFactory<?,?> extendedRequestFactory = extReqFactories.get( req.getRequestName() );
+        
         if ( extendedRequestFactory != null )
         {
             resp = ( ExtendedResponseDecorator<ExtendedResponse> ) extendedRequestFactory.newResponse( serializedResponse );
@@ -946,6 +916,7 @@ public class StandaloneLdapCodecService implements LdapCodecService
         }
         
         resp.setMessageId( req.getMessageId() );
+        
         return ( E ) resp;
     }
 
@@ -958,6 +929,7 @@ public class StandaloneLdapCodecService implements LdapCodecService
         ExtendedRequest<?> req = null;
         
         ExtendedRequestFactory<?,?> extendedRequestFactory = extReqFactories.get( oid );
+        
         if ( extendedRequestFactory != null )
         {
             if ( value == null )
@@ -992,6 +964,7 @@ public class StandaloneLdapCodecService implements LdapCodecService
         ExtendedRequestDecorator<?,?> req = null;
         
         ExtendedRequestFactory<?,?> extendedRequestFactory = extReqFactories.get( decoratedMessage.getRequestName() );
+        
         if ( extendedRequestFactory != null )
         {
             req = extendedRequestFactory.decorate( decoratedMessage );
@@ -1015,6 +988,7 @@ public class StandaloneLdapCodecService implements LdapCodecService
         
         UnsolicitedResponseFactory<?> unsolicitedResponseFactory = unsolicitedFactories.get( decoratedMessage.getResponseName() );
         ExtendedRequestFactory<?,?> extendedRequestFactory = extReqFactories.get( decoratedMessage.getResponseName() );
+        
         if ( extendedRequestFactory != null )
         {
             resp = extendedRequestFactory.decorate( decoratedMessage );
