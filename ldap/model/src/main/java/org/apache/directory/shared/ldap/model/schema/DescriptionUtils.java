@@ -799,7 +799,7 @@ public final class DescriptionUtils
     {
         for ( Map.Entry<String, List<String>> extension : extensions.entrySet())
         {
-            sb.append( extension.getKey() ).append( " " );
+            sb.append( " " + extension.getKey() ).append( " " );
 
             List<String> values = extension.getValue();
 
