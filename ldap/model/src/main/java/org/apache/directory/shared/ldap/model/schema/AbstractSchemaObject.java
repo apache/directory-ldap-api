@@ -569,17 +569,19 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
     /**
      * The SchemaObject type :
-     * <li> AttributeType
-     * <li> DitCOntentRule
-     * <li> DitStructureRule
-     * <li> LdapComparator (specific to ADS)
-     * <li> LdapSyntaxe
-     * <li> MatchingRule
-     * <li> MatchingRuleUse
-     * <li> NameForm
-     * <li> Normalizer (specific to ADS)
-     * <li> ObjectClass
-     * <li> SyntaxChecker (specific to ADS)
+     * <ul>
+     *   <li> AttributeType
+     *   <li> DitCOntentRule
+     *   <li> DitStructureRule
+     *   <li> LdapComparator (specific to ADS)
+     *   <li> LdapSyntaxe
+     *   <li> MatchingRule
+     *   <li> MatchingRuleUse
+     *   <li> NameForm
+     *   <li> Normalizer (specific to ADS)
+     *   <li> ObjectClass
+     *   <li> SyntaxChecker (specific to ADS)
+     * </ul>
      * 
      * @return the SchemaObject type
      */
