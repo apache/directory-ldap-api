@@ -84,7 +84,7 @@ public class StoreErrorMessage extends GrammarAction<LdapMessageContainer<Messag
 
         ResultResponse response = ( ResultResponse ) container.getMessage();
         LdapResult ldapResult = response.getLdapResult();
-        ldapResult.setErrorMessage( errorMessage );
+        ldapResult.setDiagnosticMessage( errorMessage );
 
         // We can have an END transition
         container.setGrammarEndAllowed( true );

@@ -25,16 +25,69 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 
 
 /**
- * LDAPv3 result structure embedded into Responses. See section 4.1.10 in <a
- * href="">RFC 2251</a> for a description of the LDAPResult ASN.1 structure,
- * here's a snippet from it:
+ * LDAPv3 result structure embedded into Responses. See section 4.1.9 in <a
+ * href="http://www.ietf.org/rfc/rfc4511.txt">RFC 4511</a> for a description of 
+ * the LDAPResult ASN.1 structure, here's a snippet from it:
  * 
  * <pre>
  *   The LDAPResult is the construct used in this protocol to return
- *   success or failure indications from servers to clients. In response
- *   to various requests servers will return responses containing fields
- *   of type LDAPResult to indicate the final status of a protocol
- *   operation request.
+ *   success or failure indications from servers to clients. To various
+ *  requests, servers will return responses containing the elements found
+ *  in LDAPResult to indicate the final status of the protocol operation
+ *  request.
+
+ * LDAPResult ::= SEQUENCE {
+ *     resultCode         ENUMERATED {
+ *         success                      (0),
+ *         operationsError              (1),
+ *         protocolError                (2),
+ *         timeLimitExceeded            (3),
+ *         sizeLimitExceeded            (4),
+ *         compareFalse                 (5),
+ *         compareTrue                  (6),
+ *         authMethodNotSupported       (7),
+ *         strongerAuthRequired         (8),
+ *              -- 9 reserved --
+ *         referral                     (10),
+ *         adminLimitExceeded           (11),
+ *         unavailableCriticalExtension (12),
+ *         confidentialityRequired      (13),
+ *         saslBindInProgress           (14),
+ *         noSuchAttribute              (16),
+ *         undefinedAttributeType       (17),
+ *         inappropriateMatching        (18),
+ *         constraintViolation          (19),
+ *         attributeOrValueExists       (20),
+ *         invalidAttributeSyntax       (21),
+ *              -- 22-31 unused --
+ *         noSuchObject                 (32),
+ *         aliasProblem                 (33),
+ *         invalidDNSyntax              (34),
+ *              -- 35 reserved for undefined isLeaf --
+ *         aliasDereferencingProblem    (36),
+ *              -- 37-47 unused --
+ *         inappropriateAuthentication  (48),
+ *         invalidCredentials           (49),
+ *         insufficientAccessRights     (50),
+ *         busy                         (51),
+ *         unavailable                  (52),
+ *         unwillingToPerform           (53),
+ *         loopDetect                   (54),
+ *              -- 55-63 unused --
+ *         namingViolation              (64),
+ *         objectClassViolation         (65),
+ *         notAllowedOnNonLeaf          (66),
+ *         notAllowedOnRDN              (67),
+ *         entryAlreadyExists           (68),
+ *         objectClassModsProhibited    (69),
+ *              -- 70 reserved for CLDAP --
+ *         affectsMultipleDSAs          (71),
+ *              -- 72-79 unused --
+ *         other                        (80),
+ *         ...  },
+ *     matchedDN          LDAPDN,
+ *     diagnosticMessage  LDAPString,
+ *     referral           [3] Referral OPTIONAL }
  * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -56,8 +109,7 @@ public interface LdapResult
      * Corresponds to the <b> resultCode </b> field within the LDAPResult ASN.1
      * structure.
      * 
-     * @param resultCode
-     *            the result code enum value.
+     * @param resultCode the result code enum value.
      */
     void setResultCode( ResultCodeEnum resultCode );
 
@@ -88,21 +140,21 @@ public interface LdapResult
 
 
     /**
-     * Gets the descriptive error message associated with the error code. May be
+     * Gets the descriptive diagnostic message associated with the error code. May be
      * null for SUCCESS, COMPARETRUE, COMPAREFALSE and REFERRAL operations.
      * 
-     * @return the descriptive error message.
+     * @return the descriptive diagnostic message.
      */
-    String getErrorMessage();
+    String getDiagnosticMessage();
 
 
     /**
-     * Sets the descriptive error message associated with the error code. May be
+     * Sets the descriptive diagnostic message associated with the error code. May be
      * null for SUCCESS, COMPARETRUE, and COMPAREFALSE operations.
      * 
-     * @param errorMessage the descriptive error message.
+     * @param diagnosticMessage the descriptive diagnostic message.
      */
-    void setErrorMessage( String errorMessage );
+    void setDiagnosticMessage( String diagnosticMessage );
 
 
     /**
@@ -118,7 +170,7 @@ public interface LdapResult
      * Gets the Referral associated with this LdapResult if the resultCode
      * property is set to the REFERRAL ResultCodeEnum.
      * 
-     * @return the referral on REFERRAL errors, null on all others.
+     * @return the referral on REFERRAL resultCode, null on all others.
      */
     Referral getReferral();
 

@@ -20,21 +20,19 @@
 package org.apache.directory.shared.ldap.codec.extended;
 
 
-import static org.junit.Assert.assertEquals; 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
-import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.CodecControl;
 import org.apache.directory.shared.ldap.codec.api.ExtendedResponseDecorator;
+import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
@@ -42,6 +40,9 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -105,7 +106,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
         assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", extendedResponse.getLdapResult().getErrorMessage() );
+        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
         assertEquals( "value", Strings.utf8ToString((byte[]) extendedResponse.getResponseValue()) );
 
@@ -197,7 +198,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
         assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", extendedResponse.getLdapResult().getErrorMessage() );
+        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
         assertEquals( "value", Strings.utf8ToString((byte[]) extendedResponse.getResponseValue() ) );
 
@@ -281,7 +282,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
         assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", extendedResponse.getLdapResult().getErrorMessage() );
+        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
 
         // Check the encoding
         try
@@ -364,7 +365,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
         assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", extendedResponse.getLdapResult().getErrorMessage() );
+        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
 
         // Check the Control
         Map<String, Control> controls = extendedResponse.getControls();
@@ -571,7 +572,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
         assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", extendedResponse.getLdapResult().getErrorMessage() );
+        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
         assertEquals( "", Strings.utf8ToString((byte[]) extendedResponse.getResponseValue() ) );
 
@@ -658,7 +659,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
         assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", extendedResponse.getLdapResult().getErrorMessage() );
+        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
         assertEquals( "", Strings.utf8ToString( ( byte[] ) extendedResponse.getResponseValue() ) );
 
@@ -751,7 +752,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
         assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", extendedResponse.getLdapResult().getErrorMessage() );
+        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
         assertEquals( "", Strings.utf8ToString((byte[]) extendedResponse.getResponseValue() ) );
 
@@ -839,7 +840,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
         assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", extendedResponse.getLdapResult().getErrorMessage() );
+        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
         assertEquals( "", Strings.utf8ToString((byte[]) extendedResponse.getResponseValue() ) );
 

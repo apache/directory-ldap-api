@@ -24,22 +24,20 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 
 
 /**
- * LdapResult implementation.
+ * The LdapResult implementation. RFC 4511 definition for a LdapResult is given below. <br>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class LdapResultImpl implements LdapResult
 {
-    static final long serialVersionUID = -1446626887394613213L;
-
     /** Lowest matched entry Dn - defaults to empty string */
     private Dn matchedDn;
 
     /** Referral associated with this LdapResult if the errorCode is REFERRAL */
     private Referral referral;
 
-    /** Decriptive error message - defaults to empty string */
-    private String errorMessage;
+    /** Decriptive diagnostic message - defaults to empty string */
+    private String diagnosticMessage;
 
     /** Resultant operation error code - defaults to SUCCESS */
     private ResultCodeEnum resultCode = ResultCodeEnum.SUCCESS;
@@ -48,45 +46,26 @@ public class LdapResultImpl implements LdapResult
     // ------------------------------------------------------------------------
     // LdapResult Interface Method Implementations
     // ------------------------------------------------------------------------
-
-
     /**
-     * Gets the descriptive error message associated with the error code. May be
-     * null for SUCCESS, COMPARETRUE, COMPAREFALSE and REFERRAL operations.
-     * 
-     * @return the descriptive error message.
+     * {@inheritDoc}
      */
-    public String getErrorMessage()
+    public String getDiagnosticMessage()
     {
-        return errorMessage;
+        return diagnosticMessage;
     }
 
 
     /**
-     * Sets the descriptive error message associated with the error code. May be
-     * null for SUCCESS, COMPARETRUE, and COMPAREFALSE operations.
-     * 
-     * @param errorMessage
-     *            the descriptive error message.
+     * {@inheritDoc}
      */
-    public void setErrorMessage( String errorMessage )
+    public void setDiagnosticMessage( String diagnosticMessage )
     {
-        this.errorMessage = errorMessage;
+        this.diagnosticMessage = diagnosticMessage;
     }
 
 
     /**
-     * Gets the lowest entry in the directory that was matched. For result codes
-     * of noSuchObject, aliasProblem, invalidDNSyntax and
-     * aliasDereferencingProblem, the matchedDN field is set to the name of the
-     * lowest entry (object or alias) in the directory that was matched. If no
-     * aliases were dereferenced while attempting to locate the entry, this will
-     * be a truncated form of the name provided, or if aliases were
-     * dereferenced, of the resulting name, as defined in section 12.5 of X.511
-     * [8]. The matchedDN field is to be set to a zero length string with all
-     * other result codes.
-     * 
-     * @return the Dn of the lowest matched entry.
+     * {@inheritDoc}
      */
     public Dn getMatchedDn()
     {
@@ -95,10 +74,7 @@ public class LdapResultImpl implements LdapResult
 
 
     /**
-     * Sets the lowest entry in the directory that was matched.
-     * 
-     * @see #getMatchedDn()
-     * @param matchedDn the Dn of the lowest matched entry.
+     * {@inheritDoc}
      */
     public void setMatchedDn( Dn matchedDn )
     {
@@ -107,11 +83,7 @@ public class LdapResultImpl implements LdapResult
 
 
     /**
-     * Gets the result code enumeration associated with the response.
-     * Corresponds to the <b> resultCode </b> field within the LDAPResult ASN.1
-     * structure.
-     * 
-     * @return the result code enum value.
+     * {@inheritDoc}
      */
     public ResultCodeEnum getResultCode()
     {
@@ -120,12 +92,7 @@ public class LdapResultImpl implements LdapResult
 
 
     /**
-     * Sets the result code enumeration associated with the response.
-     * Corresponds to the <b> resultCode </b> field within the LDAPResult ASN.1
-     * structure.
-     * 
-     * @param resultCode
-     *            the result code enum value.
+     * {@inheritDoc}
      */
     public void setResultCode( ResultCodeEnum resultCode )
     {
@@ -134,10 +101,7 @@ public class LdapResultImpl implements LdapResult
 
 
     /**
-     * Gets the Referral associated with this LdapResult if the resultCode
-     * property is set to the REFERRAL ResultCodeEnum.
-     * 
-     * @return the referral on REFERRAL errors, null on all others.
+     * {@inheritDoc}
      */
     public Referral getReferral()
     {
@@ -146,10 +110,7 @@ public class LdapResultImpl implements LdapResult
 
 
     /**
-     * Gets whether or not this result represents a Referral. For referrals the
-     * error code is set to REFERRAL and the referral property is not null.
-     * 
-     * @return true if this result represents a referral.
+     * {@inheritDoc}
      */
     public boolean isReferral()
     {
@@ -158,13 +119,7 @@ public class LdapResultImpl implements LdapResult
 
 
     /**
-     * Sets the Referral associated with this LdapResult if the resultCode
-     * property is set to the REFERRAL ResultCodeEnum. Setting this property
-     * will result in a true return from isReferral and the resultCode should be
-     * set to REFERRAL.
-     * 
-     * @param referral
-     *            optional referral on REFERRAL errors.
+     * {@inheritDoc}
      */
     public void setReferral( Referral referral )
     {
@@ -179,15 +134,19 @@ public class LdapResultImpl implements LdapResult
     public int hashCode()
     {
         int hash = 37;
+        
         if ( referral != null )
         {
             hash = hash * 17 + referral.hashCode();
         }
+        
         hash = hash * 17 + resultCode.hashCode();
-        if ( errorMessage != null )
+        
+        if ( diagnosticMessage != null )
         {
-            hash = hash * 17 + errorMessage.hashCode();
+            hash = hash * 17 + diagnosticMessage.hashCode();
         }
+        
         if ( matchedDn != null )
         {
             hash = hash * 17 + matchedDn.hashCode();
@@ -238,9 +197,9 @@ public class LdapResultImpl implements LdapResult
             return false;
         }
 
-        // Handle Error Messages where "" is considered equivalent to null
-        String errMsg0 = errorMessage;
-        String errMsg1 = result.getErrorMessage();
+        // Handle diagnostic Messages where "" is considered equivalent to null
+        String errMsg0 = diagnosticMessage;
+        String errMsg1 = result.getDiagnosticMessage();
 
         if ( errMsg0 == null )
         {
@@ -529,7 +488,7 @@ public class LdapResultImpl implements LdapResult
         }
 
         sb.append( "            Matched Dn : '" ).append( matchedDn ).append( "'\n" );
-        sb.append( "            Error message : '" ).append( errorMessage ).append( "'\n" );
+        sb.append( "            Diagnostic message : '" ).append( diagnosticMessage ).append( "'\n" );
 
         if ( referral != null )
         {

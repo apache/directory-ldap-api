@@ -20,15 +20,16 @@
 package org.apache.directory.shared.ldap.model.message;
 
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -128,8 +129,8 @@ public class BindResponseImplTest
         LdapResultImpl r0 = new LdapResultImpl();
         LdapResultImpl r1 = new LdapResultImpl();
 
-        r0.setErrorMessage( "blah blah blah" );
-        r1.setErrorMessage( "blah blah blah" );
+        r0.setDiagnosticMessage( "blah blah blah" );
+        r1.setDiagnosticMessage( "blah blah blah" );
 
         r0.setMatchedDn( new Dn( "dc=example,dc=com" ) );
         r1.setMatchedDn( new Dn( "dc=example,dc=com" ) );
@@ -165,8 +166,8 @@ public class BindResponseImplTest
         LdapResultImpl r0 = new LdapResultImpl();
         LdapResultImpl r1 = new LdapResultImpl();
 
-        r0.setErrorMessage( "blah blah blah" );
-        r1.setErrorMessage( "blah blah blah" );
+        r0.setDiagnosticMessage( "blah blah blah" );
+        r1.setDiagnosticMessage( "blah blah blah" );
 
         r0.setMatchedDn( new Dn( "dc=example,dc=com" ) );
         r1.setMatchedDn( new Dn( "dc=example,dc=com" ) );

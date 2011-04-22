@@ -27,8 +27,6 @@ import static org.junit.Assert.fail;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
@@ -42,6 +40,9 @@ import org.apache.directory.shared.ldap.model.message.SearchResultDone;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -100,7 +101,7 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
         assertEquals( 1, searchResultDone.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, searchResultDone.getLdapResult().getResultCode() );
         assertEquals( "", searchResultDone.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", searchResultDone.getLdapResult().getErrorMessage() );
+        assertEquals( "", searchResultDone.getLdapResult().getDiagnosticMessage() );
 
         // Check the encoding
         try
@@ -181,7 +182,7 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
         assertEquals( 1, searchResultDone.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, searchResultDone.getLdapResult().getResultCode() );
         assertEquals( "", searchResultDone.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", searchResultDone.getLdapResult().getErrorMessage() );
+        assertEquals( "", searchResultDone.getLdapResult().getDiagnosticMessage() );
 
         // Check the Control
         Map<String, Control> controls = searchResultDone.getControls();

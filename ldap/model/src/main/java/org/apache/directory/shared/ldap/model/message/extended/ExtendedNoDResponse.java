@@ -75,7 +75,7 @@ public class ExtendedNoDResponse extends ExtendedResponseImpl
                     ResultCodeEnum.PROTOCOL_ERROR, ResultCodeEnum.STRONG_AUTH_REQUIRED ) );
         }
 
-        super.getLdapResult().setErrorMessage( rcode.toString() + ": The server will disconnect!" );
+        super.getLdapResult().setDiagnosticMessage( rcode.toString() + ": The server will disconnect!" );
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( rcode );
     }

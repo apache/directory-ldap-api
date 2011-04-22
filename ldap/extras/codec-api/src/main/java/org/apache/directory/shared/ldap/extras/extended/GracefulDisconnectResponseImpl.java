@@ -77,7 +77,7 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
         buf.append( "The server will disconnect and will be unavailable for " ).append( timeOffline );
         buf.append( " minutes in " ).append( delay ).append( " seconds." );
 
-        ldapResult.setErrorMessage( buf.toString() );
+        ldapResult.setDiagnosticMessage( buf.toString() );
         ldapResult.setMatchedDn( null );
         ldapResult.setResultCode( ResultCodeEnum.UNAVAILABLE );
     }

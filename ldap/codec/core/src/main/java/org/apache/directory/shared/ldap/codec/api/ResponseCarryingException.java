@@ -68,7 +68,7 @@ public class ResponseCarryingException extends DecoderException
     {
         super( message, cause );
 
-        response.getLdapResult().setErrorMessage( message );
+        response.getLdapResult().setDiagnosticMessage( message );
         response.getLdapResult().setResultCode( code );
         response.getLdapResult().setMatchedDn( matchedDn );
     

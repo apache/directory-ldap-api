@@ -1476,7 +1476,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
                 if ( !nextText.equals( "" ) )
                 {
-                    ldapResult.setErrorMessage( nextText.trim() );
+                    ldapResult.setDiagnosticMessage( nextText.trim() );
                 }
             }
             catch ( IOException e )

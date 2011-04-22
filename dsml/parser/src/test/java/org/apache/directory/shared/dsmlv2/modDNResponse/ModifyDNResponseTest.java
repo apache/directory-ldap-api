@@ -310,7 +310,7 @@ public class ModifyDNResponseTest extends AbstractResponseTest
         LdapResult ldapResult = modifyDNResponse.getLdapResult();
 
         assertEquals( "Unrecognized extended operation EXTENSION_OID: 1.2.6.1.4.1.18060.1.1.1.100.2", ldapResult
-            .getErrorMessage() );
+            .getDiagnosticMessage() );
     }
 
 
@@ -339,7 +339,7 @@ public class ModifyDNResponseTest extends AbstractResponseTest
 
         LdapResult ldapResult = modifyDNResponse.getLdapResult();
 
-        assertNull( ldapResult.getErrorMessage() );
+        assertNull( ldapResult.getDiagnosticMessage() );
     }
 
 

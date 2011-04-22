@@ -2243,7 +2243,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
                 if ( modifyResponse instanceof ModifyNoDResponse )
                 {
                     // A NoticeOfDisconnect : deserves a special treatment
-                    throw new LdapException( modifyResponse.getLdapResult().getErrorMessage() );
+                    throw new LdapException( modifyResponse.getLdapResult().getDiagnosticMessage() );
                 }
 
                 // We have had an error
@@ -3668,7 +3668,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             }
             else
             {
-                throw new LdapOperationException( result.getResultCode(), result.getErrorMessage() );
+                throw new LdapOperationException( result.getResultCode(), result.getDiagnosticMessage() );
             }
         }
         catch ( LdapException e )

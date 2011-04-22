@@ -152,18 +152,18 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
-    public String getErrorMessage()
+    public String getDiagnosticMessage()
     {
-        return decoratedLdapResult.getErrorMessage();
+        return decoratedLdapResult.getDiagnosticMessage();
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setErrorMessage( String errorMessage )
+    public void setDiagnosticMessage( String diagnosticMessage )
     {
-        decoratedLdapResult.setErrorMessage( errorMessage );
+        decoratedLdapResult.setDiagnosticMessage( diagnosticMessage );
     }
 
 
@@ -250,7 +250,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
         }
 
         // The errorMessage length
-        byte[] errorMessageBytes = Strings.getBytesUtf8( getErrorMessage() );
+        byte[] errorMessageBytes = Strings.getBytesUtf8( getDiagnosticMessage() );
         ldapResultLength += 1 + TLV.getNbBytes( errorMessageBytes.length ) + errorMessageBytes.length;
         setErrorMessageBytes( errorMessageBytes );
 

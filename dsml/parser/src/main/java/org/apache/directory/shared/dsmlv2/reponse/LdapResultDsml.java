@@ -99,7 +99,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
         resultCodeElement.addAttribute( "descr", result.getResultCode().getMessage() );
 
         // ErrorMessage
-        String errorMessage = ( result.getErrorMessage() );
+        String errorMessage = ( result.getDiagnosticMessage() );
         if ( ( errorMessage != null ) && ( !errorMessage.equals( "" ) ) )
         {
             Element errorMessageElement = root.addElement( "errorMessage" );
@@ -126,24 +126,20 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
 
 
     /**
-     * Get the error message
-     * 
-     * @return Returns the errorMessage.
+     * {@inheritDoc}
      */
-    public String getErrorMessage()
+    public String getDiagnosticMessage()
     {
-        return result.getErrorMessage();
+        return result.getDiagnosticMessage();
     }
 
 
     /**
-     * Set the error message
-     * 
-     * @param errorMessage The errorMessage to set.
+     * {@inheritDoc}
      */
-    public void setErrorMessage( String errorMessage )
+    public void setDiagnosticMessage( String diagnosticMessage )
     {
-        result.setErrorMessage( errorMessage );
+        result.setDiagnosticMessage( diagnosticMessage );
     }
 
 

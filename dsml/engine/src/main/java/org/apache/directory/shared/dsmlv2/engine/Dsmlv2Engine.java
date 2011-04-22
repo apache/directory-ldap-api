@@ -786,7 +786,7 @@ public class Dsmlv2Engine
 
         if ( bindResponse.getLdapResult().getResultCode() != ResultCodeEnum.SUCCESS )
         {
-            LOG.warn( "Error : {}", bindResponse.getLdapResult().getErrorMessage() );
+            LOG.warn( "Error : {}", bindResponse.getLdapResult().getDiagnosticMessage() );
         }
     }
 }

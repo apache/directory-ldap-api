@@ -27,12 +27,10 @@ import static org.junit.Assert.fail;
 import java.nio.ByteBuffer;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
-import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.Asn1Container;
+import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.ldap.codec.api.CodecControl;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
@@ -45,6 +43,9 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -102,7 +103,7 @@ public class AddResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, addResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, addResponse.getLdapResult().getResultCode() );
         assertEquals( "", addResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", addResponse.getLdapResult().getErrorMessage() );
+        assertEquals( "", addResponse.getLdapResult().getDiagnosticMessage() );
 
         try
         {
@@ -218,7 +219,7 @@ public class AddResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, addResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, addResponse.getLdapResult().getResultCode() );
         assertEquals( "", addResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", addResponse.getLdapResult().getErrorMessage() );
+        assertEquals( "", addResponse.getLdapResult().getDiagnosticMessage() );
 
         // Check the Control
         Map<String, Control> controls = addResponse.getControls();
