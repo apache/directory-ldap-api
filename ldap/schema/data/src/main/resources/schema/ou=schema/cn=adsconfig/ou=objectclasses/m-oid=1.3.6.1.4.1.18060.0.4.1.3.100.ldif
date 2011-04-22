@@ -22,4 +22,3 @@ m-may: ads-dsMaxPDUSize
 m-may: ads-dsPasswordHidden
 m-may: ads-dsSyncPeriodMillis
 m-may: ads-dsTestEntries
-m-may: ads-passwordPolicies
