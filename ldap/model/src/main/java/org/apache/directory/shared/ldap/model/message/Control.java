@@ -22,7 +22,8 @@ package org.apache.directory.shared.ldap.model.message;
 
 /**
  * Protocol request and response altering control interface. Any number of
- * controls may be associated with a protocol message.
+ * controls may be associated with a protocol message. Each control may be
+ * associated with a Request, a response, or both.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
