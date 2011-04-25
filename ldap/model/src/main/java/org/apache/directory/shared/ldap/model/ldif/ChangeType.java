@@ -45,7 +45,7 @@ public enum ChangeType
     /** The Delete changeType */
     Delete(4),
 
-    /** A placeholder when we have no changeType */
+    /** A place-holder when we have no changeType */
     None(-1);
 
     /** Add ordinal value */

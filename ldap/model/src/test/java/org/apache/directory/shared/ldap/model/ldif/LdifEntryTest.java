@@ -99,15 +99,15 @@ public class LdifEntryTest
     @Test
     public void testSimpleLdifEntry() throws Exception
     {
-        String ldif = 
-            "cn: app1\n" + 
-            "objectClass: top\n" + 
-            "objectClass: apApplication\n" + 
-            "displayName:   app1   \n" +
-            "dependencies:\n" + 
-            "envVars:";
-
-        LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
+        String cn = "app1";
+        
+        LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", 
+            "cn", cn,
+            "objectClass: top", 
+            "objectClass: apApplication", 
+            "displayName:   app1   ",
+            "dependencies:",
+            "envVars:" );
 
         assertNotNull( ldifEntry );
         assertTrue( ldifEntry.isLdifContent() );
@@ -115,6 +115,9 @@ public class LdifEntryTest
 
         Attribute attr = ldifEntry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
+        
+        Attribute cnAttr = ldifEntry.get( "cn" );
+        assertTrue( cnAttr.contains( "app1" ) );
     }
     
     

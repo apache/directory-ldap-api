@@ -31,11 +31,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
+import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
@@ -131,6 +131,9 @@ public class LdifEntry implements Cloneable, Externalizable
      * 
      * @param dn The LdifEntry DN
      * @param avas The Ldif to convert to an LdifEntry
+     * @throws LdapInvalidAttributeValueException If either the AttributeType or the associated value
+     * is incorrect
+     * @throws LdapLdifException If we get any other exception
      */
     public LdifEntry( Dn dn, Object... avas ) throws LdapInvalidAttributeValueException, LdapLdifException
     {
@@ -256,7 +259,11 @@ public class LdifEntry implements Cloneable, Externalizable
      * Creates a LdifEntry using a list of strings representing the Ldif element
      * 
      * @param dn The LdifEntry DN
-     * @param avas The Ldif to convert to an LdifEntry
+     * @param avas The Ldif attributes and values to convert to an LdifEntry
+     * @throws LdapInvalidDnException If the Dn is invalid
+     * @throws LdapInvalidAttributeValueException If either the AttributeType or the associated value
+     * is incorrect
+     * @throws LdapLdifException If we get any other exception
      */
     public LdifEntry( String dn, Object... strings ) 
         throws LdapInvalidAttributeValueException, LdapLdifException, LdapInvalidDnException

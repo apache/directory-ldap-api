@@ -40,7 +40,7 @@ import org.apache.directory.shared.util.Strings;
 
 
 /**
- * Some LDIF useful methods
+ * Some LDIF helper methods.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -66,7 +66,7 @@ public final class LdifUtils
             LDIF_SAFE_STARTING_CHAR_ALPHABET[i] = true;
         }
 
-        LDIF_SAFE_STARTING_CHAR_ALPHABET[0] = false; // 0 (NUL)
+        LDIF_SAFE_STARTING_CHAR_ALPHABET[0]  = false; // 0 (NUL)
         LDIF_SAFE_STARTING_CHAR_ALPHABET[10] = false; // 10 (LF)
         LDIF_SAFE_STARTING_CHAR_ALPHABET[13] = false; // 13 (CR)
         LDIF_SAFE_STARTING_CHAR_ALPHABET[32] = false; // 32 (SPACE)
@@ -79,7 +79,7 @@ public final class LdifUtils
             LDIF_SAFE_OTHER_CHARS_ALPHABET[i] = true;
         }
 
-        LDIF_SAFE_OTHER_CHARS_ALPHABET[0] = false; // 0 (NUL)
+        LDIF_SAFE_OTHER_CHARS_ALPHABET[0]  = false; // 0 (NUL)
         LDIF_SAFE_OTHER_CHARS_ALPHABET[10] = false; // 10 (LF)
         LDIF_SAFE_OTHER_CHARS_ALPHABET[13] = false; // 13 (CR)
     }
