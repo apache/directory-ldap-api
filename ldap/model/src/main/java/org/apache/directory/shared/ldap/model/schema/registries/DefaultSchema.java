@@ -119,7 +119,8 @@ public class DefaultSchema implements Schema
         
         if ( dependencies != null )
         {
-            this.dependencies = dependencies;
+            this.dependencies = new String[dependencies.length];
+            System.arraycopy( dependencies, 0, this.dependencies, 0, dependencies.length );
         }
         else
         {
@@ -150,8 +151,21 @@ public class DefaultSchema implements Schema
     {
         if ( dependenciesToAdd != null )
         {
-            this.dependencies = new String[dependenciesToAdd.length];
-            System.arraycopy( dependenciesToAdd, 0, dependencies, 0, dependenciesToAdd.length );
+            int start = 0;
+            
+            if ( dependencies == null )
+            {
+                dependencies = new String[dependenciesToAdd.length];
+            }
+            else
+            {
+                String[] tempDependencies = new String[ dependencies.length + dependenciesToAdd.length ];
+                System.arraycopy( tempDependencies, 0, dependencies, 0, dependencies.length );
+                start = dependencies.length;
+                dependencies = tempDependencies;
+            }
+            
+            System.arraycopy( dependenciesToAdd, 0, dependenciesToAdd, start, dependenciesToAdd.length );
         }
     }
 
