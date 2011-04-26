@@ -1024,12 +1024,12 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                     if ( isEmptyValue )
                     {
                         // Update the entry
-                        entry.addModificationItem( modificationType, modified, null );
+                        entry.addModification( modificationType, modified, null );
                     }
                     else
                     {
                         // Update the entry with the attribute
-                        entry.addModificationItem( modificationType, attribute );
+                        entry.addModification( modificationType, attribute );
                     }
 
                     state = MOD_SPEC;

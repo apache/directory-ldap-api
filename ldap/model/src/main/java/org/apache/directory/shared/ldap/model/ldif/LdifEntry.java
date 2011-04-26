@@ -77,7 +77,7 @@ public class LdifEntry implements Cloneable, Externalizable
     private List<Modification> modificationList;
 
     /** The map containing all the modifications */
-    private Map<String, Modification> modificationItems;
+    private Map<String, Modification> modifications;
 
     /** The new superior */
     private String newSuperior;
@@ -105,7 +105,7 @@ public class LdifEntry implements Cloneable, Externalizable
     {
         changeType = ChangeType.None; // Default LDIF content
         modificationList = new LinkedList<Modification>();
-        modificationItems = new HashMap<String, Modification>();
+        modifications = new HashMap<String, Modification>();
         entry = new DefaultEntry( (Dn) null );
         entryDn = null;
         controls = null;
@@ -119,7 +119,7 @@ public class LdifEntry implements Cloneable, Externalizable
     {
         changeType = ChangeType.None; // Default LDIF content
         modificationList = new LinkedList<Modification>();
-        modificationItems = new HashMap<String, Modification>();
+        modifications = new HashMap<String, Modification>();
         this.entry = entry;
         entryDn = entry.getDn();
         controls = null;
@@ -242,12 +242,12 @@ public class LdifEntry implements Cloneable, Externalizable
                     break;
                     
                 case Modify :
-                    modificationList = ldifEntry.getModificationItems();
-                    modificationItems = new HashMap<String, Modification>();
+                    modificationList = ldifEntry.getModifications();
+                    modifications = new HashMap<String, Modification>();
                     
                     for ( Modification modification : modificationList )
                     {
-                        modificationItems.put( modification.getAttribute().getId(), modification );
+                        modifications.put( modification.getAttribute().getId(), modification );
                     }
                     break;
             }
@@ -344,12 +344,12 @@ public class LdifEntry implements Cloneable, Externalizable
      * 
      * @param modification The modification to be added
      */
-    public void addModificationItem( Modification modification )
+    public void addModification( Modification modification )
     {
         if ( changeType == ChangeType.Modify )
         {
             modificationList.add( modification );
-            modificationItems.put( modification.getAttribute().getId(), modification );
+            modifications.put( modification.getAttribute().getId(), modification );
         }
     }
 
@@ -366,19 +366,19 @@ public class LdifEntry implements Cloneable, Externalizable
      * 
      * @param attr The attribute to be added
      */
-    public void addModificationItem( ModificationOperation modOp, Attribute attr )
+    public void addModification( ModificationOperation modOp, Attribute attr )
     {
         if ( changeType == ChangeType.Modify )
         {
             Modification item = new DefaultModification( modOp, attr );
             modificationList.add( item );
-            modificationItems.put( attr.getId(), item );
+            modifications.put( attr.getId(), item );
         }
     }
 
 
     /**
-     * Add a modification item
+     * Add a modification
      * 
      * @param modOp The modification operation value. One of : 
      * <ul>
@@ -390,7 +390,7 @@ public class LdifEntry implements Cloneable, Externalizable
      * @param id The attribute's ID
      * @param value The attribute's value
      */
-    public void addModificationItem( ModificationOperation modOp, String id, Object value )
+    public void addModification( ModificationOperation modOp, String id, Object value )
     {
         if ( changeType == ChangeType.Modify )
         {
@@ -408,7 +408,7 @@ public class LdifEntry implements Cloneable, Externalizable
 
             Modification item = new DefaultModification( modOp, attr );
             modificationList.add( item );
-            modificationItems.put( id, item );
+            modifications.put( id, item );
         }
     }
 
@@ -518,7 +518,7 @@ public class LdifEntry implements Cloneable, Externalizable
     /**
      * @return The list of modification items
      */
-    public List<Modification> getModificationItems()
+    public List<Modification> getModifications()
     {
         return modificationList;
     }
@@ -529,7 +529,7 @@ public class LdifEntry implements Cloneable, Externalizable
      *
      * @return modification items as an array.
      */
-    public Modification[] getModificationItemsArray()
+    public Modification[] getModificationArray()
     {
         return modificationList.toArray( EMPTY_MODS );
     }
@@ -556,8 +556,7 @@ public class LdifEntry implements Cloneable, Externalizable
     /**
      * Returns a attribute given it's id
      * 
-     * @param attributeId
-     *            The attribute Id
+     * @param attributeId The attribute Id
      * @return The attribute if it exists
      */
     public Attribute get( String attributeId )
@@ -650,7 +649,7 @@ public class LdifEntry implements Cloneable, Externalizable
 
 
     /**
-     * @return True if there is this is a content ldif
+     * @return True if this is a content ldif
      */
     public boolean isLdifContent()
     {
@@ -813,14 +812,14 @@ public class LdifEntry implements Cloneable, Externalizable
             }
         }
 
-        if ( modificationItems != null )
+        if ( modifications != null )
         {
-            for ( String key : modificationItems.keySet() )
+            for ( String key : modifications.keySet() )
             {
-                Modification modif = modificationItems.get( key );
+                Modification modif = modifications.get( key );
                 Modification modifClone = new DefaultModification( modif.getOperation(),
                         modif.getAttribute().clone() );
-                clone.modificationItems.put( key, modifClone );
+                clone.modifications.put( key, modifClone );
             }
 
         }
@@ -1199,7 +1198,7 @@ public class LdifEntry implements Cloneable, Externalizable
                     Modification modification = new DefaultModification();
                     modification.readExternal( in );
                     
-                    addModificationItem( modification );
+                    addModification( modification );
                 }
 
                 break;

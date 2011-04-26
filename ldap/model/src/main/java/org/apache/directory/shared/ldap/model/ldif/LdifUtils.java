@@ -465,7 +465,7 @@ public final class LdifUtils
                 break;
 
             case Modify:
-                for ( Modification modification : entry.getModificationItems() )
+                for ( Modification modification : entry.getModifications() )
                 {
                     switch ( modification.getOperation() )
                     {

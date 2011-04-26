@@ -528,9 +528,9 @@ public class LdifEntryTest
         assertTrue( ldifEntry.isLdifChange() );
         
         // Check the modification
-        assertNotNull( ldifEntry.getModificationItems() );
+        assertNotNull( ldifEntry.getModifications() );
         
-        for ( Modification modification : ldifEntry.getModificationItems() )
+        for ( Modification modification : ldifEntry.getModifications() )
         {
             assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
             Attribute attribute = modification.getAttribute();
@@ -596,9 +596,9 @@ public class LdifEntryTest
         assertTrue( ldifEntry.isLdifChange() );
         
         // Check the modification
-        assertNotNull( ldifEntry.getModificationItems() );
+        assertNotNull( ldifEntry.getModifications() );
         
-        for ( Modification modification : ldifEntry.getModificationItems() )
+        for ( Modification modification : ldifEntry.getModifications() )
         {
             assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
             Attribute attribute = modification.getAttribute();
@@ -667,9 +667,9 @@ public class LdifEntryTest
         assertTrue( ldifEntry.isLdifChange() );
         
         // Check the modification
-        assertNotNull( ldifEntry.getModificationItems() );
+        assertNotNull( ldifEntry.getModifications() );
         
-        for ( Modification modification : ldifEntry.getModificationItems() )
+        for ( Modification modification : ldifEntry.getModifications() )
         {
             assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
             Attribute attribute = modification.getAttribute();

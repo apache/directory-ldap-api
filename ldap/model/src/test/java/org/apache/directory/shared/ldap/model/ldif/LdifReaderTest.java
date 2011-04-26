@@ -315,7 +315,7 @@ public class LdifReaderTest
 
         assertEquals( "dc=example,dc=com", entry.getDn().getName() );
 
-        List<Modification> mods = entry.getModificationItems();
+        List<Modification> mods = entry.getModifications();
         assertTrue( mods.size() == 1 );
         Attribute attr = mods.get( 0 ).getAttribute();
         assertTrue( attr.getId().equals( "administrativerole" ) );
@@ -1389,7 +1389,7 @@ public class LdifReaderTest
 
         // Fifth entry
         entry = entries.get( 4 );
-        List<Modification> modifs = entry.getModificationItems();
+        List<Modification> modifs = entry.getModifications();
 
         assertTrue( entry.isChangeModify() );
         assertEquals( values[4][0][1], entry.getDn().getName() );
@@ -1426,7 +1426,7 @@ public class LdifReaderTest
 
         // Sixth entry
         entry = entries.get( 5 );
-        modifs = entry.getModificationItems();
+        modifs = entry.getModifications();
 
         assertTrue( entry.isChangeModify() );
         assertEquals( values[5][0][1], entry.getDn().getName() );

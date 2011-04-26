@@ -147,7 +147,7 @@ public class LdifRevertorTest
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
         
-        List<Modification> mods = reversed.getModificationItems();
+        List<Modification> mods = reversed.getModifications();
         
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
@@ -192,7 +192,7 @@ public class LdifRevertorTest
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
         
-        List<Modification> mods = reversed.getModificationItems();
+        List<Modification> mods = reversed.getModifications();
         
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
@@ -235,7 +235,7 @@ public class LdifRevertorTest
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
         
-        List<Modification> mods = reversed.getModificationItems();
+        List<Modification> mods = reversed.getModifications();
         
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
@@ -284,7 +284,7 @@ public class LdifRevertorTest
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
         
-        List<Modification> mods = reversed.getModificationItems();
+        List<Modification> mods = reversed.getModifications();
         
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
@@ -326,7 +326,7 @@ public class LdifRevertorTest
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
         
-        List<Modification> mods = reversed.getModificationItems();
+        List<Modification> mods = reversed.getModifications();
         
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
@@ -370,7 +370,7 @@ public class LdifRevertorTest
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
         
-        List<Modification> mods = reversed.getModificationItems();
+        List<Modification> mods = reversed.getModifications();
         
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
@@ -572,7 +572,7 @@ public class LdifRevertorTest
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
-        List<Modification> mods = reversed.getModificationItems();
+        List<Modification> mods = reversed.getModifications();
         
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
@@ -609,7 +609,7 @@ public class LdifRevertorTest
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
-        List<Modification> mods = reversed.getModificationItems();
+        List<Modification> mods = reversed.getModifications();
         
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
@@ -1211,7 +1211,7 @@ public class LdifRevertorTest
         
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
-        Modification[] mods = reversed.getModificationItemsArray();
+        Modification[] mods = reversed.getModificationArray();
         
         assertNotNull( mods );
         assertEquals( 1, mods.length );
@@ -1314,7 +1314,7 @@ public class LdifRevertorTest
         
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
-        Modification[] mods = reversed.getModificationItemsArray();
+        Modification[] mods = reversed.getModificationArray();
         
         assertNotNull( mods );
         assertEquals( 1, mods.length );
@@ -1419,7 +1419,7 @@ public class LdifRevertorTest
         
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
-        Modification[] mods = reversed.getModificationItemsArray();
+        Modification[] mods = reversed.getModificationArray();
         
         assertNotNull( mods );
         assertEquals( 1, mods.length );
@@ -1522,7 +1522,7 @@ public class LdifRevertorTest
         
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
-        Modification[] mods = reversed.getModificationItemsArray();
+        Modification[] mods = reversed.getModificationArray();
         
         assertNotNull( mods );
         assertEquals( 1, mods.length );
@@ -1627,7 +1627,7 @@ public class LdifRevertorTest
         
         assertEquals( "cn=small+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
-        Modification[] mods = reversed.getModificationItemsArray();
+        Modification[] mods = reversed.getModificationArray();
         
         assertNotNull( mods );
         assertEquals( 1, mods.length );
@@ -1732,7 +1732,7 @@ public class LdifRevertorTest
         
         assertEquals( "cn=small+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
-        Modification[] mods = reversed.getModificationItemsArray();
+        Modification[] mods = reversed.getModificationArray();
         
         assertNotNull( mods );
         assertEquals( 1, mods.length );

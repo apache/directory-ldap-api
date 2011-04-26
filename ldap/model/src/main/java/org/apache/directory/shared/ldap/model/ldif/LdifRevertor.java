@@ -243,7 +243,7 @@ public final class LdifRevertor
         // Now, push the reversed list into the entry
         for ( Modification modification : reverseModifications )
         {
-            entry.addModificationItem( modification );
+            entry.addModification( modification );
         }
 
         // Return the reverted entry
@@ -366,7 +366,7 @@ public final class LdifRevertor
                 Modification modification = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE,
                     new DefaultAttribute( ava.getUpType(), ava.getUpValue().getString() ) );
 
-                restored.addModificationItem( modification );
+                restored.addModification( modification );
             }
         }
 
