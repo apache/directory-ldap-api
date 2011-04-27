@@ -193,7 +193,7 @@ public final class LdifUtils
      */
     public static String convertToLdif( Attributes attrs, Dn dn, int length ) throws LdapException
     {
-        return convertEntryToLdif( AttributeUtils.toEntry( attrs, dn ), length );
+        return convertToLdif( AttributeUtils.toEntry( attrs, dn ), length );
     }
 
 
@@ -207,7 +207,7 @@ public final class LdifUtils
      */
     public static String convertToLdif( Attributes attrs, Dn dn ) throws LdapException
     {
-        return convertEntryToLdif( AttributeUtils.toEntry( attrs, dn ), DEFAULT_LINE_LENGTH );
+        return convertToLdif( AttributeUtils.toEntry( attrs, dn ), DEFAULT_LINE_LENGTH );
     }
 
 
@@ -218,9 +218,9 @@ public final class LdifUtils
      * @return the corresponding LDIF code as a String
      * @throws LdapException If a naming exception is encountered.
      */
-    public static String convertEntryToLdif( Entry entry ) throws LdapException
+    public static String convertToLdif( Entry entry ) throws LdapException
     {
-        return convertEntryToLdif( entry, DEFAULT_LINE_LENGTH );
+        return convertToLdif( entry, DEFAULT_LINE_LENGTH );
     }
 
 
@@ -232,9 +232,9 @@ public final class LdifUtils
      * @return the corresponding LDIF code as a String
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException If a naming exception is encountered.
      */
-    public static String convertEntryToLdif( Entry entry, boolean includeVersionInfo ) throws LdapException
+    public static String convertToLdif( Entry entry, boolean includeVersionInfo ) throws LdapException
     {
-        String ldif = convertEntryToLdif( entry, DEFAULT_LINE_LENGTH );
+        String ldif = convertToLdif( entry, DEFAULT_LINE_LENGTH );
 
         if ( includeVersionInfo )
         {
@@ -259,13 +259,13 @@ public final class LdifUtils
 
 
     /**
-     * Convert a LDIF String to an attributes.
+     * Convert a LDIF String to a JNDI attributes.
      *
      * @param ldif The LDIF string containing an attribute value
      * @return An Attributes instance
      * @exception LdapLdifException If the LDIF String cannot be converted to an Attributes
      */
-    public static Attributes convertAttributesFromLdif( String ldif ) throws LdapLdifException
+    public static Attributes getJndiAttributesFromLdif( String ldif ) throws LdapLdifException
     {
         LdifAttributesReader reader = new LdifAttributesReader();
 
@@ -281,7 +281,7 @@ public final class LdifUtils
      * @return the corresponding LDIF code as a String
      * @throws LdapException If a naming exception is encountered.
      */
-    public static String convertEntryToLdif( Entry entry, int length ) throws LdapException
+    public static String convertToLdif( Entry entry, int length ) throws LdapException
     {
         StringBuilder sb = new StringBuilder();
 
@@ -669,7 +669,7 @@ public final class LdifUtils
      * @return An Attributes instance
      * @throws LdapException If the data are invalid
      */
-    public static Attributes createAttributes( Object... avas ) throws LdapException
+    public static Attributes createJndiAttributes( Object... avas ) throws LdapException
     {
         StringBuilder sb = new StringBuilder();
         int pos = 0;

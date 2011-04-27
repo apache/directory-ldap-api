@@ -406,7 +406,7 @@ public class AttributeTypeHolder extends SchemaElementImpl
 
         // First dump the Dn only
         Entry entry = new DefaultEntry( dn );
-        sb.append( LdifUtils.convertEntryToLdif(entry) );
+        sb.append( LdifUtils.convertToLdif(entry) );
 
         return sb.toString();
     }

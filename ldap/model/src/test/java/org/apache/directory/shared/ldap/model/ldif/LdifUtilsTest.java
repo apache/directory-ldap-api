@@ -377,7 +377,7 @@ public class LdifUtilsTest
         attributes.put( "sn", "test" );
 
         String ldif = LdifUtils.convertToLdif( attributes, (Dn)null, 15 );
-        Attributes result = LdifUtils.convertAttributesFromLdif( ldif );
+        Attributes result = LdifUtils.getJndiAttributesFromLdif( ldif );
         assertEquals( attributes, result );
     }
 
@@ -454,7 +454,7 @@ public class LdifUtilsTest
         String mOid = "m-oid: 1.2.3.4";
         String description = "description";
         
-        Attributes attrs = LdifUtils.createAttributes( 
+        Attributes attrs = LdifUtils.createJndiAttributes( 
             "objectClass: top",
             "objectClass: metaTop",
             "objectClass: metaSyntax",
@@ -469,7 +469,7 @@ public class LdifUtilsTest
 
         try
         {
-            LdifUtils.createAttributes( 
+            LdifUtils.createJndiAttributes( 
                 "objectClass", "top",
                 "objectClass" );
             fail();
