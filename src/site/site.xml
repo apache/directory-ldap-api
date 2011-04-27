@@ -26,7 +26,7 @@
   </bannerLeft>
   <skin>
     <groupId>org.apache.directory.skins</groupId>
-    <artifactId>directory-skin</artifactId>
+    <artifactId>directory-api-skin</artifactId>
     <version>${skin.version}</version>
   </skin>
   <publishDate position="navigation-bottom" format="dd-MM-yyyy HH:mm"/>
