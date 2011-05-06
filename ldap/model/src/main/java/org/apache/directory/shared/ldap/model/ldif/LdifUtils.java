@@ -482,7 +482,7 @@ public final class LdifUtils
                             break;
                     }
 
-                    sb.append( modification.getAttribute().getId() );
+                    sb.append( modification.getAttribute().getUpId() );
                     sb.append( '\n' );
 
                     sb.append( convertToLdif( modification.getAttribute() ) );
