@@ -360,7 +360,7 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
         {
             // check that the attributeTypes directory exists for the schema
             String start = getSchemaDirectoryString( schema )
-                    + SchemaConstants.ATTRIBUTES_TYPE_PATH + "/" + "m-oid=";
+                    + SchemaConstants.ATTRIBUTE_TYPES_PATH + "/" + "m-oid=";
             String end = "." + LDIF_EXT;
             
             // get list of attributeType LDIF schema files in attributeTypes

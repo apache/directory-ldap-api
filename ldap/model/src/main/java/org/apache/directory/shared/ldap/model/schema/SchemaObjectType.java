@@ -72,7 +72,7 @@ public enum SchemaObjectType
         switch ( this )
         {
             case ATTRIBUTE_TYPE :
-                schemaObjectPath = SchemaConstants.ATTRIBUTES_TYPE_PATH;
+                schemaObjectPath = SchemaConstants.ATTRIBUTE_TYPES_PATH;
                 break;
                 
             case COMPARATOR :
