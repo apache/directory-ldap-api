@@ -160,12 +160,12 @@ public class DefaultSchema implements Schema
             else
             {
                 String[] tempDependencies = new String[ dependencies.length + dependenciesToAdd.length ];
-                System.arraycopy( tempDependencies, 0, dependencies, 0, dependencies.length );
+                System.arraycopy( dependencies, 0, tempDependencies, 0, dependencies.length );
                 start = dependencies.length;
                 dependencies = tempDependencies;
             }
             
-            System.arraycopy( dependenciesToAdd, 0, dependenciesToAdd, start, dependenciesToAdd.length );
+            System.arraycopy( dependenciesToAdd, 0, dependencies, start, dependenciesToAdd.length );
         }
     }
 
