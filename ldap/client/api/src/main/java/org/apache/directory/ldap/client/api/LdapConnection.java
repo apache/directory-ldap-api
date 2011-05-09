@@ -107,7 +107,7 @@ public interface LdapConnection
      * @return the add operation's response
      * @throws LdapException if some error occurred
      */
-    AddResponse add( Entry entry ) throws LdapException;
+    void add( Entry entry ) throws LdapException;
 
 
     /**
@@ -148,7 +148,7 @@ public interface LdapConnection
      * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
-    BindResponse bind() throws LdapException, IOException;
+    void bind() throws LdapException, IOException;
 
 
     /**
@@ -160,7 +160,7 @@ public interface LdapConnection
      * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
-    BindResponse bind( String name ) throws LdapException, IOException;
+    void bind( String name ) throws LdapException, IOException;
 
 
     /**
@@ -173,7 +173,7 @@ public interface LdapConnection
      * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
-    BindResponse bind( String name, String credentials ) throws LdapException, IOException;
+    void bind( String name, String credentials ) throws LdapException, IOException;
 
 
     /**
@@ -185,7 +185,7 @@ public interface LdapConnection
      * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
-    BindResponse bind( Dn name ) throws LdapException, IOException;
+    void bind( Dn name ) throws LdapException, IOException;
 
 
     /**
@@ -198,7 +198,7 @@ public interface LdapConnection
      * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
-    BindResponse bind( Dn name, String credentials ) throws LdapException, IOException;
+    void bind( Dn name, String credentials ) throws LdapException, IOException;
 
 
     /**
@@ -296,7 +296,7 @@ public interface LdapConnection
      * @return the modify operation's response
      * @throws LdapException in case of modify operation failure or timeout happens
      */
-    ModifyResponse modify( Dn dn, Modification... modifications ) throws LdapException;
+    void modify( Dn dn, Modification... modifications ) throws LdapException;
 
 
     /**
@@ -307,7 +307,7 @@ public interface LdapConnection
      * @return the modify operation's response
      * @throws LdapException in case of modify operation failure or timeout happens
      */
-    ModifyResponse modify( String dn, Modification... modifications ) throws LdapException;
+    void modify( String dn, Modification... modifications ) throws LdapException;
 
 
     /**
@@ -318,7 +318,7 @@ public interface LdapConnection
      * @return the modify operation's response
      * @throws LdapException in case of modify operation failure or timeout happens
      */
-    ModifyResponse modify( Entry entry, ModificationOperation modOp ) throws LdapException;
+    void modify( Entry entry, ModificationOperation modOp ) throws LdapException;
 
 
     /**
@@ -341,7 +341,7 @@ public interface LdapConnection
      * @throws LdapException if some error occurred
      * @see #rename(String, String, boolean)
      */
-    ModifyDnResponse rename( String entryDn, String newRdn ) throws LdapException;
+    void rename( String entryDn, String newRdn ) throws LdapException;
 
 
     /**
@@ -353,7 +353,7 @@ public interface LdapConnection
      * @throws LdapException if some error occurred
      * @see #rename(org.apache.directory.shared.ldap.model.name.Dn, org.apache.directory.shared.ldap.model.name.Rdn, boolean)
      */
-    ModifyDnResponse rename( Dn entryDn, Rdn newRdn ) throws LdapException;
+    void rename( Dn entryDn, Rdn newRdn ) throws LdapException;
 
 
     /**
@@ -367,7 +367,7 @@ public interface LdapConnection
      * @throws LdapException if some error occurred
      * @see #rename(org.apache.directory.shared.ldap.model.name.Dn, org.apache.directory.shared.ldap.model.name.Rdn, boolean)
      */
-    ModifyDnResponse rename( String entryDn, String newRdn, boolean deleteOldRdn ) throws LdapException;
+    void rename( String entryDn, String newRdn, boolean deleteOldRdn ) throws LdapException;
 
 
     /**
@@ -380,7 +380,7 @@ public interface LdapConnection
      * @return modifyDn operation's response
      * @throws LdapException if some error occurred
      */
-    ModifyDnResponse rename( Dn entryDn, Rdn newRdn, boolean deleteOldRdn ) throws LdapException;
+    void rename( Dn entryDn, Rdn newRdn, boolean deleteOldRdn ) throws LdapException;
 
 
     /**
@@ -392,7 +392,7 @@ public interface LdapConnection
      * @throws LdapException if some error occurred
      * @see #move(org.apache.directory.shared.ldap.model.name.Dn, org.apache.directory.shared.ldap.model.name.Dn)
      */
-    ModifyDnResponse move( String entryDn, String newSuperiorDn ) throws LdapException;
+    void move( String entryDn, String newSuperiorDn ) throws LdapException;
 
 
     /**
@@ -403,7 +403,7 @@ public interface LdapConnection
      * @return modifyDn operation's response
      * @throws LdapException if some error occurred
      */
-    ModifyDnResponse move( Dn entryDn, Dn newSuperiorDn ) throws LdapException;
+    void move( Dn entryDn, Dn newSuperiorDn ) throws LdapException;
 
 
     /**
@@ -415,7 +415,7 @@ public interface LdapConnection
      * @throws LdapException if some error occurred
      * @see #moveAndRename(org.apache.directory.shared.ldap.model.name.Dn, org.apache.directory.shared.ldap.model.name.Dn, boolean)
      */
-    ModifyDnResponse moveAndRename( Dn entryDn, Dn newDn ) throws LdapException;
+    void moveAndRename( Dn entryDn, Dn newDn ) throws LdapException;
 
 
     /**
@@ -427,7 +427,7 @@ public interface LdapConnection
      * @throws LdapException if some error occurred
      * @see #moveAndRename(org.apache.directory.shared.ldap.model.name.Dn, org.apache.directory.shared.ldap.model.name.Dn, boolean)
      */
-    ModifyDnResponse moveAndRename( String entryDn, String newDn ) throws LdapException;
+    void moveAndRename( String entryDn, String newDn ) throws LdapException;
 
 
     /**
@@ -439,7 +439,7 @@ public interface LdapConnection
      * @return modifyDn operations response
      * @throws LdapException if some error occurred
      */
-    ModifyDnResponse moveAndRename( Dn entryDn, Dn newDn, boolean deleteOldRdn ) throws LdapException;
+    void moveAndRename( Dn entryDn, Dn newDn, boolean deleteOldRdn ) throws LdapException;
 
 
     /**
@@ -451,7 +451,7 @@ public interface LdapConnection
      * @return modifyDn operation's response
      * @throws LdapException if some error occurred
      */
-    ModifyDnResponse moveAndRename( String entryDn, String newDn, boolean deleteOldRdn )
+    void moveAndRename( String entryDn, String newDn, boolean deleteOldRdn )
         throws LdapException;
 
 
@@ -472,7 +472,7 @@ public interface LdapConnection
      * @return the delete operation's response
      * @throws LdapException If the Dn is not valid or if the deletion failed
      */
-    DeleteResponse delete( String dn ) throws LdapException;
+    void delete( String dn ) throws LdapException;
 
 
     /**
@@ -482,7 +482,7 @@ public interface LdapConnection
      * @return the delete operation's response
      * @throws LdapException If the Dn is not valid or if the deletion failed
      */
-    DeleteResponse delete( Dn dn ) throws LdapException;
+    void delete( Dn dn ) throws LdapException;
 
 
     /**
@@ -505,7 +505,7 @@ public interface LdapConnection
      * @return compare operation's response
      * @throws LdapException if some error occurred
      */
-    CompareResponse compare( String dn, String attributeName, String value ) throws LdapException;
+    boolean compare( String dn, String attributeName, String value ) throws LdapException;
 
 
     /**
@@ -518,7 +518,7 @@ public interface LdapConnection
      * @return compare operation's response
      * @throws LdapException if some error occurred
      */
-    CompareResponse compare( String dn, String attributeName, byte[] value ) throws LdapException;
+    boolean compare( String dn, String attributeName, byte[] value ) throws LdapException;
 
 
     /**
@@ -531,7 +531,7 @@ public interface LdapConnection
      * @return compare operation's response
      * @throws LdapException if some error occurred
      */
-    CompareResponse compare( String dn, String attributeName, Value<?> value ) throws LdapException;
+    boolean compare( String dn, String attributeName, Value<?> value ) throws LdapException;
 
 
     /**
@@ -544,7 +544,7 @@ public interface LdapConnection
      * @return compare operation's response
      * @throws LdapException if some error occurred
      */
-    CompareResponse compare( Dn dn, String attributeName, String value ) throws LdapException;
+    boolean compare( Dn dn, String attributeName, String value ) throws LdapException;
 
 
     /**
@@ -557,7 +557,7 @@ public interface LdapConnection
      * @return compare operation's response
      * @throws LdapException if some error occurred
      */
-    CompareResponse compare( Dn dn, String attributeName, byte[] value ) throws LdapException;
+    boolean compare( Dn dn, String attributeName, byte[] value ) throws LdapException;
 
 
     /**
@@ -570,7 +570,7 @@ public interface LdapConnection
      * @return compare operation's response
      * @throws LdapException if some error occurred
      */
-    CompareResponse compare( Dn dn, String attributeName, Value<?> value ) throws LdapException;
+    boolean compare( Dn dn, String attributeName, Value<?> value ) throws LdapException;
 
 
     /**

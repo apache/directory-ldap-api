@@ -20,6 +20,8 @@
 package org.apache.directory.ldap.client.api;
 
 
+import static org.apache.directory.shared.ldap.model.message.AbstractResponse.processResponse;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -473,7 +475,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         messageId = new AtomicInteger();
     }
 
-
+    
     //-------------------------- The methods ---------------------------//
     /**
      * {@inheritDoc}
@@ -653,7 +655,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public AddResponse add( Entry entry ) throws LdapException
+    public void add( Entry entry ) throws LdapException
     {
         if ( entry == null )
         {
@@ -665,7 +667,9 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         AddRequest addRequest = new AddRequestImpl();
         addRequest.setEntry( entry );
 
-        return add( addRequest );
+        AddResponse addResponse = add( addRequest );
+        
+        processResponse( addResponse );
     }
 
 
@@ -888,14 +892,16 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public BindResponse bind() throws LdapException, IOException
+    public void bind() throws LdapException, IOException
     {
         LOG.debug( "Anonymous Bind request" );
 
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( StringConstants.EMPTY, StringConstants.EMPTY_BYTES );
 
-        return bind( bindRequest );
+        BindResponse bindResponse = bind( bindRequest );
+        
+        processResponse( bindResponse );
     }
 
 
@@ -916,21 +922,23 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public BindResponse bind( String name ) throws LdapException, IOException
+    public void bind( String name ) throws LdapException, IOException
     {
         LOG.debug( "Bind request : {}", name );
 
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( name, StringConstants.EMPTY_BYTES );
 
-        return bind( bindRequest );
+        BindResponse bindResponse = bind( bindRequest );
+        
+        processResponse( bindResponse );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public BindResponse bind( String name, String credentials ) throws LdapException, IOException
+    public void bind( String name, String credentials ) throws LdapException, IOException
     {
         LOG.debug( "Bind request : {}", name );
 
@@ -944,7 +952,9 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( name, Strings.getBytesUtf8( credentials ) );
 
-        return bind( bindRequest );
+        BindResponse bindResponse = bind( bindRequest );
+        
+        processResponse( bindResponse );
     }
 
 
@@ -992,21 +1002,23 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public BindResponse bind( Dn name ) throws LdapException, IOException
+    public void bind( Dn name ) throws LdapException, IOException
     {
         LOG.debug( "Unauthenticated authentication Bind request : {}", name );
 
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( name, StringConstants.EMPTY_BYTES, null );
 
-        return bind( bindRequest );
+        BindResponse bindResponse = bind( bindRequest );
+        
+        processResponse( bindResponse );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public BindResponse bind( Dn name, String credentials ) throws LdapException, IOException
+    public void bind( Dn name, String credentials ) throws LdapException, IOException
     {
         LOG.debug( "Bind request : {}", name );
 
@@ -1020,7 +1032,9 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( name, Strings.getBytesUtf8( credentials ), null );
 
-        return bind( bindRequest );
+        BindResponse bindResponse = bind( bindRequest );
+        
+        processResponse( bindResponse );
     }
 
 
@@ -2145,7 +2159,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public ModifyResponse modify( Entry entry, ModificationOperation modOp ) throws LdapException
+    public void modify( Entry entry, ModificationOperation modOp ) throws LdapException
     {
         if ( entry == null )
         {
@@ -2162,14 +2176,16 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             modReq.addModification( itr.next(), modOp );
         }
 
-        return modify( modReq );
+        ModifyResponse modifyResponse = modify( modReq );
+        
+        processResponse( modifyResponse );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ModifyResponse modify( Dn dn, Modification... modifications ) throws LdapException
+    public void modify( Dn dn, Modification... modifications ) throws LdapException
     {
         if ( dn == null )
         {
@@ -2192,16 +2208,18 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             modReq.addModification( modification );
         }
 
-        return modify( modReq );
+        ModifyResponse modifyResponse = modify( modReq );
+        
+        processResponse( modifyResponse );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ModifyResponse modify( String dn, Modification... modifications ) throws LdapException
+    public void modify( String dn, Modification... modifications ) throws LdapException
     {
-        return modify( new Dn( dn ), modifications );
+        modify( new Dn( dn ), modifications );
     }
 
 
@@ -2322,25 +2340,25 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public ModifyDnResponse rename( String entryDn, String newRdn ) throws LdapException
+    public void rename( String entryDn, String newRdn ) throws LdapException
     {
-        return rename( entryDn, newRdn, true );
+        rename( entryDn, newRdn, true );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ModifyDnResponse rename( Dn entryDn, Rdn newRdn ) throws LdapException
+    public void rename( Dn entryDn, Rdn newRdn ) throws LdapException
     {
-        return rename( entryDn, newRdn, true );
+        rename( entryDn, newRdn, true );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ModifyDnResponse rename( String entryDn, String newRdn, boolean deleteOldRdn ) throws LdapException
+    public void rename( String entryDn, String newRdn, boolean deleteOldRdn ) throws LdapException
     {
         if ( entryDn == null )
         {
@@ -2358,7 +2376,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
         try
         {
-            return rename( new Dn( entryDn ), new Rdn( newRdn ), deleteOldRdn );
+            rename( new Dn( entryDn ), new Rdn( newRdn ), deleteOldRdn );
         }
         catch ( LdapInvalidDnException e )
         {
@@ -2371,7 +2389,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public ModifyDnResponse rename( Dn entryDn, Rdn newRdn, boolean deleteOldRdn ) throws LdapException
+    public void rename( Dn entryDn, Rdn newRdn, boolean deleteOldRdn ) throws LdapException
     {
         if ( entryDn == null )
         {
@@ -2392,14 +2410,16 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         modDnRequest.setNewRdn( newRdn );
         modDnRequest.setDeleteOldRdn( deleteOldRdn );
 
-        return modifyDn( modDnRequest );
+        ModifyDnResponse modifyDnResponse = modifyDn( modDnRequest );
+        
+        processResponse( modifyDnResponse );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ModifyDnResponse move( String entryDn, String newSuperiorDn ) throws LdapException
+    public void move( String entryDn, String newSuperiorDn ) throws LdapException
     {
         if ( entryDn == null )
         {
@@ -2417,7 +2437,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
         try
         {
-            return move( new Dn( entryDn ), new Dn( newSuperiorDn ) );
+            move( new Dn( entryDn ), new Dn( newSuperiorDn ) );
         }
         catch ( LdapInvalidDnException e )
         {
@@ -2430,7 +2450,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public ModifyDnResponse move( Dn entryDn, Dn newSuperiorDn ) throws LdapException
+    public void move( Dn entryDn, Dn newSuperiorDn ) throws LdapException
     {
         if ( entryDn == null )
         {
@@ -2453,32 +2473,34 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         //TODO not setting the below value is resulting in error
         modDnRequest.setNewRdn( entryDn.getRdn() );
 
-        return modifyDn( modDnRequest );
+        ModifyDnResponse modifyDnResponse = modifyDn( modDnRequest );
+        
+        processResponse( modifyDnResponse );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ModifyDnResponse moveAndRename( Dn entryDn, Dn newDn ) throws LdapException
+    public void moveAndRename( Dn entryDn, Dn newDn ) throws LdapException
     {
-        return moveAndRename( entryDn, newDn, true );
+        moveAndRename( entryDn, newDn, true );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ModifyDnResponse moveAndRename( String entryDn, String newDn ) throws LdapException
+    public void moveAndRename( String entryDn, String newDn ) throws LdapException
     {
-        return moveAndRename( new Dn( entryDn ), new Dn( newDn ), true );
+        moveAndRename( new Dn( entryDn ), new Dn( newDn ), true );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ModifyDnResponse moveAndRename( Dn entryDn, Dn newDn, boolean deleteOldRdn ) throws LdapException
+    public void moveAndRename( Dn entryDn, Dn newDn, boolean deleteOldRdn ) throws LdapException
     {
         // Check the parameters first
         if ( entryDn == null )
@@ -2508,16 +2530,18 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         modDnRequest.setNewSuperior( newDn.getParent() );
         modDnRequest.setDeleteOldRdn( deleteOldRdn );
 
-        return modifyDn( modDnRequest );
+        ModifyDnResponse modifyDnResponse = modifyDn( modDnRequest );
+        
+        processResponse( modifyDnResponse );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ModifyDnResponse moveAndRename( String entryDn, String newDn, boolean deleteOldRdn ) throws LdapException
+    public void moveAndRename( String entryDn, String newDn, boolean deleteOldRdn ) throws LdapException
     {
-        return moveAndRename( new Dn( entryDn ), new Dn( newDn ), true );
+        moveAndRename( new Dn( entryDn ), new Dn( newDn ), true );
     }
 
 
@@ -2632,21 +2656,23 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public DeleteResponse delete( String dn ) throws LdapException
+    public void delete( String dn ) throws LdapException
     {
-        return delete( new Dn( dn ) );
+        delete( new Dn( dn ) );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public DeleteResponse delete( Dn dn ) throws LdapException
+    public void delete( Dn dn ) throws LdapException
     {
         DeleteRequest deleteRequest = new DeleteRequestImpl();
         deleteRequest.setName( dn );
 
-        return delete( deleteRequest );
+        DeleteResponse deleteResponse = delete( deleteRequest );
+        
+        processResponse( deleteResponse );
     }
 
 
@@ -2657,7 +2683,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      * @return operation's response
      * @throws LdapException If the Dn is not valid or if the deletion failed
      */
-    public DeleteResponse deleteTree( Dn dn ) throws LdapException
+    public void deleteTree( Dn dn ) throws LdapException
     {
         String treeDeleteOid = "1.2.840.113556.1.4.805";
 
@@ -2666,7 +2692,9 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             DeleteRequest deleteRequest = new DeleteRequestImpl();
             deleteRequest.setName( dn );
             deleteRequest.addControl( new OpaqueControl( treeDeleteOid ) );
-            return delete( deleteRequest );
+            DeleteResponse deleteResponse = delete( deleteRequest );
+            
+            processResponse( deleteResponse );
         }
         else
         {
@@ -2685,7 +2713,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      * @return operation's response
      * @throws LdapException If the Dn is not valid or if the deletion failed
      */
-    public DeleteResponse deleteTree( String dn ) throws LdapException
+    public void deleteTree( String dn ) throws LdapException
     {
         try
         {
@@ -2697,7 +2725,9 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
                 DeleteRequest deleteRequest = new DeleteRequestImpl();
                 deleteRequest.setName( newDn );
                 deleteRequest.addControl( new OpaqueControl( treeDeleteOid ) );
-                return delete( deleteRequest );
+                DeleteResponse deleteResponse = delete( deleteRequest );
+                
+                processResponse( deleteResponse );
             }
             else
             {
@@ -2827,7 +2857,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public CompareResponse compare( String dn, String attributeName, String value ) throws LdapException
+    public boolean compare( String dn, String attributeName, String value ) throws LdapException
     {
         return compare( new Dn( dn ), attributeName, value );
     }
@@ -2836,7 +2866,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public CompareResponse compare( String dn, String attributeName, byte[] value ) throws LdapException
+    public boolean compare( String dn, String attributeName, byte[] value ) throws LdapException
     {
         return compare( new Dn( dn ), attributeName, value );
     }
@@ -2845,7 +2875,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public CompareResponse compare( String dn, String attributeName, Value<?> value ) throws LdapException
+    public boolean compare( String dn, String attributeName, Value<?> value ) throws LdapException
     {
         return compare( new Dn( dn ), attributeName, value );
     }
@@ -2854,35 +2884,39 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public CompareResponse compare( Dn dn, String attributeName, String value ) throws LdapException
+    public boolean compare( Dn dn, String attributeName, String value ) throws LdapException
     {
         CompareRequest compareRequest = new CompareRequestImpl();
         compareRequest.setName( dn );
         compareRequest.setAttributeId( attributeName );
         compareRequest.setAssertionValue( value );
 
-        return compare( compareRequest );
+        CompareResponse compareResponse = compare( compareRequest );
+        
+        return processResponse( compareResponse );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public CompareResponse compare( Dn dn, String attributeName, byte[] value ) throws LdapException
+    public boolean compare( Dn dn, String attributeName, byte[] value ) throws LdapException
     {
         CompareRequest compareRequest = new CompareRequestImpl();
         compareRequest.setName( dn );
         compareRequest.setAttributeId( attributeName );
         compareRequest.setAssertionValue( value );
 
-        return compare( compareRequest );
+        CompareResponse compareResponse = compare( compareRequest );
+        
+        return processResponse( compareResponse );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public CompareResponse compare( Dn dn, String attributeName, Value<?> value ) throws LdapException
+    public boolean compare( Dn dn, String attributeName, Value<?> value ) throws LdapException
     {
         CompareRequest compareRequest = new CompareRequestImpl();
         compareRequest.setName( dn );
@@ -2897,7 +2931,9 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             compareRequest.setAssertionValue( value.getBytes() );
         }
 
-        return compare( compareRequest );
+        CompareResponse compareResponse = compare( compareRequest );
+        
+        return processResponse( compareResponse );
     }
 
 
