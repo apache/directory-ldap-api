@@ -135,7 +135,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
     protected Map<SchemaObjectWrapper, Set<SchemaObjectWrapper>> using;
 
     /** A reference on the schema Manager */
-    @SuppressWarnings({ "PMD.UnusedPrivateField", "unused" })
+    @SuppressWarnings(
+        { "PMD.UnusedPrivateField", "unused" })
     // False positive 
     private SchemaManager schemaManager;
 
@@ -673,7 +674,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
     @SuppressWarnings("PMD.UnusedFormalParameter")
     private void buildDitContentRuleReferences( List<Throwable> errors )
     {
-        for ( @SuppressWarnings("unused") DITContentRule ditContentRule : ditContentRuleRegistry )
+        for ( @SuppressWarnings("unused")
+        DITContentRule ditContentRule : ditContentRuleRegistry )
         {
             // TODO
         }
@@ -687,7 +689,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
     @SuppressWarnings("PMD.UnusedFormalParameter")
     private void buildDitStructureRuleReferences( List<Throwable> errors )
     {
-        for ( @SuppressWarnings("unused") DITStructureRule ditStructureRule : ditStructureRuleRegistry )
+        for ( @SuppressWarnings("unused")
+        DITStructureRule ditStructureRule : ditStructureRuleRegistry )
         {
             // TODO
         }
@@ -792,7 +795,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
     @SuppressWarnings("PMD.UnusedFormalParameter")
     private void buildNameFormReferences( List<Throwable> errors )
     {
-        for ( @SuppressWarnings("unused") NameForm nameFormRule : nameFormRegistry )
+        for ( @SuppressWarnings("unused")
+        NameForm nameFormRule : nameFormRegistry )
         {
             // TODO
         }
@@ -1083,8 +1087,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 else
                 {
                     // Not allowed : we have a cyle
-                    Throwable error = new LdapSchemaViolationException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n
-                        .err( I18n.ERR_04297, attributeType.getOid() ) );
+                    Throwable error = new LdapSchemaViolationException( ResultCodeEnum.OTHER, I18n.err( I18n.ERR_04297,
+                        attributeType.getOid() ) );
                     errors.add( error );
                     return;
                 }
