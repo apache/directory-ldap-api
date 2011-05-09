@@ -401,7 +401,7 @@ public class AttributeTypeHolder extends SchemaElementImpl
     {
         StringBuilder sb = new StringBuilder();
 
-        String dn = "m-oid=" + oid + ", " + SchemaConstants.ATTRIBUTES_TYPE_PATH + ", cn="
+        String dn = "m-oid=" + oid + ", " + SchemaConstants.ATTRIBUTE_TYPES_PATH + ", cn="
             + Rdn.escapeValue(schemaName) + ", ou=schema";
 
         // First dump the Dn only

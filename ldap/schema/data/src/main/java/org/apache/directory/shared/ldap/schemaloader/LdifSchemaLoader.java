@@ -447,7 +447,7 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
         for ( Schema schema : schemas )
         {
             // check that the attributeTypes directory exists for the schema
-            File attributeTypesDirectory = new File( getSchemaDirectory( schema ), SchemaConstants.ATTRIBUTES_TYPE_PATH );
+            File attributeTypesDirectory = new File( getSchemaDirectory( schema ), SchemaConstants.ATTRIBUTE_TYPES_PATH );
 
             if ( !attributeTypesDirectory.exists() )
             {

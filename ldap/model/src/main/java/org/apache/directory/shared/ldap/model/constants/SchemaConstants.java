@@ -54,7 +54,7 @@ public final class SchemaConstants
     public final static String SYNTAX_CHECKER                       = "SyntaxChecker";
 
     // SchemaEntity paths
-    public final static String ATTRIBUTES_TYPE_PATH                 = "ou=attributetypes";
+    public final static String ATTRIBUTE_TYPES_PATH                 = "ou=attributetypes";
     public final static String COMPARATORS_PATH                     = "ou=comparators";
     public final static String DIT_CONTENT_RULES_PATH               = "ou=ditcontentrules";
     public final static String DIT_STRUCTURE_RULES_PATH             = "ou=ditstructurerules";
