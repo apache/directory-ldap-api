@@ -783,4 +783,9 @@ public interface LdapConnection
      */
     boolean doesFutureExistFor( int messageId );
 
+    
+    /**
+     * Shutdowns the internal OSGi container if any.
+     */
+    void shutdown();
 }
