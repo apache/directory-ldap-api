@@ -29,6 +29,9 @@ import javax.naming.LimitExceededException;
 import javax.naming.PartialResultException;
 import javax.naming.SizeLimitExceededException;
 
+import org.apache.directory.shared.ldap.model.exception.LdapAffectMultipleDsaException;
+import org.apache.directory.shared.ldap.model.exception.LdapAliasDereferencingException;
+import org.apache.directory.shared.ldap.model.exception.LdapAliasException;
 import org.apache.directory.shared.ldap.model.exception.LdapAttributeInUseException;
 import org.apache.directory.shared.ldap.model.exception.LdapAuthenticationException;
 import org.apache.directory.shared.ldap.model.exception.LdapAuthenticationNotSupportedException;
@@ -39,10 +42,14 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeType
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidSearchFilterException;
+import org.apache.directory.shared.ldap.model.exception.LdapLoopDetectedException;
 import org.apache.directory.shared.ldap.model.exception.LdapNoPermissionException;
 import org.apache.directory.shared.ldap.model.exception.LdapNoSuchAttributeException;
 import org.apache.directory.shared.ldap.model.exception.LdapNoSuchObjectException;
+import org.apache.directory.shared.ldap.model.exception.LdapOperationErrorException;
 import org.apache.directory.shared.ldap.model.exception.LdapOperationException;
+import org.apache.directory.shared.ldap.model.exception.LdapOtherException;
+import org.apache.directory.shared.ldap.model.exception.LdapProtocolErrorException;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaViolationException;
 import org.apache.directory.shared.ldap.model.exception.LdapServiceUnavailableException;
 import org.apache.directory.shared.ldap.model.exception.LdapTimeLimitExceededException;
@@ -720,6 +727,7 @@ public enum ResultCodeEnum
         this.message = message;
     }
     
+    
     /**
      * @return The value associated with the current element.
      */
@@ -727,6 +735,7 @@ public enum ResultCodeEnum
     {
         return value;
     }
+    
     
     /**
      * @return The description associated with the current element.
@@ -736,28 +745,13 @@ public enum ResultCodeEnum
         return message;
     }
     
-    public static final Set<ResultCodeEnum> EMPTY_RESULT_CODE_SET = new HashSet<ResultCodeEnum>();
+    
+    private static final Set<ResultCodeEnum> EMPTY_RESULT_CODE_SET = new HashSet<ResultCodeEnum>();
     
     
     // ------------------------------------------------------------------------
     // Error Codes Grouped Into Categories & Static Accessors
     // ------------------------------------------------------------------------
-
-    /**
-     * This array holds the set of general error codes. General error codes are
-     * typically returned only when no suitable specific error exists. Specific
-     * error codes are meant to capture situations that are specific to the
-     * requested operation. A general error code typically specifies an error
-     * condition for which there is no suitable specific error code. If the
-     * server can return an error, which is more specific than the following
-     * general errors, then the specific error should be returned instead. This
-     * array only contains the OTHER error code at the present time. The set
-     * contains:
-     * <ul>
-     * <li><a href="OTHER">OTHER</a></li>
-     * </ul>
-     */
-    public static final Set<ResultCodeEnum> GENERAL_CODES = Collections.singleton( OTHER );
 
     /**
      * Five result codes that may be returned in LDAPResult are not used to
@@ -773,7 +767,7 @@ public enum ResultCodeEnum
      * <li><a href="#SASL_BIND_IN_PROGRESS">SASL_BIND_IN_PROGRESS</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> NON_ERRONEOUS_CODES;
+    private static final Set<ResultCodeEnum> NON_ERRONEOUS_CODES;
     
     static
     {
@@ -786,199 +780,7 @@ public enum ResultCodeEnum
         set.add( ResultCodeEnum.CANCELED );
         NON_ERRONEOUS_CODES = Collections.unmodifiableSet( set );
     }
-
-    /**
-     * Contains the set of error codes associated with attribute problems. An
-     * attribute error reports a problem related to an attribute specified by
-     * the client in their request message. The set contains:
-     * <ul>
-     * <li><a href="#NO_SUCH_ATTRIBUTE">NO_SUCH_ATTRIBUTE</a></li>
-     * <li><a href="#UNDEFINED_ATTRIBUTE_TYPE">UNDEFINED_ATTRIBUTE_TYPE</a></li>
-     * <li><a href="#INAPPROPRIATE_MATCHING">INAPPROPRIATE_MATCHING</a></li>
-     * <li><a href="#CONSTRAINT_VIOLATION">CONSTRAINT_VIOLATION</a></li>
-     * <li><a href="#ATTRIBUTE_OR_VALUE_EXISTS">ATTRIBUTE_OR_VALUE_EXISTS</a></li>
-     * <li><a href="#INVALID_ATTRIBUTE_SYNTAX">INVALID_ATTRIBUTE_SYNTAX</a></li>
-     * </ul>
-     */
-    public static final Set<ResultCodeEnum> ATTRIBUTE_CODES;
     
-    static
-    {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.NO_SUCH_ATTRIBUTE );
-        set.add( ResultCodeEnum.UNDEFINED_ATTRIBUTE_TYPE );
-        set.add( ResultCodeEnum.INAPPROPRIATE_MATCHING );
-        set.add( ResultCodeEnum.CONSTRAINT_VIOLATION );
-        set.add( ResultCodeEnum.ATTRIBUTE_OR_VALUE_EXISTS );
-        set.add( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX );
-        ATTRIBUTE_CODES = Collections.unmodifiableSet( set );
-    }
-
-    /**
-     * Stores the set of error codes associated with name problems. A name error
-     * reports a problem related to the distinguished name provided as an
-     * argument to an operation [X511, Section 12.5]. For result codes of
-     * NO_SUCH_OBJECT, aliasProblem, invalidDNSyntax and
-     * aliasDereferencingProblem, the matchedDN field is set to the name of the
-     * lowest entry (object or alias) in the directory that was matched. If no
-     * aliases were dereferenced while attempting to locate the entry, this will
-     * be a truncated form of the name provided, or if aliases were dereferenced
-     * of the resulting name, as defined in section 12.5 of X.511 [X511]. The
-     * matchedDN field is to be set to a zero length string with all other
-     * result codes [RFC2251, Section 4.1.10]. The set contains:
-     * <ul>
-     * <li><a href="#NO_SUCH_OBJECT">NO_SUCH_OBJECT</a></li>
-     * <li><a href="#ALIAS_PROBLEM">ALIAS_PROBLEM</a></li>
-     * <li><a href="#INVALID_DN_SYNTAX">INVALID_DN_SYNTAX</a></li>
-     * </ul>
-     */
-    public static final Set<ResultCodeEnum> NAME_CODES;
-    
-    static
-    {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.NO_SUCH_OBJECT );
-        set.add( ResultCodeEnum.ALIAS_PROBLEM );
-        set.add( ResultCodeEnum.INVALID_DN_SYNTAX );
-        NAME_CODES = Collections.unmodifiableSet( set );
-    }
-
-    /**
-     * Stores all the result codes associated with security related problems. A
-     * security error reports a problem in carrying out an operation for
-     * security reasons [X511, Section 12.7]. The set contains:
-     * <ul>
-     * <li><a href="#INVALID_CREDENTIALS">INVALID_CREDENTIALS</a></li>
-     * <li><a href="#STRONG_AUTH_REQUIRED">STRONG_AUTH_REQUIRED</a></li>
-     * <li><a href="#AUTH_METHOD_NOT_SUPPORTED">AUTH_METHOD_NOT_SUPPORTED</a></li>
-     * <li><a href="#CONFIDENTIALITY_REQUIRED">CONFIDENTIALITY_REQUIRED</a></li>
-     * <li><a href="#INSUFFICIENT_ACCESS_RIGHTS">INSUFFICIENT_ACCESS_RIGHTS</a></li>
-     * <li><a href="#ALIAS_DEREFERENCING_PROBLEM">ALIAS_DEREFERENCING_PROBLEM</a></li>
-     * <li><a href="#INAPPROPRIATE_AUTHENTICATION">INAPPROPRIATE_AUTHENTICATION</a></li>
-     * </ul>
-     */
-    public static final Set<ResultCodeEnum> SECURITY_CODES;
-    
-    static
-    {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.INVALID_CREDENTIALS );
-        set.add( ResultCodeEnum.STRONG_AUTH_REQUIRED );
-        set.add( ResultCodeEnum.AUTH_METHOD_NOT_SUPPORTED );
-        set.add( ResultCodeEnum.CONFIDENTIALITY_REQUIRED );
-        set.add( ResultCodeEnum.INSUFFICIENT_ACCESS_RIGHTS );
-        set.add( ResultCodeEnum.ALIAS_DEREFERENCING_PROBLEM );
-        set.add( ResultCodeEnum.INAPPROPRIATE_AUTHENTICATION );
-        SECURITY_CODES = Collections.unmodifiableSet( set );
-    }
-
-    /**
-     * A service error reports a problem related to the provision of the service
-     * [X511, Section 12.8]. This set stores all error codes related to service
-     * problems. The set contains:
-     * <ul>
-     * <li><a href="#BUSY">BUSY</a></li>
-     * <li><a href="#LOOP_DETECT">LOOP_DETECT</a></li>
-     * <li><a href="#UNAVAILABLE">UNAVAILABLE</a></li>
-     * <li><a href="#PROTOCOL_ERROR">PROTOCOL_ERROR</a></li>
-     * <li><a href="#OPERATIONSERROR">OPERATIONSERROR</a></li>
-     * <li><a href="#TIME_LIMIT_EXCEEDED">TIME_LIMIT_EXCEEDED</a></li>
-     * <li><a href="#SIZE_LIMIT_EXCEEDED">SIZE_LIMIT_EXCEEDED</a></li>
-     * <li><a href="#ADMIN_LIMIT_EXCEEDED">ADMIN_LIMIT_EXCEEDED</a></li>
-     * <li><a href="#UNWILLING_TO_PERFORM">UNWILLING_TO_PERFORM</a></li>
-     * <li><a href="#UNAVAILABLE_CRITICAL_EXTENSION">UNAVAILABLE_CRITICAL_EXTENSION</a></li>
-     * </ul>
-     */
-    public static final Set<ResultCodeEnum> SERVICE_CODES;
-    
-    static
-    {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.BUSY );
-        set.add( ResultCodeEnum.LOOP_DETECT );
-        set.add( ResultCodeEnum.UNAVAILABLE );
-        set.add( ResultCodeEnum.PROTOCOL_ERROR );
-        set.add( ResultCodeEnum.OPERATIONS_ERROR );
-        set.add( ResultCodeEnum.TIME_LIMIT_EXCEEDED );
-        set.add( ResultCodeEnum.SIZE_LIMIT_EXCEEDED );
-        set.add( ResultCodeEnum.ADMIN_LIMIT_EXCEEDED );
-        set.add( ResultCodeEnum.UNWILLING_TO_PERFORM );
-        set.add( ResultCodeEnum.UNAVAILABLE_CRITICAL_EXTENSION );
-        set.add( ResultCodeEnum.CANNOT_CANCEL );
-        set.add( ResultCodeEnum.TOO_LATE );
-        set.add( ResultCodeEnum.NO_SUCH_OPERATION );
-        SERVICE_CODES = Collections.unmodifiableSet( set );
-    }
-
-    /**
-     * An update error reports problems related to attempts to add, delete, or
-     * modify information in the DIB [X511, Section 12.9]. This set contains the
-     * category of update errors.
-     * <ul>
-     * <li><a href="#NAMING_VIOLATION">NAMING_VIOLATION</a></li>
-     * <li><a href="#OBJECT_CLASS_VIOLATION">OBJECT_CLASS_VIOLATION</a></li>
-     * <li><a href="#NOT_ALLOWED_ON_NON_LEAF">NOT_ALLOWED_ON_NON_LEAF</a></li>
-     * <li><a href="#NOT_ALLOWED_ON_RDN">NOT_ALLOWED_ON_RDN</a></li>
-     * <li><a href="#ENTRY_ALREADY_EXISTS">ENTRY_ALREADY_EXISTS</a></li>
-     * <li><a href="#OBJECT_CLASS_MODS_PROHIBITED">OBJECT_CLASS_MODS_PROHIBITED</a></li>
-     * <li><a href="#AFFECTS_MULTIPLE_DSAS">AFFECTS_MULTIPLE_DSAS</a></li>
-     * </ul>
-     */
-    public static final Set<ResultCodeEnum> UPDATE_CODES;
-    
-    static
-    {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.NAMING_VIOLATION );
-        set.add( ResultCodeEnum.OBJECT_CLASS_VIOLATION );
-        set.add( ResultCodeEnum.NOT_ALLOWED_ON_NON_LEAF );
-        set.add( ResultCodeEnum.NOT_ALLOWED_ON_RDN );
-        set.add( ResultCodeEnum.ENTRY_ALREADY_EXISTS );
-        set.add( ResultCodeEnum.OBJECT_CLASS_MODS_PROHIBITED );
-        set.add( ResultCodeEnum.AFFECTS_MULTIPLE_DSAS );
-        UPDATE_CODES = Collections.unmodifiableSet( set );
-    }
-
-    // ------------------------------------------------------------------------
-    // Result Codes Categorized by Request Type
-    // ------------------------------------------------------------------------
-
-    /**
-     * A set of result code enumerations common to all operations. The set
-     * contains:
-     * <ul>
-     * <li><a href="#BUSY">BUSY</a></li>
-     * <li><a href="#OTHER">OTHER</a></li>
-     * <li><a href="#REFERRAL">REFERRAL</a></li>
-     * <li><a href="#LOOP_DETECT">LOOP_DETECT</a></li>
-     * <li><a href="#UNAVAILABLE">UNAVAILABLE</a></li>
-     * <li><a href="#PROTOCOL_ERROR">PROTOCOL_ERROR</a></li>
-     * <li><a href="#TIME_LIMIT_EXCEEDED">TIME_LIMIT_EXCEEDED</a></li>
-     * <li><a href="#ADMIN_LIMIT_EXCEEDED">ADMIN_LIMIT_EXCEEDED</a></li>
-     * <li><a href="#STRONG_AUTH_REQUIRED">STRONG_AUTH_REQUIRED</a></li>
-     * <li><a href="#UNWILLING_TO_PERFORM">UNWILLING_TO_PERFORM</a></li>
-     * <li><a href="#CONFIDENTIALITY_REQUIRED">CONFIDENTIALITY_REQUIRED</a></li>
-     * <li><a href="#UNAVAILABLE_CRITICAL_EXTENSION">UNAVAILABLE_CRITICAL_EXTENSION</a></li>
-     * </ul>
-     */
-    public static final Set<ResultCodeEnum> COMMON_CODES;
-    static
-    {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.BUSY );
-        set.add( ResultCodeEnum.OTHER );
-        set.add( ResultCodeEnum.REFERRAL );
-        set.add( ResultCodeEnum.LOOP_DETECT );
-        set.add( ResultCodeEnum.UNAVAILABLE );
-        set.add( ResultCodeEnum.PROTOCOL_ERROR );
-        set.add( ResultCodeEnum.TIME_LIMIT_EXCEEDED );
-        set.add( ResultCodeEnum.ADMIN_LIMIT_EXCEEDED );
-        set.add( ResultCodeEnum.STRONG_AUTH_REQUIRED );
-        set.add( ResultCodeEnum.UNWILLING_TO_PERFORM );
-        set.add( ResultCodeEnum.CONFIDENTIALITY_REQUIRED );
-        set.add( ResultCodeEnum.UNAVAILABLE_CRITICAL_EXTENSION );
-        COMMON_CODES = Collections.unmodifiableSet( set );
-    }
 
     /**
      * A set of result code enumerations that may result from bind operations.
@@ -1004,7 +806,8 @@ public enum ResultCodeEnum
      * <li><a href="#UNAVAILABLE_CRITICAL_EXTENSION">UNAVAILABLE_CRITICAL_EXTENSION</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> BIND_CODES;
+    private static final Set<ResultCodeEnum> BIND_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
@@ -1029,6 +832,7 @@ public enum ResultCodeEnum
         set.add( ResultCodeEnum.CANCELED );
         BIND_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of result code enumerations that may result from search operations.
@@ -1056,7 +860,8 @@ public enum ResultCodeEnum
      * <li><a href="#UNAVAILABLE_CRITICAL_EXTENSION">UNAVAILABLE_CRITICAL_EXTENSION</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> SEARCH_CODES;
+    private static final Set<ResultCodeEnum> SEARCH_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
@@ -1084,6 +889,7 @@ public enum ResultCodeEnum
         set.add( ResultCodeEnum.E_SYNC_REFRESH_REQUIRED );
         SEARCH_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of result code enumerations that may result from modify operations.
@@ -1115,7 +921,8 @@ public enum ResultCodeEnum
      * <li><a href="#UNAVAILABLE_CRITICAL_EXTENSION">UNAVAILABLE_CRITICAL_EXTENSION</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> MODIFY_CODES;
+    private static final Set<ResultCodeEnum> MODIFY_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
@@ -1146,6 +953,7 @@ public enum ResultCodeEnum
         set.add( ResultCodeEnum.CANCELED );
         MODIFY_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of result code enumerations that may result from add operations.
@@ -1176,7 +984,8 @@ public enum ResultCodeEnum
      * <li><a href="#UNAVAILABLE_CRITICAL_EXTENSION">UNAVAILABLE_CRITICAL_EXTENSION</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> ADD_CODES;
+    private static final Set<ResultCodeEnum> ADD_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
@@ -1206,6 +1015,7 @@ public enum ResultCodeEnum
         set.add( ResultCodeEnum.CANCELED );
         ADD_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of result code enumerations that may result from delete operations.
@@ -1230,7 +1040,8 @@ public enum ResultCodeEnum
      * <li><a href="#UNAVAILABLE_CRITICAL_EXTENSION">UNAVAILABLE_CRITICAL_EXTENSION</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> DELETE_CODES;
+    private static final Set<ResultCodeEnum> DELETE_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
@@ -1254,6 +1065,7 @@ public enum ResultCodeEnum
         set.add( ResultCodeEnum.CANCELED );
         DELETE_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of result code enumerations resulting from modifyDn operations. The
@@ -1283,7 +1095,8 @@ public enum ResultCodeEnum
      * <li><a href="#UNAVAILABLE_CRITICAL_EXTENSION">UNAVAILABLE_CRITICAL_EXTENSION</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> MODIFYDN_CODES;
+    private static final Set<ResultCodeEnum> MODIFYDN_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
@@ -1312,6 +1125,7 @@ public enum ResultCodeEnum
         set.add( ResultCodeEnum.CANCELED );
         MODIFYDN_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of result code enumerations that may result from compare
@@ -1339,7 +1153,8 @@ public enum ResultCodeEnum
      * <li><a href="#OTHER">OTHER</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> COMPARE_CODES;
+    private static final Set<ResultCodeEnum> COMPARE_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
@@ -1366,6 +1181,7 @@ public enum ResultCodeEnum
         set.add( ResultCodeEnum.CANCELED );
         COMPARE_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of result code enumerations that could result from extended
@@ -1413,7 +1229,8 @@ public enum ResultCodeEnum
      * <li><a href="#OTHER">OTHER</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> EXTENDED_CODES;
+    private static final Set<ResultCodeEnum> EXTENDED_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
@@ -1459,108 +1276,8 @@ public enum ResultCodeEnum
         set.add( ResultCodeEnum.CANCELED );
         EXTENDED_CODES = Collections.unmodifiableSet( set );
     }
-
-    // ------------------------------------------------------------------------
-    // All Result Codes
-    // ------------------------------------------------------------------------
-
-    /**
-     * Set of all result code enumerations. The set contains:
-     * <ul>
-     * <li><a href="#SUCCESS">SUCCESS</a></li>
-     * <li><a href="#OPERATIONSERROR">OPERATIONSERROR</a></li>
-     * <li><a href="#PROTOCOL_ERROR">PROTOCOL_ERROR</a></li>
-     * <li><a href="#TIME_LIMIT_EXCEEDED">TIME_LIMIT_EXCEEDED</a></li>
-     * <li><a href="#SIZE_LIMIT_EXCEEDED">SIZE_LIMIT_EXCEEDED</a></li>
-     * <li><a href="#COMPAREFALSE">COMPAREFALSE</a></li>
-     * <li><a href="#COMPARETRUE">COMPARETRUE</a></li>
-     * <li><a href="#AUTH_METHOD_NOT_SUPPORTED">AUTH_METHOD_NOT_SUPPORTED</a></li>
-     * <li><a href="#STRONG_AUTH_REQUIRED">STRONG_AUTH_REQUIRED</a></li>
-     * <li><a href="#PARTIAL_RESULTS">PARTIAL_RESULTS</a></li>
-     * <li><a href="#REFERRAL">REFERRAL</a></li>
-     * <li><a href="#ADMIN_LIMIT_EXCEEDED">ADMIN_LIMIT_EXCEEDED</a></li>
-     * <li><a href="#UNAVAILABLE_CRITICAL_EXTENSION">UNAVAILABLE_CRITICAL_EXTENSION</a></li>
-     * <li><a href="#CONFIDENTIALITY_REQUIRED">CONFIDENTIALITY_REQUIRED</a></li>
-     * <li><a href="#SASL_BIND_IN_PROGRESS">SASL_BIND_IN_PROGRESS</a></li>
-     * <li><a href="#NO_SUCH_ATTRIBUTE">NO_SUCH_ATTRIBUTE</a></li>
-     * <li><a href="#UNDEFINED_ATTRIBUTE_TYPE">UNDEFINED_ATTRIBUTE_TYPE</a></li>
-     * <li><a href="#INAPPROPRIATE_MATCHING">INAPPROPRIATE_MATCHING</a></li>
-     * <li><a href="#CONSTRAINT_VIOLATION">CONSTRAINT_VIOLATION</a></li>
-     * <li><a href="#ATTRIBUTE_OR_VALUE_EXISTS">ATTRIBUTE_OR_VALUE_EXISTS</a></li>
-     * <li><a href="#INVALID_ATTRIBUTE_SYNTAX">INVALID_ATTRIBUTE_SYNTAX</a></li>
-     * <li><a href="#NO_SUCH_OBJECT">NO_SUCH_OBJECT</a></li>
-     * <li><a href="#ALIAS_PROBLEM">ALIAS_PROBLEM</a></li>
-     * <li><a href="#INVALID_DN_SYNTAX">INVALID_DN_SYNTAX</a></li>
-     * <li><a href="#ALIAS_DEREFERENCING_PROBLEM">ALIAS_DEREFERENCING_PROBLEM</a></li>
-     * <li><a href="#INAPPROPRIATE_AUTHENTICATION">INAPPROPRIATE_AUTHENTICATION</a></li>
-     * <li><a href="#INVALID_CREDENTIALS">INVALID_CREDENTIALS</a></li>
-     * <li><a href="#INSUFFICIENT_ACCESS_RIGHTS">INSUFFICIENT_ACCESS_RIGHTS</a></li>
-     * <li><a href="#BUSY">BUSY</a></li>
-     * <li><a href="#UNAVAILABLE">UNAVAILABLE</a></li>
-     * <li><a href="#UNWILLING_TO_PERFORM">UNWILLING_TO_PERFORM</a></li>
-     * <li><a href="#LOOP_DETECT">LOOP_DETECT</a></li>
-     * <li><a href="#NAMING_VIOLATION">NAMING_VIOLATION</a></li>
-     * <li><a href="#OBJECT_CLASS_VIOLATION">OBJECT_CLASS_VIOLATION</a></li>
-     * <li><a href="#NOT_ALLOWED_ON_NON_LEAF">NOT_ALLOWED_ON_NON_LEAF</a></li>
-     * <li><a href="#NOT_ALLOWED_ON_RDN">NOT_ALLOWED_ON_RDN</a></li>
-     * <li><a href="#ENTRY_ALREADY_EXISTS">ENTRY_ALREADY_EXISTS</a></li>
-     * <li><a href="#OBJECT_CLASS_MODS_PROHIBITED">OBJECT_CLASS_MODS_PROHIBITED</a></li>
-     * <li><a href="#AFFECTS_MULTIPLE_DSAS">AFFECTS_MULTIPLE_DSAS</a></li>
-     * <li><a href="#OTHER">OTHER</a></li>
-     * </ul>
-     */
-    public static final Set<ResultCodeEnum> ALL_CODES;
-    static
-    {
-        Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
-        set.add( ResultCodeEnum.SUCCESS );
-        set.add( ResultCodeEnum.OPERATIONS_ERROR );
-        set.add( ResultCodeEnum.PROTOCOL_ERROR );
-        set.add( ResultCodeEnum.TIME_LIMIT_EXCEEDED );
-        set.add( ResultCodeEnum.SIZE_LIMIT_EXCEEDED );
-        set.add( ResultCodeEnum.COMPARE_FALSE );
-        set.add( ResultCodeEnum.COMPARE_TRUE );
-        set.add( ResultCodeEnum.AUTH_METHOD_NOT_SUPPORTED );
-        set.add( ResultCodeEnum.STRONG_AUTH_REQUIRED );
-        set.add( ResultCodeEnum.PARTIAL_RESULTS );
-        set.add( ResultCodeEnum.REFERRAL );
-        set.add( ResultCodeEnum.ADMIN_LIMIT_EXCEEDED );
-        set.add( ResultCodeEnum.UNAVAILABLE_CRITICAL_EXTENSION );
-        set.add( ResultCodeEnum.CONFIDENTIALITY_REQUIRED );
-        set.add( ResultCodeEnum.SASL_BIND_IN_PROGRESS );
-        set.add( ResultCodeEnum.NO_SUCH_ATTRIBUTE );
-        set.add( ResultCodeEnum.UNDEFINED_ATTRIBUTE_TYPE );
-        set.add( ResultCodeEnum.INAPPROPRIATE_MATCHING );
-        set.add( ResultCodeEnum.CONSTRAINT_VIOLATION );
-        set.add( ResultCodeEnum.ATTRIBUTE_OR_VALUE_EXISTS );
-        set.add( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX );
-        set.add( ResultCodeEnum.NO_SUCH_OBJECT );
-        set.add( ResultCodeEnum.ALIAS_PROBLEM );
-        set.add( ResultCodeEnum.INVALID_DN_SYNTAX );
-        set.add( ResultCodeEnum.ALIAS_DEREFERENCING_PROBLEM );
-        set.add( ResultCodeEnum.INAPPROPRIATE_AUTHENTICATION );
-        set.add( ResultCodeEnum.INVALID_CREDENTIALS );
-        set.add( ResultCodeEnum.INSUFFICIENT_ACCESS_RIGHTS );
-        set.add( ResultCodeEnum.BUSY );
-        set.add( ResultCodeEnum.UNAVAILABLE );
-        set.add( ResultCodeEnum.UNWILLING_TO_PERFORM );
-        set.add( ResultCodeEnum.LOOP_DETECT );
-        set.add( ResultCodeEnum.NAMING_VIOLATION );
-        set.add( ResultCodeEnum.OBJECT_CLASS_VIOLATION );
-        set.add( ResultCodeEnum.NOT_ALLOWED_ON_NON_LEAF );
-        set.add( ResultCodeEnum.NOT_ALLOWED_ON_RDN );
-        set.add( ResultCodeEnum.ENTRY_ALREADY_EXISTS );
-        set.add( ResultCodeEnum.OBJECT_CLASS_MODS_PROHIBITED );
-        set.add( ResultCodeEnum.AFFECTS_MULTIPLE_DSAS );
-        set.add( ResultCodeEnum.OTHER );
-        set.add( ResultCodeEnum.CANNOT_CANCEL );
-        set.add( ResultCodeEnum.TOO_LATE );
-        set.add( ResultCodeEnum.NO_SUCH_OPERATION );
-        set.add( ResultCodeEnum.CANCELED );
-        set.add( ResultCodeEnum.E_SYNC_REFRESH_REQUIRED );
-        ALL_CODES = Collections.unmodifiableSet( set );
-    }
-
+    
+    
     /**
      * @return The integer associated with the result code
      */
@@ -1568,6 +1285,7 @@ public enum ResultCodeEnum
     {
         return value;
     }
+    
     
     /**
      * @return The integer associated with the result code
@@ -1628,230 +1346,6 @@ public enum ResultCodeEnum
     
 
 
-    /**
-     * Gets the set of general error codes.
-     * 
-     * @return array of result codes enumerations
-     * @see #GENERAL_CODES
-     */
-    public static Set<ResultCodeEnum> getGeneralCodes()
-    {
-        // Must clone to prevent array content alterations
-        return GENERAL_CODES;
-    }
-
-
-    /**
-     * Gets the set of result code enumerations that do not represent
-     * operational failures.
-     * 
-     * @return array of result codes enumerations
-     * @see #NON_ERRONEOUS_CODES
-     */
-    public static Set<ResultCodeEnum> getNonErroneousCodes()
-    {
-        // Must clone to prevent array content alterations
-        return NON_ERRONEOUS_CODES;
-    }
-
-
-    /**
-     * Gets an array of result code enumerations that report a problem related
-     * to an attribute specified by the client in their request message..
-     * 
-     * @return array of result codes enumerations
-     * @see #ATTRIBUTE_CODES
-     */
-    public static Set<ResultCodeEnum> getAttributeCodes()
-    {
-        // Must clone to prevent array content alterations
-        return ATTRIBUTE_CODES;
-    }
-
-
-    /**
-     * Gets an array of result code enumerations that report a problem related
-     * to a distinguished name provided as an argument to a request message.
-     * 
-     * @return array of result codes enumerations
-     * @see #NAME_CODES
-     */
-    public static Set<ResultCodeEnum> getNameCodes()
-    {
-        // Must clone to prevent array content alterations
-        return NAME_CODES;
-    }
-
-
-    /**
-     * Gets an array of result code enumerations that report a problem related
-     * to a problem in carrying out an operation for security reasons.
-     * 
-     * @return array of result codes enumerations
-     * @see #SECURITY_CODES
-     */
-    public static Set<ResultCodeEnum> getSecurityCodes()
-    {
-        // Must clone to prevent array content alterations
-        return SECURITY_CODES;
-    }
-
-
-    /**
-     * Gets an array of result code enumerations that report a problem related
-     * to the provision of the service.
-     * 
-     * @return array of result codes enumerations
-     * @see #SERVICE_CODES
-     */
-    public static Set<ResultCodeEnum> getServiceCodes()
-    {
-        // Must clone to prevent array content alterations
-        return SERVICE_CODES;
-    }
-
-
-    /**
-     * Gets an array of result code enumerations that reports problems related
-     * to attempts to add, delete, or modify information in the DIB.
-     * 
-     * @return array of result codes enumerations
-     * @see #UPDATE_CODES
-     */
-    public static Set<ResultCodeEnum> getUpdateCodes()
-    {
-        // Must clone to prevent array content alterations
-        return UPDATE_CODES;
-    }
-
-
-    /**
-     * Gets an array of result code enumerations common to all operations.
-     * 
-     * @return an array of common operation ResultCodeEnum's
-     * @see #COMMON_CODES
-     */
-    public static Set<ResultCodeEnum> getCommonCodes()
-    {
-        return COMMON_CODES;
-    }
-
-
-    /**
-     * Gets an array of result code enumerations resulting from bind operations.
-     * 
-     * @return an array of bind operation ResultCodeEnum's
-     * @see #BIND_CODES
-     */
-    public static Set<ResultCodeEnum> getBindCodes()
-    {
-        return BIND_CODES;
-    }
-
-
-    /**
-     * Gets an array of result code enumerations resulting from search
-     * operations.
-     * 
-     * @return an array of search operation ResultCodeEnum's
-     * @see #SEARCH_CODES
-     */
-    public static Set<ResultCodeEnum> getSearchCodes()
-    {
-        return SEARCH_CODES;
-    }
-
-
-    /**
-     * Gets an array of result code enumerations resulting from modify
-     * operations.
-     * 
-     * @return an array of modify operation ResultCodeEnum's
-     * @see #MODIFY_CODES
-     */
-    public static Set<ResultCodeEnum> getModifyCodes()
-    {
-        return MODIFY_CODES;
-    }
-
-
-    /**
-     * Gets an array of result code enumerations resulting from add operations.
-     * 
-     * @return an array of add operation ResultCodeEnum's
-     * @see #ADD_CODES
-     */
-    public static Set<ResultCodeEnum> getAddCodes()
-    {
-        return ADD_CODES;
-    }
-
-
-    /**
-     * Gets an array of result code enumerations resulting from delete
-     * operations.
-     * 
-     * @return an array of delete operation ResultCodeEnum's
-     * @see #DELETE_CODES
-     */
-    public static Set<ResultCodeEnum> getDeleteCodes()
-    {
-        return DELETE_CODES;
-    }
-
-
-    /**
-     * Gets an array of result code enumerations resulting from modifyDn
-     * operations.
-     * 
-     * @return an array of modifyDn operation ResultCodeEnum's
-     * @see #MODIFYDN_CODES
-     */
-    public static Set<ResultCodeEnum> getModifyDnCodes()
-    {
-        return MODIFYDN_CODES;
-    }
-
-
-    /**
-     * Gets an array of result code enumerations resulting from compare
-     * operations.
-     * 
-     * @return an array of compare operation ResultCodeEnum's
-     * @see #COMPARE_CODES
-     */
-    public static Set<ResultCodeEnum> getCompareCodes()
-    {
-        return COMPARE_CODES;
-    }
-
-
-    /**
-     * Gets an array of result code enumerations resulting from extended
-     * operations.
-     * 
-     * @return an array of extended operation ResultCodeEnum's
-     * @see #EXTENDED_CODES
-     */
-    public static Set<ResultCodeEnum> getExtendedCodes()
-    {
-        return EXTENDED_CODES;
-    }
-
-
-    /**
-     * Gets all of the result code enumerations defined.
-     * 
-     * @return an array of all defined result codes
-     * @see #ALL_CODES
-     */
-    public static Set<ResultCodeEnum> getAllCodes()
-    {
-        // Must clone to prevent array content tampering.
-        return ALL_CODES;
-    }
-
-
     // ------------------------------------------------------------------------
     // Getting Result Code Enumeration Object Using Integer Values
     // ------------------------------------------------------------------------
@@ -1870,7 +1364,8 @@ public enum ResultCodeEnum
      * <li><a href="#OTHER">other(80)</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> NAMINGEXCEPTION_CODES;
+    private static final Set<ResultCodeEnum> NAMING_EXCEPTION_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
@@ -1880,8 +1375,9 @@ public enum ResultCodeEnum
         set.add( ResultCodeEnum.LOOP_DETECT );
         set.add( ResultCodeEnum.AFFECTS_MULTIPLE_DSAS );
         set.add( ResultCodeEnum.OTHER );
-        NAMINGEXCEPTION_CODES = Collections.unmodifiableSet( set );
+        NAMING_EXCEPTION_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of ResultCodes containing those that may correspond to a
@@ -1894,7 +1390,8 @@ public enum ResultCodeEnum
      * href="#INAPPROPRIATE_AUTHENTICATION">inappropriateAuthentication(48)</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> AUTHENTICATIONNOTSUPPOERTEDEXCEPTION_CODES;
+    private static final Set<ResultCodeEnum> AUTHENTICATION_NOT_SUPPORTED_EXCEPTION_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
@@ -1902,8 +1399,9 @@ public enum ResultCodeEnum
         set.add( ResultCodeEnum.STRONG_AUTH_REQUIRED );
         set.add( ResultCodeEnum.CONFIDENTIALITY_REQUIRED );
         set.add( ResultCodeEnum.INAPPROPRIATE_AUTHENTICATION );
-        AUTHENTICATIONNOTSUPPOERTEDEXCEPTION_CODES = Collections.unmodifiableSet( set );
+        AUTHENTICATION_NOT_SUPPORTED_EXCEPTION_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of ResultCodes containing those that may correspond to a
@@ -1913,14 +1411,16 @@ public enum ResultCodeEnum
      * <li><a href="#UNAVAILABLE">unavailable(52)</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> SERVICEUNAVAILABLE_CODES;
+    private static final Set<ResultCodeEnum> SERVICE_UNAVAILABLE_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
         set.add( ResultCodeEnum.BUSY );
         set.add( ResultCodeEnum.UNAVAILABLE );
-        SERVICEUNAVAILABLE_CODES = Collections.unmodifiableSet( set );
+        SERVICE_UNAVAILABLE_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of ResultCodes containing those that may correspond to a
@@ -1930,14 +1430,16 @@ public enum ResultCodeEnum
      * <li><a href="#INVALID_ATTRIBUTE_SYNTAX">invalidAttributeSyntax(21)</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> INVALIDATTRIBUTEVALUEEXCEPTION_CODES;
+    private static final Set<ResultCodeEnum> INVALID_ATTRIBUTE_VALUE_EXCEPTION_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
         set.add( ResultCodeEnum.CONSTRAINT_VIOLATION );
         set.add( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX );
-        INVALIDATTRIBUTEVALUEEXCEPTION_CODES = Collections.unmodifiableSet( set );
+        INVALID_ATTRIBUTE_VALUE_EXCEPTION_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of ResultCodes containing those that may correspond to a
@@ -1947,14 +1449,16 @@ public enum ResultCodeEnum
      * <li><a href="#REFERRAL">referral(10)</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> PARTIAL_RESULTSEXCEPTION_CODES;
+    private static final Set<ResultCodeEnum> PARTIAL_RESULTS_EXCEPTION_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
         set.add( ResultCodeEnum.PARTIAL_RESULTS );
         set.add( ResultCodeEnum.REFERRAL );
-        PARTIAL_RESULTSEXCEPTION_CODES = Collections.unmodifiableSet( set );
+        PARTIAL_RESULTS_EXCEPTION_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of ResultCodes containing those that may correspond to a
@@ -1964,14 +1468,16 @@ public enum ResultCodeEnum
      * <li><a href="#ADMIN_LIMIT_EXCEEDED">adminLimitExceeded(11)</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> LIMITEXCEEDEDEXCEPTION_CODES;
+    private static final Set<ResultCodeEnum> LIMIT_EXCEEDED_EXCEPTION_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
         set.add( ResultCodeEnum.REFERRAL );
         set.add( ResultCodeEnum.ADMIN_LIMIT_EXCEEDED );
-        LIMITEXCEEDEDEXCEPTION_CODES = Collections.unmodifiableSet( set );
+        LIMIT_EXCEEDED_EXCEPTION_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of ResultCodes containing those that may correspond to a
@@ -1982,14 +1488,16 @@ public enum ResultCodeEnum
      * <li><a href="#UNWILLING_TO_PERFORM">unwillingToPerform(53)</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> OPERATIONNOTSUPPOERTEXCEPTION_CODES;
+    private static final Set<ResultCodeEnum> OPERATION_NOT_SUPPORTED_EXCEPTION_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
         set.add( ResultCodeEnum.UNAVAILABLE_CRITICAL_EXTENSION );
         set.add( ResultCodeEnum.UNWILLING_TO_PERFORM );
-        OPERATIONNOTSUPPOERTEXCEPTION_CODES = Collections.unmodifiableSet( set );
+        OPERATION_NOT_SUPPORTED_EXCEPTION_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of ResultCodes containing those that may correspond to a
@@ -1999,14 +1507,16 @@ public enum ResultCodeEnum
      * <li><a href="#NAMING_VIOLATION">namingViolation(64)</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> INVALIDNAMEEXCEPTION_CODES;
+    private static final Set<ResultCodeEnum> INVALID_NAME_EXCEPTION_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
         set.add( ResultCodeEnum.INVALID_DN_SYNTAX );
         set.add( ResultCodeEnum.NAMING_VIOLATION );
-        INVALIDNAMEEXCEPTION_CODES = Collections.unmodifiableSet( set );
+        INVALID_NAME_EXCEPTION_CODES = Collections.unmodifiableSet( set );
     }
+    
 
     /**
      * A set of ResultCodes containing those that may correspond to a
@@ -2017,14 +1527,15 @@ public enum ResultCodeEnum
      * <li><a href="#OBJECT_CLASS_MODS_PROHIBITED">objectClassModsProhibited(69)</a></li>
      * </ul>
      */
-    public static final Set<ResultCodeEnum> SCHEMAVIOLATIONEXCEPTION_CODES;
+    private static final Set<ResultCodeEnum> SCHEMA_VIOLATION_EXCEPTION_CODES;
+    
     static
     {
         Set<ResultCodeEnum> set = new HashSet<ResultCodeEnum>();
         set.add( ResultCodeEnum.OBJECT_CLASS_VIOLATION );
         set.add( ResultCodeEnum.NOT_ALLOWED_ON_RDN );
         set.add( ResultCodeEnum.OBJECT_CLASS_MODS_PROHIBITED );
-        SCHEMAVIOLATIONEXCEPTION_CODES = Collections.unmodifiableSet( set );
+        SCHEMA_VIOLATION_EXCEPTION_CODES = Collections.unmodifiableSet( set );
     }
 
 
@@ -2282,7 +1793,7 @@ public enum ResultCodeEnum
      *            the Throwable to find the result code mappings for
      * @return the set of mapped result codes
      */
-    public static Set<ResultCodeEnum> getResultCodes( Throwable t )
+    private static Set<ResultCodeEnum> getResultCodes( Throwable t )
     {
         ResultCodeEnum rc;
         
@@ -2293,49 +1804,49 @@ public enum ResultCodeEnum
 
         if ( t instanceof LdapSchemaViolationException )
         {
-            return SCHEMAVIOLATIONEXCEPTION_CODES;
+            return SCHEMA_VIOLATION_EXCEPTION_CODES;
         }
 
         if ( t instanceof LdapInvalidDnException )
         {
-            return INVALIDNAMEEXCEPTION_CODES;
+            return INVALID_NAME_EXCEPTION_CODES;
         }
 
         if ( t instanceof LdapUnwillingToPerformException )
         {
-            return OPERATIONNOTSUPPOERTEXCEPTION_CODES;
+            return OPERATION_NOT_SUPPORTED_EXCEPTION_CODES;
         }
 
         if ( t instanceof LimitExceededException )
         {
-            return LIMITEXCEEDEDEXCEPTION_CODES;
+            return LIMIT_EXCEEDED_EXCEPTION_CODES;
         }
 
         if ( t instanceof PartialResultException )
         {
-            return PARTIAL_RESULTSEXCEPTION_CODES;
+            return PARTIAL_RESULTS_EXCEPTION_CODES;
         }
 
         if ( t instanceof LdapInvalidAttributeValueException )
         {
-            return INVALIDATTRIBUTEVALUEEXCEPTION_CODES;
+            return INVALID_ATTRIBUTE_VALUE_EXCEPTION_CODES;
         }
 
         if ( t instanceof LdapServiceUnavailableException)
         {
-            return SERVICEUNAVAILABLE_CODES;
+            return SERVICE_UNAVAILABLE_CODES;
         }
 
         if ( t instanceof LdapAuthenticationNotSupportedException )
         {
-            return AUTHENTICATIONNOTSUPPOERTEDEXCEPTION_CODES;
+            return AUTHENTICATION_NOT_SUPPORTED_EXCEPTION_CODES;
         }
 
         // keep this last because others are subtypes and thier evaluation
         // may be shorted otherwise by this comparison here
         if ( t instanceof LdapException)
         {
-            return NAMINGEXCEPTION_CODES;
+            return NAMING_EXCEPTION_CODES;
         }
 
         return EMPTY_RESULT_CODE_SET;
@@ -2440,5 +1951,218 @@ public enum ResultCodeEnum
         }
 
         return null;
+    }
+    
+    
+    /**
+     * Process the response, throwing the associated exception if needed. If the result
+     * was SUCCESS, does not return anything but true. 
+     * 
+     * @param response The response to process
+     * @return For the COMPARE_TRUE or COMPARE_FALSE results, return true or false
+     * @throws LdapException The associated exception
+     */
+    public static boolean processResponse( ResultResponse response ) throws LdapException
+    {
+        LdapResult ldapResult = response.getLdapResult();
+        
+        switch ( ldapResult.getResultCode() )
+        {
+            // Not erroneous code
+            case SUCCESS :
+            case REFERRAL :
+            case SASL_BIND_IN_PROGRESS :
+            case CANCELED :
+            case COMPARE_TRUE :
+                return true;
+                
+            case COMPARE_FALSE :
+                return false;
+                
+            case INVALID_CREDENTIALS :
+                LdapAuthenticationException authenticationException = new LdapAuthenticationException( ldapResult.getDiagnosticMessage() );
+                authenticationException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw authenticationException;
+                
+            case UNWILLING_TO_PERFORM :
+            case UNAVAILABLE_CRITICAL_EXTENSION :
+                LdapUnwillingToPerformException unwillingToPerformException = 
+                    new LdapUnwillingToPerformException( ldapResult.getResultCode(), ldapResult.getDiagnosticMessage() );
+                unwillingToPerformException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw unwillingToPerformException;
+                
+            case INSUFFICIENT_ACCESS_RIGHTS :
+                LdapNoPermissionException ldapNoPermissionException = new LdapNoPermissionException( ldapResult.getDiagnosticMessage() );
+                ldapNoPermissionException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapNoPermissionException;
+                
+            case NOT_ALLOWED_ON_NON_LEAF :
+                LdapContextNotEmptyException ldapContextNotEmptyException = new LdapContextNotEmptyException( ldapResult.getDiagnosticMessage() );
+                ldapContextNotEmptyException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapContextNotEmptyException;
+                
+            case NO_SUCH_OBJECT :
+                LdapNoSuchObjectException ldapNoSuchObjectException = new LdapNoSuchObjectException( ldapResult.getDiagnosticMessage() );
+                ldapNoSuchObjectException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapNoSuchObjectException;
+                
+            case NO_SUCH_ATTRIBUTE :
+                LdapNoSuchAttributeException ldapNoSuchAttributeException = new LdapNoSuchAttributeException( ldapResult.getDiagnosticMessage() );
+                ldapNoSuchAttributeException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapNoSuchAttributeException;
+                
+            case ATTRIBUTE_OR_VALUE_EXISTS :
+                LdapAttributeInUseException ldapAttributeInUseException = new LdapAttributeInUseException( ldapResult.getDiagnosticMessage() );
+                ldapAttributeInUseException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapAttributeInUseException;
+                
+            case ENTRY_ALREADY_EXISTS :
+                LdapEntryAlreadyExistsException ldapEntryAlreadyExistsException = new LdapEntryAlreadyExistsException( ldapResult.getDiagnosticMessage() );
+                ldapEntryAlreadyExistsException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapEntryAlreadyExistsException;
+                
+            case OBJECT_CLASS_VIOLATION :
+            case NOT_ALLOWED_ON_RDN :
+            case OBJECT_CLASS_MODS_PROHIBITED :
+                LdapSchemaViolationException ldapSchemaViolationException = 
+                    new LdapSchemaViolationException( ldapResult.getResultCode() , ldapResult.getDiagnosticMessage() );
+                ldapSchemaViolationException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapSchemaViolationException;
+                
+            case ALIAS_PROBLEM :
+                LdapAliasException ldapAliasException = new LdapAliasException( ldapResult.getDiagnosticMessage() );
+                ldapAliasException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapAliasException;
+                
+            case AFFECTS_MULTIPLE_DSAS :
+                LdapAffectMultipleDsaException ldapAffectMultipleDsaException = new LdapAffectMultipleDsaException( ldapResult.getDiagnosticMessage() );
+                ldapAffectMultipleDsaException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapAffectMultipleDsaException;
+                
+            case ALIAS_DEREFERENCING_PROBLEM :
+                LdapAliasDereferencingException ldapAliasDereferencingException = new LdapAliasDereferencingException( ldapResult.getDiagnosticMessage() );
+                ldapAliasDereferencingException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapAliasDereferencingException;
+                
+            case AUTH_METHOD_NOT_SUPPORTED :
+            case INAPPROPRIATE_AUTHENTICATION :
+            case CONFIDENTIALITY_REQUIRED :
+                LdapAuthenticationNotSupportedException ldapAuthenticationNotSupportedException = 
+                    new LdapAuthenticationNotSupportedException( ldapResult.getResultCode(), ldapResult.getDiagnosticMessage() );
+                ldapAuthenticationNotSupportedException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapAuthenticationNotSupportedException;
+
+            case BUSY :
+            case UNAVAILABLE :
+                LdapServiceUnavailableException ldapServiceUnavailableException = 
+                    new LdapServiceUnavailableException( ldapResult.getResultCode(), ldapResult.getDiagnosticMessage() );
+                ldapServiceUnavailableException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapServiceUnavailableException;
+
+            case CONSTRAINT_VIOLATION :
+            case INVALID_ATTRIBUTE_SYNTAX :
+                LdapInvalidAttributeValueException ldapInvalidAttributeValueException = 
+                    new LdapInvalidAttributeValueException( ldapResult.getResultCode(), ldapResult.getDiagnosticMessage() );
+                ldapInvalidAttributeValueException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapInvalidAttributeValueException;
+
+            case INAPPROPRIATE_MATCHING :
+                LdapInvalidSearchFilterException ldapInvalidSearchFilterException = new LdapInvalidSearchFilterException( ldapResult.getDiagnosticMessage() );
+                ldapInvalidSearchFilterException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapInvalidSearchFilterException;
+
+            case INVALID_DN_SYNTAX :
+            case NAMING_VIOLATION :
+                LdapInvalidDnException ldapInvalidDnException = 
+                    new LdapInvalidDnException( ldapResult.getResultCode(), ldapResult.getDiagnosticMessage() );
+                ldapInvalidDnException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapInvalidDnException;
+
+            case LOOP_DETECT :
+                LdapLoopDetectedException ldapLoopDetectedException = new LdapLoopDetectedException( ldapResult.getDiagnosticMessage() );
+                ldapLoopDetectedException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapLoopDetectedException;
+
+            case OPERATIONS_ERROR :
+                LdapOperationErrorException ldapOperationErrorException = new LdapOperationErrorException( ldapResult.getDiagnosticMessage() );
+                ldapOperationErrorException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapOperationErrorException;
+
+            case PROTOCOL_ERROR :
+                LdapProtocolErrorException ldapProtocolErrorException = new LdapProtocolErrorException( ldapResult.getDiagnosticMessage() );
+                ldapProtocolErrorException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapProtocolErrorException;
+
+            case TIME_LIMIT_EXCEEDED :
+                LdapTimeLimitExceededException ldapTimeLimitExceededException = new LdapTimeLimitExceededException( ldapResult.getDiagnosticMessage() );
+                ldapTimeLimitExceededException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapTimeLimitExceededException;
+
+            case UNDEFINED_ATTRIBUTE_TYPE :
+                LdapInvalidAttributeTypeException ldapInvalidAttributeTypeException = new LdapInvalidAttributeTypeException( ldapResult.getDiagnosticMessage() );
+                ldapInvalidAttributeTypeException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapInvalidAttributeTypeException;
+
+            case OTHER :
+                LdapOtherException ldapOtherException = new LdapOtherException( ldapResult.getDiagnosticMessage() );
+                ldapOtherException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapOtherException;
+
+            case TOO_LATE :
+                // TODO
+                
+            case UNKNOWN :
+                // TODO
+                
+            case ADMIN_LIMIT_EXCEEDED :
+                // TODO
+                
+            case CANNOT_CANCEL :
+                // TODO
+                
+            case E_SYNC_REFRESH_REQUIRED :
+                // TODO
+                
+            case PARTIAL_RESULTS :
+                // TODO
+                
+            case STRONG_AUTH_REQUIRED :
+                // TODO
+                
+            case SIZE_LIMIT_EXCEEDED :
+                // TODO
+
+            case NO_SUCH_OPERATION :
+                // TODO
+                
+            default :
+                LdapOperationException exception = new LdapOperationException( ldapResult.getResultCode(), ldapResult.getDiagnosticMessage() );
+                exception.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw exception;
+        }
     }
 }

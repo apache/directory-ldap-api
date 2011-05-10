@@ -20,7 +20,7 @@
 package org.apache.directory.ldap.client.api;
 
 
-import static org.apache.directory.shared.ldap.model.message.AbstractResponse.processResponse;
+import static org.apache.directory.shared.ldap.model.message.ResultCodeEnum.processResponse;
 
 import java.io.File;
 import java.io.FileWriter;
