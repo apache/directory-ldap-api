@@ -24,32 +24,36 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 
 
 /**
- * A subclass of {@link LdapOperationException} which associates the
- * {@link org.apache.directory.shared.ldap.model.message.ResultCodeEnum#INVALID_CREDENTIALS} value with the type.
+ * A LdapCannotCancelException which associates a resultCode, namely the
+ * {@link ResultCodeEnum#CANNOT_CANCEL} resultCode with the exception.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapAuthenticationException extends LdapOperationException
+public class LdapCannotCancelException extends LdapOperationException
 {
     /** The serial version UUID */
     static final long serialVersionUID = 1L;
 
+
     /**
-     * Creates a new instance of LdapAuthenticationException.
+     * 
+     * Creates a new instance of LdapCannotCancelException.
      *
-     * @param message The exception message
      */
-    public LdapAuthenticationException( String message )
+    public LdapCannotCancelException()
     {
-        super( ResultCodeEnum.INVALID_CREDENTIALS, message );
+        super( ResultCodeEnum.CANNOT_CANCEL, null );
     }
 
 
     /**
-     * Creates a new instance of LdapAuthenticationException.
+     * 
+     * Creates a new instance of LdapCannotCancelException.
+     *
+     * @param explanation The associated error message
      */
-    public LdapAuthenticationException()
+    public LdapCannotCancelException( String explanation )
     {
-        super( ResultCodeEnum.INVALID_CREDENTIALS, null );
+        super( ResultCodeEnum.CANNOT_CANCEL, explanation );
     }
 }

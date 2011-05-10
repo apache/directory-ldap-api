@@ -36,7 +36,7 @@ public class LdapInvalidDnException extends LdapOperationException
 
     
     /**
-     * to be used by some special exceptions like TooComplexException
+     * to be used by some special exceptions like LdapInvalidDnException
      */
     public LdapInvalidDnException( String message )
     {

@@ -24,8 +24,8 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 
 
 /**
- * A TiimeLimitExceededException which associates a resultCode namely the
- * {@link ResultCodeEnum#SIZELIMITEXCEEDED} resultCode with the exception.
+ * A LdapTimeLimitExceededException which associates a resultCode namely the
+ * {@link ResultCodeEnum#TIME_LIMIT_EXCEEDED} resultCode with the exception.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

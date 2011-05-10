@@ -24,32 +24,36 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 
 
 /**
- * A subclass of {@link LdapOperationException} which associates the
- * {@link org.apache.directory.shared.ldap.model.message.ResultCodeEnum#INVALID_CREDENTIALS} value with the type.
+ * A LdapTooLateException which associates a resultCode namely the
+ * {@link ResultCodeEnum#TOO_LATE} resultCode with the exception.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapAuthenticationException extends LdapOperationException
+public class LdapTooLateException extends LdapOperationException
 {
     /** The serial version UUID */
     static final long serialVersionUID = 1L;
 
+
     /**
-     * Creates a new instance of LdapAuthenticationException.
+     * 
+     * Creates a new instance of LdapTooLateException.
      *
-     * @param message The exception message
      */
-    public LdapAuthenticationException( String message )
+    public LdapTooLateException()
     {
-        super( ResultCodeEnum.INVALID_CREDENTIALS, message );
+        super( ResultCodeEnum.TOO_LATE, null );
     }
 
 
     /**
-     * Creates a new instance of LdapAuthenticationException.
+     * 
+     * Creates a new instance of LdapTooLateException.
+     *
+     * @param explanation The associated error message
      */
-    public LdapAuthenticationException()
+    public LdapTooLateException( String explanation )
     {
-        super( ResultCodeEnum.INVALID_CREDENTIALS, null );
+        super( ResultCodeEnum.TOO_LATE, explanation );
     }
 }

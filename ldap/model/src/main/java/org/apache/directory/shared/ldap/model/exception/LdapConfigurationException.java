@@ -39,7 +39,7 @@ public class LdapConfigurationException extends LdapOperationException
 
 
     /**
-     * Creates a new instance of LdapAuthenticationException.
+     * Creates a new instance of LdapConfigurationException.
      *
      * @param message The exception message
      */
@@ -50,7 +50,7 @@ public class LdapConfigurationException extends LdapOperationException
 
 
     /**
-     * Creates a new instance of LdapAuthenticationException.
+     * Creates a new instance of LdapConfigurationException.
      */
     public LdapConfigurationException()
     {
@@ -59,7 +59,7 @@ public class LdapConfigurationException extends LdapOperationException
 
 
     /**
-     * Creates a new instance of LdapAuthenticationException.
+     * Creates a new instance of LdapConfigurationException.
      *
      * @param message the exception message
      * @param cause the cause

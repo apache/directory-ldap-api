@@ -24,32 +24,36 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 
 
 /**
- * A subclass of {@link LdapOperationException} which associates the
- * {@link org.apache.directory.shared.ldap.model.message.ResultCodeEnum#INVALID_CREDENTIALS} value with the type.
+ * A LdapUnknownException which associates a resultCode, namely the
+ * {@link ResultCodeEnum#UNKNOWN} resultCode with the exception.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapAuthenticationException extends LdapOperationException
+public class LdapUnknownException extends LdapOperationException
 {
     /** The serial version UUID */
     static final long serialVersionUID = 1L;
 
+
     /**
-     * Creates a new instance of LdapAuthenticationException.
+     * 
+     * Creates a new instance of LdapUnknownException.
      *
-     * @param message The exception message
      */
-    public LdapAuthenticationException( String message )
+    public LdapUnknownException()
     {
-        super( ResultCodeEnum.INVALID_CREDENTIALS, message );
+        super( ResultCodeEnum.UNKNOWN, null );
     }
 
 
     /**
-     * Creates a new instance of LdapAuthenticationException.
+     * 
+     * Creates a new instance of LdapUnknownException.
+     *
+     * @param explanation The associated error message
      */
-    public LdapAuthenticationException()
+    public LdapUnknownException( String explanation )
     {
-        super( ResultCodeEnum.INVALID_CREDENTIALS, null );
+        super( ResultCodeEnum.UNKNOWN, explanation );
     }
 }

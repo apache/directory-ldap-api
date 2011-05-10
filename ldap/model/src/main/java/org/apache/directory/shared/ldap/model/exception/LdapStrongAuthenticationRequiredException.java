@@ -25,31 +25,31 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 
 /**
  * A subclass of {@link LdapOperationException} which associates the
- * {@link org.apache.directory.shared.ldap.model.message.ResultCodeEnum#INVALID_CREDENTIALS} value with the type.
+ * {@link org.apache.directory.shared.ldap.model.message.ResultCodeEnum#STRONG_AUTH_REQUIRED} value with the type.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapAuthenticationException extends LdapOperationException
+public class LdapStrongAuthenticationRequiredException extends LdapOperationException
 {
     /** The serial version UUID */
     static final long serialVersionUID = 1L;
 
     /**
-     * Creates a new instance of LdapAuthenticationException.
+     * Creates a new instance of LdapStrongAuthenticationRequiredException.
      *
      * @param message The exception message
      */
-    public LdapAuthenticationException( String message )
+    public LdapStrongAuthenticationRequiredException( String message )
     {
-        super( ResultCodeEnum.INVALID_CREDENTIALS, message );
+        super( ResultCodeEnum.STRONG_AUTH_REQUIRED, message );
     }
 
 
     /**
-     * Creates a new instance of LdapAuthenticationException.
+     * Creates a new instance of LdapStrongAuthenticationRequiredException.
      */
-    public LdapAuthenticationException()
+    public LdapStrongAuthenticationRequiredException()
     {
-        super( ResultCodeEnum.INVALID_CREDENTIALS, null );
+        super( ResultCodeEnum.STRONG_AUTH_REQUIRED, null );
     }
 }

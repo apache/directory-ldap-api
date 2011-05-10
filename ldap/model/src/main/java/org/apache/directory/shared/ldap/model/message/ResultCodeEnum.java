@@ -29,12 +29,14 @@ import javax.naming.LimitExceededException;
 import javax.naming.PartialResultException;
 import javax.naming.SizeLimitExceededException;
 
+import org.apache.directory.shared.ldap.model.exception.LdapAdminLimitExceededException;
 import org.apache.directory.shared.ldap.model.exception.LdapAffectMultipleDsaException;
 import org.apache.directory.shared.ldap.model.exception.LdapAliasDereferencingException;
 import org.apache.directory.shared.ldap.model.exception.LdapAliasException;
 import org.apache.directory.shared.ldap.model.exception.LdapAttributeInUseException;
 import org.apache.directory.shared.ldap.model.exception.LdapAuthenticationException;
 import org.apache.directory.shared.ldap.model.exception.LdapAuthenticationNotSupportedException;
+import org.apache.directory.shared.ldap.model.exception.LdapCannotCancelException;
 import org.apache.directory.shared.ldap.model.exception.LdapContextNotEmptyException;
 import org.apache.directory.shared.ldap.model.exception.LdapEntryAlreadyExistsException;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -46,13 +48,18 @@ import org.apache.directory.shared.ldap.model.exception.LdapLoopDetectedExceptio
 import org.apache.directory.shared.ldap.model.exception.LdapNoPermissionException;
 import org.apache.directory.shared.ldap.model.exception.LdapNoSuchAttributeException;
 import org.apache.directory.shared.ldap.model.exception.LdapNoSuchObjectException;
+import org.apache.directory.shared.ldap.model.exception.LdapNoSuchOperationException;
 import org.apache.directory.shared.ldap.model.exception.LdapOperationErrorException;
 import org.apache.directory.shared.ldap.model.exception.LdapOperationException;
 import org.apache.directory.shared.ldap.model.exception.LdapOtherException;
 import org.apache.directory.shared.ldap.model.exception.LdapProtocolErrorException;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaViolationException;
 import org.apache.directory.shared.ldap.model.exception.LdapServiceUnavailableException;
+import org.apache.directory.shared.ldap.model.exception.LdapSizeLimitExceededException;
+import org.apache.directory.shared.ldap.model.exception.LdapStrongAuthenticationRequiredException;
 import org.apache.directory.shared.ldap.model.exception.LdapTimeLimitExceededException;
+import org.apache.directory.shared.ldap.model.exception.LdapTooLateException;
+import org.apache.directory.shared.ldap.model.exception.LdapUnknownException;
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 
 
@@ -1970,6 +1977,7 @@ public enum ResultCodeEnum
         {
             // Not erroneous code
             case SUCCESS :
+            case PARTIAL_RESULTS :
             case REFERRAL :
             case SASL_BIND_IN_PROGRESS :
             case CANCELED :
@@ -2131,32 +2139,53 @@ public enum ResultCodeEnum
                 
                 throw ldapOtherException;
 
-            case TOO_LATE :
-                // TODO
-                
-            case UNKNOWN :
-                // TODO
-                
-            case ADMIN_LIMIT_EXCEEDED :
-                // TODO
-                
-            case CANNOT_CANCEL :
-                // TODO
-                
-            case E_SYNC_REFRESH_REQUIRED :
-                // TODO
-                
-            case PARTIAL_RESULTS :
-                // TODO
+            case SIZE_LIMIT_EXCEEDED :
+                LdapSizeLimitExceededException ldapSizeLimitExceededException = new LdapSizeLimitExceededException( ldapResult.getDiagnosticMessage() );
+                ldapSizeLimitExceededException.setResolvedDn( ldapResult.getMatchedDn() );
+
+                throw ldapSizeLimitExceededException;
                 
             case STRONG_AUTH_REQUIRED :
-                // TODO
+                LdapStrongAuthenticationRequiredException ldapStrongAuthenticationRequiredException = 
+                    new LdapStrongAuthenticationRequiredException( ldapResult.getDiagnosticMessage() );
+                ldapStrongAuthenticationRequiredException.setResolvedDn( ldapResult.getMatchedDn() );
                 
-            case SIZE_LIMIT_EXCEEDED :
-                // TODO
+                throw ldapStrongAuthenticationRequiredException;
 
+            case ADMIN_LIMIT_EXCEEDED :
+                LdapAdminLimitExceededException ldapAdminLimitExceededException = 
+                    new LdapAdminLimitExceededException( ldapResult.getDiagnosticMessage() );
+                ldapAdminLimitExceededException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapAdminLimitExceededException;
+
+            case TOO_LATE :
+                LdapTooLateException ldapTooLateException = new LdapTooLateException( ldapResult.getDiagnosticMessage() );
+                ldapTooLateException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapTooLateException;
+
+            case UNKNOWN :
+                LdapUnknownException ldapUnknownException = new LdapUnknownException( ldapResult.getDiagnosticMessage() );
+                ldapUnknownException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapUnknownException;
+                
+            case CANNOT_CANCEL :
+                LdapCannotCancelException ldapCannotCancelException = new LdapCannotCancelException( ldapResult.getDiagnosticMessage() );
+                ldapCannotCancelException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapCannotCancelException;
+                
             case NO_SUCH_OPERATION :
-                // TODO
+                LdapNoSuchOperationException ldapNoSuchOperationException = new LdapNoSuchOperationException( ldapResult.getDiagnosticMessage() );
+                ldapNoSuchOperationException.setResolvedDn( ldapResult.getMatchedDn() );
+                
+                throw ldapNoSuchOperationException;
+                
+            case E_SYNC_REFRESH_REQUIRED :
+                // This is a specific error message. We won't encapsulate it in a dedicated exception
+                // Fallthrough
                 
             default :
                 LdapOperationException exception = new LdapOperationException( ldapResult.getResultCode(), ldapResult.getDiagnosticMessage() );

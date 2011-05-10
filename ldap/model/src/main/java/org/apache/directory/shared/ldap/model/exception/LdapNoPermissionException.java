@@ -25,8 +25,8 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 
 /**
  * A {@link LdapOperationException} which associates a resultCode namely the
- * {@link org.apache.directory.shared.ldap.model.message.ResultCodeEnum#INSUFFICIENTACCESSRIGHTS} resultCode with the
- * exception.
+ * {@link org.apache.directory.shared.ldap.model.message.ResultCodeEnum#INSUFFICIENT_ACCESS_RIGHTS} 
+ * resultCode with the exception.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
