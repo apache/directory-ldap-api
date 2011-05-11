@@ -500,15 +500,37 @@ public class StandaloneLdapCodecService implements LdapCodecService
         // instantiate and start up felix
         felix = new Felix( config );
         
-        try
+        Thread felixThread = new Thread(new Runnable() {
+            public void run()
+            {
+                try
+                {
+                    felix.start();
+                    this.notify();
+                }
+                catch ( BundleException e )
+                {
+                    String message = "Failed to start embedded felix instance: " + e.getMessage();
+                    LOG.error( message, e );
+                    throw new RuntimeException( message, e );
+                }
+            }
+        }, "FelixThread");
+        
+        felixThread.setDaemon( true );
+        felixThread.start();
+        
+        while ( felix.getState() != Felix.ACTIVE )
         {
-            felix.start();
-        }
-        catch ( BundleException e )
-        {
-            String message = "Failed to start embedded felix instance: " + e.getMessage();
-            LOG.error( message, e );
-            throw new RuntimeException( message, e );
+            try
+            {
+                // Yuuukkkk...
+                Thread.sleep( 10 );
+            }
+            catch( InterruptedException ie )
+            {
+                // done
+            }
         }
     }
     
