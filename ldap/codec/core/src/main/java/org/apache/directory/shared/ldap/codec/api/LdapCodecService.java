@@ -285,4 +285,10 @@ public interface LdapCodecService
 
 
     ExtendedResponseDecorator<?> decorate( ExtendedResponse decoratedMessage );
+    
+
+    /**
+     * Shutdowns the internal OSGi container if any.
+     */
+    void shutdown();
 }

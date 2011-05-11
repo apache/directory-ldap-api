@@ -73,17 +73,17 @@ public class DefaultLdapCodecService implements LdapCodecService
     private static final Logger LOG = LoggerFactory.getLogger( DefaultLdapCodecService.class );
 
     /** The map of registered {@link org.apache.directory.shared.ldap.codec.api.ControlFactory}'s */
-    private Map<String,ControlFactory<?,?>> controlFactories = new HashMap<String, ControlFactory<?,?>>();
+    private Map<String, ControlFactory<?, ?>> controlFactories = new HashMap<String, ControlFactory<?, ?>>();
 
     /** The map of registered {@link org.apache.directory.shared.ldap.codec.api.ExtendedRequestFactory}'s by request OID */
-    private Map<String,ExtendedRequestFactory<?,?>> extReqFactories = new HashMap<String, ExtendedRequestFactory<?,?>>();
+    private Map<String, ExtendedRequestFactory<?, ?>> extReqFactories = new HashMap<String, ExtendedRequestFactory<?, ?>>();
 
     /** The map of registered {@link UnsolicitedResponseFactory}'s by request OID */
-    private Map<String,UnsolicitedResponseFactory<?>> unsolicitedFactories = new HashMap<String, UnsolicitedResponseFactory<?>>();
+    private Map<String, UnsolicitedResponseFactory<?>> unsolicitedFactories = new HashMap<String, UnsolicitedResponseFactory<?>>();
 
     /** The registered ProtocolCodecFactory */
     private ProtocolCodecFactory protocolCodecFactory;
-    
+
 
     /**
      * Creates a new instance of DefaultLdapCodecService.
@@ -129,20 +129,19 @@ public class DefaultLdapCodecService implements LdapCodecService
     // LdapCodecService implementation methods
     //-------------------------------------------------------------------------
 
-
     /**
      * {@inheritDoc}
      */
-    public ControlFactory<?, ?> registerControl( ControlFactory<?,?> factory )
+    public ControlFactory<?, ?> registerControl( ControlFactory<?, ?> factory )
     {
-        return controlFactories.put(factory.getOid(), factory);
+        return controlFactories.put( factory.getOid(), factory );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ControlFactory<?, ?>  unregisterControl( String oid )
+    public ControlFactory<?, ?> unregisterControl( String oid )
     {
         return controlFactories.remove( oid );
     }
@@ -153,7 +152,7 @@ public class DefaultLdapCodecService implements LdapCodecService
      */
     public Iterator<String> registeredControls()
     {
-        return Collections.unmodifiableSet(controlFactories.keySet()).iterator();
+        return Collections.unmodifiableSet( controlFactories.keySet() ).iterator();
     }
 
 
@@ -162,7 +161,7 @@ public class DefaultLdapCodecService implements LdapCodecService
      */
     public boolean isControlRegistered( String oid )
     {
-        return controlFactories.containsKey(oid);
+        return controlFactories.containsKey( oid );
     }
 
 
@@ -178,7 +177,7 @@ public class DefaultLdapCodecService implements LdapCodecService
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestFactory<?, ?> registerExtendedRequest( ExtendedRequestFactory<?,?> factory )
+    public ExtendedRequestFactory<?, ?> registerExtendedRequest( ExtendedRequestFactory<?, ?> factory )
     {
         return extReqFactories.put( factory.getOid(), factory );
     }
@@ -191,8 +190,8 @@ public class DefaultLdapCodecService implements LdapCodecService
     {
         return protocolCodecFactory;
     }
-    
-    
+
+
     public ProtocolCodecFactory registerProtocolCodecFactory( ProtocolCodecFactory protocolCodecFactory )
     {
         ProtocolCodecFactory oldFactory = this.protocolCodecFactory;
@@ -206,7 +205,7 @@ public class DefaultLdapCodecService implements LdapCodecService
      */
     public CodecControl<? extends Control> newControl( String oid )
     {
-        ControlFactory<?,?> factory = controlFactories.get( oid );
+        ControlFactory<?, ?> factory = controlFactories.get( oid );
 
         if ( factory == null )
         {
@@ -231,17 +230,17 @@ public class DefaultLdapCodecService implements LdapCodecService
         // protect agains being multiply decorated
         if ( control instanceof CodecControl )
         {
-            return (CodecControl<?> )control;
+            return ( CodecControl<?> ) control;
         }
-        
+
         @SuppressWarnings("rawtypes")
         ControlFactory factory = controlFactories.get( control.getOid() );
-        
+
         if ( factory == null )
         {
-            return new BasicControlDecorator<Control>( this, control ); 
+            return new BasicControlDecorator<Control>( this, control );
         }
-        
+
         return factory.newCodecControl( control );
     }
 
@@ -251,11 +250,11 @@ public class DefaultLdapCodecService implements LdapCodecService
      */
     public javax.naming.ldap.Control toJndiControl( Control control ) throws EncoderException
     {
-        CodecControl<? extends Control> decorator = newControl(control);
+        CodecControl<? extends Control> decorator = newControl( control );
         ByteBuffer bb = ByteBuffer.allocate( decorator.computeLength() );
         decorator.encode( bb );
         bb.flip();
-        javax.naming.ldap.BasicControl jndiControl = 
+        javax.naming.ldap.BasicControl jndiControl =
             new javax.naming.ldap.BasicControl( control.getOid(), control.isCritical(), bb.array() );
         return jndiControl;
     }
@@ -268,17 +267,17 @@ public class DefaultLdapCodecService implements LdapCodecService
     {
         @SuppressWarnings("rawtypes")
         ControlFactory factory = controlFactories.get( control.getID() );
-        
+
         if ( factory == null )
         {
             OpaqueControl ourControl = new OpaqueControl( control.getID() );
             ourControl.setCritical( control.isCritical() );
-            BasicControlDecorator<Control> decorator = 
+            BasicControlDecorator<Control> decorator =
                 new BasicControlDecorator<Control>( this, ourControl );
             decorator.setValue( control.getEncodedValue() );
             return decorator;
         }
-        
+
         @SuppressWarnings("unchecked")
         CodecControl<? extends Control> ourControl = factory.newCodecControl();
         ourControl.setCritical( control.isCritical() );
@@ -339,51 +338,51 @@ public class DefaultLdapCodecService implements LdapCodecService
     public javax.naming.ldap.ExtendedResponse toJndi( final ExtendedResponse modelResponse ) throws EncoderException
     {
         throw new NotImplementedException( "Figure out how to transform" );
-//        final byte[] encodedValue = new byte[ modelResponse.getEncodedValue().length ];
-//        System.arraycopy( modelResponse.getEncodedValue(), 0, encodedValue, 0, modelResponse.getEncodedValue().length );
-//        
-//        return new javax.naming.ldap.ExtendedResponse()
-//        {
-//            private static final long serialVersionUID = 2955142105375495493L;
-//
-//            public String getID()
-//            {
-//                return modelResponse.getID();
-//            }
-//
-//            public byte[] getEncodedValue()
-//            {
-//                return encodedValue;
-//            }
-//        };
+        //        final byte[] encodedValue = new byte[ modelResponse.getEncodedValue().length ];
+        //        System.arraycopy( modelResponse.getEncodedValue(), 0, encodedValue, 0, modelResponse.getEncodedValue().length );
+        //        
+        //        return new javax.naming.ldap.ExtendedResponse()
+        //        {
+        //            private static final long serialVersionUID = 2955142105375495493L;
+        //
+        //            public String getID()
+        //            {
+        //                return modelResponse.getID();
+        //            }
+        //
+        //            public byte[] getEncodedValue()
+        //            {
+        //                return encodedValue;
+        //            }
+        //        };
     }
-    
+
 
     /**
      * {@inheritDoc}
      */
     public ExtendedResponse fromJndi( javax.naming.ldap.ExtendedResponse jndiResponse ) throws DecoderException
-    {   
+    {
         throw new NotImplementedException( "Figure out how to transform" );
-//        ExtendedResponse modelResponse;
-//        ExtendedRequestFactory<?,?> extendedRequestFactory = extReqFactories.get( jndiResponse.getID() );
-//        UnsolicitedResponseFactory<?> unsolicitedResponseFactory = unsolicitedFactories.get( jndiResponse.getID() );
-//        
-//        if ( unsolicitedResponseFactory != null )
-//        {
-//            modelResponse = unsolicitedResponseFactory.newResponse( jndiResponse.getEncodedValue() );
-//        }
-//        else if ( extendedRequestFactory != null )
-//        {
-//            modelResponse = extendedRequestFactory.newResponse( jndiResponse.getEncodedValue() );
-//        }
-//        else
-//        {
-//            modelResponse = new ExtendedResponseImpl( jndiResponse.getID() );
-//            modelResponse.setResponseValue( jndiResponse.getEncodedValue() );
-//        }
-//        
-//        return modelResponse;
+        //        ExtendedResponse modelResponse;
+        //        ExtendedRequestFactory<?,?> extendedRequestFactory = extReqFactories.get( jndiResponse.getID() );
+        //        UnsolicitedResponseFactory<?> unsolicitedResponseFactory = unsolicitedFactories.get( jndiResponse.getID() );
+        //        
+        //        if ( unsolicitedResponseFactory != null )
+        //        {
+        //            modelResponse = unsolicitedResponseFactory.newResponse( jndiResponse.getEncodedValue() );
+        //        }
+        //        else if ( extendedRequestFactory != null )
+        //        {
+        //            modelResponse = extendedRequestFactory.newResponse( jndiResponse.getEncodedValue() );
+        //        }
+        //        else
+        //        {
+        //            modelResponse = new ExtendedResponseImpl( jndiResponse.getID() );
+        //            modelResponse.setResponseValue( jndiResponse.getEncodedValue() );
+        //        }
+        //        
+        //        return modelResponse;
     }
 
 
@@ -392,7 +391,7 @@ public class DefaultLdapCodecService implements LdapCodecService
      */
     public ExtendedRequest<?> fromJndi( javax.naming.ldap.ExtendedRequest jndiRequest ) throws DecoderException
     {
-        ExtendedRequestDecorator<?,?> decorator =
+        ExtendedRequestDecorator<?, ?> decorator =
             ( ExtendedRequestDecorator<?, ?> ) newExtendedRequest( jndiRequest.getID(), jndiRequest.getEncodedValue() );
         return decorator;
     }
@@ -405,7 +404,7 @@ public class DefaultLdapCodecService implements LdapCodecService
     {
         final String oid = modelRequest.getRequestName();
         final byte[] value;
-        
+
         if ( modelRequest instanceof ExtendedRequestDecorator )
         {
             ExtendedRequestDecorator<?, ?> decorator = ( ExtendedRequestDecorator<?, ?> ) modelRequest;
@@ -414,54 +413,59 @@ public class DefaultLdapCodecService implements LdapCodecService
         else
         {
             // have to ask the factory to decorate for us - can't do it ourselves
-            ExtendedRequestFactory<?,?> extendedRequestFactory = extReqFactories.get( modelRequest.getRequestName() );
+            ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( modelRequest.getRequestName() );
             ExtendedRequestDecorator<?, ?> decorator = extendedRequestFactory.decorate( modelRequest );
             value = decorator.getRequestValue();
         }
-        
-        
+
         javax.naming.ldap.ExtendedRequest jndiRequest = new javax.naming.ldap.ExtendedRequest()
         {
             private static final long serialVersionUID = -4160980385909987475L;
+
 
             public String getID()
             {
                 return oid;
             }
 
+
             public byte[] getEncodedValue()
             {
                 return value;
             }
 
+
             public javax.naming.ldap.ExtendedResponse createExtendedResponse( String id, byte[] berValue, int offset,
                 int length ) throws NamingException
             {
-                ExtendedRequestFactory<?,?> factory = extReqFactories.get( modelRequest.getRequestName() );
-                
+                ExtendedRequestFactory<?, ?> factory = extReqFactories.get( modelRequest.getRequestName() );
+
                 try
                 {
-                    final ExtendedResponseDecorator<?> resp = ( ExtendedResponseDecorator<?> ) factory.newResponse( berValue );
+                    final ExtendedResponseDecorator<?> resp = ( ExtendedResponseDecorator<?> ) factory
+                        .newResponse( berValue );
                     javax.naming.ldap.ExtendedResponse jndiResponse = new javax.naming.ldap.ExtendedResponse()
                     {
                         private static final long serialVersionUID = -7686354122066100703L;
+
 
                         public String getID()
                         {
                             return oid;
                         }
 
+
                         public byte[] getEncodedValue()
                         {
                             return resp.getResponseValue();
                         }
                     };
-                    
+
                     return jndiResponse;
                 }
                 catch ( DecoderException e )
                 {
-                    NamingException ne = new NamingException( "Unable to decode encoded response value: " + 
+                    NamingException ne = new NamingException( "Unable to decode encoded response value: " +
                         Strings.dumpBytes( berValue ) );
                     ne.setRootCause( e );
                     throw ne;
@@ -481,23 +485,25 @@ public class DefaultLdapCodecService implements LdapCodecService
      * @throws DecoderException 
      */
     @SuppressWarnings("unchecked")
-    public <E extends ExtendedResponse> E newExtendedResponse( ExtendedRequest<E> req, byte[] serializedResponse ) throws DecoderException
+    public <E extends ExtendedResponse> E newExtendedResponse( ExtendedRequest<E> req, byte[] serializedResponse )
+        throws DecoderException
     {
         ExtendedResponseDecorator<ExtendedResponse> resp;
-        
-        ExtendedRequestFactory<?,?> extendedRequestFactory = extReqFactories.get( req.getRequestName() );
+
+        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( req.getRequestName() );
         if ( extendedRequestFactory != null )
         {
-            resp = ( ExtendedResponseDecorator<ExtendedResponse> ) extendedRequestFactory.newResponse( serializedResponse );
+            resp = ( ExtendedResponseDecorator<ExtendedResponse> ) extendedRequestFactory
+                .newResponse( serializedResponse );
         }
         else
         {
-            resp = new ExtendedResponseDecorator<ExtendedResponse>( this, 
+            resp = new ExtendedResponseDecorator<ExtendedResponse>( this,
                 new ExtendedResponseImpl( req.getRequestName() ) );
             resp.setResponseValue( serializedResponse );
             resp.setResponseName( req.getRequestName() );
         }
-        
+
         resp.setMessageId( req.getMessageId() );
         return ( E ) resp;
     }
@@ -509,22 +515,22 @@ public class DefaultLdapCodecService implements LdapCodecService
     public ExtendedRequest<?> newExtendedRequest( String oid, byte[] value )
     {
         ExtendedRequest<?> req = null;
-        
-        ExtendedRequestFactory<?,?> extendedRequestFactory = extReqFactories.get( oid );
+
+        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( oid );
         if ( extendedRequestFactory != null )
         {
             req = extendedRequestFactory.newRequest( value );
         }
         else
         {
-            ExtendedRequestDecorator<ExtendedRequest<ExtendedResponse>, ExtendedResponse> decorator = 
-                new ExtendedRequestDecorator<ExtendedRequest<ExtendedResponse>, ExtendedResponse>( this, 
+            ExtendedRequestDecorator<ExtendedRequest<ExtendedResponse>, ExtendedResponse> decorator =
+                new ExtendedRequestDecorator<ExtendedRequest<ExtendedResponse>, ExtendedResponse>( this,
                     new ExtendedRequestImpl() );
             decorator.setRequestName( oid );
             decorator.setRequestValue( value );
             req = decorator;
         }
-        
+
         return req;
     }
 
@@ -535,19 +541,19 @@ public class DefaultLdapCodecService implements LdapCodecService
     @SuppressWarnings("unchecked")
     public ExtendedRequestDecorator<?, ?> decorate( ExtendedRequest<?> decoratedMessage )
     {
-        ExtendedRequestDecorator<?,?> req = null;
-        
-        ExtendedRequestFactory<?,?> extendedRequestFactory = extReqFactories.get( decoratedMessage.getRequestName() );
+        ExtendedRequestDecorator<?, ?> req = null;
+
+        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( decoratedMessage.getRequestName() );
         if ( extendedRequestFactory != null )
         {
             req = extendedRequestFactory.decorate( decoratedMessage );
         }
         else
         {
-            req = new ExtendedRequestDecorator<ExtendedRequest<ExtendedResponse>, ExtendedResponse>( this, 
+            req = new ExtendedRequestDecorator<ExtendedRequest<ExtendedResponse>, ExtendedResponse>( this,
                     ( ExtendedRequest<ExtendedResponse> ) decoratedMessage );
         }
-        
+
         return req;
     }
 
@@ -558,9 +564,10 @@ public class DefaultLdapCodecService implements LdapCodecService
     public ExtendedResponseDecorator<?> decorate( ExtendedResponse decoratedMessage )
     {
         ExtendedResponseDecorator<?> resp = null;
-        
-        UnsolicitedResponseFactory<?> unsolicitedResponseFactory = unsolicitedFactories.get( decoratedMessage.getResponseName() );
-        ExtendedRequestFactory<?,?> extendedRequestFactory = extReqFactories.get( decoratedMessage.getResponseName() );
+
+        UnsolicitedResponseFactory<?> unsolicitedResponseFactory = unsolicitedFactories.get( decoratedMessage
+            .getResponseName() );
+        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( decoratedMessage.getResponseName() );
         if ( extendedRequestFactory != null )
         {
             resp = extendedRequestFactory.decorate( decoratedMessage );
@@ -573,7 +580,7 @@ public class DefaultLdapCodecService implements LdapCodecService
         {
             resp = new ExtendedResponseDecorator<ExtendedResponse>( this, decoratedMessage );
         }
-        
+
         return resp;
     }
 
@@ -584,5 +591,14 @@ public class DefaultLdapCodecService implements LdapCodecService
     public boolean isExtendedOperationRegistered( String oid )
     {
         return extReqFactories.containsKey( oid ) || unsolicitedFactories.containsKey( oid );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void shutdown()
+    {
+        // Nothing to do
     }
 }

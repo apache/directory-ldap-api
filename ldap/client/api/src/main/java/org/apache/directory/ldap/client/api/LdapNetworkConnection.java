@@ -67,7 +67,6 @@ import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.codec.api.MessageEncoderException;
-import org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapCodecService;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.cursor.Cursor;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
@@ -4014,7 +4013,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     {
         if ( codec != null )
         {
-            ((StandaloneLdapCodecService)codec).shutdown();
+            codec.shutdown();
         }
     }
 }
