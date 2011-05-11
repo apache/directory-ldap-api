@@ -25,15 +25,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.cursor.Cursor;
+import org.apache.directory.shared.ldap.model.cursor.EntryCursor;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.message.Response;
-import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.schema.registries.Schema;
 import org.apache.directory.shared.ldap.model.schema.registries.AbstractSchemaLoader;
+import org.apache.directory.shared.ldap.model.schema.registries.Schema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,11 +110,11 @@ public class NetworkSchemaLoader extends AbstractSchemaLoader
                 filter = FILTER;
             }
 
-            Cursor<Response> cursor = connection.search( new Dn( baseDn ), filter, SearchScope.ONELEVEL, "*", "+" );
+            EntryCursor cursor = connection.search( new Dn( baseDn ), filter, SearchScope.ONELEVEL, "*", "+" );
 
             while ( cursor.next() )
             {
-                Entry entry = ( ( SearchResultEntry ) cursor.get() ).getEntry();
+                Entry entry = cursor.get();
                 entries.add( entry );
             }
 

@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.model.cursor.EntryCursor;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Modification;
@@ -232,7 +233,7 @@ public interface LdapConnection
      * @return A search cursor on the result.
      * @throws LdapException if some error occurred
      */
-    SearchCursor search( Dn baseDn, String filter, SearchScope scope, String... attributes )
+    EntryCursor search( Dn baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException;
 
 
@@ -255,7 +256,7 @@ public interface LdapConnection
      * @return A search cursor on the result.
      * @throws LdapException if some error occurred
      */
-    SearchCursor search( String baseDn, String filter, SearchScope scope, String... attributes )
+    EntryCursor search( String baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException;
 
 
@@ -782,10 +783,4 @@ public interface LdapConnection
      * @return true if there is a non-null future exists, false otherwise
      */
     boolean doesFutureExistFor( int messageId );
-
-    
-    /**
-     * Shutdowns the internal OSGi container if any.
-     */
-    void shutdown();
 }

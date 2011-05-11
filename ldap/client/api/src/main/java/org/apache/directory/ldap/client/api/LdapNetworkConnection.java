@@ -69,6 +69,7 @@ import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.codec.api.MessageEncoderException;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.cursor.Cursor;
+import org.apache.directory.shared.ldap.model.cursor.EntryCursor;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
@@ -1558,7 +1559,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public SearchCursor search( Dn baseDn, String filter, SearchScope scope, String... attributes )
+    public EntryCursor search( Dn baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException
     {
         if ( baseDn == null )
@@ -1577,14 +1578,14 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         searchRequest.setDerefAliases( AliasDerefMode.DEREF_ALWAYS );
 
         // Process the request in blocking mode
-        return search( searchRequest );
+        return new EntryCursorImpl( search( searchRequest ) );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public SearchCursor search( String baseDn, String filter, SearchScope scope, String... attributes )
+    public EntryCursor search( String baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException
     {
         return search( new Dn( baseDn ), filter, scope, attributes );
@@ -3505,14 +3506,13 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     private void fetchRootDSE() throws LdapException
     {
-        Cursor<Response> cursor = null;
+        EntryCursor cursor = null;
+        
         try
         {
             cursor = search( "", "(objectClass=*)", SearchScope.OBJECT, "*", "+" );
             cursor.next();
-            SearchResultEntry searchRes = ( SearchResultEntry ) cursor.get();
-
-            rootDSE = searchRes.getEntry();
+            rootDSE = cursor.get();
         }
         catch ( Exception e )
         {
@@ -4002,18 +4002,5 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         LOG.debug( "krb 5 config file created at {}", krb5ConfPath );
 
         return krb5ConfPath;
-    }
-
-
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void shutdown()
-    {
-        if ( codec != null )
-        {
-            codec.shutdown();
-        }
     }
 }

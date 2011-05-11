@@ -21,20 +21,16 @@
 package org.apache.directory.ldap.client.api;
 
 
-import java.util.concurrent.TimeUnit;
-
-import org.apache.directory.ldap.client.api.future.SearchFuture;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.cursor.AbstractCursor;
 import org.apache.directory.shared.ldap.model.cursor.EntryCursor;
 import org.apache.directory.shared.ldap.model.cursor.InvalidCursorPositionException;
+import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.exception.LdapReferralException;
 import org.apache.directory.shared.ldap.model.message.Response;
 import org.apache.directory.shared.ldap.model.message.SearchResultDone;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
-import org.apache.directory.shared.ldap.model.message.SearchResultReference;
 
 
 /**
@@ -46,94 +42,70 @@ import org.apache.directory.shared.ldap.model.message.SearchResultReference;
  */
 public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCursor
 {
-    /** the search future */
-    private SearchFuture future;
-
-    /** wait time while polling for a SearchResponse */
-    private long timeout;
-
-    /** time units of timeout value */
-    private TimeUnit timeUnit;
-
     /** a reference to hold the retrieved SearchResponse object from SearchFuture */
     private Response response;
 
-    /** the done flag */
-    private boolean done;
+    /** The encapsulated search cursor */
+    private SearchCursor searchCursor;
 
-    /** a reference to hold the SearchResultDone response */
-    private SearchResultDone searchDoneResp;
-
+    /** The underlying messageId */
+    private int messageId;
 
     /**
-     * Instantiates a new search cursor.
+     * Instantiates a new search cursor, embedding a SearchCursor.
      *
-     * @param future the future
-     * @param timeout the timeout
-     * @param timeUnit the time unit
+     * @param searchCursor the embedded SearchResponse cursor
      */
-    public EntryCursorImpl( SearchFuture future, long timeout, TimeUnit timeUnit )
+    public EntryCursorImpl( SearchCursor searchCursor )
     {
-        this.future = future;
-        this.timeout = timeout;
-        this.timeUnit = timeUnit;
+        this.searchCursor = searchCursor;
+        messageId = -1;
     }
-
+    
 
     /**
      * {@inheritDoc}
      */
     public boolean next() throws Exception
     {
-        if ( done )
+        if ( !searchCursor.next() )
         {
             return false;
         }
 
         try
         {
-            if ( future.isCancelled() )
+            
+            do
             {
-                response = null;
-                done = true;
-                return false;
-            }
+                response = searchCursor.get();
 
-            response = future.get( timeout, timeUnit );
+                if ( response == null )
+                {
+                    throw new LdapException( LdapNetworkConnection.TIME_OUT_ERROR );
+                }
+
+                messageId = response.getMessageId();
+
+                if ( response instanceof SearchResultEntry )
+                {
+                    return true;
+                }
+            }
+            while ( !( response instanceof SearchResultDone ) );
+            
+            return false;
         }
         catch ( Exception e )
         {
             LdapException ldapException = new LdapException( LdapNetworkConnection.NO_RESPONSE_ERROR );
             ldapException.initCause( e );
 
-            // Send an abandon request
-            if ( !future.isCancelled() )
-            {
-                future.cancel( true );
-            }
-
             // close the cursor
             close( ldapException );
 
             throw ldapException;
         }
-
-        if ( response == null )
-        {
-            future.cancel( true );
-
-            throw new LdapException( LdapNetworkConnection.TIME_OUT_ERROR );
-        }
-
-        done = ( response instanceof SearchResultDone );
-
-        if ( done )
-        {
-            searchDoneResp = ( SearchResultDone ) response;
-            response = null;
-        }
-
-        return !done;
     }
 
 
@@ -142,18 +114,21 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      */
     public Entry get() throws Exception
     {
-        if ( !available() )
+        if ( !searchCursor.available() )
         {
             throw new InvalidCursorPositionException();
         }
 
-        if ( response instanceof SearchResultEntry )
+        do
         {
-            return ((SearchResultEntry)response).getEntry();
+            if ( response instanceof SearchResultEntry )
+            {
+                return ((SearchResultEntry)response).getEntry();
+            }
         }
+        while ( next() && !( response instanceof SearchResultDone ) );
         
-        SearchResultReference referral = ((SearchResultReference)response);
-        throw new LdapReferralException( referral.getReferral().getLdapUrls() );
+        return null;
     }
 
 
@@ -162,7 +137,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      */
     public SearchResultDone getSearchResultDone()
     {
-        return searchDoneResp;
+        return searchCursor.getSearchResultDone();
     }
 
 
@@ -180,7 +155,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      */
     public boolean available()
     {
-        return response != null;
+        return searchCursor.available();
     }
 
 
@@ -190,7 +165,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public void close() throws Exception
     {
-        close( null );
+        searchCursor.close();
     }
 
 
@@ -200,25 +175,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public void close( Exception cause ) throws Exception
     {
-        if ( done )
-        {
-            super.close();
-            return;
-        }
-
-        if ( !future.isCancelled() )
-        {
-            future.cancel( true );
-        }
-
-        if ( cause != null )
-        {
-            super.close( cause );
-        }
-        else
-        {
-            super.close();
-        }
+        searchCursor.close( cause );
     }
 
 
@@ -298,5 +255,14 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "previous()" ) ) );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getMessageId()
+    {
+        return messageId;
     }
 }
