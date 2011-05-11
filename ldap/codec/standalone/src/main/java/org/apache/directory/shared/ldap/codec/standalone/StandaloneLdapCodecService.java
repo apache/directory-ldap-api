@@ -536,27 +536,6 @@ public class StandaloneLdapCodecService implements LdapCodecService
     
     
     /**
-     * Shuts down the codec and its embedded {@link Felix} instance.
-     */
-    public void shutdown()
-    {
-        LOG.info( "Attempt to shutdown the codec service" );
-        
-        try
-        {
-            felix.stop();
-            felix.waitForStop( 0 );
-        }
-        catch ( Exception e )
-        {
-            String message = "Failed to stop embedded felix instance: " + e.getMessage();
-            LOG.error( message, e );
-            throw new RuntimeException( message, e );
-        }
-    }
-    
-    
-    /**
      * Loads the Controls implement out of the box in the codec.
      */
     private void loadStockControls()

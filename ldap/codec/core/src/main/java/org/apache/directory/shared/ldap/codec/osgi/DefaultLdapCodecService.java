@@ -592,13 +592,4 @@ public class DefaultLdapCodecService implements LdapCodecService
     {
         return extReqFactories.containsKey( oid ) || unsolicitedFactories.containsKey( oid );
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void shutdown()
-    {
-        // Nothing to do
-    }
 }

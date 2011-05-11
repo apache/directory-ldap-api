@@ -57,7 +57,6 @@ public abstract class AbstractCodecServiceTest
     @AfterClass
     public static void tearDownLdapCodecService()
     {
-        codec.shutdown();
         codec = null;
         encoder = null;
     }

@@ -52,7 +52,6 @@ public class StandaloneLdapCodecServiceTest
         CodecControl<? extends Control> control = codec.newControl( PasswordPolicy.OID );
         assertNotNull( control );
         assertNotNull( codec );
-        codec.shutdown();
     }
 
 
@@ -72,6 +71,5 @@ public class StandaloneLdapCodecServiceTest
         
         StoredProcedureRequest decorator = ( StoredProcedureRequest ) codec.decorate( req );
         assertNotNull( decorator );
-        codec.shutdown();
     }
 }
