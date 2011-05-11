@@ -21,6 +21,10 @@
 package org.apache.directory.shared.ldap.model.cursor;
 
 
+import org.apache.directory.shared.ldap.model.entry.Entry;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.message.IntermediateResponse;
+import org.apache.directory.shared.ldap.model.message.Referral;
 import org.apache.directory.shared.ldap.model.message.Response;
 import org.apache.directory.shared.ldap.model.message.SearchResultDone;
 
@@ -33,9 +37,51 @@ import org.apache.directory.shared.ldap.model.message.SearchResultDone;
 public interface SearchCursor extends Cursor<Response>
 {
     /**
+     * @return true if the cursor has processed all the elements we were searching
+     */
+    boolean isDone();
+    
+    /**
      * gives the SearchResultDone message received at the end of search results
      * 
      * @return the SearchResultDone message, null if the search operation fails for any reason 
      */
-    public SearchResultDone getSearchResultDone();
+    SearchResultDone getSearchResultDone();
+
+    
+    /**
+     * @return true if the next element in the cursor is a referral 
+     */
+    boolean isReferral();
+    
+    
+    /**
+     * @return The next referral element, if it's a referral 
+     * @throws LdapException If the 
+     */
+    Referral getReferral() throws LdapException;
+    
+    
+    /**
+     * @return true if the next element in the cursor is an entry 
+     */
+    boolean isEntry();
+    
+    /**
+     * @return The next entry element, if it's an entry 
+     * @throws LdapException If the 
+     */
+    Entry getEntry() throws LdapException;
+    
+
+    /**
+     * @return true if the next element in the cursor is an intermediate response 
+     */
+    boolean isIntermediate();
+    
+    /**
+     * @return The next intermediate response element, if it's an intermediate response 
+     * @throws LdapException If the 
+     */
+    IntermediateResponse getIntermediate() throws LdapException;
 }

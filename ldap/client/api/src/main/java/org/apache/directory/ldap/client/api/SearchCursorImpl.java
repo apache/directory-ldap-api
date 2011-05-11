@@ -28,9 +28,14 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.cursor.AbstractCursor;
 import org.apache.directory.shared.ldap.model.cursor.InvalidCursorPositionException;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
+import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.message.IntermediateResponse;
+import org.apache.directory.shared.ldap.model.message.Referral;
 import org.apache.directory.shared.ldap.model.message.Response;
 import org.apache.directory.shared.ldap.model.message.SearchResultDone;
+import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
+import org.apache.directory.shared.ldap.model.message.SearchResultReference;
 
 
 /**
@@ -290,4 +295,81 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
             .concat( "." ).concat( "previous()" ) ) );
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isDone()
+    {
+        return done;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isReferral()
+    {
+        return response instanceof SearchResultReference;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Referral getReferral() throws LdapException
+    {
+        if ( isReferral() )
+        {
+            return ((SearchResultReference)response).getReferral();
+        }
+
+        throw new LdapException();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isEntry()
+    {
+        return response instanceof SearchResultEntry;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Entry getEntry() throws LdapException
+    {
+        if ( isEntry() )
+        {
+            return ((SearchResultEntry)response).getEntry();
+        }
+
+        throw new LdapException();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isIntermediate()
+    {
+        return response instanceof IntermediateResponse;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public IntermediateResponse getIntermediate() throws LdapException
+    {
+        if ( isEntry() )
+        {
+            return (IntermediateResponse)response;
+        }
+
+        throw new LdapException();
+    }
 }
