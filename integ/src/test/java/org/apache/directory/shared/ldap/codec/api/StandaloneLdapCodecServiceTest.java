@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.codec.api;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapCodecService;
+import org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapApiService;
 import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.shared.ldap.extras.extended.StoredProcedureRequest;
 import org.apache.directory.shared.ldap.extras.extended.StoredProcedureRequestImpl;
@@ -43,9 +43,9 @@ public class StandaloneLdapCodecServiceTest
      * Test method for {@link org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapCodecService#StandaloneLdapCodecService()}.
      */
     @Test
-    public void testLoadingExtras()
+    public void testLoadingExtras() throws Exception
     {
-        StandaloneLdapCodecService codec = new StandaloneLdapCodecService();
+        StandaloneLdapApiService codec = new StandaloneLdapApiService();
         
         assertTrue( codec.isControlRegistered( PasswordPolicy.OID ) );
 
@@ -59,9 +59,9 @@ public class StandaloneLdapCodecServiceTest
      * Test an extended operation.
      */
     @Test
-    public void testLoadingExtendedOperation()
+    public void testLoadingExtendedOperation() throws Exception
     {
-        StandaloneLdapCodecService codec = new StandaloneLdapCodecService();
+        StandaloneLdapApiService codec = new StandaloneLdapApiService();
         StoredProcedureRequest req = new StoredProcedureRequestImpl();
         req.setLanguage( "Java" );
         req.setProcedure( Strings.getBytesUtf8( "bogusProc" ) );

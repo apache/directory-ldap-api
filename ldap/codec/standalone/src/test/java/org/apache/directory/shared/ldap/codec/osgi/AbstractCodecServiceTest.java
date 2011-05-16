@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.codec.osgi;
 
 
 import org.apache.directory.shared.ldap.codec.api.LdapEncoder;
-import org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapCodecService;
+import org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapApiService;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
@@ -34,7 +34,7 @@ import org.junit.BeforeClass;
 public abstract class AbstractCodecServiceTest
 {
     /** The codec service */
-    protected static StandaloneLdapCodecService codec;
+    protected static StandaloneLdapApiService codec;
 
     /** The encoder instance */
     protected static LdapEncoder encoder;
@@ -44,9 +44,9 @@ public abstract class AbstractCodecServiceTest
      * Initialize the codec service
      */
     @BeforeClass
-    public static void setupLdapCodecService()
+    public static void setupLdapApiService() throws Exception
     {
-        codec = new StandaloneLdapCodecService();
+        codec = new StandaloneLdapApiService();
         encoder = new LdapEncoder( codec );
     }
 

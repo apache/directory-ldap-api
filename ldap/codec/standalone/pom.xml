@@ -57,6 +57,11 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>shared-ldap-codec-core</artifactId>
     </dependency> 
+    
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>shared-ldap-extras-codec-api</artifactId>
+    </dependency> 
 
     <dependency>
       <groupId>org.apache.felix</groupId>
@@ -81,6 +86,17 @@
             <org.osgi.framework.storage>
               osgi-cache
             </org.osgi.framework.storage>
+            <default.controls>
+              org.apache.directory.shared.ldap.codec.controls.cascade.CascadeFactory,
+              org.apache.directory.shared.ldap.codec.controls.manageDsaIT.ManageDsaITFactory,
+              org.apache.directory.shared.ldap.codec.controls.search.entryChange.EntryChangeFactory,
+              org.apache.directory.shared.ldap.codec.controls.search.pagedSearch.PagedResultsFactory,
+              org.apache.directory.shared.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory,
+              org.apache.directory.shared.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory
+            </default.controls>
+            <extra.controls>
+              
+            </extra.controls>
           </systemPropertyVariables>
         </configuration>
       </plugin>

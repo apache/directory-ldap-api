@@ -20,16 +20,12 @@
 package org.apache.directory.shared.ldap.codec.standalone;
 
 
-import java.io.File;
+import java.lang.reflect.Constructor;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.naming.NamingException;
 import javax.naming.ldap.BasicControl;
@@ -47,12 +43,6 @@ import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.codec.api.UnsolicitedResponseFactory;
-import org.apache.directory.shared.ldap.codec.controls.cascade.CascadeFactory;
-import org.apache.directory.shared.ldap.codec.controls.manageDsaIT.ManageDsaITFactory;
-import org.apache.directory.shared.ldap.codec.controls.search.entryChange.EntryChangeFactory;
-import org.apache.directory.shared.ldap.codec.controls.search.pagedSearch.PagedResultsFactory;
-import org.apache.directory.shared.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory;
-import org.apache.directory.shared.ldap.codec.controls.search.subentries.SubentriesFactory;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.ExtendedRequest;
 import org.apache.directory.shared.ldap.model.message.ExtendedRequestImpl;
@@ -60,14 +50,11 @@ import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
 import org.apache.directory.shared.ldap.model.message.ExtendedResponseImpl;
 import org.apache.directory.shared.ldap.model.message.Message;
 import org.apache.directory.shared.ldap.model.message.controls.OpaqueControl;
-import org.apache.directory.shared.util.OsgiUtils;
 import org.apache.directory.shared.util.Strings;
 import org.apache.directory.shared.util.exception.NotImplementedException;
 import org.apache.felix.framework.Felix;
-import org.apache.felix.framework.util.FelixConstants;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,52 +65,11 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class StandaloneLdapCodecService implements LdapCodecService
+public class StandaloneLdapApiService implements LdapCodecService
 {
-    /** Missing felix constants for cache directory locking */
-    public static final String FELIX_CACHE_LOCKING = "felix.cache.locking";
-
-    /** Missing felix constants for cache root directory path */
-    public static final String FELIX_CACHE_ROOTDIR = "felix.cache.rootdir";
-
     /** A logger */
-    private static final Logger LOG = LoggerFactory.getLogger( StandaloneLdapCodecService.class );
-    
-    /**
-     * This should be constructed at class initialization time by reading the
-     * Export-Package attribute of the this jar's manifest file.
-     */
-    private static final String[] SYSTEM_PACKAGES =
-    {
-        "org.slf4j; version=1.6.0",
-        "org.apache.directory.shared.i18n; version=1.0.0",
-        "org.apache.directory.shared.util; version=1.0.0",
-        "org.apache.directory.shared.util.exception; version=1.0.0",
-        "org.apache.directory.shared.asn1; version=1.0.0",
-        "org.apache.directory.shared.asn1.util; version=1.0.0",
-        "org.apache.directory.shared.asn1.ber; version=1.0.0",
-        "org.apache.directory.shared.asn1.ber.tlv; version=1.0.0",
-        "org.apache.directory.shared.asn1.ber.grammar; version=1.0.0",
-        "org.apache.directory.shared.asn1.actions; version=1.0.0",
-        "org.apache.directory.shared.ldap.asn1.ber; version=1.0.0",
-        "org.apache.directory.shared.ldap.model; version=1.0.0",
-        "org.apache.directory.shared.ldap.model.exception; version=1.0.0",
-        "org.apache.directory.shared.ldap.model.filter; version=1.0.0",
-        "org.apache.directory.shared.ldap.model.name; version=1.0.0",
-        "org.apache.directory.shared.ldap.model.entry; version=1.0.0",
-        "org.apache.directory.shared.ldap.model.schema; version=1.0.0",
-        "org.apache.directory.shared.ldap.model.message; version=1.0.0",
-        "org.apache.directory.shared.ldap.model.message.controls; version=1.0.0",
-        "org.apache.directory.shared.ldap.codec.controls; version=1.0.0",
-        "org.apache.directory.shared.ldap.codec.api; version=1.0.0",
-        "org.apache.directory.shared.ldap.model.url; version=1.0.0",
-        "org.apache.directory.shared.ldap.extras.controls",
-        "org.apache.directory.shared.ldap.extras.extended"
-    };
+    private static final Logger LOG = LoggerFactory.getLogger( StandaloneLdapApiService.class );
  
-    /** System property checked if the pluginProperty is null */
-    public static final String PLUGIN_DIRECTORY_PROPERTY = "codec.plugin.directory";
-    
     /** The map of registered {@link org.apache.directory.shared.ldap.codec.api.ControlFactory}'s */
     private Map<String,ControlFactory<?,?>> controlFactories = new HashMap<String, ControlFactory<?,?>>();
 
@@ -141,94 +87,10 @@ public class StandaloneLdapCodecService implements LdapCodecService
     
     /** The embedded {@link Felix} instance */
     private Felix felix;
+    
+    /** The list of default controls to load at startup */ 
+    private static String DEFAULT_CONTROLS_LIST = "default.controls";
 
-    /** Felix's bundle cache directory */
-    private File cacheDirectory;
-    
-    /** The plugin (bundle) containing directory to load codec extensions from */
-    private File pluginDirectory;
-    
-    
-    private void initPluginDirectory( File pluginDirectory )
-    {
-        // Use the given directory if not null, or use the default one
-        if ( pluginDirectory == null )
-        {
-            this.pluginDirectory = getPluginDirectoryDefault();
-            LOG.info( "Null plugin directory provided, using default instead: {}", this.pluginDirectory );
-        }
-        else
-        {
-            this.pluginDirectory = pluginDirectory;
-            LOG.info( "Valid plugin directory provided: {}", this.pluginDirectory );
-        }
-        
-        // Now, if we have a plugin directory, check that it's a directory and that it's readable
-        if ( this.pluginDirectory != null )
-        {
-            if ( ( ! this.pluginDirectory.exists() ) && ! this.pluginDirectory.mkdirs() )
-            {
-                String msg = "The provided plugin directory is not creatable:" + this.pluginDirectory.getAbsolutePath();
-                LOG.error( msg );
-                throw new IllegalArgumentException( msg );
-            }
-
-            if ( ! this.pluginDirectory.isDirectory() )
-            {
-                String msg = "The provided plugin directory is not a directory:" + this.pluginDirectory.getAbsolutePath();
-                LOG.error( msg );
-                throw new IllegalArgumentException( msg );
-            }
-            else if ( ! this.pluginDirectory.canRead() )
-            {
-                String msg = "The provided plugin directory is not readable:" + this.pluginDirectory.getAbsolutePath();
-                LOG.error( msg );
-                throw new IllegalArgumentException( msg );
-            }
-        }
-    }
-    
-    
-    private void initCacheDirectory( File cacheDirectory )
-    {
-        // Use the given directory if not null, or use the default one
-        if ( cacheDirectory == null )
-        {
-            this.cacheDirectory = getCacheDirectoryDefault();
-            LOG.info( "Null cache directory provided, using default instead: {}", this.cacheDirectory );
-        }
-        else
-        {
-            this.cacheDirectory = cacheDirectory;
-            LOG.info( "Valid cache directory provided: {}", this.cacheDirectory );
-        }
-        
-        // Now, if we have a cache directory, check that it's a directory and that it's readable
-        if ( this.cacheDirectory != null )
-        {
-            if ( ! this.cacheDirectory.exists() &&  ( ! this.cacheDirectory.mkdirs() ) )
-            {
-                String msg = "The provided cache directory can't be created:" + this.cacheDirectory.getAbsolutePath();
-                LOG.error( msg );
-                throw new IllegalArgumentException( msg );
-            }
-            
-            if ( ! this.cacheDirectory.isDirectory() )
-            {
-                String msg = "The provided cache directory is not a directory:" + this.cacheDirectory.getAbsolutePath();
-                LOG.error( msg );
-                throw new IllegalArgumentException( msg );
-            }
-            else if ( ! this.cacheDirectory.canRead() )
-            {
-                String msg = "The provided cache directory is not readable:" + this.cacheDirectory.getAbsolutePath();
-                LOG.error( msg );
-                throw new IllegalArgumentException( msg );
-            }
-        }
-    }
-    
-    
     /**
      * Creates a new instance of StandaloneLdapCodecService. Optionally checks for
      * system property {@link #PLUGIN_DIRECTORY_PROPERTY}. Intended for use by 
@@ -292,130 +154,65 @@ public class StandaloneLdapCodecService implements LdapCodecService
      *   &lt;/build&gt;
      * </pre>
      */
-    public StandaloneLdapCodecService()
+    public StandaloneLdapApiService() throws Exception
     {
-        this( null, null );
-    }
-    
-    
-    /**
-     * Creates a new instance of StandaloneLdapCodecService.
-     * 
-     * @param pluginDirectory The directory where plugins are stored
-     * @param cacheDirectory The directory where the embedded Felix manages 
-     * its cache
-     */
-    public StandaloneLdapCodecService( File pluginDirectory, File cacheDirectory )
-    {
+        // Load the controls
+        loadControls();
         
-        // -------------------------------------------------------------------
-        // Handle plugin directory
-        // -------------------------------------------------------------------
-        initPluginDirectory( pluginDirectory );
+        // Load the extended operations
+        //loadExtendedOperations();
         
-        // -------------------------------------------------------------------
-        // Handle cache directory
-        // -------------------------------------------------------------------
-        initCacheDirectory( cacheDirectory );
+        // Load the schema elements
+        //loadSchemaElements();
         
-        // Load the default controls
-        loadStockControls();
+        // Load the network layer
+        //loadNetworkLayer()
         
         // Start the Felix container
-        setupFelix();
+        //loadExtendedControls();
+    }
+    
+    
+    private void loadControls() throws Exception
+    {
+        // first load the default controls
+        loadDefaultControls();
         
-        if ( protocolCodecFactory == null )
-        {
-            try
-            {
-                @SuppressWarnings("unchecked")
-                Class<? extends ProtocolCodecFactory> clazz = ( Class<? extends ProtocolCodecFactory> ) 
-                    Class.forName( DEFAULT_PROTOCOL_CODEC_FACTORY );
-                protocolCodecFactory = clazz.newInstance();
-            }
-            catch( Exception cause )
-            {
-                throw new RuntimeException( "Failed to load default codec factory.", cause );
-            }
-        }
+        // The load the extra controls
+        //loadExtraControls();
     }
     
     
     /**
-     * Uses system properties and default considerations to create a cache 
-     * directory that can be used when one is not provided.
-     *
-     * @see FelixConstants#FRAMEWORK_STORAGE
-     * @return The cache directory default.
+     * Loads the Controls implement out of the box in the codec.
      */
-    private File getCacheDirectoryDefault()
+    private void loadDefaultControls() throws Exception
     {
-        String frameworkStorage = System.getProperties().getProperty( FelixConstants.FRAMEWORK_STORAGE );
-        LOG.info( "{}: {}", FelixConstants.FRAMEWORK_STORAGE, frameworkStorage );
+        // Load defaults from command line properties if it exists
+         String defaultControlsList = System.getProperty( DEFAULT_CONTROLS_LIST );
         
-        String felixCacheRootdir = System.getProperties().getProperty( FELIX_CACHE_ROOTDIR );
-        LOG.info( "{}: {}", FELIX_CACHE_ROOTDIR, felixCacheRootdir );
+        for ( String control : defaultControlsList.split( "," ) )
+        {
+            System.out.println( control );
 
-        try
-        {
-            if ( frameworkStorage == null )
-            {
-                if ( felixCacheRootdir == null )
-                {
-                    return new File( File.createTempFile( "dummy", null ).getParentFile(), 
-                        "osgi-cache-" + Integer.toString( this.hashCode() ) );
-                }
-                else
-                {
-                    return new File( new File ( felixCacheRootdir ), 
-                        "osgi-cache-" + Integer.toString( this.hashCode() ) );
-                }
-            } 
-            else if ( felixCacheRootdir == null )
-            {
-                return new File( frameworkStorage + "-" + Integer.toString( this.hashCode() ) );
-            }
+            Class<?>[] types = new Class<?>[] { LdapCodecService.class };
+            Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> )Class.forName( control );
+            Constructor<?> constructor = clazz.getConstructor(types);
             
-            // else if both are not null now
-            return new File( new File ( felixCacheRootdir ), 
-                frameworkStorage + "-" + Integer.toString( this.hashCode() ) );
-        }
-        catch ( Exception e ) 
-        {
-            String message = "Failure to create temporary cache directory: " + e.getMessage();
-            LOG.warn( message, e );
-            return null;
+            ControlFactory<?, ?> factory = (ControlFactory<?, ?>)constructor.newInstance( new Object[]{ this } );
+            controlFactories.put( factory.getOid(), factory );
+            LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
         }
     }
     
-    
-    /**
-     * Gets the optional system property value for the pluginDirectory if one 
-     * is provided.
-     *
-     * @return The path for the pluginDirectory or null if not provided.
-     */
-    private File getPluginDirectoryDefault()
-    {
-        String value = System.getProperty( StandaloneLdapCodecService.PLUGIN_DIRECTORY_PROPERTY );
-        LOG.info( "{}: {}", PLUGIN_DIRECTORY_PROPERTY, value );
-        
-        if ( value == null )
-        {
-            return null;
-        }
-        
-        return new File( value );
-    }
-    
-    
+
     /**
      * Assembles the <code>org.osgi.framework.system.packages.extra</code> list
      * of system packages exported by the embedding host to interact with bundles
      * running inside {@link Felix}.
      * 
      * @return A comma delimited list of exported host packages.
-     */
+     *
     private String getSystemPackages()
     {
         Set<String> pkgs = new HashSet<String>();
@@ -458,7 +255,7 @@ public class StandaloneLdapCodecService implements LdapCodecService
     
     /**
      * Sets up a {@link Felix} instance.
-     */
+     *
     private void setupFelix()
     {
         // initialize activator and setup system bundle activators
@@ -534,36 +331,6 @@ public class StandaloneLdapCodecService implements LdapCodecService
         }
     }
     
-    
-    /**
-     * Loads the Controls implement out of the box in the codec.
-     */
-    private void loadStockControls()
-    {
-        ControlFactory<?, ?> factory = new CascadeFactory( this );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
-        
-        factory = new EntryChangeFactory( this );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
-        
-        factory = new ManageDsaITFactory( this );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
-        
-        factory = new PagedResultsFactory( this );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
-        
-        factory = new PersistentSearchFactory( this );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
-
-        factory = new SubentriesFactory( this );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
-    }
     
     //-------------------------------------------------------------------------
     // LdapCodecService implementation methods
@@ -736,20 +503,6 @@ public class StandaloneLdapCodecService implements LdapCodecService
     public Asn1Container newMessageContainer()
     {
         return new LdapMessageContainer<MessageDecorator<? extends Message>>( this );
-    }
-
-
-    /**
-     * Gets the plugin directory containing codec extension bundles to load. 
-     * If null, the service checks to see if system properties were used to 
-     * specify the plugin directory. 
-     *
-     * @see {@link #PLUGIN_DIRECTORY_PROPERTY}
-     * @return The directory containing plugins.
-     */
-    public File getPluginDirectory()
-    {
-        return pluginDirectory;
     }
 
 
