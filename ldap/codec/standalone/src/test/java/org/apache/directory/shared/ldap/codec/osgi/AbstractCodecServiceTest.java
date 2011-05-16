@@ -46,6 +46,15 @@ public abstract class AbstractCodecServiceTest
     @BeforeClass
     public static void setupLdapApiService() throws Exception
     {
+        System.setProperty( "default.controls", 
+            "org.apache.directory.shared.ldap.codec.controls.cascade.CascadeFactory," +
+            "org.apache.directory.shared.ldap.codec.controls.manageDsaIT.ManageDsaITFactory," +
+            "org.apache.directory.shared.ldap.codec.controls.search.entryChange.EntryChangeFactory," +
+            "org.apache.directory.shared.ldap.codec.controls.search.pagedSearch.PagedResultsFactory," +
+            "org.apache.directory.shared.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory," +
+            "org.apache.directory.shared.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory," +
+            "org.apache.directory.shared.ldap.codec.controls.search.subentries.SubentriesFactory" );
+
         codec = new StandaloneLdapApiService();
         encoder = new LdapEncoder( codec );
     }
