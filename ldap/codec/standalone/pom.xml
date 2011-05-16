@@ -60,7 +60,7 @@
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-extras-codec-api</artifactId>
+      <artifactId>shared-ldap-extras-codec</artifactId>
     </dependency> 
 
     <dependency>
@@ -82,12 +82,18 @@
               org.apache.directory.shared.ldap.codec.controls.search.entryChange.EntryChangeFactory,
               org.apache.directory.shared.ldap.codec.controls.search.pagedSearch.PagedResultsFactory,
               org.apache.directory.shared.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory,
-              org.apache.directory.shared.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory,
               org.apache.directory.shared.ldap.codec.controls.search.subentries.SubentriesFactory
             </default.controls>
             <extra.controls>
-              
+              org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicyFactory,
+              org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory,
+              org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory,
+              org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncModifyDnFactory,
+              org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory,
+              org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory
             </extra.controls>
+            <default.extendedOperations>
+            </default.extendedOperations>
           </systemPropertyVariables>
         </configuration>
       </plugin>

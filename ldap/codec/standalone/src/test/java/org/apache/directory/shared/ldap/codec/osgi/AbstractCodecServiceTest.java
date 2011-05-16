@@ -46,14 +46,26 @@ public abstract class AbstractCodecServiceTest
     @BeforeClass
     public static void setupLdapApiService() throws Exception
     {
-        System.setProperty( "default.controls", 
+        // Load the extension points
+        System.setProperty( StandaloneLdapApiService.DEFAULT_CONTROLS_LIST, 
             "org.apache.directory.shared.ldap.codec.controls.cascade.CascadeFactory," +
             "org.apache.directory.shared.ldap.codec.controls.manageDsaIT.ManageDsaITFactory," +
             "org.apache.directory.shared.ldap.codec.controls.search.entryChange.EntryChangeFactory," +
             "org.apache.directory.shared.ldap.codec.controls.search.pagedSearch.PagedResultsFactory," +
             "org.apache.directory.shared.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory," +
-            "org.apache.directory.shared.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory," +
             "org.apache.directory.shared.ldap.codec.controls.search.subentries.SubentriesFactory" );
+
+        System.setProperty( StandaloneLdapApiService.EXTRA_CONTROLS_LIST, 
+            "org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicyFactory," +
+            "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory," +
+            "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory," +
+            "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncModifyDnFactory," +
+            "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory," +
+            "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory" );
+        
+        System.setProperty( StandaloneLdapApiService.DEFAULT_EXTENDED_OPERATION_LIST, "" ); 
+
+        System.setProperty( StandaloneLdapApiService.EXTRA_EXTENDED_OPERATION_LIST, "" ); 
 
         codec = new StandaloneLdapApiService();
         encoder = new LdapEncoder( codec );

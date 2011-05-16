@@ -85,11 +85,17 @@ public class StandaloneLdapApiService implements LdapCodecService
     /** The codec's {@link BundleActivator} */
     private CodecHostActivator activator;
     
-    /** The embedded {@link Felix} instance */
-    private Felix felix;
-    
     /** The list of default controls to load at startup */ 
-    private static String DEFAULT_CONTROLS_LIST = "default.controls";
+    public static String DEFAULT_CONTROLS_LIST = "default.controls";
+
+    /** The list of extra controls to load at startup */ 
+    public static String EXTRA_CONTROLS_LIST = "extra.controls";
+
+    /** The list of default controls to load at startup */ 
+    public static String DEFAULT_EXTENDED_OPERATION_LIST = "default.extendedOperations";
+
+    /** The list of extra controls to load at startup */ 
+    public static String EXTRA_EXTENDED_OPERATION_LIST = "extra.extendedOperations";
 
     /**
      * Creates a new instance of StandaloneLdapCodecService. Optionally checks for
@@ -179,7 +185,7 @@ public class StandaloneLdapApiService implements LdapCodecService
         loadDefaultControls();
         
         // The load the extra controls
-        //loadExtraControls();
+        loadExtraControls();
     }
     
     
@@ -192,6 +198,34 @@ public class StandaloneLdapApiService implements LdapCodecService
          String defaultControlsList = System.getProperty( DEFAULT_CONTROLS_LIST );
         
         for ( String control : defaultControlsList.split( "," ) )
+        {
+            System.out.println( control );
+
+            Class<?>[] types = new Class<?>[] { LdapCodecService.class };
+            Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> )Class.forName( control );
+            Constructor<?> constructor = clazz.getConstructor(types);
+            
+            ControlFactory<?, ?> factory = (ControlFactory<?, ?>)constructor.newInstance( new Object[]{ this } );
+            controlFactories.put( factory.getOid(), factory );
+            LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        }
+    }
+    
+    
+    /**
+     * Loads the extra Controls
+     */
+    private void loadExtraControls() throws Exception
+    {
+        // Load extra from command line properties if it exists
+        String extraControlsList = System.getProperty( EXTRA_CONTROLS_LIST );
+        
+        if ( Strings.isEmpty( extraControlsList ) )
+        {
+            return;
+        }
+        
+        for ( String control : extraControlsList.split( "," ) )
         {
             System.out.println( control );
 
