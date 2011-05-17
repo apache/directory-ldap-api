@@ -203,8 +203,13 @@ public class StandaloneLdapApiService implements LdapApiService
     private void loadDefaultControls() throws Exception
     {
         // Load defaults from command line properties if it exists
-         String defaultControlsList = System.getProperty( DEFAULT_CONTROLS_LIST );
+        String defaultControlsList = System.getProperty( DEFAULT_CONTROLS_LIST );
         
+        if ( Strings.isEmpty( defaultControlsList ) )
+        {
+            return;
+        }
+
         for ( String control : defaultControlsList.split( "," ) )
         {
             System.out.println( control );

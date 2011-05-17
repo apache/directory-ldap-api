@@ -111,31 +111,6 @@
   <build>
     <plugins>
       <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <groupId>org.apache.maven.plugins</groupId>
-        <configuration>
-          <systemPropertyVariables>
-            <workingDirectory>${basedir}/target</workingDirectory>
-            <felix.cache.rootdir>
-              ${project.build.directory}
-            </felix.cache.rootdir>
-            <felix.cache.locking>
-              true
-            </felix.cache.locking>
-            <org.osgi.framework.storage.clean>
-              onFirstInit
-            </org.osgi.framework.storage.clean>
-            <org.osgi.framework.storage>
-              osgi-cache
-            </org.osgi.framework.storage>
-            <codec.plugin.directory>
-              ${codec.plugin.directory}
-            </codec.plugin.directory>
-          </systemPropertyVariables>
-        </configuration>
-      </plugin>
-      
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
@@ -158,7 +133,6 @@
           </execution>
         </executions>
       </plugin>
-      
     </plugins>
   </build>
 </project>
