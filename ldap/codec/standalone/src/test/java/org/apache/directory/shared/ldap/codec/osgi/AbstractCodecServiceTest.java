@@ -20,6 +20,8 @@
 package org.apache.directory.shared.ldap.codec.osgi;
 
 
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.shared.ldap.codec.api.LdapEncoder;
 import org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapApiService;
 import org.junit.AfterClass;
@@ -34,7 +36,7 @@ import org.junit.BeforeClass;
 public abstract class AbstractCodecServiceTest
 {
     /** The codec service */
-    protected static StandaloneLdapApiService codec;
+    protected static LdapApiService codec;
 
     /** The encoder instance */
     protected static LdapEncoder encoder;
@@ -74,7 +76,7 @@ public abstract class AbstractCodecServiceTest
         
         System.setProperty( StandaloneLdapApiService.EXTRA_EXTENDED_OPERATION_LIST, "" ); 
 
-        codec = new StandaloneLdapApiService();
+        codec = LdapApiServiceFactory.getSingleton();
         encoder = new LdapEncoder( codec );
     }
 

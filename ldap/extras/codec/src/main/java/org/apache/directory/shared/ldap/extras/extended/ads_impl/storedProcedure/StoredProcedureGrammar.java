@@ -28,7 +28,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
+import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.shared.ldap.extras.extended.StoredProcedureParameter;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -94,7 +94,7 @@ public final class StoredProcedureGrammar extends AbstractGrammar<StoredProcedur
                     StoredProcedureRequestDecorator storedProcedure = container.getStoredProcedure();
                     if ( storedProcedure == null )
                     {
-                        storedProcedure = new StoredProcedureRequestDecorator( LdapCodecServiceFactory.getSingleton() );
+                        storedProcedure = new StoredProcedureRequestDecorator( LdapApiServiceFactory.getSingleton() );
                         container.setStoredProcedure( storedProcedure );
                     }
 

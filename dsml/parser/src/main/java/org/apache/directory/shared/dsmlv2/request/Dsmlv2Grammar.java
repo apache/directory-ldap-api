@@ -42,7 +42,7 @@ import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml.ResponseOrder
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.CodecControl;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
+import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.model.entry.BinaryValue;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
@@ -80,7 +80,7 @@ import org.xmlpull.v1.XmlPullParserException;
  */
 public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 {
-    private LdapApiService codec = LdapCodecServiceFactory.getSingleton();
+    private LdapApiService codec = LdapApiServiceFactory.getSingleton();
     
 
     /**

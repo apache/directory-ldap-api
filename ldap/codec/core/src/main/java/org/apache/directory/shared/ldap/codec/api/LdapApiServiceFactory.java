@@ -35,10 +35,10 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapCodecServiceFactory
+public class LdapApiServiceFactory
 {
     /** Logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( LdapCodecServiceFactory.class );
+    private static final Logger LOG = LoggerFactory.getLogger( LdapApiServiceFactory.class );
     
     /** The LdapCodecService singleton bound to this factory */
     private static LdapApiService ldapCodecService;
@@ -105,10 +105,10 @@ public class LdapCodecServiceFactory
          * If the class member is already set we have problems.
          */
         
-        if ( LdapCodecServiceFactory.ldapCodecService != null )
+        if ( LdapApiServiceFactory.ldapCodecService != null )
         {
             StringBuilder sb = new StringBuilder( "The LdapCodecService is already set to an instance of " );
-            sb.append( LdapCodecServiceFactory.class.getName() );
+            sb.append( LdapApiServiceFactory.class.getName() );
             LOG.error( sb.toString() );
             throw new IllegalStateException( sb.toString() );
         }
@@ -124,8 +124,8 @@ public class LdapCodecServiceFactory
             {
                 @SuppressWarnings("unchecked")
                 Class<? extends LdapApiService> serviceClass = ( Class<? extends LdapApiService> ) 
-                    Class.forName( "org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapCodecService" );
-                LdapCodecServiceFactory.ldapCodecService = serviceClass.newInstance();
+                    Class.forName( "org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapApiService" );
+                LdapApiServiceFactory.ldapCodecService = serviceClass.newInstance();
                 usingStandaloneImplementation = true;
             }
             catch ( Exception e )
@@ -136,7 +136,7 @@ public class LdapCodecServiceFactory
         else
         {
             usingStandaloneImplementation = false;
-            LdapCodecServiceFactory.ldapCodecService = ldapCodecService;
+            LdapApiServiceFactory.ldapCodecService = ldapCodecService;
         }
     }
 }

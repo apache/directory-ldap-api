@@ -26,7 +26,7 @@ import static org.junit.Assert.fail;
 
 import org.apache.directory.shared.dsmlv2.request.Dsmlv2Grammar;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
+import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.xmlpull.v1.XmlPullParserException;
 
 /**
@@ -37,7 +37,7 @@ import org.xmlpull.v1.XmlPullParserException;
 public abstract class AbstractTest
 {
     /** The LDAP encoder decoder service */
-    private LdapApiService codec = LdapCodecServiceFactory.getSingleton();
+    private LdapApiService codec = LdapApiServiceFactory.getSingleton();
     
     private Dsmlv2Grammar grammar = new Dsmlv2Grammar();
     

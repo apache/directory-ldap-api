@@ -78,7 +78,7 @@ public class StandaloneLdapCodecServiceTest
     @Test
     public void testLoadingExtras() throws Exception
     {
-        StandaloneLdapApiService codec = new StandaloneLdapApiService();
+        LdapApiService codec = LdapApiServiceFactory.getSingleton();
         
         assertTrue( codec.isControlRegistered( PasswordPolicy.OID ) );
 
@@ -94,7 +94,7 @@ public class StandaloneLdapCodecServiceTest
     @Test
     public void testLoadingExtendedOperation() throws Exception
     {
-        StandaloneLdapApiService codec = new StandaloneLdapApiService();
+        LdapApiService codec = LdapApiServiceFactory.getSingleton();
         StoredProcedureRequest req = new StoredProcedureRequestImpl();
         req.setLanguage( "Java" );
         req.setProcedure( Strings.getBytesUtf8( "bogusProc" ) );
