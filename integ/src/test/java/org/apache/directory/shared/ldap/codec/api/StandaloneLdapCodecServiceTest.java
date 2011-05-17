@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.extras.extended.StoredProcedureRequest;
 import org.apache.directory.shared.ldap.extras.extended.StoredProcedureRequestImpl;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.util.Strings;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -38,7 +39,39 @@ import org.junit.Test;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class StandaloneLdapCodecServiceTest
-{   
+{
+    @BeforeClass
+    public static void setupLdapApiService() throws Exception
+    {
+        // Load the extension points
+        System.setProperty( StandaloneLdapApiService.DEFAULT_CONTROLS_LIST, 
+            "org.apache.directory.shared.ldap.codec.controls.cascade.CascadeFactory," +
+            "org.apache.directory.shared.ldap.codec.controls.manageDsaIT.ManageDsaITFactory," +
+            "org.apache.directory.shared.ldap.codec.controls.search.entryChange.EntryChangeFactory," +
+            "org.apache.directory.shared.ldap.codec.controls.search.pagedSearch.PagedResultsFactory," +
+            "org.apache.directory.shared.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory," +
+            "org.apache.directory.shared.ldap.codec.controls.search.subentries.SubentriesFactory" );
+
+        System.setProperty( StandaloneLdapApiService.EXTRA_CONTROLS_LIST, 
+            "org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicyFactory," +
+            "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory," +
+            "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory," +
+            "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncModifyDnFactory," +
+            "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory," +
+            "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory" );
+        
+        System.setProperty( StandaloneLdapApiService.DEFAULT_EXTENDED_OPERATION_REQUESTS_LIST, 
+            "org.apache.directory.shared.ldap.extras.extended.ads_impl.cancel.CancelFactory," +
+            "org.apache.directory.shared.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory," +
+            "org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory," +
+            "org.apache.directory.shared.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory" );
+
+        System.setProperty( StandaloneLdapApiService.DEFAULT_EXTENDED_OPERATION_RESPONSES_LIST, 
+            "org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory" );
+        
+        System.setProperty( StandaloneLdapApiService.EXTRA_EXTENDED_OPERATION_LIST, "" ); 
+    }
+
     /**
      * Test method for {@link org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapCodecService#StandaloneLdapCodecService()}.
      */
