@@ -26,7 +26,7 @@ import java.nio.ByteBuffer;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.model.message.IntermediateResponse;
@@ -53,7 +53,7 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
      *
      * @param decoratedMessage the decorated IntermediateResponse
      */
-    public IntermediateResponseDecorator( LdapCodecService codec, IntermediateResponse decoratedMessage )
+    public IntermediateResponseDecorator( LdapApiService codec, IntermediateResponse decoratedMessage )
     {
         super( codec, decoratedMessage );
     }

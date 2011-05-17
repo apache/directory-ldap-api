@@ -26,7 +26,7 @@ import java.nio.ByteBuffer;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.model.message.DeleteRequest;
 import org.apache.directory.shared.ldap.model.message.DeleteResponse;
@@ -46,7 +46,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
      *
      * @param decoratedMessage the decorated DeleteRequest
      */
-    public DeleteRequestDecorator( LdapCodecService codec, DeleteRequest decoratedMessage )
+    public DeleteRequestDecorator( LdapApiService codec, DeleteRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
     }

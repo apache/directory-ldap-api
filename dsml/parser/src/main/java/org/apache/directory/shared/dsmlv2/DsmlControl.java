@@ -20,7 +20,7 @@
 package org.apache.directory.shared.dsmlv2;
 
 
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.dom4j.Element;
 
@@ -40,10 +40,10 @@ public class DsmlControl<E extends Control>
     protected byte[] value;
     
     /** The codec service responsible for encoding decoding this object */
-    private LdapCodecService codec;
+    private LdapApiService codec;
     
     
-    public DsmlControl( LdapCodecService codec, E decorated )
+    public DsmlControl( LdapApiService codec, E decorated )
     {
         this.codec = codec;
         this.decorated = decorated;
@@ -53,7 +53,7 @@ public class DsmlControl<E extends Control>
     /**
      * Gets the LDAP codec service.
      */
-    public LdapCodecService getCodecService()
+    public LdapApiService getCodecService()
     {
         return codec;
     }

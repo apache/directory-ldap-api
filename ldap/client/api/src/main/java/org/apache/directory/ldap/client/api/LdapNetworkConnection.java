@@ -62,7 +62,7 @@ import org.apache.directory.ldap.client.api.future.SearchFuture;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
@@ -221,7 +221,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     private SchemaManager schemaManager;
 
     /** the ldap codec service */
-    LdapCodecService codec = LdapCodecServiceFactory.getSingleton();
+    LdapApiService codec = LdapCodecServiceFactory.getSingleton();
 
     /** The Ldap codec protocol filter */
     private IoFilter ldapProtocolFilter = new ProtocolCodecFilter( codec.getProtocolCodecFactory() );
@@ -3485,7 +3485,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public LdapCodecService getCodecService()
+    public LdapApiService getCodecService()
     {
         return codec;
     }

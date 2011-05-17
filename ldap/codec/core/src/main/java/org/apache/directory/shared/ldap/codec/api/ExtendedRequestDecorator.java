@@ -54,7 +54,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
      *
      * @param decoratedMessage the decorated ExtendedRequest
      */
-    public ExtendedRequestDecorator( LdapCodecService codec, Q decoratedMessage )
+    public ExtendedRequestDecorator( LdapApiService codec, Q decoratedMessage )
     {
         super( codec, decoratedMessage );
     }

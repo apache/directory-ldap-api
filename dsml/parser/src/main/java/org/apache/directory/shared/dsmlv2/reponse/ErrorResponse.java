@@ -21,7 +21,7 @@ package org.apache.directory.shared.dsmlv2.reponse;
 
 
 import org.apache.directory.shared.dsmlv2.DsmlDecorator;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.AbstractResponse;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.message.Response;
@@ -276,7 +276,7 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
     }
 
 
-    public LdapCodecService getCodecService()
+    public LdapApiService getCodecService()
     {
         throw new IllegalArgumentException( "This should not be a decorator " +
         		"but seems it was made into one. We need to do something about" +

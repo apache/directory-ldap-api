@@ -20,7 +20,7 @@
 package org.apache.directory.shared.dsmlv2.reponse;
 
 
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.BindResponse;
 import org.apache.directory.shared.ldap.model.message.BindResponseImpl;
 import org.dom4j.Element;
@@ -36,7 +36,7 @@ public class BindResponseDsml extends AbstractResultResponseDsml<BindResponse> i
     /**
      * Creates a new getDecoratedMessage() of AuthResponseDsml.
      */
-    public BindResponseDsml( LdapCodecService codec )
+    public BindResponseDsml( LdapApiService codec )
     {
         super( codec, new BindResponseImpl() );
     }
@@ -48,7 +48,7 @@ public class BindResponseDsml extends AbstractResultResponseDsml<BindResponse> i
      * @param ldapMessage
      *      the message to decorate
      */
-    public BindResponseDsml( LdapCodecService codec, BindResponse ldapMessage )
+    public BindResponseDsml( LdapApiService codec, BindResponse ldapMessage )
     {
         super( codec, ldapMessage );
     }

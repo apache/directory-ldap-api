@@ -63,8 +63,15 @@ public abstract class AbstractCodecServiceTest
             "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory," +
             "org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory" );
         
-        System.setProperty( StandaloneLdapApiService.DEFAULT_EXTENDED_OPERATION_LIST, "" ); 
+        System.setProperty( StandaloneLdapApiService.DEFAULT_EXTENDED_OPERATION_REQUESTS_LIST, 
+            "org.apache.directory.shared.ldap.extras.extended.ads_impl.cancel.CancelFactory," +
+            "org.apache.directory.shared.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory," +
+            "org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory," +
+            "org.apache.directory.shared.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory" );
 
+        System.setProperty( StandaloneLdapApiService.DEFAULT_EXTENDED_OPERATION_RESPONSES_LIST, 
+            "org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory" );
+        
         System.setProperty( StandaloneLdapApiService.EXTRA_EXTENDED_OPERATION_LIST, "" ); 
 
         codec = new StandaloneLdapApiService();

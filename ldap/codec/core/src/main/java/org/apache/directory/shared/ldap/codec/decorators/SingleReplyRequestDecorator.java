@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.codec.decorators;
 
 
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.AbandonListener;
 import org.apache.directory.shared.ldap.model.message.AbandonableRequest;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
@@ -41,7 +41,7 @@ public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest<R
      *
      * @param decoratedMessage the decorated message
      */
-    public SingleReplyRequestDecorator( LdapCodecService codec, M decoratedMessage )
+    public SingleReplyRequestDecorator( LdapApiService codec, M decoratedMessage )
     {
         super( codec, decoratedMessage );
     }

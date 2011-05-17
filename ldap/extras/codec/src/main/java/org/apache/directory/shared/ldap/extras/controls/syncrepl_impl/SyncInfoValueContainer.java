@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.extras.controls.syncrepl_impl;
 
 
 import org.apache.directory.shared.asn1.ber.AbstractContainer;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 
 
 /**
@@ -34,14 +34,14 @@ public class SyncInfoValueContainer extends AbstractContainer
     /** SyncInfoValueControl */
     private SyncInfoValueDecorator control;
 
-    private LdapCodecService codec;
+    private LdapApiService codec;
 
     
     /**
      * Creates a new SyncInfoValueControlContainer object. We will store one grammar,
      * it's enough ...
      */
-    public SyncInfoValueContainer( LdapCodecService codec )
+    public SyncInfoValueContainer( LdapApiService codec )
     {
         super();
         this.codec = codec;
@@ -56,7 +56,7 @@ public class SyncInfoValueContainer extends AbstractContainer
      * Creates a new SyncInfoValueControlContainer object. We will store one grammar,
      * it's enough ...
      */
-    public SyncInfoValueContainer( LdapCodecService codec, SyncInfoValueDecorator control )
+    public SyncInfoValueContainer( LdapApiService codec, SyncInfoValueDecorator control )
     {
         super();
         this.codec = codec;
@@ -88,7 +88,7 @@ public class SyncInfoValueContainer extends AbstractContainer
     }
 
     
-    public LdapCodecService getCodecService()
+    public LdapApiService getCodecService()
     {
         return codec;
     }

@@ -44,7 +44,7 @@ public abstract class ControlDecorator<E extends Control> extends AbstractAsn1Ob
     protected byte[] value;
     
     /** The codec service responsible for encoding decoding this object */
-    private LdapCodecService codec;
+    private LdapApiService codec;
 
     
     /**
@@ -52,7 +52,7 @@ public abstract class ControlDecorator<E extends Control> extends AbstractAsn1Ob
      *
      * @param decoratedControl The Control to decorate.
      */
-    public ControlDecorator( LdapCodecService codec, E decoratedControl )
+    public ControlDecorator( LdapApiService codec, E decoratedControl )
     {
         this.decorated = decoratedControl;
         this.codec = codec;
@@ -80,7 +80,7 @@ public abstract class ControlDecorator<E extends Control> extends AbstractAsn1Ob
     /**
      * {@inheritDoc}
      */
-    public LdapCodecService getCodecService()
+    public LdapApiService getCodecService()
     {
         return codec;
     }

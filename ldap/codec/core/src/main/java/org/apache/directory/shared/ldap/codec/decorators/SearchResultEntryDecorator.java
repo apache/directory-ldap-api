@@ -31,7 +31,7 @@ import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.asn1.util.Asn1StringUtils;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
@@ -74,7 +74,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
      *
      * @param decoratedMessage the decorated SearchResultEntry
      */
-    public SearchResultEntryDecorator( LdapCodecService codec, SearchResultEntry decoratedMessage )
+    public SearchResultEntryDecorator( LdapApiService codec, SearchResultEntry decoratedMessage )
     {
         super( codec, decoratedMessage );
     }

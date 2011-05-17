@@ -92,8 +92,15 @@
               org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory,
               org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory
             </extra.controls>
-            <default.extendedOperations>
-            </default.extendedOperations>
+            <default.extendedOperation.requests>
+              org.apache.directory.shared.ldap.extras.extended.ads_impl.cancel.CancelFactory,
+              org.apache.directory.shared.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory,
+              org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory,
+              org.apache.directory.shared.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory
+            </default.extendedOperation.requests>
+            <default.extendedOperation.responses>
+              org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory
+            </default.extendedOperation.responses>
           </systemPropertyVariables>
         </configuration>
       </plugin>

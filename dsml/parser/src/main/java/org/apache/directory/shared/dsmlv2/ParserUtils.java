@@ -34,7 +34,7 @@ import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml.Processing;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml.ResponseOrder;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.CodecControl;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.ldif.LdifUtils;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.util.Base64;
@@ -219,7 +219,7 @@ public final class ParserUtils
      * @param element the element to add the Controls to
      * @param controls a List of Controls
      */
-    public static void addControls( LdapCodecService codec, Element element, Collection<Control> controls )
+    public static void addControls( LdapApiService codec, Element element, Collection<Control> controls )
     {
         if ( controls != null )
         {

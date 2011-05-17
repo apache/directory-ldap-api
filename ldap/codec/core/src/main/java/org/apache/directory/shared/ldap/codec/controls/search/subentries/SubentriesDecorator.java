@@ -29,7 +29,7 @@ import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.controls.Subentries;
 import org.apache.directory.shared.ldap.model.message.controls.SubentriesImpl;
 
@@ -49,7 +49,7 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
     /**
      * Default constructor
      */
-    public SubentriesDecorator( LdapCodecService codec )
+    public SubentriesDecorator( LdapApiService codec )
     {
         this( codec, new SubentriesImpl() );
     }
@@ -61,7 +61,7 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
      *
      * @param control The Subentries Control to wrap with this decorator.
      */
-    public SubentriesDecorator( LdapCodecService codec, Subentries control )
+    public SubentriesDecorator( LdapApiService codec, Subentries control )
     {
         super( codec, control );
     }

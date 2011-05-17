@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.codec.controls.search.entryChange;
 
 
 import org.apache.directory.shared.ldap.codec.api.ControlFactory;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.controls.EntryChange;
 
 
@@ -34,7 +34,7 @@ import org.apache.directory.shared.ldap.model.message.controls.EntryChange;
 public class EntryChangeFactory implements ControlFactory<EntryChange, EntryChangeDecorator>
 {
     /** The LDAP codec service */
-    private LdapCodecService codec;
+    private LdapApiService codec;
 
     
     /**
@@ -42,7 +42,7 @@ public class EntryChangeFactory implements ControlFactory<EntryChange, EntryChan
      *
      * @param codec The LDAP codec.
      */
-    public EntryChangeFactory( LdapCodecService codec )
+    public EntryChangeFactory( LdapApiService codec )
     {
         this.codec = codec;
     }

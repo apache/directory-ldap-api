@@ -65,5 +65,5 @@ public interface Decorator<E>
      * 
      * @return the codec service
      */
-    LdapCodecService getCodecService();
+    LdapApiService getCodecService();
 }

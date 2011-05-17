@@ -26,7 +26,7 @@ import org.apache.directory.shared.asn1.Asn1Object;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.ldap.codec.api.CodecControl;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.model.message.controls.Cascade;
 
@@ -41,7 +41,7 @@ public class CascadeDecorator extends ControlDecorator<Cascade> implements Codec
     /**
      * Default constructor
      */
-    public CascadeDecorator( LdapCodecService codec, Cascade control )
+    public CascadeDecorator( LdapApiService codec, Cascade control )
     {
         super( codec, control );
     }

@@ -93,10 +93,10 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     private int controlsLength;
     
     /** The LdapCodecService */
-    private final LdapCodecService codec;
+    private final LdapApiService codec;
 
     
-    public static MessageDecorator<? extends Message> getDecorator( LdapCodecService codec, Message decoratedMessage )
+    public static MessageDecorator<? extends Message> getDecorator( LdapApiService codec, Message decoratedMessage )
     {
         if ( decoratedMessage instanceof MessageDecorator )
         {
@@ -212,7 +212,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * Makes a Message an Decorator object.
      */
-    protected MessageDecorator( LdapCodecService codec, E decoratedMessage )
+    protected MessageDecorator( LdapApiService codec, E decoratedMessage )
     {
         this.codec = codec;
         this.decoratedMessage = decoratedMessage;
@@ -413,7 +413,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
-    public LdapCodecService getCodecService()
+    public LdapApiService getCodecService()
     {
         return codec;
     }

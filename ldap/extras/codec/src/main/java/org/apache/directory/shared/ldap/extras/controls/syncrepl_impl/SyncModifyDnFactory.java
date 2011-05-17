@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.extras.controls.syncrepl_impl;
 
 
 import org.apache.directory.shared.ldap.codec.api.ControlFactory;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.extras.controls.SyncModifyDn;
 
 
@@ -34,7 +34,7 @@ import org.apache.directory.shared.ldap.extras.controls.SyncModifyDn;
 public class SyncModifyDnFactory implements ControlFactory<SyncModifyDn, SyncModifyDnDecorator>
 {
     
-    private LdapCodecService codec;
+    private LdapApiService codec;
     
 
     /**
@@ -42,7 +42,7 @@ public class SyncModifyDnFactory implements ControlFactory<SyncModifyDn, SyncMod
      *
      * @param codec The codec for this factory.
      */
-    public SyncModifyDnFactory( LdapCodecService codec )
+    public SyncModifyDnFactory( LdapApiService codec )
     {
         this.codec = codec;
     }

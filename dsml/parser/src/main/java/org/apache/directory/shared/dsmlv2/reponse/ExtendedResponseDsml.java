@@ -22,7 +22,7 @@ package org.apache.directory.shared.dsmlv2.reponse;
 
 import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
 import org.apache.directory.shared.ldap.model.message.ExtendedResponseImpl;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
@@ -49,7 +49,7 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
     /**
      * Creates a new getDecoratedMessage() of ExtendedResponseDsml.
      */
-    public ExtendedResponseDsml( LdapCodecService codec )
+    public ExtendedResponseDsml( LdapApiService codec )
     {
         super( codec, new ExtendedResponseImpl( "" ) );
     }
@@ -61,7 +61,7 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
      * @param ldapMessage
      *      the message to decorate
      */
-    public ExtendedResponseDsml( LdapCodecService codec, ExtendedResponse ldapMessage )
+    public ExtendedResponseDsml( LdapApiService codec, ExtendedResponse ldapMessage )
     {
         super( codec, ldapMessage );
     }

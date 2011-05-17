@@ -21,7 +21,7 @@ package org.apache.directory.shared.dsmlv2.reponse;
 
 
 import org.apache.directory.shared.dsmlv2.AbstractDsmlMessageDecorator;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.Response;
 
 
@@ -38,7 +38,7 @@ public abstract class AbstractResponseDsml<E extends Response>
      *
      * @param response the LDAP response message to decorate
      */
-    public AbstractResponseDsml( LdapCodecService codec, E response )
+    public AbstractResponseDsml( LdapApiService codec, E response )
     {
         super( codec, response );
     }

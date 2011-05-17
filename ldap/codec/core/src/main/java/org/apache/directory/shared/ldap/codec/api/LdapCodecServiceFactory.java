@@ -41,7 +41,7 @@ public class LdapCodecServiceFactory
     private static final Logger LOG = LoggerFactory.getLogger( LdapCodecServiceFactory.class );
     
     /** The LdapCodecService singleton bound to this factory */
-    private static LdapCodecService ldapCodecService;
+    private static LdapApiService ldapCodecService;
     
     /** Whether or not the standalone implementation is being used */
     private static boolean usingStandaloneImplementation;
@@ -82,7 +82,7 @@ public class LdapCodecServiceFactory
      * @return a valid instance implementation based on environment and the 
      * availability of bindings.
      */
-    public static LdapCodecService getSingleton()
+    public static LdapApiService getSingleton()
     {
         if ( ldapCodecService == null )
         {
@@ -99,7 +99,7 @@ public class LdapCodecServiceFactory
      * 
      * @param ldapCodecService The LDAP Codec Service to initialize with.
      */
-    public static void initialize( LdapCodecService ldapCodecService )
+    public static void initialize( LdapApiService ldapCodecService )
     {
         /*
          * If the class member is already set we have problems.
@@ -123,7 +123,7 @@ public class LdapCodecServiceFactory
             try
             {
                 @SuppressWarnings("unchecked")
-                Class<? extends LdapCodecService> serviceClass = ( Class<? extends LdapCodecService> ) 
+                Class<? extends LdapApiService> serviceClass = ( Class<? extends LdapApiService> ) 
                     Class.forName( "org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapCodecService" );
                 LdapCodecServiceFactory.ldapCodecService = serviceClass.newInstance();
                 usingStandaloneImplementation = true;

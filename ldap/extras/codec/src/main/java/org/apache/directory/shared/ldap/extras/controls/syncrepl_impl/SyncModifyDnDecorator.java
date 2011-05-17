@@ -31,7 +31,7 @@ import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.asn1.util.Asn1StringUtils;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.extras.controls.SyncModifyDn;
 import org.apache.directory.shared.ldap.extras.controls.SyncModifyDnImpl;
@@ -76,20 +76,20 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
     private Asn1Decoder decoder = new Asn1Decoder();
 
 
-    public SyncModifyDnDecorator( LdapCodecService codec )
+    public SyncModifyDnDecorator( LdapApiService codec )
     {
         super( codec, new SyncModifyDnImpl() );
     }
 
 
-    public SyncModifyDnDecorator( LdapCodecService codec, SyncModifyDnType type )
+    public SyncModifyDnDecorator( LdapApiService codec, SyncModifyDnType type )
     {
         this( codec );
         this.modDnType = type;
     }
 
 
-    public SyncModifyDnDecorator( LdapCodecService codec, SyncModifyDn control )
+    public SyncModifyDnDecorator( LdapApiService codec, SyncModifyDn control )
     {
         super( codec, control );
     }

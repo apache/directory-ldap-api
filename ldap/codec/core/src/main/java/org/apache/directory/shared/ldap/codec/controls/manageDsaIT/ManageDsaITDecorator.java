@@ -26,7 +26,7 @@ import org.apache.directory.shared.asn1.Asn1Object;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.controls.ManageDsaIT;
 
 
@@ -42,7 +42,7 @@ public class ManageDsaITDecorator extends ControlDecorator<ManageDsaIT> implemen
     /**
      * Default constructor
      */
-    public ManageDsaITDecorator( LdapCodecService codec, ManageDsaIT control )
+    public ManageDsaITDecorator( LdapApiService codec, ManageDsaIT control )
     {
         super( codec, control );
     }

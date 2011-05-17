@@ -25,7 +25,7 @@ import java.nio.ByteBuffer;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.dsmlv2.AbstractDsmlMessageDecorator;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.Request;
 import org.dom4j.Element;
 
@@ -45,7 +45,7 @@ public abstract class AbstractRequestDsml<E extends Request>
      * @param ldapMessage
      *      the message to decorate
      */
-    public AbstractRequestDsml( LdapCodecService codec, E ldapMessage )
+    public AbstractRequestDsml( LdapApiService codec, E ldapMessage )
     {
         super( codec, ldapMessage );
     }

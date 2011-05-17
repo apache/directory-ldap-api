@@ -21,7 +21,7 @@
 package org.apache.directory.shared.dsmlv2.reponse;
 
 
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.CompareResponse;
 import org.apache.directory.shared.ldap.model.message.CompareResponseImpl;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
@@ -42,7 +42,7 @@ public class CompareResponseDsml extends AbstractResultResponseDsml<CompareRespo
     /**
      * Creates a new getDecoratedMessage() of CompareResponseDsml.
      */
-    public CompareResponseDsml( LdapCodecService codec )
+    public CompareResponseDsml( LdapApiService codec )
     {
         super( codec, new CompareResponseImpl() );
     }
@@ -54,7 +54,7 @@ public class CompareResponseDsml extends AbstractResultResponseDsml<CompareRespo
      * @param ldapMessage
      *      the message to decorate
      */
-    public CompareResponseDsml( LdapCodecService codec, CompareResponse ldapMessage )
+    public CompareResponseDsml( LdapApiService codec, CompareResponse ldapMessage )
     {
         super( codec, ldapMessage );
     }

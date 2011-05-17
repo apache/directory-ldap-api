@@ -56,7 +56,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
      *
      * @param decoratedMessage the decorated ExtendedResponse
      */
-    public ExtendedResponseDecorator( LdapCodecService codec, R decoratedMessage )
+    public ExtendedResponseDecorator( LdapApiService codec, R decoratedMessage )
     {
         super( codec, decoratedMessage );
     }

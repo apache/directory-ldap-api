@@ -21,7 +21,7 @@ package org.apache.directory.shared.dsmlv2.reponse;
 
 
 import org.apache.directory.shared.dsmlv2.ParserUtils;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
@@ -57,7 +57,7 @@ public class SearchResultEntryDsml
     /**
      * Creates a new getDecoratedMessage() of SearchResultEntryDsml.
      */
-    public SearchResultEntryDsml( LdapCodecService codec )
+    public SearchResultEntryDsml( LdapApiService codec )
     {
         super( codec, new SearchResultEntryImpl() );
     }
@@ -69,7 +69,7 @@ public class SearchResultEntryDsml
      * @param ldapMessage
      *      the message to decorate
      */
-    public SearchResultEntryDsml( LdapCodecService codec, SearchResultEntry ldapMessage )
+    public SearchResultEntryDsml( LdapApiService codec, SearchResultEntry ldapMessage )
     {
         super( codec, ldapMessage );
     }
