@@ -32,14 +32,14 @@ import org.osgi.framework.ServiceRegistration;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapApiActivator implements BundleActivator
+public class LdapCodecActivator implements BundleActivator
 {
     private StandaloneLdapApiService codec;
     private ServiceRegistration registration;
     private BundleContext bundleContext;
     
     
-    public LdapApiActivator( StandaloneLdapApiService codec )
+    public LdapCodecActivator( StandaloneLdapApiService codec )
     {
         this.codec = codec;
     }
