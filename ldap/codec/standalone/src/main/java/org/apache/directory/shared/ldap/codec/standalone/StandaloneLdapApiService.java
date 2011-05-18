@@ -52,9 +52,7 @@ import org.apache.directory.shared.ldap.model.message.Message;
 import org.apache.directory.shared.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.shared.util.Strings;
 import org.apache.directory.shared.util.exception.NotImplementedException;
-import org.apache.felix.framework.Felix;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
-import org.osgi.framework.BundleActivator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,9 +79,6 @@ public class StandaloneLdapApiService implements LdapApiService
     
     /** The LDAP {@link ProtocolCodecFactory} implementation used */
     private ProtocolCodecFactory protocolCodecFactory;
-    
-    /** The codec's {@link BundleActivator} */
-    private LdapApiActivator activator;
     
     /** The list of default controls to load at startup */ 
     public static String DEFAULT_CONTROLS_LIST = "default.controls";
@@ -177,8 +172,20 @@ public class StandaloneLdapApiService implements LdapApiService
         // Load the network layer
         //loadNetworkLayer()
         
-        // Start the Felix container
-        //loadExtendedControls();
+        if ( protocolCodecFactory == null )
+        {
+             try
+             {
+             @SuppressWarnings("unchecked")
+             Class<? extends ProtocolCodecFactory> clazz = ( Class<? extends ProtocolCodecFactory> )
+             Class.forName( DEFAULT_PROTOCOL_CODEC_FACTORY );
+             protocolCodecFactory = clazz.newInstance();
+             }
+             catch( Exception cause )
+             {
+             throw new RuntimeException( "Failed to load default codec factory.", cause );
+             }
+        }
     }
     
     
@@ -328,132 +335,6 @@ public class StandaloneLdapApiService implements LdapApiService
     private void loadExtraExtendedOperations()
     {
         
-    }
-    
-
-    /**
-     * Assembles the <code>org.osgi.framework.system.packages.extra</code> list
-     * of system packages exported by the embedding host to interact with bundles
-     * running inside {@link Felix}.
-     * 
-     * @return A comma delimited list of exported host packages.
-     *
-    private String getSystemPackages()
-    {
-        Set<String> pkgs = new HashSet<String>();
-
-        // Load defaults from command line properties if it exists
-        String sysProp = System.getProperty( FelixConstants.FRAMEWORK_SYSTEMPACKAGES_EXTRA );
-        
-        if ( sysProp != null )
-        {
-            OsgiUtils.splitIntoPackages( sysProp, pkgs );
-        }
-        
-        // Merge defaults with exports from all bundles on system path
-        OsgiUtils.getAllBundleExports( null, pkgs );
-        
-        // Merge all now with exports listed in our properties
-        Collections.addAll( pkgs, SYSTEM_PACKAGES );
-        
-        StringBuilder sb = new StringBuilder();
-        boolean isFirst = true;
-        
-        for ( String pkg :  pkgs )
-        {
-            if ( isFirst )
-            {
-                isFirst = false;
-            }
-            else
-            {
-                sb.append( ',' );
-            }
-            
-            sb.append( pkg );
-            LOG.debug( "Adding system extras package: {}", pkg );
-        }
-        
-        return sb.toString();
-    }
-    
-    
-    /**
-     * Sets up a {@link Felix} instance.
-     *
-    private void setupFelix()
-    {
-        // initialize activator and setup system bundle activators
-        activator = new CodecHostActivator( this );
-        List<BundleActivator> activators = new ArrayList<BundleActivator>();
-        activators.add( activator );
-        
-        // setup configuration for felix 
-        Map<String, Object> config = new HashMap<String, Object>();
-        config.put( FelixConstants.SYSTEMBUNDLE_ACTIVATORS_PROP, activators );
-        config.put( FelixConstants.FRAMEWORK_SYSTEMPACKAGES_EXTRA, getSystemPackages() );
-        config.put( FELIX_CACHE_ROOTDIR, this.cacheDirectory.getParent() );
-        config.put( FelixConstants.FRAMEWORK_STORAGE, this.cacheDirectory.getName() );
-        
-        if ( System.getProperties().getProperty( FelixConstants.FRAMEWORK_STORAGE_CLEAN ) != null )
-        {
-            String cleanMode = System.getProperties().getProperty( FelixConstants.FRAMEWORK_STORAGE_CLEAN );
-            config.put( FelixConstants.FRAMEWORK_STORAGE_CLEAN, cleanMode );
-            LOG.info( "Using framework storage clean value from sytem properties: {}", cleanMode );
-        }
-        else
-        {
-            config.put( FelixConstants.FRAMEWORK_STORAGE_CLEAN, "none" );
-            LOG.info( "Using framework storage clean defaults: none" );
-        }
-
-        if ( System.getProperties().getProperty( FELIX_CACHE_LOCKING ) != null )
-        {
-            String lockCache = System.getProperties().getProperty( FELIX_CACHE_LOCKING );
-            config.put( FELIX_CACHE_LOCKING, lockCache );
-            LOG.info( "Using framework cache locking setting from sytem properties: {}", lockCache );
-        }
-        else
-        {
-            config.put( FELIX_CACHE_LOCKING, "true" );
-            LOG.info( "Using default for cache locking: enabled" );
-        }
-        
-        // instantiate and start up felix
-        felix = new Felix( config );
-        
-        Thread felixThread = new Thread(new Runnable() {
-            public void run()
-            {
-                try
-                {
-                    felix.start();
-                    this.notify();
-                }
-                catch ( BundleException e )
-                {
-                    String message = "Failed to start embedded felix instance: " + e.getMessage();
-                    LOG.error( message, e );
-                    throw new RuntimeException( message, e );
-                }
-            }
-        }, "FelixThread");
-        
-        felixThread.setDaemon( true );
-        felixThread.start();
-        
-        while ( felix.getState() != Felix.ACTIVE )
-        {
-            try
-            {
-                // Yuuukkkk...
-                Thread.sleep( 10 );
-            }
-            catch( InterruptedException ie )
-            {
-                // done
-            }
-        }
     }
     
     
