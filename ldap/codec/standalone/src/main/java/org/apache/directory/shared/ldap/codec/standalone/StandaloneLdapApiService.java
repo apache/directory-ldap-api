@@ -219,8 +219,6 @@ public class StandaloneLdapApiService implements LdapApiService
 
         for ( String control : defaultControlsList.split( "," ) )
         {
-            System.out.println( control );
-
             Class<?>[] types = new Class<?>[] { LdapApiService.class };
             Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> )Class.forName( control );
             Constructor<?> constructor = clazz.getConstructor(types);
@@ -247,8 +245,6 @@ public class StandaloneLdapApiService implements LdapApiService
         
         for ( String control : extraControlsList.split( "," ) )
         {
-            System.out.println( control );
-
             Class<?>[] types = new Class<?>[] { LdapApiService.class };
             Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> )Class.forName( control );
             Constructor<?> constructor = clazz.getConstructor(types);
@@ -288,8 +284,6 @@ public class StandaloneLdapApiService implements LdapApiService
         
         for ( String extendedOperation : defaultExtendedOperationsList.split( "," ) )
         {
-            System.out.println( extendedOperation );
-
             Class<?>[] types = new Class<?>[] { LdapApiService.class };
             Class<? extends ExtendedRequestFactory<?,?>> clazz = ( Class<? extends ExtendedRequestFactory<?,?>> )Class.forName( extendedOperation );
             Constructor<?> constructor = clazz.getConstructor(types);
@@ -316,8 +310,6 @@ public class StandaloneLdapApiService implements LdapApiService
         
         for ( String extendedOperation : defaultExtendedOperationsList.split( "," ) )
         {
-            System.out.println( extendedOperation );
-
             Class<?>[] types = new Class<?>[] { LdapApiService.class };
             Class<? extends UnsolicitedResponseFactory<?>> clazz = ( Class<? extends UnsolicitedResponseFactory<?>> )Class.forName( extendedOperation );
             Constructor<?> constructor = clazz.getConstructor(types);
