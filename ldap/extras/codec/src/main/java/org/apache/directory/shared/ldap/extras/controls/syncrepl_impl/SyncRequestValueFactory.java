@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.extras.controls.syncrepl_impl;
 
 
 import org.apache.directory.shared.ldap.codec.api.ControlFactory;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.extras.controls.SyncRequestValue;
 
 
@@ -34,7 +34,7 @@ import org.apache.directory.shared.ldap.extras.controls.SyncRequestValue;
 public class SyncRequestValueFactory implements ControlFactory<SyncRequestValue, SyncRequestValueDecorator>
 {
     /** The codec for this factory */
-    private LdapCodecService codec;
+    private LdapApiService codec;
     
 
     /**
@@ -42,7 +42,7 @@ public class SyncRequestValueFactory implements ControlFactory<SyncRequestValue,
      *
      * @param codec The codec for this factory.
      */
-    public SyncRequestValueFactory( LdapCodecService codec )
+    public SyncRequestValueFactory( LdapApiService codec )
     {
         this.codec = codec;
     }

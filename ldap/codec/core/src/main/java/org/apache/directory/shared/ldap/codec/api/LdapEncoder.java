@@ -44,7 +44,7 @@ import org.apache.directory.shared.util.Strings;
 public class LdapEncoder
 {
     /** The LdapCodecService */
-    private LdapCodecService codec;
+    private LdapApiService codec;
     
     
     /**
@@ -53,7 +53,7 @@ public class LdapEncoder
      * @param codec The Codec service to use to handle Controls and extended operations,
      * plus to get access to the underlying services.
      */
-    public LdapEncoder( LdapCodecService codec )
+    public LdapEncoder( LdapApiService codec )
     {
         if ( codec == null )
         {

@@ -23,7 +23,7 @@ package org.apache.directory.shared.dsmlv2.request;
 import java.util.Collection;
 
 import org.apache.directory.shared.dsmlv2.ParserUtils;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
@@ -61,7 +61,7 @@ public class ModifyRequestDsml
     /**
      * Creates a new getDecoratedMessage() of ModifyRequestDsml.
      */
-    public ModifyRequestDsml( LdapCodecService codec )
+    public ModifyRequestDsml( LdapApiService codec )
     {
         super( codec, new ModifyRequestImpl() );
     }
@@ -73,7 +73,7 @@ public class ModifyRequestDsml
      * @param ldapMessage
      *      the message to decorate
      */
-    public ModifyRequestDsml( LdapCodecService codec, ModifyRequest ldapMessage )
+    public ModifyRequestDsml( LdapApiService codec, ModifyRequest ldapMessage )
     {
         super( codec, ldapMessage );
     }

@@ -29,7 +29,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
@@ -69,7 +69,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
      *
      * @param decoratedMessage the decorated AddRequest
      */
-    public AddRequestDecorator( LdapCodecService codec, AddRequest decoratedMessage )
+    public AddRequestDecorator( LdapApiService codec, AddRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
     }

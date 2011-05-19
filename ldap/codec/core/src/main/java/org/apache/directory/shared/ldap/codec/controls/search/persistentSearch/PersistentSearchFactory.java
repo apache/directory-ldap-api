@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.codec.controls.search.persistentSearch;
 
 
 import org.apache.directory.shared.ldap.codec.api.ControlFactory;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.controls.PersistentSearch;
 
 
@@ -33,10 +33,10 @@ import org.apache.directory.shared.ldap.model.message.controls.PersistentSearch;
  */
 public class PersistentSearchFactory implements ControlFactory<PersistentSearch, PersistentSearchDecorator>
 {
-    private LdapCodecService codec;
+    private LdapApiService codec;
     
     
-    public PersistentSearchFactory( LdapCodecService codec )
+    public PersistentSearchFactory( LdapApiService codec )
     {
         this.codec = codec;
     }

@@ -20,7 +20,7 @@
 package org.apache.directory.shared.dsmlv2.request;
 
 
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.AbandonRequest;
 import org.apache.directory.shared.ldap.model.message.AbandonRequestImpl;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
@@ -38,7 +38,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     /**
      * Creates a new instance of AbandonRequestDsml.
      */
-    public AbandonRequestDsml( LdapCodecService codec )
+    public AbandonRequestDsml( LdapApiService codec )
     {
         super( codec, new AbandonRequestImpl() );
     }
@@ -49,7 +49,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
      *
      * @param ldapMessage the message to decorate
      */
-    public AbandonRequestDsml( LdapCodecService codec, AbandonRequest ldapMessage )
+    public AbandonRequestDsml( LdapApiService codec, AbandonRequest ldapMessage )
     {
         super( codec, ldapMessage );
     }

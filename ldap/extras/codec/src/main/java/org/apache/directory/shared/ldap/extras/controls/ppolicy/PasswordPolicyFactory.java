@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.extras.controls.ppolicy;
 
 
 import org.apache.directory.shared.ldap.codec.api.ControlFactory;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicy;
 
 
@@ -34,14 +34,14 @@ import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicy;
 public class PasswordPolicyFactory implements ControlFactory<PasswordPolicy, PasswordPolicyDecorator>
 {
     
-    private LdapCodecService codec;
+    private LdapApiService codec;
     
 
     /**
      * Creates a new instance of PasswordPolicyFactory.
      *
      */
-    public PasswordPolicyFactory( LdapCodecService codec )
+    public PasswordPolicyFactory( LdapApiService codec )
     {
         this.codec = codec;
     }

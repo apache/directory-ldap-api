@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.codec.protocol.mina;
 
 
-import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
+import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -63,7 +63,7 @@ public class LdapProtocolCodecActivator implements BundleActivator
     public void start( BundleContext bundleContext ) throws Exception
     {
         registration = bundleContext.registerService( LdapProtocolCodecFactory.class.getName(), factory, null );
-        LdapCodecServiceFactory.getSingleton().registerProtocolCodecFactory( factory );
+        LdapApiServiceFactory.getSingleton().registerProtocolCodecFactory( factory );
     }
 
 

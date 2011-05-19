@@ -29,7 +29,7 @@ import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.Decorator;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapEncoder;
 import org.apache.directory.shared.ldap.model.message.LdapResult;
 import org.apache.directory.shared.ldap.model.message.Referral;
@@ -55,7 +55,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     private byte[] matchedDnBytes;
     
     /** The codec responsible for encoding and decoding this object. */
-    private LdapCodecService codec;
+    private LdapApiService codec;
 
 
     /**
@@ -321,7 +321,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * {@inheritDoc}
      */
-    public LdapCodecService getCodecService()
+    public LdapApiService getCodecService()
     {
         return codec;
     }

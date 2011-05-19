@@ -36,7 +36,7 @@ import javax.naming.ldap.LdapContext;
 
 import org.apache.commons.lang.SerializationUtils;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
+import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.shared.ldap.extras.extended.StoredProcedureRequestImpl;
 
 
@@ -150,7 +150,7 @@ public final class JavaStoredProcUtils
              * Call the stored procedure via the extended operation
              * and get back its return value.
              */
-            ExtendedRequest jndiReq = LdapCodecServiceFactory.getSingleton().toJndi( req );
+            ExtendedRequest jndiReq = LdapApiServiceFactory.getSingleton().toJndi( req );
             ExtendedResponse resp = ctx.extendedOperation( jndiReq );
 
             /**

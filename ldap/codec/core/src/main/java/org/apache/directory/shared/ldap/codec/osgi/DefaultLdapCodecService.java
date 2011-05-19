@@ -30,7 +30,7 @@ import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.CodecControl;
 import org.apache.directory.shared.ldap.codec.api.ControlFactory;
 import org.apache.directory.shared.ldap.codec.api.ExtendedRequestFactory;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.codec.api.UnsolicitedResponseFactory;
 import org.apache.directory.shared.ldap.codec.controls.cascade.CascadeFactory;
@@ -62,12 +62,12 @@ import javax.naming.NamingException;
 
 
 /**
- * The default {@link LdapCodecService} implementation.
+ * The default {@link LdapApiService} implementation.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class DefaultLdapCodecService implements LdapCodecService
+public class DefaultLdapCodecService implements LdapApiService
 {
     /** A logger */
     private static final Logger LOG = LoggerFactory.getLogger( DefaultLdapCodecService.class );

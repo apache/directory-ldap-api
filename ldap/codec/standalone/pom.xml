@@ -57,33 +57,15 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>shared-ldap-codec-core</artifactId>
     </dependency> 
+    
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>shared-ldap-extras-codec</artifactId>
+    </dependency> 
 
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.framework</artifactId>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <groupId>org.apache.maven.plugins</groupId>
-        <configuration>
-          <systemPropertyVariables>
-            <workingDirectory>${basedir}/target</workingDirectory>
-            <felix.cache.rootdir>
-              ${project.build.directory}
-            </felix.cache.rootdir>
-            <felix.cache.locking>
-              false
-            </felix.cache.locking>
-            <org.osgi.framework.storage>
-              osgi-cache
-            </org.osgi.framework.storage>
-          </systemPropertyVariables>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>

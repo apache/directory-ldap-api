@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.extras;
 
 import org.apache.directory.shared.ldap.codec.api.ControlFactory;
 import org.apache.directory.shared.ldap.codec.api.ExtendedRequestFactory;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.UnsolicitedResponseFactory;
 import org.apache.directory.shared.ldap.extras.controls.SyncDoneValue;
 import org.apache.directory.shared.ldap.extras.controls.SyncInfoValue;
@@ -41,11 +41,11 @@ import org.apache.directory.shared.ldap.extras.extended.CertGenerationRequest;
 import org.apache.directory.shared.ldap.extras.extended.GracefulDisconnectResponse;
 import org.apache.directory.shared.ldap.extras.extended.GracefulShutdownRequest;
 import org.apache.directory.shared.ldap.extras.extended.StoredProcedureRequest;
-import org.apache.directory.shared.ldap.extras.extended.ads_impl.CancelFactory;
-import org.apache.directory.shared.ldap.extras.extended.ads_impl.CertGenerationFactory;
-import org.apache.directory.shared.ldap.extras.extended.ads_impl.GracefulDisconnectFactory;
-import org.apache.directory.shared.ldap.extras.extended.ads_impl.GracefulShutdownFactory;
-import org.apache.directory.shared.ldap.extras.extended.ads_impl.StoredProcedureFactory;
+import org.apache.directory.shared.ldap.extras.extended.ads_impl.cancel.CancelFactory;
+import org.apache.directory.shared.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory;
+import org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory;
+import org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory;
+import org.apache.directory.shared.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -67,8 +67,8 @@ public class ExtrasBundleActivator implements BundleActivator
      */
     public void start( BundleContext context ) throws Exception
     {
-        codecServiceRef = context.getServiceReference( LdapCodecService.class.getName() );
-        LdapCodecService codec = ( LdapCodecService ) context.getService( codecServiceRef );
+        codecServiceRef = context.getServiceReference( LdapApiService.class.getName() );
+        LdapApiService codec = ( LdapApiService ) context.getService( codecServiceRef );
         registerExtrasControls( codec );
         registerExtrasExtendedOps( codec );
     }
@@ -79,7 +79,7 @@ public class ExtrasBundleActivator implements BundleActivator
      *
      * @param codec The codec service.
      */
-    private void registerExtrasControls( LdapCodecService codec )
+    private void registerExtrasControls( LdapApiService codec )
     {
         ControlFactory<?,?> factory = new SyncDoneValueFactory( codec );
         codec.registerControl( factory );
@@ -106,7 +106,7 @@ public class ExtrasBundleActivator implements BundleActivator
      *
      * @param codec The codec service.
      */
-    private void registerExtrasExtendedOps( LdapCodecService codec )
+    private void registerExtrasExtendedOps( LdapApiService codec )
     {
         // --------------------------------------------------------------------
         // Register Extended Request Factories
@@ -131,7 +131,7 @@ public class ExtrasBundleActivator implements BundleActivator
         // --------------------------------------------------------------------
         
         
-        UnsolicitedResponseFactory<?> unsolicitedResponseFactory = new GracefulDisconnectFactory();
+        UnsolicitedResponseFactory<?> unsolicitedResponseFactory = new GracefulDisconnectFactory( codec );
         codec.registerUnsolicitedResponse( unsolicitedResponseFactory );
     }
     
@@ -141,7 +141,7 @@ public class ExtrasBundleActivator implements BundleActivator
      */
     public void stop( BundleContext context ) throws Exception
     {
-        LdapCodecService codec = ( LdapCodecService ) context.getService( codecServiceRef );
+        LdapApiService codec = ( LdapApiService ) context.getService( codecServiceRef );
         
         codec.unregisterControl( SyncDoneValue.OID );
         codec.unregisterControl( SyncInfoValue.OID );

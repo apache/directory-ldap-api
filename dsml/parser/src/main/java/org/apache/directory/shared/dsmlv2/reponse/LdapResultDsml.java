@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.apache.directory.shared.dsmlv2.DsmlDecorator;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.LdapResult;
 import org.apache.directory.shared.ldap.model.message.Message;
 import org.apache.directory.shared.ldap.model.message.Referral;
@@ -49,7 +49,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
     private Message message;
     
     /** The ldap codec service */
-    private LdapCodecService codec;
+    private LdapApiService codec;
 
 
     /**
@@ -61,7 +61,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
      *      the associated message
      * @param the ldap codec service 
      */
-    public LdapResultDsml( LdapCodecService codec, LdapResult result, Message message )
+    public LdapResultDsml( LdapApiService codec, LdapResult result, Message message )
     {
         this.codec = codec;
         this.result = result;

@@ -26,7 +26,7 @@ import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.ExtendedRequestDecorator;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
+import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.model.message.ExtendedRequest;
 import org.apache.directory.shared.util.Strings;
@@ -99,9 +99,9 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
                     throw new DecoderException( msg );
                 }
 
-                req = LdapCodecServiceFactory.getSingleton().newExtendedRequest( requestName, null );
+                req = LdapApiServiceFactory.getSingleton().newExtendedRequest( requestName, null );
                 req.setMessageId( container.getMessageId() );
-                container.setMessage( LdapCodecServiceFactory.getSingleton().decorate( req ) );
+                container.setMessage( LdapApiServiceFactory.getSingleton().decorate( req ) );
             }
             catch ( DecoderException de )
             {

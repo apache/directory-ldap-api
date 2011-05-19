@@ -25,7 +25,7 @@ import java.util.List;
 
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -76,7 +76,7 @@ public class SearchRequestDsml
     /**
      * Creates a new getDecoratedMessage() of SearchRequestDsml.
      */
-    public SearchRequestDsml( LdapCodecService codec )
+    public SearchRequestDsml( LdapApiService codec )
     {
         super( codec, new SearchRequestImpl() );
     }
@@ -88,7 +88,7 @@ public class SearchRequestDsml
      * @param ldapMessage
      *      the message to decorate
      */
-    public SearchRequestDsml( LdapCodecService codec, SearchRequest ldapMessage )
+    public SearchRequestDsml( LdapApiService codec, SearchRequest ldapMessage )
     {
         super( codec, ldapMessage );
     }

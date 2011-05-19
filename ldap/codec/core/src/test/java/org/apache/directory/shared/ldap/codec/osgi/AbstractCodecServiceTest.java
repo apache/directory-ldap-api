@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.codec.osgi;
 
 
-import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
+import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.shared.ldap.codec.api.LdapEncoder;
 import org.apache.directory.shared.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.mina.core.session.IoSession;
@@ -66,9 +66,9 @@ public abstract class AbstractCodecServiceTest
         });
         
         
-        if ( LdapCodecServiceFactory.isInitialized() == false )
+        if ( LdapApiServiceFactory.isInitialized() == false )
         {
-            LdapCodecServiceFactory.initialize( codec );
+            LdapApiServiceFactory.initialize( codec );
         }
         encoder = new LdapEncoder( codec );
     }

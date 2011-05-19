@@ -62,8 +62,8 @@ import org.apache.directory.ldap.client.api.future.SearchFuture;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecServiceFactory;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.codec.api.MessageEncoderException;
@@ -221,7 +221,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     private SchemaManager schemaManager;
 
     /** the ldap codec service */
-    LdapCodecService codec = LdapCodecServiceFactory.getSingleton();
+    LdapApiService codec = LdapApiServiceFactory.getSingleton();
 
     /** The Ldap codec protocol filter */
     private IoFilter ldapProtocolFilter = new ProtocolCodecFilter( codec.getProtocolCodecFactory() );
@@ -3089,7 +3089,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     public ExtendedResponse extended( Oid oid, byte[] value ) throws LdapException
     {
         ExtendedRequest<?> extendedRequest =
-            LdapCodecServiceFactory.getSingleton().newExtendedRequest( oid.toString(), value );
+            LdapApiServiceFactory.getSingleton().newExtendedRequest( oid.toString(), value );
         return extended( extendedRequest );
     }
 
@@ -3485,7 +3485,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public LdapCodecService getCodecService()
+    public LdapApiService getCodecService()
     {
         return codec;
     }

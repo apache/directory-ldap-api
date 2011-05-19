@@ -27,7 +27,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.codec.api.LdapEncoder;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
@@ -55,7 +55,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
      *
      * @param decoratedMessage the decorated SearchResultReference
      */
-    public SearchResultReferenceDecorator( LdapCodecService codec, SearchResultReference decoratedMessage )
+    public SearchResultReferenceDecorator( LdapApiService codec, SearchResultReference decoratedMessage )
     {
         super( codec, decoratedMessage );
     }

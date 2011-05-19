@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.codec.controls.cascade;
 
 
 import org.apache.directory.shared.ldap.codec.api.ControlFactory;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.controls.Cascade;
 import org.apache.directory.shared.ldap.model.message.controls.CascadeImpl;
 
@@ -35,7 +35,7 @@ import org.apache.directory.shared.ldap.model.message.controls.CascadeImpl;
 public class CascadeFactory implements ControlFactory<Cascade, CascadeDecorator>
 {
     /** The LDAP codec responsible for encoding and decoding Cascade Controls */
-    private LdapCodecService codec;
+    private LdapApiService codec;
     
     
     /**
@@ -43,7 +43,7 @@ public class CascadeFactory implements ControlFactory<Cascade, CascadeDecorator>
      *
      * @param codec The LDAP codec
      */
-    public CascadeFactory( LdapCodecService codec )
+    public CascadeFactory( LdapApiService codec )
     {
         this.codec = codec;
     }

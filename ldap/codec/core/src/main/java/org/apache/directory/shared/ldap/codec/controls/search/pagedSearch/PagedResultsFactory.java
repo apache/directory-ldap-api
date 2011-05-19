@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.codec.controls.search.pagedSearch;
 
 
 import org.apache.directory.shared.ldap.codec.api.ControlFactory;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.controls.PagedResults;
 
 
@@ -34,7 +34,7 @@ import org.apache.directory.shared.ldap.model.message.controls.PagedResults;
 public class PagedResultsFactory implements ControlFactory<PagedResults, PagedResultsDecorator>
 {
     /** The LDAP codec service */
-    private LdapCodecService codec;
+    private LdapApiService codec;
 
     
     /**
@@ -42,7 +42,7 @@ public class PagedResultsFactory implements ControlFactory<PagedResults, PagedRe
      *
      * @param codec The LDAP codec.
      */
-    public PagedResultsFactory( LdapCodecService codec )
+    public PagedResultsFactory( LdapApiService codec )
     {
         this.codec = codec;
     }

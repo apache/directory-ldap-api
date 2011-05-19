@@ -20,7 +20,7 @@
 package org.apache.directory.shared.dsmlv2.reponse;
 
 
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.message.ModifyResponse;
 import org.apache.directory.shared.ldap.model.message.ModifyResponseImpl;
@@ -42,7 +42,7 @@ public class ModifyResponseDsml extends AbstractResultResponseDsml<ModifyRespons
     /**
      * Creates a new getDecoratedMessage() of ModifyResponseDsml.
      */
-    public ModifyResponseDsml( LdapCodecService codec )
+    public ModifyResponseDsml( LdapApiService codec )
     {
         super( codec, new ModifyResponseImpl() );
     }
@@ -54,7 +54,7 @@ public class ModifyResponseDsml extends AbstractResultResponseDsml<ModifyRespons
      * @param ldapMessage
      *      the message to decorate
      */
-    public ModifyResponseDsml( LdapCodecService codec, ModifyResponse ldapMessage )
+    public ModifyResponseDsml( LdapApiService codec, ModifyResponse ldapMessage )
     {
         super( codec, ldapMessage );
     }

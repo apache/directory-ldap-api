@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.codec.controls.manageDsaIT;
 
 
 import org.apache.directory.shared.ldap.codec.api.ControlFactory;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.shared.ldap.model.message.controls.ManageDsaITImpl;
 
@@ -35,7 +35,7 @@ import org.apache.directory.shared.ldap.model.message.controls.ManageDsaITImpl;
 public class ManageDsaITFactory implements ControlFactory<ManageDsaIT, ManageDsaITDecorator>
 {
     /** The LDAP codec responsible for encoding and decoding Cascade Controls */
-    private LdapCodecService codec;
+    private LdapApiService codec;
     
     
     /**
@@ -43,7 +43,7 @@ public class ManageDsaITFactory implements ControlFactory<ManageDsaIT, ManageDsa
      *
      * @param codec The LDAP codec
      */
-    public ManageDsaITFactory( LdapCodecService codec )
+    public ManageDsaITFactory( LdapApiService codec )
     {
         this.codec = codec;
     }

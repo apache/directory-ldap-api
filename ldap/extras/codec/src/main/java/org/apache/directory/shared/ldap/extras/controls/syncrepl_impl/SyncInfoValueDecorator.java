@@ -33,7 +33,7 @@ import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.extras.controls.SyncInfoValue;
 import org.apache.directory.shared.ldap.extras.controls.SyncInfoValueImpl;
 import org.apache.directory.shared.ldap.extras.controls.SynchronizationInfoEnum;
@@ -57,7 +57,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * The constructor for this codec. Dont't forget to set the type.
      */
-    public SyncInfoValueDecorator( LdapCodecService codec )
+    public SyncInfoValueDecorator( LdapApiService codec )
     {
         super( codec, new SyncInfoValueImpl() );
     }
@@ -66,7 +66,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     /**
      * The constructor for this codec. Dont't forget to set the type.
      */
-    public SyncInfoValueDecorator( LdapCodecService codec, SyncInfoValue control )
+    public SyncInfoValueDecorator( LdapApiService codec, SyncInfoValue control )
     {
         super( codec, control );
     }
@@ -77,7 +77,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
      * @param type The kind of syncInfo we will store. Can be newCookie,
      * refreshPresent, refreshDelete or syncIdSet
      */
-    public SyncInfoValueDecorator( LdapCodecService codec, SynchronizationInfoEnum type )
+    public SyncInfoValueDecorator( LdapApiService codec, SynchronizationInfoEnum type )
     {
         this( codec );
 

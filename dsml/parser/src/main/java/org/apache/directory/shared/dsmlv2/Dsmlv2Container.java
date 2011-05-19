@@ -23,7 +23,7 @@ package org.apache.directory.shared.dsmlv2;
 import org.apache.directory.shared.asn1.ber.Asn1Container;
 import org.apache.directory.shared.dsmlv2.reponse.BatchResponseDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.xmlpull.v1.XmlPullParser;
 
 
@@ -57,24 +57,24 @@ public class Dsmlv2Container implements Container
     private AbstractGrammar grammar;
 
     /** The codec service */
-    private final LdapCodecService codec;
+    private final LdapApiService codec;
 
     /**
      * Creates a new LdapMessageContainer object. We will store ten grammars,
      * it's enough ...
      */
-    public Dsmlv2Container( LdapCodecService codec )
+    public Dsmlv2Container( LdapApiService codec )
     {
         this.codec= codec;
     }
     
     
     /**
-     * Gets the {@link LdapCodecService} associated with this {@link Asn1Container}.
+     * Gets the {@link LdapApiService} associated with this {@link Asn1Container}.
      *
      * @return
      */
-    public LdapCodecService getLdapCodecService()
+    public LdapApiService getLdapCodecService()
     {
         return codec;
     }

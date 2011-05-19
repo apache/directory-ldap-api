@@ -23,7 +23,7 @@ package org.apache.directory.shared.dsmlv2;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.Message;
@@ -39,7 +39,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
     implements DsmlDecorator<E>, Message
 {
     /** The LDAP message codec */
-    private final LdapCodecService codec;
+    private final LdapApiService codec;
 
     /** The LDAP message */
     private final E message;
@@ -51,7 +51,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
     private DsmlControl<? extends Control> currentControl;
 
     
-    public AbstractDsmlMessageDecorator( LdapCodecService codec, E message )
+    public AbstractDsmlMessageDecorator( LdapApiService codec, E message )
     {
         this.codec = codec;
         this.message = message;
@@ -70,7 +70,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
     }
 
     
-    public LdapCodecService getCodecService()
+    public LdapApiService getCodecService()
     {
         return codec;
     }

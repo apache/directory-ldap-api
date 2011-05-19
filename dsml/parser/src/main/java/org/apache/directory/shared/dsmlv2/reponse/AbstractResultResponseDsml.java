@@ -20,7 +20,7 @@
 package org.apache.directory.shared.dsmlv2.reponse;
 
 
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.LdapResult;
 import org.apache.directory.shared.ldap.model.message.ResultResponse;
 import org.dom4j.Element;
@@ -39,7 +39,7 @@ public abstract class AbstractResultResponseDsml<E extends ResultResponse>
      *
      * @param ldapMessage the LDAP message to decorate
      */
-    public AbstractResultResponseDsml( LdapCodecService codec, E resultResponse )
+    public AbstractResultResponseDsml( LdapApiService codec, E resultResponse )
     {
         super( codec, resultResponse );
     }

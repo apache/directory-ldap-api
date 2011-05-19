@@ -30,7 +30,7 @@ import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.extras.controls.SyncRequestValue;
 import org.apache.directory.shared.ldap.extras.controls.SyncRequestValueImpl;
@@ -52,13 +52,13 @@ public class SyncRequestValueDecorator  extends ControlDecorator<SyncRequestValu
     private static final Asn1Decoder decoder = new Asn1Decoder();
 
 
-    public SyncRequestValueDecorator( LdapCodecService codec )
+    public SyncRequestValueDecorator( LdapApiService codec )
     {
         super( codec, new SyncRequestValueImpl() );
     }
 
 
-    public SyncRequestValueDecorator( LdapCodecService codec, SyncRequestValue control )
+    public SyncRequestValueDecorator( LdapApiService codec, SyncRequestValue control )
     {
         super( codec, control );
     }

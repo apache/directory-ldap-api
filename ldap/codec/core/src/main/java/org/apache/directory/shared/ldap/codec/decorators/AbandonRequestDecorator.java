@@ -26,7 +26,7 @@ import java.nio.ByteBuffer;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.model.message.AbandonRequest;
 
@@ -44,7 +44,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
      *
      * @param decoratedMessage the decorated AddRequest
      */
-    public AbandonRequestDecorator( LdapCodecService codec, AbandonRequest decoratedMessage )
+    public AbandonRequestDecorator( LdapApiService codec, AbandonRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
     }

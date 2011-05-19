@@ -30,7 +30,7 @@ import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.codec.api.LdapCodecService;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.extras.controls.SyncDoneValue;
 import org.apache.directory.shared.ldap.extras.controls.SyncDoneValueImpl;
@@ -54,7 +54,7 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
     /**
      * Creates a new instance of SyncDoneValueControlCodec.
      */
-    public SyncDoneValueDecorator( LdapCodecService codec )
+    public SyncDoneValueDecorator( LdapApiService codec )
     {
         super( codec, new SyncDoneValueImpl() );
     }
@@ -66,7 +66,7 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
      * @param codec The LDAP codec
      * @param control The control to be decorated
      */
-    public SyncDoneValueDecorator( LdapCodecService codec, SyncDoneValue control )
+    public SyncDoneValueDecorator( LdapApiService codec, SyncDoneValue control )
     {
         super( codec, control );
     }
