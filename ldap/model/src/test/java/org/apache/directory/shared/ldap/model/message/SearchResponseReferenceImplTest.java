@@ -26,11 +26,12 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -123,13 +124,15 @@ public class SearchResponseReferenceImplTest
             }
 
 
-            public void addControl( Control control ) throws MessageException
+            public SearchResultReference addControl( Control control ) throws MessageException
             {
+                return this;
             }
 
 
-            public void removeControl( Control control ) throws MessageException
+            public SearchResultReference removeControl( Control control ) throws MessageException
             {
+                return this;
             }
 
 
@@ -151,8 +154,9 @@ public class SearchResponseReferenceImplTest
             }
 
 
-            public void addAllControls( Control[] controls ) throws MessageException
+            public SearchResultReference addAllControls( Control[] controls ) throws MessageException
             {
+                return this;
             }
 
 
@@ -168,8 +172,9 @@ public class SearchResponseReferenceImplTest
             }
 
 
-            public void setMessageId( int messageId )
+            public SearchResultReference setMessageId( int messageId )
             {
+                return this;
             }
         };
 

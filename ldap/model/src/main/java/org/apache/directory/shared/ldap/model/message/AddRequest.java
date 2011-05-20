@@ -51,8 +51,9 @@ public interface AddRequest extends SingleReplyRequest<AddResponse>, Abandonable
      * Sets the distinguished name of the entry to add.
      * 
      * @param entry the Dn of the added entry.
+     * @return The AddRequest instance
      */
-    void setEntryDn( Dn entry );
+    AddRequest setEntryDn( Dn entry );
 
 
     /**
@@ -67,6 +68,7 @@ public interface AddRequest extends SingleReplyRequest<AddResponse>, Abandonable
      * Sets the Entry to add.
      * 
      * @param entry the added Entry
+     * @return The AddRequest instance
      */
-    void setEntry( Entry entry );
+    AddRequest setEntry( Entry entry );
 }

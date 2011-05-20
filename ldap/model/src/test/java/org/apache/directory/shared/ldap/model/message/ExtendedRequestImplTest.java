@@ -168,13 +168,14 @@ public class ExtendedRequestImplTest
     @Test
     public void testEqualsDiffImpl()
     {
-        ExtendedRequest<?> req0 = new ExtendedRequest<ExtendedResponse>()
+        ExtendedRequest<ExtendedResponse> req0 = new ExtendedRequest<ExtendedResponse>()
         {
             private static final long serialVersionUID = 1L;
 
 
-            public void setRequestName( String oid )
+            public ExtendedRequest<ExtendedResponse> setRequestName( String oid )
             {
+                return this;
             }
 
 
@@ -202,13 +203,15 @@ public class ExtendedRequestImplTest
             }
 
 
-            public void addControl( Control control ) throws MessageException
+            public ExtendedRequest<ExtendedResponse> addControl( Control control ) throws MessageException
             {
+                return this;
             }
 
 
-            public void removeControl( Control control ) throws MessageException
+            public ExtendedRequest<ExtendedResponse> removeControl( Control control ) throws MessageException
             {
+                return this;
             }
 
 
@@ -242,8 +245,9 @@ public class ExtendedRequestImplTest
             }
 
 
-            public void addAllControls( Control[] controls ) throws MessageException
+            public ExtendedRequest<ExtendedResponse> addAllControls( Control[] controls ) throws MessageException
             {
+                return this;
             }
 
 
@@ -259,8 +263,9 @@ public class ExtendedRequestImplTest
             }
 
 
-            public void setMessageId( int messageId )
+            public ExtendedRequest<ExtendedResponse> setMessageId( int messageId )
             {
+                return this;
             }
         };
 

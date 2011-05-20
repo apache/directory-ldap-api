@@ -67,11 +67,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     // -----------------------------------------------------------------------
 
     /**
-     * Gets the flag which determines if the old Rdn attribute is to be removed
-     * from the entry when the new Rdn is used in its stead. This property
-     * corresponds to the <b>deleteoldrdn</b>
-     * 
-     * @return true if the old rdn is to be deleted, false if it is not
+     * {@inheritDoc}
      */
     public boolean getDeleteOldRdn()
     {
@@ -80,25 +76,18 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
 
 
     /**
-     * Sets the flag which determines if the old Rdn attribute is to be removed
-     * from the entry when the new Rdn is used in its stead. This property
-     * corresponds to the <b>deleteoldrdn</b>
-     * 
-     * @param deleteOldRdn true if the old rdn is to be deleted, false if it is not
+     * {@inheritDoc}
      */
-    public void setDeleteOldRdn( boolean deleteOldRdn )
+    public ModifyDnRequest setDeleteOldRdn( boolean deleteOldRdn )
     {
         this.deleteOldRdn = deleteOldRdn;
+        
+        return this;
     }
 
 
     /**
-     * Gets whether or not this request is a Dn change resulting in a move
-     * operation. Setting the newSuperior property to a non-null name, toggles
-     * this flag.
-     * 
-     * @return true if the newSuperior property is <b>NOT</b> null, false
-     *         otherwise.
+     * {@inheritDoc}
      */
     public boolean isMove()
     {
@@ -107,10 +96,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
 
 
     /**
-     * Gets the entry's distinguished name representing the <b>entry</b> PDU
-     * field.
-     * 
-     * @return the distinguished name of the entry.
+     * {@inheritDoc}
      */
     public Dn getName()
     {
@@ -119,23 +105,18 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
 
 
     /**
-     * Sets the entry's distinguished name representing the <b>entry</b> PDU
-     * field.
-     * 
-     * @param name
-     *            the distinguished name of the entry.
+     * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public ModifyDnRequest setName( Dn name )
     {
         this.name = name;
+        
+        return this;
     }
 
 
     /**
-     * Gets the new relative distinguished name for the entry which represents
-     * the PDU's <b>newrdn</b> field.
-     * 
-     * @return the relative dn with one component
+     * {@inheritDoc}
      */
     public Rdn getNewRdn()
     {
@@ -144,24 +125,18 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
 
 
     /**
-     * Sets the new relative distinguished name for the entry which represents
-     * the PDU's <b>newrdn</b> field.
-     * 
-     * @param newRdn the relative dn with one component
+     * {@inheritDoc}
      */
-    public void setNewRdn( Rdn newRdn )
+    public ModifyDnRequest setNewRdn( Rdn newRdn )
     {
         this.newRdn = newRdn;
+        
+        return this;
     }
 
 
     /**
-     * Gets the optional distinguished name of the new superior entry where the
-     * candidate entry is to be moved. This property corresponds to the PDU's
-     * <b>newSuperior</b> field. May be null representing a simple Rdn change
-     * rather than a move operation.
-     * 
-     * @return the dn of the superior entry the candidate entry is moved under.
+     * {@inheritDoc}
      */
     public Dn getNewSuperior()
     {
@@ -170,18 +145,24 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
 
 
     /**
-     * Sets the optional distinguished name of the new superior entry where the
-     * candidate entry is to be moved. This property corresponds to the PDU's
-     * <b>newSuperior</b> field. May be null representing a simple Rdn change
-     * rather than a move operation. Setting this property to a non-null value
-     * toggles the move flag obtained via the <code>isMove</code> method.
-     * 
-     * @param newSuperior the dn of the superior entry the candidate entry for Dn
-     *            modification is moved under.
+     * {@inheritDoc}
      */
-    public void setNewSuperior( Dn newSuperior )
+    public ModifyDnRequest setNewSuperior( Dn newSuperior )
     {
         this.newSuperior = newSuperior;
+        
+        return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyDnRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
     }
 
 

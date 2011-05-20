@@ -70,10 +70,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     // ModifyRequest Interface Method Implementations
     // ------------------------------------------------------------------------
     /**
-     * Gets an immutable Collection of modification items representing the
-     * atomic changes to perform on the candidate entry to modify.
-     * 
-     * @return an immutable Collection of Modification instances.
+     * {@inheritDoc}
      */
     public Collection<Modification> getModifications()
     {
@@ -82,10 +79,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
 
 
     /**
-     * Gets the distinguished name of the entry to be modified by this request.
-     * This property represents the PDU's <b>object</b> field.
-     * 
-     * @return the Dn of the modified entry.
+     * {@inheritDoc}
      */
     public Dn getName()
     {
@@ -94,26 +88,24 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
 
 
     /**
-     * Sets the distinguished name of the entry to be modified by this request.
-     * This property represents the PDU's <b>object</b> field.
-     * 
-     * @param name the Dn of the modified entry.
+     * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public ModifyRequest setName( Dn name )
     {
         this.name = name;
+        
+        return this;
     }
 
 
     /**
-     * Adds a Modification to the set of modifications composing this modify
-     * request.
-     * 
-     * @param mod a Modification to add
+     * {@inheritDoc}
      */
-    public void addModification( Modification mod )
+    public ModifyRequest addModification( Modification mod )
     {
         mods.add( mod );
+        
+        return this;
     }
 
 
@@ -131,133 +123,146 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     }
 
 
-    public void addModification( Attribute attr, ModificationOperation modOp )
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyRequest addModification( Attribute attr, ModificationOperation modOp )
     {
         mods.add( new DefaultModification( modOp, attr ) );
+        
+        return this;
     }
 
 
     /**
-     *
-     * marks a given attribute for addition in the target entry with the
-     * given values.
-     *
-     * @param attributeName name of the attribute to be added
-     * @param attributeValue values of the attribute
+     *{@inheritDoc}
      */
-    public void add( String attributeName, String... attributeValue )
+    public ModifyRequest add( String attributeName, String... attributeValue )
     {
         addModification( ModificationOperation.ADD_ATTRIBUTE, attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
      * @see #add(String, String...)
      */
-    public void add( String attributeName, byte[]... attributeValue )
+    public ModifyRequest add( String attributeName, byte[]... attributeValue )
     {
         addModification( ModificationOperation.ADD_ATTRIBUTE, attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
-     *
-     * marks a given attribute for addition in the target entry.
-     *
-     * @param attr the attribute to be added
+     *{@inheritDoc}
      */
-    public void add( Attribute attr )
+    public ModifyRequest add( Attribute attr )
     {
         addModification( attr, ModificationOperation.ADD_ATTRIBUTE );
+        
+        return this;
     }
 
 
     /**
      * @see #replace(String, String...)
      */
-    public void replace( String attributeName )
+    public ModifyRequest replace( String attributeName )
     {
         addModification( ModificationOperation.REPLACE_ATTRIBUTE, attributeName, StringConstants.EMPTY_STRINGS );
+        
+        return this;
     }
 
 
     /**
-     *
-     * marks a given attribute for replacement with the given
-     * values in the target entry.
-     *
-     * @param attributeName name of the attribute to be added
-     * @param attributeValue values of the attribute
+     *{@inheritDoc}
      */
-    public void replace( String attributeName, String... attributeValue )
+    public ModifyRequest replace( String attributeName, String... attributeValue )
     {
         addModification( ModificationOperation.REPLACE_ATTRIBUTE, attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
      * @see #replace(String, String...)
      */
-    public void replace( String attributeName, byte[]... attributeValue )
+    public ModifyRequest replace( String attributeName, byte[]... attributeValue )
     {
         addModification( ModificationOperation.REPLACE_ATTRIBUTE, attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
-     *
-     * marks a given attribute for replacement in the target entry.
-     *
-     * @param attr the attribute to be added
+     *{@inheritDoc}
      */
-    public void replace( Attribute attr )
+    public ModifyRequest replace( Attribute attr )
     {
         addModification( attr, ModificationOperation.REPLACE_ATTRIBUTE );
+        
+        return this;
     }
 
 
     /**
-     * Removes a Modification to the set of modifications composing this
-     * modify request.
-     * 
-     * @param mod a Modification to remove.
+     * {@inheritDoc}
      */
-    public void removeModification( Modification mod )
+    public ModifyRequest removeModification( Modification mod )
     {
         mods.remove( mod );
+        
+        return this;
     }
 
 
     /**
-     * marks a given attribute for removal with the given
-     * values from the target entry.
-     *
-     * @param attributeName name of the attribute to be added
-     * @param attributeValue values of the attribute
+     * {@inheritDoc}
      */
-    public void remove( String attributeName, String... attributeValue )
+    public ModifyRequest remove( String attributeName, String... attributeValue )
     {
         addModification( ModificationOperation.REMOVE_ATTRIBUTE, attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
-     * @see #remove(String, String...)
+     * {@inheritDoc}
      */
-    public void remove( String attributeName, byte[]... attributeValue )
+    public ModifyRequest remove( String attributeName, byte[]... attributeValue )
     {
         addModification( ModificationOperation.REMOVE_ATTRIBUTE, attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
-     * marks a given attribute for removal from the target entry.
-     *
-     * @param attr the attribute to be added
+     * {@inheritDoc}
      */
-    public void remove( Attribute attr )
+    public ModifyRequest remove( Attribute attr )
     {
         addModification( attr, ModificationOperation.REMOVE_ATTRIBUTE );
+        
+        return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
     }
 
 

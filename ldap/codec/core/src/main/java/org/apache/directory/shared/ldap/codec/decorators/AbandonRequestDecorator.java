@@ -67,9 +67,11 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * {@inheritDoc}
      */
-    public void setAbandoned( int requestId )
+    public AbandonRequest setAbandoned( int requestId )
     {
         getDecorated().setAbandoned( requestId );
+        
+        return this;
     }
 
     

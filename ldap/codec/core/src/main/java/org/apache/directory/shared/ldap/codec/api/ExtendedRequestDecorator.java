@@ -119,9 +119,11 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
     /**
      * {@inheritDoc}
      */
-    public void setRequestName( String oid )
+    public ExtendedRequest<P> setRequestName( String oid )
     {
         getDecorated().setRequestName( oid );
+        
+        return this;
     }
 
 

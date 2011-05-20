@@ -52,8 +52,9 @@ public interface CompareRequest extends SingleReplyRequest<CompareResponse>, Aba
      * attribute value assertion.
      * 
      * @param name the Dn of the compared entry.
+     * @return The CompareRequest instance
      */
-    void setName( Dn name );
+    CompareRequest setName( Dn name );
 
 
     /**
@@ -68,16 +69,18 @@ public interface CompareRequest extends SingleReplyRequest<CompareResponse>, Aba
      * Sets the attribute value to use in the comparison.
      * 
      * @param value the attribute value used in comparison.
+     * @return The CompareRequest instance
      */
-    void setAssertionValue( String value );
+    CompareRequest setAssertionValue( String value );
 
 
     /**
      * Sets the attribute value to use in the comparison.
      * 
      * @param value the attribute value used in comparison.
+     * @return The CompareRequest instance
      */
-    void setAssertionValue( byte[] value );
+    CompareRequest setAssertionValue( byte[] value );
 
 
     /**
@@ -92,6 +95,7 @@ public interface CompareRequest extends SingleReplyRequest<CompareResponse>, Aba
      * Sets the attribute id used in the comparison.
      * 
      * @param attrId the attribute id used in comparison.
+     * @return The CompareRequest instance
      */
-    void setAttributeId( String attrId );
+    CompareRequest setAttributeId( String attrId );
 }

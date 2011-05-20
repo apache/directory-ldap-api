@@ -115,9 +115,11 @@ public class CompareRequestDsml
      * 
      * @param entry The entry to set.
      */
-    public void setName( Dn entry )
+    public CompareRequest setName( Dn entry )
     {
         getDecorated().setName( entry );
+        
+        return this;
     }
 
 
@@ -173,18 +175,22 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setAssertionValue( String value )
+    public CompareRequest setAssertionValue( String value )
     {
         getDecorated().setAssertionValue( value );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setAssertionValue( byte[] value )
+    public CompareRequest setAssertionValue( byte[] value )
     {
         getDecorated().setAssertionValue( value );
+        
+        return this;
     }
 
 
@@ -200,9 +206,11 @@ public class CompareRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setAttributeId( String attrId )
+    public CompareRequest setAttributeId( String attrId )
     {
         getDecorated().setAttributeId( attrId );
+        
+        return this;
     }
 
 

@@ -159,8 +159,9 @@ public class DeleteRequestImplTest
             }
 
 
-            public void setName( Dn name )
+            public DeleteRequest setName( Dn name )
             {
+                return this;
             }
 
 
@@ -188,13 +189,15 @@ public class DeleteRequestImplTest
             }
 
 
-            public void addControl( Control control ) throws MessageException
+            public DeleteRequest addControl( Control control ) throws MessageException
             {
+                return this;
             }
 
 
-            public void removeControl( Control control ) throws MessageException
+            public DeleteRequest removeControl( Control control ) throws MessageException
             {
+                return this;
             }
 
 
@@ -227,8 +230,9 @@ public class DeleteRequestImplTest
             }
 
 
-            public void addAbandonListener( AbandonListener listener )
+            public DeleteRequest addAbandonListener( AbandonListener listener )
             {
+                return this;
             }
 
 
@@ -238,8 +242,9 @@ public class DeleteRequestImplTest
             }
 
 
-            public void addAllControls( Control[] controls ) throws MessageException
+            public DeleteRequest addAllControls( Control[] controls ) throws MessageException
             {
+                return this;
             }
 
 
@@ -255,8 +260,9 @@ public class DeleteRequestImplTest
             }
 
 
-            public void setMessageId( int messageId )
+            public DeleteRequest setMessageId( int messageId )
             {
+                return this;
             }
         };
 

@@ -231,9 +231,11 @@ public class ModifyRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public ModifyRequest setName( Dn name )
     {
         getDecorated().setName( name );
+        
+        return this;
     }
 
 
@@ -249,116 +251,142 @@ public class ModifyRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void addModification( Modification mod )
+    public ModifyRequest addModification( Modification mod )
     {
         getDecorated().addModification( mod );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void removeModification( Modification mod )
+    public ModifyRequest removeModification( Modification mod )
     {
         getDecorated().removeModification( mod );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void remove( String attributeName, String... attributeValue )
+    public ModifyRequest remove( String attributeName, String... attributeValue )
     {
         getDecorated().remove( attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void remove( String attributeName, byte[]... attributeValue )
+    public ModifyRequest remove( String attributeName, byte[]... attributeValue )
     {
         getDecorated().remove( attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void remove( Attribute attr )
+    public ModifyRequest remove( Attribute attr )
     {
         getDecorated().remove( attr );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void addModification( Attribute attr, ModificationOperation modOp )
+    public ModifyRequest addModification( Attribute attr, ModificationOperation modOp )
     {
         getDecorated().addModification( attr, modOp );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( String attributeName, String... attributeValue )
+    public ModifyRequest add( String attributeName, String... attributeValue )
     {
         getDecorated().add( attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( String attributeName, byte[]... attributeValue )
+    public ModifyRequest add( String attributeName, byte[]... attributeValue )
     {
         getDecorated().add( attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( Attribute attr )
+    public ModifyRequest add( Attribute attr )
     {
         getDecorated().add( attr );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void replace( String attributeName )
+    public ModifyRequest replace( String attributeName )
     {
         getDecorated().replace( attributeName );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void replace( String attributeName, String... attributeValue )
+    public ModifyRequest replace( String attributeName, String... attributeValue )
     {
         getDecorated().replace( attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void replace( String attributeName, byte[]... attributeValue )
+    public ModifyRequest replace( String attributeName, byte[]... attributeValue )
     {
         getDecorated().replace( attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void replace( Attribute attr )
+    public ModifyRequest replace( Attribute attr )
     {
         getDecorated().replace( attr );
+        
+        return this;
     }
 }

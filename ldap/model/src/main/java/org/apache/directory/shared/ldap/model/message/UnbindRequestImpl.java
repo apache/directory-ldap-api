@@ -54,6 +54,17 @@ public class UnbindRequestImpl extends AbstractRequest implements UnbindRequest
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_04185 ) );
     }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public UnbindRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
 
 
     /**

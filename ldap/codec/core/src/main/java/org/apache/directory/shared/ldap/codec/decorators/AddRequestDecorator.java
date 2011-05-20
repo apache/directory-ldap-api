@@ -31,9 +31,9 @@ import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.AddRequest;
@@ -168,9 +168,11 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
-    public void setEntryDn( Dn entry )
+    public AddRequest setEntryDn( Dn entry )
     {
         getDecorated().setEntryDn( entry );
+        
+        return this;
     }
 
 
@@ -186,9 +188,11 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
-    public void setEntry( Entry entry )
+    public AddRequest setEntry( Entry entry )
     {
         getDecorated().setEntry( entry );
+        
+        return this;
     }
 
     

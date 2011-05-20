@@ -98,9 +98,11 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
-    public void setSimple( boolean simple )
+    public BindRequest setSimple( boolean simple )
     {
         this.isSimple = simple;
+        
+        return this;
     }
 
 
@@ -116,16 +118,16 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
-    public void setCredentials( String credentials )
+    public BindRequest setCredentials( String credentials )
     {
-        setCredentials( Strings.getBytesUtf8(credentials) );
+        return setCredentials( Strings.getBytesUtf8(credentials) );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setCredentials( byte[] credentials )
+    public BindRequest setCredentials( byte[] credentials )
     {
         if ( credentials != null )
         {
@@ -151,6 +153,8 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
         {
             hCredentials = 0;
         }
+        
+        return this;
     }
 
 
@@ -166,10 +170,12 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
-    public void setSaslMechanism( String saslMechanism )
+    public BindRequest setSaslMechanism( String saslMechanism )
     {
         this.isSimple = false;
         this.mechanism = saslMechanism;
+        
+        return this;
     }
 
 
@@ -185,9 +191,11 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public BindRequest setName( Dn name )
     {
         this.name = name;
+        
+        return this;
     }
 
 
@@ -212,9 +220,22 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
-    public void setVersion3( boolean version3 )
+    public BindRequest setVersion3( boolean version3 )
     {
         this.isVersion3 = version3;
+        
+        return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
     }
 
 

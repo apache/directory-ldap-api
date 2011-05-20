@@ -74,6 +74,7 @@ public interface ExtendedRequest<R extends ExtendedResponse> extends SingleReply
      * Sets the Object Identifier corresponding to the extended request type.
      * 
      * @param oid the dotted-decimal representation as a String of the OID
+     * @return The ExtendedRequest instance
      */
-    void setRequestName( String oid );
+    ExtendedRequest<R> setRequestName( String oid );
 }

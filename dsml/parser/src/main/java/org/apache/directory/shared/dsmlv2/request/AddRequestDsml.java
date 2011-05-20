@@ -22,9 +22,9 @@ package org.apache.directory.shared.dsmlv2.request;
 
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.AddRequest;
@@ -247,25 +247,24 @@ public class AddRequestDsml
 
 
     /**
-     * Set the added Dn.
-     * 
-     * @param entryDn The entry Dn to set.
+     * {@inheritDoc}
      */
-    public void setEntryDn( Dn entryDn )
+    public AddRequest setEntryDn( Dn entryDn )
     {
         getDecorated().setEntryDn( entryDn );
+        
+        return this;
     }
 
 
     /**
-     * Sets the entry.
-     *
-     * @param entry
-     *      the entry
+     * {@inheritDoc}
      */
-    public void setEntry( Entry entry )
+    public AddRequest setEntry( Entry entry )
     {
         getDecorated().setEntry( entry );
+        
+        return this;
     }
 
 

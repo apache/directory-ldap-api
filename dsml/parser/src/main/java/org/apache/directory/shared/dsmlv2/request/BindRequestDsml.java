@@ -118,9 +118,11 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setSimple( boolean isSimple )
+    public BindRequest setSimple( boolean isSimple )
     {
         getDecorated().setSimple( isSimple );
+
+        return this;
     }
 
 
@@ -136,18 +138,22 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setCredentials( String credentials )
+    public BindRequest setCredentials( String credentials )
     {
         getDecorated().setCredentials( credentials );
+
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setCredentials( byte[] credentials )
+    public BindRequest setCredentials( byte[] credentials )
     {
         getDecorated().setCredentials( credentials );
+
+        return this;
     }
 
 
@@ -163,9 +169,11 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public BindRequest setName( Dn name )
     {
         getDecorated().setName( name );
+
+        return this;
     }
 
 
@@ -190,9 +198,11 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setVersion3( boolean isVersion3 )
+    public BindRequest setVersion3( boolean isVersion3 )
     {
         getDecorated().setVersion3( isVersion3 );
+
+        return this;
     }
 
 
@@ -208,8 +218,10 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setSaslMechanism( String saslMechanism )
+    public BindRequest setSaslMechanism( String saslMechanism )
     {
         getDecorated().setSaslMechanism( saslMechanism );
+
+        return this;
     }
 }

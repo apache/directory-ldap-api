@@ -45,8 +45,8 @@ public interface AbandonableRequest extends Request
     /**
      * Adds listener to be notified if this request gets abandoned.
      * 
-     * @param listener
-     *            to be notified if this request gets abandoned.
+     * @param listener to be notified if this request gets abandoned.
+     * @return An AbandonableRequest reference
      */
-    void addAbandonListener( AbandonListener listener );
+    AbandonableRequest addAbandonListener( AbandonListener listener );
 }

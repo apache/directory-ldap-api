@@ -51,6 +51,7 @@ public interface DeleteRequest extends SingleReplyRequest<DeleteResponse>, Aband
      * request.
      * 
      * @param name the Dn of the leaf entry to delete.
+     * @return The DeleteRequest instance
      */
-    void setName( Dn name );
+    DeleteRequest setName( Dn name );
 }

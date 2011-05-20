@@ -69,9 +69,11 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     /**
      * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public DeleteRequest setName( Dn name )
     {
         getDecorated().setName( name );
+        
+        return this;
     }
 
     

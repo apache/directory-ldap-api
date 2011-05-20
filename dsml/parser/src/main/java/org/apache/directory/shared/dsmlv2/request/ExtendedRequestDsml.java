@@ -149,8 +149,10 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends Extende
     /**
      * {@inheritDoc}
      */
-    public void setRequestName( String oid )
+    public ExtendedRequest<P> setRequestName( String oid )
     {
         getDecorated().setRequestName( oid );
+        
+        return this;
     }
 }

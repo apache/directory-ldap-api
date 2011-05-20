@@ -69,14 +69,24 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
 
 
     /**
-     * Sets the distinguished name of the leaf entry to be deleted by this
-     * request.
-     * 
-     * @param name the Dn of the leaf entry to delete.
+     * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public DeleteRequest setName( Dn name )
     {
         this.name = name;
+        
+        return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public DeleteRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
     }
 
 

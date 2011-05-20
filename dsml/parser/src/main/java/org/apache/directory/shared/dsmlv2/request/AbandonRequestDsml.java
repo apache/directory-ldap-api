@@ -97,9 +97,11 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
      * 
      * @param abandonedMessageId The abandoned messageID to set.
      */
-    public void setAbandonedMessageId( int abandonedMessageId )
+    public AbandonRequest setAbandonedMessageId( int abandonedMessageId )
     {
         getDecorated().setAbandoned( abandonedMessageId );
+        
+        return this;
     }
 
 
@@ -115,8 +117,10 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     /**
      * {@inheritDoc}
      */
-    public void setAbandoned( int requestId )
+    public AbandonRequest setAbandoned( int requestId )
     {
         getDecorated().setAbandoned( requestId );
+        
+        return this;
     }
 }

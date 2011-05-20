@@ -185,9 +185,11 @@ public class ModifyDNRequestDsml
      * 
      * @param newSuperior The newSuperior to set.
      */
-    public void setNewSuperior( Dn newSuperior )
+    public ModifyDnRequest setNewSuperior( Dn newSuperior )
     {
         getDecorated().setNewSuperior( newSuperior );
+        
+        return this;
     }
 
 
@@ -203,9 +205,11 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public ModifyDnRequest setName( Dn name )
     {
         getDecorated().setName( name );
+        
+        return this;
     }
 
 
@@ -221,9 +225,11 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setNewRdn( Rdn newRdn )
+    public ModifyDnRequest setNewRdn( Rdn newRdn )
     {
         getDecorated().setNewRdn( newRdn );
+        
+        return this;
     }
 
 
@@ -239,9 +245,11 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setDeleteOldRdn( boolean deleteOldRdn )
+    public ModifyDnRequest setDeleteOldRdn( boolean deleteOldRdn )
     {
         getDecorated().setDeleteOldRdn( deleteOldRdn );
+        
+        return this;
     }
 
 

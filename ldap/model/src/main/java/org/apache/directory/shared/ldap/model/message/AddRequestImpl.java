@@ -141,20 +141,18 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
 
 
     /**
-     * Sets the distinguished name of the entry to add.
-     * 
-     * @param dn the Dn of the added entry.
+     * {@inheritDoc}
      */
-    public void setEntryDn( Dn dn )
+    public AddRequest setEntryDn( Dn dn )
     {
         entry.setDn( dn );
+        
+        return this;
     }
 
 
     /**
-     * Gets the entry to add.
-     * 
-     * @return the added Entry
+     * {@inheritDoc}
      */
     public Entry getEntry()
     {
@@ -163,15 +161,26 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
 
 
     /**
-     * Sets the Entry to add.
-     * 
-     * @param entry the added Entry
+     * {@inheritDoc}
      */
-    public void setEntry( Entry entry )
+    public AddRequest setEntry( Entry entry )
     {
         this.entry = entry;
+        
+        return this;
     }
     
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AddRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
     
     // ------------------------------------------------------------------------
     // SingleReplyRequest Interface Method Implementations

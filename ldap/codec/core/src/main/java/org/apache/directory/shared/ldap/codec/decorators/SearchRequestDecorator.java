@@ -211,19 +211,23 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public void setFilter( ExprNode filter )
+    public SearchRequest setFilter( ExprNode filter )
     {
         topFilter = transform( filter );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setFilter( String filter ) throws LdapException
+    public SearchRequest setFilter( String filter ) throws LdapException
     {
         getDecorated().setFilter( filter );
         this.currentFilter = transform( getDecorated().getFilter() );
+        
+        return this;
     }
 
 
@@ -752,9 +756,11 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public void setBase( Dn baseDn )
+    public SearchRequest setBase( Dn baseDn )
     {
         getDecorated().setBase( baseDn );
+        
+        return this;
     }
 
 
@@ -770,9 +776,11 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public void setScope( SearchScope scope )
+    public SearchRequest setScope( SearchScope scope )
     {
         getDecorated().setScope( scope );
+        
+        return this;
     }
 
 
@@ -788,9 +796,11 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public void setDerefAliases( AliasDerefMode aliasDerefAliases )
+    public SearchRequest setDerefAliases( AliasDerefMode aliasDerefAliases )
     {
         getDecorated().setDerefAliases( aliasDerefAliases );
+        
+        return this;
     }
 
 
@@ -806,9 +816,11 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public void setSizeLimit( long entriesMax )
+    public SearchRequest setSizeLimit( long entriesMax )
     {
         getDecorated().setSizeLimit( entriesMax );
+        
+        return this;
     }
 
 
@@ -824,9 +836,11 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public void setTimeLimit( int secondsMax )
+    public SearchRequest setTimeLimit( int secondsMax )
     {
         getDecorated().setTimeLimit( secondsMax );
+        
+        return this;
     }
 
 
@@ -842,9 +856,11 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public void setTypesOnly( boolean typesOnly )
+    public SearchRequest setTypesOnly( boolean typesOnly )
     {
         getDecorated().setTypesOnly( typesOnly );
+        
+        return this;
     }
 
 
@@ -869,18 +885,22 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public void addAttributes( String... attributes )
+    public SearchRequest addAttributes( String... attributes )
     {
         getDecorated().addAttributes( attributes );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void removeAttribute( String attribute )
+    public SearchRequest removeAttribute( String attribute )
     {
         getDecorated().removeAttribute( attribute );
+        
+        return this;
     }
 
 
@@ -1059,8 +1079,10 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     }
 
 
-    public void addAbandonListener( AbandonListener listener )
+    public SearchRequest addAbandonListener( AbandonListener listener )
     {
         getDecorated().addAbandonListener( listener );
+        
+        return this;
     }
 }

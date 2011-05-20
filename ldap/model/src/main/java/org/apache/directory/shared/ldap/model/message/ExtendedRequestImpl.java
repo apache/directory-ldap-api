@@ -68,12 +68,25 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
      * 
      * @param newOid the dotted-decimal representation as a String of the OID
      */
-    public void setRequestName( String newOid )
+    public ExtendedRequest<ExtendedResponse> setRequestName( String newOid )
     {
         this.oid = newOid;
+        
+        return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedRequest<ExtendedResponse> setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
     }
 
-
+    
     // ------------------------------------------------------------------------
     // SingleReplyRequest Interface Method Implementations
     // ------------------------------------------------------------------------

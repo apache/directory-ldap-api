@@ -80,9 +80,11 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
      * 
      * @param newOid the dotted-decimal representation as a String of the OID
      */
-    public void setRequestName( String newOid )
+    public ExtendedRequest<R> setRequestName( String newOid )
     {
         this.oid = newOid;
+        
+        return this;
     }
 
 

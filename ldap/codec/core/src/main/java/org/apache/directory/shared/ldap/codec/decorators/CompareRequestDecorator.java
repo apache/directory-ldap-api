@@ -168,9 +168,11 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public CompareRequest setName( Dn name )
     {
         getDecorated().setName( name );
+        
+        return this;
     }
 
 
@@ -186,18 +188,22 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
-    public void setAssertionValue( String value )
+    public CompareRequest setAssertionValue( String value )
     {
         getDecorated().setAssertionValue( value );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setAssertionValue( byte[] value )
+    public CompareRequest setAssertionValue( byte[] value )
     {
         getDecorated().setAssertionValue( value );
+        
+        return this;
     }
 
 
@@ -213,9 +219,11 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
-    public void setAttributeId( String attrId )
+    public CompareRequest setAttributeId( String attrId )
     {
         getDecorated().setAttributeId( attrId );
+        
+        return this;
     }
 
     

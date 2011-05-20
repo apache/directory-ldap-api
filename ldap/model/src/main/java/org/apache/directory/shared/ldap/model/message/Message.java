@@ -72,29 +72,32 @@ public interface Message
      * Adds a control to this Message.
      * 
      * @param control the control to add.
+     * @return A Message reference
      * @throws org.apache.directory.shared.ldap.model.exception.MessageException if controls cannot be added to this Message or the control is
      *             not known etc.
      */
-    void addControl( Control control ) throws MessageException;
+    Message addControl( Control control ) throws MessageException;
 
 
     /**
      * Adds an array of controls to this Message.
      * 
      * @param controls the controls to add.
+     * @return A Message reference
      * @throws MessageException if controls cannot be added to this Message or they are not known etc.
      */
-    void addAllControls( Control[] controls ) throws MessageException;
+    Message addAllControls( Control[] controls ) throws MessageException;
 
 
     /**
      * Deletes a control removing it from this Message.
      * 
      * @param control the control to remove.
+     * @return A Message reference
      * @throws MessageException if controls cannot be added to this Message or the control is
      *             not known etc.
      */
-    void removeControl( Control control ) throws MessageException;
+    Message removeControl( Control control ) throws MessageException;
 
 
     /**
@@ -139,6 +142,7 @@ public interface Message
     /**
      * Sets the Message ID for this request
      * @param messageId The message Id
+     * @return A Message reference
      */
-    void setMessageId( int messageId );
+    Message setMessageId( int messageId );
 }
