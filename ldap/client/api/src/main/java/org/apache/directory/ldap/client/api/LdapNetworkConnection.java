@@ -895,10 +895,27 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public void bind() throws LdapException, IOException
     {
-        LOG.debug( "Anonymous Bind request" );
+        LOG.debug( "Bind request" );
 
         // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( StringConstants.EMPTY, StringConstants.EMPTY_BYTES );
+        BindRequest bindRequest = createBindRequest( config.getName(), Strings.getBytesUtf8( config.getCredentials() ) );
+
+        BindResponse bindResponse = bind( bindRequest );
+        
+        processResponse( bindResponse );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void anonymousBind() throws LdapException, IOException
+    {
+        LOG.debug( "Anonymous Bind request" );
+
+        
+        // Create the BindRequest
+        BindRequest bindRequest = createBindRequest( config.getName(), Strings.getBytesUtf8( config.getCredentials() ) );
 
         BindResponse bindResponse = bind( bindRequest );
         
@@ -911,7 +928,22 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public BindFuture bindAsync() throws LdapException, IOException
     {
-        LOG.debug( "Anonymous Bind request" );
+        LOG.debug( "Asynchronous Bind request" );
+
+        
+        // Create the BindRequest
+        BindRequest bindRequest = createBindRequest( config.getName(), Strings.getBytesUtf8( config.getCredentials() ) );
+
+        return bindAsync( bindRequest );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public BindFuture anonymousBindAsync() throws LdapException, IOException
+    {
+        LOG.debug( "Anonymous asynchronous Bind request" );
 
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( StringConstants.EMPTY, StringConstants.EMPTY_BYTES );

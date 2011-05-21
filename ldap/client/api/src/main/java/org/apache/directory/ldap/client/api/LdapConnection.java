@@ -143,13 +143,23 @@ public interface LdapConnection
 
 
     /**
-     * Anonymous Bind on a server.
+     * Bind on a server, using the LdapConnectionConfig informations
      *
      * @return The BindResponse LdapResponse
      * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
     void bind() throws LdapException, IOException;
+
+
+    /**
+     * Anonymous Bind on a server.
+     *
+     * @return The BindResponse LdapResponse
+     * @throws LdapException if some error occurred
+     * @throws IOException if an I/O exception occurred
+     */
+    void anonymousBind() throws LdapException, IOException;
 
 
     /**

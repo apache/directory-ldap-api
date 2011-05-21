@@ -74,13 +74,23 @@ public interface LdapAsyncConnection extends LdapConnection
 
 
     /**
-     * Anonymous asynchronous Bind on a server. 
+     * Asynchronous Bind on a server, using the LdapConnectionConfig informations. 
      *
      * @return the bind operation's future
      * @throws LdapException if some error occurred
      * @throws IOException if some IO error occurred
      */
     BindFuture bindAsync() throws LdapException, IOException;
+
+
+    /**
+     * Anonymous asynchronous Bind on a server. 
+     *
+     * @return the bind operation's future
+     * @throws LdapException if some error occurred
+     * @throws IOException if some IO error occurred
+     */
+    BindFuture anonymousBindAsync() throws LdapException, IOException;
 
 
     /**
