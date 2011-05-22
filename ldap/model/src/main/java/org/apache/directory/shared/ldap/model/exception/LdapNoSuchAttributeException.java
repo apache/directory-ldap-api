@@ -47,6 +47,18 @@ public class LdapNoSuchAttributeException extends LdapOperationException
 
     /**
      * Creates a new instance of LdapNoSuchAttributeException.
+     *
+     * @param message The exception message
+     * @param cause The root cause for this exception
+     */
+    public LdapNoSuchAttributeException( String message, Throwable cause )
+    {
+        super( ResultCodeEnum.NO_SUCH_ATTRIBUTE, message, cause );
+    }
+
+    
+    /**
+     * Creates a new instance of LdapNoSuchAttributeException.
      */
     public LdapNoSuchAttributeException()
     {

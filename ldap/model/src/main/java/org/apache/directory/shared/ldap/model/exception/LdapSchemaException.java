@@ -85,10 +85,8 @@ public class LdapSchemaException extends LdapException
     /**
      * Creates a new instance of LdapSchemaException.
      *
-     * @param code
-     *      The code of the exception
-     * @param explanation
-     *      The message associated with the exception
+     * @param code The code of the exception
+     * @param explanation The message associated with the exception
      */
     public LdapSchemaException( LdapSchemaExceptionCodes code, String explanation )
     {
@@ -97,6 +95,32 @@ public class LdapSchemaException extends LdapException
     }
 
 
+    /**
+     *
+     * @param code The code of the exception
+     * @param cause The root cause for this exception
+     */
+    public LdapSchemaException( LdapSchemaExceptionCodes code, Throwable cause )
+    {
+        super(cause);
+        this.code = code;
+    }
+
+    
+    /**
+     * Creates a new instance of LdapSchemaException.
+     *
+     * @param code The code of the exception
+     * @param explanation The message associated with the exception
+     * @param cause The root cause for this exception
+     */
+    public LdapSchemaException( LdapSchemaExceptionCodes code, String explanation, Throwable cause )
+    {
+        super( explanation, cause );
+        this.code = code;
+    }
+
+    
     /**
      * Gets the code of the exception.
      *

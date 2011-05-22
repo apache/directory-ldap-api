@@ -30,16 +30,25 @@ public class UrlDecoderException extends LdapException
 {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Creates a DecoderException
+     * 
+     * @param message A message with meaning to a human
+     */
+    public UrlDecoderException( String message )
+    {
+        super( message );
+    }
+
 
     /**
      * Creates a DecoderException
      * 
-     * @param pMessage
-     *            A message with meaning to a human
+     * @param message A message with meaning to a human
+     * @param cause The root cause for this exception
      */
-    public UrlDecoderException(String pMessage)
+    public UrlDecoderException( String message, Throwable cause )
     {
-        super( pMessage );
+        super( message, cause  );
     }
-
 }

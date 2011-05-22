@@ -486,7 +486,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
             }
             catch( LdapException e )
             {
-                throw new LdapInvalidDnException( e.getMessage() );
+                throw new LdapInvalidDnException( e.getMessage(), e );
             }
         }
 

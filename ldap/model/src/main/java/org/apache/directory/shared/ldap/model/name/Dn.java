@@ -1114,7 +1114,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
                 }
                 catch ( LdapException le )
                 {
-                    throw new LdapInvalidDnException( le.getMessage() );
+                    throw new LdapInvalidDnException( le.getMessage(), le );
                 }
             }
             else

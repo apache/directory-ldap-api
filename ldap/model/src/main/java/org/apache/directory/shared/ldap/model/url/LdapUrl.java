@@ -647,7 +647,7 @@ public class LdapUrl
         }
         catch ( UrlDecoderException e )
         {
-            throw new LdapUriException( e.getMessage() );
+            throw new LdapUriException( e.getMessage(), e );
         }
     }
 

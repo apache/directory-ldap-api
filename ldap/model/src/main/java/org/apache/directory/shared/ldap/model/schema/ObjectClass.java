@@ -191,7 +191,7 @@ public class ObjectClass extends AbstractSchemaObject
                     String msg = I18n.err( I18n.ERR_04321, oid, superiorName );
 
                     LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                        LdapSchemaExceptionCodes.OC_NONEXISTENT_SUPERIOR, msg );
+                        LdapSchemaExceptionCodes.OC_NONEXISTENT_SUPERIOR, msg, ne );
                     ldapSchemaException.setSourceObject( this );
                     ldapSchemaException.setRelatedId( superiorName );
                     errors.add( ldapSchemaException );
@@ -250,7 +250,7 @@ public class ObjectClass extends AbstractSchemaObject
                     String msg = I18n.err( I18n.ERR_04323, oid, mayAttributeTypeName );
 
                     LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                        LdapSchemaExceptionCodes.OC_NONEXISTENT_MAY_AT, msg );
+                        LdapSchemaExceptionCodes.OC_NONEXISTENT_MAY_AT, msg, ne );
                     ldapSchemaException.setSourceObject( this );
                     ldapSchemaException.setRelatedId( mayAttributeTypeName );
                     errors.add( ldapSchemaException );
@@ -325,7 +325,7 @@ public class ObjectClass extends AbstractSchemaObject
                     String msg = I18n.err( I18n.ERR_04326, oid, mustAttributeTypeName );
 
                     LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                        LdapSchemaExceptionCodes.OC_NONEXISTENT_MUST_AT, msg );
+                        LdapSchemaExceptionCodes.OC_NONEXISTENT_MUST_AT, msg, ne );
                     ldapSchemaException.setSourceObject( this );
                     ldapSchemaException.setRelatedId( mustAttributeTypeName );
                     errors.add( ldapSchemaException );

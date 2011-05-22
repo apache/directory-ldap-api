@@ -160,7 +160,7 @@ public class MatchingRule extends AbstractSchemaObject
                 String msg = I18n.err( I18n.ERR_04317 );
 
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.MR_NONEXISTENT_SYNTAX, msg );
+                    LdapSchemaExceptionCodes.MR_NONEXISTENT_SYNTAX, msg, ne );
                 ldapSchemaException.setSourceObject( this );
                 ldapSchemaException.setRelatedId( ldapSyntaxOid );
                 errors.add( ldapSchemaException );

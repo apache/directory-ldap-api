@@ -127,7 +127,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
             {
                 String message = I18n.err( I18n.ERR_04222 );
                 LOG.error( message );
-                throw new LdapException( message );
+                throw new LdapException( message, uee );
             }
         }
         
@@ -156,7 +156,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
             {
                 String message = I18n.err( I18n.ERR_04223 );
                 LOG.error( message );
-                throw new LdapException( message );
+                throw new LdapException( message, uee );
             }
         }
     }

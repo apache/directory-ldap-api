@@ -278,7 +278,7 @@ public class LdifAttributesReader extends LdifReader
                 }
                 catch ( LdapException le )
                 {
-                    throw new LdapLdifException( I18n.err( I18n.ERR_12057_BAD_ATTRIBUTE ) );
+                    throw new LdapLdifException( I18n.err( I18n.ERR_12057_BAD_ATTRIBUTE ), le );
                 }
             }
         }
@@ -297,7 +297,7 @@ public class LdifAttributesReader extends LdifReader
             }
             catch ( LdapInvalidAttributeValueException liave )
             {
-                throw new LdapLdifException( liave.getMessage() );
+                throw new LdapLdifException( liave.getMessage(), liave );
             }
         }
     }
@@ -475,7 +475,7 @@ public class LdifAttributesReader extends LdifReader
         catch ( LdapLdifException ne )
         {
             LOG.error( I18n.err( I18n.ERR_12008_CANNOT_PARSE_LDIF_BUFFER, ne.getLocalizedMessage() ) );
-            throw new LdapLdifException( I18n.err( I18n.ERR_12009_ERROR_PARSING_LDIF_BUFFER ) );
+            throw new LdapLdifException( I18n.err( I18n.ERR_12009_ERROR_PARSING_LDIF_BUFFER ), ne );
         }
         finally
         {
@@ -485,7 +485,7 @@ public class LdifAttributesReader extends LdifReader
             }
             catch ( IOException ioe )
             {
-                throw new LdapLdifException( I18n.err( I18n.ERR_12024_CANNOT_CLOSE_FILE ) );
+                throw new LdapLdifException( I18n.err( I18n.ERR_12024_CANNOT_CLOSE_FILE ), ioe );
             }
         }
     }
@@ -539,7 +539,7 @@ public class LdifAttributesReader extends LdifReader
         catch ( LdapLdifException ne )
         {
             LOG.error( I18n.err( I18n.ERR_12008_CANNOT_PARSE_LDIF_BUFFER, ne.getLocalizedMessage() ) );
-            throw new LdapLdifException( I18n.err( I18n.ERR_12009_ERROR_PARSING_LDIF_BUFFER ) );
+            throw new LdapLdifException( I18n.err( I18n.ERR_12009_ERROR_PARSING_LDIF_BUFFER ), ne );
         }
         finally
         {
@@ -549,7 +549,7 @@ public class LdifAttributesReader extends LdifReader
             }
             catch ( IOException ioe )
             {
-                throw new LdapLdifException( I18n.err( I18n.ERR_12024_CANNOT_CLOSE_FILE ) );
+                throw new LdapLdifException( I18n.err( I18n.ERR_12024_CANNOT_CLOSE_FILE ), ioe );
             }
         }
     }
@@ -604,7 +604,7 @@ public class LdifAttributesReader extends LdifReader
         catch ( LdapLdifException ne )
         {
             LOG.error( I18n.err( I18n.ERR_12008_CANNOT_PARSE_LDIF_BUFFER, ne.getLocalizedMessage() ) );
-            throw new LdapLdifException( I18n.err( I18n.ERR_12009_ERROR_PARSING_LDIF_BUFFER ) );
+            throw new LdapLdifException( I18n.err( I18n.ERR_12009_ERROR_PARSING_LDIF_BUFFER ), ne );
         }
         finally
         {
@@ -614,7 +614,7 @@ public class LdifAttributesReader extends LdifReader
             }
             catch ( IOException ioe )
             {
-                throw new LdapLdifException( I18n.err( I18n.ERR_12024_CANNOT_CLOSE_FILE ) );
+                throw new LdapLdifException( I18n.err( I18n.ERR_12024_CANNOT_CLOSE_FILE ), ioe );
             }
         }
     }

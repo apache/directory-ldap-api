@@ -99,6 +99,18 @@ public class LdapOperationException extends LdapException
 
 
     /**
+     * Creates a new instance of LdapOperationException.
+     *
+     * @param message The exception message
+     * @param cause The root cause for this exception
+     */
+    public LdapOperationException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
+
+
+    /**
      * Gets the LDAP result code that would be associated with this exception.
      * 
      * @return the LDAP result code corresponding to this exception type.

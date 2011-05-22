@@ -29,22 +29,18 @@ public class LdapUriException extends LdapException
 {
     private static final long serialVersionUID = 1L;
 
-
-    // ----------------------------------------------------------- constructors
     /**
      * The constructor with a reason string argument.
      * 
-     * @param reason
-     *            the reason
+     * @param reason the reason
+     * @param cause the root cause
      */
-    public LdapUriException(String reason)
+    public LdapUriException( String reason, Throwable cause )
     {
-        super( reason ); // for backward compatibility of Throwable
+        super( reason, cause ); // for backward compatibility of Throwable
         this.reason = reason;
         this.reasonCode = UNKNOWN;
     }
-
-    // -------------------------------------------------------------- constants
 
     /**
      * No specified reason code.
@@ -70,7 +66,6 @@ public class LdapUriException extends LdapException
      * The DNS punycode encoding or decoding error.
      */
     // public static final int PUNYCODE = 4;
-    // ------------------------------------------------------------- properties
     /**
      * The reason code.
      */
@@ -81,8 +76,6 @@ public class LdapUriException extends LdapException
      */
     protected String reason;
 
-
-    // ---------------------------------------------------------------- methods
 
     /**
      * Get the reason code.

@@ -89,7 +89,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         }
         catch ( LdapException ne )
         {
-            throw new LdapNoSuchAttributeException( ne.getMessage() );
+            throw new LdapNoSuchAttributeException( ne.getMessage(), ne );
         }
     }
 
@@ -125,7 +125,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         }
         catch ( LdapException ne )
         {
-            throw new LdapNoSuchAttributeException( ne.getMessage() );
+            throw new LdapNoSuchAttributeException( ne.getMessage(), ne );
         }
     }
 
@@ -247,7 +247,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         }
         catch ( LdapException ne )
         {
-            throw new LdapNoSuchAttributeException( ne.getMessage() );
+            throw new LdapNoSuchAttributeException( ne.getMessage(), ne );
         }
     }
 
@@ -313,7 +313,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         }
         catch ( LdapException ne )
         {
-            throw new LdapNoSuchAttributeException( ne.getMessage() );
+            throw new LdapNoSuchAttributeException( ne.getMessage(), ne );
         }
     }
 
