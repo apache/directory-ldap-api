@@ -358,7 +358,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     {
         this.config = config;
         messageId = new AtomicInteger( 0 );
-
     }
 
 
@@ -3725,6 +3724,11 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     {
         try
         {
+            if ( config.isUseSsl() )
+            {
+                throw new LdapException( "Cannot use TLS when the useSsl flag is set true in the configuration" );
+            }
+
             checkSession();
 
             ExtendedResponse resp = extended( START_TLS_REQ_OID );
