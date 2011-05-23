@@ -49,7 +49,16 @@ public class CursorIterator<E> implements Iterator<E>
     public CursorIterator( Cursor<E> cursor )
     {
         this.cursor = cursor;
-        this.available = cursor.available();
+        
+        try
+        {
+            cursor.next();
+            this.available = true;
+        }
+        catch ( Exception e )
+        {
+            this.available = false;
+        }
     }
 
 
