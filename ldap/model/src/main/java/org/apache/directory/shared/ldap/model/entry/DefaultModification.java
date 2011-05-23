@@ -72,6 +72,94 @@ public class DefaultModification implements Modification
         this.attribute = attribute;
     }
 
+
+    /**
+     * Creates a new instance of DefaultModification.
+     *
+     * @param operation The modification operation
+     * @param attributeId The associated attribute ID
+     * @param values the associated values
+     */
+    public DefaultModification( ModificationOperation operation, String attributeId, String... values )
+    {
+        this.operation = operation;
+        this.attribute = new DefaultAttribute( attributeId, values );
+    }
+
+
+    /**
+     * Creates a new instance of DefaultModification.
+     *
+     * @param operation The modification operation
+     * @param attributeId The associated attribute ID
+     * @param values the associated values
+     */
+    public DefaultModification( ModificationOperation operation, String attributeId, byte[]... values )
+    {
+        this.operation = operation;
+        this.attribute = new DefaultAttribute( attributeId, values );
+    }
+
+
+    /**
+     * Creates a new instance of DefaultModification.
+     *
+     * @param operation The modification operation
+     * @param attributeId The associated attribute ID
+     * @param values the associated values
+     */
+    public DefaultModification( ModificationOperation operation, String attributeId, Value<?>... values )
+    {
+        this.operation = operation;
+        this.attribute = new DefaultAttribute( attributeId, values );
+    }
+
+
+    /**
+     * Creates a new instance of DefaultModification.
+     *
+     * @param operation The modification operation
+     * @param attributeType The associated attributeType
+     * @param values the associated values
+     */
+    public DefaultModification( ModificationOperation operation, AttributeType attributeType, String... values ) 
+        throws LdapInvalidAttributeValueException
+    {
+        this.operation = operation;
+        this.attribute = new DefaultAttribute( attributeType, values );
+    }
+
+
+    /**
+     * Creates a new instance of DefaultModification.
+     *
+     * @param operation The modification operation
+     * @param attributeType The associated attributeType
+     * @param values the associated values
+     */
+    public DefaultModification( ModificationOperation operation, AttributeType attributeType, byte[]... values )
+    throws LdapInvalidAttributeValueException
+    {
+        this.operation = operation;
+        this.attribute = new DefaultAttribute( attributeType, values );
+    }
+
+
+    /**
+     * Creates a new instance of DefaultModification.
+     *
+     * @param operation The modification operation
+     * @param attributeType The associated attributeType
+     * @param values the associated values
+     */
+    public DefaultModification( ModificationOperation operation, AttributeType attributeType, Value<?>... values )
+    throws LdapInvalidAttributeValueException
+    {
+        this.operation = operation;
+        this.attribute = new DefaultAttribute( attributeType, values );
+    }
+
+
     /**
      * Creates a new instance of DefaultModification.
      *
