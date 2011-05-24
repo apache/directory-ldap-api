@@ -28,7 +28,9 @@ import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.message.AbandonRequest;
+import org.apache.directory.shared.ldap.model.message.Control;
 
 
 /**
@@ -72,6 +74,44 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
         getDecorated().setAbandoned( requestId );
         
         return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AbandonRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AbandonRequest addControl( Control control ) throws MessageException
+    {
+        return (AbandonRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AbandonRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (AbandonRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AbandonRequest removeControl( Control control ) throws MessageException
+    {
+        return (AbandonRequest)super.removeControl( control );
     }
 
     

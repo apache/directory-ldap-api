@@ -47,6 +47,7 @@ import org.apache.directory.shared.ldap.codec.search.PresentFilter;
 import org.apache.directory.shared.ldap.codec.search.SubstringFilter;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.filter.AndNode;
 import org.apache.directory.shared.ldap.model.filter.ApproximateNode;
 import org.apache.directory.shared.ldap.model.filter.BranchNode;
@@ -64,6 +65,7 @@ import org.apache.directory.shared.ldap.model.filter.SimpleNode;
 import org.apache.directory.shared.ldap.model.filter.SubstringNode;
 import org.apache.directory.shared.ldap.model.message.AbandonListener;
 import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.Message;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.message.SearchRequest;
@@ -1084,5 +1086,41 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
         getDecorated().addAbandonListener( listener );
         
         return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest setMessageId( int messageId )
+    {
+        return (SearchRequest)super.setMessageId( messageId );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest addControl( Control control ) throws MessageException
+    {
+        return (SearchRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (SearchRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest removeControl( Control control ) throws MessageException
+    {
+        return (SearchRequest)super.removeControl( control );
     }
 }

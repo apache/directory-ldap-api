@@ -21,6 +21,7 @@ package org.apache.directory.shared.ldap.model.message;
 
 
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 
 
 /**
@@ -64,6 +65,33 @@ public class UnbindRequestImpl extends AbstractRequest implements UnbindRequest
         super.setMessageId( messageId );
         
         return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public UnbindRequest addControl( Control control ) throws MessageException
+    {
+        return (UnbindRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public UnbindRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (UnbindRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public UnbindRequest removeControl( Control control ) throws MessageException
+    {
+        return (UnbindRequest)super.removeControl( control );
     }
 
 

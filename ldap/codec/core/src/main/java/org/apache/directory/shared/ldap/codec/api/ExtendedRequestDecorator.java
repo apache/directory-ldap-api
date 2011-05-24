@@ -27,6 +27,8 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.decorators.SingleReplyRequestDecorator;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.ExtendedRequest;
 import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
 import org.apache.directory.shared.util.Strings;
@@ -145,6 +147,44 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
     }
 
     
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedRequest<P> setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedRequest<P> addControl( Control control ) throws MessageException
+    {
+        return (ExtendedRequest<P>)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedRequest<P> addAllControls( Control[] controls ) throws MessageException
+    {
+        return (ExtendedRequest<P>)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedRequest<P> removeControl( Control control ) throws MessageException
+    {
+        return (ExtendedRequest<P>)super.removeControl( control );
+    }
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------

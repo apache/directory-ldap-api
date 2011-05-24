@@ -20,6 +20,7 @@
 package org.apache.directory.shared.ldap.model.message;
 
 
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 
 
@@ -87,6 +88,33 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
         super.setMessageId( messageId );
         
         return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public DeleteRequest addControl( Control control ) throws MessageException
+    {
+        return (DeleteRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public DeleteRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (DeleteRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public DeleteRequest removeControl( Control control ) throws MessageException
+    {
+        return (DeleteRequest)super.removeControl( control );
     }
 
 

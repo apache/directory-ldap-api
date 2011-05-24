@@ -39,6 +39,8 @@ import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.ModifyRequest;
 import org.apache.directory.shared.ldap.model.message.ModifyResponse;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -406,6 +408,44 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
         getDecorated().replace( attr );
         
         return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyRequest addControl( Control control ) throws MessageException
+    {
+        return (ModifyRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (ModifyRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyRequest removeControl( Control control ) throws MessageException
+    {
+        return (ModifyRequest)super.removeControl( control );
     }
 
 

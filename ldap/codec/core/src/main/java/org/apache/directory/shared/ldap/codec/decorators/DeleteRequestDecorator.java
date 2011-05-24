@@ -28,6 +28,8 @@ import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.DeleteRequest;
 import org.apache.directory.shared.ldap.model.message.DeleteResponse;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -74,6 +76,44 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
         getDecorated().setName( name );
         
         return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public DeleteRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public DeleteRequest addControl( Control control ) throws MessageException
+    {
+        return (DeleteRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public DeleteRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (DeleteRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public DeleteRequest removeControl( Control control ) throws MessageException
+    {
+        return (DeleteRequest)super.removeControl( control );
     }
 
     

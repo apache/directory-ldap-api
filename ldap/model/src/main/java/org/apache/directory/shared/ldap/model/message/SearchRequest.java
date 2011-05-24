@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.model.message;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.filter.ExprNode;
 import org.apache.directory.shared.ldap.model.name.Dn;
 
@@ -241,4 +242,28 @@ public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, Aband
      * @return The SearchRequest instance
      */
     SearchRequest removeAttribute( String attribute );
+
+
+    /**
+     * {@inheritDoc}
+     */
+    SearchRequest setMessageId( int messageId );
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    SearchRequest addControl( Control control ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    SearchRequest addAllControls( Control[] controls ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    SearchRequest removeControl( Control control ) throws MessageException;
 }

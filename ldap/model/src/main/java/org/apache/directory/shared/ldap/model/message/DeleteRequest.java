@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.message;
 
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 
 
@@ -54,4 +55,28 @@ public interface DeleteRequest extends SingleReplyRequest<DeleteResponse>, Aband
      * @return The DeleteRequest instance
      */
     DeleteRequest setName( Dn name );
+
+
+    /**
+     * {@inheritDoc}
+     */
+    DeleteRequest setMessageId( int messageId );
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    DeleteRequest addControl( Control control ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    DeleteRequest addAllControls( Control[] controls ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    DeleteRequest removeControl( Control control ) throws MessageException;
 }

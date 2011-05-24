@@ -19,6 +19,8 @@
  */
 package org.apache.directory.shared.ldap.model.message;
 
+import org.apache.directory.shared.ldap.model.exception.MessageException;
+
 
 /**
  * Unbind protocol request message used to end a client session.
@@ -29,4 +31,28 @@ public interface UnbindRequest extends Request
 {
     /** Unbind request protocol message type */
     MessageTypeEnum TYPE = MessageTypeEnum.UNBIND_REQUEST;
+
+
+    /**
+     * {@inheritDoc}
+     */
+    UnbindRequest setMessageId( int messageId );
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    UnbindRequest addControl( Control control ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    UnbindRequest addAllControls( Control[] controls ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    UnbindRequest removeControl( Control control ) throws MessageException;
 }

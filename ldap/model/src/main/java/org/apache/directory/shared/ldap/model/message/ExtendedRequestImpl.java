@@ -19,6 +19,8 @@
  */
 package org.apache.directory.shared.ldap.model.message;
 
+import org.apache.directory.shared.ldap.model.exception.MessageException;
+
 
 /**
  * ExtendedRequest implementation.
@@ -84,6 +86,33 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
         super.setMessageId( messageId );
         
         return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedRequest<ExtendedResponse> addControl( Control control ) throws MessageException
+    {
+        return (ExtendedRequest<ExtendedResponse>)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedRequest<ExtendedResponse> addAllControls( Control[] controls ) throws MessageException
+    {
+        return (ExtendedRequest<ExtendedResponse>)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedRequest<ExtendedResponse> removeControl( Control control ) throws MessageException
+    {
+        return (ExtendedRequest<ExtendedResponse>)super.removeControl( control );
     }
 
     

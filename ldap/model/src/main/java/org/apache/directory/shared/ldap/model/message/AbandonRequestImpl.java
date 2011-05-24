@@ -20,6 +20,7 @@
 package org.apache.directory.shared.ldap.model.message;
 
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 
 
 /**
@@ -94,6 +95,33 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
         super.setMessageId( messageId );
         
         return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AbandonRequest addControl( Control control ) throws MessageException
+    {
+        return (AbandonRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AbandonRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (AbandonRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AbandonRequest removeControl( Control control ) throws MessageException
+    {
+        return (AbandonRequest)super.removeControl( control );
     }
 
     

@@ -20,6 +20,7 @@
 package org.apache.directory.shared.ldap.model.message;
 
 
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 
@@ -163,6 +164,33 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
         super.setMessageId( messageId );
         
         return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyDnRequest addControl( Control control ) throws MessageException
+    {
+        return (ModifyDnRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyDnRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (ModifyDnRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyDnRequest removeControl( Control control ) throws MessageException
+    {
+        return (ModifyDnRequest)super.removeControl( control );
     }
 
 

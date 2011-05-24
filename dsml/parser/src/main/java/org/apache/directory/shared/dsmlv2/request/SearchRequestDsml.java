@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.filter.AndNode;
 import org.apache.directory.shared.ldap.model.filter.ApproximateNode;
 import org.apache.directory.shared.ldap.model.filter.BranchNode;
@@ -43,6 +44,7 @@ import org.apache.directory.shared.ldap.model.filter.OrNode;
 import org.apache.directory.shared.ldap.model.filter.PresenceNode;
 import org.apache.directory.shared.ldap.model.filter.SubstringNode;
 import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.message.SearchRequest;
 import org.apache.directory.shared.ldap.model.message.SearchRequestImpl;
@@ -802,5 +804,41 @@ public class SearchRequestDsml
         getDecorated().removeAttribute( attribute );
         
         return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest setMessageId( int messageId )
+    {
+        return (SearchRequest)super.setMessageId( messageId );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest addControl( Control control ) throws MessageException
+    {
+        return (SearchRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (SearchRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest removeControl( Control control ) throws MessageException
+    {
+        return (SearchRequest)super.removeControl( control );
     }
 }

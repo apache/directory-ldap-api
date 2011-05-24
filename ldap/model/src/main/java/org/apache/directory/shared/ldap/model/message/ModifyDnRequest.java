@@ -20,6 +20,7 @@
 package org.apache.directory.shared.ldap.model.message;
 
 
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 
@@ -167,4 +168,28 @@ public interface ModifyDnRequest extends SingleReplyRequest<ModifyDnResponse>, A
      * otherwise.
      */
     boolean isMove();
+
+
+    /**
+     * {@inheritDoc}
+     */
+    ModifyDnRequest setMessageId( int messageId );
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    ModifyDnRequest addControl( Control control ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    ModifyDnRequest addAllControls( Control[] controls ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    ModifyDnRequest removeControl( Control control ) throws MessageException;
 }

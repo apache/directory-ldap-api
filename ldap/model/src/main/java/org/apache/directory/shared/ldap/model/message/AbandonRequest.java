@@ -19,6 +19,8 @@
  */
 package org.apache.directory.shared.ldap.model.message;
 
+import org.apache.directory.shared.ldap.model.exception.MessageException;
+
 
 /**
  * Abandon protocol operation request to terminate an operation already in
@@ -47,4 +49,28 @@ public interface AbandonRequest extends Request
      * @return The AbandonRequest instance
      */
     AbandonRequest setAbandoned( int requestId );
+
+
+    /**
+     * {@inheritDoc}
+     */
+    AbandonRequest setMessageId( int messageId );
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    AbandonRequest addControl( Control control ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    AbandonRequest addAllControls( Control[] controls ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    AbandonRequest removeControl( Control control ) throws MessageException;
 }

@@ -20,6 +20,7 @@
 package org.apache.directory.shared.ldap.model.message;
 
 
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 
 
@@ -181,4 +182,28 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * @return The BindRequest instance
      */
     BindRequest setSaslMechanism( String saslMechanism );
+
+
+    /**
+     * {@inheritDoc}
+     */
+    BindRequest setMessageId( int messageId );
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    BindRequest addControl( Control control ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    BindRequest addAllControls( Control[] controls ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    BindRequest removeControl( Control control ) throws MessageException;
 }

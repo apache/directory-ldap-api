@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapProtocolErrorException;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.filter.BranchNormalizedVisitor;
 import org.apache.directory.shared.ldap.model.filter.ExprNode;
 import org.apache.directory.shared.ldap.model.filter.FilterParser;
@@ -311,6 +312,33 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
         super.setMessageId( messageId );
         
         return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest addControl( Control control ) throws MessageException
+    {
+        return (SearchRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (SearchRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest removeControl( Control control ) throws MessageException
+    {
+        return (SearchRequest)super.removeControl( control );
     }
 
 

@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.model.message;
 import java.util.Arrays;
 
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.util.Strings;
 
@@ -236,6 +237,33 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
         super.setMessageId( messageId );
         
         return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest addControl( Control control ) throws MessageException
+    {
+        return (BindRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (BindRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest removeControl( Control control ) throws MessageException
+    {
+        return (BindRequest)super.removeControl( control );
     }
 
 

@@ -22,9 +22,11 @@ package org.apache.directory.shared.dsmlv2.request;
 
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.entry.Value;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.message.CompareRequest;
 import org.apache.directory.shared.ldap.model.message.CompareRequestImpl;
 import org.apache.directory.shared.ldap.model.message.CompareResponse;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.dom4j.Element;
@@ -220,5 +222,43 @@ public class CompareRequestDsml
     public Value<?> getAssertionValue()
     {
         return getDecorated().getAssertionValue();
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public CompareRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public CompareRequest addControl( Control control ) throws MessageException
+    {
+        return (CompareRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public CompareRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (CompareRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public CompareRequest removeControl( Control control ) throws MessageException
+    {
+        return (CompareRequest)super.removeControl( control );
     }
 }

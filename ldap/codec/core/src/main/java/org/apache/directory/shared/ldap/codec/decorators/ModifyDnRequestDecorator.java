@@ -29,6 +29,8 @@ import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.ModifyDnRequest;
 import org.apache.directory.shared.ldap.model.message.ModifyDnResponse;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -169,6 +171,44 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     public boolean isMove()
     {
         return getDecorated().isMove();
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyDnRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyDnRequest addControl( Control control ) throws MessageException
+    {
+        return (ModifyDnRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyDnRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (ModifyDnRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyDnRequest removeControl( Control control ) throws MessageException
+    {
+        return (ModifyDnRequest)super.removeControl( control );
     }
 
     

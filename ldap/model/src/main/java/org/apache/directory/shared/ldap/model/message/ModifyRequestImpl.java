@@ -31,6 +31,7 @@ import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.util.StringConstants;
 
@@ -263,6 +264,33 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
         super.setMessageId( messageId );
         
         return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyRequest addControl( Control control ) throws MessageException
+    {
+        return (ModifyRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (ModifyRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyRequest removeControl( Control control ) throws MessageException
+    {
+        return (ModifyRequest)super.removeControl( control );
     }
 
 
