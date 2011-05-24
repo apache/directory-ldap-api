@@ -52,8 +52,7 @@ public class CursorIterator<E> implements Iterator<E>
         
         try
         {
-            cursor.next();
-            this.available = true;
+            this.available = cursor.next();
         }
         catch ( Exception e )
         {
