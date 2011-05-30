@@ -260,6 +260,10 @@ public final class SchemaConstants
     public final static String ENTRY_UUID_AT                            = "entryUUID";
     public final static String ENTRY_UUID_AT_OID                        = "1.3.6.1.1.16.4";
 
+    //entryParentId
+    public final static String ENTRY_PARENT_ID_AT                       = "entryParentId";
+    public final static String ENTRY_PARENT_ID_OID                      = "1.3.6.1.4.1.18060.0.4.1.2.51";
+    
     // entryDN
     public final static String ENTRY_DN_AT                              = "entryDN";
     public final static String ENTRY_DN_AT_OID                          = "1.3.6.1.1.20";
