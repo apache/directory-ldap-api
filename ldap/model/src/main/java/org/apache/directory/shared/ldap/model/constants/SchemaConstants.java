@@ -82,6 +82,9 @@ public final class SchemaConstants
 
     public final static String ALL_OPERATIONAL_ATTRIBUTES           = "+";
     public final static String[] ALL_OPERATIONAL_ATTRIBUTES_ARRAY   = new String[]{ ALL_OPERATIONAL_ATTRIBUTES };
+    
+    public final static String[] ALL_ATTRIBUTES_ARRAY               = new String[]{ ALL_OPERATIONAL_ATTRIBUTES, ALL_USER_ATTRIBUTES };
+    
 
     // ---- ObjectClasses -----------------------------------------------------
     // Domain
