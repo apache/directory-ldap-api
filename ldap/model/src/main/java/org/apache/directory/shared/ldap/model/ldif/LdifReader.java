@@ -691,7 +691,36 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             }
             else
             {
-                return Strings.trim(line.substring(pos + 1));
+                String value = Strings.trimLeft( line.substring( pos + 1 ) );
+                int end = value.length();
+                
+                for ( int i = value.length() - 1; i > 0; i-- )
+                {
+                    char cc = value.charAt( i );
+                    
+                    if ( cc == ' ' )
+                    {
+                        if ( value.charAt( i - 1 ) == '\\' )
+                        {
+                            // Escaped space : do nothing
+                            break;
+                        }
+                        else
+                        {
+                            end = i;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                
+                String result = null;
+                
+                result = value.substring( 0, end );
+
+                return result;
             }
         }
         else
