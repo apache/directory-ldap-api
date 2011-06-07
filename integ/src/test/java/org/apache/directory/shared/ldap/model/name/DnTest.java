@@ -357,6 +357,28 @@ public class DnTest
 
 
     /**
+     * Test for DIRSTUDIO-589, DIRSTUDIO-591, DIRSHARED-38
+     *
+     * Check escaped sharp followed by a hex sequence
+     * (without the ESC it would be a valid hexstring).
+     */
+    @Test
+    public void testDnEscValue() throws LdapException, LdapException
+    {
+        Dn dn = new Dn( "cn = Exa\\+mple  one " );
+
+        assertTrue( Dn.isValid( "cn = Exa\\+mple  one " ) );
+        assertEquals( "cn=Exa\\+mple  one", dn.getNormName() );
+        assertEquals( "cn = Exa\\+mple  one ", dn.getName() );
+
+        Dn dn2 = new Dn( schemaManager, "cn = Exa\\+mple  one " );
+
+        assertEquals( "2.5.4.3=exa\\+mple one", dn2.getNormName() );
+        assertEquals( "cn = Exa\\+mple  one ", dn2.getName() );
+    }
+
+
+    /**
       * test a simple Dn with a # on first position
       */
     @Test
@@ -2471,7 +2493,7 @@ public class DnTest
         assertEquals( " cn = Amos\\,Tori ", dn1.getRdn().getName() );
         Ava atav1 = dn1.getRdn().getAva();
         assertEquals( "cn", atav1.getUpType() );
-        assertEquals( "Amos,Tori", atav1.getUpValue().getString() );
+        assertEquals( " Amos\\,Tori ", atav1.getUpValue().getString() );
 
         // antlr parser: hexstring with trailing spaces
         Dn dn3 = new Dn( " cn = #414243 , ou=system " );
@@ -2486,7 +2508,7 @@ public class DnTest
         assertEquals( " cn = \\41\\42\\43 ", dn4.getRdn().getName() );
         Ava atav4 = dn4.getRdn().getAva();
         assertEquals( "cn", atav4.getUpType() );
-        assertEquals( "ABC", atav4.getUpValue().getString() );
+        assertEquals( " \\41\\42\\43 ", atav4.getUpValue().getString() );
         assertEquals( "ABC", atav4.getNormValue().getString() );
 
         // antlr parser: quotestring with trailing spaces
@@ -2494,7 +2516,7 @@ public class DnTest
         assertEquals( " cn = \"ABC\" ", dn5.getRdn().getName() );
         Ava atav5 = dn5.getRdn().getAva();
         assertEquals( "cn", atav5.getUpType() );
-        assertEquals( "ABC", atav5.getUpValue().getString() );
+        assertEquals( " \"ABC\" ", atav5.getUpValue().getString() );
         assertEquals( "ABC", atav5.getNormValue().getString() );
 
         // fast parser: string value with trailing spaces
@@ -2625,7 +2647,7 @@ public class DnTest
         assertEquals( "example", rdn.getNormValue().getString() );
         assertEquals( "2.5.4.11=example+2.5.4.11=test", rdn.getNormName() );
         assertEquals( "ou", rdn.getUpType() );
-        assertEquals( "Example", rdn.getUpValue().getString() );
+        assertEquals( "  Example ", rdn.getUpValue().getString() );
         assertEquals( "  ou  =  Example + ou = TEST ", rdn.getName() );
 
         // The first ATAV
@@ -2636,7 +2658,7 @@ public class DnTest
         assertEquals( "example", atav.getNormValue().getValue() );
 
         assertEquals( "ou", atav.getUpType() );
-        assertEquals( "Example", atav.getUpValue().getValue() );
+        assertEquals( "  Example ", atav.getUpValue().getValue() );
 
         assertEquals( "  ou  =  Example ", atav.getUpName() );
 
@@ -2656,7 +2678,7 @@ public class DnTest
             assertEquals( "test", ava.getNormValue().getValue() );
 
             assertEquals( "ou", ava.getUpType() );
-            assertEquals( "TEST", ava.getUpValue().getValue() );
+            assertEquals( " TEST ", ava.getUpValue().getValue() );
             assertEquals( " ou = TEST ", ava.getUpName() );
         }
     }
@@ -2665,18 +2687,18 @@ public class DnTest
     @Test
     public void testNormalizeAsciiWithEscaped() throws Exception
     {
-        Dn dn = new Dn( "  ou  =  Ex\\+mple ,  ou  =  COM " );
+        Dn dn = new Dn( "  ou  =  Ex\\+mple " );
 
         dn.apply( schemaManager );
-        assertEquals( "2.5.4.11=ex\\+mple,2.5.4.11=com", dn.getNormName() );
-        assertEquals( "  ou  =  Ex\\+mple ,  ou  =  COM ", dn.getName() );
+        assertEquals( "2.5.4.11=ex\\+mple", dn.getNormName() );
+        assertEquals( "  ou  =  Ex\\+mple ", dn.getName() );
 
         Rdn rdn = dn.getRdn();
         assertEquals( "2.5.4.11", rdn.getNormType() );
         assertEquals( "ex+mple", rdn.getNormValue().getString() );
         assertEquals( "2.5.4.11=ex\\+mple", rdn.getNormName() );
         assertEquals( "ou", rdn.getUpType() );
-        assertEquals( "Ex+mple", rdn.getUpValue().getString() );
+        assertEquals( "  Ex\\+mple ", rdn.getUpValue().getString() );
         assertEquals( "  ou  =  Ex\\+mple ", rdn.getName() );
 
         Ava atav = rdn.getAva();
@@ -2686,7 +2708,7 @@ public class DnTest
         assertEquals( "ex+mple", atav.getNormValue().getValue() );
 
         assertEquals( "ou", atav.getUpType() );
-        assertEquals( "Ex+mple", atav.getUpValue().getValue() );
+        assertEquals( "  Ex\\+mple ", atav.getUpValue().getValue() );
 
         assertEquals( "  ou  =  Ex\\+mple ", atav.getUpName() );
     }
@@ -2710,7 +2732,7 @@ public class DnTest
         assertEquals( "OU", rdn.getUpType() );
         assertEquals( "ou", rdn.getNormType() );
 
-        assertEquals( "Ex+mple", rdn.getUpValue().getString() );
+        assertEquals( "  Ex\\+mple ", rdn.getUpValue().getString() );
         assertEquals( "Ex+mple", rdn.getNormValue().getString() );
 
         // The first ATAV
@@ -2722,7 +2744,7 @@ public class DnTest
         assertEquals( "ou", atav.getNormType() );
         assertEquals( "OU", atav.getUpType() );
 
-        assertEquals( "Ex+mple", atav.getUpValue().getValue() );
+        assertEquals( "  Ex\\+mple ", atav.getUpValue().getValue() );
         assertEquals( "Ex+mple", atav.getNormValue().getValue() );
 
         assertEquals( 2, rdn.size() );
@@ -2742,7 +2764,7 @@ public class DnTest
             assertEquals( "ou", ava.getUpType() );
             assertEquals( "ou", ava.getNormType() );
 
-            assertEquals( "T+ST ", ava.getUpValue().getValue() );
+            assertEquals( " T\\+ST\\  ", ava.getUpValue().getValue() );
             assertEquals( "T+ST ", ava.getNormValue().getValue() );
         }
 
@@ -2761,7 +2783,7 @@ public class DnTest
         assertEquals( "OU", rdn.getUpType() );
         assertEquals( "2.5.4.11", rdn.getNormType() );
 
-        assertEquals( "Ex+mple", rdn.getUpValue().getString() );
+        assertEquals( "  Ex\\+mple ", rdn.getUpValue().getString() );
         assertEquals( "ex+mple", rdn.getNormValue().getString() );
 
         // The first ATAV
@@ -2773,7 +2795,7 @@ public class DnTest
         assertEquals( "2.5.4.11", atav.getNormType() );
         assertEquals( "OU", atav.getUpType() );
 
-        assertEquals( "Ex+mple", atav.getUpValue().getValue() );
+        assertEquals( "  Ex\\+mple ", atav.getUpValue().getValue() );
         assertEquals( "ex+mple", atav.getNormValue().getValue() );
 
         assertEquals( 2, rdn.size() );
@@ -2793,7 +2815,7 @@ public class DnTest
             assertEquals( "ou", ava.getUpType() );
             assertEquals( "2.5.4.11", ava.getNormType() );
 
-            assertEquals( "T+ST ", ava.getUpValue().getValue() );
+            assertEquals( " T\\+ST\\  ", ava.getUpValue().getValue() );
             assertEquals( "t+st", ava.getNormValue().getValue() );
         }
     }

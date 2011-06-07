@@ -22,7 +22,6 @@ package org.apache.directory.shared.ldap.codec.osgi;
 
 import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.shared.ldap.codec.api.LdapEncoder;
-import org.apache.directory.shared.ldap.codec.osgi.DefaultLdapCodecService;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.apache.mina.filter.codec.ProtocolDecoder;

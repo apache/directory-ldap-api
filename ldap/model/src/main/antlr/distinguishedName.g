@@ -313,6 +313,7 @@ attributeTypeAndValue [Rdn rdn] returns [String upName = ""]
         matchedProduction( "attributeTypeAndValue()" );
         String type = null;
         UpAndNormValue value = new UpAndNormValue();
+        String upValue = null;
     }
     :
     (
@@ -320,7 +321,19 @@ attributeTypeAndValue [Rdn rdn] returns [String upName = ""]
         type = attributeType { upName += type; }
         ( SPACE { upName += " "; } )*
         EQUALS { upName += "="; }
-        ( SPACE { upName += " "; } )*
+        ( SPACE 
+        { 
+            upName += " "; 
+            
+            if ( upValue == null )
+            {
+                upValue = " ";
+            }
+            else
+            {
+                upValue += " "; 
+            } 
+        } )*
         attributeValue[value] 
         {
             try
@@ -330,11 +343,16 @@ attributeTypeAndValue [Rdn rdn] returns [String upName = ""]
             
                 if ( value.value instanceof String )
                 {
+                    if ( upValue != null )
+                    {
+                        value.rawValue = upValue + value.rawValue;
+                    }
+
                     ava = new Ava(
                         type,
                         type,
+                        new StringValue( (String)value.rawValue ),
                         new StringValue( (String)value.value ), 
-                        new StringValue( (String)value.value ),
                         upName
                     );
                 }
