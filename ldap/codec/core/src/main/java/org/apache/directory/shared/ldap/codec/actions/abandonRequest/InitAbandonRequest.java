@@ -111,7 +111,7 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
                 .err( I18n.ERR_04076, Strings.dumpBytes(value.getData()), ide.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( ide.getMessage() );
+            throw new DecoderException( ide.getMessage(), ide );
         }
     }
 }
