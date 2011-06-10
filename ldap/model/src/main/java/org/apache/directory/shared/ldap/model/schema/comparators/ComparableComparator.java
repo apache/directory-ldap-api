@@ -56,7 +56,7 @@ public class ComparableComparator<T> extends LdapComparator<Comparable<T>>
      * the first is a comparable then its compareTo operation is called and the
      * result returned as is. If the first is not a Comparable but the second is
      * then its compareTo method is called and the result is returned after
-     * being negated. If none are comparables the hashCode of o1 minus the
+     * being negated. If none are comparable the hashCode of o1 minus the
      * hashCode of o2 is returned.
      *
      * @param o1 the first comparable

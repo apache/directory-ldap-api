@@ -29,11 +29,10 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 
 
 /**
- * 
+ * Compare two DNs
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@SuppressWarnings("serial")
 public class DnComparator extends LdapComparator<Object>
 {
     /** The serial version UID */
@@ -78,7 +77,7 @@ public class DnComparator extends LdapComparator<Object>
     }
 
 
-    public Dn getDn( Object obj ) throws LdapInvalidDnException
+    private Dn getDn( Object obj ) throws LdapInvalidDnException
     {
         Dn dn = null;
         
