@@ -144,15 +144,6 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     /**
      * {@inheritDoc}
      */
-    public boolean isElementReused()
-    {
-        return true;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public boolean available()
     {
         return searchCursor.available();

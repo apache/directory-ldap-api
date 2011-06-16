@@ -163,15 +163,6 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     /**
      * {@inheritDoc}
      */
-    public boolean isElementReused()
-    {
-        return true;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public boolean available()
     {
         return response != null;

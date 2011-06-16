@@ -489,13 +489,4 @@ public class ListCursor<E> extends AbstractCursor<E>
 
         return list.get( index );
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isElementReused()
-    {
-        return true;
-    }
 }
