@@ -25,13 +25,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.dsmlv2.AbstractResponseTest;
 import org.apache.directory.shared.dsmlv2.Dsmlv2ResponseParser;
 import org.apache.directory.shared.dsmlv2.reponse.SearchResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 /**
  * Tests for the Search Result Done Response parsing
@@ -129,6 +130,35 @@ public class SearchResponseTest extends AbstractResponseTest
         SearchResponse searchResponse = ( SearchResponse ) parser.getBatchResponse().getCurrentResponse().getDecorated();
 
         assertEquals( 1, searchResponse.getSearchResultEntryList().size() );
+
+        assertNotNull( searchResponse.getSearchResultDone() );
+    }
+
+
+    /**
+     * Test parsing of a Response with 1 Search Result Entry and a Search Result Done
+     */
+    @Test
+    public void testResponseWith0SRE1SRD()
+    {
+        Dsmlv2ResponseParser parser = null;
+        try
+        {
+            parser = new Dsmlv2ResponseParser( getCodec() );
+
+            parser.setInput( SearchResponseTest.class.getResource( "response_with_0_SRE_1_SRD.xml" ).openStream(),
+                "UTF-8" );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchResponse searchResponse = ( SearchResponse ) parser.getBatchResponse().getCurrentResponse().getDecorated();
+
+        assertEquals( 0, searchResponse.getSearchResultEntryList().size() );
 
         assertNotNull( searchResponse.getSearchResultDone() );
     }
