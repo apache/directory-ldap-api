@@ -620,32 +620,25 @@ public class Dsmlv2Engine
                 
                 SearchResponseDsml searchResponseDsml = new SearchResponseDsml( connection.getCodecService() );
                 
-                boolean first = true;
+                if ( respWriter != null )
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append( "<searchResponse" );
+                    
+                    if ( request.getDecorated().getMessageId() > 0 )
+                    {
+                        sb.append( " requestID=\"" );
+                        sb.append( request.getDecorated().getMessageId() );
+                        sb.append( '"' );
+                    }
+                    
+                    sb.append( '>' );
+                    
+                    respWriter.write( sb.toString() );
+                }
                 
                 while ( searchResponses.next() )
                 {
-                    if( first )
-                    {
-                        if ( respWriter != null )
-                        {
-                            StringBuilder sb = new StringBuilder();
-                            sb.append( "<searchResponse" );
-                            
-                            if ( request.getDecorated().getMessageId() > 0 )
-                            {
-                                sb.append( " requestID=\"" );
-                                sb.append( request.getDecorated().getMessageId() );
-                                sb.append( '"' );
-                            }
-                            
-                            sb.append( '>' );
-                            
-                            respWriter.write( sb.toString() );
-                        }
-                        
-                        first = false;
-                    }
-                    
                     Response searchResponse = searchResponses.get();
 
                     if ( searchResponse.getType() == MessageTypeEnum.SEARCH_RESULT_ENTRY )
@@ -691,14 +684,15 @@ public class Dsmlv2Engine
                     resultCode = srDone.getLdapResult().getResultCode();
                     
                     SearchResultDoneDsml srdDsml = new SearchResultDoneDsml( connection.getCodecService(), srDone );
-                    writeResponse( respWriter, srdDsml);
                     
                     if ( respWriter != null )
                     {
+                        writeResponse( respWriter, srdDsml);
                         respWriter.write( "</searchResponse>" );
                     }
                     else
                     {
+                        searchResponseDsml.addResponse( srdDsml );
                         batchResponse.addResponse( searchResponseDsml );
                     }
                 }
