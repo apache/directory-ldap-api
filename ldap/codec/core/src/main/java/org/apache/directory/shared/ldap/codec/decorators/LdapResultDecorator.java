@@ -25,7 +25,6 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.Decorator;
@@ -234,8 +233,8 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     {
         int ldapResultLength = 0;
 
-        // The result code : always 3 bytes
-        ldapResultLength = 1 + 1 + 1;
+        // The result code
+        ldapResultLength = 1 + 1 + Value.getNbBytes( getResultCode().getValue() );
 
         // The matchedDN length
         if ( getMatchedDn() == null )
@@ -282,9 +281,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
         try
         {
             // The result code
-            buffer.put( UniversalTag.ENUMERATED.getValue() );
-            buffer.put( ( byte ) 1 );
-            buffer.put( ( byte ) getResultCode().getValue() );
+            Value.encodeEnumerated( buffer, getResultCode().getValue() );
         }
         catch ( BufferOverflowException boe )
         {

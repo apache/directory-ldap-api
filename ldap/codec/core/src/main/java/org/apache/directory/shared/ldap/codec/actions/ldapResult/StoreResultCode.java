@@ -79,7 +79,7 @@ public class StoreResultCode extends GrammarAction<LdapMessageContainer<MessageD
 
         try
         {
-            resultCode = ResultCodeEnum.getResultCode( IntegerDecoder.parse(value, 0, ResultCodeEnum.UNKNOWN
+            resultCode = ResultCodeEnum.getResultCode( IntegerDecoder.parse(value, 0, ResultCodeEnum.E_SYNC_REFRESH_REQUIRED
                     .getResultCode()) );
         }
         catch ( IntegerDecoderException ide )
@@ -87,58 +87,6 @@ public class StoreResultCode extends GrammarAction<LdapMessageContainer<MessageD
             LOG.error( I18n.err( I18n.ERR_04018, Strings.dumpBytes(value.getData()), ide.getMessage() ) );
 
             throw new DecoderException( ide.getMessage() );
-        }
-
-        // Treat the 'normal' cases !
-        switch ( resultCode )
-        {
-            case SUCCESS:
-            case OPERATIONS_ERROR:
-            case PROTOCOL_ERROR:
-            case TIME_LIMIT_EXCEEDED:
-            case SIZE_LIMIT_EXCEEDED:
-            case COMPARE_FALSE:
-            case COMPARE_TRUE:
-            case AUTH_METHOD_NOT_SUPPORTED:
-            case STRONG_AUTH_REQUIRED:
-            case REFERRAL:
-            case ADMIN_LIMIT_EXCEEDED:
-            case UNAVAILABLE_CRITICAL_EXTENSION:
-            case CONFIDENTIALITY_REQUIRED:
-            case SASL_BIND_IN_PROGRESS:
-            case NO_SUCH_ATTRIBUTE:
-            case UNDEFINED_ATTRIBUTE_TYPE:
-            case INAPPROPRIATE_MATCHING:
-            case CONSTRAINT_VIOLATION:
-            case ATTRIBUTE_OR_VALUE_EXISTS:
-            case INVALID_ATTRIBUTE_SYNTAX:
-            case NO_SUCH_OBJECT:
-            case ALIAS_PROBLEM:
-            case INVALID_DN_SYNTAX:
-            case ALIAS_DEREFERENCING_PROBLEM:
-            case INAPPROPRIATE_AUTHENTICATION:
-            case INVALID_CREDENTIALS:
-            case INSUFFICIENT_ACCESS_RIGHTS:
-            case BUSY:
-            case UNAVAILABLE:
-            case UNWILLING_TO_PERFORM:
-            case LOOP_DETECT:
-            case NAMING_VIOLATION:
-            case OBJECT_CLASS_VIOLATION:
-            case NOT_ALLOWED_ON_NON_LEAF:
-            case NOT_ALLOWED_ON_RDN:
-            case ENTRY_ALREADY_EXISTS:
-            case AFFECTS_MULTIPLE_DSAS:
-            case CANCELED:
-            case CANNOT_CANCEL:
-            case TOO_LATE:
-            case NO_SUCH_OPERATION:
-                break;
-
-            default:
-                LOG.warn( "The resultCode " + resultCode + " is unknown." );
-                resultCode = ResultCodeEnum.OTHER;
-                break;
         }
 
         if ( IS_DEBUG )

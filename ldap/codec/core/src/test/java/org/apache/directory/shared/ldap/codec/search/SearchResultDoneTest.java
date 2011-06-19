@@ -249,4 +249,73 @@ public class SearchResultDoneTest extends AbstractCodecServiceTest
 
         fail( "We should not reach this point" );
     }
+    
+    
+    /**
+     * Test the decoding of a SearchResultDone with a result code of length 2 bytes
+     */
+    @Test
+    public void testDecodeSearchResultDoneEsyncRefresh()
+    {
+        Asn1Decoder ldapDecoder = new Asn1Decoder();
+
+        ByteBuffer stream = ByteBuffer.allocate( 0x0F );
+
+        stream.put( new byte[]
+            { 0x30, 0x0D, // LDAPMessage ::=SEQUENCE {
+                0x02, 0x01, 0x01, // messageID MessageID
+                0x65, 0x08, // CHOICE { ..., searchResDone SearchResultDone, ...
+                // SearchResultDone ::= [APPLICATION 5] LDAPResult
+                0x0A, 0x02, 0x10, 0x00, // LDAPResult ::= SEQUENCE {
+                // resultCode ENUMERATED {
+                // success (0), ...
+                // },
+                0x04, 0x00, // matchedDN LDAPDN,
+                0x04, 0x00 // errorMessage LDAPString,
+            // referral [3] Referral OPTIONAL }
+            // }
+            } );
+
+        String decodedPdu = Strings.dumpBytes(stream.array());
+        stream.flip();
+
+        // Allocate a SearchResultDone Container
+        LdapMessageContainer<SearchResultDoneDecorator> ldapMessageContainer = 
+            new LdapMessageContainer<SearchResultDoneDecorator>( codec );
+
+        try
+        {
+            ldapDecoder.decode( stream, ldapMessageContainer );
+        }
+        catch ( DecoderException de )
+        {
+            de.printStackTrace();
+            fail( de.getMessage() );
+        }
+
+        SearchResultDone searchResultDone = ldapMessageContainer.getMessage();
+
+        assertEquals( 1, searchResultDone.getMessageId() );
+        assertEquals( ResultCodeEnum.E_SYNC_REFRESH_REQUIRED, searchResultDone.getLdapResult().getResultCode() );
+        assertEquals( "", searchResultDone.getLdapResult().getMatchedDn().getName() );
+        assertEquals( "", searchResultDone.getLdapResult().getDiagnosticMessage() );
+
+        // Check the encoding
+        try
+        {
+            ByteBuffer bb = encoder.encodeMessage( searchResultDone );
+
+            // Check the length
+            assertEquals( 0x0F, bb.limit() );
+
+            String encodedPdu = Strings.dumpBytes(bb.array());
+
+            assertEquals( encodedPdu, decodedPdu );
+        }
+        catch ( EncoderException ee )
+        {
+            ee.printStackTrace();
+            fail( ee.getMessage() );
+        }
+    }
 }
