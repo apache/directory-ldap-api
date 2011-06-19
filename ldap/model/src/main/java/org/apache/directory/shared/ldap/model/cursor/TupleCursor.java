@@ -25,7 +25,7 @@ package org.apache.directory.shared.ldap.model.cursor;
  * inefficiencies encountered when scanning over Tuples.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
- * @param <K> The Tupe key type
+ * @param <K> The Tuple key type
  * @param <V> The Value type stored in the Tuple
  */
 public interface TupleCursor<K, V> extends Cursor<Tuple<K, V>>
