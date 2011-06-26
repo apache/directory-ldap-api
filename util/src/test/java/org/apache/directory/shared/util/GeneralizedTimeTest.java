@@ -27,6 +27,7 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 import com.mycila.junit.concurrent.Concurrency;
@@ -36,6 +37,8 @@ import org.apache.directory.shared.util.GeneralizedTime.TimeZoneFormat;
 import org.apache.directory.shared.util.GeneralizedTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -47,6 +50,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class GeneralizedTimeTest
 {
+    private static final Logger LOG = LoggerFactory.getLogger( GeneralizedTimeTest.class );
 
     // Test all valid variants:
     // Time: min + sec / min + no sec / no min + no sec 
@@ -1051,11 +1055,12 @@ public class GeneralizedTimeTest
         calendar.set( Calendar.HOUR_OF_DAY, 12 );
         calendar.set( Calendar.MINUTE, 13 );
         calendar.set( Calendar.SECOND, 14 );
+        calendar.set( Calendar.MILLISECOND, 222 );
         calendar.setTimeZone( TimeZone.getTimeZone( "GMT" ) );
 
         GeneralizedTime generalizedTime = new GeneralizedTime( calendar );
         String result = generalizedTime.toGeneralizedTime();
-        assertEquals( "20080102121314Z", result );
+        assertEquals( "20080102121314.222Z", result );
     }
 
 
@@ -1152,5 +1157,53 @@ public class GeneralizedTimeTest
         GeneralizedTime generalizedTime = new GeneralizedTime( gt );
         String result = generalizedTime.toGeneralizedTime();
         assertEquals( gt, result );
+    }
+    
+    
+    /**
+     * Tests to make sure the GeneralizedTime parser preserves the milliseconds 
+     * component.
+     * 
+     * @see <a href="https://issues.apache.org/jira/browse/DIRSHARED-131">DIRSHARED-131</a>
+     */
+    @Test
+    public void testMillisecondsPreservation() throws ParseException
+    {
+        Date date = new Date();
+        long originalTime = 0;
+        long millisLost = 0;
+        long trimmedMillis = 0;
+        
+        // Get the current date and time now, also with trimmed milliseconds
+        
+        while ( millisLost == 0 )
+        {
+            date = new Date();
+            originalTime = date.getTime();
+            trimmedMillis = originalTime / 1000;
+            trimmedMillis = trimmedMillis * 1000;
+            millisLost = originalTime - trimmedMillis;
+        }
+        
+        LOG.info( "original time = {}", originalTime );
+        LOG.info( "trimmed milliseconds = {}", trimmedMillis );
+        LOG.info( "milliseconds lost = {}", millisLost );
+
+        // Set time on new Calendar instance, and generate the GT string
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime( date );
+        GeneralizedTime gt = new GeneralizedTime( calendar );
+        assertEquals( "calendar time must equal the date time", date.getTime(), calendar.getTime().getTime() );
+        String gtStr = gt.toGeneralizedTime();
+        LOG.info( "generalized time string of original time = {}", gtStr );
+
+        // Parse and regenerate calendar from gtStr
+        GeneralizedTime recalculatedGt = new GeneralizedTime( gtStr );
+        long recalculatedTime = recalculatedGt.getCalendar().getTime().getTime();
+        LOG.info( "recalculated time = {}", recalculatedTime );
+        LOG.info( "generalized time string of recalculated time = {}", recalculatedGt.toGeneralizedTime() );
+        
+        assertEquals( "The time after round trip GeneralizedTime generation should stay the same", 
+            originalTime, recalculatedTime );
     }
 }
