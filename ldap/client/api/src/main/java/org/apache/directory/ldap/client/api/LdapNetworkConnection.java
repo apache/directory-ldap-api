@@ -1562,7 +1562,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         try
         {
             System.setProperty( "javax.security.auth.useSubjectCredsOnly", "true" );
-            LoginContext loginContext = new LoginContext( "ldapnetworkconnection",
+            LoginContext loginContext = new LoginContext( request.getLoginContextName(),
                                     new SaslCallbackHandler( request ) );
             loginContext.login();
 
@@ -3658,8 +3658,8 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
                     {
                         return !Strings.isEmpty( id ) && id.endsWith( ";binary" );
                     }
-                }
-            } );
+                    }
+                } );
 
         session.setAttribute( "messageContainer", ldapMessageContainer );
     }
