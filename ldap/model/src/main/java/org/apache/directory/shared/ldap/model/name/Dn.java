@@ -1081,12 +1081,15 @@ public class Dn implements Iterable<Rdn>, Externalizable
             {
                 try
                 {
-                    return new Ava(
+                    Ava newAva = new Ava(
                         atav.getUpType(),
                         oidNormalizer.getAttributeTypeOid(),
                         atav.getUpValue(),
                         oidNormalizer.getNormalizer().normalize( atav.getNormValue() ),
                         atav.getUpName() );
+                    newAva.apply( schemaManager );
+                    
+                    return newAva;
                 }
                 catch ( LdapException le )
                 {

@@ -997,6 +997,15 @@ public class Ava implements Externalizable, Cloneable
     {
         return attributeType != null;
     }
+
+
+    /**
+     * @return the attributeType
+     */
+    public AttributeType getAttributeType()
+    {
+        return attributeType;
+    }
     
     
     /**
