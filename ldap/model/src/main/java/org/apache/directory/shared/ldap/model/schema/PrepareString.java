@@ -22,8 +22,8 @@ package org.apache.directory.shared.ldap.model.schema;
 
 import java.io.IOException;
 
-import org.apache.directory.shared.util.exception.InvalidCharacterException;
 import org.apache.directory.shared.util.Strings;
+import org.apache.directory.shared.util.exception.InvalidCharacterException;
 
 /**
  * 
@@ -252,7 +252,7 @@ public final class PrepareString
             case 0x0058 : 
             case 0x0059 : 
             case 0x005A : 
-                target[pos++] = (char)( c | lowerCase );
+                target[pos++] = (char)(c | lowerCase);
                 break;
     
             case 0x007F:
@@ -4698,13 +4698,13 @@ public final class PrepareString
 
     /**
      * 
-     * Remove all insignifiant spaces in a string.
+     * Remove all insignificant spaces in a string.
      * 
      * This method use a finite state machine to parse
      * the text.
      * 
      * @param str The String to modify
-     * @param caseSensitive A flag telling if the chars must be lowercased
+     * @param caseSensitive A flag telling if the chars must be lower cased
      * @return The modified StringBuilder
      * @throws InvalidCharacterException If an invalid character is found in the String
      */

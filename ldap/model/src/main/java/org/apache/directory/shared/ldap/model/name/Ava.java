@@ -429,7 +429,6 @@ public class Ava implements Externalizable, Cloneable
         {
             this.normType = Strings.lowerCaseAscii( normTypeTrimmed );
             this.upType = upType;
-
         }
 
         this.normValue = normValue;
@@ -454,9 +453,11 @@ public class Ava implements Externalizable, Cloneable
         { 
             this.schemaManager = schemaManager;
             
+            AttributeType attributeType = null;
+            
             try
             {
-                attributeType = schemaManager.lookupAttributeTypeRegistry( upType );
+                attributeType = schemaManager.lookupAttributeTypeRegistry( normType );
             }
             catch ( LdapException le )
             {
@@ -465,7 +466,22 @@ public class Ava implements Externalizable, Cloneable
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
             
+            if ( this.attributeType == attributeType ) 
+            {
+                // No need to normalize again
+                return;
+            }
+            else
+            {
+                this.attributeType = attributeType;
+            }
+            
             normType = attributeType.getOid();
+            
+            if ( normValue != null )
+            {
+                return;
+            }
 
             try
             {
