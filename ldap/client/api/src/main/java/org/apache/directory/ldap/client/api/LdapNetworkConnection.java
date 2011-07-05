@@ -27,6 +27,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.nio.channels.UnresolvedAddressException;
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -475,7 +476,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         messageId = new AtomicInteger();
     }
 
-    
+
     //-------------------------- The methods ---------------------------//
     /**
      * {@inheritDoc}
@@ -536,10 +537,24 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             }
 
             Throwable e = connectionFuture.getException();
-            
+
             if ( e != null )
             {
-                throw new InvalidConnectionException( "Cannot connect on the server: " + e.getMessage(), e );
+                StringBuilder message = new StringBuilder( "Cannot connect on the server: " );
+
+                // Special case for UnresolvedAddressException
+                // (most of the time no message is associated with this exception)
+                if ( ( e instanceof UnresolvedAddressException ) && ( e.getMessage() == null ) )
+                {
+                    message.append( "Hostname '" );
+                    message.append( config.getLdapHost() );
+                    message.append( "' could not be resolved." );
+                    throw new InvalidConnectionException( message.toString(), e );
+                }
+
+                // Default case
+                message.append( e.getMessage() );
+                throw new InvalidConnectionException( message.toString(), e );
             }
 
             return false;
@@ -675,7 +690,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addRequest.setEntry( entry );
 
         AddResponse addResponse = add( addRequest );
-        
+
         processResponse( addResponse );
     }
 
@@ -905,7 +920,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         BindRequest bindRequest = createBindRequest( config.getName(), Strings.getBytesUtf8( config.getCredentials() ) );
 
         BindResponse bindResponse = bind( bindRequest );
-        
+
         processResponse( bindResponse );
     }
 
@@ -917,12 +932,11 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     {
         LOG.debug( "Anonymous Bind request" );
 
-        
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( config.getName(), Strings.getBytesUtf8( config.getCredentials() ) );
 
         BindResponse bindResponse = bind( bindRequest );
-        
+
         processResponse( bindResponse );
     }
 
@@ -934,7 +948,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     {
         LOG.debug( "Asynchronous Bind request" );
 
-        
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( config.getName(), Strings.getBytesUtf8( config.getCredentials() ) );
 
@@ -967,7 +980,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         BindRequest bindRequest = createBindRequest( name, StringConstants.EMPTY_BYTES );
 
         BindResponse bindResponse = bind( bindRequest );
-        
+
         processResponse( bindResponse );
     }
 
@@ -985,12 +998,12 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             LOG.debug( "The password is missing" );
             throw new LdapAuthenticationException( "The password is missing" );
         }
-        
+
         // Create the BindRequest
         BindRequest bindRequest = createBindRequest( name, Strings.getBytesUtf8( credentials ) );
 
         BindResponse bindResponse = bind( bindRequest );
-        
+
         processResponse( bindResponse );
     }
 
@@ -1047,7 +1060,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         BindRequest bindRequest = createBindRequest( name, StringConstants.EMPTY_BYTES, null );
 
         BindResponse bindResponse = bind( bindRequest );
-        
+
         processResponse( bindResponse );
     }
 
@@ -1070,7 +1083,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         BindRequest bindRequest = createBindRequest( name, Strings.getBytesUtf8( credentials ), null );
 
         BindResponse bindResponse = bind( bindRequest );
-        
+
         processResponse( bindResponse );
     }
 
@@ -1103,7 +1116,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         LOG.debug( "Bind request : {}", name );
 
         // The password must not be empty or null
-        if ( Strings.isEmpty( credentials ) && (! Dn.EMPTY_DN.equals( name ) ) )
+        if ( Strings.isEmpty( credentials ) && ( !Dn.EMPTY_DN.equals( name ) ) )
         {
             LOG.debug( "The password is missing" );
             throw new LdapAuthenticationException( "The password is missing" );
@@ -1535,10 +1548,11 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             System.setProperty( "java.security.krb5.conf", request.getKrb5ConfFilePath() );
         }
         else if ( ( request.getRealmName() != null ) && ( request.getKdcHost() != null )
-                        && ( request.getKdcPort() != 0 ) )
+            && ( request.getKdcPort() != 0 ) )
         {
             // Using a custom krb5.conf we create from the settings provided by the user
-            String krb5ConfPath = createKrb5ConfFile( request.getRealmName(), request.getKdcHost(), request.getKdcPort() );
+            String krb5ConfPath = createKrb5ConfFile( request.getRealmName(), request.getKdcHost(),
+                request.getKdcPort() );
             System.setProperty( "java.security.krb5.conf", krb5ConfPath );
         }
         else
@@ -1563,17 +1577,17 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         {
             System.setProperty( "javax.security.auth.useSubjectCredsOnly", "true" );
             LoginContext loginContext = new LoginContext( request.getLoginContextName(),
-                                    new SaslCallbackHandler( request ) );
+                new SaslCallbackHandler( request ) );
             loginContext.login();
 
             final GssApiRequest requetFinal = request;
             return ( BindFuture ) Subject.doAs( loginContext.getSubject(), new PrivilegedExceptionAction<Object>()
+            {
+                public Object run() throws Exception
                 {
-                    public Object run() throws Exception
-                    {
-                        return bindSasl( requetFinal );
-                    }
-                } );
+                    return bindSasl( requetFinal );
+                }
+            } );
         }
         catch ( Exception e )
         {
@@ -2198,14 +2212,14 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         modReq.setName( entry.getDn() );
 
         Iterator<Attribute> itr = entry.iterator();
-        
+
         while ( itr.hasNext() )
         {
             modReq.addModification( itr.next(), modOp );
         }
 
         ModifyResponse modifyResponse = modify( modReq );
-        
+
         processResponse( modifyResponse );
     }
 
@@ -2237,7 +2251,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         }
 
         ModifyResponse modifyResponse = modify( modReq );
-        
+
         processResponse( modifyResponse );
     }
 
@@ -2437,7 +2451,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         modDnRequest.setDeleteOldRdn( deleteOldRdn );
 
         ModifyDnResponse modifyDnResponse = modifyDn( modDnRequest );
-        
+
         processResponse( modifyDnResponse );
     }
 
@@ -2500,7 +2514,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         modDnRequest.setNewRdn( entryDn.getRdn() );
 
         ModifyDnResponse modifyDnResponse = modifyDn( modDnRequest );
-        
+
         processResponse( modifyDnResponse );
     }
 
@@ -2557,7 +2571,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         modDnRequest.setDeleteOldRdn( deleteOldRdn );
 
         ModifyDnResponse modifyDnResponse = modifyDn( modDnRequest );
-        
+
         processResponse( modifyDnResponse );
     }
 
@@ -2695,7 +2709,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         deleteRequest.setName( dn );
 
         DeleteResponse deleteResponse = delete( deleteRequest );
-        
+
         processResponse( deleteResponse );
     }
 
@@ -2717,7 +2731,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             deleteRequest.setName( dn );
             deleteRequest.addControl( new OpaqueControl( treeDeleteOid ) );
             DeleteResponse deleteResponse = delete( deleteRequest );
-            
+
             processResponse( deleteResponse );
         }
         else
@@ -2750,7 +2764,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
                 deleteRequest.setName( newDn );
                 deleteRequest.addControl( new OpaqueControl( treeDeleteOid ) );
                 DeleteResponse deleteResponse = delete( deleteRequest );
-                
+
                 processResponse( deleteResponse );
             }
             else
@@ -2914,7 +2928,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         compareRequest.setAssertionValue( value );
 
         CompareResponse compareResponse = compare( compareRequest );
-        
+
         return processResponse( compareResponse );
     }
 
@@ -2930,7 +2944,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         compareRequest.setAssertionValue( value );
 
         CompareResponse compareResponse = compare( compareRequest );
-        
+
         return processResponse( compareResponse );
     }
 
@@ -2954,7 +2968,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         }
 
         CompareResponse compareResponse = compare( compareRequest );
-        
+
         return processResponse( compareResponse );
     }
 
@@ -3468,7 +3482,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
             List<AttributeType> atList = olsp.getAttributeTypes();
             AttributeTypeRegistry atRegistry = schemaManager.getRegistries().getAttributeTypeRegistry();
-            
+
             for ( AttributeType atType : atList )
             {
                 atRegistry.addMappingFor( atType );
@@ -3476,7 +3490,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
             List<ObjectClass> ocList = olsp.getObjectClassTypes();
             ObjectClassRegistry ocRegistry = schemaManager.getRegistries().getObjectClassRegistry();
-            
+
             for ( ObjectClass oc : ocList )
             {
                 ocRegistry.register( oc );
@@ -3526,7 +3540,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     private void fetchRootDSE() throws LdapException
     {
         EntryCursor cursor = null;
-        
+
         try
         {
             cursor = search( "", "(objectClass=*)", SearchScope.OBJECT, "*", "+" );
@@ -3646,18 +3660,18 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             new LdapMessageContainer<MessageDecorator<Message>>(
                 codec,
                 new BinaryAttributeDetector()
-            {
-                public boolean isBinary( String id )
                 {
-                    try
+                    public boolean isBinary( String id )
                     {
-                        AttributeType type = schemaManager.lookupAttributeTypeRegistry( id );
-                        return !type.getSyntax().isHumanReadable();
-                    }
-                    catch ( Exception e )
-                    {
-                        return !Strings.isEmpty( id ) && id.endsWith( ";binary" );
-                    }
+                        try
+                        {
+                            AttributeType type = schemaManager.lookupAttributeTypeRegistry( id );
+                            return !type.getSyntax().isHumanReadable();
+                        }
+                        catch ( Exception e )
+                        {
+                            return !Strings.isEmpty( id ) && id.endsWith( ";binary" );
+                        }
                     }
                 } );
 
