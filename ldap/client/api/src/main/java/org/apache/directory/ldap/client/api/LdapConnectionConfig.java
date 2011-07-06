@@ -87,6 +87,9 @@ public class LdapConnectionConfig
     /** an array of certificate trust managers, if set, will be used while initializing the SSL context */
     private TrustManager[] trustManagers;
 
+    /** an array of cipher suites which are enabled, if set, will be used while initializing the SSL context */
+    private String[] enabledCipherSuites;
+
     /** name of the protocol used for creating SSL context, default value is "TLS" */
     private String sslProtocol = DEFAULT_SSL_PROTOCOL;
 
@@ -385,4 +388,25 @@ public class LdapConnectionConfig
         this.secureRandom = secureRandom;
     }
 
+
+    /**
+     * Gets the cipher suites which are enabled.
+     * 
+     * @return the cipher suites which are enabled
+     */
+    public String[] getEnabledCipherSuites()
+    {
+        return enabledCipherSuites;
+    }
+
+
+    /**
+     * Sets the cipher suites which are enabled
+     * 
+     * @param enabledCipherSuites the cipher suites which are enabled
+     */
+    public void setEnabledCipherSuites( String[] enabledCipherSuites )
+    {
+        this.enabledCipherSuites = enabledCipherSuites;
+    }
 }

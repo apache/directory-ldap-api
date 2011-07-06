@@ -3768,6 +3768,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
             SslFilter sslFilter = new SslFilter( sslContext );
             sslFilter.setUseClientMode( true );
+            sslFilter.setEnabledCipherSuites( config.getEnabledCipherSuites() );
 
             // for LDAPS
             if ( ldapSession == null )
