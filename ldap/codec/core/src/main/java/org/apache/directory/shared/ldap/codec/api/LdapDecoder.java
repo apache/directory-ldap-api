@@ -128,14 +128,11 @@ public class LdapDecoder
         {
             try
             {
-                asn1Decoder.decode( buffer, messageContainer );
-
                 if ( IS_DEBUG )
                 {
                     LOG.debug( "Decoding the PDU : " );
 
-                    int size = buffer.position();
-                    buffer.reset();
+                    int size = buffer.limit();
                     int position = buffer.position();
                     int pduLength = size - position;
 
@@ -153,9 +150,11 @@ public class LdapDecoder
                     {
                         LOG.debug( Strings.dumpBytes(array) );
                     }
+
+                    buffer.reset();
                 }
 
-                buffer.mark();
+                asn1Decoder.decode( buffer, messageContainer );
 
                 if ( messageContainer.getState() == TLVStateEnum.PDU_DECODED )
                 {
