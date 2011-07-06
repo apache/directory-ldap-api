@@ -933,7 +933,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         LOG.debug( "Anonymous Bind request" );
 
         // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( config.getName(), Strings.getBytesUtf8( config.getCredentials() ) );
+        BindRequest bindRequest = createBindRequest( StringConstants.EMPTY, StringConstants.EMPTY_BYTES );
 
         BindResponse bindResponse = bind( bindRequest );
 
@@ -3833,7 +3833,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             // Quality of Protection SASL property
             if ( saslRequest.getQualityOfProtection() != null )
             {
-
                 properties.put( Sasl.QOP, saslRequest.getQualityOfProtection().getValue() );
             }
 
