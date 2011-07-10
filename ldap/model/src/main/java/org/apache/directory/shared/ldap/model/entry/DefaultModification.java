@@ -116,6 +116,19 @@ public class DefaultModification implements Modification
 
 
     /**
+     * Creates a new instance of DefaultModification with no value
+     *
+     * @param operation The modification operation
+     * @param attributeId The associated attribute ID
+     */
+    public DefaultModification( ModificationOperation operation, String attributeId )
+    {
+        this.operation = operation;
+        this.attribute = new DefaultAttribute( attributeId );
+    }
+
+
+    /**
      * Creates a new instance of DefaultModification.
      *
      * @param operation The modification operation
@@ -157,6 +170,20 @@ public class DefaultModification implements Modification
     {
         this.operation = operation;
         this.attribute = new DefaultAttribute( attributeType, values );
+    }
+
+
+    /**
+     * Creates a new instance of DefaultModification with no value.
+     *
+     * @param operation The modification operation
+     * @param attributeType The associated attributeType
+     */
+    public DefaultModification( ModificationOperation operation, AttributeType attributeType )
+    throws LdapInvalidAttributeValueException
+    {
+        this.operation = operation;
+        this.attribute = new DefaultAttribute( attributeType );
     }
 
 

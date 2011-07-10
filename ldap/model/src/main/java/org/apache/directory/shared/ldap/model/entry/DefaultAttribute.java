@@ -281,7 +281,12 @@ public class DefaultAttribute implements Attribute, Cloneable
         }
 
         apply( attributeType );
-        add( vals );
+        
+        if ( ( vals != null ) && ( vals.length > 0 ) )
+        {
+            add( vals );
+        }
+        
         setUpId( upId, attributeType );
     }
 
