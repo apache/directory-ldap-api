@@ -70,7 +70,7 @@ public final class SchemaConstants
     public final static String OU_SCHEMA                            = "ou=schema";
 
     // The Dn for the schema modifications
-    public final static String SCHEMA_MODIFICATIONS_DN              = "cn=schemaModifications,ou=schema";
+    public final static String SCHEMA_MODIFICATIONS_DN              = "ou=schemaModifications,ou=schema";
 
 
     // Special attributes 1.1 , * and + for search operations
