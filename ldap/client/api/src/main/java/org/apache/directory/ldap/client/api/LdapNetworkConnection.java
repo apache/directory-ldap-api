@@ -41,6 +41,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.net.ssl.SSLContext;
 import javax.security.auth.Subject;
@@ -186,8 +187,8 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /** The connector open with the remote server */
     private IoConnector connector;
 
-    /** A flag set to true when we used a local connector */
-    private boolean localConnector;
+    /** A mutex used to avoid a double close of the connector */
+    private ReentrantLock connectorMutex = new ReentrantLock(); 
 
     /**
      * The created session, created when we open a connection with
@@ -494,7 +495,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         if ( connector == null )
         {
             connector = new NioSocketConnector();
-            localConnector = true;
 
             // Add the codec to the chain
             connector.getFilterChain().addLast( "ldapCodec", ldapProtocolFilter );
@@ -657,12 +657,14 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         }
 
         // And close the connector if it has been created locally
-        if ( localConnector && ( connector != null ) )
+        // Release the connector
+        connectorMutex.lock();
+        if ( connector != null )
         {
-            // Release the connector
             connector.dispose();
             connector = null;
         }
+        connectorMutex.unlock();
 
         // Reset the messageId
         messageId.set( 0 );
@@ -1766,7 +1768,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         clearMaps();
 
         //  We now have to close the session
-        if ( ( ldapSession != null ) && connected.get() )
+        if ( ldapSession != null )
         {
             CloseFuture closeFuture = ldapSession.close( true );
 
@@ -3696,17 +3698,20 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         // Reset the messageId
         messageId.set( 0 );
 
-        // DO NOT call connector.dispose(), it is hanging when there is no network connection
-        // set localConnector flag to false to avoid NPE when close() is called after this sessionClosed() method
-        // gets called
-        localConnector = false;
-        connector = null;
+        if ( connector != null )
+        {
+            connectorMutex.lock();
+            connector.dispose();
+            connector = null;
+            connectorMutex.unlock();
+        }
 
         clearMaps();
 
         if ( conCloseListeners != null )
         {
             LOG.debug( "notifying the registered ConnectionClosedEventListeners.." );
+            
             for ( ConnectionClosedEventListener listener : conCloseListeners )
             {
                 listener.connectionClosed();
