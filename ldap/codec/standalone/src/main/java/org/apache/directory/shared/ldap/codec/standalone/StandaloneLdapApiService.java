@@ -176,14 +176,14 @@ public class StandaloneLdapApiService implements LdapApiService
         {
              try
              {
-             @SuppressWarnings("unchecked")
-             Class<? extends ProtocolCodecFactory> clazz = ( Class<? extends ProtocolCodecFactory> )
-             Class.forName( DEFAULT_PROTOCOL_CODEC_FACTORY );
-             protocolCodecFactory = clazz.newInstance();
+                 @SuppressWarnings("unchecked")
+                 Class<? extends ProtocolCodecFactory> clazz = ( Class<? extends ProtocolCodecFactory> )
+                 Class.forName( DEFAULT_PROTOCOL_CODEC_FACTORY );
+                 protocolCodecFactory = clazz.newInstance();
              }
              catch( Exception cause )
              {
-             throw new RuntimeException( "Failed to load default codec factory.", cause );
+                 throw new RuntimeException( "Failed to load default codec factory.", cause );
              }
         }
     }
