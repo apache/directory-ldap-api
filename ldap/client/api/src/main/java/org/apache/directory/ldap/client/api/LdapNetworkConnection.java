@@ -659,11 +659,13 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         // And close the connector if it has been created locally
         // Release the connector
         connectorMutex.lock();
+        
         if ( connector != null )
         {
             connector.dispose();
             connector = null;
         }
+        
         connectorMutex.unlock();
 
         // Reset the messageId
@@ -3698,13 +3700,15 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         // Reset the messageId
         messageId.set( 0 );
 
+        connectorMutex.lock();
+        
         if ( connector != null )
         {
-            connectorMutex.lock();
             connector.dispose();
             connector = null;
-            connectorMutex.unlock();
         }
+
+        connectorMutex.unlock();
 
         clearMaps();
 
