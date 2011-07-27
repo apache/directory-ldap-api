@@ -263,7 +263,7 @@ public final class SchemaConstants
     public final static String ENTRY_UUID_AT                            = "entryUUID";
     public final static String ENTRY_UUID_AT_OID                        = "1.3.6.1.1.16.4";
 
-    //entryParentId
+    // entryParentId
     public final static String ENTRY_PARENT_ID_AT                       = "entryParentId";
     public final static String ENTRY_PARENT_ID_OID                      = "1.3.6.1.4.1.18060.0.4.1.2.51";
     
@@ -373,7 +373,6 @@ public final class SchemaConstants
     public final static String SEARCHGUIDE_AT                           = "searchguide";
     public final static String SEARCHGUIDE_AT_OID                       = "2.5.4.14";
 
-
     // PostalCode
     public final static String POSTALCODE_AT                            = "postalCode";
     public final static String POSTALCODE_AT_OID                        = "2.5.4.17";
@@ -385,6 +384,7 @@ public final class SchemaConstants
     // PostOfficeBox
     public final static String POSTOFFICEBOX_AT                         = "postOfficeBox";
     public final static String POSTOFFICEBOX_AT_OID                     = "2.5.4.18";
+    
     // Member
     public final static String MEMBER_AT                                = "member";
     public final static String MEMBER_AT_OID                            = "2.5.4.31";
@@ -405,7 +405,7 @@ public final class SchemaConstants
     public final static String EXCLUDE_ALL_COLLECTIVE_ATTRIBUTES_AT     = "excludeAllCollectiveAttributes";
     public final static String EXCLUDE_ALL_COLLECTIVE_ATTRIBUTES_AT_OID = "2.5.18.0";
 
-        // CreateTimestamp
+    // CreateTimestamp
     public final static String CREATE_TIMESTAMP_AT                      = "createTimestamp";
     public final static String CREATE_TIMESTAMP_AT_OID                  = "2.5.18.1";
 
@@ -512,7 +512,122 @@ public final class SchemaConstants
     // subordinateCount, by Novell
     public final static String SUBORDINATE_COUNT_AT                     = "subordinateCount";
     // no official OID in RFCs
+    
 
+    //=========================================================================
+    // LdapServer AT and OC
+    //-------------------------------------------------------------------------
+    // ObjectClasses
+    //-------------------------------------------------------------------------
+    // ads-replReqHandler AT
+    public final static String ADS_REPL_REQ_HANDLER                     = "ads-replReqHandler";
+    public final static String ADS_REPL_REQ_HANDLER_OID                 = "1.3.6.1.4.1.18060.0.4.1.2.832";
+
+    //=========================================================================
+    // Replication AT and OC
+    //-------------------------------------------------------------------------
+    // ObjectClasses
+    //-------------------------------------------------------------------------
+    // ads-replEventLog OC
+    public final static String ADS_REPL_EVENT_LOG                        = "ads-replEventLog";
+    public final static String ADS_REPL_EVENT_LOG_OID                    = "1.3.6.1.4.1.18060.0.4.1.3.805";
+    
+    // ads-replConsumer OC
+    public final static String ADS_REPL_CONSUMER                        = "ads-replConsumer";
+    public final static String ADS_REPL_CONSUMER_OID                    = "1.3.6.1.4.1.18060.0.4.1.3.806";
+    
+    //-------------------------------------------------------------------------
+    // AttributeTypes
+    //-------------------------------------------------------------------------
+    // ads-dsReplicaId AT
+    public final static String ADS_DS_REPLICA_ID                        = "ads-dsReplicaId";
+    public final static String ADS_DS_REPLICA_ID_OID                    = "1.3.6.1.4.1.18060.0.4.1.2.112";
+
+    // ads-replConsumerImpl AT
+    public final static String ADS_REPL_CONSUMER_IMPL                   = "ads-replConsumerImpl";
+    public final static String ADS_REPL_CONSUMER_IMPL_OID               = "1.3.6.1.4.1.18060.0.4.1.2.310";
+
+    // ads-replSearchFilter AT
+    public final static String ADS_REPL_SEARCH_FILTER                   = "ads-replSearchFilter";
+    public final static String ADS_REPL_SEARCH_FILTER_OID               = "1.3.6.1.4.1.18060.0.4.1.2.817";
+    
+    // ads-replLastSentCsn AT
+    public final static String ADS_REPL_LAST_SENT_CSN                   = "ads-replLastSentCsn";
+    public final static String ADS_REPL_LAST_SENT_CSN_OID               = "1.3.6.1.4.1.18060.0.4.1.2.818";
+    
+    // ads-replAliasDerefMode AT
+    public final static String ADS_REPL_ALIAS_DEREF_MODE                = "ads-replAliasDerefMode";
+    public final static String ADS_REPL_ALIAS_DEREF_MODE_…ID            = "1.3.6.1.4.1.18060.0.4.1.2.819";
+    
+    // ads-searchBaseDN AT
+    public final static String ADS_SEARCH_BASE_DN                       = "ads-searchBaseDN";
+    public final static String ADS_SEARCH_BASE_DN_OID                   = "1.3.6.1.4.1.18060.0.4.1.2.820";
+    
+    // ads-replSearchScope AT
+    public final static String ADS_REPL_SEARCH_SCOPE                    = "ads-replSearchScope";
+    public final static String ADS_REPL_SEARCH_SCOPE_OID                = "1.3.6.1.4.1.18060.0.4.1.2.821";
+    
+    // ads-replRefreshNPersist AT
+    public final static String ADS_REPL_REFRESH_N_PERSIST               = "ads-replRefreshNPersist";
+    public final static String ADS_REPL_REFRESH_N_PERSIST_POID          = "1.3.6.1.4.1.18060.0.4.1.2.822";
+    
+    // ads-replProvHostName AT
+    public final static String ADS_REPL_PROV_HOST_NAME                  = "ads-replProvHostName";
+    public final static String ADS_REPL_PROV_HOST_NAME_OID              = "1.3.6.1.4.1.18060.0.4.1.2.823";
+    
+    // ads-replProvPort AT
+    public final static String ADS_REPL_PROV_PORT                       = "ads-replProvPort";
+    public final static String ADS_REPL_PROV_PORT_OID                   = "1.3.6.1.4.1.18060.0.4.1.2.824";
+    
+    // ads-replUserDn AT
+    public final static String ADS_REPL_USER_DN                         = "ads-replUserDn";
+    public final static String ADS_REPL_USER_DN_OID                     = "1.3.6.1.4.1.18060.0.4.1.2.825";
+    
+    // ads-replUserPassword AT
+    public final static String ADS_REPL_USER_PASSWORD                   = "ads-replUserPassword";
+    public final static String ADS_REPL_USER_PASSWORD_OID               = "1.3.6.1.4.1.18060.0.4.1.2.826";
+    
+    // ads-replRefreshInterval AT
+    public final static String ADS_REPL_REFRESH_INTERVAL                = "ads-replRefreshInterval";
+    public final static String ADS_REPL_REFRESH_INTERVAL_OID            = "1.3.6.1.4.1.18060.0.4.1.2.827";
+    
+    // ads-replAttributes AT
+    public final static String ADS_REPL_ATTRIBUTES                      = "ads-replAttributes";
+    public final static String ADS_REPL_ATTRIBUTES_OID                  = "1.3.6.1.4.1.18060.0.4.1.2.828";
+    
+    // ads-replSearchSizeLimit AT
+    public final static String ADS_REPL_SEARCH_SIZE_LIMIT               = "ads-replSearchSizeLimit";
+    public final static String ADS_REPL_SEARCH_SIZE_LIMIT_OID           = "1.3.6.1.4.1.18060.0.4.1.2.829";
+    
+    // ads-replSearchTimeOut AT
+    public final static String ADS_REPL_SEARCH_TIMEOUT                  = "ads-replSearchTimeOut";
+    public final static String ADS_REPL_SEARCH_TIMEOUT_OID              = "1.3.6.1.4.1.18060.0.4.1.2.830";
+    
+    // ads-replCookie AT
+    public final static String ADS_REPL_COOKIE                          = "ads-replCookie";
+    public final static String ADS_REPL_COOKIE_OID                      = "1.3.6.1.4.1.18060.0.4.1.2.831";
+    
+    // ads-replUseTls AT
+    public final static String ADS_REPL_USE_TLS                         = "ads-replUseTls";
+    public final static String ADS_REPL_USE_TLS_OID                     = "1.3.6.1.4.1.18060.0.4.1.2.833";
+    
+    // ads-replStrictCertValidation AT
+    public final static String ADS_REPL_STRICT_CERT_VALIDATION          = "ads-replStrictCertValidation";
+    public final static String ADS_REPL_STRICT_CERT_VALIDATION_OID      = "1.3.6.1.4.1.18060.0.4.1.2.834";
+    
+    // ads-replPeerCertificate AT
+    public final static String ADS_REPL_PEER_CERTIFICATE                = "ads-replPeerCertificate";
+    public final static String ADS_REPL_PEER_CERTIFICATE_OID            = "1.3.6.1.4.1.18060.0.4.1.2.835";
+    
+    // ads-replProviderId AT
+    public final static String ADS_REPL_PROVIDER_ID                     = "ads-replProviderId";
+    public final static String ADS_REPL_PROVIDER_ID_OID                 = "1.3.6.1.4.1.18060.0.4.1.2.836";
+
+    // ads-replConsumerId AT
+    public final static String ADS_REPL_CONSUMER_ID                     = "ads-replConsumerId";
+    public final static String ADS_REPL_CONSUMER_ID_OID                 = "1.3.6.1.4.1.18060.0.4.1.2.837";
+
+    
     //-------------------------------------------------------------------------
     // ---- Syntaxes ----------------------------------------------------------
     //-------------------------------------------------------------------------
