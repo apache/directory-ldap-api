@@ -557,7 +557,7 @@ public final class SchemaConstants
     
     // ads-replAliasDerefMode AT
     public final static String ADS_REPL_ALIAS_DEREF_MODE                = "ads-replAliasDerefMode";
-    public final static String ADS_REPL_ALIAS_DEREF_MODE_…ID            = "1.3.6.1.4.1.18060.0.4.1.2.819";
+    public final static String ADS_REPL_ALIAS_DEREF_MODE_OID            = "1.3.6.1.4.1.18060.0.4.1.2.819";
     
     // ads-searchBaseDN AT
     public final static String ADS_SEARCH_BASE_DN                       = "ads-searchBaseDN";
@@ -569,7 +569,7 @@ public final class SchemaConstants
     
     // ads-replRefreshNPersist AT
     public final static String ADS_REPL_REFRESH_N_PERSIST               = "ads-replRefreshNPersist";
-    public final static String ADS_REPL_REFRESH_N_PERSIST_POID          = "1.3.6.1.4.1.18060.0.4.1.2.822";
+    public final static String ADS_REPL_REFRESH_N_PERSIST_OID          = "1.3.6.1.4.1.18060.0.4.1.2.822";
     
     // ads-replProvHostName AT
     public final static String ADS_REPL_PROV_HOST_NAME                  = "ads-replProvHostName";
