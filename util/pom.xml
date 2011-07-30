@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.shared</groupId>
     <artifactId>shared-parent</artifactId>
-    <version>1.0.0-M6-SNAPSHOT</version>
+    <version>1.0.0-M6</version>
   </parent>
   
   <artifactId>shared-util</artifactId>
