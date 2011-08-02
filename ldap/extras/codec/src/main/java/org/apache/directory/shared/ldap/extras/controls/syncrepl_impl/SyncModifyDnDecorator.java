@@ -52,20 +52,6 @@ import org.apache.directory.shared.ldap.extras.controls.SyncModifyDnType;
  */
 public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implements SyncModifyDn
 {
-    /** the entry's Dn to be changed */
-    private String entryDn;
-
-    /** target entry's new parent Dn */
-    private String newSuperiorDn;
-
-    /** the new Rdn */
-    private String newRdn;
-
-    /** flag to indicate whether to delete the old Rdn */
-    private boolean deleteOldRdn = false;
-
-    private SyncModifyDnType modDnType;
-
     /** global length for the control */
     private int syncModDnSeqLength;
 
@@ -85,7 +71,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
     public SyncModifyDnDecorator( LdapApiService codec, SyncModifyDnType type )
     {
         this( codec );
-        this.modDnType = type;
+        getDecorated().setModDnType( type );
     }
 
 
@@ -110,9 +96,13 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
     @Override
     public int computeLength()
     {
+        String entryDn = getDecorated().getEntryDn();
+        String newSuperiorDn = getDecorated().getNewSuperiorDn();
+        String newRdn = getDecorated().getNewRdn();
+        
         syncModDnSeqLength = 1 + TLV.getNbBytes( entryDn.length() ) + entryDn.length();
 
-        switch ( modDnType )
+        switch ( getDecorated().getModDnType() )
         {
             case MOVE:
                 int moveLen = 1 + TLV.getNbBytes( newSuperiorDn.length() ) + newSuperiorDn.length();
@@ -163,10 +153,14 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
         buffer.put( UniversalTag.SEQUENCE.getValue() );
         buffer.put( TLV.getBytes( syncModDnSeqLength ) );
 
+        String entryDn = getDecorated().getEntryDn();
+        String newSuperiorDn = getDecorated().getNewSuperiorDn();
+        String newRdn = getDecorated().getNewRdn();
+        
         // the entryDn
         Value.encode( buffer, entryDn );
 
-        switch ( modDnType )
+        switch ( getDecorated().getModDnType() )
         {
             case MOVE:
                 buffer.put( ( byte ) SyncModifyDnTags.MOVE_TAG.getValue() );
@@ -178,7 +172,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
                 buffer.put( ( byte ) SyncModifyDnTags.RENAME_TAG.getValue() );
                 buffer.put( TLV.getBytes( renameLen ) );
                 Value.encode( buffer, newRdn );
-                Value.encode( buffer, deleteOldRdn );
+                Value.encode( buffer, getDecorated().isDeleteOldRdn() );
                 break;
 
             case MOVEANDRENAME:
@@ -186,7 +180,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
                 buffer.put( TLV.getBytes( moveAndRenameLen ) );
                 Value.encode( buffer, newSuperiorDn );
                 Value.encode( buffer, newRdn );
-                Value.encode( buffer, deleteOldRdn );
+                Value.encode( buffer, getDecorated().isDeleteOldRdn() );
                 break;
         }
 
@@ -211,10 +205,14 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
                 buffer.put( UniversalTag.SEQUENCE.getValue() );
                 buffer.put( TLV.getBytes( syncModDnSeqLength ) );
 
+                String entryDn = getDecorated().getEntryDn();
+                String newSuperiorDn = getDecorated().getNewSuperiorDn();
+                String newRdn = getDecorated().getNewRdn();
+                
                 // the entryDn
                 Value.encode( buffer, entryDn );
 
-                switch ( modDnType )
+                switch ( getDecorated().getModDnType() )
                 {
                     case MOVE:
                         buffer.put( ( byte ) SyncModifyDnTags.MOVE_TAG.getValue() );
@@ -226,7 +224,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
                         buffer.put( ( byte ) SyncModifyDnTags.RENAME_TAG.getValue() );
                         buffer.put( TLV.getBytes( renameLen ) );
                         Value.encode( buffer, newRdn );
-                        Value.encode( buffer, deleteOldRdn );
+                        Value.encode( buffer, getDecorated().isDeleteOldRdn() );
                         break;
 
                     case MOVEANDRENAME:
@@ -234,7 +232,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
                         buffer.put( TLV.getBytes( moveAndRenameLen ) );
                         Value.encode( buffer, newSuperiorDn );
                         Value.encode( buffer, newRdn );
-                        Value.encode( buffer, deleteOldRdn );
+                        Value.encode( buffer, getDecorated().isDeleteOldRdn() );
                         break;
                 }
 
@@ -255,7 +253,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
      */
     public String getEntryDn()
     {
-        return entryDn;
+        return getDecorated().getEntryDn();
     }
 
 
@@ -264,7 +262,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
      */
     public void setEntryDn( String entryDn )
     {
-        this.entryDn = entryDn;
+        getDecorated().setEntryDn( entryDn );
     }
 
 
@@ -273,7 +271,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
      */
     public String getNewSuperiorDn()
     {
-        return newSuperiorDn;
+        return getDecorated().getNewSuperiorDn();
     }
 
 
@@ -282,7 +280,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
      */
     public void setNewSuperiorDn( String newSuperiorDn )
     {
-        this.newSuperiorDn = newSuperiorDn;
+        getDecorated().setNewSuperiorDn( newSuperiorDn );
     }
 
 
@@ -291,7 +289,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
      */
     public String getNewRdn()
     {
-        return newRdn;
+        return getDecorated().getNewRdn();
     }
 
 
@@ -300,7 +298,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
      */
     public void setNewRdn( String newRdn )
     {
-        this.newRdn = newRdn;
+        getDecorated().setNewRdn( newRdn );
     }
 
 
@@ -309,7 +307,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
      */
     public boolean isDeleteOldRdn()
     {
-        return deleteOldRdn;
+        return getDecorated().isDeleteOldRdn();
     }
 
 
@@ -318,7 +316,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
      */
     public void setDeleteOldRdn( boolean deleteOldRdn )
     {
-        this.deleteOldRdn = deleteOldRdn;
+        getDecorated().setDeleteOldRdn( deleteOldRdn );
     }
 
 
@@ -327,7 +325,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
      */
     public SyncModifyDnType getModDnType()
     {
-        return modDnType;
+        return getDecorated().getModDnType();
     }
 
 
@@ -336,11 +334,11 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
      */
     public void setModDnType( SyncModifyDnType modDnType )
     {
-        if( this.modDnType != null )
+        if( getDecorated().getModDnType() != null )
         {
             throw new IllegalStateException( "cannot overwrite the existing modDnType value" );
         }
-        this.modDnType = modDnType;
+        getDecorated().setModDnType( modDnType );
     }
 
 
