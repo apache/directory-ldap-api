@@ -42,6 +42,7 @@ public class SyncModifyDnImpl extends AbstractControl implements SyncModifyDn
     /** flag to indicate whether to delete the old Rdn */
     private boolean deleteOldRdn = false;
 
+    /** The type of MODDN operation : MOVE, RENAME or MOVE_AND_RENAME */
     private SyncModifyDnType modDnType;
 
 
@@ -154,8 +155,6 @@ public class SyncModifyDnImpl extends AbstractControl implements SyncModifyDn
     {
         this.modDnType = modDnType;
     }
-
-
 
 
     /**

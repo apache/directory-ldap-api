@@ -264,7 +264,7 @@ public final class SyncModifyDnGrammar extends AbstractGrammar
             {
                 public void action( SyncModifyDnContainer container ) throws DecoderException
                 {
-                    container.getSyncModifyDnControl().setModDnType( SyncModifyDnType.MOVEANDRENAME );
+                    container.getSyncModifyDnControl().setModDnType( SyncModifyDnType.MOVE_AND_RENAME );
                     container.setGrammarEndAllowed( false );
                 }
             } );

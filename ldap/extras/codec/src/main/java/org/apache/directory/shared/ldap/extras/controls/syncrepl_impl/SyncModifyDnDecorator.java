@@ -31,8 +31,8 @@ import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.asn1.util.Asn1StringUtils;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
+import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.extras.controls.SyncModifyDn;
 import org.apache.directory.shared.ldap.extras.controls.SyncModifyDnImpl;
 import org.apache.directory.shared.ldap.extras.controls.SyncModifyDnType;
@@ -55,6 +55,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
     /** global length for the control */
     private int syncModDnSeqLength;
 
+    /** Length for the encoded elements */
     private int renameLen = 0;
     private int moveAndRenameLen = 0;
 
@@ -62,12 +63,21 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
     private Asn1Decoder decoder = new Asn1Decoder();
 
 
+    /**
+     * Creates a new instance of SyncModifyDnDecorator
+     * @param codec The codec to use
+     */
     public SyncModifyDnDecorator( LdapApiService codec )
     {
         super( codec, new SyncModifyDnImpl() );
     }
 
 
+    /**
+     * Creates a new instance of SyncModifyDnDecorator
+     * @param codec The codec to use
+     * @param type The type of MODDN opertaion
+     */
     public SyncModifyDnDecorator( LdapApiService codec, SyncModifyDnType type )
     {
         this( codec );
@@ -75,6 +85,11 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
     }
 
 
+    /**
+     * Creates a new instance of SyncModifyDnDecorator
+     * @param codec The codec to use
+     * @param control The MODDN control
+     */
     public SyncModifyDnDecorator( LdapApiService codec, SyncModifyDn control )
     {
         super( codec, control );
@@ -118,7 +133,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
                 syncModDnSeqLength += 1 + TLV.getNbBytes( renameLen ) + renameLen;
                 break;
 
-            case MOVEANDRENAME:
+            case MOVE_AND_RENAME:
                 moveAndRenameLen = 1 + TLV.getNbBytes( newSuperiorDn.length() ) + newSuperiorDn.length();
                 moveAndRenameLen += 1 + TLV.getNbBytes( newRdn.length() ) + newRdn.length();
                 // deleteOldRdn
@@ -175,7 +190,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
                 Value.encode( buffer, getDecorated().isDeleteOldRdn() );
                 break;
 
-            case MOVEANDRENAME:
+            case MOVE_AND_RENAME:
                 buffer.put( ( byte ) SyncModifyDnTags.MOVEANDRENAME_TAG.getValue() );
                 buffer.put( TLV.getBytes( moveAndRenameLen ) );
                 Value.encode( buffer, newSuperiorDn );
@@ -227,7 +242,7 @@ public class SyncModifyDnDecorator extends ControlDecorator<SyncModifyDn> implem
                         Value.encode( buffer, getDecorated().isDeleteOldRdn() );
                         break;
 
-                    case MOVEANDRENAME:
+                    case MOVE_AND_RENAME:
                         buffer.put( ( byte ) SyncModifyDnTags.MOVEANDRENAME_TAG.getValue() );
                         buffer.put( TLV.getBytes( moveAndRenameLen ) );
                         Value.encode( buffer, newSuperiorDn );
