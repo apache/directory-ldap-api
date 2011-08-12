@@ -21,7 +21,7 @@
 package org.apache.directory.shared.ldap.extras.controls;
 
 /**
- * TODO SyncModifyDnControlEnum.
+ * The type of MODDN modification. One of MOVE, RENAME or MOVE_AND_RENAME
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -29,11 +29,14 @@ public enum SyncModifyDnType
 {
     MOVE( 0 ),
     RENAME( 1 ),
-    MOVEANDRENAME( 2 );
+    MOVE_AND_RENAME( 2 );
     
     /** Internal value for each tag */
     private int value;
     
+    /**
+     * Creates the value
+     */
     private SyncModifyDnType( int value )
     {
         this.value = value;
@@ -49,6 +52,11 @@ public enum SyncModifyDnType
     }
     
     
+    /**
+     * Get the instance from it's interger value
+     * @param value The value we are looking for 
+     * @return The associated value
+     */
     public static SyncModifyDnType getModifyDnType( int value )
     {
         switch ( value )
@@ -57,7 +65,7 @@ public enum SyncModifyDnType
             
             case 1 : return RENAME;
             
-            case 2 : return MOVEANDRENAME;
+            case 2 : return MOVE_AND_RENAME;
         }
         
         throw new IllegalArgumentException( "unknown modify dn operantion type " + value );
