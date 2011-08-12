@@ -37,37 +37,66 @@ import org.apache.directory.shared.ldap.model.message.Control;
  */
 public interface SyncModifyDn extends Control
 {
-
     /** This control OID */
     public static final String OID = "1.3.6.1.4.1.4203.1.9.1.5";
     
 
+    /**
+     * @return the current entry DN
+     */
     String getEntryDn();
 
 
+    /**
+     * @param entryDn The Entry DN
+     */
     void setEntryDn( String entryDn );
 
 
+    /**
+     * @return The new superior DN if it's a Move or a Move@Rename operation
+     */
     String getNewSuperiorDn();
 
 
+    /**
+     * @param newSuperiorDn Sets the new Superior DN
+     */
     void setNewSuperiorDn( String newSuperiorDn );
 
 
+    /**
+     * @return The new name if it's a Rename or Move&Rename opertion
+     */
     String getNewRdn();
 
 
+    /**
+     * @param newRdn Sets the new name
+     */
     void setNewRdn( String newRdn );
 
 
+    /**
+     * @return true if the attribute associated with the old name is to be removed (rename operation)
+     */
     boolean isDeleteOldRdn();
 
 
+    /**
+     * @param deleteOldRdn The flag to tell the server to remove the attribute assoicated with the old name
+     */
     void setDeleteOldRdn( boolean deleteOldRdn );
 
 
+    /**
+     * @return The MODDN operation type
+     */
     SyncModifyDnType getModDnType();
 
 
+    /**
+     * @param modDnType The MODDN operation type
+     */
     void setModDnType( SyncModifyDnType modDnType );
 }
