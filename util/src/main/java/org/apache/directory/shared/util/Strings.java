@@ -31,6 +31,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -1762,7 +1763,7 @@ public final class Strings
             return null;
         }
 
-        return str.toLowerCase();
+        return str.toLowerCase( Locale.ENGLISH );
     }
 
 
@@ -1937,7 +1938,7 @@ public final class Strings
         sb.append( '-' );
         sb.append( hex, 20, 12 );
 
-        return sb.toString().toLowerCase();
+        return Strings.toLowerCase( sb.toString() );
     }
 
 

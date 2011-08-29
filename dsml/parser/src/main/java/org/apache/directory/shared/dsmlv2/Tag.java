@@ -19,6 +19,8 @@
  */
 package org.apache.directory.shared.dsmlv2;
 
+import org.apache.directory.shared.util.Strings;
+
 
 /**
  * This class represents a XML tag.
@@ -81,7 +83,7 @@ public class Tag
      */
     public void setName( String name )
     {
-        this.name = name.toLowerCase();
+        this.name = Strings.toLowerCase( name );
     }
 
 

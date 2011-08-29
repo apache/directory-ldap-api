@@ -524,7 +524,7 @@ public final class PropertiesUtils
             return defaultValue;
         }
 
-        String val = props.getProperty( key ).trim().toLowerCase();
+        String val = Strings.toLowerCase( Strings.trim( props.getProperty( key ) ) );
         return val.equals( "true" ) || val.equals( "on" ) || val.equals( "1" ) || val.equals( "yes" );
     }
 

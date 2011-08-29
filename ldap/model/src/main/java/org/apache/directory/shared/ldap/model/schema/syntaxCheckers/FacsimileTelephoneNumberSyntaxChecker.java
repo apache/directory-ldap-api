@@ -71,13 +71,13 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
     /** Initialization of the fax parameters set of values */
     static
     {
-        faxParameters.add( TWO_DIMENSIONAL.toLowerCase() );
-        faxParameters.add( FINE_RESOLUTION.toLowerCase() );
-        faxParameters.add( UNLIMITED_LENGTH.toLowerCase() );
-        faxParameters.add( B4_LENGTH.toLowerCase() );
-        faxParameters.add( A3_LENGTH.toLowerCase() );
-        faxParameters.add( B4_WIDTH.toLowerCase() );
-        faxParameters.add( UNCOMPRESSED.toLowerCase() );
+        faxParameters.add( Strings.toLowerCase( TWO_DIMENSIONAL ) );
+        faxParameters.add( Strings.toLowerCase( FINE_RESOLUTION ) );
+        faxParameters.add( Strings.toLowerCase( UNLIMITED_LENGTH ) );
+        faxParameters.add( Strings.toLowerCase( B4_LENGTH ) );
+        faxParameters.add( Strings.toLowerCase( A3_LENGTH ) );
+        faxParameters.add( Strings.toLowerCase( B4_WIDTH ) );
+        faxParameters.add( Strings.toLowerCase( UNCOMPRESSED ) );
     }
     
     /**
@@ -179,7 +179,7 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
                 }
                 
                 // Relax a little bit the syntax by lowercasing the param
-                faxParam = faxParam.toLowerCase();
+                faxParam = Strings.toLowerCase( faxParam );
                 
                 if ( !faxParameters.contains( faxParam ) )
                 {

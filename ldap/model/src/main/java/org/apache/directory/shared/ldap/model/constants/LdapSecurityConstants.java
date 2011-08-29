@@ -19,6 +19,8 @@
  */
 package org.apache.directory.shared.ldap.model.constants;
 
+import org.apache.directory.shared.util.Strings;
+
 
 /**
  * An enum to store all the security constants used in the server
@@ -110,7 +112,7 @@ public enum LdapSecurityConstants
 
         if ( name != null )
         {
-            algorithm = name.toLowerCase();
+            algorithm = Strings.toLowerCase( name );
         }
 
         if ( HASH_METHOD_SHA.getName().equalsIgnoreCase( algorithm ) )

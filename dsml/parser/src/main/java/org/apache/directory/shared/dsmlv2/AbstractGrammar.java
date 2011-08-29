@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.util.Strings;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -161,7 +162,7 @@ public abstract class AbstractGrammar implements Grammar
     {
         XmlPullParser xpp = container.getParser();
 
-        String tagName = xpp.getName().toLowerCase();
+        String tagName = Strings.toLowerCase( xpp.getName() );
 
         GrammarTransition transition = getTransition( container.getState(), new Tag( tagName, tagType ) );
 
