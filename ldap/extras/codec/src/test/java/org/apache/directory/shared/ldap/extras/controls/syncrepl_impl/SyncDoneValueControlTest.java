@@ -63,9 +63,9 @@ public class SyncDoneValueControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        SyncDoneValueDecorator decorator =  new SyncDoneValueDecorator( codec );
+        SyncDoneValue decorator =  new SyncDoneValueDecorator( codec );
 
-        SyncDoneValue control = (SyncDoneValue)decorator.decode( bb.array() );
+        SyncDoneValue control = (SyncDoneValue)((SyncDoneValueDecorator)decorator).decode( bb.array() );
         
         assertEquals( "xkcd", Strings.utf8ToString(control.getCookie()) );
         assertTrue( control.isRefreshDeletes() );
@@ -99,9 +99,9 @@ public class SyncDoneValueControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        SyncDoneValueDecorator decorator =  new SyncDoneValueDecorator( codec );
+        SyncDoneValue decorator =  new SyncDoneValueDecorator( codec );
 
-        SyncDoneValue control = (SyncDoneValue)decorator.decode( bb.array() );
+        SyncDoneValue control = (SyncDoneValue)((SyncDoneValueDecorator)decorator).decode( bb.array() );
 
         assertNull( control.getCookie() );
         assertTrue( control.isRefreshDeletes() );
@@ -133,9 +133,9 @@ public class SyncDoneValueControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        SyncDoneValueDecorator decorator =  new SyncDoneValueDecorator( codec );
+        SyncDoneValue decorator =  new SyncDoneValueDecorator( codec );
 
-        SyncDoneValue control = (SyncDoneValue)decorator.decode( bb.array() );
+        SyncDoneValue control = (SyncDoneValue)((SyncDoneValueDecorator)decorator).decode( bb.array() );
 
         assertNull( control.getCookie() );
         assertFalse( control.isRefreshDeletes() );
@@ -156,9 +156,9 @@ public class SyncDoneValueControlTest extends AbstractCodecServiceTest
 
         bb.flip();
 
-        SyncDoneValueDecorator decorator =  new SyncDoneValueDecorator( codec );
+        SyncDoneValue decorator =  new SyncDoneValueDecorator( codec );
 
-        SyncDoneValue control = (SyncDoneValue)decorator.decode( bb.array() );
+        SyncDoneValue control = (SyncDoneValue)((SyncDoneValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( "", Strings.utf8ToString(control.getCookie()) );
         assertFalse( control.isRefreshDeletes() );

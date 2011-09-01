@@ -67,10 +67,10 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         decorator.setType( SynchronizationInfoEnum.NEW_COOKIE );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.NEW_COOKIE, syncInfoValue.getType() );
         assertEquals( "abc", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -102,10 +102,10 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         decorator.setType( SynchronizationInfoEnum.NEW_COOKIE );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.NEW_COOKIE, syncInfoValue.getType() );
         assertEquals( "", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -143,11 +143,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.REFRESH_DELETE );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.REFRESH_DELETE, syncInfoValue.getType() );
         assertEquals( "abc", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -192,11 +192,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.REFRESH_DELETE );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.REFRESH_DELETE, syncInfoValue.getType() );
         assertEquals( "abc", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -231,11 +231,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.REFRESH_DELETE );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.REFRESH_DELETE, syncInfoValue.getType() );
         assertEquals( "abc", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -270,11 +270,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.REFRESH_DELETE );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.REFRESH_DELETE, syncInfoValue.getType() );
         assertEquals( "", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -307,11 +307,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.REFRESH_DELETE );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.REFRESH_DELETE, syncInfoValue.getType() );
         assertEquals( "", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -350,11 +350,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.REFRESH_PRESENT );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.REFRESH_PRESENT, syncInfoValue.getType() );
         assertEquals( "abc", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -399,11 +399,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.REFRESH_PRESENT );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.REFRESH_PRESENT, syncInfoValue.getType() );
         assertEquals( "abc", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -438,11 +438,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.REFRESH_PRESENT );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.REFRESH_PRESENT, syncInfoValue.getType() );
         assertEquals( "abc", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -477,11 +477,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.REFRESH_PRESENT );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.REFRESH_PRESENT, syncInfoValue.getType() );
         assertEquals( "", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -514,11 +514,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.REFRESH_PRESENT );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.REFRESH_PRESENT, syncInfoValue.getType() );
         assertEquals( "", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -554,13 +554,13 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
         try
         {
-            decorator.decode( bb.array() );
+            ((SyncInfoValueDecorator)decorator).decode( bb.array() );
             fail( "Should not get there" );
         }
         catch ( DecoderException de )
@@ -586,13 +586,13 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
         try
         {
-            decorator.decode( bb.array() );
+            ((SyncInfoValueDecorator)decorator).decode( bb.array() );
             fail( "Should not get there" );
         }
         catch ( DecoderException de )
@@ -618,13 +618,13 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
         try
         {
-            decorator.decode( bb.array() );
+            ((SyncInfoValueDecorator)decorator).decode( bb.array() );
             fail( "Should not get there" );
         }
         catch ( DecoderException de )
@@ -651,13 +651,13 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
         try
         {
-            decorator.decode( bb.array() );
+            ((SyncInfoValueDecorator)decorator).decode( bb.array() );
             fail( "Should not get there" );
         }
         catch ( DecoderException de )
@@ -683,11 +683,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.SYNC_ID_SET, syncInfoValue.getType() );
         assertEquals( "", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -732,11 +732,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.SYNC_ID_SET, syncInfoValue.getType() );
         assertEquals( "", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -783,11 +783,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.SYNC_ID_SET, syncInfoValue.getType() );
         assertEquals( "abc", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -833,11 +833,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.SYNC_ID_SET, syncInfoValue.getType() );
         assertEquals( "abc", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -884,11 +884,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.SYNC_ID_SET, syncInfoValue.getType() );
         assertEquals( "", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -944,11 +944,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.SYNC_ID_SET, syncInfoValue.getType() );
         assertEquals( "", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -1015,11 +1015,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.SYNC_ID_SET, syncInfoValue.getType() );
         assertEquals( "abc", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -1077,11 +1077,11 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
-        SyncInfoValue syncInfoValue = (SyncInfoValue)decorator.decode( bb.array() );
+        SyncInfoValue syncInfoValue = (SyncInfoValue)((SyncInfoValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationInfoEnum.SYNC_ID_SET, syncInfoValue.getType() );
         assertEquals( "abc", Strings.utf8ToString(syncInfoValue.getCookie()) );
@@ -1152,13 +1152,13 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         
         decorator.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
         try
         {
-            decorator.decode( bb.array() );
+            ((SyncInfoValueDecorator)decorator).decode( bb.array() );
             fail( "Should not be there" );
         }
         catch ( DecoderException de )
@@ -1190,12 +1190,12 @@ public class SyncInfoValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncInfoValueDecorator decorator = new SyncInfoValueDecorator( codec );
+        SyncInfoValue decorator = new SyncInfoValueDecorator( codec );
         decorator.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
         try
         {
-            decorator.decode( bb.array() );
+            ((SyncInfoValueDecorator)decorator).decode( bb.array() );
             fail( "Should not be there" );
         }
         catch ( DecoderException de )

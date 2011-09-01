@@ -66,9 +66,9 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncStateValueDecorator decorator = new SyncStateValueDecorator( codec );
+        SyncStateValue decorator = new SyncStateValueDecorator( codec );
 
-        SyncStateValue syncStateValue = (SyncStateValue)decorator.decode( bb.array() );
+        SyncStateValue syncStateValue = (SyncStateValue)((SyncStateValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SyncStateTypeEnum.PRESENT, syncStateValue.getSyncStateType() );
         assertEquals( "abc", Strings.utf8ToString(syncStateValue.getEntryUUID()) );
@@ -103,9 +103,9 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncStateValueDecorator decorator = new SyncStateValueDecorator( codec );
+        SyncStateValue decorator = new SyncStateValueDecorator( codec );
 
-        SyncStateValue syncStateValue = (SyncStateValue)decorator.decode( bb.array() );
+        SyncStateValue syncStateValue = (SyncStateValue)((SyncStateValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SyncStateTypeEnum.ADD, syncStateValue.getSyncStateType() );
         assertEquals( "abc", Strings.utf8ToString(syncStateValue.getEntryUUID()) );
@@ -141,9 +141,9 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncStateValueDecorator decorator = new SyncStateValueDecorator( codec );
+        SyncStateValue decorator = new SyncStateValueDecorator( codec );
 
-        SyncStateValue syncStateValue = (SyncStateValue)decorator.decode( bb.array() );
+        SyncStateValue syncStateValue = (SyncStateValue)((SyncStateValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SyncStateTypeEnum.MODIFY, syncStateValue.getSyncStateType() );
         assertEquals( "abc", Strings.utf8ToString(syncStateValue.getEntryUUID()) );
@@ -185,9 +185,9 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncStateValueDecorator decorator = new SyncStateValueDecorator( codec );
+        SyncStateValue decorator = new SyncStateValueDecorator( codec );
 
-        decorator.decode( bb.array() );
+        ((SyncStateValueDecorator)decorator).decode( bb.array() );
     }
 
 
@@ -205,9 +205,9 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncStateValueDecorator decorator = new SyncStateValueDecorator( codec );
+        SyncStateValue decorator = new SyncStateValueDecorator( codec );
 
-        decorator.decode( bb.array() );
+        ((SyncStateValueDecorator)decorator).decode( bb.array() );
     }
 
 
@@ -227,9 +227,9 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncStateValueDecorator decorator = new SyncStateValueDecorator( codec );
+        SyncStateValue decorator = new SyncStateValueDecorator( codec );
 
-        decorator.decode( bb.array() );
+        ((SyncStateValueDecorator)decorator).decode( bb.array() );
     }
     
     
@@ -252,9 +252,9 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncStateValueDecorator decorator = new SyncStateValueDecorator( codec );
+        SyncStateValue decorator = new SyncStateValueDecorator( codec );
 
-        SyncStateValue syncStateValue = (SyncStateValue)decorator.decode( bb.array() );
+        SyncStateValue syncStateValue = (SyncStateValue)((SyncStateValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SyncStateTypeEnum.MODDN, syncStateValue.getSyncStateType() );
         assertEquals( "abc", Strings.utf8ToString(syncStateValue.getEntryUUID()) );
