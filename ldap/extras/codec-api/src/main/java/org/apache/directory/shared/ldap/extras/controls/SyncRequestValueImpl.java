@@ -203,7 +203,7 @@ public class SyncRequestValueImpl extends AbstractControl implements SyncRequest
         sb.append( "        mode              : '" ).append( getMode() ).append( "'\n" );
         sb.append( "        cookie            : '" ).
             append( Strings.dumpBytes( getCookie() ) ).append( "'\n" );
-        sb.append( "        refreshAndPersist : '" ).append( isReloadHint() ).append( "'\n" );
+        sb.append( "        reloadHint : '" ).append( isReloadHint() ).append( "'\n" );
 
         return sb.toString();
     }
