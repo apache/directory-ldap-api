@@ -641,7 +641,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                                 try
                                 {
                                     inf = new DataInputStream( new FileInputStream( file ) );
-                                    inf.read( data );
+                                    inf.readFully( data );
 
                                     return data;
                                 }
