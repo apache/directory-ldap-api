@@ -1227,7 +1227,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             String msg = "The given dn '" + name + "' is not valid";
             LOG.error( msg );
 
-            throw new LdapException( msg, ine );
+            throw new LdapInvalidDnException( msg, ine );
         }
     }
 
