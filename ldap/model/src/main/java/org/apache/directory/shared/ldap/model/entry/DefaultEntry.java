@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1346,19 +1347,9 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Set<AttributeType> getAttributeTypes()
+    public Collection<Attribute> getAttributes()
     {
-        Set<AttributeType> attributeTypes = new HashSet<AttributeType>();
-
-        for ( Attribute attribute : attributes.values() )
-        {
-            if ( attribute.getAttributeType() != null )
-            {
-                attributeTypes.add( attribute.getAttributeType() );
-            }
-        }
-
-        return attributeTypes;
+        return Collections.unmodifiableMap( attributes ).values();
     }
 
 
