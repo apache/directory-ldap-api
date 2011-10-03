@@ -35,6 +35,7 @@ import javax.naming.ldap.ExtendedResponse;
 import javax.naming.ldap.LdapContext;
 
 import org.apache.commons.lang.SerializationUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.shared.ldap.extras.extended.StoredProcedureRequestImpl;
@@ -80,13 +81,16 @@ public final class JavaStoredProcUtils
         try
         {
             in.read( buf );
-            in.close();
         }
         catch ( IOException e )
         {
             NamingException ne = new NamingException();
             ne.setRootCause( e );
             throw ne;
+        }
+        finally
+        {
+        	IOUtils.closeQuietly( in );
         }
 
         return buf;
