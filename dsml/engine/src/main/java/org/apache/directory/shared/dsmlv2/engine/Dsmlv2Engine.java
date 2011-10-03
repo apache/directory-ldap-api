@@ -765,6 +765,11 @@ public class Dsmlv2Engine
             return;
         }
         
+        if ( connection == null )
+        {
+        	throw new IOException( I18n.err( I18n.ERR_03101_MISSING_CONNECTION_TO ) );
+        }
+        
         BindRequest bindRequest = new BindRequestImpl();
         bindRequest.setSimple( true );
         bindRequest.setCredentials( Strings.getBytesUtf8(password) );
