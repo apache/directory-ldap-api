@@ -81,19 +81,19 @@ public class StandaloneLdapApiService implements LdapApiService
     private ProtocolCodecFactory protocolCodecFactory;
     
     /** The list of default controls to load at startup */ 
-    public static String DEFAULT_CONTROLS_LIST = "default.controls";
+    public static final String DEFAULT_CONTROLS_LIST = "default.controls";
 
     /** The list of extra controls to load at startup */ 
-    public static String EXTRA_CONTROLS_LIST = "extra.controls";
+    public static final String EXTRA_CONTROLS_LIST = "extra.controls";
 
     /** The list of default extended operation requests to load at startup */ 
-    public static String DEFAULT_EXTENDED_OPERATION_REQUESTS_LIST = "default.extendedOperation.requests";
+    public static final String DEFAULT_EXTENDED_OPERATION_REQUESTS_LIST = "default.extendedOperation.requests";
 
     /** The list of default extended operation responses to load at startup */ 
-    public static String DEFAULT_EXTENDED_OPERATION_RESPONSES_LIST = "default.extendedOperation.responses";
+    public static final String DEFAULT_EXTENDED_OPERATION_RESPONSES_LIST = "default.extendedOperation.responses";
 
     /** The list of extra controls to load at startup */ 
-    public static String EXTRA_EXTENDED_OPERATION_LIST = "extra.extendedOperations";
+    public static final String EXTRA_EXTENDED_OPERATION_LIST = "extra.extendedOperations";
 
     /**
      * Creates a new instance of StandaloneLdapCodecService. Optionally checks for
