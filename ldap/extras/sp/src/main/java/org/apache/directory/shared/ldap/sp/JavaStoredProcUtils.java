@@ -90,7 +90,7 @@ public final class JavaStoredProcUtils
         }
         finally
         {
-        	IOUtils.closeQuietly( in );
+            IOUtils.closeQuietly( in );
         }
 
         return buf;
