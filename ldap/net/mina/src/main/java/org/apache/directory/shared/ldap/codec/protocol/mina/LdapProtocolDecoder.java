@@ -20,7 +20,6 @@
 package org.apache.directory.shared.ldap.codec.protocol.mina;
 
 
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
