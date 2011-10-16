@@ -118,10 +118,10 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
-            <Bundle-SymbolicName>${project.groupId}.ldap.codec.core</Bundle-SymbolicName>
             <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
             <Export-Package>
-              org.apache.directory.shared.ldap.codec.api
+                {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
             <Bundle-Activator>
               org.apache.directory.shared.ldap.codec.osgi.DefaultActivator
