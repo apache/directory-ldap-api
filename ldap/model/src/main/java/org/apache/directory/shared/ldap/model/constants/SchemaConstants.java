@@ -832,7 +832,7 @@ public final class SchemaConstants
     // From http://www.openldap.org/faq/data/cache/1145.html
     public final static String CSN_SID_SYNTAX                                 = "1.3.6.1.4.1.4203.666.11.2.4";
 
-    // Apache DS
+    // ApacheDS
     public final static String JAVA_BYTE_SYNTAX                               = "1.3.6.1.4.1.18060.0.4.1.0.0";
     public final static String JAVA_CHAR_SYNTAX                               = "1.3.6.1.4.1.18060.0.4.1.0.1";
     public final static String JAVA_SHORT_SYNTAX                              = "1.3.6.1.4.1.18060.0.4.1.0.2";
