@@ -32,25 +32,30 @@ import java.util.Set;
 
 import javax.naming.NamingException;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
-import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.Asn1Container;
+import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.ldap.codec.api.CodecControl;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.shared.ldap.codec.decorators.AddRequestDecorator;
 import org.apache.directory.shared.ldap.codec.osgi.AbstractCodecServiceTest;
-import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
+import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Value;
-import org.apache.directory.shared.ldap.model.message.*;
+import org.apache.directory.shared.ldap.model.message.AddRequest;
+import org.apache.directory.shared.ldap.model.message.AddResponseImpl;
+import org.apache.directory.shared.ldap.model.message.Control;
+import org.apache.directory.shared.ldap.model.message.Message;
+import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -156,9 +161,9 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         Attribute attribute = entry.get( "l" );
 
-        assertTrue( expectedTypes.contains( attribute.getId().toLowerCase() ) );
+        assertTrue( expectedTypes.contains( Strings.toLowerCase( attribute.getId() ) ) );
 
-        Set<String> vals = ( Set<String> ) typesVals.get( attribute.getId().toLowerCase() );
+        Set<String> vals = ( Set<String> ) typesVals.get( Strings.toLowerCase( attribute.getId() ) );
 
         for ( Value<?> value : attribute )
         {
@@ -169,9 +174,9 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         attribute = entry.get( "attrs" );
 
-        assertTrue( expectedTypes.contains( attribute.getId().toLowerCase() ) );
+        assertTrue( expectedTypes.contains( Strings.toLowerCase( attribute.getId() ) ) );
 
-        vals = ( Set<String> ) typesVals.get( attribute.getId().toLowerCase() );
+        vals = ( Set<String> ) typesVals.get( Strings.toLowerCase( attribute.getId() ) );
 
         for ( Value<?> value : attribute )
         {
@@ -678,7 +683,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         Attribute attribute = entry.get( "l" );
 
-        assertEquals( "l", attribute.getId().toLowerCase() );
+        assertEquals( "l", Strings.toLowerCase( attribute.getId() ) );
 
         for ( Value<?> value : attribute )
         {
@@ -770,7 +775,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         Attribute attribute = entry.get( "l" );
 
-        assertEquals( "l", attribute.getId().toLowerCase() );
+        assertEquals( "l", Strings.toLowerCase( attribute.getId() ) );
 
         for ( Value<?> value : attribute )
         {

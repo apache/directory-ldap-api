@@ -31,8 +31,10 @@ import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.model.entry.BinaryValue;
 import org.apache.directory.shared.ldap.model.entry.Value;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.message.CompareRequest;
 import org.apache.directory.shared.ldap.model.message.CompareResponse;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.util.Strings;
 
@@ -168,9 +170,11 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public CompareRequest setName( Dn name )
     {
         getDecorated().setName( name );
+        
+        return this;
     }
 
 
@@ -186,18 +190,22 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
-    public void setAssertionValue( String value )
+    public CompareRequest setAssertionValue( String value )
     {
         getDecorated().setAssertionValue( value );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setAssertionValue( byte[] value )
+    public CompareRequest setAssertionValue( byte[] value )
     {
         getDecorated().setAssertionValue( value );
+        
+        return this;
     }
 
 
@@ -213,9 +221,49 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
-    public void setAttributeId( String attrId )
+    public CompareRequest setAttributeId( String attrId )
     {
         getDecorated().setAttributeId( attrId );
+        
+        return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public CompareRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public CompareRequest addControl( Control control ) throws MessageException
+    {
+        return (CompareRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public CompareRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (CompareRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public CompareRequest removeControl( Control control ) throws MessageException
+    {
+        return (CompareRequest)super.removeControl( control );
     }
 
     

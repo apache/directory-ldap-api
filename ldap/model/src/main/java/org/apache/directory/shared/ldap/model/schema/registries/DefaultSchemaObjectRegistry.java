@@ -339,7 +339,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         if ( schemaObject == null )
         {
             // last resort before giving up check with lower cased version
-            String lowerCased = name.toLowerCase();
+            String lowerCased = Strings.toLowerCase( name );
 
             schemaObject = byName.get( lowerCased );
 

@@ -18,23 +18,25 @@
  *
  */
 
-package org.apache.directory.shared.ldap.extras.controls.syncrepl_impl;
-
+package org.apache.directory.shared.ldap.extras.controls.ppolicy_impl;
 
 /**
- * TODO SyncModifyDnControlTags.
+ * Tags used for decoding PasswordPolicyResponseControl.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public enum SyncModifyDnTags
+public enum PasswordPolicyTags
 {
-    MOVE_TAG(0x0080), RENAME_TAG(0x00A1), MOVEANDRENAME_TAG(0x00A2);
+    PPOLICY_WARNING_TAG(0xA0),          // warning [0]
+    PPOLICY_ERROR_TAG(0x81),            // error [1]
+    TIME_BEFORE_EXPIRATION_TAG(0x80),   // timeBeforeExpiration [0]
+    GRACE_AUTHNS_REMAINING_TAG(0x81);   // graceAuthNsRemaining [1]
 
     /** Internal value for each tag */
     private int value;
 
 
-    private SyncModifyDnTags( int value )
+    private PasswordPolicyTags( int value )
     {
         this.value = value;
     }

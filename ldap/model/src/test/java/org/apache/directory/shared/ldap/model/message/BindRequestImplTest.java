@@ -225,8 +225,9 @@ public class BindRequestImplTest
             }
 
 
-            public void setSimple( boolean a_isSimple )
+            public BindRequest setSimple( boolean a_isSimple )
             {
+                return this;
             }
 
 
@@ -236,13 +237,15 @@ public class BindRequestImplTest
             }
 
 
-            public void setCredentials( String credentials )
+            public BindRequest setCredentials( String credentials )
             {
+                return this;
             }
 
 
-            public void setCredentials( byte[] credentials )
+            public BindRequest setCredentials( byte[] credentials )
             {
+                return this;
             }
 
 
@@ -252,8 +255,9 @@ public class BindRequestImplTest
             }
 
 
-            public void setName( Dn name )
+            public BindRequest setName( Dn name )
             {
+                return this;
             }
 
 
@@ -269,8 +273,9 @@ public class BindRequestImplTest
             }
 
 
-            public void setVersion3( boolean a_isVersion3 )
+            public BindRequest setVersion3( boolean isVersion3 )
             {
+                return this;
             }
 
 
@@ -298,13 +303,15 @@ public class BindRequestImplTest
             }
 
 
-            public void addControl( Control control ) throws MessageException
+            public BindRequest addControl( Control control ) throws MessageException
             {
+                return this;
             }
 
 
-            public void removeControl( Control control ) throws MessageException
+            public BindRequest removeControl( Control control ) throws MessageException
             {
+                return this;
             }
 
 
@@ -332,8 +339,9 @@ public class BindRequestImplTest
             }
 
 
-            public void setSaslMechanism( String saslMechanism )
+            public BindRequest setSaslMechanism( String saslMechanism )
             {
+                return this;
             }
 
 
@@ -343,8 +351,9 @@ public class BindRequestImplTest
             }
 
 
-            public void addAllControls( Control[] controls ) throws MessageException
+            public BindRequest addAllControls( Control[] controls ) throws MessageException
             {
+                return this;
             }
 
 
@@ -359,8 +368,9 @@ public class BindRequestImplTest
             }
 
 
-            public void addAbandonListener( AbandonListener listener )
+            public BindRequest addAbandonListener( AbandonListener listener )
             {
+                return this;
             }
 
 
@@ -376,8 +386,9 @@ public class BindRequestImplTest
             }
 
 
-            public void setMessageId( int messageId )
+            public BindRequest setMessageId( int messageId )
             {
+                return this;
             }
         };
 

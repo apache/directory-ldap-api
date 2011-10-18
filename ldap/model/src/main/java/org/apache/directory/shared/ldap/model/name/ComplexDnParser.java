@@ -53,9 +53,7 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
         }
         catch ( Exception e )
         {
-            LdapInvalidDnException ine = new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, e.getMessage() );
-            ine.initCause( e );
-            throw ine;
+            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, e.getMessage(), e );
         }
     }
 
@@ -78,9 +76,7 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
         }
         catch ( Exception e )
         {
-            LdapInvalidDnException ine = new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, e.getMessage() );
-            ine.initCause( e );
-            throw ine;
+            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, e.getMessage(), e );
         }
     }
 }

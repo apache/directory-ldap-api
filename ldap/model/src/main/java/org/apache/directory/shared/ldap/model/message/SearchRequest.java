@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.model.message;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.filter.ExprNode;
 import org.apache.directory.shared.ldap.model.name.Dn;
 
@@ -68,8 +69,9 @@ public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, Aband
      * Sets the search base as a distinguished name.
      * 
      * @param baseDn the search base
+     * @return The SearchRequest instance
      */
-    void setBase( Dn baseDn );
+    SearchRequest setBase( Dn baseDn );
 
 
     /**
@@ -84,8 +86,9 @@ public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, Aband
      * Sets the search scope parameter enumeration.
      * 
      * @param scope the scope enumeration parameter.
+     * @return The SearchRequest instance
      */
-    void setScope( SearchScope scope );
+    SearchRequest setScope( SearchScope scope );
 
 
     /**
@@ -100,8 +103,9 @@ public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, Aband
      * Sets the alias handling parameter.
      * 
      * @param aliasDerefAliases the alias handling parameter enumeration.
+     * @return The SearchRequest instance
      */
-    void setDerefAliases( AliasDerefMode aliasDerefAliases );
+    SearchRequest setDerefAliases( AliasDerefMode aliasDerefAliases );
 
 
     /**
@@ -122,8 +126,9 @@ public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, Aband
      * search. Servers may enforce a maximum number of entries to return.
      * 
      * @param entriesMax maximum search result entries to return.
+     * @return The SearchRequest instance
      */
-    void setSizeLimit( long entriesMax );
+    SearchRequest setSizeLimit( long entriesMax );
 
 
     /**
@@ -142,8 +147,9 @@ public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, Aband
      * requested timelimit restrictions are in effect for the search.
      * 
      * @param secondsMax the search time limit in seconds.
+     * @return The SearchRequest instance
      */
-    void setTimeLimit( int secondsMax );
+    SearchRequest setTimeLimit( int secondsMax );
 
 
     /**
@@ -164,8 +170,9 @@ public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, Aband
      * field to FALSE causes both attribute types and values to be returned.
      * 
      * @param typesOnly true for only types, false for types and values.
+     * @return The SearchRequest instance
      */
-    void setTypesOnly( boolean typesOnly );
+    SearchRequest setTypesOnly( boolean typesOnly );
 
 
     /**
@@ -180,16 +187,18 @@ public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, Aband
      * Sets the search filter associated with this search request.
      * 
      * @param filter the expression node for the root of the filter expression tree.
+     * @return The SearchRequest instance
      */
-    void setFilter( ExprNode filter );
+    SearchRequest setFilter( ExprNode filter );
 
 
     /**
      * Sets the search filter associated with this search request.
      * 
      * @param filter the expression node for the root of the filter expression tree.
+     * @return The SearchRequest instance
      */
-    void setFilter( String filter ) throws LdapException;
+    SearchRequest setFilter( String filter ) throws LdapException;
 
 
     /**
@@ -221,14 +230,40 @@ public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, Aband
      * Adds some attributes to the set of entry attributes to return.
      * 
      * @param attributes the attributes description or identifier.
+     * @return The SearchRequest instance
      */
-    void addAttributes( String... attributes );
+    SearchRequest addAttributes( String... attributes );
 
 
     /**
      * Removes an attribute to the set of entry attributes to return.
      * 
      * @param attribute the attribute description or identifier.
+     * @return The SearchRequest instance
      */
-    void removeAttribute( String attribute );
+    SearchRequest removeAttribute( String attribute );
+
+
+    /**
+     * {@inheritDoc}
+     */
+    SearchRequest setMessageId( int messageId );
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    SearchRequest addControl( Control control ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    SearchRequest addAllControls( Control[] controls ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    SearchRequest removeControl( Control control ) throws MessageException;
 }

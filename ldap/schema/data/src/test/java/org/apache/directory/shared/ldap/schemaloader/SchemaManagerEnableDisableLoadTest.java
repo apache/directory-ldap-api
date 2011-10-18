@@ -39,6 +39,7 @@ import org.apache.directory.shared.ldap.model.schema.registries.Schema;
 import org.apache.directory.shared.ldap.schemaextractor.SchemaLdifExtractor;
 import org.apache.directory.shared.ldap.schemaextractor.impl.DefaultSchemaLdifExtractor;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
+import org.apache.directory.shared.util.Strings;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -146,7 +147,7 @@ public class SchemaManagerEnableDisableLoadTest
 
         for ( Schema schema : enabled )
         {
-            assertTrue( enabledSchemas.contains( schema.getSchemaName().toLowerCase() ) );
+            assertTrue( enabledSchemas.contains( Strings.toLowerCase( schema.getSchemaName() ) ) );
         }
 
         // The disabled schemas

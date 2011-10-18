@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.model.message;
 import org.apache.directory.shared.ldap.model.entry.BinaryValue;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.entry.Value;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.util.Strings;
 
@@ -79,14 +80,13 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
 
 
     /**
-     * Sets the distinguished name of the entry to be compared using the
-     * attribute value assertion.
-     * 
-     * @param name the Dn of the compared entry.
+     * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public CompareRequest setName( Dn name )
     {
         this.name = name;
+        
+        return this;
     }
 
 
@@ -102,22 +102,20 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
 
 
     /**
-     * Sets the attribute value to use in the comparison.
-     * 
-     * @param value the attribute value used in comparison.
+     * {@inheritDoc}
      */
-    public void setAssertionValue( String value )
+    public CompareRequest setAssertionValue( String value )
     {
         this.attrVal = new StringValue( value );
+        
+        return this;
     }
 
 
     /**
-     * Sets the attribute value to use in the comparison.
-     * 
-     * @param value the attribute value used in comparison.
+     * {@inheritDoc}
      */
-    public void setAssertionValue( byte[] value )
+    public CompareRequest setAssertionValue( byte[] value )
     {
         if ( value != null )
         {
@@ -127,6 +125,8 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
         {
             this.attrVal = null;
         }
+        
+        return this;
     }
 
 
@@ -142,13 +142,51 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
 
 
     /**
-     * Sets the attribute id used in the comparison.
-     * 
-     * @param attributeId the attribute id used in comparison.
+     * {@inheritDoc}
      */
-    public void setAttributeId( String attributeId )
+    public CompareRequest setAttributeId( String attributeId )
     {
         this.attrId = attributeId;
+        
+        return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public CompareRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public CompareRequest addControl( Control control ) throws MessageException
+    {
+        return (CompareRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public CompareRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (CompareRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public CompareRequest removeControl( Control control ) throws MessageException
+    {
+        return (CompareRequest)super.removeControl( control );
     }
 
 

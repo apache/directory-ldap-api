@@ -1,8 +1,8 @@
 version: 1
-dn: cn=schemaModifications,ou=schema
+dn: ou=schemaModifications,ou=schema
 objectClass: schemaModificationAttributes
 objectClass: top
-cn: schemaModifications
+ou: schemaModifications
 schemaModifiersName: uid=admin,ou=system
 schemaModifyTimestamp: 20090818022733Z
 subschemaSubentryName: cn=schema

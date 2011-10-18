@@ -736,7 +736,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Not allowed.
             String msg = I18n.err( I18n.ERR_04292, schemaObject.getName(), ne.getLocalizedMessage() );
 
-            Throwable error = new LdapProtocolErrorException( msg );
+            Throwable error = new LdapProtocolErrorException( msg, ne );
             errors.add( error );
             LOG.info( msg );
         }
@@ -757,7 +757,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Not allowed.
             String msg = I18n.err( I18n.ERR_04293, schemaObject.getName(), ne.getLocalizedMessage() );
 
-            Throwable error = new LdapSchemaViolationException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, msg );
+            Throwable error = new LdapSchemaViolationException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, msg, ne );
             errors.add( error );
             LOG.info( msg );
         }
@@ -1011,7 +1011,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             {
                 // This MR's syntax has not been loaded into the Registries.
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, I18n.err( I18n.ERR_04294, matchingRule.getOid() ) );
+                    LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, I18n.err( I18n.ERR_04294, matchingRule.getOid() ), ne );
                 ldapSchemaException.setSourceObject( matchingRule );
                 errors.add( ldapSchemaException );
             }
@@ -1287,7 +1287,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 if ( !processed.contains( superiorOid ) )
                 {
                     LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                        LdapSchemaExceptionCodes.OC_NONEXISTENT_SUPERIOR );
+                        LdapSchemaExceptionCodes.OC_NONEXISTENT_SUPERIOR, ne );
                     ldapSchemaException.setSourceObject( objectClass );
                     ldapSchemaException.setRelatedId( superiorOid );
                     errors.add( ldapSchemaException );

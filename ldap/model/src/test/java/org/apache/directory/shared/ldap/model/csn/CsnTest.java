@@ -20,20 +20,20 @@
 package org.apache.directory.shared.ldap.model.csn;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.csn.Csn;
-import org.apache.directory.shared.ldap.model.csn.InvalidCSNException;
+import org.apache.directory.shared.util.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -46,21 +46,29 @@ import static org.junit.Assert.fail;
 @Concurrency()
 public class CsnTest
 {
-    private SimpleDateFormat sdf = new SimpleDateFormat( "yyyyMMddHHmmss.123456'Z'" );
+    private static final SimpleDateFormat SDF = new SimpleDateFormat( "yyyyMMddHHmmss.123456'Z'" );
+    
+    static
+    {
+        SDF.setTimeZone( DateUtils.UTC_TIME_ZONE );
+    }
 
     @Test
     public void testCSN()
     {
-        long ts = System.currentTimeMillis();
-
-        Csn csn = new Csn( sdf.format( new Date( ts ) ) + "#123456#abc#654321" );
-
-        assertEquals( ts/1000, csn.getTimestamp()/1000 );
-        
-        // ALl the value are converted from hex to int
-        assertEquals( 1193046, csn.getChangeCount() );
-        assertEquals( 6636321, csn.getOperationNumber() );
-        assertEquals( 2748, csn.getReplicaId() );
+        synchronized ( SDF )
+        {
+            long ts = System.currentTimeMillis();
+    
+            Csn csn = new Csn( SDF.format( new Date( ts ) ) + "#123456#abc#654321" );
+    
+            assertEquals( ts/1000, csn.getTimestamp()/1000 );
+            
+            // ALl the value are converted from hex to int
+            assertEquals( 1193046, csn.getChangeCount() );
+            assertEquals( 6636321, csn.getOperationNumber() );
+            assertEquals( 2748, csn.getReplicaId() );
+        }
     }
 
 
@@ -99,7 +107,11 @@ public class CsnTest
     {
         try
         {
-            new Csn( sdf.format( new Date( System.currentTimeMillis() ) ) );
+            synchronized( SDF )
+            {
+                new Csn( SDF.format( new Date( System.currentTimeMillis() ) ) );
+            }
+            
             fail();
         }
         catch ( InvalidCSNException ice )

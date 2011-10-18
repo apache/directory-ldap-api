@@ -313,13 +313,4 @@ public class SingletonCursor<E> extends AbstractCursor<E>
             throw new InvalidCursorPositionException( I18n.err( I18n.ERR_02013_CANNOT_ACCESS_IF_AFTER_LAST ) );
         }
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isElementReused()
-    {
-        return true;
-    }
 }

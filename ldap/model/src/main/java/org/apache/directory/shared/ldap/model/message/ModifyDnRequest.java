@@ -20,6 +20,7 @@
 package org.apache.directory.shared.ldap.model.message;
 
 
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 
@@ -87,10 +88,10 @@ public interface ModifyDnRequest extends SingleReplyRequest<ModifyDnResponse>, A
      * Sets the entry's distinguished name representing the <b>entry</b> PDU
      * field.
      * 
-     * @param name
-     *            the distinguished name of the entry.
+     * @param name the distinguished name of the entry.
+     * @return The ModifyDnRequest instance
      */
-    void setName( Dn name );
+    ModifyDnRequest setName( Dn name );
 
 
     /**
@@ -106,10 +107,10 @@ public interface ModifyDnRequest extends SingleReplyRequest<ModifyDnResponse>, A
      * Sets the new relative distinguished name for the entry which represents
      * the PDU's <b>newrdn</b> field.
      * 
-     * @param newRdn
-     *            the relative dn with one component
+     * @param newRdn the relative dn with one component
+     * @return The ModifyDnRequest instance
      */
-    void setNewRdn( Rdn newRdn );
+    ModifyDnRequest setNewRdn( Rdn newRdn );
 
 
     /**
@@ -127,10 +128,10 @@ public interface ModifyDnRequest extends SingleReplyRequest<ModifyDnResponse>, A
      * from the entry when the new Rdn is used in its stead. This property
      * corresponds to the <b>deleteoldrdn</b>.
      * 
-     * @param deleteOldRdn
-     *            true if the old rdn is to be deleted, false if it is not
+     * @param deleteOldRdn true if the old rdn is to be deleted, false if it is not
+     * @return The ModifyDnRequest instance
      */
-    void setDeleteOldRdn( boolean deleteOldRdn );
+    ModifyDnRequest setDeleteOldRdn( boolean deleteOldRdn );
 
 
     /**
@@ -151,11 +152,11 @@ public interface ModifyDnRequest extends SingleReplyRequest<ModifyDnResponse>, A
      * rather than a move operation. Setting this property to a non-null value
      * toggles the move flag obtained via the <code>isMove</code> method.
      * 
-     * @param newSuperior
-     *            the dn of the superior entry the candidate entry for Dn
-     *            modification is moved under.
+     * @param newSuperior the dn of the superior entry the candidate entry for Dn
+     * modification is moved under.
+     * @return The ModifyDnRequest instance
      */
-    void setNewSuperior( Dn newSuperior );
+    ModifyDnRequest setNewSuperior( Dn newSuperior );
 
 
     /**
@@ -164,7 +165,31 @@ public interface ModifyDnRequest extends SingleReplyRequest<ModifyDnResponse>, A
      * this flag.
      * 
      * @return true if the newSuperior property is <b>NOT</b> null, false
-     *         otherwise.
+     * otherwise.
      */
     boolean isMove();
+
+
+    /**
+     * {@inheritDoc}
+     */
+    ModifyDnRequest setMessageId( int messageId );
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    ModifyDnRequest addControl( Control control ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    ModifyDnRequest addAllControls( Control[] controls ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    ModifyDnRequest removeControl( Control control ) throws MessageException;
 }

@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.shared</groupId>
     <artifactId>shared-ldap-extras-parent</artifactId>
-    <version>1.0.0-M4-SNAPSHOT</version>
+    <version>1.0.0-M9-SNAPSHOT</version>
   </parent>
   
   <artifactId>shared-ldap-extras-sp</artifactId>
@@ -66,6 +66,11 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>shared-ldap-extras-util</artifactId>
     </dependency> 
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency> 
   </dependencies>
 
   <build>
@@ -78,9 +83,9 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
-            <Bundle-SymbolicName>${project.groupId}.ldap.extras.sp</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
             <Export-Package>
-              org.apache.directory.shared.ldap.sp
+                {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
           </instructions>
         </configuration>

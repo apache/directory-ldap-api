@@ -21,7 +21,7 @@ package org.apache.directory.shared.dsmlv2.request;
 
 
 import java.util.ArrayList;
-import java.util.List; 
+import java.util.List;
 
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.filter.AndNode;
 import org.apache.directory.shared.ldap.model.filter.ApproximateNode;
 import org.apache.directory.shared.ldap.model.filter.BranchNode;
@@ -43,6 +44,7 @@ import org.apache.directory.shared.ldap.model.filter.OrNode;
 import org.apache.directory.shared.ldap.model.filter.PresenceNode;
 import org.apache.directory.shared.ldap.model.filter.SubstringNode;
 import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.message.SearchRequest;
 import org.apache.directory.shared.ldap.model.message.SearchRequestImpl;
@@ -635,9 +637,11 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setBase( Dn baseDn )
+    public SearchRequest setBase( Dn baseDn )
     {
         getDecorated().setBase( baseDn );
+        
+        return this;
     }
 
 
@@ -653,9 +657,11 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setScope( SearchScope scope )
+    public SearchRequest setScope( SearchScope scope )
     {
         getDecorated().setScope( scope );
+        
+        return this;
     }
 
 
@@ -671,9 +677,11 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setDerefAliases( AliasDerefMode aliasDerefAliases )
+    public SearchRequest setDerefAliases( AliasDerefMode aliasDerefAliases )
     {
         getDecorated().setDerefAliases( aliasDerefAliases );
+        
+        return this;
     }
 
 
@@ -689,9 +697,11 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setSizeLimit( long entriesMax )
+    public SearchRequest setSizeLimit( long entriesMax )
     {
         getDecorated().setSizeLimit( entriesMax );
+        
+        return this;
     }
 
 
@@ -707,9 +717,11 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setTimeLimit( int secondsMax )
+    public SearchRequest setTimeLimit( int secondsMax )
     {
         getDecorated().setTimeLimit( secondsMax );
+        
+        return this;
     }
 
 
@@ -725,9 +737,11 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setTypesOnly( boolean typesOnly )
+    public SearchRequest setTypesOnly( boolean typesOnly )
     {
         getDecorated().setTypesOnly( typesOnly );
+        
+        return this;
     }
 
 
@@ -743,18 +757,22 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setFilter( ExprNode filter )
+    public SearchRequest setFilter( ExprNode filter )
     {
         getDecorated().setFilter( filter );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setFilter( String filter ) throws LdapException
+    public SearchRequest setFilter( String filter ) throws LdapException
     {
         getDecorated().setFilter( filter );
+        
+        return this;
     }
 
 
@@ -770,17 +788,57 @@ public class SearchRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void addAttributes( String... attributes )
+    public SearchRequest addAttributes( String... attributes )
     {
         getDecorated().addAttributes( attributes );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void removeAttribute( String attribute )
+    public SearchRequest removeAttribute( String attribute )
     {
         getDecorated().removeAttribute( attribute );
+        
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest setMessageId( int messageId )
+    {
+        return (SearchRequest)super.setMessageId( messageId );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest addControl( Control control ) throws MessageException
+    {
+        return (SearchRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (SearchRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest removeControl( Control control ) throws MessageException
+    {
+        return (SearchRequest)super.removeControl( control );
     }
 }

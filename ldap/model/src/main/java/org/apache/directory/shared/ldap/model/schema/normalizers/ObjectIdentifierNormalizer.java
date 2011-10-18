@@ -25,6 +25,7 @@ import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
+import org.apache.directory.shared.util.Strings;
 
 
 /**
@@ -67,7 +68,7 @@ public class ObjectIdentifierNormalizer extends Normalizer
         }
         else
         {
-            return new StringValue( str.toLowerCase() );
+            return new StringValue( Strings.toLowerCase( str ) );
         }
     }
     
@@ -95,7 +96,7 @@ public class ObjectIdentifierNormalizer extends Normalizer
         }
         else
         {
-            return str.toLowerCase();
+            return Strings.toLowerCase( str );
         }
     }
 }

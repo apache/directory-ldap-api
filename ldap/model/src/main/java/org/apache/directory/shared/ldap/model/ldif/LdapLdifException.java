@@ -43,4 +43,16 @@ public class LdapLdifException extends LdapException
     {
         super( message );
     }
+
+
+    /**
+     * Creates a new instance of LdapLdifException.
+     *
+     * @param message The exception message
+     * @param cause The root cause for this exception
+     */
+    public LdapLdifException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
 }

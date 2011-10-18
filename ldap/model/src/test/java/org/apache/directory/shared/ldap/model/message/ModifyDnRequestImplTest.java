@@ -258,8 +258,9 @@ public class ModifyDnRequestImplTest
             }
 
 
-            public void setName( Dn name )
+            public ModifyDnRequest setName( Dn name )
             {
+                return this;
             }
 
 
@@ -277,8 +278,9 @@ public class ModifyDnRequestImplTest
             }
 
 
-            public void setNewRdn( Rdn newRdn )
+            public ModifyDnRequest setNewRdn( Rdn newRdn )
             {
+                return this;
             }
 
 
@@ -288,8 +290,9 @@ public class ModifyDnRequestImplTest
             }
 
 
-            public void setDeleteOldRdn( boolean deleteOldRdn )
+            public ModifyDnRequest setDeleteOldRdn( boolean deleteOldRdn )
             {
+                return this;
             }
 
 
@@ -307,8 +310,9 @@ public class ModifyDnRequestImplTest
             }
 
 
-            public void setNewSuperior( Dn newSuperior )
+            public ModifyDnRequest setNewSuperior( Dn newSuperior )
             {
+                return this;
             }
 
 
@@ -342,13 +346,15 @@ public class ModifyDnRequestImplTest
             }
 
 
-            public void addControl( Control a_control ) throws MessageException
+            public ModifyDnRequest addControl( Control a_control ) throws MessageException
             {
+                return this;
             }
 
 
-            public void removeControl( Control a_control ) throws MessageException
+            public ModifyDnRequest removeControl( Control a_control ) throws MessageException
             {
+                return this;
             }
 
 
@@ -381,8 +387,9 @@ public class ModifyDnRequestImplTest
             }
 
 
-            public void addAbandonListener( AbandonListener listener )
+            public ModifyDnRequest addAbandonListener( AbandonListener listener )
             {
+                return this;
             }
 
 
@@ -392,8 +399,9 @@ public class ModifyDnRequestImplTest
             }
 
 
-            public void addAllControls( Control[] controls ) throws MessageException
+            public ModifyDnRequest addAllControls( Control[] controls ) throws MessageException
             {
+                return this;
             }
 
 
@@ -409,8 +417,9 @@ public class ModifyDnRequestImplTest
             }
 
 
-            public void setMessageId( int messageId )
+            public ModifyDnRequest setMessageId( int messageId )
             {
+                return this;
             }
         };
 

@@ -164,8 +164,10 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
     /**
      * {@inheritDoc}
      */
-    public void addAbandonListener( AbandonListener listener )
+    public AbandonableRequest addAbandonListener( AbandonListener listener )
     {
         ( ( AbandonableRequest ) getDecorated() ).addAbandonListener( listener );
+        
+        return this;
     }
 }

@@ -34,10 +34,22 @@ public class LdapURLEncodingException extends LdapException
     /**
      * Creates a LdapStringEncodingException
      * 
-     * @param pMessage A message with meaning to a human
+     * @param message A message with meaning to a human
      */
-    public LdapURLEncodingException( String pMessage )
+    public LdapURLEncodingException( String message )
     {
-        super( pMessage );
+        super( message );
+    }
+
+    
+    /**
+     * Creates a LdapStringEncodingException
+     * 
+     * @param message A message with meaning to a human
+     * @param cause The root cause for this exception
+     */
+    public LdapURLEncodingException( String message, Throwable cause )
+    {
+        super( message, cause );
     }
 }

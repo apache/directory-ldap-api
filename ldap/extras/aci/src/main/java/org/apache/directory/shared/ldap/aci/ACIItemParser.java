@@ -64,7 +64,7 @@ public class ACIItemParser
         // this method MUST be called while we cannot do
         // constructor overloading for antlr generated parser
         this.parser.init( schemaManager );
-        
+
         this.isNormalizing = false;
     }
 
@@ -85,7 +85,7 @@ public class ACIItemParser
 
         // this method MUST be called while we cannot do
         // constructor overloading for antlr generated parser
-        this.parser.init( schemaManager ); 
+        this.parser.init( schemaManager );
     }
 
 
@@ -132,8 +132,10 @@ public class ACIItemParser
         }
         catch ( RecognitionException e )
         {
-            throw new ParseException( I18n
-                .err( I18n.ERR_04004_PARSER_FAILURE_ACI_ITEM, spec, e.getLocalizedMessage() ), e.getColumn() );
+            throw new ParseException(
+                I18n
+                    .err( I18n.ERR_04004_PARSER_FAILURE_ACI_ITEM, spec, e.getLocalizedMessage(), e.getLine(),
+                        e.getColumn() ), e.getColumn() );
         }
 
         return aCIItem;

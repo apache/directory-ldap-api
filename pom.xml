@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>21</version>
+    <version>24</version>
     <relativePath />
   </parent>
 
@@ -30,7 +30,7 @@
   <artifactId>shared-parent</artifactId>
   <name>Apache Directory Shared</name>
   <packaging>pom</packaging>
-  <version>1.0.0-M4-SNAPSHOT</version>
+  <version>1.0.0-M9-SNAPSHOT</version>
 
   <properties>
     <projectName>ApacheDS-Shared</projectName>
@@ -48,17 +48,17 @@
     <commons.lang.version>2.6</commons.lang.version>
     <commons.pool.version>1.5.6</commons.pool.version>
     <dom4j.version>1.6.1</dom4j.version>
-    <junit.version>4.8.2</junit.version>
+    <junit.version>4.9</junit.version>
     <log4j.version>1.2.16</log4j.version>
-    <mina.core.version>2.0.3</mina.core.version>
+    <mina.core.version>2.0.4</mina.core.version>
     <org.osgi.version>3.0.0</org.osgi.version>
-    <org.osgi.core.version>4.2.0</org.osgi.core.version>
-    <org.apache.felix.version>3.2.0</org.apache.felix.version>
-    <slf4j.api.version>1.6.1</slf4j.api.version>
-    <slf4j.log4j12.version>1.6.1</slf4j.log4j12.version>
+    <org.osgi.core.version>4.3.0</org.osgi.core.version>
+    <org.apache.felix.version>3.2.2</org.apache.felix.version>
+    <slf4j.api.version>1.6.2</slf4j.api.version>
+    <slf4j.log4j12.version>1.6.2</slf4j.log4j12.version>
     <xml.apis.version>2.0.2</xml.apis.version>
     <xpp3.version>1.1.4c</xpp3.version>
-    <pax-exam.version>2.0.0-RC1</pax-exam.version>
+    <pax-exam.version>2.2.0</pax-exam.version>
     <pax-exam-container-default.version>1.2.4</pax-exam-container-default.version>
     <pax-exam-junit.version>1.2.4</pax-exam-junit.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
@@ -125,7 +125,45 @@
               <exclude>src/main/resources/schema-all.ldif</exclude>
             </excludes>
           </configuration>
-         </plugin>
+        </plugin>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <versionRange>[1.6,)</versionRange>
+                    <goals>
+                      <goal>run</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <versionRange>[2.2,)</versionRange>
+                    <goals>
+                      <goal>copy</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore />
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
 

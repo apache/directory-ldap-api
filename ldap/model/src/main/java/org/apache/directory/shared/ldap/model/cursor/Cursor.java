@@ -215,21 +215,6 @@ public interface Cursor<E> extends Iterable<E>
 
 
     /**
-     * Gets whether or not this Cursor will return the same element object
-     * instance on get() operations for any position of this Cursor.  Some
-     * Cursor implementations may reuse the same element copying values into
-     * it for every position rather than creating and emit new element
-     * objects on each advance.  Some Cursor implementations may return
-     * different elements for each position yet the same element instance
-     * is returned for the same position. In these cases this method should
-     * return true.
-     *
-     * @return true if elements are reused by this Cursor
-     */
-    boolean isElementReused();
-
-
-    /**
      * Closes this Cursor and frees any resources it my have allocated.
      * Repeated calls to this method after this Cursor has already been
      * called should not fail with exceptions.

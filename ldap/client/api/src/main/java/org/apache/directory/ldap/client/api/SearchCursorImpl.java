@@ -104,8 +104,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
         }
         catch ( Exception e )
         {
-            LdapException ldapException = new LdapException( LdapNetworkConnection.NO_RESPONSE_ERROR );
-            ldapException.initCause( e );
+            LdapException ldapException = new LdapException( LdapNetworkConnection.NO_RESPONSE_ERROR, e );
 
             // Send an abandon request
             if ( !future.isCancelled() )
@@ -158,15 +157,6 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     public SearchResultDone getSearchResultDone()
     {
         return searchDoneResp;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isElementReused()
-    {
-        return true;
     }
 
 

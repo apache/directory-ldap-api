@@ -171,7 +171,7 @@ public class LdifControl implements Control, Externalizable
             if ( valueLength > 0 )
             {
                 value = new byte[valueLength];
-                in.read( value );
+                in.readFully( value );
             }
         }
     }

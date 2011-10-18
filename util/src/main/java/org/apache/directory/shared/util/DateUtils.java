@@ -33,9 +33,11 @@ import java.util.TimeZone;
  */
 public final class DateUtils
 {
-    private static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone( "GMT" );
+    /** Defines an UTC/GMT time zone */
+    public static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone( "UTC" );
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat( "yyyyMMddHHmmss'Z'" );
+    /** Defines a default date format with a "yyyyMMddHHmmss'Z'" pattern */
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat( "yyyyMMddHHmmss'Z'" );
 
     static
     {

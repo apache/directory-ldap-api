@@ -440,10 +440,7 @@ public class BinaryValue extends AbstractValue<byte[]>
         {
             wrappedValue = new byte[wrappedLength];
 
-            if ( wrappedLength > 0 &&  in.read( wrappedValue ) == -1 )
-            {
-                throw new IOException( I18n.err( I18n.ERR_04480_END_OF_STREAM ) );
-            }
+            in.readFully( wrappedValue );
         }
 
         // Read the isNormalized flag
@@ -457,10 +454,7 @@ public class BinaryValue extends AbstractValue<byte[]>
             {
                 normalizedValue = new byte[normalizedLength];
 
-                if ( normalizedLength > 0 )
-                {
-                    in.read( normalizedValue );
-                }
+                in.readFully( normalizedValue );
             }
         }
         else

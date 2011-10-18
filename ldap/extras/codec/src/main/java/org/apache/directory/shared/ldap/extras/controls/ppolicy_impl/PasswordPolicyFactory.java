@@ -17,60 +17,62 @@
  *   under the License.
  *
  */
-package org.apache.directory.shared.ldap.extras.controls.syncrepl_impl;
+package org.apache.directory.shared.ldap.extras.controls.ppolicy_impl;
 
 
 import org.apache.directory.shared.ldap.codec.api.ControlFactory;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.extras.controls.SyncModifyDn;
+import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicy;
 
 
 /**
- * A {@link ControlFactory} which creates {@link SyncModifyDn} controls.
+ * A {@link ControlFactory} which creates {@link PasswordPolicy} controls.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SyncModifyDnFactory implements ControlFactory<SyncModifyDn, SyncModifyDnDecorator>
+public class PasswordPolicyFactory implements ControlFactory<PasswordPolicy, PasswordPolicyDecorator>
 {
     
     private LdapApiService codec;
     
 
     /**
-     * Creates a new instance of SyncModifyDnFactory.
+     * Creates a new instance of PasswordPolicyFactory.
      *
-     * @param codec The codec for this factory.
      */
-    public SyncModifyDnFactory( LdapApiService codec )
+    public PasswordPolicyFactory( LdapApiService codec )
     {
         this.codec = codec;
     }
     
 
     /**
+     * 
      * {@inheritDoc}
      */
     public String getOid()
     {
-        return SyncModifyDn.OID;
+        return PasswordPolicy.OID;
     }
 
     
     /**
+     * 
      * {@inheritDoc}
      */
-    public SyncModifyDnDecorator newCodecControl()
+    public PasswordPolicyDecorator newCodecControl()
     {
-        return new SyncModifyDnDecorator( codec );
+        return new PasswordPolicyDecorator( codec );
     }
     
 
     /**
+     * 
      * {@inheritDoc}
      */
-    public SyncModifyDnDecorator newCodecControl( SyncModifyDn control )
+    public PasswordPolicyDecorator newCodecControl( PasswordPolicy control )
     {
-        return new SyncModifyDnDecorator( codec, control );
+        return new PasswordPolicyDecorator( codec, control );
     }
 }

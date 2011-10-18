@@ -26,6 +26,7 @@ import java.util.Date;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.util.Chars;
+import org.apache.directory.shared.util.DateUtils;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,6 +80,12 @@ public class Csn implements Comparable<Csn>
 
     /** The Timestamp syntax. The last 'z' is _not_ the Time Zone */
     private static final SimpleDateFormat SDF = new SimpleDateFormat( "yyyyMMddHHmmss" );
+    
+    // Initialize the dateFormat with the UTC TZ
+    static
+    {
+        SDF.setTimeZone( DateUtils.UTC_TIME_ZONE );
+    }
     
     /** Padding used to format number with a fixed size */
     private static final String[] PADDING_6 = new String[] { "00000", "0000", "000", "00", "0", "" };

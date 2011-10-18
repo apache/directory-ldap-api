@@ -47,6 +47,18 @@ public class LdapOtherException extends LdapOperationException
 
     /**
      * Creates a new instance of LdapOtherException.
+     *
+     * @param message The exception message
+     * @param cause The root cause for this exception
+     */
+    public LdapOtherException( String message, Throwable cause )
+    {
+        super( ResultCodeEnum.OTHER, message, cause );
+    }
+
+
+    /**
+     * Creates a new instance of LdapOtherException.
      */
     public LdapOtherException()
     {

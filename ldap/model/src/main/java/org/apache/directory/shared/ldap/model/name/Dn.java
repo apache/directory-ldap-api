@@ -354,30 +354,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * Creates a schema aware Dn copying an existing Dn
-     *
-     * @param schemaManager the schema manager
-     * @param dn the Dn to copy
-     * @throws LdapInvalidDnException If the resulting Dn is invalid
-     */
-    public Dn( SchemaManager schemaManager, Dn dn ) throws LdapInvalidDnException
-    {
-        if ( dn == null )
-        {
-            throw new IllegalArgumentException( "The dn is null" );
-        }
-        
-        for ( Rdn rdnParent : dn )
-        {
-            rdns.add( rdnParent );
-        }
-        
-        apply( schemaManager );
-        toUpName();
-    }
-
-
-    /**
      * Creates a Schema aware Dn from a list of Rdns.
      *
      * @param schemaManager The SchemaManager to use
@@ -1105,16 +1081,19 @@ public class Dn implements Iterable<Rdn>, Externalizable
             {
                 try
                 {
-                    return new Ava(
+                    Ava newAva = new Ava(
                         atav.getUpType(),
                         oidNormalizer.getAttributeTypeOid(),
                         atav.getUpValue(),
                         oidNormalizer.getNormalizer().normalize( atav.getNormValue() ),
                         atav.getUpName() );
+                    newAva.apply( schemaManager );
+                    
+                    return newAva;
                 }
                 catch ( LdapException le )
                 {
-                    throw new LdapInvalidDnException( le.getMessage() );
+                    throw new LdapInvalidDnException( le.getMessage(), le );
                 }
             }
             else

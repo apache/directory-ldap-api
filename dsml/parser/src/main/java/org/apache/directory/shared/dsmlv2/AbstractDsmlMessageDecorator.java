@@ -115,7 +115,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
     /**
      * {@inheritDoc}
      */
-    public void addControl( Control control ) throws MessageException
+    public Message addControl( Control control ) throws MessageException
     {
         Control decorated;
         DsmlControl<? extends Control> decorator;
@@ -134,28 +134,34 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         message.addControl( decorated );
         controls.put( control.getOid(), decorator );
         currentControl = decorator;
+        
+        return this;
     }
 
     
     /**
      * {@inheritDoc}
      */
-    public void addAllControls( Control[] controls ) throws MessageException
+    public Message addAllControls( Control[] controls ) throws MessageException
     {
         for ( Control control : controls )
         {
             addControl( control );
         }
+        
+        return this;
     }
 
     
     /**
      * {@inheritDoc}
      */
-    public void removeControl( Control control ) throws MessageException
+    public Message removeControl( Control control ) throws MessageException
     {
         controls.remove( control.getOid() );
         message.removeControl( control );
+        
+        return this;
     }
 
     
@@ -189,9 +195,11 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
     /**
      * {@inheritDoc}
      */
-    public void setMessageId( int messageId )
+    public Message setMessageId( int messageId )
     {
         message.setMessageId( messageId );
+        
+        return this;
     }
 
     

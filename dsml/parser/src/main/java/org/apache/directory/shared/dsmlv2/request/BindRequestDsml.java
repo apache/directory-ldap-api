@@ -21,9 +21,11 @@ package org.apache.directory.shared.dsmlv2.request;
 
 
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.message.BindRequest;
 import org.apache.directory.shared.ldap.model.message.BindRequestImpl;
 import org.apache.directory.shared.ldap.model.message.BindResponse;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.dom4j.Element;
@@ -50,8 +52,7 @@ public class BindRequestDsml
     /**
      * Creates a new getDecoratedMessage() of AuthRequestDsml.
      *
-     * @param ldapMessage
-     *      the message to decorate
+     * @param ldapMessage the message to decorate
      */
     public BindRequestDsml( LdapApiService codec, BindRequest ldapMessage )
     {
@@ -118,9 +119,11 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setSimple( boolean isSimple )
+    public BindRequest setSimple( boolean isSimple )
     {
         getDecorated().setSimple( isSimple );
+
+        return this;
     }
 
 
@@ -136,18 +139,22 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setCredentials( String credentials )
+    public BindRequest setCredentials( String credentials )
     {
         getDecorated().setCredentials( credentials );
+
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setCredentials( byte[] credentials )
+    public BindRequest setCredentials( byte[] credentials )
     {
         getDecorated().setCredentials( credentials );
+
+        return this;
     }
 
 
@@ -163,9 +170,11 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public BindRequest setName( Dn name )
     {
         getDecorated().setName( name );
+
+        return this;
     }
 
 
@@ -190,9 +199,11 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setVersion3( boolean isVersion3 )
+    public BindRequest setVersion3( boolean isVersion3 )
     {
         getDecorated().setVersion3( isVersion3 );
+
+        return this;
     }
 
 
@@ -208,8 +219,48 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setSaslMechanism( String saslMechanism )
+    public BindRequest setSaslMechanism( String saslMechanism )
     {
         getDecorated().setSaslMechanism( saslMechanism );
+
+        return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest addControl( Control control ) throws MessageException
+    {
+        return (BindRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (BindRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest removeControl( Control control ) throws MessageException
+    {
+        return (BindRequest)super.removeControl( control );
     }
 }

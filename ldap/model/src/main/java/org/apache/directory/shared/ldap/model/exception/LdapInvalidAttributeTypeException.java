@@ -37,6 +37,15 @@ public class LdapInvalidAttributeTypeException  extends LdapOperationException
 
     /**
      * Creates a new instance of LdapInvalidAttributeTypeException.
+     */
+    public LdapInvalidAttributeTypeException()
+    {
+        super( ResultCodeEnum.UNDEFINED_ATTRIBUTE_TYPE, null );
+    }
+
+
+    /**
+     * Creates a new instance of LdapInvalidAttributeTypeException.
      *
      * @param message The exception message
      */
@@ -48,9 +57,12 @@ public class LdapInvalidAttributeTypeException  extends LdapOperationException
 
     /**
      * Creates a new instance of LdapInvalidAttributeTypeException.
+     * 
+     * @param message The exception message
+     * @param cause The root cause for this exception
      */
-    public LdapInvalidAttributeTypeException()
+    public LdapInvalidAttributeTypeException( String message, Throwable cause )
     {
-        super( ResultCodeEnum.UNDEFINED_ATTRIBUTE_TYPE, null );
+        super( ResultCodeEnum.UNDEFINED_ATTRIBUTE_TYPE, message, cause );
     }
 }

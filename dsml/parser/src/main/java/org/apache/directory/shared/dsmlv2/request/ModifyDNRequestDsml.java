@@ -21,6 +21,8 @@ package org.apache.directory.shared.dsmlv2.request;
 
 
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.model.message.ModifyDnRequest;
 import org.apache.directory.shared.ldap.model.message.ModifyDnRequestImpl;
@@ -185,9 +187,11 @@ public class ModifyDNRequestDsml
      * 
      * @param newSuperior The newSuperior to set.
      */
-    public void setNewSuperior( Dn newSuperior )
+    public ModifyDnRequest setNewSuperior( Dn newSuperior )
     {
         getDecorated().setNewSuperior( newSuperior );
+        
+        return this;
     }
 
 
@@ -203,9 +207,11 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public ModifyDnRequest setName( Dn name )
     {
         getDecorated().setName( name );
+        
+        return this;
     }
 
 
@@ -221,9 +227,11 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setNewRdn( Rdn newRdn )
+    public ModifyDnRequest setNewRdn( Rdn newRdn )
     {
         getDecorated().setNewRdn( newRdn );
+        
+        return this;
     }
 
 
@@ -239,9 +247,11 @@ public class ModifyDNRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setDeleteOldRdn( boolean deleteOldRdn )
+    public ModifyDnRequest setDeleteOldRdn( boolean deleteOldRdn )
     {
         getDecorated().setDeleteOldRdn( deleteOldRdn );
+        
+        return this;
     }
 
 
@@ -251,5 +261,43 @@ public class ModifyDNRequestDsml
     public boolean isMove()
     {
         return getDecorated().isMove();
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyDnRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyDnRequest addControl( Control control ) throws MessageException
+    {
+        return (ModifyDnRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyDnRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (ModifyDnRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyDnRequest removeControl( Control control ) throws MessageException
+    {
+        return (ModifyDnRequest)super.removeControl( control );
     }
 }

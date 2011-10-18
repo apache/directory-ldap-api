@@ -26,14 +26,12 @@ import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.UnsolicitedResponseFactory;
 import org.apache.directory.shared.ldap.extras.controls.SyncDoneValue;
 import org.apache.directory.shared.ldap.extras.controls.SyncInfoValue;
-import org.apache.directory.shared.ldap.extras.controls.SyncModifyDn;
 import org.apache.directory.shared.ldap.extras.controls.SyncRequestValue;
 import org.apache.directory.shared.ldap.extras.controls.SyncStateValue;
 import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicy;
-import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicyFactory;
+import org.apache.directory.shared.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
 import org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory;
 import org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory;
-import org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncModifyDnFactory;
 import org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory;
 import org.apache.directory.shared.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory;
 import org.apache.directory.shared.ldap.extras.extended.CancelRequest;
@@ -85,9 +83,6 @@ public class ExtrasBundleActivator implements BundleActivator
         codec.registerControl( factory );
         
         factory = new SyncInfoValueFactory( codec );
-        codec.registerControl( factory );
-        
-        factory = new SyncModifyDnFactory( codec );
         codec.registerControl( factory );
         
         factory = new SyncRequestValueFactory( codec );
@@ -145,7 +140,6 @@ public class ExtrasBundleActivator implements BundleActivator
         
         codec.unregisterControl( SyncDoneValue.OID );
         codec.unregisterControl( SyncInfoValue.OID );
-        codec.unregisterControl( SyncModifyDn.OID );
         codec.unregisterControl( SyncRequestValue.OID );
         codec.unregisterControl( SyncStateValue.OID );
         codec.unregisterControl( PasswordPolicy.OID );

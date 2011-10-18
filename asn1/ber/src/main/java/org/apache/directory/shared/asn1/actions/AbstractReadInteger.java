@@ -124,7 +124,7 @@ public abstract class AbstractReadInteger<E extends Asn1Container> extends Gramm
                 .getLocalizedMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( ide.getMessage() );
+            throw new DecoderException( ide.getMessage(), ide );
         }
     }
 }

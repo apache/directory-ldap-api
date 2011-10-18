@@ -78,8 +78,10 @@ public abstract class AbandonableRequestDecorator<M extends AbandonableResultRes
     /**
      * {@inheritDoc}
      */
-    public void addAbandonListener( AbandonListener listener )
+    public AbandonableRequest addAbandonListener( AbandonListener listener )
     {
         getAbandonableRequest().addAbandonListener( listener );
+        
+        return this;
     }
 }

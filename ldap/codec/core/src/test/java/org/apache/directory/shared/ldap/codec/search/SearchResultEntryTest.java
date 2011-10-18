@@ -36,8 +36,8 @@ import org.apache.directory.shared.ldap.codec.api.CodecControl;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.SearchResultEntryDecorator;
 import org.apache.directory.shared.ldap.codec.osgi.AbstractCodecServiceTest;
-import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
+import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
 import org.apache.directory.shared.util.Strings;
@@ -124,7 +124,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         {
             Attribute attribute = entry.get( "objectclass" );
 
-            assertEquals( "objectClass".toLowerCase(), attribute.getUpId().toLowerCase() );
+            assertEquals( Strings.toLowerCase( "objectClass" ), Strings.toLowerCase( attribute.getUpId() ) );
 
             assertTrue( attribute.contains( "top" ) );
             assertTrue( attribute.contains( "organizationalUnit" ) );
@@ -228,7 +228,9 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         {
             Attribute attribute = entry.get( expectedAttributes[i] );
 
-            assertEquals( expectedAttributes[i].toLowerCase(), attribute.getUpId().toLowerCase() );
+            assertEquals( 
+                Strings.toLowerCase( expectedAttributes[i] ), 
+                Strings.toLowerCase( attribute.getUpId() ) );
 
             assertTrue( attribute.contains( "top" ) );
             assertTrue( attribute.contains( "organizationalUnit" ) );
@@ -336,7 +338,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         {
             Attribute attribute = entry.get( "objectclass" );
 
-            assertEquals( "objectClass".toLowerCase(), attribute.getUpId().toLowerCase() );
+            assertEquals( Strings.toLowerCase( "objectClass" ), Strings.toLowerCase( attribute.getUpId() ) );
 
             assertTrue( attribute.contains( "top" ) );
             assertTrue( attribute.contains( "person" ) );
@@ -837,7 +839,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         {
             Attribute attribute = entry.get( "objectclass" );
 
-            assertEquals( "objectClass".toLowerCase(), attribute.getUpId().toLowerCase() );
+            assertEquals( Strings.toLowerCase( "objectClass" ), Strings.toLowerCase( attribute.getUpId() ) );
             assertEquals( 0, attribute.size() );
         }
 
@@ -921,11 +923,11 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         assertEquals( 2, entry.size() );
 
         Attribute attribute = entry.get( "objectclass" );
-        assertEquals( "objectClass".toLowerCase(), attribute.getUpId().toLowerCase() );
+        assertEquals( Strings.toLowerCase( "objectClass" ), Strings.toLowerCase( attribute.getUpId() ) );
         assertEquals( 0, attribute.size() );
 
         attribute = entry.get( "objectclazz" );
-        assertEquals( "objectClazz".toLowerCase(), attribute.getUpId().toLowerCase() );
+        assertEquals( Strings.toLowerCase( "objectClazz" ), Strings.toLowerCase( attribute.getUpId() ) );
         assertEquals( 0, attribute.size() );
 
         // Check the encoding
@@ -1014,7 +1016,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         {
             Attribute attribute = entry.get( "objectclass" );
 
-            assertEquals( "objectClass".toLowerCase(), attribute.getUpId().toLowerCase() );
+            assertEquals( Strings.toLowerCase( "objectClass" ), Strings.toLowerCase( attribute.getUpId() ) );
 
             assertEquals( 0, attribute.size() );
         }
@@ -1112,7 +1114,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         {
             Attribute attribute = entry.get( "objectclass" );
 
-            assertEquals( "objectClass".toLowerCase(), attribute.getUpId().toLowerCase() );
+            assertEquals( Strings.toLowerCase( "objectClass" ), Strings.toLowerCase( attribute.getUpId() ) );
 
             assertTrue( attribute.contains( "" ) );
         }
@@ -1206,7 +1208,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         {
             Attribute attribute = entry.get( "objectclass" );
 
-            assertEquals( "objectClass".toLowerCase(), attribute.getUpId().toLowerCase() );
+            assertEquals( Strings.toLowerCase( "objectClass" ), Strings.toLowerCase( attribute.getUpId() ) );
 
             assertTrue( attribute.contains( "" ) );
         }

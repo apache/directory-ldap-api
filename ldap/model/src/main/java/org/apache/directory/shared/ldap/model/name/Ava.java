@@ -160,7 +160,7 @@ public class Ava implements Externalizable, Cloneable
             {
                 String message =  I18n.err( I18n.ERR_04188 );
                 LOG.error( message );
-                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
             
             try
@@ -171,7 +171,7 @@ public class Ava implements Externalizable, Cloneable
             {
                 String message =  I18n.err( I18n.ERR_04188 );
                 LOG.error( message );
-                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, liave );
             }
         }
         else
@@ -222,7 +222,7 @@ public class Ava implements Externalizable, Cloneable
             {
                 String message =  I18n.err( I18n.ERR_04188 );
                 LOG.error( message );
-                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
             
             try
@@ -233,7 +233,7 @@ public class Ava implements Externalizable, Cloneable
             {
                 String message =  I18n.err( I18n.ERR_04188 );
                 LOG.error( message );
-                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, liave );
             }
         }
         else
@@ -278,7 +278,7 @@ public class Ava implements Externalizable, Cloneable
         {
             String message =  I18n.err( I18n.ERR_04188 );
             LOG.error( message );
-            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
+            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
         }
 
         this.upValue = upValue;
@@ -429,7 +429,6 @@ public class Ava implements Externalizable, Cloneable
         {
             this.normType = Strings.lowerCaseAscii( normTypeTrimmed );
             this.upType = upType;
-
         }
 
         this.normValue = normValue;
@@ -454,18 +453,35 @@ public class Ava implements Externalizable, Cloneable
         { 
             this.schemaManager = schemaManager;
             
+            AttributeType attributeType = null;
+            
             try
             {
-                attributeType = schemaManager.lookupAttributeTypeRegistry( upType );
+                attributeType = schemaManager.lookupAttributeTypeRegistry( normType );
             }
             catch ( LdapException le )
             {
                 String message =  I18n.err( I18n.ERR_04188 );
                 LOG.error( message );
-                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
+            }
+            
+            if ( this.attributeType == attributeType ) 
+            {
+                // No need to normalize again
+                return;
+            }
+            else
+            {
+                this.attributeType = attributeType;
             }
             
             normType = attributeType.getOid();
+            
+            if ( normValue != null )
+            {
+                return;
+            }
 
             try
             {
@@ -485,7 +501,7 @@ public class Ava implements Externalizable, Cloneable
             {
                 String message =  I18n.err( I18n.ERR_04188 );
                 LOG.error( message );
-                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
             
             hashCode();
@@ -996,6 +1012,15 @@ public class Ava implements Externalizable, Cloneable
     public boolean isSchemaAware()
     {
         return attributeType != null;
+    }
+
+
+    /**
+     * @return the attributeType
+     */
+    public AttributeType getAttributeType()
+    {
+        return attributeType;
     }
     
     

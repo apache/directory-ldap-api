@@ -32,6 +32,7 @@ import org.apache.directory.shared.dsmlv2.reponse.Dsmlv2ResponseGrammar;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.Response;
+import org.apache.directory.shared.util.Strings;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -188,7 +189,7 @@ public class Dsmlv2ResponseParser
     {
         XmlPullParser xpp = container.getParser();
 
-        String tagName = xpp.getName().toLowerCase();
+        String tagName = Strings.toLowerCase( xpp.getName() );
 
         GrammarTransition transition = container.getTransition( container.getState(), new Tag( tagName, tagType ) );
 

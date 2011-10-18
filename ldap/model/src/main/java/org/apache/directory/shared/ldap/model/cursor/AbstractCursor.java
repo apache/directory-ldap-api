@@ -56,7 +56,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
      * @param operation The operation we try to execute
      * @throws Exception If there is a problem during the check
      */
-    protected final void checkNotClosed( String operation ) throws Exception
+    public final void checkNotClosed( String operation ) throws Exception
     {
         monitor.checkNotClosed();
     }

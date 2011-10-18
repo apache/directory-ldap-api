@@ -22,6 +22,7 @@ package org.apache.directory.shared.ldap.extras.controls.syncrepl_impl;
 
 import org.apache.directory.shared.asn1.ber.AbstractContainer;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
+import org.apache.directory.shared.ldap.extras.controls.SyncDoneValue;
 
 
 /**
@@ -33,7 +34,7 @@ import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 public class SyncDoneValueContainer extends AbstractContainer
 {
     /** syncDoneValue*/
-    private SyncDoneValueDecorator control;
+    private SyncDoneValue control;
 
     private LdapApiService codec;
     
@@ -59,7 +60,7 @@ public class SyncDoneValueContainer extends AbstractContainer
      * Creates a new SyncDoneValueControlContainer object.
      *
      */
-    public SyncDoneValueContainer( LdapApiService codec, SyncDoneValueDecorator control )
+    public SyncDoneValueContainer( LdapApiService codec, SyncDoneValue control )
     {
         super();
         this.codec = codec;
@@ -73,7 +74,7 @@ public class SyncDoneValueContainer extends AbstractContainer
     /**
      * @return the SyncDoneValueControlCodec object
      */
-    public SyncDoneValueDecorator getSyncDoneValueControl()
+    public SyncDoneValue getSyncDoneValueControl()
     {
         return control;
     }
@@ -85,7 +86,7 @@ public class SyncDoneValueContainer extends AbstractContainer
      * 
      * @param control the SyncDoneValueControlCodec to set.
      */
-    public void setSyncDoneValueControl( SyncDoneValueDecorator control )
+    public void setSyncDoneValueControl( SyncDoneValue control )
     {
         this.control = control;
     }

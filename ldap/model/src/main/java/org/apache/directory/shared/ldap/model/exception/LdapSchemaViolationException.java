@@ -50,6 +50,20 @@ public class LdapSchemaViolationException extends LdapOperationException
 
 
     /**
+     *
+     * @param resultCode the ResultCodeEnum for this exception
+     * @param message The exception message
+     * @param cause The root cause for this exception
+     */
+    public LdapSchemaViolationException( ResultCodeEnum resultCode, String message, Throwable cause )
+    {
+        super( message, cause );
+        checkResultCode( resultCode );
+        this.resultCode = resultCode;
+    }
+    
+    
+    /**
      * Creates a new instance of LdapSchemaViolationException.
      * 
      * @param resultCode the ResultCodeEnum for this exception

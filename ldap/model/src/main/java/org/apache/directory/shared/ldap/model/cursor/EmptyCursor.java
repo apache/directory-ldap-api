@@ -123,13 +123,4 @@ public class EmptyCursor<E> extends AbstractCursor<E>
         checkNotClosed( "get()" );
         throw new InvalidCursorPositionException( I18n.err( I18n.ERR_02004_EMPTY_CURSOR ) );
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isElementReused()
-    {
-        return false;
-    }
 }

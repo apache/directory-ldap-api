@@ -42,6 +42,18 @@ public class LdapInvalidDnException extends LdapOperationException
     {
         super( message );
     }
+
+    
+    /**
+     * to be used by some special exceptions like LdapInvalidDnException
+     * 
+     * @param message The exception message
+     * @param cause The root cause for this exception
+     */
+    public LdapInvalidDnException( String message, Throwable cause )
+    {
+        super( message, cause );
+    }
     
     
     /**
@@ -53,6 +65,21 @@ public class LdapInvalidDnException extends LdapOperationException
     public LdapInvalidDnException(  ResultCodeEnum resultCode, String message )
     {
         super( message );
+        checkResultCode( resultCode );
+        this.resultCode = resultCode;
+    }
+
+
+    /**
+     * Creates a new instance of LdapInvalidDnException.
+     *
+     * @param resultCode the ResultCodeEnum for this exception
+     * @param message The exception message
+     * @param cause The root cause for this exception
+     */
+    public LdapInvalidDnException(  ResultCodeEnum resultCode, String message, Throwable cause )
+    {
+        super( message, cause );
         checkResultCode( resultCode );
         this.resultCode = resultCode;
     }

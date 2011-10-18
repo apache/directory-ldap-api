@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.apache.directory.shared</groupId>
     <artifactId>shared-ldap-client-parent</artifactId>
-    <version>1.0.0-M4-SNAPSHOT</version>
+    <version>1.0.0-M9-SNAPSHOT</version>
   </parent>
 
   <artifactId>shared-ldap-client-api</artifactId>
@@ -115,8 +115,10 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
-            <Bundle-SymbolicName>${project.groupId}.ldap.client.api</Bundle-SymbolicName>
-            <Export-Package>org.apache.directory.ldap.client.api.*</Export-Package>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+            <Export-Package>
+                {local-packages};version=${project.version};-noimport:=true
+            </Export-Package>
           </instructions>
         </configuration>
       </plugin>

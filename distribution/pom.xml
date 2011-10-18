@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.shared</groupId>
     <artifactId>shared-parent</artifactId>
-    <version>1.0.0-M4-SNAPSHOT</version>
+    <version>1.0.0-M9-SNAPSHOT</version>
   </parent>
   
   <artifactId>apache-ldap-api</artifactId>
@@ -100,6 +100,19 @@
                   <!-- avoid false positive, as we add a '-bin' or '-src' to the base directory -->
                   <strict>false</strict>
                 </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
               </execution>
             </executions>
           </plugin>

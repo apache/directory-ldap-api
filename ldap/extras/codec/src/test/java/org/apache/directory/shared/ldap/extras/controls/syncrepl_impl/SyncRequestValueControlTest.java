@@ -29,7 +29,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
-import org.apache.directory.shared.ldap.codec.osgi.AbstractCodecServiceTest;
+import org.apache.directory.shared.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.shared.ldap.extras.controls.SyncRequestValue;
 import org.apache.directory.shared.ldap.extras.controls.SynchronizationModeEnum;
 import org.apache.directory.shared.util.Strings;
@@ -67,9 +67,9 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncRequestValueDecorator decorator = new SyncRequestValueDecorator( codec );
+        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
         
-        SyncRequestValue syncRequestValue = (SyncRequestValue)decorator.decode( bb.array() );
+        SyncRequestValue syncRequestValue = (SyncRequestValue)((SyncRequestValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_ONLY, syncRequestValue.getMode() );
         assertEquals( "abc", Strings.utf8ToString(syncRequestValue.getCookie()) );
@@ -119,9 +119,9 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncRequestValueDecorator decorator = new SyncRequestValueDecorator( codec );
+        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
         
-        SyncRequestValue syncRequestValue = (SyncRequestValue)decorator.decode( bb.array() );
+        SyncRequestValue syncRequestValue = (SyncRequestValue)((SyncRequestValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertEquals( "abc", Strings.utf8ToString(syncRequestValue.getCookie()) );
@@ -170,9 +170,9 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncRequestValueDecorator decorator = new SyncRequestValueDecorator(  codec );
+        SyncRequestValue decorator = new SyncRequestValueDecorator(  codec );
         
-        SyncRequestValue syncRequestValue = (SyncRequestValue)decorator.decode( bb.array() );
+        SyncRequestValue syncRequestValue = (SyncRequestValue)((SyncRequestValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertNull( syncRequestValue.getCookie() );
@@ -221,9 +221,9 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         buffer.flip();
 
-        SyncRequestValueDecorator decorator = new SyncRequestValueDecorator( codec );
+        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
         
-        SyncRequestValue syncRequestValue = (SyncRequestValue)decorator.decode( buffer.array() );
+        SyncRequestValue syncRequestValue = (SyncRequestValue)((SyncRequestValueDecorator)decorator).decode( buffer.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertNull( syncRequestValue.getCookie() );
@@ -261,9 +261,9 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncRequestValueDecorator decorator = new SyncRequestValueDecorator( codec );
+        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
         
-        SyncRequestValue syncRequestValue = (SyncRequestValue)decorator.decode( bb.array() );
+        SyncRequestValue syncRequestValue = (SyncRequestValue)((SyncRequestValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertNull( syncRequestValue.getCookie() );
@@ -301,9 +301,9 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncRequestValueDecorator decorator = new SyncRequestValueDecorator( codec );
+        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
         
-        SyncRequestValue syncRequestValue = (SyncRequestValue)decorator.decode( bb.array() );
+        SyncRequestValue syncRequestValue = (SyncRequestValue)((SyncRequestValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertEquals( "abc", Strings.utf8ToString(syncRequestValue.getCookie()) );
@@ -341,9 +341,9 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncRequestValueDecorator decorator = new SyncRequestValueDecorator( codec );
+        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
         
-        SyncRequestValue syncRequestValue = (SyncRequestValue)decorator.decode( bb.array() );
+        SyncRequestValue syncRequestValue = (SyncRequestValue)((SyncRequestValueDecorator)decorator).decode( bb.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertEquals( "", Strings.utf8ToString(syncRequestValue.getCookie()) );
@@ -387,11 +387,11 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncRequestValueDecorator decorator = new SyncRequestValueDecorator( codec );
+        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
         
         try
         {
-            decorator.decode( bb.array() );
+            ((SyncRequestValueDecorator)decorator).decode( bb.array() );
             fail( "we should not get there" );
         }
         catch ( DecoderException de )
@@ -415,11 +415,11 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
             } );
         bb.flip();
 
-        SyncRequestValueDecorator decorator = new SyncRequestValueDecorator( codec );
+        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
         
         try
         {
-            decorator.decode( bb.array() );
+            ((SyncRequestValueDecorator)decorator).decode( bb.array() );
             fail( "we should not get there" );
         }
         catch ( DecoderException de )

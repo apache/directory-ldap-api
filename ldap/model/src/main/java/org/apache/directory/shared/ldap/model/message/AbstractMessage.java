@@ -78,9 +78,14 @@ public abstract class AbstractMessage implements Message
     }
 
 
-    public void setMessageId( int id )
+    /**
+     * {@inheritDoc}
+     */
+    public Message setMessageId( int id )
     {
         this.id = id;
+        
+        return this;
     }
 
 
@@ -114,9 +119,11 @@ public abstract class AbstractMessage implements Message
     /**
      * {@inheritDoc}
      */
-    public void addControl( Control control ) throws MessageException
+    public Message addControl( Control control ) throws MessageException
     {
         controls.put( control.getOid(), control );
+        
+        return this;
     }
 
 
@@ -127,9 +134,11 @@ public abstract class AbstractMessage implements Message
      * @throws MessageException if controls cannot be added to this Message or the control is
      *             not known etc.
      */
-    public void removeControl( Control control ) throws MessageException
+    public Message removeControl( Control control ) throws MessageException
     {
         controls.remove( control.getOid() );
+        
+        return this;
     }
 
 
@@ -250,12 +259,14 @@ public abstract class AbstractMessage implements Message
     /**
      * {@inheritDoc}
      */
-    public void addAllControls( Control[] controls ) throws MessageException
+    public Message addAllControls( Control[] controls ) throws MessageException
     {
         for ( Control c : controls )
         {
             this.controls.put( c.getOid(), c );
         }
+        
+        return this;
     }
 
 

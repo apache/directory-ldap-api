@@ -312,7 +312,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public void addControl( Control control ) throws MessageException
+    public Message addControl( Control control ) throws MessageException
     {
         Control decorated;
         CodecControl<? extends Control> controlDecorator;
@@ -331,28 +331,34 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
         decoratedMessage.addControl( decorated );
         controls.put( control.getOid(), controlDecorator );
         currentControl = controlDecorator;
+
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void addAllControls( Control[] controls ) throws MessageException
+    public Message addAllControls( Control[] controls ) throws MessageException
     {
         for ( Control control : controls )
         {
             addControl( control );
         }
+
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void removeControl( Control control ) throws MessageException
+    public Message removeControl( Control control ) throws MessageException
     {
         decoratedMessage.removeControl( control );
         controls.remove( control.getOid() );
+
+        return this;
     }
 
 
@@ -386,9 +392,11 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
-    public void setMessageId( int messageId )
+    public Message setMessageId( int messageId )
     {
         decoratedMessage.setMessageId( messageId );
+        
+        return this;
     }
 
 

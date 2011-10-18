@@ -29,8 +29,10 @@ import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.message.BindRequest;
 import org.apache.directory.shared.ldap.model.message.BindResponse;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.util.Strings;
 
@@ -121,6 +123,44 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     }
     
     
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest addControl( Control control ) throws MessageException
+    {
+        return (BindRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (BindRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest removeControl( Control control ) throws MessageException
+    {
+        return (BindRequest)super.removeControl( control );
+    }
+
+    
     //-------------------------------------------------------------------------
     // The BindRequest methods
     //-------------------------------------------------------------------------
@@ -147,9 +187,11 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
-    public void setSimple( boolean isSimple )
+    public BindRequest setSimple( boolean isSimple )
     {
         getDecorated().setSimple( isSimple );
+        
+        return this;
     }
 
 
@@ -165,18 +207,22 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
-    public void setCredentials( String credentials )
+    public BindRequest setCredentials( String credentials )
     {
         getDecorated().setCredentials( credentials );
+
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setCredentials( byte[] credentials )
+    public BindRequest setCredentials( byte[] credentials )
     {
         getDecorated().setCredentials( credentials );
+
+        return this;
     }
 
 
@@ -192,9 +238,11 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public BindRequest setName( Dn name )
     {
         getDecorated().setName( name );
+
+        return this;
     }
 
 
@@ -219,9 +267,11 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
-    public void setVersion3( boolean isVersion3 )
+    public BindRequest setVersion3( boolean isVersion3 )
     {
         getDecorated().setVersion3( isVersion3 );
+
+        return this;
     }
 
 
@@ -237,9 +287,11 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
-    public void setSaslMechanism( String saslMechanism )
+    public BindRequest setSaslMechanism( String saslMechanism )
     {
         getDecorated().setSaslMechanism( saslMechanism );
+        
+        return this;
     }
 
 

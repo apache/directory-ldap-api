@@ -26,13 +26,14 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -146,13 +147,15 @@ public class SearchResponseDoneImplTest
             }
 
 
-            public void addControl( Control a_control ) throws MessageException
+            public SearchResultDone addControl( Control a_control ) throws MessageException
             {
+                return this;
             }
 
 
-            public void removeControl( Control a_control ) throws MessageException
+            public SearchResultDone removeControl( Control a_control ) throws MessageException
             {
+                return this;
             }
 
 
@@ -174,8 +177,9 @@ public class SearchResponseDoneImplTest
             }
 
 
-            public void addAllControls( Control[] controls ) throws MessageException
+            public SearchResultDone addAllControls( Control[] controls ) throws MessageException
             {
+                return this;
             }
 
 
@@ -191,8 +195,9 @@ public class SearchResponseDoneImplTest
             }
 
 
-            public void setMessageId( int messageId )
+            public SearchResultDone setMessageId( int messageId )
             {
+                return this;
             }
         };
 

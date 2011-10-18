@@ -31,13 +31,15 @@ import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.message.AddRequest;
 import org.apache.directory.shared.ldap.model.message.AddResponse;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.name.Dn;
 
 
@@ -149,6 +151,42 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     {
         return valuesLength;
     }
+    /**
+     * {@inheritDoc}
+     */
+    public AddRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AddRequest addControl( Control control ) throws MessageException
+    {
+        return (AddRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AddRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (AddRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AddRequest removeControl( Control control ) throws MessageException
+    {
+        return (AddRequest)super.removeControl( control );
+    }
 
 
     //-------------------------------------------------------------------------
@@ -168,9 +206,11 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
-    public void setEntryDn( Dn entry )
+    public AddRequest setEntryDn( Dn entry )
     {
         getDecorated().setEntryDn( entry );
+        
+        return this;
     }
 
 
@@ -186,9 +226,11 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /**
      * {@inheritDoc}
      */
-    public void setEntry( Entry entry )
+    public AddRequest setEntry( Entry entry )
     {
         getDecorated().setEntry( entry );
+        
+        return this;
     }
 
     

@@ -20,6 +20,7 @@
 package org.apache.directory.shared.ldap.model.message;
 
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 
 
 /**
@@ -66,13 +67,13 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
 
 
     /**
-     * Sets the id of the request operation to terminate.
-     * 
-     * @param abandonId the sequence id of the request message to abandon
+     * {@inheritDoc}
      */
-    public void setAbandoned( int abandonId )
+    public AbandonRequest setAbandoned( int abandonId )
     {
         this.abandonId = abandonId;
+        
+        return this;
     }
 
 
@@ -84,8 +85,46 @@ public class AbandonRequestImpl extends AbstractRequest implements AbandonReques
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_04185 ) );
     }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AbandonRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
 
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AbandonRequest addControl( Control control ) throws MessageException
+    {
+        return (AbandonRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AbandonRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (AbandonRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AbandonRequest removeControl( Control control ) throws MessageException
+    {
+        return (AbandonRequest)super.removeControl( control );
+    }
 
+    
     /**
      * Checks for equality first by asking the super method which should compare
      * all but the Abandoned request's Id. It then compares this to determine

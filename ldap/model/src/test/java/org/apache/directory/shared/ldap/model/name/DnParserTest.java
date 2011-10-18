@@ -594,4 +594,18 @@ public class DnParserTest
             return;
         }
     }
+    
+    
+    /**
+     * Test the Dn.get( int ) method
+     */
+    @Test
+    public void testGetRdnN() throws Exception
+    {
+        Dn dn = new Dn( "cn=test,dc=example,dc=org" );
+        
+        assertEquals( "cn=test", dn.getRdn( 0 ).getName() );
+        assertEquals( "dc=example", dn.getRdn( 1 ).getName() );
+        assertEquals( "dc=org", dn.getRdn( 2 ).getName() );
+    }
 }

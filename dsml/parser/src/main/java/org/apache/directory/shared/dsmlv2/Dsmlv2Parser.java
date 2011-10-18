@@ -31,6 +31,7 @@ import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.shared.dsmlv2.request.Dsmlv2Grammar;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.message.Request;
+import org.apache.directory.shared.util.Strings;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -237,7 +238,7 @@ public class Dsmlv2Parser
     {
         XmlPullParser xpp = container.getParser();
 
-        String tagName = xpp.getName().toLowerCase();
+        String tagName = Strings.toLowerCase( xpp.getName() );
 
         GrammarTransition transition = container.getTransition( container.getState(), new Tag( tagName, tagType ) );
 

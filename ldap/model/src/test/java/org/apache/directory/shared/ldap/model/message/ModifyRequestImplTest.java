@@ -325,13 +325,15 @@ public class ModifyRequestImplTest
             }
 
 
-            public void addModification( Modification mod )
+            public ModifyRequest addModification( Modification mod )
             {
+                return this;
             }
 
 
-            public void removeModification( Modification mod )
+            public ModifyRequest removeModification( Modification mod )
             {
+                return this;
             }
 
 
@@ -349,8 +351,9 @@ public class ModifyRequestImplTest
             }
 
 
-            public void setName( Dn name )
+            public ModifyRequest setName( Dn name )
             {
+                return this;
             }
 
 
@@ -378,13 +381,15 @@ public class ModifyRequestImplTest
             }
 
 
-            public void addControl( Control a_control ) throws MessageException
+            public ModifyRequest addControl( Control a_control ) throws MessageException
             {
+                return this;
             }
 
 
-            public void removeControl( Control a_control ) throws MessageException
+            public ModifyRequest removeControl( Control a_control ) throws MessageException
             {
+                return this;
             }
 
 
@@ -417,8 +422,9 @@ public class ModifyRequestImplTest
             }
 
 
-            public void addAbandonListener( AbandonListener listener )
+            public ModifyRequest addAbandonListener( AbandonListener listener )
             {
+                return this;
             }
 
 
@@ -428,8 +434,9 @@ public class ModifyRequestImplTest
             }
 
 
-            public void addAllControls( Control[] controls ) throws MessageException
+            public ModifyRequest addAllControls( Control[] controls ) throws MessageException
             {
+                return this;
             }
 
 
@@ -445,63 +452,75 @@ public class ModifyRequestImplTest
             }
 
 
-            public void setMessageId( int messageId )
+            public ModifyRequest setMessageId( int messageId )
             {
+                return this;
             }
 
 
-            public void addModification( Attribute attr, ModificationOperation modOp )
+            public ModifyRequest addModification( Attribute attr, ModificationOperation modOp )
             {
+                return this;
             }
 
 
-            public void replace( String attributeName )
+            public ModifyRequest replace( String attributeName )
             {
+                return this;
             }
 
 
-            public void replace( String attributeName, String... attributeValue )
+            public ModifyRequest replace( String attributeName, String... attributeValue )
             {
+                return this;
             }
 
 
-            public void replace( String attributeName, byte[]... attributeValue )
+            public ModifyRequest replace( String attributeName, byte[]... attributeValue )
             {
+                return this;
             }
 
 
-            public void replace( Attribute attr )
+            public ModifyRequest replace( Attribute attr )
             {
+                return this;
             }
 
 
-            public void add( String attributeName, String... attributeValue )
+            public ModifyRequest add( String attributeName, String... attributeValue )
             {
+                return this;
             }
 
 
-            public void add( String attributeName, byte[]... attributeValue )
+            public ModifyRequest add( String attributeName, byte[]... attributeValue )
             {
+                return this;
             }
 
 
-            public void add( Attribute attr )
+            public ModifyRequest add( Attribute attr )
             {
+                return this;
             }
 
 
-            public void remove( String attributeName, String... attributeValue )
+            public ModifyRequest remove( String attributeName, String... attributeValue )
             {
+                return this;
             }
 
 
-            public void remove( String attributeName, byte[]... attributeValue )
+            public ModifyRequest remove( String attributeName, byte[]... attributeValue )
             {
+                return this;
             }
 
 
-            public void remove( Attribute attr )
+            public ModifyRequest remove( Attribute attr )
             {
+                return this;
             }
         };
 

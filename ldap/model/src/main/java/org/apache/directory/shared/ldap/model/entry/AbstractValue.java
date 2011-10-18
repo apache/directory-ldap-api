@@ -203,7 +203,7 @@ public abstract class AbstractValue<T> implements Value<T>
         {
             String message = I18n.err( I18n.ERR_04447_CANNOT_NORMALIZE_VALUE, le.getLocalizedMessage() );
             LOG.info( message );
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message, le );
         }
         
         // Rehash the Value now

@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.shared</groupId>
     <artifactId>shared-ldap-extras-parent</artifactId>
-    <version>1.0.0-M4-SNAPSHOT</version>
+    <version>1.0.0-M9-SNAPSHOT</version>
   </parent>
   
   <artifactId>shared-ldap-extras-codec</artifactId>
@@ -100,7 +100,10 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
-            <Bundle-SymbolicName>${project.groupId}.ldap.extras.codec</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+            <Export-Package>
+                {local-packages};version=${project.version};-noimport:=true
+            </Export-Package>
             <Bundle-Activator>
               org.apache.directory.shared.ldap.extras.ExtrasBundleActivator
             </Bundle-Activator>

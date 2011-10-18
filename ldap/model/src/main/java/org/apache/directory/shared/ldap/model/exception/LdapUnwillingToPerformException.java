@@ -57,6 +57,20 @@ public class LdapUnwillingToPerformException extends LdapOperationException
         checkResultCode( resultCode );
         this.resultCode = resultCode;
     }
+    
+    
+    /**
+     *
+     * @param resultCode the ResultCodeEnum for this exception
+     * @param message The exception message
+     * @param cause The root cause for this exception
+     */
+    public LdapUnwillingToPerformException( ResultCodeEnum resultCode, String message, Throwable cause )
+    {
+        super( message, cause );
+        checkResultCode( resultCode );
+        this.resultCode = resultCode;
+    }
 
 
     /**

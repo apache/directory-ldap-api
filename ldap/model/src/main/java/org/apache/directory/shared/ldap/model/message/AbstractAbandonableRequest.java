@@ -78,7 +78,10 @@ public class AbstractAbandonableRequest extends AbstractRequest implements Aband
     }
 
 
-    public void addAbandonListener( final AbandonListener listener )
+    /**
+     * {@inheritDoc}
+     */
+    public AbandonableRequest addAbandonListener( final AbandonListener listener )
     {
         if ( o == null )
         {
@@ -92,6 +95,8 @@ public class AbstractAbandonableRequest extends AbstractRequest implements Aband
                 listener.requestAbandoned( AbstractAbandonableRequest.this );
             }
         } );
+        
+        return this;
     }
 
 

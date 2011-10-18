@@ -25,6 +25,7 @@ import java.util.Collection;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 
 
@@ -118,10 +119,10 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
      * Sets the distinguished name of the entry to be modified by this request.
      * This property represents the PDU's <b>object</b> field.
      * 
-     * @param name
-     *            the Dn of the modified entry.
+     * @param name the Dn of the modified entry.
+     * @return The ModifyRequest instance
      */
-    void setName( Dn name );
+    ModifyRequest setName( Dn name );
 
 
     /**
@@ -138,8 +139,9 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
      * request.
      * 
      * @param mod a Modification to add.
+     * @return The ModifyRequest instance
      */
-    void addModification( Modification mod );
+    ModifyRequest addModification( Modification mod );
 
 
     /**
@@ -147,8 +149,9 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
      * modify request.
      * 
      * @param mod a Modification to remove.
+     * @return The ModifyRequest instance
      */
-    void removeModification( Modification mod );
+    ModifyRequest removeModification( Modification mod );
 
 
     /**
@@ -158,14 +161,15 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
      *
      * @param attributeName name of the attribute to be added
      * @param attributeValue values of the attribute
+     * @return The ModifyRequest instance
      */
-    void remove( String attributeName, String... attributeValue );
+    ModifyRequest remove( String attributeName, String... attributeValue );
 
 
     /**
      * @see #remove(String, String...)
      */
-    void remove( String attributeName, byte[]... attributeValue );
+    ModifyRequest remove( String attributeName, byte[]... attributeValue );
 
 
     /**
@@ -173,11 +177,18 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
      * marks a given attribute for removal from the target entry.
      *
      * @param attr the attribute to be added
+     * @return The ModifyRequest instance
      */
-    void remove( Attribute attr );
+    ModifyRequest remove( Attribute attr );
 
 
-    void addModification( Attribute attr, ModificationOperation modOp );
+    /**
+     * Add a modification 
+     * @param attr The attribute to be modified
+     * @param modOp The operation
+     * @return The ModifyRequest instance
+     */
+    ModifyRequest addModification( Attribute attr, ModificationOperation modOp );
 
 
     /**
@@ -186,28 +197,30 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
      *
      * @param attributeName name of the attribute to be added
      * @param attributeValue values of the attribute
+     * @return The ModifyRequest instance
      */
-    void add( String attributeName, String... attributeValue );
+    ModifyRequest add( String attributeName, String... attributeValue );
 
 
     /**
      * @see #add(String, String...)
      */
-    void add( String attributeName, byte[]... attributeValue );
+    ModifyRequest add( String attributeName, byte[]... attributeValue );
 
 
     /**
      * marks a given attribute for addition in the target entry.
      *
      * @param attr the attribute to be added
+     * @return The ModifyRequest instance
      */
-    void add( Attribute attr );
+    ModifyRequest add( Attribute attr );
 
 
     /**
      * @see #replace(String, String...)
      */
-    void replace( String attributeName );
+    ModifyRequest replace( String attributeName );
 
 
     /**
@@ -216,20 +229,46 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
      *
      * @param attributeName name of the attribute to be added
      * @param attributeValue values of the attribute
+     * @return The ModifyRequest instance
      */
-    void replace( String attributeName, String... attributeValue );
+    ModifyRequest replace( String attributeName, String... attributeValue );
 
 
     /**
      * @see #replace(String, String...)
      */
-    void replace( String attributeName, byte[]... attributeValue );
+    ModifyRequest replace( String attributeName, byte[]... attributeValue );
 
 
     /**
      * marks a given attribute for replacement in the target entry.
      *
      * @param attr the attribute to be added
+     * @return The ModifyRequest instance
      */
-    void replace( Attribute attr );
+    ModifyRequest replace( Attribute attr );
+
+
+    /**
+     * {@inheritDoc}
+     */
+    ModifyRequest setMessageId( int messageId );
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    ModifyRequest addControl( Control control ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    ModifyRequest addAllControls( Control[] controls ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    ModifyRequest removeControl( Control control ) throws MessageException;
 }

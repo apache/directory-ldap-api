@@ -198,15 +198,15 @@ public class CompareRequestImplTest
             }
 
 
-            public void setAssertionValue( String value )
+            public CompareRequest setAssertionValue( String value )
             {
-
+                return this;
             }
 
 
-            public void setAssertionValue( byte[] value )
+            public CompareRequest setAssertionValue( byte[] value )
             {
-
+                return this;
             }
 
 
@@ -216,9 +216,9 @@ public class CompareRequestImplTest
             }
 
 
-            public void setAttributeId( String attrId )
+            public CompareRequest setAttributeId( String attrId )
             {
-
+                return this;
             }
 
 
@@ -228,8 +228,9 @@ public class CompareRequestImplTest
             }
 
 
-            public void setName( Dn name )
+            public CompareRequest setName( Dn name )
             {
+                return this;
             }
 
 
@@ -257,13 +258,15 @@ public class CompareRequestImplTest
             }
 
 
-            public void addControl( Control a_control ) throws MessageException
+            public CompareRequest addControl( Control a_control ) throws MessageException
             {
+                return this;
             }
 
 
-            public void removeControl( Control a_control ) throws MessageException
+            public CompareRequest removeControl( Control a_control ) throws MessageException
             {
+                return this;
             }
 
 
@@ -296,8 +299,9 @@ public class CompareRequestImplTest
             }
 
 
-            public void addAbandonListener( AbandonListener listener )
+            public CompareRequest addAbandonListener( AbandonListener listener )
             {
+                return this;
             }
 
 
@@ -307,8 +311,9 @@ public class CompareRequestImplTest
             }
 
 
-            public void addAllControls( Control[] controls ) throws MessageException
+            public CompareRequest addAllControls( Control[] controls ) throws MessageException
             {
+                return this;
             }
 
 
@@ -324,8 +329,9 @@ public class CompareRequestImplTest
             }
 
 
-            public void setMessageId( int messageId )
+            public CompareRequest setMessageId( int messageId )
             {
+                return this;
             }
         };
 

@@ -88,7 +88,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * Creates a new instance of DefaultLdapCodecService.
      */
-    DefaultLdapCodecService()
+    public DefaultLdapCodecService()
     {
         loadStockControls();
     }

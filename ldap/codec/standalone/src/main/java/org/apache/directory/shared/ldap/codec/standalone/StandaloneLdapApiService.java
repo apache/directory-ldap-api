@@ -81,19 +81,19 @@ public class StandaloneLdapApiService implements LdapApiService
     private ProtocolCodecFactory protocolCodecFactory;
     
     /** The list of default controls to load at startup */ 
-    public static String DEFAULT_CONTROLS_LIST = "default.controls";
+    public static final String DEFAULT_CONTROLS_LIST = "default.controls";
 
     /** The list of extra controls to load at startup */ 
-    public static String EXTRA_CONTROLS_LIST = "extra.controls";
+    public static final String EXTRA_CONTROLS_LIST = "extra.controls";
 
     /** The list of default extended operation requests to load at startup */ 
-    public static String DEFAULT_EXTENDED_OPERATION_REQUESTS_LIST = "default.extendedOperation.requests";
+    public static final String DEFAULT_EXTENDED_OPERATION_REQUESTS_LIST = "default.extendedOperation.requests";
 
     /** The list of default extended operation responses to load at startup */ 
-    public static String DEFAULT_EXTENDED_OPERATION_RESPONSES_LIST = "default.extendedOperation.responses";
+    public static final String DEFAULT_EXTENDED_OPERATION_RESPONSES_LIST = "default.extendedOperation.responses";
 
     /** The list of extra controls to load at startup */ 
-    public static String EXTRA_EXTENDED_OPERATION_LIST = "extra.extendedOperations";
+    public static final String EXTRA_EXTENDED_OPERATION_LIST = "extra.extendedOperations";
 
     /**
      * Creates a new instance of StandaloneLdapCodecService. Optionally checks for
@@ -176,14 +176,14 @@ public class StandaloneLdapApiService implements LdapApiService
         {
              try
              {
-             @SuppressWarnings("unchecked")
-             Class<? extends ProtocolCodecFactory> clazz = ( Class<? extends ProtocolCodecFactory> )
-             Class.forName( DEFAULT_PROTOCOL_CODEC_FACTORY );
-             protocolCodecFactory = clazz.newInstance();
+                 @SuppressWarnings("unchecked")
+                 Class<? extends ProtocolCodecFactory> clazz = ( Class<? extends ProtocolCodecFactory> )
+                 Class.forName( DEFAULT_PROTOCOL_CODEC_FACTORY );
+                 protocolCodecFactory = clazz.newInstance();
              }
              catch( Exception cause )
              {
-             throw new RuntimeException( "Failed to load default codec factory.", cause );
+                 throw new RuntimeException( "Failed to load default codec factory.", cause );
              }
         }
     }
@@ -219,8 +219,6 @@ public class StandaloneLdapApiService implements LdapApiService
 
         for ( String control : defaultControlsList.split( "," ) )
         {
-            System.out.println( control );
-
             Class<?>[] types = new Class<?>[] { LdapApiService.class };
             Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> )Class.forName( control );
             Constructor<?> constructor = clazz.getConstructor(types);
@@ -247,8 +245,6 @@ public class StandaloneLdapApiService implements LdapApiService
         
         for ( String control : extraControlsList.split( "," ) )
         {
-            System.out.println( control );
-
             Class<?>[] types = new Class<?>[] { LdapApiService.class };
             Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> )Class.forName( control );
             Constructor<?> constructor = clazz.getConstructor(types);
@@ -288,8 +284,6 @@ public class StandaloneLdapApiService implements LdapApiService
         
         for ( String extendedOperation : defaultExtendedOperationsList.split( "," ) )
         {
-            System.out.println( extendedOperation );
-
             Class<?>[] types = new Class<?>[] { LdapApiService.class };
             Class<? extends ExtendedRequestFactory<?,?>> clazz = ( Class<? extends ExtendedRequestFactory<?,?>> )Class.forName( extendedOperation );
             Constructor<?> constructor = clazz.getConstructor(types);
@@ -316,8 +310,6 @@ public class StandaloneLdapApiService implements LdapApiService
         
         for ( String extendedOperation : defaultExtendedOperationsList.split( "," ) )
         {
-            System.out.println( extendedOperation );
-
             Class<?>[] types = new Class<?>[] { LdapApiService.class };
             Class<? extends UnsolicitedResponseFactory<?>> clazz = ( Class<? extends UnsolicitedResponseFactory<?>> )Class.forName( extendedOperation );
             Constructor<?> constructor = clazz.getConstructor(types);

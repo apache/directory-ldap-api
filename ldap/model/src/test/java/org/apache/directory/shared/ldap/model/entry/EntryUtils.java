@@ -141,7 +141,7 @@ public class EntryUtils
             {
                 if ( value.isHumanReadable() )
                 {
-                    return new StringValue( value.getString().toLowerCase() );
+                    return new StringValue( Strings.toLowerCase( value.getString() ) );
                 }
 
                 throw new IllegalStateException( I18n.err( I18n.ERR_04474 ) );

@@ -64,7 +64,7 @@ public class TelephoneNumberNormalizer extends Normalizer
        }
        catch ( IOException ioe )
        {
-           throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ) );
+           throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ), ioe );
        }
    }
 
@@ -81,7 +81,7 @@ public class TelephoneNumberNormalizer extends Normalizer
        }
        catch ( IOException ioe )
        {
-           throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ) );
+           throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ), ioe );
        }
    }
 }

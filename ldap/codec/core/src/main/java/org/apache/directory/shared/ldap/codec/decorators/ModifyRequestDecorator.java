@@ -33,12 +33,14 @@ import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
+import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultModification;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.ModifyRequest;
 import org.apache.directory.shared.ldap.model.message.ModifyResponse;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -249,9 +251,11 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public ModifyRequest setName( Dn name )
     {
         getDecorated().setName( name );
+        
+        return this;
     }
 
 
@@ -267,117 +271,181 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
-    public void addModification( Modification mod )
+    public ModifyRequest addModification( Modification mod )
     {
         getDecorated().addModification( mod );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void removeModification( Modification mod )
+    public ModifyRequest removeModification( Modification mod )
     {
         getDecorated().removeModification( mod );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void remove( String attributeName, String... attributeValue )
+    public ModifyRequest remove( String attributeName, String... attributeValue )
     {
         getDecorated().remove( attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void remove( String attributeName, byte[]... attributeValue )
+    public ModifyRequest remove( String attributeName, byte[]... attributeValue )
     {
         getDecorated().remove( attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void remove( Attribute attr )
+    public ModifyRequest remove( Attribute attr )
     {
         getDecorated().remove( attr );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void addModification( Attribute attr, ModificationOperation modOp )
+    public ModifyRequest addModification( Attribute attr, ModificationOperation modOp )
     {
         getDecorated().addModification( attr, modOp );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( String attributeName, String... attributeValue )
+    public ModifyRequest add( String attributeName, String... attributeValue )
     {
         getDecorated().add( attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( String attributeName, byte[]... attributeValue )
+    public ModifyRequest add( String attributeName, byte[]... attributeValue )
     {
         getDecorated().add( attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( Attribute attr )
+    public ModifyRequest add( Attribute attr )
     {
         getDecorated().add( attr );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void replace( String attributeName )
+    public ModifyRequest replace( String attributeName )
     {
         getDecorated().replace( attributeName );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void replace( String attributeName, String... attributeValue )
+    public ModifyRequest replace( String attributeName, String... attributeValue )
     {
         getDecorated().replace( attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void replace( String attributeName, byte[]... attributeValue )
+    public ModifyRequest replace( String attributeName, byte[]... attributeValue )
     {
         getDecorated().replace( attributeName, attributeValue );
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void replace( Attribute attr )
+    public ModifyRequest replace( Attribute attr )
     {
         getDecorated().replace( attr );
+        
+        return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyRequest addControl( Control control ) throws MessageException
+    {
+        return (ModifyRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (ModifyRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ModifyRequest removeControl( Control control ) throws MessageException
+    {
+        return (ModifyRequest)super.removeControl( control );
     }
 
 

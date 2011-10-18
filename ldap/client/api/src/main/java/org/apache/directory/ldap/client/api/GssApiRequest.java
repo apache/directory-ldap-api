@@ -42,7 +42,10 @@ public class GssApiRequest extends SaslRequest
     /** The krb5.conf file absolute path */
     protected String krb5ConfFilePath;
 
-    /** The {@link javax.security.auth.login.Configuration} object for Login Module */
+    /** The name for the {@link javax.security.auth.login.LoginContext} object */
+    protected String loginContextName = "ldapnetworkconnection";
+
+    /** The {@link javax.security.auth.login.Configuration} object for LoginModule */
     protected Configuration loginModuleConfiguration;
 
 
@@ -52,17 +55,6 @@ public class GssApiRequest extends SaslRequest
     public GssApiRequest()
     {
         super( SupportedSaslMechanisms.GSSAPI );
-    }
-
-
-    /**
-     * Gets the {@link javax.security.auth.login.Configuration} object for Login Module.
-     *
-     * @return the {@link javax.security.auth.login.Configuration} object for Login Module
-     */
-    public Configuration getLoginModuleConfiguration()
-    {
-        return loginModuleConfiguration;
     }
 
 
@@ -100,13 +92,24 @@ public class GssApiRequest extends SaslRequest
 
 
     /**
-     * Sets the {@link javax.security.auth.login.Configuration} object for Login Module.
-     *
-     * @param loginModuleConfiguration the {@link javax.security.auth.login.Configuration} object for Login Module
+     * Gets the name for the {@link javax.security.auth.login.LoginContext} object. 
+     * 
+     * @return the name for the {@link javax.security.auth.login.LoginContext} object
      */
-    public void setLoginModuleConfiguration( Configuration loginModuleConfiguration )
+    public String getLoginContextName()
     {
-        this.loginModuleConfiguration = loginModuleConfiguration;
+        return loginContextName;
+    }
+
+
+    /**
+     * Gets the {@link javax.security.auth.login.Configuration} object for Login Module.
+     *
+     * @return the {@link javax.security.auth.login.Configuration} object for Login Module
+     */
+    public Configuration getLoginModuleConfiguration()
+    {
+        return loginModuleConfiguration;
     }
 
 
@@ -140,6 +143,28 @@ public class GssApiRequest extends SaslRequest
     public void setKrb5ConfFilePath( String krb5ConfFilePath )
     {
         this.krb5ConfFilePath = krb5ConfFilePath;
+    }
+
+
+    /**
+     * Sets the name for the {@link javax.security.auth.login.LoginContext} object.
+     * 
+     * @param loginContextName the name for the {@link javax.security.auth.login.LoginContext} object
+     */
+    public void setLoginContextName( String loginContextName )
+    {
+        this.loginContextName = loginContextName;
+    }
+
+
+    /**
+     * Sets the {@link javax.security.auth.login.Configuration} object for Login Module.
+     *
+     * @param loginModuleConfiguration the {@link javax.security.auth.login.Configuration} object for Login Module
+     */
+    public void setLoginModuleConfiguration( Configuration loginModuleConfiguration )
+    {
+        this.loginModuleConfiguration = loginModuleConfiguration;
     }
 
 

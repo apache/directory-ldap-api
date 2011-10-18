@@ -20,6 +20,7 @@
 package org.apache.directory.shared.ldap.model.message;
 
 
+import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 
 
@@ -61,8 +62,9 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * authentication.
      * 
      * @param isSimple true if authentication is simple, false otherwise.
+     * @return The BindRequest instance
      */
-    void setSimple( boolean isSimple );
+    BindRequest setSimple( boolean isSimple );
 
 
     /**
@@ -79,8 +81,9 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * attempt. Ignored if this request uses SASL authentication mechanisms.
      * 
      * @param credentials the credentials if authentication is simple
+     * @return The BindRequest instance
      */
-    void setCredentials( String credentials );
+    BindRequest setCredentials( String credentials );
 
 
     /**
@@ -88,8 +91,9 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * attempt. Ignored if this request uses SASL authentication mechanisms.
      * 
      * @param credentials the credentials if authentication is simple
+     * @return The BindRequest instance
      */
-    void setCredentials( byte[] credentials );
+    BindRequest setCredentials( byte[] credentials );
 
 
     /**
@@ -112,8 +116,9 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * mechanism that includes the Dn in the credentials.
      * 
      * @param name the Dn of the authenticating user - leave null for annonymous user.
+     * @return The BindRequest instance
      */
-    void setName( Dn name );
+    BindRequest setName( Dn name );
 
 
     /**
@@ -155,8 +160,9 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * 
      * @param isVersion3 if true the client will be exhibiting version 3 bind behavior,
      *  If false is used version 2 behavior will be exhibited.
+     * @return The BindRequest instance
      */
-    void setVersion3( boolean isVersion3 );
+    BindRequest setVersion3( boolean isVersion3 );
 
 
     /**
@@ -173,6 +179,31 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * bind operation is using SASL.
      * 
      * @param saslMechanism the SASL mechanism
+     * @return The BindRequest instance
      */
-    void setSaslMechanism( String saslMechanism );
+    BindRequest setSaslMechanism( String saslMechanism );
+
+
+    /**
+     * {@inheritDoc}
+     */
+    BindRequest setMessageId( int messageId );
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    BindRequest addControl( Control control ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    BindRequest addAllControls( Control[] controls ) throws MessageException;
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    BindRequest removeControl( Control control ) throws MessageException;
 }

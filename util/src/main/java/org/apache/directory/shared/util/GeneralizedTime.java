@@ -193,7 +193,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
         this.calendar = calendar;
         upGeneralizedTime = null;
-        upFormat = Format.YEAR_MONTH_DAY_HOUR_MIN_SEC;
+        upFormat = Format.YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION;
         upTimeZoneFormat = TimeZoneFormat.Z;
         upFractionDelimiter = FractionDelimiter.DOT;
         upFractionLength = 3;

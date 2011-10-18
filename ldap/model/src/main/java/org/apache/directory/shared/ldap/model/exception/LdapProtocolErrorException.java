@@ -44,6 +44,17 @@ public class LdapProtocolErrorException extends LdapOperationException
         super( ResultCodeEnum.PROTOCOL_ERROR, message );
     }
 
+    /**
+     * Creates a new instance of LdapProtocolErrorException.
+     *
+     * @param message The exception message
+     * @param cause The root cause for this exception
+     */
+    public LdapProtocolErrorException( String message, Throwable cause )
+    {
+        super( ResultCodeEnum.PROTOCOL_ERROR, message, cause );
+    }
+
 
     /**
      * Creates a new instance of LdapProtocolErrorException.

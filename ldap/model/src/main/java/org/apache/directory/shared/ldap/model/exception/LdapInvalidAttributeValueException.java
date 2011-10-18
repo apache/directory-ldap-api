@@ -63,6 +63,21 @@ public class LdapInvalidAttributeValueException extends LdapOperationException
 
 
     /**
+     * Creates a new instance of LdapInvalidAttributeValueException.
+     * 
+     * @param resultCode the ResultCodeEnum for this exception
+     * @param message The exception message
+     * @param cause The root cause for this exception
+     */
+    public LdapInvalidAttributeValueException( ResultCodeEnum resultCode, String message, Throwable cause )
+    {
+        super( message, cause );
+        checkResultCode( resultCode );
+        this.resultCode = resultCode;
+    }
+
+
+    /**
      * Checks to make sure the resultCode value is right for this exception
      * type.
      * 

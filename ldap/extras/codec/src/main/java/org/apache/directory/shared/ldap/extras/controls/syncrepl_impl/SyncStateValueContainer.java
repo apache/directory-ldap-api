@@ -21,6 +21,7 @@ package org.apache.directory.shared.ldap.extras.controls.syncrepl_impl;
 
 
 import org.apache.directory.shared.asn1.ber.AbstractContainer;
+import org.apache.directory.shared.ldap.extras.controls.SyncStateValue;
 
 
 /**
@@ -31,7 +32,7 @@ import org.apache.directory.shared.asn1.ber.AbstractContainer;
 public class SyncStateValueContainer extends AbstractContainer
 {
     /** SyncStateValueControl */
-    private SyncStateValueDecorator control;
+    private SyncStateValue control;
 
 
     /**
@@ -51,7 +52,7 @@ public class SyncStateValueContainer extends AbstractContainer
      * Creates a new SyncStateValueControlContainer object. We will store one grammar,
      * it's enough ...
      */
-    public SyncStateValueContainer( SyncStateValueDecorator control )
+    public SyncStateValueContainer( SyncStateValue control )
     {
         super();
         this.control = control;
@@ -64,7 +65,7 @@ public class SyncStateValueContainer extends AbstractContainer
     /**
      * @return Returns the syncStateValue control.
      */
-    public SyncStateValueDecorator getSyncStateValueControl()
+    public SyncStateValue getSyncStateValueControl()
     {
         return control;
     }
@@ -76,7 +77,7 @@ public class SyncStateValueContainer extends AbstractContainer
      * 
      * @param control the SyncStateValueControl to set.
      */
-    public void setSyncStateValueControl( SyncStateValueDecorator control )
+    public void setSyncStateValueControl( SyncStateValue control )
     {
         this.control = control;
     }

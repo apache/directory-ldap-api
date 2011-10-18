@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.shared</groupId>
     <artifactId>shared-ldap-schema-parent</artifactId>
-    <version>1.0.0-M4-SNAPSHOT</version>
+    <version>1.0.0-M9-SNAPSHOT</version>
   </parent>
   
   <artifactId>shared-ldap-schema-converter</artifactId>
@@ -111,8 +111,10 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
-            <Bundle-SymbolicName>${project.groupId}.ldap.schema.converter</Bundle-SymbolicName>
-            <Export-Package>org.apache.directory.shared.converter.schema</Export-Package>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+            <Export-Package>
+                {local-packages};version=${project.version};-noimport:=true
+            </Export-Package>
           </instructions>
         </configuration>
       </plugin>

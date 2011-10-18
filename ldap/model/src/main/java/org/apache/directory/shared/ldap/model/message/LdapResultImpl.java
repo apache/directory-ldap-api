@@ -399,6 +399,10 @@ public class LdapResultImpl implements LdapResult
                 sb.append( " affectsMultipleDSAs -- new\n" );
                 break;
 
+            case E_SYNC_REFRESH_REQUIRED:
+                sb.append( " eSyncRefreshRequired\n" );
+                break;
+
             case OTHER:
                 sb.append( " other\n" );
                 break;

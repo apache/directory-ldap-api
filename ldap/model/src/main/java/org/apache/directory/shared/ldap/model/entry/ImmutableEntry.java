@@ -22,6 +22,7 @@ package org.apache.directory.shared.ldap.model.entry;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -279,9 +280,9 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public Set<AttributeType> getAttributeTypes()
+    public Collection<Attribute> getAttributes()
     {
-        return entry.getAttributeTypes();
+        return entry.getAttributes();
     }
 
 

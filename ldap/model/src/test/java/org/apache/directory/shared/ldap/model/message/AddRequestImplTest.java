@@ -212,8 +212,9 @@ public class AddRequestImplTest
             }
 
 
-            public void setEntry( Entry entry )
+            public AddRequest setEntry( Entry entry )
             {
+                return this;
             }
 
 
@@ -223,8 +224,9 @@ public class AddRequestImplTest
             }
 
 
-            public void setEntryDn( Dn entryDn )
+            public AddRequest setEntryDn( Dn entryDn )
             {
+                return this;
             }
 
 
@@ -252,13 +254,15 @@ public class AddRequestImplTest
             }
 
 
-            public void addControl( Control control ) throws MessageException
+            public AddRequest addControl( Control control ) throws MessageException
             {
+                return this;
             }
 
 
-            public void removeControl( Control control ) throws MessageException
+            public AddRequest removeControl( Control control ) throws MessageException
             {
+                return this;
             }
 
 
@@ -291,8 +295,9 @@ public class AddRequestImplTest
             }
 
 
-            public void addAbandonListener( AbandonListener listener )
+            public AddRequest addAbandonListener( AbandonListener listener )
             {
+                return this;
             }
 
 
@@ -302,8 +307,9 @@ public class AddRequestImplTest
             }
 
 
-            public void addAllControls( Control[] controls ) throws MessageException
+            public AddRequest addAllControls( Control[] controls ) throws MessageException
             {
+                return this;
             }
 
 
@@ -319,8 +325,9 @@ public class AddRequestImplTest
             }
 
 
-            public void setMessageId( int messageId )
+            public AddRequest setMessageId( int messageId )
             {
+                return this;
             }
         };
 

@@ -20,6 +20,7 @@ package org.apache.directory.shared.ldap.model.entry;
 
 
 import java.io.Externalizable;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -112,11 +113,11 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
 
     /**
-     * Gets all the attributes type
+     * Gets all the attributes
      *
      * @return The combined set of all the attributes.
      */
-    Set<AttributeType> getAttributeTypes();
+    Collection<Attribute> getAttributes();
     
     
     /**

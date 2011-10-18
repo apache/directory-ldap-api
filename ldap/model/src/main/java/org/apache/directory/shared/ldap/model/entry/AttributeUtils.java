@@ -477,7 +477,7 @@ public final class AttributeUtils
             }
             catch ( LdapException ne )
             {
-                throw new LdapInvalidAttributeTypeException( ne.getMessage() );
+                throw new LdapInvalidAttributeTypeException( ne.getMessage(), ne );
             }
         }
         else

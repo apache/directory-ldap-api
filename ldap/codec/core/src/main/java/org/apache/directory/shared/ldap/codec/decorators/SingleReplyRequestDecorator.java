@@ -68,8 +68,10 @@ public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest<R
     }
 
 
-    public void addAbandonListener( AbandonListener listener )
+    public AbandonableRequest addAbandonListener( AbandonListener listener )
     {
         ( ( AbandonableRequest ) getDecorated() ).addAbandonListener( listener );
+        
+        return this;
     }
 }

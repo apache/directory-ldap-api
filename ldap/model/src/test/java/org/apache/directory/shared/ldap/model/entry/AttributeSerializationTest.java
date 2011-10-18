@@ -25,6 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 
 import org.junit.Test;
@@ -52,8 +53,8 @@ public class AttributeSerializationTest
         Attribute attribute1 = new DefaultAttribute( "CN" );
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream( baos );
-
+        ObjectOutput out = new ObjectOutputStream( baos );
+        
         attribute1.writeExternal( out );
         
         ObjectInputStream in = null;

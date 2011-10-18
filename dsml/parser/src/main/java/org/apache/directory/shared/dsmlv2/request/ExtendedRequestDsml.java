@@ -23,6 +23,8 @@ package org.apache.directory.shared.dsmlv2.request;
 import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.ExtendedRequest;
 import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
 import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
@@ -149,8 +151,48 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends Extende
     /**
      * {@inheritDoc}
      */
-    public void setRequestName( String oid )
+    public ExtendedRequest<P> setRequestName( String oid )
     {
         getDecorated().setRequestName( oid );
+        
+        return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedRequest<P> setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedRequest<P> addControl( Control control ) throws MessageException
+    {
+        return (ExtendedRequest<P>)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedRequest<P> addAllControls( Control[] controls ) throws MessageException
+    {
+        return (ExtendedRequest<P>)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedRequest<P> removeControl( Control control ) throws MessageException
+    {
+        return (ExtendedRequest<P>)super.removeControl( control );
     }
 }

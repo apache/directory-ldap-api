@@ -21,6 +21,8 @@ package org.apache.directory.shared.dsmlv2.request;
 
 
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
+import org.apache.directory.shared.ldap.model.exception.MessageException;
+import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.DeleteRequest;
 import org.apache.directory.shared.ldap.model.message.DeleteRequestImpl;
 import org.apache.directory.shared.ldap.model.message.DeleteResponse;
@@ -128,8 +130,48 @@ public class DelRequestDsml
     /**
      * {@inheritDoc}
      */
-    public void setName( Dn name )
+    public DeleteRequest setName( Dn name )
     {
         getDecorated().setName( name );
+    
+        return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public DeleteRequest setMessageId( int messageId )
+    {
+        super.setMessageId( messageId );
+        
+        return this;
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public DeleteRequest addControl( Control control ) throws MessageException
+    {
+        return (DeleteRequest)super.addControl( control );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public DeleteRequest addAllControls( Control[] controls ) throws MessageException
+    {
+        return (DeleteRequest)super.addAllControls( controls );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public DeleteRequest removeControl( Control control ) throws MessageException
+    {
+        return (DeleteRequest)super.removeControl( control );
     }
 }

@@ -52,4 +52,16 @@ public class InvalidConnectionException extends LdapException
     {
         super( explanation );
     }
+
+
+    /**
+     * Instantiates a new invalid connection exception.
+     *
+     * @param explanation the explanation
+     * @param cause The root cause for this exception
+     */
+    public InvalidConnectionException( String explanation, Throwable cause )
+    {
+        super( explanation, cause );
+    }
 }

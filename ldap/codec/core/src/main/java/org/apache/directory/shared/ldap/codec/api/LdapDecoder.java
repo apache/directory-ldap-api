@@ -22,15 +22,12 @@ package org.apache.directory.shared.ldap.codec.api;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.util.List;
 
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.tlv.TLVStateEnum;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.exception.ResponseCarryingMessageException;
 import org.apache.directory.shared.ldap.model.message.Message;
-import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,7 +116,7 @@ public class LdapDecoder
      * is stored into this container
      * @param decodedMessages The list of decoded messages
      * @throws Exception If the decoding failed
-     */
+     *
     public void decode( ByteBuffer buffer, LdapMessageContainer<MessageDecorator<? extends Message>> messageContainer, List<Message> decodedMessages ) throws DecoderException
     {
         buffer.mark();
@@ -128,14 +125,11 @@ public class LdapDecoder
         {
             try
             {
-                asn1Decoder.decode( buffer, messageContainer );
-
                 if ( IS_DEBUG )
                 {
                     LOG.debug( "Decoding the PDU : " );
 
-                    int size = buffer.position();
-                    buffer.reset();
+                    int size = buffer.limit();
                     int position = buffer.position();
                     int pduLength = size - position;
 
@@ -153,9 +147,11 @@ public class LdapDecoder
                     {
                         LOG.debug( Strings.dumpBytes(array) );
                     }
+
+                    buffer.reset();
                 }
 
-                buffer.mark();
+                asn1Decoder.decode( buffer, messageContainer );
 
                 if ( messageContainer.getState() == TLVStateEnum.PDU_DECODED )
                 {
@@ -191,5 +187,5 @@ public class LdapDecoder
                 }
             }
         }
-    }
+    }*/
 }
