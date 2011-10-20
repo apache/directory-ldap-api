@@ -1593,13 +1593,34 @@ public class DefaultSchemaManager implements SchemaManager
         return new ImmutableSyntaxCheckerRegistry( registries.getSyntaxCheckerRegistry() );
     }
 
+    
+    /**
+     * Get rid of AT's options (everything after the ';'
+     * @param oid
+     * @return
+     */
+    private String stripOptions( String oid )
+    {
+        int semiColonPos = oid.indexOf( ';' );
+        
+        if ( semiColonPos != -1 )
+        {
+            return oid.substring( 0, semiColonPos );
+        }
+        else
+        {
+            return oid;
+        }
+    }
 
     /**
      * {@inheritDoc}
      */
     public AttributeType lookupAttributeTypeRegistry( String oid ) throws LdapException
     {
-        return registries.getAttributeTypeRegistry().lookup( Strings.toLowerCase( oid ).trim() );
+        String oidTrimmed = Strings.toLowerCase( oid ).trim();
+        String oidNoOption = stripOptions( oidTrimmed );
+        return registries.getAttributeTypeRegistry().lookup( oidNoOption );
     }
 
 
