@@ -111,10 +111,9 @@ public class Tag
     }
 
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
+    /**
+     * {@inheritDoc}
      */
-    @Override
     public boolean equals( Object obj )
     {
         if ( obj instanceof Tag )
@@ -130,20 +129,18 @@ public class Tag
     }
 
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#hashCode()
+    /**
+     * {@inheritDoc}
      */
-    @Override
     public int hashCode()
     {
         return name.hashCode() + type << 24;
     }
 
 
-    /* (non-Javadoc)
-     * @see java.lang.Object#toString()
+    /**
+     * {@inheritDoc}
      */
-    @Override
     public String toString()
     {
         if ( name != null )

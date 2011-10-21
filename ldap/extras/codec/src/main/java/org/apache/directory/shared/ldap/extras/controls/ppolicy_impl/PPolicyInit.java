@@ -17,42 +17,50 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.extras.controls.ppolicy;
+package org.apache.directory.shared.ldap.extras.controls.ppolicy_impl;
 
 
-import org.apache.directory.shared.asn1.actions.AbstractReadInteger;
 import org.apache.directory.shared.asn1.ber.Asn1Container;
+import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.shared.asn1.DecoderException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
- * The action used to store the error
+ * The action used to initialize the PasswordPolicyResponseControlContainer object
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@SuppressWarnings("rawtypes")
-public class StoreError extends AbstractReadInteger
+public class PPolicyInit extends GrammarAction<Asn1Container>
 {
+    /** The logger */
+    private static final Logger LOG = LoggerFactory.getLogger( PPolicyInit.class );
+
+    /** Speedup for logs */
+    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
+
 
     /**
-     * Instantiates a new StoreError action.
+     * Instantiates a new PPolicyInit action.
      */
-    public StoreError()
+    public PPolicyInit()
     {
-        super( "PPolicy error" );
+        super( "Initialize the PasswordPolicyResponseControlContainer" );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    protected void setIntegerValue( int value, Asn1Container container )
+    public void action( Asn1Container container ) throws DecoderException
     {
-        PasswordPolicyContainer ppolicyContainer = ( PasswordPolicyContainer ) container;
-        
-        PasswordPolicyErrorEnum error = PasswordPolicyErrorEnum.get( value );
-        ppolicyContainer.getPasswordPolicyResponseControl().getResponse().setPasswordPolicyError( error );
+        // As all the values are optional or defaulted, we can end here
+        container.setGrammarEndAllowed( true );
 
-        ppolicyContainer.setGrammarEndAllowed( true );
+        if ( IS_DEBUG )
+        {
+            LOG.debug( "PasswordPolicyResponseControlContainer initialized" );
+        }
     }
 }

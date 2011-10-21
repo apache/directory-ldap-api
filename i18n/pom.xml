@@ -60,7 +60,9 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.i18n</Bundle-SymbolicName>
-            <Export-Package>org.apache.directory.shared.i18n</Export-Package>
+            <Export-Package>
+                {local-packages};version=${project.version};-noimport:=true
+            </Export-Package>
           </instructions>
         </configuration>
       </plugin>

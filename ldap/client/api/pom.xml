@@ -116,7 +116,9 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.client.api</Bundle-SymbolicName>
-            <Export-Package>org.apache.directory.ldap.client.api.*</Export-Package>
+            <Export-Package>
+                {local-packages};version=${project.version};-noimport:=true
+            </Export-Package>
           </instructions>
         </configuration>
       </plugin>

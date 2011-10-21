@@ -57,6 +57,17 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
+            <addMavenDescriptor>false</addMavenDescriptor>
+          </archive>
+        </configuration>
+      </plugin>
+      
+      <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-bundle-plugin</artifactId>
         <inherited>true</inherited>
@@ -66,8 +77,7 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.asn1.ber</Bundle-SymbolicName>
             <Export-Package>
-              org.apache.directory.shared.asn1.actions,
-              org.apache.directory.shared.asn1.ber.*
+                {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
           </instructions>
         </configuration>

@@ -114,7 +114,9 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.dsmlv2.parser</Bundle-SymbolicName>
-            <Export-Package>org.apache.directory.shared.dsmlv2.*</Export-Package>
+            <Export-Package>
+                {local-packages};version=${project.version};-noimport:=true
+            </Export-Package>
           </instructions>
         </configuration>
       </plugin>

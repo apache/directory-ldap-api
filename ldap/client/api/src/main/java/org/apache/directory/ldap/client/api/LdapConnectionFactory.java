@@ -47,7 +47,7 @@ public final class LdapConnectionFactory
     {
         try
         {
-            Class<?> cl = Class.forName( "org.apache.directory.server.core.LdapCoreSessionConnection" );
+            Class<?> cl = Class.forName( "org.apache.directory.server.core.api.LdapCoreSessionConnection" );
             return ( LdapConnection ) cl.newInstance();
         }
         catch ( Exception e )

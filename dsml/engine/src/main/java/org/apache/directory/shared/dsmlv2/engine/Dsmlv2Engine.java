@@ -381,10 +381,6 @@ public class Dsmlv2Engine
             LOG.warn( "Failed while getting next request", e );
             
             int reqId = 0;
-            if ( request != null )
-            {
-                reqId = request.getDecorated().getMessageId();
-            }
             
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( reqId, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
@@ -767,6 +763,11 @@ public class Dsmlv2Engine
         if ( ( connection != null ) && connection.isAuthenticated() )
         {
             return;
+        }
+        
+        if ( connection == null )
+        {
+        	throw new IOException( I18n.err( I18n.ERR_03101_MISSING_CONNECTION_TO ) );
         }
         
         BindRequest bindRequest = new BindRequestImpl();

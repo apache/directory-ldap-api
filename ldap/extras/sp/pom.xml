@@ -66,6 +66,11 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>shared-ldap-extras-util</artifactId>
     </dependency> 
+
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency> 
   </dependencies>
 
   <build>
@@ -80,7 +85,7 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.extras.sp</Bundle-SymbolicName>
             <Export-Package>
-              org.apache.directory.shared.ldap.sp
+                {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
           </instructions>
         </configuration>

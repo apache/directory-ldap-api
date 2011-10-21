@@ -29,7 +29,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
-import org.apache.directory.shared.ldap.codec.osgi.AbstractCodecServiceTest;
+import org.apache.directory.shared.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.shared.ldap.extras.controls.SyncRequestValue;
 import org.apache.directory.shared.ldap.extras.controls.SynchronizationModeEnum;
 import org.apache.directory.shared.util.Strings;

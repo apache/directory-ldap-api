@@ -56,8 +56,7 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.util</Bundle-SymbolicName>
             <Export-Package>
-              org.apache.directory.shared.util,
-              org.apache.directory.shared.util.exception
+                {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
           </instructions>
         </configuration>

@@ -112,7 +112,9 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.schema.converter</Bundle-SymbolicName>
-            <Export-Package>org.apache.directory.shared.converter.schema</Export-Package>
+            <Export-Package>
+                {local-packages};version=${project.version};-noimport:=true
+            </Export-Package>
           </instructions>
         </configuration>
       </plugin>

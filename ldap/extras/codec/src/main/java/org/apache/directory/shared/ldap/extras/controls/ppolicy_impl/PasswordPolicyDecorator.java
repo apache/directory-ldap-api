@@ -17,7 +17,7 @@
  *   under the License.
  *
  */
-package org.apache.directory.shared.ldap.extras.controls.ppolicy;
+package org.apache.directory.shared.ldap.extras.controls.ppolicy_impl;
 
 
 import java.nio.ByteBuffer;
@@ -32,6 +32,9 @@ import org.apache.directory.shared.asn1.ber.tlv.Value;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
+import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicy;
+import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicyImpl;
+import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicyResponse;
 
 
 /**

@@ -58,8 +58,7 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.extras.codec.api</Bundle-SymbolicName>
             <Export-Package>
-              org.apache.directory.shared.ldap.extras.controls,
-              org.apache.directory.shared.ldap.extras.extended
+                {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
           </instructions>
         </configuration>

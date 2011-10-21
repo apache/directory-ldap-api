@@ -1,3 +1,4 @@
+package org.apache.directory.shared.ldap.extras;
 /*
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -6,52 +7,57 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
-package org.apache.directory.shared.ldap.extras.controls.ppolicy;
 
 
-import org.apache.directory.shared.asn1.actions.AbstractReadInteger;
-import org.apache.directory.shared.asn1.ber.Asn1Container;
+
+import org.apache.directory.shared.ldap.codec.api.LdapEncoder;
+import org.apache.directory.shared.ldap.codec.osgi.DefaultLdapCodecService;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 
 
 /**
- * The action used to store the GraceAuthsRemains
- * 
+ * Initialize the Codec service. This can later be removed.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@SuppressWarnings("rawtypes")
-public class StoreGraceAuthsRemaining extends AbstractReadInteger
+public abstract class AbstractCodecServiceTest
 {
+    protected static DefaultLdapCodecService codec;
+
+    /** The encoder instance */
+    protected static LdapEncoder encoder;
+
 
     /**
-     * Instantiates a new StoreCusec action.
+     * Initialize the codec service
      */
-    public StoreGraceAuthsRemaining()
+    @BeforeClass
+    public static void setupLdapCodecService()
     {
-        super( "PPolicy graceAuthnsRemains" );
+        codec = new DefaultLdapCodecService();
+        encoder = new LdapEncoder( codec );
     }
 
 
     /**
-     * {@inheritDoc}
+     * Shutdown the codec service
      */
-    @Override
-    protected void setIntegerValue( int value, Asn1Container container )
+    @AfterClass
+    public static void tearDownLdapCodecService()
     {
-        PasswordPolicyContainer ppolicyContainer = ( PasswordPolicyContainer ) container;
-        
-        ppolicyContainer.getPasswordPolicyResponseControl().getResponse().setGraceAuthNsRemaining( value );
-
-        ppolicyContainer.setGrammarEndAllowed( true );
+        codec = null;
+        encoder = null;
     }
 }

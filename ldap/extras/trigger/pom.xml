@@ -85,7 +85,7 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.extras.trigger</Bundle-SymbolicName>
             <Export-Package>
-              org.apache.directory.shared.ldap.trigger
+                {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
           </instructions>
         </configuration>

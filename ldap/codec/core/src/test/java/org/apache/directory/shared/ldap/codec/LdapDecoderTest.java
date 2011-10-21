@@ -35,13 +35,16 @@ import org.apache.directory.shared.asn1.ber.tlv.TLVStateEnum;
 import org.apache.directory.shared.ldap.codec.api.LdapDecoder;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
+import org.apache.directory.shared.ldap.codec.api.ResponseCarryingException;
 import org.apache.directory.shared.ldap.codec.decorators.BindRequestDecorator;
 import org.apache.directory.shared.ldap.codec.osgi.AbstractCodecServiceTest;
+import org.apache.directory.shared.ldap.model.exception.ResponseCarryingMessageException;
 import org.apache.directory.shared.ldap.model.message.BindRequest;
 import org.apache.directory.shared.ldap.model.message.Message;
 import org.apache.directory.shared.util.Strings;
 import org.apache.mina.core.session.DummySession;
 import org.apache.mina.core.session.IoSession;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -58,6 +61,70 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class LdapDecoderTest extends AbstractCodecServiceTest
 {
+    /** The ASN 1 decoder instance */
+    private static Asn1Decoder asn1Decoder;
+
+    
+    @BeforeClass
+    public static void init()
+    {
+        asn1Decoder = new Asn1Decoder();
+    }
+    
+
+    /**
+     * Decode an incoming buffer into LDAP messages. The result can be 0, 1 or many 
+     * LDAP messages, which will be stored into the array the caller has created.
+     * 
+     * @param buffer The incoming byte buffer
+     * @param messageContainer The LdapMessageContainer which will be used to store the
+     * message being decoded. If the message is not fully decoded, the ucrrent state
+     * is stored into this container
+     * @param decodedMessages The list of decoded messages
+     * @throws Exception If the decoding failed
+     */
+    private void decode( ByteBuffer buffer, LdapMessageContainer<MessageDecorator<? extends Message>> messageContainer, List<Message> decodedMessages ) throws DecoderException
+    {
+        buffer.mark();
+
+        while ( buffer.hasRemaining() )
+        {
+            try
+            {
+                asn1Decoder.decode( buffer, messageContainer );
+
+                if ( messageContainer.getState() == TLVStateEnum.PDU_DECODED )
+                {
+                    Message message = messageContainer.getMessage();
+
+                    decodedMessages.add( message );
+
+                    messageContainer.clean();
+                }
+            }
+            catch ( DecoderException de )
+            {
+                buffer.clear();
+                messageContainer.clean();
+
+                if ( de instanceof ResponseCarryingException )
+                {
+                    // Transform the DecoderException message to a MessageException
+                    ResponseCarryingMessageException rcme = new ResponseCarryingMessageException( de.getMessage() );
+                    rcme.setResponse( ( ( ResponseCarryingException ) de ).getResponse() );
+
+                    throw rcme;
+                }
+                else
+                {
+                    // TODO : This is certainly not the way we should handle such an exception !
+                    throw new ResponseCarryingException( de.getMessage() );
+                }
+            }
+        }
+    }
+
+    
     /**
      * Test the decoding of a full PDU
      */
@@ -118,7 +185,6 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
     @Test
     public void testDecode2Messages() throws Exception
     {
-        LdapDecoder ldapDecoder = new LdapDecoder();
         LdapMessageContainer<MessageDecorator<? extends Message>> container = 
             new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
 
@@ -163,7 +229,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         // Decode a BindRequest PDU
         try
         {
-            ldapDecoder.decode( stream, container, result );
+            decode( stream, container, result );
         }
         catch ( DecoderException de )
         {

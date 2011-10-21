@@ -139,7 +139,7 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.model</Bundle-SymbolicName>
             <Export-Package>
-              org.apache.directory.shared.ldap.model*
+                {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
           </instructions>
         </configuration>
