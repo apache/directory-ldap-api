@@ -24,6 +24,9 @@ import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.util.Chars;
 import org.apache.directory.shared.util.Strings;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,24 +36,34 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Component
+@Provides
 public class ObjectIdentifierFirstComponentComparator extends LdapComparator<String>
 {
+    /**
+     * Property to specify factory type.
+     * TODO:This is temporary. Will be vanished after introducing custom annotations
+     */
+    @Property(name = "ads.comp.type", value = "comparator")
+    public String compType;
+
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ObjectIdentifierFirstComponentComparator.class );
 
+
     /**
      * The ObjectIdentifierFirstComponentComparator constructor. Its OID is the 
      * ObjectIdentifierFirstComponentMatch matching rule OID.
      */
-    public ObjectIdentifierFirstComponentComparator( String oid )
+    public ObjectIdentifierFirstComponentComparator( @Property(name = "ads.comp.comparator.oid") String oid )
     {
         super( oid );
     }
 
-    
+
     /**
      * Get the OID from the SchemaObject description
      */
@@ -58,27 +71,27 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
     {
         // Get the OID from the strings now
         int pos = 0;
-        
+
         if ( !Strings.isCharASCII( s, pos++, '(' ) )
         {
             return null;
         }
-        
+
         while ( Strings.isCharASCII( s, pos, ' ' ) )
         {
             pos++;
         }
-        
+
         int start = pos;
-        
-        while ( Chars.isDigit(s, pos) || Strings.isCharASCII( s, pos, '.' ) )
+
+        while ( Chars.isDigit( s, pos ) || Strings.isCharASCII( s, pos, '.' ) )
         {
             pos++;
         }
-        
+
         String numericOid = s.substring( start, pos );
-        
-        if ( Oid.isOid(numericOid) )
+
+        if ( Oid.isOid( numericOid ) )
         {
             return numericOid;
         }
@@ -87,7 +100,8 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
             return null;
         }
     }
-    
+
+
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
@@ -102,7 +116,7 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
         {
             return ( s2 == null ) ? 0 : -1;
         }
-        
+
         if ( s2 == null )
         {
             return -1;
@@ -113,22 +127,22 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
         {
             return 0;
         }
-        
+
         // Get the OID from the strings now
         String oid1 = getNumericOid( s1 );
-        
+
         if ( oid1 == null )
         {
             return -1;
         }
-        
+
         String oid2 = getNumericOid( s2 );
 
         if ( oid2 == null )
         {
             return -1;
         }
-        
+
         if ( oid1.equals( oid2 ) )
         {
             return 0;

@@ -22,6 +22,9 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 import org.apache.directory.shared.ldap.model.schema.normalizers.CachingNormalizer;
 import org.apache.directory.shared.ldap.model.schema.normalizers.DeepTrimNormalizer;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
 
 
 /**
@@ -29,13 +32,24 @@ import org.apache.directory.shared.ldap.model.schema.normalizers.DeepTrimNormali
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Component
+@Provides
 public class DeepTrimCachingNormalizingComparator extends NormalizingComparator
 {
+    /**
+     * Property to specify factory type.
+     * TODO:This is temporary. Will be vanished after introducing custom annotations
+     */
+    @Property(name = "ads.comp.type", value = "comparator")
+    public String compType;
+
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public DeepTrimCachingNormalizingComparator( String oid )
+
+    @SuppressWarnings(
+        { "rawtypes", "unchecked" })
+    public DeepTrimCachingNormalizingComparator( @Property(name = "ads.comp.comparator.oid") String oid )
     {
         super( oid, new CachingNormalizer( new DeepTrimNormalizer( oid ), 10 ),
             new ComparableComparator( oid ) );

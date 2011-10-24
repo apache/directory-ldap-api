@@ -26,6 +26,9 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
 
 
 /**
@@ -35,19 +38,29 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Component
+@Provides
 public class UniqueMemberComparator extends LdapComparator<String>
 {
+    /**
+     * Property to specify factory type.
+     * TODO:This is temporary. Will be vanished after introducing custom annotations
+     */
+    @Property(name = "ads.comp.type", value = "comparator")
+    public String compType;
+
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
     /** A reference to the schema manager */
     private SchemaManager schemaManager;
 
+
     /**
      * The IntegerComparator constructor. Its OID is the IntegerOrderingMatch matching
      * rule OID.
      */
-    public UniqueMemberComparator( String oid )
+    public UniqueMemberComparator( @Property(name = "ads.comp.comparator.oid") String oid )
     {
         super( oid );
     }
@@ -68,7 +81,7 @@ public class UniqueMemberComparator extends LdapComparator<String>
             {
                 Dn dn1 = getDn( dnstr1 );
                 Dn dn2 = getDn( dnstr2 );
-                
+
                 if ( dn1.equals( dn2 ) )
                 {
                     return 0;
@@ -168,9 +181,9 @@ public class UniqueMemberComparator extends LdapComparator<String>
     {
         Dn dn = null;
 
-        if ( obj instanceof Dn)
+        if ( obj instanceof Dn )
         {
-            dn = (Dn) obj;
+            dn = ( Dn ) obj;
 
             dn = ( dn.isSchemaAware() ? dn : dn.apply( schemaManager ) );
         }

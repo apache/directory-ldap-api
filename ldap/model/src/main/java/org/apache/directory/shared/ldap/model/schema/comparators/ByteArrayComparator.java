@@ -22,6 +22,9 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.util.Strings;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,30 +34,41 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Component
+@Provides
 public class ByteArrayComparator extends LdapComparator<byte[]>
 {
+    /**
+     * Property to specify factory type.
+     * TODO:This is temporary. Will be vanished after introducing custom annotations
+     */
+    @Property(name = "ads.comp.type", value = "comparator")
+    public String compType;
+
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ByteArrayComparator.class );
 
+
     /**
      * The ByteArrayComparator constructor. Its OID is the OctetStringMatch matching
      * rule OID.
      */
-    public ByteArrayComparator( String oid )
+    public ByteArrayComparator( @Property(name = "ads.comp.comparator.oid") String oid )
     {
         super( oid );
     }
+
 
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
     public int compare( byte[] b1, byte[] b2 )
     {
-        LOG.debug( "comparing OctetString objects '{}' with '{}'", 
-            Strings.dumpBytes(b1), Strings.dumpBytes(b2) );
+        LOG.debug( "comparing OctetString objects '{}' with '{}'",
+            Strings.dumpBytes( b1 ), Strings.dumpBytes( b2 ) );
 
         // -------------------------------------------------------------------
         // Handle some basis cases
@@ -64,12 +78,12 @@ public class ByteArrayComparator extends LdapComparator<byte[]>
         {
             return ( b2 == null ) ? 0 : -1;
         }
-        
+
         if ( b2 == null )
         {
             return 1;
         }
-        
+
         if ( b1.length == b2.length )
         {
             for ( int i = 0; i < b1.length; i++ )
@@ -83,12 +97,12 @@ public class ByteArrayComparator extends LdapComparator<byte[]>
                     return -1;
                 }
             }
-            
+
             return 0;
         }
-        
+
         int minLength = Math.min( b1.length, b2.length );
-        
+
         for ( int i = 0; i < minLength; i++ )
         {
             if ( b1[i] > b2[i] )
@@ -100,19 +114,19 @@ public class ByteArrayComparator extends LdapComparator<byte[]>
                 return -1;
             }
         }
-        
+
         // b2 is longer w/ b1 as prefix 
         if ( b1.length == minLength )
         {
             return -1;
         }
-        
+
         // b1 is longer w/ b2 as prefix
         if ( b2.length == minLength )
         {
             return 1;
         }
-        
+
         return 0;
     }
 }

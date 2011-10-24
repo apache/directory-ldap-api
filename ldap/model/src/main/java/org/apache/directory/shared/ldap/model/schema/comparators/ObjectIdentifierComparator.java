@@ -21,6 +21,9 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,19 +33,29 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Component
+@Provides
 public class ObjectIdentifierComparator extends LdapComparator<Object>
 {
+    /**
+     * Property to specify factory type.
+     * TODO:This is temporary. Will be vanished after introducing custom annotations
+     */
+    @Property(name = "ads.comp.type", value = "comparator")
+    public String compType;
+
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ObjectIdentifierComparator.class );
 
+
     /**
      * The ObjectIdentifierComparator constructor. Its OID is the ObjectIdentifierMatch matching
      * rule OID.
      */
-    public ObjectIdentifierComparator( String oid )
+    public ObjectIdentifierComparator( @Property(name = "ads.comp.comparator.oid") String oid )
     {
         super( oid );
     }
@@ -84,6 +97,6 @@ public class ObjectIdentifierComparator extends LdapComparator<Object>
         }
 
         // Here, we should leverage the SchemaManager to compare the String and teh OID
-        return ((String)o1).compareToIgnoreCase( (String)o2 );
+        return ( ( String ) o1 ).compareToIgnoreCase( ( String ) o2 );
     }
 }

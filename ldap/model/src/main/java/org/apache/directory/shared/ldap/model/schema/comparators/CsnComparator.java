@@ -22,6 +22,9 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,19 +40,29 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Component
+@Provides
 public class CsnComparator extends LdapComparator<Object>
 {
+    /**
+     * Property to specify factory type.
+     * TODO:This is temporary. Will be vanished after introducing custom annotations
+     */
+    @Property(name = "ads.comp.type", value = "comparator")
+    public String compType;
+
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( CsnComparator.class );
 
+
     /**
      * The CsnComparator constructor. Its OID is the CsnMatch matching
      * rule OID.
      */
-    public CsnComparator( String oid )
+    public CsnComparator( @Property(name = "ads.comp.comparator.oid") String oid )
     {
         super( oid );
     }
@@ -61,7 +74,7 @@ public class CsnComparator extends LdapComparator<Object>
     public int compare( Object csnObj1, Object csnObj2 )
     {
         LOG.debug( "comparing CSN objects '{}' with '{}'", csnObj1, csnObj2 );
-        
+
         if ( csnObj1 == csnObj2 )
         {
             return 0;
@@ -74,15 +87,15 @@ public class CsnComparator extends LdapComparator<Object>
         {
             return ( csnObj2 == null ) ? 0 : -1;
         }
-        
+
         if ( csnObj2 == null )
         {
             return 1;
         }
-        
+
         String csnStr1 = null;
         String csnStr2 = null;
-        
+
         if ( csnObj1 instanceof StringValue )
         {
             csnStr1 = ( ( StringValue ) csnObj1 ).getValue();
@@ -94,13 +107,13 @@ public class CsnComparator extends LdapComparator<Object>
 
         if ( csnObj2 instanceof StringValue )
         {
-            csnStr2 = ( (StringValue) csnObj2 ).getValue();
+            csnStr2 = ( ( StringValue ) csnObj2 ).getValue();
         }
         else
         {
             csnStr2 = csnObj2.toString();
         }
-        
+
         return csnStr1.compareTo( csnStr2 );
     }
 }

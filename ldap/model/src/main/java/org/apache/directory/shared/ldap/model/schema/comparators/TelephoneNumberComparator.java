@@ -21,6 +21,9 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,24 +36,34 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Component
+@Provides
 public class TelephoneNumberComparator extends LdapComparator<String>
 {
+    /**
+     * Property to specify factory type.
+     * TODO:This is temporary. Will be vanished after introducing custom annotations
+     */
+    @Property(name = "ads.comp.type", value = "comparator")
+    public String compType;
+
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( TelephoneNumberComparator.class );
 
+
     /**
      * The TelephoneNumberComparator constructor. Its OID is the TelephoneNumberMatch matching
      * rule OID.
      */
-    public TelephoneNumberComparator( String oid )
+    public TelephoneNumberComparator( @Property(name = "ads.comp.comparator.oid") String oid )
     {
         super( oid );
     }
 
-    
+
     /**
      * Remove all spaces and '-' from the telephone number
      */
@@ -58,21 +71,21 @@ public class TelephoneNumberComparator extends LdapComparator<String>
     {
         char[] telephoneNumberArray = telephoneNumber.toCharArray();
         int pos = 0;
-        
-        for ( char c:telephoneNumberArray )
+
+        for ( char c : telephoneNumberArray )
         {
             if ( ( c == ' ' ) || ( c == '-' ) )
-            { 
+            {
                 continue;
             }
-            
+
             telephoneNumberArray[pos++] = c;
         }
-        
+
         return new String( telephoneNumberArray, 0, pos );
     }
 
-    
+
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
@@ -87,18 +100,18 @@ public class TelephoneNumberComparator extends LdapComparator<String>
         {
             return ( telephoneNumber2 == null ) ? 0 : -1;
         }
-        
+
         if ( telephoneNumber2 == null )
         {
             return 1;
         }
-        
+
         // -------------------------------------------------------------------
         // Remove all spaces and '-'
         // -------------------------------------------------------------------
         String strippedTelephoneNumber1 = strip( telephoneNumber1 );
         String strippedTelephoneNumber2 = strip( telephoneNumber2 );
-        
+
         return ( strippedTelephoneNumber1.compareToIgnoreCase( strippedTelephoneNumber2 ) );
     }
 }

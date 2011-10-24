@@ -57,6 +57,17 @@
       <version>${commons.io.version}</version>
       <scope>test</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.apache.felix.ipojo</artifactId>
+      <version>1.8.0</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>shared-ipojo-manager</artifactId>
+    </dependency>
   </dependencies>
 
   <build>

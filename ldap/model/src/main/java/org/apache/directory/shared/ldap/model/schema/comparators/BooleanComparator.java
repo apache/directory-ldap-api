@@ -21,6 +21,9 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,19 +33,29 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Component
+@Provides
 public class BooleanComparator extends LdapComparator<String>
 {
+    /**
+     * Property to specify factory type.
+     * TODO:This is temporary. Will be vanished after introducing custom annotations
+     */
+    @Property(name = "ads.comp.type", value = "comparator")
+    public String compType;
+
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( BooleanComparator.class );
 
+
     /**
      * The BooleanComparator constructor. Its OID is the BooleanMatch matching
      * rule OID.
      */
-    public BooleanComparator( String oid )
+    public BooleanComparator( @Property(name = "ads.comp.comparator.oid") String oid )
     {
         super( oid );
     }

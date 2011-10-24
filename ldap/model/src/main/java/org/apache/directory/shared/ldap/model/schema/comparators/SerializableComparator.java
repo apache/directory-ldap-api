@@ -27,6 +27,10 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
+import org.apache.felix.ipojo.annotations.Validate;
 
 
 /**
@@ -43,13 +47,14 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
 
     /** the OID of the matchingRule for this comparator */
     private String matchingRuleOid;
-    
+
     /** the transient wrapped comparator */
     private transient Comparator<E> wrapped;
 
-    /** A reference to the schema manager */ 
+    /** A reference to the schema manager */
     private transient SchemaManager schemaManager;
-    
+
+
     // ------------------------------------------------------------------------
     // C O N T R U C T O R S
     // ------------------------------------------------------------------------
@@ -74,7 +79,7 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
         {
             try
             {
-                wrapped = (Comparator<E>)schemaManager.lookupComparatorRegistry( matchingRuleOid );
+                wrapped = ( Comparator<E> ) schemaManager.lookupComparatorRegistry( matchingRuleOid );
             }
             catch ( LdapException e )
             {
@@ -96,18 +101,18 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
         {
             try
             {
-                wrapped = ( Comparator<E> ) 
+                wrapped = ( Comparator<E> )
                     schemaManager.lookupComparatorRegistry( matchingRuleOid );
             }
             catch ( LdapException ne )
             {
                 // Not found : get the default comparator
-                wrapped = ( Comparator<E> ) 
+                wrapped = ( Comparator<E> )
                     new ComparableComparator<Comparable<E>>( matchingRuleOid );
             }
         }
 
-        ((LdapComparator<E>)wrapped).setSchemaManager( schemaManager );
+        ( ( LdapComparator<E> ) wrapped ).setSchemaManager( schemaManager );
         super.setSchemaManager( schemaManager );
     }
 }

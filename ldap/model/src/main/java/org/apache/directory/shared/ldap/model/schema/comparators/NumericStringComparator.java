@@ -25,6 +25,9 @@ import java.io.IOException;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.PrepareString;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,19 +37,29 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Component
+@Provides
 public class NumericStringComparator extends LdapComparator<String>
 {
+    /**
+     * Property to specify factory type.
+     * TODO:This is temporary. Will be vanished after introducing custom annotations
+     */
+    @Property(name = "ads.comp.type", value = "comparator")
+    public String compType;
+
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( NumericStringComparator.class );
 
+
     /**
      * The IntegerComparator constructor. Its OID is the numericStringOrderingMatch matching
      * rule OID.
      */
-    public NumericStringComparator( String oid )
+    public NumericStringComparator( @Property(name = "ads.comp.comparator.oid") String oid )
     {
         super( oid );
     }
@@ -56,7 +69,7 @@ public class NumericStringComparator extends LdapComparator<String>
      * Implementation of the Compare method
      */
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ES_COMPARING_PARAMETER_STRING_WITH_EQ",
-    		justification ="false positive")
+        justification = "false positive")
     public int compare( String backendValue, String assertValue )
     {
         LOG.debug( "comparing numericStringOrdering objects '{}' with '{}'", backendValue, assertValue );

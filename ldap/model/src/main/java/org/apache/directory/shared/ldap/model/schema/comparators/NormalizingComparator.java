@@ -42,10 +42,10 @@ import org.slf4j.LoggerFactory;
     private static final Logger LOG = LoggerFactory.getLogger( NormalizingComparator.class );
 
     /** the Normalizer to normalize values with before comparing */
-    private Normalizer normalizer;
+    protected Normalizer normalizer;
 
     /** the underlying comparator to use for comparisons */
-    private LdapComparator<String> comparator;
+    protected LdapComparator<String> comparator;
 
 
     /**

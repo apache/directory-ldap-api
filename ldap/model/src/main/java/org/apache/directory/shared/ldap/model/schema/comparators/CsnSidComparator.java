@@ -21,6 +21,9 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
+import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,24 +35,34 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Component
+@Provides
 public class CsnSidComparator extends LdapComparator<String>
 {
+    /**
+     * Property to specify factory type.
+     * TODO:This is temporary. Will be vanished after introducing custom annotations
+     */
+    @Property(name = "ads.comp.type", value = "comparator")
+    public String compType;
+
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( CsnSidComparator.class );
 
+
     /**
      * The CsnSidComparator constructor. Its OID is the CsnSidMatch matching
      * rule OID.
      */
-    public CsnSidComparator( String oid )
+    public CsnSidComparator( @Property(name = "ads.comp.comparator.oid") String oid )
     {
         super( oid );
     }
-    
-    
+
+
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
@@ -64,15 +77,15 @@ public class CsnSidComparator extends LdapComparator<String>
         {
             return ( sidStr2 == null ) ? 0 : -1;
         }
-        
+
         if ( sidStr2 == null )
         {
             return 1;
         }
-        
+
         int sid1 = 0;
         int sid2 = 0;
-        
+
         try
         {
             sid1 = Integer.parseInt( sidStr1, 16 );
@@ -81,7 +94,7 @@ public class CsnSidComparator extends LdapComparator<String>
         {
             return -1;
         }
-        
+
         try
         {
             sid2 = Integer.parseInt( sidStr2, 16 );
@@ -90,7 +103,7 @@ public class CsnSidComparator extends LdapComparator<String>
         {
             return 1;
         }
-        
+
         if ( sid1 > sid2 )
         {
             return 1;
@@ -99,7 +112,7 @@ public class CsnSidComparator extends LdapComparator<String>
         {
             return -1;
         }
-        
+
         return 0;
     }
 }

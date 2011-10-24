@@ -28,6 +28,7 @@ import java.util.Set;
 
 import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.ipojo.schema.SchemaElementsManager;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
@@ -76,13 +77,16 @@ public class SchemaEntityFactory implements EntityFactory
 
     /** The empty string list. */
     private static final List<String> EMPTY_LIST = new ArrayList<String>();
-    
+
     /** The empty string array. */
     private static final String[] EMPTY_ARRAY = new String[]
         {};
 
     /** A special ClassLoader that loads a class from the bytecode attribute */
     private final AttributeClassLoader classLoader;
+
+    /** SchemaElementsManager class to OSGI load the classes */
+    private static SchemaElementsManager schemaElements = new SchemaElementsManager();
 
 
     /**
@@ -112,7 +116,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         String oid = mOid.getString();
 
-        if ( !Oid.isOid(oid) )
+        if ( !Oid.isOid( oid ) )
         {
             String msg = I18n.err( I18n.ERR_10006, oid );
             LOG.warn( msg );
@@ -184,7 +188,7 @@ public class SchemaEntityFactory implements EntityFactory
      */
     private Schema getSchema( String schemaName, Registries registries )
     {
-        if ( Strings.isEmpty(schemaName) )
+        if ( Strings.isEmpty( schemaName ) )
         {
             schemaName = MetaSchemaConstants.SCHEMA_OTHER;
         }
@@ -257,7 +261,8 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * Class load a syntaxChecker instance
      */
-    private SyntaxChecker classLoadSyntaxChecker( SchemaManager schemaManager, String oid, String className, Attribute byteCode )
+    private SyntaxChecker classLoadSyntaxChecker( SchemaManager schemaManager, String oid, String className,
+        Attribute byteCode )
         throws Exception
     {
         // Try to class load the syntaxChecker
@@ -273,7 +278,7 @@ public class SchemaEntityFactory implements EntityFactory
         {
             classLoader.setAttribute( byteCode );
             clazz = classLoader.loadClass( className );
-            byteCodeStr = new String( Base64.encode(byteCode.getBytes()) );
+            byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
         }
 
         // Create the syntaxChecker instance
@@ -288,7 +293,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         // Inject the SchemaManager for the comparator who needs it
         syntaxChecker.setSchemaManager( schemaManager );
-        
+
         return syntaxChecker;
     }
 
@@ -333,10 +338,10 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // Class load the syntaxChecker
             SyntaxChecker syntaxChecker = classLoadSyntaxChecker( schemaManager, oid, className, byteCode );
-    
+
             // Update the common fields
             setSchemaObjectProperties( syntaxChecker, entry, schema );
-    
+
             // return the resulting syntaxChecker
             return syntaxChecker;
         }
@@ -444,6 +449,39 @@ public class SchemaEntityFactory implements EntityFactory
 
 
     /**
+     * Load Comparator instances by marshaling IPojo
+     */
+    private LdapComparator<?> OSGILoadComparator( SchemaManager schemaManager, String oid, String className,
+        Attribute byteCode ) throws Exception
+    {
+        // Try to class load the comparator
+        LdapComparator<?> comparator = null;
+        Class<?> clazz = null;
+        String byteCodeStr = StringConstants.EMPTY;
+
+        if ( byteCode == null )
+        {
+            comparator = schemaElements.getLdapComparator( className, oid );
+        }
+        else
+        {
+            classLoader.setAttribute( byteCode );
+            clazz = classLoader.loadClass( className );
+            byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
+        }
+
+        // Update the loadable fields
+        comparator.setBytecode( byteCodeStr );
+        comparator.setFqcn( className );
+
+        // Inject the SchemaManager for the comparator who needs it
+        comparator.setSchemaManager( schemaManager );
+
+        return comparator;
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     public LdapComparator<?> getLdapComparator( SchemaManager schemaManager,
@@ -522,7 +560,62 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // Class load the comparator
             LdapComparator<?> comparator = classLoadComparator( schemaManager, oid, fqcn, byteCode );
-    
+
+            // Update the common fields
+            setSchemaObjectProperties( comparator, entry, schema );
+
+            // return the resulting comparator
+            return comparator;
+        }
+        catch ( Exception e )
+        {
+            throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, e.getMessage(), e );
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public LdapComparator<?> getLdapComparatorOSGI( SchemaManager schemaManager, Entry entry,
+        Registries targetRegistries,
+        String schemaName ) throws LdapException
+    {
+        checkEntry( entry, SchemaConstants.COMPARATOR );
+
+        // The Comparator OID
+        String oid = getOid( entry, SchemaConstants.COMPARATOR );
+
+        // Get the schema
+        if ( !schemaManager.isSchemaLoaded( schemaName ) )
+        {
+            // The schema is not loaded. We can't create the requested Comparator
+            String msg = I18n.err( I18n.ERR_10016, entry.getDn().getName(), schemaName );
+            LOG.warn( msg );
+            throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
+        }
+
+        Schema schema = getSchema( schemaName, targetRegistries );
+
+        if ( schema == null )
+        {
+            // The schema is disabled. We still have to update the backend
+            String msg = I18n.err( I18n.ERR_10017, entry.getDn().getName(), schemaName );
+            LOG.info( msg );
+            schema = schemaManager.getLoadedSchema( schemaName );
+        }
+
+        // The FQCN
+        String fqcn = getFqcn( entry, SchemaConstants.COMPARATOR );
+
+        // The ByteCode
+        Attribute byteCode = entry.get( MetaSchemaConstants.M_BYTECODE_AT );
+
+        try
+        {
+            // Class load the comparator
+            LdapComparator<?> comparator = OSGILoadComparator( schemaManager, oid, fqcn, byteCode );
+
             // Update the common fields
             setSchemaObjectProperties( comparator, entry, schema );
 
@@ -653,10 +746,10 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // Class load the Normalizer
             Normalizer normalizer = classLoadNormalizer( schemaManager, oid, className, byteCode );
-    
+
             // Update the common fields
             setSchemaObjectProperties( normalizer, entry, schema );
-    
+
             // return the resulting Normalizer
             return normalizer;
         }
@@ -1027,7 +1120,7 @@ public class SchemaEntityFactory implements EntityFactory
         return mFqcn;
     }
 
-    
+
     /**
      * Process the ByteCode attribute
      */
