@@ -31,7 +31,7 @@ import java.util.List;
 
 /**
  * A class used to translate a OpenLdap schema file to a Ldif file compatible
- * with the Apache DS meta schema format
+ * with the ApacheDS meta schema format
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

@@ -113,7 +113,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
-            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+            <Bundle-SymbolicName>${project.groupId}.dsmlv2.parser</Bundle-SymbolicName>
             <Export-Package>
                 {local-packages};version=${project.version};-noimport:=true
             </Export-Package>

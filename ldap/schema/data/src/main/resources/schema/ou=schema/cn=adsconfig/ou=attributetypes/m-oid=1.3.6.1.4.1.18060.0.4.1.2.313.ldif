@@ -1,15 +1,15 @@
 version: 1
 dn: m-oid=1.3.6.1.4.1.18060.0.4.1.2.313,ou=attributeTypes,cn=adsconfig,ou=schema
-m-ordering: caseExactOrderingMatch
+m-name: ads-passwordPolicies
 m-oid: 1.3.6.1.4.1.18060.0.4.1.2.313
-m-description: The PasswordPolicy configurations
-m-substr: caseExactSubstringsMatch
-m-supattributetype: ads-compositeElement
+m-description: The PasswordPolicy configuration
 objectclass: top
 objectclass: metaTop
 objectclass: metaAttributeType
 m-syntax: 1.3.6.1.4.1.1466.115.121.1.44
-m-name: ads-passwordPolicies
-creatorsname: uid=admin,ou=system
 m-equality: caseExactMatch
+m-ordering: caseExactOrderingMatch
+m-substr: caseExactSubstringsMatch
+m-supattributetype: ads-compositeElement
 m-length: 0
+creatorsname: uid=admin,ou=system

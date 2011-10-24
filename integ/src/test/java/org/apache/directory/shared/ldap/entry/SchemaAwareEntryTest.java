@@ -1240,4 +1240,28 @@ public class SchemaAwareEntryTest
     }
     
   
+    /**
+     * Test method for userCertificate;binary AT
+     */
+    @Test
+    public void testUserCertificateBinary() throws LdapException
+    {
+        Entry entry = new DefaultEntry( schemaManager );
+        entry.add( "objectClass", "top", "person", "inetorgPerson" );
+        entry.add( "cn", "test1", "test2" );
+        entry.add( "sn", "Test1", "Test2" );
+        entry.add( "userPassword", BYTES1, BYTES2 );
+        
+        entry.add( "userCertificate;binary", Strings.getBytesUtf8( "secret" ) );
+        assertTrue( entry.containsAttribute( "userCertificate;binary" ) );
+        assertTrue( entry.containsAttribute( "userCertificate" ) );
+        
+        entry.removeAttributes( "userCertificate;binary" );
+        assertFalse( entry.containsAttribute( "userCertificate;binary" ) );
+        assertFalse( entry.containsAttribute( "userCertificate" ) );
+        
+        entry.add( "userCertificate", Strings.getBytesUtf8( "secret" ) );
+        assertTrue( entry.containsAttribute( "userCertificate;binary" ) );
+        assertTrue( entry.containsAttribute( "userCertificate" ) );
+    }
 }
