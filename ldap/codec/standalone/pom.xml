@@ -27,7 +27,7 @@
   
   <artifactId>shared-ldap-codec-standalone</artifactId>
   <name>Apache Directory Shared LDAP Codec Standalone</name>
-  <packaging>bundle</packaging>
+  <packaging>jar</packaging>
   <description>
     This module was created to fix issue DIRSHARED-91 where the embedded Felix
     instance inside the default LdapCodecService implementation was making it 
@@ -56,37 +56,7 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>shared-ldap-codec-core</artifactId>
-    </dependency> 
-    
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-extras-codec</artifactId>
-    </dependency> 
-
-    <dependency>
-      <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.framework</artifactId>
     </dependency>
   </dependencies>
   
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <inherited>true</inherited>
-        <extensions>true</extensions>
-        <configuration>
-          <manifestLocation>META-INF</manifestLocation>
-          <instructions>
-            <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
-            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
-            <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
-            </Export-Package>
-          </instructions>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
