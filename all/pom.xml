@@ -27,7 +27,6 @@
   
   <artifactId>shared-all</artifactId>
   <name>Apache Directory Shared All</name>
-  <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
