@@ -128,7 +128,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
 
                     byte[] array = new byte[pduLength];
 
-                    System.arraycopy(buffer.array(), position, array, 0, pduLength);
+                    System.arraycopy( buffer.array(), position, array, 0, pduLength );
 
                     buffer.position( size );
 
