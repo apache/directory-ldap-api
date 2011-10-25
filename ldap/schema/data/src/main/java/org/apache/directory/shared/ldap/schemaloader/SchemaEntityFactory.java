@@ -28,6 +28,7 @@ import java.util.Set;
 
 import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.ipojo.helpers.OSGIHelper;
 import org.apache.directory.shared.ipojo.schema.SchemaElementsManager;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
@@ -270,19 +271,29 @@ public class SchemaEntityFactory implements EntityFactory
         SyntaxChecker syntaxChecker = null;
         String byteCodeStr = StringConstants.EMPTY;
 
-        if ( byteCode == null )
+        // Check if we're in OSGI context and byteCode is null 
+        if ( OSGIHelper.isAPIInOSGIContainer() && byteCode == null )
         {
-            clazz = Class.forName( className );
+            // That is the only case we have to OSGI load the class,
+            // The other cases are the monolithic load cases.
+            syntaxChecker = schemaElements.getSyntaxChecker( className );
         }
         else
         {
-            classLoader.setAttribute( byteCode );
-            clazz = classLoader.loadClass( className );
-            byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
-        }
+            if ( byteCode == null )
+            {
+                clazz = Class.forName( className );
+            }
+            else
+            {
+                classLoader.setAttribute( byteCode );
+                clazz = classLoader.loadClass( className );
+                byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
+            }
 
-        // Create the syntaxChecker instance
-        syntaxChecker = ( SyntaxChecker ) clazz.newInstance();
+            // Create the syntaxChecker instance
+            syntaxChecker = ( SyntaxChecker ) clazz.newInstance();
+        }
 
         // Update the common fields
         syntaxChecker.setBytecode( byteCodeStr );
@@ -402,72 +413,50 @@ public class SchemaEntityFactory implements EntityFactory
         Class<?> clazz = null;
         String byteCodeStr = StringConstants.EMPTY;
 
-        if ( byteCode == null )
+        // Check if we're in OSGI context and byteCode is null 
+        if ( OSGIHelper.isAPIInOSGIContainer() && byteCode == null )
         {
-            clazz = Class.forName( className );
-        }
-        else
-        {
-            classLoader.setAttribute( byteCode );
-            clazz = classLoader.loadClass( className );
-            byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
-        }
-
-        // Create the comparator instance. Either we have a no argument constructor,
-        // or we have one which takes an OID. Lets try the one with an OID argument first
-        try
-        {
-            Constructor<?> constructor = clazz.getConstructor( new Class[]
-                { String.class } );
-            comparator = ( LdapComparator<?> ) constructor.newInstance( new Object[]
-                { oid } );
-        }
-        catch ( NoSuchMethodException nsme )
-        {
-            // Ok, let's try with the constructor without argument.
-            // In this case, we will have to check that the OID is the same than
-            // the one we got in the Comparator entry
-            clazz.getConstructor();
-            comparator = ( LdapComparator<?> ) clazz.newInstance();
-
-            if ( !comparator.getOid().equals( oid ) )
-            {
-                String msg = I18n.err( I18n.ERR_10015, oid, comparator.getOid() );
-                throw new LdapInvalidAttributeValueException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg, nsme );
-            }
-        }
-
-        // Update the loadable fields
-        comparator.setBytecode( byteCodeStr );
-        comparator.setFqcn( className );
-
-        // Inject the SchemaManager for the comparator who needs it
-        comparator.setSchemaManager( schemaManager );
-
-        return comparator;
-    }
-
-
-    /**
-     * Load Comparator instances by marshaling IPojo
-     */
-    private LdapComparator<?> OSGILoadComparator( SchemaManager schemaManager, String oid, String className,
-        Attribute byteCode ) throws Exception
-    {
-        // Try to class load the comparator
-        LdapComparator<?> comparator = null;
-        Class<?> clazz = null;
-        String byteCodeStr = StringConstants.EMPTY;
-
-        if ( byteCode == null )
-        {
+            // That is the only case we have to OSGI load the class,
+            // The other cases are the monolithic load cases.
+            // Comparators are also oid bound classes, so we send it too.
             comparator = schemaElements.getLdapComparator( className, oid );
         }
         else
         {
-            classLoader.setAttribute( byteCode );
-            clazz = classLoader.loadClass( className );
-            byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
+            if ( byteCode == null )
+            {
+                clazz = Class.forName( className );
+            }
+            else
+            {
+                classLoader.setAttribute( byteCode );
+                clazz = classLoader.loadClass( className );
+                byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
+            }
+
+            // Create the comparator instance. Either we have a no argument constructor,
+            // or we have one which takes an OID. Lets try the one with an OID argument first
+            try
+            {
+                Constructor<?> constructor = clazz.getConstructor( new Class[]
+                    { String.class } );
+                comparator = ( LdapComparator<?> ) constructor.newInstance( new Object[]
+                    { oid } );
+            }
+            catch ( NoSuchMethodException nsme )
+            {
+                // Ok, let's try with the constructor without argument.
+                // In this case, we will have to check that the OID is the same than
+                // the one we got in the Comparator entry
+                clazz.getConstructor();
+                comparator = ( LdapComparator<?> ) clazz.newInstance();
+
+                if ( !comparator.getOid().equals( oid ) )
+                {
+                    String msg = I18n.err( I18n.ERR_10015, oid, comparator.getOid() );
+                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg, nsme );
+                }
+            }
         }
 
         // Update the loadable fields
@@ -575,61 +564,6 @@ public class SchemaEntityFactory implements EntityFactory
 
 
     /**
-     * {@inheritDoc}
-     */
-    public LdapComparator<?> getLdapComparatorOSGI( SchemaManager schemaManager, Entry entry,
-        Registries targetRegistries,
-        String schemaName ) throws LdapException
-    {
-        checkEntry( entry, SchemaConstants.COMPARATOR );
-
-        // The Comparator OID
-        String oid = getOid( entry, SchemaConstants.COMPARATOR );
-
-        // Get the schema
-        if ( !schemaManager.isSchemaLoaded( schemaName ) )
-        {
-            // The schema is not loaded. We can't create the requested Comparator
-            String msg = I18n.err( I18n.ERR_10016, entry.getDn().getName(), schemaName );
-            LOG.warn( msg );
-            throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg );
-        }
-
-        Schema schema = getSchema( schemaName, targetRegistries );
-
-        if ( schema == null )
-        {
-            // The schema is disabled. We still have to update the backend
-            String msg = I18n.err( I18n.ERR_10017, entry.getDn().getName(), schemaName );
-            LOG.info( msg );
-            schema = schemaManager.getLoadedSchema( schemaName );
-        }
-
-        // The FQCN
-        String fqcn = getFqcn( entry, SchemaConstants.COMPARATOR );
-
-        // The ByteCode
-        Attribute byteCode = entry.get( MetaSchemaConstants.M_BYTECODE_AT );
-
-        try
-        {
-            // Class load the comparator
-            LdapComparator<?> comparator = OSGILoadComparator( schemaManager, oid, fqcn, byteCode );
-
-            // Update the common fields
-            setSchemaObjectProperties( comparator, entry, schema );
-
-            // return the resulting comparator
-            return comparator;
-        }
-        catch ( Exception e )
-        {
-            throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, e.getMessage(), e );
-        }
-    }
-
-
-    /**
      * Class load a normalizer instances
      */
     private Normalizer classLoadNormalizer( SchemaManager schemaManager, String oid, String className,
@@ -640,19 +574,29 @@ public class SchemaEntityFactory implements EntityFactory
         Normalizer normalizer = null;
         String byteCodeStr = StringConstants.EMPTY;
 
-        if ( byteCode == null )
+        // Check if we're in OSGI context and byteCode is null 
+        if ( OSGIHelper.isAPIInOSGIContainer() && byteCode == null )
         {
-            clazz = Class.forName( className );
+            // That is the only case we have to OSGI load the class,
+            // The other cases are the monolithic load cases.
+            normalizer = schemaElements.getNormalizer( className );
         }
         else
         {
-            classLoader.setAttribute( byteCode );
-            clazz = classLoader.loadClass( className );
-            byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
-        }
+            if ( byteCode == null )
+            {
+                clazz = Class.forName( className );
+            }
+            else
+            {
+                classLoader.setAttribute( byteCode );
+                clazz = classLoader.loadClass( className );
+                byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
+            }
 
-        // Create the normalizer instance
-        normalizer = ( Normalizer ) clazz.newInstance();
+            // Create the normalizer instance
+            normalizer = ( Normalizer ) clazz.newInstance();
+        }
 
         // Update the common fields
         normalizer.setBytecode( byteCodeStr );

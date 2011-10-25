@@ -30,6 +30,8 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.PrepareString;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Provides;
 
 
 /**
@@ -38,6 +40,8 @@ import org.apache.directory.shared.ldap.model.schema.PrepareString;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
+@Component
+@Provides
 public class TelephoneNumberNormalizer extends Normalizer
 {
     /**
@@ -49,39 +53,38 @@ public class TelephoneNumberNormalizer extends Normalizer
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    public Value<?> normalize( Value<?> value ) throws LdapException
+    {
+        try
+        {
+            String normalized = PrepareString.normalize( value.getString(),
+                PrepareString.StringType.TELEPHONE_NUMBER );
 
-   /**
-    * {@inheritDoc}
-    */
-   public Value<?> normalize( Value<?> value ) throws LdapException
-   {
-       try
-       {
-           String normalized = PrepareString.normalize( value.getString(),
-               PrepareString.StringType.TELEPHONE_NUMBER );
-           
-           return new StringValue( normalized );
-       }
-       catch ( IOException ioe )
-       {
-           throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ), ioe );
-       }
-   }
+            return new StringValue( normalized );
+        }
+        catch ( IOException ioe )
+        {
+            throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ), ioe );
+        }
+    }
 
 
-   /**
-    * {@inheritDoc}
-    */
-   public String normalize( String value ) throws LdapException
-   {
-       try
-       {
-           return PrepareString.normalize( value,
-               PrepareString.StringType.TELEPHONE_NUMBER );
-       }
-       catch ( IOException ioe )
-       {
-           throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ), ioe );
-       }
-   }
+    /**
+     * {@inheritDoc}
+     */
+    public String normalize( String value ) throws LdapException
+    {
+        try
+        {
+            return PrepareString.normalize( value,
+                PrepareString.StringType.TELEPHONE_NUMBER );
+        }
+        catch ( IOException ioe )
+        {
+            throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ), ioe );
+        }
+    }
 }

@@ -37,13 +37,6 @@ import org.slf4j.LoggerFactory;
 @Provides
 public class UUIDComparator extends LdapComparator<String>
 {
-    /**
-     * Property to specify factory type.
-     * TODO:This is temporary. Will be vanished after introducing custom annotations
-     */
-    @Property(name = "ads.comp.type", value = "comparator")
-    public String compType;
-
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 

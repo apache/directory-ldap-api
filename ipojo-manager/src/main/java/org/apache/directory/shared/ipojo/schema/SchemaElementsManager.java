@@ -28,27 +28,31 @@ public class SchemaElementsManager
         return comparator;
     }
 
-    /*
-        public Normalizer getNormalizer( String factoryName ) throws Exception
-        {
-            Normalizer comparator = activeNormalizers.get( factoryName );
-            if ( comparator == null )
-            {
-                throw new Exception( "Required Normalizer is not registered" );
-            }
 
-            return comparator;
+    public Normalizer getNormalizer( String factoryName ) throws Exception
+    {
+        Normalizer normalizer = ( Normalizer ) IPojoHelper
+            .createIPojoComponent( factoryName, null, null );
+
+        if ( normalizer == null )
+        {
+            throw new Exception( "Required Normalizer is not registered" );
         }
 
+        return normalizer;
+    }
 
-        public SyntaxChecker getSyntaxChecker( String factoryName ) throws Exception
+
+    public SyntaxChecker getSyntaxChecker( String factoryName ) throws Exception
+    {
+        SyntaxChecker syntaxer = ( SyntaxChecker ) IPojoHelper
+            .createIPojoComponent( factoryName, null, null );
+
+        if ( syntaxer == null )
         {
-            SyntaxChecker comparator = activeSyntaxCheckers.get( factoryName );
-            if ( comparator == null )
-            {
-                throw new Exception( "Required SyntaxChecker is not registered" );
-            }
+            throw new Exception( "Required Syntax Checker is not registered" );
+        }
 
-            return comparator;
-        }*/
+        return syntaxer;
+    }
 }

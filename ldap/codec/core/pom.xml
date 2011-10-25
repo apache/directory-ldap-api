@@ -82,6 +82,12 @@
       <artifactId>org.osgi</artifactId>
       <scope>provided</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>org.apache.felix</groupId>
+      <artifactId>org.apache.felix.ipojo</artifactId>
+      <version>1.8.0</version>
+    </dependency>
   </dependencies>
 
   <build>

@@ -30,6 +30,8 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValu
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.PrepareString;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Provides;
 
 
 /**
@@ -40,6 +42,8 @@ import org.apache.directory.shared.ldap.model.schema.PrepareString;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
+@Component
+@Provides
 public class DeepTrimNormalizer extends Normalizer
 {
     /**
@@ -62,41 +66,42 @@ public class DeepTrimNormalizer extends Normalizer
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    public Value<?> normalize( Value<?> value ) throws LdapException
+    {
+        try
+        {
+            String normalized = PrepareString.normalize( value.getString(),
+                PrepareString.StringType.DIRECTORY_STRING );
 
-   /**
-    * {@inheritDoc}
-    */
-   public Value<?> normalize( Value<?> value ) throws LdapException
-   {
-       try
-       {
-           String normalized = PrepareString.normalize( value.getString(), 
-               PrepareString.StringType.DIRECTORY_STRING ); 
-           
-           return new StringValue( normalized ); 
-       }
-       catch ( IOException ioe )
-       {
-           throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err( I18n.ERR_04224, value ), ioe );
-       }
-   }
+            return new StringValue( normalized );
+        }
+        catch ( IOException ioe )
+        {
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                I18n.ERR_04224, value ), ioe );
+        }
+    }
 
 
-   /**
-    * {@inheritDoc}
-    */
-   public String normalize( String value ) throws LdapException
-   {
-       try
-       {
-           String normalized = PrepareString.normalize( value, 
-               PrepareString.StringType.DIRECTORY_STRING ); 
-           
-           return normalized; 
-       }
-       catch ( IOException ioe )
-       {
-           throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err( I18n.ERR_04224, value ), ioe );
-       }
-   }
+    /**
+     * {@inheritDoc}
+     */
+    public String normalize( String value ) throws LdapException
+    {
+        try
+        {
+            String normalized = PrepareString.normalize( value,
+                PrepareString.StringType.DIRECTORY_STRING );
+
+            return normalized;
+        }
+        catch ( IOException ioe )
+        {
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                I18n.ERR_04224, value ), ioe );
+        }
+    }
 }

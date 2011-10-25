@@ -34,7 +34,7 @@ public class OSGIHelper
     public static BundleContext bundleCtx;
 
 
-    private static boolean checkOSGIContext()
+    public static boolean isAPIInOSGIContainer()
     {
         if ( bundleCtx == null )
         {
@@ -47,7 +47,7 @@ public class OSGIHelper
 
     public static List<?> getServices( String serviceClassName, String filter )
     {
-        if ( !checkOSGIContext() )
+        if ( !isAPIInOSGIContainer() )
         {
             return null;
         }
@@ -78,7 +78,7 @@ public class OSGIHelper
 
     public static Object getService( String serviceClassName )
     {
-        if ( !checkOSGIContext() )
+        if ( !isAPIInOSGIContainer() )
         {
             return null;
         }

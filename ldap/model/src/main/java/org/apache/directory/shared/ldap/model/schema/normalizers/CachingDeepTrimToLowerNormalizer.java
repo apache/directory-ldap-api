@@ -20,6 +20,8 @@
 package org.apache.directory.shared.ldap.model.schema.normalizers;
 
 
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Provides;
 
 
 /**
@@ -32,6 +34,8 @@ package org.apache.directory.shared.ldap.model.schema.normalizers;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
+@Component
+@Provides
 public class CachingDeepTrimToLowerNormalizer extends CachingNormalizer
 {
     public CachingDeepTrimToLowerNormalizer()

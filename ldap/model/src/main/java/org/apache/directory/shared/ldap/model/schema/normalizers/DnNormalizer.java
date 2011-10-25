@@ -27,6 +27,8 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Provides;
 
 
 /**
@@ -35,11 +37,14 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
+@Component
+@Provides
 public class DnNormalizer extends Normalizer
 {
     /** A reference to the schema manager used to normalize the Dn */
     private SchemaManager schemaManager;
-    
+
+
     /**
      * Empty constructor
      */
@@ -55,11 +60,11 @@ public class DnNormalizer extends Normalizer
     public Value<?> normalize( Value<?> value ) throws LdapException
     {
         Dn dn = null;
-        
+
         String dnStr = value.getString();
-        
+
         dn = new Dn( schemaManager, dnStr );
-        
+
         return new StringValue( dn.getNormName() );
     }
 
@@ -70,9 +75,9 @@ public class DnNormalizer extends Normalizer
     public String normalize( String value ) throws LdapException
     {
         Dn dn = null;
-        
+
         dn = new Dn( schemaManager, value );
-        
+
         return dn.getNormName();
     }
 
@@ -86,9 +91,9 @@ public class DnNormalizer extends Normalizer
     public String normalize( Dn value ) throws LdapException
     {
         Dn dn = null;
-        
+
         dn = value.apply( schemaManager );
-        
+
         return dn.getNormName();
     }
 

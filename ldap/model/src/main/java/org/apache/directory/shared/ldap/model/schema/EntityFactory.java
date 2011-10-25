@@ -85,20 +85,6 @@ public interface EntityFactory
 
 
     /**
-     * Retrieve and load a Comparator class through OSGI from the DIT.
-     * 
-     * @param schemaManager The Schema Manager
-     * @param entry The entry containing all the informations to build a LdapComparator
-     * @param targetRegistries The registries containing all the enabled SchemaObjects
-     * @param schemaName The schema this SchemaObject will be part of
-     * @return the loaded Comparator
-     * @throws LdapException if anything fails during loading
-     */
-    LdapComparator<?> getLdapComparatorOSGI( SchemaManager schemaManager, Entry entry,
-        Registries targetRegistries, String schemaName ) throws LdapException;
-
-
-    /**
      * Construct an MatchingRule from an entry get from the Dit
      *
      * @param schemaManager The Schema Manager

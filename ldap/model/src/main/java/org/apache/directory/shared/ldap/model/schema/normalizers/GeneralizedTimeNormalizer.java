@@ -36,6 +36,8 @@ import org.apache.directory.shared.util.GeneralizedTime;
 import org.apache.directory.shared.util.GeneralizedTime.Format;
 import org.apache.directory.shared.util.GeneralizedTime.FractionDelimiter;
 import org.apache.directory.shared.util.GeneralizedTime.TimeZoneFormat;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Provides;
 
 
 /**
@@ -51,6 +53,8 @@ import org.apache.directory.shared.util.GeneralizedTime.TimeZoneFormat;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
+@Component
+@Provides
 public class GeneralizedTimeNormalizer extends Normalizer
 {
     /**
@@ -75,7 +79,8 @@ public class GeneralizedTimeNormalizer extends Normalizer
         }
         catch ( IOException ioe )
         {
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err( I18n.ERR_04224, value ), ioe );
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                I18n.ERR_04224, value ), ioe );
         }
     }
 
@@ -97,11 +102,13 @@ public class GeneralizedTimeNormalizer extends Normalizer
         }
         catch ( IOException ioe )
         {
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err( I18n.ERR_04224, value ), ioe );
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                I18n.ERR_04224, value ), ioe );
         }
         catch ( ParseException pe )
         {
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err( I18n.ERR_04224, value ), pe );
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                I18n.ERR_04224, value ), pe );
         }
     }
 }

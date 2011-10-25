@@ -30,6 +30,8 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValu
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.PrepareString;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Provides;
 
 
 /**
@@ -41,6 +43,8 @@ import org.apache.directory.shared.ldap.model.schema.PrepareString;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
+@Component
+@Provides
 public class DeepTrimToLowerNormalizer extends Normalizer
 {
     /**
@@ -77,12 +81,13 @@ public class DeepTrimToLowerNormalizer extends Normalizer
         {
             String normalized = PrepareString.normalize( value.getString(),
                 PrepareString.StringType.CASE_IGNORE );
-            
+
             return new StringValue( normalized );
         }
         catch ( IOException ioe )
         {
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err( I18n.ERR_04224, value ), ioe );
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                I18n.ERR_04224, value ), ioe );
         }
     }
 
@@ -101,12 +106,13 @@ public class DeepTrimToLowerNormalizer extends Normalizer
         {
             String normalized = PrepareString.normalize( value,
                 PrepareString.StringType.CASE_IGNORE );
-            
+
             return normalized;
         }
         catch ( IOException ioe )
         {
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err( I18n.ERR_04224,  value ), ioe );
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                I18n.ERR_04224, value ), ioe );
         }
     }
 }
