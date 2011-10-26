@@ -31,11 +31,6 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-i18n</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>shared-asn1-api</artifactId>
     </dependency>
 
@@ -43,15 +38,15 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>shared-asn1-ber</artifactId>
     </dependency>
-
+    
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-client-api</artifactId>
+      <artifactId>shared-i18n</artifactId>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <artifactId>shared-ldap-client-api</artifactId>
     </dependency>
 
     <dependency>
@@ -62,6 +57,11 @@
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>shared-ldap-codec-standalone</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>shared-ldap-model</artifactId>
     </dependency>
 
     <dependency>
@@ -88,7 +88,7 @@
             </goals>
             <configuration>
               <createDependencyReducedPom>true</createDependencyReducedPom>
-              <shadedArtifactAttached>false</shadedArtifactAttached>
+              <createSourcesJar>true</createSourcesJar>
             </configuration>
           </execution>
         </executions>
