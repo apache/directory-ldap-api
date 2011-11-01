@@ -109,5 +109,6 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
 
         ((LdapComparator<E>)wrapped).setSchemaManager( schemaManager );
         super.setSchemaManager( schemaManager );
+        this.schemaManager = schemaManager;
     }
 }
