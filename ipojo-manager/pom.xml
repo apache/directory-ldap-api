@@ -36,14 +36,7 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-      <version>1.8.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.ipojo.handler.whiteboard</artifactId>
-      <version>1.6.0</version>
+      <artifactId>org.apache.felix.ipojo</artifactId>
     </dependency>
     
     <dependency>
@@ -85,7 +78,7 @@
       <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-ipojo-plugin</artifactId>
-        <version>1.8.0</version>
+        <version>${maven.ipojo.version}</version>
         <executions>
           <execution>
             <goals>

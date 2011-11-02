@@ -62,6 +62,9 @@
     <pax-exam-container-default.version>1.2.4</pax-exam-container-default.version>
     <pax-exam-junit.version>1.2.4</pax-exam-junit.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
+    <maven.ipojo.version>1.8.0</maven.ipojo.version>
+    <ipojo.version>1.8.0</ipojo.version>
+    <ipojo.annotations.version>1.8.0</ipojo.annotations.version>
   </properties>
   
   <distributionManagement>
@@ -658,6 +661,18 @@
         <groupId>xpp3</groupId>
         <artifactId>xpp3</artifactId>
         <version>${xpp3.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>org.apache.felix.ipojo</artifactId>
+        <version>${ipojo.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+        <version>${ipojo.annotations.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
