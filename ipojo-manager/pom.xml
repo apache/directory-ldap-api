@@ -28,7 +28,7 @@
   </parent>
   
   <artifactId>shared-ipojo-manager</artifactId>
-  <name>ApacheDS Shared OSGI/IPOJO Manager</name>
+  <name>Apache Directory Shared OSGI/IPOJO Manager</name>
   <packaging>bundle</packaging>
 
   <description>Provides main facility for handling IPojo component management</description>
