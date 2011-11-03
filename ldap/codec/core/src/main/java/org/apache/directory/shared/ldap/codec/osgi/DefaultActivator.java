@@ -55,6 +55,7 @@ public class DefaultActivator implements BundleActivator
     {
         registration = bundleContext.registerService( LdapApiService.class.getName(), codec, null );
         LdapApiServiceFactory.initialize( codec );
+        System.out.println( "Service registered: " + LdapApiService.class.getName() + " - " + codec );
     }
 
 
