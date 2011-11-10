@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.slf4j.Logger;
@@ -1872,6 +1873,24 @@ public final class Strings
         }
 
         return true;
+    }
+
+    
+    /**
+     * Construct an UUID based on an integer value
+     * @param idx The value
+     * @return A UUID
+     */
+    public static UUID getUUIDString( int idx )
+    {
+        /** UUID string */
+        UUID baseUUID = UUID.fromString( "00000000-0000-0000-0000-000000000000" );
+        
+        long low = baseUUID.getLeastSignificantBits();
+        long high = baseUUID.getMostSignificantBits();
+        low = low + idx;
+        
+        return new UUID( high, low );
     }
 
 
