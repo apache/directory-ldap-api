@@ -19,7 +19,6 @@
  */
 package org.apache.directory.shared.ldap.model.schema.comparators;
 
-
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class UUIDComparator extends LdapComparator<String>
+public class UUIDComparator extends LdapComparator<Object>
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
@@ -51,7 +50,7 @@ public class UUIDComparator extends LdapComparator<String>
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
-    public int compare( String uuid1, String uuid2 )
+    public int compare( Object uuid1, Object uuid2 )
     {
         LOG.debug( "comparing UUID objects '{}' with '{}'", uuid1, uuid2 );
 
@@ -68,6 +67,9 @@ public class UUIDComparator extends LdapComparator<String>
             return 1;
         }
         
-        return uuid1.compareTo( uuid2 );
+        String uuidStr1 = uuid1.toString();
+        String uuidStr2 = uuid2.toString();
+
+        return uuidStr1.compareTo( uuidStr2 );
     }
 }
