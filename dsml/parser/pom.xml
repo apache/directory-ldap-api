@@ -35,16 +35,10 @@
       <artifactId>junit-addons</artifactId>
       <scope>test</scope>
     </dependency>
-
-    <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-codec-standalone</artifactId>
-      <scope>test</scope>
-    </dependency>
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-net-mina</artifactId>
+      <artifactId>shared-ldap-codec-standalone</artifactId>
       <scope>test</scope>
     </dependency>
     

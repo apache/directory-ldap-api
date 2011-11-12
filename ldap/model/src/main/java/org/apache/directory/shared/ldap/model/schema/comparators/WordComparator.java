@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema.comparators;
 
@@ -30,16 +30,16 @@ import org.slf4j.LoggerFactory;
  * <p>
  * A comparator for Words/KeyWords. RFC 4517 par. 4.2.21 (KeywordMatch) and par.
  * 4.2.32 is pretty vague about the definition of what is a word or a keyword
- * ("...The precise definition of a word is implementation specific...) 
+ * ("...The precise definition of a word is implementation specific...)
  * ("...The identification of keywords in the attribute value and the exactness
  *  of the match are both implementation specific...).
  * <p>
- * We will simply check that the assertion is present in the value at some place, 
+ * We will simply check that the assertion is present in the value at some place,
  * after having deep trimmed the word.
  * <p>
  * For instance, the word "  World  " will be found in the value "Hello world!".
  * <p>
- * A word is defined by the following regexp : "(^|[^A-Za-z0-9])([A-Za-z0-9])*([^A-Za-z0-9]|$)". 
+ * A word is defined by the following regexp : "(^|[^A-Za-z0-9])([A-Za-z0-9])*([^A-Za-z0-9]|$)".
  * Anything that is not matched by this regexp will not be considered as a word.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -66,7 +66,7 @@ public class WordComparator extends LdapComparator<String>
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ES_COMPARING_PARAMETER_STRING_WITH_EQ",
-    		justification ="false positive")
+            justification ="false positive")
     public int compare( String value, String assertion )
     {
         LOG.debug( "comparing String objects '{}' with '{}'", value, assertion );

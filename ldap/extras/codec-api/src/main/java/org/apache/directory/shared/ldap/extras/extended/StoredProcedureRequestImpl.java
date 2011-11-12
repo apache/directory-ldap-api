@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.extras.extended;
 
@@ -131,8 +131,8 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredPr
         {
             this.procedure = new byte[ procedure.length ];
             System.arraycopy( procedure, 0, this.procedure, 0, procedure.length );
-        } 
-        else 
+        }
+        else
         {
             this.procedure = null;
         }
@@ -196,7 +196,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredPr
      * {@inheritDoc}
      */
     @edu.umd.cs.findbugs.annotations.SuppressWarnings( value = "BC_IMPOSSIBLE_INSTANCEOF",
-    		justification = "False positive")
+            justification = "False positive")
     public Object getParameterTypeString( int index )
     {
         if ( ! language.equals( "java" ) )
@@ -239,7 +239,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredPr
      * {@inheritDoc}
      */
     @edu.umd.cs.findbugs.annotations.SuppressWarnings( value = "BC_IMPOSSIBLE_INSTANCEOF",
-    		justification = "False positive")
+            justification = "False positive")
     public Object getParameterValueString( int index )
     {
         if ( ! language.equals( "java" ) )
@@ -258,11 +258,11 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredPr
                     }
                     catch ( IntegerDecoderException e )
                     {
-                        throw new RuntimeException( "Failed to decode INTEGER: " + 
+                        throw new RuntimeException( "Failed to decode INTEGER: " +
                             Strings.dumpBytes( ( byte[] ) obj ), e );
                     }
                 }
-                else 
+                else
                 {
                     return str;
                 }

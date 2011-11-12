@@ -54,11 +54,6 @@
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-codec-standalone</artifactId>
-    </dependency> 
-
-    <dependency>
-      <groupId>${project.groupId}</groupId>
       <artifactId>shared-ldap-extras-codec</artifactId>
     </dependency> 
 

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.dsmlv2.reponse;
 
@@ -33,7 +33,7 @@ import org.dom4j.tree.DefaultElement;
  * Class representing Error Response.
  * <br/>
  * An Error Response has a requestID, a message, and a type which can be :
- * <ul> 
+ * <ul>
  *     <li>NOT_ATTEMPTED,</li>
  *     <li>COULD_NOT_CONNECT,</li>
  *     <li>CONNECTION_CLOSED,</li>
@@ -44,7 +44,7 @@ import org.dom4j.tree.DefaultElement;
  *     <li>OTHER</li>
  * </ul>
  * 
- * @TODO review this class - maybe it should not be decorated and if it is 
+ * @TODO review this class - maybe it should not be decorated and if it is
  * it should extend AbstractResultResponseDsml - by Alex
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -106,7 +106,7 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
      *
      * @param requestID
      *      the requestID of the response
-     * @param type 
+     * @param type
      *      the type of the response
      * @param message
      *      the associated message
@@ -160,9 +160,9 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
     /**
      * Returns the String associated to the error response type
      * 
-     * @param type 
+     * @param type
      *      the error response type
-     * @return 
+     * @return
      *      the corresponding String
      */
     public String getTypeDescr( ErrorResponseType type )
@@ -279,8 +279,8 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
     public LdapApiService getCodecService()
     {
         throw new IllegalArgumentException( "This should not be a decorator " +
-        		"but seems it was made into one. We need to do something about" +
-        		"this if this exception is being raise." );
+                "but seems it was made into one. We need to do something about" +
+                "this if this exception is being raise." );
     }
 
 
