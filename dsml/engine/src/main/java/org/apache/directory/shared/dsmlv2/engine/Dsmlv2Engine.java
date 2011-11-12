@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.shared.dsmlv2.engine;
@@ -152,7 +152,7 @@ public class Dsmlv2Engine
      * 
      * Creates a new instance of Dsmlv2Engine.
      *
-     * @param connection an unbound active connection 
+     * @param connection an unbound active connection
      * @param user the user name to be used to bind this connection to the server
      * @param password user's credentials
      */
@@ -168,7 +168,7 @@ public class Dsmlv2Engine
     /**
      * Processes the file given and return the result of the operations
      * 
-     * @param dsmlInput 
+     * @param dsmlInput
      *      the DSMLv2 formatted request input
      * @return
      *      the XML response in DSMLv2 Format
@@ -187,9 +187,9 @@ public class Dsmlv2Engine
     /**
      * Processes the file given and return the result of the operations
      * 
-     * @param fileName 
+     * @param fileName
      *      the path to the file
-     * @return 
+     * @return
      *      the XML response in DSMLv2 Format
      * @throws XmlPullParserException
      *      if an error occurs in the parser
@@ -225,7 +225,7 @@ public class Dsmlv2Engine
     /**
      * uses the default UTF-8 encoding for processing the DSML
      * 
-     * @see #processDSML(InputStream, String, OutputStream) 
+     * @see #processDSML(InputStream, String, OutputStream)
      */
     public void processDSML( InputStream inputStream, OutputStream out ) throws Exception
     {
@@ -234,7 +234,7 @@ public class Dsmlv2Engine
 
 
     /**
-     * process the DSML request(s) from the given input stream with the specified encoding 
+     * process the DSML request(s) from the given input stream with the specified encoding
      * and writes the response to the output stream
      * 
      * @param inputStream the input stream for DSML batch request
@@ -641,7 +641,7 @@ public class Dsmlv2Engine
                     {
                         SearchResultEntry searchResultEntry = ( SearchResultEntry ) searchResponse;
 
-                        SearchResultEntryDsml searchResultEntryDsml = new SearchResultEntryDsml( 
+                        SearchResultEntryDsml searchResultEntryDsml = new SearchResultEntryDsml(
                             connection.getCodecService(), searchResultEntry );
                         searchResponseDsml = new SearchResponseDsml( connection.getCodecService(), searchResultEntryDsml );
 
@@ -719,7 +719,7 @@ public class Dsmlv2Engine
      *     <li>Parsing and Getting BatchRequest</li>
      *     <li>Getting and registering options from BatchRequest</li>
      * </ul>
-     *     
+     * 
      * @throws XmlPullParserException
      *      if an error occurs in the parser
      */
@@ -767,7 +767,7 @@ public class Dsmlv2Engine
         
         if ( connection == null )
         {
-        	throw new IOException( I18n.err( I18n.ERR_03101_MISSING_CONNECTION_TO ) );
+            throw new IOException( I18n.err( I18n.ERR_03101_MISSING_CONNECTION_TO ) );
         }
         
         BindRequest bindRequest = new BindRequestImpl();

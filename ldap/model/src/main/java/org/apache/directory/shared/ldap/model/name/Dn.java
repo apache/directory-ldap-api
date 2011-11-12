@@ -331,7 +331,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * Creates a Dn concatenating a Rdn and a Dn.
      *
      * @param rdn the Rdn to add to the Dn
-     * @param dn the Dn 
+     * @param dn the Dn
      * @throws LdapInvalidDnException If the resulting Dn is invalid
      */
     public Dn( Rdn rdn, Dn dn ) throws LdapInvalidDnException
@@ -547,7 +547,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Tells if the current Dn is a parent of another Dn.<br>
-     * For instance, <b>dc=com</b> is a ancestor 
+     * For instance, <b>dc=com</b> is a ancestor
      * of <b>dc=example, dc=com</b>
      *
      * @param dn The child
@@ -713,7 +713,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * Dn descendant = dn.getDescendantOf( "dc=apache, dc=org" );
      * 
      * // At this point, the descendant contains cn=test, dc=server, dc=directory"
-     * </pre> 
+     * </pre>
      */
     public Dn getDescendantOf( String ancestor ) throws LdapInvalidDnException
     {
@@ -734,7 +734,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * Dn descendant = dn.getDescendantOf( "dc=apache, dc=org" );
      * 
      * // At this point, the descendant contains cn=test, dc=server, dc=directory"
-     * </pre> 
+     * </pre>
      */
     public Dn getDescendantOf( Dn ancestor ) throws LdapInvalidDnException
     {
@@ -795,7 +795,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * Dn ancestor = dn.getAncestorOf( "cn=test, dc=server, dc=directory" );
      * 
      * // At this point, the ancestor contains "dc=apache, dc=org"
-     * </pre> 
+     * </pre>
      */
     public Dn getAncestorOf( String descendant ) throws LdapInvalidDnException
     {
@@ -815,7 +815,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * Dn ancestor = dn.getAncestorOf( new Dn( "cn=test, dc=server, dc=directory" ) );
      * 
      * // At this point, the ancestor contains "dc=apache, dc=org"
-     * </pre> 
+     * </pre>
      */
     public Dn getAncestorOf( Dn descendant ) throws LdapInvalidDnException
     {
@@ -1008,7 +1008,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * @return <code>true</code> if the two instances are equals
      */
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS",
-    		justification = "String is a special case")
+            justification = "String is a special case")
     @Override
     public boolean equals( Object obj )
     {
@@ -1241,7 +1241,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * Iterate over the inner Rdn. The Rdn are returned from 
+     * Iterate over the inner Rdn. The Rdn are returned from
      * the rightmost to the leftmost. For instance, the following code :<br/>
      * <pre>
      * Dn dn = new Dn( "sn=test, dc=apache, dc=org );
