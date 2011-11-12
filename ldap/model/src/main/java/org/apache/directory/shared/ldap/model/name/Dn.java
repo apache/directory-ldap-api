@@ -595,7 +595,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public boolean isDescendantOf( Dn dn )
     {
-        if ( ( dn == null ) || dn.isRootDSE() )
+        if ( ( dn == null ) || dn.isRootDse() )
         {
             return true;
         }
@@ -640,7 +640,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *
      * @return <code>true</code> if the Dn is the RootDSE's Dn
      */
-    public boolean isRootDSE()
+    public boolean isRootDse()
     {
         return ( rdns.size() == 0 );
     }

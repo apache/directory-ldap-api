@@ -206,7 +206,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     private List<String> supportedControls;
 
     /** The ROOT DSE entry */
-    private Entry rootDSE;
+    private Entry rootDse;
 
     /** A flag indicating that the BindRequest has been issued and successfully authenticated the user */
     private AtomicBoolean authenticated = new AtomicBoolean( false );
@@ -2552,7 +2552,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             throw new IllegalArgumentException( "The entry Dn must not be null" );
         }
 
-        if ( entryDn.isRootDSE() )
+        if ( entryDn.isRootDse() )
         {
             throw new IllegalArgumentException( "The RootDSE cannot be moved" );
         }
@@ -2562,7 +2562,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             throw new IllegalArgumentException( "The new Dn must not be null" );
         }
 
-        if ( newDn.isRootDSE() )
+        if ( newDn.isRootDse() )
         {
             throw new IllegalArgumentException( "The RootDSE cannot be the target" );
         }
@@ -3381,14 +3381,14 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             return supportedControls;
         }
 
-        if ( rootDSE == null )
+        if ( rootDse == null )
         {
             fetchRootDSE();
         }
 
         supportedControls = new ArrayList<String>();
 
-        Attribute attr = rootDSE.get( SchemaConstants.SUPPORTED_CONTROL_AT );
+        Attribute attr = rootDse.get( SchemaConstants.SUPPORTED_CONTROL_AT );
 
         for ( Value<?> value : attr )
         {
@@ -3549,7 +3549,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         {
             cursor = search( "", "(objectClass=*)", SearchScope.OBJECT, "*", "+" );
             cursor.next();
-            rootDSE = cursor.get();
+            rootDse = cursor.get();
         }
         catch ( Exception e )
         {
