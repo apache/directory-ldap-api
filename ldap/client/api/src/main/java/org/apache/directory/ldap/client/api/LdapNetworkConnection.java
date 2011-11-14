@@ -188,7 +188,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     private IoConnector connector;
 
     /** A mutex used to avoid a double close of the connector */
-    private ReentrantLock connectorMutex = new ReentrantLock(); 
+    private ReentrantLock connectorMutex = new ReentrantLock();
 
     /**
      * The created session, created when we open a connection with
@@ -3267,6 +3267,24 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         {
             throw le;
         }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Entry getRootDse() throws LdapException
+    {
+        return lookup( Dn.ROOT_DSE, SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Entry getRootDse( String... attributes ) throws LdapException
+    {
+        return lookup( Dn.ROOT_DSE, attributes );
     }
 
 
