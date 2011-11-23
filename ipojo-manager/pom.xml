@@ -66,6 +66,7 @@
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
+            <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
             <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
             <Bundle-Activator>org.apache.directory.shared.ipojo.helpers.OSGIHelpersActivator</Bundle-Activator>
             <Export-Package>
