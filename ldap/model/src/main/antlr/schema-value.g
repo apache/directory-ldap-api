@@ -67,7 +67,7 @@ protected LDIGIT : '1'..'9' ;
 protected DIGIT : '0'..'9' ; 
 protected NUMBER : DIGIT | ( LDIGIT (DIGIT)+ ) ;
 protected NUMBER2 : (DIGIT)+ ;
-protected NUMERICOID : NUMBER ( '.' NUMBER )+ ;
+protected NUMERICOID : NUMBER2 ( '.' NUMBER2 )+ ;
 protected HYPEN : '-';
 protected OTHER : '_' | ';' | '.' | ':' ;
 protected DESCR: CHAR ( CHAR | DIGIT | HYPEN )* ;
