@@ -1710,6 +1710,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         }
         catch ( LdapLdifException ne )
         {
+            ne.printStackTrace();
             LOG.error( I18n.err( I18n.ERR_12069, ne.getLocalizedMessage() ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12070 ), ne );
         }
