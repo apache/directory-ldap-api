@@ -112,6 +112,7 @@ import org.apache.directory.shared.ldap.model.message.ModifyDnResponse;
 import org.apache.directory.shared.ldap.model.message.ModifyRequest;
 import org.apache.directory.shared.ldap.model.message.ModifyRequestImpl;
 import org.apache.directory.shared.ldap.model.message.ModifyResponse;
+import org.apache.directory.shared.ldap.model.message.Request;
 import org.apache.directory.shared.ldap.model.message.Response;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.message.SearchRequest;
@@ -188,7 +189,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     private IoConnector connector;
 
     /** A mutex used to avoid a double close of the connector */
-    private ReentrantLock connectorMutex = new ReentrantLock(); 
+    private ReentrantLock connectorMutex = new ReentrantLock();
 
     /**
      * The created session, created when we open a connection with
@@ -230,6 +231,9 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
     /** the SslFilter key */
     private static final String SSL_FILTER_KEY = "sslFilter";
+    
+    /** The exception stored in the session if we've got one */
+    private static final String EXCEPTION_KEY = "sessionException";
 
     /** the StartTLS extended operation's OID */
     private static final String START_TLS_REQ_OID = "1.3.6.1.4.1.1466.20037";
@@ -523,8 +527,10 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
         // Wait until it's established
         connectionFuture.awaitUninterruptibly();
+        
+        boolean isConnected = connectionFuture.isConnected();
 
-        if ( !connectionFuture.isConnected() )
+        if ( !isConnected )
         {
             // disposing connector if not connected
             try
@@ -822,16 +828,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addToFutureMap( newId, addFuture );
 
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( addRequest );
-
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Add failed : timeout occured" );
-
-            throw new LdapException( TIME_OUT_ERROR );
-        }
+        writeRequest( addRequest );
 
         // Ok, done return the future
         return addFuture;
@@ -1305,7 +1302,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
         addToFutureMap( newId, bindFuture );
 
-        writeBindRequest( bindRequest );
+        writeRequest( bindRequest );
 
         // Ok, done return the future
         return bindFuture;
@@ -1691,18 +1688,9 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addToFutureMap( searchRequest.getMessageId(), searchFuture );
 
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( searchRequest );
+        writeRequest( searchRequest );
 
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Search failed : timeout occured" );
-
-            throw new LdapException( TIME_OUT_ERROR );
-        }
-
-        // Chekc that the future hasn't be canceled
+        // Check that the future hasn't be canceled
         if ( searchFuture.isCancelled() )
         {
             // Thow an exception here
@@ -1826,6 +1814,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     public void exceptionCaught( IoSession session, Throwable cause ) throws Exception
     {
         LOG.warn( cause.getMessage(), cause );
+        session.setAttribute( EXCEPTION_KEY, cause );
 
         if ( cause instanceof ProtocolEncoderException )
         {
@@ -1840,10 +1829,8 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
                 response.setCause( realCause );
             }
         }
-        else
-        {
-            cause.printStackTrace();
-        }
+        
+        session.close( true );
     }
 
 
@@ -2365,16 +2352,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addToFutureMap( newId, modifyFuture );
 
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( modRequest );
-
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Modify failed : timeout occured" );
-
-            throw new LdapException( TIME_OUT_ERROR );
-        }
+        writeRequest( modRequest );
 
         // Ok, done return the future
         return modifyFuture;
@@ -2679,16 +2657,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addToFutureMap( newId, modifyDnFuture );
 
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( modDnRequest );
-
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Modify failed : timeout occured" );
-
-            throw new LdapException( TIME_OUT_ERROR );
-        }
+        writeRequest( modDnRequest );
 
         // Ok, done return the future
         return modifyDnFuture;
@@ -2878,16 +2847,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addToFutureMap( newId, deleteFuture );
 
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( deleteRequest );
-
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Delete failed : timeout occured" );
-
-            throw new LdapException( TIME_OUT_ERROR );
-        }
+        writeRequest( deleteRequest );
 
         // Ok, done return the future
         return deleteFuture;
@@ -3068,16 +3028,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addToFutureMap( newId, compareFuture );
 
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( compareRequest );
-
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Compare failed : timeout occured" );
-
-            throw new LdapException( TIME_OUT_ERROR );
-        }
+        writeRequest( compareRequest );
 
         // Ok, done return the future
         return compareFuture;
@@ -3222,16 +3173,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addToFutureMap( newId, extendedFuture );
 
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( extendedRequest );
-
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Extended failed : timeout occured" );
-
-            throw new LdapException( TIME_OUT_ERROR );
-        }
+        writeRequest( extendedRequest );
 
         // Ok, done return the future
         return extendedFuture;
@@ -3267,6 +3209,24 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         {
             throw le;
         }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Entry getRootDse() throws LdapException
+    {
+        return lookup( Dn.ROOT_DSE, SchemaConstants.ALL_USER_ATTRIBUTES_ARRAY );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Entry getRootDse( String... attributes ) throws LdapException
+    {
+        return lookup( Dn.ROOT_DSE, attributes );
     }
 
 
@@ -3775,7 +3735,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             SSLContext sslContext = SSLContext.getInstance( config.getSslProtocol() );
             sslContext.init( config.getKeyManagers(), config.getTrustManagers(), config.getSecureRandom() );
 
-            SslFilter sslFilter = new SslFilter( sslContext );
+            SslFilter sslFilter = new SslFilter( sslContext, true );
             sslFilter.setUseClientMode( true );
             sslFilter.setEnabledCipherSuites( config.getEnabledCipherSuites() );
 
@@ -3885,7 +3845,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
                 // Stores the challenge's response, and send it to the server
                 bindRequest.setCredentials( challengeResponse );
-                writeBindRequest( bindRequest );
+                writeRequest( bindRequest );
 
                 // Get the server's response, blocking
                 bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
@@ -3911,7 +3871,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
                 bindRequestCopy.setVersion3( bindRequest.getVersion3() );
                 bindRequestCopy.addAllControls( bindRequest.getControls().values().toArray( new Control[0] ) );
 
-                writeBindRequest( bindRequestCopy );
+                writeRequest( bindRequestCopy );
 
                 bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
 
@@ -3945,7 +3905,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
                     addToFutureMap( newId, bindFuture );
 
-                    writeBindRequest( bindRequest );
+                    writeRequest( bindRequest );
 
                     bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
 
@@ -3974,24 +3934,56 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             throw new LdapException( e );
         }
     }
-
-
+    
+    
     /**
      * a reusable code block to be used in various bind methods
      */
-    private void writeBindRequest( BindRequest bindRequest ) throws LdapException
+    private void writeRequest( Request request ) throws LdapException
     {
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( bindRequest );
+        WriteFuture writeFuture = ldapSession.write( request );
 
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
+        long localTimeout = timeout;
+        
+        while ( localTimeout > 0 )
         {
-            // We didn't received anything : this is an error
-            LOG.error( "Bind failed : timeout occured" );
+            // Wait only 100 ms
+            boolean done = writeFuture.awaitUninterruptibly( 100 );
 
-            throw new LdapException( TIME_OUT_ERROR );
+            if ( done )
+            {
+                return;
+            }
+            
+            // Wait for the message to be sent to the server
+            if ( !ldapSession.isConnected() )
+            {
+                // We didn't received anything : this is an error
+                LOG.error( "Message failed : something wrong has occured" );
+                
+                Exception exception = (Exception)ldapSession.removeAttribute( EXCEPTION_KEY );
+    
+                if ( exception != null )
+                {
+                    if ( exception instanceof LdapException )
+                    {
+                        throw (LdapException)exception;
+                    }
+                    else
+                    {
+                        throw new InvalidConnectionException( exception.getMessage() );
+                    }
+                }
+                
+                throw new InvalidConnectionException( "Error while sending some message : the session has been closed" );
+            }
+            
+            localTimeout -= 100;
         }
+        
+        LOG.error( "TimeOut has occured" );
+        throw new LdapException( TIME_OUT_ERROR );
     }
 
 

@@ -653,9 +653,9 @@ public interface LdapConnection
      * Tells if an Entry exists in the server.
      * 
      * @param dn The Dn for the entry we want to check the existence
-     * @return <code>true</code> if the entry exists, <code>false</code> otherwise. 
+     * @return <code>true</code> if the entry exists, <code>false</code> otherwise.
      * Note that if the entry exists but if the user does not have the permission to
-     * read it, <code>false</code> will also be returned 
+     * read it, <code>false</code> will also be returned
      * @throws LdapException if some error occurred
      */
     boolean exists( String dn ) throws LdapException;
@@ -665,12 +665,33 @@ public interface LdapConnection
      * Tells if an Entry exists in the server.
      * 
      * @param dn The Dn for the entry we want to check the existence
-     * @return <code>true</code> if the entry exists, <code>false</code> otherwise. 
+     * @return <code>true</code> if the entry exists, <code>false</code> otherwise.
      * Note that if the entry exists but if the user does not have the permission to
-     * read it, <code>false</code> will also be returned 
+     * read it, <code>false</code> will also be returned
      * @throws LdapException if some error occurred
      */
     boolean exists( Dn dn ) throws LdapException;
+    
+    
+    /**
+     * Get back the RooDSE from the connected server. We only return the user attributes.
+     * 
+     * @return The Entry containing all the information about the rootDSE
+     * @throws LdapException If the rootDSE can't be read
+     */
+    Entry getRootDse() throws LdapException;
+    
+    
+    /**
+     * Get back the RooDSE from the connected server. The user can provide the
+     * list of attributes he wants to get back. Sending "*" will return all the
+     * user attributes, sending "+" will return all the operational attributes;
+     * 
+     * @param attributes The list of attributes to return
+     * @return The Entry containing all the information about the rootDSE
+     * @throws LdapException If the rootDSE can't be read
+     */
+    Entry getRootDse( String... attributes ) throws LdapException;
 
 
     /**
@@ -778,7 +799,7 @@ public interface LdapConnection
 
     
     /**
-     * Gets the LDAP CODEC service responsible for encoding and decoding 
+     * Gets the LDAP CODEC service responsible for encoding and decoding
      * messages.
      * 
      * @return The LDAP CODEC service.

@@ -26,12 +26,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -213,6 +210,19 @@ public final class DefaultEntry implements Entry
      * @param upIds The list of attributes to create.
      */
     public DefaultEntry( String dn, Object... elements ) throws LdapException
+    {
+        this( null, dn, elements );
+    }
+
+
+    /**
+     * Creates a new instance of DefaultEntry, with a
+     * Dn and a list of IDs.
+     *
+     * @param dn The Dn for this serverEntry. Can be null.
+     * @param upIds The list of attributes to create.
+     */
+    public DefaultEntry( Dn dn, Object... elements ) throws LdapException
     {
         this( null, dn, elements );
     }
@@ -432,7 +442,7 @@ public final class DefaultEntry implements Entry
             return id;
         }
         else
-        {     
+        {
             return upId;
         }
     }
