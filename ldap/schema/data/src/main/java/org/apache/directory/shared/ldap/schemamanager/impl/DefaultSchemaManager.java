@@ -722,6 +722,7 @@ public class DefaultSchemaManager implements SchemaManager
                         LOG.info( msg );
                         Throwable error = new LdapProtocolErrorException( msg );
                         errors.add( error );
+                        
                         return false;
                     }
 
@@ -955,7 +956,7 @@ public class DefaultSchemaManager implements SchemaManager
         {
             if ( registries.isDisabledAccepted() || ( schema.isEnabled() && schemaObject.isEnabled() ) )
             {
-                registries.add( errors, schemaObject );
+                registries.add( errors, schemaObject, false );
             }
             else
             {
@@ -966,7 +967,7 @@ public class DefaultSchemaManager implements SchemaManager
         {
             if ( schema.isEnabled() && schemaObject.isEnabled() )
             {
-                registries.add( errors, schemaObject );
+                registries.add( errors, schemaObject, false );
             }
             else
             {
@@ -1812,7 +1813,7 @@ public class DefaultSchemaManager implements SchemaManager
         if ( registries.isRelaxed() )
         {
             // Apply the addition right away
-            registries.add( errors, copy );
+            registries.add( errors, copy, true );
 
             return errors.isEmpty();
         }
@@ -1877,7 +1878,7 @@ public class DefaultSchemaManager implements SchemaManager
                 }
 
                 // Inject the new SchemaObject in the cloned registries
-                clonedRegistries.add( errors, copy );
+                clonedRegistries.add( errors, copy, true );
 
                 // Remove the cloned registries
                 clonedRegistries.clear();
@@ -1889,7 +1890,7 @@ public class DefaultSchemaManager implements SchemaManager
                     copy = copy( schemaObject );
 
                     // Apply the addition to the real registries
-                    registries.add( errors, copy );
+                    registries.add( errors, copy, true );
 
                     LOG.debug( "Added {} into the enabled schema {}", copy.getName(), schemaName );
 

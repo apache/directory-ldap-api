@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema.registries;
 
@@ -123,13 +123,13 @@ public class Registries implements SchemaLoaderListener, Cloneable
     public static final boolean RELAXED = true;
 
     /**
-     *  A map storing a relation between a SchemaObject and all the 
+     *  A map storing a relation between a SchemaObject and all the
      *  referencing SchemaObjects.
      */
     protected Map<SchemaObjectWrapper, Set<SchemaObjectWrapper>> usedBy;
 
     /**
-     *  A map storing a relation between a SchemaObject and all the 
+     *  A map storing a relation between a SchemaObject and all the
      *  SchemaObjects it uses.
      */
     protected Map<SchemaObjectWrapper, Set<SchemaObjectWrapper>> using;
@@ -137,7 +137,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /** A reference on the schema Manager */
     @SuppressWarnings(
         { "PMD.UnusedPrivateField", "unused" })
-    // False positive 
+    // False positive
     private SchemaManager schemaManager;
 
 
@@ -279,7 +279,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
 
     /**
-     * Get an OID from a name. As we have many possible registries, we 
+     * Get an OID from a name. As we have many possible registries, we
      * have to look in all of them to get the one containing the OID.
      *
      * @param name The name we are looking at
@@ -456,7 +456,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * <li/>6) MatchingRuleUses (depend on matchingRules and AttributeTypes)
      * <li/>7) DitContentRules (depend on ObjectClasses and AttributeTypes)
      * <li/>8) NameForms (depends on ObjectClasses and AttributeTypes)
-     * <li/>9) DitStructureRules (depends onNameForms and DitStructureRules)      * 
+     * <li/>9) DitStructureRules (depends onNameForms and DitStructureRules)      *
      *
      * @return a list of exceptions encountered while resolving entities
      */
@@ -520,7 +520,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Add the SchemaObjectReferences. This method does nothing, it's just
-     * a catch all. The other methods will be called for each specific 
+     * a catch all. The other methods will be called for each specific
      * schemaObject
      *
     public void addCrossReferences( SchemaObject schemaObject )
@@ -530,7 +530,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     
     
     /**
-     * Delete the AT references (using and usedBy) : 
+     * Delete the AT references (using and usedBy) :
      * AT -> MR (for EQUALITY, ORDERING and SUBSTR)
      * AT -> S
      * AT -> AT
@@ -565,10 +565,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
 
     /**
-     * Some specific controls must be checked : 
+     * Some specific controls must be checked :
      * - an AT must have either a SYNTAX or a SUP. If there is no SYNTAX, then
      * the AT will take it's superior SYNTAX;
-     * - if there is no EQUALITY, ORDERING or SUBSTRING MR, and if there is 
+     * - if there is no EQUALITY, ORDERING or SUBSTRING MR, and if there is
      * a SUP, then the AT will use its parent MR, if any;
      * - if an AT has a superior, then its usage must be the same than its
      * superior Usage;
@@ -592,7 +592,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             String msg = "Cannot build the AttributeType references for the object " + attributeType.getName() +
                 ", error : " + ne.getMessage();
             
-            Throwable error = new LdapSchemaViolationException( 
+            Throwable error = new LdapSchemaViolationException(
                 msg, ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX );
             errors.add( error );
             LOG.info( msg );
@@ -604,7 +604,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // The LdapSyntax (cannot be null)
         //buildSyntax( errors, attributeType );
         
-        // The equality MR. 
+        // The equality MR.
         //buildEquality( errors, attributeType );
 
         // The ORDERING MR.
@@ -698,7 +698,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
 
     /**
-     * Delete the MR references (using and usedBy) : 
+     * Delete the MR references (using and usedBy) :
      * MR -> C
      * MR -> N
      * MR -> S
@@ -992,7 +992,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
 
     /**
-     * Check if the Comparator, Normalizer and the syntax are 
+     * Check if the Comparator, Normalizer and the syntax are
      * existing for a matchingRule.
      */
     private void resolve( MatchingRule matchingRule, List<Throwable> errors )
@@ -1018,7 +1018,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
         else
         {
-            // This is an error. 
+            // This is an error.
             LdapSchemaException ldapSchemaException = new LdapSchemaException(
                 LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, I18n.err( I18n.ERR_04294, matchingRule.getOid() ) );
             ldapSchemaException.setSourceObject( matchingRule );
@@ -1075,7 +1075,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 }
             }
 
-            // We now have to process the superior, if it hasn't been 
+            // We now have to process the superior, if it hasn't been
             // processed yet.
             if ( superior != null )
             {
@@ -1095,7 +1095,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             }
         }
 
-        // Process the Syntax. If it's null, the attributeType must have 
+        // Process the Syntax. If it's null, the attributeType must have
         // a Superior.
         String syntaxOid = attributeType.getSyntaxOid();
 
@@ -1183,13 +1183,13 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Check the inheritance, and the existence of MatchingRules and LdapSyntax
-     * for an attribute 
+     * for an attribute
      */
     private void resolve( AttributeType attributeType, List<Throwable> errors )
     {
         // This set is used to avoid having more than one error
         // for an AttributeType. It's mandatory when processing
-        // a Superior, as it may be broken and referenced more than once. 
+        // a Superior, as it may be broken and referenced more than once.
         Set<String> processed = new HashSet<String>();
 
         // Store the AttributeType itself in the processed, to avoid cycle
@@ -1207,7 +1207,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             if ( processed.contains( objectClass ) )
             {
-                // We have found a cycle. It has already been reported, 
+                // We have found a cycle. It has already been reported,
                 // don't add a new error, just exit.
                 return null;
             }
@@ -1233,7 +1233,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     {
         // This set is used to avoid having more than one error
         // for an ObjectClass. It's mandatory when processing
-        // the Superiors, as they may be broken and referenced more than once. 
+        // the Superiors, as they may be broken and referenced more than once.
         Set<String> processed = new HashSet<String>();
 
         // Store the ObjectClass itself in the processed, to avoid cycle
@@ -1294,7 +1294,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 }
             }
 
-            // We now have to process the superior, if it hasn't been 
+            // We now have to process the superior, if it hasn't been
             // processed yet.
             if ( superior != null )
             {
@@ -1316,7 +1316,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             }
         }
 
-        // Process the MAY attributeTypes.  
+        // Process the MAY attributeTypes.
         for ( String mayOid : objectClass.getMayAttributeTypeOids() )
         {
             // Check if the MAY AttributeType is present in the registries
@@ -1331,7 +1331,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             }
         }
 
-        // Process the MUST attributeTypes.  
+        // Process the MUST attributeTypes.
         for ( String mustOid : objectClass.getMustAttributeTypeOids() )
         {
             // Check if the MUST AttributeType is present in the registries
@@ -1353,7 +1353,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
         catch ( LdapException ne )
         {
-            // Do nothing. We may have a broken OC, 
+            // Do nothing. We may have a broken OC,
             // but at this point, it doesn't matter.
         }
     }
@@ -1362,7 +1362,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Applies the added SchemaObject to the given register
      */
-    public List<Throwable> add( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
+    public List<Throwable> add( List<Throwable> errors, SchemaObject schemaObject, boolean check ) throws LdapException
     {
         // Relax the registries
         boolean wasRelaxed = isRelaxed;
@@ -1375,17 +1375,23 @@ public class Registries implements SchemaLoaderListener, Cloneable
         associateWithSchema( errors, schemaObject );
 
         // Build the SchemaObject references
-        buildReference( errors, schemaObject );
+        if ( check )
+        {
+            buildReference( errors, schemaObject );
+        }
 
         // Lock the SchemaObject
         schemaObject.lock();
 
-        if ( errors.isEmpty() )
+        if ( check )
         {
-            // Check the registries now
-            List<Throwable> checkErrors = checkRefInteg();
-
-            errors.addAll( checkErrors );
+            if ( errors.isEmpty() )
+            {
+                // Check the registries now
+                List<Throwable> checkErrors = checkRefInteg();
+    
+                errors.addAll( checkErrors );
+            }
         }
 
         // Get back to Strict mode
@@ -1461,7 +1467,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
 
     /**
-     * Gets an unmodifiable Map of schema names to loaded Schema objects. 
+     * Gets an unmodifiable Map of schema names to loaded Schema objects.
      * 
      * @return the map of loaded Schema objects
      */
@@ -1911,7 +1917,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Gets the Set of SchemaObjects referencing the given SchemaObject
      *
      * @param schemaObject The SchemaObject we are looking for
-     * @return The Set of referencing SchemaObject, or null 
+     * @return The Set of referencing SchemaObject, or null
      */
     public Set<SchemaObjectWrapper> getUsedBy( SchemaObject schemaObject )
     {
@@ -1997,7 +2003,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Gets the Set of SchemaObjects referenced by the given SchemaObject
      *
      * @param schemaObject The SchemaObject we are looking for
-     * @return The Set of referenced SchemaObject, or null 
+     * @return The Set of referenced SchemaObject, or null
      */
     public Set<SchemaObjectWrapper> getUsing( SchemaObject schemaObject )
     {
@@ -2265,7 +2271,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 return false;
             }
 
-            // Check the references : Syntax -> SyntaxChecker and SyntaxChecker -> Syntax 
+            // Check the references : Syntax -> SyntaxChecker and SyntaxChecker -> Syntax
             if ( !checkReferences( syntax, syntax.getSyntaxChecker(), "SyntaxChecker" ) )
             {
                 return false;
@@ -2326,19 +2332,19 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 return false;
             }
 
-            // Check the references : MR -> S and S -> MR 
+            // Check the references : MR -> S and S -> MR
             if ( !checkReferences( matchingRule, matchingRule.getSyntax(), "Syntax" ) )
             {
                 return false;
             }
 
-            // Check the references : MR -> N 
+            // Check the references : MR -> N
             if ( !checkReferences( matchingRule, matchingRule.getNormalizer(), "Normalizer" ) )
             {
                 return false;
             }
 
-            // Check the references : MR -> C and C -> MR 
+            // Check the references : MR -> C and C -> MR
             if ( !checkReferences( matchingRule, matchingRule.getLdapComparator(), "Comparator" ) )
             {
                 return false;
@@ -2362,7 +2368,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                         return false;
                     }
 
-                    // Check the references : OC -> AT  and AT -> OC (MAY) 
+                    // Check the references : OC -> AT  and AT -> OC (MAY)
                     if ( !checkReferences( objectClass, may, "AttributeType" ) )
                     {
                         return false;
@@ -2382,7 +2388,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                         return false;
                     }
 
-                    // Check the references : OC -> AT  and AT -> OC (MUST) 
+                    // Check the references : OC -> AT  and AT -> OC (MUST)
                     if ( !checkReferences( objectClass, must, "AttributeType" ) )
                     {
                         return false;
@@ -2403,7 +2409,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                         return false;
                     }
 
-                    // Check the references : OC -> OC  and OC -> OC (SUPERIORS) 
+                    // Check the references : OC -> OC  and OC -> OC (SUPERIORS)
                     if ( !checkReferences( objectClass, superior, "ObjectClass" ) )
                     {
                         return false;
@@ -2417,7 +2423,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         for ( AttributeType attributeType : attributeTypeRegistry )
         {
-            // Check that each AttributeType has a SYNTAX 
+            // Check that each AttributeType has a SYNTAX
             if ( attributeType.getSyntax() == null )
             {
                 LOG.debug( "The AttributeType {} has no Syntax", attributeType );
@@ -2506,7 +2512,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     return false;
                 }
 
-                // Check the references : AT -> AT  and AT -> AT (SUPERIOR) 
+                // Check the references : AT -> AT  and AT -> AT (SUPERIOR)
                 if ( !checkReferences( attributeType, superior, "AttributeType" ) )
                 {
                     return false;
@@ -2647,10 +2653,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
 
     /**
-     * Tells if the Registries is permissive or if it must be checked 
+     * Tells if the Registries is permissive or if it must be checked
      * against inconsistencies.
      *
-     * @return True if SchemaObjects can be added even if they break the consistency 
+     * @return True if SchemaObjects can be added even if they break the consistency
      */
     public boolean isRelaxed()
     {
@@ -2661,7 +2667,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Tells if the Registries is strict.
      *
-     * @return True if SchemaObjects cannot be added if they break the consistency 
+     * @return True if SchemaObjects cannot be added if they break the consistency
      */
     public boolean isStrict()
     {
@@ -2692,7 +2698,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Tells if the Registries accept disabled elements.
      *
-     * @return True if disabled SchemaObjects can be added 
+     * @return True if disabled SchemaObjects can be added
      */
     public boolean isDisabledAccepted()
     {
@@ -2719,7 +2725,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Change the Registries behavior regarding disabled SchemaObject element.
      *
      * @param disabledAccepted If <code>false</code>, then the Registries won't accept
-     * disabled SchemaObject or enabled SchemaObject from disabled schema 
+     * disabled SchemaObject or enabled SchemaObject from disabled schema
      */
     public void setDisabledAccepted( boolean disabledAccepted )
     {
