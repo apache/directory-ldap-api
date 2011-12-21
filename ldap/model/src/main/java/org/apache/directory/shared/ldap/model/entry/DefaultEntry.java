@@ -37,7 +37,9 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.ldif.LdapLdifException;
 import org.apache.directory.shared.ldap.model.ldif.LdifAttributesReader;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.shared.ldap.model.name.Ava;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Base64;
@@ -586,6 +588,65 @@ public final class DefaultEntry implements Entry
 
         return schemaManager.lookupAttributeTypeRegistry( upId );
     }
+    
+    
+    /**
+     * Adds missing Rdn's attributes and values to the entry.
+     *
+     * @param dn the Dn
+     * @param entry the entry
+     */
+    private void addRdnAttributesToEntry( SchemaManager schemaManager ) throws LdapException
+    {
+        if ( Dn.isNullOrEmpty( dn ) )
+        {
+            return;
+        }
+
+        Rdn rdn = dn.getRdn();
+
+        // Loop on all the AVAs
+        for ( Ava ava : rdn )
+        {
+            Value<?> value = ava.getNormValue();
+            Value<?> upValue = ava.getUpValue();
+            String upId = ava.getUpType();
+
+            // Check that the entry contains this Ava
+            if ( !contains( upId, value ) )
+            {
+                String message = "The Rdn '" + upId + "=" + upValue + "' is not present in the entry";
+                LOG.warn( message );
+
+                // We don't have this attribute : add it.
+                // Two cases :
+                // 1) The attribute does not exist
+                if ( !containsAttribute( upId ) )
+                {
+                    AttributeType attributeType = schemaManager.getAttributeType( upId );
+
+                    add( upId, attributeType, value );
+                }
+                // 2) The attribute exists
+                else
+                {
+                    AttributeType at = schemaManager.lookupAttributeTypeRegistry( upId );
+
+                    // 2.1 if the attribute is single valued, replace the value
+                    if ( at.isSingleValued() )
+                    {
+                        removeAttributes( upId );
+                        add( upId, value );
+                    }
+                    // 2.2 the attribute is multi-valued : add the missing value
+                    else
+                    {
+                        add( upId, value );
+                    }
+                }
+            }
+        }
+    }
 
 
     //-------------------------------------------------------------------------
@@ -971,6 +1032,30 @@ public final class DefaultEntry implements Entry
                 attributes.put( id, new DefaultAttribute( upId, values ) );
             }
         }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void apply( SchemaManager schemaManager ) throws LdapException
+    {
+        if ( dn.getSchemaManager() == null )
+        {
+            dn.apply( schemaManager );
+        }
+
+        for ( Attribute attribute : attributes.values() )
+        {
+            if ( attribute.getAttributeType() == null )
+            {
+                AttributeType attributeType = schemaManager.getAttributeType( attribute.getId() );
+                attribute.apply( attributeType );
+            }
+        }
+
+        addRdnAttributesToEntry( schemaManager );
+        this.schemaManager = schemaManager;
     }
 
 

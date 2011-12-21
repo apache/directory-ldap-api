@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 
 
 /**
@@ -47,6 +48,13 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
  */
 public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 {
+    /**
+     * Apply the SchemaManager to this entry
+     * @param schemaManager The SchemaManager
+     * @throws LdapException if there is some problem in the DN or in the Attributes
+     */
+    void apply( SchemaManager schemaManager ) throws LdapException;
+
     /**
      * Remove all the attributes for this entry. The Dn is not reset
      */

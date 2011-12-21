@@ -31,6 +31,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.exception.NotImplementedException;
 
 
@@ -164,6 +165,16 @@ public class ImmutableEntry implements Entry
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void apply( SchemaManager schemaManager )
+    {
+        new Exception().printStackTrace();
+        throw new NotImplementedException( "Cannot apply the schemaManager : the entry " + entry.getDn() + " is immutable." );
     }
 
 
