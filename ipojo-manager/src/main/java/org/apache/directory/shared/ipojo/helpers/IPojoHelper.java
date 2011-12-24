@@ -54,7 +54,7 @@ public class IPojoHelper
     }
 
 
-    public static Object createIPojoComponent( String factoryName, String instanceName, Dictionary<String,String> props )
+    public static Object createIPojoComponent( String factoryName, String instanceName, Dictionary props )
     {
         ComponentFactory factory = IPojoHelper.getFactory( factoryName );
         if ( factory == null )
