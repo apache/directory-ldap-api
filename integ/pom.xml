@@ -62,6 +62,12 @@
 
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>shared-ldap-extras-aci</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>shared-ldap-extras-codec</artifactId>
       <scope>test</scope>
     </dependency>
