@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -93,7 +94,7 @@ public final class DefaultEntry implements Entry
      */
     public DefaultEntry()
     {
-        this( (SchemaManager)null );
+        this( ( SchemaManager ) null );
     }
 
 
@@ -252,12 +253,12 @@ public final class DefaultEntry implements Entry
      */
     public DefaultEntry( SchemaManager schemaManager, Dn dn, Object... elements ) throws LdapException
     {
-        DefaultEntry entry = (DefaultEntry)createEntry( schemaManager, elements );
-        
+        DefaultEntry entry = ( DefaultEntry ) createEntry( schemaManager, elements );
+
         this.dn = dn;
         this.attributes = entry.attributes;
         this.schemaManager = schemaManager;
-        
+
         if ( schemaManager != null )
         {
             this.dn.apply( schemaManager );
@@ -331,7 +332,8 @@ public final class DefaultEntry implements Entry
     //-------------------------------------------------------------------------
     // Helper methods
     //-------------------------------------------------------------------------
-    private Entry createEntry( SchemaManager schemaManager, Object... elements ) throws LdapInvalidAttributeValueException, LdapLdifException
+    private Entry createEntry( SchemaManager schemaManager, Object... elements )
+        throws LdapInvalidAttributeValueException, LdapLdifException
     {
         StringBuilder sb = new StringBuilder();
         int pos = 0;
@@ -389,10 +391,11 @@ public final class DefaultEntry implements Entry
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Entry entry = reader.parseEntry( schemaManager, sb.toString() );
-        
+
         return entry;
     }
-    
+
+
     /**
      * Get the trimmed and lower cased entry ID
      */
@@ -429,7 +432,7 @@ public final class DefaultEntry implements Entry
                 LOG.error( message );
                 throw new IllegalArgumentException( message );
             }
-            
+
             return upId;
         }
         else if ( Strings.isEmpty( normUpId ) )
@@ -440,7 +443,7 @@ public final class DefaultEntry implements Entry
             {
                 id = attributeType.getOid();
             }
-            
+
             return id;
         }
         else
@@ -467,14 +470,15 @@ public final class DefaultEntry implements Entry
         {
             return;
         }
-        
+
         try
         {
             synchronized ( MUTEX )
             {
                 if ( objectClassAttributeType == null )
                 {
-                        objectClassAttributeType = schemaManager.lookupAttributeTypeRegistry( SchemaConstants.OBJECT_CLASS_AT );
+                    objectClassAttributeType = schemaManager
+                        .lookupAttributeTypeRegistry( SchemaConstants.OBJECT_CLASS_AT );
                 }
             }
         }
@@ -530,15 +534,16 @@ public final class DefaultEntry implements Entry
         }
         */
     }
-    
-    
+
+
     /**
      * Add a new EntryAttribute, with its upId. If the upId is null,
      * default to the AttributeType name.
      *
      * Updates the AttributeMap.
      */
-    protected void createAttribute( String upId, AttributeType attributeType, byte[]... values ) throws LdapInvalidAttributeValueException
+    protected void createAttribute( String upId, AttributeType attributeType, byte[]... values )
+        throws LdapInvalidAttributeValueException
     {
         Attribute attribute = new DefaultAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
@@ -552,7 +557,8 @@ public final class DefaultEntry implements Entry
      *
      * Updates the AttributeMap.
      */
-    protected void createAttribute( String upId, AttributeType attributeType, String... values ) throws LdapInvalidAttributeValueException
+    protected void createAttribute( String upId, AttributeType attributeType, String... values )
+        throws LdapInvalidAttributeValueException
     {
         Attribute attribute = new DefaultAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
@@ -566,7 +572,8 @@ public final class DefaultEntry implements Entry
      *
      * Updates the AttributeMap.
      */
-    protected void createAttribute( String upId, AttributeType attributeType, Value<?>... values ) throws LdapInvalidAttributeValueException
+    protected void createAttribute( String upId, AttributeType attributeType, Value<?>... values )
+        throws LdapInvalidAttributeValueException
     {
         Attribute attribute = new DefaultAttribute( attributeType, values );
         attribute.setUpId( upId, attributeType );
@@ -579,7 +586,7 @@ public final class DefaultEntry implements Entry
      */
     protected AttributeType getAttributeType( String upId ) throws LdapException
     {
-        if ( Strings.isEmpty(Strings.trim(upId)) )
+        if ( Strings.isEmpty( Strings.trim( upId ) ) )
         {
             String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
             LOG.error( message );
@@ -588,8 +595,8 @@ public final class DefaultEntry implements Entry
 
         return schemaManager.lookupAttributeTypeRegistry( upId );
     }
-    
-    
+
+
     /**
      * Adds missing Rdn's attributes and values to the entry.
      *
@@ -914,7 +921,7 @@ public final class DefaultEntry implements Entry
      */
     public void add( String upId, byte[]... values ) throws LdapException
     {
-        if ( Strings.isEmpty(upId) )
+        if ( Strings.isEmpty( upId ) )
         {
             String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
             LOG.error( message );
@@ -956,7 +963,7 @@ public final class DefaultEntry implements Entry
      */
     public void add( String upId, String... values ) throws LdapException
     {
-        if ( Strings.isEmpty(upId) )
+        if ( Strings.isEmpty( upId ) )
         {
             String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
             LOG.error( message );
@@ -998,7 +1005,7 @@ public final class DefaultEntry implements Entry
      */
     public void add( String upId, Value<?>... values ) throws LdapException
     {
-        if ( Strings.isEmpty(upId) )
+        if ( Strings.isEmpty( upId ) )
         {
             String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
             LOG.error( message );
@@ -1045,13 +1052,24 @@ public final class DefaultEntry implements Entry
             dn.apply( schemaManager );
         }
 
+        Map<String, Attribute> updatedAttributes = new HashMap<String, Attribute>();
+
         for ( Attribute attribute : attributes.values() )
         {
             if ( attribute.getAttributeType() == null )
             {
+                String id = attribute.getId();
                 AttributeType attributeType = schemaManager.getAttributeType( attribute.getId() );
                 attribute.apply( attributeType );
+                updatedAttributes.put( id, attribute );
             }
+        }
+
+        for ( String id : updatedAttributes.keySet() )
+        {
+            attributes.remove( id );
+            Attribute attribute = updatedAttributes.get( id );
+            attributes.put( attribute.getAttributeType().getOid(), attribute );
         }
 
         addRdnAttributesToEntry( schemaManager );
@@ -1286,7 +1304,7 @@ public final class DefaultEntry implements Entry
      */
     public boolean contains( String upId, byte[]... values )
     {
-        if ( Strings.isEmpty(upId) )
+        if ( Strings.isEmpty( upId ) )
         {
             return false;
         }
@@ -1321,7 +1339,7 @@ public final class DefaultEntry implements Entry
      */
     public boolean contains( String upId, String... values )
     {
-        if ( Strings.isEmpty(upId) )
+        if ( Strings.isEmpty( upId ) )
         {
             return false;
         }
@@ -1356,7 +1374,7 @@ public final class DefaultEntry implements Entry
      */
     public boolean contains( String upId, Value<?>... values )
     {
-        if ( Strings.isEmpty(upId) )
+        if ( Strings.isEmpty( upId ) )
         {
             return false;
         }
@@ -1453,7 +1471,7 @@ public final class DefaultEntry implements Entry
      */
     public Attribute put( String upId, byte[]... values )
     {
-        if ( Strings.isEmpty(upId) )
+        if ( Strings.isEmpty( upId ) )
         {
             String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
             LOG.error( message );
@@ -1492,7 +1510,7 @@ public final class DefaultEntry implements Entry
      */
     public Attribute put( String upId, String... values )
     {
-        if ( Strings.isEmpty(upId) )
+        if ( Strings.isEmpty( upId ) )
         {
             String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
             LOG.error( message );
@@ -1531,7 +1549,7 @@ public final class DefaultEntry implements Entry
      */
     public Attribute put( String upId, Value<?>... values )
     {
-        if ( Strings.isEmpty(upId) )
+        if ( Strings.isEmpty( upId ) )
         {
             String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
             LOG.error( message );
@@ -1705,7 +1723,7 @@ public final class DefaultEntry implements Entry
         }
         else
         {
-            if ( !Strings.isEmpty(upId) )
+            if ( !Strings.isEmpty( upId ) )
             {
                 AttributeType tempAT = getAttributeType( upId );
 
@@ -1755,7 +1773,7 @@ public final class DefaultEntry implements Entry
         }
         else
         {
-            if ( !Strings.isEmpty(upId) )
+            if ( !Strings.isEmpty( upId ) )
             {
                 AttributeType tempAT = getAttributeType( upId );
 
@@ -1798,7 +1816,7 @@ public final class DefaultEntry implements Entry
         }
         else
         {
-            if ( !Strings.isEmpty(upId) )
+            if ( !Strings.isEmpty( upId ) )
             {
                 AttributeType tempAT = getAttributeType( upId );
 
@@ -2133,7 +2151,7 @@ public final class DefaultEntry implements Entry
      */
     public boolean remove( String upId, byte[]... values ) throws LdapException
     {
-        if ( Strings.isEmpty(upId) )
+        if ( Strings.isEmpty( upId ) )
         {
             String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
             LOG.info( message );
@@ -2213,7 +2231,7 @@ public final class DefaultEntry implements Entry
      */
     public boolean remove( String upId, String... values ) throws LdapException
     {
-        if ( Strings.isEmpty(upId) )
+        if ( Strings.isEmpty( upId ) )
         {
             String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
             LOG.info( message );
@@ -2292,7 +2310,7 @@ public final class DefaultEntry implements Entry
      */
     public boolean remove( String upId, Value<?>... values ) throws LdapException
     {
-        if ( Strings.isEmpty(upId) )
+        if ( Strings.isEmpty( upId ) )
         {
             String message = I18n.err( I18n.ERR_04457_NULL_ATTRIBUTE_ID );
             LOG.info( message );
@@ -2469,7 +2487,6 @@ public final class DefaultEntry implements Entry
         // Read the Dn
         dn = new Dn( schemaManager );
         dn.readExternal( in );
-            
 
         // Read the number of attributes
         int nbAttributes = in.readInt();
@@ -2532,7 +2549,7 @@ public final class DefaultEntry implements Entry
         {
             return false;
         }
-        
+
         for ( String objectClass : objectClasses )
         {
             if ( schemaManager != null )
@@ -2550,7 +2567,7 @@ public final class DefaultEntry implements Entry
                 }
             }
         }
-        
+
         return true;
     }
 
@@ -2564,23 +2581,23 @@ public final class DefaultEntry implements Entry
         {
             return false;
         }
-        
-        for ( Attribute objectClass:objectClasses )
+
+        for ( Attribute objectClass : objectClasses )
         {
             // We have to check that we are checking the ObjectClass attributeType
             if ( !objectClass.getAttributeType().equals( objectClassAttributeType ) )
             {
                 return false;
             }
-    
+
             Attribute attribute = attributes.get( objectClassAttributeType.getOid() );
-    
+
             if ( attribute == null )
             {
                 // The entry does not have an ObjectClass attribute
                 return false;
             }
-    
+
             for ( Value<?> value : objectClass )
             {
                 // Loop on all the values, and check if they are present
@@ -2594,7 +2611,7 @@ public final class DefaultEntry implements Entry
         return true;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
