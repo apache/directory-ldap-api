@@ -35,6 +35,7 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.shared.ldap.model.exception.LdapNoSuchAttributeException;
 import org.apache.directory.shared.ldap.model.ldif.LdapLdifException;
 import org.apache.directory.shared.ldap.model.ldif.LdifAttributesReader;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
@@ -1060,6 +1061,13 @@ public final class DefaultEntry implements Entry
             {
                 String id = attribute.getId();
                 AttributeType attributeType = schemaManager.getAttributeType( attribute.getId() );
+
+                if ( attributeType == null )
+                {
+                    throw new LdapNoSuchAttributeException( "The AttributeType '" + attribute.getId()
+                        + "' is unkown" );
+                }
+
                 attribute.apply( attributeType );
                 updatedAttributes.put( id, attribute );
             }
