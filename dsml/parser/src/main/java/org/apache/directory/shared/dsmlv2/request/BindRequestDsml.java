@@ -78,10 +78,21 @@ public class BindRequestDsml
 
         BindRequest request = ( BindRequest ) getDecorated();
 
-        // AbandonID
-        String name = request.getName().getName();
-        if ( ( name != null ) && ( !"".equals( name ) ) )
+        // Principal
+        Dn dn = request.getDn();
+
+        if ( !Dn.isNullOrEmpty( dn ) )
         {
+            // A DN has been provided
+
+            element.addAttribute( "principal", dn.getName() );
+        }
+        else
+        {
+            // No DN has been provided, let's use the name as a string instead
+
+            String name = request.getName();
+
             element.addAttribute( "principal", name );
         }
 
@@ -161,7 +172,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public Dn getName()
+    public String getName()
     {
         return getDecorated().getName();
     }
@@ -170,9 +181,29 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public BindRequest setName( Dn name )
+    public BindRequest setName( String name )
     {
         getDecorated().setName( name );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Dn getDn()
+    {
+        return getDecorated().getDn();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest setDn( Dn dn )
+    {
+        getDecorated().setDn( dn );
 
         return this;
     }

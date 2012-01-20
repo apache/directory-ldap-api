@@ -1058,7 +1058,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         LOG.debug( "Unauthenticated authentication Bind request : {}", name );
 
         // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( name, StringConstants.EMPTY_BYTES, null );
+        BindRequest bindRequest = createBindRequest( name.getName(), StringConstants.EMPTY_BYTES, null );
 
         BindResponse bindResponse = bind( bindRequest );
 
@@ -1081,7 +1081,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         }
 
         // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( name, Strings.getBytesUtf8( credentials ), null );
+        BindRequest bindRequest = createBindRequest( name.getName(), Strings.getBytesUtf8( credentials ), null );
 
         BindResponse bindResponse = bind( bindRequest );
 
@@ -1202,37 +1202,15 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     private BindRequest createBindRequest( Dn name, byte[] credentials ) throws LdapException
     {
-        return createBindRequest( name, credentials, null, ( Control[] ) null );
+        return createBindRequest( name.getName(), credentials, null, ( Control[] ) null );
     }
+
 
 
     /**
      * Create a complete BindRequest ready to be sent.
      */
     private BindRequest createBindRequest( String name, byte[] credentials, String saslMechanism, Control... controls )
-        throws LdapException
-    {
-        // Set the name
-        try
-        {
-            Dn dn = new Dn( name );
-
-            return createBindRequest( dn, credentials, saslMechanism, controls );
-        }
-        catch ( LdapInvalidDnException ine )
-        {
-            String msg = "The given dn '" + name + "' is not valid";
-            LOG.error( msg );
-
-            throw new LdapInvalidDnException( msg, ine );
-        }
-    }
-
-
-    /**
-     * Create a complete BindRequest ready to be sent.
-     */
-    private BindRequest createBindRequest( Dn name, byte[] credentials, String saslMechanism, Control... controls )
         throws LdapException
     {
         // Set the new messageId

@@ -42,7 +42,7 @@ import org.apache.directory.shared.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class BindRequestDecorator extends SingleReplyRequestDecorator<BindRequest,BindResponse> 
+public class BindRequestDecorator extends SingleReplyRequestDecorator<BindRequest, BindResponse>
     implements BindRequest
 {
     /** The bind request length */
@@ -121,50 +121,49 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     {
         return saslMechanismLength;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public BindRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public BindRequest addControl( Control control ) throws MessageException
     {
-        return (BindRequest)super.addControl( control );
+        return ( BindRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public BindRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (BindRequest)super.addAllControls( controls );
+        return ( BindRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public BindRequest removeControl( Control control ) throws MessageException
     {
-        return (BindRequest)super.removeControl( control );
+        return ( BindRequest ) super.removeControl( control );
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The BindRequest methods
     //-------------------------------------------------------------------------
-
 
     /**
      * {@inheritDoc}
@@ -190,7 +189,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     public BindRequest setSimple( boolean isSimple )
     {
         getDecorated().setSimple( isSimple );
-        
+
         return this;
     }
 
@@ -229,7 +228,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
-    public Dn getName()
+    public String getName()
     {
         return getDecorated().getName();
     }
@@ -238,9 +237,29 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
-    public BindRequest setName( Dn name )
+    public BindRequest setName( String name )
     {
         getDecorated().setName( name );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Dn getDn()
+    {
+        return getDecorated().getDn();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest setDn( Dn dn )
+    {
+        getDecorated().setDn( dn );
 
         return this;
     }
@@ -290,7 +309,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     public BindRequest setSaslMechanism( String saslMechanism )
     {
         getDecorated().setSaslMechanism( saslMechanism );
-        
+
         return this;
     }
 
@@ -318,17 +337,30 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     public int computeLength()
     {
         int bindRequestLength = 1 + 1 + 1; // Initialized with version
-        
-        Dn name = getName();
-        
-        // The name
-        if ( name == null )
-        { 
-            name = Dn.EMPTY_DN;
-        }
 
-        bindRequestLength += 1 + TLV.getNbBytes( Dn.getNbBytes( name ) )
-            + Dn.getNbBytes( name );
+        Dn dn = getDn();
+
+        if ( !Dn.isNullOrEmpty( dn ) )
+        {
+            // A DN has been provided
+
+            bindRequestLength += 1 + TLV.getNbBytes( Dn.getNbBytes( dn ) )
+                + Dn.getNbBytes( dn );
+        }
+        else
+        {
+            // No DN has been provided, let's use the name as a string instead
+
+            String name = getName();
+
+            if ( Strings.isEmpty( name ) )
+            {
+                name = "";
+            }
+
+            bindRequestLength += 1 + TLV.getNbBytes( name.getBytes().length )
+                + name.getBytes().length;
+        }
 
         byte[] credentials = getCredentials();
 
@@ -405,16 +437,27 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
         // The version (LDAP V3 only)
         Value.encode( buffer, 3 );
 
-        // The name
-        Dn name = getName();
-        
-        // The name
-        if ( name == null )
-        { 
-            name = Dn.EMPTY_DN;
-        }
+        Dn dn = getDn();
 
-        Value.encode( buffer, Dn.getBytes( name ) );
+        if ( !Dn.isNullOrEmpty( dn ) )
+        {
+            // A DN has been provided
+            
+            Value.encode( buffer, Dn.getBytes( dn ) );
+        }
+        else
+        {
+            // No DN has been provided, let's use the name as a string instead
+
+            String name = getName();
+
+            if ( Strings.isEmpty( name ) )
+            {
+                name = "";
+            }
+            
+            Value.encode( buffer, name.getBytes() );
+        }
 
         byte[] credentials = getCredentials();
 
@@ -473,7 +516,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
                 throw new EncoderException( msg );
             }
         }
-        
+
         return buffer;
     }
 }

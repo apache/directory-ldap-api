@@ -84,7 +84,7 @@ public class AuthRequestTest extends AbstractTest
 
         BindRequest bindRequest = ( BindRequest ) parser.getBatchRequest().getCurrentRequest();
 
-        assertEquals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM", bindRequest.getName().getNormName() );
+        assertEquals( "CN=Bob Rush,OU=Dev,DC=Example,DC=COM", bindRequest.getName() );
     }
 
 

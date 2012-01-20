@@ -70,14 +70,14 @@ public class BindRequestImplTest
         BindRequestImpl req0 = new BindRequestImpl();
         req0.setMessageId( 5 );
         req0.setCredentials( "password".getBytes() );
-        req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
+        req0.setDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req0.setSimple( true );
         req0.setVersion3( true );
 
         BindRequestImpl req1 = new BindRequestImpl();
         req1.setMessageId( 5 );
         req1.setCredentials( "password".getBytes() );
-        req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
+        req1.setDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setSimple( true );
         req1.setVersion3( true );
 
@@ -94,14 +94,14 @@ public class BindRequestImplTest
         BindRequestImpl req0 = new BindRequestImpl();
         req0.setMessageId( 7 );
         req0.setCredentials( "password".getBytes() );
-        req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
+        req0.setDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req0.setSimple( true );
         req0.setVersion3( true );
 
         BindRequestImpl req1 = new BindRequestImpl();
         req1.setMessageId( 5 );
         req1.setCredentials( "password".getBytes() );
-        req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
+        req1.setDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setSimple( true );
         req1.setVersion3( true );
 
@@ -118,14 +118,14 @@ public class BindRequestImplTest
         BindRequestImpl req0 = new BindRequestImpl();
         req0.setMessageId( 5 );
         req0.setCredentials( "abcdefg".getBytes() );
-        req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
+        req0.setDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req0.setSimple( true );
         req0.setVersion3( true );
 
         BindRequestImpl req1 = new BindRequestImpl();
         req1.setMessageId( 5 );
         req1.setCredentials( "password".getBytes() );
-        req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
+        req1.setDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setSimple( true );
         req1.setVersion3( true );
 
@@ -142,14 +142,14 @@ public class BindRequestImplTest
         BindRequestImpl req0 = new BindRequestImpl();
         req0.setMessageId( 5 );
         req0.setCredentials( "password".getBytes() );
-        req0.setName( new Dn( "uid=akarasulu,dc=example,dc=com" ) );
+        req0.setDn( new Dn( "uid=akarasulu,dc=example,dc=com" ) );
         req0.setSimple( true );
         req0.setVersion3( true );
 
         BindRequestImpl req1 = new BindRequestImpl();
         req1.setMessageId( 5 );
         req1.setCredentials( "password".getBytes() );
-        req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
+        req1.setDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setSimple( true );
         req1.setVersion3( true );
 
@@ -166,14 +166,14 @@ public class BindRequestImplTest
         BindRequestImpl req0 = new BindRequestImpl();
         req0.setMessageId( 5 );
         req0.setCredentials( "password".getBytes() );
-        req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
+        req0.setDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req0.setSimple( false );
         req0.setVersion3( true );
 
         BindRequestImpl req1 = new BindRequestImpl();
         req1.setMessageId( 5 );
         req1.setCredentials( "password".getBytes() );
-        req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
+        req1.setDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setSimple( true );
         req1.setVersion3( true );
 
@@ -190,14 +190,14 @@ public class BindRequestImplTest
         BindRequestImpl req0 = new BindRequestImpl();
         req0.setMessageId( 5 );
         req0.setCredentials( "password".getBytes() );
-        req0.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
+        req0.setDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req0.setSimple( true );
         req0.setVersion3( false );
 
         BindRequestImpl req1 = new BindRequestImpl();
         req1.setMessageId( 5 );
         req1.setCredentials( "password".getBytes() );
-        req1.setName( new Dn( "cn=admin,dc=example,dc=com" ) );
+        req1.setDn( new Dn( "cn=admin,dc=example,dc=com" ) );
         req1.setSimple( true );
         req1.setVersion3( true );
 
@@ -249,13 +249,25 @@ public class BindRequestImplTest
             }
 
 
-            public Dn getName()
+            public String getName()
             {
                 return null;
             }
 
 
-            public BindRequest setName( Dn name )
+            public BindRequest setName( String name )
+            {
+                return this;
+            }
+
+
+            public Dn getDn()
+            {
+                return null;
+            }
+
+
+            public BindRequest setDn( Dn dn )
             {
                 return this;
             }

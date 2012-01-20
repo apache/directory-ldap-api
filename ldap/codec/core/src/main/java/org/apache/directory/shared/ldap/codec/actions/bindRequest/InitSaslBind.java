@@ -86,7 +86,7 @@ public class InitSaslBind extends GrammarAction<LdapMessageContainer<BindRequest
             BindResponseImpl response = new BindResponseImpl( bindRequestMessage.getMessageId() );
 
             throw new ResponseCarryingException( msg, response, ResultCodeEnum.INVALID_CREDENTIALS,
-                bindRequestMessage.getName(), null );
+                bindRequestMessage.getDn(), null );
         }
 
         bindRequestMessage.setSimple( false );

@@ -81,7 +81,7 @@ import org.xmlpull.v1.XmlPullParserException;
 public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 {
     private LdapApiService codec = LdapApiServiceFactory.getSingleton();
-    
+
 
     /**
      * Creates a new instance of Dsmlv2Grammar.
@@ -119,7 +119,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
         // ** ABANDON REQUEST **
         // State: [BATCHREQUEST_START_TAG] - Tag: <abandonRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG.ordinal()].put( new Tag( "abandonRequest", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG.ordinal()].put(
+            new Tag( "abandonRequest", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.ABANDON_REQUEST_START_TAG,
                 abandonRequestCreation ) );
         // state: [BATCHREQUEST_LOOP] - Tag: <abandonRequest>
@@ -145,7 +146,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
         // ** COMPARE REQUEST **
         // state: [BATCHREQUEST_START_TAG] - Tag: <compareRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG.ordinal()].put( new Tag( "compareRequest", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG.ordinal()].put(
+            new Tag( "compareRequest", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.COMPARE_REQUEST_START_TAG,
                 compareRequestCreation ) );
         // state: [BATCHREQUEST_LOOP] - Tag: <compareRequest>
@@ -165,7 +167,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
         // ** EXTENDED REQUEST **
         // state: [BATCHREQUEST_START_TAG] - Tag: <extendedRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG.ordinal()].put( new Tag( "extendedRequest", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG.ordinal()].put(
+            new Tag( "extendedRequest", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG,
                 Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG, extendedRequestCreation ) );
         // state: [BATCHREQUEST_LOOP] - Tag: <extendedRequest>
@@ -185,7 +188,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
         // ** MODIFY REQUEST **
         // state: [BATCHREQUEST_START_TAG] - Tag: <modifyRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG.ordinal()].put( new Tag( "modifyRequest", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG.ordinal()].put(
+            new Tag( "modifyRequest", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG,
                 modifyRequestCreation ) );
         // state: [BATCHREQUEST_LOOP] - Tag: <modifyRequest>
@@ -195,7 +199,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
         // ** SEARCH REQUEST **
         // state: [BATCHREQUEST_START_TAG] - Tag: <searchRequest>
-        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG.ordinal()].put( new Tag( "searchRequest", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.BATCHREQUEST_START_TAG.ordinal()].put(
+            new Tag( "searchRequest", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, Dsmlv2StatesEnum.SEARCH_REQUEST_START_TAG,
                 searchRequestCreation ) );
         // state: [BATCHREQUEST_LOOP] - Tag: <searchRequest>
@@ -228,22 +233,26 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
 
         // State: [ABANDON_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG, null ) );
 
         // State: [ABANDON_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "control",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG, null ) );
 
         // State: [ABANDON_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "control", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "control",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_START_TAG, controlCreation ) );
 
         // State: [ABANDON_REQUEST_CONTROL_END_TAG] - Tag: </abandonRequest>
-        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "abandonRequest", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "abandonRequest",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.ABANDON_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
 
@@ -267,12 +276,14 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG, controlCreation ) );
 
         // State: [ADD_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "controlValue", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "controlValue",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
 
         // State: [ADD_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put(
+            new Tag( "control", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG, null ) );
 
@@ -287,7 +298,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_START_TAG, controlCreation ) );
 
         // State: [ADD_REQUEST_CONTROL_END_TAG] - Tag: </addRequest>
-        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "addRequest", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG.ordinal()].put(
+            new Tag( "addRequest", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.ADD_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,
                 null ) );
 
@@ -339,27 +351,32 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG, controlCreation ) );
 
         // State: [AUTH_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "controlValue", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "controlValue",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
 
         // State: [AUTH_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG, null ) );
 
         // State: [AUTH_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG.ordinal()].put(
+            new Tag( "control", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG, null ) );
 
         // State: [AUTH_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "control", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG.ordinal()].put(
+            new Tag( "control", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_START_TAG, controlCreation ) );
 
         // State: [AUTH_REQUEST_CONTROL_END_TAG] - Tag: </authRequest>
-        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "authRequest", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG.ordinal()].put(
+            new Tag( "authRequest", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.AUTH_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,
                 null ) );
 
@@ -386,22 +403,26 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
 
         // State: [COMPARE_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG, null ) );
 
         // State: [COMPARE_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "control",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG, null ) );
 
         // State: [COMPARE_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "control", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "control",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_START_TAG, controlCreation ) );
 
         // State: [COMPARE_REQUEST_CONTROL_END_TAG] - Tag: </compareRequest>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "compareRequest", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "compareRequest",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
 
@@ -411,17 +432,20 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_START_TAG, compareRequestAddAssertion ) );
 
         // State: [COMPARE_REQUEST_CONTROL_END_TAG] - Tag: <assertion>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "assertion", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "assertion",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_START_TAG, compareRequestAddAssertion ) );
 
         // State: [COMPARE_REQUEST_ASSERTION_START_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_START_TAG.ordinal()].put( new Tag( "value", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_START_TAG.ordinal()].put( new Tag( "value",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_START_TAG,
                 Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_END_TAG, compareRequestAddValue ) );
 
         //State: [COMPARE_REQUEST_VALUE_END_TAG] - Tag: </assertion>
-        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_END_TAG.ordinal()].put( new Tag( "assertion", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_END_TAG.ordinal()].put(
+            new Tag( "assertion", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.COMPARE_REQUEST_VALUE_END_TAG,
                 Dsmlv2StatesEnum.COMPARE_REQUEST_ASSERTION_END_TAG, null ) );
 
@@ -448,12 +472,14 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG, controlCreation ) );
 
         // State: [DEL_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "controlValue", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "controlValue",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
 
         // State: [DEL_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put(
+            new Tag( "control", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.DEL_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG, null ) );
 
@@ -468,7 +494,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_START_TAG, controlCreation ) );
 
         // State: [DEL_REQUEST_CONTROL_END_TAG] - Tag: </delRequest>
-        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "delRequest", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG.ordinal()].put(
+            new Tag( "delRequest", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.DEL_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,
                 null ) );
 
@@ -494,17 +521,20 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
 
         // State: [EXTENDED_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG, null ) );
 
         // State: [EXTENDED_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "control",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG, null ) );
 
         // State: [EXTENDED_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "control", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "control",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_START_TAG, controlCreation ) );
 
@@ -514,27 +544,32 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
 
         // State: [EXTENDED_REQUEST_START_TAG] - Tag: <requestName>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG.ordinal()].put( new Tag( "requestName", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG.ordinal()].put(
+            new Tag( "requestName", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_START_TAG,
                 Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG, extendedRequestAddName ) );
 
         // State: [EXTENDED_REQUEST_CONTROL_END_TAG] - Tag: <requestName>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "requestName", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "requestName",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG, extendedRequestAddName ) );
 
         // State: [EXTENDED_REQUEST_REQUESTNAME_END_TAG] - Tag: </extendedRequest>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG.ordinal()].put( new Tag( "extendedRequest",
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG.ordinal()].put( new Tag(
+            "extendedRequest",
             Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG,
             Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
 
         // State: [EXTENDED_REQUEST_REQUESTNAME_END_TAG] - Tag: <requestValue>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG.ordinal()].put( new Tag( "requestValue",
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG.ordinal()].put( new Tag(
+            "requestValue",
             Tag.START ), new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTNAME_END_TAG,
             Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_END_TAG, extendedRequestAddValue ) );
 
         // State: [EXTENDED_REQUEST_REQUESTVALUE_END_TAG] - Tag: </requestRequest>
-        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_END_TAG.ordinal()].put( new Tag( "extendedRequest",
+        super.transitions[Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_END_TAG.ordinal()].put( new Tag(
+            "extendedRequest",
             Tag.END ), new GrammarTransition( Dsmlv2StatesEnum.EXTENDED_REQUEST_REQUESTVALUE_END_TAG,
             Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
 
@@ -547,7 +582,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
         super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
 
         // State: [MODIFY_DN_REQUEST_START_TAG] - Tag: </modDNRequest>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG.ordinal()].put( new Tag( "modDNRequest", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG.ordinal()].put(
+            new Tag( "modDNRequest", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_DN_REQUEST_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,
                 null ) );
 
@@ -563,22 +599,26 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
 
         // State: [MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG, null ) );
 
         // State: [MODIFY_DN_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "control",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG, null ) );
 
         // State: [MODIFY_DN_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "control", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "control",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_START_TAG, controlCreation ) );
 
         // State: [MODIFY_DN_REQUEST_CONTROL_END_TAG] - Tag: </modDNRequest>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "modDNRequest", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "modDNRequest",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_DN_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.BATCHREQUEST_LOOP, null ) );
 
@@ -604,37 +644,44 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG, controlCreation ) );
 
         // State: [MODIFY_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "controlValue", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "controlValue",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
 
         // State: [MODIFY_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG, null ) );
 
         // State: [MODIFY_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG.ordinal()].put(
+            new Tag( "control", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG, null ) );
 
         // State: [MODIFY_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "control", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG.ordinal()].put(
+            new Tag( "control", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_START_TAG, controlCreation ) );
 
         // State: [MODIFY_REQUEST_CONTROL_END_TAG] - Tag: </modifyRequest>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "modifyRequest", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "modifyRequest",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,
                 null ) );
 
         // State: [MODIFY_REQUEST_CONTROL_END_TAG] - Tag: <modification>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "modification", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "modification",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG, modifyRequestAddModification ) );
 
         // State: [MODIFY_REQUEST_START_TAG] - Tag: <modification>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG.ordinal()].put( new Tag( "modification", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG.ordinal()].put(
+            new Tag( "modification", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_START_TAG,
                 Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG, modifyRequestAddModification ) );
 
@@ -651,7 +698,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG, null ) );
 
         // State: [MODIFY_REQUEST_MODIFICATION_START_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG.ordinal()].put( new Tag( "value", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG.ordinal()].put( new Tag( "value",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_START_TAG,
                 Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG, modifyRequestAddValue ) );
 
@@ -661,7 +709,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG, modifyRequestAddValue ) );
 
         // State: [MODIFY_REQUEST_VALUE_END_TAG] - Tag: </modification>
-        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG.ordinal()].put( new Tag( "modification", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG.ordinal()].put( new Tag( "modification",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.MODIFY_REQUEST_VALUE_END_TAG,
                 Dsmlv2StatesEnum.MODIFY_REQUEST_MODIFICATION_END_TAG, null ) );
 
@@ -688,57 +737,68 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG, controlCreation ) );
 
         // State: [SEARCH_REQUEST_CONTROL_START_TAG] - Tag: <controlValue>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "controlValue", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "controlValue",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_END_TAG, controlValueCreation ) );
 
         // State: [SEARCH_REQUEST_CONTROLVALUE_END_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_END_TAG.ordinal()].put( new Tag( "control",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROLVALUE_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG, null ) );
 
         // State: [SEARCH_REQUEST_CONTROL_START_TAG] - Tag: </control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG.ordinal()].put( new Tag( "control", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG.ordinal()].put(
+            new Tag( "control", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG, null ) );
 
         // State: [SEARCH_REQUEST_CONTROL_END_TAG] - Tag: <control>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "control", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG.ordinal()].put(
+            new Tag( "control", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_START_TAG, controlCreation ) );
-        
+
         // State: [SEARCH_REQUEST_FILTER_END_TAG] - Tag: </searchRequest>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "searchRequest", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "searchRequest",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,
                 storeFilter ) );
 
         // State: [SEARCH_REQUEST_ATTRIBUTES_START_TAG] - Tag: </attributes>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG.ordinal()].put( new Tag( "attributes", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG.ordinal()].put( new Tag( "attributes",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG, null ) );
 
         // State: [SEARCH_REQUEST_ATTRIBUTES_START_TAG] - Tag: <attribute>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG.ordinal()].put( new Tag( "attribute", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG.ordinal()].put( new Tag( "attribute",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_START_TAG, searchRequestAddAttribute ) );
 
         // State: [SEARCH_REQUEST_ATTRIBUTE_START_TAG] - Tag: </attribute>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_START_TAG.ordinal()].put( new Tag( "attribute", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_START_TAG.ordinal()].put( new Tag( "attribute",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG, null ) );
 
         // State: [SEARCH_REQUEST_ATTRIBUTE_END_TAG] - Tag: <attribute>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG.ordinal()].put( new Tag( "attribute", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG.ordinal()].put( new Tag( "attribute",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_START_TAG, searchRequestAddAttribute ) );
 
         // State: [SEARCH_REQUEST_ATTRIBUTE_END_TAG] - Tag: </attributes>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG.ordinal()].put( new Tag( "attributes", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG.ordinal()].put( new Tag( "attributes",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTE_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG, null ) );
 
         // State: [SEARCH_REQUEST_ATTRIBUTES_END_TAG] - Tag: </searchRequest>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG.ordinal()].put( new Tag( "searchRequest", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG.ordinal()].put( new Tag( "searchRequest",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_END_TAG,
                 Dsmlv2StatesEnum.BATCHREQUEST_LOOP, storeFilter ) );
 
@@ -763,7 +823,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, null ) );
 
         // State: [SEARCH_REQUEST_CONTROL_END_TAG] - Tag: <filter>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG.ordinal()].put( new Tag( "filter", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG.ordinal()].put(
+            new Tag( "filter", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_CONTROL_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG, null ) );
 
@@ -817,33 +878,39 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
         //*** SUBSTRINGS ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <substrings>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG.ordinal()].put( new Tag( "substrings", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG.ordinal()].put( new Tag( "substrings",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG, substringsFilterCreation ) );
 
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <substrings>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP.ordinal()].put( new Tag( "substrings", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP.ordinal()].put(
+            new Tag( "substrings", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG, substringsFilterCreation ) );
 
         //*** EQUALITY MATCH ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <equalityMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG.ordinal()].put( new Tag( "equalityMatch", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG.ordinal()].put( new Tag( "equalityMatch",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_EQUALITYMATCH_START_TAG, equalityMatchFilterCreation ) );
 
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <equalityMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP.ordinal()].put( new Tag( "equalityMatch", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP.ordinal()].put( new Tag( "equalityMatch",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_EQUALITYMATCH_START_TAG, equalityMatchFilterCreation ) );
 
         // State: [SEARCH_REQUEST_EQUALITYMATCH_START_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_EQUALITYMATCH_START_TAG.ordinal()].put( new Tag( "value", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_EQUALITYMATCH_START_TAG.ordinal()].put( new Tag( "value",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_EQUALITYMATCH_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG, filterAddValue ) );
 
         // State: [SEARCH_REQUEST_VALUE_END_TAG] - Tag: </equalityMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG.ordinal()].put( new Tag( "equalityMatch", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG.ordinal()].put( new Tag( "equalityMatch",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ) );
 
@@ -855,65 +922,77 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.SEARCH_REQUEST_GREATEROREQUAL_START_TAG, greaterOrEqualFilterCreation ) );
 
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <greaterOrEqual>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP.ordinal()].put( new Tag( "greaterOrEqual", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP.ordinal()].put( new Tag( "greaterOrEqual",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_GREATEROREQUAL_START_TAG, greaterOrEqualFilterCreation ) );
 
         // State: [SEARCH_REQUEST_GREATEROREQUAL_START_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_GREATEROREQUAL_START_TAG.ordinal()].put( new Tag( "value", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_GREATEROREQUAL_START_TAG.ordinal()].put( new Tag( "value",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_GREATEROREQUAL_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG, filterAddValue ) );
 
         // State: [SEARCH_REQUEST_VALUE_END_TAG] - Tag: </greaterOrEqual>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG.ordinal()].put( new Tag( "greaterOrEqual", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG.ordinal()].put( new Tag( "greaterOrEqual",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ) );
 
         //*** LESS OR EQUAL ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <lessOrEqual>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG.ordinal()].put( new Tag( "lessOrEqual", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG.ordinal()].put( new Tag( "lessOrEqual",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_LESSOREQUAL_START_TAG, lessOrEqualFilterCreation ) );
 
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <lessOrEqual>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP.ordinal()].put( new Tag( "lessOrEqual", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP.ordinal()].put(
+            new Tag( "lessOrEqual", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_LESSOREQUAL_START_TAG, lessOrEqualFilterCreation ) );
 
         // State: [SEARCH_REQUEST_LESSOREQUAL_START_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_LESSOREQUAL_START_TAG.ordinal()].put( new Tag( "value", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_LESSOREQUAL_START_TAG.ordinal()].put( new Tag( "value",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_LESSOREQUAL_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG, filterAddValue ) );
 
         // State: [SEARCH_REQUEST_VALUE_END_TAG] - Tag: </lessOrEqual>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG.ordinal()].put( new Tag( "lessOrEqual", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG.ordinal()].put(
+            new Tag( "lessOrEqual", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ) );
 
         //*** LESS OR EQUAL ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <approxMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG.ordinal()].put( new Tag( "approxMatch", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG.ordinal()].put( new Tag( "approxMatch",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_APPROXMATCH_START_TAG, approxMatchFilterCreation ) );
 
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <approxMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP.ordinal()].put( new Tag( "approxMatch", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP.ordinal()].put(
+            new Tag( "approxMatch", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_APPROXMATCH_START_TAG, approxMatchFilterCreation ) );
 
         // State: [SEARCH_REQUEST_APPROXMATCH_START_TAG] - Tag: <value>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_APPROXMATCH_START_TAG.ordinal()].put( new Tag( "value", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_APPROXMATCH_START_TAG.ordinal()].put( new Tag( "value",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_APPROXMATCH_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG, filterAddValue ) );
 
         // State: [SEARCH_REQUEST_VALUE_END_TAG] - Tag: </approxMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG.ordinal()].put( new Tag( "approxMatch", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG.ordinal()].put(
+            new Tag( "approxMatch", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_VALUE_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ) );
 
         //*** PRESENT ***
         // State: [SEARCH_REQUEST_FILTER_START_TAG] - Tag: <present>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG.ordinal()].put( new Tag( "present", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG.ordinal()].put( new Tag( "present",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_PRESENT_START_TAG, presentFilterCreation ) );
 
@@ -923,7 +1002,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.SEARCH_REQUEST_PRESENT_START_TAG, presentFilterCreation ) );
 
         // State: [SEARCH_REQUEST_PRESENT_START_TAG] - Tag: </present>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_PRESENT_START_TAG.ordinal()].put( new Tag( "present", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_PRESENT_START_TAG.ordinal()].put(
+            new Tag( "present", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_PRESENT_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ) );
 
@@ -935,7 +1015,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_START_TAG, extensibleMatchFilterCreation ) );
 
         // State: [SEARCH_REQUEST_FILTER_LOOP] - Tag: <extensibleMatch>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP.ordinal()].put( new Tag( "extensibleMatch", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP.ordinal()].put( new Tag( "extensibleMatch",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_EXTENSIBLEMATCH_START_TAG, extensibleMatchFilterCreation ) );
 
@@ -958,12 +1039,14 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG, null ) );
 
         // State: [SEARCH_REQUEST_FILTER_END_TAG] - Tag: <attributes>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG.ordinal()].put( new Tag( "attributes", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG.ordinal()].put( new Tag( "attributes",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_ATTRIBUTES_START_TAG, null ) );
 
         // State: [SEARCH_REQUEST_FILTER_END_TAG] - Tag: </searchRequest>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG.ordinal()].put( new Tag( "searchRequest", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG.ordinal()].put( new Tag( "searchRequest",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_END_TAG, Dsmlv2StatesEnum.BATCHREQUEST_LOOP,
                 storeFilter ) );
 
@@ -977,12 +1060,14 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
         super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_END_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
 
         // State: [SEARCH_REQUEST_SUBSTRINGS_START_TAG] - Tag: </substrings>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG.ordinal()].put( new Tag( "substrings", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG.ordinal()].put( new Tag( "substrings",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, null ) );
 
         // State: [SEARCH_REQUEST_SUBSTRINGS_START_TAG] - Tag: <initial>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG.ordinal()].put( new Tag( "initial", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG.ordinal()].put( new Tag( "initial",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG, substringsFilterSetInitial ) );
 
@@ -992,17 +1077,20 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG, substringsFilterAddAny ) );
 
         // State: [SEARCH_REQUEST_INITIAL_END_TAG] - Tag: <final>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG.ordinal()].put( new Tag( "final", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG.ordinal()].put(
+            new Tag( "final", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG, substringsFilterSetFinal ) );
 
         // State: [SEARCH_REQUEST_INITIAL_END_TAG] - Tag: </substrings>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG.ordinal()].put( new Tag( "substrings", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG.ordinal()].put( new Tag( "substrings",
+            Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_INITIAL_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, substringsFilterClose ) );
 
         // State: [SEARCH_REQUEST_SUBSTRINGS_START_TAG] - Tag: <any>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG.ordinal()].put( new Tag( "any", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG.ordinal()].put( new Tag( "any",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_ANY_END_TAG, substringsFilterAddAny ) );
 
@@ -1022,37 +1110,41 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, substringsFilterClose ) );
 
         // State: [SEARCH_REQUEST_SUBSTRINGS_START_TAG] - Tag: <final>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG.ordinal()].put( new Tag( "final", Tag.START ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG.ordinal()].put( new Tag( "final",
+            Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_SUBSTRINGS_START_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG, substringsFilterSetFinal ) );
 
         // State: [SEARCH_REQUEST_FINAL_END_TAG] - Tag: </substrings>
-        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG.ordinal()].put( new Tag( "substrings", Tag.END ),
+        super.transitions[Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG.ordinal()].put(
+            new Tag( "substrings", Tag.END ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_REQUEST_FINAL_END_TAG,
                 Dsmlv2StatesEnum.SEARCH_REQUEST_FILTER_LOOP, substringsFilterClose ) );
 
-        
         //------------------------------------------ handle SOAP envelopes --------------------------
         super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_START_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_END_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SOAP_BODY_START_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SOAP_BODY_END_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
-        
+
         super.transitions[Dsmlv2StatesEnum.GRAMMAR_END.ordinal()] = new HashMap<Tag, GrammarTransition>();
-        
+
         // State: [INIT_GRAMMAR_STATE] - Tag: <envelope>
         super.transitions[Dsmlv2StatesEnum.INIT_GRAMMAR_STATE.ordinal()].put( new Tag( "envelope", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE, Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG,
                 null ) );
-        
+
         // state: [SOAP_ENVELOPE_START_TAG] -> Tag: <header>
         super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()].put( new Tag( "header", Tag.START ),
-            new GrammarTransition( Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG, Dsmlv2StatesEnum.SOAP_HEADER_START_TAG, readSoapHeader ) );
+            new GrammarTransition( Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG, Dsmlv2StatesEnum.SOAP_HEADER_START_TAG,
+                readSoapHeader ) );
 
         // state: [SOAP_HEADER_START_TAG] -> Tag: </header>
-        super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_START_TAG.ordinal()].put( new Tag( "header", Tag.END ),
-            new GrammarTransition( Dsmlv2StatesEnum.SOAP_HEADER_START_TAG, Dsmlv2StatesEnum.SOAP_HEADER_END_TAG, null ) );
+        super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_START_TAG.ordinal()]
+            .put( new Tag( "header", Tag.END ),
+                new GrammarTransition( Dsmlv2StatesEnum.SOAP_HEADER_START_TAG, Dsmlv2StatesEnum.SOAP_HEADER_END_TAG,
+                    null ) );
 
         // state: [SOAP_HEADER_END_TAG] -> Tag: <body>
         super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_END_TAG.ordinal()].put( new Tag( "body", Tag.START ),
@@ -1060,12 +1152,15 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
         // state: [SOAP_BODY_START_TAG] -> Tag: <batchRequest>
         super.transitions[Dsmlv2StatesEnum.SOAP_BODY_START_TAG.ordinal()].put( new Tag( "batchRequest", Tag.START ),
-            new GrammarTransition( Dsmlv2StatesEnum.SOAP_BODY_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_START_TAG, batchRequestCreation ) );
+            new GrammarTransition( Dsmlv2StatesEnum.SOAP_BODY_START_TAG, Dsmlv2StatesEnum.BATCHREQUEST_START_TAG,
+                batchRequestCreation ) );
 
         // the optional transition if no soap header is present
         // state: [SOAP_ENVELOPE_START_TAG] -> Tag: <body>
-        super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()].put( new Tag( "body", Tag.START ),
-            new GrammarTransition( Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG, Dsmlv2StatesEnum.SOAP_BODY_START_TAG, null ) );
+        super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()]
+            .put( new Tag( "body", Tag.START ),
+                new GrammarTransition( Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG, Dsmlv2StatesEnum.SOAP_BODY_START_TAG,
+                    null ) );
 
         // the below two transitions are a bit unconventional, technically the container's state is set to GRAMMAR_END
         // when the </batchRequest> tag is encountered by the parser and the corresponding action gets executed but in
@@ -1081,8 +1176,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
     } // End of the constructor
 
-    
-    
+
     /**
      * @return The LDAP codec service.
      */
@@ -1090,8 +1184,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         return codec;
     }
-    
-    
+
     //*************************
     //*    GRAMMAR ACTIONS    *
     //*************************
@@ -1113,14 +1206,14 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             String attributeValue;
             // requestID
             attributeValue = xpp.getAttributeValue( "", "requestID" );
-            
+
             if ( attributeValue != null )
             {
                 batchRequest.setRequestID( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             // processing
             attributeValue = xpp.getAttributeValue( "", "processing" );
-            
+
             if ( attributeValue != null )
             {
                 if ( "sequential".equals( attributeValue ) )
@@ -1140,10 +1233,10 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 batchRequest.setProcessing( Processing.SEQUENTIAL );
             }
-            
+
             // onError
             attributeValue = xpp.getAttributeValue( "", "onError" );
-            
+
             if ( attributeValue != null )
             {
                 if ( "resume".equals( attributeValue ) )
@@ -1163,10 +1256,10 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 batchRequest.setOnError( OnError.EXIT );
             }
-            
+
             // responseOrder
             attributeValue = xpp.getAttributeValue( "", "responseOrder" );
-            
+
             if ( attributeValue != null )
             {
                 if ( "sequential".equals( attributeValue ) )
@@ -1290,7 +1383,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            AddRequestDsml addRequest = ( AddRequestDsml ) 
+            AddRequestDsml addRequest = ( AddRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
@@ -1299,7 +1392,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             String attributeValue;
             // name
             attributeValue = xpp.getAttributeValue( "", "name" );
-            
+
             if ( attributeValue != null )
             {
                 try
@@ -1325,11 +1418,11 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            AddRequestDsml addRequest = ( AddRequestDsml ) 
+            AddRequestDsml addRequest = ( AddRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
-            
+
             try
             {
                 // We have to catch the type Attribute Value before going to the next Text node
@@ -1399,14 +1492,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
             if ( attributeValue != null )
             {
-                try
-                {
-                    authRequest.setName( new Dn( attributeValue ) );
-                }
-                catch ( LdapInvalidDnException e )
-                {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
-                }
+                authRequest.setName( attributeValue );
             }
             else
             {
@@ -1588,8 +1674,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            ExtendedRequestDsml<?,?> extendedRequest = 
-                new ExtendedRequestDsml<ExtendedRequest<ExtendedResponse>,ExtendedResponse>( codec, new ExtendedRequestImpl() );
+            ExtendedRequestDsml<?, ?> extendedRequest =
+                new ExtendedRequestDsml<ExtendedRequest<ExtendedResponse>, ExtendedResponse>( codec,
+                    new ExtendedRequestImpl() );
             container.getBatchRequest().addRequest( extendedRequest );
 
             XmlPullParser xpp = container.getParser();
@@ -1620,7 +1707,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            ExtendedRequestDsml<?,?> extendedRequest = ( ExtendedRequestDsml<?,?> ) 
+            ExtendedRequestDsml<?, ?> extendedRequest = ( ExtendedRequestDsml<?, ?> )
                 container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
@@ -1661,7 +1748,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            ExtendedRequestDsml<?,?> extendedRequest = ( ExtendedRequestDsml<?,?> ) 
+            ExtendedRequestDsml<?, ?> extendedRequest = ( ExtendedRequestDsml<?, ?> )
                 container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
@@ -1857,7 +1944,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            ModifyRequestDsml modifyRequest = ( ModifyRequestDsml ) 
+            ModifyRequestDsml modifyRequest = ( ModifyRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
@@ -1914,7 +2001,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            ModifyRequestDsml modifyRequest = ( ModifyRequestDsml ) 
+            ModifyRequestDsml modifyRequest = ( ModifyRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
@@ -1932,7 +2019,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
                     {
-                        modifyRequest.addAttributeValue( Base64.decode(nextText.trim().toCharArray()) );
+                        modifyRequest.addAttributeValue( Base64.decode( nextText.trim().toCharArray() ) );
                     }
                     else
                     {
@@ -2153,7 +2240,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
@@ -2169,7 +2256,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 throw new XmlPullParserException( e.getMessage(), xpp, null );
             }
-            
+
             searchRequestDecorator.setTerminalFilter( filter );
 
             // Checking and adding the filter's attributes
@@ -2195,10 +2282,10 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
-            SubstringFilter substringFilter = ( SubstringFilter ) 
+            SubstringFilter substringFilter = ( SubstringFilter )
                 searchRequestDecorator.getTerminalFilter();
 
             XmlPullParser xpp = container.getParser();
@@ -2238,7 +2325,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             SubstringFilter substringFilter = ( SubstringFilter ) searchRequestDecorator.getTerminalFilter();
@@ -2279,7 +2366,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             SubstringFilter substringFilter = ( SubstringFilter ) searchRequestDecorator.getTerminalFilter();
@@ -2321,7 +2408,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             searchRequestDecorator.setTerminalFilter( null );
@@ -2335,7 +2422,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
@@ -2361,7 +2448,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             Filter filter = searchRequestDecorator.getCurrentFilter();
@@ -2377,7 +2464,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
@@ -2403,7 +2490,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
@@ -2429,7 +2516,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
@@ -2474,7 +2561,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
@@ -2519,7 +2606,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
@@ -2566,7 +2653,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             XmlPullParser xpp = container.getParser();
@@ -2612,7 +2699,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
         {
             SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
-            AttributeValueAssertionFilter filter = ( AttributeValueAssertionFilter ) searchRequestDecorator.getTerminalFilter();
+            AttributeValueAssertionFilter filter = ( AttributeValueAssertionFilter ) searchRequestDecorator
+                .getTerminalFilter();
             AttributeValueAssertion assertion = filter.getAssertion();
 
             XmlPullParser xpp = container.getParser();
@@ -2658,7 +2746,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             XmlPullParser xpp = container.getParser();
 
             // Adding the filter to the Search Filter
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             try
@@ -2694,7 +2782,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             // Adding the filter to the Search Filter
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
             SearchRequest searchRequest = searchRequestDecorator.getDecorated();
 
@@ -2702,11 +2790,11 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 throw new IllegalStateException( "No filter element present in the DSML search request" );
             }
-            
+
             searchRequest.setFilter( searchRequestDecorator.getFilterNode() );
         }
     };
-    
+
     /**
      * GrammarAction that creates an Extensible Match Filter
      */
@@ -2719,7 +2807,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             XmlPullParser xpp = container.getParser();
 
             // Adding the filter to the Search Filter
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
             try
@@ -2783,7 +2871,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml ) 
+            SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
             ExtensibleMatchFilter filter = ( ExtensibleMatchFilter ) searchRequestDecorator.getTerminalFilter();
 
@@ -2873,7 +2961,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
-            AbstractRequestDsml<? extends Request> request = 
+            AbstractRequestDsml<? extends Request> request =
                 ( AbstractRequestDsml<? extends Request> ) container.getBatchRequest().getCurrentRequest();
             DsmlControl<? extends Control> control = request.getCurrentControl();
 
@@ -2906,7 +2994,6 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
         }
     };
 
-
     /**
      * GrammarAction that reads the SOAP header data
      */
@@ -2918,41 +3005,41 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 XmlPullParser xpp = container.getParser();
                 StringBuilder sb = new StringBuilder();
-                
+
                 String startTag = xpp.getText();
                 sb.append( startTag );
 
                 // string '<' and '>'
                 startTag = startTag.substring( 1, startTag.length() - 1 );
-                
+
                 int tagType = -1;
                 String endTag = "";
-                
+
                 // continue parsing till we get to the end tag of SOAP header
                 // and match the tag values including the namespace
-                while( !startTag.equals( endTag ) )
+                while ( !startTag.equals( endTag ) )
                 {
                     tagType = xpp.next();
                     endTag = xpp.getText();
                     sb.append( endTag );
-                    
+
                     if ( tagType == XmlPullParser.END_TAG )
                     {
                         // strip '<', '/' and '>'
                         endTag = endTag.substring( 2, endTag.length() - 1 );
                     }
                 }
-                
+
                 // change the state to header end
                 container.setState( Dsmlv2StatesEnum.SOAP_HEADER_END_TAG );
-                
+
                 //System.out.println( sb );
             }
-            catch( IOException e )
+            catch ( IOException e )
             {
                 e.printStackTrace();
             }
-            
+
         }
     };
 }

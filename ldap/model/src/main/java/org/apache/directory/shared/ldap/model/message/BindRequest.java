@@ -97,28 +97,53 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
 
 
     /**
-     * Gets the distinguished name of the subject in this authentication
+     * Gets the name of the subject in this authentication
      * request. This field may take on a null value (a zero length string) for
      * the purposes of anonymous binds, when authentication has been performed
      * at a lower layer, or when using SASL credentials with a mechanism that
-     * includes the Dn in the credentials.
+     * includes the name in the credentials.
      * 
-     * @return the Dn of the authenticating user.
+     * @return the name of the authenticating user.
      */
-    Dn getName();
+    String getName();
 
 
     /**
-     * Sets the distinguished name of the subject in this authentication
+     * Sets the  name of the subject in this authentication
      * request. This field may take on a null value (or a zero length string)
      * for the purposes of anonymous binds, when authentication has been
      * performed at a lower layer, or when using SASL credentials with a
-     * mechanism that includes the Dn in the credentials.
+     * mechanism that includes the name in the credentials.
      * 
-     * @param name the Dn of the authenticating user - leave null for annonymous user.
+     * @param name the name of the authenticating user - leave null for anonymous user.
      * @return The BindRequest instance
      */
-    BindRequest setName( Dn name );
+    BindRequest setName( String name );
+
+
+    /**
+     * Gets the DN of the subject in this authentication
+     * request. This field may take on a null value (a zero length string) for
+     * the purposes of anonymous binds, when authentication has been performed
+     * at a lower layer, or when using SASL credentials with a mechanism that
+     * includes the DN in the credentials.
+     * 
+     * @return the DN of the authenticating user.
+     */
+    Dn getDn();
+
+
+    /**
+     * Sets the DN of the subject in this authentication
+     * request. This field may take on a null value (or a zero length string)
+     * for the purposes of anonymous binds, when authentication has been
+     * performed at a lower layer, or when using SASL credentials with a
+     * mechanism that includes the DN in the credentials.
+     * 
+     * @param name the DN of the authenticating user - leave null for anonymous user.
+     * @return The BindRequest instance
+     */
+    BindRequest setDn( Dn name );
 
 
     /**
@@ -188,20 +213,20 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * {@inheritDoc}
      */
     BindRequest setMessageId( int messageId );
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     BindRequest addControl( Control control ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     BindRequest addAllControls( Control[] controls ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

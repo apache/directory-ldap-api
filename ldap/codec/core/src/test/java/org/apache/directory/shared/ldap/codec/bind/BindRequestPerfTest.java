@@ -171,7 +171,7 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
     @Ignore
     public void testEncodeBindRequestPerf() throws Exception
     {
-        Dn name = new Dn( "uid=akarasulu,dc=example,dc=com" );
+        Dn dn = new Dn( "uid=akarasulu,dc=example,dc=com" );
         int nbLoops = 1000000;
         long t0 = System.currentTimeMillis();
 
@@ -182,7 +182,7 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
             bindRequest.setMessageId( 1 );
 
             bindRequest.setSimple( true );
-            bindRequest.setName( name );
+            bindRequest.setDn( dn );
             bindRequest.setCredentials( Strings.getBytesUtf8("password") );
             Control control = new OpaqueControl( "2.16.840.1.113730.3.4.2" );
 

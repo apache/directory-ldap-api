@@ -206,7 +206,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, bindRequest.getMessageId() );
         assertTrue( bindRequest.isVersion3() );
-        assertEquals( "uid=akarasulu,dc=example,dc=com", bindRequest.getName().toString() );
+        assertEquals( "uid=akarasulu,dc=example,dc=com", bindRequest.getName() );
         assertTrue( bindRequest.isSimple() );
         assertEquals( "password", Strings.utf8ToString(bindRequest.getCredentials()) );
 
@@ -369,7 +369,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, bindRequest.getMessageId() );
         assertTrue( bindRequest.isVersion3() );
-        assertEquals( "", bindRequest.getName().toString() );
+        assertEquals( "", bindRequest.getName() );
         assertTrue( bindRequest.isSimple() );
         assertEquals( "password", Strings.utf8ToString(bindRequest.getCredentials()) );
 
@@ -528,7 +528,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, bindRequest.getMessageId() );
         assertTrue( bindRequest.isVersion3() );
-        assertEquals( "uid=akarasulu,dc=example,dc=com", bindRequest.getName().toString() );
+        assertEquals( "uid=akarasulu,dc=example,dc=com", bindRequest.getName() );
         assertFalse( bindRequest.isSimple() );
         assertEquals( "KERBEROS_V4", bindRequest.getSaslMechanism() );
         assertEquals( "abcdef", Strings.utf8ToString(bindRequest.getCredentials()) );
@@ -605,7 +605,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, bindRequest.getMessageId() );
         assertTrue( bindRequest.isVersion3() );
-        assertEquals( "", bindRequest.getName().toString() );
+        assertEquals( "", bindRequest.getName() );
         assertFalse( bindRequest.isSimple() );
         assertEquals( "KERBEROS_V4", bindRequest.getSaslMechanism() );
         assertEquals( "abcdef", Strings.utf8ToString(bindRequest.getCredentials()) );
@@ -885,7 +885,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
      * Test the decoding of a BindRequest with an empty simple
      */
     @Test
-    public void testDecodeBindRequestEmptysimple()
+    public void testDecodeBindRequestEmptySimple()
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -919,7 +919,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, bindRequest.getMessageId() );
         assertTrue( bindRequest.isVersion3() );
-        assertEquals( "", bindRequest.getName().toString() );
+        assertEquals( "", bindRequest.getName() );
         assertTrue( bindRequest.isSimple() );
         assertEquals( "", Strings.utf8ToString(bindRequest.getCredentials()) );
 
@@ -1021,7 +1021,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, bindRequest.getMessageId() );
         assertTrue( bindRequest.isVersion3() );
-        assertEquals( "", bindRequest.getName().toString() );
+        assertEquals( "", bindRequest.getName() );
         assertFalse( bindRequest.isSimple() );
         assertEquals( "", bindRequest.getSaslMechanism() );
 
@@ -1127,7 +1127,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, bindRequest.getMessageId() );
         assertTrue( bindRequest.isVersion3() );
-        assertEquals( "", bindRequest.getName().toString() );
+        assertEquals( "", bindRequest.getName() );
         assertFalse( bindRequest.isSimple() );
         assertEquals( "", bindRequest.getSaslMechanism() );
         assertEquals( "", Strings.utf8ToString(bindRequest.getCredentials()) );
@@ -1198,7 +1198,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, bindRequest.getMessageId() );
         assertTrue( bindRequest.isVersion3() );
-        assertEquals( "", bindRequest.getName().toString() );
+        assertEquals( "", bindRequest.getName() );
         assertFalse( bindRequest.isSimple() );
         assertEquals( "", bindRequest.getSaslMechanism() );
         assertEquals( "", Strings.utf8ToString(bindRequest.getCredentials()) );
@@ -1278,7 +1278,7 @@ public class BindRequestTest extends AbstractCodecServiceTest
 
         assertEquals( 1, bindRequest.getMessageId() );
         assertTrue( bindRequest.isVersion3() );
-        assertEquals( "", bindRequest.getName().toString() );
+        assertEquals( "", bindRequest.getName() );
         assertFalse( bindRequest.isSimple() );
         assertEquals( "", bindRequest.getSaslMechanism() );
         assertEquals( "", Strings.utf8ToString(bindRequest.getCredentials()) );

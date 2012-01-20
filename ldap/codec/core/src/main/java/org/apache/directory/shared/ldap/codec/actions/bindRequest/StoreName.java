@@ -77,21 +77,22 @@ public class StoreName extends GrammarAction<LdapMessageContainer<BindRequestDec
         // We have to handle the special case of a 0 length name
         if ( tlv.getLength() == 0 )
         {
-            bindRequestMessage.setName( Dn.EMPTY_DN );
+            bindRequestMessage.setName( "" );
         }
         else
         {
-            byte[] dnBytes = tlv.getValue().getData();
-            String dnStr = Strings.utf8ToString(dnBytes);
+            byte[] nameBytes = tlv.getValue().getData();
+            String nameStr = Strings.utf8ToString( nameBytes );
 
             try
             {
-                Dn dn = new Dn( dnStr );
-                bindRequestMessage.setName( dn );
+                // Testing the name as a DN
+                new Dn( nameStr );
+                bindRequestMessage.setName( nameStr );
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = "Incorrect Dn given : " + dnStr + " (" + Strings.dumpBytes(dnBytes)
+                String msg = "Incorrect DN given : " + nameStr + " (" + Strings.dumpBytes( nameBytes )
                     + ") is invalid";
                 LOG.error( "{} : {}", msg, ine.getMessage() );
 
