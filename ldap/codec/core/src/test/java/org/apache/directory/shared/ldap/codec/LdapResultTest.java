@@ -70,10 +70,14 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x0E, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x69, 0x02, // CHOICE { ..., addResponse AddResponse, ...
-                0x0A, 0x00 // Empty resultCode
-            } );
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x69,
+                0x02, // CHOICE { ..., addResponse AddResponse, ...
+                0x0A,
+                0x00 // Empty resultCode
+        } );
 
         stream.flip();
 
@@ -107,10 +111,16 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x0E, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x69, 0x02, // CHOICE { ..., addResponse AddResponse, ...
-                0x0A, 0x03, 0x01, 0x01 // resultCode too high
-            } );
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x69,
+                0x02, // CHOICE { ..., addResponse AddResponse, ...
+                0x0A,
+                0x03,
+                0x01,
+                0x01 // resultCode too high
+        } );
 
         stream.flip();
 
@@ -144,12 +154,19 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
         byte[] buffer = new byte[]
             { 0x30, 0x0C, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x69, 0x07, // CHOICE { ..., addResponse AddResponse, ...
-                0x0A, 0x01, 0x00, // resultCode success
-                0x04, 0x00, // matchedDN LDAPDN,
-                0x04, 0x00 // errorMessage LDAPString,
-            };
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x69,
+                0x07, // CHOICE { ..., addResponse AddResponse, ...
+                0x0A,
+                0x01,
+                0x00, // resultCode success
+                0x04,
+                0x00, // matchedDN LDAPDN,
+                0x04,
+                0x00 // errorMessage LDAPString,
+        };
 
         for ( int i = 0; i < 91; i++ )
         {
@@ -189,9 +206,14 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x08, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x69, 0x03, // CHOICE { ..., addResponse AddResponse, ...
-                0x0A, 0x01, 0x00, // resultCode success
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x69,
+                0x03, // CHOICE { ..., addResponse AddResponse, ...
+                0x0A,
+                0x01,
+                0x00, // resultCode success
             } );
 
         stream.flip();
@@ -226,11 +248,17 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x0A, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x69, 0x05, // CHOICE { ..., addResponse AddResponse, ...
-                0x0A, 0x01, 0x00, // resultCode success
-                0x04, 0x00 // Empty matched Dn
-            } );
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x69,
+                0x05, // CHOICE { ..., addResponse AddResponse, ...
+                0x0A,
+                0x01,
+                0x00, // resultCode success
+                0x04,
+                0x00 // Empty matched Dn
+        } );
 
         stream.flip();
 
@@ -264,18 +292,25 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x0C, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x69, 0x07, // CHOICE { ..., addResponse AddResponse, ...
-                0x0A, 0x01, 0x00, // resultCode success
-                0x04, 0x00, // Empty matched Dn
-                0x04, 0x00 // Empty errorMessage
-            } );
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x69,
+                0x07, // CHOICE { ..., addResponse AddResponse, ...
+                0x0A,
+                0x01,
+                0x00, // resultCode success
+                0x04,
+                0x00, // Empty matched Dn
+                0x04,
+                0x00 // Empty errorMessage
+        } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddResponseDecorator> container = 
+        LdapMessageContainer<AddResponseDecorator> container =
             new LdapMessageContainer<AddResponseDecorator>( codec );
 
         // Decode the AddResponse PDU
@@ -304,7 +339,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x0E, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -328,14 +363,32 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x18, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x69, 0x13, // CHOICE { ..., addResponse AddResponse, ...
-                0x0A, 0x01, 0x0A, // resultCode success (Referral)
-                0x04, 0x00, // Empty matched Dn
-                0x04, 0x00, // Empty errorMessage
-                ( byte ) 0xA3, 0x0A, 0x04, 0x08, 'l', 'd', 'a', 'p', ':', '/', '/', '/' } );
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x69,
+                0x13, // CHOICE { ..., addResponse AddResponse, ...
+                0x0A,
+                0x01,
+                0x0A, // resultCode success (Referral)
+                0x04,
+                0x00, // Empty matched Dn
+                0x04,
+                0x00, // Empty errorMessage
+                ( byte ) 0xA3,
+                0x0A,
+                0x04,
+                0x08,
+                'l',
+                'd',
+                'a',
+                'p',
+                ':',
+                '/',
+                '/',
+                '/' } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -375,7 +428,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x1A, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -400,20 +453,42 @@ public class LdapResultTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x22, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 0x69,
                 0x1D, // CHOICE { ..., addResponse AddResponse, ...
-                0x0A, 0x01,
+                0x0A,
+                0x01,
                 0x0A, // resultCode success (Referral)
                 0x04,
                 0x00, // Empty matched Dn
                 0x04,
                 0x00, // Empty errorMessage
-                ( byte ) 0xA3, 0x14, 0x04, 0x08, 'l', 'd', 'a', 'p', ':', '/', '/', '/', 0x04, 0x08, 'l', 'd', 'a',
-                'p', ':', '/', '/', '/' } );
+                ( byte ) 0xA3,
+                0x14,
+                0x04,
+                0x08,
+                'l',
+                'd',
+                'a',
+                'p',
+                ':',
+                '/',
+                '/',
+                '/',
+                0x04,
+                0x08,
+                'l',
+                'd',
+                'a',
+                'p',
+                ':',
+                '/',
+                '/',
+                '/' } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -458,7 +533,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x24, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -483,14 +558,34 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x1A, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x69, 0x15, // CHOICE { ..., addResponse AddResponse, ...
-                0x0A, 0x01, 0x0A, // resultCode success (Referral)
-                0x04, 0x00, // Empty matched Dn
-                0x04, 0x00, // Empty errorMessage
-                ( byte ) 0xA3, 0x0C, 0x04, 0x08, 'l', 'd', 'a', 'p', ':', '/', '/', '/', 0x04, 0x00 } );
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x69,
+                0x15, // CHOICE { ..., addResponse AddResponse, ...
+                0x0A,
+                0x01,
+                0x0A, // resultCode success (Referral)
+                0x04,
+                0x00, // Empty matched Dn
+                0x04,
+                0x00, // Empty errorMessage
+                ( byte ) 0xA3,
+                0x0C,
+                0x04,
+                0x08,
+                'l',
+                'd',
+                'a',
+                'p',
+                ':',
+                '/',
+                '/',
+                '/',
+                0x04,
+                0x00 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -540,7 +635,7 @@ public class LdapResultTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x1C, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -565,17 +660,25 @@ public class LdapResultTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x0E, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x69, 0x09, // CHOICE { ..., addResponse AddResponse, ...
-                0x0A, 0x01, 0x0A, // resultCode success (Referral)
-                0x04, 0x00, // Empty matched Dn
-                0x04, 0x00, // Empty errorMessage
-                ( byte ) 0xA3, 0x00, } );
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x69,
+                0x09, // CHOICE { ..., addResponse AddResponse, ...
+                0x0A,
+                0x01,
+                0x0A, // resultCode success (Referral)
+                0x04,
+                0x00, // Empty matched Dn
+                0x04,
+                0x00, // Empty errorMessage
+                ( byte ) 0xA3,
+                0x00, } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<MessageDecorator<? extends Message>> container = 
+        LdapMessageContainer<MessageDecorator<? extends Message>> container =
             new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
 
         // Decode the AddResponse PDU

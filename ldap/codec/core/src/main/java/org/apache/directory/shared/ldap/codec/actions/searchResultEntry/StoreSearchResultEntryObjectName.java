@@ -51,6 +51,7 @@ public class StoreSearchResultEntryObjectName extends GrammarAction<LdapMessageC
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -79,7 +80,7 @@ public class StoreSearchResultEntryObjectName extends GrammarAction<LdapMessageC
         else
         {
             byte[] dnBytes = tlv.getValue().getData();
-            String dnStr = Strings.utf8ToString(dnBytes);
+            String dnStr = Strings.utf8ToString( dnBytes );
 
             try
             {
@@ -88,7 +89,7 @@ public class StoreSearchResultEntryObjectName extends GrammarAction<LdapMessageC
             catch ( LdapInvalidDnException ine )
             {
                 // This is for the client side. We will never decode LdapResult on the server
-                String msg = "The Dn " + Strings.dumpBytes(dnBytes) + "is invalid : "
+                String msg = "The Dn " + Strings.dumpBytes( dnBytes ) + "is invalid : "
                     + ine.getMessage();
                 LOG.error( "{} : {}", msg, ine.getMessage() );
                 throw new DecoderException( msg, ine );

@@ -46,7 +46,7 @@ public class CascadeDecorator extends ControlDecorator<Cascade> implements Codec
         super( codec, control );
     }
 
-    
+
     /**
      * Returns the default control length.
      */
@@ -55,7 +55,7 @@ public class CascadeDecorator extends ControlDecorator<Cascade> implements Codec
         return 0;
     }
 
-    
+
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         return this;

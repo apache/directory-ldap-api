@@ -44,6 +44,7 @@ public class InitCompareRequest extends GrammarAction<LdapMessageContainer<Compa
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitCompareRequest.class );
 
+
     /**
      * Instantiates a new action.
      */

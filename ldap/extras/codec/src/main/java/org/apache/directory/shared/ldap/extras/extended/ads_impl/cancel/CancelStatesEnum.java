@@ -88,7 +88,7 @@ public enum CancelStatesEnum implements States
         return ( ( state == END_STATE.ordinal() ) ? "CANCEL_END_STATE" : this.name() );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -96,8 +96,8 @@ public enum CancelStatesEnum implements States
     {
         return this == END_STATE;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

@@ -94,7 +94,7 @@ public final class JndiUtils
 
 
     // @TODO not really needed and can be moved out
-    public static javax.naming.ldap.Control toJndiControl( LdapApiService codec, Control control ) 
+    public static javax.naming.ldap.Control toJndiControl( LdapApiService codec, Control control )
         throws EncoderException
     {
         return codec.toJndiControl( control );
@@ -102,8 +102,8 @@ public final class JndiUtils
 
 
     // @TODO not really needed and can be moved out
-    public static javax.naming.ldap.Control[] toJndiControls( LdapApiService codec, Control... controls ) 
-         throws EncoderException
+    public static javax.naming.ldap.Control[] toJndiControls( LdapApiService codec, Control... controls )
+        throws EncoderException
     {
         if ( controls != null )
         {
@@ -125,7 +125,7 @@ public final class JndiUtils
 
 
     // @TODO not really needed and can be moved out
-    public static Control fromJndiControl( LdapApiService codec, javax.naming.ldap.Control jndiControl ) 
+    public static Control fromJndiControl( LdapApiService codec, javax.naming.ldap.Control jndiControl )
         throws DecoderException
     {
         return codec.fromJndiControl( jndiControl );
@@ -164,7 +164,7 @@ public final class JndiUtils
 
         NamingException ne = null;
 
-        if ( t instanceof LdapAffectMultipleDsaException)
+        if ( t instanceof LdapAffectMultipleDsaException )
         {
             ne = new NamingException( t.getLocalizedMessage() );
         }
@@ -220,7 +220,7 @@ public final class JndiUtils
         {
             ne = new NoPermissionException( t.getLocalizedMessage() );
         }
-        else if ( t instanceof LdapNoSuchAttributeException)
+        else if ( t instanceof LdapNoSuchAttributeException )
         {
             ne = new NoSuchAttributeException( t.getLocalizedMessage() );
         }
@@ -252,7 +252,7 @@ public final class JndiUtils
         {
             ne = new SchemaViolationException( t.getLocalizedMessage() );
         }
-        else if ( t instanceof LdapServiceUnavailableException)
+        else if ( t instanceof LdapServiceUnavailableException )
         {
             ne = new ServiceUnavailableException( t.getLocalizedMessage() );
         }

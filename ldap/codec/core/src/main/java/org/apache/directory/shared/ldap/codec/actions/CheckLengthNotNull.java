@@ -41,6 +41,7 @@ public class CheckLengthNotNull extends GrammarAction<LdapMessageContainer<Messa
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( CheckLengthNotNull.class );
 
+
     /**
      * Instantiates the action.
      */

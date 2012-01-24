@@ -88,37 +88,100 @@ public class AddRequestTest extends AbstractCodecServiceTest
                 0x52, // CHOICE { ..., addRequest AddRequest, ...
                 // AddRequest ::= [APPLICATION 8] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // attributes AttributeList }
                 0x30,
                 0x2E, // AttributeList ::= SEQUENCE OF SEQUENCE {
                 0x30,
                 0x0c, // attribute 1
-                0x04, 0x01,
+                0x04,
+                0x01,
                 'l', // type AttributeDescription,
                 0x31,
                 0x07, // vals SET OF AttributeValue }
-                0x04, 0x05, 'P', 'a', 'r', 'i', 's',
+                0x04,
+                0x05,
+                'P',
+                'a',
+                'r',
+                'i',
+                's',
 
                 0x30,
                 0x1E, // attribute 2
                 // type AttributeDescription,
-                0x04, 0x05, 'a', 't', 't', 'r',
+                0x04,
+                0x05,
+                'a',
+                't',
+                't',
+                'r',
                 's',
                 0x31,
                 0x15, // vals SET
                 // OF
                 // AttributeValue
                 // }
-                0x04, 0x05, 't', 'e', 's', 't', '1', 0x04, 0x05, 't', 'e', 's', 't', '2', 0x04, 0x05, 't', 'e', 's',
-                't', '3', } );
+                0x04,
+                0x05,
+                't',
+                'e',
+                's',
+                't',
+                '1',
+                0x04,
+                0x05,
+                't',
+                'e',
+                's',
+                't',
+                '2',
+                0x04,
+                0x05,
+                't',
+                'e',
+                's',
+                't',
+                '3', } );
 
         Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddRequestDecorator> container = 
+        LdapMessageContainer<AddRequestDecorator> container =
             new LdapMessageContainer<AddRequestDecorator>( codec );
 
         // Decode a AddRequest message
@@ -228,9 +291,12 @@ public class AddRequestTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x05, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x68, 0x00 // CHOICE { ..., addRequest AddRequest, ...
-            } );
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x68,
+                0x00 // CHOICE { ..., addRequest AddRequest, ...
+        } );
 
         stream.flip();
 
@@ -265,36 +331,69 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x37, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 0x68,
                 0x26, // CHOICE { ..., addRequest AddRequest, ...
                 // AddRequest ::= [APPLICATION 8] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x00,
+                0x04,
+                0x00,
                 // attributes AttributeList }
                 0x30,
                 0x2E, // AttributeList ::= SEQUENCE OF SEQUENCE {
                 0x30,
                 0x0c, // attribute 1
-                0x04, 0x01,
+                0x04,
+                0x01,
                 'l', // type AttributeDescription,
                 0x31,
                 0x07, // vals SET OF AttributeValue }
-                0x04, 0x05, 'P', 'a', 'r', 'i', 's',
+                0x04,
+                0x05,
+                'P',
+                'a',
+                'r',
+                'i',
+                's',
 
                 0x30,
                 0x1E, // attribute 2
                 // type AttributeDescription,
-                0x04, 0x05, 'a', 't', 't', 'r',
+                0x04,
+                0x05,
+                'a',
+                't',
+                't',
+                'r',
                 's',
                 0x31,
                 0x15, // vals SET
                 // OF
                 // AttributeValue
                 // }
-                0x04, 0x05, 't', 'e', 's', 't', '1', 0x04, 0x05, 't', 'e', 's', 't', '2', 0x04, 0x05, 't', 'e', 's',
-                't', '3', } );
+                0x04,
+                0x05,
+                't',
+                'e',
+                's',
+                't',
+                '1',
+                0x04,
+                0x05,
+                't',
+                'e',
+                's',
+                't',
+                '2',
+                0x04,
+                0x05,
+                't',
+                'e',
+                's',
+                't',
+                '3', } );
 
         stream.flip();
 
@@ -341,37 +440,100 @@ public class AddRequestTest extends AbstractCodecServiceTest
                 0x52, // CHOICE { ..., addRequest AddRequest, ...
                 // AddRequest ::= [APPLICATION 8] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', ':', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                ':',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // attributes AttributeList }
                 0x30,
                 0x2E, // AttributeList ::= SEQUENCE OF SEQUENCE {
                 0x30,
                 0x0c, // attribute 1
-                0x04, 0x01,
+                0x04,
+                0x01,
                 'l', // type AttributeDescription,
                 0x31,
                 0x07, // vals SET OF AttributeValue }
-                0x04, 0x05, 'P', 'a', 'r', 'i', 's',
+                0x04,
+                0x05,
+                'P',
+                'a',
+                'r',
+                'i',
+                's',
 
                 0x30,
                 0x1E, // attribute 2
                 // type AttributeDescription,
-                0x04, 0x05, 'a', 't', 't', 'r',
+                0x04,
+                0x05,
+                'a',
+                't',
+                't',
+                'r',
                 's',
                 0x31,
                 0x15, // vals SET
                 // OF
                 // AttributeValue
                 // }
-                0x04, 0x05, 't', 'e', 's', 't', '1', 0x04, 0x05, 't', 'e', 's', 't', '2', 0x04, 0x05, 't', 'e', 's',
-                't', '3', } );
+                0x04,
+                0x05,
+                't',
+                'e',
+                's',
+                't',
+                '1',
+                0x04,
+                0x05,
+                't',
+                'e',
+                's',
+                't',
+                '2',
+                0x04,
+                0x05,
+                't',
+                'e',
+                's',
+                't',
+                '3', } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
         Asn1Container ldapMessageContainer = new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
- 
+
         // Decode a AddRequest message
         try
         {
@@ -404,16 +566,50 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x29, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 0x68,
                 0x24, // CHOICE { ..., addRequest AddRequest, ...
                 // AddRequest ::= [APPLICATION 8] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // attributes AttributeList }
-                0x30, 0x00, // AttributeList ::= SEQUENCE OF SEQUENCE {
+                0x30,
+                0x00, // AttributeList ::= SEQUENCE OF SEQUENCE {
             } );
 
         stream.flip();
@@ -449,17 +645,52 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x2B, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 0x68,
                 0x26, // CHOICE { ..., addRequest AddRequest, ...
                 // AddRequest ::= [APPLICATION 8] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // attributes AttributeList }
-                0x30, 0x02, // AttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x00, // AttributeList ::= SEQUENCE OF SEQUENCE {
+                0x30,
+                0x02, // AttributeList ::= SEQUENCE OF SEQUENCE {
+                0x30,
+                0x00, // AttributeList ::= SEQUENCE OF SEQUENCE {
             } );
 
         stream.flip();
@@ -495,18 +726,54 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x2D, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 0x68,
                 0x28, // CHOICE { ..., addRequest AddRequest, ...
                 // AddRequest ::= [APPLICATION 8] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // attributes AttributeList }
-                0x30, 0x04, // AttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x02, // attribute 1
-                0x04, 0x00, // type AttributeDescription,
+                0x30,
+                0x04, // AttributeList ::= SEQUENCE OF SEQUENCE {
+                0x30,
+                0x02, // attribute 1
+                0x04,
+                0x00, // type AttributeDescription,
             } );
 
         stream.flip();
@@ -546,18 +813,55 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x2E, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 0x68,
                 0x29, // CHOICE { ..., addRequest AddRequest, ...
                 // AddRequest ::= [APPLICATION 8] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // attributes AttributeList }
-                0x30, 0x05, // AttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x03, // attribute 1
-                0x04, 0x01, 'A', // type AttributeDescription,
+                0x30,
+                0x05, // AttributeList ::= SEQUENCE OF SEQUENCE {
+                0x30,
+                0x03, // attribute 1
+                0x04,
+                0x01,
+                'A', // type AttributeDescription,
             } );
 
         stream.flip();
@@ -593,19 +897,57 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x30, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 0x68,
                 0x2B, // CHOICE { ..., addRequest AddRequest, ...
                 // AddRequest ::= [APPLICATION 8] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // attributes AttributeList }
-                0x30, 0x07, // AttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x05, // attribute 1
-                0x04, 0x01, 'A', // type AttributeDescription,
-                0x31, 0x00 } );
+                0x30,
+                0x07, // AttributeList ::= SEQUENCE OF SEQUENCE {
+                0x30,
+                0x05, // attribute 1
+                0x04,
+                0x01,
+                'A', // type AttributeDescription,
+                0x31,
+                0x00 } );
 
         stream.flip();
 
@@ -640,21 +982,61 @@ public class AddRequestTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x32, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 0x68,
                 0x2D, // CHOICE { ..., addRequest AddRequest, ...
                 // AddRequest ::= [APPLICATION 8] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // attributes AttributeList }
-                0x30, 0x09, // AttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x07, // attribute 1
-                0x04, 0x01, 'l', // type AttributeDescription,
-                0x31, 0x02, 0x04, 0x00 } );
+                0x30,
+                0x09, // AttributeList ::= SEQUENCE OF SEQUENCE {
+                0x30,
+                0x07, // attribute 1
+                0x04,
+                0x01,
+                'l', // type AttributeDescription,
+                0x31,
+                0x02,
+                0x04,
+                0x00 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -698,7 +1080,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x34, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -732,21 +1114,83 @@ public class AddRequestTest extends AbstractCodecServiceTest
                 0x2D, // CHOICE { ..., addRequest AddRequest, ...
                 // AddRequest ::= [APPLICATION 8] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // attributes AttributeList }
                 0x30,
                 0x09, // AttributeList ::= SEQUENCE OF SEQUENCE {
                 0x30,
                 0x07, // attribute 1
-                0x04, 0x01,
+                0x04,
+                0x01,
                 'l', // type AttributeDescription,
-                0x31, 0x02, 0x04, 0x00, ( byte ) 0xA0,
+                0x31,
+                0x02,
+                0x04,
+                0x00,
+                ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, 0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30, 0x2E, 0x31, 0x2E, 0x31, 0x31,
-                0x33, 0x37, 0x33, 0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32 } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -790,7 +1234,8 @@ public class AddRequestTest extends AbstractCodecServiceTest
         assertTrue( addRequest.hasControl( "2.16.840.1.113730.3.4.2" ) );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
@@ -802,7 +1247,7 @@ public class AddRequestTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x51, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }

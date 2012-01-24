@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.entry;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -58,6 +59,7 @@ public class SchemaAwareModificationSerializationTest
     private static SchemaManager schemaManager;
     private static AttributeType CN_AT;
 
+
     /**
      * Initialize OIDs maps for normalization
      */
@@ -68,7 +70,7 @@ public class SchemaAwareModificationSerializationTest
         CN_AT = schemaManager.getAttributeType( "cn" );
     }
 
-    
+
     /**
      * Serialize a DefaultModification
      */
@@ -80,7 +82,7 @@ public class SchemaAwareModificationSerializationTest
         try
         {
             oOut = new ObjectOutputStream( out );
-            
+
             modification.writeExternal( oOut );
         }
         catch ( IOException ioe )
@@ -102,15 +104,16 @@ public class SchemaAwareModificationSerializationTest
                 throw ioe;
             }
         }
-        
+
         return out;
     }
-    
-    
+
+
     /**
      * Deserialize a DefaultModification
      */
-    private Modification deserializeValue( ByteArrayOutputStream out ) throws IOException, ClassNotFoundException, LdapInvalidAttributeValueException
+    private Modification deserializeValue( ByteArrayOutputStream out ) throws IOException, ClassNotFoundException,
+        LdapInvalidAttributeValueException
     {
         ObjectInputStream oIn = null;
         ByteArrayInputStream in = new ByteArrayInputStream( out.toByteArray() );
@@ -122,11 +125,11 @@ public class SchemaAwareModificationSerializationTest
             modification.readExternal( oIn );
 
             Attribute attribute = modification.getAttribute();
-            
+
             if ( ( attribute != null ) && ( schemaManager != null ) )
             {
                 AttributeType attributeType = schemaManager.getAttributeType( attribute.getId() );
-                
+
                 modification.apply( attributeType );
             }
 
@@ -151,21 +154,21 @@ public class SchemaAwareModificationSerializationTest
             }
         }
     }
-    
-    
-    @Test 
+
+
+    @Test
     public void testCreateServerModification() throws LdapException
     {
         Attribute attribute = new DefaultAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
-        
+
         Modification mod = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attribute );
         Modification clone = mod.clone();
-        
+
         attribute.remove( "test2" );
-        
+
         Attribute clonedAttribute = clone.getAttribute();
-        
+
         assertEquals( 1, mod.getAttribute().size() );
         assertTrue( mod.getAttribute().contains( "TEST1" ) );
 
@@ -173,59 +176,63 @@ public class SchemaAwareModificationSerializationTest
         assertTrue( clone.getAttribute().contains( "test1" ) );
         assertTrue( clone.getAttribute().contains( "test2" ) );
     }
-    
-    
+
+
     @Test
-    public void testSerializationModificationADD() throws ClassNotFoundException, IOException, LdapInvalidAttributeValueException
+    public void testSerializationModificationADD() throws ClassNotFoundException, IOException,
+        LdapInvalidAttributeValueException
     {
         Attribute attribute = new DefaultAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
-        
+
         DefaultModification mod = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attribute );
-        
+
         Modification modSer = deserializeValue( serializeValue( mod ) );
-        
+
         assertEquals( mod, modSer );
     }
-    
-    
+
+
     @Test
-    public void testSerializationModificationREPLACE() throws ClassNotFoundException, IOException, LdapInvalidAttributeValueException
+    public void testSerializationModificationREPLACE() throws ClassNotFoundException, IOException,
+        LdapInvalidAttributeValueException
     {
         Attribute attribute = new DefaultAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
-        
+
         DefaultModification mod = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attribute );
-        
+
         Modification modSer = deserializeValue( serializeValue( mod ) );
-        
+
         assertEquals( mod, modSer );
     }
-    
-    
+
+
     @Test
-    public void testSerializationModificationREMOVE() throws ClassNotFoundException, IOException, LdapInvalidAttributeValueException
+    public void testSerializationModificationREMOVE() throws ClassNotFoundException, IOException,
+        LdapInvalidAttributeValueException
     {
         Attribute attribute = new DefaultAttribute( "cn", CN_AT );
         attribute.add( "test1", "test2" );
-        
+
         DefaultModification mod = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attribute );
-        
+
         Modification modSer = deserializeValue( serializeValue( mod ) );
-        
+
         assertEquals( mod, modSer );
     }
-    
-    
+
+
     @Test
-    public void testSerializationModificationNoAttribute() throws ClassNotFoundException, IOException, LdapInvalidAttributeValueException
+    public void testSerializationModificationNoAttribute() throws ClassNotFoundException, IOException,
+        LdapInvalidAttributeValueException
     {
         DefaultModification mod = new DefaultModification();
-        
+
         mod.setOperation( ModificationOperation.ADD_ATTRIBUTE );
-        
+
         Modification modSer = deserializeValue( serializeValue( mod ) );
-        
+
         assertEquals( mod, modSer );
     }
 }

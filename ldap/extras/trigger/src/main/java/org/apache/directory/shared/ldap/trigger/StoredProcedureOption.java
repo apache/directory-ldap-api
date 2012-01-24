@@ -21,7 +21,6 @@
 package org.apache.directory.shared.ldap.trigger;
 
 
-
 /**
  * Just a marker interface for Stored Procedure Options.
  * 

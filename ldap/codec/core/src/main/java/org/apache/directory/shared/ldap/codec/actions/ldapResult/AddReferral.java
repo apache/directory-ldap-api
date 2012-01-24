@@ -72,7 +72,7 @@ public class AddReferral extends GrammarAction<LdapMessageContainer<MessageDecor
         TLV tlv = container.getCurrentTLV();
 
         Message response = container.getMessage();
-        LdapResult ldapResult = ( (ResultResponse) response ).getLdapResult();
+        LdapResult ldapResult = ( ( ResultResponse ) response ).getLdapResult();
         Referral referral = ldapResult.getReferral();
 
         if ( tlv.getLength() == 0 )
@@ -90,7 +90,7 @@ public class AddReferral extends GrammarAction<LdapMessageContainer<MessageDecor
                 }
                 catch ( LdapURLEncodingException luee )
                 {
-                    String badUrl = Strings.utf8ToString(tlv.getValue().getData());
+                    String badUrl = Strings.utf8ToString( tlv.getValue().getData() );
                     LOG.error( I18n.err( I18n.ERR_04015, badUrl, luee.getMessage() ) );
                     throw new DecoderException( I18n.err( I18n.ERR_04016, luee.getMessage() ) );
                 }

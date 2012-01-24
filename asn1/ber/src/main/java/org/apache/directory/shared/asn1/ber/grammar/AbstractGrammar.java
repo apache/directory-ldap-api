@@ -52,6 +52,7 @@ public abstract class AbstractGrammar<E extends Asn1Container> implements Gramma
     /** The grammar name */
     private String name;
 
+
     /** Default constructor */
     public AbstractGrammar()
     {
@@ -105,7 +106,7 @@ public abstract class AbstractGrammar<E extends Asn1Container> implements Gramma
 
         Enum<?> currentState = container.getTransition();
         // We have to deal with the special case of a GRAMMAR_END state
-        if ( ((States)currentState).isEndState() )
+        if ( ( ( States ) currentState ).isEndState() )
         {
             return;
         }
@@ -113,12 +114,14 @@ public abstract class AbstractGrammar<E extends Asn1Container> implements Gramma
         byte tagByte = container.getCurrentTLV().getTag();
 
         // We will loop until no more actions are to be executed
-        GrammarTransition<E> transition = ( ( AbstractGrammar<E> ) container.getGrammar() ).getTransition( currentState,
+        GrammarTransition<E> transition = ( ( AbstractGrammar<E> ) container.getGrammar() ).getTransition(
+            currentState,
             tagByte );
 
         if ( transition == null )
         {
-            String errorMessage = I18n.err( I18n.ERR_00001_BAD_TRANSITION_FROM_STATE, currentState, Asn1StringUtils.dumpByte( tagByte ) );
+            String errorMessage = I18n.err( I18n.ERR_00001_BAD_TRANSITION_FROM_STATE, currentState,
+                Asn1StringUtils.dumpByte( tagByte ) );
 
             LOG.error( errorMessage );
 

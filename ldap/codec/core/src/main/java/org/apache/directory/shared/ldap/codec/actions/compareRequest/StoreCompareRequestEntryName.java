@@ -54,6 +54,7 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -84,7 +85,7 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
         else
         {
             byte[] dnBytes = tlv.getValue().getData();
-            String dnStr = Strings.utf8ToString(dnBytes);
+            String dnStr = Strings.utf8ToString( dnBytes );
 
             try
             {
@@ -92,7 +93,7 @@ public class StoreCompareRequestEntryName extends GrammarAction<LdapMessageConta
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = "Invalid Dn given : " + dnStr + " (" + Strings.dumpBytes(dnBytes)
+                String msg = "Invalid Dn given : " + dnStr + " (" + Strings.dumpBytes( dnBytes )
                     + ") is invalid";
                 LOG.error( "{} : {}", msg, ine.getMessage() );
 

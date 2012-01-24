@@ -49,7 +49,7 @@ public class StoreGraceAuthsRemaining extends AbstractReadInteger
     protected void setIntegerValue( int value, Asn1Container container )
     {
         PasswordPolicyContainer ppolicyContainer = ( PasswordPolicyContainer ) container;
-        
+
         ppolicyContainer.getPasswordPolicyResponseControl().getResponse().setGraceAuthNsRemaining( value );
 
         ppolicyContainer.setGrammarEndAllowed( true );

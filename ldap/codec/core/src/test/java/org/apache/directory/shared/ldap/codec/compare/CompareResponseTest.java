@@ -66,25 +66,32 @@ public class CompareResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x0C, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x6F, 0x07, // CHOICE { ..., compareResponse CompareResponse,
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x6F,
+                0x07, // CHOICE { ..., compareResponse CompareResponse,
                 // ...
                 // CompareResponse ::= [APPLICATION 15] LDAPResult
-                0x0A, 0x01, 0x00, // LDAPResult ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x00, // LDAPResult ::= SEQUENCE {
                 // resultCode ENUMERATED {
                 // success (0), ...
                 // },
-                0x04, 0x00, // matchedDN LDAPDN,
-                0x04, 0x00 // errorMessage LDAPString,
+                0x04,
+                0x00, // matchedDN LDAPDN,
+                0x04,
+                0x00 // errorMessage LDAPString,
             // referral [3] Referral OPTIONAL }
             // }
-            } );
+        } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareResponseDecorator> container = 
+        LdapMessageContainer<CompareResponseDecorator> container =
             new LdapMessageContainer<CompareResponseDecorator>( codec );
 
         // Decode the CompareResponse PDU
@@ -114,7 +121,7 @@ public class CompareResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x0E, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -160,14 +167,39 @@ public class CompareResponseTest extends AbstractCodecServiceTest
                 // }
                 ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, 0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30, 0x2E, 0x31, 0x2E, 0x31, 0x31,
-                0x33, 0x37, 0x33, 0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32 } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareResponseDecorator> container = 
+        LdapMessageContainer<CompareResponseDecorator> container =
             new LdapMessageContainer<CompareResponseDecorator>( codec );
 
         // Decode the CompareResponse PDU
@@ -195,7 +227,8 @@ public class CompareResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
@@ -207,7 +240,7 @@ public class CompareResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x2B, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -231,15 +264,18 @@ public class CompareResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x05, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x6F, 0x00 // CHOICE { ..., compareResponse CompareResponse,
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x6F,
+                0x00 // CHOICE { ..., compareResponse CompareResponse,
             // ...
-            } );
+        } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareResponseDecorator> container = 
+        LdapMessageContainer<CompareResponseDecorator> container =
             new LdapMessageContainer<CompareResponseDecorator>( codec );
 
         // Decode a CompareResponse message

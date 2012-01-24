@@ -47,12 +47,14 @@ public class AvaTest
 
     private static SchemaManager schemaManager;
 
+
     @BeforeClass
     public static void setup() throws Exception
     {
         schemaManager = new DefaultSchemaManager();
     }
-    
+
+
     /**
      * Test a null AttributeTypeAndValue
      */
@@ -73,7 +75,7 @@ public class AvaTest
     {
         try
         {
-            new Ava( schemaManager, null, (String)null );
+            new Ava( schemaManager, null, ( String ) null );
             fail();
         }
         catch ( LdapException ine )
@@ -83,6 +85,7 @@ public class AvaTest
 
     }
 
+
     /**
      * Test an invalid type for an AttributeTypeAndValue
      */
@@ -91,7 +94,7 @@ public class AvaTest
     {
         try
         {
-            new Ava( schemaManager, "  ", (String)null );
+            new Ava( schemaManager, "  ", ( String ) null );
             fail();
         }
         catch ( LdapException ine )
@@ -111,7 +114,7 @@ public class AvaTest
         assertEquals( "CN= ", ava.toString() );
         assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
         assertEquals( "CN= ", ava.getUpName() );
-        
+
         ava = new Ava( schemaManager, "  CN  ", " " );
         assertEquals( "  CN  = ", ava.toString() );
         assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
@@ -121,12 +124,13 @@ public class AvaTest
         assertEquals( "cn= ", ava.toString() );
         assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
         assertEquals( "cn= ", ava.getUpName() );
-        
+
         ava = new Ava( schemaManager, "  cn  ", " " );
         assertEquals( "  cn  = ", ava.toString() );
         assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
         assertEquals( "  cn  = ", ava.getUpName() );
     }
+
 
     /**
      * test an empty AttributeTypeAndValue
@@ -157,8 +161,6 @@ public class AvaTest
         assertEquals( "2.5.4.3=b", atav.getNormName() );
         assertEquals( "cn=b", atav.getUpName() );
     }
-
-
 
 
     /**

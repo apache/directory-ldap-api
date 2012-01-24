@@ -51,7 +51,7 @@ import org.apache.directory.shared.ldap.model.name.Dn;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRequest,ModifyResponse>
+public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRequest, ModifyResponse>
     implements ModifyRequest
 {
     /** The modify request length */
@@ -74,7 +74,6 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
 
     /** A local storage for the operation */
     private ModificationOperation currentOperation;
-
 
 
     /**
@@ -176,8 +175,8 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     {
         return valuesLength;
     }
-    
-    
+
+
     /**
      * Store the current operation
      * 
@@ -237,8 +236,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     //-------------------------------------------------------------------------
     // The ModifyRequest methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -254,7 +252,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequest setName( Dn name )
     {
         getDecorated().setName( name );
-        
+
         return this;
     }
 
@@ -274,7 +272,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequest addModification( Modification mod )
     {
         getDecorated().addModification( mod );
-        
+
         return this;
     }
 
@@ -285,7 +283,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequest removeModification( Modification mod )
     {
         getDecorated().removeModification( mod );
-        
+
         return this;
     }
 
@@ -296,7 +294,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequest remove( String attributeName, String... attributeValue )
     {
         getDecorated().remove( attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -307,7 +305,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequest remove( String attributeName, byte[]... attributeValue )
     {
         getDecorated().remove( attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -318,7 +316,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequest remove( Attribute attr )
     {
         getDecorated().remove( attr );
-        
+
         return this;
     }
 
@@ -329,7 +327,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequest addModification( Attribute attr, ModificationOperation modOp )
     {
         getDecorated().addModification( attr, modOp );
-        
+
         return this;
     }
 
@@ -340,7 +338,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequest add( String attributeName, String... attributeValue )
     {
         getDecorated().add( attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -351,7 +349,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequest add( String attributeName, byte[]... attributeValue )
     {
         getDecorated().add( attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -362,7 +360,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequest add( Attribute attr )
     {
         getDecorated().add( attr );
-        
+
         return this;
     }
 
@@ -373,7 +371,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequest replace( String attributeName )
     {
         getDecorated().replace( attributeName );
-        
+
         return this;
     }
 
@@ -384,7 +382,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequest replace( String attributeName, String... attributeValue )
     {
         getDecorated().replace( attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -395,7 +393,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequest replace( String attributeName, byte[]... attributeValue )
     {
         getDecorated().replace( attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -406,54 +404,53 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     public ModifyRequest replace( Attribute attr )
     {
         getDecorated().replace( attr );
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public ModifyRequest addControl( Control control ) throws MessageException
     {
-        return (ModifyRequest)super.addControl( control );
+        return ( ModifyRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (ModifyRequest)super.addAllControls( controls );
+        return ( ModifyRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyRequest removeControl( Control control ) throws MessageException
     {
-        return (ModifyRequest)super.removeControl( control );
+        return ( ModifyRequest ) super.removeControl( control );
     }
 
 
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * Compute the ModifyRequest length 
      * 
@@ -663,7 +660,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
         {
             throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
         }
-        
+
         return buffer;
     }
 }

@@ -79,12 +79,13 @@ public class StoreResultCode extends GrammarAction<LdapMessageContainer<MessageD
 
         try
         {
-            resultCode = ResultCodeEnum.getResultCode( IntegerDecoder.parse(value, 0, ResultCodeEnum.E_SYNC_REFRESH_REQUIRED
-                    .getResultCode()) );
+            resultCode = ResultCodeEnum.getResultCode( IntegerDecoder.parse( value, 0,
+                ResultCodeEnum.E_SYNC_REFRESH_REQUIRED
+                    .getResultCode() ) );
         }
         catch ( IntegerDecoderException ide )
         {
-            LOG.error( I18n.err( I18n.ERR_04018, Strings.dumpBytes(value.getData()), ide.getMessage() ) );
+            LOG.error( I18n.err( I18n.ERR_04018, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
 
             throw new DecoderException( ide.getMessage() );
         }

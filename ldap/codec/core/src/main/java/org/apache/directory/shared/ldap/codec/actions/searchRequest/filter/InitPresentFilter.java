@@ -71,16 +71,16 @@ public class InitPresentFilter extends GrammarAction<LdapMessageContainer<Search
         searchRequestDecorator.addCurrentFilter( presentFilter );
         searchRequestDecorator.setTerminalFilter( presentFilter );
 
-        String value = Strings.utf8ToString(tlv.getValue().getData());
+        String value = Strings.utf8ToString( tlv.getValue().getData() );
 
-        if ( Strings.isEmpty(value) )
+        if ( Strings.isEmpty( value ) )
         {
             presentFilter.setAttributeDescription( "" );
         }
         else
         {
             // Store the value.
-            String type = Strings.utf8ToString(tlv.getValue().getData());
+            String type = Strings.utf8ToString( tlv.getValue().getData() );
             presentFilter.setAttributeDescription( type );
         }
 

@@ -20,7 +20,6 @@
 package org.apache.directory.shared.ldap.codec.api;
 
 
-
 /**
  * An interface used to abstract the means to detect whether or not an attribute
  * identifier/descriptor represents a binary attributeType.

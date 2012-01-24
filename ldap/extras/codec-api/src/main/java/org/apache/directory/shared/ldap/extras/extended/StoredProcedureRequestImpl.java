@@ -38,17 +38,18 @@ import org.apache.directory.shared.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredProcedureResponse> implements StoredProcedureRequest
+public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredProcedureResponse> implements
+    StoredProcedureRequest
 {
     /** The serialVersionUID. */
     private static final long serialVersionUID = -4682291068700593492L;
-    
+
     private String language = "Java";
 
     private byte[] procedure = StringConstants.EMPTY_BYTES;
 
     private List<StoredProcedureParameter> parameters = new ArrayList<StoredProcedureParameter>();
-    
+
     private StoredProcedureResponse response;
 
 
@@ -87,12 +88,11 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredPr
         this.language = language;
         this.procedure = Strings.getBytesUtf8( procedure );
     }
-    
-    
+
+
     // -----------------------------------------------------------------------
     // Parameters of the Extended Request Payload
     // -----------------------------------------------------------------------
-
 
     /**
      * {@inheritDoc}
@@ -119,7 +119,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredPr
             return null;
         }
 
-        final byte[] copy = new byte[ procedure.length ];
+        final byte[] copy = new byte[procedure.length];
         System.arraycopy( procedure, 0, copy, 0, procedure.length );
         return copy;
     }
@@ -129,7 +129,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredPr
     {
         if ( procedure != null )
         {
-            this.procedure = new byte[ procedure.length ];
+            this.procedure = new byte[procedure.length];
             System.arraycopy( procedure, 0, this.procedure, 0, procedure.length );
         }
         else
@@ -183,7 +183,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredPr
      */
     public Object getParameterType( int index )
     {
-        if ( ! language.equals( "java" ) )
+        if ( !language.equals( "java" ) )
         {
             return parameters.get( index ).getType();
         }
@@ -195,16 +195,16 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredPr
     /**
      * {@inheritDoc}
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings( value = "BC_IMPOSSIBLE_INSTANCEOF",
-            justification = "False positive")
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "BC_IMPOSSIBLE_INSTANCEOF",
+        justification = "False positive")
     public Object getParameterTypeString( int index )
     {
-        if ( ! language.equals( "java" ) )
+        if ( !language.equals( "java" ) )
         {
             Object obj = parameters.get( index ).getType();
             if ( obj instanceof byte[] )
             {
-                return Strings.utf8ToString( ( byte [] ) obj );
+                return Strings.utf8ToString( ( byte[] ) obj );
             }
         }
 
@@ -226,7 +226,7 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredPr
      */
     public Object getParameterValue( int index )
     {
-        if ( ! language.equals( "java" ) )
+        if ( !language.equals( "java" ) )
         {
             return parameters.get( index ).getValue();
         }
@@ -238,23 +238,23 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredPr
     /**
      * {@inheritDoc}
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings( value = "BC_IMPOSSIBLE_INSTANCEOF",
-            justification = "False positive")
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "BC_IMPOSSIBLE_INSTANCEOF",
+        justification = "False positive")
     public Object getParameterValueString( int index )
     {
-        if ( ! language.equals( "java" ) )
+        if ( !language.equals( "java" ) )
         {
             Object obj = parameters.get( index ).getValue();
             if ( obj instanceof byte[] )
             {
-                String str = Strings.utf8ToString( ( byte [] ) obj );
+                String str = Strings.utf8ToString( ( byte[] ) obj );
                 String type = ( String ) getParameterTypeString( index );
-                
+
                 if ( type.equals( "int" ) )
                 {
                     try
                     {
-                        return IntegerDecoder.parse( new Value( (byte[]) obj ) );
+                        return IntegerDecoder.parse( new Value( ( byte[] ) obj ) );
                     }
                     catch ( IntegerDecoderException e )
                     {

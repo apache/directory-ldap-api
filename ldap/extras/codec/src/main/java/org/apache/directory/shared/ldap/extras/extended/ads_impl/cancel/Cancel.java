@@ -46,9 +46,10 @@ public class Cancel extends AbstractAsn1Object
 {
     /** The Id of the the message to cancel */
     private int cancelId;
-    
+
     /** Length of the sequence */
     private int cancelSequenceLength;
+
 
     /**
      * Create a Cancel object, with a messageId

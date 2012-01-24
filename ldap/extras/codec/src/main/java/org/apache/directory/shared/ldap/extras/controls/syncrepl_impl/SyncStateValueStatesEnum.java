@@ -49,7 +49,7 @@ public enum SyncStateValueStatesEnum implements States
 
     /** sync state type Value */
     SYNC_TYPE_STATE,
-    
+
     /** syncUUID Value */
     SYNC_UUID_STATE,
 
@@ -99,7 +99,7 @@ public enum SyncStateValueStatesEnum implements States
         return ( ( state == END_STATE.ordinal() ) ? "SYNC_STATE_VALUE_END_STATE" : this.name() );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -107,8 +107,8 @@ public enum SyncStateValueStatesEnum implements States
     {
         return this == END_STATE;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

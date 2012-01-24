@@ -222,7 +222,7 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
     /**
      * {@inheritDoc}
      */
-   public Asn1Object decode( byte[] controlBytes ) throws DecoderException
+    public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         SyncDoneValueContainer container = new SyncDoneValueContainer( getCodecService(), this );

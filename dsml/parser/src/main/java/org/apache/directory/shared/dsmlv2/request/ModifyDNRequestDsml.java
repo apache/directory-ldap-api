@@ -37,7 +37,7 @@ import org.dom4j.Element;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModifyDNRequestDsml 
+public class ModifyDNRequestDsml
     extends AbstractResultResponseRequestDsml<ModifyDnRequest, ModifyDnResponse>
     implements ModifyDnRequest
 {
@@ -165,7 +165,7 @@ public class ModifyDNRequestDsml
      * 
      * @param newRdn The newRdn to set.
      */
-    public void setNewRDN( Rdn newRdn)
+    public void setNewRDN( Rdn newRdn )
     {
         getDecorated().setNewRdn( newRdn );
     }
@@ -190,7 +190,7 @@ public class ModifyDNRequestDsml
     public ModifyDnRequest setNewSuperior( Dn newSuperior )
     {
         getDecorated().setNewSuperior( newSuperior );
-        
+
         return this;
     }
 
@@ -210,7 +210,7 @@ public class ModifyDNRequestDsml
     public ModifyDnRequest setName( Dn name )
     {
         getDecorated().setName( name );
-        
+
         return this;
     }
 
@@ -230,7 +230,7 @@ public class ModifyDNRequestDsml
     public ModifyDnRequest setNewRdn( Rdn newRdn )
     {
         getDecorated().setNewRdn( newRdn );
-        
+
         return this;
     }
 
@@ -250,7 +250,7 @@ public class ModifyDNRequestDsml
     public ModifyDnRequest setDeleteOldRdn( boolean deleteOldRdn )
     {
         getDecorated().setDeleteOldRdn( deleteOldRdn );
-        
+
         return this;
     }
 
@@ -262,42 +262,42 @@ public class ModifyDNRequestDsml
     {
         return getDecorated().isMove();
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyDnRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public ModifyDnRequest addControl( Control control ) throws MessageException
     {
-        return (ModifyDnRequest)super.addControl( control );
+        return ( ModifyDnRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyDnRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (ModifyDnRequest)super.addAllControls( controls );
+        return ( ModifyDnRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyDnRequest removeControl( Control control ) throws MessageException
     {
-        return (ModifyDnRequest)super.removeControl( control );
+        return ( ModifyDnRequest ) super.removeControl( control );
     }
 }

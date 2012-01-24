@@ -83,7 +83,7 @@ public class StoreIntermediateResponseName extends GrammarAction<LdapMessageCont
         {
             byte[] responseNameBytes = tlv.getValue().getData();
 
-            String oidStr = Strings.utf8ToString(responseNameBytes);
+            String oidStr = Strings.utf8ToString( responseNameBytes );
 
             if ( Oid.isOid( oidStr ) )
             {
@@ -93,8 +93,8 @@ public class StoreIntermediateResponseName extends GrammarAction<LdapMessageCont
             else
             {
                 String msg = "The Intermediate Response name is not a valid OID : "
-                    + Strings.utf8ToString(responseNameBytes) + " ("
-                    + Strings.dumpBytes(responseNameBytes) + ") is invalid";
+                    + Strings.utf8ToString( responseNameBytes ) + " ("
+                    + Strings.dumpBytes( responseNameBytes ) + ") is invalid";
                 LOG.error( "{} : {}", msg, oidStr );
 
                 // Rethrow the exception, we will get a PROTOCOL_ERROR

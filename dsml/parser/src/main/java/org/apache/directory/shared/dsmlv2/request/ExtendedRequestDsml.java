@@ -38,7 +38,7 @@ import org.dom4j.QName;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends ExtendedResponse> 
+public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends ExtendedResponse>
     extends AbstractResultResponseRequestDsml<Q, P>
     implements ExtendedRequest<P>
 {
@@ -76,7 +76,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends Extende
         // Request Name
         if ( getDecorated().getRequestName() != null )
         {
-            element.addElement( "requestName" ).setText( 
+            element.addElement( "requestName" ).setText(
                 getDecorated().getRequestName() );
         }
 
@@ -88,7 +88,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends Extende
 
         Element valueElement = element.addElement( "requestValue" ).addText(
             ParserUtils.base64Encode( getRequestValue() ) );
-        valueElement.addAttribute( new QName( "type", xsiNamespace ), 
+        valueElement.addAttribute( new QName( "type", xsiNamespace ),
             "xsd:" + ParserUtils.BASE64BINARY );
 
         return element;
@@ -154,45 +154,45 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends Extende
     public ExtendedRequest<P> setRequestName( String oid )
     {
         getDecorated().setRequestName( oid );
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<P> setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<P> addControl( Control control ) throws MessageException
     {
-        return (ExtendedRequest<P>)super.addControl( control );
+        return ( ExtendedRequest<P> ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<P> addAllControls( Control[] controls ) throws MessageException
     {
-        return (ExtendedRequest<P>)super.addAllControls( controls );
+        return ( ExtendedRequest<P> ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<P> removeControl( Control control ) throws MessageException
     {
-        return (ExtendedRequest<P>)super.removeControl( control );
+        return ( ExtendedRequest<P> ) super.removeControl( control );
     }
 }

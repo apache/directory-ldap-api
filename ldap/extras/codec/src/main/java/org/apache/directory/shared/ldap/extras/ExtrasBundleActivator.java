@@ -58,8 +58,8 @@ import org.osgi.framework.ServiceReference;
 public class ExtrasBundleActivator implements BundleActivator
 {
     private ServiceReference codecServiceRef;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -70,8 +70,8 @@ public class ExtrasBundleActivator implements BundleActivator
         registerExtrasControls( codec );
         registerExtrasExtendedOps( codec );
     }
-    
-    
+
+
     /**
      * Registers all the extras controls present in this control pack.
      *
@@ -79,18 +79,18 @@ public class ExtrasBundleActivator implements BundleActivator
      */
     private void registerExtrasControls( LdapApiService codec )
     {
-        ControlFactory<?,?> factory = new SyncDoneValueFactory( codec );
+        ControlFactory<?, ?> factory = new SyncDoneValueFactory( codec );
         codec.registerControl( factory );
-        
+
         factory = new SyncInfoValueFactory( codec );
         codec.registerControl( factory );
-        
+
         factory = new SyncRequestValueFactory( codec );
         codec.registerControl( factory );
 
         factory = new SyncStateValueFactory( codec );
         codec.registerControl( factory );
-        
+
         factory = new PasswordPolicyFactory( codec );
         codec.registerControl( factory );
     }
@@ -106,49 +106,46 @@ public class ExtrasBundleActivator implements BundleActivator
         // --------------------------------------------------------------------
         // Register Extended Request Factories
         // --------------------------------------------------------------------
-        
-        
-        ExtendedRequestFactory<?,?> extReqfactory = new CancelFactory( codec );
+
+        ExtendedRequestFactory<?, ?> extReqfactory = new CancelFactory( codec );
         codec.registerExtendedRequest( extReqfactory );
-        
+
         extReqfactory = new CertGenerationFactory( codec );
         codec.registerExtendedRequest( extReqfactory );
 
         extReqfactory = new GracefulShutdownFactory( codec );
         codec.registerExtendedRequest( extReqfactory );
-        
+
         extReqfactory = new StoredProcedureFactory( codec );
         codec.registerExtendedRequest( extReqfactory );
-        
-        
+
         // --------------------------------------------------------------------
         // Register Unsolicited Response Factories
         // --------------------------------------------------------------------
-        
-        
+
         UnsolicitedResponseFactory<?> unsolicitedResponseFactory = new GracefulDisconnectFactory( codec );
         codec.registerUnsolicitedResponse( unsolicitedResponseFactory );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public void stop( BundleContext context ) throws Exception
     {
         LdapApiService codec = ( LdapApiService ) context.getService( codecServiceRef );
-        
+
         codec.unregisterControl( SyncDoneValue.OID );
         codec.unregisterControl( SyncInfoValue.OID );
         codec.unregisterControl( SyncRequestValue.OID );
         codec.unregisterControl( SyncStateValue.OID );
         codec.unregisterControl( PasswordPolicy.OID );
-        
+
         codec.unregisterExtendedRequest( CancelRequest.EXTENSION_OID );
         codec.unregisterExtendedRequest( CertGenerationRequest.EXTENSION_OID );
         codec.unregisterExtendedRequest( GracefulShutdownRequest.EXTENSION_OID );
         codec.unregisterExtendedRequest( StoredProcedureRequest.EXTENSION_OID );
-        
+
         codec.unregisterUnsolicitedResponse( GracefulDisconnectResponse.EXTENSION_OID );
     }
 }

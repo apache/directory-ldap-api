@@ -49,6 +49,7 @@ public class StoreInitial extends GrammarAction<LdapMessageContainer<SearchReque
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreInitial.class );
 
+
     /**
      * Instantiates a new store any action.
      */
@@ -77,7 +78,7 @@ public class StoreInitial extends GrammarAction<LdapMessageContainer<SearchReque
             throw new DecoderException( msg );
         }
 
-        substringFilter.setInitialSubstrings( Strings.utf8ToString(tlv.getValue().getData()) );
+        substringFilter.setInitialSubstrings( Strings.utf8ToString( tlv.getValue().getData() ) );
 
         // We now have to get back to the nearest filter which is
         // not terminal.

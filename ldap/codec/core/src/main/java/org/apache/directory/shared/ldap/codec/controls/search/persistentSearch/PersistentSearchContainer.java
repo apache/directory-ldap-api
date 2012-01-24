@@ -32,7 +32,7 @@ public class PersistentSearchContainer extends AbstractContainer
 {
     /** PSearchControl */
     private PersistentSearchDecorator decorator;
-    
+
     private LdapApiService codec;
 
 
@@ -81,7 +81,6 @@ public class PersistentSearchContainer extends AbstractContainer
             this.decorator = new PersistentSearchDecorator( codec, control );
         }
     }
-
 
 
     /**

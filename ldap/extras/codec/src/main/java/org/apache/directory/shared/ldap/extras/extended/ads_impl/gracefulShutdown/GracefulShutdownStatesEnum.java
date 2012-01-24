@@ -92,7 +92,7 @@ public enum GracefulShutdownStatesEnum implements States
         return ( ( state == END_STATE.ordinal() ) ? "GRACEFUL_SHUTDOWN_END_STATE" : name() );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -100,8 +100,8 @@ public enum GracefulShutdownStatesEnum implements States
     {
         return this == END_STATE;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

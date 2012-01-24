@@ -71,226 +71,228 @@ public final class StoredProcedureGrammar extends AbstractGrammar<StoredProcedur
         // StoredProcedure ::= SEQUENCE {
         //   ...
         // Nothing to do.
-        super.transitions[StoredProcedureStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = 
-            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.START_STATE, 
-                                    StoredProcedureStatesEnum.STORED_PROCEDURE_STATE, 
-                                    UniversalTag.SEQUENCE.getValue(), 
-                                    null );
+        super.transitions[StoredProcedureStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
+            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.START_STATE,
+                StoredProcedureStatesEnum.STORED_PROCEDURE_STATE,
+                UniversalTag.SEQUENCE.getValue(),
+                null );
 
         //    language OCTETSTRING, (Tag)
         //    ...
         //
         // Creates the storeProcedure and stores the language
-        super.transitions[StoredProcedureStatesEnum.STORED_PROCEDURE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
-            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.STORED_PROCEDURE_STATE, 
-                                    StoredProcedureStatesEnum.LANGUAGE_STATE, 
-                                    UniversalTag.OCTET_STRING.getValue(),
+        super.transitions[StoredProcedureStatesEnum.STORED_PROCEDURE_STATE.ordinal()][UniversalTag.OCTET_STRING
+            .getValue()] =
+            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.STORED_PROCEDURE_STATE,
+                StoredProcedureStatesEnum.LANGUAGE_STATE,
+                UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<StoredProcedureContainer>( "Stores the language" )
-            {
-                public void action( StoredProcedureContainer container ) throws DecoderException
                 {
-                    TLV tlv = container.getCurrentTLV();
-
-                    StoredProcedureRequestDecorator storedProcedure = container.getStoredProcedure();
-                    if ( storedProcedure == null )
+                    public void action( StoredProcedureContainer container ) throws DecoderException
                     {
-                        storedProcedure = new StoredProcedureRequestDecorator( LdapApiServiceFactory.getSingleton() );
-                        container.setStoredProcedure( storedProcedure );
-                    }
+                        TLV tlv = container.getCurrentTLV();
 
-                    // Store the value.
-                    if ( tlv.getLength() == 0 )
-                    {
-                        // We can't have a void language !
-                        String msg = I18n.err( I18n.ERR_04038 );
-                        LOG.error( msg );
-                        throw new DecoderException( msg );
-                    }
-                    else
-                    {
-                        // Only this field's type is String by default
-                        String language = Strings.utf8ToString(tlv.getValue().getData());
-
-                        if ( LOG.isDebugEnabled() )
+                        StoredProcedureRequestDecorator storedProcedure = container.getStoredProcedure();
+                        if ( storedProcedure == null )
                         {
-                            LOG.debug( "SP language found: " + language );
+                            storedProcedure = new StoredProcedureRequestDecorator( LdapApiServiceFactory.getSingleton() );
+                            container.setStoredProcedure( storedProcedure );
                         }
 
-                        storedProcedure.setLanguage( language );
+                        // Store the value.
+                        if ( tlv.getLength() == 0 )
+                        {
+                            // We can't have a void language !
+                            String msg = I18n.err( I18n.ERR_04038 );
+                            LOG.error( msg );
+                            throw new DecoderException( msg );
+                        }
+                        else
+                        {
+                            // Only this field's type is String by default
+                            String language = Strings.utf8ToString( tlv.getValue().getData() );
+
+                            if ( LOG.isDebugEnabled() )
+                            {
+                                LOG.debug( "SP language found: " + language );
+                            }
+
+                            storedProcedure.setLanguage( language );
+                        }
                     }
-                }
-            } );
+                } );
 
         //    procedure OCTETSTRING, (Value)
         //    ...
         // Stores the procedure.
-        super.transitions[StoredProcedureStatesEnum.LANGUAGE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
-            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.LANGUAGE_STATE, 
-                                    StoredProcedureStatesEnum.PROCEDURE_STATE, 
-                                    UniversalTag.OCTET_STRING.getValue(),
+        super.transitions[StoredProcedureStatesEnum.LANGUAGE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
+            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.LANGUAGE_STATE,
+                StoredProcedureStatesEnum.PROCEDURE_STATE,
+                UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<StoredProcedureContainer>( "Stores the procedure" )
-            {
-                public void action( StoredProcedureContainer container ) throws DecoderException
                 {
-                    TLV tlv = container.getCurrentTLV();
-
-                    StoredProcedureRequestDecorator storedProcedure = container.getStoredProcedure();
-
-                    // Store the value.
-                    if ( tlv.getLength() == 0 )
+                    public void action( StoredProcedureContainer container ) throws DecoderException
                     {
-                        // We can't have a void procedure !
-                        String msg = I18n.err( I18n.ERR_04039 );
-                        LOG.error( msg );
-                        throw new DecoderException( msg );
-                    }
-                    else
-                    {
-                        byte[] procedure = tlv.getValue().getData();
+                        TLV tlv = container.getCurrentTLV();
 
-                        storedProcedure.setProcedure( procedure );
-                    }
+                        StoredProcedureRequestDecorator storedProcedure = container.getStoredProcedure();
 
-                    if ( LOG.isDebugEnabled() )
-                    {
-                        LOG.debug( "Procedure found : " + storedProcedure.getProcedureSpecification() );
+                        // Store the value.
+                        if ( tlv.getLength() == 0 )
+                        {
+                            // We can't have a void procedure !
+                            String msg = I18n.err( I18n.ERR_04039 );
+                            LOG.error( msg );
+                            throw new DecoderException( msg );
+                        }
+                        else
+                        {
+                            byte[] procedure = tlv.getValue().getData();
+
+                            storedProcedure.setProcedure( procedure );
+                        }
+
+                        if ( LOG.isDebugEnabled() )
+                        {
+                            LOG.debug( "Procedure found : " + storedProcedure.getProcedureSpecification() );
+                        }
                     }
-                }
-            } );
+                } );
 
         // parameters SEQUENCE OF Parameter { (Value)
         //    ...
         // The list of parameters will be created with the first parameter.
         // We can have an empty list of parameters, so the PDU can be empty
-        super.transitions[StoredProcedureStatesEnum.PROCEDURE_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = 
-            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.PROCEDURE_STATE, 
-                                    StoredProcedureStatesEnum.PARAMETERS_STATE, 
-                                    UniversalTag.SEQUENCE.getValue(), 
-            new GrammarAction<StoredProcedureContainer>( "Stores the parameters" )
-            {
-                public void action( StoredProcedureContainer container ) throws DecoderException
+        super.transitions[StoredProcedureStatesEnum.PROCEDURE_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
+            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.PROCEDURE_STATE,
+                StoredProcedureStatesEnum.PARAMETERS_STATE,
+                UniversalTag.SEQUENCE.getValue(),
+                new GrammarAction<StoredProcedureContainer>( "Stores the parameters" )
                 {
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
-        
+                    public void action( StoredProcedureContainer container ) throws DecoderException
+                    {
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
+
         // parameter SEQUENCE OF { (Value)
         //    ...
         // Nothing to do. 
-        super.transitions[StoredProcedureStatesEnum.PARAMETERS_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = 
-            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.PARAMETERS_STATE, 
-                                    StoredProcedureStatesEnum.PARAMETER_STATE, 
-                                    UniversalTag.SEQUENCE.getValue(), 
-                                    null );
+        super.transitions[StoredProcedureStatesEnum.PARAMETERS_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
+            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.PARAMETERS_STATE,
+                StoredProcedureStatesEnum.PARAMETER_STATE,
+                UniversalTag.SEQUENCE.getValue(),
+                null );
 
         // Parameter ::= {
         //    type OCTETSTRING, (Value)
         //    ...
         //
         // We can create a parameter, and store its type
-        super.transitions[StoredProcedureStatesEnum.PARAMETER_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
-            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.PARAMETER_STATE, 
-                                    StoredProcedureStatesEnum.PARAMETER_TYPE_STATE, 
-                                    UniversalTag.OCTET_STRING.getValue(),
+        super.transitions[StoredProcedureStatesEnum.PARAMETER_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
+            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.PARAMETER_STATE,
+                StoredProcedureStatesEnum.PARAMETER_TYPE_STATE,
+                UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<StoredProcedureContainer>( "Store parameter type" )
-            {
-                public void action( StoredProcedureContainer container ) throws DecoderException
                 {
-                    TLV tlv = container.getCurrentTLV();
-                    StoredProcedureRequestDecorator storedProcedure = container.getStoredProcedure();
-
-                    // Store the value.
-                    if ( tlv.getLength() == 0 )
+                    public void action( StoredProcedureContainer container ) throws DecoderException
                     {
-                        // We can't have a void parameter type !
-                        String msg = I18n.err( I18n.ERR_04040 );
-                        LOG.error( msg );
-                        throw new DecoderException( msg );
-                    }
-                    else
-                    {
-                        StoredProcedureParameter parameter = new StoredProcedureParameter();
+                        TLV tlv = container.getCurrentTLV();
+                        StoredProcedureRequestDecorator storedProcedure = container.getStoredProcedure();
 
-                        byte[] parameterType = tlv.getValue().getData();
-
-                        parameter.setType( parameterType );
-
-                        // We store the type in the current parameter.
-                        storedProcedure.setCurrentParameter( parameter );
-
-                        if ( LOG.isDebugEnabled() )
+                        // Store the value.
+                        if ( tlv.getLength() == 0 )
                         {
-                            LOG.debug( "Parameter type found : " + Strings.dumpBytes(parameterType) );
+                            // We can't have a void parameter type !
+                            String msg = I18n.err( I18n.ERR_04040 );
+                            LOG.error( msg );
+                            throw new DecoderException( msg );
                         }
+                        else
+                        {
+                            StoredProcedureParameter parameter = new StoredProcedureParameter();
 
+                            byte[] parameterType = tlv.getValue().getData();
+
+                            parameter.setType( parameterType );
+
+                            // We store the type in the current parameter.
+                            storedProcedure.setCurrentParameter( parameter );
+
+                            if ( LOG.isDebugEnabled() )
+                            {
+                                LOG.debug( "Parameter type found : " + Strings.dumpBytes( parameterType ) );
+                            }
+
+                        }
                     }
-                }
-            } );
+                } );
 
         // Parameter ::= {
         //    ...
         //    value OCTETSTRING (Tag)
         // }
         // Store the parameter value
-        super.transitions[StoredProcedureStatesEnum.PARAMETER_TYPE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
-            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.PARAMETER_TYPE_STATE, 
-                                    StoredProcedureStatesEnum.PARAMETER_VALUE_STATE, 
-                                    UniversalTag.OCTET_STRING.getValue(),
+        super.transitions[StoredProcedureStatesEnum.PARAMETER_TYPE_STATE.ordinal()][UniversalTag.OCTET_STRING
+            .getValue()] =
+            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.PARAMETER_TYPE_STATE,
+                StoredProcedureStatesEnum.PARAMETER_VALUE_STATE,
+                UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<StoredProcedureContainer>( "Store parameter value" )
-            {
-                public void action( StoredProcedureContainer container ) throws DecoderException
                 {
-                    StoredProcedureContainer storedProcedureContainer = ( StoredProcedureContainer ) container;
-
-                    TLV tlv = storedProcedureContainer.getCurrentTLV();
-                    StoredProcedureRequestDecorator storedProcedure = storedProcedureContainer.getStoredProcedure();
-
-                    // Store the value.
-                    if ( tlv.getLength() == 0 )
+                    public void action( StoredProcedureContainer container ) throws DecoderException
                     {
-                        // We can't have a void parameter value !
-                        String msg = I18n.err( I18n.ERR_04041 );
-                        LOG.error( msg );
-                        throw new DecoderException( msg );
-                    }
-                    else
-                    {
-                        byte[] parameterValue = tlv.getValue().getData();
+                        StoredProcedureContainer storedProcedureContainer = ( StoredProcedureContainer ) container;
 
-                        if ( parameterValue.length != 0 )
+                        TLV tlv = storedProcedureContainer.getCurrentTLV();
+                        StoredProcedureRequestDecorator storedProcedure = storedProcedureContainer.getStoredProcedure();
+
+                        // Store the value.
+                        if ( tlv.getLength() == 0 )
                         {
-                            StoredProcedureParameter parameter = storedProcedure.getCurrentParameter();
-                            parameter.setValue( parameterValue );
-
-                            // We can now add a new Parameter to the procedure
-                            storedProcedure.addParameter( parameter );
-
-                            if ( LOG.isDebugEnabled() )
-                            {
-                                LOG.debug( "Parameter value found : " + Strings.dumpBytes(parameterValue) );
-                            }
-                        }
-                        else
-                        {
-                            String msg = I18n.err( I18n.ERR_04042 );
+                            // We can't have a void parameter value !
+                            String msg = I18n.err( I18n.ERR_04041 );
                             LOG.error( msg );
                             throw new DecoderException( msg );
                         }
-                    }
+                        else
+                        {
+                            byte[] parameterValue = tlv.getValue().getData();
 
-                    // The only possible END state for the grammar is here
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
-        
+                            if ( parameterValue.length != 0 )
+                            {
+                                StoredProcedureParameter parameter = storedProcedure.getCurrentParameter();
+                                parameter.setValue( parameterValue );
+
+                                // We can now add a new Parameter to the procedure
+                                storedProcedure.addParameter( parameter );
+
+                                if ( LOG.isDebugEnabled() )
+                                {
+                                    LOG.debug( "Parameter value found : " + Strings.dumpBytes( parameterValue ) );
+                                }
+                            }
+                            else
+                            {
+                                String msg = I18n.err( I18n.ERR_04042 );
+                                LOG.error( msg );
+                                throw new DecoderException( msg );
+                            }
+                        }
+
+                        // The only possible END state for the grammar is here
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
+
         // Parameters ::= SEQUENCE OF Parameter
         // 
         // Loop on next parameter
-        super.transitions[StoredProcedureStatesEnum.PARAMETER_VALUE_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = 
-            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.PARAMETER_VALUE_STATE, 
-                                    StoredProcedureStatesEnum.PARAMETER_STATE, 
-                                    UniversalTag.SEQUENCE.getValue(),
-                                    null );
+        super.transitions[StoredProcedureStatesEnum.PARAMETER_VALUE_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
+            new GrammarTransition<StoredProcedureContainer>( StoredProcedureStatesEnum.PARAMETER_VALUE_STATE,
+                StoredProcedureStatesEnum.PARAMETER_STATE,
+                UniversalTag.SEQUENCE.getValue(),
+                null );
     }
 
 

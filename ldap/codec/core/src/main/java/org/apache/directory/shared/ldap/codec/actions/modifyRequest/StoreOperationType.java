@@ -53,6 +53,7 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -80,7 +81,7 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
         }
         catch ( IntegerDecoderException ide )
         {
-            String msg = I18n.err( I18n.ERR_04082, Strings.dumpBytes(tlv.getValue().getData()) );
+            String msg = I18n.err( I18n.ERR_04082, Strings.dumpBytes( tlv.getValue().getData() ) );
             LOG.error( msg );
 
             // This will generate a PROTOCOL_ERROR

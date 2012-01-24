@@ -20,6 +20,7 @@
 
 package org.apache.directory.shared.ldap.extras.controls;
 
+
 /**
  * The type of MODDN modification. One of MOVE, RENAME or MOVE_AND_RENAME
  *
@@ -27,13 +28,14 @@ package org.apache.directory.shared.ldap.extras.controls;
  */
 public enum SyncModifyDnType
 {
-    MOVE( 0 ),
-    RENAME( 1 ),
-    MOVE_AND_RENAME( 2 );
-    
+    MOVE(0),
+    RENAME(1),
+    MOVE_AND_RENAME(2);
+
     /** Internal value for each tag */
     private int value;
-    
+
+
     /**
      * Creates the value
      */
@@ -41,8 +43,8 @@ public enum SyncModifyDnType
     {
         this.value = value;
     }
-    
-    
+
+
     /**
      * @return The value associated with the current element.
      */
@@ -50,8 +52,8 @@ public enum SyncModifyDnType
     {
         return value;
     }
-    
-    
+
+
     /**
      * Get the instance from it's interger value
      * @param value The value we are looking for 
@@ -61,13 +63,16 @@ public enum SyncModifyDnType
     {
         switch ( value )
         {
-            case 0 : return MOVE;
-            
-            case 1 : return RENAME;
-            
-            case 2 : return MOVE_AND_RENAME;
+            case 0:
+                return MOVE;
+
+            case 1:
+                return RENAME;
+
+            case 2:
+                return MOVE_AND_RENAME;
         }
-        
+
         throw new IllegalArgumentException( "unknown modify dn operantion type " + value );
     }
 }

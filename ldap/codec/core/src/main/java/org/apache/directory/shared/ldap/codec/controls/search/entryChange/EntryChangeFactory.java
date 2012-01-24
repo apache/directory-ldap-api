@@ -36,7 +36,7 @@ public class EntryChangeFactory implements ControlFactory<EntryChange, EntryChan
     /** The LDAP codec service */
     private LdapApiService codec;
 
-    
+
     /**
      * Creates a new instance of EntryChangeFactory.
      *
@@ -46,8 +46,8 @@ public class EntryChangeFactory implements ControlFactory<EntryChange, EntryChan
     {
         this.codec = codec;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -56,7 +56,7 @@ public class EntryChangeFactory implements ControlFactory<EntryChange, EntryChan
         return EntryChange.OID;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -64,7 +64,7 @@ public class EntryChangeFactory implements ControlFactory<EntryChange, EntryChan
     {
         return new EntryChangeDecorator( codec );
     }
-    
+
 
     /**
      * {@inheritDoc}

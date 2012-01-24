@@ -91,20 +91,20 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
 
     /** The length of the controls */
     private int controlsLength;
-    
+
     /** The LdapCodecService */
     private final LdapApiService codec;
 
-    
+
     public static MessageDecorator<? extends Message> getDecorator( LdapApiService codec, Message decoratedMessage )
     {
         if ( decoratedMessage instanceof MessageDecorator )
         {
-            return (org.apache.directory.shared.ldap.codec.api.MessageDecorator<?> ) decoratedMessage;
+            return ( org.apache.directory.shared.ldap.codec.api.MessageDecorator<?> ) decoratedMessage;
         }
-        
+
         MessageDecorator<?> decorator = null;
-        
+
         switch ( decoratedMessage.getType() )
         {
             case ABANDON_REQUEST:
@@ -114,27 +114,27 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
             case ADD_REQUEST:
                 decorator = new AddRequestDecorator( codec, ( AddRequest ) decoratedMessage );
                 break;
-                
+
             case ADD_RESPONSE:
                 decorator = new AddResponseDecorator( codec, ( AddResponse ) decoratedMessage );
                 break;
-                
+
             case BIND_REQUEST:
                 decorator = new BindRequestDecorator( codec, ( BindRequest ) decoratedMessage );
                 break;
-                
+
             case BIND_RESPONSE:
                 decorator = new BindResponseDecorator( codec, ( BindResponse ) decoratedMessage );
                 break;
-                
+
             case COMPARE_REQUEST:
                 decorator = new CompareRequestDecorator( codec, ( CompareRequest ) decoratedMessage );
                 break;
-                
+
             case COMPARE_RESPONSE:
                 decorator = new CompareResponseDecorator( codec, ( CompareResponse ) decoratedMessage );
                 break;
-                
+
             case DEL_REQUEST:
                 decorator = new DeleteRequestDecorator( codec, ( DeleteRequest ) decoratedMessage );
                 break;
@@ -142,61 +142,61 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
             case DEL_RESPONSE:
                 decorator = new DeleteResponseDecorator( codec, ( DeleteResponse ) decoratedMessage );
                 break;
-                
+
             case EXTENDED_REQUEST:
                 decorator = codec.decorate( ( ExtendedRequest<?> ) decoratedMessage );
                 break;
-                
+
             case EXTENDED_RESPONSE:
                 decorator = codec.decorate( ( ExtendedResponse ) decoratedMessage );
                 break;
-                
+
             case INTERMEDIATE_RESPONSE:
                 decorator = new IntermediateResponseDecorator( codec, ( IntermediateResponse ) decoratedMessage );
                 break;
-                
+
             case MODIFY_REQUEST:
                 decorator = new ModifyRequestDecorator( codec, ( ModifyRequest ) decoratedMessage );
                 break;
-                
+
             case MODIFY_RESPONSE:
                 decorator = new ModifyResponseDecorator( codec, ( ModifyResponse ) decoratedMessage );
                 break;
-                
+
             case MODIFYDN_REQUEST:
                 decorator = new ModifyDnRequestDecorator( codec, ( ModifyDnRequest ) decoratedMessage );
                 break;
-                
+
             case MODIFYDN_RESPONSE:
                 decorator = new ModifyDnResponseDecorator( codec, ( ModifyDnResponse ) decoratedMessage );
                 break;
-                
+
             case SEARCH_REQUEST:
                 decorator = new SearchRequestDecorator( codec, ( SearchRequest ) decoratedMessage );
                 break;
-                
+
             case SEARCH_RESULT_DONE:
                 decorator = new SearchResultDoneDecorator( codec, ( SearchResultDone ) decoratedMessage );
                 break;
-                
+
             case SEARCH_RESULT_ENTRY:
                 decorator = new SearchResultEntryDecorator( codec, ( SearchResultEntry ) decoratedMessage );
                 break;
-                
+
             case SEARCH_RESULT_REFERENCE:
                 decorator = new SearchResultReferenceDecorator( codec, ( SearchResultReference ) decoratedMessage );
                 break;
-            
+
             case UNBIND_REQUEST:
                 decorator = new UnbindRequestDecorator( codec, ( UnbindRequest ) decoratedMessage );
                 break;
-                
-            default :
+
+            default:
                 return null;
         }
-        
+
         Map<String, Control> controls = decoratedMessage.getControls();
-        
+
         if ( controls != null )
         {
             for ( Control control : controls.values() )
@@ -204,7 +204,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
                 decorator.addControl( control );
             }
         }
-        
+
         return decorator;
     }
 
@@ -266,12 +266,11 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
         return currentControl;
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The Message methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -316,10 +315,10 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     {
         Control decorated;
         CodecControl<? extends Control> controlDecorator;
-        
-        if ( control instanceof ControlDecorator)
+
+        if ( control instanceof ControlDecorator )
         {
-            controlDecorator = (org.apache.directory.shared.ldap.codec.api.CodecControl<? extends Control> ) control;
+            controlDecorator = ( org.apache.directory.shared.ldap.codec.api.CodecControl<? extends Control> ) control;
             decorated = controlDecorator.getDecorated();
         }
         else
@@ -327,7 +326,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
             controlDecorator = codec.newControl( control );
             decorated = control;
         }
-        
+
         decoratedMessage.addControl( decorated );
         controls.put( control.getOid(), controlDecorator );
         currentControl = controlDecorator;
@@ -395,7 +394,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     public Message setMessageId( int messageId )
     {
         decoratedMessage.setMessageId( messageId );
-        
+
         return this;
     }
 
@@ -416,7 +415,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     {
         return decoratedMessage;
     }
-    
+
 
     /**
      * {@inheritDoc}

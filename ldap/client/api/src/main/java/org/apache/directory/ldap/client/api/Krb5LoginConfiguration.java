@@ -48,7 +48,7 @@ public class Krb5LoginConfiguration extends Configuration
 
         // TODO: this only works for Sun JVM
         options.put( "refreshKrb5Config", "true" );
-        
+
         LoginModuleControlFlag flag = LoginModuleControlFlag.REQUIRED;
         configList[0] = new AppConfigurationEntry( loginModule, flag, options );
     }

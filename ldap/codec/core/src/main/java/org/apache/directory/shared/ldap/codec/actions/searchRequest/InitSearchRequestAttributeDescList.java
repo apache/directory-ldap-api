@@ -50,6 +50,7 @@ public class InitSearchRequestAttributeDescList extends GrammarAction<LdapMessag
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new init attribute desc list action.
      */
@@ -57,6 +58,7 @@ public class InitSearchRequestAttributeDescList extends GrammarAction<LdapMessag
     {
         super( "Initialize AttributeDesc list" );
     }
+
 
     /**
      * {@inheritDoc}

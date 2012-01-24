@@ -39,18 +39,18 @@ import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulShutdownFactory 
+public class GracefulShutdownFactory
     implements ExtendedRequestFactory<GracefulShutdownRequest, GracefulShutdownResponse>
 {
     private LdapApiService codec;
-    
-    
+
+
     public GracefulShutdownFactory( LdapApiService codec )
     {
         this.codec = codec;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -59,7 +59,7 @@ public class GracefulShutdownFactory
         return GracefulShutdownRequest.EXTENSION_OID;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -74,7 +74,7 @@ public class GracefulShutdownFactory
      */
     public GracefulShutdownResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
-        GracefulShutdownResponseDecorator response = new GracefulShutdownResponseDecorator( 
+        GracefulShutdownResponseDecorator response = new GracefulShutdownResponseDecorator(
             codec, new GracefulShutdownResponseImpl() );
         response.setResponseValue( encodedValue );
         return response;
@@ -86,7 +86,8 @@ public class GracefulShutdownFactory
      */
     public GracefulShutdownRequest newRequest( byte[] value )
     {
-        GracefulShutdownRequestDecorator req = new GracefulShutdownRequestDecorator( codec, new GracefulShutdownRequestImpl() );
+        GracefulShutdownRequestDecorator req = new GracefulShutdownRequestDecorator( codec,
+            new GracefulShutdownRequestImpl() );
         req.setRequestValue( value );
         return req;
     }

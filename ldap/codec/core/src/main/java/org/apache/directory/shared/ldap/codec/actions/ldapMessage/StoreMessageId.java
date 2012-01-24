@@ -102,7 +102,7 @@ public class StoreMessageId extends GrammarAction<LdapMessageContainer<MessageDe
         }
         catch ( IntegerDecoderException ide )
         {
-            LOG.error( I18n.err( I18n.ERR_04070, Strings.dumpBytes(value.getData()), ide
+            LOG.error( I18n.err( I18n.ERR_04070, Strings.dumpBytes( value.getData() ), ide
                 .getLocalizedMessage() ) );
 
             // This will generate a PROTOCOL_ERROR

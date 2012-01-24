@@ -45,6 +45,7 @@ public class InitAddRequest extends GrammarAction<LdapMessageContainer<AddReques
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitAddRequest.class );
 
+
     /**
      * Instantiates a new action.
      */

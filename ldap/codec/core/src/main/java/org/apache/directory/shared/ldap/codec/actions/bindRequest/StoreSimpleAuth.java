@@ -91,8 +91,8 @@ public class StoreSimpleAuth extends GrammarAction<LdapMessageContainer<BindRequ
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "The simple authentication is : {}", Strings.dumpBytes(bindRequestMessage
-                    .getCredentials()) );
+            LOG.debug( "The simple authentication is : {}", Strings.dumpBytes( bindRequestMessage
+                .getCredentials() ) );
         }
     }
 }

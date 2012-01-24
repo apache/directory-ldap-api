@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.util.tree;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +70,7 @@ public class DnNode<N> implements Cloneable
     /** Stores the list of all the descendant */
     private Map<Rdn, DnNode<N>> children;
 
+
     //-------------------------------------------------------------------------
     // Helper methods
     //-------------------------------------------------------------------------
@@ -84,6 +86,7 @@ public class DnNode<N> implements Cloneable
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, message );
         }
     }
+
 
     /**
      * Create a new DnNode, recursively creating all the intermediate nodes.
@@ -129,7 +132,7 @@ public class DnNode<N> implements Cloneable
         return rootNode;
     }
 
-    
+
     /**
      * Store the given element into the node
      */
@@ -137,8 +140,8 @@ public class DnNode<N> implements Cloneable
     {
         this.nodeElement = element;
     }
-    
-    
+
+
     //-------------------------------------------------------------------------
     // Constructors
     //-------------------------------------------------------------------------
@@ -245,7 +248,7 @@ public class DnNode<N> implements Cloneable
         int size = 1;
 
         // Iterate through the children if any
-        if ( children.size() !=0 )
+        if ( children.size() != 0 )
         {
             for ( DnNode<N> node : children.values() )
             {
@@ -282,7 +285,7 @@ public class DnNode<N> implements Cloneable
         return node.nodeElement;
     }
 
-    
+
     /**
      * @return True if the Node stores an element. BranchNode may not hold any
      * element.
@@ -310,7 +313,7 @@ public class DnNode<N> implements Cloneable
         return node.nodeElement != null;
     }
 
-    
+
     /**
      * recursively check if the node has a descendant having an element
      */
@@ -320,12 +323,12 @@ public class DnNode<N> implements Cloneable
         {
             return false;
         }
-        
+
         if ( node.hasElement() )
         {
             return true;
         }
-        
+
         for ( DnNode<N> child : node.getChildren().values() )
         {
             if ( hasDescendantElement( child ) )
@@ -338,7 +341,7 @@ public class DnNode<N> implements Cloneable
         return false;
     }
 
-    
+
     /**
      * @return True if one of the node below the current node has one element, 
      * False otherwise
@@ -352,7 +355,7 @@ public class DnNode<N> implements Cloneable
         {
             return false;
         }
-        
+
         // We must be at the right place in the tree
         if ( node.getDn().size() != dn.size() )
         {
@@ -369,11 +372,11 @@ public class DnNode<N> implements Cloneable
                 }
             }
         }
-        
+
         return false;
     }
 
-    
+
     /**
      * recursively get all the elements from nodes having an element
      */
@@ -383,22 +386,22 @@ public class DnNode<N> implements Cloneable
         {
             return;
         }
-        
+
         if ( node.hasElement() )
         {
             descendants.add( node.getElement() );
-            
+
             // Stop here
             return;
         }
-        
+
         for ( DnNode<N> child : node.getChildren().values() )
         {
             getDescendantElements( child, descendants );
         }
     }
 
-    
+
     /**
      * @return True if one of the node below the current node has one element, 
      * False otherwise
@@ -407,14 +410,14 @@ public class DnNode<N> implements Cloneable
     public synchronized List<N> getDescendantElements( Dn dn )
     {
         List<N> descendants = new ArrayList<N>();
-        
+
         DnNode<N> node = getNode( dn );
 
         if ( node == null )
         {
             return descendants;
         }
-        
+
         // We must be at the right place in the tree
         if ( node.getDn().size() != dn.size() )
         {
@@ -428,7 +431,7 @@ public class DnNode<N> implements Cloneable
                 getDescendantElements( child, descendants );
             }
         }
-        
+
         return descendants;
     }
 
@@ -531,7 +534,7 @@ public class DnNode<N> implements Cloneable
             }
         }
 
-        return( parentNode != null );
+        return ( parentNode != null );
     }
 
 
@@ -599,7 +602,7 @@ public class DnNode<N> implements Cloneable
             else
             {
                 DnNode<N> rootNode = createNode( dn, element, nbRdns );
-    
+
                 // done. now, add the newly created tree to the parent node
                 rootNode.parent = parentNode;
                 parentNode.children.put( rootNode.nodeRdn, rootNode );
@@ -829,7 +832,7 @@ public class DnNode<N> implements Cloneable
         return element;
     }
 
-    
+
     /**
      * Get the closest Node for a given Dn which has an element, if present in the tree.<br>
      * For instance, if we have stored dc=acme, dc=org into the tree,
@@ -850,14 +853,14 @@ public class DnNode<N> implements Cloneable
             {
                 return currentNode;
             }
-            
+
             currentNode = currentNode.parent;
         }
-        
+
         return null;
     }
 
-    
+
     /**
      * rename the DnNode's Dn
      * 
@@ -870,20 +873,20 @@ public class DnNode<N> implements Cloneable
         temp = temp.add( newRdn );
 
         Rdn oldRdn = nodeRdn;
-        
+
         nodeRdn = temp.getRdn();
         nodeDn = temp;
-        
+
         if ( parent != null )
         {
             parent.children.remove( oldRdn );
             parent.children.put( nodeRdn, this );
         }
-        
+
         updateAfterModDn( nodeDn );
     }
-    
-    
+
+
     /**
      * move the DnNode's Dn
      *
@@ -895,21 +898,21 @@ public class DnNode<N> implements Cloneable
         DnNode<N> tmp = null;
 
         Dn tmpDn = null;
-       
+
         // check if the new parent Dn is child of the parent
-        if( newParent.isDescendantOf( parent.nodeDn ) )
+        if ( newParent.isDescendantOf( parent.nodeDn ) )
         {
             tmp = parent;
             tmpDn = parent.nodeDn;
         }
-        
+
         // if yes, then drill for the new parent node
         if ( tmpDn != null )
         {
             int parentNodeSize = tmpDn.size();
             int count = newParent.size() - parentNodeSize;
-            
-            while( count-- > 0 )
+
+            while ( count-- > 0 )
             {
                 tmp = tmp.getChild( newParent.getRdn( parentNodeSize++ ) );
             }
@@ -920,27 +923,27 @@ public class DnNode<N> implements Cloneable
         if ( tmp == null )
         {
             tmp = this;
-            while( tmp.parent != null )
+            while ( tmp.parent != null )
             {
                 tmp = tmp.parent;
             }
-            
+
             tmp = tmp.getNode( newParent );
         }
-        
+
         nodeDn = newParent.add( nodeRdn );
         updateAfterModDn( nodeDn );
-        
-        if( parent != null )
+
+        if ( parent != null )
         {
             parent.children.remove( nodeRdn );
         }
-        
+
         parent = tmp;
         parent.children.put( nodeRdn, this );
     }
-    
-    
+
+
     /**
      * update the children's Dn based on the new parent Dn created
      * after a rename or move operation
@@ -951,15 +954,15 @@ public class DnNode<N> implements Cloneable
     {
         if ( children != null )
         {
-            for( DnNode<N> child : children.values() )
+            for ( DnNode<N> child : children.values() )
             {
                 child.nodeDn = newParentDn.add( child.nodeRdn );
                 child.updateAfterModDn( child.nodeDn );
             }
         }
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -1034,6 +1037,7 @@ public class DnNode<N> implements Cloneable
 
         return sb.toString();
     }
+
 
     /**
      * {@inheritDoc}

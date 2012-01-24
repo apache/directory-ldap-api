@@ -32,13 +32,14 @@ import org.apache.directory.shared.ldap.model.message.AbstractExtendedRequest;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulShutdownRequestImpl extends AbstractExtendedRequest<GracefulShutdownResponse> implements GracefulShutdownRequest
+public class GracefulShutdownRequestImpl extends AbstractExtendedRequest<GracefulShutdownResponse> implements
+    GracefulShutdownRequest
 {
     /** The serialVersionUID. */
     private static final long serialVersionUID = -4682291068700593492L;
 
     private GracefulShutdownResponse response;
-    
+
     /** Offline time after disconnection */
     private int timeOffline;
 
@@ -88,7 +89,6 @@ public class GracefulShutdownRequestImpl extends AbstractExtendedRequest<Gracefu
     // Parameters of the Extended Request Payload
     // -----------------------------------------------------------------------
 
-
     /**
      * {@inheritDoc}
      */
@@ -132,7 +132,7 @@ public class GracefulShutdownRequestImpl extends AbstractExtendedRequest<Gracefu
         {
             response = new GracefulShutdownResponseImpl();
         }
-        
+
         return response;
     }
 }

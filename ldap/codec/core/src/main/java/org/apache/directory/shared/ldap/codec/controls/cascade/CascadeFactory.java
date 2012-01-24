@@ -36,8 +36,8 @@ public class CascadeFactory implements ControlFactory<Cascade, CascadeDecorator>
 {
     /** The LDAP codec responsible for encoding and decoding Cascade Controls */
     private LdapApiService codec;
-    
-    
+
+
     /**
      * Creates a new instance of CascadeFactory.
      *
@@ -48,7 +48,7 @@ public class CascadeFactory implements ControlFactory<Cascade, CascadeDecorator>
         this.codec = codec;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -57,7 +57,7 @@ public class CascadeFactory implements ControlFactory<Cascade, CascadeDecorator>
         return Cascade.OID;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -65,7 +65,7 @@ public class CascadeFactory implements ControlFactory<Cascade, CascadeDecorator>
     {
         return new CascadeDecorator( codec, new CascadeImpl() );
     }
-   
+
 
     /**
      * {@inheritDoc}

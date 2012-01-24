@@ -373,6 +373,7 @@ public class OidTest
         }
     }
 
+
     /**
      * Test Oid Equals
      */
@@ -388,6 +389,7 @@ public class OidTest
         assertFalse( oid2.equals( oid3 ) );
     }
 
+
     /**
      * Test Oid Equals
      */
@@ -397,11 +399,11 @@ public class OidTest
         String s1 = "1.2.840.113554.1.2.2.1.2.840.113554.1.2.2.1.2.840.113554.1.2.2";
         String s2 = "1.2.840.113554.1.2.2.1.2.840.113554.1.2.2.1.2.840.113554.1.2.2";
         String s3 = "1.3.6.1.5.5.2";
-        
+
         Oid oid1 = new Oid( s1 );
         Oid oid2 = new Oid( s2 );
         Oid oid3 = new Oid( s3 );
-        
+
         assertTrue( oid1.equals( oid2 ) );
         assertFalse( oid1.equals( oid3 ) );
         assertFalse( oid2.equals( oid3 ) );

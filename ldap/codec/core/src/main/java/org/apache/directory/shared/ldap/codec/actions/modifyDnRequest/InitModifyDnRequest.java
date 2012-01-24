@@ -42,6 +42,7 @@ public class InitModifyDnRequest extends GrammarAction<LdapMessageContainer<Modi
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitModifyDnRequest.class );
 
+
     /**
      * Instantiates a new action.
      */

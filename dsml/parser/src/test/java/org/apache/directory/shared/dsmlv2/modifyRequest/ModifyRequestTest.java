@@ -126,7 +126,7 @@ public class ModifyRequestTest extends AbstractTest
         assertNotNull( control );
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
-        assertEquals( "Some text", Strings.utf8ToString((byte[]) ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "Some text", Strings.utf8ToString( ( byte[] ) ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -161,7 +161,7 @@ public class ModifyRequestTest extends AbstractTest
         assertNotNull( control );
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
-        assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString((byte[]) ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString( ( byte[] ) ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -231,7 +231,7 @@ public class ModifyRequestTest extends AbstractTest
         assertNotNull( control );
         assertFalse( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.789", control.getOid() );
-        assertEquals( "Some other text", Strings.utf8ToString((byte[]) ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "Some other text", Strings.utf8ToString( ( byte[] ) ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -610,7 +610,7 @@ public class ModifyRequestTest extends AbstractTest
         assertEquals( "directreport", attribute.getId() );
 
         assertEquals( 2, attribute.size() );
-        
+
         assertTrue( attribute.contains( "CN=John Smith, DC=microsoft, DC=com" ) );
         assertTrue( attribute.contains( "CN=Steve Jobs, DC=apple, DC=com" ) );
     }

@@ -70,7 +70,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             {
 
-            0x30,
+                0x30,
                 0x4e, // LDAPMessage ::=SEQUENCE {
                 0x02,
                 0x01,
@@ -80,25 +80,91 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x1b, 'o', 'u', '=', 'c', 'o', 'n', 't', 'a', 'c', 't', 's', ',', 'd', 'c', '=', 'i', 'k', 't',
-                'e', 'k', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                0x04,
+                0x1b,
+                'o',
+                'u',
+                '=',
+                'c',
+                'o',
+                'n',
+                't',
+                'a',
+                'c',
+                't',
+                's',
+                ',',
+                'd',
+                'c',
+                '=',
+                'i',
+                'k',
+                't',
+                'e',
+                'k',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
                 // attributes PartialAttributeList }
                 // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x2a, 0x30, 0x28,
+                0x30,
+                0x2a,
+                0x30,
+                0x28,
                 // type AttributeDescription,
-                0x04, 0x0b, 'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
+                0x04,
+                0x0b,
+                'o',
+                'b',
+                'j',
+                'e',
+                'c',
+                't',
+                'c',
+                'l',
+                'a',
+                's',
+                's',
                 // vals SET OF AttributeValue }
-                0x31, 0x19,
+                0x31,
+                0x19,
                 // AttributeValue ::= OCTET STRING
-                0x04, 0x03, 't', 'o', 'p',
+                0x04,
+                0x03,
+                't',
+                'o',
+                'p',
                 // AttributeValue ::= OCTET STRING
-                0x04, 0x12, 'o', 'r', 'g', 'a', 'n', 'i', 'z', 'a', 't', 'i', 'o', 'n', 'a', 'l', 'U', 'n', 'i', 't' } );
+                0x04,
+                0x12,
+                'o',
+                'r',
+                'g',
+                'a',
+                'n',
+                'i',
+                'z',
+                'a',
+                't',
+                'i',
+                'o',
+                'n',
+                'a',
+                'l',
+                'U',
+                'n',
+                'i',
+                't' } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -138,7 +204,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x50, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -172,34 +238,137 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x1b, 'o', 'u', '=', 'c', 'o', 'n', 't', 'a', 'c', 't', 's', ',', 'd', 'c', '=', 'i', 'k', 't',
-                'e', 'k', ',', 'd', 'c', '=', 'c', 'o',
+                0x04,
+                0x1b,
+                'o',
+                'u',
+                '=',
+                'c',
+                'o',
+                'n',
+                't',
+                'a',
+                'c',
+                't',
+                's',
+                ',',
+                'd',
+                'c',
+                '=',
+                'i',
+                'k',
+                't',
+                'e',
+                'k',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
                 'm',
                 // attributes PartialAttributeList }
                 // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x55, 0x30, 0x28,
+                0x30,
+                0x55,
+                0x30,
+                0x28,
                 // type AttributeDescription,
-                0x04, 0x0b, 'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
+                0x04,
+                0x0b,
+                'o',
+                'b',
+                'j',
+                'e',
+                'c',
+                't',
+                'c',
+                'l',
+                'a',
+                's',
+                's',
                 // vals SET OF AttributeValue }
-                0x31, 0x19,
+                0x31,
+                0x19,
                 // AttributeValue ::= OCTET STRING
-                0x04, 0x03, 't', 'o', 'p',
+                0x04,
+                0x03,
+                't',
+                'o',
+                'p',
                 // AttributeValue ::= OCTET STRING
-                0x04, 0x12, 'o', 'r', 'g', 'a', 'n', 'i', 'z', 'a', 't', 'i', 'o', 'n', 'a', 'l', 'U', 'n', 'i', 't',
-                0x30, 0x29,
+                0x04,
+                0x12,
+                'o',
+                'r',
+                'g',
+                'a',
+                'n',
+                'i',
+                'z',
+                'a',
+                't',
+                'i',
+                'o',
+                'n',
+                'a',
+                'l',
+                'U',
+                'n',
+                'i',
+                't',
+                0x30,
+                0x29,
                 // type AttributeDescription,
-                0x04, 0x0c, 'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's', '2',
+                0x04,
+                0x0c,
+                'o',
+                'b',
+                'j',
+                'e',
+                'c',
+                't',
+                'c',
+                'l',
+                'a',
+                's',
+                's',
+                '2',
                 // vals SET OF AttributeValue }
-                0x31, 0x19,
+                0x31,
+                0x19,
                 // AttributeValue ::= OCTET STRING
-                0x04, 0x03, 't', 'o', 'p',
+                0x04,
+                0x03,
+                't',
+                'o',
+                'p',
                 // AttributeValue ::= OCTET STRING
-                0x04, 0x12, 'o', 'r', 'g', 'a', 'n', 'i', 'z', 'a', 't', 'i', 'o', 'n', 'a', 'l', 'U', 'n', 'i', 't' } );
+                0x04,
+                0x12,
+                'o',
+                'r',
+                'g',
+                'a',
+                'n',
+                'i',
+                'z',
+                'a',
+                't',
+                'i',
+                'o',
+                'n',
+                'a',
+                'l',
+                'U',
+                'n',
+                'i',
+                't' } );
 
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -228,8 +397,8 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         {
             Attribute attribute = entry.get( expectedAttributes[i] );
 
-            assertEquals( 
-                Strings.toLowerCase( expectedAttributes[i] ), 
+            assertEquals(
+                Strings.toLowerCase( expectedAttributes[i] ),
                 Strings.toLowerCase( attribute.getUpId() ) );
 
             assertTrue( attribute.contains( "top" ) );
@@ -278,14 +447,43 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x13, 'u', 'i', 'd', '=', 'a', 'd', 'm', 'i', 'n', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e',
+                0x04,
+                0x13,
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'd',
+                'm',
+                'i',
+                'n',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
                 'm',
                 // attributes PartialAttributeList }
                 0x30,
                 0x43, // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x41,
+                0x30,
+                0x41,
                 // type AttributeDescription,
-                0x04, 0x0B, 'o', 'b', 'j', 'e', 'c', 't', 'c', 'l',
+                0x04,
+                0x0B,
+                'o',
+                'b',
+                'j',
+                'e',
+                'c',
+                't',
+                'c',
+                'l',
                 'a',
                 's',
                 's',
@@ -296,23 +494,72 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // AttributeValue
                 // }
                 // AttributeValue ::= OCTET STRING
-                0x04, 0x0D, 'i', 'n', 'e', 't', 'O', 'r', 'g', 'P', 'e', 'r', 's', 'o', 'n',
+                0x04,
+                0x0D,
+                'i',
+                'n',
+                'e',
+                't',
+                'O',
+                'r',
+                'g',
+                'P',
+                'e',
+                'r',
+                's',
+                'o',
+                'n',
                 // AttributeValue ::= OCTET STRING
-                0x04, 0x14, 'o', 'r', 'g', 'a', 'n', 'i', 'z', 'a', 't', 'i', 'o', 'n', 'a', 'l', 'P', 'e', 'r', 's',
-                'o', 'n',
+                0x04,
+                0x14,
+                'o',
+                'r',
+                'g',
+                'a',
+                'n',
+                'i',
+                'z',
+                'a',
+                't',
+                'i',
+                'o',
+                'n',
+                'a',
+                'l',
+                'P',
+                'e',
+                'r',
+                's',
+                'o',
+                'n',
                 // AttributeValue ::= OCTET STRING
-                0x04, 0x06, 'p', 'e', 'r', 's', 'o', 'n',
+                0x04,
+                0x06,
+                'p',
+                'e',
+                'r',
+                's',
+                'o',
+                'n',
                 // AttributeValue ::= OCTET STRING
-                0x04, 0x03, 't', 'o', 'p', 0x30, 0x45, // Start of the next
+                0x04,
+                0x03,
+                't',
+                'o',
+                'p',
+                0x30,
+                0x45, // Start of the next
                 // message
-                0x02, 0x01, 0x02 // messageID MessageID ...
-            } );
+                0x02,
+                0x01,
+                0x02 // messageID MessageID ...
+        } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -361,7 +608,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x61, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             // We have to supress the last 5 chars from the decodedPDU, as they
             // belongs to the next message.
@@ -390,16 +637,19 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             {
 
-            0x30, 0x05, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x64, 0x00 // CHOICE { ..., searchResEntry SearchResultEntry,
+                0x30, 0x05, // LDAPMessage ::=SEQUENCE {
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x64,
+                0x00 // CHOICE { ..., searchResEntry SearchResultEntry,
             // ...
-            } );
+        } );
 
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -428,19 +678,23 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x07, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x64, 0x02, // CHOICE { ..., searchResEntry SearchResultEntry,
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x64,
+                0x02, // CHOICE { ..., searchResEntry SearchResultEntry,
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x00
+                0x04,
+                0x00
 
-            } );
+        } );
 
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -478,15 +732,42 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x1B, 'o', 'u', '=', 'c', 'o', 'n', 't', 'a', 'c', 't', 's', ',', 'd', 'c', '=', 'i', 'k', 't',
-                'e', 'k', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                0x04,
+                0x1B,
+                'o',
+                'u',
+                '=',
+                'c',
+                'o',
+                'n',
+                't',
+                'a',
+                'c',
+                't',
+                's',
+                ',',
+                'd',
+                'c',
+                '=',
+                'i',
+                'k',
+                't',
+                'e',
+                'k',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
 
-            } );
+        } );
 
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -524,17 +805,45 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x1B, 'o', 'u', '=', 'c', 'o', 'n', 't', 'a', 'c', 't', 's', ',', 'd', 'c', '=', 'i', 'k', 't',
-                'e', 'k', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                0x04,
+                0x1B,
+                'o',
+                'u',
+                '=',
+                'c',
+                'o',
+                'n',
+                't',
+                'a',
+                'c',
+                't',
+                's',
+                ',',
+                'd',
+                'c',
+                '=',
+                'i',
+                'k',
+                't',
+                'e',
+                'k',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
                 // attributes PartialAttributeList }
                 // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x00 } );
+                0x30,
+                0x00 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -564,7 +873,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x26, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -597,16 +906,46 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x1B, 'o', 'u', '=', 'c', 'o', 'n', 't', 'a', 'c', 't', 's', ',', 'd', 'c', '=', 'i', 'k', 't',
-                'e', 'k', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                0x04,
+                0x1B,
+                'o',
+                'u',
+                '=',
+                'c',
+                'o',
+                'n',
+                't',
+                'a',
+                'c',
+                't',
+                's',
+                ',',
+                'd',
+                'c',
+                '=',
+                'i',
+                'k',
+                't',
+                'e',
+                'k',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
                 // attributes PartialAttributeList }
                 // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x02, 0x30, 0x00 } );
+                0x30,
+                0x02,
+                0x30,
+                0x00 } );
 
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -646,20 +985,75 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x1B, 'o', 'u', '=', 'c', 'o', 'n', 't', 'a', 'c', 't', 's', ',', 'd', 'c', '=', 'i', 'k', 't',
-                'e', 'k', ',', 'd', 'c', '=', 'c', 'o',
+                0x04,
+                0x1B,
+                'o',
+                'u',
+                '=',
+                'c',
+                'o',
+                'n',
+                't',
+                'a',
+                'c',
+                't',
+                's',
+                ',',
+                'd',
+                'c',
+                '=',
+                'i',
+                'k',
+                't',
+                'e',
+                'k',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
                 'm',
                 // attributes PartialAttributeList }
                 // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x02, 0x30, 0x00, ( byte ) 0xA0,
+                0x30,
+                0x02,
+                0x30,
+                0x00,
+                ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.', '1', '1', '3', '7', '3',
-                '0', '.', '3', '.', '4', '.', '2' } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                '2',
+                '.',
+                '1',
+                '6',
+                '.',
+                '8',
+                '4',
+                '0',
+                '.',
+                '1',
+                '.',
+                '1',
+                '1',
+                '3',
+                '7',
+                '3',
+                '0',
+                '.',
+                '3',
+                '.',
+                '4',
+                '.',
+                '2' } );
 
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -689,7 +1083,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             {
 
-            0x30,
+                0x30,
                 0x28, // LDAPMessage ::=SEQUENCE {
                 0x02,
                 0x01,
@@ -699,18 +1093,49 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x1b, 'o', 'u', '=', 'c', 'o', 'n', 't', 'a', 'c', 't', 's', ',', 'd', 'c', '=', 'i', 'k', 't',
-                'e', 'k', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                0x04,
+                0x1b,
+                'o',
+                'u',
+                '=',
+                'c',
+                'o',
+                'n',
+                't',
+                'a',
+                'c',
+                't',
+                's',
+                ',',
+                'd',
+                'c',
+                '=',
+                'i',
+                'k',
+                't',
+                'e',
+                'k',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
                 // attributes PartialAttributeList }
                 // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x04, 0x30, 0x02,
+                0x30,
+                0x04,
+                0x30,
+                0x02,
                 // type AttributeDescription,
-                0x04, 0x00 } );
+                0x04,
+                0x00 } );
 
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -740,7 +1165,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             {
 
-            0x30,
+                0x30,
                 0x33, // LDAPMessage ::=SEQUENCE {
                 0x02,
                 0x01,
@@ -750,18 +1175,60 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x1b, 'o', 'u', '=', 'c', 'o', 'n', 't', 'a', 'c', 't', 's', ',', 'd', 'c', '=', 'i', 'k', 't',
-                'e', 'k', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                0x04,
+                0x1b,
+                'o',
+                'u',
+                '=',
+                'c',
+                'o',
+                'n',
+                't',
+                'a',
+                'c',
+                't',
+                's',
+                ',',
+                'd',
+                'c',
+                '=',
+                'i',
+                'k',
+                't',
+                'e',
+                'k',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
                 // attributes PartialAttributeList }
                 // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x0F, 0x30, 0x0D,
+                0x30,
+                0x0F,
+                0x30,
+                0x0D,
                 // type AttributeDescription,
-                0x04, 0x0b, 'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's' } );
+                0x04,
+                0x0b,
+                'o',
+                'b',
+                'j',
+                'e',
+                'c',
+                't',
+                'c',
+                'l',
+                'a',
+                's',
+                's' } );
 
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -791,7 +1258,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             {
 
-            0x30,
+                0x30,
                 0x35, // LDAPMessage ::=SEQUENCE {
                 0x02,
                 0x01,
@@ -801,19 +1268,63 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x1b, 'o', 'u', '=', 'c', 'o', 'n', 't', 'a', 'c', 't', 's', ',', 'd', 'c', '=', 'i', 'k', 't',
-                'e', 'k', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                0x04,
+                0x1b,
+                'o',
+                'u',
+                '=',
+                'c',
+                'o',
+                'n',
+                't',
+                'a',
+                'c',
+                't',
+                's',
+                ',',
+                'd',
+                'c',
+                '=',
+                'i',
+                'k',
+                't',
+                'e',
+                'k',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
                 // attributes PartialAttributeList }
                 // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x11, 0x30, 0x0F,
+                0x30,
+                0x11,
+                0x30,
+                0x0F,
                 // type AttributeDescription,
-                0x04, 0x0b, 'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's', 0x31, 0x00 } );
+                0x04,
+                0x0b,
+                'o',
+                'b',
+                'j',
+                'e',
+                'c',
+                't',
+                'c',
+                'l',
+                'a',
+                's',
+                's',
+                0x31,
+                0x00 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -851,7 +1362,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x37, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -876,7 +1387,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             {
 
-            0x30,
+                0x30,
                 0x46, // LDAPMessage ::=SEQUENCE {
                 0x02,
                 0x01,
@@ -886,21 +1397,81 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x1b, 'o', 'u', '=', 'c', 'o', 'n', 't', 'a', 'c', 't', 's', ',', 'd', 'c', '=', 'i', 'k', 't',
-                'e', 'k', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                0x04,
+                0x1b,
+                'o',
+                'u',
+                '=',
+                'c',
+                'o',
+                'n',
+                't',
+                'a',
+                'c',
+                't',
+                's',
+                ',',
+                'd',
+                'c',
+                '=',
+                'i',
+                'k',
+                't',
+                'e',
+                'k',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
                 // attributes PartialAttributeList }
                 // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x22, 0x30, 0x0F,
+                0x30,
+                0x22,
+                0x30,
+                0x0F,
                 // type AttributeDescription,
-                0x04, 0x0b, 'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's', 0x31, 0x00, 0x30, 0x0F,
+                0x04,
+                0x0b,
+                'o',
+                'b',
+                'j',
+                'e',
+                'c',
+                't',
+                'c',
+                'l',
+                'a',
+                's',
+                's',
+                0x31,
+                0x00,
+                0x30,
+                0x0F,
                 // type AttributeDescription,
-                0x04, 0x0b, 'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 'z', 'z', 0x31, 0x00 } );
+                0x04,
+                0x0b,
+                'o',
+                'b',
+                'j',
+                'e',
+                'c',
+                't',
+                'c',
+                'l',
+                'a',
+                'z',
+                'z',
+                0x31,
+                0x00 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -938,7 +1509,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x48, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu.length(), decodedPdu.length() );
         }
@@ -973,24 +1544,93 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x1b, 'o', 'u', '=', 'c', 'o', 'n', 't', 'a', 'c', 't', 's', ',', 'd', 'c', '=', 'i', 'k', 't',
-                'e', 'k', ',', 'd', 'c', '=', 'c', 'o',
+                0x04,
+                0x1b,
+                'o',
+                'u',
+                '=',
+                'c',
+                'o',
+                'n',
+                't',
+                'a',
+                'c',
+                't',
+                's',
+                ',',
+                'd',
+                'c',
+                '=',
+                'i',
+                'k',
+                't',
+                'e',
+                'k',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
                 'm',
                 // attributes PartialAttributeList }
                 // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x11, 0x30, 0x0F,
+                0x30,
+                0x11,
+                0x30,
+                0x0F,
                 // type AttributeDescription,
-                0x04, 0x0b, 'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's', 0x31, 0x00, ( byte ) 0xA0,
+                0x04,
+                0x0b,
+                'o',
+                'b',
+                'j',
+                'e',
+                'c',
+                't',
+                'c',
+                'l',
+                'a',
+                's',
+                's',
+                0x31,
+                0x00,
+                ( byte ) 0xA0,
                 0x1B, // A
                 // control
-                0x30, 0x19, 0x04, 0x17, 0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30, 0x2E, 0x31, 0x2E, 0x31, 0x31,
-                0x33, 0x37, 0x33, 0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32 } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -1027,9 +1667,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> )controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes((byte[]) control.getValue()) );
+        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
         // Check the encoding
         try
@@ -1039,7 +1680,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x54, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -1072,23 +1713,67 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x1b, 'o', 'u', '=', 'c', 'o', 'n', 't', 'a', 'c', 't', 's', ',', 'd', 'c', '=', 'i', 'k', 't',
-                'e', 'k', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                0x04,
+                0x1b,
+                'o',
+                'u',
+                '=',
+                'c',
+                'o',
+                'n',
+                't',
+                'a',
+                'c',
+                't',
+                's',
+                ',',
+                'd',
+                'c',
+                '=',
+                'i',
+                'k',
+                't',
+                'e',
+                'k',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
                 // attributes PartialAttributeList }
                 // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x13, 0x30, 0x11,
+                0x30,
+                0x13,
+                0x30,
+                0x11,
                 // type AttributeDescription,
-                0x04, 0x0b, 'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
+                0x04,
+                0x0b,
+                'o',
+                'b',
+                'j',
+                'e',
+                'c',
+                't',
+                'c',
+                'l',
+                'a',
+                's',
+                's',
                 // vals SET OF AttributeValue }
-                0x31, 0x02,
+                0x31,
+                0x02,
                 // AttributeValue ::= OCTET STRING
-                0x04, 0x00, } );
+                0x04,
+                0x00, } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -1127,7 +1812,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x39, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -1162,27 +1847,96 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
                 // ...
                 // SearchResultEntry ::= [APPLICATION 4] SEQUENCE {
                 // objectName LDAPDN,
-                0x04, 0x1b, 'o', 'u', '=', 'c', 'o', 'n', 't', 'a', 'c', 't', 's', ',', 'd', 'c', '=', 'i', 'k', 't',
-                'e', 'k', ',', 'd', 'c', '=', 'c', 'o',
+                0x04,
+                0x1b,
+                'o',
+                'u',
+                '=',
+                'c',
+                'o',
+                'n',
+                't',
+                'a',
+                'c',
+                't',
+                's',
+                ',',
+                'd',
+                'c',
+                '=',
+                'i',
+                'k',
+                't',
+                'e',
+                'k',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
                 'm',
                 // attributes PartialAttributeList }
                 // PartialAttributeList ::= SEQUENCE OF SEQUENCE {
-                0x30, 0x13, 0x30, 0x11,
+                0x30,
+                0x13,
+                0x30,
+                0x11,
                 // type AttributeDescription,
-                0x04, 0x0b, 'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
+                0x04,
+                0x0b,
+                'o',
+                'b',
+                'j',
+                'e',
+                'c',
+                't',
+                'c',
+                'l',
+                'a',
+                's',
+                's',
                 // vals SET OF AttributeValue }
-                0x31, 0x02,
+                0x31,
+                0x02,
                 // AttributeValue ::= OCTET STRING
-                0x04, 0x00, ( byte ) 0xA0,
+                0x04,
+                0x00,
+                ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, 0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30, 0x2E, 0x31, 0x2E, 0x31, 0x31,
-                0x33, 0x37, 0x33, 0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32 } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchResultEntryDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchResultEntryDecorator>( codec );
 
         try
@@ -1219,9 +1973,10 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> )controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes((byte[]) control.getValue()) );
+        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
         // Check the encoding
         try
@@ -1231,7 +1986,7 @@ public class SearchResultEntryTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x56, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }

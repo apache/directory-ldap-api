@@ -69,27 +69,72 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x36, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 // CHOICE { ..., compareRequest CompareRequest, ...
                 0x6E,
                 0x31, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // ava AttributeValueAssertion }
-                0x30, 0x0D, // AttributeValueAssertion ::= SEQUENCE {
+                0x30,
+                0x0D, // AttributeValueAssertion ::= SEQUENCE {
                 // attributeDesc AttributeDescription,
-                0x04, 0x04, 't', 'e', 's', 't',
+                0x04,
+                0x04,
+                't',
+                'e',
+                's',
+                't',
                 // assertionValue AssertionValue }
-                0x04, 0x05, 'v', 'a', 'l', 'u', 'e' } );
+                0x04,
+                0x05,
+                'v',
+                'a',
+                'l',
+                'u',
+                'e' } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container 
-            = new LdapMessageContainer<CompareRequestDecorator>( codec );
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
+            codec );
 
         // Decode the CompareRequest PDU
         try
@@ -118,7 +163,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x38, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -142,16 +187,19 @@ public class CompareRequestTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x05, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., compareRequest CompareRequest, ...
-                0x6E, 0x00 // CompareRequest ::= [APPLICATION 14] SEQUENCE {
-            } );
+                0x6E,
+                0x00 // CompareRequest ::= [APPLICATION 14] SEQUENCE {
+        } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container 
-        = new LdapMessageContainer<CompareRequestDecorator>( codec );
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
+            codec );
 
         // Decode the CompareRequest PDU
         try
@@ -178,22 +226,38 @@ public class CompareRequestTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x16, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., compareRequest CompareRequest, ...
-                0x6E, 0x11, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
-                0x04, 0x00, // entry LDAPDN,
+                0x6E,
+                0x11, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
+                0x04,
+                0x00, // entry LDAPDN,
                 // ava AttributeValueAssertion }
-                0x30, 0x0D, // AttributeValueAssertion ::= SEQUENCE {
+                0x30,
+                0x0D, // AttributeValueAssertion ::= SEQUENCE {
                 // attributeDesc AttributeDescription,
-                0x04, 0x04, 't', 'e', 's', 't',
+                0x04,
+                0x04,
+                't',
+                'e',
+                's',
+                't',
                 // assertionValue AssertionValue }
-                0x04, 0x05, 'v', 'a', 'l', 'u', 'e' } );
+                0x04,
+                0x05,
+                'v',
+                'a',
+                'l',
+                'u',
+                'e' } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container 
-            = new LdapMessageContainer<CompareRequestDecorator>( codec );
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
+            codec );
 
         // Decode the CompareRequest PDU
         try
@@ -221,23 +285,57 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x29, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 // CHOICE { ..., compareRequest CompareRequest, ...
                 0x6E,
                 0x24, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // ava AttributeValueAssertion }
-                0x30, 0x00 // AttributeValueAssertion ::= SEQUENCE {
-            } );
+                0x30,
+                0x00 // AttributeValueAssertion ::= SEQUENCE {
+        } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container 
-            = new LdapMessageContainer<CompareRequestDecorator>( codec );
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
+            codec );
 
         // Decode the CompareRequest PDU
         try
@@ -265,23 +363,57 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x29, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 // CHOICE { ..., compareRequest CompareRequest, ...
                 0x6E,
                 0x24, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', ':', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                ':',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // ava AttributeValueAssertion }
-                0x30, 0x00 // AttributeValueAssertion ::= SEQUENCE {
-            } );
+                0x30,
+                0x00 // AttributeValueAssertion ::= SEQUENCE {
+        } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container 
-            = new LdapMessageContainer<CompareRequestDecorator>( codec );
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
+            codec );
 
         // Decode the CompareRequest PDU
         try
@@ -314,23 +446,58 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x2B, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 // CHOICE { ..., compareRequest CompareRequest, ...
                 0x6E,
                 0x26, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // ava AttributeValueAssertion }
-                0x30, 0x02, // AttributeValueAssertion ::= SEQUENCE {
-                0x04, 0x00 } );
+                0x30,
+                0x02, // AttributeValueAssertion ::= SEQUENCE {
+                0x04,
+                0x00 } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container 
-            = new LdapMessageContainer<CompareRequestDecorator>( codec );
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
+            codec );
 
         // Decode the CompareRequest PDU
         try
@@ -363,27 +530,67 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x31, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 // CHOICE { ..., compareRequest CompareRequest, ...
                 0x6E,
                 0x2C, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // ava AttributeValueAssertion }
-                0x30, 0x08, // AttributeValueAssertion ::= SEQUENCE {
+                0x30,
+                0x08, // AttributeValueAssertion ::= SEQUENCE {
                 // attributeDesc AttributeDescription,
-                0x04, 0x04, 't', 'e', 's', 't',
+                0x04,
+                0x04,
+                't',
+                'e',
+                's',
+                't',
                 // assertionValue AssertionValue }
-                0x04, 0x00 } );
+                0x04,
+                0x00 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container 
-            = new LdapMessageContainer<CompareRequestDecorator>( codec );
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
+            codec );
 
         // Decode the CompareRequest PDU
         try
@@ -412,7 +619,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x33, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -445,25 +652,94 @@ public class CompareRequestTest extends AbstractCodecServiceTest
                 0x6E,
                 0x31, // CompareRequest ::= [APPLICATION 14] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // ava AttributeValueAssertion }
                 0x30,
                 0x0D, // AttributeValueAssertion ::= SEQUENCE {
                 // attributeDesc AttributeDescription,
-                0x04, 0x04, 't', 'e', 's', 't',
+                0x04,
+                0x04,
+                't',
+                'e',
+                's',
+                't',
                 // assertionValue AssertionValue }
-                0x04, 0x05, 'v', 'a', 'l', 'u', 'e', ( byte ) 0xA0,
+                0x04,
+                0x05,
+                'v',
+                'a',
+                'l',
+                'u',
+                'e',
+                ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, 0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30, 0x2E, 0x31, 0x2E, 0x31, 0x31,
-                0x33, 0x37, 0x33, 0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32 } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<CompareRequestDecorator> container 
-            = new LdapMessageContainer<CompareRequestDecorator>( codec );
+        LdapMessageContainer<CompareRequestDecorator> container = new LdapMessageContainer<CompareRequestDecorator>(
+            codec );
 
         // Decode the CompareRequest PDU
         try
@@ -490,7 +766,8 @@ public class CompareRequestTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
@@ -502,7 +779,7 @@ public class CompareRequestTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x55, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }

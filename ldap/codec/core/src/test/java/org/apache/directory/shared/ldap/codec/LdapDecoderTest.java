@@ -64,13 +64,13 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
     /** The ASN 1 decoder instance */
     private static Asn1Decoder asn1Decoder;
 
-    
+
     @BeforeClass
     public static void init()
     {
         asn1Decoder = new Asn1Decoder();
     }
-    
+
 
     /**
      * Decode an incoming buffer into LDAP messages. The result can be 0, 1 or many 
@@ -83,7 +83,8 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
      * @param decodedMessages The list of decoded messages
      * @throws Exception If the decoding failed
      */
-    private void decode( ByteBuffer buffer, LdapMessageContainer<MessageDecorator<? extends Message>> messageContainer, List<Message> decodedMessages ) throws DecoderException
+    private void decode( ByteBuffer buffer, LdapMessageContainer<MessageDecorator<? extends Message>> messageContainer,
+        List<Message> decodedMessages ) throws DecoderException
     {
         buffer.mark();
 
@@ -124,7 +125,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         }
     }
 
-    
+
     /**
      * Test the decoding of a full PDU
      */
@@ -132,26 +133,69 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
     public void testDecodeFull()
     {
         Asn1Decoder ldapDecoder = new Asn1Decoder();
-        LdapMessageContainer<MessageDecorator<? extends Message>> container = 
+        LdapMessageContainer<MessageDecorator<? extends Message>> container =
             new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
 
         ByteBuffer stream = ByteBuffer.allocate( 0x35 );
         stream.put( new byte[]
-            { 
-                0x30, 0x33,                     // LDAPMessage ::=SEQUENCE {
-                    0x02, 0x01, 0x01,           // messageID MessageID
-                  0x60, 0x2E,                   // CHOICE { ..., bindRequest BindRequest, ...
-                                                // BindRequest ::= APPLICATION[0] SEQUENCE {
-                    0x02, 0x01, 0x03,           // version INTEGER (1..127),
-                    0x04, 0x1F,                 // name LDAPDN,
-                      'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                      'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', 
-                    ( byte ) 0x80, 0x08,        // authentication
-                                                // AuthenticationChoice
-                                                // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
-                                                // ...
-                      'p', 'a', 's', 's', 'w', 'o', 'r', 'd'
-            } );
+            {
+                0x30, 0x33, // LDAPMessage ::=SEQUENCE {
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x60,
+                0x2E, // CHOICE { ..., bindRequest BindRequest, ...
+                      // BindRequest ::= APPLICATION[0] SEQUENCE {
+                0x02,
+                0x01,
+                0x03, // version INTEGER (1..127),
+                0x04,
+                0x1F, // name LDAPDN,
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                ( byte ) 0x80,
+                0x08, // authentication
+                      // AuthenticationChoice
+                      // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
+                      // ...
+                'p',
+                'a',
+                's',
+                's',
+                'w',
+                'o',
+                'r',
+                'd'
+        } );
 
         stream.flip();
 
@@ -169,13 +213,13 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         assertEquals( TLVStateEnum.PDU_DECODED, container.getState() );
 
         // Check the decoded PDU
-        BindRequest bindRequest = (BindRequest)container.getMessage();
+        BindRequest bindRequest = ( BindRequest ) container.getMessage();
 
         assertEquals( 1, bindRequest.getMessageId() );
         assertTrue( bindRequest.isVersion3() );
         assertEquals( "uid=akarasulu,dc=example,dc=com", bindRequest.getName().toString() );
         assertTrue( bindRequest.isSimple() );
-        assertEquals( "password", Strings.utf8ToString(bindRequest.getCredentials()) );
+        assertEquals( "password", Strings.utf8ToString( bindRequest.getCredentials() ) );
     }
 
 
@@ -185,7 +229,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
     @Test
     public void testDecode2Messages() throws Exception
     {
-        LdapMessageContainer<MessageDecorator<? extends Message>> container = 
+        LdapMessageContainer<MessageDecorator<? extends Message>> container =
             new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
 
         IoSession dummySession = new DummySession();
@@ -193,34 +237,121 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
 
         ByteBuffer stream = ByteBuffer.allocate( 0x6A );
         stream.put( new byte[]
-            { 
-                0x30, 0x33,                     // LDAPMessage ::=SEQUENCE {
-                  0x02, 0x01, 0x01,             // messageID MessageID
-                  0x60, 0x2E,                   // CHOICE { ..., bindRequest BindRequest, ...
-                                                // BindRequest ::= APPLICATION[0] SEQUENCE {
-                    0x02, 0x01, 0x03,           // version INTEGER (1..127),
-                    0x04, 0x1F,                 // name LDAPDN,
-                      'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                      'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', 
-                    ( byte ) 0x80, 0x08,        // authentication
-                                                // AuthenticationChoice
-                                                // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
-                                                // ...
-                      'p', 'a', 's', 's', 'w', 'o', 'r', 'd',
-                0x30, 0x33,                     // LDAPMessage ::=SEQUENCE {
-                  0x02, 0x01, 0x02,             // messageID MessageID
-                  0x60, 0x2E,                   // CHOICE { ..., bindRequest BindRequest, ...
-                                                // BindRequest ::= APPLICATION[0] SEQUENCE {
-                    0x02, 0x01, 0x03,           // version INTEGER (1..127),
-                    0x04, 0x1F,                 // name LDAPDN,
-                      'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                      'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', 
-                    ( byte ) 0x80, 0x08,        // authentication
-                                                // AuthenticationChoice
-                                                // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
-                                                // ...
-                      'p', 'a', 's', 's', 'w', 'o', 'r', 'd'
-            } );
+            {
+                0x30, 0x33, // LDAPMessage ::=SEQUENCE {
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x60,
+                0x2E, // CHOICE { ..., bindRequest BindRequest, ...
+                      // BindRequest ::= APPLICATION[0] SEQUENCE {
+                0x02,
+                0x01,
+                0x03, // version INTEGER (1..127),
+                0x04,
+                0x1F, // name LDAPDN,
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                ( byte ) 0x80,
+                0x08, // authentication
+                      // AuthenticationChoice
+                      // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
+                      // ...
+                'p',
+                'a',
+                's',
+                's',
+                'w',
+                'o',
+                'r',
+                'd',
+                0x30,
+                0x33, // LDAPMessage ::=SEQUENCE {
+                0x02,
+                0x01,
+                0x02, // messageID MessageID
+                0x60,
+                0x2E, // CHOICE { ..., bindRequest BindRequest, ...
+                      // BindRequest ::= APPLICATION[0] SEQUENCE {
+                0x02,
+                0x01,
+                0x03, // version INTEGER (1..127),
+                0x04,
+                0x1F, // name LDAPDN,
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                ( byte ) 0x80,
+                0x08, // authentication
+                      // AuthenticationChoice
+                      // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
+                      // ...
+                'p',
+                'a',
+                's',
+                's',
+                'w',
+                'o',
+                'r',
+                'd'
+        } );
 
         stream.flip();
 
@@ -238,14 +369,14 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         }
 
         // Check the decoded PDU
-        BindRequest bindRequest = (BindRequest) ( result.get( 0 ) );
+        BindRequest bindRequest = ( BindRequest ) ( result.get( 0 ) );
 
         assertEquals( 1, bindRequest.getMessageId() );
         assertTrue( bindRequest.isVersion3() );
         assertEquals( "uid=akarasulu,dc=example,dc=com", bindRequest.getName().toString() );
         assertTrue( bindRequest.isSimple() );
-        assertEquals( "password", Strings.utf8ToString(bindRequest.getCredentials()) );
-        
+        assertEquals( "password", Strings.utf8ToString( bindRequest.getCredentials() ) );
+
         // The second message
         bindRequest = ( BindRequest ) ( result.get( 1 ) );
 
@@ -253,7 +384,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         assertTrue( bindRequest.isVersion3() );
         assertEquals( "uid=akarasulu,dc=example,dc=com", bindRequest.getName().toString() );
         assertTrue( bindRequest.isSimple() );
-        assertEquals( "password", Strings.utf8ToString(bindRequest.getCredentials()) );
+        assertEquals( "password", Strings.utf8ToString( bindRequest.getCredentials() ) );
     }
 
 
@@ -269,12 +400,21 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 16 );
         stream.put( new byte[]
             { 0x30, 0x33, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x60, 0x2E, // CHOICE { ..., bindRequest BindRequest, ...
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x60,
+                0x2E, // CHOICE { ..., bindRequest BindRequest, ...
                 // BindRequest ::= APPLICATION[0] SEQUENCE {
-                0x02, 0x01, 0x03, // version INTEGER (1..127),
-                0x04, 0x1F, // name LDAPDN,
-                'u', 'i', 'd', '=' } );
+                0x02,
+                0x01,
+                0x03, // version INTEGER (1..127),
+                0x04,
+                0x1F, // name LDAPDN,
+                'u',
+                'i',
+                'd',
+                '=' } );
 
         stream.flip();
 
@@ -316,12 +456,21 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 16 );
         stream.put( new byte[]
             { 0x30, 0x33, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x60, 0x2E, // CHOICE { ..., bindRequest BindRequest, ...
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x60,
+                0x2E, // CHOICE { ..., bindRequest BindRequest, ...
                 // BindRequest ::= APPLICATION[0] SEQUENCE {
-                0x02, 0x01, 0x03, // version INTEGER (1..127),
-                0x04, 0x1F, // name LDAPDN,
-                'u', 'i', 'd', '=' } );
+                0x02,
+                0x01,
+                0x03, // version INTEGER (1..127),
+                0x04,
+                0x1F, // name LDAPDN,
+                'u',
+                'i',
+                'd',
+                '=' } );
 
         stream.flip();
 
@@ -349,7 +498,14 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
                 // AuthenticationChoice
                 // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
                 // ...
-                'p', 'a', 's', 's', 'w', 'o', 'r', 'd' } );
+                'p',
+                'a',
+                's',
+                's',
+                'w',
+                'o',
+                'r',
+                'd' } );
 
         stream.flip();
 
@@ -373,7 +529,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         assertTrue( bindRequest.isVersion3() );
         assertEquals( "uid=akarasulu,dc=example,dc=com", bindRequest.getName().toString() );
         assertTrue( bindRequest.isSimple() );
-        assertEquals( "password", Strings.utf8ToString(bindRequest.getCredentials()) );
+        assertEquals( "password", Strings.utf8ToString( bindRequest.getCredentials() ) );
     }
 
 
@@ -393,26 +549,66 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
                 // Length should be 0x33...
                 0x30,
                 0x32, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 0x60,
                 0x2E, // CHOICE { ..., bindRequest BindRequest, ...
                 // BindRequest ::= APPLICATION[0] SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x03, // version INTEGER (1..127),
                 0x04,
                 0x1F, // name LDAPDN,
-                'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', ( byte ) 0x80, 0x08, // authentication
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                ( byte ) 0x80,
+                0x08, // authentication
                 // AuthenticationChoice
                 // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
                 // ...
-                'p', 'a', 's', 's', 'w', 'o', 'r', 'd' } );
+                'p',
+                'a',
+                's',
+                's',
+                'w',
+                'o',
+                'r',
+                'd' } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<MessageDecorator<? extends Message>> ldapMessageContainer = 
+        LdapMessageContainer<MessageDecorator<? extends Message>> ldapMessageContainer =
             new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
 
         // Decode a BindRequest PDU
@@ -447,25 +643,64 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
             { 0x30,
                 0x33, // LDAPMessage ::=SEQUENCE {
                 // Length should be 0x01...
-                0x02, 0x02,
+                0x02,
+                0x02,
                 0x01, // messageID MessageID
                 0x60,
                 0x2E, // CHOICE { ..., bindRequest BindRequest, ...
                 // BindRequest ::= APPLICATION[0] SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x03, // version INTEGER (1..127),
                 0x04,
                 0x1F, // name LDAPDN,
-                'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', ( byte ) 0x80, 0x08, // authentication AuthenticationChoice
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                ( byte ) 0x80,
+                0x08, // authentication AuthenticationChoice
                 // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
                 // ...
-                'p', 'a', 's', 's', 'w', 'o', 'r' } );
+                'p',
+                'a',
+                's',
+                's',
+                'w',
+                'o',
+                'r' } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        Asn1Container ldapMessageContainer = 
+        Asn1Container ldapMessageContainer =
             new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
 
         // Decode a BindRequest PDU
@@ -475,7 +710,8 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         }
         catch ( DecoderException de )
         {
-            assertEquals( "ERR_00001_BAD_TRANSITION_FROM_STATE Bad transition from state MESSAGE_ID_STATE, tag 0x2E", de.getMessage() );
+            assertEquals( "ERR_00001_BAD_TRANSITION_FROM_STATE Bad transition from state MESSAGE_ID_STATE, tag 0x2E",
+                de.getMessage() );
             return;
         }
 
@@ -498,21 +734,61 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
             { 0x30,
                 0x33, // LDAPMessage ::=SEQUENCE {
                 // Length should be 0x01...
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 0x2D,
                 0x2D, // CHOICE { ..., bindRequest BindRequest, ...
                 // BindRequest ::= APPLICATION[0] SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x03, // version INTEGER (1..127),
                 0x04,
                 0x1F, // name LDAPDN,
-                'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', ( byte ) 0x80, 0x08, // authentication
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                ( byte ) 0x80,
+                0x08, // authentication
                 // AuthenticationChoice
                 // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
                 // ...
-                'p', 'a', 's', 's', 'w', 'o', 'r', 'd' } );
+                'p',
+                'a',
+                's',
+                's',
+                'w',
+                'o',
+                'r',
+                'd' } );
 
         stream.flip();
 
@@ -526,7 +802,8 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         }
         catch ( DecoderException de )
         {
-            assertEquals( "ERR_00001_BAD_TRANSITION_FROM_STATE Bad transition from state MESSAGE_ID_STATE, tag 0x2D", de.getMessage() );
+            assertEquals( "ERR_00001_BAD_TRANSITION_FROM_STATE Bad transition from state MESSAGE_ID_STATE, tag 0x2D",
+                de.getMessage() );
             return;
         }
 
@@ -573,7 +850,7 @@ public class LdapDecoderTest extends AbstractCodecServiceTest
         stream = ByteBuffer.allocate( 1 );
         stream.put( new byte[]
             { ( byte ) 0x80 // End of the length
-            } );
+        } );
 
         stream.flip();
 

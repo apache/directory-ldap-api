@@ -78,19 +78,79 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
                 // ...
                 // ModifyDNRequest ::= [APPLICATION 12] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // newrdn RelativeLDAPDN,
-                0x04, 0x0F, 'c', 'n', '=', 't', 'e', 's', 't', 'D', 'N', 'M', 'o', 'd', 'i', 'f', 'y', 0x01, 0x01,
+                0x04,
+                0x0F,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'D',
+                'N',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                0x01,
+                0x01,
                 0x00, // deleteoldrdn BOOLEAN,
                 // newSuperior [0] LDAPDN OPTIONAL }
-                ( byte ) 0x80, 0x09, 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm' } );
+                ( byte ) 0x80,
+                0x09,
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm' } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a ModifyRequest Container
-        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<ModifyDnRequestDecorator>( codec );
 
         try
@@ -119,7 +179,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x48, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -153,18 +213,78 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
                 // ...
                 // ModifyDNRequest ::= [APPLICATION 12] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', ':', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                ':',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // newrdn RelativeLDAPDN,
-                0x04, 0x0F, 'c', 'n', '=', 't', 'e', 's', 't', 'D', 'N', 'M', 'o', 'd', 'i', 'f', 'y', 0x01, 0x01,
+                0x04,
+                0x0F,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'D',
+                'N',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                0x01,
+                0x01,
                 0x00, // deleteoldrdn BOOLEAN,
                 // newSuperior [0] LDAPDN OPTIONAL }
-                ( byte ) 0x80, 0x09, 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm' } );
+                ( byte ) 0x80,
+                0x09,
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm' } );
 
         stream.flip();
 
         // Allocate a ModifyRequest Container
-        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<ModifyDnRequestDecorator>( codec );
 
         try
@@ -207,18 +327,78 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
                 // ...
                 // ModifyDNRequest ::= [APPLICATION 12] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // newrdn RelativeLDAPDN,
-                0x04, 0x0F, 'c', 'n', ':', 't', 'e', 's', 't', 'D', 'N', 'M', 'o', 'd', 'i', 'f', 'y', 0x01, 0x01,
+                0x04,
+                0x0F,
+                'c',
+                'n',
+                ':',
+                't',
+                'e',
+                's',
+                't',
+                'D',
+                'N',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                0x01,
+                0x01,
                 0x00, // deleteoldrdn BOOLEAN,
                 // newSuperior [0] LDAPDN OPTIONAL }
-                ( byte ) 0x80, 0x09, 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm' } );
+                ( byte ) 0x80,
+                0x09,
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm' } );
 
         stream.flip();
 
         // Allocate a ModifyRequest Container
-        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<ModifyDnRequestDecorator>( codec );
 
         try
@@ -261,18 +441,78 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
                 // ...
                 // ModifyDNRequest ::= [APPLICATION 12] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // newrdn RelativeLDAPDN,
-                0x04, 0x0F, 'c', 'n', '=', 't', 'e', 's', 't', 'D', 'N', 'M', 'o', 'd', 'i', 'f', 'y', 0x01, 0x01,
+                0x04,
+                0x0F,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'D',
+                'N',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                0x01,
+                0x01,
                 0x00, // deleteoldrdn BOOLEAN,
                 // newSuperior [0] LDAPDN OPTIONAL }
-                ( byte ) 0x80, 0x09, 'o', 'u', ':', 's', 'y', 's', 't', 'e', 'm' } );
+                ( byte ) 0x80,
+                0x09,
+                'o',
+                'u',
+                ':',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm' } );
 
         stream.flip();
 
         // Allocate a ModifyRequest Container
-        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<ModifyDnRequestDecorator>( codec );
 
         try
@@ -284,7 +524,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
             assertTrue( de instanceof ResponseCarryingException );
             Message response = ( ( ResponseCarryingException ) de ).getResponse();
             assertTrue( response instanceof ModifyDnResponseImpl );
-            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( (ModifyDnResponseImpl) response ).getLdapResult()
+            assertEquals( ResultCodeEnum.INVALID_DN_SYNTAX, ( ( ModifyDnResponseImpl ) response ).getLdapResult()
                 .getResultCode() );
             return;
         }
@@ -315,24 +555,108 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
                 // ...
                 // ModifyDNRequest ::= [APPLICATION 12] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
                 'm',
                 // newrdn RelativeLDAPDN,
-                0x04, 0x0F, 'c', 'n', '=', 't', 'e', 's', 't', 'D', 'N', 'M', 'o', 'd', 'i', 'f', 'y', 0x01,
+                0x04,
+                0x0F,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'D',
+                'N',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                0x01,
                 0x01,
                 0x00, // deleteoldrdn BOOLEAN,
                 // newSuperior [0] LDAPDN OPTIONAL }
-                ( byte ) 0x80, 0x09, 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm', ( byte ) 0xA0,
+                ( byte ) 0x80,
+                0x09,
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
+                ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, 0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30, 0x2E, 0x31, 0x2E, 0x31, 0x31,
-                0x33, 0x37, 0x33, 0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32 } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a ModifyRequest Container
-        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<ModifyDnRequestDecorator>( codec );
 
         try
@@ -359,9 +683,10 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> )modifyDnRequest.getControl( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) modifyDnRequest
+            .getControl( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes((byte[]) control.getValue()) );
+        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
         // Check the encoding
         try
@@ -371,7 +696,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x65, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -404,18 +729,69 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
                 // ...
                 // ModifyDNRequest ::= [APPLICATION 12] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
                 // newrdn RelativeLDAPDN,
-                0x04, 0x0F, 'c', 'n', '=', 't', 'e', 's', 't', 'D', 'N', 'M', 'o', 'd', 'i', 'f', 'y', 0x01, 0x01, 0x00 // deleteoldrdn BOOLEAN,
+                0x04,
+                0x0F,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'D',
+                'N',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                0x01,
+                0x01,
+                0x00 // deleteoldrdn BOOLEAN,
             // newSuperior [0] LDAPDN OPTIONAL }
-            } );
+        } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a ModifyRequest Container
-        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<ModifyDnRequestDecorator>( codec );
 
         try
@@ -443,7 +819,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x3D, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -477,24 +853,97 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
                 // ...
                 // ModifyDNRequest ::= [APPLICATION 12] SEQUENCE {
                 // entry LDAPDN,
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e',
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
                 'm',
                 // newrdn RelativeLDAPDN,
-                0x04, 0x0F, 'c', 'n', '=', 't', 'e', 's', 't', 'D', 'N', 'M', 'o', 'd', 'i', 'f', 'y', 0x01,
+                0x04,
+                0x0F,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'D',
+                'N',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                0x01,
                 0x01,
                 0x00, // deleteoldrdn BOOLEAN,
                 // newSuperior [0] LDAPDN OPTIONAL }
                 ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, 0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30, 0x2E, 0x31, 0x2E, 0x31, 0x31,
-                0x33, 0x37, 0x33, 0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32 } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a ModifyRequest Container
-        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<ModifyDnRequestDecorator>( codec );
 
         try
@@ -522,9 +971,10 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         assertTrue( modifyDnRequest.hasControl( "2.16.840.1.113730.3.4.2" ) );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> )modifyDnRequest.getControl( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) modifyDnRequest
+            .getControl( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes((byte[]) control.getValue()) );
+        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
         // Check the encoding
         try
@@ -534,7 +984,7 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x5A, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -560,15 +1010,18 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x05, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x6C, 0x00 // CHOICE { ..., modifyDNRequest ModifyDNRequest,
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x6C,
+                0x00 // CHOICE { ..., modifyDNRequest ModifyDNRequest,
             // ...
-            } );
+        } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<ModifyDnRequestDecorator>( codec );
 
         // Decode a ModifyDNRequest PDU
@@ -596,15 +1049,19 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x07, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x6C, 0x02, // CHOICE { ..., modifyDNRequest ModifyDNRequest,
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x6C,
+                0x02, // CHOICE { ..., modifyDNRequest ModifyDNRequest,
                 // ...
-                0x04, 0x00 } );
+                0x04,
+                0x00 } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<ModifyDnRequestDecorator>( codec );
 
         // Decode a ModifyDNRequest PDU
@@ -633,18 +1090,53 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x2B, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 0x6C,
                 0x26, // CHOICE { ..., modifyDNRequest ModifyDNRequest,
                 // ...
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm', 0x04, 0x00 } );
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
+                0x04,
+                0x00 } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<ModifyDnRequestDecorator>( codec );
 
         // Decode a ModifyDNRequest PDU
@@ -680,15 +1172,65 @@ public class ModifyDNRequestTest extends AbstractCodecServiceTest
                 0x6C,
                 0x35, // CHOICE { ..., modifyDNRequest ModifyDNRequest,
                 // ...
-                0x04, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm', 0x04, 0x0F, 'c', 'n', '=', 't',
-                'e', 's', 't', 'D', 'N', 'M', 'o', 'd', 'i', 'f', 'y', 0x01, 0x00 // deleteoldrdn BOOLEAN
-            } );
+                0x04,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
+                0x04,
+                0x0F,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'D',
+                'N',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                0x01,
+                0x00 // deleteoldrdn BOOLEAN
+        } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<ModifyDnRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<ModifyDnRequestDecorator>( codec );
 
         // Decode a ModifyDNRequest PDU

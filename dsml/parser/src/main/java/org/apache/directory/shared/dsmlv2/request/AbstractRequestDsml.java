@@ -35,8 +35,8 @@ import org.dom4j.Element;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractRequestDsml<E extends Request> 
-    extends AbstractDsmlMessageDecorator<E> 
+public abstract class AbstractRequestDsml<E extends Request>
+    extends AbstractDsmlMessageDecorator<E>
     implements Request
 {
     /**

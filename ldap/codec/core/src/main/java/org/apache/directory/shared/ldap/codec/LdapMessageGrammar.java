@@ -146,7 +146,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class LdapMessageGrammar<E> extends AbstractGrammar<LdapMessageContainer<MessageDecorator<? extends Message>>>
+public final class LdapMessageGrammar<E> extends
+    AbstractGrammar<LdapMessageContainer<MessageDecorator<? extends Message>>>
 {
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( LdapMessageGrammar.class );
@@ -155,13 +156,16 @@ public final class LdapMessageGrammar<E> extends AbstractGrammar<LdapMessageCont
     static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
     /** The instance of grammar. LdapMessageGrammar is a singleton */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings(
+        { "unchecked", "rawtypes" })
     private static Grammar<LdapMessageContainer<MessageDecorator<? extends Message>>> instance = new LdapMessageGrammar();
+
 
     /**
      * Creates a new LdapMessageGrammar object.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings(
+        { "unchecked", "rawtypes" })
     private LdapMessageGrammar()
     {
 
@@ -4853,7 +4857,8 @@ public final class LdapMessageGrammar<E> extends AbstractGrammar<LdapMessageCont
         // Store the matching rule ID
         super.transitions[LdapStatesEnum.EXTENSIBLE_MATCH_STATE.ordinal()][LdapConstants.MATCHING_RULE_ID_TAG] = new GrammarTransition(
             LdapStatesEnum.EXTENSIBLE_MATCH_STATE, LdapStatesEnum.MATCHING_RULE_STATE,
-            LdapConstants.MATCHING_RULE_ID_TAG, new GrammarAction<LdapMessageContainer<SearchRequestDecorator>>( "Store matching rule Value" )
+            LdapConstants.MATCHING_RULE_ID_TAG, new GrammarAction<LdapMessageContainer<SearchRequestDecorator>>(
+                "Store matching rule Value" )
             {
                 public void action( LdapMessageContainer<SearchRequestDecorator> container ) throws DecoderException
                 {
@@ -4863,7 +4868,7 @@ public final class LdapMessageGrammar<E> extends AbstractGrammar<LdapMessageCont
 
                     // Store the value.
                     ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter )
-                            searchRequest.getTerminalFilter();
+                        searchRequest.getTerminalFilter();
 
                     if ( tlv.getLength() == 0 )
                     {
@@ -4875,7 +4880,7 @@ public final class LdapMessageGrammar<E> extends AbstractGrammar<LdapMessageCont
                     }
                     else
                     {
-                        extensibleMatchFilter.setMatchingRule( Strings.utf8ToString(tlv.getValue().getData()) );
+                        extensibleMatchFilter.setMatchingRule( Strings.utf8ToString( tlv.getValue().getData() ) );
                     }
                 }
             } );

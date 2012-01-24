@@ -80,7 +80,7 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
         return addResponseLength;
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -101,7 +101,7 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
     {
         AddResponse addResponse = getAddResponse();
         setLdapResult( new LdapResultDecorator( addResponse.getLdapResult() ) );
-        int addResponseLength = ((LdapResultDecorator)getLdapResult()).computeLength();
+        int addResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         setAddResponseLength( addResponseLength );
 
@@ -124,8 +124,8 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
             buffer.put( TLV.getBytes( getAddResponseLength() ) );
 
             // The LdapResult
-            ((LdapResultDecorator)getLdapResult()).encode( buffer );
-            
+            ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
+
             return buffer;
         }
         catch ( BufferOverflowException boe )

@@ -30,7 +30,7 @@ import org.apache.directory.shared.ldap.model.message.Response;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractResponseDsml<E extends Response> 
+public abstract class AbstractResponseDsml<E extends Response>
     extends AbstractDsmlMessageDecorator<E> implements Response
 {
     /**

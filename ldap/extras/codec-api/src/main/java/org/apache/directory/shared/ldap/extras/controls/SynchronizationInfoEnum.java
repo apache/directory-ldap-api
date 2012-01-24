@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.extras.controls;
 
+
 /**
  * This class describes the four possible Info values :
  * <ul>
@@ -38,10 +39,10 @@ public enum SynchronizationInfoEnum
     REFRESH_DELETE(1),
     REFRESH_PRESENT(2),
     SYNC_ID_SET(3);
-    
+
     /** The internal value */
     private int value;
-    
+
 
     /**
      * Private constructor so no other instances can be created other than the
@@ -54,7 +55,7 @@ public enum SynchronizationInfoEnum
         this.value = value;
     }
 
-    
+
     /**
      * @return The value associated with the current element.
      */
@@ -62,8 +63,8 @@ public enum SynchronizationInfoEnum
     {
         return value;
     }
-    
-    
+
+
     /**
      * Get the {@link SynchronizationInfoEnum} instance from an integer value.
      * 

@@ -82,6 +82,7 @@ public class SyncStateValueContainer extends AbstractContainer
         this.control = control;
     }
 
+
     /**
      * Clean the container
      */

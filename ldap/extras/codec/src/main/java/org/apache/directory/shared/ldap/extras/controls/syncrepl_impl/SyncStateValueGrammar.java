@@ -101,9 +101,10 @@ public final class SyncStateValueGrammar extends AbstractGrammar
          *     
          * Stores the sync state type value
          */
-        super.transitions[SyncStateValueStatesEnum.SYNC_STATE_VALUE_SEQUENCE_STATE.ordinal()][UniversalTag.ENUMERATED.getValue()] = new GrammarTransition(
+        super.transitions[SyncStateValueStatesEnum.SYNC_STATE_VALUE_SEQUENCE_STATE.ordinal()][UniversalTag.ENUMERATED
+            .getValue()] = new GrammarTransition(
             SyncStateValueStatesEnum.SYNC_STATE_VALUE_SEQUENCE_STATE,
-            SyncStateValueStatesEnum.SYNC_TYPE_STATE, UniversalTag.ENUMERATED.getValue(), 
+            SyncStateValueStatesEnum.SYNC_TYPE_STATE, UniversalTag.ENUMERATED.getValue(),
             new GrammarAction<SyncStateValueContainer>( "Set SyncStateValueControl state type" )
             {
                 public void action( SyncStateValueContainer container ) throws DecoderException
@@ -113,8 +114,8 @@ public final class SyncStateValueGrammar extends AbstractGrammar
                     try
                     {
                         // Check that the value is into the allowed interval
-                        int syncStateType = IntegerDecoder.parse(value, SyncStateTypeEnum.PRESENT.getValue(),
-                                SyncStateTypeEnum.MODDN.getValue());
+                        int syncStateType = IntegerDecoder.parse( value, SyncStateTypeEnum.PRESENT.getValue(),
+                            SyncStateTypeEnum.MODDN.getValue() );
 
                         SyncStateTypeEnum syncStateTypeEnum = SyncStateTypeEnum.getSyncStateType( syncStateType );
 
@@ -148,7 +149,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar
          */
         super.transitions[SyncStateValueStatesEnum.SYNC_TYPE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = new GrammarTransition(
             SyncStateValueStatesEnum.SYNC_TYPE_STATE, SyncStateValueStatesEnum.SYNC_UUID_STATE,
-            UniversalTag.OCTET_STRING.getValue(), 
+            UniversalTag.OCTET_STRING.getValue(),
             new GrammarAction<SyncStateValueContainer>( "Set SyncStateValueControl entryUUID" )
             {
                 public void action( SyncStateValueContainer container ) throws DecoderException
@@ -159,7 +160,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar
 
                     if ( IS_DEBUG )
                     {
-                        LOG.debug( "entryUUID = {}", Strings.dumpBytes(entryUUID) );
+                        LOG.debug( "entryUUID = {}", Strings.dumpBytes( entryUUID ) );
                     }
 
                     container.getSyncStateValueControl().setEntryUUID( entryUUID );
@@ -180,7 +181,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar
          */
         super.transitions[SyncStateValueStatesEnum.SYNC_UUID_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = new GrammarTransition(
             SyncStateValueStatesEnum.SYNC_UUID_STATE, SyncStateValueStatesEnum.COOKIE_STATE,
-            UniversalTag.OCTET_STRING.getValue(), 
+            UniversalTag.OCTET_STRING.getValue(),
             new GrammarAction<SyncStateValueContainer>( "Set SyncStateValueControl cookie value" )
             {
                 public void action( SyncStateValueContainer container ) throws DecoderException

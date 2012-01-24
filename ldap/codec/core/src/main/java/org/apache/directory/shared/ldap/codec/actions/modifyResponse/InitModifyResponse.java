@@ -40,6 +40,8 @@ public class InitModifyResponse extends GrammarAction<LdapMessageContainer<Modif
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitModifyResponse.class );
+
+
     /**
      * Instantiates a new action.
      */

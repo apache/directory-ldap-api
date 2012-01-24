@@ -55,30 +55,33 @@ public class SyncDoneValueControlTest extends AbstractCodecServiceTest
         ByteBuffer bb = ByteBuffer.allocate( 11 );
 
         bb.put( new byte[]
-            { 
-              0x30, 0x09, 
+            {
+                0x30, 0x09,
                 0x04, 0x04, 'x', 'k', 'c', 'd', // the cookie 
-                0x01, 0x01, ( byte ) 0xFF       // refreshDeletes flag TRUE
-            } );
+                0x01,
+                0x01,
+                ( byte ) 0xFF // refreshDeletes flag TRUE
+        } );
 
         bb.flip();
 
-        SyncDoneValue decorator =  new SyncDoneValueDecorator( codec );
+        SyncDoneValue decorator = new SyncDoneValueDecorator( codec );
 
-        SyncDoneValue control = (SyncDoneValue)((SyncDoneValueDecorator)decorator).decode( bb.array() );
-        
-        assertEquals( "xkcd", Strings.utf8ToString(control.getCookie()) );
+        SyncDoneValue control = ( SyncDoneValue ) ( ( SyncDoneValueDecorator ) decorator ).decode( bb.array() );
+
+        assertEquals( "xkcd", Strings.utf8ToString( control.getCookie() ) );
         assertTrue( control.isRefreshDeletes() );
-        
+
         // test encoding
         try
         {
-            ByteBuffer buffer = ((SyncDoneValueDecorator)control).encode( ByteBuffer.allocate( ((SyncDoneValueDecorator)control).computeLength() ) );
+            ByteBuffer buffer = ( ( SyncDoneValueDecorator ) control ).encode( ByteBuffer
+                .allocate( ( ( SyncDoneValueDecorator ) control ).computeLength() ) );
             String expected = Strings.dumpBytes( bb.array() );
             String decoded = Strings.dumpBytes( buffer.array() );
             assertEquals( expected, decoded );
         }
-        catch( EncoderException e )
+        catch ( EncoderException e )
         {
             fail( e.getMessage() );
         }
@@ -91,17 +94,19 @@ public class SyncDoneValueControlTest extends AbstractCodecServiceTest
         ByteBuffer bb = ByteBuffer.allocate( 5 );
 
         bb.put( new byte[]
-            { 
-              0x30, 0x03, 
-              // null cookie
-                0x01, 0x01, (byte)0xFF // refreshDeletes flag TRUE
-            } );
+            {
+                0x30, 0x03,
+                // null cookie
+                0x01,
+                0x01,
+                ( byte ) 0xFF // refreshDeletes flag TRUE
+        } );
 
         bb.flip();
 
-        SyncDoneValue decorator =  new SyncDoneValueDecorator( codec );
+        SyncDoneValue decorator = new SyncDoneValueDecorator( codec );
 
-        SyncDoneValue control = (SyncDoneValue)((SyncDoneValueDecorator)decorator).decode( bb.array() );
+        SyncDoneValue control = ( SyncDoneValue ) ( ( SyncDoneValueDecorator ) decorator ).decode( bb.array() );
 
         assertNull( control.getCookie() );
         assertTrue( control.isRefreshDeletes() );
@@ -109,68 +114,72 @@ public class SyncDoneValueControlTest extends AbstractCodecServiceTest
         // test encoding
         try
         {
-            ByteBuffer buffer = ((SyncDoneValueDecorator)control).encode( ByteBuffer.allocate( ((SyncDoneValueDecorator)control).computeLength() ) );
+            ByteBuffer buffer = ( ( SyncDoneValueDecorator ) control ).encode( ByteBuffer
+                .allocate( ( ( SyncDoneValueDecorator ) control ).computeLength() ) );
             String expected = Strings.dumpBytes( bb.array() );
             String decoded = Strings.dumpBytes( buffer.array() );
             assertEquals( expected, decoded );
         }
-        catch( EncoderException e )
+        catch ( EncoderException e )
         {
             fail( e.getMessage() );
         }
     }
 
-    
+
     @Test
     public void testSyncDoneValueWithSequenceOnly() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 2 );
 
         bb.put( new byte[]
-            { 
-              0x30, 0x00 
-            } );
+            {
+                0x30, 0x00
+        } );
 
         bb.flip();
 
-        SyncDoneValue decorator =  new SyncDoneValueDecorator( codec );
+        SyncDoneValue decorator = new SyncDoneValueDecorator( codec );
 
-        SyncDoneValue control = (SyncDoneValue)((SyncDoneValueDecorator)decorator).decode( bb.array() );
+        SyncDoneValue control = ( SyncDoneValue ) ( ( SyncDoneValueDecorator ) decorator ).decode( bb.array() );
 
         assertNull( control.getCookie() );
         assertFalse( control.isRefreshDeletes() );
     }
 
-    
+
     @Test
     public void testSyncDoneValueControlWithEmptyCookie() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 7 );
 
         bb.put( new byte[]
-            { 
-              0x30, 0x05, 
-                0x04, 0x00,      // empty cookie
-                0x01, 0x01, 0x00 // refreshDeletes flag FALSE
-            } );
+            {
+                0x30, 0x05,
+                0x04, 0x00, // empty cookie
+                0x01,
+                0x01,
+                0x00 // refreshDeletes flag FALSE
+        } );
 
         bb.flip();
 
-        SyncDoneValue decorator =  new SyncDoneValueDecorator( codec );
+        SyncDoneValue decorator = new SyncDoneValueDecorator( codec );
 
-        SyncDoneValue control = (SyncDoneValue)((SyncDoneValueDecorator)decorator).decode( bb.array() );
+        SyncDoneValue control = ( SyncDoneValue ) ( ( SyncDoneValueDecorator ) decorator ).decode( bb.array() );
 
-        assertEquals( "", Strings.utf8ToString(control.getCookie()) );
+        assertEquals( "", Strings.utf8ToString( control.getCookie() ) );
         assertFalse( control.isRefreshDeletes() );
 
         // test encoding
         try
         {
-            ByteBuffer buffer = ((SyncDoneValueDecorator)control).encode( ByteBuffer.allocate( ((SyncDoneValueDecorator)control).computeLength() ) );
+            ByteBuffer buffer = ( ( SyncDoneValueDecorator ) control ).encode( ByteBuffer
+                .allocate( ( ( SyncDoneValueDecorator ) control ).computeLength() ) );
             String decoded = Strings.dumpBytes( buffer.array() );
             assertEquals( "0x30 0x00 ", decoded );
         }
-        catch( Exception e )
+        catch ( Exception e )
         {
             fail( e.getMessage() );
         }

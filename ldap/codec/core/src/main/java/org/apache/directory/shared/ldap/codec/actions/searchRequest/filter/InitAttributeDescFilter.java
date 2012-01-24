@@ -75,11 +75,11 @@ public class InitAttributeDescFilter extends GrammarAction<LdapMessageContainer<
         }
         else
         {
-            String type = Strings.utf8ToString(tlv.getValue().getData());
+            String type = Strings.utf8ToString( tlv.getValue().getData() );
             assertion.setAttributeDesc( type );
 
             AttributeValueAssertionFilter terminalFilter = ( AttributeValueAssertionFilter )
-                    searchRequestDecorator.getTerminalFilter();
+                searchRequestDecorator.getTerminalFilter();
             terminalFilter.setAssertion( assertion );
         }
 

@@ -37,7 +37,7 @@ public class PasswordPolicyResponseImpl implements PasswordPolicyResponse
     /** number representing the password policy error */
     private PasswordPolicyErrorEnum ppolicyError;
 
-    
+
     /**
      * {@inheritDoc}
      */

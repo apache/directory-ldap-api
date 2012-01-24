@@ -65,32 +65,118 @@ public class LdapControlTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x64 );
         stream.put( new byte[]
             { 0x30, 0x62, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x03, // messageID MessageID
-                0x50, 0x01, 0x02, // CHOICE { ..., abandonRequest
+                0x02,
+                0x01,
+                0x03, // messageID MessageID
+                0x50,
+                0x01,
+                0x02, // CHOICE { ..., abandonRequest
                 // AbandonRequest,...
-                ( byte ) 0xA0, 0x5A, // controls [0] Controls OPTIONAL }
-                0x30, 0x1A, // Control ::= SEQUENCE {
+                ( byte ) 0xA0,
+                0x5A, // controls [0] Controls OPTIONAL }
+                0x30,
+                0x1A, // Control ::= SEQUENCE {
                 // controlType LDAPOID,
-                0x04, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '1',
+                0x04,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '1',
                 // criticality BOOLEAN DEFAULT FALSE,
-                0x01, 0x01, ( byte ) 0xFF,
+                0x01,
+                0x01,
+                ( byte ) 0xFF,
                 // controlValue OCTET STRING OPTIONAL }
-                0x04, 0x06, 'a', 'b', 'c', 'd', 'e', 'f', 0x30, 0x17, // Control ::= SEQUENCE {
+                0x04,
+                0x06,
+                'a',
+                'b',
+                'c',
+                'd',
+                'e',
+                'f',
+                0x30,
+                0x17, // Control ::= SEQUENCE {
                 // controlType LDAPOID,
-                0x04, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2',
+                0x04,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '2',
                 // controlValue OCTET STRING OPTIONAL }
-                0x04, 0x06, 'g', 'h', 'i', 'j', 'k', 'l', 0x30, 0x12, // Control ::= SEQUENCE {
+                0x04,
+                0x06,
+                'g',
+                'h',
+                'i',
+                'j',
+                'k',
+                'l',
+                0x30,
+                0x12, // Control ::= SEQUENCE {
                 // controlType LDAPOID,
-                0x04, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '3',
+                0x04,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '3',
                 // criticality BOOLEAN DEFAULT FALSE}
-                0x01, 0x01, ( byte ) 0xFF, 0x30, 0x0F, // Control ::= SEQUENCE {
+                0x01,
+                0x01,
+                ( byte ) 0xFF,
+                0x30,
+                0x0F, // Control ::= SEQUENCE {
                 // controlType LDAPOID}
-                0x04, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '4' } );
+                0x04,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '4' } );
 
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        LdapMessageContainer<AbandonRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<AbandonRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<AbandonRequestDecorator>( codec );
 
         // Decode the PDU
@@ -119,27 +205,28 @@ public class LdapControlTest extends AbstractCodecServiceTest
 
         assertEquals( 4, controls.size() );
 
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "1.3.6.1.5.5.1" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "1.3.6.1.5.5.1" );
         assertEquals( "1.3.6.1.5.5.1", control.getOid() );
         assertEquals( "0x61 0x62 0x63 0x64 0x65 0x66 ", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
         assertTrue( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
-        control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "1.3.6.1.5.5.2" );
+        control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "1.3.6.1.5.5.2" );
         assertEquals( "1.3.6.1.5.5.2", control.getOid() );
-        assertEquals( "0x67 0x68 0x69 0x6A 0x6B 0x6C ", Strings.dumpBytes((byte[]) control.getValue()) );
+        assertEquals( "0x67 0x68 0x69 0x6A 0x6B 0x6C ", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
         assertFalse( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
-        control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "1.3.6.1.5.5.3" );
+        control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "1.3.6.1.5.5.3" );
         assertEquals( "1.3.6.1.5.5.3", control.getOid() );
-        assertEquals( "", Strings.dumpBytes((byte[]) control.getValue()) );
+        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
         assertTrue( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
-        control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "1.3.6.1.5.5.4" );
+        control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "1.3.6.1.5.5.4" );
         assertEquals( "1.3.6.1.5.5.4", control.getOid() );
-        assertEquals( "", Strings.dumpBytes((byte[]) control.getValue()) );
+        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
         assertFalse( control.isCritical() );
         internalAbandonRequest.addControl( control );
 
@@ -186,22 +273,38 @@ public class LdapControlTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x19 );
         stream.put( new byte[]
             { 0x30, 0x17, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x03, // messageID MessageID
-                0x50, 0x01, 0x02, // CHOICE { ..., abandonRequest
+                0x02,
+                0x01,
+                0x03, // messageID MessageID
+                0x50,
+                0x01,
+                0x02, // CHOICE { ..., abandonRequest
                 // AbandonRequest,...
-                ( byte ) 0xA0, 0x0F, // controls [0] Controls OPTIONAL }
-                0x30, 0x0D, // Control ::= SEQUENCE {
+                ( byte ) 0xA0,
+                0x0F, // controls [0] Controls OPTIONAL }
+                0x30,
+                0x0D, // Control ::= SEQUENCE {
                 // controlType LDAPOID,
-                0x04, 0x00,
+                0x04,
+                0x00,
                 // criticality BOOLEAN DEFAULT FALSE,
-                0x01, 0x01, ( byte ) 0xFF,
+                0x01,
+                0x01,
+                ( byte ) 0xFF,
                 // controlValue OCTET STRING OPTIONAL }
-                0x04, 0x06, 'a', 'b', 'c', 'd', 'e', 'f', } );
+                0x04,
+                0x06,
+                'a',
+                'b',
+                'c',
+                'd',
+                'e',
+                'f', } );
 
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        Asn1Container ldapMessageContainer = 
+        Asn1Container ldapMessageContainer =
             new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
 
         // Decode the PDU
@@ -230,22 +333,45 @@ public class LdapControlTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x20 );
         stream.put( new byte[]
             { 0x30, 0x1E, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x03, // messageID MessageID
-                0x50, 0x01, 0x02, // CHOICE { ..., abandonRequest
+                0x02,
+                0x01,
+                0x03, // messageID MessageID
+                0x50,
+                0x01,
+                0x02, // CHOICE { ..., abandonRequest
                 // AbandonRequest,...
-                ( byte ) 0xA0, 0x16, // controls [0] Controls OPTIONAL }
-                0x30, 0x14, // Control ::= SEQUENCE {
+                ( byte ) 0xA0,
+                0x16, // controls [0] Controls OPTIONAL }
+                0x30,
+                0x14, // Control ::= SEQUENCE {
                 // controlType LDAPOID,
-                0x04, 0x07, 'b', 'a', 'd', ' ', 'o', 'i', 'd',
+                0x04,
+                0x07,
+                'b',
+                'a',
+                'd',
+                ' ',
+                'o',
+                'i',
+                'd',
                 // criticality BOOLEAN DEFAULT FALSE,
-                0x01, 0x01, ( byte ) 0xFF,
+                0x01,
+                0x01,
+                ( byte ) 0xFF,
                 // controlValue OCTET STRING OPTIONAL }
-                0x04, 0x06, 'a', 'b', 'c', 'd', 'e', 'f', } );
+                0x04,
+                0x06,
+                'a',
+                'b',
+                'c',
+                'd',
+                'e',
+                'f', } );
 
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        Asn1Container ldapMessageContainer = 
+        Asn1Container ldapMessageContainer =
             new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
 
         // Decode the PDU
@@ -274,22 +400,50 @@ public class LdapControlTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x25 );
         stream.put( new byte[]
             { 0x30, 0x23, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x03, // messageID MessageID
-                0x50, 0x01, 0x02, // CHOICE { ..., abandonRequest
+                0x02,
+                0x01,
+                0x03, // messageID MessageID
+                0x50,
+                0x01,
+                0x02, // CHOICE { ..., abandonRequest
                 // AbandonRequest,...
-                ( byte ) 0xA0, 0x1B, // controls [0] Controls OPTIONAL }
-                0x30, 0x19, // Control ::= SEQUENCE {
+                ( byte ) 0xA0,
+                0x1B, // controls [0] Controls OPTIONAL }
+                0x30,
+                0x19, // Control ::= SEQUENCE {
                 // controlType LDAPOID,
-                0x04, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '1',
+                0x04,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '1',
                 // criticality BOOLEAN DEFAULT FALSE,
-                0x01, 0x00,
+                0x01,
+                0x00,
                 // controlValue OCTET STRING OPTIONAL }
-                0x04, 0x06, 'a', 'b', 'c', 'd', 'e', 'f', } );
+                0x04,
+                0x06,
+                'a',
+                'b',
+                'c',
+                'd',
+                'e',
+                'f', } );
 
         stream.flip();
 
         // Allocate a LdapMessageContainer Container
-        Asn1Container ldapMessageContainer = 
+        Asn1Container ldapMessageContainer =
             new LdapMessageContainer<MessageDecorator<? extends Message>>( codec );
 
         // Decode the PDU

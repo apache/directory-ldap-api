@@ -311,7 +311,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     {
         if ( isReferral() )
         {
-            return ((SearchResultReference)response).getReferral();
+            return ( ( SearchResultReference ) response ).getReferral();
         }
 
         throw new LdapException();
@@ -334,7 +334,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     {
         if ( isEntry() )
         {
-            return ((SearchResultEntry)response).getEntry();
+            return ( ( SearchResultEntry ) response ).getEntry();
         }
 
         throw new LdapException();
@@ -357,7 +357,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     {
         if ( isEntry() )
         {
-            return (IntermediateResponse)response;
+            return ( IntermediateResponse ) response;
         }
 
         throw new LdapException();

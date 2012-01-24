@@ -33,7 +33,7 @@ import org.dom4j.tree.DefaultElement;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AddResponseDsml extends AbstractResultResponseDsml<AddResponse> 
+public class AddResponseDsml extends AbstractResultResponseDsml<AddResponse>
     implements AddResponse
 {
     private static final String ADD_RESPONSE_TAG = "addResponse";
@@ -75,17 +75,17 @@ public class AddResponseDsml extends AbstractResultResponseDsml<AddResponse>
     public Element toDsml( Element root )
     {
         Element element = null;
-        
+
         if ( root != null )
         {
             element = root.addElement( ADD_RESPONSE_TAG );
         }
         else
         {
-            element = new DefaultElement( ADD_RESPONSE_TAG );           
+            element = new DefaultElement( ADD_RESPONSE_TAG );
         }
 
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(), 
+        LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),
             getDecorated().getLdapResult(), getDecorated() );
         ldapResultDsml.toDsml( element );
         return element;

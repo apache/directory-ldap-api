@@ -153,7 +153,6 @@ public enum LdapStatesEnum implements States
     INTERMEDIATE_RESPONSE_VALUE_STATE,
     LAST_LDAP_STATE;
 
-
     /**
      * Get the grammar name
      *

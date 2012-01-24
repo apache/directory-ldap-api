@@ -50,6 +50,7 @@ public class StoreAddRequestEntryName extends GrammarAction<LdapMessageContainer
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreAddRequestEntryName.class );
 
+
     /**
      * Instantiates a new action.
      */
@@ -85,7 +86,7 @@ public class StoreAddRequestEntryName extends GrammarAction<LdapMessageContainer
         {
             Dn entryDn = null;
             byte[] dnBytes = tlv.getValue().getData();
-            String dnStr = Strings.utf8ToString(dnBytes);
+            String dnStr = Strings.utf8ToString( dnBytes );
 
             try
             {
@@ -93,7 +94,7 @@ public class StoreAddRequestEntryName extends GrammarAction<LdapMessageContainer
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = "Invalid Dn given : " + dnStr + " (" + Strings.dumpBytes(dnBytes)
+                String msg = "Invalid Dn given : " + dnStr + " (" + Strings.dumpBytes( dnBytes )
                     + ") is invalid";
                 LOG.error( "{} : {}", msg, ine.getMessage() );
 

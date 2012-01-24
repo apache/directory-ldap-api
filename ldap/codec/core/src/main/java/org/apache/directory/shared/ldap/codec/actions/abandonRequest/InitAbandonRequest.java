@@ -52,6 +52,7 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -108,7 +109,7 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
         catch ( IntegerDecoderException ide )
         {
             LOG.error( I18n
-                .err( I18n.ERR_04076, Strings.dumpBytes(value.getData()), ide.getMessage() ) );
+                .err( I18n.ERR_04076, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( ide.getMessage(), ide );

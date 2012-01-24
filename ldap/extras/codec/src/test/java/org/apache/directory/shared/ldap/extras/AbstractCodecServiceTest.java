@@ -1,4 +1,6 @@
 package org.apache.directory.shared.ldap.extras;
+
+
 /*
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
@@ -18,8 +20,6 @@ package org.apache.directory.shared.ldap.extras;
  *  under the License.
  *
  */
-
-
 
 import org.apache.directory.shared.ldap.codec.api.LdapEncoder;
 import org.apache.directory.shared.ldap.codec.osgi.DefaultLdapCodecService;

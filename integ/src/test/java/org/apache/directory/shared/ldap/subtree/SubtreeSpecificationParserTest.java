@@ -50,6 +50,7 @@ import org.junit.runner.RunWith;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
+
 /**
  * Unit tests class for Subtree Specification parser (wrapper).
  *
@@ -116,10 +117,11 @@ public class SubtreeSpecificationParserTest
     private static SchemaManager schemaManager;
 
     /** Some global OC */
-    private static ObjectClass TOP_OC;      // 2.5.6.0
-    private static ObjectClass ALIAS_OC;    // 2.5.6.1
-    private static ObjectClass COUNTRY_OC;  // 2.5.6.2
-    private static ObjectClass PERSON_OC;   // 2.5.6.6
+    private static ObjectClass TOP_OC; // 2.5.6.0
+    private static ObjectClass ALIAS_OC; // 2.5.6.1
+    private static ObjectClass COUNTRY_OC; // 2.5.6.2
+    private static ObjectClass PERSON_OC; // 2.5.6.6
+
 
     /**
      * Initialization
@@ -332,7 +334,8 @@ public class SubtreeSpecificationParserTest
         ss.getRefinement().printRefinementToBuffer( buffer );
 
         //assertEquals( outerAndRefinement.toString(), buffer );
-        assertEquals( "and: { and: { item: 2.5.6.0, or: { item: 2.5.6.1, item: person } }, not: item: 2.5.6.2 }", buffer.toString() );
+        assertEquals( "and: { and: { item: 2.5.6.0, or: { item: 2.5.6.1, item: person } }, not: item: 2.5.6.2 }",
+            buffer.toString() );
     }
 
 
@@ -400,13 +403,13 @@ public class SubtreeSpecificationParserTest
         String firstExclusion = "{ specificExclusions { chopAfter:\"cn=l\" } }";
         SubtreeSpecification firstSpec = parser.parse( firstExclusion );
         assertEquals( 1, firstSpec.getChopAfterExclusions().size() );
-        assertEquals(firstDn, firstSpec.getChopAfterExclusions().iterator().next() );
+        assertEquals( firstDn, firstSpec.getChopAfterExclusions().iterator().next() );
 
         Dn secondDn = new Dn( schemaManager, "l=y" );
         String secondExclusion = "{ specificExclusions { chopAfter:\"l=y\" } }";
         SubtreeSpecification secondSpec = parser.parse( secondExclusion );
         assertEquals( 1, secondSpec.getChopAfterExclusions().size() );
-        assertEquals(secondDn, secondSpec.getChopAfterExclusions().iterator().next() );
+        assertEquals( secondDn, secondSpec.getChopAfterExclusions().iterator().next() );
 
     }
 
@@ -463,7 +466,7 @@ public class SubtreeSpecificationParserTest
         SubtreeSpecification result;
 
 
-        public ParseSpecification(String specStr)
+        public ParseSpecification( String specStr )
         {
             this.specStr = specStr;
         }

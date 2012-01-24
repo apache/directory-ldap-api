@@ -39,14 +39,14 @@ public class LdapApiServiceFactory
 {
     /** Logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( LdapApiServiceFactory.class );
-    
+
     /** The LdapCodecService singleton bound to this factory */
     private static LdapApiService ldapCodecService;
-    
+
     /** Whether or not the standalone implementation is being used */
     private static boolean usingStandaloneImplementation;
-    
-    
+
+
     /**
      * Checks to see if the factory is initialized.
      *
@@ -56,8 +56,8 @@ public class LdapApiServiceFactory
     {
         return ldapCodecService != null;
     }
-    
-    
+
+
     /**
      * Checks to see if the factory is using the standalone implementation.
      *
@@ -65,17 +65,17 @@ public class LdapApiServiceFactory
      */
     public static boolean isUsingStandaloneImplementation()
     {
-        if ( ! isInitialized() )
+        if ( !isInitialized() )
         {
             String msg = "Not initialized yet!";
             LOG.error( msg );
             throw new IllegalStateException( msg );
         }
-        
+
         return usingStandaloneImplementation;
     }
-    
-    
+
+
     /**
      * Gets the singleton instance of the LdapCodecService.
      *
@@ -88,11 +88,11 @@ public class LdapApiServiceFactory
         {
             initialize( null );
         }
-        
+
         return ldapCodecService;
     }
-    
-    
+
+
     /**
      * Initialization can only take place once. There after an exception 
      * results.
@@ -104,7 +104,7 @@ public class LdapApiServiceFactory
         /*
          * If the class member is already set we have problems.
          */
-        
+
         if ( LdapApiServiceFactory.ldapCodecService != null )
         {
             StringBuilder sb = new StringBuilder( "The LdapCodecService is already set to an instance of " );
@@ -113,7 +113,6 @@ public class LdapApiServiceFactory
             throw new IllegalStateException( sb.toString() );
         }
 
-        
         /*
          * If the argument is null, then we attempt discovery
          */
@@ -123,7 +122,7 @@ public class LdapApiServiceFactory
             try
             {
                 @SuppressWarnings("unchecked")
-                Class<? extends LdapApiService> serviceClass = ( Class<? extends LdapApiService> ) 
+                Class<? extends LdapApiService> serviceClass = ( Class<? extends LdapApiService> )
                     Class.forName( "org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapApiService" );
                 LdapApiServiceFactory.ldapCodecService = serviceClass.newInstance();
                 usingStandaloneImplementation = true;

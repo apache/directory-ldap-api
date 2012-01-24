@@ -52,7 +52,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
 
     /** Temporary storage of the byte[] representing the matchedDN */
     private byte[] matchedDnBytes;
-    
+
     /** The codec responsible for encoding and decoding this object. */
     private LdapApiService codec;
 
@@ -71,7 +71,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     /**
      * @return The encoded Error message
      */
-    public  byte[] getErrorMessageBytes()
+    public byte[] getErrorMessageBytes()
     {
         return errorMessageBytes;
     }
@@ -110,8 +110,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     //-------------------------------------------------------------------------
     // The LdapResult methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -192,7 +191,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
         decoratedLdapResult.setReferral( referral );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -200,8 +199,8 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     {
         return decoratedLdapResult.toString();
     }
-    
-    
+
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -243,7 +242,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
         }
         else
         {
-            byte[] matchedDNBytes = Strings.getBytesUtf8( Strings .trimLeft( getMatchedDn().getName() ) );
+            byte[] matchedDNBytes = Strings.getBytesUtf8( Strings.trimLeft( getMatchedDn().getName() ) );
             ldapResultLength += 1 + TLV.getNbBytes( matchedDNBytes.length ) + matchedDNBytes.length;
             setMatchedDnBytes( matchedDNBytes );
         }

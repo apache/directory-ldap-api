@@ -58,6 +58,7 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -93,7 +94,7 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
         else
         {
             byte[] dnBytes = tlv.getValue().getData();
-            String dnStr = Strings.utf8ToString(dnBytes);
+            String dnStr = Strings.utf8ToString( dnBytes );
 
             try
             {
@@ -102,7 +103,7 @@ public class StoreModifyDnRequestNewRdn extends GrammarAction<LdapMessageContain
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = "Invalid new Rdn given : " + dnStr + " (" + Strings.dumpBytes(dnBytes)
+                String msg = "Invalid new Rdn given : " + dnStr + " (" + Strings.dumpBytes( dnBytes )
                     + ") is invalid";
                 LOG.error( "{} : {}", msg, ine.getMessage() );
 

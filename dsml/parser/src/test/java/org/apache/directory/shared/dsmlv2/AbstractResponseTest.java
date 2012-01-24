@@ -26,6 +26,7 @@ import static org.junit.Assert.fail;
 
 import org.xmlpull.v1.XmlPullParserException;
 
+
 /**
  * This class had to be used to create a Response TestCase
  *

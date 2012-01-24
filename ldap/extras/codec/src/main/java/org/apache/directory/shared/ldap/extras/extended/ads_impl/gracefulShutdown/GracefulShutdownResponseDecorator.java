@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulShutdown;
 
 
-import org.apache.directory.shared.ldap.codec.api.ExtendedResponseDecorator; 
+import org.apache.directory.shared.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.extras.extended.GracefulShutdownResponse;
 
@@ -30,7 +30,8 @@ import org.apache.directory.shared.ldap.extras.extended.GracefulShutdownResponse
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulShutdownResponseDecorator extends ExtendedResponseDecorator<GracefulShutdownResponse> implements GracefulShutdownResponse
+public class GracefulShutdownResponseDecorator extends ExtendedResponseDecorator<GracefulShutdownResponse> implements
+    GracefulShutdownResponse
 {
     /**
      * Creates a new instance of GracefulShutdownResponseDecorator.

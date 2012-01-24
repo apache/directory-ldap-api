@@ -85,7 +85,7 @@ public class ModifyResponseDsml extends AbstractResultResponseDsml<ModifyRespons
             element = new DefaultElement( MODIFY_RESPONSE_TAG );
         }
 
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(), 
+        LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),
             getDecorated().getLdapResult(), getDecorated() );
         ldapResultDsml.toDsml( element );
         return element;

@@ -36,12 +36,11 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CertGenerationRequestDecorator 
-    extends ExtendedRequestDecorator<CertGenerationRequest,CertGenerationResponse> 
+public class CertGenerationRequestDecorator
+    extends ExtendedRequestDecorator<CertGenerationRequest, CertGenerationResponse>
     implements CertGenerationRequest
 {
     private static final Logger LOG = LoggerFactory.getLogger( CertGenerationRequestDecorator.class );
-    
 
     private CertGenerationObject certGenObj;
 
@@ -52,13 +51,13 @@ public class CertGenerationRequestDecorator
         certGenObj = new CertGenerationObject( decoratedMessage );
     }
 
-    
+
     public CertGenerationObject getCertGenerationObject()
     {
         return certGenObj;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -127,7 +126,7 @@ public class CertGenerationRequestDecorator
     {
         return getDecorated().getResultResponse();
     }
-    
+
 
     /**
      * {@inheritDoc}

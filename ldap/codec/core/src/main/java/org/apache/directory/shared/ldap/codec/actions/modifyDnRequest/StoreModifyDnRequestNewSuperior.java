@@ -54,6 +54,7 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -95,7 +96,7 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
         else
         {
             byte[] dnBytes = tlv.getValue().getData();
-            String dnStr = Strings.utf8ToString(dnBytes);
+            String dnStr = Strings.utf8ToString( dnBytes );
 
             try
             {
@@ -104,7 +105,7 @@ public class StoreModifyDnRequestNewSuperior extends GrammarAction<LdapMessageCo
             catch ( LdapInvalidDnException ine )
             {
                 String msg = "Invalid new superior Dn given : " + dnStr + " ("
-                    + Strings.dumpBytes(dnBytes) + ") is invalid";
+                    + Strings.dumpBytes( dnBytes ) + ") is invalid";
                 LOG.error( "{} : {}", msg, ine.getMessage() );
 
                 ModifyDnResponseImpl response = new ModifyDnResponseImpl( modifyDnRequest.getMessageId() );

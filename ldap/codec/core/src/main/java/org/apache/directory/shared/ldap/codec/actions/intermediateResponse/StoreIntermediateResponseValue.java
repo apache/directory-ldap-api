@@ -87,7 +87,7 @@ public class StoreIntermediateResponseValue extends GrammarAction<LdapMessageCon
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "Value read : {}", Strings.dumpBytes(intermediateResponse.getResponseValue()) );
+            LOG.debug( "Value read : {}", Strings.dumpBytes( intermediateResponse.getResponseValue() ) );
         }
     }
 }

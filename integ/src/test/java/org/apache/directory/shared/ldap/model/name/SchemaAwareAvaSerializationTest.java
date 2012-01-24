@@ -54,12 +54,13 @@ public class SchemaAwareAvaSerializationTest
 
     private static SchemaManager schemaManager;
 
+
     @BeforeClass
     public static void setup() throws Exception
     {
         schemaManager = new DefaultSchemaManager();
     }
-    
+
 
     /**
      * Test serialization of a simple ATAV
@@ -89,7 +90,7 @@ public class SchemaAwareAvaSerializationTest
     @Test
     public void testBinaryAtavSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        byte[] normValue = Strings.getBytesUtf8("Test");
+        byte[] normValue = Strings.getBytesUtf8( "Test" );
 
         Ava atav = new Ava( schemaManager, "userPKCS12", normValue );
 
@@ -136,7 +137,7 @@ public class SchemaAwareAvaSerializationTest
     @Test
     public void testNullUpValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Ava atav = new Ava( schemaManager, "dc", (String)null );
+        Ava atav = new Ava( schemaManager, "dc", ( String ) null );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -204,7 +205,7 @@ public class SchemaAwareAvaSerializationTest
     @Test
     public void testBinaryAtavStaticSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        byte[] upValue = Strings.getBytesUtf8("  Test  ");
+        byte[] upValue = Strings.getBytesUtf8( "  Test  " );
 
         Ava atav = new Ava( schemaManager, "userPKCS12", upValue );
 
@@ -248,10 +249,10 @@ public class SchemaAwareAvaSerializationTest
     }
 
 
-    @Test( expected = IOException.class )
+    @Test(expected = IOException.class)
     public void testNullNormValueStaticSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Ava atav = new Ava( schemaManager, "DC", (String)null );
+        Ava atav = new Ava( schemaManager, "DC", ( String ) null );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -264,7 +265,7 @@ public class SchemaAwareAvaSerializationTest
     @Test
     public void testEmptyNormValueStaticSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Ava atav = new Ava( schemaManager, "DC", (String)"" );
+        Ava atav = new Ava( schemaManager, "DC", ( String ) "" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );

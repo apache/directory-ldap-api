@@ -39,8 +39,8 @@ import org.apache.directory.shared.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends ExtendedResponse> 
-    extends SingleReplyRequestDecorator<Q,P> implements ExtendedRequest<P>
+public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends ExtendedResponse>
+    extends SingleReplyRequestDecorator<Q, P> implements ExtendedRequest<P>
 {
     /** The extended request length */
     private int extendedRequestLength;
@@ -107,8 +107,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
     //-------------------------------------------------------------------------
     // The ExtendedRequest methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -124,7 +123,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
     public ExtendedRequest<P> setRequestName( String oid )
     {
         getDecorated().setRequestName( oid );
-        
+
         return this;
     }
 
@@ -146,50 +145,49 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
         this.requestValue = requestValue;
     }
 
-    
-    
-    
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<P> setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<P> addControl( Control control ) throws MessageException
     {
-        return (ExtendedRequest<P>)super.addControl( control );
+        return ( ExtendedRequest<P> ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<P> addAllControls( Control[] controls ) throws MessageException
     {
-        return (ExtendedRequest<P>)super.addAllControls( controls );
+        return ( ExtendedRequest<P> ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<P> removeControl( Control control ) throws MessageException
     {
-        return (ExtendedRequest<P>)super.removeControl( control );
+        return ( ExtendedRequest<P> ) super.removeControl( control );
     }
+
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * Compute the ExtendedRequest length
      * 

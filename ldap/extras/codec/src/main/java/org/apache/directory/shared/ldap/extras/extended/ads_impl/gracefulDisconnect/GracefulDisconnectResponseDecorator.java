@@ -45,12 +45,13 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorator<GracefulDisconnectResponse> implements GracefulDisconnectResponse
+public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorator<GracefulDisconnectResponse>
+    implements GracefulDisconnectResponse
 {
     /** The logger. */
     private static final Logger LOG = LoggerFactory.getLogger( GracefulDisconnectResponseDecorator.class );
 
-    
+
     /**
      * Creates a new instance of CancelResponseDecorator.
      *
@@ -63,8 +64,8 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
         responseValue = null;
         encodeResponse();
     }
-    
-    
+
+
     /**
      * Creates a new instance of CancelResponseDecorator.
      *
@@ -77,8 +78,8 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
         this.responseValue = responseValue;
         decodeValue();
     }
-    
-    
+
+
     private void decodeValue() throws DecoderException
     {
         GracefulDisconnectDecoder decoder = new GracefulDisconnectDecoder();
@@ -86,7 +87,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
 
         try
         {
-            codec = (org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnect) decoder
+            codec = ( org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnect ) decoder
                 .decode( responseValue );
             getDecorated().setTimeOffline( codec.getTimeOffline() );
             getDecorated().setDelay( codec.getDelay() );
@@ -108,7 +109,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
 
     private void encodeResponse()
     {
-        org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnect codec = 
+        org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnect codec =
             new org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnect();
         codec.setTimeOffline( getDecorated().getTimeOffline() );
         codec.setDelay( getDecorated().getDelay() );
@@ -146,7 +147,6 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     // ExtendedResponse Interface Method Implementations
     // ------------------------------------------------------------------------
 
-    
     /**
      * Gets the response OID specific encoded response values.
      * 
@@ -180,7 +180,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
             getDecorated().getLdapResult().setReferral( new ReferralImpl() );
             return;
         }
-        
+
         ByteBuffer bb = ByteBuffer.wrap( responseValue );
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();
         Asn1Decoder decoder = new Asn1Decoder();
@@ -196,7 +196,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
 
         org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnect codec = container
             .getGracefulDisconnect();
-        
+
         getDecorated().setDelay( codec.getDelay() );
         getDecorated().setTimeOffline( codec.getTimeOffline() );
 
@@ -208,7 +208,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
         this.responseValue = new byte[responseValue.length];
         System.arraycopy( responseValue, 0, this.responseValue, 0, responseValue.length );
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -218,7 +218,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
         return getDecorated().getDelay();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -227,7 +227,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
         getDecorated().setDelay( delay );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -235,7 +235,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
     {
         return getDecorated().getTimeOffline();
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -245,7 +245,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
         getDecorated().setTimeOffline( timeOffline );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */

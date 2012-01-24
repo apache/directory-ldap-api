@@ -42,6 +42,7 @@ public class InitIntermediateResponse extends GrammarAction<LdapMessageContainer
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitIntermediateResponse.class );
 
+
     /**
      * Instantiates a new action.
      */

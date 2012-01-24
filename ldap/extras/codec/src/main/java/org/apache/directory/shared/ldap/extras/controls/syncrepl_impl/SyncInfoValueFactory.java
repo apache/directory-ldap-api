@@ -33,9 +33,9 @@ import org.apache.directory.shared.ldap.extras.controls.SyncInfoValue;
  */
 public class SyncInfoValueFactory implements ControlFactory<SyncInfoValue, SyncInfoValueDecorator>
 {
-    
+
     private LdapApiService codec;
-    
+
 
     /**
      * Creates a new instance of SyncInfoValueFactory.
@@ -46,7 +46,7 @@ public class SyncInfoValueFactory implements ControlFactory<SyncInfoValue, SyncI
     {
         this.codec = codec;
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -56,7 +56,7 @@ public class SyncInfoValueFactory implements ControlFactory<SyncInfoValue, SyncI
         return SyncInfoValue.OID;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -64,7 +64,7 @@ public class SyncInfoValueFactory implements ControlFactory<SyncInfoValue, SyncI
     {
         return new SyncInfoValueDecorator( codec );
     }
-    
+
 
     /**
      * {@inheritDoc}

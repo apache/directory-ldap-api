@@ -59,16 +59,17 @@ public class Dsmlv2Container implements Container
     /** The codec service */
     private final LdapApiService codec;
 
+
     /**
      * Creates a new LdapMessageContainer object. We will store ten grammars,
      * it's enough ...
      */
     public Dsmlv2Container( LdapApiService codec )
     {
-        this.codec= codec;
+        this.codec = codec;
     }
-    
-    
+
+
     /**
      * Gets the {@link LdapApiService} associated with this {@link Asn1Container}.
      *
@@ -78,8 +79,8 @@ public class Dsmlv2Container implements Container
     {
         return codec;
     }
-    
-    
+
+
     /**
      * Gets the DSML Batch Request
      * 
@@ -206,8 +207,8 @@ public class Dsmlv2Container implements Container
      * @return
      *      the states.
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value="UWF_UNWRITTEN_FIELD",
-        justification="it exists a setter for 'states'")
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "UWF_UNWRITTEN_FIELD",
+        justification = "it exists a setter for 'states'")
     public Enum<Dsmlv2StatesEnum>[] getStates()
     {
         return states;

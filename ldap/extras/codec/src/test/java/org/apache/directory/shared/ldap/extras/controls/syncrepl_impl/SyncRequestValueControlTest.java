@@ -57,22 +57,31 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0D );
         bb.put( new byte[]
-            { 
-            0x30, 0x0B,                     // syncRequestValue ::= SEQUENCE {
-              0x0A, 0x01, 0x01,             //     mode ENUMERATED {
-                                            //         refreshOnly (1)
-                                            //     }
-              0x04, 0x03, 'a', 'b', 'c',    //     cookie syncCookie OPTIONAL,
-              0x01, 0x01, 0x00              //     reloadHint BOOLEAN DEFAULT FALSE
-            } );
+            {
+                0x30, 0x0B, // syncRequestValue ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x01, //     mode ENUMERATED {
+                      //         refreshOnly (1)
+                      //     }
+                0x04,
+                0x03,
+                'a',
+                'b',
+                'c', //     cookie syncCookie OPTIONAL,
+                0x01,
+                0x01,
+                0x00 //     reloadHint BOOLEAN DEFAULT FALSE
+        } );
         bb.flip();
 
         SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-        
-        SyncRequestValue syncRequestValue = (SyncRequestValue)((SyncRequestValueDecorator)decorator).decode( bb.array() );
+
+        SyncRequestValue syncRequestValue = ( SyncRequestValue ) ( ( SyncRequestValueDecorator ) decorator ).decode( bb
+            .array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_ONLY, syncRequestValue.getMode() );
-        assertEquals( "abc", Strings.utf8ToString(syncRequestValue.getCookie()) );
+        assertEquals( "abc", Strings.utf8ToString( syncRequestValue.getCookie() ) );
         assertEquals( false, syncRequestValue.isReloadHint() );
 
         // Check the encoding
@@ -80,17 +89,24 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
         {
             bb = ByteBuffer.allocate( 0x0A );
             bb.put( new byte[]
-                { 
-                0x30, 0x08,                     // syncRequestValue ::= SEQUENCE {
-                  0x0A, 0x01, 0x01,             //     mode ENUMERATED {
-                                                //         refreshOnly (1)
-                                                //     }
-                  0x04, 0x03, 'a', 'b', 'c'     //     cookie syncCookie OPTIONAL,
-                } );
+                {
+                    0x30, 0x08, // syncRequestValue ::= SEQUENCE {
+                    0x0A,
+                    0x01,
+                    0x01, //     mode ENUMERATED {
+                          //         refreshOnly (1)
+                          //     }
+                    0x04,
+                    0x03,
+                    'a',
+                    'b',
+                    'c' //     cookie syncCookie OPTIONAL,
+            } );
             bb.flip();
 
-            ByteBuffer buffer = ((SyncRequestValueDecorator)syncRequestValue).encode( ByteBuffer.allocate( ((SyncRequestValueDecorator)syncRequestValue).computeLength() ) );
-            String decoded = Strings.dumpBytes( bb.array()) ;
+            ByteBuffer buffer = ( ( SyncRequestValueDecorator ) syncRequestValue ).encode( ByteBuffer
+                .allocate( ( ( SyncRequestValueDecorator ) syncRequestValue ).computeLength() ) );
+            String decoded = Strings.dumpBytes( bb.array() );
             String expected = Strings.dumpBytes( buffer.array() );
             assertEquals( expected, decoded );
         }
@@ -109,22 +125,31 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0D );
         bb.put( new byte[]
-            { 
-            0x30, 0x0B,                     // syncRequestValue ::= SEQUENCE {
-              0x0A, 0x01, 0x03,             //     mode ENUMERATED {
-                                            //         refreshAndPersist (3)
-                                            //     }
-              0x04, 0x03, 'a', 'b', 'c',    //     cookie syncCookie OPTIONAL,
-              0x01, 0x01, 0x00              //     reloadHint BOOLEAN DEFAULT FALSE
-            } );
+            {
+                0x30, 0x0B, // syncRequestValue ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x03, //     mode ENUMERATED {
+                      //         refreshAndPersist (3)
+                      //     }
+                0x04,
+                0x03,
+                'a',
+                'b',
+                'c', //     cookie syncCookie OPTIONAL,
+                0x01,
+                0x01,
+                0x00 //     reloadHint BOOLEAN DEFAULT FALSE
+        } );
         bb.flip();
 
         SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-        
-        SyncRequestValue syncRequestValue = (SyncRequestValue)((SyncRequestValueDecorator)decorator).decode( bb.array() );
+
+        SyncRequestValue syncRequestValue = ( SyncRequestValue ) ( ( SyncRequestValueDecorator ) decorator ).decode( bb
+            .array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
-        assertEquals( "abc", Strings.utf8ToString(syncRequestValue.getCookie()) );
+        assertEquals( "abc", Strings.utf8ToString( syncRequestValue.getCookie() ) );
         assertEquals( false, syncRequestValue.isReloadHint() );
 
         // Check the encoding
@@ -132,16 +157,23 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
         {
             ByteBuffer buffer = ByteBuffer.allocate( 0x0A );
             buffer.put( new byte[]
-                { 
-                  0x30, 0x08,                        // syncRequestValue ::= SEQUENCE {
-                    0x0A, 0x01, 0x03,                //     mode ENUMERATED {
-                                                     //         refreshAndPersist (3)
-                                                     //     }
-                    0x04, 0x03, 'a', 'b', 'c'        //     cookie syncCookie OPTIONAL,
-                } );
+                {
+                    0x30, 0x08, // syncRequestValue ::= SEQUENCE {
+                    0x0A,
+                    0x01,
+                    0x03, //     mode ENUMERATED {
+                          //         refreshAndPersist (3)
+                          //     }
+                    0x04,
+                    0x03,
+                    'a',
+                    'b',
+                    'c' //     cookie syncCookie OPTIONAL,
+            } );
             buffer.flip();
 
-            bb = ((SyncRequestValueDecorator)syncRequestValue).encode( ByteBuffer.allocate( ((SyncRequestValueDecorator)syncRequestValue).computeLength() ) );
+            bb = ( ( SyncRequestValueDecorator ) syncRequestValue ).encode( ByteBuffer
+                .allocate( ( ( SyncRequestValueDecorator ) syncRequestValue ).computeLength() ) );
             String decoded = Strings.dumpBytes( bb.array() );
             String expected = Strings.dumpBytes( buffer.array() );
             assertEquals( expected, decoded );
@@ -161,18 +193,23 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
         bb.put( new byte[]
-            { 
-            0x30, 0x06,                     // syncRequestValue ::= SEQUENCE {
-              0x0A, 0x01, 0x03,             //     mode ENUMERATED {
-                                            //         refreshAndPersist (3)
-                                            //     }
-              0x01, 0x01, 0x00              //     reloadHint BOOLEAN DEFAULT FALSE
-            } );
+            {
+                0x30, 0x06, // syncRequestValue ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x03, //     mode ENUMERATED {
+                      //         refreshAndPersist (3)
+                      //     }
+                0x01,
+                0x01,
+                0x00 //     reloadHint BOOLEAN DEFAULT FALSE
+        } );
         bb.flip();
 
-        SyncRequestValue decorator = new SyncRequestValueDecorator(  codec );
-        
-        SyncRequestValue syncRequestValue = (SyncRequestValue)((SyncRequestValueDecorator)decorator).decode( bb.array() );
+        SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
+
+        SyncRequestValue syncRequestValue = ( SyncRequestValue ) ( ( SyncRequestValueDecorator ) decorator ).decode( bb
+            .array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertNull( syncRequestValue.getCookie() );
@@ -183,15 +220,18 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
         {
             bb = ByteBuffer.allocate( 0x05 );
             bb.put( new byte[]
-                { 
-                0x30, 0x03,                     // syncRequestValue ::= SEQUENCE {
-                  0x0A, 0x01, 0x03              //     mode ENUMERATED {
-                                                //         refreshAndPersist (3)
-                                                //     }
-                } );
+                {
+                    0x30, 0x03, // syncRequestValue ::= SEQUENCE {
+                    0x0A,
+                    0x01,
+                    0x03 //     mode ENUMERATED {
+                         //         refreshAndPersist (3)
+                         //     }
+            } );
             bb.flip();
-            
-            ByteBuffer buffer = ((SyncRequestValueDecorator)syncRequestValue).encode( ByteBuffer.allocate( ((SyncRequestValueDecorator)syncRequestValue).computeLength() ) );
+
+            ByteBuffer buffer = ( ( SyncRequestValueDecorator ) syncRequestValue ).encode( ByteBuffer
+                .allocate( ( ( SyncRequestValueDecorator ) syncRequestValue ).computeLength() ) );
             String decoded = Strings.dumpBytes( buffer.array() );
             String expected = Strings.dumpBytes( bb.array() );
             assertEquals( expected, decoded );
@@ -212,18 +252,23 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer buffer = ByteBuffer.allocate( 0x08 );
         buffer.put( new byte[]
-            { 
-            0x30, 0x06,                     // syncRequestValue ::= SEQUENCE {
-              0x0A, 0x01, 0x03,             //     mode ENUMERATED {
-                                            //         refreshAndPersist (3)
-                                            //     }
-              0x01, 0x01, (byte)0xFF        //     reloadHint BOOLEAN DEFAULT FALSE
-            } );
+            {
+                0x30, 0x06, // syncRequestValue ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x03, //     mode ENUMERATED {
+                      //         refreshAndPersist (3)
+                      //     }
+                0x01,
+                0x01,
+                ( byte ) 0xFF //     reloadHint BOOLEAN DEFAULT FALSE
+        } );
         buffer.flip();
 
         SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-        
-        SyncRequestValue syncRequestValue = (SyncRequestValue)((SyncRequestValueDecorator)decorator).decode( buffer.array() );
+
+        SyncRequestValue syncRequestValue = ( SyncRequestValue ) ( ( SyncRequestValueDecorator ) decorator )
+            .decode( buffer.array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertNull( syncRequestValue.getCookie() );
@@ -232,7 +277,8 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = ((SyncRequestValueDecorator)syncRequestValue).encode( ByteBuffer.allocate( ((SyncRequestValueDecorator)syncRequestValue).computeLength() ) );
+            ByteBuffer bb = ( ( SyncRequestValueDecorator ) syncRequestValue ).encode( ByteBuffer
+                .allocate( ( ( SyncRequestValueDecorator ) syncRequestValue ).computeLength() ) );
             String decoded = Strings.dumpBytes( bb.array() );
             String expected = Strings.dumpBytes( buffer.array() );
             assertEquals( expected, decoded );
@@ -253,17 +299,20 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
-            { 
-            0x30, 0x03,                     // syncRequestValue ::= SEQUENCE {
-              0x0A, 0x01, 0x03              //     mode ENUMERATED {
-                                            //         refreshAndPersist (3)
-                                            //     }
-            } );
+            {
+                0x30, 0x03, // syncRequestValue ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x03 //     mode ENUMERATED {
+                     //         refreshAndPersist (3)
+                     //     }
+        } );
         bb.flip();
 
         SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-        
-        SyncRequestValue syncRequestValue = (SyncRequestValue)((SyncRequestValueDecorator)decorator).decode( bb.array() );
+
+        SyncRequestValue syncRequestValue = ( SyncRequestValue ) ( ( SyncRequestValueDecorator ) decorator ).decode( bb
+            .array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
         assertNull( syncRequestValue.getCookie() );
@@ -272,7 +321,8 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
         // Check the encoding
         try
         {
-            ByteBuffer buffer = ((SyncRequestValueDecorator)syncRequestValue).encode( ByteBuffer.allocate( ((SyncRequestValueDecorator)syncRequestValue).computeLength() ) );
+            ByteBuffer buffer = ( ( SyncRequestValueDecorator ) syncRequestValue ).encode( ByteBuffer
+                .allocate( ( ( SyncRequestValueDecorator ) syncRequestValue ).computeLength() ) );
             String decoded = Strings.dumpBytes( buffer.array() );
             String expected = Strings.dumpBytes( bb.array() );
             assertEquals( expected, decoded );
@@ -292,27 +342,35 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0A );
         bb.put( new byte[]
-            { 
-            0x30, 0x08,                     // syncRequestValue ::= SEQUENCE {
-              0x0A, 0x01, 0x03,             //     mode ENUMERATED {
-                                            //         refreshAndPersist (3)
-                                            //     }
-              0x04, 0x03, 'a', 'b', 'c'     //     cookie syncCookie OPTIONAL,
-            } );
+            {
+                0x30, 0x08, // syncRequestValue ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x03, //     mode ENUMERATED {
+                      //         refreshAndPersist (3)
+                      //     }
+                0x04,
+                0x03,
+                'a',
+                'b',
+                'c' //     cookie syncCookie OPTIONAL,
+        } );
         bb.flip();
 
         SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-        
-        SyncRequestValue syncRequestValue = (SyncRequestValue)((SyncRequestValueDecorator)decorator).decode( bb.array() );
+
+        SyncRequestValue syncRequestValue = ( SyncRequestValue ) ( ( SyncRequestValueDecorator ) decorator ).decode( bb
+            .array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
-        assertEquals( "abc", Strings.utf8ToString(syncRequestValue.getCookie()) );
+        assertEquals( "abc", Strings.utf8ToString( syncRequestValue.getCookie() ) );
         assertEquals( false, syncRequestValue.isReloadHint() );
 
         // Check the encoding
         try
         {
-            ByteBuffer buffer = ((SyncRequestValueDecorator)syncRequestValue).encode( ByteBuffer.allocate( ((SyncRequestValueDecorator)syncRequestValue).computeLength() ) );
+            ByteBuffer buffer = ( ( SyncRequestValueDecorator ) syncRequestValue ).encode( ByteBuffer
+                .allocate( ( ( SyncRequestValueDecorator ) syncRequestValue ).computeLength() ) );
             String decoded = Strings.dumpBytes( buffer.array() );
             String expected = Strings.dumpBytes( bb.array() );
             assertEquals( expected, decoded );
@@ -332,21 +390,25 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
         bb.put( new byte[]
-            { 
-            0x30, 0x05,                     // syncRequestValue ::= SEQUENCE {
-              0x0A, 0x01, 0x03,             //     mode ENUMERATED {
-                                            //         refreshAndPersist (3)
-                                            //     }
-              0x04, 0x00,                   //     cookie syncCookie OPTIONAL,
+            {
+                0x30, 0x05, // syncRequestValue ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x03, //     mode ENUMERATED {
+                      //         refreshAndPersist (3)
+                      //     }
+                0x04,
+                0x00, //     cookie syncCookie OPTIONAL,
             } );
         bb.flip();
 
         SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-        
-        SyncRequestValue syncRequestValue = (SyncRequestValue)((SyncRequestValueDecorator)decorator).decode( bb.array() );
+
+        SyncRequestValue syncRequestValue = ( SyncRequestValue ) ( ( SyncRequestValueDecorator ) decorator ).decode( bb
+            .array() );
 
         assertEquals( SynchronizationModeEnum.REFRESH_AND_PERSIST, syncRequestValue.getMode() );
-        assertEquals( "", Strings.utf8ToString(syncRequestValue.getCookie()) );
+        assertEquals( "", Strings.utf8ToString( syncRequestValue.getCookie() ) );
         assertEquals( false, syncRequestValue.isReloadHint() );
 
         // Check the encoding
@@ -354,15 +416,18 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
         {
             bb = ByteBuffer.allocate( 0x05 );
             bb.put( new byte[]
-                { 
-                0x30, 0x03,                     // syncRequestValue ::= SEQUENCE {
-                  0x0A, 0x01, 0x03              //     mode ENUMERATED {
-                                                //         refreshAndPersist (3)
-                                                //     }
-                } );
+                {
+                    0x30, 0x03, // syncRequestValue ::= SEQUENCE {
+                    0x0A,
+                    0x01,
+                    0x03 //     mode ENUMERATED {
+                         //         refreshAndPersist (3)
+                         //     }
+            } );
             bb.flip();
 
-            ByteBuffer buffer = ((SyncRequestValueDecorator)syncRequestValue).encode( ByteBuffer.allocate( ((SyncRequestValueDecorator)syncRequestValue).computeLength() ) );
+            ByteBuffer buffer = ( ( SyncRequestValueDecorator ) syncRequestValue ).encode( ByteBuffer
+                .allocate( ( ( SyncRequestValueDecorator ) syncRequestValue ).computeLength() ) );
             String decoded = Strings.dumpBytes( buffer.array() );
             String expected = Strings.dumpBytes( bb.array() );
             assertEquals( expected, decoded );
@@ -382,16 +447,16 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
-            { 
-            0x30, 0x00                      // syncRequestValue ::= SEQUENCE {
-            } );
+            {
+                0x30, 0x00 // syncRequestValue ::= SEQUENCE {
+        } );
         bb.flip();
 
         SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-        
+
         try
         {
-            ((SyncRequestValueDecorator)decorator).decode( bb.array() );
+            ( ( SyncRequestValueDecorator ) decorator ).decode( bb.array() );
             fail( "we should not get there" );
         }
         catch ( DecoderException de )
@@ -409,17 +474,21 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
         bb.put( new byte[]
-            { 
-            0x30, 0x05,                     // syncRequestValue ::= SEQUENCE {
-              0x04, 0x03, 'a', 'b', 'c'     //     cookie syncCookie OPTIONAL,
-            } );
+            {
+                0x30, 0x05, // syncRequestValue ::= SEQUENCE {
+                0x04,
+                0x03,
+                'a',
+                'b',
+                'c' //     cookie syncCookie OPTIONAL,
+        } );
         bb.flip();
 
         SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
-        
+
         try
         {
-            ((SyncRequestValueDecorator)decorator).decode( bb.array() );
+            ( ( SyncRequestValueDecorator ) decorator ).decode( bb.array() );
             fail( "we should not get there" );
         }
         catch ( DecoderException de )

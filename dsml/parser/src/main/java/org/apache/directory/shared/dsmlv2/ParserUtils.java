@@ -174,7 +174,7 @@ public final class ParserUtils
         }
         else if ( value instanceof String )
         {
-            return new String( Base64.encode( Strings.getBytesUtf8((String) value) ) );
+            return new String( Base64.encode( Strings.getBytesUtf8( ( String ) value ) ) );
         }
 
         return "";
@@ -240,13 +240,13 @@ public final class ParserUtils
                 byte[] value;
                 if ( control instanceof CodecControl<?> )
                 {
-                    value = ( (org.apache.directory.shared.ldap.codec.api.CodecControl<?> ) control ).getValue();
+                    value = ( ( org.apache.directory.shared.ldap.codec.api.CodecControl<?> ) control ).getValue();
                 }
                 else
                 {
                     value = codec.newControl( control ).getValue();
                 }
-                
+
                 if ( value != null )
                 {
                     if ( ParserUtils.needsBase64Encoding( value ) )

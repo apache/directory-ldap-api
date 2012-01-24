@@ -76,7 +76,7 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
             if ( tlv.getLength() == 0 )
             {
                 searchResultEntry.addAttributeValue( "" );
-    
+
                 LOG.debug( "The attribute value is null" );
             }
             else
@@ -84,19 +84,19 @@ public class StoreSearchResultAttributeValue extends GrammarAction<LdapMessageCo
                 if ( container.isBinary( searchResultEntry.getCurrentAttribute().getId() ) )
                 {
                     value = tlv.getValue().getData();
-    
+
                     if ( IS_DEBUG )
                     {
-                        LOG.debug( "Attribute value {}", Strings.dumpBytes((byte[]) value) );
+                        LOG.debug( "Attribute value {}", Strings.dumpBytes( ( byte[] ) value ) );
                     }
                 }
                 else
                 {
-                    value = Strings.utf8ToString(tlv.getValue().getData());
-    
+                    value = Strings.utf8ToString( tlv.getValue().getData() );
+
                     LOG.debug( "Attribute value {}", value );
                 }
-    
+
                 searchResultEntry.addAttributeValue( value );
             }
         }

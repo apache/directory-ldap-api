@@ -75,8 +75,7 @@ public class SearchResultDoneDecorator extends ResponseDecorator<SearchResultDon
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * Compute the SearchResultDone length 
      * 
@@ -92,7 +91,7 @@ public class SearchResultDoneDecorator extends ResponseDecorator<SearchResultDon
      */
     public int computeLength()
     {
-        int searchResultDoneLength = ((LdapResultDecorator)getLdapResult()).computeLength();
+        int searchResultDoneLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         setSearchResultDoneLength( searchResultDoneLength );
 
@@ -115,13 +114,13 @@ public class SearchResultDoneDecorator extends ResponseDecorator<SearchResultDon
             buffer.put( TLV.getBytes( getSearchResultDoneLength() ) );
 
             // The LdapResult
-            ((LdapResultDecorator)getLdapResult()).encode( buffer );
+            ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
         }
         catch ( BufferOverflowException boe )
         {
             throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
         }
-        
+
         return buffer;
     }
 }

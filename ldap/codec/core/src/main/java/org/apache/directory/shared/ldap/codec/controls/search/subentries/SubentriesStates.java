@@ -51,7 +51,6 @@ public enum SubentriesStates implements States
     /** terminal state */
     LAST_SUB_ENTRY_STATE;
 
-
     /**
      * Get the grammar name
      * 
@@ -92,7 +91,7 @@ public enum SubentriesStates implements States
         return ( ( state == END_STATE.ordinal() ) ? "SUB_ENTRY_END_STATE" : name() );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -100,8 +99,8 @@ public enum SubentriesStates implements States
     {
         return this == END_STATE;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

@@ -66,27 +66,54 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x22, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., extendedResp ExtendedResponse, ...
-                0x78, 0x1D, // ExtendedResponse ::= [APPLICATION 23] SEQUENCE {
+                0x78,
+                0x1D, // ExtendedResponse ::= [APPLICATION 23] SEQUENCE {
                 // COMPONENTS OF LDAPResult,
-                0x0A, 0x01, 0x00, // LDAPResult ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x00, // LDAPResult ::= SEQUENCE {
                 // resultCode ENUMERATED {
                 // success (0), ...
                 // },
-                0x04, 0x00, // matchedDN LDAPDN,
-                0x04, 0x00, // errorMessage LDAPString,
+                0x04,
+                0x00, // matchedDN LDAPDN,
+                0x04,
+                0x00, // errorMessage LDAPString,
                 // referral [3] Referral OPTIONAL }
                 // responseName [10] LDAPOID OPTIONAL,
-                ( byte ) 0x8A, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2',
+                ( byte ) 0x8A,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '2',
                 // response [11] OCTET STRING OPTIONAL }
-                ( byte ) 0x8B, 0x05, 'v', 'a', 'l', 'u', 'e' } );
+                ( byte ) 0x8B,
+                0x05,
+                'v',
+                'a',
+                'l',
+                'u',
+                'e' } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedResponseDecorator<?>> container = 
+        LdapMessageContainer<ExtendedResponseDecorator<?>> container =
             new LdapMessageContainer<ExtendedResponseDecorator<?>>( codec );
 
         // Decode the ExtendedResponse PDU
@@ -108,7 +135,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
         assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
-        assertEquals( "value", Strings.utf8ToString((byte[]) extendedResponse.getResponseValue()) );
+        assertEquals( "value", Strings.utf8ToString( ( byte[] ) extendedResponse.getResponseValue() ) );
 
         // Check the encoding
         try
@@ -118,7 +145,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x24, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -167,18 +194,61 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
                 //     referral [3] Referral OPTIONAL }
                 ( byte ) 0x8A,
                 0x0D, //   responseName [10] LDAPOID OPTIONAL,
-                '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2', ( byte ) 0x8B,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '2',
+                ( byte ) 0x8B,
                 0x05, // response [11] OCTET STRING OPTIONAL } 
-                'v', 'a', 'l', 'u', 'e', ( byte ) 0xA0,
+                'v',
+                'a',
+                'l',
+                'u',
+                'e',
+                ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.', '1', '1', '3', '7', '3',
-                '0', '.', '3', '.', '4', '.', '2' } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                '2',
+                '.',
+                '1',
+                '6',
+                '.',
+                '8',
+                '4',
+                '0',
+                '.',
+                '1',
+                '.',
+                '1',
+                '1',
+                '3',
+                '7',
+                '3',
+                '0',
+                '.',
+                '3',
+                '.',
+                '4',
+                '.',
+                '2' } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedResponseDecorator<?>> container = 
+        LdapMessageContainer<ExtendedResponseDecorator<?>> container =
             new LdapMessageContainer<ExtendedResponseDecorator<?>>( codec );
 
         // Decode the ExtendedResponse PDU
@@ -200,7 +270,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
         assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
-        assertEquals( "value", Strings.utf8ToString((byte[]) extendedResponse.getResponseValue()) );
+        assertEquals( "value", Strings.utf8ToString( ( byte[] ) extendedResponse.getResponseValue() ) );
 
         // Check the Control
         Map<String, Control> controls = extendedResponse.getControls();
@@ -208,9 +278,10 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes((byte[]) control.getValue()) );
+        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
         // Check the encoding
         try
@@ -220,7 +291,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x41, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -244,25 +315,32 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x0C, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., extendedResp Response, ...
-                0x78, 0x07, // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
+                0x78,
+                0x07, // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
                 // COMPONENTS OF LDAPResult,
-                0x0A, 0x01, 0x00, // LDAPResult ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x00, // LDAPResult ::= SEQUENCE {
                 // resultCode ENUMERATED {
                 // success (0), ...
                 // },
-                0x04, 0x00, // matchedDN LDAPDN,
-                0x04, 0x00 // errorMessage LDAPString,
+                0x04,
+                0x00, // matchedDN LDAPDN,
+                0x04,
+                0x00 // errorMessage LDAPString,
             // referral [3] Referral OPTIONAL }
             // responseName [0] LDAPOID,
-            } );
+        } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedResponseDecorator<?>> container = 
+        LdapMessageContainer<ExtendedResponseDecorator<?>> container =
             new LdapMessageContainer<ExtendedResponseDecorator<?>>( codec );
 
         // Decode the ExtendedResponse PDU
@@ -292,7 +370,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x0E, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -338,14 +416,39 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
                 // responseName [0] LDAPOID,
                 ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, 0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30, 0x2E, 0x31, 0x2E, 0x31, 0x31,
-                0x33, 0x37, 0x33, 0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32 } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedResponseDecorator<?>> container = 
+        LdapMessageContainer<ExtendedResponseDecorator<?>> container =
             new LdapMessageContainer<ExtendedResponseDecorator<?>>( codec );
 
         // Decode the ExtendedResponse PDU
@@ -372,9 +475,10 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, controls.size() );
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes((byte[]) control.getValue()) );
+        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
         // Check the encoding
         try
@@ -384,7 +488,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x2B, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -408,15 +512,18 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x05, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., extendedResp Response, ...
-                0x78, 0x00 // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
-            } );
+                0x78,
+                0x00 // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
+        } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedResponseDecorator<?>> container = 
+        LdapMessageContainer<ExtendedResponseDecorator<?>> container =
             new LdapMessageContainer<ExtendedResponseDecorator<?>>( codec );
 
         // Decode a DelRequest PDU
@@ -444,24 +551,32 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x0E, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., extendedResp Response, ...
-                0x78, 0x09, // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
+                0x78,
+                0x09, // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
                 // COMPONENTS OF LDAPResult,
-                0x0A, 0x01, 0x00, // LDAPResult ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x00, // LDAPResult ::= SEQUENCE {
                 // resultCode ENUMERATED {
                 // success (0), ...
                 // },
-                0x04, 0x00, // matchedDN LDAPDN,
-                0x04, 0x00, // errorMessage LDAPString,
+                0x04,
+                0x00, // matchedDN LDAPDN,
+                0x04,
+                0x00, // errorMessage LDAPString,
                 // referral [3] Referral OPTIONAL }
                 // responseName [0] LDAPOID,
-                ( byte ) 0x8A, 0x00 } );
+                ( byte ) 0x8A,
+                0x00 } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedResponseDecorator<?>> container = 
+        LdapMessageContainer<ExtendedResponseDecorator<?>> container =
             new LdapMessageContainer<ExtendedResponseDecorator<?>>( codec );
 
         // Decode a DelRequest PDU
@@ -489,24 +604,34 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x10, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., extendedResp Response, ...
-                0x78, 0x0B, // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
+                0x78,
+                0x0B, // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
                 // COMPONENTS OF LDAPResult,
-                0x0A, 0x01, 0x00, // LDAPResult ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x00, // LDAPResult ::= SEQUENCE {
                 // resultCode ENUMERATED {
                 // success (0), ...
                 // },
-                0x04, 0x00, // matchedDN LDAPDN,
-                0x04, 0x00, // errorMessage LDAPString,
+                0x04,
+                0x00, // matchedDN LDAPDN,
+                0x04,
+                0x00, // errorMessage LDAPString,
                 // referral [3] Referral OPTIONAL }
                 // responseName [0] LDAPOID,
-                ( byte ) 0x8A, 0x02, 'a', 'b' } );
+                ( byte ) 0x8A,
+                0x02,
+                'a',
+                'b' } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedResponseDecorator<?>> container = 
+        LdapMessageContainer<ExtendedResponseDecorator<?>> container =
             new LdapMessageContainer<ExtendedResponseDecorator<?>>( codec );
 
         // Decode a DelRequest PDU
@@ -534,25 +659,46 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x1B, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., extendedResp Response, ...
-                0x78, 0x16, // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
+                0x78,
+                0x16, // ExtendedResponse ::= [APPLICATION 24] SEQUENCE {
                 // COMPONENTS OF LDAPResult,
-                0x0A, 0x01, 0x00, // LDAPResult ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x00, // LDAPResult ::= SEQUENCE {
                 // resultCode ENUMERATED {
                 // success (0), ...
                 // },
-                0x04, 0x00, // matchedDN LDAPDN,
-                0x04, 0x00, // errorMessage LDAPString,
+                0x04,
+                0x00, // matchedDN LDAPDN,
+                0x04,
+                0x00, // errorMessage LDAPString,
                 // referral [3] Referral OPTIONAL }
                 // responseName [0] LDAPOID,
-                ( byte ) 0x8A, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2', } );
+                ( byte ) 0x8A,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '2', } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedResponseDecorator<?>> container = 
+        LdapMessageContainer<ExtendedResponseDecorator<?>> container =
             new LdapMessageContainer<ExtendedResponseDecorator<?>>( codec );
 
         // Decode the ExtendedResponse PDU
@@ -574,7 +720,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
         assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
-        assertEquals( "", Strings.utf8ToString((byte[]) extendedResponse.getResponseValue()) );
+        assertEquals( "", Strings.utf8ToString( ( byte[] ) extendedResponse.getResponseValue() ) );
 
         // Check the encoding
         try
@@ -584,7 +730,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x1D, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -629,17 +775,56 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
                 0x00, // errorMessage LDAPString,
                 // referral [3] Referral OPTIONAL }
                 // responseName [0] LDAPOID,
-                ( byte ) 0x8A, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2',
+                ( byte ) 0x8A,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '2',
                 ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, 0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30, 0x2E, 0x31, 0x2E, 0x31, 0x31,
-                0x33, 0x37, 0x33, 0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32 } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedResponseDecorator<?>> container = 
+        LdapMessageContainer<ExtendedResponseDecorator<?>> container =
             new LdapMessageContainer<ExtendedResponseDecorator<?>>( codec );
 
         // Decode the ExtendedResponse PDU
@@ -661,7 +846,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
         assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
-        assertEquals( "", Strings.utf8ToString((byte[]) extendedResponse.getResponseValue()) );
+        assertEquals( "", Strings.utf8ToString( ( byte[] ) extendedResponse.getResponseValue() ) );
 
         // Check the Control
         Map<String, Control> controls = extendedResponse.getControls();
@@ -669,7 +854,8 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
@@ -681,7 +867,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x3A, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -725,14 +911,29 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
                 0x00, // errorMessage LDAPString,
                 // referral [3] Referral OPTIONAL }
                 // responseName [0] LDAPOID,
-                ( byte ) 0x8A, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2', ( byte ) 0x8B,
+                ( byte ) 0x8A,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '2',
+                ( byte ) 0x8B,
                 0x00 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedResponseDecorator<?>> container = 
+        LdapMessageContainer<ExtendedResponseDecorator<?>> container =
             new LdapMessageContainer<ExtendedResponseDecorator<?>>( codec );
 
         // Decode the ExtendedResponse PDU
@@ -754,7 +955,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
         assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
-        assertEquals( "", Strings.utf8ToString((byte[]) extendedResponse.getResponseValue()) );
+        assertEquals( "", Strings.utf8ToString( ( byte[] ) extendedResponse.getResponseValue() ) );
 
         // Check the encoding
         try
@@ -764,7 +965,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x1F, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -810,17 +1011,58 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
                 0x00, // errorMessage LDAPString,
                 // referral [3] Referral OPTIONAL }
                 // responseName [0] LDAPOID,
-                ( byte ) 0x8A, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2', ( byte ) 0x8B,
-                0x00, ( byte ) 0xA0,
+                ( byte ) 0x8A,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '2',
+                ( byte ) 0x8B,
+                0x00,
+                ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, 0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30, 0x2E, 0x31, 0x2E, 0x31, 0x31,
-                0x33, 0x37, 0x33, 0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32 } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<ExtendedResponseDecorator<?>> container = 
+        LdapMessageContainer<ExtendedResponseDecorator<?>> container =
             new LdapMessageContainer<ExtendedResponseDecorator<?>>( codec );
 
         // Decode the ExtendedResponse PDU
@@ -842,7 +1084,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
         assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
-        assertEquals( "", Strings.utf8ToString((byte[]) extendedResponse.getResponseValue()) );
+        assertEquals( "", Strings.utf8ToString( ( byte[] ) extendedResponse.getResponseValue() ) );
 
         // Check the Control
         Map<String, Control> controls = extendedResponse.getControls();
@@ -850,7 +1092,8 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
@@ -862,7 +1105,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x3C, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }

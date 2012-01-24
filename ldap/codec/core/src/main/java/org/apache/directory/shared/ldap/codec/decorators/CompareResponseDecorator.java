@@ -36,7 +36,7 @@ import org.apache.directory.shared.ldap.model.message.CompareResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CompareResponseDecorator extends ResponseDecorator<CompareResponse> 
+public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
     implements CompareResponse
 {
     /** The encoded compareResponse length */
@@ -77,7 +77,6 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
     // The CompareResponse methods
     //-------------------------------------------------------------------------
 
-    
     /**
      * {@inheritDoc}
      */
@@ -86,11 +85,10 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
         return getDecorated().isTrue();
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
-    
 
     /**
      * Compute the CompareResponse length 
@@ -107,7 +105,7 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
      */
     public int computeLength()
     {
-        int compareResponseLength = ((LdapResultDecorator)getLdapResult()).computeLength();
+        int compareResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         setCompareResponseLength( compareResponseLength );
 
@@ -130,13 +128,13 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
             buffer.put( TLV.getBytes( getCompareResponseLength() ) );
 
             // The LdapResult
-            ((LdapResultDecorator)getLdapResult()).encode( buffer );
+            ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
         }
         catch ( BufferOverflowException boe )
         {
             throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
         }
-        
+
         return buffer;
     }
 }

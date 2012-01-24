@@ -44,6 +44,7 @@ public class InitCompareResponse extends GrammarAction<LdapMessageContainer<Comp
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitCompareResponse.class );
 
+
     /**
      * Instantiates a new action.
      */

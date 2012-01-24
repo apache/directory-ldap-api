@@ -50,6 +50,7 @@ public class StoreSearchRequestAttributeDesc extends GrammarAction<LdapMessageCo
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new attribute desc action.
      */
@@ -70,10 +71,10 @@ public class StoreSearchRequestAttributeDesc extends GrammarAction<LdapMessageCo
 
         if ( tlv.getLength() != 0 )
         {
-            attributeDescription = Strings.utf8ToString(tlv.getValue().getData());
+            attributeDescription = Strings.utf8ToString( tlv.getValue().getData() );
 
             // If the attributeDescription is empty, we won't add it
-            if ( !Strings.isEmpty(attributeDescription.trim()) )
+            if ( !Strings.isEmpty( attributeDescription.trim() ) )
             {
                 searchRequestDecorator.getDecorated().addAttributes( attributeDescription );
             }

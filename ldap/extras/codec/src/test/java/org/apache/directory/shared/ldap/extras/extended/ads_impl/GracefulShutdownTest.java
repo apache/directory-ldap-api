@@ -58,13 +58,17 @@ public class GracefulShutdownTest
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
         bb.put( new byte[]
             { 0x30, 0x06, // GracefulShutdown ::= SEQUENCE {
-                0x02, 0x01, 0x01, // timeOffline INTEGER (0..720) DEFAULT 0,
-                ( byte ) 0x80, 0x01, 0x01 // delay INTEGER (0..86400) DEFAULT
-                                            // 0
+                0x02,
+                0x01,
+                0x01, // timeOffline INTEGER (0..720) DEFAULT 0,
+                ( byte ) 0x80,
+                0x01,
+                0x01 // delay INTEGER (0..86400) DEFAULT
+                     // 0
             // }
-            } );
+        } );
 
-        String decodedPdu = Strings.dumpBytes(bb.array());
+        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         GracefulShutdownContainer container = new GracefulShutdownContainer();
@@ -91,7 +95,7 @@ public class GracefulShutdownTest
         {
             ByteBuffer bb1 = gracefulShutdown.encode();
 
-            String encodedPdu = Strings.dumpBytes(bb1.array());
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -113,10 +117,12 @@ public class GracefulShutdownTest
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
             { 0x30, 0x03, // GracefulShutdown ::= SEQUENCE {
-                0x02, 0x01, 0x01 // timeOffline INTEGER (0..720) DEFAULT 0,
-            } );
+                0x02,
+                0x01,
+                0x01 // timeOffline INTEGER (0..720) DEFAULT 0,
+        } );
 
-        String decodedPdu = Strings.dumpBytes(bb.array());
+        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         GracefulShutdownContainer container = new GracefulShutdownContainer();
@@ -143,7 +149,7 @@ public class GracefulShutdownTest
         {
             ByteBuffer bb1 = gracefulShutdown.encode();
 
-            String encodedPdu = Strings.dumpBytes(bb1.array());
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -165,11 +171,13 @@ public class GracefulShutdownTest
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
             { 0x30, 0x03, // GracefulShutdown ::= SEQUENCE {
-                ( byte ) 0x80, 0x01, 0x01 // delay INTEGER (0..86400) DEFAULT
-                                            // 0
-            } );
+                ( byte ) 0x80,
+                0x01,
+                0x01 // delay INTEGER (0..86400) DEFAULT
+                     // 0
+        } );
 
-        String decodedPdu = Strings.dumpBytes(bb.array());
+        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         GracefulShutdownContainer container = new GracefulShutdownContainer();
@@ -196,7 +204,7 @@ public class GracefulShutdownTest
         {
             ByteBuffer bb1 = gracefulShutdown.encode();
 
-            String encodedPdu = Strings.dumpBytes(bb1.array());
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -218,9 +226,9 @@ public class GracefulShutdownTest
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
             { 0x30, 0x00 // GracefulShutdown ::= SEQUENCE {
-            } );
+        } );
 
-        String decodedPdu = Strings.dumpBytes(bb.array());
+        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         GracefulShutdownContainer container = new GracefulShutdownContainer();
@@ -247,7 +255,7 @@ public class GracefulShutdownTest
         {
             ByteBuffer bb1 = gracefulShutdown.encode();
 
-            String encodedPdu = Strings.dumpBytes(bb1.array());
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -269,12 +277,15 @@ public class GracefulShutdownTest
         ByteBuffer bb = ByteBuffer.allocate( 0x06 );
         bb.put( new byte[]
             { 0x30, 0x04, // GracefulShutdown ::= SEQUENCE {
-                ( byte ) 0x80, 0x02, 0x01, ( byte ) 0xF4 // delay INTEGER
-                                                            // (0..86400)
-                                                            // DEFAULT 0
-            } );
+                ( byte ) 0x80,
+                0x02,
+                0x01,
+                ( byte ) 0xF4 // delay INTEGER
+                              // (0..86400)
+                              // DEFAULT 0
+        } );
 
-        String decodedPdu = Strings.dumpBytes(bb.array());
+        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         GracefulShutdownContainer container = new GracefulShutdownContainer();
@@ -301,7 +312,7 @@ public class GracefulShutdownTest
         {
             ByteBuffer bb1 = gracefulShutdown.encode();
 
-            String encodedPdu = Strings.dumpBytes(bb1.array());
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -323,12 +334,15 @@ public class GracefulShutdownTest
         ByteBuffer bb = ByteBuffer.allocate( 0x06 );
         bb.put( new byte[]
             { 0x30, 0x04, // GracefulShutdown ::= SEQUENCE {
-                ( byte ) 0x80, 0x02, 0x7F, ( byte ) 0xFF // delay INTEGER
-                                                            // (0..86400)
-                                                            // DEFAULT 0
-            } );
+                ( byte ) 0x80,
+                0x02,
+                0x7F,
+                ( byte ) 0xFF // delay INTEGER
+                              // (0..86400)
+                              // DEFAULT 0
+        } );
 
-        String decodedPdu = Strings.dumpBytes(bb.array());
+        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         GracefulShutdownContainer container = new GracefulShutdownContainer();
@@ -355,7 +369,7 @@ public class GracefulShutdownTest
         {
             ByteBuffer bb1 = gracefulShutdown.encode();
 
-            String encodedPdu = Strings.dumpBytes(bb1.array());
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -377,14 +391,18 @@ public class GracefulShutdownTest
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
         bb.put( new byte[]
             { 0x30, 0x05, // GracefulShutdown ::= SEQUENCE {
-                ( byte ) 0x80, 0x03, 0x00, ( byte ) 0x80, ( byte ) 0x00 // delay
-                                                                        // INTEGER
-                                                                        // (0..86400)
-                                                                        // DEFAULT
-                                                                        // 0
-            } );
+                ( byte ) 0x80,
+                0x03,
+                0x00,
+                ( byte ) 0x80,
+                ( byte ) 0x00 // delay
+                              // INTEGER
+                              // (0..86400)
+                              // DEFAULT
+                              // 0
+        } );
 
-        String decodedPdu = Strings.dumpBytes(bb.array());
+        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         GracefulShutdownContainer container = new GracefulShutdownContainer();
@@ -411,7 +429,7 @@ public class GracefulShutdownTest
         {
             ByteBuffer bb1 = gracefulShutdown.encode();
 
-            String encodedPdu = Strings.dumpBytes(bb1.array());
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -435,9 +453,12 @@ public class GracefulShutdownTest
         ByteBuffer bb = ByteBuffer.allocate( 0x06 );
         bb.put( new byte[]
             { 0x30, 0x04, // GracefulShutdown ::= SEQUENCE {
-                0x02, 0x02, 0x03, ( byte ) 0xE8 // timeOffline INTEGER (0..720)
-                                                // DEFAULT 0,
-            } );
+                0x02,
+                0x02,
+                0x03,
+                ( byte ) 0xE8 // timeOffline INTEGER (0..720)
+                              // DEFAULT 0,
+        } );
         bb.flip();
 
         GracefulShutdownContainer container = new GracefulShutdownContainer();
@@ -466,12 +487,16 @@ public class GracefulShutdownTest
         ByteBuffer bb = ByteBuffer.allocate( 0x0b );
         bb.put( new byte[]
             { 0x30, 0x05, // GracefulShutdown ::= SEQUENCE {
-                ( byte ) 0x80, 0x03, 0x01, ( byte ) 0x86, ( byte ) 0xA0 // delay
-                                                                        // INTEGER
-                                                                        // (0..86400)
-                                                                        // DEFAULT
-                                                                        // 0
-            } );
+                ( byte ) 0x80,
+                0x03,
+                0x01,
+                ( byte ) 0x86,
+                ( byte ) 0xA0 // delay
+                              // INTEGER
+                              // (0..86400)
+                              // DEFAULT
+                              // 0
+        } );
         bb.flip();
 
         GracefulShutdownContainer container = new GracefulShutdownContainer();
@@ -500,8 +525,9 @@ public class GracefulShutdownTest
         ByteBuffer bb = ByteBuffer.allocate( 0x0b );
         bb.put( new byte[]
             { 0x30, 0x02, // GracefulShutdown ::= SEQUENCE {
-                0x02, 0x00 // timeOffline INTEGER (0..720) DEFAULT 0,
-            } );
+                0x02,
+                0x00 // timeOffline INTEGER (0..720) DEFAULT 0,
+        } );
         bb.flip();
 
         GracefulShutdownContainer container = new GracefulShutdownContainer();
@@ -530,8 +556,9 @@ public class GracefulShutdownTest
         ByteBuffer bb = ByteBuffer.allocate( 0x0b );
         bb.put( new byte[]
             { 0x30, 0x02, // GracefulShutdown ::= SEQUENCE {
-                ( byte ) 0x80, 0x00 // delay INTEGER (0..86400) DEFAULT 0
-            } );
+                ( byte ) 0x80,
+                0x00 // delay INTEGER (0..86400) DEFAULT 0
+        } );
         bb.flip();
 
         GracefulShutdownContainer container = new GracefulShutdownContainer();

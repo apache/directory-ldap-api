@@ -49,7 +49,7 @@ public enum PersistentSearchStates implements States
 
     /** changeTypes Value */
     CHANGE_TYPES_STATE,
-    
+
     /** changesOnly Value */
     CHANGES_ONLY_STATE,
 
@@ -58,7 +58,6 @@ public enum PersistentSearchStates implements States
 
     /** terminal state */
     LAST_PSEARCH_STATE;
-
 
     /**
      * Get the grammar name
@@ -99,7 +98,7 @@ public enum PersistentSearchStates implements States
         return ( ( state == END_STATE.ordinal() ) ? "PSEARCH_END_STATE" : name() );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -107,8 +106,8 @@ public enum PersistentSearchStates implements States
     {
         return this == END_STATE;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

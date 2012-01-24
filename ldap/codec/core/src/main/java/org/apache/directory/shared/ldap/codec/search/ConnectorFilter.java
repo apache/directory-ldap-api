@@ -109,7 +109,7 @@ public abstract class ConnectorFilter extends Filter
 
         if ( ( filterSet != null ) && ( filterSet.size() != 0 ) )
         {
-            for ( Filter filter:filterSet )
+            for ( Filter filter : filterSet )
             {
                 connectorFilterLength += filter.computeLength();
             }
@@ -138,7 +138,7 @@ public abstract class ConnectorFilter extends Filter
         // encode each filter
         if ( ( filterSet != null ) && ( filterSet.size() != 0 ) )
         {
-            for ( Filter filter:filterSet )
+            for ( Filter filter : filterSet )
             {
                 filter.encode( buffer );
             }

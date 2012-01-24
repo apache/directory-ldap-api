@@ -35,7 +35,7 @@ public class SyncRequestValueFactory implements ControlFactory<SyncRequestValue,
 {
     /** The codec for this factory */
     private LdapApiService codec;
-    
+
 
     /**
      * Creates a new instance of SyncRequestValueFactory.
@@ -46,7 +46,7 @@ public class SyncRequestValueFactory implements ControlFactory<SyncRequestValue,
     {
         this.codec = codec;
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -56,7 +56,7 @@ public class SyncRequestValueFactory implements ControlFactory<SyncRequestValue,
         return SyncRequestValue.OID;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -64,7 +64,7 @@ public class SyncRequestValueFactory implements ControlFactory<SyncRequestValue,
     {
         return new SyncRequestValueDecorator( codec );
     }
-    
+
 
     /**
      * {@inheritDoc}

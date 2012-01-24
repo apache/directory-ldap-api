@@ -37,7 +37,7 @@ import org.apache.directory.shared.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExtendedResponseDecorator<R extends ExtendedResponse> extends ResponseDecorator<R> 
+public class ExtendedResponseDecorator<R extends ExtendedResponse> extends ResponseDecorator<R>
     implements ExtendedResponse
 {
     private static final long serialVersionUID = -9029282485890195506L;
@@ -103,12 +103,11 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
         return extendedResponseLength;
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The ExtendedResponse methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -144,7 +143,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
         this.responseValue = responseValue;
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -169,15 +168,15 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
      */
     public int computeLength()
     {
-        int ldapResultLength = ( (LdapResultDecorator) getLdapResult() ).computeLength();
+        int ldapResultLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         int extendedResponseLength = ldapResultLength;
 
         String id = getResponseName();
 
-        if ( !Strings.isEmpty(id) )
+        if ( !Strings.isEmpty( id ) )
         {
-            byte[] idBytes = Strings.getBytesUtf8(id);
+            byte[] idBytes = Strings.getBytesUtf8( id );
             setResponseNameBytes( idBytes );
             int idLength = idBytes.length;
             extendedResponseLength += 1 + TLV.getNbBytes( idLength ) + idLength;
@@ -215,7 +214,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
             buffer.put( TLV.getBytes( getExtendedResponseLength() ) );
 
             // The LdapResult
-            ((LdapResultDecorator)getLdapResult()).encode( buffer );
+            ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
 
             // The ID, if any
             byte[] idBytes = getResponseNameBytes();
@@ -250,7 +249,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
         {
             throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
         }
-        
+
         return buffer;
     }
 }

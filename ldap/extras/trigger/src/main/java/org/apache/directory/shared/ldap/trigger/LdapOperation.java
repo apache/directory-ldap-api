@@ -28,21 +28,20 @@ package org.apache.directory.shared.ldap.trigger;
  */
 public enum LdapOperation
 {
-    MODIFY( "Modify" ),
+    MODIFY("Modify"),
 
-    ADD( "Add" ),
+    ADD("Add"),
 
-    DELETE( "Delete" ),
+    DELETE("Delete"),
 
-    MODIFYDN( "ModifyDN" ),
-    
-    MODIFYDN_RENAME( "ModifyDN.Rename" ),
-    
-    MODIFYDN_EXPORT( "ModifyDN.Export" ),
-    
-    MODIFYDN_IMPORT( "ModifyDN.Import" );
+    MODIFYDN("ModifyDN"),
 
-    
+    MODIFYDN_RENAME("ModifyDN.Rename"),
+
+    MODIFYDN_EXPORT("ModifyDN.Export"),
+
+    MODIFYDN_IMPORT("ModifyDN.Import");
+
     private final String name;
 
 

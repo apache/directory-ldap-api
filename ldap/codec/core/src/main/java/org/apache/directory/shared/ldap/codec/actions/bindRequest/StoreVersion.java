@@ -89,7 +89,7 @@ public class StoreVersion extends GrammarAction<LdapMessageContainer<BindRequest
         catch ( IntegerDecoderException ide )
         {
             LOG.error( I18n
-                .err( I18n.ERR_04078, Strings.dumpBytes(value.getData()), ide.getMessage() ) );
+                .err( I18n.ERR_04078, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( ide.getMessage() );

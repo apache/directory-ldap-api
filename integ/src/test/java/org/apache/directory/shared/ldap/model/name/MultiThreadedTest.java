@@ -56,6 +56,7 @@ public class MultiThreadedTest
 
     private static SchemaManager schemaManager;
 
+
     @BeforeClass
     public static void setup() throws Exception
     {

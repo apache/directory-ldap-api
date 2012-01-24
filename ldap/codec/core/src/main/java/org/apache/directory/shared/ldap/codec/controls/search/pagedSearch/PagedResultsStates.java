@@ -49,13 +49,12 @@ public enum PagedResultsStates implements States
 
     /** Size Value */
     SIZE_STATE,
-    
+
     /** Cookie Value */
     COOKIE_STATE,
 
     /** terminal state */
     LAST_PAGED_SEARCH_STATE;
-
 
     /**
      * Get the grammar name
@@ -97,7 +96,7 @@ public enum PagedResultsStates implements States
         return ( ( state == END_STATE.ordinal() ) ? "PAGED_SEARCH_END_STATE" : name() );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -105,8 +104,8 @@ public enum PagedResultsStates implements States
     {
         return this == END_STATE;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

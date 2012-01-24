@@ -37,8 +37,8 @@ import org.dom4j.Element;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractResultResponseRequestDsml<E extends ResultResponseRequest<F>, F extends ResultResponse> 
-    extends AbstractRequestDsml<E> 
+public abstract class AbstractResultResponseRequestDsml<E extends ResultResponseRequest<F>, F extends ResultResponse>
+    extends AbstractRequestDsml<E>
     implements ResultResponseRequest<F>, AbandonableRequest
 {
     /**
@@ -167,7 +167,7 @@ public abstract class AbstractResultResponseRequestDsml<E extends ResultResponse
     public AbandonableRequest addAbandonListener( AbandonListener listener )
     {
         ( ( AbandonableRequest ) getDecorated() ).addAbandonListener( listener );
-        
+
         return this;
     }
 }

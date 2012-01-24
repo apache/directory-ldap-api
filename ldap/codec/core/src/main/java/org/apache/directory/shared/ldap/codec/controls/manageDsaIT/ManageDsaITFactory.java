@@ -36,8 +36,8 @@ public class ManageDsaITFactory implements ControlFactory<ManageDsaIT, ManageDsa
 {
     /** The LDAP codec responsible for encoding and decoding Cascade Controls */
     private LdapApiService codec;
-    
-    
+
+
     /**
      * Creates a new instance of CascadeFactory.
      *
@@ -48,7 +48,7 @@ public class ManageDsaITFactory implements ControlFactory<ManageDsaIT, ManageDsa
         this.codec = codec;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -57,7 +57,7 @@ public class ManageDsaITFactory implements ControlFactory<ManageDsaIT, ManageDsa
         return ManageDsaIT.OID;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -65,7 +65,7 @@ public class ManageDsaITFactory implements ControlFactory<ManageDsaIT, ManageDsa
     {
         return new ManageDsaITDecorator( codec, new ManageDsaITImpl() );
     }
-    
+
 
     /**
      * {@inheritDoc}

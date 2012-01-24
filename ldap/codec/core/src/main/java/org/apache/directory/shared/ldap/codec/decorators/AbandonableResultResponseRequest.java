@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.message.ResultResponseRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface AbandonableResultResponseRequest<R extends ResultResponse> extends ResultResponseRequest<R>, AbandonableRequest
+public interface AbandonableResultResponseRequest<R extends ResultResponse> extends ResultResponseRequest<R>,
+    AbandonableRequest
 {
 }

@@ -81,7 +81,7 @@ public class StoreAny extends GrammarAction<LdapMessageContainer<SearchRequestDe
             throw new DecoderException( msg );
         }
 
-        String any = Strings.utf8ToString(tlv.getValue().getData());
+        String any = Strings.utf8ToString( tlv.getValue().getData() );
         substringFilter.addAnySubstrings( any );
 
         // We now have to get back to the nearest filter which is

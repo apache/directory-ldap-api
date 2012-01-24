@@ -57,6 +57,7 @@ public class StoreSearchRequestScope extends GrammarAction<LdapMessageContainer<
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -91,7 +92,7 @@ public class StoreSearchRequestScope extends GrammarAction<LdapMessageContainer<
             throw new DecoderException( msg );
         }
 
-        searchRequest.setScope( SearchScope.getSearchScope(scope) );
+        searchRequest.setScope( SearchScope.getSearchScope( scope ) );
 
         if ( IS_DEBUG )
         {

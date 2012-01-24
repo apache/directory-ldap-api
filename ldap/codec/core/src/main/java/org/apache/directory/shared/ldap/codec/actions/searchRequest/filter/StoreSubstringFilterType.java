@@ -51,6 +51,7 @@ public class StoreSubstringFilterType extends GrammarAction<LdapMessageContainer
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreSubstringFilterType.class );
 
+
     /**
      * Instantiates a new action.
      */

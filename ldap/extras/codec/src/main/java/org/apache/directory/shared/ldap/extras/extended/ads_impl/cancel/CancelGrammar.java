@@ -65,7 +65,8 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
     /**
      * Creates a new GracefulDisconnectGrammar object.
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings(
+        { "unchecked", "rawtypes" })
     private CancelGrammar()
     {
         setName( CancelGrammar.class.getName() );
@@ -80,19 +81,19 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
          * 
          * Creates the Cancel object
          */
-        super.transitions[CancelStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = 
+        super.transitions[CancelStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<CancelContainer>( CancelStatesEnum.START_STATE,
-                                    CancelStatesEnum.CANCEL_SEQUENCE_STATE, 
-                                    UniversalTag.SEQUENCE.getValue(),
+                CancelStatesEnum.CANCEL_SEQUENCE_STATE,
+                UniversalTag.SEQUENCE.getValue(),
                 new GrammarAction( "Init Cancel" )
-            {
-                public void action( Asn1Container container )
                 {
-                    CancelContainer cancelContainer = ( CancelContainer ) container;
-                    Cancel cancel = new Cancel();
-                    cancelContainer.setCancel( cancel );
-                }
-            } );
+                    public void action( Asn1Container container )
+                    {
+                        CancelContainer cancelContainer = ( CancelContainer ) container;
+                        Cancel cancel = new Cancel();
+                        cancelContainer.setCancel( cancel );
+                    }
+                } );
 
         /**
          * Transition from cancel SEQ to cancelId
@@ -103,37 +104,37 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
          *     
          * Set the cancelId value into the Cancel object.    
          */
-        super.transitions[CancelStatesEnum.CANCEL_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER.getValue()] = 
+        super.transitions[CancelStatesEnum.CANCEL_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER.getValue()] =
             new GrammarTransition<CancelContainer>( CancelStatesEnum.CANCEL_SEQUENCE_STATE,
-                                    CancelStatesEnum.CANCEL_ID_STATE, 
-                                    UniversalTag.INTEGER.getValue(), 
+                CancelStatesEnum.CANCEL_ID_STATE,
+                UniversalTag.INTEGER.getValue(),
                 new GrammarAction( "Stores CancelId" )
-            {
-                public void action( Asn1Container container ) throws DecoderException
                 {
-                    CancelContainer cancelContainer = ( CancelContainer ) container;
-                    Value value = cancelContainer.getCurrentTLV().getValue();
-    
-                    try
+                    public void action( Asn1Container container ) throws DecoderException
                     {
-                        int cancelId = IntegerDecoder.parse( value, 0, Integer.MAX_VALUE );
-        
-                        if ( IS_DEBUG )
+                        CancelContainer cancelContainer = ( CancelContainer ) container;
+                        Value value = cancelContainer.getCurrentTLV().getValue();
+
+                        try
                         {
-                            LOG.debug( "CancelId = " + cancelId );
+                            int cancelId = IntegerDecoder.parse( value, 0, Integer.MAX_VALUE );
+
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "CancelId = " + cancelId );
+                            }
+
+                            cancelContainer.getCancel().setCancelId( cancelId );
+                            cancelContainer.setGrammarEndAllowed( true );
                         }
-        
-                        cancelContainer.getCancel().setCancelId( cancelId );
-                        cancelContainer.setGrammarEndAllowed( true );
+                        catch ( IntegerDecoderException e )
+                        {
+                            String msg = I18n.err( I18n.ERR_04031, Strings.dumpBytes( value.getData() ) );
+                            LOG.error( msg );
+                            throw new DecoderException( msg );
+                        }
                     }
-                    catch ( IntegerDecoderException e )
-                    {
-                        String msg = I18n.err( I18n.ERR_04031, Strings.dumpBytes(value.getData()) );
-                        LOG.error( msg );
-                        throw new DecoderException( msg );
-                    }
-                }
-            });
+                } );
     }
 
 

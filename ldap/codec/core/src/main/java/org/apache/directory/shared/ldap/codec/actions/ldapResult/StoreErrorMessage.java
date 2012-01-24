@@ -79,7 +79,7 @@ public class StoreErrorMessage extends GrammarAction<LdapMessageContainer<Messag
         }
         else
         {
-            errorMessage = Strings.utf8ToString(tlv.getValue().getData());
+            errorMessage = Strings.utf8ToString( tlv.getValue().getData() );
         }
 
         ResultResponse response = ( ResultResponse ) container.getMessage();

@@ -56,6 +56,7 @@ public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteReq
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -93,7 +94,7 @@ public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteReq
         else
         {
             byte[] dnBytes = tlv.getValue().getData();
-            String dnStr = Strings.utf8ToString(dnBytes);
+            String dnStr = Strings.utf8ToString( dnBytes );
 
             try
             {
@@ -101,7 +102,7 @@ public class InitDelRequest extends GrammarAction<LdapMessageContainer<DeleteReq
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = I18n.err( I18n.ERR_04074, dnStr, Strings.dumpBytes(dnBytes), ine
+                String msg = I18n.err( I18n.ERR_04074, dnStr, Strings.dumpBytes( dnBytes ), ine
                     .getLocalizedMessage() );
                 LOG.error( msg );
 

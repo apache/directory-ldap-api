@@ -47,7 +47,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
 
     /** The associated LDAP Message */
     private Message message;
-    
+
     /** The ldap codec service */
     private LdapApiService codec;
 
@@ -85,7 +85,7 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
         // Matched Dn
         Dn matchedDn = result.getMatchedDn();
 
-        if ( !Dn.isNullOrEmpty(matchedDn) )
+        if ( !Dn.isNullOrEmpty( matchedDn ) )
         {
             root.addAttribute( "matchedDn", matchedDn.getName() );
         }
@@ -159,9 +159,9 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
      * 
      * @param matchedDn The matchedDn to set.
      */
-    public void setMatchedDn( Dn matchedDn)
+    public void setMatchedDn( Dn matchedDn )
     {
-        result.setMatchedDn(matchedDn);
+        result.setMatchedDn( matchedDn );
     }
 
 

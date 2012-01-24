@@ -37,7 +37,7 @@ public class SyncInfoValueContainer extends AbstractContainer
 
     private LdapApiService codec;
 
-    
+
     /**
      * Creates a new SyncInfoValueControlContainer object. We will store one grammar,
      * it's enough ...
@@ -88,13 +88,13 @@ public class SyncInfoValueContainer extends AbstractContainer
         this.control = control;
     }
 
-    
+
     public LdapApiService getCodecService()
     {
         return codec;
     }
-    
-    
+
+
     /**
      * Clean the container
      */

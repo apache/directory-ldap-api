@@ -20,6 +20,7 @@
 
 package org.apache.directory.ldap.client.api;
 
+
 /**
  * A listener class intended for notifying the classes using LdapNetworkConnection
  * in the event of any network failure

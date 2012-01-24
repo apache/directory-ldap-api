@@ -43,6 +43,7 @@ public class CancelRequestImpl extends AbstractExtendedRequest<CancelResponse> i
     /** The cancelId of the request to be canceled */
     private int cancelId;
 
+
     /**
      * Creates a new instance of CancelRequest.
      *
@@ -66,18 +67,18 @@ public class CancelRequestImpl extends AbstractExtendedRequest<CancelResponse> i
         setRequestName( EXTENSION_OID );
     }
 
-    
+
     public int getCancelId()
     {
         return cancelId;
     }
-    
-    
+
+
     public void setCancelId( int cancelId )
     {
         this.cancelId = cancelId;
     }
-    
+
 
     public CancelResponse getResultResponse()
     {

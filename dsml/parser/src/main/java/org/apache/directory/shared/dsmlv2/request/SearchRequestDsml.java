@@ -61,7 +61,7 @@ import org.dom4j.QName;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SearchRequestDsml 
+public class SearchRequestDsml
     extends AbstractResultResponseRequestDsml<SearchRequest, SearchResultDone>
     implements SearchRequest
 {
@@ -73,8 +73,8 @@ public class SearchRequestDsml
 
     /** The global filter. This is used while decoding a PDU */
     private Filter topFilter;
-    
-    
+
+
     /**
      * Creates a new getDecoratedMessage() of SearchRequestDsml.
      */
@@ -94,8 +94,6 @@ public class SearchRequestDsml
     {
         super( codec, ldapMessage );
     }
-    
-    
 
 
     public Filter getCurrentFilter()
@@ -193,8 +191,6 @@ public class SearchRequestDsml
             topFilter = localFilter;
         }
     }
-    
-
 
 
     /**
@@ -203,25 +199,26 @@ public class SearchRequestDsml
      * @param filter The filter to be transformed
      * @return An ExprNode
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings(
+        { "unchecked", "rawtypes" })
     private ExprNode transform( Filter filter )
     {
         if ( filter != null )
         {
             // Transform OR, AND or NOT leaves
-            if ( filter instanceof ConnectorFilter)
+            if ( filter instanceof ConnectorFilter )
             {
                 BranchNode branch = null;
 
-                if ( filter instanceof AndFilter)
+                if ( filter instanceof AndFilter )
                 {
                     branch = new AndNode();
                 }
-                else if ( filter instanceof OrFilter)
+                else if ( filter instanceof OrFilter )
                 {
                     branch = new OrNode();
                 }
-                else if ( filter instanceof NotFilter)
+                else if ( filter instanceof NotFilter )
                 {
                     branch = new NotNode();
                 }
@@ -333,7 +330,7 @@ public class SearchRequestDsml
         }
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -456,7 +453,7 @@ public class SearchRequestDsml
         {
             Element newElement = element.addElement( "and" );
 
-            List<ExprNode> filterList = ( (AndNode) filter ).getChildren();
+            List<ExprNode> filterList = ( ( AndNode ) filter ).getChildren();
 
             for ( int i = 0; i < filterList.size(); i++ )
             {
@@ -486,7 +483,7 @@ public class SearchRequestDsml
         }
 
         // SUBSTRING FILTER
-        else if ( filter instanceof SubstringNode)
+        else if ( filter instanceof SubstringNode )
         {
             Element newElement = element.addElement( "substrings" );
 
@@ -640,7 +637,7 @@ public class SearchRequestDsml
     public SearchRequest setBase( Dn baseDn )
     {
         getDecorated().setBase( baseDn );
-        
+
         return this;
     }
 
@@ -660,7 +657,7 @@ public class SearchRequestDsml
     public SearchRequest setScope( SearchScope scope )
     {
         getDecorated().setScope( scope );
-        
+
         return this;
     }
 
@@ -680,7 +677,7 @@ public class SearchRequestDsml
     public SearchRequest setDerefAliases( AliasDerefMode aliasDerefAliases )
     {
         getDecorated().setDerefAliases( aliasDerefAliases );
-        
+
         return this;
     }
 
@@ -700,7 +697,7 @@ public class SearchRequestDsml
     public SearchRequest setSizeLimit( long entriesMax )
     {
         getDecorated().setSizeLimit( entriesMax );
-        
+
         return this;
     }
 
@@ -720,7 +717,7 @@ public class SearchRequestDsml
     public SearchRequest setTimeLimit( int secondsMax )
     {
         getDecorated().setTimeLimit( secondsMax );
-        
+
         return this;
     }
 
@@ -740,7 +737,7 @@ public class SearchRequestDsml
     public SearchRequest setTypesOnly( boolean typesOnly )
     {
         getDecorated().setTypesOnly( typesOnly );
-        
+
         return this;
     }
 
@@ -760,7 +757,7 @@ public class SearchRequestDsml
     public SearchRequest setFilter( ExprNode filter )
     {
         getDecorated().setFilter( filter );
-        
+
         return this;
     }
 
@@ -771,7 +768,7 @@ public class SearchRequestDsml
     public SearchRequest setFilter( String filter ) throws LdapException
     {
         getDecorated().setFilter( filter );
-        
+
         return this;
     }
 
@@ -791,7 +788,7 @@ public class SearchRequestDsml
     public SearchRequest addAttributes( String... attributes )
     {
         getDecorated().addAttributes( attributes );
-        
+
         return this;
     }
 
@@ -802,7 +799,7 @@ public class SearchRequestDsml
     public SearchRequest removeAttribute( String attribute )
     {
         getDecorated().removeAttribute( attribute );
-        
+
         return this;
     }
 
@@ -812,33 +809,33 @@ public class SearchRequestDsml
      */
     public SearchRequest setMessageId( int messageId )
     {
-        return (SearchRequest)super.setMessageId( messageId );
+        return ( SearchRequest ) super.setMessageId( messageId );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public SearchRequest addControl( Control control ) throws MessageException
     {
-        return (SearchRequest)super.addControl( control );
+        return ( SearchRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public SearchRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (SearchRequest)super.addAllControls( controls );
+        return ( SearchRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public SearchRequest removeControl( Control control ) throws MessageException
     {
-        return (SearchRequest)super.removeControl( control );
+        return ( SearchRequest ) super.removeControl( control );
     }
 }

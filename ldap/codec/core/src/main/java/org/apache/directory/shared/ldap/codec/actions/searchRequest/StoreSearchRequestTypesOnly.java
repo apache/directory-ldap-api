@@ -53,6 +53,7 @@ public class StoreSearchRequestTypesOnly extends GrammarAction<LdapMessageContai
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -86,7 +87,7 @@ public class StoreSearchRequestTypesOnly extends GrammarAction<LdapMessageContai
         catch ( BooleanDecoderException bde )
         {
             LOG.error( I18n
-                .err( I18n.ERR_04105, Strings.dumpBytes(value.getData()), bde.getMessage() ) );
+                .err( I18n.ERR_04105, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
 
             throw new DecoderException( bde.getMessage() );
         }

@@ -81,7 +81,7 @@ public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainer
         }
 
         AttributeValueAssertionFilter terminalFilter = ( AttributeValueAssertionFilter )
-                searchRequestDecorator.getTerminalFilter();
+            searchRequestDecorator.getTerminalFilter();
         AttributeValueAssertion assertion = terminalFilter.getAssertion();
 
         if ( container.isBinary( assertion.getAttributeDesc() ) )
@@ -101,7 +101,7 @@ public class InitAssertionValueFilter extends GrammarAction<LdapMessageContainer
         {
             if ( tlv.getLength() != 0 )
             {
-                assertionValue = new StringValue( Strings.utf8ToString(tlv.getValue().getData()) );
+                assertionValue = new StringValue( Strings.utf8ToString( tlv.getValue().getData() ) );
             }
             else
             {

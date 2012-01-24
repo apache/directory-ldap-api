@@ -62,22 +62,22 @@ public class MaxValueCountItemTest
     public void initNames() throws Exception
     {
         itemsA = new HashSet<MaxValueCountElem>();
-        itemsA.add( new MaxValueCountElem( new AttributeType("aa"), 1 ) );
-        itemsA.add( new MaxValueCountElem( new AttributeType("aa"), 2 ) );
-        itemsA.add( new MaxValueCountElem( new AttributeType("aa"), 3 ) );
+        itemsA.add( new MaxValueCountElem( new AttributeType( "aa" ), 1 ) );
+        itemsA.add( new MaxValueCountElem( new AttributeType( "aa" ), 2 ) );
+        itemsA.add( new MaxValueCountElem( new AttributeType( "aa" ), 3 ) );
         // Sets aren't ordered, so adding order must not matter
         itemsB = new HashSet<MaxValueCountElem>();
-        itemsB.add( new MaxValueCountElem( new AttributeType("aa"), 2 ) );
-        itemsB.add( new MaxValueCountElem( new AttributeType("aa"), 3 ) );
-        itemsB.add( new MaxValueCountElem( new AttributeType("aa"), 1 ) );
+        itemsB.add( new MaxValueCountElem( new AttributeType( "aa" ), 2 ) );
+        itemsB.add( new MaxValueCountElem( new AttributeType( "aa" ), 3 ) );
+        itemsB.add( new MaxValueCountElem( new AttributeType( "aa" ), 1 ) );
         itemsC = new HashSet<MaxValueCountElem>();
-        itemsC.add( new MaxValueCountElem( new AttributeType("aa"), 1 ) );
-        itemsC.add( new MaxValueCountElem( new AttributeType("bb"), 2 ) );
-        itemsC.add( new MaxValueCountElem( new AttributeType("aa"), 3 ) );
+        itemsC.add( new MaxValueCountElem( new AttributeType( "aa" ), 1 ) );
+        itemsC.add( new MaxValueCountElem( new AttributeType( "bb" ), 2 ) );
+        itemsC.add( new MaxValueCountElem( new AttributeType( "aa" ), 3 ) );
         itemsD = new HashSet<MaxValueCountElem>();
-        itemsD.add( new MaxValueCountElem( new AttributeType("aa"), 1 ) );
-        itemsD.add( new MaxValueCountElem( new AttributeType("aa"), 2 ) );
-        itemsD.add( new MaxValueCountElem( new AttributeType("aa"), 4 ) );
+        itemsD.add( new MaxValueCountElem( new AttributeType( "aa" ), 1 ) );
+        itemsD.add( new MaxValueCountElem( new AttributeType( "aa" ), 2 ) );
+        itemsD.add( new MaxValueCountElem( new AttributeType( "aa" ), 4 ) );
         maxValueCountItemA = new MaxValueCountItem( itemsA );
         maxValueCountItemACopy = new MaxValueCountItem( itemsA );
         maxValueCountItemB = new MaxValueCountItem( itemsB );

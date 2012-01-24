@@ -43,6 +43,7 @@ public class InitSearchRequest extends GrammarAction<LdapMessageContainer<Search
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitSearchRequest.class );
 
+
     /**
      * Instantiates a new action.
      */
@@ -65,7 +66,7 @@ public class InitSearchRequest extends GrammarAction<LdapMessageContainer<Search
         SearchRequestDecorator searchRequest = new SearchRequestDecorator(
             container.getLdapCodecService(), internalSearchRequest );
 
-        searchRequest.setTlvId( tlv.getId());
+        searchRequest.setTlvId( tlv.getId() );
         container.setMessage( searchRequest );
 
         LOG.debug( "Search Request" );

@@ -41,6 +41,7 @@ public class InitDelResponse extends GrammarAction<LdapMessageContainer<DeleteRe
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitDelResponse.class );
 
+
     /**
      * Instantiates a new action.
      */

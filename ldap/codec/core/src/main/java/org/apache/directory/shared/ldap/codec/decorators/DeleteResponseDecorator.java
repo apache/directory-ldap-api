@@ -36,7 +36,7 @@ import org.apache.directory.shared.ldap.model.message.DeleteResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse> 
+public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse>
     implements DeleteResponse
 {
     /** The encoded deleteResponse length */
@@ -72,12 +72,11 @@ public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse>
         return deleteResponseLength;
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * Compute the DelResponse length 
      * 
@@ -93,7 +92,7 @@ public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse>
      */
     public int computeLength()
     {
-        int deleteResponseLength = ((LdapResultDecorator)getLdapResult()).computeLength();
+        int deleteResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         setDeleteResponseLength( deleteResponseLength );
 
@@ -115,13 +114,13 @@ public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse>
             buffer.put( TLV.getBytes( getDeleteResponseLength() ) );
 
             // The LdapResult
-            ((LdapResultDecorator)getLdapResult()).encode( buffer );
+            ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
         }
         catch ( BufferOverflowException boe )
         {
             throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
         }
-        
+
         return buffer;
     }
 }

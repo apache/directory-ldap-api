@@ -69,49 +69,49 @@ public class ACIItemChekerTest
     @Test
     public void testItemFirst() throws Exception
     {
-        String spec = 
+        String spec =
             " {  " +
-            "   identificationTag  \"id1\" , " +
-            "   precedence 114  , " +
-            "   authenticationLevel simple  , " +
-            "   itemOrUserFirst itemFirst  :" +
-            "   { " +
-            "     protectedItems  " +
-            "     { " +
-            "       entry  , " +
-            "       attributeType { 1.2.3    , ou }  ," +
-            "       attributeValue { ou=people  , cn=Ersin  }  , " +
-            "       rangeOfValues (cn=ErsinEr) , " +
-            "       classes and : " +
-            "       { " +
-            "         item: xyz , " +
-            "         or:{item:X,item:Y}   " +
-            "       }" +
-            "     }  , " +
-            "     itemPermissions " +
-            "     { " +
-            "       { " +
-            "         userClasses " +
-            "         {" +
-            "           allUsers  , " +
-            "           userGroup { \"2.5.4.3=y,dc=t\"  , \"cn=b,dc=d\" } ," +
-            "           subtree { { base \"ou=people\" } } " +
-            "         }   , " +
-            "         grantsAndDenials  {  denyCompare  , grantModify } " +
-            "       }," +
-            "       { " +
-            "         precedence 10, " +
-            "         userClasses " +
-            "         {" +
-            "           allUsers  , " +
-            "           userGroup { \"2.5.4.3=y,dc=t\"  , \"cn=b,dc=d\" } ," +
-            "           subtree { { base \"ou=people\" } } " +
-            "         }   , " +
-            "         grantsAndDenials  {  denyCompare  , grantModify } " +
-            "       } " +
-            "     } " +
-            "   }" +
-            " }";
+                "   identificationTag  \"id1\" , " +
+                "   precedence 114  , " +
+                "   authenticationLevel simple  , " +
+                "   itemOrUserFirst itemFirst  :" +
+                "   { " +
+                "     protectedItems  " +
+                "     { " +
+                "       entry  , " +
+                "       attributeType { 1.2.3    , ou }  ," +
+                "       attributeValue { ou=people  , cn=Ersin  }  , " +
+                "       rangeOfValues (cn=ErsinEr) , " +
+                "       classes and : " +
+                "       { " +
+                "         item: xyz , " +
+                "         or:{item:X,item:Y}   " +
+                "       }" +
+                "     }  , " +
+                "     itemPermissions " +
+                "     { " +
+                "       { " +
+                "         userClasses " +
+                "         {" +
+                "           allUsers  , " +
+                "           userGroup { \"2.5.4.3=y,dc=t\"  , \"cn=b,dc=d\" } ," +
+                "           subtree { { base \"ou=people\" } } " +
+                "         }   , " +
+                "         grantsAndDenials  {  denyCompare  , grantModify } " +
+                "       }," +
+                "       { " +
+                "         precedence 10, " +
+                "         userClasses " +
+                "         {" +
+                "           allUsers  , " +
+                "           userGroup { \"2.5.4.3=y,dc=t\"  , \"cn=b,dc=d\" } ," +
+                "           subtree { { base \"ou=people\" } } " +
+                "         }   , " +
+                "         grantsAndDenials  {  denyCompare  , grantModify } " +
+                "       } " +
+                "     } " +
+                "   }" +
+                " }";
 
         checker.parse( spec );
     }
@@ -265,7 +265,7 @@ public class ACIItemChekerTest
     public void testInvalidAttributeValue()
     {
         String spec;
-        
+
         // no name-value-pair
         spec = "{ identificationTag \"id2\"   , precedence 14, authenticationLevel none  , "
             + "itemOrUserFirst userFirst:  { userPermissions { { protectedItems{ entry  , attributeType { cn  , ou }  , attributeValue { must_be_a_name_value_pair } , "
@@ -275,13 +275,13 @@ public class ACIItemChekerTest
         try
         {
             checker.parse( spec );
-            fail("Expected ParseException, invalid protected item 'attributeValue { must_be_a_name_value_pair }'");
+            fail( "Expected ParseException, invalid protected item 'attributeValue { must_be_a_name_value_pair }'" );
         }
         catch ( ParseException e )
         {
             // Expected
         }
-        
+
         // no name-value-pair
         spec = "{ identificationTag \"id2\"   , precedence 14, authenticationLevel none  , "
             + "itemOrUserFirst userFirst:  { userPermissions { { protectedItems{ entry  , attributeType { cn  , ou }  , attributeValue { x=y,m=n,k=l,x } , "
@@ -291,15 +291,15 @@ public class ACIItemChekerTest
         try
         {
             checker.parse( spec );
-            fail("Expected ParseException, invalid protected item 'attributeValue { must_be_a_name_value_pair }'");
+            fail( "Expected ParseException, invalid protected item 'attributeValue { must_be_a_name_value_pair }'" );
         }
         catch ( ParseException e )
         {
             // Expected
         }
     }
-    
-    
+
+
     /**
      * Test case for DIRSERVER-891
      */
@@ -307,45 +307,45 @@ public class ACIItemChekerTest
     public void testIncomplete()
     {
         String spec;
-        
+
         spec = "{ }";
         try
         {
             checker.parse( spec );
-            fail("Expected ParseException, ACIItem is incomplete'");
+            fail( "Expected ParseException, ACIItem is incomplete'" );
         }
         catch ( ParseException e )
         {
             // Expected
         }
-        
+
         spec = "{ identificationTag \"id2\" }";
         try
         {
             checker.parse( spec );
-            fail("Expected ParseException, ACIItem is incomplete'");
+            fail( "Expected ParseException, ACIItem is incomplete'" );
         }
         catch ( ParseException e )
         {
             // Expected
         }
-        
+
         spec = "{ identificationTag \"id2\", precedence 14 } ";
         try
         {
             checker.parse( spec );
-            fail("Expected ParseException, ACIItem is incomplete'");
+            fail( "Expected ParseException, ACIItem is incomplete'" );
         }
         catch ( ParseException e )
         {
             // Expected
         }
-        
+
         spec = "{ identificationTag \"id2\", precedence 14, authenticationLevel none } ";
         try
         {
             checker.parse( spec );
-            fail("Expected ParseException, ACIItem is incomplete'");
+            fail( "Expected ParseException, ACIItem is incomplete'" );
         }
         catch ( ParseException e )
         {

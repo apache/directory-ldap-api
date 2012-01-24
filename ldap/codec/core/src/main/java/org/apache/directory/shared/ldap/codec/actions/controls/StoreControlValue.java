@@ -98,7 +98,7 @@ public class StoreControlValue extends GrammarAction<LdapMessageContainer<Messag
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "Control value : " + Strings.dumpBytes(control.getValue()) );
+            LOG.debug( "Control value : " + Strings.dumpBytes( control.getValue() ) );
         }
     }
 }

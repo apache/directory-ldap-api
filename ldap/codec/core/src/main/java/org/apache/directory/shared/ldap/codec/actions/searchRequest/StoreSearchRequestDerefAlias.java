@@ -58,6 +58,7 @@ public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageConta
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -82,8 +83,8 @@ public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageConta
 
         try
         {
-            derefAliases = IntegerDecoder.parse(value, LdapConstants.NEVER_DEREF_ALIASES,
-                    LdapConstants.DEREF_ALWAYS);
+            derefAliases = IntegerDecoder.parse( value, LdapConstants.NEVER_DEREF_ALIASES,
+                LdapConstants.DEREF_ALWAYS );
         }
         catch ( IntegerDecoderException ide )
         {

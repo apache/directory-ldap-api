@@ -30,7 +30,8 @@ import org.apache.directory.shared.ldap.model.message.AbstractExtendedRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CertGenerationRequestImpl extends AbstractExtendedRequest<CertGenerationResponse> implements CertGenerationRequest
+public class CertGenerationRequestImpl extends AbstractExtendedRequest<CertGenerationResponse> implements
+    CertGenerationRequest
 {
     /** The serial version UUID */
     private static final long serialVersionUID = 1L;
@@ -47,7 +48,7 @@ public class CertGenerationRequestImpl extends AbstractExtendedRequest<CertGener
     /** name of the algorithm used for generating the keys*/
     private String keyAlgorithm;// = "RSA";
 
-    
+
     /**
      * Creates a new instance of CertGenerationRequest.
      *
@@ -57,7 +58,8 @@ public class CertGenerationRequestImpl extends AbstractExtendedRequest<CertGener
      * @param subjectDN Dn to be used as certificate's subject
      * @param keyAlgorithm crypto algorithm name to be used for generating the keys
      */
-    public CertGenerationRequestImpl( int messageId, String targerDN, String issuerDN, String subjectDN, String keyAlgorithm )
+    public CertGenerationRequestImpl( int messageId, String targerDN, String issuerDN, String subjectDN,
+        String keyAlgorithm )
     {
         super( messageId );
         setRequestName( EXTENSION_OID );
@@ -154,8 +156,8 @@ public class CertGenerationRequestImpl extends AbstractExtendedRequest<CertGener
     {
         return new CertGenerationResponseImpl();
     }
-    
-    
+
+
     @Override
     public String toString()
     {

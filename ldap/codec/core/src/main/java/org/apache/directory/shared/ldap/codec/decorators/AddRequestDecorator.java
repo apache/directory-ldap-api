@@ -48,7 +48,8 @@ import org.apache.directory.shared.ldap.model.name.Dn;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRequest,AddResponse> implements AddRequest
+public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRequest, AddResponse> implements
+    AddRequest
 {
     /** The add request length */
     private int addRequestLength;
@@ -65,7 +66,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /** The current attribute being decoded */
     private Attribute currentAttribute;
 
-    
+
     /**
      * Makes a AddRequest a MessageDecorator.
      *
@@ -151,41 +152,43 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     {
         return valuesLength;
     }
+
+
     /**
      * {@inheritDoc}
      */
     public AddRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public AddRequest addControl( Control control ) throws MessageException
     {
-        return (AddRequest)super.addControl( control );
+        return ( AddRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AddRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (AddRequest)super.addAllControls( controls );
+        return ( AddRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AddRequest removeControl( Control control ) throws MessageException
     {
-        return (AddRequest)super.removeControl( control );
+        return ( AddRequest ) super.removeControl( control );
     }
 
 
@@ -193,7 +196,6 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     // The AddRequest methods
     //-------------------------------------------------------------------------
 
-    
     /**
      * {@inheritDoc}
      */
@@ -209,7 +211,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     public AddRequest setEntryDn( Dn entry )
     {
         getDecorated().setEntryDn( entry );
-        
+
         return this;
     }
 
@@ -229,11 +231,11 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     public AddRequest setEntry( Entry entry )
     {
         getDecorated().setEntry( entry );
-        
+
         return this;
     }
 
-    
+
     /**
      * Create a new attributeValue
      * 
@@ -294,8 +296,8 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     {
         currentAttribute.add( value );
     }
-    
-    
+
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -349,7 +351,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
         }
 
         // The entry Dn
-        int addRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes(entry.getDn()) ) + Dn.getNbBytes(entry.getDn());
+        int addRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes( entry.getDn() ) ) + Dn.getNbBytes( entry.getDn() );
 
         // The attributes sequence
         int entryLength = 0;
@@ -484,7 +486,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
                     attributeNumber++;
                 }
             }
-            
+
             return buffer;
         }
         catch ( BufferOverflowException boe )

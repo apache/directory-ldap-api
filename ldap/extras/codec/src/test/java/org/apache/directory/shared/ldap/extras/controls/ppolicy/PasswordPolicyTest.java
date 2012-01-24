@@ -47,12 +47,16 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         ByteBuffer bb = ByteBuffer.allocate( 0xA );
 
         bb.put( new byte[]
-            { 
-                      0x30, 0x08,
-             ( byte ) 0xA0, 0x03,         // timeBeforeExpiration
-             ( byte ) 0x80, 0x01, 0x01, 
-             ( byte ) 0x81, 0x01, 0x01    // ppolicyError
-            } );
+            {
+                0x30, 0x08,
+                ( byte ) 0xA0, 0x03, // timeBeforeExpiration
+                ( byte ) 0x80,
+                0x01,
+                0x01,
+                ( byte ) 0x81,
+                0x01,
+                0x01 // ppolicyError
+        } );
 
         bb.flip();
 
@@ -62,12 +66,12 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         assertTrue( passwordPolicy.hasResponse() );
         assertEquals( 1, passwordPolicy.getResponse().getTimeBeforeExpiration() );
         assertEquals( 1, passwordPolicy.getResponse().getPasswordPolicyError().getValue() );
-        
-        ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode( 
+
+        ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode(
             ByteBuffer.allocate( ( ( PasswordPolicyDecorator ) passwordPolicy ).computeLength() ) );
         assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
     }
-    
+
 
     @Test
     public void testDecodeRespWithGraceAuthWarningAndError() throws Exception
@@ -75,39 +79,43 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         ByteBuffer bb = ByteBuffer.allocate( 0xA );
 
         bb.put( new byte[]
-            { 
-                       0x30, 0x08,
-              ( byte ) 0xA0, 0x03,           // warning
-              ( byte ) 0x81, 0x01, 0x01,     // graceAuthNsRemaining
-              ( byte ) 0x81, 0x01, 0x01      // error
-            } );
+            {
+                0x30, 0x08,
+                ( byte ) 0xA0, 0x03, // warning
+                ( byte ) 0x81,
+                0x01,
+                0x01, // graceAuthNsRemaining
+                ( byte ) 0x81,
+                0x01,
+                0x01 // error
+        } );
 
         bb.flip();
 
         PasswordPolicyDecorator control = new PasswordPolicyDecorator( codec, true );
         PasswordPolicy passwordPolicy = ( PasswordPolicy ) control.decode( bb.array() );
-        
+
         assertTrue( passwordPolicy.hasResponse() );
         assertEquals( 1, passwordPolicy.getResponse().getGraceAuthNsRemaining() );
         assertEquals( 1, passwordPolicy.getResponse().getPasswordPolicyError().getValue() );
-        
-        ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode( 
+
+        ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode(
             ByteBuffer.allocate( ( ( PasswordPolicyDecorator ) passwordPolicy ).computeLength() ) );
-        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array())  );
+        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
     }
 
-    
+
     @Test
     public void testDecodeRespWithTimeBeforeExpiryWarningOnly() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 7 );
 
         bb.put( new byte[]
-            { 
-                       0x30, 0x05,
-              ( byte ) 0xA0, 0x03,
-              ( byte ) 0x80, 0x01, 0x01 //  timeBeforeExpiration
-            } );
+            {
+                0x30, 0x05,
+                ( byte ) 0xA0, 0x03,
+                ( byte ) 0x80, 0x01, 0x01 //  timeBeforeExpiration
+        } );
 
         bb.flip();
 
@@ -116,12 +124,12 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         assertTrue( passwordPolicy.hasResponse() );
         assertEquals( 1, passwordPolicy.getResponse().getTimeBeforeExpiration() );
-        
-        ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode( 
+
+        ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode(
             ByteBuffer.allocate( ( ( PasswordPolicyDecorator ) passwordPolicy ).computeLength() ) );
         assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
     }
-    
+
 
     @Test
     public void testDecodeRespWithGraceAuthWarningOnly() throws Exception
@@ -129,11 +137,11 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         ByteBuffer bb = ByteBuffer.allocate( 7 );
 
         bb.put( new byte[]
-            { 
-                       0x30, 0x05,
-              ( byte ) 0xA0, 0x03,
-              ( byte ) 0x81, 0x01, 0x01 //  graceAuthNsRemaining
-            } );
+            {
+                0x30, 0x05,
+                ( byte ) 0xA0, 0x03,
+                ( byte ) 0x81, 0x01, 0x01 //  graceAuthNsRemaining
+        } );
 
         bb.flip();
 
@@ -142,57 +150,57 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         assertTrue( passwordPolicy.hasResponse() );
         assertEquals( 1, passwordPolicy.getResponse().getGraceAuthNsRemaining() );
-        
-        ByteBuffer encoded = ( ( PasswordPolicyDecorator) passwordPolicy ).encode( 
-            ByteBuffer.allocate( ( ( PasswordPolicyDecorator) passwordPolicy ).computeLength() ) );
+
+        ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode(
+            ByteBuffer.allocate( ( ( PasswordPolicyDecorator ) passwordPolicy ).computeLength() ) );
         assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
     }
-    
-    
+
+
     @Test
     public void testDecodeRespWithErrorOnly() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 5 );
 
         bb.put( new byte[]
-            { 
-                       0x30, 0x03,
-              ( byte ) 0x81, 0x01, 0x01 //  error
-            } );
+            {
+                0x30, 0x03,
+                ( byte ) 0x81, 0x01, 0x01 //  error
+        } );
 
         bb.flip();
 
         PasswordPolicyDecorator control = new PasswordPolicyDecorator( codec, true );
         PasswordPolicy passwordPolicy = ( PasswordPolicy ) control.decode( bb.array() );
-        
+
         assertTrue( passwordPolicy.hasResponse() );
         assertEquals( 1, passwordPolicy.getResponse().getPasswordPolicyError().getValue() );
-        
-        ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode( 
-            ByteBuffer.allocate( ( ( PasswordPolicyDecorator) passwordPolicy ).computeLength() ) );
+
+        ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode(
+            ByteBuffer.allocate( ( ( PasswordPolicyDecorator ) passwordPolicy ).computeLength() ) );
         assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
     }
 
-    
+
     @Test
     public void testDecodeRespWithoutWarningAndError() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 2 );
 
         bb.put( new byte[]
-            { 
-             0x30, 0x00
-            } );
+            {
+                0x30, 0x00
+        } );
 
         bb.flip();
 
         PasswordPolicyDecorator control = new PasswordPolicyDecorator( codec, true );
         PasswordPolicy passwordPolicy = ( PasswordPolicy ) control.decode( bb.array() );
-        
+
         assertNotNull( passwordPolicy );
         assertTrue( passwordPolicy.hasResponse() );
-        
-        ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode( 
+
+        ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode(
             ByteBuffer.allocate( ( ( PasswordPolicyDecorator ) passwordPolicy ).computeLength() ) );
         assertEquals( "", Strings.dumpBytes( encoded.array() ) );
     }

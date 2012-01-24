@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.name;
 
+
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
@@ -38,6 +39,7 @@ import org.junit.runner.RunWith;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
+
 /**
  * Test the Dn Serialization
  * 
@@ -49,6 +51,7 @@ public class SchemaAwareDnSerializationTest
 {
     private static SchemaManager schemaManager;
 
+
     /**
      * Initialize OIDs maps for normalization
      */
@@ -58,17 +61,17 @@ public class SchemaAwareDnSerializationTest
         schemaManager = new DefaultSchemaManager();
     }
 
-    
+
     @Test
     public void testDnFullSerialization() throws IOException, LdapException, ClassNotFoundException
     {
         Dn dn1 = new Dn( schemaManager, "gn=john + cn=doe, dc=example, dc=com" );
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         dn1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -85,12 +88,12 @@ public class SchemaAwareDnSerializationTest
     public void testDnEmptySerialization() throws IOException, LdapException, ClassNotFoundException
     {
         Dn dn1 = new Dn( schemaManager );
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         dn1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -107,12 +110,12 @@ public class SchemaAwareDnSerializationTest
     public void testDnSimpleSerialization() throws IOException, LdapException, ClassNotFoundException
     {
         Dn dn1 = new Dn( schemaManager, "Cn = Doe" );
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         dn1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -125,6 +128,8 @@ public class SchemaAwareDnSerializationTest
         assertEquals( "Cn = Doe", dn2.getName() );
         assertEquals( "2.5.4.3=doe", dn2.getNormName() );
     }
+
+
     /**
      * Test the serialization of a Dn
      *
@@ -143,7 +148,7 @@ public class SchemaAwareDnSerializationTest
 
         byte[] data = baos.toByteArray();
         ObjectInputStream in = new ObjectInputStream( new ByteArrayInputStream( data ) );
-        
+
         Dn dn2 = new Dn( schemaManager );
         dn2.readExternal( in );
 
@@ -163,7 +168,7 @@ public class SchemaAwareDnSerializationTest
 
         byte[] data = baos.toByteArray();
         ObjectInputStream in = new ObjectInputStream( new ByteArrayInputStream( data ) );
-        
+
         Dn dn2 = new Dn( schemaManager );
         dn2.readExternal( in );
 
@@ -189,7 +194,7 @@ public class SchemaAwareDnSerializationTest
 
         byte[] data = baos.toByteArray();
         ObjectInputStream in = new ObjectInputStream( new ByteArrayInputStream( data ) );
-        
+
         Dn dn2 = new Dn( schemaManager );
         dn2.readExternal( in );
 
@@ -198,7 +203,8 @@ public class SchemaAwareDnSerializationTest
 
 
     @Ignore
-    @Test public void testSerializationPerfs() throws Exception
+    @Test
+    public void testSerializationPerfs() throws Exception
     {
         Dn dn = new Dn( "ou= Some   People   + dc=  And   Some anImAls,dc = eXample,dc= cOm" );
         dn.apply( schemaManager );
@@ -221,7 +227,7 @@ public class SchemaAwareDnSerializationTest
 
         long t1 = System.currentTimeMillis();
 
-        System.out.println( "delta :" + ( t1 - t0) );
+        System.out.println( "delta :" + ( t1 - t0 ) );
 
         long t2 = System.currentTimeMillis();
 
@@ -243,10 +249,11 @@ public class SchemaAwareDnSerializationTest
 
         long t3 = System.currentTimeMillis();
 
-        System.out.println( "delta :" + ( t3 - t2) );
+        System.out.println( "delta :" + ( t3 - t2 ) );
 
         //assertEquals( dn, DnSerializer.deserialize( in ) );
     }
+
 
     @Test
     public void testStaticSerializeEmptyDN() throws Exception
@@ -260,7 +267,7 @@ public class SchemaAwareDnSerializationTest
 
         byte[] data = baos.toByteArray();
         ObjectInputStream in = new ObjectInputStream( new ByteArrayInputStream( data ) );
-        
+
         Dn dn2 = new Dn( schemaManager );
         dn2.readExternal( in );
 

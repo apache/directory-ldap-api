@@ -128,14 +128,14 @@ public class SyncStateValueImpl extends AbstractControl implements SyncStateValu
     {
         int h = 37;
 
-        h = h*17 + super.hashCode();
-        h = h*17 + type.getValue();
+        h = h * 17 + super.hashCode();
+        h = h * 17 + type.getValue();
 
         if ( cookie != null )
         {
             for ( byte b : cookie )
             {
-                h = h*17 + b;
+                h = h * 17 + b;
             }
         }
 
@@ -143,7 +143,7 @@ public class SyncStateValueImpl extends AbstractControl implements SyncStateValu
         {
             for ( byte b : entryUuid )
             {
-                h = h*17 + b;
+                h = h * 17 + b;
             }
         }
 
@@ -189,7 +189,7 @@ public class SyncStateValueImpl extends AbstractControl implements SyncStateValu
         sb.append( "        critical : " ).append( isCritical() ).append( '\n' );
         sb.append( "        syncStateType     : '" ).append( getSyncStateType() ).append( "'\n" );
         sb.append( "        entryUUID         : '" ).append( Strings.dumpBytes( getEntryUUID() ) ).append( "'\n" );
-        sb.append( "        cookie            : '" ).append( Strings.dumpBytes( getCookie()) ).append( "'\n" );
+        sb.append( "        cookie            : '" ).append( Strings.dumpBytes( getCookie() ) ).append( "'\n" );
 
         return sb.toString();
     }

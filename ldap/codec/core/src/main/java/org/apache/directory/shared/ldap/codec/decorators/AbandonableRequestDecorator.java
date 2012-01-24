@@ -31,8 +31,8 @@ import org.apache.directory.shared.ldap.model.message.ResultResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbandonableRequestDecorator<M extends AbandonableResultResponseRequest<R>, R extends ResultResponse> 
-    extends ResultResponseRequestDecorator<M,R> 
+public abstract class AbandonableRequestDecorator<M extends AbandonableResultResponseRequest<R>, R extends ResultResponse>
+    extends ResultResponseRequestDecorator<M, R>
     implements AbandonableRequest
 {
     /**
@@ -45,7 +45,7 @@ public abstract class AbandonableRequestDecorator<M extends AbandonableResultRes
         super( codec, decoratedMessage );
     }
 
-    
+
     /**
      * Gets the decorated AbandonableRequest.
      *
@@ -55,8 +55,8 @@ public abstract class AbandonableRequestDecorator<M extends AbandonableResultRes
     {
         return getDecorated();
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -65,7 +65,7 @@ public abstract class AbandonableRequestDecorator<M extends AbandonableResultRes
         getAbandonableRequest().abandon();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -81,7 +81,7 @@ public abstract class AbandonableRequestDecorator<M extends AbandonableResultRes
     public AbandonableRequest addAbandonListener( AbandonListener listener )
     {
         getAbandonableRequest().addAbandonListener( listener );
-        
+
         return this;
     }
 }

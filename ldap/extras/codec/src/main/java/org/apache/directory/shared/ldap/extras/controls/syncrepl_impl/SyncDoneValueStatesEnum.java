@@ -34,7 +34,7 @@ public enum SyncDoneValueStatesEnum implements States
 
     /** The END_STATE */
     END_STATE,
-    
+
     /***/
     START_STATE,
 
@@ -98,8 +98,8 @@ public enum SyncDoneValueStatesEnum implements States
     {
         return this == END_STATE;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

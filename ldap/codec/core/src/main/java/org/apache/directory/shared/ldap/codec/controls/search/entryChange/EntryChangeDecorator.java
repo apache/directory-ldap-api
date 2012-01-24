@@ -60,7 +60,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /** An instance of this decoder */
     private static final Asn1Decoder decoder = new Asn1Decoder();
 
-    
+
     /**
      * Creates a new instance of EntryChangeDecoder wrapping a newly created
      * EntryChange Control object.
@@ -207,7 +207,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * {@inheritDoc}
      */
-    public ChangeType getChangeType ()
+    public ChangeType getChangeType()
     {
         return getEntryChange().getChangeType();
     }
@@ -216,7 +216,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * {@inheritDoc}
      */
-    public void setChangeType ( ChangeType changeType )
+    public void setChangeType( ChangeType changeType )
     {
         getEntryChange().setChangeType( changeType );
     }
@@ -225,7 +225,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * {@inheritDoc}
      */
-    public Dn getPreviousDn ()
+    public Dn getPreviousDn()
     {
         return getEntryChange().getPreviousDn();
     }
@@ -234,7 +234,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * {@inheritDoc}
      */
-    public void setPreviousDn ( Dn previousDn )
+    public void setPreviousDn( Dn previousDn )
     {
         getEntryChange().setPreviousDn( previousDn );
     }
@@ -243,7 +243,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * {@inheritDoc}
      */
-    public long getChangeNumber ()
+    public long getChangeNumber()
     {
         return getEntryChange().getChangeNumber();
     }
@@ -252,7 +252,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
     /**
      * {@inheritDoc}
      */
-    public void setChangeNumber ( long changeNumber )
+    public void setChangeNumber( long changeNumber )
     {
         getEntryChange().setChangeNumber( changeNumber );
     }

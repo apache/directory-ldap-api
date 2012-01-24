@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.extras.controls;
 
+
 import org.apache.directory.shared.i18n.I18n;
 
 
@@ -95,7 +96,7 @@ public enum SyncStateTypeEnum
         {
             return MODDN;
         }
-        
+
         throw new IllegalArgumentException( I18n.err( I18n.ERR_04163, value ) );
     }
 

@@ -34,7 +34,7 @@ import org.dom4j.Element;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest> 
+public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     implements AbandonRequest
 {
     /**
@@ -102,7 +102,7 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     public AbandonRequest setAbandonedMessageId( int abandonedMessageId )
     {
         getDecorated().setAbandoned( abandonedMessageId );
-        
+
         return this;
     }
 
@@ -122,45 +122,45 @@ public class AbandonRequestDsml extends AbstractRequestDsml<AbandonRequest>
     public AbandonRequest setAbandoned( int requestId )
     {
         getDecorated().setAbandoned( requestId );
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AbandonRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public AbandonRequest addControl( Control control ) throws MessageException
     {
-        return (AbandonRequest)super.addControl( control );
+        return ( AbandonRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AbandonRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (AbandonRequest)super.addAllControls( controls );
+        return ( AbandonRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AbandonRequest removeControl( Control control ) throws MessageException
     {
-        return (AbandonRequest)super.removeControl( control );
+        return ( AbandonRequest ) super.removeControl( control );
     }
 }

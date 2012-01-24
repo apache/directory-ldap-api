@@ -54,6 +54,7 @@ public class StoreModifyDnRequestEntryName extends GrammarAction<LdapMessageCont
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -85,7 +86,7 @@ public class StoreModifyDnRequestEntryName extends GrammarAction<LdapMessageCont
         else
         {
             byte[] dnBytes = tlv.getValue().getData();
-            String dnStr = Strings.utf8ToString(dnBytes);
+            String dnStr = Strings.utf8ToString( dnBytes );
 
             try
             {
@@ -93,7 +94,7 @@ public class StoreModifyDnRequestEntryName extends GrammarAction<LdapMessageCont
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = "Invalid Dn given : " + dnStr + " (" + Strings.dumpBytes(dnBytes)
+                String msg = "Invalid Dn given : " + dnStr + " (" + Strings.dumpBytes( dnBytes )
                     + ") is invalid";
                 LOG.error( "{} : {}", msg, ine.getMessage() );
 

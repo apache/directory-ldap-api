@@ -40,7 +40,7 @@ import org.apache.directory.shared.ldap.model.message.SearchResultReference;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SearchResultReferenceDecorator extends MessageDecorator<SearchResultReference> 
+public class SearchResultReferenceDecorator extends MessageDecorator<SearchResultReference>
     implements SearchResultReference
 {
     /** The length of the referral */
@@ -102,8 +102,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
     //-------------------------------------------------------------------------
     // The SearchResultReference methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -118,15 +117,14 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
      */
     public void setReferral( Referral referral )
     {
-        getDecorated().setReferral( referral );        
+        getDecorated().setReferral( referral );
     }
 
 
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * Compute the SearchResultReference length
      * 
@@ -208,7 +206,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
         {
             throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
         }
-        
+
         return buffer;
     }
 }

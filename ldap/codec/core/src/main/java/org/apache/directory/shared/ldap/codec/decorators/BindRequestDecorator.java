@@ -442,7 +442,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
         if ( !Dn.isNullOrEmpty( dn ) )
         {
             // A DN has been provided
-            
+
             Value.encode( buffer, Dn.getBytes( dn ) );
         }
         else
@@ -455,7 +455,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
             {
                 name = "";
             }
-            
+
             Value.encode( buffer, name.getBytes() );
         }
 

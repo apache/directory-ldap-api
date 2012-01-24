@@ -59,19 +59,121 @@ public class GracefulDisconnectTest
         ByteBuffer stream = ByteBuffer.allocate( 0x70 );
         stream.put( new byte[]
             { 0x30, 0x6E, // GracefulDisconnec ::= SEQUENCE {
-                0x02, 0x01, 0x01, // timeOffline INTEGER (0..720) DEFAULT 0,
-                ( byte ) 0x80, 0x01, 0x01, // delay INTEGER (0..86400) DEFAULT
-                                            // 0
+                0x02,
+                0x01,
+                0x01, // timeOffline INTEGER (0..720) DEFAULT 0,
+                ( byte ) 0x80,
+                0x01,
+                0x01, // delay INTEGER (0..86400) DEFAULT
+                      // 0
                 // replicatedContexts Referral OPTIONAL
-                0x30, 0x66, 0x04, 0x1F, 'l', 'd', 'a', 'p', ':', '/', '/', 'd', 'i', 'r', 'e', 'c', 't', 'o', 'r', 'y',
-                '.', 'a', 'p', 'a', 'c', 'h', 'e', '.', 'o', 'r', 'g', ':', '8', '0', '/', 0x04, 0x43, 'l', 'd', 'a',
-                'p', ':', '/', '/', 'l', 'd', 'a', 'p', '.', 'n', 'e', 't', 's', 'c', 'a', 'p', 'e', '.', 'c', 'o',
-                'm', '/', 'o', '=', 'B', 'a', 'b', 's', 'c', 'o', ',', 'c', '=', 'U', 'S', '?', '?', '?', '(', 'i',
-                'n', 't', '=', '%', '5', 'c', '0', '0', '%', '5', 'c', '0', '0', '%', '5', 'c', '0', '0', '%', '5',
-                'c', '0', '4', ')'
+                0x30,
+                0x66,
+                0x04,
+                0x1F,
+                'l',
+                'd',
+                'a',
+                'p',
+                ':',
+                '/',
+                '/',
+                'd',
+                'i',
+                'r',
+                'e',
+                'c',
+                't',
+                'o',
+                'r',
+                'y',
+                '.',
+                'a',
+                'p',
+                'a',
+                'c',
+                'h',
+                'e',
+                '.',
+                'o',
+                'r',
+                'g',
+                ':',
+                '8',
+                '0',
+                '/',
+                0x04,
+                0x43,
+                'l',
+                'd',
+                'a',
+                'p',
+                ':',
+                '/',
+                '/',
+                'l',
+                'd',
+                'a',
+                'p',
+                '.',
+                'n',
+                'e',
+                't',
+                's',
+                'c',
+                'a',
+                'p',
+                'e',
+                '.',
+                'c',
+                'o',
+                'm',
+                '/',
+                'o',
+                '=',
+                'B',
+                'a',
+                'b',
+                's',
+                'c',
+                'o',
+                ',',
+                'c',
+                '=',
+                'U',
+                'S',
+                '?',
+                '?',
+                '?',
+                '(',
+                'i',
+                'n',
+                't',
+                '=',
+                '%',
+                '5',
+                'c',
+                '0',
+                '0',
+                '%',
+                '5',
+                'c',
+                '0',
+                '0',
+                '%',
+                '5',
+                'c',
+                '0',
+                '0',
+                '%',
+                '5',
+                'c',
+                '0',
+                '4',
+                ')'
             // }
-            } );
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        } );
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();
@@ -102,7 +204,7 @@ public class GracefulDisconnectTest
         {
             ByteBuffer bb = gracefulDisconnect.encode();
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -124,10 +226,12 @@ public class GracefulDisconnectTest
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
             { 0x30, 0x03, // GracefulDisconnect ::= SEQUENCE {
-                0x02, 0x01, 0x01 // timeOffline INTEGER (0..720) DEFAULT 0,
-            } );
+                0x02,
+                0x01,
+                0x01 // timeOffline INTEGER (0..720) DEFAULT 0,
+        } );
 
-        String decodedPdu = Strings.dumpBytes(bb.array());
+        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();
@@ -155,7 +259,7 @@ public class GracefulDisconnectTest
         {
             ByteBuffer bb1 = gracefulDisconnect.encode();
 
-            String encodedPdu = Strings.dumpBytes(bb1.array());
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -177,11 +281,13 @@ public class GracefulDisconnectTest
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
             { 0x30, 0x03, // GracefulDisconnect ::= SEQUENCE {
-                ( byte ) 0x80, 0x01, 0x01 // delay INTEGER (0..86400) DEFAULT
-                                            // 0
-            } );
+                ( byte ) 0x80,
+                0x01,
+                0x01 // delay INTEGER (0..86400) DEFAULT
+                     // 0
+        } );
 
-        String decodedPdu = Strings.dumpBytes(bb.array());
+        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();
@@ -209,7 +315,7 @@ public class GracefulDisconnectTest
         {
             ByteBuffer bb1 = gracefulDisconnect.encode();
 
-            String encodedPdu = Strings.dumpBytes(bb1.array());
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -231,12 +337,16 @@ public class GracefulDisconnectTest
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
         bb.put( new byte[]
             { 0x30, 0x06, // GracefulDisconnect ::= SEQUENCE {
-                0x02, 0x01, 0x01, // timeOffline INTEGER (0..720) DEFAULT 0,
-                ( byte ) 0x80, 0x01, 0x01, // timeOffline INTEGER (0..720)
-                                            // DEFAULT 0,
+                0x02,
+                0x01,
+                0x01, // timeOffline INTEGER (0..720) DEFAULT 0,
+                ( byte ) 0x80,
+                0x01,
+                0x01, // timeOffline INTEGER (0..720)
+                      // DEFAULT 0,
             } );
 
-        String decodedPdu = Strings.dumpBytes(bb.array());
+        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();
@@ -264,7 +374,7 @@ public class GracefulDisconnectTest
         {
             ByteBuffer bb2 = gracefulDisconnect.encode();
 
-            String encodedPdu = Strings.dumpBytes(bb2.array());
+            String encodedPdu = Strings.dumpBytes( bb2.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -286,19 +396,114 @@ public class GracefulDisconnectTest
         ByteBuffer stream = ByteBuffer.allocate( 0x6A );
         stream.put( new byte[]
             {
-            0x30, 0x68,             // GracefulDisconnec ::= SEQUENCE {
-              0x30, 0x66,           // replicatedContexts Referral OPTIONAL
-                0x04, 0x1F,
-                  'l', 'd', 'a', 'p', ':', '/', '/', 'd', 'i', 'r', 'e', 'c', 't', 'o', 'r', 'y', '.', 'a',
-                  'p', 'a', 'c', 'h', 'e', '.', 'o', 'r', 'g', ':', '8', '0', '/',
-                0x04, 0x43,
-                  'l', 'd', 'a', 'p', ':', '/', '/', 'l', 'd', 'a', 'p', '.', 'n', 'e', 't', 's', 'c', 'a',
-                  'p', 'e', '.', 'c', 'o', 'm', '/', 'o', '=', 'B', 'a', 'b', 's', 'c', 'o', ',', 'c', '=',
-                  'U', 'S', '?', '?', '?', '(', 'i', 'n', 't', '=', '%', '5', 'c', '0', '0', '%', '5', 'c',
-                  '0', '0', '%', '5', 'c', '0', '0', '%', '5', 'c', '0', '4', ')'
-            } );
+                0x30, 0x68, // GracefulDisconnec ::= SEQUENCE {
+                0x30,
+                0x66, // replicatedContexts Referral OPTIONAL
+                0x04,
+                0x1F,
+                'l',
+                'd',
+                'a',
+                'p',
+                ':',
+                '/',
+                '/',
+                'd',
+                'i',
+                'r',
+                'e',
+                'c',
+                't',
+                'o',
+                'r',
+                'y',
+                '.',
+                'a',
+                'p',
+                'a',
+                'c',
+                'h',
+                'e',
+                '.',
+                'o',
+                'r',
+                'g',
+                ':',
+                '8',
+                '0',
+                '/',
+                0x04,
+                0x43,
+                'l',
+                'd',
+                'a',
+                'p',
+                ':',
+                '/',
+                '/',
+                'l',
+                'd',
+                'a',
+                'p',
+                '.',
+                'n',
+                'e',
+                't',
+                's',
+                'c',
+                'a',
+                'p',
+                'e',
+                '.',
+                'c',
+                'o',
+                'm',
+                '/',
+                'o',
+                '=',
+                'B',
+                'a',
+                'b',
+                's',
+                'c',
+                'o',
+                ',',
+                'c',
+                '=',
+                'U',
+                'S',
+                '?',
+                '?',
+                '?',
+                '(',
+                'i',
+                'n',
+                't',
+                '=',
+                '%',
+                '5',
+                'c',
+                '0',
+                '0',
+                '%',
+                '5',
+                'c',
+                '0',
+                '0',
+                '%',
+                '5',
+                'c',
+                '0',
+                '0',
+                '%',
+                '5',
+                'c',
+                '0',
+                '4',
+                ')'
+        } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();
@@ -329,7 +534,7 @@ public class GracefulDisconnectTest
         {
             ByteBuffer bb = gracefulDisconnect.encode();
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -351,9 +556,9 @@ public class GracefulDisconnectTest
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
             { 0x30, 0x00 // GracefulDisconnect ::= SEQUENCE {
-            } );
+        } );
 
-        String decodedPdu = Strings.dumpBytes(bb.array());
+        String decodedPdu = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();
@@ -381,7 +586,7 @@ public class GracefulDisconnectTest
         {
             ByteBuffer bb1 = gracefulDisconnect.encode();
 
-            String encodedPdu = Strings.dumpBytes(bb1.array());
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -405,9 +610,12 @@ public class GracefulDisconnectTest
         ByteBuffer bb = ByteBuffer.allocate( 0x0b );
         bb.put( new byte[]
             { 0x30, 0x04, // GracefulDisconnect ::= SEQUENCE {
-                0x02, 0x02, 0x03, ( byte ) 0xE8 // timeOffline INTEGER (0..720)
-                                                // DEFAULT 0,
-            } );
+                0x02,
+                0x02,
+                0x03,
+                ( byte ) 0xE8 // timeOffline INTEGER (0..720)
+                              // DEFAULT 0,
+        } );
         bb.flip();
 
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();
@@ -436,12 +644,16 @@ public class GracefulDisconnectTest
         ByteBuffer bb = ByteBuffer.allocate( 0x0b );
         bb.put( new byte[]
             { 0x30, 0x05, // GracefulDisconnect ::= SEQUENCE {
-                ( byte ) 0x80, 0x03, 0x01, ( byte ) 0x86, ( byte ) 0xA0 // delay
-                                                                        // INTEGER
-                                                                        // (0..86400)
-                                                                        // DEFAULT
-                                                                        // 0
-            } );
+                ( byte ) 0x80,
+                0x03,
+                0x01,
+                ( byte ) 0x86,
+                ( byte ) 0xA0 // delay
+                              // INTEGER
+                              // (0..86400)
+                              // DEFAULT
+                              // 0
+        } );
         bb.flip();
 
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();
@@ -470,8 +682,9 @@ public class GracefulDisconnectTest
         ByteBuffer bb = ByteBuffer.allocate( 0x0b );
         bb.put( new byte[]
             { 0x30, 0x02, // GracefulDisconnect ::= SEQUENCE {
-                0x02, 0x00 // timeOffline INTEGER (0..720) DEFAULT 0,
-            } );
+                0x02,
+                0x00 // timeOffline INTEGER (0..720) DEFAULT 0,
+        } );
         bb.flip();
 
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();
@@ -500,8 +713,9 @@ public class GracefulDisconnectTest
         ByteBuffer bb = ByteBuffer.allocate( 0x0b );
         bb.put( new byte[]
             { 0x30, 0x02, // GracefulDisconnect ::= SEQUENCE {
-                ( byte ) 0x80, 0x00 // delay INTEGER (0..86400) DEFAULT 0
-            } );
+                ( byte ) 0x80,
+                0x00 // delay INTEGER (0..86400) DEFAULT 0
+        } );
         bb.flip();
 
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();
@@ -531,8 +745,9 @@ public class GracefulDisconnectTest
         ByteBuffer bb = ByteBuffer.allocate( 0x04 );
         bb.put( new byte[]
             { 0x30, 0x02, // GracefulDisconnect ::= SEQUENCE {
-                0x30, 0x00 // replicatedContexts Referral OPTIONAL
-            } );
+                0x30,
+                0x00 // replicatedContexts Referral OPTIONAL
+        } );
         bb.flip();
 
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();
@@ -562,8 +777,10 @@ public class GracefulDisconnectTest
         ByteBuffer bb = ByteBuffer.allocate( 0x06 );
         bb.put( new byte[]
             { 0x30, 0x04, // GracefulDisconnect ::= SEQUENCE {
-                0x30, 0x02, // replicatedContexts Referral OPTIONAL
-                0x04, 0x00 } );
+                0x30,
+                0x02, // replicatedContexts Referral OPTIONAL
+                0x04,
+                0x00 } );
         bb.flip();
 
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();

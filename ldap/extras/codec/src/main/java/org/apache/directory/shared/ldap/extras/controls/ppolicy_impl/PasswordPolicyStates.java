@@ -33,32 +33,33 @@ import org.apache.directory.shared.asn1.ber.grammar.States;
 public enum PasswordPolicyStates implements States
 {
 
-    START_STATE,                            // 0
+    START_STATE, // 0
 
-    PPOLICY_SEQ_STATE,                      // 1
-    
-    PPOLICY_WARNING_TAG_STATE,              // 2
+    PPOLICY_SEQ_STATE, // 1
 
-    PPOLICY_TIME_BEFORE_EXPIRATION_STATE,   // 3
+    PPOLICY_WARNING_TAG_STATE, // 2
 
-    PPOLICY_GRACE_AUTHNS_REMAINING_STATE,   // 4
+    PPOLICY_TIME_BEFORE_EXPIRATION_STATE, // 3
 
-    PPOLICY_ERROR_TAG_STATE,                // 5
+    PPOLICY_GRACE_AUTHNS_REMAINING_STATE, // 4
 
-    END_STATE;                              // 6
+    PPOLICY_ERROR_TAG_STATE, // 5
+
+    END_STATE; // 6
 
     /**
      * {@inheritDoc}
      */
     public String getGrammarName( Grammar<?> grammar )
     {
-        if( grammar instanceof PasswordPolicyGrammar )
+        if ( grammar instanceof PasswordPolicyGrammar )
         {
             return "PASSWORD_POLICY_RESPONSE_CONTROL_GRAMMAR";
         }
-        
+
         return "UNKNOWN_GRAMMAR";
     }
+
 
     /**
      * {@inheritDoc}
@@ -85,8 +86,8 @@ public enum PasswordPolicyStates implements States
     {
         return this == END_STATE;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

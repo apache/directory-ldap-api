@@ -37,8 +37,8 @@ public class SyncDoneValueContainer extends AbstractContainer
     private SyncDoneValue control;
 
     private LdapApiService codec;
-    
-    
+
+
     /**
      * 
      * Creates a new SyncDoneValueControlContainer object.
@@ -91,12 +91,12 @@ public class SyncDoneValueContainer extends AbstractContainer
         this.control = control;
     }
 
-    
+
     public LdapApiService getCodecService()
     {
         return codec;
     }
-    
+
 
     /**
      * clean the container

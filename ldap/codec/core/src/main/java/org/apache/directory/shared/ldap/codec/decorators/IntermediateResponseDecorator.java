@@ -38,7 +38,7 @@ import org.apache.directory.shared.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class IntermediateResponseDecorator extends MessageDecorator<IntermediateResponse> 
+public class IntermediateResponseDecorator extends MessageDecorator<IntermediateResponse>
     implements IntermediateResponse
 {
     /** The response name as a byte[] */
@@ -100,12 +100,11 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
         this.responseNameBytes = responseNameBytes;
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The IntermediateResponse methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -140,8 +139,8 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
     {
         getDecorated().setResponseValue( value );
     }
-    
-    
+
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -234,7 +233,7 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
         {
             throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
         }
-        
+
         return buffer;
     }
 }

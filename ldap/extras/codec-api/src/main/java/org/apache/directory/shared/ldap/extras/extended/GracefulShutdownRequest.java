@@ -37,10 +37,10 @@ public interface GracefulShutdownRequest extends ExtendedRequest<GracefulShutdow
 
     /** The OID for the graceful shutdown extended operation request. */
     String EXTENSION_OID = "1.3.6.1.4.1.18060.0.1.3";
-    
+
     /** Undetermined value used for offline time */
     int UNDETERMINED = 0;
-    
+
     /** The shutdown is immediate */
     int NOW = 0;
 

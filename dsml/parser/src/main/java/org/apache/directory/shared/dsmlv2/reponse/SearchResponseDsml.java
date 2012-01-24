@@ -46,7 +46,7 @@ public class SearchResponseDsml extends AbstractResponseDsml<Response>
     private static final String SEARCH_RESPONSE_TAG = "searchResponse";
 
     /** The responses */
-    private List<DsmlDecorator<? extends Response>> responses = 
+    private List<DsmlDecorator<? extends Response>> responses =
         new ArrayList<DsmlDecorator<? extends Response>>();
 
 
@@ -82,24 +82,24 @@ public class SearchResponseDsml extends AbstractResponseDsml<Response>
     {
         if ( response instanceof SearchResultEntry )
         {
-            ( ( SearchResponse ) getDecorated() ).addSearchResultEntry( 
-                ( SearchResultEntryDsml ) response );            
+            ( ( SearchResponse ) getDecorated() ).addSearchResultEntry(
+                ( SearchResultEntryDsml ) response );
         }
         else if ( response instanceof SearchResultReference )
         {
-            ( ( SearchResponse ) getDecorated() ).addSearchResultReference( 
-                ( SearchResultReferenceDsml ) response );            
+            ( ( SearchResponse ) getDecorated() ).addSearchResultReference(
+                ( SearchResultReferenceDsml ) response );
         }
         else if ( response instanceof SearchResultDone )
         {
-            ( ( SearchResponse ) getDecorated() ).setSearchResultDone( 
-                ( SearchResultDoneDsml ) response );            
+            ( ( SearchResponse ) getDecorated() ).setSearchResultDone(
+                ( SearchResultDoneDsml ) response );
         }
         else
         {
             throw new IllegalArgumentException( "Unidentified search resp type" );
         }
-        
+
         return responses.add( response );
     }
 
@@ -133,7 +133,6 @@ public class SearchResponseDsml extends AbstractResponseDsml<Response>
         {
             element = new DefaultElement( SEARCH_RESPONSE_TAG );
         }
-
 
         // RequestID
         if ( getDecorated() != null )

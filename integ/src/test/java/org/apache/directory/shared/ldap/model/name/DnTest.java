@@ -58,6 +58,7 @@ public class DnTest
 {
     private static SchemaManager schemaManager;
 
+
     /**
      * Initialize OIDs maps for normalization
      */
@@ -104,7 +105,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = b" );
 
-        assertTrue( Dn.isValid("a = b") );
+        assertTrue( Dn.isValid( "a = b" ) );
         assertEquals( "a = b", dn.getName() );
         assertEquals( "a=b", dn.getNormName() );
     }
@@ -118,7 +119,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = b  " );
 
-        assertTrue( Dn.isValid("a = b  ") );
+        assertTrue( Dn.isValid( "a = b  " ) );
         assertEquals( "a = b  ", dn.getName() );
         assertEquals( "a=b", dn.getNormName() );
     }
@@ -132,7 +133,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = b, c = d" );
 
-        assertTrue( Dn.isValid("a = b, c = d") );
+        assertTrue( Dn.isValid( "a = b, c = d" ) );
         assertEquals( "a=b,c=d", dn.getNormName() );
         assertEquals( "a = b, c = d", dn.getName() );
     }
@@ -146,7 +147,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = b  , c = d" );
 
-        assertTrue( Dn.isValid("a = b  , c = d") );
+        assertTrue( Dn.isValid( "a = b  , c = d" ) );
         assertEquals( "a=b,c=d", dn.getNormName() );
         assertEquals( "a = b  , c = d", dn.getName() );
     }
@@ -160,7 +161,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a=b, a =b, a= b, a = b, a  =  b" );
 
-        assertTrue( Dn.isValid("a=b, a =b, a= b, a = b, a  =  b") );
+        assertTrue( Dn.isValid( "a=b, a =b, a= b, a = b, a  =  b" ) );
         assertEquals( "a=b,a=b,a=b,a=b,a=b", dn.getNormName() );
         assertEquals( "a=b, a =b, a= b, a = b, a  =  b", dn.getName() );
     }
@@ -175,7 +176,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a=b;c=d,e=f" );
 
-        assertTrue( Dn.isValid("a=b;c=d,e=f") );
+        assertTrue( Dn.isValid( "a=b;c=d,e=f" ) );
         assertEquals( "a=b,c=d,e=f", dn.getNormName() );
         assertEquals( "a=b;c=d,e=f", dn.getName() );
     }
@@ -189,7 +190,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = b + c = d" );
 
-        assertTrue( Dn.isValid("a = b + c = d") );
+        assertTrue( Dn.isValid( "a = b + c = d" ) );
         assertEquals( "a=b+c=d", dn.getNormName() );
         assertEquals( "a = b + c = d", dn.getName() );
     }
@@ -204,7 +205,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a=b+c=d, e=f + g=h + i=j" );
 
-        assertTrue( Dn.isValid("a=b+c=d, e=f + g=h + i=j") );
+        assertTrue( Dn.isValid( "a=b+c=d, e=f + g=h + i=j" ) );
         assertEquals( "a=b+c=d,e=f+g=h+i=j", dn.getNormName() );
         assertEquals( "a=b+c=d, e=f + g=h + i=j", dn.getName() );
     }
@@ -234,7 +235,7 @@ public class DnTest
     {
         Dn dn = new Dn( "OID.12.34.56 = azerty" );
 
-        assertTrue( Dn.isValid("OID.12.34.56 = azerty") );
+        assertTrue( Dn.isValid( "OID.12.34.56 = azerty" ) );
         assertEquals( "oid.12.34.56=azerty", dn.getNormName() );
         assertEquals( "OID.12.34.56 = azerty", dn.getName() );
     }
@@ -248,7 +249,7 @@ public class DnTest
     {
         Dn dn = new Dn( "oid.12.34.56 = azerty" );
 
-        assertTrue( Dn.isValid("oid.12.34.56 = azerty") );
+        assertTrue( Dn.isValid( "oid.12.34.56 = azerty" ) );
         assertEquals( "oid.12.34.56=azerty", dn.getNormName() );
         assertEquals( "oid.12.34.56 = azerty", dn.getName() );
     }
@@ -263,7 +264,7 @@ public class DnTest
     {
         Dn dn = new Dn( "12.34.56 = azerty" );
 
-        assertTrue( Dn.isValid("12.34.56 = azerty") );
+        assertTrue( Dn.isValid( "12.34.56 = azerty" ) );
         assertEquals( "12.34.56=azerty", dn.getNormName() );
         assertEquals( "12.34.56 = azerty", dn.getName() );
     }
@@ -278,7 +279,7 @@ public class DnTest
     {
         Dn dn = new Dn( "12.34.56 = azerty; 7.8 = test" );
 
-        assertTrue( Dn.isValid("12.34.56 = azerty; 7.8 = test") );
+        assertTrue( Dn.isValid( "12.34.56 = azerty; 7.8 = test" ) );
         assertEquals( "12.34.56=azerty,7.8=test", dn.getNormName() );
         assertEquals( "12.34.56 = azerty; 7.8 = test", dn.getName() );
     }
@@ -292,7 +293,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C4\\8D" );
 
-        assertTrue( Dn.isValid("a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C4\\8D") );
+        assertTrue( Dn.isValid( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C4\\8D" ) );
         assertEquals( "a=\\,=\\+\\<\\>#\\;\\\\\\\"\u010D", dn.getNormName() );
         assertEquals( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C4\\8D", dn.getName() );
     }
@@ -306,7 +307,7 @@ public class DnTest
     {
         Dn dn = new Dn( "SN=Lu\\C4\\8Di\\C4\\87" );
 
-        assertTrue( Dn.isValid("SN=Lu\\C4\\8Di\\C4\\87") );
+        assertTrue( Dn.isValid( "SN=Lu\\C4\\8Di\\C4\\87" ) );
         assertEquals( "sn=Lu\u010Di\u0107", dn.getNormName() );
         assertEquals( "SN=Lu\\C4\\8Di\\C4\\87", dn.getName() );
     }
@@ -320,7 +321,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = #0010A0AAFF" );
 
-        assertTrue( Dn.isValid("a = #0010A0AAFF") );
+        assertTrue( Dn.isValid( "a = #0010A0AAFF" ) );
         assertEquals( "a=#0010A0AAFF", dn.getNormName() );
         assertEquals( "a = #0010A0AAFF", dn.getName() );
     }
@@ -337,22 +338,22 @@ public class DnTest
     {
         Dn dn = new Dn( "a = \\#123456" );
 
-        assertTrue( Dn.isValid("a = \\#123456") );
+        assertTrue( Dn.isValid( "a = \\#123456" ) );
         assertEquals( "a=\\#123456", dn.getNormName() );
         assertEquals( "a = \\#123456", dn.getName() );
 
         Rdn rdn = dn.getRdn();
         assertEquals( "a = \\#123456", rdn.getName() );
 
-        assertTrue( Dn.isValid("a = \\#00") );
-        assertTrue( Dn.isValid("a = \\#11") );
-        assertTrue( Dn.isValid("a = \\#99") );
-        assertTrue( Dn.isValid("a = \\#AA") );
-        assertTrue( Dn.isValid("a = \\#FF") );
+        assertTrue( Dn.isValid( "a = \\#00" ) );
+        assertTrue( Dn.isValid( "a = \\#11" ) );
+        assertTrue( Dn.isValid( "a = \\#99" ) );
+        assertTrue( Dn.isValid( "a = \\#AA" ) );
+        assertTrue( Dn.isValid( "a = \\#FF" ) );
 
-        assertTrue( Dn.isValid("uid=\\#123456") );
-        assertTrue( Dn.isValid("cn=\\#ACL_AD-Projects_Author,ou=Notes_Group,o=Contacts,c=DE") );
-        assertTrue( Dn.isValid("cn=\\#Abraham") );
+        assertTrue( Dn.isValid( "uid=\\#123456" ) );
+        assertTrue( Dn.isValid( "cn=\\#ACL_AD-Projects_Author,ou=Notes_Group,o=Contacts,c=DE" ) );
+        assertTrue( Dn.isValid( "cn=\\#Abraham" ) );
     }
 
 
@@ -386,7 +387,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = \\#this is a sharp" );
 
-        assertTrue( Dn.isValid("a = \\#this is a sharp") );
+        assertTrue( Dn.isValid( "a = \\#this is a sharp" ) );
         assertEquals( "a=\\#this is a sharp", dn.getNormName() );
         assertEquals( "a = \\#this is a sharp", dn.getName() );
 
@@ -403,7 +404,7 @@ public class DnTest
     {
         Dn dn = new Dn( "ou = \\#this is a sharp" );
 
-        assertTrue( Dn.isValid("ou = \\#this is a sharp") );
+        assertTrue( Dn.isValid( "ou = \\#this is a sharp" ) );
         assertEquals( "ou=\\#this is a sharp", dn.getNormName() );
         assertEquals( "ou = \\#this is a sharp", dn.getName() );
 
@@ -423,7 +424,7 @@ public class DnTest
     public void testNormalizeDnEscEscHexHex() throws LdapException
     {
         Dn dn = new Dn( "ou = AC\\\\DC" );
-        assertTrue( Dn.isValid("ou = AC\\\\DC") );
+        assertTrue( Dn.isValid( "ou = AC\\\\DC" ) );
         assertEquals( "ou=AC\\\\DC", dn.getNormName() );
         assertEquals( "ou = AC\\\\DC", dn.getName() );
 
@@ -448,7 +449,7 @@ public class DnTest
         catch ( LdapException ine )
         {
 
-            assertFalse( Dn.isValid("a = #0010Z0AAFF") );
+            assertFalse( Dn.isValid( "a = #0010Z0AAFF" ) );
             assertTrue( true );
         }
     }
@@ -467,7 +468,7 @@ public class DnTest
         }
         catch ( LdapException ine )
         {
-            assertFalse( Dn.isValid("a = #AABBCCDD3") );
+            assertFalse( Dn.isValid( "a = #AABBCCDD3" ) );
             assertTrue( true );
         }
     }
@@ -481,7 +482,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = quoted \\\"value\\\"" );
 
-        assertTrue( Dn.isValid("a = quoted \\\"value\\\"") );
+        assertTrue( Dn.isValid( "a = quoted \\\"value\\\"" ) );
         assertEquals( "a=quoted \\\"value\\\"", dn.getNormName() );
         assertEquals( "a = quoted \\\"value\\\"", dn.getName() );
     }
@@ -495,7 +496,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a = \\\" quoted value \\\"" );
 
-        assertTrue( Dn.isValid("a = \\\" quoted value \\\"") );
+        assertTrue( Dn.isValid( "a = \\\" quoted value \\\"" ) );
         assertEquals( "a=\\\" quoted value \\\"", dn.getNormName() );
         assertEquals( "a = \\\" quoted value \\\"", dn.getName() );
     }
@@ -507,8 +508,8 @@ public class DnTest
     @Test
     public void testDnComaAtEnd()
     {
-        assertFalse( Dn.isValid("a = b,") );
-        assertFalse( Dn.isValid("a = b, ") );
+        assertFalse( Dn.isValid( "a = b," ) );
+        assertFalse( Dn.isValid( "a = b, " ) );
 
         try
         {
@@ -613,7 +614,7 @@ public class DnTest
     {
         Dn dn = new Dn();
 
-        assertTrue( Dn.isValid("") );
+        assertTrue( Dn.isValid( "" ) );
         assertEquals( 0, dn.size() );
     }
 
@@ -626,7 +627,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a=b" );
 
-        assertTrue( Dn.isValid("a=b") );
+        assertTrue( Dn.isValid( "a=b" ) );
         assertEquals( 1, dn.size() );
     }
 
@@ -639,7 +640,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a=b, c=d, e=f" );
 
-        assertTrue( Dn.isValid("a=b, c=d, e=f") );
+        assertTrue( Dn.isValid( "a=b, c=d, e=f" ) );
         assertEquals( 3, dn.size() );
     }
 
@@ -652,7 +653,7 @@ public class DnTest
     {
         Dn dn = new Dn( "a=b+c=d, c=d, e=f" );
 
-        assertTrue( Dn.isValid("a=b+c=d, c=d, e=f") );
+        assertTrue( Dn.isValid( "a=b+c=d, c=d, e=f" ) );
         assertEquals( 3, dn.size() );
     }
 
@@ -903,12 +904,12 @@ public class DnTest
     /**
      * Get the prefix out of bound
      */
-    @Test( expected=LdapInvalidDnException.class)
+    @Test(expected = LdapInvalidDnException.class)
     public void testDnGetPrefixPos4() throws LdapException
     {
         Dn dn = new Dn( "a=b, c=d,e = f" );
 
-         dn.getAncestorOf( "a=z" );
+        dn.getAncestorOf( "a=z" );
     }
 
 
@@ -1054,7 +1055,7 @@ public class DnTest
     public void testDnStartsWithNull() throws LdapException
     {
         Dn dn = new Dn( "a=b, c=d,e = f" );
-        assertEquals( true, dn.isDescendantOf( (Dn) null ) );
+        assertEquals( true, dn.isDescendantOf( ( Dn ) null ) );
     }
 
 
@@ -1132,10 +1133,8 @@ public class DnTest
     public void testDnEndsWithNull() throws LdapException
     {
         Dn dn = new Dn( "a=b, c=d,e = f" );
-        assertEquals( true, dn.isDescendantOf( (Dn) null ) );
+        assertEquals( true, dn.isDescendantOf( ( Dn ) null ) );
     }
-
-
 
 
     @Test
@@ -1169,7 +1168,6 @@ public class DnTest
     }
 
 
-    
     @Test
     public void testAttributeComparisonIsCaseInSensitive() throws Exception
     {
@@ -1220,9 +1218,9 @@ public class DnTest
     {
         Dn dn = new Dn( "cn = John, ou = People, OU = Marketing" );
 
-        byte[] bytes = Dn.getBytes(dn);
+        byte[] bytes = Dn.getBytes( dn );
 
-        assertEquals( 30, Dn.getNbBytes(dn) );
+        assertEquals( 30, Dn.getNbBytes( dn ) );
         assertEquals( "cn=John,ou=People,ou=Marketing", new String( bytes, "UTF-8" ) );
     }
 
@@ -1230,9 +1228,9 @@ public class DnTest
     @Test
     public void testStringParser() throws Exception
     {
-        String dn = Strings.utf8ToString(new byte[]
-                {'C', 'N', ' ', '=', ' ', 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', ' ', 'L', (byte) 0xc3,
-                        (byte) 0xa9, 'c', 'h', 'a', 'r', 'n', 'y'});
+        String dn = Strings.utf8ToString( new byte[]
+            { 'C', 'N', ' ', '=', ' ', 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', ' ', 'L', ( byte ) 0xc3,
+                ( byte ) 0xa9, 'c', 'h', 'a', 'r', 'n', 'y' } );
 
         Dn name = new Dn( dn );
 
@@ -1957,7 +1955,8 @@ public class DnTest
 
         Dn result = name.apply( schemaManager );
 
-        assertEquals( "2.5.4.11=some people,0.9.2342.19200300.100.1.25=example,0.9.2342.19200300.100.1.25=com", result.getNormName() );
+        assertEquals( "2.5.4.11=some people,0.9.2342.19200300.100.1.25=example,0.9.2342.19200300.100.1.25=com",
+            result.getNormName() );
     }
 
 
@@ -2031,7 +2030,7 @@ public class DnTest
         Dn name = new Dn(
             "2.5.4.11= Some   People   + domainComponent=  And   Some anImAls,DomainComponent = eXample,0.9.2342.19200300.100.1.25= cOm" );
 
-        Dn result = name.apply( schemaManager);
+        Dn result = name.apply( schemaManager );
 
         assertTrue( result
             .getNormName()
@@ -2050,11 +2049,12 @@ public class DnTest
     @Test
     public void testLdapNameHashCode() throws Exception
     {
-        Dn name1 = new Dn( schemaManager,
-                    "2.5.4.11= Some   People   + domainComponent=  And   Some anImAls,DomainComponent = eXample,0.9.2342.19200300.100.1.25= cOm" );
+        Dn name1 = new Dn(
+            schemaManager,
+            "2.5.4.11= Some   People   + domainComponent=  And   Some anImAls,DomainComponent = eXample,0.9.2342.19200300.100.1.25= cOm" );
 
         Dn name2 = new Dn( schemaManager,
-                    "2.5.4.11=some people+domainComponent=and some animals,DomainComponent=example,0.9.2342.19200300.100.1.25=com" );
+            "2.5.4.11=some people+domainComponent=and some animals,DomainComponent=example,0.9.2342.19200300.100.1.25=com" );
 
         assertEquals( name1.hashCode(), name2.hashCode() );
     }
@@ -2083,7 +2083,8 @@ public class DnTest
         LdapName jName = new LdapName( "cn=four,cn=three,cn=two,cn=one" );
         Dn aName = new Dn( "cn=four,cn=three,cn=two,cn=one" );
 
-        assertEquals( jName.getPrefix( 0 ).toString(), aName.getAncestorOf( "cn=four,cn=three,cn=two,cn=one" ).toString() );
+        assertEquals( jName.getPrefix( 0 ).toString(), aName.getAncestorOf( "cn=four,cn=three,cn=two,cn=one" )
+            .toString() );
         assertEquals( jName.getPrefix( 1 ).toString(), aName.getAncestorOf( "cn=four,cn=three,cn=two" ).toString() );
         assertEquals( jName.getPrefix( 2 ).toString(), aName.getAncestorOf( "cn=four,cn=three" ).toString() );
         assertEquals( jName.getPrefix( 3 ).toString(), aName.getAncestorOf( "cn=four" ).toString() );
@@ -2104,7 +2105,8 @@ public class DnTest
         assertEquals( jName.getSuffix( 1 ).toString(), aName.getDescendantOf( "cn=one" ).toString() );
         assertEquals( jName.getSuffix( 2 ).toString(), aName.getDescendantOf( "cn=two,cn=one" ).toString() );
         assertEquals( jName.getSuffix( 3 ).toString(), aName.getDescendantOf( "cn=three,cn=two,cn=one" ).toString() );
-        assertEquals( jName.getSuffix( 4 ).toString(), aName.getDescendantOf( "cn=four,cn=three,cn=two,cn=one" ).toString() );
+        assertEquals( jName.getSuffix( 4 ).toString(), aName.getDescendantOf( "cn=four,cn=three,cn=two,cn=one" )
+            .toString() );
     }
 
 
@@ -2442,24 +2444,24 @@ public class DnTest
     @Test
     public void testIsValid()
     {
-        assertTrue( Dn.isValid("") );
+        assertTrue( Dn.isValid( "" ) );
 
-        assertFalse( Dn.isValid("a") );
-        assertFalse( Dn.isValid("a ") );
+        assertFalse( Dn.isValid( "a" ) );
+        assertFalse( Dn.isValid( "a " ) );
 
-        assertTrue( Dn.isValid("a=") );
-        assertTrue( Dn.isValid("a= ") );
+        assertTrue( Dn.isValid( "a=" ) );
+        assertTrue( Dn.isValid( "a= " ) );
 
-        assertFalse( Dn.isValid("=") );
-        assertFalse( Dn.isValid(" = ") );
-        assertFalse( Dn.isValid(" = a") );
+        assertFalse( Dn.isValid( "=" ) );
+        assertFalse( Dn.isValid( " = " ) );
+        assertFalse( Dn.isValid( " = a" ) );
     }
 
 
     @Test
     public void testCompositeRDN() throws LdapException
     {
-        assertTrue( Dn.isValid("a=b+c=d+e=f,g=h") );
+        assertTrue( Dn.isValid( "a=b+c=d+e=f,g=h" ) );
 
         Dn dn = new Dn( "a=b+c=d+e=f,g=h" );
 
@@ -2471,7 +2473,7 @@ public class DnTest
     public void testCompositeRDNOids() throws LdapException
     {
         assertTrue( Dn
-            .isValid("1.2.3.4.5=0+1.2.3.4.6=0+1.2.3.4.7=omnischmomni,2.5.4.3=subtree,0.9.2342.19200300.100.1.25=example,0.9.2342.19200300.100.1.25=com") );
+            .isValid( "1.2.3.4.5=0+1.2.3.4.6=0+1.2.3.4.7=omnischmomni,2.5.4.3=subtree,0.9.2342.19200300.100.1.25=example,0.9.2342.19200300.100.1.25=com" ) );
 
         Dn dn = new Dn(
             "1.2.3.4.5=0+1.2.3.4.6=0+1.2.3.4.7=omnischmomni,2.5.4.3=subtree,0.9.2342.19200300.100.1.25=example,0.9.2342.19200300.100.1.25=com" );
@@ -2501,7 +2503,7 @@ public class DnTest
         Ava atav3 = dn3.getRdn().getAva();
         assertEquals( "cn", atav3.getUpType() );
         assertEquals( "ABC", atav3.getUpValue().getString() );
-        assertTrue( Arrays.equals( Strings.getBytesUtf8("ABC"), atav3.getNormValue().getBytes() ) );
+        assertTrue( Arrays.equals( Strings.getBytesUtf8( "ABC" ), atav3.getNormValue().getBytes() ) );
 
         // antlr parser:
         Dn dn4 = new Dn( " cn = \\41\\42\\43 , ou=system " );
@@ -2957,16 +2959,16 @@ public class DnTest
 
         assertEquals( dnStr, dn.toString() );
     }
-    
-    
+
+
     @Test
     public void testCreateDnFromRdnParent() throws Exception
     {
         String rdn = "cn=test";
         String parentDn = "ou=apache,ou=org";
-        
+
         Dn dn = new Dn( rdn, parentDn );
-        
+
         assertEquals( "cn=test,ou=apache,ou=org", dn.getName() );
     }
 }

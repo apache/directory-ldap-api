@@ -111,7 +111,6 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
     // Parameters of the Extended Response Value
     // -----------------------------------------------------------------------
 
-    
     /* (non-Javadoc)
      * @see org.apache.directory.shared.ldap.extras.extended.GracefulDisconnectResponse#getDelay()
      */

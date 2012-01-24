@@ -53,6 +53,7 @@ public class StoreCompareRequestAssertionValue extends GrammarAction<LdapMessage
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -86,13 +87,13 @@ public class StoreCompareRequestAssertionValue extends GrammarAction<LdapMessage
 
                 if ( IS_DEBUG )
                 {
-                    LOG.debug( "Comparing attribute value {}", Strings.dumpBytes(compareRequest
-                            .getAssertionValue().getBytes()) );
+                    LOG.debug( "Comparing attribute value {}", Strings.dumpBytes( compareRequest
+                        .getAssertionValue().getBytes() ) );
                 }
             }
             else
             {
-                compareRequest.setAssertionValue( Strings.utf8ToString(tlv.getValue().getData()) );
+                compareRequest.setAssertionValue( Strings.utf8ToString( tlv.getValue().getData() ) );
 
                 if ( LOG.isDebugEnabled() )
                 {

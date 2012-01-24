@@ -64,19 +64,42 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x1B, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., intermediateResponse IntermediateResponse, ...
-                0x79, 0x16, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
+                0x79,
+                0x16, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
                 // responseName [0] LDAPOID,
-                ( byte ) 0x80, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2',
+                ( byte ) 0x80,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '2',
                 // responseValue [1] OCTET STRING OPTIONAL }
-                ( byte ) 0x81, 0x05, 'v', 'a', 'l', 'u', 'e' } );
+                ( byte ) 0x81,
+                0x05,
+                'v',
+                'a',
+                'l',
+                'u',
+                'e' } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer = 
+        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
             new LdapMessageContainer<IntermediateResponseDecorator>( codec );
 
         // Decode the IntermediateResponse PDU
@@ -95,7 +118,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, intermediateResponse.getMessageId() );
         assertEquals( "1.3.6.1.5.5.2", intermediateResponse.getResponseName() );
-        assertEquals( "value", Strings.utf8ToString(intermediateResponse.getResponseValue()) );
+        assertEquals( "value", Strings.utf8ToString( intermediateResponse.getResponseValue() ) );
 
         // Check the encoding
         try
@@ -105,7 +128,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x1D, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -130,24 +153,71 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x38, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 // CHOICE { ..., intermediateResponse IntermediateResponse, ...
                 0x79,
                 0x16, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
                 // responseName [0] LDAPOID,
-                ( byte ) 0x80, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2',
+                ( byte ) 0x80,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '2',
                 // requestValue [1] OCTET STRING OPTIONAL }
-                ( byte ) 0x81, 0x05, 'v', 'a', 'l', 'u', 'e', ( byte ) 0xA0,
+                ( byte ) 0x81,
+                0x05,
+                'v',
+                'a',
+                'l',
+                'u',
+                'e',
+                ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.', '1', '1', '3', '7', '3',
-                '0', '.', '3', '.', '4', '.', '2' } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                '2',
+                '.',
+                '1',
+                '6',
+                '.',
+                '8',
+                '4',
+                '0',
+                '.',
+                '1',
+                '.',
+                '1',
+                '1',
+                '3',
+                '7',
+                '3',
+                '0',
+                '.',
+                '3',
+                '.',
+                '4',
+                '.',
+                '2' } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer = 
+        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
             new LdapMessageContainer<IntermediateResponseDecorator>( codec );
 
         // Decode the IntermediateResponse PDU
@@ -166,7 +236,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, intermediateResponse.getMessageId() );
         assertEquals( "1.3.6.1.5.5.2", intermediateResponse.getResponseName() );
-        assertEquals( "value", Strings.utf8ToString(intermediateResponse.getResponseValue()) );
+        assertEquals( "value", Strings.utf8ToString( intermediateResponse.getResponseValue() ) );
 
         // Check the Control
         Map<String, Control> controls = intermediateResponse.getControls();
@@ -174,9 +244,10 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> )controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes((byte[]) control.getValue()) );
+        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
         // Check the encoding
         try
@@ -186,7 +257,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x3A, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -212,24 +283,64 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x31, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 // CHOICE { ..., intermediateResponse IntermediateResponse, ...
                 0x79,
                 0x0F, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
                 // responseName [0] LDAPOID,
-                ( byte ) 0x80, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2',
+                ( byte ) 0x80,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '2',
                 // requestValue [1] OCTET STRING OPTIONAL }
                 ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, '2', '.', '1', '6', '.', '8', '4', '0', '.', '1', '.', '1', '1', '3', '7', '3',
-                '0', '.', '3', '.', '4', '.', '2' } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                '2',
+                '.',
+                '1',
+                '6',
+                '.',
+                '8',
+                '4',
+                '0',
+                '.',
+                '1',
+                '.',
+                '1',
+                '1',
+                '3',
+                '7',
+                '3',
+                '0',
+                '.',
+                '3',
+                '.',
+                '4',
+                '.',
+                '2' } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer = 
+        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
             new LdapMessageContainer<IntermediateResponseDecorator>( codec );
 
         // Decode the IntermediateResponse PDU
@@ -248,7 +359,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, intermediateResponse.getMessageId() );
         assertEquals( "1.3.6.1.5.5.2", intermediateResponse.getResponseName() );
-        assertEquals( "", Strings.utf8ToString(intermediateResponse.getResponseValue()) );
+        assertEquals( "", Strings.utf8ToString( intermediateResponse.getResponseValue() ) );
 
         // Check the Control
         Map<String, Control> controls = intermediateResponse.getControls();
@@ -256,9 +367,10 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> )controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes((byte[]) control.getValue()) );
+        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
         // Check the encoding
         try
@@ -268,7 +380,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x33, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -292,15 +404,18 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x05, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., intermediateResponse IntermediateResponse, ...
-                0x79, 0x00, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
+                0x79,
+                0x00, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
             } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer = 
+        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
             new LdapMessageContainer<IntermediateResponseDecorator>( codec );
 
         // Decode a IntermediateResponse PDU
@@ -328,15 +443,19 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x07, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., intermediateResponse IntermediateResponse, ...
-                0x79, 0x02, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
-                ( byte ) 0x80, 0x00 } );
+                0x79,
+                0x02, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
+                ( byte ) 0x80,
+                0x00 } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer = 
+        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
             new LdapMessageContainer<IntermediateResponseDecorator>( codec );
 
         // Decode a IntermediateResponse PDU
@@ -364,16 +483,33 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x14, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., intermediateResponse IntermediateResponse, ...
-                0x79, 0x0F, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
+                0x79,
+                0x0F, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
                 // responseName [0] LDAPOID,
-                ( byte ) 0x80, 0x0D, '1', '-', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2', } );
+                ( byte ) 0x80,
+                0x0D,
+                '1',
+                '-',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '2', } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer = 
+        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
             new LdapMessageContainer<IntermediateResponseDecorator>( codec );
 
         // Decode a IntermediateResponse PDU
@@ -401,17 +537,34 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x14, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., intermediateResponse IntermediateResponse, ...
-                0x79, 0x0F, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
+                0x79,
+                0x0F, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
                 // responseName [0] LDAPOID,
-                ( byte ) 0x80, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2', } );
+                ( byte ) 0x80,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '2', } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer = 
+        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
             new LdapMessageContainer<IntermediateResponseDecorator>( codec );
 
         // Decode the IntermediateResponse PDU
@@ -439,7 +592,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x16, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -464,20 +617,36 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x16, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 // CHOICE { ..., intermediateResponse IntermediateResponse, ...
                 0x79,
                 0x11, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
                 // responseName [0] LDAPOID,
-                ( byte ) 0x80, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2', ( byte ) 0x81,
+                ( byte ) 0x80,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '2',
+                ( byte ) 0x81,
                 0x00 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer = 
+        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
             new LdapMessageContainer<IntermediateResponseDecorator>( codec );
 
         // Decode the IntermediateResponse PDU
@@ -496,7 +665,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, intermediateResponse.getMessageId() );
         assertEquals( "1.3.6.1.5.5.2", intermediateResponse.getResponseName() );
-        assertEquals( "", Strings.utf8ToString(intermediateResponse.getResponseValue()) );
+        assertEquals( "", Strings.utf8ToString( intermediateResponse.getResponseValue() ) );
 
         // Check the encoding
         try
@@ -506,7 +675,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x18, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -530,17 +699,26 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x0C, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., intermediateResponse IntermediateResponse, ...
-                0x79, 0x07, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
+                0x79,
+                0x07, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
                 // responseValue [1] OCTET STRING OPTIONAL,
-                ( byte ) 0x81, 0x05, 'v', 'a', 'l', 'u', 'e' } );
+                ( byte ) 0x81,
+                0x05,
+                'v',
+                'a',
+                'l',
+                'u',
+                'e' } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer = 
+        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
             new LdapMessageContainer<IntermediateResponseDecorator>( codec );
 
         // Decode the IntermediateResponse PDU
@@ -559,7 +737,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, intermediateResponse.getMessageId() );
         assertEquals( "", intermediateResponse.getResponseName() );
-        assertEquals( "value", Strings.utf8ToString(intermediateResponse.getResponseValue()) );
+        assertEquals( "value", Strings.utf8ToString( intermediateResponse.getResponseValue() ) );
 
         // Check the encoding
         try
@@ -569,7 +747,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x0E, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -593,17 +771,34 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x14, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., intermediateResponse IntermediateResponse, ...
-                0x79, 0x0F, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
+                0x79,
+                0x0F, // IntermediateResponse ::= [APPLICATION 25] SEQUENCE {
                 // responseName [0] LDAPOID,
-                ( byte ) 0x80, 0x0D, '1', '.', '3', '.', '6', '.', '1', '.', '5', '.', '5', '.', '2', } );
+                ( byte ) 0x80,
+                0x0D,
+                '1',
+                '.',
+                '3',
+                '.',
+                '6',
+                '.',
+                '1',
+                '.',
+                '5',
+                '.',
+                '5',
+                '.',
+                '2', } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer = 
+        LdapMessageContainer<IntermediateResponseDecorator> ldapMessageContainer =
             new LdapMessageContainer<IntermediateResponseDecorator>( codec );
 
         // Decode the IntermediateResponse PDU
@@ -622,7 +817,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, intermediateResponse.getMessageId() );
         assertEquals( "1.3.6.1.5.5.2", intermediateResponse.getResponseName() );
-        assertEquals( "", Strings.utf8ToString(intermediateResponse.getResponseValue()) );
+        assertEquals( "", Strings.utf8ToString( intermediateResponse.getResponseValue() ) );
 
         // Check the encoding
         try
@@ -632,7 +827,7 @@ public class IntermediateResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x16, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }

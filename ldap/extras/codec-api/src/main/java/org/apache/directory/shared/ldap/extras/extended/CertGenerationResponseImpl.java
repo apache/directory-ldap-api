@@ -36,6 +36,7 @@ public class CertGenerationResponseImpl extends ExtendedResponseImpl implements 
     /** The serial version UUID */
     private static final long serialVersionUID = 1L;
 
+
     public CertGenerationResponseImpl( int messageId, ResultCodeEnum rcode )
     {
         super( messageId, EXTENSION_OID );

@@ -48,14 +48,13 @@ import org.apache.directory.shared.util.Strings;
 public class CertGenerationObject extends AbstractAsn1Object
 {
     private CertGenerationRequest request;
-    
-    
+
+
     public CertGenerationObject( CertGenerationRequest request )
     {
         this.request = request;
     }
-    
-    
+
     /** stores the length of the request*/
     private int requestLength = 0;
 

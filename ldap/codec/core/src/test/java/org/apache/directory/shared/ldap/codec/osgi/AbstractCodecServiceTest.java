@@ -57,14 +57,14 @@ public abstract class AbstractCodecServiceTest
             {
                 return null;
             }
-            
+
+
             public ProtocolDecoder getDecoder( IoSession session ) throws Exception
             {
                 return null;
             }
-        });
-        
-        
+        } );
+
         if ( LdapApiServiceFactory.isInitialized() == false )
         {
             LdapApiServiceFactory.initialize( codec );

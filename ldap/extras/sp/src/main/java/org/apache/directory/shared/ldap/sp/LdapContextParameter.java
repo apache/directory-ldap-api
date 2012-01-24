@@ -20,8 +20,8 @@
 
 package org.apache.directory.shared.ldap.sp;
 
-import java.io.Serializable;
 
+import java.io.Serializable;
 
 
 /**
@@ -32,14 +32,16 @@ import java.io.Serializable;
 public class LdapContextParameter implements Serializable
 {
     private static final long serialVersionUID = -8703671542595407603L;
-    
+
     private String name;
+
 
     public LdapContextParameter( String name )
     {
         this.name = name;
     }
-    
+
+
     public String getValue()
     {
         return name;

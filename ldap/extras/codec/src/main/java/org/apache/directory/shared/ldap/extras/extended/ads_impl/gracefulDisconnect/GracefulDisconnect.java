@@ -131,7 +131,7 @@ public class GracefulDisconnect extends GracefulAction
             replicatedContextsLength = 0;
 
             // We may have more than one reference.
-            for ( LdapUrl replicatedContext:replicatedContexts )
+            for ( LdapUrl replicatedContext : replicatedContexts )
             {
                 int ldapUrlLength = replicatedContext.getNbBytes();
                 replicatedContextsLength += 1 + TLV.getNbBytes( ldapUrlLength ) + ldapUrlLength;
@@ -177,7 +177,7 @@ public class GracefulDisconnect extends GracefulAction
             bb.put( TLV.getBytes( replicatedContextsLength ) );
 
             // We may have more than one reference.
-            for ( LdapUrl replicatedContext:replicatedContexts )
+            for ( LdapUrl replicatedContext : replicatedContexts )
             {
                 Value.encode( bb, replicatedContext.getBytesReference() );
             }
@@ -198,12 +198,12 @@ public class GracefulDisconnect extends GracefulAction
         sb.append( "    TimeOffline : " ).append( timeOffline ).append( '\n' );
         sb.append( "    Delay : " ).append( delay ).append( '\n' );
 
-        if ( ( replicatedContexts != null) && ( replicatedContexts.size() != 0 ) )
+        if ( ( replicatedContexts != null ) && ( replicatedContexts.size() != 0 ) )
         {
             sb.append( "    Replicated contexts :" );
 
             // We may have more than one reference.
-            for ( LdapUrl url:replicatedContexts )
+            for ( LdapUrl url : replicatedContexts )
             {
                 sb.append( "\n        " ).append( url );
             }

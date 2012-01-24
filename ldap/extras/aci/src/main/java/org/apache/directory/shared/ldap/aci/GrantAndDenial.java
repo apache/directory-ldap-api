@@ -30,86 +30,86 @@ public enum GrantAndDenial
     // Permissions that may be used in conjunction with any component of
     // <tt>ProtectedItem</tt>s.
     /** Grant for {@link MicroOperation#ADD} */
-    GRANT_ADD ( MicroOperation.ADD, 0, true ),
+    GRANT_ADD(MicroOperation.ADD, 0, true),
 
     /** Denial for {@link MicroOperation#ADD} */
-    DENY_ADD ( MicroOperation.ADD, 1, false ),
+    DENY_ADD(MicroOperation.ADD, 1, false),
 
     /** Grant for {@link MicroOperation#DISCLOSE_ON_ERROR} */
-    GRANT_DISCLOSE_ON_ERROR ( MicroOperation.DISCLOSE_ON_ERROR, 2, true ),
+    GRANT_DISCLOSE_ON_ERROR(MicroOperation.DISCLOSE_ON_ERROR, 2, true),
 
     /** Denial for {@link MicroOperation#DISCLOSE_ON_ERROR} */
-    DENY_DISCLOSE_ON_ERROR ( MicroOperation.DISCLOSE_ON_ERROR, 3, false ),
+    DENY_DISCLOSE_ON_ERROR(MicroOperation.DISCLOSE_ON_ERROR, 3, false),
 
     /** Grant for {@link MicroOperation#READ} */
-    GRANT_READ ( MicroOperation.READ, 4, true ),
+    GRANT_READ(MicroOperation.READ, 4, true),
 
     /** Denial for {@link MicroOperation#READ} */
-    DENY_READ ( MicroOperation.READ, 5, false ),
+    DENY_READ(MicroOperation.READ, 5, false),
 
     /** Grant for {@link MicroOperation#REMOVE} */
-    GRANT_REMOVE ( MicroOperation.REMOVE, 6, true ),
+    GRANT_REMOVE(MicroOperation.REMOVE, 6, true),
 
     /** Denial for {@link MicroOperation#REMOVE} */
-    DENY_REMOVE ( MicroOperation.REMOVE, 7, false ),
+    DENY_REMOVE(MicroOperation.REMOVE, 7, false),
 
     // Permissions that may be used only in conjunction with the entry
     // component.
     /** Grant for {@link MicroOperation#BROWSE} */
-    GRANT_BROWSE ( MicroOperation.BROWSE, 8, true ),
+    GRANT_BROWSE(MicroOperation.BROWSE, 8, true),
 
     /** Denial for {@link MicroOperation#BROWSE} */
-    DENY_BROWSE ( MicroOperation.BROWSE, 9, false ),
+    DENY_BROWSE(MicroOperation.BROWSE, 9, false),
 
     /** Grant for {@link MicroOperation#EXPORT} */
-    GRANT_EXPORT ( MicroOperation.EXPORT, 10, true ),
+    GRANT_EXPORT(MicroOperation.EXPORT, 10, true),
 
     /** Denial for {@link MicroOperation#EXPORT} */
-    DENY_EXPORT ( MicroOperation.EXPORT, 11, false ),
+    DENY_EXPORT(MicroOperation.EXPORT, 11, false),
 
     /** Grant for {@link MicroOperation#IMPORT} */
-    GRANT_IMPORT ( MicroOperation.IMPORT, 12, true ),
+    GRANT_IMPORT(MicroOperation.IMPORT, 12, true),
 
     /** Denial for {@link MicroOperation#IMPORT} */
-    DENY_IMPORT ( MicroOperation.IMPORT, 13, false ),
+    DENY_IMPORT(MicroOperation.IMPORT, 13, false),
 
     /** Grant for {@link MicroOperation#MODIFY} */
-    GRANT_MODIFY ( MicroOperation.MODIFY, 14, true ),
+    GRANT_MODIFY(MicroOperation.MODIFY, 14, true),
 
     /** Denial for {@link MicroOperation#MODIFY} */
-    DENY_MODIFY ( MicroOperation.MODIFY, 15, false ),
+    DENY_MODIFY(MicroOperation.MODIFY, 15, false),
 
     /** Grant for {@link MicroOperation#RENAME} */
-    GRANT_RENAME ( MicroOperation.RENAME, 16, true ),
+    GRANT_RENAME(MicroOperation.RENAME, 16, true),
 
     /** Denial for {@link MicroOperation#RENAME} */
-    DENY_RENAME ( MicroOperation.RENAME, 17, false ),
+    DENY_RENAME(MicroOperation.RENAME, 17, false),
 
     /** Grant for {@link MicroOperation#RETURN_DN} */
-    GRANT_RETURN_DN ( MicroOperation.RETURN_DN, 18, true ),
+    GRANT_RETURN_DN(MicroOperation.RETURN_DN, 18, true),
 
     /** Denial for {@link MicroOperation#RETURN_DN} */
-    DENY_RETURN_DN ( MicroOperation.RETURN_DN, 19, false ),
+    DENY_RETURN_DN(MicroOperation.RETURN_DN, 19, false),
 
     // Permissions that may be used in conjunction with any component,
     // except entry, of <tt>ProtectedItem</tt>s.
     /** Grant for {@link MicroOperation#COMPARE} */
-    GRANT_COMPARE ( MicroOperation.COMPARE, 20, true ),
+    GRANT_COMPARE(MicroOperation.COMPARE, 20, true),
 
     /** Deny for {@link MicroOperation#COMPARE} */
-    DENY_COMPARE ( MicroOperation.COMPARE, 21, false ),
+    DENY_COMPARE(MicroOperation.COMPARE, 21, false),
 
     /** Grant for {@link MicroOperation#FILTER_MATCH} */
-    GRANT_FILTER_MATCH ( MicroOperation.FILTER_MATCH, 22, true ),
+    GRANT_FILTER_MATCH(MicroOperation.FILTER_MATCH, 22, true),
 
     /** Denial for {@link MicroOperation#FILTER_MATCH} */
-    DENY_FILTER_MATCH ( MicroOperation.FILTER_MATCH, 23, false ),
+    DENY_FILTER_MATCH(MicroOperation.FILTER_MATCH, 23, false),
 
     /** Grant for {@link MicroOperation#INVOKE} */
-    GRANT_INVOKE ( MicroOperation.INVOKE, 24, true ),
+    GRANT_INVOKE(MicroOperation.INVOKE, 24, true),
 
     /** Denial for {@link MicroOperation#INVOKE} */
-    DENY_INVOKE ( MicroOperation.INVOKE, 25, false );
+    DENY_INVOKE(MicroOperation.INVOKE, 25, false);
 
     /** The micro operation. */
     private final MicroOperation microOperation;

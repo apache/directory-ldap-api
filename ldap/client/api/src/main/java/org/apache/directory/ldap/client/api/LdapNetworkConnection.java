@@ -231,7 +231,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
     /** the SslFilter key */
     private static final String SSL_FILTER_KEY = "sslFilter";
-    
+
     /** The exception stored in the session if we've got one */
     private static final String EXCEPTION_KEY = "sessionException";
 
@@ -527,7 +527,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
         // Wait until it's established
         connectionFuture.awaitUninterruptibly();
-        
+
         boolean isConnected = connectionFuture.isConnected();
 
         if ( !isConnected )
@@ -665,13 +665,13 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         // And close the connector if it has been created locally
         // Release the connector
         connectorMutex.lock();
-        
+
         if ( connector != null )
         {
             connector.dispose();
             connector = null;
         }
-        
+
         connectorMutex.unlock();
 
         // Reset the messageId
@@ -1204,7 +1204,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     {
         return createBindRequest( name.getName(), credentials, null, ( Control[] ) null );
     }
-
 
 
     /**
@@ -1807,7 +1806,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
                 response.setCause( realCause );
             }
         }
-        
+
         session.close( true );
     }
 
@@ -3639,7 +3638,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         messageId.set( 0 );
 
         connectorMutex.lock();
-        
+
         if ( connector != null )
         {
             connector.dispose();
@@ -3653,7 +3652,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         if ( conCloseListeners != null )
         {
             LOG.debug( "notifying the registered ConnectionClosedEventListeners.." );
-            
+
             for ( ConnectionClosedEventListener listener : conCloseListeners )
             {
                 listener.connectionClosed();
@@ -3912,8 +3911,8 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             throw new LdapException( e );
         }
     }
-    
-    
+
+
     /**
      * a reusable code block to be used in various bind methods
      */
@@ -3923,7 +3922,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         WriteFuture writeFuture = ldapSession.write( request );
 
         long localTimeout = timeout;
-        
+
         while ( localTimeout > 0 )
         {
             // Wait only 100 ms
@@ -3933,33 +3932,33 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             {
                 return;
             }
-            
+
             // Wait for the message to be sent to the server
             if ( !ldapSession.isConnected() )
             {
                 // We didn't received anything : this is an error
                 LOG.error( "Message failed : something wrong has occured" );
-                
-                Exception exception = (Exception)ldapSession.removeAttribute( EXCEPTION_KEY );
-    
+
+                Exception exception = ( Exception ) ldapSession.removeAttribute( EXCEPTION_KEY );
+
                 if ( exception != null )
                 {
                     if ( exception instanceof LdapException )
                     {
-                        throw (LdapException)exception;
+                        throw ( LdapException ) exception;
                     }
                     else
                     {
                         throw new InvalidConnectionException( exception.getMessage() );
                     }
                 }
-                
+
                 throw new InvalidConnectionException( "Error while sending some message : the session has been closed" );
             }
-            
+
             localTimeout -= 100;
         }
-        
+
         LOG.error( "TimeOut has occured" );
         throw new LdapException( TIME_OUT_ERROR );
     }

@@ -671,8 +671,8 @@ public interface LdapConnection
      * @throws LdapException if some error occurred
      */
     boolean exists( Dn dn ) throws LdapException;
-    
-    
+
+
     /**
      * Get back the RooDSE from the connected server. We only return the user attributes.
      * 
@@ -680,8 +680,8 @@ public interface LdapConnection
      * @throws LdapException If the rootDSE can't be read
      */
     Entry getRootDse() throws LdapException;
-    
-    
+
+
     /**
      * Get back the RooDSE from the connected server. The user can provide the
      * list of attributes he wants to get back. Sending "*" will return all the
@@ -737,7 +737,6 @@ public interface LdapConnection
      * @throws LdapException in case of any problems while searching for the Dn or if the returned response contains a referral
      */
     Entry lookup( Dn dn, Control[] controls, String... attributes ) throws LdapException;
-
 
 
     /**
@@ -797,7 +796,7 @@ public interface LdapConnection
      */
     SchemaManager getSchemaManager();
 
-    
+
     /**
      * Gets the LDAP CODEC service responsible for encoding and decoding
      * messages.
@@ -805,8 +804,8 @@ public interface LdapConnection
      * @return The LDAP CODEC service.
      */
     LdapApiService getCodecService();
-    
-    
+
+
     /**
      * Checks if there is a ResponseFuture associated with the given message ID.
      *

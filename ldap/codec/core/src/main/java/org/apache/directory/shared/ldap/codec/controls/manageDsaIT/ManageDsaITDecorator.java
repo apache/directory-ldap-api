@@ -38,7 +38,6 @@ import org.apache.directory.shared.ldap.model.message.controls.ManageDsaIT;
 public class ManageDsaITDecorator extends ControlDecorator<ManageDsaIT> implements ManageDsaIT
 {
 
-    
     /**
      * Default constructor
      */
@@ -55,9 +54,9 @@ public class ManageDsaITDecorator extends ControlDecorator<ManageDsaIT> implemen
     {
         return 0;
     }
-    
 
-    public Asn1Object decode( byte[] controlBytes ) throws DecoderException  
+
+    public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         return this;
     }

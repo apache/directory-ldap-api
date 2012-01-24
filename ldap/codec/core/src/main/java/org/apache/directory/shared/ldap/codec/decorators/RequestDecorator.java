@@ -43,7 +43,7 @@ public abstract class RequestDecorator<M extends Request> extends MessageDecorat
     {
         super( codec, decoratedMessage );
     }
-    
+
 
     /**
      * {@inheritDoc}

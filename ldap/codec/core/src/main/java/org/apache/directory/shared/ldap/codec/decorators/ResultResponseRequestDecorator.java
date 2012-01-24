@@ -30,7 +30,7 @@ import org.apache.directory.shared.ldap.model.message.ResultResponseRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class ResultResponseRequestDecorator<M extends ResultResponseRequest<R>, R extends ResultResponse> 
+public abstract class ResultResponseRequestDecorator<M extends ResultResponseRequest<R>, R extends ResultResponse>
     extends RequestDecorator<M> implements ResultResponseRequest<R>
 {
     /**
@@ -42,7 +42,7 @@ public abstract class ResultResponseRequestDecorator<M extends ResultResponseReq
     {
         super( codec, decoratedMessage );
     }
-    
+
 
     /**
      * {@inheritDoc}

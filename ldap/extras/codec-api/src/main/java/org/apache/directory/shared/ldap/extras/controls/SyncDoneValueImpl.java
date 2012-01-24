@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.extras.controls;
 
+
 import java.util.Arrays;
 
 import org.apache.directory.shared.ldap.model.message.controls.AbstractControl;
@@ -105,14 +106,14 @@ public class SyncDoneValueImpl extends AbstractControl implements SyncDoneValue
     {
         int h = 37;
 
-        h = h*17 + super.hashCode();
-        h = h*17 + ( refreshDeletes ? 1 : 0 );
+        h = h * 17 + super.hashCode();
+        h = h * 17 + ( refreshDeletes ? 1 : 0 );
 
         if ( cookie != null )
         {
             for ( byte b : cookie )
             {
-                h = h*17 + b;
+                h = h * 17 + b;
             }
         }
 
@@ -138,9 +139,9 @@ public class SyncDoneValueImpl extends AbstractControl implements SyncDoneValue
 
         SyncDoneValue otherControl = ( SyncDoneValue ) o;
 
-        return  ( refreshDeletes == otherControl.isRefreshDeletes() ) &&
-                ( Arrays.equals( cookie, otherControl.getCookie() ) &&
-                ( isCritical() == otherControl.isCritical() ) );
+        return ( refreshDeletes == otherControl.isRefreshDeletes() ) &&
+            ( Arrays.equals( cookie, otherControl.getCookie() ) &&
+            ( isCritical() == otherControl.isCritical() ) );
     }
 
 

@@ -48,7 +48,7 @@ import org.dom4j.QName;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModifyRequestDsml 
+public class ModifyRequestDsml
     extends AbstractResultResponseRequestDsml<ModifyRequest, ModifyResponse>
     implements ModifyRequest
 {
@@ -58,8 +58,8 @@ public class ModifyRequestDsml
 
     /** A local storage for the operation */
     private ModificationOperation currentOperation;
-    
-    
+
+
     /**
      * Creates a new getDecoratedMessage() of ModifyRequestDsml.
      */
@@ -89,7 +89,7 @@ public class ModifyRequestDsml
         return currentAttribute.getId();
     }
 
-    
+
     /**
      * Store the current operation
      * 
@@ -210,8 +210,7 @@ public class ModifyRequestDsml
     //-------------------------------------------------------------------------
     // The ModifyRequest methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -236,7 +235,7 @@ public class ModifyRequestDsml
     public ModifyRequest setName( Dn name )
     {
         getDecorated().setName( name );
-        
+
         return this;
     }
 
@@ -256,7 +255,7 @@ public class ModifyRequestDsml
     public ModifyRequest addModification( Modification mod )
     {
         getDecorated().addModification( mod );
-        
+
         return this;
     }
 
@@ -267,7 +266,7 @@ public class ModifyRequestDsml
     public ModifyRequest removeModification( Modification mod )
     {
         getDecorated().removeModification( mod );
-        
+
         return this;
     }
 
@@ -278,7 +277,7 @@ public class ModifyRequestDsml
     public ModifyRequest remove( String attributeName, String... attributeValue )
     {
         getDecorated().remove( attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -289,7 +288,7 @@ public class ModifyRequestDsml
     public ModifyRequest remove( String attributeName, byte[]... attributeValue )
     {
         getDecorated().remove( attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -300,7 +299,7 @@ public class ModifyRequestDsml
     public ModifyRequest remove( Attribute attr )
     {
         getDecorated().remove( attr );
-        
+
         return this;
     }
 
@@ -311,7 +310,7 @@ public class ModifyRequestDsml
     public ModifyRequest addModification( Attribute attr, ModificationOperation modOp )
     {
         getDecorated().addModification( attr, modOp );
-        
+
         return this;
     }
 
@@ -322,7 +321,7 @@ public class ModifyRequestDsml
     public ModifyRequest add( String attributeName, String... attributeValue )
     {
         getDecorated().add( attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -333,7 +332,7 @@ public class ModifyRequestDsml
     public ModifyRequest add( String attributeName, byte[]... attributeValue )
     {
         getDecorated().add( attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -344,7 +343,7 @@ public class ModifyRequestDsml
     public ModifyRequest add( Attribute attr )
     {
         getDecorated().add( attr );
-        
+
         return this;
     }
 
@@ -355,7 +354,7 @@ public class ModifyRequestDsml
     public ModifyRequest replace( String attributeName )
     {
         getDecorated().replace( attributeName );
-        
+
         return this;
     }
 
@@ -366,7 +365,7 @@ public class ModifyRequestDsml
     public ModifyRequest replace( String attributeName, String... attributeValue )
     {
         getDecorated().replace( attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -377,7 +376,7 @@ public class ModifyRequestDsml
     public ModifyRequest replace( String attributeName, byte[]... attributeValue )
     {
         getDecorated().replace( attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -388,45 +387,45 @@ public class ModifyRequestDsml
     public ModifyRequest replace( Attribute attr )
     {
         getDecorated().replace( attr );
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public ModifyRequest addControl( Control control ) throws MessageException
     {
-        return (ModifyRequest)super.addControl( control );
+        return ( ModifyRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (ModifyRequest)super.addAllControls( controls );
+        return ( ModifyRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyRequest removeControl( Control control ) throws MessageException
     {
-        return (ModifyRequest)super.removeControl( control );
+        return ( ModifyRequest ) super.removeControl( control );
     }
 }
