@@ -78,7 +78,7 @@ public class BitString
 
 
     /**
-     * Creates a BitString from a byte[]. As the first byteis the number of unused bits
+     * Creates a BitString from a byte[]. As the first byte is the number of unused bits
      * in the last byte, we have to ignore it.
      *
      * @param bytes The value to store. The first byte contains the number of
