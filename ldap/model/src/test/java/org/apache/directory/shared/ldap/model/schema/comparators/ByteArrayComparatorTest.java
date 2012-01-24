@@ -44,97 +44,109 @@ public class ByteArrayComparatorTest
         assertEquals( 0, new ByteArrayComparator( null ).compare( null, null ) );
     }
 
-    
+
     @Test
     public void testB2Null()
     {
         assertEquals( 1, new ByteArrayComparator( null ).compare( new byte[0], null ) );
     }
 
-    
+
     @Test
     public void testB1Null()
     {
         assertEquals( -1, new ByteArrayComparator( null ).compare( null, new byte[0] ) );
     }
 
-    
+
     @Test
     public void testBothEmpty()
     {
         assertEquals( 0, new ByteArrayComparator( null ).compare( new byte[0], new byte[0] ) );
     }
 
-    
+
     @Test
     public void testBothEqualLengthOne()
     {
         assertEquals( 0, new ByteArrayComparator( null ).compare( new byte[1], new byte[1] ) );
     }
 
-    
+
     @Test
     public void testBothEqualLengthTen()
     {
         assertEquals( 0, new ByteArrayComparator( null ).compare( new byte[10], new byte[10] ) );
     }
-    
-    
+
+
     @Test
     public void testB1PrefixOfB2()
     {
-        byte[] b1 = new byte[] { 0, 1, 2 };
-        byte[] b2 = new byte[] { 0, 1, 2, 3 };
+        byte[] b1 = new byte[]
+            { 0, 1, 2 };
+        byte[] b2 = new byte[]
+            { 0, 1, 2, 3 };
 
         assertEquals( -1, new ByteArrayComparator( null ).compare( b1, b2 ) );
     }
-    
-    
+
+
     @Test
     public void testB2PrefixOfB1()
     {
-        byte[] b1 = new byte[] { 0, 1, 2, 3 };
-        byte[] b2 = new byte[] { 0, 1, 2 };
-
-        assertEquals( 1, new ByteArrayComparator( null ).compare( b1, b2 ) );
-    }
-    
-    
-    @Test
-    public void testB1GreaterThanB2() 
-    {
-        byte[] b1 = new byte[] { 0, 5 };
-        byte[] b2 = new byte[] { 0, 1, 2 };
+        byte[] b1 = new byte[]
+            { 0, 1, 2, 3 };
+        byte[] b2 = new byte[]
+            { 0, 1, 2 };
 
         assertEquals( 1, new ByteArrayComparator( null ).compare( b1, b2 ) );
     }
 
 
     @Test
-    public void testB1GreaterThanB2SameLength() 
+    public void testB1GreaterThanB2()
     {
-        byte[] b1 = new byte[] { 0, 5 };
-        byte[] b2 = new byte[] { 0, 1 };
+        byte[] b1 = new byte[]
+            { 0, 5 };
+        byte[] b2 = new byte[]
+            { 0, 1, 2 };
 
         assertEquals( 1, new ByteArrayComparator( null ).compare( b1, b2 ) );
     }
 
 
     @Test
-    public void testB2GreaterThanB1() 
+    public void testB1GreaterThanB2SameLength()
     {
-        byte[] b1 = new byte[] { 0, 1, 2 };
-        byte[] b2 = new byte[] { 0, 5 };
+        byte[] b1 = new byte[]
+            { 0, 5 };
+        byte[] b2 = new byte[]
+            { 0, 1 };
+
+        assertEquals( 1, new ByteArrayComparator( null ).compare( b1, b2 ) );
+    }
+
+
+    @Test
+    public void testB2GreaterThanB1()
+    {
+        byte[] b1 = new byte[]
+            { 0, 1, 2 };
+        byte[] b2 = new byte[]
+            { 0, 5 };
 
         assertEquals( -1, new ByteArrayComparator( null ).compare( b1, b2 ) );
     }
 
 
     @Test
-    public void testB2GreaterThanB1SameLength() 
+    public void testB2GreaterThanB1SameLength()
     {
-        byte[] b1 = new byte[] { 0, 1 };
-        byte[] b2 = new byte[] { 0, 5 };
+        byte[] b1 = new byte[]
+            { 0, 1 };
+        byte[] b2 = new byte[]
+            { 0, 5 };
 
         assertEquals( -1, new ByteArrayComparator( null ).compare( b1, b2 ) );
     }

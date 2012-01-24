@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.filter;
 
+
 /**
  * All the different kind of assertions.
  * 
@@ -61,7 +62,7 @@ public enum AssertionType
 
     /** NOT operator constant */
     NOT,
-    
+
     /** Undefined operation */
     UNDEFINED;
 }

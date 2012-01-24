@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.BitStringSyn
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Test cases for BitStringSyntaxChecker.
  *
@@ -63,8 +64,8 @@ public class BitStringSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "1" ) );
         assertFalse( checker.isValidSyntax( "B" ) );
     }
-    
-    
+
+
     @Test
     public void testWrongCase()
     {
@@ -76,8 +77,8 @@ public class BitStringSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "'11200'B" ) );
         assertFalse( checker.isValidSyntax( "'1100'b" ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectCase()
     {

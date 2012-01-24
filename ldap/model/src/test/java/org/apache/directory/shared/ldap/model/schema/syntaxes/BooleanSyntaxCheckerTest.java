@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.BooleanSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for BooleanSyntaxChecker.
@@ -62,16 +64,16 @@ public class BooleanSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "t" ) );
         assertFalse( checker.isValidSyntax( "T" ) );
     }
-    
-    
+
+
     @Test
     public void testWrongValue()
     {
         assertFalse( checker.isValidSyntax( "abc" ) );
         assertFalse( checker.isValidSyntax( "123" ) );
     }
-    
-    
+
+
     @Test
     public void testMixedCase()
     {
@@ -80,8 +82,8 @@ public class BooleanSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( "false" ) );
         assertTrue( checker.isValidSyntax( "true" ) );
     }
-    
-    
+
+
     @Test
     public void testUpperCase()
     {

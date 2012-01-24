@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.ldif;
 
+
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
@@ -37,6 +38,7 @@ import org.junit.runner.RunWith;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
+
 /**
  * Test the LdifControlSerializer class
  * 
@@ -52,25 +54,27 @@ public class LdifControlSerializationTest
     private static Control controlNoCriticalWithData;
     private static Control controlNoCriticalNoData;
     private static Control controlNoCriticalEmptyData;
-    private static byte[] data = new byte[] {0x01, 0x02, 0x03, 0x04};
-    
+    private static byte[] data = new byte[]
+        { 0x01, 0x02, 0x03, 0x04 };
+
+
     @BeforeClass
     public static void setup()
     {
         controlCriticalWithData = new OpaqueControl( "1.2.3.4.1" );
         controlCriticalWithData.setCritical( true );
-        ((OpaqueControl)controlCriticalWithData).setEncodedValue( data );
+        ( ( OpaqueControl ) controlCriticalWithData ).setEncodedValue( data );
 
         controlCriticalNoData = new OpaqueControl( "1.2.3.4.2" );
         controlCriticalNoData.setCritical( true );
 
         controlCriticalEmptyData = new OpaqueControl( "1.2.3.4.3" );
         controlCriticalEmptyData.setCritical( true );
-        ((OpaqueControl)controlCriticalEmptyData).setEncodedValue( StringConstants.EMPTY_BYTES );
+        ( ( OpaqueControl ) controlCriticalEmptyData ).setEncodedValue( StringConstants.EMPTY_BYTES );
 
         controlNoCriticalWithData = new OpaqueControl( "1.2.3.4.4" );
         controlNoCriticalWithData.setCritical( false );
-        ((OpaqueControl)controlNoCriticalWithData).setEncodedValue( data );
+        ( ( OpaqueControl ) controlNoCriticalWithData ).setEncodedValue( data );
 
         controlNoCriticalNoData = new OpaqueControl( "1.2.3.4.5" );
         controlNoCriticalNoData.setCritical( false );
@@ -78,20 +82,20 @@ public class LdifControlSerializationTest
         controlNoCriticalEmptyData = new OpaqueControl( "1.2.3.4.6" );
         controlNoCriticalEmptyData.setCritical( false );
     }
-    
-    
+
+
     @Test
     public void testControlCriticalWithDataSerialization() throws IOException, ClassNotFoundException
     {
         LdifControl ldifControl1 = new LdifControl( controlCriticalWithData.getOid() );
         ldifControl1.setCritical( controlCriticalWithData.isCritical() );
-        ldifControl1.setValue( ((OpaqueControl)controlCriticalWithData).getEncodedValue() );
-        
+        ldifControl1.setValue( ( ( OpaqueControl ) controlCriticalWithData ).getEncodedValue() );
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         ldifControl1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -102,19 +106,19 @@ public class LdifControlSerializationTest
 
         assertEquals( ldifControl1, ldifControl2 );
     }
-    
-    
+
+
     @Test
     public void testControlCriticalNoDataSerialization() throws IOException, ClassNotFoundException
     {
         LdifControl ldifControl1 = new LdifControl( controlCriticalNoData.getOid() );
         ldifControl1.setCritical( controlCriticalNoData.isCritical() );
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         ldifControl1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -125,20 +129,20 @@ public class LdifControlSerializationTest
 
         assertEquals( ldifControl1, ldifControl2 );
     }
-    
-    
+
+
     @Test
     public void testControlCriticalEmptyDataSerialization() throws IOException, ClassNotFoundException
     {
         LdifControl ldifControl1 = new LdifControl( controlCriticalEmptyData.getOid() );
         ldifControl1.setCritical( controlCriticalEmptyData.isCritical() );
-        ldifControl1.setValue( ((OpaqueControl)controlCriticalEmptyData).getEncodedValue() );
-        
+        ldifControl1.setValue( ( ( OpaqueControl ) controlCriticalEmptyData ).getEncodedValue() );
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         ldifControl1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -149,20 +153,20 @@ public class LdifControlSerializationTest
 
         assertEquals( ldifControl1, ldifControl2 );
     }
-    
-    
+
+
     @Test
     public void testControlNoCriticalWithDataSerialization() throws IOException, ClassNotFoundException
     {
         LdifControl ldifControl1 = new LdifControl( controlNoCriticalWithData.getOid() );
         ldifControl1.setCritical( controlNoCriticalWithData.isCritical() );
-        ldifControl1.setValue( ((OpaqueControl)controlNoCriticalWithData).getEncodedValue() );
-        
+        ldifControl1.setValue( ( ( OpaqueControl ) controlNoCriticalWithData ).getEncodedValue() );
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         ldifControl1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -173,19 +177,19 @@ public class LdifControlSerializationTest
 
         assertEquals( ldifControl1, ldifControl2 );
     }
-    
-    
+
+
     @Test
     public void testControlNoCriticalNoDataSerialization() throws IOException, ClassNotFoundException
     {
         LdifControl ldifControl1 = new LdifControl( controlNoCriticalNoData.getOid() );
         ldifControl1.setCritical( controlNoCriticalNoData.isCritical() );
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         ldifControl1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -196,20 +200,20 @@ public class LdifControlSerializationTest
 
         assertEquals( ldifControl1, ldifControl2 );
     }
-    
-    
+
+
     @Test
     public void testControlNoCriticalEmptyDataSerialization() throws IOException, ClassNotFoundException
     {
         LdifControl ldifControl1 = new LdifControl( controlNoCriticalEmptyData.getOid() );
         ldifControl1.setCritical( controlNoCriticalEmptyData.isCritical() );
-        ldifControl1.setValue( ((OpaqueControl)controlNoCriticalEmptyData).getEncodedValue() );
-        
+        ldifControl1.setValue( ( ( OpaqueControl ) controlNoCriticalEmptyData ).getEncodedValue() );
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         ldifControl1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();

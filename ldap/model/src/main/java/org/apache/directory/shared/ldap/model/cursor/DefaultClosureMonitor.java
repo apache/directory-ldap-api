@@ -47,7 +47,7 @@ public class DefaultClosureMonitor implements ClosureMonitor
     {
         // state check needed to "try" not to overwrite exception (lack of
         // synchronization may still allow overwriting but who cares that much
-        if ( ! closed )
+        if ( !closed )
         {
             // not going to sync because who cares if it takes a little longer
             // to stop but we need to set cause before toggling closed state
@@ -65,7 +65,7 @@ public class DefaultClosureMonitor implements ClosureMonitor
     {
         // state check needed to "try" not to overwrite exception (lack of
         // synchronization may still allow overwriting but who cares that much
-        if ( ! closed )
+        if ( !closed )
         {
             // not going to sync because who cares if it takes a little longer
             // to stop but we need to set cause before toggling closed state
@@ -83,7 +83,7 @@ public class DefaultClosureMonitor implements ClosureMonitor
     {
         // state check needed to "try" not to overwrite exception (lack of
         // synchronization may still allow overwriting but who cares that much
-        if ( ! closed )
+        if ( !closed )
         {
             // not going to sync because who cares if it takes a little longer
             // to stop but we need to set cause before toggling closed state

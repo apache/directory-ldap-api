@@ -30,7 +30,8 @@ public class LdapException extends Exception
 {
     /** The serial version UUID */
     private static final long serialVersionUID = 1L;
-    
+
+
     /**
      * Creates a new instance of LdapException.
      */
@@ -38,7 +39,7 @@ public class LdapException extends Exception
     {
     }
 
-    
+
     /**
      * Creates a new instance of LdapException.
      *
@@ -49,7 +50,7 @@ public class LdapException extends Exception
         super( explanation );
     }
 
-    
+
     /**
      * Creates a new instance of LdapException.
      */

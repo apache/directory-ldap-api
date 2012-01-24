@@ -57,22 +57,22 @@ public class FilterToStringTest
         assertEquals( str, node.toString() );
 
         str = "(ou<=test)";
-        node = FilterParser.parse(str);
-        assertEquals( str, node.toString() );
-
-        str="(ou=)";
         node = FilterParser.parse( str );
         assertEquals( str, node.toString() );
 
-        str="(ou~=)";
+        str = "(ou=)";
         node = FilterParser.parse( str );
         assertEquals( str, node.toString() );
 
-        str="(ou>=)";
+        str = "(ou~=)";
         node = FilterParser.parse( str );
         assertEquals( str, node.toString() );
 
-        str="(ou<=)";
+        str = "(ou>=)";
+        node = FilterParser.parse( str );
+        assertEquals( str, node.toString() );
+
+        str = "(ou<=)";
         node = FilterParser.parse( str );
         assertEquals( str, node.toString() );
     }

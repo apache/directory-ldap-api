@@ -39,6 +39,7 @@ public class ObjectClassTypeSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ObjectClassTypeSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of ObjectClassTypeSyntaxChecker.
      */
@@ -47,7 +48,7 @@ public class ObjectClassTypeSyntaxChecker extends SyntaxChecker
         super( SchemaConstants.OBJECT_CLASS_TYPE_SYNTAX );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -60,14 +61,14 @@ public class ObjectClassTypeSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -79,24 +80,24 @@ public class ObjectClassTypeSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         char ch = strValue.charAt( 0 );
 
-        switch( ch )
+        switch ( ch )
         {
-            case( 'A' ):
+            case ( 'A' ):
                 if ( "AUXILIARY".equals( strValue ) || "ABSTRACT".equals( strValue ) )
                 {
                     LOG.debug( "Syntax valid for '{}'", value );
                     return true;
                 }
 
-            LOG.debug( "Syntax invalid for '{}'", value );
+                LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
-            
-            case( 'S' ):
+
+            case ( 'S' ):
                 boolean result = "STRUCTURAL".equals( strValue );
-            
+
                 if ( result )
                 {
                     LOG.debug( "Syntax valid for '{}'", value );
@@ -105,9 +106,9 @@ public class ObjectClassTypeSyntaxChecker extends SyntaxChecker
                 {
                     LOG.debug( "Syntax invalid for '{}'", value );
                 }
-            
+
                 return result;
-            
+
             default:
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;

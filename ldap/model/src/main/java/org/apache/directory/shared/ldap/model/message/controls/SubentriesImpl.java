@@ -20,8 +20,6 @@
 package org.apache.directory.shared.ldap.model.message.controls;
 
 
-
-
 /**
  * A simple Subentries Control implementation. This control is described in 
  * RFC 3672 :

@@ -253,20 +253,20 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
      * {@inheritDoc}
      */
     ModifyRequest setMessageId( int messageId );
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     ModifyRequest addControl( Control control ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     ModifyRequest addAllControls( Control[] controls ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

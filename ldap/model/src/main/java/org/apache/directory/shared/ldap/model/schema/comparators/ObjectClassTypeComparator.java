@@ -30,40 +30,42 @@ import org.apache.directory.shared.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ObjectClassTypeComparator<T> extends LdapComparator<T> 
+public class ObjectClassTypeComparator<T> extends LdapComparator<T>
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
+
 
     public ObjectClassTypeComparator( String oid )
     {
         super( oid );
     }
-    
+
+
     public int compare( T o1, T o2 )
     {
         String s1 = getString( o1 );
         String s2 = getString( o2 );
-        
+
         if ( s1 == null && s2 == null )
         {
             return 0;
         }
-        
+
         if ( s1 == null )
         {
             return -1;
         }
-        
+
         if ( s2 == null )
         {
             return 1;
         }
-        
+
         return s1.compareTo( s2 );
     }
-    
-    
+
+
     String getString( T obj )
     {
         String strValue;
@@ -72,14 +74,14 @@ public class ObjectClassTypeComparator<T> extends LdapComparator<T>
         {
             return null;
         }
-        
+
         if ( obj instanceof String )
         {
             strValue = ( String ) obj;
         }
         else if ( obj instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) obj);
+            strValue = Strings.utf8ToString( ( byte[] ) obj );
         }
         else
         {

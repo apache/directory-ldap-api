@@ -41,6 +41,7 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ObjectIdentifierFirstComponentComparator.class );
 
+
     /**
      * The ObjectIdentifierFirstComponentComparator constructor. Its OID is the 
      * ObjectIdentifierFirstComponentMatch matching rule OID.
@@ -50,7 +51,7 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
         super( oid );
     }
 
-    
+
     /**
      * Get the OID from the SchemaObject description
      */
@@ -58,27 +59,27 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
     {
         // Get the OID from the strings now
         int pos = 0;
-        
+
         if ( !Strings.isCharASCII( s, pos++, '(' ) )
         {
             return null;
         }
-        
+
         while ( Strings.isCharASCII( s, pos, ' ' ) )
         {
             pos++;
         }
-        
+
         int start = pos;
-        
-        while ( Chars.isDigit(s, pos) || Strings.isCharASCII( s, pos, '.' ) )
+
+        while ( Chars.isDigit( s, pos ) || Strings.isCharASCII( s, pos, '.' ) )
         {
             pos++;
         }
-        
+
         String numericOid = s.substring( start, pos );
-        
-        if ( Oid.isOid(numericOid) )
+
+        if ( Oid.isOid( numericOid ) )
         {
             return numericOid;
         }
@@ -87,7 +88,8 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
             return null;
         }
     }
-    
+
+
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
@@ -102,7 +104,7 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
         {
             return ( s2 == null ) ? 0 : -1;
         }
-        
+
         if ( s2 == null )
         {
             return -1;
@@ -113,22 +115,22 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
         {
             return 0;
         }
-        
+
         // Get the OID from the strings now
         String oid1 = getNumericOid( s1 );
-        
+
         if ( oid1 == null )
         {
             return -1;
         }
-        
+
         String oid2 = getNumericOid( s2 );
 
         if ( oid2 == null )
         {
             return -1;
         }
-        
+
         if ( oid1.equals( oid2 ) )
         {
             return 0;

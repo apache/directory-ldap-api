@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema;
 
+
 import static org.junit.Assert.assertEquals;
 
 import com.mycila.junit.concurrent.Concurrency;
@@ -26,6 +27,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * The unit tests for methods on UsageEnum.
@@ -44,7 +46,8 @@ public class UsageEnumTest
         assertEquals( 2, UsageEnum.DISTRIBUTED_OPERATION.getValue() );
         assertEquals( 3, UsageEnum.DSA_OPERATION.getValue() );
     }
-    
+
+
     @Test
     public void testGetUsage()
     {
@@ -54,7 +57,8 @@ public class UsageEnumTest
         assertEquals( UsageEnum.DSA_OPERATION, UsageEnum.getUsage( "dSAOperation" ) );
         assertEquals( null, UsageEnum.getUsage( "azerty" ) );
     }
-    
+
+
     @Test
     public void testRenderer()
     {

@@ -41,7 +41,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith( ConcurrentJunitRunner.class )
+@RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
 public class StringsTest
 {
@@ -84,10 +84,10 @@ public class StringsTest
         List<String> list = new ArrayList<String>();
 
         list.add( "elem1" );
-        list.add("elem2");
+        list.add( "elem2" );
         list.add( "elem3" );
 
-        assertEquals("elem1, elem2, elem3", Strings.listToString(list));
+        assertEquals( "elem1, elem2, elem3", Strings.listToString( list ) );
     }
 
 
@@ -101,7 +101,7 @@ public class StringsTest
             int val;
 
 
-            public Value(String name, int val)
+            public Value( String name, int val )
             {
                 this.name = name;
                 this.val = val;
@@ -120,7 +120,7 @@ public class StringsTest
         map.put( "elem2", new Value( "name2", 2 ) );
         map.put( "elem3", new Value( "name3", 3 ) );
 
-        String result = Strings.mapToString(map);
+        String result = Strings.mapToString( map );
 
         boolean res = "elem1 = '[name1, 1]', elem2 = '[name2, 2]', elem3 = '[name3, 3]'".equals( result )
             || "elem1 = '[name1, 1]', elem3 = '[name3, 3]', elem2 = '[name2, 2]'".equals( result )
@@ -155,39 +155,39 @@ public class StringsTest
     @Test
     public void testTrim()
     {
-        assertEquals( "", Strings.trim((String) null) );
-        assertEquals( "", Strings.trim("") );
-        assertEquals( "", Strings.trim(" ") );
-        assertEquals( "", Strings.trim("  ") );
-        assertEquals( "a", Strings.trim("a  ") );
-        assertEquals( "a", Strings.trim("  a") );
-        assertEquals( "a", Strings.trim("  a  ") );
+        assertEquals( "", Strings.trim( ( String ) null ) );
+        assertEquals( "", Strings.trim( "" ) );
+        assertEquals( "", Strings.trim( " " ) );
+        assertEquals( "", Strings.trim( "  " ) );
+        assertEquals( "a", Strings.trim( "a  " ) );
+        assertEquals( "a", Strings.trim( "  a" ) );
+        assertEquals( "a", Strings.trim( "  a  " ) );
     }
 
 
     @Test
     public void testTrimLeft()
     {
-        assertEquals( "", Strings.trimLeft((String) null) );
-        assertEquals( "", Strings.trimLeft("") );
-        assertEquals( "", Strings.trimLeft(" ") );
-        assertEquals( "", Strings.trimLeft("  ") );
-        assertEquals( "a  ", Strings.trimLeft("a  ") );
-        assertEquals( "a", Strings.trimLeft("  a") );
-        assertEquals( "a  ", Strings.trimLeft("  a  ") );
+        assertEquals( "", Strings.trimLeft( ( String ) null ) );
+        assertEquals( "", Strings.trimLeft( "" ) );
+        assertEquals( "", Strings.trimLeft( " " ) );
+        assertEquals( "", Strings.trimLeft( "  " ) );
+        assertEquals( "a  ", Strings.trimLeft( "a  " ) );
+        assertEquals( "a", Strings.trimLeft( "  a" ) );
+        assertEquals( "a  ", Strings.trimLeft( "  a  " ) );
     }
 
 
     @Test
     public void testTrimRight()
     {
-        assertEquals( "", Strings.trimRight((String) null) );
-        assertEquals( "", Strings.trimRight("") );
-        assertEquals( "", Strings.trimRight(" ") );
-        assertEquals( "", Strings.trimRight("  ") );
-        assertEquals( "a", Strings.trimRight("a  ") );
-        assertEquals( "  a", Strings.trimRight("  a") );
-        assertEquals( "  a", Strings.trimRight("  a  ") );
+        assertEquals( "", Strings.trimRight( ( String ) null ) );
+        assertEquals( "", Strings.trimRight( "" ) );
+        assertEquals( "", Strings.trimRight( " " ) );
+        assertEquals( "", Strings.trimRight( "  " ) );
+        assertEquals( "a", Strings.trimRight( "a  " ) );
+        assertEquals( "  a", Strings.trimRight( "  a" ) );
+        assertEquals( "  a", Strings.trimRight( "  a  " ) );
     }
 
 
@@ -195,10 +195,12 @@ public class StringsTest
     public void testConvertUUID()
     {
         UUID uuid = UUID.randomUUID();
-        byte[] bytes = Strings.uuidToBytes(uuid.toString());
-        String string = Strings.uuidToString(bytes);
+        byte[] bytes = Strings.uuidToBytes( uuid.toString() );
+        String string = Strings.uuidToString( bytes );
         assertEquals( uuid.toString(), string );
     }
+
+
     /**
      * Test the DnUtils AreEquals method
      */
@@ -206,7 +208,7 @@ public class StringsTest
     public void testAreEqualsFull()
     {
         // Full compare
-        assertEquals( 6, Strings.areEquals("azerty".getBytes(), 0, "azerty") );
+        assertEquals( 6, Strings.areEquals( "azerty".getBytes(), 0, "azerty" ) );
     }
 
 

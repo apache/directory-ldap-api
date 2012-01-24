@@ -174,20 +174,20 @@ public interface ModifyDnRequest extends SingleReplyRequest<ModifyDnResponse>, A
      * {@inheritDoc}
      */
     ModifyDnRequest setMessageId( int messageId );
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     ModifyDnRequest addControl( Control control ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     ModifyDnRequest addAllControls( Control[] controls ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

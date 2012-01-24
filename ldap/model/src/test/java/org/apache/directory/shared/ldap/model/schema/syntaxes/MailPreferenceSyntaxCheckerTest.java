@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.MailPreferenceSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for MailPreferenceSyntaxChecker.
@@ -62,8 +64,8 @@ public class MailPreferenceSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "t" ) );
         assertFalse( checker.isValidSyntax( "T" ) );
     }
-    
-    
+
+
     @Test
     public void testWrongCase()
     {
@@ -72,8 +74,8 @@ public class MailPreferenceSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "PROFESSIONAL-LISTs" ) );
         assertFalse( checker.isValidSyntax( "abc" ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectCase()
     {

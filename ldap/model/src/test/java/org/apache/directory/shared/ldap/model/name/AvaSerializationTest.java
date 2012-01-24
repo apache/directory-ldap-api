@@ -51,7 +51,8 @@ public class AvaSerializationTest
 {
     /** A null schemaManager used in tests */
     SchemaManager schemaManager = null;
-    
+
+
     /**
      * Test serialization of a simple ATAV
      */
@@ -82,7 +83,7 @@ public class AvaSerializationTest
     @Test
     public void testBinaryAtavSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        byte[] upValue = Strings.getBytesUtf8("  Test  ");
+        byte[] upValue = Strings.getBytesUtf8( "  Test  " );
 
         Ava atav = new Ava( schemaManager, "CN", upValue );
 
@@ -131,7 +132,7 @@ public class AvaSerializationTest
     @Test
     public void testNullNormValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Ava atav = new Ava( schemaManager, "CN", (String)null );
+        Ava atav = new Ava( schemaManager, "CN", ( String ) null );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -152,7 +153,7 @@ public class AvaSerializationTest
     @Test
     public void testNullUpValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Ava atav = new Ava( schemaManager, "CN", (String)null );
+        Ava atav = new Ava( schemaManager, "CN", ( String ) null );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -244,7 +245,7 @@ public class AvaSerializationTest
     @Test
     public void testBinaryAtavStaticSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        byte[] upValue = Strings.getBytesUtf8("  Test  ");
+        byte[] upValue = Strings.getBytesUtf8( "  Test  " );
 
         Ava atav = new Ava( schemaManager, "CN", upValue );
 
@@ -252,7 +253,7 @@ public class AvaSerializationTest
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        
+
         atav.writeExternal( out );
 
         ObjectInputStream in = null;
@@ -293,7 +294,7 @@ public class AvaSerializationTest
     @Test
     public void testNullUpValueStaticSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Ava atav = new Ava( schemaManager, "CN", (String)null );
+        Ava atav = new Ava( schemaManager, "CN", ( String ) null );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );

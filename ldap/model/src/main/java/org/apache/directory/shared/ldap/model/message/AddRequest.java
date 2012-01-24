@@ -78,20 +78,20 @@ public interface AddRequest extends SingleReplyRequest<AddResponse>, Abandonable
      * {@inheritDoc}
      */
     AddRequest setMessageId( int messageId );
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     AddRequest addControl( Control control ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     AddRequest addAllControls( Control[] controls ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

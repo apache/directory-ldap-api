@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.filter;
 
+
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 
 
@@ -31,7 +32,7 @@ public class LeafNode extends AbstractExprNode
 {
     /** attributeType on which this leaf is based */
     protected AttributeType attributeType;
-    
+
     /** attribute on which this leaf is based */
     protected String attribute;
 
@@ -46,7 +47,7 @@ public class LeafNode extends AbstractExprNode
     {
         super( assertionType );
         this.attributeType = attributeType;
-        
+
         if ( attributeType != null )
         {
             this.attribute = attributeType.getName();
@@ -68,8 +69,8 @@ public class LeafNode extends AbstractExprNode
         this.attribute = attribute;
         isSchemaAware = false;
     }
-    
-    
+
+
     /**
      * Gets whether this node is a leaf - the answer is always true here.
      * 
@@ -101,8 +102,8 @@ public class LeafNode extends AbstractExprNode
     {
         return attribute;
     }
-    
-    
+
+
     /**
      * Sets the attributeType this leaf node is based on.
      * 
@@ -111,15 +112,15 @@ public class LeafNode extends AbstractExprNode
     public void setAttributeType( AttributeType attributeType )
     {
         this.attributeType = attributeType;
-        
+
         if ( attributeType != null )
         {
             attribute = attributeType.getName();
             isSchemaAware = true;
         }
     }
-    
-    
+
+
     /**
      * Sets the attribute this leaf node is based on.
      * 
@@ -131,7 +132,7 @@ public class LeafNode extends AbstractExprNode
         isSchemaAware = false;
     }
 
-    
+
     /**
      * @see ExprNode#accept(
      *FilterVisitor)
@@ -159,18 +160,18 @@ public class LeafNode extends AbstractExprNode
     public int hashCode()
     {
         int h = 37;
-        
-        h = h*17 + super.hashCode();
-        
+
+        h = h * 17 + super.hashCode();
+
         if ( attributeType != null )
         {
-            h = h*17 + attributeType.hashCode();
+            h = h * 17 + attributeType.hashCode();
         }
         else
         {
-            h = h*17 + attribute.hashCode();
+            h = h * 17 + attribute.hashCode();
         }
-        
+
         return h;
     }
 
@@ -189,14 +190,14 @@ public class LeafNode extends AbstractExprNode
         {
             return false;
         }
-        
-        LeafNode otherNode = (LeafNode)other;
+
+        LeafNode otherNode = ( LeafNode ) other;
 
         if ( other.getClass() != this.getClass() )
         {
             return false;
         }
-            
+
         if ( attributeType != null )
         {
             return attributeType.equals( otherNode.getAttributeType() );

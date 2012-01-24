@@ -20,7 +20,6 @@
 package org.apache.directory.shared.ldap.model.message;
 
 
-
 /**
  * A request which can be abandoned.
  * 

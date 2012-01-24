@@ -51,7 +51,8 @@ public class AttributeUtilsTest
     byte[] byteArrayACopy;
     byte[] byteArrayB;
     byte[] byteArrayC;
-    
+
+
     /**
      * Initialize name instances
      */
@@ -65,7 +66,7 @@ public class AttributeUtilsTest
         byteArrayC = "cc".getBytes();
     }
 
-    
+
     /**
      * Test a addModification applied to an empty entry
      */
@@ -76,7 +77,7 @@ public class AttributeUtilsTest
         Attribute attr = new DefaultAttribute( "cn", "test" );
         Modification modification = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attr );
         AttributeUtils.applyModification( entry, modification );
-        assertNotNull( entry.get(  "cn" ) );
+        assertNotNull( entry.get( "cn" ) );
         assertEquals( 1, entry.size() );
         assertEquals( attr, entry.get( "cn" ) );
     }
@@ -96,7 +97,7 @@ public class AttributeUtilsTest
         Modification modification = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attr );
 
         AttributeUtils.applyModification( entry, modification );
-        assertNotNull( entry.get(  "cn" ) );
+        assertNotNull( entry.get( "cn" ) );
         assertEquals( 2, entry.size() );
         assertEquals( attr, entry.get( "cn" ) );
     }
@@ -116,26 +117,26 @@ public class AttributeUtilsTest
         Attribute attr = new DefaultAttribute( "cn", "test" );
         Modification modification = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attr );
         AttributeUtils.applyModification( entry, modification );
-        assertNotNull( entry.get(  "cn" ) );
+        assertNotNull( entry.get( "cn" ) );
         assertEquals( 1, entry.size() );
-        
+
         Attribute attribute = entry.get( "cn" );
-        
+
         assertTrue( attribute.size() != 0 );
-        
+
         Set<String> expectedValues = new HashSet<String>();
         expectedValues.add( "apache" );
         expectedValues.add( "test" );
-        
-        for ( Value<?> value:attribute )
+
+        for ( Value<?> value : attribute )
         {
             String valueStr = value.getString();
-            
+
             assertTrue( expectedValues.contains( valueStr ) );
-            
+
             expectedValues.remove( valueStr );
         }
-        
+
         assertEquals( 0, expectedValues.size() );
     }
 
@@ -156,28 +157,28 @@ public class AttributeUtilsTest
         AttributeUtils.applyModification( entry, modification );
         assertNotNull( entry.get( "cn" ) );
         assertEquals( 1, entry.size() );
-        
+
         Attribute cnAttr = entry.get( "cn" );
-        
+
         assertTrue( cnAttr.size() != 0 );
-        
+
         Set<String> expectedValues = new HashSet<String>();
         expectedValues.add( "apache" );
         expectedValues.add( "test" );
-        
-        for ( Value<?> value:cnAttr )
+
+        for ( Value<?> value : cnAttr )
         {
             String valueStr = value.getString();
-            
+
             assertTrue( expectedValues.contains( valueStr ) );
-            
+
             expectedValues.remove( valueStr );
         }
-        
+
         assertEquals( 0, expectedValues.size() );
     }
 
-    
+
     /**
      * Test the deletion of an attribute into an empty entry
      */
@@ -205,13 +206,13 @@ public class AttributeUtilsTest
 
         Attribute dc = new DefaultAttribute( "dc", "apache" );
         entry.put( dc );
-        
+
         Attribute cn = new DefaultAttribute( "cn", "test" );
-        
+
         Modification modification = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, cn );
-        
+
         AttributeUtils.applyModification( entry, modification );
-        
+
         assertNull( entry.get( "cn" ) );
         assertNotNull( entry.get( "dc" ) );
         assertEquals( 1, entry.size() );
@@ -230,13 +231,13 @@ public class AttributeUtilsTest
 
         Attribute cn = new DefaultAttribute( "cn", "apache" );
         entry.put( cn );
-        
+
         Attribute attr = new DefaultAttribute( "cn", "test" );
-        
+
         Modification modification = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attr );
-        
+
         AttributeUtils.applyModification( entry, modification );
-        
+
         assertNotNull( entry.get( "cn" ) );
         assertEquals( 1, entry.size() );
         assertEquals( cn, entry.get( "cn" ) );
@@ -253,13 +254,13 @@ public class AttributeUtilsTest
     {
         Entry entry = new DefaultEntry();
         entry.put( "cn", "test" );
-        
+
         Attribute attr = new DefaultAttribute( "cn", "test" );
 
         Modification modification = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attr );
-        
+
         AttributeUtils.applyModification( entry, modification );
-        
+
         assertNull( entry.get( "cn" ) );
         assertEquals( 0, entry.size() );
     }
@@ -276,31 +277,32 @@ public class AttributeUtilsTest
     {
         Entry entry = new DefaultEntry();
         entry.put( "cn", "test", "apache" );
-        
+
         Attribute attr = new DefaultAttribute( "cn", "test" );
-        
+
         Modification modification = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attr );
-        
+
         AttributeUtils.applyModification( entry, modification );
-        
+
         assertNotNull( entry.get( "cn" ) );
         assertEquals( 1, entry.size() );
-        
+
         Attribute modifiedAttr = entry.get( "cn" );
-        
+
         assertTrue( modifiedAttr.size() != 0 );
-        
+
         boolean isFirst = true;
-        
-        for ( Value<?> value:modifiedAttr )
+
+        for ( Value<?> value : modifiedAttr )
         {
             assertTrue( isFirst );
-            
+
             isFirst = false;
             assertEquals( "apache", value.getString() );
         }
     }
-    
+
+
     /**
      * test the addition by modification of an attribute in an empty entry.
      * 
@@ -312,17 +314,16 @@ public class AttributeUtilsTest
     public void testApplyModifyModificationFromEmptyEntry() throws LdapException
     {
         Entry entry = new DefaultEntry();
-        
+
         Attribute attr = new DefaultAttribute( "cn", "test" );
 
-        
         Modification modification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attr );
         AttributeUtils.applyModification( entry, modification );
         assertNotNull( entry.get( "cn" ) );
         assertEquals( 1, entry.size() );
     }
 
-    
+
     /**
      * Test the replacement by modification of an attribute in an empty entry.
      * 
@@ -334,7 +335,7 @@ public class AttributeUtilsTest
     public void testApplyModifyEmptyModificationFromEmptyEntry() throws LdapException
     {
         Entry entry = new DefaultEntry();
-        
+
         Attribute attr = new DefaultAttribute( "cn" );
 
         Modification modification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attr );
@@ -357,35 +358,35 @@ public class AttributeUtilsTest
         Entry entry = new DefaultEntry();
         entry.put( "cn", "test" );
         entry.put( "ou", "apache", "acme corp" );
-        
+
         Attribute newOu = new DefaultAttribute( "ou", "Big Company", "directory" );
-        
+
         Modification modification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, newOu );
-        
+
         AttributeUtils.applyModification( entry, modification );
-        
+
         assertEquals( 2, entry.size() );
-        
+
         assertNotNull( entry.get( "cn" ) );
         assertNotNull( entry.get( "ou" ) );
-        
+
         Attribute modifiedAttr = entry.get( "ou" );
-        
+
         assertTrue( modifiedAttr.size() != 0 );
-        
+
         Set<String> expectedValues = new HashSet<String>();
         expectedValues.add( "Big Company" );
         expectedValues.add( "directory" );
 
-        for ( Value<?> value:modifiedAttr )
+        for ( Value<?> value : modifiedAttr )
         {
             String valueStr = value.getString();
-            
+
             assertTrue( expectedValues.contains( valueStr ) );
-            
+
             expectedValues.remove( valueStr );
         }
-        
+
         assertEquals( 0, expectedValues.size() );
     }
 
@@ -399,19 +400,18 @@ public class AttributeUtilsTest
     public void testApplyModifyModificationRemoveAttribute() throws LdapException
     {
         Entry entry = new DefaultEntry();
-        entry.put(  "cn", "test" );
+        entry.put( "cn", "test" );
         entry.put( "ou", "apache", "acme corp" );
-        
+
         Attribute newOu = new DefaultAttribute( "ou" );
-        
+
         Modification modification = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, newOu );
-        
+
         AttributeUtils.applyModification( entry, modification );
-        
+
         assertEquals( 1, entry.size() );
-        
+
         assertNotNull( entry.get( "cn" ) );
         assertNull( entry.get( "ou" ) );
     }
 }
-

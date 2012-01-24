@@ -20,6 +20,7 @@
 
 package org.apache.directory.shared.util;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
@@ -49,25 +50,28 @@ public class MethodUtilsTest
         @SuppressWarnings("unused")
         public static void methodA( String str )
         {
-            
+
         }
-        
+
+
         @SuppressWarnings("unused")
         public static void methodB( Collection<?> c )
         {
-            
+
         }
     }
-    
+
+
     @Test
     public void testSameBehaviourOfStandardGetMethod()
     {
         Method m1 = null;
         Method m2 = null;
-        
+
         try
         {
-            m1 = TestClass.class.getMethod( "methodA", new Class[] { String.class } );
+            m1 = TestClass.class.getMethod( "methodA", new Class[]
+                { String.class } );
         }
         catch ( SecurityException e )
         {
@@ -79,29 +83,32 @@ public class MethodUtilsTest
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
         try
         {
-            m2 = MethodUtils.getAssignmentCompatibleMethod(TestClass.class, "methodA", new Class[]{String.class});
+            m2 = MethodUtils.getAssignmentCompatibleMethod( TestClass.class, "methodA", new Class[]
+                { String.class } );
         }
         catch ( NoSuchMethodException e )
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
         assertEquals( m1, m2 );
-        
+
     }
-    
+
+
     @Test
     public void testNewBehaviourOfAssignmentCompatibleGetMethod()
     {
         Method m2 = null;
-        
+
         try
         {
-            TestClass.class.getMethod( "methodB", new Class[] { ArrayList.class } );
+            TestClass.class.getMethod( "methodB", new Class[]
+                { ArrayList.class } );
             fail( "We should not have come here." );
         }
         catch ( SecurityException e )
@@ -113,19 +120,20 @@ public class MethodUtilsTest
         {
             assertNotNull( e );
         }
-        
+
         try
         {
-            m2 = MethodUtils.getAssignmentCompatibleMethod(TestClass.class, "methodB", new Class[]{ArrayList.class});
+            m2 = MethodUtils.getAssignmentCompatibleMethod( TestClass.class, "methodB", new Class[]
+                { ArrayList.class } );
         }
         catch ( NoSuchMethodException e )
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
         assertNotNull( m2 );
-        
+
     }
 
 }

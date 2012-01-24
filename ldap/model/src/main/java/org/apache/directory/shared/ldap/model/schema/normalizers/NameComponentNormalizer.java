@@ -40,6 +40,7 @@ public interface NameComponentNormalizer
      */
     boolean isDefined( String id );
 
+
     /**
      * Normalizes the attribute name/alias to use the OID for it instead.
      * 
@@ -48,6 +49,7 @@ public interface NameComponentNormalizer
      * @throws LdapException if the attributeName is not recognized as a valid alias
      */
     String normalizeName( String attributeName ) throws LdapException;
+
 
     /**
      * Normalizes an attribute's value given the name of the attribute - short

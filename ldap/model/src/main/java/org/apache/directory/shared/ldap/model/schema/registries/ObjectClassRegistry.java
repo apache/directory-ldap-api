@@ -45,8 +45,8 @@ public interface ObjectClassRegistry extends SchemaObjectRegistry<ObjectClass>,
      * discerned from the ancestorId supplied
      */
     boolean hasDescendants( String ancestorId ) throws LdapException;
-    
-    
+
+
     /**
      * Get's an iterator over the set of descendant ObjectClasses for
      * some ancestor's name alias or their OID.
@@ -59,7 +59,7 @@ public interface ObjectClassRegistry extends SchemaObjectRegistry<ObjectClass>,
      */
     Iterator<ObjectClass> descendants( String ancestorId ) throws LdapException;
 
-    
+
     /**
      * Store the ObjectClass into a map associating an ObjectClass to its
      * descendants.
@@ -68,10 +68,10 @@ public interface ObjectClassRegistry extends SchemaObjectRegistry<ObjectClass>,
      * @param ancestors Its ancestors
      * @throws LdapException If something went wrong
      */
-    void registerDescendants( ObjectClass objectClass, List<ObjectClass> ancestors ) 
+    void registerDescendants( ObjectClass objectClass, List<ObjectClass> ancestors )
         throws LdapException;
-    
-    
+
+
     /**
      * Remove the ObjectClass from the map associating an ObjectClass to its
      * descendants.
@@ -80,10 +80,10 @@ public interface ObjectClassRegistry extends SchemaObjectRegistry<ObjectClass>,
      * @param ancestors its ancestors 
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException If something went wrong
      */
-    void unregisterDescendants( ObjectClass attributeType, List<ObjectClass> ancestors ) 
+    void unregisterDescendants( ObjectClass attributeType, List<ObjectClass> ancestors )
         throws LdapException;
-    
-    
+
+
     /**
      * Registers a new ObjectClass with this registry.
      *
@@ -92,8 +92,8 @@ public interface ObjectClassRegistry extends SchemaObjectRegistry<ObjectClass>,
      * the registration operation is not supported
      */
     void register( ObjectClass objectClass ) throws LdapException;
-    
-    
+
+
     /**
      * Removes the ObjectClass registered with this registry.
      * 
@@ -101,8 +101,8 @@ public interface ObjectClassRegistry extends SchemaObjectRegistry<ObjectClass>,
      * @throws LdapException if the numeric identifier is invalid
      */
     ObjectClass unregister( String numericOid ) throws LdapException;
-    
-    
+
+
     /**
      * Copy the ObjectClassRegistry
      */

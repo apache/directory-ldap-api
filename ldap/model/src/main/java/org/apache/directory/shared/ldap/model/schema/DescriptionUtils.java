@@ -797,7 +797,7 @@ public final class DescriptionUtils
 
     private static void getExtensions( StringBuilder sb, Map<String, List<String>> extensions )
     {
-        for ( Map.Entry<String, List<String>> extension : extensions.entrySet())
+        for ( Map.Entry<String, List<String>> extension : extensions.entrySet() )
         {
             sb.append( " " + extension.getKey() ).append( " " );
 

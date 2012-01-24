@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,7 @@ public class PresentationAddressSyntaxChecker extends BinarySyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( PresentationAddressSyntaxChecker.class );
+
 
     /**
      * Creates an instance of PresentationAddressSyntaxChecker

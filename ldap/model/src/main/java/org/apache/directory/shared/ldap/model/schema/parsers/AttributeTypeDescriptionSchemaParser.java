@@ -42,13 +42,14 @@ public class AttributeTypeDescriptionSchemaParser extends AbstractSchemaParser
     /** The LoggerFactory used by this class */
     protected static final Logger LOG = LoggerFactory.getLogger( AttributeTypeDescriptionSchemaParser.class );
 
+
     /**
      * Creates a schema parser instance.
      */
     public AttributeTypeDescriptionSchemaParser()
     {
     }
-    
+
 
     /**
      * Parses a attribute type description according to RFC 4512:
@@ -100,7 +101,7 @@ public class AttributeTypeDescriptionSchemaParser extends AbstractSchemaParser
         try
         {
             AttributeType attributeType = parser.attributeTypeDescription();
-            
+
             // Update the schemaName
             updateSchemaName( attributeType );
 
@@ -108,7 +109,7 @@ public class AttributeTypeDescriptionSchemaParser extends AbstractSchemaParser
         }
         catch ( RecognitionException re )
         {
-            String msg = I18n.err( I18n.ERR_04228, attributeTypeDescription , re.getMessage() , re.getColumn() );
+            String msg = I18n.err( I18n.ERR_04228, attributeTypeDescription, re.getMessage(), re.getColumn() );
             LOG.error( msg );
             throw new ParseException( msg, re.getColumn() );
         }

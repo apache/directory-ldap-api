@@ -16,6 +16,7 @@
  */
 package org.apache.directory.shared.util;
 
+
 /**
  * Defines a simple key value pair.
  * <p>
@@ -28,7 +29,8 @@ package org.apache.directory.shared.util;
  * 
  * @author Stephen Colebourne
  */
-public interface KeyValue {
+public interface KeyValue
+{
 
     /**
      * Gets the key from the pair.
@@ -36,6 +38,7 @@ public interface KeyValue {
      * @return the key 
      */
     Object getKey();
+
 
     /**
      * Gets the value from the pair.

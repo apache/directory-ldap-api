@@ -38,23 +38,23 @@ public class DefaultSchema implements Schema
 {
     /** The default schema's owner */
     protected static final String DEFAULT_OWNER = "uid=admin,ou=system";
-    
+
     /** Tells if this schema is disabled */
     protected boolean disabled;
-    
+
     /** Contains the list of schema it depends on */
     protected String[] dependencies;
-    
+
     /** The schema owner */
     protected String owner;
-    
+
     /** The schema name */
     protected String name;
-    
+
     /** The set of SchemaObjects declared in this schema */
     protected Set<SchemaObjectWrapper> content;
-    
-    
+
+
     /**
      * Creates a new instance of DefaultSchema.
      *
@@ -64,8 +64,8 @@ public class DefaultSchema implements Schema
     {
         this( name, null, null, false );
     }
-    
-        
+
+
     /**
      * Creates a new instance of DefaultSchema.
      *
@@ -76,8 +76,8 @@ public class DefaultSchema implements Schema
     {
         this( name, owner, null, false );
     }
-    
-        
+
+
     /**
      * Creates a new instance of DefaultSchema.
      *
@@ -89,8 +89,8 @@ public class DefaultSchema implements Schema
     {
         this( name, owner, dependencies, false );
     }
-    
-        
+
+
     /**
      * Creates a new instance of DefaultSchema.
      *
@@ -105,9 +105,9 @@ public class DefaultSchema implements Schema
         {
             throw new IllegalArgumentException( I18n.err( I18n.ERR_04266 ) );
         }
-        
+
         this.name = name;
-        
+
         if ( owner != null )
         {
             this.owner = owner;
@@ -116,7 +116,7 @@ public class DefaultSchema implements Schema
         {
             this.owner = DEFAULT_OWNER;
         }
-        
+
         if ( dependencies != null )
         {
             this.dependencies = new String[dependencies.length];
@@ -126,10 +126,10 @@ public class DefaultSchema implements Schema
         {
             this.dependencies = StringConstants.EMPTY_STRINGS;
         }
-        
+
         this.disabled = disabled;
-        
-        content = new HashSet<SchemaObjectWrapper>(); 
+
+        content = new HashSet<SchemaObjectWrapper>();
     }
 
 
@@ -143,7 +143,7 @@ public class DefaultSchema implements Schema
         return copy;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -152,24 +152,24 @@ public class DefaultSchema implements Schema
         if ( dependenciesToAdd != null )
         {
             int start = 0;
-            
+
             if ( dependencies == null )
             {
                 dependencies = new String[dependenciesToAdd.length];
             }
             else
             {
-                String[] tempDependencies = new String[ dependencies.length + dependenciesToAdd.length ];
+                String[] tempDependencies = new String[dependencies.length + dependenciesToAdd.length];
                 System.arraycopy( dependencies, 0, tempDependencies, 0, dependencies.length );
                 start = dependencies.length;
                 dependencies = tempDependencies;
             }
-            
+
             System.arraycopy( dependenciesToAdd, 0, dependencies, start, dependenciesToAdd.length );
         }
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -178,7 +178,7 @@ public class DefaultSchema implements Schema
         return owner;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -186,8 +186,8 @@ public class DefaultSchema implements Schema
     {
         return name;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -195,8 +195,8 @@ public class DefaultSchema implements Schema
     {
         return disabled;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -204,8 +204,8 @@ public class DefaultSchema implements Schema
     {
         return !disabled;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -213,8 +213,8 @@ public class DefaultSchema implements Schema
     {
         this.disabled = true;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -231,7 +231,7 @@ public class DefaultSchema implements Schema
     {
         return content;
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -247,7 +247,7 @@ public class DefaultSchema implements Schema
         sb.append( owner );
         sb.append( "\n\t\tDependencies: " );
         sb.append( Arrays.toString( dependencies ) );
-        
+
         // TODO : print the associated ShcemaObjects
         return sb.toString();
     }

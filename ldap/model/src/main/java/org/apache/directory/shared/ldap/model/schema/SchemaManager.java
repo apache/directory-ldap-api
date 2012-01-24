@@ -803,8 +803,8 @@ public interface SchemaManager
      * @return true if the schema is laoded
      */
     boolean isSchemaLoaded( String schemaName );
-    
-    
+
+
     /**
      * Get the list of Schema names which has the given schema name as a dependence
      *

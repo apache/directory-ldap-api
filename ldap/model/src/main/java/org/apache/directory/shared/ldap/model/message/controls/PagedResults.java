@@ -65,6 +65,7 @@ public interface PagedResults extends Control
      */
     int getSize();
 
+
     /**
      * Set the number of entry requested or returned
      *
@@ -72,10 +73,12 @@ public interface PagedResults extends Control
      */
     void setSize( int size );
 
+
     /**
      * @return The stored cookie
      */
     byte[] getCookie();
+
 
     /**
      * Set the cookie
@@ -83,6 +86,7 @@ public interface PagedResults extends Control
      * @param cookie The cookie to store in this control
      */
     void setCookie( byte[] cookie );
+
 
     /**
      * @return The integer value for the current cookie

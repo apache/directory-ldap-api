@@ -33,16 +33,16 @@ public interface Control
      * @return The Control's OID
      */
     String getOid();
-    
-    
+
+
     /**
      * Tells if the control is critical or not.
      *
      * @return <code>true</code> if the control is critical, <code>false</code> otherwise 
      */
     boolean isCritical();
-    
-    
+
+
     /**
      * Sets the critical flag which determines whether or not this control is
      * critical for the correct operation of a request or response message. The

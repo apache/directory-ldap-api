@@ -73,7 +73,7 @@ public final class SynchronizedLRUMap extends SequencedHashMap implements Extern
      * @param i
      *            Maximum capacity of the LRUMap
      */
-    public SynchronizedLRUMap(int i)
+    public SynchronizedLRUMap( int i )
     {
         super( i );
         maximumSize = i;

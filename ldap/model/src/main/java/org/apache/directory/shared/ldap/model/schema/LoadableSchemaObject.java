@@ -193,7 +193,7 @@ public abstract class LoadableSchemaObject extends AbstractSchemaObject
     {
         String className = this.getClass().getName();
 
-        if ( Strings.isEmpty(fqcn) )
+        if ( Strings.isEmpty( fqcn ) )
         {
             fqcn = className;
             return true;

@@ -47,6 +47,7 @@ public class SubstringNode extends LeafNode
     /** List of fragments between wildcard */
     private List<String> anyPattern;
 
+
     /**
      * Creates a new SubstringNode object with only one wildcard and no internal
      * any fragments between wildcards.
@@ -64,7 +65,7 @@ public class SubstringNode extends LeafNode
         this.initialPattern = initialPattern;
     }
 
-    
+
     /**
      * Creates a new SubstringNode object with only one wildcard and no internal
      * any fragments between wildcards.
@@ -82,7 +83,7 @@ public class SubstringNode extends LeafNode
         this.initialPattern = initialPattern;
     }
 
-    
+
     /**
      * Creates a new SubstringNode object without any value
      * 
@@ -122,7 +123,8 @@ public class SubstringNode extends LeafNode
      * @param initialPattern the initial fragment
      * @param finalPattern the final fragment
      */
-    public SubstringNode( List<String> anyPattern, AttributeType attributeType, String initialPattern, String finalPattern )
+    public SubstringNode( List<String> anyPattern, AttributeType attributeType, String initialPattern,
+        String finalPattern )
     {
         super( attributeType, AssertionType.SUBSTRING );
 
@@ -131,7 +133,7 @@ public class SubstringNode extends LeafNode
         this.initialPattern = initialPattern;
     }
 
-    
+
     /**
      * Creates a new SubstringNode object more than one wildcard and an any
      * list.
@@ -150,6 +152,7 @@ public class SubstringNode extends LeafNode
         this.initialPattern = initialPattern;
     }
 
+
     /**
      * Creates a regular expression from an LDAP substring assertion filter
      * specification.
@@ -166,7 +169,7 @@ public class SubstringNode extends LeafNode
      *             compiled
      */
     public static Pattern getRegex( String initialPattern, String[] anyPattern, String finalPattern )
-            throws PatternSyntaxException
+        throws PatternSyntaxException
     {
         StringBuffer buf = new StringBuffer();
 
@@ -192,27 +195,28 @@ public class SubstringNode extends LeafNode
             buf.append( ".*" );
         }
 
-        return Pattern.compile(buf.toString());
+        return Pattern.compile( buf.toString() );
     }
 
 
     /**
      * Clone the Node
      */
-    @Override public ExprNode clone()
+    @Override
+    public ExprNode clone()
     {
-        ExprNode clone = (ExprNode)super.clone();
-        
+        ExprNode clone = ( ExprNode ) super.clone();
+
         if ( anyPattern != null )
         {
-            ((SubstringNode)clone).anyPattern = new ArrayList<String>();
-            
-            for ( String any:anyPattern )
+            ( ( SubstringNode ) clone ).anyPattern = new ArrayList<String>();
+
+            for ( String any : anyPattern )
             {
-                ((SubstringNode)clone).anyPattern.add( any );
+                ( ( SubstringNode ) clone ).anyPattern.add( any );
             }
         }
-        
+
         return clone;
     }
 
@@ -226,18 +230,18 @@ public class SubstringNode extends LeafNode
     {
         return initialPattern;
     }
-    
-    
+
+
     /**
      * Set the initial pattern
      * @param initialPattern The initial pattern
      */
-    public void setInitial( String initialPattern ) 
+    public void setInitial( String initialPattern )
     {
         this.initialPattern = initialPattern;
     }
 
-    
+
     /**
      * Gets the final fragment or suffix.
      * 
@@ -253,7 +257,7 @@ public class SubstringNode extends LeafNode
      * Set the final pattern
      * @param finalPattern The final pattern
      */
-    public void setFinal( String finalPattern ) 
+    public void setFinal( String finalPattern )
     {
         this.finalPattern = finalPattern;
     }
@@ -274,7 +278,7 @@ public class SubstringNode extends LeafNode
      * Set the any patterns
      * @param anyPattern The any patterns
      */
-    public void setAny( List<String> anyPattern ) 
+    public void setAny( List<String> anyPattern )
     {
         this.anyPattern = anyPattern;
     }
@@ -284,7 +288,7 @@ public class SubstringNode extends LeafNode
      * Add an any pattern
      * @param anyPattern The any pattern
      */
-    public void addAny( String anyPattern ) 
+    public void addAny( String anyPattern )
     {
         this.anyPattern.add( anyPattern );
     }
@@ -306,7 +310,7 @@ public class SubstringNode extends LeafNode
             for ( int i = 0; i < any.length; i++ )
             {
                 any[i] = ( String ) normalizer.normalize( anyPattern.get( i ) );
-                
+
                 if ( any[i].length() == 0 )
                 {
                     any[i] = " ";
@@ -327,7 +331,7 @@ public class SubstringNode extends LeafNode
                 finalStr = ( String ) normalizer.normalize( finalPattern );
             }
 
-            return getRegex(initialStr, any, finalStr);
+            return getRegex( initialStr, any, finalStr );
         }
 
         String initialStr = null;
@@ -344,7 +348,7 @@ public class SubstringNode extends LeafNode
             finalStr = ( String ) normalizer.normalize( finalPattern );
         }
 
-        return getRegex(initialStr, null, finalStr);
+        return getRegex( initialStr, null, finalStr );
     }
 
 
@@ -364,7 +368,7 @@ public class SubstringNode extends LeafNode
             return false;
         }
         SubstringNode that = ( SubstringNode ) obj;
-        
+
         if ( initialPattern == null )
         {
             if ( that.initialPattern != null )
@@ -379,7 +383,7 @@ public class SubstringNode extends LeafNode
                 return false;
             }
         }
-        
+
         if ( finalPattern == null )
         {
             if ( that.finalPattern != null )
@@ -394,7 +398,7 @@ public class SubstringNode extends LeafNode
                 return false;
             }
         }
-        
+
         return super.equals( obj );
     }
 
@@ -407,20 +411,20 @@ public class SubstringNode extends LeafNode
     public int hashCode()
     {
         int h = 37;
-        
-        h = h*17 + super.hashCode();
-        h = h*17 + ( initialPattern != null ? initialPattern.hashCode() : 0 );
-        
+
+        h = h * 17 + super.hashCode();
+        h = h * 17 + ( initialPattern != null ? initialPattern.hashCode() : 0 );
+
         if ( anyPattern != null )
         {
-            for ( String pattern:anyPattern )
+            for ( String pattern : anyPattern )
             {
-                h = h*17 + pattern.hashCode();
+                h = h * 17 + pattern.hashCode();
             }
         }
-        
-        h = h*17 + ( finalPattern != null ? finalPattern.hashCode() : 0 );
-        
+
+        h = h * 17 + ( finalPattern != null ? finalPattern.hashCode() : 0 );
+
         return h;
     }
 
@@ -432,9 +436,9 @@ public class SubstringNode extends LeafNode
     public String toString()
     {
         StringBuilder buf = new StringBuilder();
-        
+
         buf.append( '(' );
-        
+
         if ( attributeType != null )
         {
             buf.append( attributeType.getName() );
@@ -443,7 +447,6 @@ public class SubstringNode extends LeafNode
         {
             buf.append( attribute );
         }
-        
 
         buf.append( '=' );
 
@@ -458,7 +461,7 @@ public class SubstringNode extends LeafNode
 
         if ( null != anyPattern )
         {
-            for ( String any:anyPattern )
+            for ( String any : anyPattern )
             {
                 buf.append( escapeFilterValue( new StringValue( any ) ) );
                 buf.append( '*' );
@@ -471,9 +474,9 @@ public class SubstringNode extends LeafNode
         }
 
         buf.append( super.toString() );
-        
+
         buf.append( ')' );
-        
+
         return buf.toString();
     }
 }

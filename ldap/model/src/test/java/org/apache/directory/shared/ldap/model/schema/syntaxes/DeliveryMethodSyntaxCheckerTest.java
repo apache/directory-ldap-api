@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DeliveryMeth
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Test cases for DeliveryMethodSyntaxChecker.
  *
@@ -63,7 +64,8 @@ public class DeliveryMethodSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "1" ) );
         assertFalse( checker.isValidSyntax( "B" ) );
     }
-    
+
+
     @Test
     public void testWrongCase()
     {
@@ -78,7 +80,7 @@ public class DeliveryMethodSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( " any any" ) );
     }
 
-    
+
     @Test
     public void testCorrectCase()
     {

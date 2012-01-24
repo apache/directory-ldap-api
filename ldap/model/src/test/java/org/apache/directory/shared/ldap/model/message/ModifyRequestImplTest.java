@@ -295,21 +295,21 @@ public class ModifyRequestImplTest
             public Collection<Modification> getModifications()
             {
                 List<Modification> list = new ArrayList<Modification>();
-                
+
                 try
-                { 
+                {
                     Attribute attr = new DefaultAttribute( "attr0" );
                     attr.add( "val0" );
                     attr.add( "val1" );
                     attr.add( "val2" );
                     Modification item = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attr );
                     list.add( item );
-    
+
                     attr = new DefaultAttribute( "attr1" );
                     attr.add( "val3" );
                     item = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attr );
                     list.add( item );
-    
+
                     attr = new DefaultAttribute( "attr2" );
                     attr.add( "val4" );
                     attr.add( "val5" );

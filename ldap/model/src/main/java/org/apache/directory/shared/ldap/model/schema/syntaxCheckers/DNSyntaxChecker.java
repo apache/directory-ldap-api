@@ -40,6 +40,7 @@ public class DNSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DNSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of DNSyntaxChecker.
      */
@@ -48,7 +49,7 @@ public class DNSyntaxChecker extends SyntaxChecker
         super( SchemaConstants.DN_SYNTAX );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -61,14 +62,14 @@ public class DNSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -83,10 +84,10 @@ public class DNSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax valid for '{}'", value );
             return true;
         }
-        
+
         // Check that the value is a valid Dn
-        boolean result = Dn.isValid(strValue);
-        
+        boolean result = Dn.isValid( strValue );
+
         if ( result )
         {
             LOG.debug( "Syntax valid for '{}'", value );
@@ -95,7 +96,7 @@ public class DNSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax invalid for '{}'", value );
         }
-        
+
         return result;
     }
 }

@@ -1011,7 +1011,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
             {
                 // This MR's syntax has not been loaded into the Registries.
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, I18n.err( I18n.ERR_04294, matchingRule.getOid() ), ne );
+                    LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, I18n.err( I18n.ERR_04294, matchingRule.getOid() ),
+                    ne );
                 ldapSchemaException.setSourceObject( matchingRule );
                 errors.add( ldapSchemaException );
             }
@@ -1389,7 +1390,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             {
                 // Check the registries now
                 List<Throwable> checkErrors = checkRefInteg();
-    
+
                 errors.addAll( checkErrors );
             }
         }

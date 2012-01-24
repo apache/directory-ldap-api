@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.util;
 
+
 /**
  *
  * This class is used to store the position of a token in a string.
@@ -30,13 +31,14 @@ public class Position
 {
     /** The starting position in the string */
     public int start = 0;
-    
-    /** The current token length */  
+
+    /** The current token length */
     public int length = 0;
-    
-    /** The token end position in the string */ 
+
+    /** The token end position in the string */
     public int end = 0;
-    
+
+
     public String toString()
     {
         return "[" + start + ", " + end + ", " + length + "]";

@@ -54,6 +54,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /** The associated response */
     private ModifyResponse response;
 
+
     // -----------------------------------------------------------------------
     // Constructors
     // -----------------------------------------------------------------------
@@ -94,7 +95,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequest setName( Dn name )
     {
         this.name = name;
-        
+
         return this;
     }
 
@@ -105,7 +106,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequest addModification( Modification mod )
     {
         mods.add( mod );
-        
+
         return this;
     }
 
@@ -130,7 +131,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequest addModification( Attribute attr, ModificationOperation modOp )
     {
         mods.add( new DefaultModification( modOp, attr ) );
-        
+
         return this;
     }
 
@@ -141,7 +142,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequest add( String attributeName, String... attributeValue )
     {
         addModification( ModificationOperation.ADD_ATTRIBUTE, attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -152,7 +153,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequest add( String attributeName, byte[]... attributeValue )
     {
         addModification( ModificationOperation.ADD_ATTRIBUTE, attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -163,7 +164,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequest add( Attribute attr )
     {
         addModification( attr, ModificationOperation.ADD_ATTRIBUTE );
-        
+
         return this;
     }
 
@@ -174,7 +175,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequest replace( String attributeName )
     {
         addModification( ModificationOperation.REPLACE_ATTRIBUTE, attributeName, StringConstants.EMPTY_STRINGS );
-        
+
         return this;
     }
 
@@ -185,7 +186,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequest replace( String attributeName, String... attributeValue )
     {
         addModification( ModificationOperation.REPLACE_ATTRIBUTE, attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -196,7 +197,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequest replace( String attributeName, byte[]... attributeValue )
     {
         addModification( ModificationOperation.REPLACE_ATTRIBUTE, attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -207,7 +208,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequest replace( Attribute attr )
     {
         addModification( attr, ModificationOperation.REPLACE_ATTRIBUTE );
-        
+
         return this;
     }
 
@@ -218,7 +219,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequest removeModification( Modification mod )
     {
         mods.remove( mod );
-        
+
         return this;
     }
 
@@ -229,7 +230,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequest remove( String attributeName, String... attributeValue )
     {
         addModification( ModificationOperation.REMOVE_ATTRIBUTE, attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -240,7 +241,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequest remove( String attributeName, byte[]... attributeValue )
     {
         addModification( ModificationOperation.REMOVE_ATTRIBUTE, attributeName, attributeValue );
-        
+
         return this;
     }
 
@@ -251,46 +252,46 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     public ModifyRequest remove( Attribute attr )
     {
         addModification( attr, ModificationOperation.REMOVE_ATTRIBUTE );
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public ModifyRequest addControl( Control control ) throws MessageException
     {
-        return (ModifyRequest)super.addControl( control );
+        return ( ModifyRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (ModifyRequest)super.addAllControls( controls );
+        return ( ModifyRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyRequest removeControl( Control control ) throws MessageException
     {
-        return (ModifyRequest)super.removeControl( control );
+        return ( ModifyRequest ) super.removeControl( control );
     }
 
 
@@ -368,7 +369,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
             return false;
         }
 
-        ModifyRequest req = (ModifyRequest) obj;
+        ModifyRequest req = ( ModifyRequest ) obj;
 
         if ( name != null && req.getName() == null )
         {
@@ -405,7 +406,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
             }
             else
 
-            if ( !item.equals( (DefaultModification) mods.get( i ) ) )
+            if ( !item.equals( ( DefaultModification ) mods.get( i ) ) )
             {
                 return false;
             }

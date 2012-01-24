@@ -41,6 +41,7 @@ public class TelephoneNumberComparator extends LdapComparator<String>
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( TelephoneNumberComparator.class );
 
+
     /**
      * The TelephoneNumberComparator constructor. Its OID is the TelephoneNumberMatch matching
      * rule OID.
@@ -50,7 +51,7 @@ public class TelephoneNumberComparator extends LdapComparator<String>
         super( oid );
     }
 
-    
+
     /**
      * Remove all spaces and '-' from the telephone number
      */
@@ -58,21 +59,21 @@ public class TelephoneNumberComparator extends LdapComparator<String>
     {
         char[] telephoneNumberArray = telephoneNumber.toCharArray();
         int pos = 0;
-        
-        for ( char c:telephoneNumberArray )
+
+        for ( char c : telephoneNumberArray )
         {
             if ( ( c == ' ' ) || ( c == '-' ) )
-            { 
+            {
                 continue;
             }
-            
+
             telephoneNumberArray[pos++] = c;
         }
-        
+
         return new String( telephoneNumberArray, 0, pos );
     }
 
-    
+
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
@@ -87,18 +88,18 @@ public class TelephoneNumberComparator extends LdapComparator<String>
         {
             return ( telephoneNumber2 == null ) ? 0 : -1;
         }
-        
+
         if ( telephoneNumber2 == null )
         {
             return 1;
         }
-        
+
         // -------------------------------------------------------------------
         // Remove all spaces and '-'
         // -------------------------------------------------------------------
         String strippedTelephoneNumber1 = strip( telephoneNumber1 );
         String strippedTelephoneNumber2 = strip( telephoneNumber2 );
-        
+
         return ( strippedTelephoneNumber1.compareToIgnoreCase( strippedTelephoneNumber2 ) );
     }
 }

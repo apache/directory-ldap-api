@@ -50,6 +50,7 @@ public class IntegerSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( IntegerSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of IntegerSyntaxChecker.
      */
@@ -57,28 +58,28 @@ public class IntegerSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.INTEGER_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public boolean isValidSyntax( Object value )
     {
-        String strValue =null;
+        String strValue = null;
 
         if ( value == null )
         {
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -90,17 +91,17 @@ public class IntegerSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // The first char must be either a '-' or in [0..9].
         // If it's a '0', then there should be any other char after
         int pos = 0;
         char c = strValue.charAt( pos );
-        
+
         if ( c == '-' )
         {
             pos = 1;
         }
-        else if ( !Chars.isDigit(c) )
+        else if ( !Chars.isDigit( c ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
@@ -118,9 +119,9 @@ public class IntegerSyntaxChecker extends SyntaxChecker
                 return true;
             }
         }
-            
+
         // We must have at least a digit which is not '0'
-        if ( !Chars.isDigit(strValue, pos) )
+        if ( !Chars.isDigit( strValue, pos ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
@@ -134,14 +135,14 @@ public class IntegerSyntaxChecker extends SyntaxChecker
         {
             pos++;
         }
-        
-        while ( Chars.isDigit(strValue, pos) )
+
+        while ( Chars.isDigit( strValue, pos ) )
         {
             pos++;
         }
-        
+
         boolean result = ( pos == strValue.length() );
-        
+
         if ( result )
         {
             LOG.debug( "Syntax valid for '{}'", value );
@@ -150,7 +151,7 @@ public class IntegerSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax invalid for '{}'", value );
         }
-        
+
         return result;
     }
 }

@@ -115,8 +115,8 @@ public interface SubtreeSpecification
      *         specification
      */
     ExprNode getRefinement();
-    
-    
+
+
     /**
      * Converts this item into its string representation as stored
      * in directory.

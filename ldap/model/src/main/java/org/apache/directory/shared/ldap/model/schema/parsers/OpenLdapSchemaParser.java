@@ -136,7 +136,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser
         {
             if ( obj instanceof OpenLdapObjectIdentifierMacro )
             {
-                OpenLdapObjectIdentifierMacro oid = (OpenLdapObjectIdentifierMacro) obj;
+                OpenLdapObjectIdentifierMacro oid = ( OpenLdapObjectIdentifierMacro ) obj;
                 objectIdentifierMacros.put( oid.getName(), oid );
             }
             else if ( obj instanceof AttributeType )

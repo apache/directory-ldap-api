@@ -55,7 +55,7 @@ public class BranchNode extends AbstractExprNode
         {
             this.children = childList;
         }
-        
+
         isSchemaAware = true;
     }
 
@@ -74,7 +74,7 @@ public class BranchNode extends AbstractExprNode
         {
             this.children = new ArrayList<ExprNode>( childList.length );
         }
-        
+
         CollectionUtils.addAll( children, childList );
     }
 
@@ -87,12 +87,12 @@ public class BranchNode extends AbstractExprNode
     protected BranchNode( AssertionType assertionType )
     {
         super( assertionType );
-        
+
         this.children = new ArrayList<ExprNode>( 2 );
         isSchemaAware = true;
     }
 
-    
+
     /**
      * @see ExprNode#isLeaf()
      * @return false all the time.
@@ -102,26 +102,28 @@ public class BranchNode extends AbstractExprNode
         return false;
     }
 
+
     /**
      * Makes a full clone in new memory space of the current node and children
      * 
      * @return the clone
      */
-    @Override public ExprNode clone()
+    @Override
+    public ExprNode clone()
     {
-        ExprNode clone = (ExprNode)super.clone();
-        
+        ExprNode clone = ( ExprNode ) super.clone();
+
         // Clone the children
         if ( children != null )
         {
-            ((BranchNode)clone).children = new ArrayList<ExprNode>();
-            
+            ( ( BranchNode ) clone ).children = new ArrayList<ExprNode>();
+
             for ( ExprNode child : children )
             {
-                ((BranchNode)clone).children.add( (ExprNode)child.clone() );
+                ( ( BranchNode ) clone ).children.add( ( ExprNode ) child.clone() );
             }
         }
-        
+
         return clone;
     }
 
@@ -147,7 +149,7 @@ public class BranchNode extends AbstractExprNode
         children.add( 0, node );
     }
 
-    
+
     /**
      * Gets the children below this BranchNode. We purposefully do not clone the
      * array list so that backends can sort the order of children using their
@@ -171,7 +173,8 @@ public class BranchNode extends AbstractExprNode
     {
         children = list;
     }
-    
+
+
     /**
      * Convenience method that gets the first child in the children array. Its
      * very useful for NOT nodes since they only have one child by avoiding code
@@ -205,10 +208,10 @@ public class BranchNode extends AbstractExprNode
 
             if ( visitor.canVisit( this ) )
             {
-                result = (ExprNode)visitor.visit( this );
+                result = ( ExprNode ) visitor.visit( this );
             }
 
-            for ( ExprNode node:childrenList )
+            for ( ExprNode node : childrenList )
             {
                 node.accept( visitor );
             }
@@ -227,8 +230,8 @@ public class BranchNode extends AbstractExprNode
             }
         }
     }
-    
-    
+
+
     /**
      * @see Object#hashCode()
      * @return the instance's hash code 
@@ -236,20 +239,21 @@ public class BranchNode extends AbstractExprNode
     public int hashCode()
     {
         int h = 37;
-        
-        h = h*17 + super.hashCode();
-        
+
+        h = h * 17 + super.hashCode();
+
         if ( children != null )
         {
-            for ( ExprNode child:children )
+            for ( ExprNode child : children )
             {
-                h = h*17 + child.hashCode();
+                h = h * 17 + child.hashCode();
             }
         }
-        
+
         return h;
     }
-    
+
+
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
@@ -264,7 +268,7 @@ public class BranchNode extends AbstractExprNode
         {
             return false;
         }
-        
+
         if ( other.getClass() != this.getClass() )
         {
             return false;
@@ -283,18 +287,18 @@ public class BranchNode extends AbstractExprNode
         {
             return false;
         }
-        
+
         for ( int i = 0; i < children.size(); i++ )
         {
             ExprNode child = children.get( i );
             ExprNode otherChild = children.get( i );
-            
+
             if ( !child.equals( otherChild ) )
             {
                 return false;
             }
         }
-        
+
         return true;
     }
 }

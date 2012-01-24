@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.GeneralizedT
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Test cases for GeneralizedTimeSyntaxChecker.
  *
@@ -63,7 +64,8 @@ public class GeneralizedTimeSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "1" ) );
         assertFalse( checker.isValidSyntax( "B" ) );
     }
-    
+
+
     @Test
     public void testErrorCase()
     {
@@ -81,7 +83,8 @@ public class GeneralizedTimeSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "20061205184527+1260" ) );
         assertFalse( checker.isValidSyntax( "20061205184527+1299" ) );
     }
-    
+
+
     @Test
     public void testCorrectCase()
     {

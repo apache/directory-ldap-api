@@ -33,6 +33,7 @@ import org.junit.runner.RunWith;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
+
 /**
  * Tests the fast Dn parser.
  * 
@@ -52,7 +53,7 @@ public class FastDnParserTest
     @Test
     public void testLdapDNEmpty() throws LdapException
     {
-        assertEquals( "", ( (Dn) FastDnParser.parse( "" ) ).getName() );
+        assertEquals( "", ( ( Dn ) FastDnParser.parse( "" ) ).getName() );
     }
 
 
@@ -144,7 +145,7 @@ public class FastDnParserTest
         {
             // expected
         }
-        
+
         FastDnParser.parse( " 0.5=" );
         FastDnParser.parse( " 0.5 = " );
         FastDnParser.parse( " 0.5 = b" );
@@ -392,19 +393,19 @@ public class FastDnParserTest
     {
         Dn dn = FastDnParser.parse( "cn = John, ou = People, OU = Marketing" );
 
-        byte[] bytes = Dn.getBytes(dn);
+        byte[] bytes = Dn.getBytes( dn );
 
         assertEquals( 30, bytes.length );
-        assertEquals( "cn=John,ou=People,ou=Marketing", Strings.utf8ToString(bytes) );
+        assertEquals( "cn=John,ou=People,ou=Marketing", Strings.utf8ToString( bytes ) );
     }
 
 
     @Test
     public void testStringParser() throws LdapException
     {
-        String dn = Strings.utf8ToString(new byte[]
-                {'C', 'N', ' ', '=', ' ', 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', ' ', 'L', (byte) 0xc3,
-                        (byte) 0xa9, 'c', 'h', 'a', 'r', 'n', 'y'});
+        String dn = Strings.utf8ToString( new byte[]
+            { 'C', 'N', ' ', '=', ' ', 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', ' ', 'L', ( byte ) 0xc3,
+                ( byte ) 0xa9, 'c', 'h', 'a', 'r', 'n', 'y' } );
 
         Dn name = FastDnParser.parse( dn );
 
@@ -416,8 +417,8 @@ public class FastDnParserTest
     @Test
     public void testStringParserShort() throws LdapException
     {
-        String dn = Strings.utf8ToString(new byte[]
-                {'C', '=', ' ', 'E', (byte) 0xc3, (byte) 0xa9, 'c'});
+        String dn = Strings.utf8ToString( new byte[]
+            { 'C', '=', ' ', 'E', ( byte ) 0xc3, ( byte ) 0xa9, 'c' } );
 
         Dn name = FastDnParser.parse( dn );
 
@@ -486,7 +487,7 @@ public class FastDnParserTest
 
         assertEquals( "RFC1779_1 : ",
             "CN=Marshall T. Rose, O=Dover Beach Consulting, L=Santa Clara, ST=California, C=US",
-            nameRFC1779_1 .getName() );
+            nameRFC1779_1.getName() );
         assertEquals( "RFC1779_1 : ", "cn=Marshall T. Rose,o=Dover Beach Consulting,l=Santa Clara,st=California,c=US",
             nameRFC1779_1.getNormName() );
     }
@@ -503,7 +504,7 @@ public class FastDnParserTest
     {
         Dn nameRFC2253_1 = FastDnParser.parse( "CN=Steve Kille,O=Isode limited,C=GB" );
 
-        assertEquals( "RFC2253_1 : ", "CN=Steve Kille,O=Isode limited,C=GB", ( (Dn) nameRFC2253_1 ).getName() );
+        assertEquals( "RFC2253_1 : ", "CN=Steve Kille,O=Isode limited,C=GB", ( ( Dn ) nameRFC2253_1 ).getName() );
     }
 
 
@@ -646,7 +647,7 @@ public class FastDnParserTest
     public final void testPreserveSpaceAfterEscape() throws LdapException
     {
         String input = "ou=some test\\,  something else";
-        
+
         try
         {
             FastDnParser.parse( input ).toString();

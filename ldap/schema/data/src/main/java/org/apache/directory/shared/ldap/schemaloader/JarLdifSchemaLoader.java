@@ -115,7 +115,7 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
         }
 
         Pattern pat = Pattern.compile( "schema" + SEPARATOR_PATTERN + "ou=schema"
-                + SEPARATOR_PATTERN + "cn=[a-z0-9-_]*\\." + LDIF_EXT );
+            + SEPARATOR_PATTERN + "cn=[a-z0-9-_]*\\." + LDIF_EXT );
 
         for ( String file : RESOURCE_MAP.keySet() )
         {
@@ -160,7 +160,7 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
     private String getSchemaDirectoryString( Schema schema )
     {
         return "schema" + "/" + "ou=schema" + "/"
-                        + "cn=" + Strings.lowerCase(schema.getSchemaName()) + "/";
+            + "cn=" + Strings.lowerCase( schema.getSchemaName() ) + "/";
     }
 
 
@@ -360,9 +360,9 @@ public class JarLdifSchemaLoader extends AbstractSchemaLoader
         {
             // check that the attributeTypes directory exists for the schema
             String start = getSchemaDirectoryString( schema )
-                    + SchemaConstants.ATTRIBUTE_TYPES_PATH + "/" + "m-oid=";
+                + SchemaConstants.ATTRIBUTE_TYPES_PATH + "/" + "m-oid=";
             String end = "." + LDIF_EXT;
-            
+
             // get list of attributeType LDIF schema files in attributeTypes
             for ( String resourcePath : RESOURCE_MAP.keySet() )
             {

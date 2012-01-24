@@ -20,6 +20,7 @@
 
 package org.apache.directory.shared.ldap.model.message;
 
+
 import org.apache.directory.shared.ldap.model.name.Dn;
 
 
@@ -134,19 +135,19 @@ public class LdapResultImpl implements LdapResult
     public int hashCode()
     {
         int hash = 37;
-        
+
         if ( referral != null )
         {
             hash = hash * 17 + referral.hashCode();
         }
-        
+
         hash = hash * 17 + resultCode.hashCode();
-        
+
         if ( diagnosticMessage != null )
         {
             hash = hash * 17 + diagnosticMessage.hashCode();
         }
-        
+
         if ( matchedDn != null )
         {
             hash = hash * 17 + matchedDn.hashCode();

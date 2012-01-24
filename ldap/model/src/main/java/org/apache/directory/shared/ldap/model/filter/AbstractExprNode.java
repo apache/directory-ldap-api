@@ -41,11 +41,11 @@ public abstract class AbstractExprNode implements ExprNode
 
     /** The node type */
     protected final AssertionType assertionType;
-    
+
     /** A flag set to true if the Node is Schema aware */
     protected boolean isSchemaAware;
-    
-    
+
+
     /**
      * Creates a node by setting abstract node type.
      * 
@@ -79,20 +79,20 @@ public abstract class AbstractExprNode implements ExprNode
         {
             return true;
         }
-        
+
         if ( !( o instanceof AbstractExprNode ) )
         {
             return false;
         }
-        
-        AbstractExprNode that = (AbstractExprNode)o;
-        
+
+        AbstractExprNode that = ( AbstractExprNode ) o;
+
         // Check the node type
         if ( this.assertionType != that.assertionType )
         {
             return false;
         }
-        
+
         if ( annotations == null )
         {
             return that.annotations == null;
@@ -101,18 +101,18 @@ public abstract class AbstractExprNode implements ExprNode
         {
             return false;
         }
-        
+
         // Check all the annotation
-        for ( String key:annotations.keySet() )
+        for ( String key : annotations.keySet() )
         {
             if ( !that.annotations.containsKey( key ) )
             {
                 return false;
             }
-            
-            Object thisAnnotation = annotations.get( key ); 
+
+            Object thisAnnotation = annotations.get( key );
             Object thatAnnotation = that.annotations.get( key );
-            
+
             if ( thisAnnotation == null )
             {
                 if ( thatAnnotation != null )
@@ -128,7 +128,7 @@ public abstract class AbstractExprNode implements ExprNode
                 }
             }
         }
-        
+
         return true;
     }
 
@@ -155,43 +155,43 @@ public abstract class AbstractExprNode implements ExprNode
 
         if ( !value.isHumanReadable() )
         {
-            sb = new StringBuilder( ((BinaryValue)value).getReference().length * 3 );
-            
-            for ( byte b:((BinaryValue)value).getReference() )
+            sb = new StringBuilder( ( ( BinaryValue ) value ).getReference().length * 3 );
+
+            for ( byte b : ( ( BinaryValue ) value ).getReference() )
             {
                 if ( ( b < 0x7F ) && ( b >= 0 ) )
                 {
                     switch ( b )
                     {
-                        case '*' :
+                        case '*':
                             sb.append( "\\2A" );
                             break;
-                            
-                        case '(' :
+
+                        case '(':
                             sb.append( "\\28" );
                             break;
-                            
-                        case ')' :
+
+                        case ')':
                             sb.append( "\\29" );
                             break;
-                            
-                        case '\\' :
+
+                        case '\\':
                             sb.append( "\\5C" );
                             break;
-                            
-                        case '\0' :
+
+                        case '\0':
                             sb.append( "\\00" );
                             break;
-                            
-                        default :
-                            sb.append( (char)b );
+
+                        default:
+                            sb.append( ( char ) b );
                     }
                 }
                 else
                 {
                     sb.append( '\\' );
-                    String digit = Integer.toHexString( ((byte)b) & 0x00FF );
-                    
+                    String digit = Integer.toHexString( ( ( byte ) b ) & 0x00FF );
+
                     if ( digit.length() == 1 )
                     {
                         sb.append( '0' );
@@ -204,8 +204,8 @@ public abstract class AbstractExprNode implements ExprNode
             return new StringValue( sb.toString() );
         }
 
-        val = ( (StringValue) value ).getString();
-        
+        val = ( ( StringValue ) value ).getString();
+
         for ( int i = 0; i < val.length(); i++ )
         {
             char ch = val.charAt( i );
@@ -216,24 +216,24 @@ public abstract class AbstractExprNode implements ExprNode
                 case '*':
                     replace = "\\2A";
                     break;
-                    
+
                 case '(':
                     replace = "\\28";
                     break;
-                    
+
                 case ')':
                     replace = "\\29";
                     break;
-                    
+
                 case '\\':
                     replace = "\\5C";
                     break;
-                    
+
                 case '\0':
                     replace = "\\00";
                     break;
             }
-            
+
             if ( replace != null )
             {
                 if ( sb == null )
@@ -260,21 +260,21 @@ public abstract class AbstractExprNode implements ExprNode
     public int hashCode()
     {
         int h = 37;
-        
+
         if ( annotations != null )
         {
-            for ( String key:annotations.keySet() )
+            for ( String key : annotations.keySet() )
             {
                 Object value = annotations.get( key );
-                
-                h = h*17 + key.hashCode();
-                h = h*17 + ( value == null ? 0 : value.hashCode() );
+
+                h = h * 17 + key.hashCode();
+                h = h * 17 + ( value == null ? 0 : value.hashCode() );
             }
         }
-        
+
         return h;
     }
-    
+
 
     /**
      * @see ExprNode#get(java.lang.Object)
@@ -317,7 +317,7 @@ public abstract class AbstractExprNode implements ExprNode
         return annotations;
     }
 
-    
+
     /**
      * Tells if this Node is Schema aware.
      * 
@@ -328,7 +328,7 @@ public abstract class AbstractExprNode implements ExprNode
         return isSchemaAware;
     }
 
-    
+
     /**
      * Default implementation for this method : just throw an exception.
      * 
@@ -340,28 +340,29 @@ public abstract class AbstractExprNode implements ExprNode
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_04144 ) );
     }
-    
-    
+
+
     /**
      * Clone the object
      */
-    @Override public ExprNode clone()
+    @Override
+    public ExprNode clone()
     {
         try
         {
-            ExprNode clone = (ExprNode)super.clone();
-            
+            ExprNode clone = ( ExprNode ) super.clone();
+
             if ( annotations != null )
             {
-                for ( String key:annotations.keySet() )
+                for ( String key : annotations.keySet() )
                 {
                     Object value = annotations.get( key );
-                    
+
                     // Note : the value aren't cloned ! 
-                    ((AbstractExprNode)clone).annotations.put( key, value );
+                    ( ( AbstractExprNode ) clone ).annotations.put( key, value );
                 }
             }
-            
+
             return clone;
         }
         catch ( CloneNotSupportedException cnse )
@@ -380,9 +381,9 @@ public abstract class AbstractExprNode implements ExprNode
         {
             return ":[" + annotations.get( "count" ) + "]";
         }
-        else 
+        else
         {
             return "";
         }
-    }    
+    }
 }

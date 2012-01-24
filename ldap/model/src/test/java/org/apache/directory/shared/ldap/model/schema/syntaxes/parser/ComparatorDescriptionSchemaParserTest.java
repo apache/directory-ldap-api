@@ -65,7 +65,7 @@ public class ComparatorDescriptionSchemaParserTest
     @Test
     public void testNumericOid() throws ParseException
     {
-        SchemaParserTestUtils.testNumericOid(parser, "FQCN org.apache.directory.SimpleComparator");
+        SchemaParserTestUtils.testNumericOid( parser, "FQCN org.apache.directory.SimpleComparator" );
     }
 
 

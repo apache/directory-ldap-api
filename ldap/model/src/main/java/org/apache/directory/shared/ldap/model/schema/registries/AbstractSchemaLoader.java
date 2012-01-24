@@ -45,7 +45,7 @@ import org.apache.directory.shared.util.Strings;
  */
 public abstract class AbstractSchemaLoader implements SchemaLoader
 {
-    
+
     /** The listener. */
     protected SchemaLoaderListener listener;
 
@@ -59,25 +59,28 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * a map implementation which converts the keys to lower case before inserting
      */
-    private static class LowerCaseKeyMap extends HashMap<String,Schema>
+    private static class LowerCaseKeyMap extends HashMap<String, Schema>
     {
         private static final long serialVersionUID = 1L;
+
 
         @Override
         public Schema put( String key, Schema value )
         {
-            return super.put( Strings.lowerCase(key), value );
+            return super.put( Strings.lowerCase( key ), value );
         }
+
 
         @Override
         public void putAll( Map<? extends String, ? extends Schema> map )
         {
-            for( Map.Entry<? extends String, ? extends Schema> e : map.entrySet() )
+            for ( Map.Entry<? extends String, ? extends Schema> e : map.entrySet() )
             {
                 put( e.getKey(), e.getValue() );
             }
         }
     }
+
 
     /**
      * {@inheritDoc}
@@ -114,7 +117,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     public final Collection<Schema> getAllEnabled() throws Exception
     {
         Collection<Schema> enabledSchemas = new ArrayList<Schema>();
-        
+
         for ( Schema schema : schemaMap.values() )
         {
             if ( schema.isEnabled() )
@@ -122,7 +125,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
                 enabledSchemas.add( schema );
             }
         }
-        
+
         return enabledSchemas;
     }
 
@@ -141,10 +144,10 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      */
     public Schema getSchema( String schemaName )
     {
-        return schemaMap.get( Strings.toLowerCase(schemaName) );
+        return schemaMap.get( Strings.toLowerCase( schemaName ) );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -152,14 +155,14 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     {
         schemaMap.put( schema.getSchemaName(), schema );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public void removeSchema( Schema schema )
     {
-        schemaMap.remove( Strings.toLowerCase(schema.getSchemaName()) );
+        schemaMap.remove( Strings.toLowerCase( schema.getSchemaName() ) );
     }
 
 
@@ -236,6 +239,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
 
         return new DefaultSchema( name, owner, dependencies, isDisabled );
     }
+
 
     // TODO: clean commented code
 

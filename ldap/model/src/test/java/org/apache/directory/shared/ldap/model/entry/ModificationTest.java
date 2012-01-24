@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.entry;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -77,11 +78,11 @@ public class ModificationTest
                 throw ioe;
             }
         }
-        
+
         return out;
     }
-    
-    
+
+
     /**
      * Deserialize a DefaultModification
      */
@@ -93,7 +94,7 @@ public class ModificationTest
         try
         {
             Modification modification = new DefaultModification();
-            
+
             oIn = new ObjectInputStream( in );
 
             modification.readExternal( oIn );
@@ -119,21 +120,21 @@ public class ModificationTest
             }
         }
     }
-    
-    
-    @Test 
+
+
+    @Test
     public void testCreateServerModification() throws LdapException
     {
         Attribute attribute = new DefaultAttribute( "cn" );
         attribute.add( "test1", "test2" );
-        
+
         Modification mod = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attribute );
         Modification clone = mod.clone();
-        
+
         attribute.remove( "test2" );
-        
+
         Attribute clonedAttribute = clone.getAttribute();
-        
+
         assertEquals( 1, mod.getAttribute().size() );
         assertTrue( mod.getAttribute().contains( "test1" ) );
 
@@ -141,59 +142,59 @@ public class ModificationTest
         assertTrue( clone.getAttribute().contains( "test1" ) );
         assertTrue( clone.getAttribute().contains( "test2" ) );
     }
-    
-    
+
+
     @Test
     public void testSerializationModificationADD() throws ClassNotFoundException, IOException, LdapException
     {
         Attribute attribute = new DefaultAttribute( "cn" );
         attribute.add( "test1", "test2" );
-        
+
         DefaultModification mod = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attribute );
-        
+
         Modification modSer = deserializeValue( serializeValue( mod ) );
-        
+
         assertEquals( mod, modSer );
     }
-    
-    
+
+
     @Test
     public void testSerializationModificationREPLACE() throws ClassNotFoundException, IOException, LdapException
     {
         Attribute attribute = new DefaultAttribute( "cn" );
         attribute.add( "test1", "test2" );
-        
+
         DefaultModification mod = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attribute );
-        
+
         Modification modSer = deserializeValue( serializeValue( mod ) );
-        
+
         assertEquals( mod, modSer );
     }
-    
-    
+
+
     @Test
     public void testSerializationModificationREMOVE() throws ClassNotFoundException, IOException, LdapException
     {
         Attribute attribute = new DefaultAttribute( "cn" );
         attribute.add( "test1", "test2" );
-        
+
         DefaultModification mod = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attribute );
-        
+
         Modification modSer = deserializeValue( serializeValue( mod ) );
-        
+
         assertEquals( mod, modSer );
     }
-    
-    
+
+
     @Test
     public void testSerializationModificationNoAttribute() throws ClassNotFoundException, IOException
     {
         DefaultModification mod = new DefaultModification();
-        
+
         mod.setOperation( ModificationOperation.ADD_ATTRIBUTE );
-        
+
         Modification modSer = deserializeValue( serializeValue( mod ) );
-        
+
         assertEquals( mod, modSer );
     }
 }

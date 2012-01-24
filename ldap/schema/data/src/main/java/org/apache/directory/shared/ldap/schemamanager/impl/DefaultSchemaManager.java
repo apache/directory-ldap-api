@@ -722,7 +722,7 @@ public class DefaultSchemaManager implements SchemaManager
                         LOG.info( msg );
                         Throwable error = new LdapProtocolErrorException( msg );
                         errors.add( error );
-                        
+
                         return false;
                     }
 
@@ -1594,7 +1594,7 @@ public class DefaultSchemaManager implements SchemaManager
         return new ImmutableSyntaxCheckerRegistry( registries.getSyntaxCheckerRegistry() );
     }
 
-    
+
     /**
      * Get rid of AT's options (everything after the ';'
      * @param oid
@@ -1603,7 +1603,7 @@ public class DefaultSchemaManager implements SchemaManager
     private String stripOptions( String oid )
     {
         int semiColonPos = oid.indexOf( ';' );
-        
+
         if ( semiColonPos != -1 )
         {
             return oid.substring( 0, semiColonPos );
@@ -1613,6 +1613,7 @@ public class DefaultSchemaManager implements SchemaManager
             return oid;
         }
     }
+
 
     /**
      * {@inheritDoc}

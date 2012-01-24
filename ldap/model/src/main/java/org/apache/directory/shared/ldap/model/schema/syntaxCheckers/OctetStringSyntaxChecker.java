@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 
@@ -44,8 +45,8 @@ public class OctetStringSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.OCTET_STRING_SYNTAX );
     }
-    
-    
+
+
     /**
      * Creates a new instance of OctetStringSyntaxChecker, with a specific OID
      * 
@@ -55,8 +56,8 @@ public class OctetStringSyntaxChecker extends SyntaxChecker
     {
         super( oid );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

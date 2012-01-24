@@ -39,15 +39,15 @@ public class DefaultDITContentRuleRegistry extends DefaultSchemaObjectRegistry<D
     {
         super( SchemaObjectType.DIT_CONTENT_RULE, new OidRegistry<DITContentRule>() );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public DefaultDITContentRuleRegistry copy()
     {
         DefaultDITContentRuleRegistry copy = new DefaultDITContentRuleRegistry();
-        
+
         // Copy the base data
         copy.copy( this );
 

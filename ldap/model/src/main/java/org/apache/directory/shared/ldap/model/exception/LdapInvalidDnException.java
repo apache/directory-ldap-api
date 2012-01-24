@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.exception;
 
+
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 
@@ -34,7 +35,7 @@ public class LdapInvalidDnException extends LdapOperationException
     /** The serial version UUID */
     static final long serialVersionUID = 1L;
 
-    
+
     /**
      * to be used by some special exceptions like LdapInvalidDnException
      */
@@ -43,7 +44,7 @@ public class LdapInvalidDnException extends LdapOperationException
         super( message );
     }
 
-    
+
     /**
      * to be used by some special exceptions like LdapInvalidDnException
      * 
@@ -54,15 +55,15 @@ public class LdapInvalidDnException extends LdapOperationException
     {
         super( message, cause );
     }
-    
-    
+
+
     /**
      * Creates a new instance of LdapInvalidDnException.
      *
      * @param resultCode the ResultCodeEnum for this exception
      * @param message The exception message
      */
-    public LdapInvalidDnException(  ResultCodeEnum resultCode, String message )
+    public LdapInvalidDnException( ResultCodeEnum resultCode, String message )
     {
         super( message );
         checkResultCode( resultCode );
@@ -77,7 +78,7 @@ public class LdapInvalidDnException extends LdapOperationException
      * @param message The exception message
      * @param cause The root cause for this exception
      */
-    public LdapInvalidDnException(  ResultCodeEnum resultCode, String message, Throwable cause )
+    public LdapInvalidDnException( ResultCodeEnum resultCode, String message, Throwable cause )
     {
         super( message, cause );
         checkResultCode( resultCode );
@@ -111,10 +112,10 @@ public class LdapInvalidDnException extends LdapOperationException
     {
         switch ( resultCode )
         {
-            case INVALID_DN_SYNTAX :
-            case NAMING_VIOLATION :
+            case INVALID_DN_SYNTAX:
+            case NAMING_VIOLATION:
                 return;
-                
+
             default:
                 throw new IllegalArgumentException( I18n.err( I18n.ERR_04140_UNACCEPTABLE_RESUT_CODE, resultCode ) );
         }

@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.JpegSyntaxCh
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Test cases for JpegSyntaxChecker.
  *
@@ -54,28 +55,30 @@ public class JpegSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "" ) );
     }
 
+
     @Test
     public void testWrongCase()
     {
-        assertFalse( checker.isValidSyntax(  "this is not a jpeg file..." ) );
+        assertFalse( checker.isValidSyntax( "this is not a jpeg file..." ) );
     }
+
 
     @Test
     public void testCorrectCase()
     {
         byte[] array = new byte[256];
-        
+
         for ( int i = 0; i < 256; i++ )
         {
-            array[ i ] = (byte)i;
+            array[i] = ( byte ) i;
         }
-        
-        array[0] = (byte)0xFF;
-        array[1] = (byte)0xD8;
-        array[2] = (byte)0xFF;
-        array[3] = (byte)0xE0;
-        array[4] = (byte)0x00;
-        array[5] = (byte)0x10;
+
+        array[0] = ( byte ) 0xFF;
+        array[1] = ( byte ) 0xD8;
+        array[2] = ( byte ) 0xFF;
+        array[3] = ( byte ) 0xE0;
+        array[4] = ( byte ) 0x00;
+        array[5] = ( byte ) 0x10;
         array[6] = 'J';
         array[7] = 'F';
         array[8] = 'I';

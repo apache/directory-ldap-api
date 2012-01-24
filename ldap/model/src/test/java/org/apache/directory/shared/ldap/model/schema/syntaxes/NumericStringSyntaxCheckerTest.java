@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.NumericStringSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for NumericStringSyntaxChecker.
@@ -60,8 +62,8 @@ public class NumericStringSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "f" ) );
         assertFalse( checker.isValidSyntax( "-" ) );
     }
-    
-    
+
+
     @Test
     public void testWrongCase()
     {
@@ -69,8 +71,8 @@ public class NumericStringSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "1aB" ) );
         assertFalse( checker.isValidSyntax( " +2" ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectCase()
     {

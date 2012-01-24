@@ -59,7 +59,6 @@ public class SearchResultReferenceImpl extends AbstractResponse implements Searc
     // SearchResponseReference Interface Method Implementations
     // ------------------------------------------------------------------------
 
-
     /**
      * Gets the sequence of LdapUrls as a Referral instance.
      * 

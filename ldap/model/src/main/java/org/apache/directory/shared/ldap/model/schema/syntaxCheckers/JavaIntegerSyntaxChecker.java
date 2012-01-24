@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Chars;
@@ -51,6 +52,7 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( JavaIntegerSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of JavaIntegerSyntaxChecker.
      */
@@ -65,7 +67,7 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
      */
     public boolean isValidSyntax( Object value )
     {
-        String strValue =null;
+        String strValue = null;
 
         if ( value == null )
         {
@@ -79,7 +81,7 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -101,7 +103,7 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
         {
             pos = 1;
         }
-        else if ( !Chars.isDigit(c) )
+        else if ( !Chars.isDigit( c ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
@@ -109,7 +111,7 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
         else if ( c == '0' )
         {
             boolean result = strValue.length() <= 1;
-            
+
             if ( result )
             {
                 LOG.debug( "Syntax valid for '{}'", value );
@@ -118,12 +120,12 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
             }
-            
+
             return result;
         }
 
         // We must have at least a digit which is not '0'
-        if ( !Chars.isDigit(strValue, pos) )
+        if ( !Chars.isDigit( strValue, pos ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
@@ -138,7 +140,7 @@ public class JavaIntegerSyntaxChecker extends SyntaxChecker
             pos++;
         }
 
-        while ( Chars.isDigit(strValue, pos) )
+        while ( Chars.isDigit( strValue, pos ) )
         {
             pos++;
         }

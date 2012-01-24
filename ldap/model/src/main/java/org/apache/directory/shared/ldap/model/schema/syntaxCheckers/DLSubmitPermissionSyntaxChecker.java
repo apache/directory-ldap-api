@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.slf4j.Logger;
@@ -36,6 +37,7 @@ public class DLSubmitPermissionSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DLSubmitPermissionSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of DLSubmitPermissionSyntaxChecker.
      */
@@ -43,7 +45,7 @@ public class DLSubmitPermissionSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.DL_SUBMIT_PERMISSION_SYNTAX );
     }
-    
+
 
     /**
      * {@inheritDoc}

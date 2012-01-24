@@ -243,7 +243,8 @@ public class LdifSchemaLoader extends AbstractSchemaLoader
      */
     private File getSchemaDirectory( Schema schema )
     {
-        return new File( new File( baseDirectory, SchemaConstants.OU_SCHEMA ), "cn=" + Strings.lowerCase(schema.getSchemaName()) );
+        return new File( new File( baseDirectory, SchemaConstants.OU_SCHEMA ), "cn="
+            + Strings.lowerCase( schema.getSchemaName() ) );
     }
 
 

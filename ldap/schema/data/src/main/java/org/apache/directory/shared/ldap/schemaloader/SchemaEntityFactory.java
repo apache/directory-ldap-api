@@ -76,7 +76,7 @@ public class SchemaEntityFactory implements EntityFactory
 
     /** The empty string list. */
     private static final List<String> EMPTY_LIST = new ArrayList<String>();
-    
+
     /** The empty string array. */
     private static final String[] EMPTY_ARRAY = new String[]
         {};
@@ -112,7 +112,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         String oid = mOid.getString();
 
-        if ( !Oid.isOid(oid) )
+        if ( !Oid.isOid( oid ) )
         {
             String msg = I18n.err( I18n.ERR_10006, oid );
             LOG.warn( msg );
@@ -184,7 +184,7 @@ public class SchemaEntityFactory implements EntityFactory
      */
     private Schema getSchema( String schemaName, Registries registries )
     {
-        if ( Strings.isEmpty(schemaName) )
+        if ( Strings.isEmpty( schemaName ) )
         {
             schemaName = MetaSchemaConstants.SCHEMA_OTHER;
         }
@@ -257,7 +257,8 @@ public class SchemaEntityFactory implements EntityFactory
     /**
      * Class load a syntaxChecker instance
      */
-    private SyntaxChecker classLoadSyntaxChecker( SchemaManager schemaManager, String oid, String className, Attribute byteCode )
+    private SyntaxChecker classLoadSyntaxChecker( SchemaManager schemaManager, String oid, String className,
+        Attribute byteCode )
         throws Exception
     {
         // Try to class load the syntaxChecker
@@ -273,7 +274,7 @@ public class SchemaEntityFactory implements EntityFactory
         {
             classLoader.setAttribute( byteCode );
             clazz = classLoader.loadClass( className );
-            byteCodeStr = new String( Base64.encode(byteCode.getBytes()) );
+            byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
         }
 
         // Create the syntaxChecker instance
@@ -288,7 +289,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         // Inject the SchemaManager for the comparator who needs it
         syntaxChecker.setSchemaManager( schemaManager );
-        
+
         return syntaxChecker;
     }
 
@@ -333,10 +334,10 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // Class load the syntaxChecker
             SyntaxChecker syntaxChecker = classLoadSyntaxChecker( schemaManager, oid, className, byteCode );
-    
+
             // Update the common fields
             setSchemaObjectProperties( syntaxChecker, entry, schema );
-    
+
             // return the resulting syntaxChecker
             return syntaxChecker;
         }
@@ -522,7 +523,7 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // Class load the comparator
             LdapComparator<?> comparator = classLoadComparator( schemaManager, oid, fqcn, byteCode );
-    
+
             // Update the common fields
             setSchemaObjectProperties( comparator, entry, schema );
 
@@ -653,10 +654,10 @@ public class SchemaEntityFactory implements EntityFactory
         {
             // Class load the Normalizer
             Normalizer normalizer = classLoadNormalizer( schemaManager, oid, className, byteCode );
-    
+
             // Update the common fields
             setSchemaObjectProperties( normalizer, entry, schema );
-    
+
             // return the resulting Normalizer
             return normalizer;
         }
@@ -1027,7 +1028,7 @@ public class SchemaEntityFactory implements EntityFactory
         return mFqcn;
     }
 
-    
+
     /**
      * Process the ByteCode attribute
      */

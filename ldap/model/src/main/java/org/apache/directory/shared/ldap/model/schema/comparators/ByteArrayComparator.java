@@ -39,6 +39,7 @@ public class ByteArrayComparator extends LdapComparator<byte[]>
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ByteArrayComparator.class );
 
+
     /**
      * The ByteArrayComparator constructor. Its OID is the OctetStringMatch matching
      * rule OID.
@@ -48,13 +49,14 @@ public class ByteArrayComparator extends LdapComparator<byte[]>
         super( oid );
     }
 
+
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
     public int compare( byte[] b1, byte[] b2 )
     {
-        LOG.debug( "comparing OctetString objects '{}' with '{}'", 
-            Strings.dumpBytes(b1), Strings.dumpBytes(b2) );
+        LOG.debug( "comparing OctetString objects '{}' with '{}'",
+            Strings.dumpBytes( b1 ), Strings.dumpBytes( b2 ) );
 
         // -------------------------------------------------------------------
         // Handle some basis cases
@@ -64,12 +66,12 @@ public class ByteArrayComparator extends LdapComparator<byte[]>
         {
             return ( b2 == null ) ? 0 : -1;
         }
-        
+
         if ( b2 == null )
         {
             return 1;
         }
-        
+
         if ( b1.length == b2.length )
         {
             for ( int i = 0; i < b1.length; i++ )
@@ -83,12 +85,12 @@ public class ByteArrayComparator extends LdapComparator<byte[]>
                     return -1;
                 }
             }
-            
+
             return 0;
         }
-        
+
         int minLength = Math.min( b1.length, b2.length );
-        
+
         for ( int i = 0; i < minLength; i++ )
         {
             if ( b1[i] > b2[i] )
@@ -100,19 +102,19 @@ public class ByteArrayComparator extends LdapComparator<byte[]>
                 return -1;
             }
         }
-        
+
         // b2 is longer w/ b1 as prefix 
         if ( b1.length == minLength )
         {
             return -1;
         }
-        
+
         // b1 is longer w/ b2 as prefix
         if ( b2.length == minLength )
         {
             return 1;
         }
-        
+
         return 0;
     }
 }

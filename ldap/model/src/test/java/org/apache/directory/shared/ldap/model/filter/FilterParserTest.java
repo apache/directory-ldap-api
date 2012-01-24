@@ -58,12 +58,13 @@ public class FilterParserTest
         }
     }
 
+
     /**
      * Tests to avoid deadlocks for invalid filters. 
      * 
      */
     @Test
-    public void testInvalidFilters() 
+    public void testInvalidFilters()
     {
         assertTrue( checkWrongFilter( "" ) );
         assertTrue( checkWrongFilter( "   " ) );
@@ -94,7 +95,7 @@ public class FilterParserTest
         assertEquals( str, str2 );
     }
 
-    
+
     @Test
     public void testAndFilter() throws ParseException
     {
@@ -106,7 +107,7 @@ public class FilterParserTest
         assertEquals( str, str2 );
     }
 
-    
+
     @Test
     public void testAndFilterOneChildOnly() throws ParseException
     {
@@ -135,7 +136,7 @@ public class FilterParserTest
     public void testOrFilterOneChildOnly() throws ParseException
     {
         String str = "(|(age>=30))";
-        BranchNode node = ( BranchNode ) FilterParser.parse(str);
+        BranchNode node = ( BranchNode ) FilterParser.parse( str );
         assertEquals( 1, node.getChildren().size() );
         assertTrue( node instanceof OrNode );
         String str2 = node.toString();
@@ -158,11 +159,11 @@ public class FilterParserTest
     @Test
     public void testOptionAndEscapesFilter() throws ParseException
     {
-        String str = "(ou;lang-de>=\\23\\42asdl fkajsd)";     // \23 = '#'
+        String str = "(ou;lang-de>=\\23\\42asdl fkajsd)"; // \23 = '#'
         SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
         assertEquals( "ou;lang-de", node.getAttribute() );
         assertEquals( "#Basdl fkajsd", node.getValue().getString() );
-        String  str2 = node.toString();
+        String str2 = node.toString();
         assertEquals( "(ou;lang-de>=#Basdl fkajsd)", str2 );
     }
 
@@ -174,7 +175,7 @@ public class FilterParserTest
         SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
         assertEquals( "ou;lang-de;version-124", node.getAttribute() );
         assertEquals( "#Basdl fkajsd", node.getValue().getString() );
-        String  str2 = node.toString();
+        String str2 = node.toString();
         assertEquals( "(ou;lang-de;version-124>=#Basdl fkajsd)", str2 );
     }
 
@@ -186,7 +187,7 @@ public class FilterParserTest
         SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str );
         assertEquals( "1.3.4.2;lang-de;version-124", node.getAttribute() );
         assertEquals( "#Bafdl fkajsd", node.getValue().getString() );
-        String  str2 = node.toString();
+        String str2 = node.toString();
         assertEquals( "(1.3.4.2;lang-de;version-124>=#Bafdl fkajsd)", str2 );
     }
 
@@ -198,7 +199,7 @@ public class FilterParserTest
         PresenceNode node = ( PresenceNode ) FilterParser.parse( str );
         assertEquals( "ou", node.getAttribute() );
         assertTrue( node instanceof PresenceNode );
-        String  str2 = node.toString();
+        String str2 = node.toString();
         assertEquals( str, str2 );
     }
 
@@ -210,7 +211,7 @@ public class FilterParserTest
         PresenceNode node = ( PresenceNode ) FilterParser.parse( str );
         assertEquals( "1.2.3.4", node.getAttribute() );
         assertTrue( node instanceof PresenceNode );
-        String  str2 = node.toString();
+        String str2 = node.toString();
         assertEquals( str, str2 );
     }
 
@@ -223,7 +224,7 @@ public class FilterParserTest
         assertEquals( "ou", node.getAttribute() );
         assertEquals( "people", node.getValue().getString() );
         assertTrue( node instanceof EqualityNode );
-        String  str2 = node.toString();
+        String str2 = node.toString();
         assertEquals( str, str2 );
     }
 
@@ -443,7 +444,7 @@ public class FilterParserTest
         FilterParser.parse( "(ou;lang-de>=\\23\\42asdl fkajsd)" );
         FilterParser.parse( "(ou;lang-de;version-124>=\\23\\42asdl fkajsd)" );
         FilterParser.parse( "(1.3.4.2;lang-de;version-124>=\\23\\42asdl fkajsd)" );
-        
+
         try
         {
             FilterParser.parse( "(ou:stupidMatch;lang-de:=dummyAssertion\\23\\ac)" );
@@ -489,7 +490,7 @@ public class FilterParserTest
             FilterParser.parse( null );
             fail( "Should not reach this point " );
         }
-        catch( ParseException pe )
+        catch ( ParseException pe )
         {
             assertTrue( true );
         }
@@ -499,7 +500,7 @@ public class FilterParserTest
             FilterParser.parse( "" );
             fail( "Should not reach this point " );
         }
-        catch( ParseException pe )
+        catch ( ParseException pe )
         {
             assertTrue( true );
         }
@@ -665,7 +666,7 @@ public class FilterParserTest
         String str = "(ou=foo* *bar)";
         SubstringNode node = ( SubstringNode ) FilterParser.parse( str );
         assertEquals( "ou", node.getAttribute() );
-        assertTrue( node instanceof SubstringNode);
+        assertTrue( node instanceof SubstringNode );
 
         assertEquals( 1, node.getAny().size() );
         assertFalse( node.getAny().contains( "" ) );
@@ -894,7 +895,8 @@ public class FilterParserTest
     {
         try
         {
-            FilterParser.parse( "(memberOf=1.2.840.113556.1.4.1301=$#@&*()==,2.5.4.11=local,2.5.4.11=users,2.5.4.11=readimanager)" );
+            FilterParser
+                .parse( "(memberOf=1.2.840.113556.1.4.1301=$#@&*()==,2.5.4.11=local,2.5.4.11=users,2.5.4.11=readimanager)" );
             fail();
         }
         catch ( ParseException pe )
@@ -912,39 +914,40 @@ public class FilterParserTest
     {
         try
         {
-            BranchNode node = ( BranchNode ) FilterParser.parse( "(&(objectClass=nisNetgroup)(|(nisNetGroupTriple=a*a)(nisNetGroupTriple=\\28*,acc1,*\\29)))");
+            BranchNode node = ( BranchNode ) FilterParser
+                .parse( "(&(objectClass=nisNetgroup)(|(nisNetGroupTriple=a*a)(nisNetGroupTriple=\\28*,acc1,*\\29)))" );
             assertEquals( 2, node.getChildren().size() );
-            
+
             assertTrue( node instanceof AndNode );
-            
+
             // Check the (a=b) part
             ExprNode aEqb = node.getFirstChild();
             assertTrue( aEqb instanceof EqualityNode );
-            assertEquals( "objectClass", ((EqualityNode<?>)aEqb).getAttribute() );
-            assertEquals( "nisNetgroup", ((EqualityNode<?>)aEqb).getValue().getString() );
-            
+            assertEquals( "objectClass", ( ( EqualityNode<?> ) aEqb ).getAttribute() );
+            assertEquals( "nisNetgroup", ( ( EqualityNode<?> ) aEqb ).getValue().getString() );
+
             // Check the or node
             ExprNode orNode = node.getChildren().get( 1 );
             assertTrue( orNode instanceof OrNode );
-            
-            assertEquals( 2, ((OrNode)orNode).getChildren().size() );
-            
-            ExprNode leftNode = ((OrNode)orNode).getChildren().get( 0 );
-            
+
+            assertEquals( 2, ( ( OrNode ) orNode ).getChildren().size() );
+
+            ExprNode leftNode = ( ( OrNode ) orNode ).getChildren().get( 0 );
+
             assertTrue( leftNode instanceof SubstringNode );
-            assertEquals( "nisNetGroupTriple", ((SubstringNode)leftNode).getAttribute() );
-            assertEquals( "a", ((SubstringNode)leftNode).getInitial() );
-            assertEquals( 0, ((SubstringNode)leftNode).getAny().size() );
-            assertEquals( "a", ((SubstringNode)leftNode).getFinal() );
-            
-            ExprNode rightNode = ((OrNode)orNode).getChildren().get( 1 );
-            
+            assertEquals( "nisNetGroupTriple", ( ( SubstringNode ) leftNode ).getAttribute() );
+            assertEquals( "a", ( ( SubstringNode ) leftNode ).getInitial() );
+            assertEquals( 0, ( ( SubstringNode ) leftNode ).getAny().size() );
+            assertEquals( "a", ( ( SubstringNode ) leftNode ).getFinal() );
+
+            ExprNode rightNode = ( ( OrNode ) orNode ).getChildren().get( 1 );
+
             assertTrue( rightNode instanceof SubstringNode );
-            assertEquals( "nisNetGroupTriple", ((SubstringNode)rightNode).getAttribute() );
-            assertEquals( "(", ((SubstringNode)rightNode).getInitial() );
-            assertEquals( 1, ((SubstringNode)rightNode).getAny().size() );
-            assertEquals( ",acc1,", ((SubstringNode)rightNode).getAny().get( 0 ) );
-            assertEquals( ")", ((SubstringNode)rightNode).getFinal() );
+            assertEquals( "nisNetGroupTriple", ( ( SubstringNode ) rightNode ).getAttribute() );
+            assertEquals( "(", ( ( SubstringNode ) rightNode ).getInitial() );
+            assertEquals( 1, ( ( SubstringNode ) rightNode ).getAny().size() );
+            assertEquals( ",acc1,", ( ( SubstringNode ) rightNode ).getAny().get( 0 ) );
+            assertEquals( ")", ( ( SubstringNode ) rightNode ).getFinal() );
         }
         catch ( ParseException pe )
         {
@@ -983,7 +986,7 @@ public class FilterParserTest
         String str = "(cn='~%\\28'$'\\5Cac)"; // note \28='(' and \5c='\'
         ExprNode node = FilterParser.parse( str );
         assertTrue( node instanceof EqualityNode );
-        assertEquals( "'~%('$'\\ac", (( EqualityNode<?> )node).getValue().getString() );
+        assertEquals( "'~%('$'\\ac", ( ( EqualityNode<?> ) node ).getValue().getString() );
         String str2 = node.toString();
         assertEquals( str.toUpperCase(), str2.toUpperCase() );
     }
@@ -1039,7 +1042,6 @@ public class FilterParserTest
     }
     */
 
-
     @Test
     public void testBinaryValueEscaped() throws ParseException
     {
@@ -1087,7 +1089,7 @@ public class FilterParserTest
 
         // Second child : (!(jagplayUserGroup=Banned))
         ExprNode child2 = children1.get( 1 );
-        assertTrue( child2 instanceof NotNode);
+        assertTrue( child2 instanceof NotNode );
         NotNode notNode1 = ( NotNode ) child2;
 
         ExprNode notNodeChild1 = notNode1.getFirstChild();

@@ -65,7 +65,7 @@ public class NormalizerDescriptionSchemaParserTest
     @Test
     public void testNumericOid() throws ParseException
     {
-        SchemaParserTestUtils.testNumericOid(parser, "FQCN org.apache.directory.SimpleNormalizer");
+        SchemaParserTestUtils.testNumericOid( parser, "FQCN org.apache.directory.SimpleNormalizer" );
     }
 
 

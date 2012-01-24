@@ -115,8 +115,8 @@ public class EntryChangeImpl extends AbstractControl implements EntryChange
         EntryChange otherControl = ( EntryChange ) o;
 
         return ( changeNumber == otherControl.getChangeNumber() ) &&
-             ( changeType == otherControl.getChangeType() ) &&
-             ( previousDn.equals( otherControl.getPreviousDn() ) );
+            ( changeType == otherControl.getChangeType() ) &&
+            ( previousDn.equals( otherControl.getPreviousDn() ) );
     }
 
 

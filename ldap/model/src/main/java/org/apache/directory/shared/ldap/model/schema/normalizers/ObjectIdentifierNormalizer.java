@@ -71,8 +71,8 @@ public class ObjectIdentifierNormalizer extends Normalizer
             return new StringValue( Strings.toLowerCase( str ) );
         }
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

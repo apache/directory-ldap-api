@@ -461,7 +461,8 @@ public class ObjectClassDescriptionSchemaParserTest
 
         assertEquals( "1.2.3.4.5.6.7.8.9.0", objectClass.getOid() );
         assertEquals( 2, objectClass.getNames().size() );
-        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", objectClass.getNames().get( 0 ) );
+        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", objectClass.getNames()
+            .get( 0 ) );
         assertEquals( "test", objectClass.getNames().get( 1 ) );
         assertEquals( "Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577", objectClass.getDescription() );
         assertTrue( objectClass.isObsolete() );
@@ -472,11 +473,13 @@ public class ObjectClassDescriptionSchemaParserTest
         assertEquals( ObjectClassTypeEnum.STRUCTURAL, objectClass.getType() );
         assertEquals( 2, objectClass.getMustAttributeTypeOids().size() );
         assertEquals( "3.4.5.6.7.8.9.0.1.2", objectClass.getMustAttributeTypeOids().get( 0 ) );
-        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", objectClass.getMustAttributeTypeOids()
+        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", objectClass
+            .getMustAttributeTypeOids()
             .get( 1 ) );
         assertEquals( 2, objectClass.getMayAttributeTypeOids().size() );
         assertEquals( "4.5.6.7.8.9.0.1.2.3", objectClass.getMayAttributeTypeOids().get( 0 ) );
-        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", objectClass.getMayAttributeTypeOids()
+        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", objectClass
+            .getMayAttributeTypeOids()
             .get( 1 ) );
         assertEquals( 2, objectClass.getExtensions().size() );
         assertNotNull( objectClass.getExtensions().get( "X-TEST-a" ) );
@@ -503,7 +506,7 @@ public class ObjectClassDescriptionSchemaParserTest
                 "( 1.1 SUP test1 SUP test2 )", "( 1.1 STRUCTURAL STRUCTURAL )", "( 1.1 ABSTRACT ABSTRACT )",
                 "( 1.1 AUXILIARY AUXILIARY )", "( 1.1 STRUCTURAL AUXILIARY AUXILIARY )",
                 "( 1.1 MUST test1 MUST test2 )", "( 1.1 MAY test1 MAY test2 )", "( 1.1 X-TEST 'test1' X-TEST 'test2' )" };
-        SchemaParserTestUtils.testUnique(parser, testValues);
+        SchemaParserTestUtils.testUnique( parser, testValues );
     }
 
 
@@ -701,7 +704,8 @@ public class ObjectClassDescriptionSchemaParserTest
         // X-NDS_ACL_TEMPLATES '2#entry#[Root Template]#member'
         assertNotNull( objectClass.getExtensions().get( "X-NDS_ACL_TEMPLATES" ) );
         assertEquals( 1, objectClass.getExtensions().get( "X-NDS_ACL_TEMPLATES" ).size() );
-        assertEquals( "2#entry#[Root Template]#member", objectClass.getExtensions().get( "X-NDS_ACL_TEMPLATES" ).get( 0 ) );
+        assertEquals( "2#entry#[Root Template]#member", objectClass.getExtensions().get( "X-NDS_ACL_TEMPLATES" )
+            .get( 0 ) );
     }
 
 

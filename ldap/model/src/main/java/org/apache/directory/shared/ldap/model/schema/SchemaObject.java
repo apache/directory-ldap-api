@@ -346,8 +346,8 @@ public interface SchemaObject
      * @param registries The Registries
      */
     void setRegistries( Registries registries );
-    
-    
+
+
     /**
      * Transform the SchemaObject to an immutable object
      * TODO locked.

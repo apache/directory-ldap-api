@@ -19,7 +19,9 @@
  */
 package org.apache.directory.shared.ldap.model.message;
 
+
 import org.apache.directory.shared.i18n.I18n;
+
 
 /**
  * A search scope enumerated type.
@@ -28,16 +30,16 @@ import org.apache.directory.shared.i18n.I18n;
  */
 public enum SearchScope
 {
-    OBJECT( 0, "base" ), 
-    ONELEVEL( 1, "one" ), 
-    SUBTREE( 2, "sub" );
-    
+    OBJECT(0, "base"),
+    ONELEVEL(1, "one"),
+    SUBTREE(2, "sub");
+
     /** 
      * The corresponding LDAP scope constant value as defined in 
      * RFC 4511
-     */ 
+     */
     private final int scope;
-    
+
     /**
      * The LDAP URL string value of either base, one or sub as defined in RFC
      * 2255.
@@ -45,7 +47,7 @@ public enum SearchScope
      * @see <a href="http://www.faqs.org/rfcs/rfc2255.html">RFC 2255</a>
      */
     private final String ldapUrlValue;
-    
+
 
     /**
      * Creates a new instance of SearchScope based on the respective 
@@ -60,7 +62,7 @@ public enum SearchScope
         this.ldapUrlValue = ldapUrlValue;
     }
 
-    
+
     /**
      * Gets the LDAP URL value for the scope: according to RFC 2255 this is 
      * either base, one, or sub.
@@ -71,7 +73,7 @@ public enum SearchScope
     {
         return ldapUrlValue;
     }
-    
+
 
     /**
      * Gets the corresponding scope constant value as defined in 
@@ -83,8 +85,8 @@ public enum SearchScope
     {
         return scope;
     }
-    
-    
+
+
     /**
      * Gets the SearchScope enumerated type for the corresponding 
      * scope numeric value.
@@ -94,17 +96,17 @@ public enum SearchScope
      */
     public static SearchScope getSearchScope( int scope )
     {
-        switch( scope )
+        switch ( scope )
         {
-            case 0 : 
+            case 0:
                 return OBJECT;
-            
-            case 1 :
+
+            case 1:
                 return ONELEVEL;
-                
-            case 2 :
+
+            case 2:
                 return SUBTREE;
-                
+
             default:
                 throw new IllegalArgumentException( I18n.err( I18n.ERR_04160, scope ) );
         }
@@ -137,8 +139,8 @@ public enum SearchScope
             throw new IllegalArgumentException( I18n.err( I18n.ERR_04161, ldapUrlValue ) );
         }
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

@@ -107,7 +107,7 @@ public class CachingNormalizer extends Normalizer
         }
 
         Value<?> normalized = normalizer.normalize( value );
-        
+
         return normalized;
     }
 

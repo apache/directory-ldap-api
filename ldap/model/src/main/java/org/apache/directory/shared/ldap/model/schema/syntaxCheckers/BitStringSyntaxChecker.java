@@ -46,6 +46,7 @@ public class BitStringSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( BitStringSyntaxChecker.class );
 
+
     /**
      * 
      * Creates a new instance of BitStringSyntaxChecker.
@@ -55,7 +56,7 @@ public class BitStringSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.BIT_STRING_SYNTAX );
     }
-    
+
 
     /**
      * A shared and static method used to check that the string is a BitString.
@@ -73,38 +74,38 @@ public class BitStringSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", strValue );
             return false;
         }
-        
+
         int pos = 0;
-        
+
         // Check that the String respect the syntax : ' ([01]+) ' B
-        if ( ! Strings.isCharASCII( strValue, pos++, '\'' ) )
+        if ( !Strings.isCharASCII( strValue, pos++, '\'' ) )
         {
             LOG.debug( "Syntax invalid for '{}'", strValue );
             return false;
         }
 
         // We must have at least one bit
-        if ( ! Chars.isBit(strValue, pos++) )
+        if ( !Chars.isBit( strValue, pos++ ) )
         {
             LOG.debug( "Syntax invalid for '{}'", strValue );
             return false;
         }
-        
-        while ( Chars.isBit(strValue, pos) )
+
+        while ( Chars.isBit( strValue, pos ) )
         {
             // Loop until we get a char which is not a 0 or a 1
             pos++;
         }
 
         // Now, we must have a simple quote 
-        if ( ! Strings.isCharASCII( strValue, pos++, '\'' ) )
+        if ( !Strings.isCharASCII( strValue, pos++, '\'' ) )
         {
             LOG.debug( "Syntax invalid for '{}'", strValue );
             return false;
         }
 
         // followed by a 'B'
-        if ( ! Strings.isCharASCII( strValue, pos, 'B' ) )
+        if ( !Strings.isCharASCII( strValue, pos, 'B' ) )
         {
             LOG.debug( "Syntax invalid for '{}'", strValue );
             return false;
@@ -113,6 +114,7 @@ public class BitStringSyntaxChecker extends SyntaxChecker
         LOG.debug( "Syntax valid for '{}'", strValue );
         return true;
     }
+
 
     /**
      * {@inheritDoc}
@@ -126,14 +128,14 @@ public class BitStringSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {

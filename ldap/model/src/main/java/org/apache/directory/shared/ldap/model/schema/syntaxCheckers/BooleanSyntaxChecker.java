@@ -43,6 +43,7 @@ public class BooleanSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( BooleanSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of BooleanSyntaxChecker.
      */
@@ -50,8 +51,8 @@ public class BooleanSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.BOOLEAN_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -64,14 +65,14 @@ public class BooleanSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -83,9 +84,9 @@ public class BooleanSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", strValue );
             return false;
         }
-        
+
         boolean valid = ( ( "TRUE".equalsIgnoreCase( strValue ) ) || ( "FALSE".equalsIgnoreCase( strValue ) ) );
-        
+
         if ( valid )
         {
             LOG.debug( "Syntax valid for '{}'", strValue );
@@ -94,7 +95,7 @@ public class BooleanSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax invalid for '{}'", strValue );
         }
-        
+
         return valid;
     }
 }

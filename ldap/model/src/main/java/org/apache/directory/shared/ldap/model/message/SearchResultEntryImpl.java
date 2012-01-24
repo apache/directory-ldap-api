@@ -148,7 +148,7 @@ public class SearchResultEntryImpl extends AbstractResponse implements SearchRes
             return false;
         }
 
-        if ( !( obj instanceof SearchResultEntry) )
+        if ( !( obj instanceof SearchResultEntry ) )
         {
             return false;
         }

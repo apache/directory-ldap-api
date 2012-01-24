@@ -208,7 +208,8 @@ public final class ResourceMap
         {
             ClassLoader cl = ResourceMap.class.getClassLoader();
             Enumeration<URL> indexes = cl.getResources( "META-INF/apacheds-schema.index" );
-            while(indexes.hasMoreElements()) {
+            while ( indexes.hasMoreElements() )
+            {
                 URL index = indexes.nextElement();
                 InputStream in = index.openStream();
                 BufferedReader reader = new BufferedReader( new InputStreamReader( in, "UTF-8" ) );

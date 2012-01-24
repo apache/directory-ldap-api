@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.subtree;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class OrRefinement implements Refinement
     /** The set of refinements */
     private List<Refinement> refinements = new ArrayList<Refinement>();
 
-    
+
     /**
      * Creates a new instance of OrRefinement.
      *
@@ -44,8 +45,8 @@ public class OrRefinement implements Refinement
     {
         this.refinements = refinements;
     }
-    
-    
+
+
     /**
      * @return Gets the set of refinements
      */
@@ -53,20 +54,20 @@ public class OrRefinement implements Refinement
     {
         return refinements;
     }
-    
-    
+
+
     /**
      * @see Object#toString()
      */
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        
+
         sb.append( "or: { " );
 
         boolean isFirst = true;
-        
-        for ( Refinement refinement:refinements )
+
+        for ( Refinement refinement : refinements )
         {
             if ( isFirst )
             {
@@ -79,7 +80,7 @@ public class OrRefinement implements Refinement
 
             sb.append( refinement );
         }
-     
+
         sb.append( " }" );
         return sb.toString();
     }

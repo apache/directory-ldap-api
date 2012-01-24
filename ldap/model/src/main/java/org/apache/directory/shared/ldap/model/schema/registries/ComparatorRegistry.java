@@ -50,8 +50,8 @@ public interface ComparatorRegistry extends SchemaObjectRegistry<LdapComparator<
      * @throws LdapException if the numeric identifier is invalid
      */
     LdapComparator<?> unregister( String numericOid ) throws LdapException;
-    
-    
+
+
     /**
      * Unregisters all LdapComparators defined for a specific schema from
      * this registry.
@@ -59,8 +59,8 @@ public interface ComparatorRegistry extends SchemaObjectRegistry<LdapComparator<
      * @param schemaName the name of the schema whose LdapComparators will be removed from
      */
     void unregisterSchemaElements( String schemaName ) throws LdapException;
-    
-    
+
+
     /**
      * Copy the ComparatorRegistry
      */

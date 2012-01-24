@@ -44,6 +44,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( TelexNumberSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of TelexNumberSyntaxChecker.
      */
@@ -51,8 +52,8 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.TELEX_NUMBER_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -65,14 +66,14 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -87,7 +88,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
 
         // Search for the first '$' separator
         int dollar = strValue.indexOf( '$' );
-        
+
         // We must have one, and not on first position
         if ( dollar <= 0 )
         {
@@ -95,26 +96,26 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         String actualNumber = strValue.substring( 0, dollar );
-        
+
         // The actualNumber must not be empty
         if ( actualNumber.length() == 0 )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // The actual number should be a PrintableString 
-        if ( ! Strings.isPrintableString(actualNumber) )
+        if ( !Strings.isPrintableString( actualNumber ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // Search for the second separator
         int dollar2 = strValue.indexOf( '$', dollar + 1 );
-            
+
         // We must have one
         if ( dollar2 == -1 )
         {
@@ -124,21 +125,21 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         }
 
         String countryCode = strValue.substring( dollar + 1, dollar2 );
-        
+
         // The countryCode must not be empty
         if ( countryCode.length() == 0 )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // The country Code should be a PrintableString 
-        if ( ! Strings.isPrintableString(countryCode) )
+        if ( !Strings.isPrintableString( countryCode ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // Now, check for the answerBack
         if ( dollar2 + 1 == strValue.length() )
         {
@@ -146,19 +147,19 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         String answerBack = strValue.substring( dollar2 + 1 );
-        
+
         // The answerBack should be a PrintableString 
-        if ( ! Strings.isPrintableString(answerBack) )
+        if ( !Strings.isPrintableString( answerBack ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // Check that the mailboxType is a PrintableString
-        boolean result = Strings.isPrintableString(answerBack);
-        
+        boolean result = Strings.isPrintableString( answerBack );
+
         if ( result )
         {
             LOG.debug( "Syntax valid for '{}'", value );
@@ -167,7 +168,7 @@ public class TelexNumberSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax invalid for '{}'", value );
         }
-        
+
         return result;
     }
 }

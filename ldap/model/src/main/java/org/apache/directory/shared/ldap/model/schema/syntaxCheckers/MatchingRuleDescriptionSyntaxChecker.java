@@ -69,7 +69,7 @@ public class MatchingRuleDescriptionSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.MATCHING_RULE_DESCRIPTION_SYNTAX );
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -90,7 +90,7 @@ public class MatchingRuleDescriptionSyntaxChecker extends SyntaxChecker
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -110,5 +110,5 @@ public class MatchingRuleDescriptionSyntaxChecker extends SyntaxChecker
             return false;
         }
     }
-    
+
 }

@@ -46,6 +46,7 @@ public class InvalidCSNException extends RuntimeException
         super();
     }
 
+
     /**
      * Creates a new instance with the specified <tt>message</tt> and
      * <tt>cause</tt>.
@@ -55,6 +56,7 @@ public class InvalidCSNException extends RuntimeException
         super( message, cause );
     }
 
+
     /**
      * Creates a new instance with the specified <tt>message</tt>.
      */
@@ -62,6 +64,7 @@ public class InvalidCSNException extends RuntimeException
     {
         super( message );
     }
+
 
     /**
      * Creates a new instance with the specified <tt>cause</tt>.

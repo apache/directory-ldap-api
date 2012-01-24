@@ -19,7 +19,9 @@
  */
 package org.apache.directory.shared.ldap.model.subtree;
 
+
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+
 
 /**
  * A class holding a n ITEM refinement, as defined in RFC 3672
@@ -31,8 +33,8 @@ public class ItemRefinement implements Refinement
 {
     /** The item */
     private ObjectClass item;
-    
-    
+
+
     /**
      * Creates a new instance of ItemRefinement.
      *
@@ -42,8 +44,8 @@ public class ItemRefinement implements Refinement
     {
         this.item = item;
     }
-    
-    
+
+
     /**
      * @return the item
      */
@@ -68,10 +70,10 @@ public class ItemRefinement implements Refinement
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        
+
         sb.append( "item : " );
         sb.append( item.getName() );
-     
+
         return sb.toString();
     }
 }

@@ -58,7 +58,7 @@ public class SubtreeSpecificationParser
     public SubtreeSpecificationParser( SchemaManager schemaManager )
     {
         StringReader in = new StringReader( "" ); // place holder for the
-                                                    // first input
+                                                  // first input
         this.lexer = new ReusableAntlrSubtreeSpecificationLexer( in );
         this.parser = new ReusableAntlrSubtreeSpecificationParser( lexer );
         this.parser.init( schemaManager ); // this method MUST be called while we cannot do
@@ -70,11 +70,11 @@ public class SubtreeSpecificationParser
     /**
      * Creates a normalizing subtree specification parser.
      */
-    public SubtreeSpecificationParser( @SuppressWarnings("rawtypes") 
-        NormalizerMappingResolver resolver, SchemaManager schemaManager )
+    public SubtreeSpecificationParser( @SuppressWarnings("rawtypes") NormalizerMappingResolver resolver,
+        SchemaManager schemaManager )
     {
         StringReader in = new StringReader( "" ); // place holder for the
-                                                    // first input
+                                                  // first input
         this.lexer = new ReusableAntlrSubtreeSpecificationLexer( in );
         this.parser = new ReusableAntlrSubtreeSpecificationParser( lexer );
         this.parser.setNormalizerMappingResolver( resolver );

@@ -38,6 +38,7 @@ public class BooleanComparator extends LdapComparator<String>
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( BooleanComparator.class );
 
+
     /**
      * The BooleanComparator constructor. Its OID is the BooleanMatch matching
      * rule OID.

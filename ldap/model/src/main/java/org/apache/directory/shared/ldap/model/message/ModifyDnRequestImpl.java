@@ -82,7 +82,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     public ModifyDnRequest setDeleteOldRdn( boolean deleteOldRdn )
     {
         this.deleteOldRdn = deleteOldRdn;
-        
+
         return this;
     }
 
@@ -111,7 +111,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     public ModifyDnRequest setName( Dn name )
     {
         this.name = name;
-        
+
         return this;
     }
 
@@ -131,7 +131,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     public ModifyDnRequest setNewRdn( Rdn newRdn )
     {
         this.newRdn = newRdn;
-        
+
         return this;
     }
 
@@ -151,46 +151,46 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     public ModifyDnRequest setNewSuperior( Dn newSuperior )
     {
         this.newSuperior = newSuperior;
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyDnRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public ModifyDnRequest addControl( Control control ) throws MessageException
     {
-        return (ModifyDnRequest)super.addControl( control );
+        return ( ModifyDnRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyDnRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (ModifyDnRequest)super.addAllControls( controls );
+        return ( ModifyDnRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyDnRequest removeControl( Control control ) throws MessageException
     {
-        return (ModifyDnRequest)super.removeControl( control );
+        return ( ModifyDnRequest ) super.removeControl( control );
     }
 
 
@@ -272,7 +272,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
             return false;
         }
 
-        ModifyDnRequest req = (ModifyDnRequest) obj;
+        ModifyDnRequest req = ( ModifyDnRequest ) obj;
 
         if ( name != null && req.getName() == null )
         {
@@ -319,7 +319,8 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
             return false;
         }
 
-        return ( ( newSuperior == null ) || ( req.getNewSuperior() == null ) || newSuperior.equals( req.getNewSuperior() ) );
+        return ( ( newSuperior == null ) || ( req.getNewSuperior() == null ) || newSuperior.equals( req
+            .getNewSuperior() ) );
     }
 
 

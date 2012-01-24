@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.message;
 
+
 import org.apache.directory.shared.ldap.model.exception.MessageException;
 
 
@@ -85,20 +86,20 @@ public interface ExtendedRequest<R extends ExtendedResponse> extends SingleReply
      * {@inheritDoc}
      */
     ExtendedRequest<R> setMessageId( int messageId );
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     ExtendedRequest<R> addControl( Control control ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     ExtendedRequest<R> addAllControls( Control[] controls ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

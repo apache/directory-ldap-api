@@ -37,7 +37,8 @@ public final class OpaqueControl extends AbstractControl implements Control
 {
     /** The opaque encoded value */
     private byte[] value;
-    
+
+
     /**
      * Creates a Control with a specific OID.
      *
@@ -57,7 +58,7 @@ public final class OpaqueControl extends AbstractControl implements Control
      */
     public OpaqueControl( String oid, boolean criticality )
     {
-        super( oid, criticality);
+        super( oid, criticality );
     }
 
 
@@ -68,8 +69,8 @@ public final class OpaqueControl extends AbstractControl implements Control
     {
         return value;
     }
-    
-    
+
+
     /**
      * Stores an opaque value into the control.
      * 
@@ -79,8 +80,8 @@ public final class OpaqueControl extends AbstractControl implements Control
     {
         this.value = Strings.copy( value );
     }
-    
-    
+
+
     /**
      * Tells if the control has a stored value. Note that if the
      * control has an empty value, this method will return true.

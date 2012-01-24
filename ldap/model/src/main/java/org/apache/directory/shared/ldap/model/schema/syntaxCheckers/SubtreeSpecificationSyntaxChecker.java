@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import java.text.ParseException;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
@@ -43,8 +44,9 @@ public class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( SubtreeSpecificationSyntaxChecker.class );
 
-    /** The associated checker */ 
+    /** The associated checker */
     private SubtreeSpecificationChecker subtreeSpecificationChecker;
+
 
     /**
      * Creates an instance of SubtreeSpecificationSyntaxChecker
@@ -67,14 +69,14 @@ public class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -89,11 +91,11 @@ public class SubtreeSpecificationSyntaxChecker extends SyntaxChecker
 
         try
         {
-            synchronized( subtreeSpecificationChecker )
+            synchronized ( subtreeSpecificationChecker )
             {
                 subtreeSpecificationChecker.parse( strValue );
             }
-            
+
             LOG.debug( "Syntax valid for '{}'", value );
             return true;
         }

@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.csn.Csn;
 import org.apache.directory.shared.ldap.model.csn.InvalidCSNException;
@@ -37,6 +38,7 @@ public class CsnSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( CsnSyntaxChecker.class );
+
 
     /**
      * Creates a new instance of CsnSyntaxChecker.
@@ -57,20 +59,20 @@ public class CsnSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
-        if ( ! ( value instanceof String ) )
+
+        if ( !( value instanceof String ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
-        String csnStr = (String)value;
-        
+
+        String csnStr = ( String ) value;
+
         // It must be a valid CSN : try to create a new one.
         try
         {
             boolean result = Csn.isValid( csnStr );
-            
+
             if ( result )
             {
                 LOG.debug( "Syntax valid for '{}'", value );
@@ -79,7 +81,7 @@ public class CsnSyntaxChecker extends SyntaxChecker
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
             }
-            
+
             return result;
         }
         catch ( InvalidCSNException icsne )

@@ -40,8 +40,8 @@ public class LdapProtocolEncoder implements ProtocolEncoder
 {
     /** The stateful encoder */
     private LdapEncoder encoder;
-    
-    
+
+
     /**
      * Creates a new instance of LdapProtocolEncoder.
      *

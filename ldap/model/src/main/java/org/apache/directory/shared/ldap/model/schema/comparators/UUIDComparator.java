@@ -38,6 +38,7 @@ public class UUIDComparator extends LdapComparator<String>
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( UUIDComparator.class );
 
+
     /**
      * The UUIDComparator constructor. Its OID is the UUIDMatch matching
      * rule OID.
@@ -47,7 +48,7 @@ public class UUIDComparator extends LdapComparator<String>
         super( oid );
     }
 
-    
+
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
@@ -62,12 +63,12 @@ public class UUIDComparator extends LdapComparator<String>
         {
             return ( uuid2 == null ) ? 0 : -1;
         }
-        
+
         if ( uuid2 == null )
         {
             return 1;
         }
-        
+
         return uuid1.compareTo( uuid2 );
     }
 }

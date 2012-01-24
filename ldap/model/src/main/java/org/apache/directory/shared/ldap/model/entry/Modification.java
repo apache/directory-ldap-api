@@ -19,10 +19,12 @@
  */
 package org.apache.directory.shared.ldap.model.entry;
 
+
 import java.io.Externalizable;
 
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+
 
 /**
  * An internal interface for a ModificationItem. The name has been
@@ -66,8 +68,8 @@ public interface Modification extends Cloneable, Externalizable
      * @param attribute The modified attribute
      */
     void setAttribute( Attribute attribute );
-    
-    
+
+
     /**
      * The clone operation
      *
@@ -75,7 +77,7 @@ public interface Modification extends Cloneable, Externalizable
      */
     Modification clone();
 
-    
+
     /**
      * Apply the AttributeType to the Modification
      * 

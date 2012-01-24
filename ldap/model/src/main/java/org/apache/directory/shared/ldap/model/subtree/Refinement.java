@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.subtree;
 
+
 /**
  * An empty interface used for Refinements.
  *

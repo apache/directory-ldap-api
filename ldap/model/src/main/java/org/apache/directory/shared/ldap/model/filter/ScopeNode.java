@@ -59,6 +59,7 @@ public class ScopeNode extends AbstractExprNode
         isSchemaAware = true;
     }
 
+
     /**
      * Always returns true since a scope node has no children.
      * 
@@ -184,12 +185,12 @@ public class ScopeNode extends AbstractExprNode
     public int hashCode()
     {
         int h = 37;
-        
-        h = h*17 + super.hashCode();
-        h = h*17 + ( aliasDerefAliases != null ? aliasDerefAliases.hashCode() : 0 );
-        h = h*17 + ( baseDn != null ? baseDn.hashCode() : 0 );
-        h = h*17 + scope.getScope();
-        
+
+        h = h * 17 + super.hashCode();
+        h = h * 17 + ( aliasDerefAliases != null ? aliasDerefAliases.hashCode() : 0 );
+        h = h * 17 + ( baseDn != null ? baseDn.hashCode() : 0 );
+        h = h * 17 + scope.getScope();
+
         return h;
     }
 
@@ -201,7 +202,7 @@ public class ScopeNode extends AbstractExprNode
     public String toString()
     {
         StringBuilder buf = new StringBuilder();
-        
+
         buf.append( "(#{" );
 
         switch ( scope )
@@ -225,7 +226,7 @@ public class ScopeNode extends AbstractExprNode
                 buf.append( "UNKNOWN" );
                 break;
         }
-        
+
         buf.append( ", '" );
         buf.append( baseDn );
         buf.append( "', " );
@@ -233,7 +234,7 @@ public class ScopeNode extends AbstractExprNode
         buf.append( "}" );
         buf.append( super.toString() );
         buf.append( ')' );
-        
+
         return buf.toString();
     }
 }

@@ -30,10 +30,11 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapInvalidAttributeTypeException  extends LdapOperationException
+public class LdapInvalidAttributeTypeException extends LdapOperationException
 {
     /** The serial version UUID */
     static final long serialVersionUID = 1L;
+
 
     /**
      * Creates a new instance of LdapInvalidAttributeTypeException.

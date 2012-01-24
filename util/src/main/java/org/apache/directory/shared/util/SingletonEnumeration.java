@@ -45,7 +45,7 @@ public class SingletonEnumeration<T> implements NamingEnumeration<T>
      * @param element
      *            TODO
      */
-    public SingletonEnumeration(final T element)
+    public SingletonEnumeration( final T element )
     {
         this.element = element;
     }

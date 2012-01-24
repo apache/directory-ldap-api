@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.CsnSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for CsnSyntaxChecker.
@@ -52,8 +54,8 @@ public class CsnSyntaxCheckerTest
     {
         assertFalse( checker.isValidSyntax( "" ) );
     }
-    
-    
+
+
     /**
      * Test that a replicaId not being an integer between 000 and fff
      * is seen as invalid
@@ -69,8 +71,8 @@ public class CsnSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "20090602120000.100000Z#000000#0 0#000000" ) );
         assertFalse( checker.isValidSyntax( "20090602120000.100000Z#000000#   #000000" ) );
     }
-    
-    
+
+
     /**
      * Test that a replicaId is a valid number between 000 and fff
      */

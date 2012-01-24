@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.name;
 
+
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
@@ -35,6 +36,7 @@ import org.junit.runner.RunWith;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
+
 /**
  * Test the Rdn Serialization
  * 
@@ -48,12 +50,12 @@ public class RdnSerializationTest
     public void testRdnFullSerialization() throws IOException, LdapException, ClassNotFoundException
     {
         Rdn rdn1 = new Rdn( "gn=john + cn=doe" );
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         rdn1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -70,12 +72,12 @@ public class RdnSerializationTest
     public void testRdnEmptySerialization() throws IOException, LdapException, ClassNotFoundException
     {
         Rdn rdn1 = new Rdn();
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         rdn1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -92,12 +94,12 @@ public class RdnSerializationTest
     public void testRdnSimpleSerialization() throws IOException, LdapException, ClassNotFoundException
     {
         Rdn rdn1 = new Rdn( "cn=doe" );
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         rdn1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();

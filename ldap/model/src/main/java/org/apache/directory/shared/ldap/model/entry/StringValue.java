@@ -45,7 +45,8 @@ public class StringValue extends AbstractValue<String>
 {
     /** Used for serialization */
     private static final long serialVersionUID = 2L;
-    
+
+
     // -----------------------------------------------------------------------
     // Constructors
     // -----------------------------------------------------------------------
@@ -54,7 +55,7 @@ public class StringValue extends AbstractValue<String>
      *
      * @param attributeType the schema attribute type associated with this StringValue
      */
-    /* No protection*/ StringValue( AttributeType attributeType )
+    /* No protection*/StringValue( AttributeType attributeType )
     {
         if ( attributeType != null )
         {
@@ -63,13 +64,13 @@ public class StringValue extends AbstractValue<String>
             {
                 throw new IllegalArgumentException( I18n.err( I18n.ERR_04445 ) );
             }
-    
-            if ( ! attributeType.getSyntax().isHumanReadable() )
+
+            if ( !attributeType.getSyntax().isHumanReadable() )
             {
                 LOG.warn( "Treating a value of a binary attribute {} as a String: "
                     + "\nthis could cause data corruption!", attributeType.getName() );
             }
-    
+
             this.attributeType = attributeType;
         }
     }
@@ -114,8 +115,8 @@ public class StringValue extends AbstractValue<String>
         // object without copying it.
         return wrappedValue;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -123,8 +124,8 @@ public class StringValue extends AbstractValue<String>
     {
         return normalizedValue;
     }
-    
-    
+
+
     // -----------------------------------------------------------------------
     // Comparable<String> Methods
     // -----------------------------------------------------------------------
@@ -157,9 +158,9 @@ public class StringValue extends AbstractValue<String>
             LOG.error( message );
             throw new NotImplementedException( message );
         }
-        
+
         StringValue stringValue = ( StringValue ) value;
-        
+
         if ( attributeType != null )
         {
             if ( stringValue.getAttributeType() == null )
@@ -176,11 +177,11 @@ public class StringValue extends AbstractValue<String>
                 }
             }
         }
-        else 
+        else
         {
             return getNormValue().compareTo( stringValue.getNormValue() );
         }
-            
+
         try
         {
             return getLdapComparator().compare( getNormValue(), stringValue.getNormValue() );
@@ -202,7 +203,7 @@ public class StringValue extends AbstractValue<String>
      */
     public StringValue clone()
     {
-        return (StringValue)super.clone();
+        return ( StringValue ) super.clone();
     }
 
 
@@ -223,13 +224,13 @@ public class StringValue extends AbstractValue<String>
             {
                 return 0;
             }
-    
+
             // If the normalized value is null, will default to wrapped
             // which cannot be null at this point.
             // If the normalized value is null, will default to wrapped
             // which cannot be null at this point.
             String normalized = getNormValue();
-            
+
             if ( normalized != null )
             {
                 h = normalized.hashCode();
@@ -239,7 +240,7 @@ public class StringValue extends AbstractValue<String>
                 h = 17;
             }
         }
-        
+
         return h;
     }
 
@@ -256,18 +257,18 @@ public class StringValue extends AbstractValue<String>
             return true;
         }
 
-        if ( ! ( obj instanceof StringValue ) )
+        if ( !( obj instanceof StringValue ) )
         {
             return false;
         }
 
         StringValue other = ( StringValue ) obj;
-        
+
         if ( this.isNull() )
         {
             return other.isNull();
         }
-       
+
         // First check the upValue. If they are equal, the Values are equal
         if ( wrappedValue == other.wrappedValue )
         {
@@ -331,7 +332,8 @@ public class StringValue extends AbstractValue<String>
                     else
                     {
                         Normalizer normalizer = attributeType.getEquality().getNormalizer();
-                        return comparator.compare( normalizer.normalize( getValue() ), normalizer.normalize( other.getValue() ) ) == 0;
+                        return comparator.compare( normalizer.normalize( getValue() ),
+                            normalizer.normalize( other.getValue() ) ) == 0;
                     }
                 }
             }
@@ -345,8 +347,8 @@ public class StringValue extends AbstractValue<String>
             return this.getNormValue().equals( other.getNormValue() );
         }
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -355,7 +357,7 @@ public class StringValue extends AbstractValue<String>
         return true;
     }
 
-    
+
     /**
      * @return The length of the interned value
      */
@@ -363,8 +365,8 @@ public class StringValue extends AbstractValue<String>
     {
         return wrappedValue != null ? wrappedValue.length() : 0;
     }
-    
-    
+
+
     /**
      * Get the wrapped value as a byte[].
      * @return the wrapped value as a byte[]
@@ -373,8 +375,8 @@ public class StringValue extends AbstractValue<String>
     {
         return Strings.getBytesUtf8( wrappedValue );
     }
-    
-    
+
+
     /**
      * Get the wrapped value as a String.
      *
@@ -384,8 +386,8 @@ public class StringValue extends AbstractValue<String>
     {
         return wrappedValue != null ? wrappedValue : "";
     }
-    
-    
+
+
     /**
      * Deserialize a StringValue. It will return a new StringValue instance.
      * 
@@ -396,13 +398,13 @@ public class StringValue extends AbstractValue<String>
      */
     public static StringValue deserialize( ObjectInput in ) throws IOException, ClassNotFoundException
     {
-        StringValue value = new StringValue( (AttributeType)null );
+        StringValue value = new StringValue( ( AttributeType ) null );
         value.readExternal( in );
 
         return value;
     }
-    
-    
+
+
     /**
      * Deserialize a schemaAware StringValue. It will return a new StringValue instance.
      * 
@@ -412,15 +414,16 @@ public class StringValue extends AbstractValue<String>
      * @throws IOException If the stream can't be read
      * @throws ClassNotFoundException If we can't instanciate a StringValue
      */
-    public static StringValue deserialize( AttributeType attributeType, ObjectInput in ) throws IOException, ClassNotFoundException
+    public static StringValue deserialize( AttributeType attributeType, ObjectInput in ) throws IOException,
+        ClassNotFoundException
     {
         StringValue value = new StringValue( attributeType );
         value.readExternal( in );
 
         return value;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -428,22 +431,22 @@ public class StringValue extends AbstractValue<String>
     {
         // Read the STRING flag
         boolean isHR = in.readBoolean();
-        
-        if ( ! isHR )
+
+        if ( !isHR )
         {
             throw new IOException( "The serialized value is not a String value" );
         }
-        
+
         // Read the wrapped value, if it's not null
         if ( in.readBoolean() )
         {
             wrappedValue = in.readUTF();
         }
-        
+
         // Read the isNormalized flag
         boolean normalized = in.readBoolean();
-        
-        if ( normalized ) 
+
+        if ( normalized )
         {
             // Read the normalized value, if not null
             if ( in.readBoolean() )
@@ -455,12 +458,12 @@ public class StringValue extends AbstractValue<String>
         {
             normalizedValue = wrappedValue;
         }
-        
+
         // The hashCoe
         h = in.readInt();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -468,7 +471,7 @@ public class StringValue extends AbstractValue<String>
     {
         // Write a boolean for the HR flag
         out.writeBoolean( STRING );
-        
+
         // Write the wrapped value, if it's not null
         if ( wrappedValue != null )
         {
@@ -479,14 +482,14 @@ public class StringValue extends AbstractValue<String>
         {
             out.writeBoolean( false );
         }
-        
+
         // Write the isNormalized flag
         if ( attributeType != null )
         {
             // This flag is present to tell that we have a normalized value different 
             // from the upValue
             out.writeBoolean( true );
-            
+
             // Write the normalized value, if not null
             if ( normalizedValue != null )
             {
@@ -503,20 +506,20 @@ public class StringValue extends AbstractValue<String>
             // No normalized value
             out.writeBoolean( false );
         }
-        
+
         // Write the hashCode
         out.writeInt( h );
-        
+
         // and flush the data
         out.flush();
     }
 
-    
+
     /**
      * @see Object#toString()
      */
     public String toString()
     {
-        return wrappedValue == null ? "null": wrappedValue;
+        return wrappedValue == null ? "null" : wrappedValue;
     }
 }

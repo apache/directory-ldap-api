@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema;
 
+
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.parsers.LdapComparatorDescription;
@@ -26,6 +27,7 @@ import org.apache.directory.shared.ldap.model.schema.parsers.NormalizerDescripti
 import org.apache.directory.shared.ldap.model.schema.registries.Schema;
 import org.apache.directory.shared.ldap.model.schema.parsers.SyntaxCheckerDescription;
 import org.apache.directory.shared.ldap.model.schema.registries.Registries;
+
 
 public interface EntityFactory
 {
@@ -37,8 +39,8 @@ public interface EntityFactory
      * @throws Exception If the instance can't be created
      */
     Schema getSchema( Entry entry ) throws Exception;
-    
-    
+
+
     /**
      * Construct an AttributeType from an entry representing an AttributeType.
      *
@@ -49,9 +51,10 @@ public interface EntityFactory
      * @return An AttributeType SchemaObject
      * @throws LdapException If the AttributeType is invalid
      */
-    AttributeType getAttributeType( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
+    AttributeType getAttributeType( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
+        String schemaName ) throws LdapException;
 
-    
+
     /**
      * Construct a LdapComparator from a description of a comparator.
      *
@@ -62,11 +65,11 @@ public interface EntityFactory
      * @return A new instance of a LdapComparator
      * @throws Exception If the creation has failed
      */
-    LdapComparator<?> getLdapComparator( SchemaManager schemaManager, 
+    LdapComparator<?> getLdapComparator( SchemaManager schemaManager,
         LdapComparatorDescription comparatorDescription,
         Registries targetRegistries, String schemaName ) throws Exception;
-    
-    
+
+
     /**
      * Retrieve and load a Comparator class from the DIT.
      * 
@@ -77,9 +80,9 @@ public interface EntityFactory
      * @return the loaded Comparator
      * @throws LdapException if anything fails during loading
      */
-    LdapComparator<?> getLdapComparator( SchemaManager schemaManager, Entry entry, 
+    LdapComparator<?> getLdapComparator( SchemaManager schemaManager, Entry entry,
         Registries targetRegistries, String schemaName ) throws LdapException;
-    
+
 
     /**
      * Construct an MatchingRule from an entry get from the Dit
@@ -91,7 +94,8 @@ public interface EntityFactory
      * @return A MatchingRule SchemaObject
      * @throws LdapException If the MatchingRule is invalid
      */
-    MatchingRule getMatchingRule( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
+    MatchingRule getMatchingRule( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
+        String schemaName ) throws LdapException;
 
 
     /**
@@ -106,8 +110,8 @@ public interface EntityFactory
      */
     Normalizer getNormalizer( SchemaManager schemaManager, NormalizerDescription normalizerDescription,
         Registries targetRegistries, String schemaName ) throws Exception;
-    
-    
+
+
     /**
      * Retrieve and load a Normalizer class from the DIT.
      * 
@@ -120,8 +124,8 @@ public interface EntityFactory
      */
     Normalizer getNormalizer( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName )
         throws LdapException;
-    
-    
+
+
     /**
      * 
      * @param schemaManager The Schema Manager
@@ -131,9 +135,10 @@ public interface EntityFactory
      * @return
      * @throws Exception
      */
-    ObjectClass getObjectClass( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
-    
-    
+    ObjectClass getObjectClass( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName )
+        throws LdapException;
+
+
     /**
      * 
      * @param schemaManager The Schema Manager
@@ -143,9 +148,10 @@ public interface EntityFactory
      * @return
      * @throws LdapException
      */
-    LdapSyntax getSyntax( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
-    
-    
+    LdapSyntax getSyntax( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName )
+        throws LdapException;
+
+
     /**
      * Retrieve and load a syntaxChecker class from the DIT.
      * 
@@ -156,8 +162,9 @@ public interface EntityFactory
      * @return the loaded SyntaxChecker
      * @throws LdapException if anything fails during loading
      */
-    SyntaxChecker getSyntaxChecker( SchemaManager schemaManager, Entry entry, Registries targetRegistries, String schemaName ) throws LdapException;
-    
+    SyntaxChecker getSyntaxChecker( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
+        String schemaName ) throws LdapException;
+
 
     /**
      * Create a new instance of a SyntaxChecker 
@@ -169,6 +176,6 @@ public interface EntityFactory
      * @return A new instance of a syntaxChecker
      * @throws Exception If the creation has failed
      */
-    SyntaxChecker getSyntaxChecker( SchemaManager schemaManager, SyntaxCheckerDescription syntaxCheckerDescription, 
+    SyntaxChecker getSyntaxChecker( SchemaManager schemaManager, SyntaxCheckerDescription syntaxCheckerDescription,
         Registries targetRegistries, String schemaName ) throws Exception;
 }

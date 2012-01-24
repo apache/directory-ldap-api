@@ -35,6 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Tests the SyntaxCheckerDescriptionSchemaParser class.
  * 
@@ -77,7 +78,7 @@ public class SyntaxCheckerDescriptionSchemaParserTest
     @Test
     public void testDescription() throws ParseException
     {
-        SchemaParserTestUtils.testDescription(parser, "1.1", "FQCN org.apache.directory.SimpleSyntaxChecker");
+        SchemaParserTestUtils.testDescription( parser, "1.1", "FQCN org.apache.directory.SimpleSyntaxChecker" );
     }
 
 

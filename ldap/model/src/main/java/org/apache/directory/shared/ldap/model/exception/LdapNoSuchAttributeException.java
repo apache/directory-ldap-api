@@ -34,6 +34,7 @@ public class LdapNoSuchAttributeException extends LdapOperationException
     /** The serial version UUID */
     static final long serialVersionUID = 1L;
 
+
     /**
      * Creates a new instance of LdapNoSuchAttributeException.
      *
@@ -56,7 +57,7 @@ public class LdapNoSuchAttributeException extends LdapOperationException
         super( ResultCodeEnum.NO_SUCH_ATTRIBUTE, message, cause );
     }
 
-    
+
     /**
      * Creates a new instance of LdapNoSuchAttributeException.
      */

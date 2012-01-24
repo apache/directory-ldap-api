@@ -68,9 +68,9 @@ public class Csn implements Comparable<Csn>
 
     /** The operation number in a modification operation */
     private final int operationNumber;
-    
+
     /** The changeCount to distinguish operations done in the same second */
-    private final int changeCount;  
+    private final int changeCount;
 
     /** Stores the String representation of the CSN */
     private String csnStr;
@@ -80,18 +80,20 @@ public class Csn implements Comparable<Csn>
 
     /** The Timestamp syntax. The last 'z' is _not_ the Time Zone */
     private static final SimpleDateFormat SDF = new SimpleDateFormat( "yyyyMMddHHmmss" );
-    
+
     // Initialize the dateFormat with the UTC TZ
     static
     {
         SDF.setTimeZone( DateUtils.UTC_TIME_ZONE );
     }
-    
-    /** Padding used to format number with a fixed size */
-    private static final String[] PADDING_6 = new String[] { "00000", "0000", "000", "00", "0", "" };
 
     /** Padding used to format number with a fixed size */
-    private static final String[] PADDING_3 = new String[] { "00", "0", "" };
+    private static final String[] PADDING_6 = new String[]
+        { "00000", "0000", "000", "00", "0", "" };
+
+    /** Padding used to format number with a fixed size */
+    private static final String[] PADDING_3 = new String[]
+        { "00", "0", "" };
 
 
     /**
@@ -123,13 +125,13 @@ public class Csn implements Comparable<Csn>
      */
     public Csn( String value ) throws InvalidCSNException
     {
-        if ( Strings.isEmpty(value) )
+        if ( Strings.isEmpty( value ) )
         {
             String message = I18n.err( I18n.ERR_04114 );
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
-        
+
         if ( value.length() != 40 )
         {
             String message = I18n.err( I18n.ERR_04115 );
@@ -139,28 +141,28 @@ public class Csn implements Comparable<Csn>
 
         // Get the Timestamp
         int sepTS = value.indexOf( '#' );
-        
+
         if ( sepTS < 0 )
         {
             String message = I18n.err( I18n.ERR_04116 );
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
-        
+
         String timestampStr = value.substring( 0, sepTS ).trim();
-        
+
         if ( timestampStr.length() != 22 )
         {
             String message = I18n.err( I18n.ERR_04117 );
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
-        
+
         // Let's transform the Timestamp by removing the mulliseconds and microseconds
         String realTimestamp = timestampStr.substring( 0, 14 );
-        
+
         long tempTimestamp = 0L;
-        
+
         synchronized ( SDF )
         {
             try
@@ -174,9 +176,9 @@ public class Csn implements Comparable<Csn>
                 throw new InvalidCSNException( message );
             }
         }
-        
+
         int millis = 0;
-        
+
         // And add the milliseconds and microseconds now
         try
         {
@@ -188,13 +190,13 @@ public class Csn implements Comparable<Csn>
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
-        
-        tempTimestamp += (millis/1000);
+
+        tempTimestamp += ( millis / 1000 );
         timestamp = tempTimestamp;
 
         // Get the changeCount. It should be an hex number prefixed with '0x'
         int sepCC = value.indexOf( '#', sepTS + 1 );
-        
+
         if ( sepCC < 0 )
         {
             String message = I18n.err( I18n.ERR_04110, value );
@@ -203,10 +205,10 @@ public class Csn implements Comparable<Csn>
         }
 
         String changeCountStr = value.substring( sepTS + 1, sepCC ).trim();
-        
+
         try
         {
-            changeCount = Integer.parseInt( changeCountStr, 16 ); 
+            changeCount = Integer.parseInt( changeCountStr, 16 );
         }
         catch ( NumberFormatException nfe )
         {
@@ -214,10 +216,10 @@ public class Csn implements Comparable<Csn>
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
-        
+
         // Get the replicaID
         int sepRI = value.indexOf( '#', sepCC + 1 );
-        
+
         if ( sepRI < 0 )
         {
             String message = I18n.err( I18n.ERR_04122, value );
@@ -225,18 +227,18 @@ public class Csn implements Comparable<Csn>
             throw new InvalidCSNException( message );
         }
 
-        String replicaIdStr = value.substring( sepCC + 1, sepRI).trim();
-        
-        if ( Strings.isEmpty(replicaIdStr) )
+        String replicaIdStr = value.substring( sepCC + 1, sepRI ).trim();
+
+        if ( Strings.isEmpty( replicaIdStr ) )
         {
             String message = I18n.err( I18n.ERR_04123 );
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
-        
+
         try
         {
-            replicaId = Integer.parseInt( replicaIdStr, 16 ); 
+            replicaId = Integer.parseInt( replicaIdStr, 16 );
         }
         catch ( NumberFormatException nfe )
         {
@@ -244,7 +246,7 @@ public class Csn implements Comparable<Csn>
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
-        
+
         // Get the modification number
         if ( sepCC == value.length() )
         {
@@ -252,22 +254,22 @@ public class Csn implements Comparable<Csn>
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
-        
+
         String operationNumberStr = value.substring( sepRI + 1 ).trim();
-        
+
         try
         {
-            operationNumber = Integer.parseInt( operationNumberStr, 16 ); 
+            operationNumber = Integer.parseInt( operationNumberStr, 16 );
         }
         catch ( NumberFormatException nfe )
         {
-            String message =  I18n.err( I18n.ERR_04126, operationNumberStr );
+            String message = I18n.err( I18n.ERR_04126, operationNumberStr );
             LOG.error( message );
             throw new InvalidCSNException( message );
         }
-        
+
         csnStr = value;
-        bytes = Strings.getBytesUtf8(csnStr);
+        bytes = Strings.getBytesUtf8( csnStr );
     }
 
 
@@ -279,34 +281,34 @@ public class Csn implements Comparable<Csn>
      */
     public static boolean isValid( String value )
     {
-        if ( Strings.isEmpty(value) )
+        if ( Strings.isEmpty( value ) )
         {
             return false;
         }
-        
+
         if ( value.length() != 40 )
         {
             return false;
         }
-    
+
         // Get the Timestamp
         int sepTS = value.indexOf( '#' );
-        
+
         if ( sepTS < 0 )
         {
             return false;
         }
-        
+
         String timestampStr = value.substring( 0, sepTS ).trim();
-        
+
         if ( timestampStr.length() != 22 )
         {
             return false;
         }
-        
+
         // Let's transform the Timestamp by removing the mulliseconds and microseconds
         String realTimestamp = timestampStr.substring( 0, 14 );
-        
+
         synchronized ( SDF )
         {
             try
@@ -318,18 +320,18 @@ public class Csn implements Comparable<Csn>
                 return false;
             }
         }
-        
+
         // And add the milliseconds and microseconds now
         String millisStr = timestampStr.substring( 15, 21 );
 
-        if ( Strings.isEmpty(millisStr) )
+        if ( Strings.isEmpty( millisStr ) )
         {
             return false;
         }
-        
+
         for ( int i = 0; i < 6; i++ )
         {
-            if ( !Chars.isDigit(millisStr, i) )
+            if ( !Chars.isDigit( millisStr, i ) )
             {
                 return false;
             }
@@ -343,67 +345,67 @@ public class Csn implements Comparable<Csn>
         {
             return false;
         }
-    
+
         // Get the changeCount. It should be an hex number prefixed with '0x'
         int sepCC = value.indexOf( '#', sepTS + 1 );
-        
+
         if ( sepCC < 0 )
         {
             return false;
         }
-    
+
         String changeCountStr = value.substring( sepTS + 1, sepCC ).trim();
-        
-        if ( Strings.isEmpty(changeCountStr) )
+
+        if ( Strings.isEmpty( changeCountStr ) )
         {
             return false;
         }
-        
+
         if ( changeCountStr.length() != 6 )
         {
             return false;
         }
-        
+
         try
         {
             for ( int i = 0; i < 6; i++ )
             {
-                if ( !Chars.isHex(changeCountStr, i) )
+                if ( !Chars.isHex( changeCountStr, i ) )
                 {
                     return false;
                 }
             }
-            
-            Integer.parseInt( changeCountStr, 16 ); 
+
+            Integer.parseInt( changeCountStr, 16 );
         }
         catch ( NumberFormatException nfe )
         {
             return false;
         }
-        
+
         // Get the replicaIDfalse
         int sepRI = value.indexOf( '#', sepCC + 1 );
-        
+
         if ( sepRI < 0 )
         {
             return false;
         }
-    
+
         String replicaIdStr = value.substring( sepCC + 1, sepRI ).trim();
-        
-        if ( Strings.isEmpty(replicaIdStr) )
+
+        if ( Strings.isEmpty( replicaIdStr ) )
         {
             return false;
         }
-        
+
         if ( replicaIdStr.length() != 3 )
         {
             return false;
         }
-        
+
         for ( int i = 0; i < 3; i++ )
         {
-            if ( !Chars.isHex(replicaIdStr, i) )
+            if ( !Chars.isHex( replicaIdStr, i ) )
             {
                 return false;
             }
@@ -411,21 +413,21 @@ public class Csn implements Comparable<Csn>
 
         try
         {
-            Integer.parseInt( replicaIdStr, 16 ); 
+            Integer.parseInt( replicaIdStr, 16 );
         }
         catch ( NumberFormatException nfe )
         {
             return false;
         }
-        
+
         // Get the modification number
         if ( sepCC == value.length() )
         {
             return false;
         }
-        
+
         String operationNumberStr = value.substring( sepRI + 1 ).trim();
-        
+
         if ( operationNumberStr.length() != 6 )
         {
             return false;
@@ -433,7 +435,7 @@ public class Csn implements Comparable<Csn>
 
         for ( int i = 0; i < 6; i++ )
         {
-            if ( !Chars.isHex(operationNumberStr, i) )
+            if ( !Chars.isHex( operationNumberStr, i ) )
             {
                 return false;
             }
@@ -441,13 +443,13 @@ public class Csn implements Comparable<Csn>
 
         try
         {
-            Integer.parseInt( operationNumberStr, 16 ); 
+            Integer.parseInt( operationNumberStr, 16 );
         }
         catch ( NumberFormatException nfe )
         {
             return false;
         }
-        
+
         return true;
     }
 
@@ -459,13 +461,13 @@ public class Csn implements Comparable<Csn>
      */
     Csn( byte[] value )
     {
-        csnStr = Strings.utf8ToString(value);
+        csnStr = Strings.utf8ToString( value );
         Csn csn = new Csn( csnStr );
         timestamp = csn.timestamp;
         changeCount = csn.changeCount;
         replicaId = csn.replicaId;
         operationNumber = csn.operationNumber;
-        bytes = Strings.getBytesUtf8(csnStr);
+        bytes = Strings.getBytesUtf8( csnStr );
     }
 
 
@@ -481,7 +483,7 @@ public class Csn implements Comparable<Csn>
     {
         if ( bytes == null )
         {
-            bytes = Strings.getBytesUtf8(csnStr);
+            bytes = Strings.getBytesUtf8( csnStr );
         }
 
         byte[] copy = new byte[bytes.length];
@@ -534,35 +536,35 @@ public class Csn implements Comparable<Csn>
         if ( csnStr == null )
         {
             StringBuilder buf = new StringBuilder( 40 );
-            
-            synchronized( SDF )
+
+            synchronized ( SDF )
             {
                 buf.append( SDF.format( new Date( timestamp ) ) );
             }
-            
+
             // Add the milliseconds part
-            long millis = (timestamp % 1000 ) * 1000;
+            long millis = ( timestamp % 1000 ) * 1000;
             String millisStr = Long.toString( millis );
-            
-            buf.append( '.' ).append( PADDING_6[ millisStr.length() - 1 ] ).append( millisStr ).append( "Z#" );
-            
+
+            buf.append( '.' ).append( PADDING_6[millisStr.length() - 1] ).append( millisStr ).append( "Z#" );
+
             String countStr = Integer.toHexString( changeCount );
-            
+
             buf.append( PADDING_6[countStr.length() - 1] ).append( countStr );
             buf.append( '#' );
 
             String replicaIdStr = Integer.toHexString( replicaId );
-            
-            buf.append( PADDING_3[replicaIdStr.length() - 1]).append( replicaIdStr );
+
+            buf.append( PADDING_3[replicaIdStr.length() - 1] ).append( replicaIdStr );
             buf.append( '#' );
-            
+
             String operationNumberStr = Integer.toHexString( operationNumber );
-            
+
             buf.append( PADDING_6[operationNumberStr.length() - 1] ).append( operationNumberStr );
-            
+
             csnStr = buf.toString();
         }
-        
+
         return csnStr;
     }
 
@@ -575,12 +577,12 @@ public class Csn implements Comparable<Csn>
     public int hashCode()
     {
         int h = 37;
-        
-        h = h*17 + (int)(timestamp ^ (timestamp >>> 32));
-        h = h*17 + changeCount;
-        h = h*17 + replicaId;
-        h = h*17 + operationNumber;
-        
+
+        h = h * 17 + ( int ) ( timestamp ^ ( timestamp >>> 32 ) );
+        h = h * 17 + changeCount;
+        h = h * 17 + replicaId;
+        h = h * 17 + operationNumber;
+
         return h;
     }
 
@@ -626,7 +628,7 @@ public class Csn implements Comparable<Csn>
         {
             return 1;
         }
-        
+
         // Compares the timestamp first
         if ( this.timestamp < csn.timestamp )
         {

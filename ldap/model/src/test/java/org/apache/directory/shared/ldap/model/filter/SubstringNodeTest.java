@@ -36,15 +36,15 @@ import static org.junit.Assert.*;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith( ConcurrentJunitRunner.class )
+@RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
 public class SubstringNodeTest
 {
     @Test
     public void testGetRegexpEmpty() throws Exception
     {
-        Pattern pattern = SubstringNode.getRegex("", new String[]
-                {""}, "");
+        Pattern pattern = SubstringNode.getRegex( "", new String[]
+            { "" }, "" );
 
         boolean b1 = pattern.matcher( "" ).matches();
 
@@ -55,8 +55,8 @@ public class SubstringNodeTest
     @Test
     public void testGetRegexpInitial() throws Exception
     {
-        Pattern pattern = SubstringNode.getRegex("Test", new String[]
-                {""}, "");
+        Pattern pattern = SubstringNode.getRegex( "Test", new String[]
+            { "" }, "" );
 
         boolean b1 = pattern.matcher( "Test just a test" ).matches();
 
@@ -71,8 +71,8 @@ public class SubstringNodeTest
     @Test
     public void testGetRegexpFinal() throws Exception
     {
-        Pattern pattern = SubstringNode.getRegex("", new String[]
-                {""}, "Test");
+        Pattern pattern = SubstringNode.getRegex( "", new String[]
+            { "" }, "Test" );
 
         boolean b1 = pattern.matcher( "test just a Test" ).matches();
 
@@ -87,8 +87,8 @@ public class SubstringNodeTest
     @Test
     public void testGetRegexpAny() throws Exception
     {
-        Pattern pattern = SubstringNode.getRegex("", new String[]
-                {"just", "a"}, "");
+        Pattern pattern = SubstringNode.getRegex( "", new String[]
+            { "just", "a" }, "" );
 
         boolean b1 = pattern.matcher( "test just a Test" ).matches();
 
@@ -103,8 +103,8 @@ public class SubstringNodeTest
     @Test
     public void testGetRegexpFull() throws Exception
     {
-        Pattern pattern = SubstringNode.getRegex("Test", new String[]
-                {"just", "a"}, "test");
+        Pattern pattern = SubstringNode.getRegex( "Test", new String[]
+            { "just", "a" }, "test" );
 
         boolean b1 = pattern.matcher( "Test (this is) just (truly !) a (little) test" ).matches();
 
@@ -123,11 +123,11 @@ public class SubstringNodeTest
     public void testGetRegexpWithLdapFilterSpecialChars() throws Exception
     {
         Pattern[] patterns = new Pattern[]
-            { SubstringNode.getRegex(null, new String[]
-                    {"("}, null), SubstringNode.getRegex(null, new String[]
-                    {")"}, null), SubstringNode.getRegex(null, new String[]
-                    {"*"}, null), SubstringNode.getRegex(null, new String[]
-                    {"\\"}, null), };
+            { SubstringNode.getRegex( null, new String[]
+                { "(" }, null ), SubstringNode.getRegex( null, new String[]
+                { ")" }, null ), SubstringNode.getRegex( null, new String[]
+                { "*" }, null ), SubstringNode.getRegex( null, new String[]
+                { "\\" }, null ), };
 
         for ( Pattern pattern : patterns )
         {

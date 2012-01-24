@@ -38,8 +38,8 @@ public interface EntryCursor extends Cursor<Entry>
      * @return the SearchResultDone message, null if the search operation fails for any reason 
      */
     public SearchResultDone getSearchResultDone();
-    
-    
+
+
     /**
      * @return the underlying message ID
      */

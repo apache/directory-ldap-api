@@ -20,6 +20,7 @@
 
 package org.apache.directory.shared.ldap.model.schema.normalizers;
 
+
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 
 
@@ -83,8 +84,8 @@ public class OidNormalizer
     {
         return attributeTypeOid;
     }
-    
-    
+
+
     /**
      * Copy an OidNormalizer(). The contained Normalizer will be cloned too.
      * 
@@ -96,7 +97,7 @@ public class OidNormalizer
 
         // Copy the SchemaObject common data
         copy.copy();
-        
+
         return copy;
     }
 

@@ -125,7 +125,7 @@ public abstract class SchemaElementImpl implements SchemaElement
     /**
      * {@inheritDoc}
      */
-    public List<String> getExtension( String key)
+    public List<String> getExtension( String key )
     {
         return extensions.get( key );
     }
@@ -180,7 +180,7 @@ public abstract class SchemaElementImpl implements SchemaElement
 
             entry.put( attribute );
 
-            return LdifUtils.convertAttributesToLdif(entry);
+            return LdifUtils.convertAttributesToLdif( entry );
         }
     }
 
@@ -191,7 +191,7 @@ public abstract class SchemaElementImpl implements SchemaElement
      */
     private String descToLdif() throws LdapException
     {
-        if ( Strings.isEmpty(description) )
+        if ( Strings.isEmpty( description ) )
         {
             return "";
         }

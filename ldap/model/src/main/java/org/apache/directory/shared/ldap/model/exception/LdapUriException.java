@@ -29,6 +29,7 @@ public class LdapUriException extends LdapException
 {
     private static final long serialVersionUID = 1L;
 
+
     /**
      * The constructor with a reason string argument.
      * 

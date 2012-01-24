@@ -40,6 +40,7 @@ public class UuidSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( UuidSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of UUIDSyntaxChecker.
      */
@@ -59,13 +60,13 @@ public class UuidSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
- 
-        if ( ! ( value instanceof String ) )
+
+        if ( !( value instanceof String ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
 
-        return Strings.isValidUuid((String) value);
+        return Strings.isValidUuid( ( String ) value );
     }
 }

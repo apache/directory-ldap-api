@@ -20,7 +20,6 @@
 package org.apache.directory.shared.ldap.model.message;
 
 
-
 /**
  * Abstract base for a Response message.
  * 

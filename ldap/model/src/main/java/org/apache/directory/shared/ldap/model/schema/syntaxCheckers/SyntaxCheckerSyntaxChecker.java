@@ -19,7 +19,9 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
+
 
 /**
  * A SyntaxChecker for the SyntaxChecker schema element

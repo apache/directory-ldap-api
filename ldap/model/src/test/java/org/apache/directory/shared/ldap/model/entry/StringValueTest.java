@@ -18,6 +18,7 @@
  */
 package org.apache.directory.shared.ldap.model.entry;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -44,6 +45,7 @@ import org.junit.runner.RunWith;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
+
 /**
  * 
  * Test the StringValue class
@@ -63,7 +65,7 @@ public class StringValueTest
      * Initialize an AttributeType and the associated MatchingRule 
      * and Syntax
      */
-    @BeforeClass 
+    @BeforeClass
     public static void initAT()
     {
         s = new EntryUtils.S( "1.1.1.1", true );
@@ -78,8 +80,8 @@ public class StringValueTest
         at.setSubstring( mr );
         at.setSyntax( s );
     }
-    
-    
+
+
     //----------------------------------------------------------------------------------
     // Helper method
     //----------------------------------------------------------------------------------
@@ -93,15 +95,16 @@ public class StringValueTest
 
         oOut = new ObjectOutputStream( out );
         value.writeExternal( oOut );
-        
+
         return out;
     }
-    
-    
+
+
     /**
      * Deserialize a StringValue
      */
-    private StringValue deserializeValue( AttributeType at, ByteArrayOutputStream out ) throws IOException, ClassNotFoundException
+    private StringValue deserializeValue( AttributeType at, ByteArrayOutputStream out ) throws IOException,
+        ClassNotFoundException
     {
         ObjectInputStream oIn = null;
         ByteArrayInputStream in = new ByteArrayInputStream( out.toByteArray() );
@@ -134,8 +137,8 @@ public class StringValueTest
             }
         }
     }
-    
-    
+
+
     //----------------------------------------------------------------------------------
     // Test the clone() method
     //----------------------------------------------------------------------------------
@@ -145,14 +148,14 @@ public class StringValueTest
     @Test
     public void testCloneEmptyValue() throws LdapException
     {
-        StringValue sv = new StringValue( (String)null );
-        
-        StringValue sv1 = (StringValue)sv.clone();
-        
+        StringValue sv = new StringValue( ( String ) null );
+
+        StringValue sv1 = ( StringValue ) sv.clone();
+
         assertEquals( sv, sv1 );
-        
+
         StringValue sv2 = new StringValue( "" );
-        
+
         assertNotSame( sv2, sv1 );
         assertNull( sv1.getValue() );
         assertEquals( "", sv2.getString() );
@@ -166,16 +169,16 @@ public class StringValueTest
     public void testCloneValue() throws LdapException
     {
         StringValue sv = new StringValue( "  This is    a   TEST  " );
-        
-        StringValue sv1 = (StringValue)sv.clone();
-        
+
+        StringValue sv1 = ( StringValue ) sv.clone();
+
         sv1 = sv.clone();
-        
+
         assertEquals( sv, sv1 );
         assertEquals( "  This is    a   TEST  ", sv.getString() );
 
         sv.apply( at );
-        
+
         assertNotSame( sv, sv1 );
         assertEquals( "  This is    a   TEST  ", sv1.getString() );
         assertEquals( "  This is    a   TEST  ", sv1.getNormValue() );
@@ -191,11 +194,11 @@ public class StringValueTest
     public void testHashCode()
     {
         StringValue csv = new StringValue( "test" );
-        
+
         int hash = "test".hashCode();
         assertEquals( hash, csv.hashCode() );
-        
-        csv = new StringValue( (String)null );
+
+        csv = new StringValue( ( String ) null );
         hash = "".hashCode();
         assertEquals( hash, csv.hashCode() );
     }
@@ -207,8 +210,8 @@ public class StringValueTest
     @Test
     public void testClientStringValueNull() throws LdapException
     {
-        StringValue csv = new StringValue( (String)null );
-        
+        StringValue csv = new StringValue( ( String ) null );
+
         assertNull( csv.getValue() );
         assertFalse( csv.isSchemaAware() );
         assertTrue( csv.isValid( new Ia5StringSyntaxChecker() ) );
@@ -224,7 +227,7 @@ public class StringValueTest
     public void testClientStringValueEmpty() throws LdapException
     {
         StringValue csv = new StringValue( "" );
-        
+
         assertNotNull( csv.getValue() );
         assertEquals( "", csv.getString() );
         assertFalse( csv.isSchemaAware() );
@@ -242,7 +245,7 @@ public class StringValueTest
     public void testClientStringValueString() throws LdapException
     {
         StringValue csv = new StringValue( "test" );
-        
+
         assertEquals( "test", csv.getValue() );
         assertFalse( csv.isSchemaAware() );
         assertTrue( csv.isValid( new Ia5StringSyntaxChecker() ) );
@@ -260,7 +263,7 @@ public class StringValueTest
     {
         StringValue sv = new StringValue( "test" );
         assertEquals( "test", sv.getValue() );
-        
+
         StringValue sv2 = new StringValue( "" );
         assertEquals( "", sv2.getValue() );
     }
@@ -273,9 +276,9 @@ public class StringValueTest
     public void testGetCopy()
     {
         StringValue sv = new StringValue( "test" );
-        
+
         assertEquals( "test", sv.getValue() );
-        
+
         StringValue sv2 = new StringValue( "" );
         assertEquals( "", sv2.getValue() );
     }
@@ -287,8 +290,8 @@ public class StringValueTest
     @Test
     public void testSet() throws LdapException
     {
-        StringValue sv = new StringValue( (String)null );
-        
+        StringValue sv = new StringValue( ( String ) null );
+
         assertNull( sv.getValue() );
         assertFalse( sv.isSchemaAware() );
         assertTrue( sv.isValid( new Ia5StringSyntaxChecker() ) );
@@ -316,14 +319,14 @@ public class StringValueTest
     @Test
     public void testIsNull()
     {
-        StringValue sv = new StringValue( (String)null );
+        StringValue sv = new StringValue( ( String ) null );
         assertTrue( sv.isNull() );
-        
+
         sv = new StringValue( "test" );
         assertFalse( sv.isNull() );
     }
 
-    
+
     /**
      * Test method for {@link org.apache.directory.shared.ldap.model.entry.StringValue#isSchemaAware()}.
      */
@@ -331,14 +334,14 @@ public class StringValueTest
     public void testIsNormalized() throws LdapException
     {
         StringValue sv = new StringValue( "  This is    a   TEST  " );
-        
+
         assertFalse( sv.isSchemaAware() );
-        
+
         sv.apply( at );
-        
+
         assertEquals( "this is a test", sv.getNormValue() );
         assertTrue( sv.isSchemaAware() );
-        
+
         sv = new StringValue( "test" );
         assertFalse( sv.isSchemaAware() );
     }
@@ -350,15 +353,15 @@ public class StringValueTest
     @Test
     public void testSetNormalized() throws LdapException
     {
-        StringValue sv = new StringValue( (String)null );
-        
+        StringValue sv = new StringValue( ( String ) null );
+
         assertFalse( sv.isSchemaAware() );
-        
+
         sv = new StringValue( "  This is    a   TEST  " );
         assertFalse( sv.isSchemaAware() );
-        
+
         sv.apply( at );
-        
+
         assertEquals( "this is a test", sv.getNormValue() );
         assertTrue( sv.isSchemaAware() );
     }
@@ -370,15 +373,15 @@ public class StringValueTest
     @Test
     public void testGetNormalizedValue() throws LdapException
     {
-        StringValue sv = new StringValue( (String)null );
-        
+        StringValue sv = new StringValue( ( String ) null );
+
         assertEquals( null, sv.getNormValue() );
-        
+
         sv = new StringValue( "  This is    a   TEST  " );
         assertEquals( "  This is    a   TEST  ", sv.getNormValue() );
-        
+
         sv.apply( at );
-        
+
         assertEquals( "this is a test", sv.getNormValue() );
     }
 
@@ -389,39 +392,39 @@ public class StringValueTest
     @Test
     public void getNormValueCopy() throws LdapException
     {
-        StringValue sv = new StringValue( (String)null );
-        
+        StringValue sv = new StringValue( ( String ) null );
+
         assertEquals( null, sv.getNormValue() );
-        
+
         sv = new StringValue( "  This is    a   TEST  " );
         assertEquals( "  This is    a   TEST  ", sv.getNormValue() );
-        
+
         sv.apply( at );
-        
+
         assertEquals( "this is a test", sv.getNormValue() );
     }
 
-    
+
     /**
      * Test method for {@link org.apache.directory.shared.ldap.model.entry.StringValue#normalize(org.apache.directory.shared.ldap.model.schema.Normalizer)}.
      */
     @Test
     public void testNormalize() throws LdapException
     {
-        StringValue sv = new StringValue( (String)null );
+        StringValue sv = new StringValue( ( String ) null );
 
         sv.apply( at );
         assertEquals( null, sv.getNormValue() );
-        
+
         sv = new StringValue( "" );
         sv.apply( at );
         assertEquals( "", sv.getNormValue() );
 
-        sv = new StringValue(  "  This is    a   TEST  " );
+        sv = new StringValue( "  This is    a   TEST  " );
         assertEquals( "  This is    a   TEST  ", sv.getNormValue() );
-        
+
         sv.apply( at );
-        
+
         assertEquals( "this is a test", sv.getNormValue() );
     }
 
@@ -433,9 +436,9 @@ public class StringValueTest
     public void testIsValid() throws LdapException
     {
         StringValue sv = new StringValue( "Test" );
-        
+
         assertTrue( sv.isValid( new Ia5StringSyntaxChecker() ) );
-        
+
         sv = new StringValue( "é" );
         assertFalse( sv.isValid( new Ia5StringSyntaxChecker() ) );
     }
@@ -447,24 +450,24 @@ public class StringValueTest
     @Test
     public void testCompareTo() throws LdapException
     {
-        StringValue sv1 = new StringValue( (String)null );
-        StringValue sv2 = new StringValue( (String)null );
-        
+        StringValue sv1 = new StringValue( ( String ) null );
+        StringValue sv2 = new StringValue( ( String ) null );
+
         assertEquals( 0, sv1.compareTo( sv2 ) );
-        
+
         sv1 = new StringValue( "Test" );
         assertEquals( 1, sv1.compareTo( sv2 ) );
         assertEquals( -1, sv2.compareTo( sv1 ) );
-        
+
         sv2 = new StringValue( "Test" );
         assertEquals( 0, sv1.compareTo( sv2 ) );
 
         // Now check that the equals method works on normalized values.
-        sv1 = new StringValue(  "  This is    a TEST   " );
+        sv1 = new StringValue( "  This is    a TEST   " );
         sv2 = new StringValue( "this is a test" );
         sv1.apply( at );
         assertEquals( 0, sv1.compareTo( sv2 ) );
-        
+
         sv1 = new StringValue( "a" );
         sv2 = new StringValue( "b" );
         assertEquals( -1, sv1.compareTo( sv2 ) );
@@ -481,14 +484,14 @@ public class StringValueTest
     @Test
     public void testEquals() throws LdapException
     {
-        StringValue sv1 = new StringValue( (String)null );
-        StringValue sv2 = new StringValue( (String)null );
-        
+        StringValue sv1 = new StringValue( ( String ) null );
+        StringValue sv2 = new StringValue( ( String ) null );
+
         assertEquals( sv1, sv2 );
-        
+
         sv1 = new StringValue( "Test" );
         assertNotSame( sv1, sv2 );
-        
+
         sv2 = new StringValue( "Test" );
         assertEquals( sv1, sv2 );
 
@@ -506,8 +509,8 @@ public class StringValueTest
     @Test
     public void testToString()
     {
-        StringValue sv = new StringValue( (String)null );
-        
+        StringValue sv = new StringValue( ( String ) null );
+
         assertEquals( "null", sv.toString() );
 
         sv = new StringValue( "" );
@@ -516,15 +519,15 @@ public class StringValueTest
         sv = new StringValue( "Test" );
         assertEquals( "Test", sv.toString() );
     }
-    
-    
+
+
     /**
      * Test the serialization of a CSV with a value and a normalized value
      */
     @Test
     public void testSerializeStandard() throws LdapException, IOException, ClassNotFoundException
     {
-        StringValue csv = new StringValue( "TEST");
+        StringValue csv = new StringValue( "TEST" );
         csv.apply( at );
         csv.isValid( new Ia5StringSyntaxChecker() );
 
@@ -534,8 +537,8 @@ public class StringValueTest
         assertEquals( csv.getNormValue(), csvSer.getNormValue() );
         assertTrue( csvSer.isSchemaAware() );
     }
-    
-    
+
+
     /**
      * Test the serialization of a CSV with a value and no normalized value
      */
@@ -551,8 +554,8 @@ public class StringValueTest
         assertEquals( csv.getValue(), csvSer.getNormValue() );
         assertFalse( csvSer.isSchemaAware() );
     }
-    
-    
+
+
     /**
      * Test the serialization of a CSV with a value and an empty normalized value
      */
@@ -564,31 +567,31 @@ public class StringValueTest
         csv.apply( at );
 
         StringValue csvSer = deserializeValue( at, serializeValue( csv ) );
-         assertNotSame( csv, csvSer );
-         assertEquals( csv.getValue(), csvSer.getValue() );
-         assertEquals( csv.getNormValue(), csvSer.getNormValue() );
-         assertTrue( csvSer.isSchemaAware() );
+        assertNotSame( csv, csvSer );
+        assertEquals( csv.getValue(), csvSer.getValue() );
+        assertEquals( csv.getNormValue(), csvSer.getNormValue() );
+        assertTrue( csvSer.isSchemaAware() );
     }
-    
-    
+
+
     /**
      * Test the serialization of a CSV with a null value
      */
     @Test
     public void testSerializeNullValue() throws LdapException, IOException, ClassNotFoundException
     {
-        StringValue csv = new StringValue( (String)null );
+        StringValue csv = new StringValue( ( String ) null );
         csv.isValid( new Ia5StringSyntaxChecker() );
         csv.apply( at );
 
         StringValue csvSer = deserializeValue( at, serializeValue( csv ) );
-         assertNotSame( csv, csvSer );
-         assertEquals( csv.getValue(), csvSer.getValue() );
-         assertEquals( csv.getNormValue(), csvSer.getNormValue() );
-         assertTrue( csvSer.isSchemaAware() );
+        assertNotSame( csv, csvSer );
+        assertEquals( csv.getValue(), csvSer.getValue() );
+        assertEquals( csv.getNormValue(), csvSer.getNormValue() );
+        assertTrue( csvSer.isSchemaAware() );
     }
-    
-    
+
+
     /**
      * Test the serialization of a CSV with an empty value
      */
@@ -600,13 +603,13 @@ public class StringValueTest
         csv.apply( at );
 
         StringValue csvSer = deserializeValue( at, serializeValue( csv ) );
-         assertNotSame( csv, csvSer );
-         assertEquals( csv.getValue(), csvSer.getValue() );
-         assertEquals( csv.getNormValue(), csvSer.getNormValue() );
-         assertTrue( csvSer.isSchemaAware() );
+        assertNotSame( csv, csvSer );
+        assertEquals( csv.getValue(), csvSer.getValue() );
+        assertEquals( csv.getNormValue(), csvSer.getNormValue() );
+        assertTrue( csvSer.isSchemaAware() );
     }
-    
-    
+
+
     /**
      * Test the serialization of a CSV with an empty value not normalized
      */
@@ -617,9 +620,9 @@ public class StringValueTest
         csv.isValid( new Ia5StringSyntaxChecker() );
 
         StringValue csvSer = deserializeValue( null, serializeValue( csv ) );
-         assertNotSame( csv, csvSer );
-         assertEquals( csv.getValue(), csvSer.getValue() );
-         assertEquals( csv.getNormValue(), csvSer.getNormValue() );
-         assertFalse( csvSer.isSchemaAware() );
+        assertNotSame( csv, csvSer );
+        assertEquals( csv.getValue(), csvSer.getValue() );
+        assertEquals( csv.getNormValue(), csvSer.getNormValue() );
+        assertFalse( csvSer.isSchemaAware() );
     }
 }

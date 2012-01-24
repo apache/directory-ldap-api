@@ -75,46 +75,46 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
     public DeleteRequest setName( Dn name )
     {
         this.name = name;
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public DeleteRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public DeleteRequest addControl( Control control ) throws MessageException
     {
-        return (DeleteRequest)super.addControl( control );
+        return ( DeleteRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public DeleteRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (DeleteRequest)super.addAllControls( controls );
+        return ( DeleteRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public DeleteRequest removeControl( Control control ) throws MessageException
     {
-        return (DeleteRequest)super.removeControl( control );
+        return ( DeleteRequest ) super.removeControl( control );
     }
 
 

@@ -51,27 +51,26 @@ public class DSETypeSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( DSETypeSyntaxChecker.class );
 
     /** The DSE BITS keywords */
-    private static final String[] DSE_BITS_STRINGS = 
+    private static final String[] DSE_BITS_STRINGS =
         {
-        "root", "glue", "cp", "entry", "alias", "subr",
-        "nssr", "supr", "xr", "admPoint", "subentry",
-        "shadow", "zombie", "immSupr", "rhob", "sa"
-        };
-    
-    
+            "root", "glue", "cp", "entry", "alias", "subr",
+            "nssr", "supr", "xr", "admPoint", "subentry",
+            "shadow", "zombie", "immSupr", "rhob", "sa"
+    };
+
     /** The Set which contains the DESBits */
     private static final Set<String> DSE_BITS = new HashSet<String>();
-    
+
     /** Initialization of the country set */
     static
     {
-        for ( String country:DSE_BITS_STRINGS )
+        for ( String country : DSE_BITS_STRINGS )
         {
             DSE_BITS.add( country );
         }
     }
 
-    
+
     /**
      * 
      * Creates a new instance of DSETypeSyntaxChecker.
@@ -81,8 +80,8 @@ public class DSETypeSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.DSE_TYPE_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -95,14 +94,14 @@ public class DSETypeSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -127,59 +126,59 @@ public class DSETypeSyntaxChecker extends SyntaxChecker
         Set<String> keywords = new HashSet<String>();
         int len = strValue.length() - 1;
         boolean needKeyword = true;
-        
+
         // 
-        for ( int i = 1; i < len; /* */ )
+        for ( int i = 1; i < len; /* */)
         {
             // Skip spaces
             while ( ( i < len ) && ( strValue.charAt( i ) == ' ' ) )
             {
                 i++;
             }
-            
+
             int pos = i;
-            
+
             // Search for a keyword
-            while ( ( i < len ) && Chars.isAlphaASCII(strValue, pos) )
+            while ( ( i < len ) && Chars.isAlphaASCII( strValue, pos ) )
             {
                 pos++;
             }
-            
+
             if ( pos == i )
             {
                 // No keyword : error
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
             }
-            
+
             String keyword = strValue.substring( i, pos );
             i = pos;
-            
+
             if ( !DSE_BITS.contains( keyword ) )
             {
                 // Unknown keyword
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
             }
-            
+
             // Check that the keyword has not been met
             if ( keywords.contains( keyword ) )
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
             }
-            
+
             keywords.add( keyword );
             needKeyword = false;
-            
+
             // Skip spaces
             while ( ( i < len ) && ( strValue.charAt( i ) == ' ' ) )
             {
                 i++;
             }
-            
+
             // Do we have another keyword ?
-            if ( ( i < len) && ( strValue.charAt( i ) == '$' ) )
+            if ( ( i < len ) && ( strValue.charAt( i ) == '$' ) )
             {
                 // yes
                 i++;
@@ -187,7 +186,7 @@ public class DSETypeSyntaxChecker extends SyntaxChecker
                 continue;
             }
         }
-        
+
         // We are done
         if ( needKeyword )
         {
@@ -197,7 +196,7 @@ public class DSETypeSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax valid for '{}'", value );
         }
-        
+
         return !needKeyword;
     }
 }

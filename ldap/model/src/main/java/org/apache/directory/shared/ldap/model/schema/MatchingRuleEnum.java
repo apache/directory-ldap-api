@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema;
 
+
 /**
  * Type safe enum for a matching rule's comparator and normalizer component
  * usage string. This can be take one of the following three values:
@@ -33,17 +34,18 @@ package org.apache.directory.shared.ldap.model.schema;
 public enum MatchingRuleEnum
 {
     /** value for ordering usage */
-    ORDERING( 0 ),
+    ORDERING(0),
 
     /** value for equality usage */
-    EQUALITY( 1 ),
+    EQUALITY(1),
 
     /** value for substring usage */
-    SUBSTRING( 2 );
+    SUBSTRING(2);
 
     /** Stores the integer value of each element of the enumeration */
     private int value;
-    
+
+
     /**
      * Private constructor so no other instances can be created other than the
      * public static constants in this class.
@@ -53,10 +55,10 @@ public enum MatchingRuleEnum
      */
     private MatchingRuleEnum( int value )
     {
-       this.value = value;
+        this.value = value;
     }
 
-    
+
     /**
      * @return The value associated with the current element.
      */
@@ -64,6 +66,7 @@ public enum MatchingRuleEnum
     {
         return value;
     }
+
 
     /**
      * Gets the enumeration type for the usage string regardless of case.

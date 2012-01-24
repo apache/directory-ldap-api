@@ -172,7 +172,7 @@ public final class AttributeUtils
             pos.start++;
 
             // We have an option
-            if ( !Chars.isAlphaDigitMinus(str, pos.start) )
+            if ( !Chars.isAlphaDigitMinus( str, pos.start ) )
             {
                 // We must have at least one keychar
                 throw new ParseException( I18n.err( I18n.ERR_04343 ), pos.start );
@@ -180,7 +180,7 @@ public final class AttributeUtils
 
             pos.start++;
 
-            while ( Chars.isAlphaDigitMinus(str, pos.start) )
+            while ( Chars.isAlphaDigitMinus( str, pos.start ) )
             {
                 pos.start++;
             }
@@ -198,7 +198,7 @@ public final class AttributeUtils
      */
     private static boolean parseNumber( String filter, Position pos )
     {
-        char c = Strings.charAt(filter, pos.start);
+        char c = Strings.charAt( filter, pos.start );
 
         switch ( c )
         {
@@ -224,7 +224,7 @@ public final class AttributeUtils
                 return false;
         }
 
-        while ( Chars.isDigit(filter, pos.start) )
+        while ( Chars.isDigit( filter, pos.start ) )
         {
             pos.start++;
         }
@@ -301,7 +301,7 @@ public final class AttributeUtils
     public static String parseAttribute( String str, Position pos, boolean withOption ) throws ParseException
     {
         // We must have an OID or an DESCR first
-        char c = Strings.charAt(str, pos.start);
+        char c = Strings.charAt( str, pos.start );
 
         if ( c == '\0' )
         {
@@ -310,12 +310,12 @@ public final class AttributeUtils
 
         int start = pos.start;
 
-        if ( Chars.isAlpha(c) )
+        if ( Chars.isAlpha( c ) )
         {
             // A DESCR
             pos.start++;
 
-            while ( Chars.isAlphaDigitMinus(str, pos.start) )
+            while ( Chars.isAlphaDigitMinus( str, pos.start ) )
             {
                 pos.start++;
             }
@@ -328,7 +328,7 @@ public final class AttributeUtils
 
             return str.substring( start, pos.start );
         }
-        else if ( Chars.isDigit(c) )
+        else if ( Chars.isDigit( c ) )
         {
             // An OID
             pos.start++;
@@ -461,7 +461,8 @@ public final class AttributeUtils
             {
                 Entry entry = new DefaultEntry( dn );
 
-                for ( NamingEnumeration<? extends javax.naming.directory.Attribute> attrs = attributes.getAll(); attrs.hasMoreElements(); )
+                for ( NamingEnumeration<? extends javax.naming.directory.Attribute> attrs = attributes.getAll(); attrs
+                    .hasMoreElements(); )
                 {
                     javax.naming.directory.Attribute attr = attrs.nextElement();
 
@@ -548,7 +549,8 @@ public final class AttributeUtils
      * @param jndiAttribute the JNDI Attribute instance to convert
      * @return An instance of a LDAP API Attribute object
      */
-    public static Attribute toApiAttribute( javax.naming.directory.Attribute jndiAttribute ) throws LdapInvalidAttributeValueException
+    public static Attribute toApiAttribute( javax.naming.directory.Attribute jndiAttribute )
+        throws LdapInvalidAttributeValueException
     {
         if ( jndiAttribute == null )
         {
@@ -563,7 +565,6 @@ public final class AttributeUtils
             {
                 Object value = values.nextElement();
 
-                
                 if ( value instanceof String )
                 {
                     attribute.add( ( String ) value );

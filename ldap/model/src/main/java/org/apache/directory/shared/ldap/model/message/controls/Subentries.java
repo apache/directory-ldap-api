@@ -57,12 +57,14 @@ public interface Subentries extends Control
     /** The control OID */
     String OID = "1.3.6.1.4.1.4203.1.10.1";
 
+
     /**
      * Check if the subEntry is visible
      *
      * @return true or false.
      */
     boolean isVisible();
+
 
     /**
      * Set the visibility flag

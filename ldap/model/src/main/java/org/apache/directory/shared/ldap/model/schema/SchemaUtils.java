@@ -71,24 +71,24 @@ public final class SchemaUtils
 
             switch ( mod.getOperation() )
             {
-                case REPLACE_ATTRIBUTE :
+                case REPLACE_ATTRIBUTE:
                     targetEntry.put( mod.getAttribute() );
                     break;
 
-                case ADD_ATTRIBUTE :
+                case ADD_ATTRIBUTE:
                     Attribute combined = mod.getAttribute().clone();
                     Attribute toBeAdded = mod.getAttribute();
                     Attribute existing = entry.get( id );
 
                     if ( existing != null )
                     {
-                        for ( Value<?> value:existing )
+                        for ( Value<?> value : existing )
                         {
                             combined.add( value );
                         }
                     }
 
-                    for ( Value<?> value:toBeAdded )
+                    for ( Value<?> value : toBeAdded )
                     {
                         combined.add( value );
                     }
@@ -96,7 +96,7 @@ public final class SchemaUtils
                     targetEntry.put( combined );
                     break;
 
-                case REMOVE_ATTRIBUTE :
+                case REMOVE_ATTRIBUTE:
                     Attribute toBeRemoved = mod.getAttribute();
 
                     if ( toBeRemoved.size() == 0 )
@@ -109,7 +109,7 @@ public final class SchemaUtils
 
                         if ( existing != null )
                         {
-                            for ( Value<?> value:toBeRemoved )
+                            for ( Value<?> value : toBeRemoved )
                             {
                                 existing.remove( value );
                             }
@@ -153,12 +153,12 @@ public final class SchemaUtils
         else
         {
             buf.append( "( " );
-            
+
             for ( String qdescr : qdescrs )
             {
                 buf.append( "'" ).append( qdescr ).append( "' " );
             }
-            
+
             buf.append( ")" );
         }
 
@@ -176,13 +176,13 @@ public final class SchemaUtils
      * @param qdescrs the quoted description strings to render
      * @return the string buffer the qdescrs are rendered into
      */
-    /* No qualifier */ static StringBuffer renderQDescrs( StringBuffer buf, List<String> qdescrs )
+    /* No qualifier */static StringBuffer renderQDescrs( StringBuffer buf, List<String> qdescrs )
     {
         if ( ( qdescrs == null ) || ( qdescrs.size() == 0 ) )
         {
             return buf;
         }
-        
+
         if ( qdescrs.size() == 1 )
         {
             buf.append( '\'' ).append( qdescrs.get( 0 ) ).append( '\'' );
@@ -190,12 +190,12 @@ public final class SchemaUtils
         else
         {
             buf.append( "( " );
-            
+
             for ( String qdescr : qdescrs )
             {
                 buf.append( '\'' ).append( qdescr ).append( "' " );
             }
-            
+
             buf.append( ")" );
         }
 
@@ -222,9 +222,9 @@ public final class SchemaUtils
         else
         {
             buf.append( "( " );
-            
+
             boolean isFirst = true;
-            
+
             for ( String oid : oids )
             {
                 if ( isFirst )
@@ -235,10 +235,10 @@ public final class SchemaUtils
                 {
                     buf.append( " $ " );
                 }
-                
+
                 buf.append( oid );
             }
-            
+
             buf.append( " )" );
         }
 
@@ -254,30 +254,31 @@ public final class SchemaUtils
      */
     private static StringBuffer renderQDString( StringBuffer buf, String qdString )
     {
-        buf.append(  '\'' );
-        
+        buf.append( '\'' );
+
         for ( char c : qdString.toCharArray() )
         {
             switch ( c )
             {
-                case 0x27 :
+                case 0x27:
                     buf.append( "\\27" );
                     break;
-                    
-                case 0x5C :
+
+                case 0x5C:
                     buf.append( "\\5C" );
                     break;
-                    
-                default :
+
+                default:
                     buf.append( c );
                     break;
             }
         }
-        
-        buf.append(  '\'' );
-     
+
+        buf.append( '\'' );
+
         return buf;
     }
+
 
     // ------------------------------------------------------------------------
     // objectClass list rendering operations
@@ -294,7 +295,7 @@ public final class SchemaUtils
     public static StringBuffer render( ObjectClass[] ocs )
     {
         StringBuffer buf = new StringBuffer();
-        
+
         return render( buf, ocs );
     }
 
@@ -322,7 +323,7 @@ public final class SchemaUtils
         else
         {
             buf.append( "( " );
-            
+
             for ( int ii = 0; ii < ocs.length; ii++ )
             {
                 if ( ii + 1 < ocs.length )
@@ -334,7 +335,7 @@ public final class SchemaUtils
                     buf.append( ocs[ii].getName() );
                 }
             }
-            
+
             buf.append( " )" );
         }
 
@@ -453,7 +454,7 @@ public final class SchemaUtils
     {
         StringBuffer buf = new StringBuffer();
         buf.append( "( " ).append( oc.getOid() );
-        
+
         List<String> names = oc.getNames();
 
         if ( ( names != null ) && ( names.size() > 0 ) )
@@ -474,7 +475,7 @@ public final class SchemaUtils
         }
 
         List<String> superiorOids = oc.getSuperiorOids();
-        
+
         if ( ( superiorOids != null ) && ( superiorOids.size() > 0 ) )
         {
             buf.append( " SUP " );
@@ -487,7 +488,7 @@ public final class SchemaUtils
         }
 
         List<String> must = oc.getMustAttributeTypeOids();
-        
+
         if ( ( must != null ) && ( must.size() > 0 ) )
         {
             buf.append( " MUST " );
@@ -674,7 +675,7 @@ public final class SchemaUtils
             return buf;
         }
 
-        for ( Map.Entry<String, List<String>>entry : extensions.entrySet() )
+        for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
         {
             buf.append( " " ).append( entry.getKey() ).append( " " );
 
@@ -760,7 +761,7 @@ public final class SchemaUtils
     {
         StringBuffer buf = new StringBuffer();
         buf.append( "( " ).append( mr.getOid() );
-        
+
         List<String> names = mr.getNames();
 
         if ( ( names != null ) && ( names.size() > 0 ) )
@@ -857,7 +858,7 @@ public final class SchemaUtils
     {
         StringBuffer buf = new StringBuffer();
         buf.append( "( " ).append( mru.getOid() );
-        
+
         List<String> names = mru.getNames();
 
         if ( ( names != null ) && ( names.size() > 0 ) )
@@ -871,20 +872,20 @@ public final class SchemaUtils
             buf.append( " DESC " );
             renderQDString( buf, mru.getDescription() );
         }
-        
+
         if ( mru.isObsolete )
         {
-            buf.append(  " OBSOLETE" );
+            buf.append( " OBSOLETE" );
         }
-        
+
         List<String> applies = mru.getApplicableAttributeOids();
-        
+
         if ( ( applies != null ) && ( applies.size() > 0 ) )
         {
             buf.append( " APPLIES " );
             renderOids( buf, applies );
         }
-        
+
         buf.append( " X-SCHEMA '" );
         buf.append( mru.getSchemaName() );
         buf.append( "'" );
@@ -905,15 +906,15 @@ public final class SchemaUtils
     {
         StringBuffer buf = new StringBuffer();
         buf.append( "( " ).append( dcr.getOid() );
-        
+
         List<String> names = dcr.getNames();
-        
+
         if ( ( names != null ) && ( names.size() > 0 ) )
         {
             buf.append( " NAME " );
             renderQDescrs( buf, names );
         }
-        
+
         if ( dcr.getDescription() != null )
         {
             buf.append( " DESC " );
@@ -926,7 +927,7 @@ public final class SchemaUtils
         }
 
         List<String> aux = dcr.getAuxObjectClassOids();
-        
+
         if ( ( aux != null ) && ( aux.size() > 0 ) )
         {
             buf.append( " AUX " );
@@ -934,7 +935,7 @@ public final class SchemaUtils
         }
 
         List<String> must = dcr.getMustAttributeTypeOids();
-        
+
         if ( ( must != null ) && ( must.size() > 0 ) )
         {
             buf.append( " MUST " );
@@ -942,7 +943,7 @@ public final class SchemaUtils
         }
 
         List<String> may = dcr.getMayAttributeTypeOids();
-        
+
         if ( ( may != null ) && ( may.size() > 0 ) )
         {
             buf.append( " MAY " );
@@ -950,7 +951,7 @@ public final class SchemaUtils
         }
 
         List<String> not = dcr.getNotAttributeTypeOids();
-        
+
         if ( ( not != null ) && ( not.size() > 0 ) )
         {
             buf.append( " AUX " );
@@ -973,20 +974,21 @@ public final class SchemaUtils
     /**
      * NOT FULLY IMPLEMENTED!
      */
-    @SuppressWarnings("PMD.UnusedLocalVariable") // Remove me when the TODO is fixed 
+    @SuppressWarnings("PMD.UnusedLocalVariable")
+    // Remove me when the TODO is fixed 
     public static StringBuffer render( DITStructureRule dsr )
     {
         StringBuffer buf = new StringBuffer();
         buf.append( "( " ).append( dsr.getOid() );
-        
+
         List<String> names = dsr.getNames();
-        
+
         if ( ( names != null ) && ( names.size() > 0 ) )
         {
             buf.append( " NAME " );
             renderQDescrs( buf, names );
         }
-        
+
         if ( dsr.getDescription() != null )
         {
             buf.append( " DESC " );
@@ -1019,7 +1021,7 @@ public final class SchemaUtils
     {
         StringBuffer buf = new StringBuffer();
         buf.append( "( " ).append( nf.getOid() );
-        
+
         List<String> names = nf.getNames();
 
         if ( ( names != null ) && ( names.size() > 0 ) )
@@ -1041,12 +1043,12 @@ public final class SchemaUtils
 
         buf.append( " OC " );
         buf.append( nf.getStructuralObjectClass().getName() );
-        
+
         buf.append( " MUST " );
         renderOids( buf, nf.getMustAttributeTypeOids() );
-        
+
         List<String> may = nf.getMayAttributeTypeOids();
-        
+
         if ( ( may != null ) && ( may.size() > 0 ) )
         {
             buf.append( " MAY " );
@@ -1082,7 +1084,7 @@ public final class SchemaUtils
 
         buf.append( " FQCN " ).append( description.getFqcn() );
 
-        if ( !Strings.isEmpty(description.getBytecode()) )
+        if ( !Strings.isEmpty( description.getBytecode() ) )
         {
             buf.append( " BYTECODE " ).append( description.getBytecode() );
         }
@@ -1119,8 +1121,8 @@ public final class SchemaUtils
      */
     public static String stripOptions( String attributeId )
     {
-        int optionsPos = attributeId.indexOf( ";" ); 
-        
+        int optionsPos = attributeId.indexOf( ";" );
+
         if ( optionsPos != -1 )
         {
             return attributeId.substring( 0, optionsPos );
@@ -1130,7 +1132,8 @@ public final class SchemaUtils
             return attributeId;
         }
     }
-    
+
+
     /**
      * Get the options from the attributeType.
      * 
@@ -1141,22 +1144,22 @@ public final class SchemaUtils
      */
     public static Set<String> getOptions( String attributeId )
     {
-        int optionsPos = attributeId.indexOf( ";" ); 
+        int optionsPos = attributeId.indexOf( ";" );
 
         if ( optionsPos != -1 )
         {
             Set<String> options = new HashSet<String>();
-            
+
             String[] res = attributeId.substring( optionsPos + 1 ).split( ";" );
-            
-            for ( String option:res )
+
+            for ( String option : res )
             {
-                if ( !Strings.isEmpty(option) )
+                if ( !Strings.isEmpty( option ) )
                 {
                     options.add( option );
                 }
             }
-            
+
             return options;
         }
         else
@@ -1164,8 +1167,8 @@ public final class SchemaUtils
             return null;
         }
     }
-    
-    
+
+
     /**
      * Transform an UUID in a byte array
      * @param uuid The UUID to transform
@@ -1175,25 +1178,25 @@ public final class SchemaUtils
     {
         Long low = uuid.getLeastSignificantBits();
         Long high = uuid.getMostSignificantBits();
-        byte[] bytes=new byte[16];
-        
-        bytes[0]  = (byte) ((high & 0xff00000000000000L)>>56);
-        bytes[1]  = (byte) ((high & 0x00ff000000000000L)>>48);
-        bytes[2]  = (byte) ((high & 0x0000ff0000000000L)>>40);
-        bytes[3]  = (byte) ((high & 0x000000ff00000000L)>>32);
-        bytes[4]  = (byte) ((high & 0x00000000ff000000L)>>24);
-        bytes[5]  = (byte) ((high & 0x0000000000ff0000L)>>16);
-        bytes[6]  = (byte) ((high & 0x000000000000ff00L)>>8);
-        bytes[7]  = (byte) (high & 0x00000000000000ffL);
-        bytes[8]  = (byte) ((low & 0xff00000000000000L)>>56);
-        bytes[9]  = (byte) ((low & 0x00ff000000000000L)>>48);
-        bytes[10] = (byte) ((low & 0x0000ff0000000000L)>>40);
-        bytes[11] = (byte) ((low & 0x000000ff00000000L)>>32);
-        bytes[12] = (byte) ((low & 0x00000000ff000000L)>>24);
-        bytes[13] = (byte) ((low & 0x0000000000ff0000L)>>16);
-        bytes[14] = (byte) ((low & 0x000000000000ff00L)>>8);
-        bytes[15] = (byte) (low & 0x00000000000000ffL);
-        
+        byte[] bytes = new byte[16];
+
+        bytes[0] = ( byte ) ( ( high & 0xff00000000000000L ) >> 56 );
+        bytes[1] = ( byte ) ( ( high & 0x00ff000000000000L ) >> 48 );
+        bytes[2] = ( byte ) ( ( high & 0x0000ff0000000000L ) >> 40 );
+        bytes[3] = ( byte ) ( ( high & 0x000000ff00000000L ) >> 32 );
+        bytes[4] = ( byte ) ( ( high & 0x00000000ff000000L ) >> 24 );
+        bytes[5] = ( byte ) ( ( high & 0x0000000000ff0000L ) >> 16 );
+        bytes[6] = ( byte ) ( ( high & 0x000000000000ff00L ) >> 8 );
+        bytes[7] = ( byte ) ( high & 0x00000000000000ffL );
+        bytes[8] = ( byte ) ( ( low & 0xff00000000000000L ) >> 56 );
+        bytes[9] = ( byte ) ( ( low & 0x00ff000000000000L ) >> 48 );
+        bytes[10] = ( byte ) ( ( low & 0x0000ff0000000000L ) >> 40 );
+        bytes[11] = ( byte ) ( ( low & 0x000000ff00000000L ) >> 32 );
+        bytes[12] = ( byte ) ( ( low & 0x00000000ff000000L ) >> 24 );
+        bytes[13] = ( byte ) ( ( low & 0x0000000000ff0000L ) >> 16 );
+        bytes[14] = ( byte ) ( ( low & 0x000000000000ff00L ) >> 8 );
+        bytes[15] = ( byte ) ( low & 0x00000000000000ffL );
+
         return bytes;
     }
 }

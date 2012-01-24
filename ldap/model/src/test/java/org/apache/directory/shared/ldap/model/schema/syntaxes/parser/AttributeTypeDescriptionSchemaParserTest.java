@@ -40,6 +40,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Tests the AttributeTypeDescriptionSchemaParser class.
  * 
@@ -112,7 +113,7 @@ public class AttributeTypeDescriptionSchemaParserTest
     @Test
     public void testObsolete() throws ParseException
     {
-        SchemaParserTestUtils.testObsolete(parser, "1.1", "SYNTAX 1.1");
+        SchemaParserTestUtils.testObsolete( parser, "1.1", "SYNTAX 1.1" );
     }
 
 

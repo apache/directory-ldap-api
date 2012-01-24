@@ -402,11 +402,11 @@ public class AttributeTypeHolder extends SchemaElementImpl
         StringBuilder sb = new StringBuilder();
 
         String dn = "m-oid=" + oid + ", " + SchemaConstants.ATTRIBUTE_TYPES_PATH + ", cn="
-            + Rdn.escapeValue(schemaName) + ", ou=schema";
+            + Rdn.escapeValue( schemaName ) + ", ou=schema";
 
         // First dump the Dn only
         Entry entry = new DefaultEntry( dn );
-        sb.append( LdifUtils.convertToLdif(entry) );
+        sb.append( LdifUtils.convertToLdif( entry ) );
 
         return sb.toString();
     }

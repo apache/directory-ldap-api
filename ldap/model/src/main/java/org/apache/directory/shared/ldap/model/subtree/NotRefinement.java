@@ -31,12 +31,13 @@ public class NotRefinement implements Refinement
     /** The refinement */
     private Refinement refinement;
 
+
     public NotRefinement( Refinement refinement )
     {
         this.refinement = refinement;
     }
-    
-    
+
+
     /**
      * @return the refinement
      */
@@ -44,18 +45,18 @@ public class NotRefinement implements Refinement
     {
         return refinement;
     }
-    
-    
+
+
     /**
      * @see Object#toString()
      */
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        
+
         sb.append( "not: " );
         sb.append( refinement );
-        
+
         return sb.toString();
     }
 }

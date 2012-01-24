@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.entry;
 
+
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
@@ -30,6 +31,7 @@ import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.shared.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.shared.util.Strings;
+
 
 /**
  * Some common declaration used by the serverEntry tests.
@@ -45,18 +47,21 @@ public class EntryUtils
     {
         private static final long serialVersionUID = 0L;
 
+
         protected AT( String oid )
         {
             super( oid );
         }
     }
 
+
     public static MatchingRule matchingRuleFactory( String oid )
     {
         MatchingRule matchingRule = new MatchingRule( oid );
-        
+
         return matchingRule;
     }
+
     /**
      * A local MatchingRule class for tests
      */
@@ -76,11 +81,12 @@ public class EntryUtils
     public static LdapSyntax syntaxFactory( String oid, boolean humanReadable )
     {
         LdapSyntax ldapSyntax = new LdapSyntax( oid );
-        
+
         ldapSyntax.setHumanReadable( humanReadable );
-        
+
         return ldapSyntax;
     }
+
     static class S extends LdapSyntax
     {
         public S( String oid, boolean humanReadible )
@@ -89,7 +95,8 @@ public class EntryUtils
         }
     }
 
-    /* no protection*/ static AttributeType getCaseIgnoringAttributeNoNumbersType()
+
+    /* no protection*/static AttributeType getCaseIgnoringAttributeNoNumbersType()
     {
         AttributeType attributeType = new AttributeType( "1.1.3.1" );
         LdapSyntax syntax = new LdapSyntax( "1.1.1.1", "", true );
@@ -102,15 +109,15 @@ public class EntryUtils
                 {
                     return true;
                 }
-                
+
                 if ( !( value instanceof String ) )
                 {
                     return false;
                 }
 
                 String strval = ( String ) value;
-                
-                for ( char c:strval.toCharArray() )
+
+                for ( char c : strval.toCharArray() )
                 {
                     if ( Character.isDigit( c ) )
                     {
@@ -120,21 +127,20 @@ public class EntryUtils
                 return true;
             }
         } );
-        
+
         MatchingRule matchingRule = new MatchingRule( "1.1.2.1" );
         matchingRule.setSyntax( syntax );
-
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
         {
             public int compare( String o1, String o2 )
             {
-                return ( o1 == null ? 
+                return ( o1 == null ?
                     ( o2 == null ? 0 : -1 ) :
                     ( o2 == null ? 1 : o1.compareTo( o2 ) ) );
             }
         } );
-        
+
         Normalizer normalizer = new Normalizer( "1.1.1" )
         {
             public Value<?> normalize( Value<?> value ) throws LdapException
@@ -146,24 +152,24 @@ public class EntryUtils
 
                 throw new IllegalStateException( I18n.err( I18n.ERR_04474 ) );
             }
-            
-            
+
+
             public String normalize( String value ) throws LdapException
             {
                 return Strings.toLowerCase( value );
             }
         };
-        
+
         matchingRule.setNormalizer( normalizer );
-        
+
         attributeType.setEquality( matchingRule );
         attributeType.setSyntax( syntax );
-        
+
         return attributeType;
     }
 
 
-    /* no protection*/ static AttributeType getIA5StringAttributeType()
+    /* no protection*/static AttributeType getIA5StringAttributeType()
     {
         AttributeType attributeType = new AttributeType( "1.1" );
         attributeType.addName( "1.1" );
@@ -173,34 +179,33 @@ public class EntryUtils
         {
             public boolean isValidSyntax( Object value )
             {
-                return ((String)value == null) || (((String)value).length() < 7) ;
+                return ( ( String ) value == null ) || ( ( ( String ) value ).length() < 7 );
             }
         } );
-        
+
         MatchingRule matchingRule = new MatchingRule( "1.1.2" );
         matchingRule.setSyntax( syntax );
-
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
         {
             public int compare( String o1, String o2 )
             {
-                return ( ( o1 == null ) ? 
+                return ( ( o1 == null ) ?
                     ( o2 == null ? 0 : -1 ) :
                     ( o2 == null ? 1 : o1.compareTo( o2 ) ) );
             }
         } );
-        
+
         matchingRule.setNormalizer( new DeepTrimToLowerNormalizer( matchingRule.getOid() ) );
-        
+
         attributeType.setEquality( matchingRule );
         attributeType.setSyntax( syntax );
-        
+
         return attributeType;
     }
 
 
-    /* No protection */ static AttributeType getBytesAttributeType()
+    /* No protection */static AttributeType getBytesAttributeType()
     {
         AttributeType attributeType = new AttributeType( "1.2" );
         LdapSyntax syntax = new LdapSyntax( "1.2.1", "", false );
@@ -209,7 +214,7 @@ public class EntryUtils
         {
             public boolean isValidSyntax( Object value )
             {
-                return ( value == null ) || ( ((byte[])value).length < 5 );
+                return ( value == null ) || ( ( ( byte[] ) value ).length < 5 );
             }
         } );
 
@@ -217,7 +222,7 @@ public class EntryUtils
         matchingRule.setSyntax( syntax );
 
         matchingRule.setLdapComparator( new ByteArrayComparator( "1.2.2" ) );
-        
+
         matchingRule.setNormalizer( new Normalizer( "1.1.1" )
         {
             public Value<?> normalize( Value<?> value ) throws LdapException
@@ -225,29 +230,30 @@ public class EntryUtils
                 if ( !value.isHumanReadable() )
                 {
                     byte[] val = value.getBytes();
-                    
+
                     // each byte will be changed to be > 0, and spaces will be trimmed
-                    byte[] newVal = new byte[ val.length ];
-                    
+                    byte[] newVal = new byte[val.length];
+
                     int i = 0;
-                    
-                    for ( byte b:val )
+
+                    for ( byte b : val )
                     {
-                        newVal[i++] = (byte)(b & 0x007F); 
+                        newVal[i++] = ( byte ) ( b & 0x007F );
                     }
-                    
-                    return new BinaryValue( Strings.trim(newVal) );
+
+                    return new BinaryValue( Strings.trim( newVal ) );
                 }
 
                 throw new IllegalStateException( I18n.err( I18n.ERR_04475 ) );
             }
+
 
             public String normalize( String value ) throws LdapException
             {
                 throw new IllegalStateException( I18n.err( I18n.ERR_04475 ) );
             }
         } );
-        
+
         attributeType.setEquality( matchingRule );
         attributeType.setSyntax( syntax );
 

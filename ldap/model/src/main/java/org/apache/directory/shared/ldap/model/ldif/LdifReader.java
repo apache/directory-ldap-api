@@ -242,6 +242,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         init();
     }
 
+
     protected void init() throws LdapException
     {
         lines = new ArrayList<String>();
@@ -254,6 +255,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         version = parseVersion();
         prefetched = parseEntry();
     }
+
 
     /**
      * A constructor which takes a file name
@@ -291,7 +293,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         }
         catch ( LdapInvalidDnException lide )
         {
-            throw new LdapLdifException( lide.getMessage(), lide);
+            throw new LdapLdifException( lide.getMessage(), lide );
         }
         catch ( LdapException le )
         {
@@ -354,7 +356,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         {
             String msg = I18n.err( I18n.ERR_12010_CANNOT_FIND_FILE, file.getAbsoluteFile() );
             LOG.error( msg );
-            throw new LdapLdifException( msg , fnfe);
+            throw new LdapLdifException( msg, fnfe );
         }
         catch ( LdapInvalidDnException lide )
         {
@@ -399,7 +401,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     // <fill> ::= ' ' <fill> | e
     private void parseFill( char[] document )
     {
-        while ( Chars.isCharASCII(document, position, ' ') )
+        while ( Chars.isCharASCII( document, position, ' ' ) )
         {
             position++;
         }
@@ -423,7 +425,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         while ( true )
         {
-            if ( Chars.isDigit(document, position) )
+            if ( Chars.isDigit( document, position ) )
             {
                 position++;
             }
@@ -454,7 +456,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     {
         ChangeType operation = ChangeType.Add;
 
-        String modOp = Strings.trim(line.substring("changetype:".length() + 1));
+        String modOp = Strings.trim( line.substring( "changetype:".length() + 1 ) );
 
         if ( "add".equalsIgnoreCase( modOp ) )
         {
@@ -568,13 +570,13 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
             if ( c == ':' )
             {
-                String value = Strings.trim(line.substring(pos + 2));
+                String value = Strings.trim( line.substring( pos + 2 ) );
 
                 return Base64.decode( value.toCharArray() );
             }
             else
             {
-                return Strings.trim(line.substring(pos + 1));
+                return Strings.trim( line.substring( pos + 1 ) );
             }
         }
         else
@@ -600,13 +602,13 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
             if ( c == ':' )
             {
-                String value = Strings.trim(line.substring(pos + 2));
+                String value = Strings.trim( line.substring( pos + 2 ) );
 
-                return Base64.decode(value.toCharArray());
+                return Base64.decode( value.toCharArray() );
             }
             else if ( c == '<' )
             {
-                String urlName = Strings.trim(line.substring(pos + 2));
+                String urlName = Strings.trim( line.substring( pos + 2 ) );
 
                 try
                 {
@@ -651,7 +653,8 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                                     // existence has already been
                                     // checked
                                     LOG.error( I18n.err( I18n.ERR_12018_FILE_NOT_FOUND, fileName ) );
-                                    throw new LdapLdifException( I18n.err( I18n.ERR_12019_BAD_URL_FILE_NOT_FOUND ), fnfe );
+                                    throw new LdapLdifException( I18n.err( I18n.ERR_12019_BAD_URL_FILE_NOT_FOUND ),
+                                        fnfe );
                                 }
                                 catch ( IOException ioe )
                                 {
@@ -693,11 +696,11 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             {
                 String value = Strings.trimLeft( line.substring( pos + 1 ) );
                 int end = value.length();
-                
+
                 for ( int i = value.length() - 1; i > 0; i-- )
                 {
                     char cc = value.charAt( i );
-                    
+
                     if ( cc == ' ' )
                     {
                         if ( value.charAt( i - 1 ) == '\\' )
@@ -715,9 +718,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                         break;
                     }
                 }
-                
+
                 String result = null;
-                
+
                 result = value.substring( 0, end );
 
                 return result;
@@ -769,7 +772,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         int initPos = pos;
 
-        while ( Chars.isCharASCII(controlValue, pos, '.') || Chars.isDigit(controlValue, pos) )
+        while ( Chars.isCharASCII( controlValue, pos, '.' ) || Chars.isDigit( controlValue, pos ) )
         {
             pos++;
         }
@@ -784,7 +787,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         // Create and check the OID
         String oidString = lowerLine.substring( 0, pos );
 
-        if ( !Oid.isOid(oidString) )
+        if ( !Oid.isOid( oidString ) )
         {
             String message = I18n.err( I18n.ERR_12031_INVALID_OID, oidString );
             LOG.error( message );
@@ -795,7 +798,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         // Get the criticality, if any
         // Skip the <fill>
-        while ( Chars.isCharASCII(controlValue, pos, ' ') )
+        while ( Chars.isCharASCII( controlValue, pos, ' ' ) )
         {
             pos++;
         }
@@ -834,14 +837,14 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         {
             // We have a value. It can be a normal value, a base64 encoded value
             // or a file contained value
-            if ( Chars.isCharASCII(controlValue, criticalPos + 1, ':') )
+            if ( Chars.isCharASCII( controlValue, criticalPos + 1, ':' ) )
             {
                 // Base 64 encoded value
-                
+
                 // Skip the <fill>
                 pos = criticalPos + 2;
-                
-                while ( Chars.isCharASCII(controlValue, pos, ' ') )
+
+                while ( Chars.isCharASCII( controlValue, pos, ' ' ) )
                 {
                     pos++;
                 }
@@ -849,7 +852,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 byte[] value = Base64.decode( line.substring( pos ).toCharArray() );
                 control.setValue( value );
             }
-            else if ( Chars.isCharASCII(controlValue, criticalPos + 1, '<') )
+            else if ( Chars.isCharASCII( controlValue, criticalPos + 1, '<' ) )
             {
                 // File contained value
                 throw new NotImplementedException( "See DIRSERVER-1547" );
@@ -858,8 +861,8 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             {
                 // Skip the <fill>
                 pos = criticalPos + 1;
-                
-                while ( Chars.isCharASCII(controlValue, pos, ' ') )
+
+                while ( Chars.isCharASCII( controlValue, pos, ' ' ) )
                 {
                     pos++;
                 }
@@ -967,7 +970,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 }
                 else
                 {
-                    entry.setNewRdn( Strings.utf8ToString((byte[]) attributeValue) );
+                    entry.setNewRdn( Strings.utf8ToString( ( byte[] ) attributeValue ) );
                 }
             }
             else
@@ -1042,7 +1045,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
             if ( lowerLine.startsWith( "-" ) )
             {
-                if ( ( state != ATTRVAL_SPEC_OR_SEP ) && ( state != ATTRVAL_SPEC ) ) 
+                if ( ( state != ATTRVAL_SPEC_OR_SEP ) && ( state != ATTRVAL_SPEC ) )
                 {
                     LOG.error( I18n.err( I18n.ERR_12040_BAD_MODIFY_SEPARATOR ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12040_BAD_MODIFY_SEPARATOR ) );
@@ -1086,7 +1089,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                     throw new LdapLdifException( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2 ) );
                 }
 
-                modified = Strings.trim(line.substring("delete:".length()));
+                modified = Strings.trim( line.substring( "delete:".length() ) );
                 modificationType = ModificationOperation.REMOVE_ATTRIBUTE;
                 attribute = new DefaultAttribute( modified );
 
@@ -1100,7 +1103,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                     throw new LdapLdifException( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2 ) );
                 }
 
-                modified = Strings.trim(line.substring("replace:".length()));
+                modified = Strings.trim( line.substring( "replace:".length() ) );
                 modificationType = ModificationOperation.REPLACE_ATTRIBUTE;
                 attribute = new DefaultAttribute( modified );
 
@@ -1135,7 +1138,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 Object attributeValue = parseValue( line, colonIndex );
 
                 try
-                {  
+                {
                     if ( attributeValue instanceof String )
                     {
                         attribute.add( ( String ) attributeValue );
@@ -1246,7 +1249,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                         }
                         else
                         {
-                            entry.setNewSuperior( Strings.utf8ToString((byte[]) attributeValue) );
+                            entry.setNewSuperior( Strings.utf8ToString( ( byte[] ) attributeValue ) );
                         }
                     }
                     else
@@ -1507,8 +1510,8 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     {
         return ( ( BufferedReader ) reader ).readLine();
     }
-    
-    
+
+
     /**
      * Reads an entry in a ldif buffer, and returns the resulting lines, without
      * comments, and unfolded.
@@ -1625,7 +1628,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     @SuppressWarnings("PMD.EmptyCatchBlock")
     public List<LdifEntry> parseLdifFile( String fileName, String encoding ) throws LdapLdifException
     {
-        if ( Strings.isEmpty(fileName) )
+        if ( Strings.isEmpty( fileName ) )
         {
             LOG.error( I18n.err( I18n.ERR_12064_EMPTY_FILE_NAME ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12064_EMPTY_FILE_NAME ) );
@@ -1689,7 +1692,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     {
         LOG.debug( "Starts parsing ldif buffer" );
 
-        if ( Strings.isEmpty(ldif) )
+        if ( Strings.isEmpty( ldif ) )
         {
             return new ArrayList<LdifEntry>();
         }

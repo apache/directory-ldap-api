@@ -156,7 +156,7 @@ public class IntermediateResponseImpl extends AbstractResultResponse implements 
             return false;
         }
 
-        IntermediateResponse resp = (IntermediateResponse) obj;
+        IntermediateResponse resp = ( IntermediateResponse ) obj;
 
         if ( ( responseName != null ) && ( resp.getResponseName() == null ) )
         {
@@ -185,7 +185,7 @@ public class IntermediateResponseImpl extends AbstractResultResponse implements 
         }
 
         return ( ( responseValue == null ) || ( resp.getResponseValue() == null )
-            || Arrays.equals( responseValue, resp.getResponseValue() ) );
+        || Arrays.equals( responseValue, resp.getResponseValue() ) );
     }
 
 
@@ -208,7 +208,7 @@ public class IntermediateResponseImpl extends AbstractResultResponse implements 
         if ( responseValue != null )
         {
             sb.append( "        ResponseValue :'" );
-            sb.append( Strings.dumpBytes(responseValue) );
+            sb.append( Strings.dumpBytes( responseValue ) );
             sb.append( "'\n" );
         }
 

@@ -248,20 +248,20 @@ public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, Aband
      * {@inheritDoc}
      */
     SearchRequest setMessageId( int messageId );
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     SearchRequest addControl( Control control ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     SearchRequest addAllControls( Control[] controls ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

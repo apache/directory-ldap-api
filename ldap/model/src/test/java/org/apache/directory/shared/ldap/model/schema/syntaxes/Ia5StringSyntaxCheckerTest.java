@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.Ia5StringSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for Ia5StringSyntaxChecker.
@@ -69,8 +71,8 @@ public class Ia5StringSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "\u00B4" ) );
         assertFalse( checker.isValidSyntax( "\u00B8" ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectCase()
     {
@@ -78,14 +80,14 @@ public class Ia5StringSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( "abcdefghijklmnopqrstuvwxyz" ) );
         assertTrue( checker.isValidSyntax( "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ) );
         assertTrue( checker.isValidSyntax( "'()+,-.=/:? " ) );
-        
+
         byte[] bytes = new byte[128];
-        
+
         for ( int i = 0; i < 128; i++ )
         {
-            bytes[i] = (byte)i;
+            bytes[i] = ( byte ) i;
         }
-        
+
         assertTrue( checker.isValidSyntax( new String( bytes ) ) );
     }
 }

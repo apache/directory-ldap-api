@@ -120,7 +120,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( registries != null )
         {
             AttributeTypeRegistry atRegistry = registries.getAttributeTypeRegistry();
@@ -167,7 +167,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.applicableAttributeOids = applicableAttributeOids;
@@ -186,7 +186,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.applicableAttributes = applicableAttributes;
@@ -213,7 +213,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly && !applicableAttributeOids.contains( oid ) )
         {
             applicableAttributeOids.add( oid );
@@ -232,7 +232,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly && !applicableAttributeOids.contains( attributeType.getOid() ) )
         {
             applicableAttributes.add( attributeType );
@@ -280,7 +280,8 @@ public class MatchingRuleUse extends AbstractSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    @SuppressWarnings("PMD.UnusedLocalVariable") // Remove me when the TODO is fixed 
+    @SuppressWarnings("PMD.UnusedLocalVariable")
+    // Remove me when the TODO is fixed 
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )

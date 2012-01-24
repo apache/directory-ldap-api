@@ -53,9 +53,10 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( ObjectNameSyntaxChecker.class );
 
     private static final String REGEXP = "^([a-zA-Z][a-zA-Z0-9-;]*)$";
-    
-    private static final Pattern PATTERN =  Pattern.compile( REGEXP );
-    
+
+    private static final Pattern PATTERN = Pattern.compile( REGEXP );
+
+
     /**
      * Creates a new instance of ObjectNameSyntaxChecker.
      */
@@ -63,8 +64,8 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.OBJECT_NAME_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -77,14 +78,14 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -98,10 +99,10 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
         }
 
         // Search for the '$' separator
-        Matcher match = PATTERN.matcher ( strValue );
-        
+        Matcher match = PATTERN.matcher( strValue );
+
         boolean result = match.matches();
-        
+
         if ( result )
         {
             LOG.debug( "Syntax valid for '{}'", value );
@@ -110,7 +111,7 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax invalid for '{}'", value );
         }
-        
+
         return result;
     }
 }

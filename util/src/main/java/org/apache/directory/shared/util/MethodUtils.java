@@ -19,11 +19,13 @@
  */
 package org.apache.directory.shared.util;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+
 
 /**
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -56,9 +58,9 @@ public final class MethodUtils
      * @throws NoSuchMethodException when the method cannot be found
      */
     public static Method getAssignmentCompatibleMethod( Class<?> clazz,
-                                                        String candidateMethodName,
-                                                        Class<?>[] candidateParameterTypes
-                                                      ) throws NoSuchMethodException
+        String candidateMethodName,
+        Class<?>[] candidateParameterTypes
+        ) throws NoSuchMethodException
     {
         if ( LOG.isDebugEnabled() )
         {
@@ -82,7 +84,7 @@ public final class MethodUtils
         {
             // Look for exactly the same signature.
             Method exactMethod = clazz.getMethod( candidateMethodName, candidateParameterTypes );
-            
+
             if ( exactMethod != null )
             {
                 return exactMethod;
@@ -93,27 +95,26 @@ public final class MethodUtils
             LOG.info( "Could not find accessible exact match for candidateMethod {}", candidateMethodName, e );
         }
 
-
         /**
          * Look for the assignment-compatible signature.
          */
-        
+
         // Get all methods of the class.
         Method[] methods = clazz.getMethods();
-        
+
         // For each method of the class...
         for ( int mx = 0; mx < methods.length; mx++ )
         {
             // If the method name does not match...
-            if ( !candidateMethodName.equals( methods[ mx ].getName() ) )
+            if ( !candidateMethodName.equals( methods[mx].getName() ) )
             {
                 // ... Go on with the next method.
                 continue;
             }
-            
+
             // ... Get parameter types list.
-            Class<?>[] parameterTypes = methods[ mx ].getParameterTypes();
-            
+            Class<?>[] parameterTypes = methods[mx].getParameterTypes();
+
             // If parameter types list length mismatch...
             if ( parameterTypes.length != candidateParameterTypes.length )
             {
@@ -125,17 +126,17 @@ public final class MethodUtils
             for ( int px = 0; px < parameterTypes.length; px++ )
             {
                 // ... If the parameter is not assignment-compatible with the candidate parameter type...
-                if ( ! parameterTypes[ px ].isAssignableFrom( candidateParameterTypes[ px ] ) )
+                if ( !parameterTypes[px].isAssignableFrom( candidateParameterTypes[px] ) )
                 {
                     // ... Go on with the next method.
                     break;
                 }
             }
-            
+
             // Return the only one possible and found method.
-            return methods[ mx ];
+            return methods[mx];
         }
-        
+
         throw new NoSuchMethodException( clazz.getName() + "." + candidateMethodName
             + "(" + Arrays.toString( candidateParameterTypes ) + ")" );
     }

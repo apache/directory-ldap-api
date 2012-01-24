@@ -151,7 +151,7 @@ public class LdifControl implements Control, Externalizable
         {
             out.writeBoolean( false );
         }
-        
+
         out.flush();
     }
 
@@ -163,7 +163,7 @@ public class LdifControl implements Control, Externalizable
     {
         oid = in.readUTF();
         criticality = in.readBoolean();
-        
+
         if ( in.readBoolean() )
         {
             int valueLength = in.readInt();
@@ -176,7 +176,7 @@ public class LdifControl implements Control, Externalizable
         }
     }
 
-    
+
     /**
      * @see Object#hashCode()
      */

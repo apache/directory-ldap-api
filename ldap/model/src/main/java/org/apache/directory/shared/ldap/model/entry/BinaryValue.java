@@ -47,12 +47,13 @@ public class BinaryValue extends AbstractValue<byte[]>
     /** Used for serialization */
     public static final long serialVersionUID = 2L;
 
+
     /**
      * Creates a BinaryValue without an initial wrapped value.
      *
      * @param attributeType the schema type associated with this BinaryValue
      */
-    /* No protection */ BinaryValue( AttributeType attributeType )
+    /* No protection */BinaryValue( AttributeType attributeType )
     {
         if ( attributeType != null )
         {
@@ -61,12 +62,12 @@ public class BinaryValue extends AbstractValue<byte[]>
             {
                 throw new IllegalArgumentException( I18n.err( I18n.ERR_04445 ) );
             }
-    
+
             if ( attributeType.getSyntax().isHumanReadable() )
             {
                 LOG.warn( "Treating a value of a human readible attribute {} as binary: ", attributeType.getName() );
             }
-    
+
             this.attributeType = attributeType;
         }
     }
@@ -396,7 +397,7 @@ public class BinaryValue extends AbstractValue<byte[]>
      */
     public static BinaryValue deserialize( ObjectInput in ) throws IOException, ClassNotFoundException
     {
-        BinaryValue value = new BinaryValue( (AttributeType)null );
+        BinaryValue value = new BinaryValue( ( AttributeType ) null );
         value.readExternal( in );
 
         return value;
@@ -412,15 +413,16 @@ public class BinaryValue extends AbstractValue<byte[]>
      * @throws IOException If the stream can't be read
      * @throws ClassNotFoundException If we can't instanciate a BinaryValue
      */
-    public static BinaryValue deserialize( AttributeType attributeType, ObjectInput in ) throws IOException, ClassNotFoundException
+    public static BinaryValue deserialize( AttributeType attributeType, ObjectInput in ) throws IOException,
+        ClassNotFoundException
     {
         BinaryValue value = new BinaryValue( attributeType );
         value.readExternal( in );
 
         return value;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -428,7 +430,7 @@ public class BinaryValue extends AbstractValue<byte[]>
     {
         // Read the BINARY flag
         boolean isHR = in.readBoolean();
-        
+
         if ( isHR )
         {
             throw new IOException( "The serialized value is not a Binary value" );
@@ -463,7 +465,7 @@ public class BinaryValue extends AbstractValue<byte[]>
             if ( wrappedLength >= 0 )
             {
                 normalizedValue = new byte[wrappedLength];
-                
+
                 System.arraycopy( wrappedValue, 0, normalizedValue, 0, wrappedLength );
             }
         }
@@ -480,7 +482,7 @@ public class BinaryValue extends AbstractValue<byte[]>
     {
         // Write the BINARY flag
         out.writeBoolean( BINARY );
-        
+
         // Write the wrapped value, if it's not null
         if ( wrappedValue != null )
         {
@@ -520,14 +522,14 @@ public class BinaryValue extends AbstractValue<byte[]>
         {
             out.writeBoolean( false );
         }
-        
+
         // The hashCode
         out.writeInt( h );
-        
+
         out.flush();
     }
 
-    
+
     /**
      * Dumps binary in hex with label.
      *
@@ -546,11 +548,11 @@ public class BinaryValue extends AbstractValue<byte[]>
 
             System.arraycopy( wrappedValue, 0, copy, 0, 16 );
 
-            return "'" + Strings.dumpBytes(copy) + "...'";
+            return "'" + Strings.dumpBytes( copy ) + "...'";
         }
         else
         {
-            return "'" + Strings.dumpBytes(wrappedValue) + "'";
+            return "'" + Strings.dumpBytes( wrappedValue ) + "'";
         }
     }
 }

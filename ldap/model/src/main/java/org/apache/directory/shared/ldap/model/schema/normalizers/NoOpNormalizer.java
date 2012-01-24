@@ -42,7 +42,7 @@ public class NoOpNormalizer extends Normalizer
         super( oid );
     }
 
-    
+
     /**
      * Default constructor for NoOpNormalizer used when we must set the OID
      * after instantiating the Normalizer.
@@ -51,7 +51,7 @@ public class NoOpNormalizer extends Normalizer
     {
     }
 
-    
+
     /**
      * Returns the value argument as-is without alterations all the time.
      * 
@@ -63,8 +63,8 @@ public class NoOpNormalizer extends Normalizer
     {
         return value;
     }
-    
-    
+
+
     /**
      * Returns the value argument as-is without alterations all the time.
      * 

@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.model.filter;
 
 import java.util.List;
 
+
 /**
  * Node representing an AND connector in a filter operation
  * 
@@ -40,6 +41,7 @@ public class AndNode extends BranchNode
         super( AssertionType.AND, childList );
     }
 
+
     /**
      * Creates a AndNode using a logical operator and a list of children.
      * 
@@ -50,7 +52,7 @@ public class AndNode extends BranchNode
         super( AssertionType.AND, childList );
     }
 
-    
+
     /**
      * Creates an empty AndNode
      */
@@ -103,7 +105,7 @@ public class AndNode extends BranchNode
         return false;
     }
 
-    
+
     /**
      * @see ExprNode#printRefinementToBuffer(StringBuffer)
      * 
@@ -115,8 +117,8 @@ public class AndNode extends BranchNode
     {
         buf.append( "and: {" );
         boolean isFirst = true;
-        
-        for ( ExprNode node:children )
+
+        for ( ExprNode node : children )
         {
             if ( isFirst )
             {
@@ -127,14 +129,15 @@ public class AndNode extends BranchNode
             {
                 buf.append( ", " );
             }
-            
+
             node.printRefinementToBuffer( buf );
         }
-        
+
         buf.append( " }" );
-        
+
         return buf;
     }
+
 
     /**
      * Gets the recursive prefix string represent of the filter from this node
@@ -150,11 +153,11 @@ public class AndNode extends BranchNode
 
         buf.append( super.toString() );
 
-        for ( ExprNode child:getChildren() )
+        for ( ExprNode child : getChildren() )
         {
             buf.append( child );
         }
-        
+
         buf.append( ')' );
 
         return buf.toString();
@@ -168,8 +171,8 @@ public class AndNode extends BranchNode
     public int hashCode()
     {
         int hash = 37;
-        hash = hash*17 + AssertionType.AND.hashCode();
-        hash = hash*17 + ( annotations == null ? 0 : annotations.hashCode() );
+        hash = hash * 17 + AssertionType.AND.hashCode();
+        hash = hash * 17 + ( annotations == null ? 0 : annotations.hashCode() );
         return hash;
     }
 
@@ -202,18 +205,18 @@ public class AndNode extends BranchNode
         {
             return false;
         }
-        
+
         for ( int i = 0; i < children.size(); i++ )
         {
             ExprNode child = children.get( i );
             ExprNode otherChild = otherChildren.get( i );
-            
+
             if ( !child.equals( otherChild ) )
             {
                 return false;
             }
         }
-        
+
         return true;
     }
 }

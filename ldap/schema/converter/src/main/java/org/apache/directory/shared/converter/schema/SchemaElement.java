@@ -47,7 +47,7 @@ public interface SchemaElement
      * 
      * @param isObsolete The value to be set
      */
-    void setObsolete(boolean isObsolete);
+    void setObsolete( boolean isObsolete );
 
 
     /**
@@ -66,7 +66,7 @@ public interface SchemaElement
      * Set the schema element's description
      * @param description The schema element's description
      */
-    void setDescription(String description);
+    void setDescription( String description );
 
 
     /**
@@ -79,7 +79,7 @@ public interface SchemaElement
      * Set a list of names for a schemaElement
      * @param names The list of names of this schemaElement
      */
-    void setNames(List<String> names);
+    void setNames( List<String> names );
 
 
     /**
@@ -92,14 +92,14 @@ public interface SchemaElement
      * @param key the Extension key
      * @return The list of a values for a given extension
      */
-    List<String> getExtension(String key);
+    List<String> getExtension( String key );
 
 
     /**
      * Set a list of extensions for a schemaElement
      * @param extensions The list of extensions of this schemaElement
      */
-    void setExtensions(Map<String, List<String>> extensions);
+    void setExtensions( Map<String, List<String>> extensions );
 
 
     /**
@@ -109,5 +109,5 @@ public interface SchemaElement
      * @return A string representing the schemaElement as a Ldif formated  String 
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException If any error occurs.
      */
-    String toLdif(String schemaName) throws LdapException;
+    String toLdif( String schemaName ) throws LdapException;
 }

@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DITContentRu
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Test cases for DITContentRuleDescriptionSyntaxChecker.
  * 

@@ -35,6 +35,7 @@ public class LdapUnwillingToPerformException extends LdapOperationException
     /** The serial version UUID */
     static final long serialVersionUID = 1L;
 
+
     /**
      * Creates a new instance of LdapUnwillingToPerformException, with
      * a default ResultCode to UNWILING_TO_PERFORM.
@@ -57,8 +58,8 @@ public class LdapUnwillingToPerformException extends LdapOperationException
         checkResultCode( resultCode );
         this.resultCode = resultCode;
     }
-    
-    
+
+
     /**
      *
      * @param resultCode the ResultCodeEnum for this exception
@@ -110,8 +111,8 @@ public class LdapUnwillingToPerformException extends LdapOperationException
     {
         switch ( resultCode )
         {
-            case UNWILLING_TO_PERFORM :
-            case UNAVAILABLE_CRITICAL_EXTENSION :
+            case UNWILLING_TO_PERFORM:
+            case UNAVAILABLE_CRITICAL_EXTENSION:
                 return;
 
             default:

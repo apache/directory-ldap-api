@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DNSyntaxChec
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Test cases for DNSyntaxChecker.
  *
@@ -63,8 +64,8 @@ public class DNSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "1" ) );
         assertFalse( checker.isValidSyntax( "B" ) );
     }
-    
-    
+
+
     @Test
     public void testWrongDN()
     {
@@ -73,8 +74,8 @@ public class DNSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "a=b+" ) );
         assertFalse( checker.isValidSyntax( "a=b,c=d," ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectDN()
     {

@@ -46,7 +46,8 @@ public class AvaTest
 {
     /** A null schemaManager used in tests */
     SchemaManager schemaManager = null;
-    
+
+
     /**
      * Test a null AttributeTypeAndValue
      */
@@ -67,7 +68,7 @@ public class AvaTest
     {
         try
         {
-            new Ava( schemaManager, null, (String)null );
+            new Ava( schemaManager, null, ( String ) null );
             fail();
         }
         catch ( LdapException ine )
@@ -77,6 +78,7 @@ public class AvaTest
 
     }
 
+
     /**
      * Test an invalid type for an AttributeTypeAndValue
      */
@@ -85,7 +87,7 @@ public class AvaTest
     {
         try
         {
-            new Ava( schemaManager, "  ", (String)null );
+            new Ava( schemaManager, "  ", ( String ) null );
             fail();
         }
         catch ( LdapException ine )
@@ -101,19 +103,19 @@ public class AvaTest
     @Test
     public void testAttributeTypeAndValueValidType() throws LdapException
     {
-        Ava atav = new Ava( schemaManager, "A", (String)null );
+        Ava atav = new Ava( schemaManager, "A", ( String ) null );
         assertEquals( "A=", atav.toString() );
         assertEquals( "a=", atav.getNormName() );
         assertEquals( "A=", atav.getUpName() );
-        
-        atav = new Ava( schemaManager, "  A  ", (String)null );
+
+        atav = new Ava( schemaManager, "  A  ", ( String ) null );
         assertEquals( "a=", atav.getNormName() );
         assertEquals( "  A  =", atav.toString() );
         assertEquals( "  A  =", atav.getUpName() );
-        
+
         try
         {
-            atav = new Ava( schemaManager, null, (String)null );
+            atav = new Ava( schemaManager, null, ( String ) null );
             fail();
         }
         catch ( LdapInvalidDnException lide )
@@ -121,6 +123,7 @@ public class AvaTest
             assertTrue( true );
         }
     }
+
 
     /**
      * test an empty AttributeTypeAndValue
@@ -186,7 +189,7 @@ public class AvaTest
     public void testCompareAtav1TypeSuperior() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "b", "b" );
-            
+
         Ava atav2 = new Ava( schemaManager, "a", "b" );
 
         assertFalse( atav1.equals( atav2 ) );
@@ -243,8 +246,8 @@ public class AvaTest
         assertEquals( "a=a", atav.normalize() );
 
     }
-    
-    
+
+
     @Test
     public void testAvaSimpleNorm() throws LdapException
     {

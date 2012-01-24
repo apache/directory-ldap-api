@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.constants;
 
+
 import org.apache.directory.shared.util.Strings;
 
 

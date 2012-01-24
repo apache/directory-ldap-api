@@ -38,7 +38,7 @@ public interface SchemaLdifExtractor
      */
     boolean isExtracted();
 
-    
+
     /**
      * Extracts the LDIF files from a Jar file or copies exploded LDIF resources.
      *
@@ -47,7 +47,7 @@ public interface SchemaLdifExtractor
      */
     void extractOrCopy( boolean overwrite ) throws IOException;
 
-    
+
     /**
      * Extracts the LDIF files from a Jar file or copies exploded LDIF
      * resources without overwriting the resources if the schema has

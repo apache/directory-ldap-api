@@ -19,12 +19,14 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Chars;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * A SyntaxChecker which verifies that a value is a valid Java primitive long or
@@ -49,6 +51,7 @@ public class JavaLongSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( JavaLongSyntaxChecker.class );
+
 
     /**
      * Creates a new instance of JavaLongSyntaxChecker.
@@ -78,7 +81,7 @@ public class JavaLongSyntaxChecker extends SyntaxChecker
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -100,7 +103,7 @@ public class JavaLongSyntaxChecker extends SyntaxChecker
         {
             pos = 1;
         }
-        else if ( !Chars.isDigit(c) )
+        else if ( !Chars.isDigit( c ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
@@ -120,7 +123,7 @@ public class JavaLongSyntaxChecker extends SyntaxChecker
         }
 
         // We must have at least a digit which is not '0'
-        if ( !Chars.isDigit(strValue, pos) )
+        if ( !Chars.isDigit( strValue, pos ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
@@ -135,7 +138,7 @@ public class JavaLongSyntaxChecker extends SyntaxChecker
             pos++;
         }
 
-        while ( Chars.isDigit(strValue, pos) )
+        while ( Chars.isDigit( strValue, pos ) )
         {
             pos++;
         }

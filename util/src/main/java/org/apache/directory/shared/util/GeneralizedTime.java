@@ -661,7 +661,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 sb.append( twoDigits.format( clonedCalendar.get( Calendar.MINUTE ) ) );
 
                 // sec + millis => fraction of minute
-                double millisec = 1000 * clonedCalendar.get( Calendar.SECOND ) + clonedCalendar.get( Calendar.MILLISECOND );
+                double millisec = 1000 * clonedCalendar.get( Calendar.SECOND )
+                    + clonedCalendar.get( Calendar.MILLISECOND );
                 double fraction = millisec / ( 1000 * 60 );
                 fractionDigits = new DecimalFormat( "0." + fractionFormat );
                 sb.append( fractionDelimiter == FractionDelimiter.COMMA ? ',' : '.' );
@@ -670,7 +671,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
             case YEAR_MONTH_DAY_HOUR_FRACTION:
                 // min + sec + millis => fraction of minute
-                millisec = 1000 * 60 * clonedCalendar.get( Calendar.MINUTE ) + 1000 * clonedCalendar.get( Calendar.SECOND )
+                millisec = 1000 * 60 * clonedCalendar.get( Calendar.MINUTE ) + 1000
+                    * clonedCalendar.get( Calendar.SECOND )
                     + clonedCalendar.get( Calendar.MILLISECOND );
                 fraction = millisec / ( 1000 * 60 * 60 );
                 fractionDigits = new DecimalFormat( "0." + fractionFormat );

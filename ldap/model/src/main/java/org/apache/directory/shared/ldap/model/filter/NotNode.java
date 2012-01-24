@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.directory.shared.i18n.I18n;
 
+
 /**
  * Node representing an Not connector in a filter operation
  * 
@@ -65,14 +66,15 @@ public class NotNode extends BranchNode
         }
     }
 
-    
+
     /**
      * Creates an empty NotNode
      */
     public NotNode()
     {
-        this( (ExprNode)null );
+        this( ( ExprNode ) null );
     }
+
 
     /**
      * Adds a child node to this NOT node node
@@ -85,7 +87,7 @@ public class NotNode extends BranchNode
         {
             throw new IllegalStateException( I18n.err( I18n.ERR_04159 ) );
         }
-        
+
         children.add( node );
     }
 
@@ -99,9 +101,9 @@ public class NotNode extends BranchNode
     {
         if ( children.size() >= 1 )
         {
-            throw new IllegalStateException( I18n.err( I18n.ERR_04159 ) );            
+            throw new IllegalStateException( I18n.err( I18n.ERR_04159 ) );
         }
-        
+
         children.add( node );
     }
 
@@ -115,13 +117,13 @@ public class NotNode extends BranchNode
     {
         if ( ( childList != null ) && ( childList.size() > 1 ) )
         {
-            throw new IllegalStateException( I18n.err( I18n.ERR_04159 ) );            
+            throw new IllegalStateException( I18n.err( I18n.ERR_04159 ) );
         }
 
         children = childList;
     }
 
-    
+
     /**
      * Gets the operator for this branch node.
      * 
@@ -175,12 +177,13 @@ public class NotNode extends BranchNode
     public StringBuilder printRefinementToBuffer( StringBuilder buf )
     {
         buf.append( "not: " );
-        
+
         // There is only one item for a not refinement
         children.get( 0 ).printRefinementToBuffer( buf );
-        
+
         return buf;
     }
+
 
     /**
      * Gets the recursive prefix string represent of the filter from this node
@@ -193,12 +196,12 @@ public class NotNode extends BranchNode
     {
         StringBuilder buf = new StringBuilder();
         buf.append( "(!" );
-        
+
         buf.append( super.toString() );
 
         buf.append( getFirstChild() );
         buf.append( ')' );
-        
+
         return buf.toString();
     }
 }

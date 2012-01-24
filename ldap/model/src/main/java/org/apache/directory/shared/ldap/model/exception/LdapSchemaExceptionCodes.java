@@ -35,13 +35,13 @@ public enum LdapSchemaExceptionCodes
 
     /** Characterizing a SO with an OID being already registered */
     OID_ALREADY_REGISTERED,
-    
+
     /** Characterizing a SO with a name being already registered */
     NAME_ALREADY_REGISTERED,
 
     /** Characterizing an SO with a nonexistent schema */
     NONEXISTENT_SCHEMA,
-    
+
     // Codes for Attribute Type
 
     /** Characterizing an AT with a nonexistent superior */
@@ -117,7 +117,7 @@ public enum LdapSchemaExceptionCodes
 
     /** Characterizing an OC with a duplicated AT in its may and must ATs list */
     OC_DUPLICATE_AT_IN_MAY_AND_MUST,
-    
+
     // Codes for Matching Rule
 
     /** Characterizing a MR with a nonexistent syntax */

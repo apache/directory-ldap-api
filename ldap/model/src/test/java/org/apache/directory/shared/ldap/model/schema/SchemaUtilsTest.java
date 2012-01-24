@@ -34,6 +34,7 @@ import org.apache.directory.shared.ldap.model.schema.SchemaUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * The unit tests for methods on SchemaUtils.
  * 
@@ -49,7 +50,7 @@ public class SchemaUtilsTest
         syntaxes[0] = new LdapSyntax( "1.3.6.1.4.1.1466.115.121.1.12", "Dn syntax", true );
         syntaxes[1] = new LdapSyntax( "1.3.6.1.4.1.1466.115.121.1.15", "Directory String syntax", true );
         syntaxes[2] = new LdapSyntax( "1.3.6.1.4.1.1466.115.121.1.58", "Substring assertion syntax", true );
-        
+
         return syntaxes;
     }
 
@@ -57,7 +58,7 @@ public class SchemaUtilsTest
     public static MatchingRule[] getMatchingRules()
     {
         MatchingRule[] mrs = new MatchingRule[3];
-        
+
         mrs[0] = new MatchingRule( "2.5.13.2" );
         mrs[0].setSyntax( getSyntaxes()[1] );
         mrs[0].addName( "caseIgnoreMatch" );
@@ -83,7 +84,7 @@ public class SchemaUtilsTest
 
         ats[0] = new AttributeType( "2.5.4.41" );
         ats[0].addName( "name" );
-        ats[0].setSyntax(  getSyntaxes()[1] );
+        ats[0].setSyntax( getSyntaxes()[1] );
         ats[0].setSyntaxLength( 32768 );
         ats[0].setEquality( getMatchingRules()[0] );
         ats[0].setSubstring( getMatchingRules()[1] );
@@ -125,17 +126,18 @@ public class SchemaUtilsTest
     @Test
     public void testRenderQdescrs()
     {
-        assertEquals( "", SchemaUtils.renderQDescrs(new StringBuffer(), (List<String>) null).toString() );
-        assertEquals( "", SchemaUtils.renderQDescrs(  new StringBuffer(), Arrays.asList( new String[]
+        assertEquals( "", SchemaUtils.renderQDescrs( new StringBuffer(), ( List<String> ) null ).toString() );
+        assertEquals( "", SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
             {} ) ).toString() );
         assertEquals( "'name1'", SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
             { "name1" } ) ).toString() );
         assertEquals( "( 'name1' 'name2' )", SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
             { "name1", "name2" } ) ).toString() );
-        assertEquals( "( 'name1' 'name2' 'name3' )", SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
-            { "name1", "name2", "name3" } ) ).toString() );
+        assertEquals( "( 'name1' 'name2' 'name3' )",
+            SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
+                { "name1", "name2", "name3" } ) ).toString() );
 
-        assertEquals( "", SchemaUtils.renderQDescrs( new StringBuffer(), (List<String>)null ).toString() );
+        assertEquals( "", SchemaUtils.renderQDescrs( new StringBuffer(), ( List<String> ) null ).toString() );
 
         assertEquals( "", SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
             {} ) ).toString() );
@@ -146,7 +148,8 @@ public class SchemaUtilsTest
         assertEquals( "( 'name1' 'name2' )", SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
             { "name1", "name2" } ) ).toString() );
 
-        assertEquals( "( 'name1' 'name2' 'name3' )", SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
-            { "name1", "name2", "name3" } ) ).toString() );
+        assertEquals( "( 'name1' 'name2' 'name3' )",
+            SchemaUtils.renderQDescrs( new StringBuffer(), Arrays.asList( new String[]
+                { "name1", "name2", "name3" } ) ).toString() );
     }
 }

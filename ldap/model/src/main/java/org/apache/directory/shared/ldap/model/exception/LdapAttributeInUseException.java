@@ -34,6 +34,7 @@ public class LdapAttributeInUseException extends LdapOperationException
     /** The serial version UUID */
     static final long serialVersionUID = 1L;
 
+
     /**
      * Creates a new instance of LdapAttributeInUseException.
      *

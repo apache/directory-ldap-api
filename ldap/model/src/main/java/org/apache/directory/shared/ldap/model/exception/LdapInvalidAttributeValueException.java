@@ -35,6 +35,7 @@ public class LdapInvalidAttributeValueException extends LdapOperationException
     /** The serial version UUID */
     static final long serialVersionUID = 1L;
 
+
     /**
      * Creates a new instance of LdapInvalidAttributeValueException.
      *
@@ -90,10 +91,10 @@ public class LdapInvalidAttributeValueException extends LdapOperationException
     {
         switch ( resultCode )
         {
-            case CONSTRAINT_VIOLATION :
-            case INVALID_ATTRIBUTE_SYNTAX :
+            case CONSTRAINT_VIOLATION:
+            case INVALID_ATTRIBUTE_SYNTAX:
                 return;
-                
+
             default:
                 throw new IllegalArgumentException( I18n.err( I18n.ERR_04140_UNACCEPTABLE_RESUT_CODE, resultCode ) );
         }

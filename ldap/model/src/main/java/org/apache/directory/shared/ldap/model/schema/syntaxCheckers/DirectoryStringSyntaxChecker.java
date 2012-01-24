@@ -41,6 +41,7 @@ public class DirectoryStringSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DirectoryStringSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of DirectoryStringSyntaxChecker.
      */
@@ -48,8 +49,8 @@ public class DirectoryStringSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.DIRECTORY_STRING_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -62,14 +63,14 @@ public class DirectoryStringSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -84,10 +85,10 @@ public class DirectoryStringSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // In any other case, we have to check that the
         // string does not contains the '0xFFFD' character
-        for ( char c:strValue.toCharArray() )
+        for ( char c : strValue.toCharArray() )
         {
             if ( c == 0xFFFD )
             {
@@ -95,7 +96,7 @@ public class DirectoryStringSyntaxChecker extends SyntaxChecker
                 return false;
             }
         }
-        
+
         LOG.debug( "Syntax valid for '{}'", value );
         return true;
     }

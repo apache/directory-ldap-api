@@ -29,16 +29,16 @@ public class CsnFactory
 {
     /** The last timestamp */
     private static volatile long lastTimestamp;
-    
+
     /** The integer used to disambiguate CSN generated at the same time */
     private int changeCount;
-    
+
     /** The replicaId to use for every CSN created by this factory */
     private int replicaId;
 
     /** A special instance ID for a purge CSN */
     private static final int PURGE_INSTANCEID = 0x0FFF;
-    
+
     /** A lock used during the instance creation */
     private Object lock = new Object();
 
@@ -58,11 +58,11 @@ public class CsnFactory
     public Csn newInstance()
     {
         int changeCount = 0;
-        
+
         synchronized ( lock )
         {
             long newTimestamp = System.currentTimeMillis();
-            
+
             // We will be able to generate 2 147 483 647 CSNs each 10 ms max
             if ( lastTimestamp == newTimestamp )
             {
@@ -73,7 +73,7 @@ public class CsnFactory
                 lastTimestamp = newTimestamp;
                 this.changeCount = 0;
             }
-            
+
             changeCount = this.changeCount;
         }
 
@@ -93,8 +93,8 @@ public class CsnFactory
     {
         return new Csn( timestamp, changeCount, replicaId, 0 );
     }
-    
-    
+
+
     /**
      * Generates a CSN used to purge data. Its replicaID is not associated
      * to a server. 
