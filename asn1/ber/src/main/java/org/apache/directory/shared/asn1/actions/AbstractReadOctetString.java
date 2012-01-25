@@ -33,9 +33,11 @@ import org.slf4j.LoggerFactory;
 /**
  * The action used to read an OCTET STRING value
  *
+ * @param C The container type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractReadOctetString<E extends Asn1Container> extends GrammarAction<E>
+public abstract class AbstractReadOctetString<C extends Asn1Container> extends GrammarAction<C>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AbstractReadOctetString.class );
@@ -46,6 +48,8 @@ public abstract class AbstractReadOctetString<E extends Asn1Container> extends G
 
     /**
      * Instantiates a new AbstractReadInteger action.
+     * 
+     * @param name the action's name
      */
     public AbstractReadOctetString( String name )
     {
@@ -56,7 +60,7 @@ public abstract class AbstractReadOctetString<E extends Asn1Container> extends G
     /**
      * Instantiates a new AbstractReadInteger action.
      *
-     * @param name The log message
+     * @param name the action's name
      * @param canBeNull Tells if the byte array can be null or not
      */
     public AbstractReadOctetString( String name, boolean canBeNull )
@@ -68,19 +72,18 @@ public abstract class AbstractReadOctetString<E extends Asn1Container> extends G
 
 
     /**
-     *
-     * set the OCTET STRING value to the appropriate field of ASN.1 object present in the container
+     * Sets the OCTET STRING value to the appropriate field of ASN.1 object present in the container
      *
      * @param value the OCTET STRING value
      * @param container the ASN.1 object's container
      */
-    protected abstract void setOctetString( byte[] value, E container );
+    protected abstract void setOctetString( byte[] value, C container );
 
 
     /**
      * {@inheritDoc}
      */
-    public final void action( E container ) throws DecoderException
+    public final void action( C container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();
 

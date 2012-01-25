@@ -32,9 +32,11 @@ import org.slf4j.LoggerFactory;
  * The abstract Grammar which is the Mother of all the grammars. It contains
  * the transitions table.
  *
+ * @param C The container type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractGrammar<E extends Asn1Container> implements Grammar<E>
+public abstract class AbstractGrammar<C extends Asn1Container> implements Grammar<C>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AbstractGrammar.class );
@@ -44,10 +46,10 @@ public abstract class AbstractGrammar<E extends Asn1Container> implements Gramma
 
     /**
      * Table of transitions. It's a two dimension array, the first dimension
-     * indice the states, the second dimension indices the Tag value, so it is
+     * indices the states, the second dimension indices the Tag value, so it is
      * 256 wide.
      */
-    protected GrammarTransition<E>[][] transitions;
+    protected GrammarTransition<C>[][] transitions;
 
     /** The grammar name */
     private String name;
@@ -60,9 +62,7 @@ public abstract class AbstractGrammar<E extends Asn1Container> implements Gramma
 
 
     /**
-     * Return the grammar's name
-     *
-     * @return The grammar name
+     * {@inheritDoc}
      */
     public String getName()
     {
@@ -71,9 +71,7 @@ public abstract class AbstractGrammar<E extends Asn1Container> implements Gramma
 
 
     /**
-     * Set the grammar's name
-     *
-     * @param name The new grammar name
+     * {@inheritDoc}
      */
     public void setName( String name )
     {
@@ -88,20 +86,16 @@ public abstract class AbstractGrammar<E extends Asn1Container> implements Gramma
      * @param tag The current tag
      * @return A valid transition if any, or null.
      */
-    public GrammarTransition<E> getTransition( Enum<?> state, int tag )
+    public GrammarTransition<C> getTransition( Enum<?> state, int tag )
     {
         return transitions[state.ordinal()][tag & 0x00FF];
     }
 
 
     /**
-     * The main function. This is where an action is executed. If the action is
-     * null, nothing is done.
-     *
-     * @param container The Asn1Container
-     * @throws DecoderException Thrown if anything went wrong
+     * {@inheritDoc}
      */
-    public void executeAction( E container ) throws DecoderException
+    public void executeAction( C container ) throws DecoderException
     {
 
         Enum<?> currentState = container.getTransition();
@@ -114,7 +108,8 @@ public abstract class AbstractGrammar<E extends Asn1Container> implements Gramma
         byte tagByte = container.getCurrentTLV().getTag();
 
         // We will loop until no more actions are to be executed
-        GrammarTransition<E> transition = ( ( AbstractGrammar<E> ) container.getGrammar() ).getTransition(
+        @SuppressWarnings("unchecked")
+        GrammarTransition<C> transition = ( ( AbstractGrammar<C> ) container.getGrammar() ).getTransition(
             currentState,
             tagByte );
 
@@ -137,7 +132,7 @@ public abstract class AbstractGrammar<E extends Asn1Container> implements Gramma
 
         if ( transition.hasAction() )
         {
-            Action<E> action = transition.getAction();
+            Action<C> action = transition.getAction();
             action.action( container );
         }
 
