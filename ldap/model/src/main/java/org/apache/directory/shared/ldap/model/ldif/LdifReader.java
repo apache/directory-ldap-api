@@ -1872,7 +1872,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
 
     /**
-     * @return True if an error occured during parsing
+     * @return True if an error occurred during parsing
      */
     public boolean hasError()
     {
