@@ -150,6 +150,11 @@
           <manifestLocation>META-INF</manifestLocation>
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.schema</Bundle-SymbolicName>
+            <Import-Package>
+                org.apache.directory.shared.ldap.model.schema.comparators;resolution:=optional,
+                org.apache.directory.shared.ldap.model.schema.syntaxCheckers;resolution:=optional,
+                *
+            </Import-Package>
             <Export-Package>
                 {local-packages};version=${project.version};-noimport:=true,
                 org.apache.directory.shared.ldap.schemaextractor.impl;version="${project.version}";-noimport:=true,

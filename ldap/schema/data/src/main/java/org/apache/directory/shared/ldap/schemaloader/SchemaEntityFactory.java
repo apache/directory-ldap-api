@@ -20,6 +20,7 @@
 package org.apache.directory.shared.ldap.schemaloader;
 
 
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -53,12 +54,14 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
+import org.apache.directory.shared.ldap.model.schema.comparators.BooleanComparator;
 import org.apache.directory.shared.ldap.model.schema.parsers.LdapComparatorDescription;
 import org.apache.directory.shared.ldap.model.schema.parsers.NormalizerDescription;
 import org.apache.directory.shared.ldap.model.schema.parsers.SyntaxCheckerDescription;
 import org.apache.directory.shared.ldap.model.schema.registries.DefaultSchema;
 import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 import org.apache.directory.shared.ldap.model.schema.registries.Schema;
+import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.BooleanSyntaxChecker;
 import org.apache.directory.shared.util.Base64;
 import org.apache.directory.shared.util.StringConstants;
 import org.apache.directory.shared.util.Strings;
@@ -271,14 +274,10 @@ public class SchemaEntityFactory implements EntityFactory
         SyntaxChecker syntaxChecker = null;
         String byteCodeStr = StringConstants.EMPTY;
 
-        // Check if we're in OSGI context and byteCode is null 
-        if ( OSGIHelper.isAPIInOSGIContainer() && byteCode == null )
-        {
-            // That is the only case we have to OSGI load the class,
-            // The other cases are the monolithic load cases.
-            syntaxChecker = schemaElements.getSyntaxChecker( className );
-        }
-        else
+        // In OSGI and in normal JRE execution, we first try to load the element through 'Class.forName()'
+        // This is for speed. There are so much schema elements and letting IPojo manage every one of them 
+        // is not viable for server start-up time.
+        try
         {
             if ( byteCode == null )
             {
@@ -293,6 +292,26 @@ public class SchemaEntityFactory implements EntityFactory
 
             // Create the syntaxChecker instance
             syntaxChecker = ( SyntaxChecker ) clazz.newInstance();
+        }
+        catch ( ClassNotFoundException e )
+        {
+            // Check if we're in OSGI context and byteCode is null 
+            if ( OSGIHelper.isAPIInOSGIContainer() && byteCode == null )
+            {
+                // That is the only case we have to OSGI load the class,
+                // The other cases are the monolithic load cases.
+                syntaxChecker = schemaElements.getSyntaxChecker( className );
+
+                if ( syntaxChecker == null )
+                {
+                    // We couldn't load the syntax checker using IPojo too.
+                    throw e;
+                }
+            }
+            else
+            {
+                throw e;
+            }
         }
 
         // Update the common fields
@@ -413,15 +432,10 @@ public class SchemaEntityFactory implements EntityFactory
         Class<?> clazz = null;
         String byteCodeStr = StringConstants.EMPTY;
 
-        // Check if we're in OSGI context and byteCode is null 
-        if ( OSGIHelper.isAPIInOSGIContainer() && byteCode == null )
-        {
-            // That is the only case we have to OSGI load the class,
-            // The other cases are the monolithic load cases.
-            // Comparators are also oid bound classes, so we send it too.
-            comparator = schemaElements.getLdapComparator( className, oid );
-        }
-        else
+        // In OSGI and in normal JRE execution, we first try to load the element through 'Class.forName()'
+        // This is for speed. There are so much schema elements and letting IPojo manage every one of them 
+        // is not viable for server start-up time.
+        try
         {
             if ( byteCode == null )
             {
@@ -456,6 +470,27 @@ public class SchemaEntityFactory implements EntityFactory
                     String msg = I18n.err( I18n.ERR_10015, oid, comparator.getOid() );
                     throw new LdapInvalidAttributeValueException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg, nsme );
                 }
+            }
+        }
+        catch ( ClassNotFoundException e )
+        {
+            // Check if we're in OSGI context and byteCode is null 
+            if ( OSGIHelper.isAPIInOSGIContainer() && byteCode == null )
+            {
+                // That is the only case we have to OSGI load the class,
+                // The other cases are the monolithic load cases.
+                // Comparators are also oid bound classes, so we send it too.
+                comparator = schemaElements.getLdapComparator( className, oid );
+
+                if ( comparator == null )
+                {
+                    // We couldn't load the comparator using IPojo too.
+                    throw e;
+                }
+            }
+            else
+            {
+                throw e;
             }
         }
 
@@ -575,14 +610,10 @@ public class SchemaEntityFactory implements EntityFactory
         Normalizer normalizer = null;
         String byteCodeStr = StringConstants.EMPTY;
 
-        // Check if we're in OSGI context and byteCode is null 
-        if ( OSGIHelper.isAPIInOSGIContainer() && byteCode == null )
-        {
-            // That is the only case we have to OSGI load the class,
-            // The other cases are the monolithic load cases.
-            normalizer = schemaElements.getNormalizer( className );
-        }
-        else
+        // In OSGI and in normal JRE execution, we first try to load the element through 'Class.forName()'
+        // This is for speed. There are so much schema elements and letting IPojo manage every one of them 
+        // is not viable for server start-up time.
+        try
         {
             if ( byteCode == null )
             {
@@ -597,6 +628,26 @@ public class SchemaEntityFactory implements EntityFactory
 
             // Create the normalizer instance
             normalizer = ( Normalizer ) clazz.newInstance();
+        }
+        catch ( ClassNotFoundException e )
+        {
+            // Check if we're in OSGI context and byteCode is null 
+            if ( OSGIHelper.isAPIInOSGIContainer() && byteCode == null )
+            {
+                // That is the only case we have to OSGI load the class,
+                // The other cases are the monolithic load cases.
+                normalizer = schemaElements.getNormalizer( className );
+
+                if ( normalizer == null )
+                {
+                    // We couldn't load the normalizer using IPojo too.
+                    throw e;
+                }
+            }
+            else
+            {
+                throw e;
+            }
         }
 
         // Update the common fields
