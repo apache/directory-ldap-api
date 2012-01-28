@@ -28,12 +28,22 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 
+/**
+ * Provides some OSGI helpers related to Service publication and access.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class OSGIHelper
 {
     /** BundleContext reference which will be assigned through BundleActivator */
     public static BundleContext bundleCtx;
 
 
+    /**
+     * Determines if Shared is launched in OSGI container.
+     *
+     * @return {@link Boolean}
+     */
     public static boolean isAPIInOSGIContainer()
     {
         if ( bundleCtx == null )
@@ -45,6 +55,13 @@ public class OSGIHelper
     }
 
 
+    /**
+     * Gets OSGI Services by given specification and filter.
+     *
+     * @param serviceClassName Name of published service class name.
+     * @param filter Filter to match against services.
+     * @return List of matching services as List<Object>
+     */
     public static List<?> getServices( String serviceClassName, String filter )
     {
         if ( !isAPIInOSGIContainer() )
@@ -76,6 +93,12 @@ public class OSGIHelper
     }
 
 
+    /**
+     * Gets the first service of given specification.
+     *
+     * @param serviceClassName Published OSGI Service class name.
+     * @return The first matched service in service registry.
+     */
     public static Object getService( String serviceClassName )
     {
         if ( !isAPIInOSGIContainer() )
@@ -89,19 +112,6 @@ public class OSGIHelper
             return null;
         }
 
-        try
-        {
-            return bundleCtx.getService( ref );
-        }
-        catch ( IllegalStateException e )
-        {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    
-    public static Object getServiceObject(ServiceReference ref)
-    {
         try
         {
             return bundleCtx.getService( ref );

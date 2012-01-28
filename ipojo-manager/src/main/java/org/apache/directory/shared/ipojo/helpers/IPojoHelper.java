@@ -28,19 +28,30 @@ import org.apache.felix.ipojo.ComponentFactory;
 import org.apache.felix.ipojo.ComponentInstance;
 import org.apache.felix.ipojo.ConfigurationException;
 import org.apache.felix.ipojo.Factory;
-import org.apache.felix.ipojo.InstanceManager;
 import org.apache.felix.ipojo.MissingHandlerException;
 import org.apache.felix.ipojo.UnacceptableConfiguration;
 
 
+/**
+ * Provides helper methods to access IPojo factories by their name, and instantiate instance of factories.
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class IPojoHelper
 {
+    /**
+     * Gets IPojo {@link ComponentFactory} by given factory name.
+     *
+     * @param factoryName factory name to get its equilavent {@link ComponentFactory}
+     * @return IPojo {@link ComponentFactory} reference
+     */
     public static ComponentFactory getFactory( String factoryName )
     {
         try
         {
             String filter = "(factory.name=" + factoryName + ")";
-            List<ComponentFactory> factories = ( List<ComponentFactory> ) OSGIHelper.getServices( Factory.class.getName(), filter );
+            List<ComponentFactory> factories = ( List<ComponentFactory> ) OSGIHelper.getServices(
+                Factory.class.getName(), filter );
             if ( factories == null )
             {
                 return null;
@@ -54,7 +65,15 @@ public class IPojoHelper
     }
 
 
-    public static Object createIPojoComponent( String factoryName, String instanceName, Dictionary props )
+    /**
+     * Creates an instance of given IPojo factory.
+     *
+     * @param factoryName Factory name to create its instance
+     * @param instanceName Name of instance being created. Pass 'null' if its not important.
+     * @param props Configuration to instance being created.
+     * @return {@link ComponentInstance} reference to created instance
+     */
+    public static ComponentInstance createIPojoComponent( String factoryName, String instanceName, Dictionary props )
     {
         ComponentFactory factory = IPojoHelper.getFactory( factoryName );
         if ( factory == null )
@@ -68,15 +87,13 @@ public class IPojoHelper
             {
                 props = new Hashtable<String, String>();
             }
+
             props.put( "instance.name", instanceName );
         }
 
         try
         {
-            ComponentInstance comp = factory.createComponentInstance( props );
-            Object instance = ( ( InstanceManager ) comp ).getPojoObject();
-
-            return instance;
+            return factory.createComponentInstance( props );
         }
         catch ( UnacceptableConfiguration e )
         {
