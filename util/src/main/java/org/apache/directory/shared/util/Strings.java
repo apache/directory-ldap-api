@@ -1462,11 +1462,11 @@ public final class Strings
 
 
     /**
-     * Get the character at a given position in a string, checking fo limits
+     * Get the character at a given position in a string, checking for limits
      *
      * @param string The string which contains the data
      * @param index Current position in the string
-     * @return The character ar the given position, or '\0' if something went wrong
+     * @return The character at the given position, or '\0' if something went wrong
      */
     public static char charAt( String string, int index )
     {
@@ -1484,6 +1484,33 @@ public final class Strings
         else
         {
             return string.charAt( index );
+        }
+    }
+
+
+    /**
+     * Get the byte at a given position in a byte array, checking for limits
+     *
+     * @param bytes The byte[] which contains the data
+     * @param index Current position in the byte[]
+     * @return The byte at the given position, or '\0' if something went wrong
+     */
+    public static byte byteAt( byte[] bytes, int index )
+    {
+        if ( bytes == null )
+        {
+            return '\0';
+        }
+
+        int length = bytes.length;
+
+        if ( ( length == 0 ) || ( index < 0 ) || ( index >= length ) )
+        {
+            return '\0';
+        }
+        else
+        {
+            return bytes[index];
         }
     }
 

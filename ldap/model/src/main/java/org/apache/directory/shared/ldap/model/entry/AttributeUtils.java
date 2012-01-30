@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.entry;
 
@@ -165,7 +165,7 @@ public final class AttributeUtils
      * option = 1*keychar
      * keychar = 'a'-z' | 'A'-'Z' / '0'-'9' / '-'
      */
-    private static void parseOptions( String str, Position pos ) throws ParseException
+    private static void parseOptions( byte[] str, Position pos ) throws ParseException
     {
         while ( Strings.isCharASCII( str, pos.start, ';' ) )
         {
@@ -196,11 +196,11 @@ public final class AttributeUtils
      * 
      * @return true if a number has been found
      */
-    private static boolean parseNumber( String filter, Position pos )
+    private static boolean parseNumber( byte[] filter, Position pos )
     {
-        char c = Strings.charAt( filter, pos.start );
+        byte b = Strings.byteAt( filter, pos.start );
 
-        switch ( c )
+        switch ( b )
         {
             case '0':
                 // If we get a starting '0', we should get out
@@ -244,7 +244,7 @@ public final class AttributeUtils
      * @param pos The current position in the string
      * @throws ParseException If we don't have a valid OID
      */
-    private static void parseOID( String str, Position pos ) throws ParseException
+    private static void parseOID( byte[] str, Position pos ) throws ParseException
     {
         // We have an OID
         parseNumber( str, pos );
@@ -298,19 +298,19 @@ public final class AttributeUtils
      * @param pos The position of the attribute in the current string
      * @return The parsed attribute if valid
      */
-    public static String parseAttribute( String str, Position pos, boolean withOption ) throws ParseException
+    public static String parseAttribute( byte[] str, Position pos, boolean withOption ) throws ParseException
     {
         // We must have an OID or an DESCR first
-        char c = Strings.charAt( str, pos.start );
+        byte b = Strings.byteAt( str, pos.start );
 
-        if ( c == '\0' )
+        if ( b == '\0' )
         {
             throw new ParseException( I18n.err( I18n.ERR_04346 ), pos.start );
         }
 
         int start = pos.start;
 
-        if ( Chars.isAlpha( c ) )
+        if ( Chars.isAlpha( b ) )
         {
             // A DESCR
             pos.start++;
@@ -326,9 +326,9 @@ public final class AttributeUtils
                 parseOptions( str, pos );
             }
 
-            return str.substring( start, pos.start );
+            return Strings.getString( str, start, pos.start - start, "UTF-8" );
         }
-        else if ( Chars.isDigit( c ) )
+        else if ( Chars.isDigit( b ) )
         {
             // An OID
             pos.start++;
@@ -342,7 +342,7 @@ public final class AttributeUtils
                 parseOptions( str, pos );
             }
 
-            return str.substring( start, pos.start );
+            return Strings.getString( str,  start, pos.start - start, "UTF-8" );
         }
         else
         {
@@ -505,7 +505,7 @@ public final class AttributeUtils
             // Looping on attributes
             for ( Iterator<Attribute> attributeIterator = entry.iterator(); attributeIterator.hasNext(); )
             {
-                Attribute entryAttribute = ( Attribute ) attributeIterator.next();
+                Attribute entryAttribute = attributeIterator.next();
 
                 attributes.put( toJndiAttribute( entryAttribute ) );
             }

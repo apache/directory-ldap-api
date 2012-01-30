@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.util;
 
@@ -412,6 +412,19 @@ public final class Unicode
     public static boolean isUnicodeSubset( char c )
     {
         return ( ( c > 127 ) || UnicodeConstants.UNICODE_SUBSET[c] );
+    }
+
+
+    /**
+     * Check if the current byte is in the unicodeSubset : all chars but
+     * '\0', '(', ')', '*' and '\'
+     *
+     * @param b The byte to check
+     * @return True if the current byte is in the unicode subset
+     */
+    public static boolean isUnicodeSubset( byte b )
+    {
+        return ( ( b < 0 ) || ( b > 127 ) || UnicodeConstants.UNICODE_SUBSET[b] );
     }
 
 

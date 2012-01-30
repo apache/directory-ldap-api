@@ -686,6 +686,20 @@ public final class Chars
 
 
     /**
+     * Test if the current byte is a digit &lt;digit> ::= '0' | '1' | '2' |
+     * '3' | '4' | '5' | '6' | '7' | '8' | '9'
+     *
+     * @param car the byte to test
+     *
+     * @return <code>true</code> if the character is a Digit
+     */
+    public static boolean isDigit( byte car )
+    {
+        return ( car >= '0' ) && ( car <= '9' );
+    }
+
+
+    /**
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
      * '3' | '4' | '5' | '6' | '7' | '8' | '9'
      *
