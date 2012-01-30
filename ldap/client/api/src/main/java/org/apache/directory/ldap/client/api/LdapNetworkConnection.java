@@ -3339,7 +3339,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
-    public void loadSchema() throws LdapException
+    public void loadDefaultSchema() throws LdapException
     {
         try
         {
@@ -3414,7 +3414,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         {
             if ( schemaManager == null )
             {
-                loadSchema();
+                loadDefaultSchema();
             }
 
             OpenLdapSchemaParser olsp = new OpenLdapSchemaParser();
