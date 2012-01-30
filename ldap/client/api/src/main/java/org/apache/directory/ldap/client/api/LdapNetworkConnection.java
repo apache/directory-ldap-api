@@ -1670,7 +1670,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         // Check that the future hasn't be canceled
         if ( searchFuture.isCancelled() )
         {
-            // Thow an exception here
+            // Throw an exception here
             throw new LdapException( searchFuture.getCause() );
         }
 
