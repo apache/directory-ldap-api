@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.name;
 
@@ -34,6 +34,7 @@ import java.io.ObjectOutputStream;
 import java.util.Iterator;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
@@ -279,7 +280,7 @@ public class RdnTest
     {
         Rdn rdn = new Rdn( "a", "b" );
 
-        Rdn rdnClone = ( Rdn ) rdn.clone();
+        Rdn rdnClone = rdn.clone();
 
         rdn = new Rdn( "c=d" );
 
@@ -311,7 +312,7 @@ public class RdnTest
     {
         Rdn rdn = new Rdn( "a = b + aa = bb" );
 
-        Rdn rdnClone = ( Rdn ) rdn.clone();
+        Rdn rdnClone = rdn.clone();
 
         rdn.clear();
         rdn = new Rdn( "c=d" );
@@ -1153,10 +1154,10 @@ public class RdnTest
     @Test
     public void testComparingOfClonedMultiValuedRDNs() throws LdapException
     {
-        // Use upper case attribute types to test if normalized types are used 
+        // Use upper case attribute types to test if normalized types are used
         // for comparison
         Rdn rdn = new Rdn( " A = b + C = d" );
-        Rdn clonedRdn = ( Rdn ) rdn.clone();
+        Rdn clonedRdn = rdn.clone();
 
         assertTrue( rdn.equals( clonedRdn ) );
     }
@@ -1171,7 +1172,7 @@ public class RdnTest
     @Test
     public void testComparingOfCopyConstructedMultiValuedRDNs() throws LdapException
     {
-        // Use upper case attribute types to test if normalized types are used 
+        // Use upper case attribute types to test if normalized types are used
         // for comparison
         Rdn rdn = new Rdn( " A = b + C = d" );
         Rdn copiedRdn = new Rdn( rdn );
@@ -1209,5 +1210,15 @@ public class RdnTest
             assertEquals( expected[i], ava.toString() );
             i++;
         }
+    }
+
+
+    /**
+     * test that a RDN with two AVAs throws an exception
+     */
+    @Test( expected=LdapInvalidDnException.class )
+    public void testWrongRdn() throws LdapException
+    {
+        new Rdn( " A = b, C = d " );
     }
 }

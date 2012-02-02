@@ -249,6 +249,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 normalized = false;
             }
 
+            if ( upName.length() < rdn.length() )
+            {
+                throw new LdapInvalidDnException( "Invalid RDN" );
+            }
+            
             upName = rdn;
         }
         else
@@ -347,7 +352,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 return;
 
             case 1:
-                this.ava = ( Ava ) rdn.ava.clone();
+                this.ava = rdn.ava.clone();
                 hashCode();
 
                 return;
@@ -359,7 +364,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
 
                 for ( Ava currentAva : rdn.avas )
                 {
-                    avas.add( ( Ava ) currentAva.clone() );
+                    avas.add( currentAva.clone() );
                     avaTypes.put( currentAva.getNormType(), currentAva );
                 }
 
@@ -772,7 +777,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                     break;
 
                 case 1:
-                    rdn.ava = ( Ava ) this.ava.clone();
+                    rdn.ava = this.ava.clone();
                     rdn.avaTypes = avaTypes;
                     break;
 
@@ -783,7 +788,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
 
                     for ( Ava currentAva : this.avas )
                     {
-                        rdn.avas.add( ( Ava ) currentAva.clone() );
+                        rdn.avas.add( currentAva.clone() );
                         rdn.avaTypes.put( currentAva.getNormType(), currentAva );
                     }
 
