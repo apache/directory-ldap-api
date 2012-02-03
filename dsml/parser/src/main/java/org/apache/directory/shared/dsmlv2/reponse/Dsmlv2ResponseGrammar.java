@@ -1621,11 +1621,11 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             if ( attributeValue != null )
             {
                 searchResponse = new SearchResponse(
-                    ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ), null );
+                    ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
             }
             else
             {
-                searchResponse = new SearchResponse( -1, null );
+                searchResponse = new SearchResponse();
             }
 
             container.getBatchResponse().addResponse( new SearchResponseDsml(
