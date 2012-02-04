@@ -3347,6 +3347,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
             // we enable all the schemas so that need not check with server for enabled schemas
             Collection<Schema> schemas = jarSchemaLoader.getAllSchemas();
+            
             for ( Schema s : schemas )
             {
                 s.enable();

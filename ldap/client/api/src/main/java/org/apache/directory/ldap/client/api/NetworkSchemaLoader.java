@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * A schema loader which uses LdapConnection to load schema.
+ * A schema loader which uses LdapConnection to load schema from a ApacheDS serveur
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -80,6 +80,7 @@ public class NetworkSchemaLoader extends AbstractSchemaLoader
         List<Entry> schemaEntries = searchSchemaObjects( SCHEMA_BASE, "(objectClass=metaSchema)" );
 
         LOG.debug( "initializing schemas {}", schemaEntries );
+        
         for ( Entry entry : schemaEntries )
         {
             Schema schema = getSchema( entry );
@@ -94,7 +95,7 @@ public class NetworkSchemaLoader extends AbstractSchemaLoader
      * @param baseDn the Dn of the schema entry under which the schema objects are present
      *               e.x ou=attributeTypes,cn=apache,ou=schema
      * @param filter optional search filter, if null the default fileter {@link #FILTER} is used
-     * @return a list of entries of the schema objects 
+     * @return a list of entries of the schema objects
      * @throws LdapException
      */
     private List<Entry> searchSchemaObjects( String baseDn, String filter ) throws LdapException

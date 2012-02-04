@@ -34,7 +34,7 @@ import org.apache.directory.shared.util.Strings;
 
 /**
  * Holds the data required to complete the SASL operation
- *  
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class SaslRequest
