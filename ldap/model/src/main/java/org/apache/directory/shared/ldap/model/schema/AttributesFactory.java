@@ -58,35 +58,35 @@ public class AttributesFactory
     {
         if ( obj instanceof LdapSyntax )
         {
-            return getAttributes( obj, schema, schemaManager );
+            return convert( (LdapSyntax)obj, schema, schemaManager );
         }
         else if ( obj instanceof MatchingRule )
         {
-            return getAttributes( obj, schema, schemaManager );
+            return convert( (MatchingRule)obj, schema, schemaManager );
         }
         else if ( obj instanceof AttributeType )
         {
-            return getAttributes( obj, schema, schemaManager );
+            return convert( (AttributeType)obj, schema, schemaManager );
         }
         else if ( obj instanceof ObjectClass )
         {
-            return getAttributes( obj, schema, schemaManager );
+            return convert( (ObjectClass)obj, schema, schemaManager );
         }
         else if ( obj instanceof MatchingRuleUse )
         {
-            return getAttributes( obj, schema, schemaManager );
+            return convert( (MatchingRuleUse)obj, schema, schemaManager );
         }
         else if ( obj instanceof DITStructureRule )
         {
-            return getAttributes( obj, schema, schemaManager );
+            return convert( (DITStructureRule)obj, schema, schemaManager );
         }
         else if ( obj instanceof DITContentRule )
         {
-            return getAttributes( obj, schema, schemaManager );
+            return convert( (DITContentRule)obj, schema, schemaManager );
         }
         else if ( obj instanceof NameForm )
         {
-            return getAttributes( obj, schema, schemaManager );
+            return convert( (NameForm)obj, schema, schemaManager );
         }
 
         throw new IllegalArgumentException( "nknown SchemaObject type: " + obj.getClass() );
@@ -343,12 +343,20 @@ public class AttributesFactory
         entry.put( SchemaConstants.CREATE_TIMESTAMP_AT, DateUtils.getGeneralizedTime() );
 
         injectCommon( objectClass, entry, schemaManager );
-
+        Attribute attr = null;
+        
         // handle the superior objectClasses
         if ( objectClass.getSuperiorOids() != null && objectClass.getSuperiorOids().size() != 0 )
         {
-            Attribute attr = new DefaultAttribute(
-                schemaManager.getAttributeType( MetaSchemaConstants.M_SUP_OBJECT_CLASS_AT ) );
+            if ( schemaManager != null )
+            {
+                attr = new DefaultAttribute(
+                    schemaManager.getAttributeType( MetaSchemaConstants.M_SUP_OBJECT_CLASS_AT ) );
+            }
+            else
+            {
+                attr = new DefaultAttribute( MetaSchemaConstants.M_SUP_OBJECT_CLASS_AT );
+            }
 
             for ( String superior : objectClass.getSuperiorOids() )
             {
@@ -361,7 +369,14 @@ public class AttributesFactory
         // add the must list
         if ( objectClass.getMustAttributeTypeOids() != null && objectClass.getMustAttributeTypeOids().size() != 0 )
         {
-            Attribute attr = new DefaultAttribute( schemaManager.getAttributeType( MetaSchemaConstants.M_MUST_AT ) );
+            if ( schemaManager != null )
+            {
+                attr = new DefaultAttribute( schemaManager.getAttributeType( MetaSchemaConstants.M_MUST_AT ) );
+            }
+            else
+            {
+                attr = new DefaultAttribute( MetaSchemaConstants.M_MUST_AT );
+            }
 
             for ( String mustOid : objectClass.getMustAttributeTypeOids() )
             {
@@ -374,7 +389,14 @@ public class AttributesFactory
         // add the may list
         if ( objectClass.getMayAttributeTypeOids() != null && objectClass.getMayAttributeTypeOids().size() != 0 )
         {
-            Attribute attr = new DefaultAttribute( schemaManager.getAttributeType( MetaSchemaConstants.M_MAY_AT ) );
+            if ( schemaManager != null )
+            {
+                attr = new DefaultAttribute( schemaManager.getAttributeType( MetaSchemaConstants.M_MAY_AT ) );
+            }
+            else
+            {
+                attr = new DefaultAttribute( MetaSchemaConstants.M_MAY_AT );
+            }
 
             for ( String mayOid : objectClass.getMayAttributeTypeOids() )
             {
@@ -409,7 +431,16 @@ public class AttributesFactory
             return;
         }
 
-        Attribute attr = new DefaultAttribute( schemaManager.getAttributeType( MetaSchemaConstants.M_NAME_AT ) );
+        Attribute attr = null;
+        
+        if ( schemaManager != null )
+        {
+            attr = new DefaultAttribute( schemaManager.getAttributeType( MetaSchemaConstants.M_NAME_AT ) );
+        }
+        else
+        {
+            attr = new DefaultAttribute( MetaSchemaConstants.M_NAME_AT );
+        }
 
         for ( String name : names )
         {

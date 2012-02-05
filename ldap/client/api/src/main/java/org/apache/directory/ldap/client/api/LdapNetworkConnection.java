@@ -3384,7 +3384,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             if ( !tmp.getErrors().isEmpty() )
             {
                 String msg = "there are errors while loading the schema";
-                LOG.error( msg + " {}", schemaManager.getErrors() );
+                LOG.error( msg + " {}", tmp.getErrors() );
                 throw new LdapException( msg );
             }
 
