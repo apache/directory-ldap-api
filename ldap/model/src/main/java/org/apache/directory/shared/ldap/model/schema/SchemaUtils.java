@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema;
 
@@ -52,7 +52,7 @@ public final class SchemaUtils
 
 
     /**
-     * Gets the target entry as it would look after a modification operation 
+     * Gets the target entry as it would look after a modification operation
      * were performed on it.
      * 
      * @param mods the modifications performed on the entry
@@ -835,11 +835,11 @@ public final class SchemaUtils
 
         if ( syntax.isHumanReadable() )
         {
-            buf.append( "' X-IS-HUMAN-READABLE 'true'" );
+            buf.append( "' X-NOT-HUMAN-READABLE 'false'" );
         }
         else
         {
-            buf.append( "' X-IS-HUMAN-READABLE 'false'" );
+            buf.append( "' X-NOT-HUMAN-READABLE 'true'" );
         }
 
         // @todo extensions are not presently supported and skipped
@@ -975,7 +975,7 @@ public final class SchemaUtils
      * NOT FULLY IMPLEMENTED!
      */
     @SuppressWarnings("PMD.UnusedLocalVariable")
-    // Remove me when the TODO is fixed 
+    // Remove me when the TODO is fixed
     public static StringBuffer render( DITStructureRule dsr )
     {
         StringBuffer buf = new StringBuffer();

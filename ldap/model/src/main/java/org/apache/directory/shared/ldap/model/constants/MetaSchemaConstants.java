@@ -163,8 +163,8 @@ public final class MetaSchemaConstants
     public final static String M_BYTECODE_AT = "m-bytecode";
     public final static String M_BYTECODE_AT_OID = "1.3.6.1.4.1.18060.0.4.0.2.33";
 
-    public final static String X_HUMAN_READABLE_AT = "x-humanReadable";
-    public final static String X_HUMAN_READABLE_AT_OID = "1.3.6.1.4.1.18060.0.4.0.2.34";
+    public final static String X_NOT_HUMAN_READABLE_AT = "x-not-human-readable";
+    public final static String X_NOT_HUMAN_READABLE_AT_OID = "1.3.6.1.4.1.18060.0.4.0.2.34";
 
     public final static String M_DISABLED_AT = "m-disabled";
     public final static String M_DISABLED_AT_OID = "1.3.6.1.4.1.18060.0.4.0.2.37";
@@ -177,7 +177,7 @@ public final class MetaSchemaConstants
 
     // -- schema extensions & values --
     public final static String X_SCHEMA = "X-SCHEMA";
-    public final static String X_IS_HUMAN_READABLE = "X-IS-HUMAN-READABLE";
+    public final static String X_NOT_HUMAN_READABLE = "X-NOT-HUMAN-READABLE";
     public final static String X_READ_ONLY = "X-READ-ONLY";
     public final static String X_ENABLED = "X-ENABLED";
 }

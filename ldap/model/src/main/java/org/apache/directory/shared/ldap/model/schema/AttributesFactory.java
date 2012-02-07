@@ -153,7 +153,7 @@ public class AttributesFactory
         Entry entry = new DefaultEntry( schemaManager );
 
         entry.put( SchemaConstants.OBJECT_CLASS_AT, SchemaConstants.TOP_OC, MetaSchemaConstants.META_SYNTAX_OC );
-        entry.put( MetaSchemaConstants.X_HUMAN_READABLE_AT, getBoolean( syntax.isHumanReadable() ) );
+        entry.put( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT, getBoolean( !syntax.isHumanReadable() ) );
         entry.put( SchemaConstants.CREATORS_NAME_AT, schema.getOwner() );
         entry.put( SchemaConstants.CREATE_TIMESTAMP_AT, DateUtils.getGeneralizedTime() );
         injectCommon( syntax, entry, schemaManager );

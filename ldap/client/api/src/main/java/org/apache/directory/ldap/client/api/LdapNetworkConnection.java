@@ -63,7 +63,7 @@ import org.apache.directory.ldap.client.api.future.ResponseFuture;
 import org.apache.directory.ldap.client.api.future.SearchFuture;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.util.Oid;
-import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
+import org.apache.directory.shared.ldap.codec.api.DefaultBinaryAttributeDectector;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
@@ -3600,22 +3600,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         // Last, store the message container
         LdapMessageContainer<? extends MessageDecorator<Message>> ldapMessageContainer =
             new LdapMessageContainer<MessageDecorator<Message>>(
-                codec,
-                new BinaryAttributeDetector()
-                {
-                    public boolean isBinary( String id )
-                    {
-                        try
-                        {
-                            AttributeType type = schemaManager.lookupAttributeTypeRegistry( id );
-                            return !type.getSyntax().isHumanReadable();
-                        }
-                        catch ( Exception e )
-                        {
-                            return !Strings.isEmpty( id ) && id.endsWith( ";binary" );
-                        }
-                    }
-                } );
+                codec, new DefaultBinaryAttributeDectector( schemaManager ) );
 
         session.setAttribute( "messageContainer", ldapMessageContainer );
     }

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema;
 
@@ -41,7 +41,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringS
  * 
  * <pre>
  *  4.1.5. LDAP Syntaxes
- *  
+ * 
  *    LDAP Syntaxes of (attribute and assertion) values are described in
  *    terms of ASN.1 [X.680] and, optionally, have an octet string encoding
  *    known as the LDAP-specific encoding.  Commonly, the LDAP-specific
@@ -76,6 +76,9 @@ public class LdapSyntax extends AbstractSchemaObject
 {
     /** the human readable flag */
     protected boolean isHumanReadable = false;
+    
+    /** A flag set to true if the Syntax has a X-NOT-HUMAN-READABLE extension */
+    private boolean hasHumanReadableFlag = false;
 
     /** The associated SyntaxChecker */
     protected SyntaxChecker syntaxChecker;
@@ -245,7 +248,7 @@ public class LdapSyntax extends AbstractSchemaObject
         if ( registries != null )
         {
             /**
-             * Remove the Syntax references (using and usedBy) : 
+             * Remove the Syntax references (using and usedBy) :
              * S -> SC
              */
             if ( syntaxChecker != null )

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.schemaloader;
 
@@ -95,7 +95,7 @@ public class SchemaEntityFactory implements EntityFactory
 
 
     /**
-     * Get an OID from an entry. Handles the bad cases (null OID, 
+     * Get an OID from an entry. Handles the bad cases (null OID,
      * not a valid OID, ...)
      */
     private String getOid( Entry entry, String objectType ) throws LdapInvalidAttributeValueException
@@ -124,7 +124,7 @@ public class SchemaEntityFactory implements EntityFactory
 
 
     /**
-     * Get an OID from an entry. Handles the bad cases (null OID, 
+     * Get an OID from an entry. Handles the bad cases (null OID,
      * not a valid OID, ...)
      */
     private String getOid( SchemaObject description, String objectType ) throws LdapInvalidAttributeValueException
@@ -670,8 +670,8 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * {@inheritDoc}
-     * @throws LdapInvalidAttributeValueException 
-     * @throws LdapUnwillingToPerformException 
+     * @throws LdapInvalidAttributeValueException
+     * @throws LdapUnwillingToPerformException
      */
     public LdapSyntax getSyntax( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapInvalidAttributeValueException, LdapUnwillingToPerformException
@@ -704,12 +704,12 @@ public class SchemaEntityFactory implements EntityFactory
         LdapSyntax syntax = new LdapSyntax( oid );
 
         // The isHumanReadable field
-        Attribute mHumanReadable = entry.get( MetaSchemaConstants.X_HUMAN_READABLE_AT );
+        Attribute mHumanReadable = entry.get( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT );
 
         if ( mHumanReadable != null )
         {
             String val = mHumanReadable.getString();
-            syntax.setHumanReadable( val.toUpperCase().equals( "TRUE" ) );
+            syntax.setHumanReadable( val.toUpperCase().equals( "FALSE" ) );
         }
 
         // Common properties
@@ -721,8 +721,8 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * {@inheritDoc}
-     * @throws LdapUnwillingToPerformException 
-     * @throws LdapInvalidAttributeValueException 
+     * @throws LdapUnwillingToPerformException
+     * @throws LdapInvalidAttributeValueException
      */
     public MatchingRule getMatchingRule( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapUnwillingToPerformException, LdapInvalidAttributeValueException
@@ -762,7 +762,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // The normalizer and comparator fields will be updated when we will
-        // apply the registry 
+        // apply the registry
 
         // Common properties
         setSchemaObjectProperties( matchingRule, entry, schema );
@@ -867,8 +867,8 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * {@inheritDoc}
-     * @throws LdapInvalidAttributeValueException 
-     * @throws LdapUnwillingToPerformException 
+     * @throws LdapInvalidAttributeValueException
+     * @throws LdapUnwillingToPerformException
      */
     public AttributeType getAttributeType( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapInvalidAttributeValueException, LdapUnwillingToPerformException
@@ -992,7 +992,7 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * Process the FQCN attribute
-     * @throws LdapInvalidAttributeValueException 
+     * @throws LdapInvalidAttributeValueException
      */
     private String getFqcn( Entry entry, String objectType ) throws LdapInvalidAttributeValueException
     {
@@ -1128,7 +1128,7 @@ public class SchemaEntityFactory implements EntityFactory
         
         if ( mSpecification != null )
         {
-            so.setSpecification( mSpecification.getString() ); 
+            so.setSpecification( mSpecification.getString() );
         }
         */
 
@@ -1177,7 +1177,7 @@ public class SchemaEntityFactory implements EntityFactory
         // The names field
         schemaObject.setNames( description.getNames() );
 
-        // The isEnabled field. Has the description does not hold a 
+        // The isEnabled field. Has the description does not hold a
         // Disable field, we will inherit from the schema enable field
         schemaObject.setEnabled( schema.isEnabled() );
 
