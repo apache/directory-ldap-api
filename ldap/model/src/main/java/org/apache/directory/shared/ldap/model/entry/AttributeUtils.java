@@ -361,7 +361,7 @@ public final class AttributeUtils
     public static void applyModification( Entry entry, Modification modification ) throws LdapException
     {
         Attribute modAttr = modification.getAttribute();
-        String modificationId = modAttr.getId();
+        String modificationId = modAttr.getUpId();
 
         switch ( modification.getOperation() )
         {
@@ -418,7 +418,7 @@ public final class AttributeUtils
                     if ( modifiedAttr.size() == 0 )
                     {
                         // If this was the last value, remove the attribute
-                        entry.removeAttributes( modifiedAttr.getId() );
+                        entry.removeAttributes( modifiedAttr.getUpId() );
                     }
                 }
 
@@ -527,7 +527,7 @@ public final class AttributeUtils
     {
         if ( attribute != null )
         {
-            javax.naming.directory.Attribute jndiAttribute = new BasicAttribute( attribute.getId() );
+            javax.naming.directory.Attribute jndiAttribute = new BasicAttribute( attribute.getUpId() );
 
             // Looping on values
             for ( Iterator<Value<?>> valueIterator = attribute.iterator(); valueIterator.hasNext(); )
