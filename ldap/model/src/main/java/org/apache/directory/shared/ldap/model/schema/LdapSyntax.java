@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.model.schema;
 import java.util.List;
 
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
@@ -105,6 +106,7 @@ public class LdapSyntax extends AbstractSchemaObject
     {
         super( SchemaObjectType.LDAP_SYNTAX, oid );
         this.description = description;
+        this.hasHumanReadableFlag = false;
     }
 
 
@@ -120,6 +122,7 @@ public class LdapSyntax extends AbstractSchemaObject
         super( SchemaObjectType.LDAP_SYNTAX, oid );
         this.description = description;
         this.isHumanReadable = isHumanReadable;
+        this.hasHumanReadableFlag = true;
     }
 
 
@@ -130,7 +133,36 @@ public class LdapSyntax extends AbstractSchemaObject
      */
     public boolean isHumanReadable()
     {
-        return isHumanReadable;
+        if ( hasHumanReadableFlag )
+        {
+            return isHumanReadable;
+        }
+        else
+        {
+            List<String> values = extensions.get( MetaSchemaConstants.X_NOT_HUMAN_READABLE );
+
+            if ( ( values == null ) || ( values.size() == 0 ) )
+            {
+                // Default to String if the flag is not set
+                return false;
+            }
+            else
+            {
+                String value = values.get( 0 );
+                hasHumanReadableFlag = true;
+                
+                if ( value.equals( "FALSE" ) )
+                {
+                    isHumanReadable = true;
+                    return true;
+                }
+                else
+                {
+                    isHumanReadable = false;
+                    return false;
+                }
+            }
+        }
     }
 
 
@@ -150,6 +182,26 @@ public class LdapSyntax extends AbstractSchemaObject
         {
             this.isHumanReadable = humanReadable;
         }
+    }
+
+
+    /**
+     * Gets whether or not the Human Readable extension is present in the Syntax.
+     * 
+     * @return true if the syntax contains teh X-NOT-HUMAN-READABLE extension
+     */
+    public boolean hasHumanReadableFlag()
+    {
+        return hasHumanReadableFlag;
+    }
+
+
+    /**
+     * Sets the hasHumanReadableFlag to true if we have a X-NOT-HUMAN-READABLE extension
+     */
+    public void setHasHumanReadableFlag()
+    {
+        hasHumanReadableFlag = true;
     }
 
 
@@ -271,6 +323,9 @@ public class LdapSyntax extends AbstractSchemaObject
 
         // Copy the HR flag
         copy.isHumanReadable = isHumanReadable;
+
+        // Copy the HR presence flag
+        copy.hasHumanReadableFlag = hasHumanReadableFlag;
 
         // All the references to other Registries object are set to null.
         copy.syntaxChecker = null;

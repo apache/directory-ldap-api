@@ -10,11 +10,22 @@ import org.apache.mina.util.ConcurrentHashSet;
 
 public class DefaultBinaryAttributeDectector implements BinaryAttributeDetector
 {
+    /** A set of binary Attribute ID */
     private Set<String> binaryAttributes = new ConcurrentHashSet<String>();
+
+    /** A set of binary Syntax ID */
     private Set<String> binarySyntaxes = new ConcurrentHashSet<String>();
+    
+    /** The schemaManager to use */
     private SchemaManager schemaManager;
     
     
+    /**
+     * Creates a new instance of BinaryAttributeDetector. The SchemaManager can
+     * be null if we don't have any.
+     * 
+     * @param schemaManager The associated SchemaManager
+     */
     public DefaultBinaryAttributeDectector( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;
@@ -46,29 +57,27 @@ public class DefaultBinaryAttributeDectector implements BinaryAttributeDetector
             
             if ( ldapSyntax != null )
             {
-                if ( !ldapSyntax.isHumanReadable() )
+                if ( ldapSyntax.hasHumanReadableFlag() )
                 {
-                    return true;
+                    return !ldapSyntax.isHumanReadable();
                 }
                 else
                 {
+                    // Check the syntaxes
+                    String syntaxId = ldapSyntax.getOid();
                     
+                    return ( binarySyntaxes.contains( syntaxId ) );
                 }
-                
-                String syntaxId = ldapSyntax.getOid();
-                
-                return ( binarySyntaxes.contains( syntaxId ) );
             }
             else
             {
+                return binaryAttributes.contains( attrId );
             }
         }
         else
         {
             return binaryAttributes.contains( attrId );
         }
-        
-        return false;
     }
     
 

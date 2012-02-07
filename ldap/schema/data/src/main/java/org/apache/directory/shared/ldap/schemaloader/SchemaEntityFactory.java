@@ -710,6 +710,7 @@ public class SchemaEntityFactory implements EntityFactory
         {
             String val = mHumanReadable.getString();
             syntax.setHumanReadable( val.toUpperCase().equals( "FALSE" ) );
+            syntax.setHasHumanReadableFlag();
         }
 
         // Common properties
