@@ -20,8 +20,6 @@
 package org.apache.directory.shared.ldap.codec.api;
 
 
-import java.util.Set;
-
 import org.apache.directory.shared.asn1.ber.AbstractContainer;
 import org.apache.directory.shared.asn1.ber.Asn1Container;
 import org.apache.directory.shared.ldap.codec.LdapMessageGrammar;
@@ -61,37 +59,7 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
      */
     public LdapMessageContainer( LdapApiService codec )
     {
-        this( codec, new BinaryAttributeDetector()
-        {
-            public boolean isBinary( String attributeId )
-            {
-                return false;
-            }
-
-            public void addBinaryAttribute( String... binaryAttributes )
-            {
-            }
-
-            public void removeBinaryAttribute( String... binaryAttributes )
-            {
-            }
-
-            public void setBinaryAttributes( Set<String> binaryAttributes )
-            {
-            }
-
-            public void addBinarySyntaxes( String... binarySyntaxes )
-            {
-            }
-
-            public void removeBinarySyntaxes( String... binarySyntaxes )
-            {
-            }
-
-            public void setBinarySyntaxes( Set<String> binarySyntaxes )
-            {
-            }
-        } );
+        this( codec, new DefaultConfigurableBinaryAttributeDetector() );
     }
 
 

@@ -27,7 +27,7 @@ import org.apache.commons.pool.impl.GenericObjectPool;
 /**
  * A pool implementation for LdapConnection objects.
  * 
- * This class is just a wrapper around the commons GenericObjectPool, and has 
+ * This class is just a wrapper around the commons GenericObjectPool, and has
  * a more meaningful name to represent the pool type.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
@@ -49,22 +49,22 @@ public class LdapConnectionPool extends GenericObjectPool
     /**
      * Gives a LdapConnection fetched from the pool.
      *
-     * @return an LdapConnection object from pool 
+     * @return an LdapConnection object from pool
      * @throws Exception if an error occurs while obtaining a connection from the factory
      */
-    public LdapNetworkConnection getConnection() throws Exception
+    public LdapConnection getConnection() throws Exception
     {
-        return ( LdapNetworkConnection ) super.borrowObject();
+        return ( LdapConnection ) super.borrowObject();
     }
 
 
     /**
      * Places the given LdapConnection back in the pool.
-     *  
+     * 
      * @param connection the LdapConnection to be released
      * @throws Exception if an error occurs while releasing the connection
      */
-    public void releaseConnection( LdapNetworkConnection connection ) throws Exception
+    public void releaseConnection( LdapConnection connection ) throws Exception
     {
         super.returnObject( connection );
     }

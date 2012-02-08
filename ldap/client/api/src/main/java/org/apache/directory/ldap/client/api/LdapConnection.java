@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.directory.shared.asn1.util.Oid;
+import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.cursor.EntryCursor;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
@@ -813,4 +814,17 @@ public interface LdapConnection
      * @return true if there is a non-null future exists, false otherwise
      */
     boolean doesFutureExistFor( int messageId );
+    
+    
+    /**
+     * @return the object responsible for the detection of binary attributes
+     */
+    BinaryAttributeDetector getBinaryAttributeDetector();
+    
+    
+    /**
+     * Sets the object responsible for the detection of binary attributes
+     * @return
+     */
+    void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetecter);
 }
