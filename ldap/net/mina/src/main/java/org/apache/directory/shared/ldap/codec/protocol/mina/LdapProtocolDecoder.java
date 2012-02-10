@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.codec.protocol.mina;
 
@@ -51,7 +51,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
 {
     /** The logger */
     private static Logger LOG = LoggerFactory.getLogger( LdapDecoder.class );
-
+    
     /** A speedup for logger */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
@@ -78,11 +78,11 @@ public class LdapProtocolDecoder implements ProtocolDecoder
         @SuppressWarnings("unchecked")
         LdapMessageContainer<MessageDecorator<? extends Message>> messageContainer =
             ( LdapMessageContainer<MessageDecorator<? extends Message>> )
-            session.getAttribute( "messageContainer" );
+            session.getAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR );
 
-        if ( session.containsAttribute( "maxPDUSize" ) )
+        if ( session.containsAttribute( LdapDecoder.MAX_PDU_SIZE_ATTR ) )
         {
-            int maxPDUSize = ( Integer ) session.getAttribute( "maxPDUSize" );
+            int maxPDUSize = ( Integer ) session.getAttribute( LdapDecoder.MAX_PDU_SIZE_ATTR );
 
             messageContainer.setMaxPDUSize( maxPDUSize );
         }
@@ -100,7 +100,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
 
 
     /**
-     * Decode an incoming buffer into LDAP messages. The result can be 0, 1 or many 
+     * Decode an incoming buffer into LDAP messages. The result can be 0, 1 or many
      * LDAP messages, which will be stored into the array the caller has created.
      * 
      * @param buffer The incoming byte buffer
