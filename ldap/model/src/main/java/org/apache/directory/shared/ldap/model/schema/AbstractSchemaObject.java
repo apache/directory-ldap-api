@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema;
 
@@ -37,7 +37,7 @@ import org.apache.directory.shared.util.Strings;
 
 /**
  * Most schema objects have some common attributes. This class
- * contains the minimum set of properties exposed by a SchemaObject.<br> 
+ * contains the minimum set of properties exposed by a SchemaObject.<br>
  * We have 11 types of SchemaObjects :
  * <li> AttributeType
  * <li> DitCOntentRule
@@ -52,9 +52,9 @@ import org.apache.directory.shared.util.Strings;
  * <li> SyntaxChecker (specific to ADS)
  * <br>
  * <br>
- * This class provides accessors and setters for the following attributes, 
+ * This class provides accessors and setters for the following attributes,
  * which are common to all those SchemaObjects :
- * <li>oid : The numeric OID 
+ * <li>oid : The numeric OID
  * <li>description : The SchemaObject description
  * <li>obsolete : Tells if the schema object is obsolete
  * <li>extensions : The extensions, a key/Values map
@@ -67,7 +67,7 @@ import org.apache.directory.shared.util.Strings;
  * Some of those attributes are not used by some Schema elements, even if they should
  * have been used. Here is the list :
  * <b>name</b> : LdapSyntax, Comparator, Normalizer, SyntaxChecker
- * <b>numericOid</b> : DitStructureRule, 
+ * <b>numericOid</b> : DitStructureRule,
  * <b>obsolete</b> : LdapSyntax, Comparator, Normalizer, SyntaxChecker
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -246,7 +246,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     /**
      * Add a new name to the list of names for this SchemaObject. The name
      * is lowercased and trimmed.
-     *  
+     * 
      * @param namesToAdd The names to add
      */
     public void addName( String... namesToAdd )
@@ -287,7 +287,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     /**
      * Sets the list of names for this SchemaObject. The names are
      * lowercased and trimmed.
-     *  
+     * 
      * @param names The list of names. Can be empty
      */
     public void setNames( List<String> names )
@@ -320,7 +320,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     /**
      * Sets the list of names for this SchemaObject. The names are
      * lowercased and trimmed.
-     *  
+     * 
      * @param names The list of names.
      */
     public void setNames( String... names )
@@ -412,8 +412,8 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
     /**
      * Tells if this SchemaObject is enabled.
-     *  
-     * @return true if the SchemaObject is enabled, or if it depends on 
+     * 
+     * @return true if the SchemaObject is enabled, or if it depends on
      * an enabled schema
      */
     public boolean isEnabled()
@@ -424,7 +424,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
     /**
      * Tells if this SchemaObject is disabled.
-     *  
+     * 
      * @return true if the SchemaObject is disabled
      */
     public boolean isDisabled()
@@ -449,7 +449,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
     /**
      * Tells if this SchemaObject is ReadOnly.
-     *  
+     * 
      * @return true if the SchemaObject is not modifiable
      */
     public boolean isReadOnly()
@@ -513,6 +513,32 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     public Map<String, List<String>> getExtensions()
     {
         return extensions;
+    }
+
+
+    /**
+     * Add an extension with its values
+     * @param key The extension key
+     * @param values The associated values
+     */
+    public void addExtension( String key, String... values )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+        }
+
+        if ( !isReadOnly )
+        {
+            List<String> valueList = new ArrayList<String>();
+            
+            for ( String value : values )
+            {
+                valueList.add( value );
+            }
+            
+            extensions.put( key, valueList );
+        }
     }
 
 
@@ -623,7 +649,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
     /**
      * This method is final to forbid the inherited classes to implement
-     * it. This has been done for performances reasons : the hashcode should 
+     * it. This has been done for performances reasons : the hashcode should
      * be computed only once, and stored locally.
      * 
      * The hashcode is currently computed in the lock() method, which is a hack
@@ -880,8 +906,8 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
 
     /**
-     * Clear the current SchemaObject : remove all the references to other objects, 
-     * and all the Maps. 
+     * Clear the current SchemaObject : remove all the references to other objects,
+     * and all the Maps.
      */
     public void clear()
     {

@@ -1099,7 +1099,7 @@ public final class SchemaUtils
 
     private static String getSchemaName( SchemaObject desc )
     {
-        List<String> values = desc.getExtensions().get( MetaSchemaConstants.X_SCHEMA );
+        List<String> values = desc.getExtensions().get( MetaSchemaConstants.X_SCHEMA_AT );
 
         if ( values == null || values.size() == 0 )
         {

@@ -67,6 +67,7 @@ import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.shared.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
+import org.apache.directory.shared.ldap.codec.api.LdapDecoder;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.codec.api.MessageEncoderException;
@@ -352,7 +353,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         config.setUseSsl( false );
         config.setLdapPort( config.getDefaultLdapPort() );
         config.setLdapHost( config.getDefaultLdapHost() );
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector() );
+        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
         messageId = new AtomicInteger( 0 );
     }
 
@@ -388,7 +389,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         config.setUseSsl( useSsl );
         config.setLdapPort( useSsl ? config.getDefaultLdapsPort() : config.getDefaultLdapPort() );
         config.setLdapHost( config.getDefaultLdapHost() );
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector() );
+        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
         messageId = new AtomicInteger( 0 );
     }
 
@@ -416,7 +417,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             config.setLdapHost( server );
         }
 
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector() );
+        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
 
         messageId = new AtomicInteger( 0 );
     }
@@ -447,7 +448,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             config.setLdapHost( server );
         }
 
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector() );
+        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
 
         messageId = new AtomicInteger( 0 );
     }
@@ -492,7 +493,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             config.setLdapHost( server );
         }
 
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector() );
+        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
         messageId = new AtomicInteger();
     }
 
@@ -654,8 +655,16 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         ldapSession = connectionFuture.getSession();
         connected.set( true );
 
-        // Store the container into the session
-        ldapSession.setAttribute( "LDAP-Container", codec.newMessageContainer() );
+        // Store the container into the session if we don't have one
+        LdapMessageContainer<MessageDecorator<? extends Message>> container =
+            (LdapMessageContainer<MessageDecorator<? extends Message>>)ldapSession.getAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR );
+        
+        if ( container == null )
+        {
+            ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
+                new LdapMessageContainer<MessageDecorator<? extends Message>>( codec,
+                    new DefaultConfigurableBinaryAttributeDetector() ) );
+        }
 
         // Initialize the MessageId
         messageId.set( 0 );
@@ -3354,8 +3363,29 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * {@inheritDoc}
      */
+    public void loadSchema() throws LdapException
+    {
+        loadSchema( new DefaultSchemaLoader( this ) );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public void loadDefaultSchema() throws LdapException
     {
+        if ( !isConnected() )
+        {
+            try
+            {
+                connect();
+            }
+            catch ( IOException ioe )
+            {
+                throw new InvalidConnectionException( "Cannot connect on the server" );
+            }
+        }
+        
         try
         {
             JarLdifSchemaLoader jarSchemaLoader = new JarLdifSchemaLoader();
@@ -3428,6 +3458,12 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             }
 
             schemaManager = tmp;
+            
+            // Change the container's BinaryDetector
+            ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
+                new LdapMessageContainer<MessageDecorator<? extends Message>>( codec,
+                    new SchemaBinaryAttributeDetector( schemaManager ) ) );
+
         }
         catch ( LdapException le )
         {
@@ -3641,7 +3677,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             new LdapMessageContainer<MessageDecorator<Message>>(
                 codec, config.getBinaryAttributeDetector() );
 
-        session.setAttribute( "messageContainer", ldapMessageContainer );
+        session.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR, ldapMessageContainer );
     }
 
 

@@ -36,7 +36,7 @@ public class SchemaBinaryAttributeDetector implements BinaryAttributeDetector
     private SchemaManager schemaManager;
     
     
-    public SchemaBinaryAttributeDetector()
+    protected SchemaBinaryAttributeDetector()
     {
     }
     
@@ -78,10 +78,7 @@ public class SchemaBinaryAttributeDetector implements BinaryAttributeDetector
             
             LdapSyntax ldapSyntax = attributeType.getSyntax();
             
-            return ( ( ldapSyntax != null ) &&
-                 ldapSyntax.hasHumanReadableFlag() &&
-                 ldapSyntax.hasHumanReadableFlag() ) &&
-                 !ldapSyntax.isHumanReadable();
+            return ( ( ldapSyntax != null ) && !ldapSyntax.isHumanReadable() );
         }
 
         return false;

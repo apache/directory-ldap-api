@@ -139,7 +139,7 @@ public class LdapSyntax extends AbstractSchemaObject
         }
         else
         {
-            List<String> values = extensions.get( MetaSchemaConstants.X_NOT_HUMAN_READABLE );
+            List<String> values = extensions.get( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT );
 
             if ( ( values == null ) || ( values.size() == 0 ) )
             {
@@ -151,7 +151,7 @@ public class LdapSyntax extends AbstractSchemaObject
                 String value = values.get( 0 );
                 hasHumanReadableFlag = true;
                 
-                if ( value.equals( "FALSE" ) )
+                if ( value.equalsIgnoreCase( "FALSE" ) )
                 {
                     isHumanReadable = true;
                     return true;
@@ -181,6 +181,7 @@ public class LdapSyntax extends AbstractSchemaObject
         if ( !isReadOnly )
         {
             this.isHumanReadable = humanReadable;
+            this.hasHumanReadableFlag = true;
         }
     }
 
@@ -189,7 +190,7 @@ public class LdapSyntax extends AbstractSchemaObject
      * Gets whether or not the Human Readable extension is present in the Syntax.
      * 
      * @return true if the syntax contains teh X-NOT-HUMAN-READABLE extension
-     */
+     *
     public boolean hasHumanReadableFlag()
     {
         return hasHumanReadableFlag;
@@ -198,7 +199,7 @@ public class LdapSyntax extends AbstractSchemaObject
 
     /**
      * Sets the hasHumanReadableFlag to true if we have a X-NOT-HUMAN-READABLE extension
-     */
+     *
     public void setHasHumanReadableFlag()
     {
         hasHumanReadableFlag = true;

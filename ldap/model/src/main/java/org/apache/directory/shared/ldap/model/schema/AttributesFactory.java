@@ -21,6 +21,7 @@ package org.apache.directory.shared.ldap.model.schema;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
@@ -153,7 +154,6 @@ public class AttributesFactory
         Entry entry = new DefaultEntry( schemaManager );
 
         entry.put( SchemaConstants.OBJECT_CLASS_AT, SchemaConstants.TOP_OC, MetaSchemaConstants.META_SYNTAX_OC );
-        entry.put( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT, getBoolean( !syntax.isHumanReadable() ) );
         entry.put( SchemaConstants.CREATORS_NAME_AT, schema.getOwner() );
         entry.put( SchemaConstants.CREATE_TIMESTAMP_AT, DateUtils.getGeneralizedTime() );
         injectCommon( syntax, entry, schemaManager );
@@ -420,6 +420,22 @@ public class AttributesFactory
         if ( object.getDescription() != null )
         {
             entry.put( MetaSchemaConstants.M_DESCRIPTION_AT, object.getDescription() );
+        }
+        
+        // The extensions
+        Map<String, List<String>> extensions = object.getExtensions();
+        
+        if ( extensions != null )
+        {
+            for ( String key : extensions.keySet() )
+            {
+                List<String> values = extensions.get( key );
+                
+                for ( String value : values )
+                {
+                    entry.add( key, value );
+                }
+            }
         }
     }
 

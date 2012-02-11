@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
@@ -74,10 +75,10 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SsseSchemaLoader extends AbstractSchemaLoader
+public class DefaultSchemaLoader extends AbstractSchemaLoader
 {
     /** the logger */
-    private static final Logger LOG = LoggerFactory.getLogger( SsseSchemaLoader.class );
+    private static final Logger LOG = LoggerFactory.getLogger( DefaultSchemaLoader.class );
     
     /** the connection to the ldap server */
     private LdapConnection connection;
@@ -107,16 +108,29 @@ public class SsseSchemaLoader extends AbstractSchemaLoader
      * @throws Exception if the connection is not authenticated or if there are any problems
      *                   while loading the schema entries
      */
-    public SsseSchemaLoader( LdapConnection connection ) throws Exception
+    public DefaultSchemaLoader( LdapConnection connection ) throws LdapException
     {
+        if ( connection == null )
+        {
+            throw new InvalidConnectionException( "Cannot connect on the server, the connection is null" );
+        }
+        
         // Get the subschemaSubentry Dn from the rootDSE
-        this.connection = connection;
-        Entry rootDse = connection.lookup( Dn.ROOT_DSE, SchemaConstants.SUBSCHEMA_SUBENTRY_AT );
-        
-        String subschemaSubentryStr = rootDse.get( SchemaConstants.SUBSCHEMA_SUBENTRY_AT ).getString();
-        subschemaSubentryDn = new Dn( connection.getSchemaManager(), subschemaSubentryStr );
-        
-        loadSchemas();
+        try
+        {
+            this.connection = connection;
+            connection.connect();
+            Entry rootDse = connection.lookup( Dn.ROOT_DSE, SchemaConstants.SUBSCHEMA_SUBENTRY_AT );
+            
+            String subschemaSubentryStr = rootDse.get( SchemaConstants.SUBSCHEMA_SUBENTRY_AT ).getString();
+            subschemaSubentryDn = new Dn( connection.getSchemaManager(), subschemaSubentryStr );
+            
+            loadSchemas();
+        }
+        catch ( IOException ioe )
+        {
+            throw new LdapException( ioe );
+        }
     }
 
 
@@ -127,7 +141,7 @@ public class SsseSchemaLoader extends AbstractSchemaLoader
      * @throws Exception if the connection is not authenticated or if there are any problems
      *                   while loading the schema entries
      */
-    public SsseSchemaLoader( LdapConnection connection, Dn subschemaSubentryDn ) throws Exception
+    public DefaultSchemaLoader( LdapConnection connection, Dn subschemaSubentryDn ) throws Exception
     {
         if ( !connection.isAuthenticated() )
         {
@@ -147,7 +161,7 @@ public class SsseSchemaLoader extends AbstractSchemaLoader
      * @param subschemaSubentryDn
      * @throws Exception
      */
-    private void loadSchemas() throws Exception
+    private void loadSchemas() throws LdapException
     {
         LOG.debug( "initializing schemas" );
         
@@ -246,7 +260,7 @@ public class SsseSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
-    private void loadAttributeTypes( Attribute attributeTypes ) throws LdapException, IOException
+    private void loadAttributeTypes( Attribute attributeTypes ) throws LdapException
     {
         for ( Value<?> value : attributeTypes )
         {
@@ -269,7 +283,7 @@ public class SsseSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
-    private void loadComparators( Attribute comparators ) throws LdapException, IOException
+    private void loadComparators( Attribute comparators ) throws LdapException
     {
         for ( Value<?> value : comparators )
         {
@@ -292,7 +306,7 @@ public class SsseSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
-    private void loadDitContentRules( Attribute ditContentRules ) throws LdapException, IOException
+    private void loadDitContentRules( Attribute ditContentRules ) throws LdapException
     {
         for ( Value<?> value : ditContentRules )
         {
@@ -315,7 +329,7 @@ public class SsseSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
-    private void loadDitStructureRules( Attribute ditStructureRules ) throws LdapException, IOException
+    private void loadDitStructureRules( Attribute ditStructureRules ) throws LdapException
     {
         for ( Value<?> value : ditStructureRules )
         {
@@ -338,7 +352,7 @@ public class SsseSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
-    private void loadLdapSyntaxes( Attribute ldapSyntaxes ) throws LdapException, IOException
+    private void loadLdapSyntaxes( Attribute ldapSyntaxes ) throws LdapException
     {
         for ( Value<?> value : ldapSyntaxes )
         {
@@ -361,7 +375,7 @@ public class SsseSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
-    private void loadMatchingRules( Attribute matchingRules ) throws LdapException, IOException
+    private void loadMatchingRules( Attribute matchingRules ) throws LdapException
     {
         for ( Value<?> value : matchingRules )
         {
@@ -384,7 +398,7 @@ public class SsseSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
-    private void loadMatchingRuleUses( Attribute matchingRuleUses ) throws LdapException, IOException
+    private void loadMatchingRuleUses( Attribute matchingRuleUses ) throws LdapException
     {
         for ( Value<?> value : matchingRuleUses )
         {
@@ -407,7 +421,7 @@ public class SsseSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
-    private void loadNameForms( Attribute nameForms ) throws LdapException, IOException
+    private void loadNameForms( Attribute nameForms ) throws LdapException
     {
         for ( Value<?> value : nameForms )
         {
@@ -430,7 +444,7 @@ public class SsseSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
-    private void loadNormalizers( Attribute normalizers ) throws LdapException, IOException
+    private void loadNormalizers( Attribute normalizers ) throws LdapException
     {
         for ( Value<?> value : normalizers )
         {
@@ -453,7 +467,7 @@ public class SsseSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
-    private void loadObjectClasses( Attribute objectClasses ) throws LdapException, IOException
+    private void loadObjectClasses( Attribute objectClasses ) throws LdapException
     {
         for ( Value<?> value : objectClasses )
         {
@@ -476,7 +490,7 @@ public class SsseSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
-    private void loadSyntaxCheckers( Attribute syntaxCheckers ) throws LdapException, IOException
+    private void loadSyntaxCheckers( Attribute syntaxCheckers ) throws LdapException
     {
         for ( Value<?> value : syntaxCheckers )
         {

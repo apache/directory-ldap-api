@@ -128,7 +128,7 @@ public abstract class AbstractSchemaParser
     protected static void updateSchemaName( SchemaObject schemaObject )
     {
         // Update the Schema if we have the X-SCHEMA extension
-        List<String> schemaExtension = schemaObject.getExtensions().get( MetaSchemaConstants.X_SCHEMA );
+        List<String> schemaExtension = schemaObject.getExtensions().get( MetaSchemaConstants.X_SCHEMA_AT );
 
         if ( schemaExtension != null )
         {
