@@ -12,3 +12,4 @@ m-name: metaTop
 m-typeobjectclass: ABSTRACT
 creatorsname: uid=admin,ou=system
 m-may: m-description
+m-may: x-schema

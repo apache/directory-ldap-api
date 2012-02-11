@@ -703,16 +703,6 @@ public class SchemaEntityFactory implements EntityFactory
         // Create the new LdapSyntax instance
         LdapSyntax syntax = new LdapSyntax( oid );
 
-        // The isHumanReadable field
-        Attribute mHumanReadable = entry.get( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT );
-
-        if ( mHumanReadable != null )
-        {
-            String val = mHumanReadable.getString();
-            syntax.setHumanReadable( val.toUpperCase().equals( "FALSE" ) );
-            syntax.setHasHumanReadableFlag();
-        }
-
         // Common properties
         setSchemaObjectProperties( syntax, entry, schema );
 
@@ -1113,15 +1103,6 @@ public class SchemaEntityFactory implements EntityFactory
             schemaObject.setEnabled( schema != null && schema.isEnabled() );
         }
 
-        // The isReadOnly field
-        Attribute mIsReadOnly = entry.get( MetaSchemaConstants.M_NO_USER_MODIFICATION_AT );
-
-        if ( mIsReadOnly != null )
-        {
-            String val = mIsReadOnly.getString();
-            schemaObject.setReadOnly( val.equalsIgnoreCase( "TRUE" ) );
-        }
-
         // The specification field
         /*
          * TODO : create the M_SPECIFICATION_AT
@@ -1136,23 +1117,52 @@ public class SchemaEntityFactory implements EntityFactory
         // The schemaName field
         schemaObject.setSchemaName( schema.getSchemaName() );
 
-        // The extensions field
-        /*
-         * TODO create the M_EXTENSION_AT AT
-        EntryAttribute extensions = entry.get( MetaSchemaConstants.M_EXTENSION_AT );
+        // The extensions fields
+        // X-SCHEMA
+        Attribute xSchema = entry.get( MetaSchemaConstants.X_SCHEMA_AT );
         
-        if ( extensions != null )
+        if ( xSchema != null )
         {
-            List<String> extensions = new ArrayList<String>();
+            String schemaName = xSchema.getString();
             
-            for ( Value<?> extension:extensions )
+            if ( !schema.getSchemaName().equalsIgnoreCase( schemaName ) )
             {
-                values.add( extension() );
+               LOG.warn( "Schema (" + schema.getSchemaName() + ") and X-SCHEMA ("
+                   + schemaName + ") are different : " + entry );
             }
             
-            so.setExtensions( values );
+            schemaObject.addExtension( MetaSchemaConstants.X_SCHEMA_AT, schemaName );
         }
-        */
+        
+        // X-NOT-HUMAN-READABLE
+        Attribute xNotHumanReadable = entry.get( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT );
+        
+        if ( xNotHumanReadable != null )
+        {
+            String value = xNotHumanReadable.getString();
+            
+            schemaObject.addExtension( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT, value );
+        }
+        
+        // X-READ-ONLY
+        Attribute xReadOnly = entry.get( MetaSchemaConstants.X_READ_ONLY_AT );
+        
+        if ( xReadOnly != null )
+        {
+            String value = xReadOnly.getString();
+            
+            schemaObject.addExtension( MetaSchemaConstants.X_READ_ONLY_AT, value );
+        }
+        
+        // X-ENABLED
+        Attribute xEnabled = entry.get( MetaSchemaConstants.X_ENABLED_AT );
+        
+        if ( xEnabled != null )
+        {
+            String value = xEnabled.getString();
+            
+            schemaObject.addExtension( MetaSchemaConstants.X_ENABLED_AT, value );
+        }
     }
 
 

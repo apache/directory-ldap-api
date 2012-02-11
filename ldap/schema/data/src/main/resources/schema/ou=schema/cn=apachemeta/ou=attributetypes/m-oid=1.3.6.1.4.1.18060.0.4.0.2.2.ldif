@@ -1,16 +1,16 @@
 version: 1
 dn: m-oid=1.3.6.1.4.1.18060.0.4.0.2.2,ou=attributeTypes,cn=apachemeta,ou=schema
-m-collective: FALSE
-m-singlevalue: FALSE
-m-oid: 1.3.6.1.4.1.18060.0.4.0.2.2
-m-obsolete: FALSE
-m-description: The Object name
-m-nousermodification: FALSE
-objectclass: metaAttributeType
-objectclass: metaTop
 objectclass: top
-m-syntax: 1.3.6.1.4.1.18060.0.4.0.0.6
-m-usage: USER_APPLICATIONS
+objectclass: metaTop
+objectclass: metaAttributeType
+m-oid: 1.3.6.1.4.1.18060.0.4.0.2.2
 m-name: m-name
-creatorsname: uid=admin,ou=system
+m-description: The Object name
+m-syntax: 1.3.6.1.4.1.18060.0.4.0.0.6
 m-equality: caseIgnoreMatch
+m-usage: USER_APPLICATIONS
+m-singlevalue: FALSE
+m-collective: FALSE
+m-obsolete: FALSE
+m-nousermodification: FALSE
+creatorsname: uid=admin,ou=system
