@@ -789,7 +789,7 @@ public interface LdapConnection
      * <b>Note:</b> This method enables <b>all</b> schemas prior to loading
      * @throws LdapException in case of problems while loading the schema
      */
-    void loadDefaultSchema() throws LdapException;
+    void loadSchema() throws LdapException;
 
 
     /**

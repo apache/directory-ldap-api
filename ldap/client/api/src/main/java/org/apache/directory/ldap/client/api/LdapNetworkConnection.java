@@ -30,7 +30,6 @@ import java.net.SocketAddress;
 import java.nio.channels.UnresolvedAddressException;
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -144,9 +143,7 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ObjectClassRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.Schema;
 import org.apache.directory.shared.ldap.model.schema.registries.SchemaLoader;
-import org.apache.directory.shared.ldap.schemaloader.JarLdifSchemaLoader;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.apache.directory.shared.util.StringConstants;
 import org.apache.directory.shared.util.Strings;
@@ -3367,75 +3364,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     {
         loadSchema( new DefaultSchemaLoader( this ) );
     }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void loadDefaultSchema() throws LdapException
-    {
-        if ( !isConnected() )
-        {
-            try
-            {
-                connect();
-            }
-            catch ( IOException ioe )
-            {
-                throw new InvalidConnectionException( "Cannot connect on the server" );
-            }
-        }
-        
-        try
-        {
-            JarLdifSchemaLoader jarSchemaLoader = new JarLdifSchemaLoader();
-
-            // we enable all the schemas so that need not check with server for enabled schemas
-            Collection<Schema> schemas = jarSchemaLoader.getAllSchemas();
-            
-            for ( Schema s : schemas )
-            {
-                s.enable();
-            }
-
-            loadSchema( jarSchemaLoader );
-            
-            // Update the BinaryAttributeDetector
-            BinaryAttributeDetector binaryAttributeDetector = getBinaryAttributeDetector();
-            
-            if ( binaryAttributeDetector == null )
-            {
-                // We don't have any BAD : create a SchemaBad
-                binaryAttributeDetector = new SchemaBinaryAttributeDetector( schemaManager );
-            }
-            else
-            {
-                if ( binaryAttributeDetector instanceof SchemaBinaryAttributeDetector )
-                {
-                    // Inject the Schema in the existing SchemaBAD (it may replace a previous one)
-                    ((SchemaBinaryAttributeDetector)binaryAttributeDetector).setSchemaManager( schemaManager );
-                }
-                else
-                {
-                    // Replace the old BAD by a SchemaBAD
-                    binaryAttributeDetector = new SchemaBinaryAttributeDetector( schemaManager );
-                }
-            }
-            
-            setBinaryAttributeDetector( binaryAttributeDetector );
-        }
-        catch ( LdapException e )
-        {
-            throw e;
-        }
-        catch ( Exception e )
-        {
-            LOG.error( "failed to load the schema using JarLdifSchemaLoader", e );
-            throw new LdapException( e );
-        }
-    }
-
-
     /**
      * loads schema using the specified schema loader
      *
@@ -3490,7 +3418,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         {
             if ( schemaManager == null )
             {
-                loadDefaultSchema();
+                loadSchema();
             }
 
             OpenLdapSchemaParser olsp = new OpenLdapSchemaParser();
