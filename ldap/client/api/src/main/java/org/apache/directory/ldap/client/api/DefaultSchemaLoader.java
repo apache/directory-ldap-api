@@ -79,7 +79,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 {
     /** the logger */
     private static final Logger LOG = LoggerFactory.getLogger( DefaultSchemaLoader.class );
-    
+
     /** the connection to the ldap server */
     private LdapConnection connection;
 
@@ -87,19 +87,19 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     private Dn subschemaSubentryDn;
 
     /** The SubschemaSubentry descriptions parsers */
-    private static AttributeTypeDescriptionSchemaParser        AT_DESCR_SCHEMA_PARSER = new AttributeTypeDescriptionSchemaParser();
-    private static DITStructureRuleDescriptionSchemaParser     DSR_DESCR_SCHEMA_PARSER = new DITStructureRuleDescriptionSchemaParser();
-    private static DITContentRuleDescriptionSchemaParser       DCR_DESCR_SCHEMA_PARSER = new DITContentRuleDescriptionSchemaParser();
-    private static MatchingRuleDescriptionSchemaParser         MR_DESCR_SCHEMA_PARSER = new MatchingRuleDescriptionSchemaParser();
-    private static MatchingRuleUseDescriptionSchemaParser      MRU_DESCR_SCHEMA_PARSER = new MatchingRuleUseDescriptionSchemaParser();
-    private static NameFormDescriptionSchemaParser             NF_DESCR_SCHEMA_PARSER = new NameFormDescriptionSchemaParser();
-    private static ObjectClassDescriptionSchemaParser          OC_DESCR_SCHEMA_PARSER = new ObjectClassDescriptionSchemaParser();
-    private static LdapSyntaxDescriptionSchemaParser           LS_DESCR_SCHEMA_PARSER = new LdapSyntaxDescriptionSchemaParser();
+    private static AttributeTypeDescriptionSchemaParser AT_DESCR_SCHEMA_PARSER = new AttributeTypeDescriptionSchemaParser();
+    private static DITStructureRuleDescriptionSchemaParser DSR_DESCR_SCHEMA_PARSER = new DITStructureRuleDescriptionSchemaParser();
+    private static DITContentRuleDescriptionSchemaParser DCR_DESCR_SCHEMA_PARSER = new DITContentRuleDescriptionSchemaParser();
+    private static MatchingRuleDescriptionSchemaParser MR_DESCR_SCHEMA_PARSER = new MatchingRuleDescriptionSchemaParser();
+    private static MatchingRuleUseDescriptionSchemaParser MRU_DESCR_SCHEMA_PARSER = new MatchingRuleUseDescriptionSchemaParser();
+    private static NameFormDescriptionSchemaParser NF_DESCR_SCHEMA_PARSER = new NameFormDescriptionSchemaParser();
+    private static ObjectClassDescriptionSchemaParser OC_DESCR_SCHEMA_PARSER = new ObjectClassDescriptionSchemaParser();
+    private static LdapSyntaxDescriptionSchemaParser LS_DESCR_SCHEMA_PARSER = new LdapSyntaxDescriptionSchemaParser();
 
-    private static LdapComparatorDescriptionSchemaParser       C_DESCR_SCHEMA_PARSER = new LdapComparatorDescriptionSchemaParser();
-    private static NormalizerDescriptionSchemaParser           N_DESCR_SCHEMA_PARSER = new NormalizerDescriptionSchemaParser();
-    private static SyntaxCheckerDescriptionSchemaParser        SC_DESCR_SCHEMA_PARSER = new SyntaxCheckerDescriptionSchemaParser();
-    
+    private static LdapComparatorDescriptionSchemaParser C_DESCR_SCHEMA_PARSER = new LdapComparatorDescriptionSchemaParser();
+    private static NormalizerDescriptionSchemaParser N_DESCR_SCHEMA_PARSER = new NormalizerDescriptionSchemaParser();
+    private static SyntaxCheckerDescriptionSchemaParser SC_DESCR_SCHEMA_PARSER = new SyntaxCheckerDescriptionSchemaParser();
+
 
     /**
      * Creates a new instance of NetworkSchemaLoader.
@@ -114,17 +114,17 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         {
             throw new InvalidConnectionException( "Cannot connect on the server, the connection is null" );
         }
-        
+
         // Get the subschemaSubentry Dn from the rootDSE
         try
         {
             this.connection = connection;
             connection.connect();
             Entry rootDse = connection.lookup( Dn.ROOT_DSE, SchemaConstants.SUBSCHEMA_SUBENTRY_AT );
-            
+
             String subschemaSubentryStr = rootDse.get( SchemaConstants.SUBSCHEMA_SUBENTRY_AT ).getString();
             subschemaSubentryDn = new Dn( connection.getSchemaManager(), subschemaSubentryStr );
-            
+
             loadSchemas();
         }
         catch ( IOException ioe )
@@ -164,7 +164,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     private void loadSchemas() throws LdapException
     {
         LOG.debug( "initializing schemas" );
-        
+
         // Load all the elements from the SubschemaSubentry
         Entry subschemaSubentry = connection.lookup( subschemaSubentryDn,
             SchemaConstants.ATTRIBUTE_TYPES_AT,
@@ -179,47 +179,47 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             SchemaConstants.OBJECT_CLASSES_AT,
             SchemaConstants.SYNTAX_CHECKERS_AT
             );
-        
+
         // Load all the AT
         Attribute attributeTypes = subschemaSubentry.get( SchemaConstants.ATTRIBUTE_TYPES_AT );
         loadAttributeTypes( attributeTypes );
-        
+
         // Load all the C
         Attribute comparators = subschemaSubentry.get( SchemaConstants.COMPARATORS_AT );
         loadComparators( comparators );
-        
+
         // Load all the DCR
         Attribute ditContentRules = subschemaSubentry.get( SchemaConstants.DIT_CONTENT_RULES_AT );
         loadDitContentRules( ditContentRules );
-        
+
         // Load all the DSR
         Attribute ditStructureRules = subschemaSubentry.get( SchemaConstants.DIT_STRUCTURE_RULES_AT );
         loadDitStructureRules( ditStructureRules );
-        
+
         // Load all the LS
         Attribute ldapSytaxes = subschemaSubentry.get( SchemaConstants.LDAP_SYNTAXES_AT );
         loadLdapSyntaxes( ldapSytaxes );
-        
+
         // Load all the MR
         Attribute matchingRules = subschemaSubentry.get( SchemaConstants.MATCHING_RULES_AT );
         loadMatchingRules( matchingRules );
-        
+
         // Load all the MRU
         Attribute matchingRuleUse = subschemaSubentry.get( SchemaConstants.MATCHING_RULE_USE_AT );
         loadMatchingRuleUses( matchingRuleUse );
-        
+
         // Load all the N
         Attribute normalizers = subschemaSubentry.get( SchemaConstants.NORMALIZERS_AT );
         loadNormalizers( normalizers );
-        
+
         // Load all the NF
         Attribute nameForms = subschemaSubentry.get( SchemaConstants.NAME_FORMS_AT );
         loadNameForms( nameForms );
-        
+
         // Load all the OC
         Attribute objectClasses = subschemaSubentry.get( SchemaConstants.OBJECT_CLASSES_AT );
         loadObjectClasses( objectClasses );
-        
+
         // Load all the SC
         Attribute syntaxCheckers = subschemaSubentry.get( SchemaConstants.SYNTAX_CHECKERS_AT );
         loadSyntaxCheckers( syntaxCheckers );
@@ -229,39 +229,13 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     /**
      * {@inheritDoc}
      */
-    public List<Entry> loadAttributeTypes( Schema... schemas ) throws LdapException, IOException
-    {
-        List<Entry> attributeTypeEntries = new ArrayList<Entry>();
-        AttributesFactory factory = new AttributesFactory();
-
-        for ( Schema schema : schemas )
-        {
-            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
-            
-            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
-            {
-                SchemaObject schemaObject = schemaObjectWrapper.get();
-                
-                if ( schemaObject instanceof AttributeType )
-                {
-                    AttributeType attributeType = (AttributeType)schemaObject;
-
-                    Entry attributeTypeEntry = factory.convert( attributeType, schema, null );
-
-                    attributeTypeEntries.add( attributeTypeEntry );
-                }
-            }
-        }
-
-        return attributeTypeEntries;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     private void loadAttributeTypes( Attribute attributeTypes ) throws LdapException
     {
+        if ( attributeTypes == null )
+        {
+            return;
+        }
+
         for ( Value<?> value : attributeTypes )
         {
             String desc = value.getString();
@@ -269,7 +243,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             try
             {
                 AttributeType attributeType = AT_DESCR_SCHEMA_PARSER.parseAttributeTypeDescription( desc );
-                
+
                 updateSchemas( attributeType );
             }
             catch ( ParseException pe )
@@ -285,6 +259,11 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      */
     private void loadComparators( Attribute comparators ) throws LdapException
     {
+        if ( comparators == null )
+        {
+            return;
+        }
+
         for ( Value<?> value : comparators )
         {
             String desc = value.getString();
@@ -292,7 +271,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             try
             {
                 LdapComparatorDescription comparator = C_DESCR_SCHEMA_PARSER.parseComparatorDescription( desc );
-                
+
                 updateSchemas( comparator );
             }
             catch ( ParseException pe )
@@ -308,6 +287,11 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      */
     private void loadDitContentRules( Attribute ditContentRules ) throws LdapException
     {
+        if ( ditContentRules == null )
+        {
+            return;
+        }
+
         for ( Value<?> value : ditContentRules )
         {
             String desc = value.getString();
@@ -315,7 +299,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             try
             {
                 DITContentRule ditContentRule = DCR_DESCR_SCHEMA_PARSER.parseDITContentRuleDescription( desc );
-                
+
                 updateSchemas( ditContentRule );
             }
             catch ( ParseException pe )
@@ -331,6 +315,11 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      */
     private void loadDitStructureRules( Attribute ditStructureRules ) throws LdapException
     {
+        if ( ditStructureRules == null )
+        {
+            return;
+        }
+
         for ( Value<?> value : ditStructureRules )
         {
             String desc = value.getString();
@@ -338,7 +327,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             try
             {
                 DITStructureRule ditStructureRule = DSR_DESCR_SCHEMA_PARSER.parseDITStructureRuleDescription( desc );
-                
+
                 updateSchemas( ditStructureRule );
             }
             catch ( ParseException pe )
@@ -354,6 +343,11 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      */
     private void loadLdapSyntaxes( Attribute ldapSyntaxes ) throws LdapException
     {
+        if ( ldapSyntaxes == null )
+        {
+            return;
+        }
+
         for ( Value<?> value : ldapSyntaxes )
         {
             String desc = value.getString();
@@ -361,7 +355,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             try
             {
                 LdapSyntax ldapSyntax = LS_DESCR_SCHEMA_PARSER.parseLdapSyntaxDescription( desc );
-                
+
                 updateSchemas( ldapSyntax );
             }
             catch ( ParseException pe )
@@ -377,6 +371,11 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      */
     private void loadMatchingRules( Attribute matchingRules ) throws LdapException
     {
+        if ( matchingRules == null )
+        {
+            return;
+        }
+
         for ( Value<?> value : matchingRules )
         {
             String desc = value.getString();
@@ -384,7 +383,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             try
             {
                 MatchingRule matchingRule = MR_DESCR_SCHEMA_PARSER.parseMatchingRuleDescription( desc );
-                
+
                 updateSchemas( matchingRule );
             }
             catch ( ParseException pe )
@@ -400,6 +399,11 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      */
     private void loadMatchingRuleUses( Attribute matchingRuleUses ) throws LdapException
     {
+        if ( matchingRuleUses == null )
+        {
+            return;
+        }
+
         for ( Value<?> value : matchingRuleUses )
         {
             String desc = value.getString();
@@ -407,7 +411,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             try
             {
                 MatchingRuleUse matchingRuleUse = MRU_DESCR_SCHEMA_PARSER.parseMatchingRuleUseDescription( desc );
-                
+
                 updateSchemas( matchingRuleUse );
             }
             catch ( ParseException pe )
@@ -423,6 +427,11 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      */
     private void loadNameForms( Attribute nameForms ) throws LdapException
     {
+        if ( nameForms == null )
+        {
+            return;
+        }
+
         for ( Value<?> value : nameForms )
         {
             String desc = value.getString();
@@ -430,7 +439,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             try
             {
                 NameForm nameForm = NF_DESCR_SCHEMA_PARSER.parseNameFormDescription( desc );
-                
+
                 updateSchemas( nameForm );
             }
             catch ( ParseException pe )
@@ -446,6 +455,11 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      */
     private void loadNormalizers( Attribute normalizers ) throws LdapException
     {
+        if ( normalizers == null )
+        {
+            return;
+        }
+
         for ( Value<?> value : normalizers )
         {
             String desc = value.getString();
@@ -453,7 +467,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             try
             {
                 NormalizerDescription normalizer = N_DESCR_SCHEMA_PARSER.parseNormalizerDescription( desc );
-                
+
                 updateSchemas( normalizer );
             }
             catch ( ParseException pe )
@@ -469,6 +483,11 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      */
     private void loadObjectClasses( Attribute objectClasses ) throws LdapException
     {
+        if ( objectClasses == null )
+        {
+            return;
+        }
+
         for ( Value<?> value : objectClasses )
         {
             String desc = value.getString();
@@ -476,7 +495,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             try
             {
                 ObjectClass objectClass = OC_DESCR_SCHEMA_PARSER.parseObjectClassDescription( desc );
-                
+
                 updateSchemas( objectClass );
             }
             catch ( ParseException pe )
@@ -492,6 +511,11 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      */
     private void loadSyntaxCheckers( Attribute syntaxCheckers ) throws LdapException
     {
+        if ( syntaxCheckers == null )
+        {
+            return;
+        }
+
         for ( Value<?> value : syntaxCheckers )
         {
             String desc = value.getString();
@@ -499,7 +523,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             try
             {
                 SyntaxCheckerDescription syntaxChecker = SC_DESCR_SCHEMA_PARSER.parseSyntaxCheckerDescription( desc );
-                
+
                 updateSchemas( syntaxChecker );
             }
             catch ( ParseException pe )
@@ -508,13 +532,13 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             }
         }
     }
-    
-    
+
+
     private void updateSchemas( SchemaObject schemaObject )
     {
         String schemaName = schemaObject.getSchemaName();
         Schema schema = null;
-        
+
         if ( Strings.isEmpty( schemaName ) || Strings.equals( "null", schemaName ) )
         {
             schemaName = "default";
@@ -524,16 +548,53 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         {
             schema = schemaMap.get( schemaName );
         }
-        
+
         if ( schema == null )
         {
             schema = new DefaultSchema( schemaName );
-            
+
             schemaMap.put( schemaName, schema );
         }
-          
+
         schema.getContent().add( new SchemaObjectWrapper( schemaObject ) );
 
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Entry> loadAttributeTypes( Schema... schemas ) throws LdapException, IOException
+    {
+        List<Entry> attributeTypeEntries = new ArrayList<Entry>();
+
+        if ( schemas == null )
+        {
+            return attributeTypeEntries;
+        }
+
+        AttributesFactory factory = new AttributesFactory();
+
+        for ( Schema schema : schemas )
+        {
+            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
+
+            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
+            {
+                SchemaObject schemaObject = schemaObjectWrapper.get();
+
+                if ( schemaObject instanceof AttributeType )
+                {
+                    AttributeType attributeType = ( AttributeType ) schemaObject;
+
+                    Entry attributeTypeEntry = factory.convert( attributeType, schema, null );
+
+                    attributeTypeEntries.add( attributeTypeEntry );
+                }
+            }
+        }
+
+        return attributeTypeEntries;
     }
 
 
@@ -544,17 +605,22 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     {
         List<Entry> comparatorEntries = new ArrayList<Entry>();
 
+        if ( schemas == null )
+        {
+            return comparatorEntries;
+        }
+
         for ( Schema schema : schemas )
         {
             Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
-            
+
             for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
             {
                 SchemaObject schemaObject = schemaObjectWrapper.get();
-                
+
                 if ( schemaObject instanceof LdapComparatorDescription )
                 {
-                    LdapComparatorDescription ldapComparatorDescription = (LdapComparatorDescription)schemaObject;
+                    LdapComparatorDescription ldapComparatorDescription = ( LdapComparatorDescription ) schemaObject;
                     Entry lcEntry = getEntry( ldapComparatorDescription );
 
                     comparatorEntries.add( lcEntry );
@@ -565,7 +631,334 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         return comparatorEntries;
     }
 
-    
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Entry> loadDitContentRules( Schema... schemas ) throws LdapException, IOException
+    {
+        List<Entry> ditContentRuleEntries = new ArrayList<Entry>();
+
+        if ( schemas == null )
+        {
+            return ditContentRuleEntries;
+        }
+
+        AttributesFactory factory = new AttributesFactory();
+
+        for ( Schema schema : schemas )
+        {
+            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
+
+            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
+            {
+                SchemaObject schemaObject = schemaObjectWrapper.get();
+
+                if ( schemaObject instanceof DITContentRule )
+                {
+                    DITContentRule ditContentRule = ( DITContentRule ) schemaObject;
+
+                    Entry ditContentRuleEntry = factory.convert( ditContentRule, schema, null );
+
+                    ditContentRuleEntries.add( ditContentRuleEntry );
+                }
+            }
+        }
+
+        return ditContentRuleEntries;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Entry> loadDitStructureRules( Schema... schemas ) throws LdapException, IOException
+    {
+        List<Entry> ditStructureRuleEntries = new ArrayList<Entry>();
+
+        if ( schemas == null )
+        {
+            return ditStructureRuleEntries;
+        }
+
+        AttributesFactory factory = new AttributesFactory();
+
+        for ( Schema schema : schemas )
+        {
+            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
+
+            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
+            {
+                SchemaObject schemaObject = schemaObjectWrapper.get();
+
+                if ( schemaObject instanceof DITStructureRule )
+                {
+                    DITStructureRule ditStructureRule = ( DITStructureRule ) schemaObject;
+
+                    Entry ditStructureRuleEntry = factory.convert( ditStructureRule, schema, null );
+
+                    ditStructureRuleEntries.add( ditStructureRuleEntry );
+                }
+            }
+        }
+
+        return ditStructureRuleEntries;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Entry> loadMatchingRuleUses( Schema... schemas ) throws LdapException, IOException
+    {
+        List<Entry> matchingRuleUseEntries = new ArrayList<Entry>();
+
+        if ( schemas == null )
+        {
+            return matchingRuleUseEntries;
+        }
+
+        AttributesFactory factory = new AttributesFactory();
+
+        for ( Schema schema : schemas )
+        {
+            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
+
+            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
+            {
+                SchemaObject schemaObject = schemaObjectWrapper.get();
+
+                if ( schemaObject instanceof MatchingRuleUse )
+                {
+                    MatchingRuleUse matchingRuleUse = ( MatchingRuleUse ) schemaObject;
+
+                    Entry matchingRuleUseEntry = factory.convert( matchingRuleUse, schema, null );
+
+                    matchingRuleUseEntries.add( matchingRuleUseEntry );
+                }
+            }
+        }
+
+        return matchingRuleUseEntries;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Entry> loadMatchingRules( Schema... schemas ) throws LdapException, IOException
+    {
+        List<Entry> matchingRuleEntries = new ArrayList<Entry>();
+
+        if ( schemas == null )
+        {
+            return matchingRuleEntries;
+        }
+
+        AttributesFactory factory = new AttributesFactory();
+
+        for ( Schema schema : schemas )
+        {
+            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
+
+            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
+            {
+                SchemaObject schemaObject = schemaObjectWrapper.get();
+
+                if ( schemaObject instanceof MatchingRule )
+                {
+                    MatchingRule matchingRule = ( MatchingRule ) schemaObject;
+
+                    Entry matchingRuleEntry = factory.convert( matchingRule, schema, null );
+
+                    matchingRuleEntries.add( matchingRuleEntry );
+                }
+            }
+        }
+
+        return matchingRuleEntries;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Entry> loadNameForms( Schema... schemas ) throws LdapException, IOException
+    {
+        List<Entry> nameFormEntries = new ArrayList<Entry>();
+
+        if ( schemas == null )
+        {
+            return nameFormEntries;
+        }
+
+        AttributesFactory factory = new AttributesFactory();
+
+        for ( Schema schema : schemas )
+        {
+            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
+
+            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
+            {
+                SchemaObject schemaObject = schemaObjectWrapper.get();
+
+                if ( schemaObject instanceof NameForm )
+                {
+                    NameForm nameForm = ( NameForm ) schemaObject;
+
+                    Entry nameFormEntry = factory.convert( nameForm, schema, null );
+
+                    nameFormEntries.add( nameFormEntry );
+                }
+            }
+        }
+
+        return nameFormEntries;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Entry> loadNormalizers( Schema... schemas ) throws LdapException, IOException
+    {
+        List<Entry> normalizerEntries = new ArrayList<Entry>();
+
+        if ( schemas == null )
+        {
+            return normalizerEntries;
+        }
+
+        for ( Schema schema : schemas )
+        {
+            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
+
+            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
+            {
+                SchemaObject schemaObject = schemaObjectWrapper.get();
+
+                if ( schemaObject instanceof NormalizerDescription )
+                {
+                    NormalizerDescription normalizerDescription = ( NormalizerDescription ) schemaObject;
+                    Entry normalizerEntry = getEntry( normalizerDescription );
+
+                    normalizerEntries.add( normalizerEntry );
+                }
+            }
+        }
+
+        return normalizerEntries;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Entry> loadObjectClasses( Schema... schemas ) throws LdapException, IOException
+    {
+        List<Entry> objectClassEntries = new ArrayList<Entry>();
+
+        if ( schemas == null )
+        {
+            return objectClassEntries;
+        }
+
+        AttributesFactory factory = new AttributesFactory();
+
+        for ( Schema schema : schemas )
+        {
+            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
+
+            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
+            {
+                SchemaObject schemaObject = schemaObjectWrapper.get();
+
+                if ( schemaObject instanceof ObjectClass )
+                {
+                    ObjectClass objectClass = ( ObjectClass ) schemaObject;
+
+                    Entry objectClassEntry = factory.convert( objectClass, schema, null );
+
+                    objectClassEntries.add( objectClassEntry );
+                }
+            }
+        }
+
+        return objectClassEntries;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Entry> loadSyntaxCheckers( Schema... schemas ) throws LdapException, IOException
+    {
+        List<Entry> syntaxCheckerEntries = new ArrayList<Entry>();
+
+        if ( schemas == null )
+        {
+            return syntaxCheckerEntries;
+        }
+
+        for ( Schema schema : schemas )
+        {
+            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
+
+            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
+            {
+                SchemaObject schemaObject = schemaObjectWrapper.get();
+
+                if ( schemaObject instanceof SyntaxCheckerDescription )
+                {
+                    SyntaxCheckerDescription syntaxCheckerDescription = ( SyntaxCheckerDescription ) schemaObject;
+                    Entry syntaxCheckerEntry = getEntry( syntaxCheckerDescription );
+
+                    syntaxCheckerEntries.add( syntaxCheckerEntry );
+                }
+            }
+        }
+
+        return syntaxCheckerEntries;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<Entry> loadSyntaxes( Schema... schemas ) throws LdapException, IOException
+    {
+        List<Entry> syntaxEntries = new ArrayList<Entry>();
+
+        if ( schemas == null )
+        {
+            return syntaxEntries;
+        }
+
+        AttributesFactory factory = new AttributesFactory();
+
+        for ( Schema schema : schemas )
+        {
+            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
+
+            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
+            {
+                SchemaObject schemaObject = schemaObjectWrapper.get();
+
+                if ( schemaObject instanceof LdapSyntax )
+                {
+                    LdapSyntax ldapSyntax = ( LdapSyntax ) schemaObject;
+
+                    Entry ldapSyntaxEntry = factory.convert( ldapSyntax, schema, null );
+
+                    syntaxEntries.add( ldapSyntaxEntry );
+                }
+            }
+        }
+
+        return syntaxEntries;
+    }
+
+
     private Entry getEntry( LdapComparatorDescription comparatorDescription )
     {
         Entry entry = new DefaultEntry();
@@ -592,7 +985,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         return entry;
     }
 
-    
+
     private Entry getEntry( SyntaxCheckerDescription syntaxCheckerDescription )
     {
         Entry entry = new DefaultEntry();
@@ -619,7 +1012,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         return entry;
     }
 
-    
+
     private Entry getEntry( NormalizerDescription normalizerDescription )
     {
         Entry entry = new DefaultEntry();
@@ -644,286 +1037,5 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         }
 
         return entry;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<Entry> loadDitContentRules( Schema... schemas ) throws LdapException, IOException
-    {
-        List<Entry> ditContentRuleEntries = new ArrayList<Entry>();
-        AttributesFactory factory = new AttributesFactory();
-
-        for ( Schema schema : schemas )
-        {
-            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
-            
-            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
-            {
-                SchemaObject schemaObject = schemaObjectWrapper.get();
-                
-                if ( schemaObject instanceof DITContentRule )
-                {
-                    DITContentRule ditContentRule = (DITContentRule)schemaObject;
-
-                    Entry ditContentRuleEntry = factory.convert( ditContentRule, schema, null );
-
-                    ditContentRuleEntries.add( ditContentRuleEntry );
-                }
-            }
-        }
-
-
-        return ditContentRuleEntries;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<Entry> loadDitStructureRules( Schema... schemas ) throws LdapException, IOException
-    {
-        List<Entry> ditStructureRuleEntries = new ArrayList<Entry>();
-        AttributesFactory factory = new AttributesFactory();
-
-        for ( Schema schema : schemas )
-        {
-            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
-            
-            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
-            {
-                SchemaObject schemaObject = schemaObjectWrapper.get();
-                
-                if ( schemaObject instanceof DITStructureRule )
-                {
-                    DITStructureRule ditStructureRule = (DITStructureRule)schemaObject;
-
-                    Entry ditStructureRuleEntry = factory.convert( ditStructureRule, schema, null );
-
-                    ditStructureRuleEntries.add( ditStructureRuleEntry );
-                }
-            }
-        }
-
-
-        return ditStructureRuleEntries;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<Entry> loadMatchingRuleUses( Schema... schemas ) throws LdapException, IOException
-    {
-        List<Entry> matchingRuleUseEntries = new ArrayList<Entry>();
-        AttributesFactory factory = new AttributesFactory();
-
-        for ( Schema schema : schemas )
-        {
-            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
-            
-            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
-            {
-                SchemaObject schemaObject = schemaObjectWrapper.get();
-                
-                if ( schemaObject instanceof MatchingRuleUse )
-                {
-                    MatchingRuleUse matchingRuleUse = (MatchingRuleUse)schemaObject;
-
-                    Entry matchingRuleUseEntry = factory.convert( matchingRuleUse, schema, null );
-
-                    matchingRuleUseEntries.add( matchingRuleUseEntry );
-                }
-            }
-        }
-
-
-        return matchingRuleUseEntries;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<Entry> loadMatchingRules( Schema... schemas ) throws LdapException, IOException
-    {
-        List<Entry> matchingRuleEntries = new ArrayList<Entry>();
-        AttributesFactory factory = new AttributesFactory();
-
-        for ( Schema schema : schemas )
-        {
-            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
-            
-            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
-            {
-                SchemaObject schemaObject = schemaObjectWrapper.get();
-                
-                if ( schemaObject instanceof MatchingRule )
-                {
-                    MatchingRule matchingRule = (MatchingRule)schemaObject;
-
-                    Entry matchingRuleEntry = factory.convert( matchingRule, schema, null );
-
-                    matchingRuleEntries.add( matchingRuleEntry );
-                }
-            }
-        }
-
-        return matchingRuleEntries;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<Entry> loadNameForms( Schema... schemas ) throws LdapException, IOException
-    {
-        List<Entry> nameFormEntries = new ArrayList<Entry>();
-        AttributesFactory factory = new AttributesFactory();
-
-        for ( Schema schema : schemas )
-        {
-            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
-            
-            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
-            {
-                SchemaObject schemaObject = schemaObjectWrapper.get();
-                
-                if ( schemaObject instanceof NameForm )
-                {
-                    NameForm nameForm = (NameForm)schemaObject;
-
-                    Entry nameFormEntry = factory.convert( nameForm, schema, null );
-
-                    nameFormEntries.add( nameFormEntry );
-                }
-            }
-        }
-
-
-        return nameFormEntries;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<Entry> loadNormalizers( Schema... schemas ) throws LdapException, IOException
-    {
-        List<Entry> normalizerEntries = new ArrayList<Entry>();
-
-        for ( Schema schema : schemas )
-        {
-            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
-            
-            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
-            {
-                SchemaObject schemaObject = schemaObjectWrapper.get();
-                
-                if ( schemaObject instanceof NormalizerDescription )
-                {
-                    NormalizerDescription normalizerDescription = (NormalizerDescription)schemaObject;
-                    Entry normalizerEntry = getEntry( normalizerDescription );
-
-                    normalizerEntries.add( normalizerEntry );
-                }
-            }
-        }
-
-
-        return normalizerEntries;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<Entry> loadObjectClasses( Schema... schemas ) throws LdapException, IOException
-    {
-        List<Entry> objectClassEntries = new ArrayList<Entry>();
-        AttributesFactory factory = new AttributesFactory();
-
-        for ( Schema schema : schemas )
-        {
-            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
-            
-            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
-            {
-                SchemaObject schemaObject = schemaObjectWrapper.get();
-                
-                if ( schemaObject instanceof ObjectClass )
-                {
-                    ObjectClass objectClass = (ObjectClass)schemaObject;
-
-                    Entry objectClassEntry = factory.convert( objectClass, schema, null );
-
-                    objectClassEntries.add(objectClassEntry );
-                }
-            }
-        }
-
-        return objectClassEntries;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<Entry> loadSyntaxCheckers( Schema... schemas ) throws LdapException, IOException
-    {
-        List<Entry> syntaxCheckerEntries = new ArrayList<Entry>();
-
-        for ( Schema schema : schemas )
-        {
-            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
-            
-            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
-            {
-                SchemaObject schemaObject = schemaObjectWrapper.get();
-                
-                if ( schemaObject instanceof SyntaxCheckerDescription )
-                {
-                    SyntaxCheckerDescription syntaxCheckerDescription = (SyntaxCheckerDescription)schemaObject;
-                    Entry syntaxCheckerEntry = getEntry( syntaxCheckerDescription );
-
-                    syntaxCheckerEntries.add( syntaxCheckerEntry );
-                }
-            }
-        }
-
-        return syntaxCheckerEntries;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public List<Entry> loadSyntaxes( Schema... schemas ) throws LdapException, IOException
-    {
-        List<Entry> syntaxEntries = new ArrayList<Entry>();
-        AttributesFactory factory = new AttributesFactory();
-
-        for ( Schema schema : schemas )
-        {
-            Set<SchemaObjectWrapper> schemaObjectWrappers = schema.getContent();
-            
-            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjectWrappers )
-            {
-                SchemaObject schemaObject = schemaObjectWrapper.get();
-                
-                if ( schemaObject instanceof LdapSyntax )
-                {
-                    LdapSyntax ldapSyntax = (LdapSyntax)schemaObject;
-
-                    Entry ldapSyntaxEntry = factory.convert( ldapSyntax, schema, null );
-
-                    syntaxEntries.add( ldapSyntaxEntry );
-                }
-            }
-        }
-
-
-        return syntaxEntries;
     }
 }
