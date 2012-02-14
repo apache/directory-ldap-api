@@ -612,7 +612,7 @@ public class SchemaManagerAddTest
 
         // Check that it hasen't changed
         AttributeType original = schemaManager.lookupAttributeTypeRegistry( "2.5.18.4" );
-        assertEquals( "distinguishedNameMatch", original.getEqualityOid() );
+        assertEquals( "distinguishedNameMatch", original.getEquality().getName() );
         assertEquals( atrSize, schemaManager.getAttributeTypeRegistry().size() );
         assertEquals( goidSize, schemaManager.getGlobalOidRegistry().size() );
     }
