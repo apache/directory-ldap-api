@@ -258,10 +258,10 @@ public class DefaultSchemaManager implements SchemaManager
             addMatchingRules( schema, registries );
             addAttributeTypes( schema, registries );
             addObjectClasses( schema, registries );
-            addMatchingRuleUses( schema, registries );
-            addDitContentRules( schema, registries );
-            addNameForms( schema, registries );
-            addDitStructureRules( schema, registries );
+            //addMatchingRuleUses( schema, registries );
+            //addDitContentRules( schema, registries );
+            //addNameForms( schema, registries );
+            //addDitStructureRules( schema, registries );
         }
         catch ( IOException ioe )
         {
@@ -814,29 +814,27 @@ public class DefaultSchemaManager implements SchemaManager
      * Add all the Schema's DitContentRules
      */
     // Not yet implemented, but may be used
-    @SuppressWarnings("PMD.UnusedFormalParameter")
-    private void addDitContentRules( Schema schema, Registries registries ) throws LdapException, IOException
-    {
-        if ( !schemaLoader.loadDitContentRules( schema ).isEmpty() )
-        {
-            throw new NotImplementedException( I18n.err( I18n.ERR_11003 ) );
-        }
-    }
-
+    //    @SuppressWarnings("PMD.UnusedFormalParameter")
+    //    private void addDitContentRules( Schema schema, Registries registries ) throws LdapException, IOException
+    //    {
+    //        if ( !schemaLoader.loadDitContentRules( schema ).isEmpty() )
+    //        {
+    //            throw new NotImplementedException( I18n.err( I18n.ERR_11003 ) );
+    //        }
+    //    }
 
     /**
      * Add all the Schema's DitStructureRules
      */
     // Not yet implemented, but may be used
-    @SuppressWarnings("PMD.UnusedFormalParameter")
-    private void addDitStructureRules( Schema schema, Registries registries ) throws LdapException, IOException
-    {
-        if ( !schemaLoader.loadDitStructureRules( schema ).isEmpty() )
-        {
-            throw new NotImplementedException( I18n.err( I18n.ERR_11004 ) );
-        }
-    }
-
+    //    @SuppressWarnings("PMD.UnusedFormalParameter")
+    //    private void addDitStructureRules( Schema schema, Registries registries ) throws LdapException, IOException
+    //    {
+    //        if ( !schemaLoader.loadDitStructureRules( schema ).isEmpty() )
+    //        {
+    //            throw new NotImplementedException( I18n.err( I18n.ERR_11004 ) );
+    //        }
+    //    }
 
     /**
      * Add all the Schema's MatchingRules
@@ -856,33 +854,31 @@ public class DefaultSchemaManager implements SchemaManager
      * Add all the Schema's MatchingRuleUses
      */
     // Not yet implemented, but may be used
-    @SuppressWarnings("PMD.UnusedFormalParameter")
-    private void addMatchingRuleUses( Schema schema, Registries registries ) throws LdapException, IOException
-    {
-        if ( !schemaLoader.loadMatchingRuleUses( schema ).isEmpty() )
-        {
-            throw new NotImplementedException( I18n.err( I18n.ERR_11005 ) );
-        }
-        // for ( Entry entry : schemaLoader.loadMatchingRuleUses( schema ) )
-        // {
-        //     throw new NotImplementedException( I18n.err( I18n.ERR_11005 ) );
-        // }
-    }
-
+    //    @SuppressWarnings("PMD.UnusedFormalParameter")
+    //    private void addMatchingRuleUses( Schema schema, Registries registries ) throws LdapException, IOException
+    //    {
+    //        if ( !schemaLoader.loadMatchingRuleUses( schema ).isEmpty() )
+    //        {
+    //            throw new NotImplementedException( I18n.err( I18n.ERR_11005 ) );
+    //        }
+    //        // for ( Entry entry : schemaLoader.loadMatchingRuleUses( schema ) )
+    //        // {
+    //        //     throw new NotImplementedException( I18n.err( I18n.ERR_11005 ) );
+    //        // }
+    //    }
 
     /**
      * Add all the Schema's NameForms
      */
     // Not yet implemented, but may be used
-    @SuppressWarnings("PMD.UnusedFormalParameter")
-    private void addNameForms( Schema schema, Registries registries ) throws LdapException, IOException
-    {
-        if ( !schemaLoader.loadNameForms( schema ).isEmpty() )
-        {
-            throw new NotImplementedException( I18n.err( I18n.ERR_11006 ) );
-        }
-    }
-
+    //    @SuppressWarnings("PMD.UnusedFormalParameter")
+    //    private void addNameForms( Schema schema, Registries registries ) throws LdapException, IOException
+    //    {
+    //        if ( !schemaLoader.loadNameForms( schema ).isEmpty() )
+    //        {
+    //            throw new NotImplementedException( I18n.err( I18n.ERR_11006 ) );
+    //        }
+    //    }
 
     /**
      * Add all the Schema's Normalizers
