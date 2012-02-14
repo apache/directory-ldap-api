@@ -59,35 +59,35 @@ public class AttributesFactory
     {
         if ( obj instanceof LdapSyntax )
         {
-            return convert( (LdapSyntax)obj, schema, schemaManager );
+            return convert( ( LdapSyntax ) obj, schema, schemaManager );
         }
         else if ( obj instanceof MatchingRule )
         {
-            return convert( (MatchingRule)obj, schema, schemaManager );
+            return convert( ( MatchingRule ) obj, schema, schemaManager );
         }
         else if ( obj instanceof AttributeType )
         {
-            return convert( (AttributeType)obj, schema, schemaManager );
+            return convert( ( AttributeType ) obj, schema, schemaManager );
         }
         else if ( obj instanceof ObjectClass )
         {
-            return convert( (ObjectClass)obj, schema, schemaManager );
+            return convert( ( ObjectClass ) obj, schema, schemaManager );
         }
         else if ( obj instanceof MatchingRuleUse )
         {
-            return convert( (MatchingRuleUse)obj, schema, schemaManager );
+            return convert( ( MatchingRuleUse ) obj, schema, schemaManager );
         }
         else if ( obj instanceof DITStructureRule )
         {
-            return convert( (DITStructureRule)obj, schema, schemaManager );
+            return convert( ( DITStructureRule ) obj, schema, schemaManager );
         }
         else if ( obj instanceof DITContentRule )
         {
-            return convert( (DITContentRule)obj, schema, schemaManager );
+            return convert( ( DITContentRule ) obj, schema, schemaManager );
         }
         else if ( obj instanceof NameForm )
         {
-            return convert( (NameForm)obj, schema, schemaManager );
+            return convert( ( NameForm ) obj, schema, schemaManager );
         }
 
         throw new IllegalArgumentException( "nknown SchemaObject type: " + obj.getClass() );
@@ -277,7 +277,6 @@ public class AttributesFactory
         Entry entry = new DefaultEntry( schemaManager );
 
         entry.put( SchemaConstants.OBJECT_CLASS_AT, SchemaConstants.TOP_OC, MetaSchemaConstants.META_ATTRIBUTE_TYPE_OC );
-        entry.put( MetaSchemaConstants.M_SYNTAX_AT, attributeType.getSyntaxOid() );
         entry.put( MetaSchemaConstants.M_COLLECTIVE_AT, getBoolean( attributeType.isCollective() ) );
         entry.put( MetaSchemaConstants.M_NO_USER_MODIFICATION_AT, getBoolean( !attributeType.isUserModifiable() ) );
         entry.put( MetaSchemaConstants.M_SINGLE_VALUE_AT, getBoolean( attributeType.isSingleValued() ) );
@@ -307,6 +306,11 @@ public class AttributesFactory
         if ( attributeType.getOrderingOid() != null )
         {
             entry.put( MetaSchemaConstants.M_ORDERING_AT, attributeType.getOrderingOid() );
+        }
+
+        if ( attributeType.getSyntaxOid() != null )
+        {
+            entry.put( MetaSchemaConstants.M_SYNTAX_AT, attributeType.getSyntaxOid() );
         }
 
         return entry;
@@ -344,7 +348,7 @@ public class AttributesFactory
 
         injectCommon( objectClass, entry, schemaManager );
         Attribute attr = null;
-        
+
         // handle the superior objectClasses
         if ( objectClass.getSuperiorOids() != null && objectClass.getSuperiorOids().size() != 0 )
         {
@@ -421,16 +425,16 @@ public class AttributesFactory
         {
             entry.put( MetaSchemaConstants.M_DESCRIPTION_AT, object.getDescription() );
         }
-        
+
         // The extensions
         Map<String, List<String>> extensions = object.getExtensions();
-        
+
         if ( extensions != null )
         {
             for ( String key : extensions.keySet() )
             {
                 List<String> values = extensions.get( key );
-                
+
                 for ( String value : values )
                 {
                     entry.add( key, value );
@@ -448,7 +452,7 @@ public class AttributesFactory
         }
 
         Attribute attr = null;
-        
+
         if ( schemaManager != null )
         {
             attr = new DefaultAttribute( schemaManager.getAttributeType( MetaSchemaConstants.M_NAME_AT ) );
