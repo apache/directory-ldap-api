@@ -1260,7 +1260,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     ldapSchemaException.setSourceObject( objectClass );
                     ldapSchemaException.setOtherObject( may );
                     errors.add( ldapSchemaException );
-                    return;
                 }
             }
         }
