@@ -1231,10 +1231,4 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
             return false;
         }
     }
-    
-    
-    public void unlock()
-    {
-        locked = false;
-    }
 }

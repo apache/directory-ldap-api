@@ -924,6 +924,12 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         // Clear the names
         names.clear();
     }
+    
+    
+    public void unlock()
+    {
+        locked = false;
+    }
 
 
     /**
