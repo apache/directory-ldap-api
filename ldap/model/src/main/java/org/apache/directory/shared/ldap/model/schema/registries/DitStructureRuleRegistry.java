@@ -23,23 +23,23 @@ package org.apache.directory.shared.ldap.model.schema.registries;
 import java.util.Iterator;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
+import org.apache.directory.shared.ldap.model.schema.DitStructureRule;
 
 
 /**
- * An DITStructureRule registry service interface.
+ * An DitStructureRule registry service interface.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface DITStructureRuleRegistry extends SchemaObjectRegistry<DITStructureRule>,
-    Iterable<DITStructureRule>
+public interface DitStructureRuleRegistry extends SchemaObjectRegistry<DitStructureRule>,
+    Iterable<DitStructureRule>
 {
     /**
-     * Checks to see if an DITStructureRule exists in the registry, by its
+     * Checks to see if an DitStructureRule exists in the registry, by its
      * ruleId. 
      * 
-     * @param ruleId the rule identifier of the DITStructureRule
-     * @return true if a DITStructureRule definition exists for the ruleId, false
+     * @param ruleId the rule identifier of the DitStructureRule
+     * @return true if a DitStructureRule definition exists for the ruleId, false
      * otherwise
      */
     boolean contains( int ruleId );
@@ -50,7 +50,7 @@ public interface DITStructureRuleRegistry extends SchemaObjectRegistry<DITStruct
      *
      * @return an Iterator of descriptions
      */
-    Iterator<DITStructureRule> iterator();
+    Iterator<DitStructureRule> iterator();
 
 
     /**
@@ -72,31 +72,31 @@ public interface DITStructureRuleRegistry extends SchemaObjectRegistry<DITStruct
 
 
     /**
-     * Registers a new DITStructureRule with this registry.
+     * Registers a new DitStructureRule with this registry.
      *
-     * @param ditStructureRule the DITStructureRule to register
-     * @throws LdapException if the DITStructureRule is already registered or
+     * @param ditStructureRule the DitStructureRule to register
+     * @throws LdapException if the DitStructureRule is already registered or
      * the registration operation is not supported
      */
-    void register( DITStructureRule ditStructureRule ) throws LdapException;
+    void register( DitStructureRule ditStructureRule ) throws LdapException;
 
 
     /**
      * Looks up an dITStructureRule by its unique Object IDentifier or by its
      * name.
      * 
-     * @param ruleId the rule identifier for the DITStructureRule
-     * @return the DITStructureRule instance for rule identifier
-     * @throws LdapException if the DITStructureRule does not exist
+     * @param ruleId the rule identifier for the DitStructureRule
+     * @return the DitStructureRule instance for rule identifier
+     * @throws LdapException if the DitStructureRule does not exist
      */
-    DITStructureRule lookup( int ruleId ) throws LdapException;
+    DitStructureRule lookup( int ruleId ) throws LdapException;
 
 
     /**
-     * Unregisters a DITStructureRule using it's rule identifier. 
+     * Unregisters a DitStructureRule using it's rule identifier. 
      * 
-     * @param ruleId the rule identifier for the DITStructureRule to unregister
-     * @throws LdapException if no such DITStructureRule exists
+     * @param ruleId the rule identifier for the DitStructureRule to unregister
+     * @throws LdapException if no such DitStructureRule exists
      */
     void unregister( int ruleId ) throws LdapException;
 
@@ -112,7 +112,7 @@ public interface DITStructureRuleRegistry extends SchemaObjectRegistry<DITStruct
 
 
     /**
-     * Modify all the DITStructureRule using a schemaName when this name changes.
+     * Modify all the DitStructureRule using a schemaName when this name changes.
      *
      * @param originalSchemaName The original Schema name
      * @param newSchemaName The new Schema name
@@ -122,7 +122,7 @@ public interface DITStructureRuleRegistry extends SchemaObjectRegistry<DITStruct
 
 
     /**
-     * Copy the DITStructureRuleRegistry
+     * Copy the DitStructureRuleRegistry
      */
-    DITStructureRuleRegistry copy();
+    DitStructureRuleRegistry copy();
 }

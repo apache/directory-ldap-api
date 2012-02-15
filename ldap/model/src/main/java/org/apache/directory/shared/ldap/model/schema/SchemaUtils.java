@@ -976,7 +976,7 @@ public final class SchemaUtils
      */
     @SuppressWarnings("PMD.UnusedLocalVariable")
     // Remove me when the TODO is fixed
-    public static StringBuffer render( DITStructureRule dsr )
+    public static StringBuffer render( DitStructureRule dsr )
     {
         StringBuffer buf = new StringBuffer();
         buf.append( "( " ).append( dsr.getOid() );

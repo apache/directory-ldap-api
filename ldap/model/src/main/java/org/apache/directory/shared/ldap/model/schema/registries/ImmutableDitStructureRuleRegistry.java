@@ -26,27 +26,27 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
+import org.apache.directory.shared.ldap.model.schema.DitStructureRule;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 
 
 /**
- * An immutable wrapper of the DITStructureRule registry.
+ * An immutable wrapper of the DitStructureRule registry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ImmutableDITStructureRuleRegistry implements DITStructureRuleRegistry
+public class ImmutableDitStructureRuleRegistry implements DitStructureRuleRegistry
 {
-    /** The wrapped DITStructureRule registry */
-    DITStructureRuleRegistry immutableDITStructureRuleRegistry;
+    /** The wrapped DitStructureRule registry */
+    DitStructureRuleRegistry immutableDITStructureRuleRegistry;
 
 
     /**
-     * Creates a new instance of ImmutableDITStructureRuleRegistry.
+     * Creates a new instance of ImmutableDitStructureRuleRegistry.
      *
-     * @param ditStructureRuleRegistry The wrapped DITStructureRule registry
+     * @param ditStructureRuleRegistry The wrapped DitStructureRule registry
      */
-    public ImmutableDITStructureRuleRegistry( DITStructureRuleRegistry ditStructureRuleRegistry )
+    public ImmutableDitStructureRuleRegistry( DitStructureRuleRegistry ditStructureRuleRegistry )
     {
         immutableDITStructureRuleRegistry = ditStructureRuleRegistry;
     }
@@ -64,7 +64,7 @@ public class ImmutableDITStructureRuleRegistry implements DITStructureRuleRegist
     /**
      * {@inheritDoc}
      */
-    public Iterator<DITStructureRule> iterator()
+    public Iterator<DitStructureRule> iterator()
     {
         return immutableDITStructureRuleRegistry.iterator();
     }
@@ -91,7 +91,7 @@ public class ImmutableDITStructureRuleRegistry implements DITStructureRuleRegist
     /**
      * {@inheritDoc}
      */
-    public void register( DITStructureRule ditStructureRule ) throws LdapException
+    public void register( DitStructureRule ditStructureRule ) throws LdapException
     {
     }
 
@@ -99,7 +99,7 @@ public class ImmutableDITStructureRuleRegistry implements DITStructureRuleRegist
     /**
      * {@inheritDoc}
      */
-    public DITStructureRule lookup( int ruleId ) throws LdapException
+    public DitStructureRule lookup( int ruleId ) throws LdapException
     {
         return immutableDITStructureRuleRegistry.lookup( ruleId );
     }
@@ -135,9 +135,9 @@ public class ImmutableDITStructureRuleRegistry implements DITStructureRuleRegist
     /**
      * {@inheritDoc}
      */
-    public ImmutableDITStructureRuleRegistry copy()
+    public ImmutableDitStructureRuleRegistry copy()
     {
-        return ( ImmutableDITStructureRuleRegistry ) immutableDITStructureRuleRegistry.copy();
+        return ( ImmutableDitStructureRuleRegistry ) immutableDITStructureRuleRegistry.copy();
     }
 
 
@@ -189,7 +189,7 @@ public class ImmutableDITStructureRuleRegistry implements DITStructureRuleRegist
     /**
      * {@inheritDoc}
      */
-    public DITStructureRule lookup( String oid ) throws LdapException
+    public DitStructureRule lookup( String oid ) throws LdapException
     {
         return immutableDITStructureRuleRegistry.lookup( oid );
     }
@@ -207,7 +207,7 @@ public class ImmutableDITStructureRuleRegistry implements DITStructureRuleRegist
     /**
      * {@inheritDoc}
      */
-    public DITStructureRule unregister( String numericOid ) throws LdapException
+    public DitStructureRule unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04278 ) );
     }
@@ -216,7 +216,7 @@ public class ImmutableDITStructureRuleRegistry implements DITStructureRuleRegist
     /**
      * {@inheritDoc}
      */
-    public DITStructureRule get( String oid )
+    public DitStructureRule get( String oid )
     {
         return immutableDITStructureRuleRegistry.get( oid );
     }
@@ -234,7 +234,7 @@ public class ImmutableDITStructureRuleRegistry implements DITStructureRuleRegist
     /**
      * {@inheritDoc}
      */
-    public DITStructureRule unregister( DITStructureRule schemaObject ) throws LdapException
+    public DitStructureRule unregister( DitStructureRule schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04278 ) );
     }

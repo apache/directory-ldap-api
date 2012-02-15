@@ -35,18 +35,18 @@ import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ImmutableDITContentRuleRegistry implements DITContentRuleRegistry
+public class ImmutableDitContentRuleRegistry implements DitContentRuleRegistry
 {
     /** The wrapped DitContentRule registry */
-    DITContentRuleRegistry immutableDITContentRuleRegistry;
+    DitContentRuleRegistry immutableDITContentRuleRegistry;
 
 
     /**
-     * Creates a new instance of ImmutableDITContentRuleRegistry.
+     * Creates a new instance of ImmutableDitContentRuleRegistry.
      *
      * @param ditContentRuleRegistry The wrapped DitContentRule registry
      */
-    public ImmutableDITContentRuleRegistry( DITContentRuleRegistry ditContentRuleRegistry )
+    public ImmutableDitContentRuleRegistry( DitContentRuleRegistry ditContentRuleRegistry )
     {
         immutableDITContentRuleRegistry = ditContentRuleRegistry;
     }
@@ -55,9 +55,9 @@ public class ImmutableDITContentRuleRegistry implements DITContentRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public ImmutableDITContentRuleRegistry copy()
+    public ImmutableDitContentRuleRegistry copy()
     {
-        return ( ImmutableDITContentRuleRegistry ) immutableDITContentRuleRegistry.copy();
+        return ( ImmutableDitContentRuleRegistry ) immutableDITContentRuleRegistry.copy();
     }
 
 

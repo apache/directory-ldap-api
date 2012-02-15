@@ -77,12 +77,12 @@ import org.apache.directory.shared.util.exception.NotImplementedException;
  * @see <a
  *      href="http://www.ietf.org/internet-drafts/draft-ietf-ldapbis-models-11.txt">ldapbis
  *      [MODELS]</a>
- * @see DescriptionUtils#getDescription(DITStructureRule)
+ * @see DescriptionUtils#getDescription(DitStructureRule)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 // super.hashCode is final
 @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
-public class DITStructureRule extends AbstractSchemaObject
+public class DitStructureRule extends AbstractSchemaObject
 {
     /** The rule ID. A DSR does not have an OID */
     private int ruleId;
@@ -95,9 +95,9 @@ public class DITStructureRule extends AbstractSchemaObject
 
 
     /**
-     * Creates a new instance of DITStructureRule
+     * Creates a new instance of DitStructureRule
      */
-    public DITStructureRule( int ruleId )
+    public DitStructureRule( int ruleId )
     {
         super( SchemaObjectType.DIT_STRUCTURE_RULE, null );
         this.ruleId = ruleId;
@@ -231,9 +231,9 @@ public class DITStructureRule extends AbstractSchemaObject
     /**
      * {@inheritDoc}
      */
-    public DITStructureRule copy()
+    public DitStructureRule copy()
     {
-        DITStructureRule copy = new DITStructureRule( ruleId );
+        DitStructureRule copy = new DitStructureRule( ruleId );
 
         // Copy the SchemaObject common data
         copy.copy( this );
@@ -266,13 +266,13 @@ public class DITStructureRule extends AbstractSchemaObject
             return false;
         }
 
-        if ( !( o instanceof DITStructureRule ) )
+        if ( !( o instanceof DitStructureRule ) )
         {
             return false;
         }
 
         @SuppressWarnings("unused")
-        DITStructureRule that = ( DITStructureRule ) o;
+        DitStructureRule that = ( DitStructureRule ) o;
 
         // TODO : complete the test
         return true;

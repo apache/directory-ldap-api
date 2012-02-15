@@ -29,8 +29,8 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.normalizers.OidNormalizer;
 import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ComparatorRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.DITContentRuleRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.DITStructureRuleRegistry;
+import org.apache.directory.shared.ldap.model.schema.registries.DitContentRuleRegistry;
+import org.apache.directory.shared.ldap.model.schema.registries.DitStructureRuleRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.LdapSyntaxRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.MatchingRuleRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.MatchingRuleUseRegistry;
@@ -534,15 +534,15 @@ public interface SchemaManager
      * 
      * @return A reference to the DitContentRule registry.
      */
-    DITContentRuleRegistry getDITContentRuleRegistry();
+    DitContentRuleRegistry getDITContentRuleRegistry();
 
 
     /**
-     * Get an immutable reference on the DITStructureRule registry
+     * Get an immutable reference on the DitStructureRule registry
      * 
-     * @return A reference to the DITStructureRule registry.
+     * @return A reference to the DitStructureRule registry.
      */
-    DITStructureRuleRegistry getDITStructureRuleRegistry();
+    DitStructureRuleRegistry getDITStructureRuleRegistry();
 
 
     /**

@@ -55,12 +55,12 @@ import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.normalizers.OidNormalizer;
 import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ComparatorRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.DITContentRuleRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.DITStructureRuleRegistry;
+import org.apache.directory.shared.ldap.model.schema.registries.DitContentRuleRegistry;
+import org.apache.directory.shared.ldap.model.schema.registries.DitStructureRuleRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ImmutableAttributeTypeRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ImmutableComparatorRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.ImmutableDITContentRuleRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.ImmutableDITStructureRuleRegistry;
+import org.apache.directory.shared.ldap.model.schema.registries.ImmutableDitContentRuleRegistry;
+import org.apache.directory.shared.ldap.model.schema.registries.ImmutableDitStructureRuleRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ImmutableLdapSyntaxRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ImmutableMatchingRuleRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ImmutableMatchingRuleUseRegistry;
@@ -1512,18 +1512,18 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public DITContentRuleRegistry getDITContentRuleRegistry()
+    public DitContentRuleRegistry getDITContentRuleRegistry()
     {
-        return new ImmutableDITContentRuleRegistry( registries.getDitContentRuleRegistry() );
+        return new ImmutableDitContentRuleRegistry( registries.getDitContentRuleRegistry() );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public DITStructureRuleRegistry getDITStructureRuleRegistry()
+    public DitStructureRuleRegistry getDITStructureRuleRegistry()
     {
-        return new ImmutableDITStructureRuleRegistry( registries.getDitStructureRuleRegistry() );
+        return new ImmutableDitStructureRuleRegistry( registries.getDitStructureRuleRegistry() );
     }
 
 

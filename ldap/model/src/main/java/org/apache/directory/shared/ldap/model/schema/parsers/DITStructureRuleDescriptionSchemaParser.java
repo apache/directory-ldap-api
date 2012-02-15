@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.model.schema.parsers;
 import java.text.ParseException;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
+import org.apache.directory.shared.ldap.model.schema.DitStructureRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,10 +73,10 @@ public class DITStructureRuleDescriptionSchemaParser extends AbstractSchemaParse
      * @return the parsed DITStructureRuleDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized DITStructureRule parseDITStructureRuleDescription( String ditStructureRuleDescription )
+    public synchronized DitStructureRule parseDITStructureRuleDescription( String ditStructureRuleDescription )
         throws ParseException
     {
-        LOG.debug( "Parsing a DITStructureRule : {}", ditStructureRuleDescription );
+        LOG.debug( "Parsing a DitStructureRule : {}", ditStructureRuleDescription );
 
         if ( ditStructureRuleDescription == null )
         {
@@ -88,7 +88,7 @@ public class DITStructureRuleDescriptionSchemaParser extends AbstractSchemaParse
 
         try
         {
-            DITStructureRule ditStructureRule = parser.ditStructureRuleDescription();
+            DitStructureRule ditStructureRule = parser.ditStructureRuleDescription();
 
             // Update the schemaName
             updateSchemaName( ditStructureRule );
@@ -112,13 +112,13 @@ public class DITStructureRuleDescriptionSchemaParser extends AbstractSchemaParse
 
 
     /**
-     * Parses a DITStructureRule description.
+     * Parses a DitStructureRule description.
      * 
-     * @param schemaDescription The DITStructureRule description to parse
-     * @return An instance of DITStructureRule
+     * @param schemaDescription The DitStructureRule description to parse
+     * @return An instance of DitStructureRule
      * @throws ParseException {@inheritDoc}
      */
-    public DITStructureRule parse( String schemaDescription ) throws ParseException
+    public DitStructureRule parse( String schemaDescription ) throws ParseException
     {
         return parseDITStructureRuleDescription( schemaDescription );
     }

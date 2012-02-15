@@ -39,7 +39,7 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.AttributesFactory;
 import org.apache.directory.shared.ldap.model.schema.DitContentRule;
-import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
+import org.apache.directory.shared.ldap.model.schema.DitStructureRule;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
@@ -326,7 +326,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
             try
             {
-                DITStructureRule ditStructureRule = DSR_DESCR_SCHEMA_PARSER.parseDITStructureRuleDescription( desc );
+                DitStructureRule ditStructureRule = DSR_DESCR_SCHEMA_PARSER.parseDITStructureRuleDescription( desc );
 
                 updateSchemas( ditStructureRule );
             }
@@ -691,9 +691,9 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             {
                 SchemaObject schemaObject = schemaObjectWrapper.get();
 
-                if ( schemaObject instanceof DITStructureRule )
+                if ( schemaObject instanceof DitStructureRule )
                 {
-                    DITStructureRule ditStructureRule = ( DITStructureRule ) schemaObject;
+                    DitStructureRule ditStructureRule = ( DitStructureRule ) schemaObject;
 
                     Entry ditStructureRuleEntry = factory.convert( ditStructureRule, schema, null );
 

@@ -26,7 +26,7 @@ import java.util.Map;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
+import org.apache.directory.shared.ldap.model.schema.DitStructureRule;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 import org.slf4j.Logger;
@@ -34,30 +34,30 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * A DITStructureRule registry's service default implementation.
+ * A DitStructureRule registry's service default implementation.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DefaultDITStructureRuleRegistry extends DefaultSchemaObjectRegistry<DITStructureRule>
-    implements DITStructureRuleRegistry
+public class DefaultDitStructureRuleRegistry extends DefaultSchemaObjectRegistry<DitStructureRule>
+    implements DitStructureRuleRegistry
 {
     /** static class logger */
-    private static final Logger LOG = LoggerFactory.getLogger( DefaultDITStructureRuleRegistry.class );
+    private static final Logger LOG = LoggerFactory.getLogger( DefaultDitStructureRuleRegistry.class );
 
     /** A speedup for debug */
     private static final boolean DEBUG = LOG.isDebugEnabled();
 
-    /** a map of DITStructureRule looked up by RuleId */
-    protected Map<Integer, DITStructureRule> byRuleId;
+    /** a map of DitStructureRule looked up by RuleId */
+    protected Map<Integer, DitStructureRule> byRuleId;
 
 
     /**
      * Creates a new default NormalizerRegistry instance.
      */
-    public DefaultDITStructureRuleRegistry()
+    public DefaultDitStructureRuleRegistry()
     {
-        super( SchemaObjectType.DIT_STRUCTURE_RULE, new OidRegistry<DITStructureRule>() );
-        byRuleId = new HashMap<Integer, DITStructureRule>();
+        super( SchemaObjectType.DIT_STRUCTURE_RULE, new OidRegistry<DitStructureRule>() );
+        byRuleId = new HashMap<Integer, DitStructureRule>();
     }
 
 
@@ -73,7 +73,7 @@ public class DefaultDITStructureRuleRegistry extends DefaultSchemaObjectRegistry
     /**
      * {@inheritDoc}
      */
-    public Iterator<DITStructureRule> iterator()
+    public Iterator<DitStructureRule> iterator()
     {
         return byRuleId.values().iterator();
     }
@@ -93,7 +93,7 @@ public class DefaultDITStructureRuleRegistry extends DefaultSchemaObjectRegistry
      */
     public String getSchemaName( int ruleId ) throws LdapException
     {
-        DITStructureRule ditStructureRule = byRuleId.get( ruleId );
+        DitStructureRule ditStructureRule = byRuleId.get( ruleId );
 
         if ( ditStructureRule != null )
         {
@@ -109,7 +109,7 @@ public class DefaultDITStructureRuleRegistry extends DefaultSchemaObjectRegistry
     /**
      * {@inheritDoc}
      */
-    public void register( DITStructureRule ditStructureRule ) throws LdapException
+    public void register( DitStructureRule ditStructureRule ) throws LdapException
     {
         int ruleId = ditStructureRule.getRuleId();
 
@@ -132,9 +132,9 @@ public class DefaultDITStructureRuleRegistry extends DefaultSchemaObjectRegistry
     /**
      * {@inheritDoc}
      */
-    public DITStructureRule lookup( int ruleId ) throws LdapException
+    public DitStructureRule lookup( int ruleId ) throws LdapException
     {
-        DITStructureRule ditStructureRule = byRuleId.get( ruleId );
+        DitStructureRule ditStructureRule = byRuleId.get( ruleId );
 
         if ( ditStructureRule == null )
         {
@@ -157,7 +157,7 @@ public class DefaultDITStructureRuleRegistry extends DefaultSchemaObjectRegistry
      */
     public void unregister( int ruleId ) throws LdapException
     {
-        DITStructureRule ditStructureRule = byRuleId.remove( ruleId );
+        DitStructureRule ditStructureRule = byRuleId.remove( ruleId );
 
         if ( DEBUG )
         {
@@ -178,7 +178,7 @@ public class DefaultDITStructureRuleRegistry extends DefaultSchemaObjectRegistry
 
         // Loop on all the SchemaObjects stored and remove those associated
         // with the give schemaName
-        for ( DITStructureRule ditStructureRule : this )
+        for ( DitStructureRule ditStructureRule : this )
         {
             if ( schemaName.equalsIgnoreCase( ditStructureRule.getSchemaName() ) )
             {
@@ -201,7 +201,7 @@ public class DefaultDITStructureRuleRegistry extends DefaultSchemaObjectRegistry
     {
         // Loop on all the SchemaObjects stored and remove those associated
         // with the give schemaName
-        for ( DITStructureRule ditStructureRule : this )
+        for ( DitStructureRule ditStructureRule : this )
         {
             if ( originalSchemaName.equalsIgnoreCase( ditStructureRule.getSchemaName() ) )
             {
@@ -219,9 +219,9 @@ public class DefaultDITStructureRuleRegistry extends DefaultSchemaObjectRegistry
     /**
      * {@inheritDoc}
      */
-    public DefaultDITStructureRuleRegistry copy()
+    public DefaultDitStructureRuleRegistry copy()
     {
-        DefaultDITStructureRuleRegistry copy = new DefaultDITStructureRuleRegistry();
+        DefaultDitStructureRuleRegistry copy = new DefaultDitStructureRuleRegistry();
 
         // Copy the base data
         copy.copy( this );

@@ -464,7 +464,7 @@ public class SchemaManagerDelTest
     // TODO
 
     //=========================================================================
-    // DITStructureRule deletion tests
+    // DitStructureRule deletion tests
     //-------------------------------------------------------------------------
     // TODO
 

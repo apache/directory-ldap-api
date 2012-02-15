@@ -928,7 +928,7 @@ public class SchemaManagerAddTest
     // TODO
 
     //=========================================================================
-    // DITStructureRule addition tests
+    // DitStructureRule addition tests
     //-------------------------------------------------------------------------
     // TODO
 

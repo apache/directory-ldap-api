@@ -21,36 +21,18 @@ package org.apache.directory.shared.ldap.model.schema.registries;
 
 
 import org.apache.directory.shared.ldap.model.schema.DitContentRule;
-import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 
 
 /**
- * An DitContentRule registry's service default implementation.
+ * An DitContentRule registry's service interface.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DefaultDITContentRuleRegistry extends DefaultSchemaObjectRegistry<DitContentRule>
-    implements DITContentRuleRegistry
+public interface DitContentRuleRegistry extends SchemaObjectRegistry<DitContentRule>,
+    Iterable<DitContentRule>
 {
     /**
-     * Creates a new default DITContentRuleRegistry instance.
+     * Copy the DitContentRuleRegistry
      */
-    public DefaultDITContentRuleRegistry()
-    {
-        super( SchemaObjectType.DIT_CONTENT_RULE, new OidRegistry<DitContentRule>() );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public DefaultDITContentRuleRegistry copy()
-    {
-        DefaultDITContentRuleRegistry copy = new DefaultDITContentRuleRegistry();
-
-        // Copy the base data
-        copy.copy( this );
-
-        return copy;
-    }
+    DitContentRuleRegistry copy();
 }

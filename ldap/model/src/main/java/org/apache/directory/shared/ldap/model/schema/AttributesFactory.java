@@ -32,7 +32,7 @@ import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.DitContentRule;
-import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
+import org.apache.directory.shared.ldap.model.schema.DitStructureRule;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
@@ -77,9 +77,9 @@ public class AttributesFactory
         {
             return convert( ( MatchingRuleUse ) obj, schema, schemaManager );
         }
-        else if ( obj instanceof DITStructureRule )
+        else if ( obj instanceof DitStructureRule )
         {
-            return convert( ( DITStructureRule ) obj, schema, schemaManager );
+            return convert( ( DitStructureRule ) obj, schema, schemaManager );
         }
         else if ( obj instanceof DitContentRule )
         {
@@ -220,7 +220,7 @@ public class AttributesFactory
     }
 
 
-    public Entry convert( DITStructureRule dITStructureRule, Schema schema, SchemaManager schemaManager )
+    public Entry convert( DitStructureRule ditStructureRule, Schema schema, SchemaManager schemaManager )
     {
         Entry entry = new DefaultEntry( schemaManager );
 

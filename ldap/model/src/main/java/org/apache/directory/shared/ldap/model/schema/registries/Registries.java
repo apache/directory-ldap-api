@@ -39,7 +39,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformEx
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.DitContentRule;
-import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
+import org.apache.directory.shared.ldap.model.schema.DitStructureRule;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
@@ -86,10 +86,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
     protected ComparatorRegistry comparatorRegistry;
 
     /** The DitContentRule registry */
-    protected DITContentRuleRegistry ditContentRuleRegistry;
+    protected DitContentRuleRegistry ditContentRuleRegistry;
 
     /** The DitStructureRule registry */
-    protected DITStructureRuleRegistry ditStructureRuleRegistry;
+    protected DitStructureRuleRegistry ditStructureRuleRegistry;
 
     /** The MatchingRule registry */
     protected MatchingRuleRegistry matchingRuleRegistry;
@@ -154,8 +154,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
         globalOidRegistry = new OidRegistry<SchemaObject>();
         attributeTypeRegistry = new DefaultAttributeTypeRegistry();
         comparatorRegistry = new DefaultComparatorRegistry();
-        ditContentRuleRegistry = new DefaultDITContentRuleRegistry();
-        ditStructureRuleRegistry = new DefaultDITStructureRuleRegistry();
+        ditContentRuleRegistry = new DefaultDitContentRuleRegistry();
+        ditStructureRuleRegistry = new DefaultDitStructureRuleRegistry();
         ldapSyntaxRegistry = new DefaultLdapSyntaxRegistry();
         matchingRuleRegistry = new DefaultMatchingRuleRegistry();
         matchingRuleUseRegistry = new DefaultMatchingRuleUseRegistry();
@@ -194,16 +194,16 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * @return The DitContentRule registry
      */
-    public DITContentRuleRegistry getDitContentRuleRegistry()
+    public DitContentRuleRegistry getDitContentRuleRegistry()
     {
         return ditContentRuleRegistry;
     }
 
 
     /**
-     * @return The DITStructureRule registry
+     * @return The DitStructureRule registry
      */
-    public DITStructureRuleRegistry getDitStructureRuleRegistry()
+    public DitStructureRuleRegistry getDitStructureRuleRegistry()
     {
         return ditStructureRuleRegistry;
     }
@@ -398,10 +398,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Fall down to the next registry
         }
 
-        // DITStructureRule
+        // DitStructureRule
         try
         {
-            DITStructureRule ditStructureRule = ditStructureRuleRegistry.lookup( name );
+            DitStructureRule ditStructureRule = ditStructureRuleRegistry.lookup( name );
 
             if ( ditStructureRule != null )
             {
@@ -624,7 +624,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     private void buildDitStructureRuleReferences( List<Throwable> errors )
     {
         for ( @SuppressWarnings("unused")
-        DITStructureRule ditStructureRule : ditStructureRuleRegistry )
+        DitStructureRule ditStructureRule : ditStructureRuleRegistry )
         {
             // TODO
         }
@@ -1539,7 +1539,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     break;
 
                 case DIT_STRUCTURE_RULE:
-                    ditStructureRuleRegistry.register( ( DITStructureRule ) schemaObject );
+                    ditStructureRuleRegistry.register( ( DitStructureRule ) schemaObject );
                     break;
 
                 case LDAP_SYNTAX:
@@ -1757,7 +1757,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 break;
 
             case DIT_STRUCTURE_RULE:
-                unregistered = ditStructureRuleRegistry.unregister( ( DITStructureRule ) schemaObject );
+                unregistered = ditStructureRuleRegistry.unregister( ( DitStructureRule ) schemaObject );
                 break;
 
             case LDAP_SYNTAX:
@@ -2514,7 +2514,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             clone.globalOidRegistry.put( ditContentRule );
         }
 
-        for ( DITStructureRule ditStructureRule : clone.ditStructureRuleRegistry )
+        for ( DitStructureRule ditStructureRule : clone.ditStructureRuleRegistry )
         {
             clone.globalOidRegistry.put( ditStructureRule );
         }

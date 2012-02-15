@@ -29,7 +29,7 @@ import java.text.ParseException;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
+import org.apache.directory.shared.ldap.model.schema.DitStructureRule;
 import org.apache.directory.shared.ldap.model.schema.parsers.DITStructureRuleDescriptionSchemaParser;
 import org.junit.After;
 import org.junit.Before;
@@ -73,7 +73,7 @@ public class DITStructureRuleDescriptionSchemaParserTest
     public void testNumericRuleId() throws ParseException
     {
         String value = null;
-        DITStructureRule ditStructureRule = null;
+        DitStructureRule ditStructureRule = null;
 
         // null test
         value = null;
@@ -198,7 +198,7 @@ public class DITStructureRuleDescriptionSchemaParserTest
     public void testForm() throws ParseException
     {
         String value = null;
-        DITStructureRule ditStructureRule = null;
+        DitStructureRule ditStructureRule = null;
 
         // numeric oid
         value = "( 1 FORM 1.2.3.4.5.6.7.8.9.0 )";
@@ -285,7 +285,7 @@ public class DITStructureRuleDescriptionSchemaParserTest
     public void testSup() throws ParseException
     {
         String value = null;
-        DITStructureRule ditStructureRule = null;
+        DitStructureRule ditStructureRule = null;
 
         // no SUP
         value = "( 1 FORM 1.1 )";
@@ -360,7 +360,7 @@ public class DITStructureRuleDescriptionSchemaParserTest
     public void testFull() throws ParseException
     {
         String value = null;
-        DITStructureRule ditStructureRule = null;
+        DitStructureRule ditStructureRule = null;
 
         value = "( 1234567890 NAME ( 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' 'test' ) DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' OBSOLETE FORM 2.3.4.5.6.7.8.9.0.1 SUP ( 1 1234567890 5 ) X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )";
         ditStructureRule = parser.parseDITStructureRuleDescription( value );
@@ -414,7 +414,7 @@ public class DITStructureRuleDescriptionSchemaParserTest
     public void testRequiredElements() throws ParseException
     {
         String value = null;
-        DITStructureRule ditStructureRule = null;
+        DitStructureRule ditStructureRule = null;
 
         value = "( 1 FORM 1.1 )";
         ditStructureRule = parser.parseDITStructureRuleDescription( value );
