@@ -20,65 +20,54 @@
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DseTypeSyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.MhsOrAddressSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
 /**
- * Test cases for DSETypeSyntaxChecker.
+ * Test cases for MHSORAddressSyntaxChecker.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class DSETypeSyntaxCheckerTest
+public class MhsOrAddressSyntaxCheckerTest
 {
-    DseTypeSyntaxChecker checker = new DseTypeSyntaxChecker();
+    MhsOrAddressSyntaxChecker checker = new MhsOrAddressSyntaxChecker();
 
 
     @Test
     public void testNullString()
     {
-        assertFalse( checker.isValidSyntax( null ) );
+        assertTrue( checker.isValidSyntax( null ) );
     }
 
 
     @Test
     public void testEmptyString()
     {
-        assertFalse( checker.isValidSyntax( "" ) );
+        assertTrue( checker.isValidSyntax( "" ) );
     }
 
 
     @Test
-    public void testWrongCase()
+    public void testOid()
     {
-        assertFalse( checker.isValidSyntax( "()" ) );
-        assertFalse( checker.isValidSyntax( "(xyz)" ) );
-        assertFalse( checker.isValidSyntax( "sa" ) );
-        assertFalse( checker.isValidSyntax( "(SA)" ) );
-        assertFalse( checker.isValidSyntax( " () " ) );
-        assertFalse( checker.isValidSyntax( " (sa) " ) );
-        assertFalse( checker.isValidSyntax( "(sa) " ) );
-        assertFalse( checker.isValidSyntax( "(sa$)" ) );
-        assertFalse( checker.isValidSyntax( "(sa$ )" ) );
-        assertFalse( checker.isValidSyntax( "( sa $ sa )" ) );
+        assertEquals( "1.3.6.1.4.1.1466.115.121.1.33", checker.getOid() );
     }
 
 
     @Test
     public void testCorrectCase()
     {
-        assertTrue( checker.isValidSyntax( "(sa)" ) );
-        assertTrue( checker.isValidSyntax( "(  sa   )" ) );
-        assertTrue( checker.isValidSyntax( "( root $ glue $ cp $ entry $ alias $ subr $ " +
-            "nssr $ supr $ xr $ admPoint $ subentry $ " +
-            "shadow $ zombie $ immSupr $ rhob $ sa )" ) );
+        assertTrue( checker.isValidSyntax( "FALSE" ) );
+        assertTrue( checker.isValidSyntax( new byte[]
+            { 0x01, ( byte ) 0xFF } ) );
     }
 }

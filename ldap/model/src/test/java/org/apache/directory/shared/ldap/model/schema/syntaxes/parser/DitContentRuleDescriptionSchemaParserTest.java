@@ -44,7 +44,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class DITContentRuleDescriptionSchemaParserTest
+public class DitContentRuleDescriptionSchemaParserTest
 {
     /** the parser instance */
     private DitContentRuleDescriptionSchemaParser parser;

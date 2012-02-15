@@ -39,7 +39,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class DITStructureRuleDescriptionSyntaxCheckerTest
+public class DitStructureRuleDescriptionSyntaxCheckerTest
 {
     private DitStructureRuleDescriptionSyntaxChecker checker = new DitStructureRuleDescriptionSyntaxChecker();
 

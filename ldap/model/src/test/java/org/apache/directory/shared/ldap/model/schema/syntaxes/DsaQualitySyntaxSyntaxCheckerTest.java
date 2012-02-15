@@ -25,21 +25,21 @@ import static org.junit.Assert.assertTrue;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DnSyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DsaQualitySyntaxSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
 /**
- * Test cases for DNSyntaxChecker.
+ * Test cases for DSAQualitySyntaxSyntaxChecker.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class DNSyntaxCheckerTest
+public class DsaQualitySyntaxSyntaxCheckerTest
 {
-    DnSyntaxChecker checker = new DnSyntaxChecker();
+    DsaQualitySyntaxSyntaxChecker checker = new DsaQualitySyntaxSyntaxChecker();
 
 
     @Test
@@ -52,37 +52,30 @@ public class DNSyntaxCheckerTest
     @Test
     public void testEmptyString()
     {
-        assertTrue( checker.isValidSyntax( "" ) );
+        assertFalse( checker.isValidSyntax( "" ) );
     }
 
 
     @Test
-    public void testOneCharString()
+    public void testWrongCase()
     {
-        assertFalse( checker.isValidSyntax( "0" ) );
-        assertFalse( checker.isValidSyntax( "'" ) );
-        assertFalse( checker.isValidSyntax( "1" ) );
-        assertFalse( checker.isValidSyntax( "B" ) );
+        assertFalse( checker.isValidSyntax( "Bad" ) );
+        assertFalse( checker.isValidSyntax( "DEFuNCT" ) );
+        assertFalse( checker.isValidSyntax( " DEFUNCT" ) );
+        assertFalse( checker.isValidSyntax( "DEFUNCT$desc" ) );
+        assertFalse( checker.isValidSyntax( "EXPERIMENTAL#test @ bad <desc>" ) );
     }
 
 
     @Test
-    public void testWrongDN()
+    public void testCorrectCase()
     {
-        assertFalse( checker.isValidSyntax( "a=b," ) );
-        assertFalse( checker.isValidSyntax( "a=#0101'B" ) );
-        assertFalse( checker.isValidSyntax( "a=b+" ) );
-        assertFalse( checker.isValidSyntax( "a=b,c=d," ) );
-    }
-
-
-    @Test
-    public void testCorrectDN()
-    {
-        assertTrue( checker.isValidSyntax( "a=b" ) );
-        assertTrue( checker.isValidSyntax( "a = b" ) );
-        assertTrue( checker.isValidSyntax( "a=b + c=d" ) );
-        assertTrue( checker.isValidSyntax( "a=b,c=d" ) );
-        assertTrue( checker.isValidSyntax( "a=b\\,c = d, e=f" ) );
+        assertTrue( checker.isValidSyntax( "DEFUNCT" ) );
+        assertTrue( checker.isValidSyntax( "EXPERIMENTAL" ) );
+        assertTrue( checker.isValidSyntax( "BEST-EFFORT" ) );
+        assertTrue( checker.isValidSyntax( "PILOT-SERVICE" ) );
+        assertTrue( checker.isValidSyntax( "FULL-SERVICE" ) );
+        assertTrue( checker.isValidSyntax( "EXPERIMENTAL#test desc" ) );
+        assertTrue( checker.isValidSyntax( "DEFUNCT#" ) );
     }
 }

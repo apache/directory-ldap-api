@@ -25,21 +25,21 @@ import static org.junit.Assert.assertTrue;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DsaQualitySyntaxSyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DseTypeSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
 /**
- * Test cases for DSAQualitySyntaxSyntaxChecker.
+ * Test cases for DSETypeSyntaxChecker.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class DSAQualitySyntaxSyntaxCheckerTest
+public class DseTypeSyntaxCheckerTest
 {
-    DsaQualitySyntaxSyntaxChecker checker = new DsaQualitySyntaxSyntaxChecker();
+    DseTypeSyntaxChecker checker = new DseTypeSyntaxChecker();
 
 
     @Test
@@ -59,23 +59,26 @@ public class DSAQualitySyntaxSyntaxCheckerTest
     @Test
     public void testWrongCase()
     {
-        assertFalse( checker.isValidSyntax( "Bad" ) );
-        assertFalse( checker.isValidSyntax( "DEFuNCT" ) );
-        assertFalse( checker.isValidSyntax( " DEFUNCT" ) );
-        assertFalse( checker.isValidSyntax( "DEFUNCT$desc" ) );
-        assertFalse( checker.isValidSyntax( "EXPERIMENTAL#test @ bad <desc>" ) );
+        assertFalse( checker.isValidSyntax( "()" ) );
+        assertFalse( checker.isValidSyntax( "(xyz)" ) );
+        assertFalse( checker.isValidSyntax( "sa" ) );
+        assertFalse( checker.isValidSyntax( "(SA)" ) );
+        assertFalse( checker.isValidSyntax( " () " ) );
+        assertFalse( checker.isValidSyntax( " (sa) " ) );
+        assertFalse( checker.isValidSyntax( "(sa) " ) );
+        assertFalse( checker.isValidSyntax( "(sa$)" ) );
+        assertFalse( checker.isValidSyntax( "(sa$ )" ) );
+        assertFalse( checker.isValidSyntax( "( sa $ sa )" ) );
     }
 
 
     @Test
     public void testCorrectCase()
     {
-        assertTrue( checker.isValidSyntax( "DEFUNCT" ) );
-        assertTrue( checker.isValidSyntax( "EXPERIMENTAL" ) );
-        assertTrue( checker.isValidSyntax( "BEST-EFFORT" ) );
-        assertTrue( checker.isValidSyntax( "PILOT-SERVICE" ) );
-        assertTrue( checker.isValidSyntax( "FULL-SERVICE" ) );
-        assertTrue( checker.isValidSyntax( "EXPERIMENTAL#test desc" ) );
-        assertTrue( checker.isValidSyntax( "DEFUNCT#" ) );
+        assertTrue( checker.isValidSyntax( "(sa)" ) );
+        assertTrue( checker.isValidSyntax( "(  sa   )" ) );
+        assertTrue( checker.isValidSyntax( "( root $ glue $ cp $ entry $ alias $ subr $ " +
+            "nssr $ supr $ xr $ admPoint $ subentry $ " +
+            "shadow $ zombie $ immSupr $ rhob $ sa )" ) );
     }
 }

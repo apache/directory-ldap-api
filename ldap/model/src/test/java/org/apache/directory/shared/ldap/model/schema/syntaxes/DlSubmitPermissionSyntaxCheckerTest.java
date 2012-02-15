@@ -25,21 +25,21 @@ import static org.junit.Assert.assertTrue;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.MhsOrAddressSyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DlSubmitPermissionSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
 /**
- * Test cases for MHSORAddressSyntaxChecker.
+ * Test cases for DLSubmitPermissionSyntaxChecker.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class MHSORAddressSyntaxCheckerTest
+public class DlSubmitPermissionSyntaxCheckerTest
 {
-    MhsOrAddressSyntaxChecker checker = new MhsOrAddressSyntaxChecker();
+    DlSubmitPermissionSyntaxChecker checker = new DlSubmitPermissionSyntaxChecker();
 
 
     @Test
@@ -59,7 +59,7 @@ public class MHSORAddressSyntaxCheckerTest
     @Test
     public void testOid()
     {
-        assertEquals( "1.3.6.1.4.1.1466.115.121.1.33", checker.getOid() );
+        assertEquals( "1.3.6.1.4.1.1466.115.121.1.18", checker.getOid() );
     }
 
 

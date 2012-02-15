@@ -20,32 +20,32 @@
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DlSubmitPermissionSyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DnSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
 /**
- * Test cases for DLSubmitPermissionSyntaxChecker.
+ * Test cases for DNSyntaxChecker.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class DLSubmitPermissionSyntaxCheckerTest
+public class DnSyntaxCheckerTest
 {
-    DlSubmitPermissionSyntaxChecker checker = new DlSubmitPermissionSyntaxChecker();
+    DnSyntaxChecker checker = new DnSyntaxChecker();
 
 
     @Test
     public void testNullString()
     {
-        assertTrue( checker.isValidSyntax( null ) );
+        assertFalse( checker.isValidSyntax( null ) );
     }
 
 
@@ -57,17 +57,32 @@ public class DLSubmitPermissionSyntaxCheckerTest
 
 
     @Test
-    public void testOid()
+    public void testOneCharString()
     {
-        assertEquals( "1.3.6.1.4.1.1466.115.121.1.18", checker.getOid() );
+        assertFalse( checker.isValidSyntax( "0" ) );
+        assertFalse( checker.isValidSyntax( "'" ) );
+        assertFalse( checker.isValidSyntax( "1" ) );
+        assertFalse( checker.isValidSyntax( "B" ) );
     }
 
 
     @Test
-    public void testCorrectCase()
+    public void testWrongDN()
     {
-        assertTrue( checker.isValidSyntax( "FALSE" ) );
-        assertTrue( checker.isValidSyntax( new byte[]
-            { 0x01, ( byte ) 0xFF } ) );
+        assertFalse( checker.isValidSyntax( "a=b," ) );
+        assertFalse( checker.isValidSyntax( "a=#0101'B" ) );
+        assertFalse( checker.isValidSyntax( "a=b+" ) );
+        assertFalse( checker.isValidSyntax( "a=b,c=d," ) );
+    }
+
+
+    @Test
+    public void testCorrectDN()
+    {
+        assertTrue( checker.isValidSyntax( "a=b" ) );
+        assertTrue( checker.isValidSyntax( "a = b" ) );
+        assertTrue( checker.isValidSyntax( "a=b + c=d" ) );
+        assertTrue( checker.isValidSyntax( "a=b,c=d" ) );
+        assertTrue( checker.isValidSyntax( "a=b\\,c = d, e=f" ) );
     }
 }
