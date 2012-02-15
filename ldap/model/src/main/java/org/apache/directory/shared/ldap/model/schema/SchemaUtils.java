@@ -902,7 +902,7 @@ public final class SchemaUtils
     /**
      * NOT FULLY IMPLEMENTED!
      */
-    public static StringBuffer render( DITContentRule dcr )
+    public static StringBuffer render( DContentRule dcr )
     {
         StringBuffer buf = new StringBuffer();
         buf.append( "( " ).append( dcr.getOid() );

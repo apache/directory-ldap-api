@@ -31,8 +31,8 @@ import java.util.Map;
  * the following objects:
  * <ul>
  * <li><a href="./AttributeType.html">AttributeType</a></li>
- * <li><a href="./DITContentRule.html">DITContentRule</a></li>
- * <li><a href="./DITContentRule.html">DITStructureRule</a></li>
+ * <li><a href="./DContentRule.html">DContentRule</a></li>
+ * <li><a href="./DContentRule.html">DITStructureRule</a></li>
  * <li><a href="./LdapComparator.html">Syntax</a></li>
  * <li><a href="./MatchingRule.html">MatchingRule</a></li>
  * <li><a href="./MatchingRuleUse.html">MatchingRuleUse</a></li>
@@ -206,7 +206,7 @@ public final class DescriptionUtils
 
 
     /**
-     * Generates the DITContentRuleDescription for a DITContentRule as defined
+     * Generates the DITContentRuleDescription for a DContentRule as defined
      * by the syntax: 1.3.6.1.4.1.1466.115.121.1.16. Only the right hand side of
      * the description starting at the opening parenthesis is generated: that
      * is 'DITContentRuleDescription = ' is not generated.
@@ -229,7 +229,7 @@ public final class DescriptionUtils
      * @return the specification according to the DITContentRuleDescription
      *         syntax
      */
-    public static String getDescription( DITContentRule dITContentRule )
+    public static String getDescription( DContentRule dITContentRule )
     {
         StringBuilder buf = new StringBuilder( "( " );
         buf.append( dITContentRule.getOid() );

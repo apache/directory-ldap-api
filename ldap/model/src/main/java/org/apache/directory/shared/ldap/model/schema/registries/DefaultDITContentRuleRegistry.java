@@ -20,16 +20,16 @@
 package org.apache.directory.shared.ldap.model.schema.registries;
 
 
-import org.apache.directory.shared.ldap.model.schema.DITContentRule;
+import org.apache.directory.shared.ldap.model.schema.DContentRule;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 
 
 /**
- * An DITContentRule registry's service default implementation.
+ * An DContentRule registry's service default implementation.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DefaultDITContentRuleRegistry extends DefaultSchemaObjectRegistry<DITContentRule>
+public class DefaultDITContentRuleRegistry extends DefaultSchemaObjectRegistry<DContentRule>
     implements DITContentRuleRegistry
 {
     /**
@@ -37,7 +37,7 @@ public class DefaultDITContentRuleRegistry extends DefaultSchemaObjectRegistry<D
      */
     public DefaultDITContentRuleRegistry()
     {
-        super( SchemaObjectType.DIT_CONTENT_RULE, new OidRegistry<DITContentRule>() );
+        super( SchemaObjectType.DIT_CONTENT_RULE, new OidRegistry<DContentRule>() );
     }
 
 

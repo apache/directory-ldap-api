@@ -569,7 +569,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      * @return the created DitContentRule instance
      * @throws Exception If the registering failed
      *
-    protected DITContentRule registerDitContentRule( Registries registries, LdifEntry entry, Schema schema)
+    protected DContentRule registerDitContentRule( Registries registries, LdifEntry entry, Schema schema)
         throws Exception
     {
         throw new NotImplementedException( "Need to implement factory " +

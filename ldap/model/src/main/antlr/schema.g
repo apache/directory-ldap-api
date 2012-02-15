@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.shared.ldap.model.schema.parsers.LdapComparatorDescription;
-import org.apache.directory.shared.ldap.model.schema.DITContentRule;
+import org.apache.directory.shared.ldap.model.schema.DContentRule;
 import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
@@ -612,13 +612,13 @@ matchingRuleUseDescription returns [MatchingRuleUse matchingRuleUse]
      *    extensions WSP RPAREN      ; extensions
      * </pre>
     */
-ditContentRuleDescription returns [DITContentRule ditContentRule]
+ditContentRuleDescription returns [DContentRule ditContentRule]
     {
         matchedProduction( "ditContentRuleDescription()" );
         ElementTracker et = new ElementTracker();
     }
     :
-    ( oid:STARTNUMERICOID { ditContentRule = new DITContentRule(numericoid(oid.getText())); } )
+    ( oid:STARTNUMERICOID { ditContentRule = new DContentRule(numericoid(oid.getText())); } )
     (
         ( name:NAME { et.track("NAME", name); ditContentRule.setNames(qdescrs(name.getText())); } )
         |

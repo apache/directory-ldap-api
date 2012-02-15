@@ -459,7 +459,7 @@ public class SchemaManagerDelTest
 
 
     //=========================================================================
-    // DITContentRule deletion tests
+    // DContentRule deletion tests
     //-------------------------------------------------------------------------
     // TODO
 

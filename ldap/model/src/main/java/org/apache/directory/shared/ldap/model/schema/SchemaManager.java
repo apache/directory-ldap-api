@@ -530,9 +530,9 @@ public interface SchemaManager
 
 
     /**
-     * Get an immutable reference on the DITContentRule registry
+     * Get an immutable reference on the DContentRule registry
      * 
-     * @return A reference to the DITContentRule registry.
+     * @return A reference to the DContentRule registry.
      */
     DITContentRuleRegistry getDITContentRuleRegistry();
 

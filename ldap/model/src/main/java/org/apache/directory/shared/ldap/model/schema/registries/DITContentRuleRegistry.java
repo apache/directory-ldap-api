@@ -20,16 +20,16 @@
 package org.apache.directory.shared.ldap.model.schema.registries;
 
 
-import org.apache.directory.shared.ldap.model.schema.DITContentRule;
+import org.apache.directory.shared.ldap.model.schema.DContentRule;
 
 
 /**
- * An DITContentRule registry's service interface.
+ * An DContentRule registry's service interface.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface DITContentRuleRegistry extends SchemaObjectRegistry<DITContentRule>,
-    Iterable<DITContentRule>
+public interface DITContentRuleRegistry extends SchemaObjectRegistry<DContentRule>,
+    Iterable<DContentRule>
 {
     /**
      * Copy the DITContentRuleRegistry

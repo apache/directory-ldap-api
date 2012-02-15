@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.model.schema.registries.helper;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.DITContentRule;
+import org.apache.directory.shared.ldap.model.schema.DContentRule;
 import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ObjectClassRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.Registries;
@@ -41,13 +41,13 @@ public class DitContentRuleHelper
     private static final Logger LOG = LoggerFactory.getLogger( DitContentRuleHelper.class );
 
     /**
-     * Inject the DITContentRule into the registries, updating the references to
+     * Inject the DContentRule into the registries, updating the references to
      * other SchemaObject
      *
      * @param registries The Registries
      * @exception If the addition failed
      */
-    public static void addToRegistries( DITContentRule ditContentRule, List<Throwable> errors,  Registries registries ) throws LdapException
+    public static void addToRegistries( DContentRule ditContentRule, List<Throwable> errors,  Registries registries ) throws LdapException
     {
         if ( registries != null )
         {

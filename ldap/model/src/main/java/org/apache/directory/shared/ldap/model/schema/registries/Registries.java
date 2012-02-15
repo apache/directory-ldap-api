@@ -38,7 +38,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapSchemaViolationExcep
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.DITContentRule;
+import org.apache.directory.shared.ldap.model.schema.DContentRule;
 import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
@@ -192,7 +192,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
 
     /**
-     * @return The DITContentRule registry
+     * @return The DContentRule registry
      */
     public DITContentRuleRegistry getDitContentRuleRegistry()
     {
@@ -383,10 +383,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Fall down to the next registry
         }
 
-        // DITContentRule
+        // DContentRule
         try
         {
-            DITContentRule ditContentRule = ditContentRuleRegistry.lookup( name );
+            DContentRule ditContentRule = ditContentRuleRegistry.lookup( name );
 
             if ( ditContentRule != null )
             {
@@ -609,7 +609,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     private void buildDitContentRuleReferences( List<Throwable> errors )
     {
         for ( @SuppressWarnings("unused")
-        DITContentRule ditContentRule : ditContentRuleRegistry )
+        DContentRule ditContentRule : ditContentRuleRegistry )
         {
             // TODO
         }
@@ -670,7 +670,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     break;
                     
                 case DIT_CONTENT_RULE :
-                    DitContentRuleHelper.addToRegistries( (DITContentRule)schemaObject, errors, this );
+                    DitContentRuleHelper.addToRegistries( (DContentRule)schemaObject, errors, this );
                     break;
                     
                 case OBJECT_CLASS :
@@ -1535,7 +1535,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     break;
 
                 case DIT_CONTENT_RULE:
-                    ditContentRuleRegistry.register( ( DITContentRule ) schemaObject );
+                    ditContentRuleRegistry.register( ( DContentRule ) schemaObject );
                     break;
 
                 case DIT_STRUCTURE_RULE:
@@ -1753,7 +1753,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 break;
 
             case DIT_CONTENT_RULE:
-                unregistered = ditContentRuleRegistry.unregister( ( DITContentRule ) schemaObject );
+                unregistered = ditContentRuleRegistry.unregister( ( DContentRule ) schemaObject );
                 break;
 
             case DIT_STRUCTURE_RULE:
@@ -2509,7 +2509,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             clone.globalOidRegistry.put( attributeType );
         }
 
-        for ( DITContentRule ditContentRule : clone.ditContentRuleRegistry )
+        for ( DContentRule ditContentRule : clone.ditContentRuleRegistry )
         {
             clone.globalOidRegistry.put( ditContentRule );
         }
