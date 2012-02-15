@@ -36,16 +36,16 @@ import antlr.TokenStreamException;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DITContentRuleDescriptionSchemaParser extends AbstractSchemaParser
+public class DitContentRuleDescriptionSchemaParser extends AbstractSchemaParser
 {
     /** The LoggerFactory used by this class */
-    protected static final Logger LOG = LoggerFactory.getLogger( DITContentRuleDescriptionSchemaParser.class );
+    protected static final Logger LOG = LoggerFactory.getLogger( DitContentRuleDescriptionSchemaParser.class );
 
 
     /**
      * Creates a schema parser instance.
      */
-    public DITContentRuleDescriptionSchemaParser()
+    public DitContentRuleDescriptionSchemaParser()
     {
     }
 

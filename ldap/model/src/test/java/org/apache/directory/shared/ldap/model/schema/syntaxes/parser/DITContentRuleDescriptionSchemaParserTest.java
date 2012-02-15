@@ -30,7 +30,7 @@ import java.text.ParseException;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.DitContentRule;
-import org.apache.directory.shared.ldap.model.schema.parsers.DITContentRuleDescriptionSchemaParser;
+import org.apache.directory.shared.ldap.model.schema.parsers.DitContentRuleDescriptionSchemaParser;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +38,7 @@ import org.junit.runner.RunWith;
 
 
 /**
- * Tests the DITContentRuleDescriptionSchemaParser class.
+ * Tests the DitContentRuleDescriptionSchemaParser class.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -47,13 +47,13 @@ import org.junit.runner.RunWith;
 public class DITContentRuleDescriptionSchemaParserTest
 {
     /** the parser instance */
-    private DITContentRuleDescriptionSchemaParser parser;
+    private DitContentRuleDescriptionSchemaParser parser;
 
 
     @Before
     public void setUp() throws Exception
     {
-        parser = new DITContentRuleDescriptionSchemaParser();
+        parser = new DitContentRuleDescriptionSchemaParser();
     }
 
 

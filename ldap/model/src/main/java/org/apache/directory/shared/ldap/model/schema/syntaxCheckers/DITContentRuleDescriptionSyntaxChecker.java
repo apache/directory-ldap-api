@@ -24,7 +24,7 @@ import java.text.ParseException;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
-import org.apache.directory.shared.ldap.model.schema.parsers.DITContentRuleDescriptionSchemaParser;
+import org.apache.directory.shared.ldap.model.schema.parsers.DitContentRuleDescriptionSchemaParser;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +56,7 @@ public class DITContentRuleDescriptionSyntaxChecker extends SyntaxChecker
     private static final Logger LOG = LoggerFactory.getLogger( DITContentRuleDescriptionSyntaxChecker.class );
 
     /** The schema parser used to parse the DITContentRuleDescription Syntax */
-    private DITContentRuleDescriptionSchemaParser schemaParser = new DITContentRuleDescriptionSchemaParser();
+    private DitContentRuleDescriptionSchemaParser schemaParser = new DitContentRuleDescriptionSchemaParser();
 
 
     /**
