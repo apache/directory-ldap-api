@@ -29,7 +29,7 @@ import java.text.ParseException;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.DContentRule;
+import org.apache.directory.shared.ldap.model.schema.DitContentRule;
 import org.apache.directory.shared.ldap.model.schema.parsers.DITContentRuleDescriptionSchemaParser;
 import org.junit.After;
 import org.junit.Before;
@@ -121,7 +121,7 @@ public class DITContentRuleDescriptionSchemaParserTest
     public void testAux() throws ParseException
     {
         String value = null;
-        DContentRule ditContentRule = null;
+        DitContentRule ditContentRule = null;
 
         // no AUX
         value = "( 1.1 )";
@@ -260,7 +260,7 @@ public class DITContentRuleDescriptionSchemaParserTest
     public void testMust() throws ParseException
     {
         String value = null;
-        DContentRule ditContentRule = null;
+        DitContentRule ditContentRule = null;
 
         // no MUST
         value = "( 1.1 )";
@@ -321,7 +321,7 @@ public class DITContentRuleDescriptionSchemaParserTest
     public void testMay() throws ParseException
     {
         String value = null;
-        DContentRule ditContentRule = null;
+        DitContentRule ditContentRule = null;
 
         // no MAY
         value = "( 1.1 )";
@@ -370,7 +370,7 @@ public class DITContentRuleDescriptionSchemaParserTest
     public void testNot() throws ParseException
     {
         String value = null;
-        DContentRule ditContentRule = null;
+        DitContentRule ditContentRule = null;
 
         // no NOT
         value = "( 1.1 )";
@@ -431,7 +431,7 @@ public class DITContentRuleDescriptionSchemaParserTest
     public void testFull() throws ParseException
     {
         String value = null;
-        DContentRule ditContentRule = null;
+        DitContentRule ditContentRule = null;
 
         value = "( 1.2.3.4.5.6.7.8.9.0 NAME ( 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' 'test' ) DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' OBSOLETE AUX ( 2.3.4.5.6.7.8.9.0.1 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) MUST ( 3.4.5.6.7.8.9.0.1.2 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) MAY ( 4.5.6.7.8.9.0.1.2.3 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) NOT ( 5.6.7.8.9.0.1.2.3.4 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )";
         ditContentRule = parser.parseDITContentRuleDescription( value );

@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.model.schema.parsers;
 import java.text.ParseException;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.schema.DContentRule;
+import org.apache.directory.shared.ldap.model.schema.DitContentRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,10 +70,10 @@ public class DITContentRuleDescriptionSchemaParser extends AbstractSchemaParser
      * @return the parsed DITContentRuleDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized DContentRule parseDITContentRuleDescription( String ditContentRuleDescription )
+    public synchronized DitContentRule parseDITContentRuleDescription( String ditContentRuleDescription )
         throws ParseException
     {
-        LOG.debug( "Parsing a DContentRule : {}", ditContentRuleDescription );
+        LOG.debug( "Parsing a DitContentRule : {}", ditContentRuleDescription );
 
         if ( ditContentRuleDescription == null )
         {
@@ -85,7 +85,7 @@ public class DITContentRuleDescriptionSchemaParser extends AbstractSchemaParser
 
         try
         {
-            DContentRule ditContentRule = parser.ditContentRuleDescription();
+            DitContentRule ditContentRule = parser.ditContentRuleDescription();
 
             // Update the schemaName
             updateSchemaName( ditContentRule );
@@ -109,13 +109,13 @@ public class DITContentRuleDescriptionSchemaParser extends AbstractSchemaParser
 
 
     /**
-     * Parses a DContentRule description.
+     * Parses a DitContentRule description.
      * 
-     * @param schemaDescription The DContentRule description to parse
-     * @return An instance of DContentRule
+     * @param schemaDescription The DitContentRule description to parse
+     * @return An instance of DitContentRule
      * @throws ParseException {@inheritDoc}
      */
-    public DContentRule parse( String schemaDescription ) throws ParseException
+    public DitContentRule parse( String schemaDescription ) throws ParseException
     {
         return parseDITContentRuleDescription( schemaDescription );
     }

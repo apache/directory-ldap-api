@@ -26,25 +26,25 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.schema.DContentRule;
+import org.apache.directory.shared.ldap.model.schema.DitContentRule;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectType;
 
 
 /**
- * An immutable wrapper of the DContentRule registry.
+ * An immutable wrapper of the DitContentRule registry.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class ImmutableDITContentRuleRegistry implements DITContentRuleRegistry
 {
-    /** The wrapped DContentRule registry */
+    /** The wrapped DitContentRule registry */
     DITContentRuleRegistry immutableDITContentRuleRegistry;
 
 
     /**
      * Creates a new instance of ImmutableDITContentRuleRegistry.
      *
-     * @param ditContentRuleRegistry The wrapped DContentRule registry
+     * @param ditContentRuleRegistry The wrapped DitContentRule registry
      */
     public ImmutableDITContentRuleRegistry( DITContentRuleRegistry ditContentRuleRegistry )
     {
@@ -109,7 +109,7 @@ public class ImmutableDITContentRuleRegistry implements DITContentRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public Iterator<DContentRule> iterator()
+    public Iterator<DitContentRule> iterator()
     {
         return immutableDITContentRuleRegistry.iterator();
     }
@@ -118,7 +118,7 @@ public class ImmutableDITContentRuleRegistry implements DITContentRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public DContentRule lookup( String oid ) throws LdapException
+    public DitContentRule lookup( String oid ) throws LdapException
     {
         return immutableDITContentRuleRegistry.lookup( oid );
     }
@@ -136,7 +136,7 @@ public class ImmutableDITContentRuleRegistry implements DITContentRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public void register( DContentRule schemaObject ) throws LdapException
+    public void register( DitContentRule schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04277 ) );
     }
@@ -154,7 +154,7 @@ public class ImmutableDITContentRuleRegistry implements DITContentRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public DContentRule unregister( String numericOid ) throws LdapException
+    public DitContentRule unregister( String numericOid ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04277 ) );
     }
@@ -172,7 +172,7 @@ public class ImmutableDITContentRuleRegistry implements DITContentRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public DContentRule get( String oid )
+    public DitContentRule get( String oid )
     {
         return immutableDITContentRuleRegistry.get( oid );
     }
@@ -190,7 +190,7 @@ public class ImmutableDITContentRuleRegistry implements DITContentRuleRegistry
     /**
      * {@inheritDoc}
      */
-    public DContentRule unregister( DContentRule schemaObject ) throws LdapException
+    public DitContentRule unregister( DitContentRule schemaObject ) throws LdapException
     {
         throw new LdapUnwillingToPerformException( ResultCodeEnum.NO_SUCH_OPERATION, I18n.err( I18n.ERR_04277 ) );
     }

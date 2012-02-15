@@ -923,7 +923,7 @@ public class SchemaManagerAddTest
 
 
     //=========================================================================
-    // DContentRule addition tests
+    // DitContentRule addition tests
     //-------------------------------------------------------------------------
     // TODO
 

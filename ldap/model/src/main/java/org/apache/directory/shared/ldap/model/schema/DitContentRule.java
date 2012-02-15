@@ -108,12 +108,12 @@ import org.apache.directory.shared.i18n.I18n;
  * @see <a
  *      href="http://www.ietf.org/internet-drafts/draft-ietf-ldapbis-models-11.txt">ldapbis
  *      [MODELS]</a>
- * @see DescriptionUtils#getDescription(DContentRule)
+ * @see DescriptionUtils#getDescription(DitContentRule)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 // super.hashCode is final
 @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
-public class DContentRule extends AbstractSchemaObject
+public class DitContentRule extends AbstractSchemaObject
 {
     /** The list of Auxiliary ObjectClass OIDs entries may belong to */
     private List<String> auxObjectClassOids;
@@ -141,11 +141,11 @@ public class DContentRule extends AbstractSchemaObject
 
 
     /**
-     * Creates a DContentRule object using a unique OID.
+     * Creates a DitContentRule object using a unique OID.
      * 
-     * @param oid the OID for this DContentRule
+     * @param oid the OID for this DitContentRule
      */
-    public DContentRule( String oid )
+    public DitContentRule( String oid )
     {
         super( SchemaObjectType.DIT_CONTENT_RULE, oid );
 
@@ -573,11 +573,11 @@ public class DContentRule extends AbstractSchemaObject
 
 
     /**
-     * Copy a DContentRule
+     * Copy a DitContentRule
      */
-    public DContentRule copy()
+    public DitContentRule copy()
     {
-        DContentRule copy = new DContentRule( oid );
+        DitContentRule copy = new DitContentRule( oid );
 
         // Copy the SchemaObject common data
         copy.copy( this );
@@ -643,13 +643,13 @@ public class DContentRule extends AbstractSchemaObject
             return false;
         }
 
-        if ( !( o instanceof DContentRule ) )
+        if ( !( o instanceof DitContentRule ) )
         {
             return false;
         }
 
         @SuppressWarnings("unused")
-        DContentRule that = ( DContentRule ) o;
+        DitContentRule that = ( DitContentRule ) o;
 
         // TODO : complete the check
         return true;
