@@ -45,10 +45,10 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DSETypeSyntaxChecker extends SyntaxChecker
+public class DseTypeSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DSETypeSyntaxChecker.class );
+    private static final Logger LOG = LoggerFactory.getLogger( DseTypeSyntaxChecker.class );
 
     /** The DSE BITS keywords */
     private static final String[] DSE_BITS_STRINGS =
@@ -76,7 +76,7 @@ public class DSETypeSyntaxChecker extends SyntaxChecker
      * Creates a new instance of DSETypeSyntaxChecker.
      *
      */
-    public DSETypeSyntaxChecker()
+    public DseTypeSyntaxChecker()
     {
         super( SchemaConstants.DSE_TYPE_SYNTAX );
     }

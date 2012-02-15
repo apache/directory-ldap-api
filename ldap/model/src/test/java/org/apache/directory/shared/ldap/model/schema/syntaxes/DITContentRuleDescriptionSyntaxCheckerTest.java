@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DITContentRuleDescriptionSyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DitContentRuleDescriptionSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -41,7 +41,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class DITContentRuleDescriptionSyntaxCheckerTest
 {
-    private DITContentRuleDescriptionSyntaxChecker checker = new DITContentRuleDescriptionSyntaxChecker();
+    private DitContentRuleDescriptionSyntaxChecker checker = new DitContentRuleDescriptionSyntaxChecker();
 
 
     @Test

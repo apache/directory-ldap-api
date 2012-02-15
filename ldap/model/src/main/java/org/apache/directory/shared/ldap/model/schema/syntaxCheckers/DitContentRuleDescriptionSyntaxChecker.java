@@ -24,7 +24,7 @@ import java.text.ParseException;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
-import org.apache.directory.shared.ldap.model.schema.parsers.DitStructureRuleDescriptionSchemaParser;
+import org.apache.directory.shared.ldap.model.schema.parsers.DitContentRuleDescriptionSchemaParser;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,41 +32,39 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A SyntaxChecker which verifies that a value follows the
- * DIT structure rule descripton syntax according to RFC 4512, par 4.2.7.1:
+ * DIT content rule descripton syntax according to RFC 4512, par 4.2.6:
  * 
  * <pre>
- * DITStructureRuleDescription = LPAREN WSP
- *   ruleid                     ; rule identifier
- *   [ SP "NAME" SP qdescrs ]   ; short names (descriptors)
- *   [ SP "DESC" SP qdstring ]  ; description
- *   [ SP "OBSOLETE" ]          ; not active
- *   SP "FORM" SP oid           ; NameForm
- *   [ SP "SUP" ruleids ]       ; superior rules
- *   extensions WSP RPAREN      ; extensions
- *
- * ruleids = ruleid / ( LPAREN WSP ruleidlist WSP RPAREN )
- * ruleidlist = ruleid *( SP ruleid )
- * ruleid = numbers
+ * DITContentRuleDescription = LPAREN WSP
+ *    numericoid                 ; object identifier
+ *    [ SP "NAME" SP qdescrs ]   ; short names (descriptors)
+ *    [ SP "DESC" SP qdstring ]  ; description
+ *    [ SP "OBSOLETE" ]          ; not active
+ *    [ SP "AUX" SP oids ]       ; auxiliary object classes
+ *    [ SP "MUST" SP oids ]      ; attribute types
+ *    [ SP "MAY" SP oids ]       ; attribute types
+ *    [ SP "NOT" SP oids ]       ; attribute types
+ *    extensions WSP RPAREN      ; extensions
  * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DITStructureRuleDescriptionSyntaxChecker extends SyntaxChecker
+public class DitContentRuleDescriptionSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DITStructureRuleDescriptionSyntaxChecker.class );
+    private static final Logger LOG = LoggerFactory.getLogger( DitContentRuleDescriptionSyntaxChecker.class );
 
     /** The schema parser used to parse the DITContentRuleDescription Syntax */
-    private DitStructureRuleDescriptionSchemaParser schemaParser = new DitStructureRuleDescriptionSchemaParser();
+    private DitContentRuleDescriptionSchemaParser schemaParser = new DitContentRuleDescriptionSchemaParser();
 
 
     /**
      * Creates a new instance of DITContentRuleDescriptionSyntaxChecker.
      */
-    public DITStructureRuleDescriptionSyntaxChecker()
+    public DitContentRuleDescriptionSyntaxChecker()
     {
-        super( SchemaConstants.DIT_STRUCTURE_RULE_SYNTAX );
+        super( SchemaConstants.DIT_CONTENT_RULE_SYNTAX );
     }
 
 
@@ -98,7 +96,7 @@ public class DITStructureRuleDescriptionSyntaxChecker extends SyntaxChecker
 
         try
         {
-            schemaParser.parseDITStructureRuleDescription( strValue );
+            schemaParser.parseDITContentRuleDescription( strValue );
             LOG.debug( "Syntax valid for '{}'", value );
             return true;
         }

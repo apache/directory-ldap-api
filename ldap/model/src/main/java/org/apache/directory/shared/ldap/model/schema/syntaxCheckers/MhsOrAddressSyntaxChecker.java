@@ -33,16 +33,16 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class MHSORAddressSyntaxChecker extends SyntaxChecker
+public class MhsOrAddressSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( MHSORAddressSyntaxChecker.class );
+    private static final Logger LOG = LoggerFactory.getLogger( MhsOrAddressSyntaxChecker.class );
 
 
     /**
      * Creates a new instance of MHSORAddressSyntaxChecker.
      */
-    public MHSORAddressSyntaxChecker()
+    public MhsOrAddressSyntaxChecker()
     {
         super( SchemaConstants.MHS_OR_ADDRESS_SYNTAX );
     }

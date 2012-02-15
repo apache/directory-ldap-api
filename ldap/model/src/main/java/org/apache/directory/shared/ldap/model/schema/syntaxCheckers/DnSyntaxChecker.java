@@ -20,51 +20,33 @@
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
 
-import java.text.ParseException;
-
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
+import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
-import org.apache.directory.shared.ldap.model.schema.parsers.DitContentRuleDescriptionSchemaParser;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * A SyntaxChecker which verifies that a value follows the
- * DIT content rule descripton syntax according to RFC 4512, par 4.2.6:
- * 
- * <pre>
- * DITContentRuleDescription = LPAREN WSP
- *    numericoid                 ; object identifier
- *    [ SP "NAME" SP qdescrs ]   ; short names (descriptors)
- *    [ SP "DESC" SP qdstring ]  ; description
- *    [ SP "OBSOLETE" ]          ; not active
- *    [ SP "AUX" SP oids ]       ; auxiliary object classes
- *    [ SP "MUST" SP oids ]      ; attribute types
- *    [ SP "MAY" SP oids ]       ; attribute types
- *    [ SP "NOT" SP oids ]       ; attribute types
- *    extensions WSP RPAREN      ; extensions
- * </pre>
+ * A SyntaxChecker which verifies that a value is a valid Dn. We just check
+ * that the Dn is valid, we don't need to verify each of the Rdn syntax.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DITContentRuleDescriptionSyntaxChecker extends SyntaxChecker
+public class DnSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DITContentRuleDescriptionSyntaxChecker.class );
-
-    /** The schema parser used to parse the DITContentRuleDescription Syntax */
-    private DitContentRuleDescriptionSchemaParser schemaParser = new DitContentRuleDescriptionSchemaParser();
+    private static final Logger LOG = LoggerFactory.getLogger( DnSyntaxChecker.class );
 
 
     /**
-     * Creates a new instance of DITContentRuleDescriptionSyntaxChecker.
+     * Creates a new instance of DNSyntaxChecker.
      */
-    public DITContentRuleDescriptionSyntaxChecker()
+    public DnSyntaxChecker()
     {
-        super( SchemaConstants.DIT_CONTENT_RULE_SYNTAX );
+        super( SchemaConstants.DN_SYNTAX );
     }
 
 
@@ -94,16 +76,27 @@ public class DITContentRuleDescriptionSyntaxChecker extends SyntaxChecker
             strValue = value.toString();
         }
 
-        try
+        if ( strValue.length() == 0 )
         {
-            schemaParser.parseDITContentRuleDescription( strValue );
+            // TODO: this should be a false, but for 
+            // some reason, the principal is empty in 
+            // some cases.
             LOG.debug( "Syntax valid for '{}'", value );
             return true;
         }
-        catch ( ParseException pe )
+
+        // Check that the value is a valid Dn
+        boolean result = Dn.isValid( strValue );
+
+        if ( result )
+        {
+            LOG.debug( "Syntax valid for '{}'", value );
+        }
+        else
         {
             LOG.debug( "Syntax invalid for '{}'", value );
-            return false;
         }
+
+        return result;
     }
 }

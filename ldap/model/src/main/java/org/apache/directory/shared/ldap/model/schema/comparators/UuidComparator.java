@@ -30,20 +30,20 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class UUIDComparator extends LdapComparator<String>
+public class UuidComparator extends LdapComparator<String>
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( UUIDComparator.class );
+    private static final Logger LOG = LoggerFactory.getLogger( UuidComparator.class );
 
 
     /**
      * The UUIDComparator constructor. Its OID is the UUIDMatch matching
      * rule OID.
      */
-    public UUIDComparator( String oid )
+    public UuidComparator( String oid )
     {
         super( oid );
     }

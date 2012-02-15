@@ -32,16 +32,16 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DLSubmitPermissionSyntaxChecker extends SyntaxChecker
+public class DlSubmitPermissionSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DLSubmitPermissionSyntaxChecker.class );
+    private static final Logger LOG = LoggerFactory.getLogger( DlSubmitPermissionSyntaxChecker.class );
 
 
     /**
      * Creates a new instance of DLSubmitPermissionSyntaxChecker.
      */
-    public DLSubmitPermissionSyntaxChecker()
+    public DlSubmitPermissionSyntaxChecker()
     {
         super( SchemaConstants.DL_SUBMIT_PERMISSION_SYNTAX );
     }

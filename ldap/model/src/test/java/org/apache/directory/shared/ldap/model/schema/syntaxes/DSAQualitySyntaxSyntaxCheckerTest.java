@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DSAQualitySyntaxSyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DsaQualitySyntaxSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,7 +39,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class DSAQualitySyntaxSyntaxCheckerTest
 {
-    DSAQualitySyntaxSyntaxChecker checker = new DSAQualitySyntaxSyntaxChecker();
+    DsaQualitySyntaxSyntaxChecker checker = new DsaQualitySyntaxSyntaxChecker();
 
 
     @Test

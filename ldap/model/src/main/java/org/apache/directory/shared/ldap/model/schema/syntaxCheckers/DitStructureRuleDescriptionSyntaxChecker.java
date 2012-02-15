@@ -20,33 +20,53 @@
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
 
+import java.text.ParseException;
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.parsers.DitStructureRuleDescriptionSchemaParser;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * A SyntaxChecker which verifies that a value is a valid Dn. We just check
- * that the Dn is valid, we don't need to verify each of the Rdn syntax.
+ * A SyntaxChecker which verifies that a value follows the
+ * DIT structure rule descripton syntax according to RFC 4512, par 4.2.7.1:
+ * 
+ * <pre>
+ * DITStructureRuleDescription = LPAREN WSP
+ *   ruleid                     ; rule identifier
+ *   [ SP "NAME" SP qdescrs ]   ; short names (descriptors)
+ *   [ SP "DESC" SP qdstring ]  ; description
+ *   [ SP "OBSOLETE" ]          ; not active
+ *   SP "FORM" SP oid           ; NameForm
+ *   [ SP "SUP" ruleids ]       ; superior rules
+ *   extensions WSP RPAREN      ; extensions
+ *
+ * ruleids = ruleid / ( LPAREN WSP ruleidlist WSP RPAREN )
+ * ruleidlist = ruleid *( SP ruleid )
+ * ruleid = numbers
+ * </pre>
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DNSyntaxChecker extends SyntaxChecker
+public class DitStructureRuleDescriptionSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DNSyntaxChecker.class );
+    private static final Logger LOG = LoggerFactory.getLogger( DitStructureRuleDescriptionSyntaxChecker.class );
+
+    /** The schema parser used to parse the DITContentRuleDescription Syntax */
+    private DitStructureRuleDescriptionSchemaParser schemaParser = new DitStructureRuleDescriptionSchemaParser();
 
 
     /**
-     * Creates a new instance of DNSyntaxChecker.
+     * Creates a new instance of DITContentRuleDescriptionSyntaxChecker.
      */
-    public DNSyntaxChecker()
+    public DitStructureRuleDescriptionSyntaxChecker()
     {
-        super( SchemaConstants.DN_SYNTAX );
+        super( SchemaConstants.DIT_STRUCTURE_RULE_SYNTAX );
     }
 
 
@@ -76,27 +96,16 @@ public class DNSyntaxChecker extends SyntaxChecker
             strValue = value.toString();
         }
 
-        if ( strValue.length() == 0 )
+        try
         {
-            // TODO: this should be a false, but for 
-            // some reason, the principal is empty in 
-            // some cases.
+            schemaParser.parseDITStructureRuleDescription( strValue );
             LOG.debug( "Syntax valid for '{}'", value );
             return true;
         }
-
-        // Check that the value is a valid Dn
-        boolean result = Dn.isValid( strValue );
-
-        if ( result )
-        {
-            LOG.debug( "Syntax valid for '{}'", value );
-        }
-        else
+        catch ( ParseException pe )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
+            return false;
         }
-
-        return result;
     }
 }

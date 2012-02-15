@@ -42,16 +42,16 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-public class DSAQualitySyntaxSyntaxChecker extends SyntaxChecker
+public class DsaQualitySyntaxSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DSAQualitySyntaxSyntaxChecker.class );
+    private static final Logger LOG = LoggerFactory.getLogger( DsaQualitySyntaxSyntaxChecker.class );
 
 
     /**
      * Creates a new instance of DSAQualitySyntaxSyntaxChecker.
      */
-    public DSAQualitySyntaxSyntaxChecker()
+    public DsaQualitySyntaxSyntaxChecker()
     {
         super( SchemaConstants.DSA_QUALITY_SYNTAX );
     }
