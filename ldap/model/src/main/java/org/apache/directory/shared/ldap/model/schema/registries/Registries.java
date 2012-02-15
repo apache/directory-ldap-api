@@ -53,6 +53,7 @@ import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectWrapper;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.registries.helper.AttributeTypeHelper;
+import org.apache.directory.shared.ldap.model.schema.registries.helper.DitContentRuleHelper;
 import org.apache.directory.shared.ldap.model.schema.registries.helper.ObjectClassHelper;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -666,6 +667,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
             {
                 case ATTRIBUTE_TYPE :
                     AttributeTypeHelper.addToRegistries( (AttributeType)schemaObject, errors, this );
+                    break;
+                    
+                case DIT_CONTENT_RULE :
+                    DitContentRuleHelper.addToRegistries( (DITContentRule)schemaObject, errors, this );
                     break;
                     
                 case OBJECT_CLASS :

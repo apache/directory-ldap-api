@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema;
 
@@ -24,10 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.ObjectClassRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 
 
 /**
@@ -41,37 +37,37 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
  * 
  * <pre>
  *  4.1.6. DIT Content Rules
- *  
+ * 
  *    A DIT content rule is a &quot;rule governing the content of entries of a
  *    particular structural object class&quot; [X.501].
- *  
+ * 
  *    For DIT entries of a particular structural object class, a DIT content
  *    rule specifies which auxiliary object classes the entries are allowed
  *    to belong to and which additional attributes (by type) are required,
  *    allowed or not allowed to appear in the entries.
- *  
+ * 
  *    The list of precluded attributes cannot include any attribute listed
  *    as mandatory in rule, the structural object class, or any of the
  *    allowed auxiliary object classes.
- *  
+ * 
  *    Each content rule is identified by the object identifier, as well as
  *    any short names (descriptors), of the structural object class it
  *    applies to.
- *  
+ * 
  *    An entry may only belong to auxiliary object classes listed in the
  *    governing content rule.
- *  
+ * 
  *    An entry must contain all attributes required by the object classes
  *    the entry belongs to as well as all attributed required by the
  *    governing content rule.
- *  
+ * 
  *    An entry may contain any non-precluded attributes allowed by the
  *    object classes the entry belongs to as well as all attributes allowed
  *    by the governing content rule.
- *  
+ * 
  *    An entry cannot include any attribute precluded by the governing
  *    content rule.
- *  
+ * 
  *    An entry is governed by (if present and active in the subschema) the
  *    DIT content rule which applies to the structural object class of the
  *    entry (see Section 2.4.2).  If no active rule is present for the
@@ -568,63 +564,6 @@ public class DITContentRule extends AbstractSchemaObject
 
 
     /**
-     * Inject the DITContentRule into the registries, updating the references to
-     * other SchemaObject
-     *
-     * @param registries The Registries
-     * @exception If the addition failed
-     */
-    public void addToRegistries( Registries registries ) throws LdapException
-    {
-        if ( registries != null )
-        {
-            AttributeTypeRegistry atRegistry = registries.getAttributeTypeRegistry();
-            ObjectClassRegistry ocRegistry = registries.getObjectClassRegistry();
-
-            if ( mayAttributeTypeOids != null )
-            {
-                mayAttributeTypes = new ArrayList<AttributeType>( mayAttributeTypeOids.size() );
-
-                for ( String oid : mayAttributeTypeOids )
-                {
-                    mayAttributeTypes.add( atRegistry.lookup( oid ) );
-                }
-            }
-
-            if ( mustAttributeTypeOids != null )
-            {
-                mustAttributeTypes = new ArrayList<AttributeType>( mustAttributeTypeOids.size() );
-
-                for ( String oid : mustAttributeTypeOids )
-                {
-                    mustAttributeTypes.add( atRegistry.lookup( oid ) );
-                }
-            }
-
-            if ( notAttributeTypeOids != null )
-            {
-                notAttributeTypes = new ArrayList<AttributeType>( notAttributeTypeOids.size() );
-
-                for ( String oid : notAttributeTypeOids )
-                {
-                    notAttributeTypes.add( atRegistry.lookup( oid ) );
-                }
-            }
-
-            if ( auxObjectClassOids != null )
-            {
-                auxObjectClasses = new ArrayList<ObjectClass>( auxObjectClassOids.size() );
-
-                for ( String oid : auxObjectClassOids )
-                {
-                    auxObjectClasses.add( ocRegistry.lookup( oid ) );
-                }
-            }
-        }
-    }
-
-
-    /**
      * @see Object#toString()
      */
     public String toString()
@@ -696,7 +635,7 @@ public class DITContentRule extends AbstractSchemaObject
      */
     @Override
     @SuppressWarnings("PMD.UnusedLocalVariable")
-    // Remove me when the TODO is fixed 
+    // Remove me when the TODO is fixed
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )
