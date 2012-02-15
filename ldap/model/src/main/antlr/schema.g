@@ -663,13 +663,13 @@ ditContentRuleDescription returns [DitContentRule ditContentRule]
      * ruleid = number
      * </pre>
     */
-ditStructureRuleDescription returns [DITStructureRule ditStructureRule]
+ditStructureRuleDescription returns [DitStructureRule ditStructureRule]
     {
         matchedProduction( "ditStructureRuleDescription()" );
         ElementTracker et = new ElementTracker();
     }
     :
-    ( ruleid:STARTNUMERICOID { ditStructureRule = new DITStructureRule(ruleid(ruleid.getText())); } )
+    ( ruleid:STARTNUMERICOID { ditStructureRule = new DitStructureRule(ruleid(ruleid.getText())); } )
     (
         ( name:NAME { et.track("NAME", name); ditStructureRule.setNames(qdescrs(name.getText())); } )
         |
