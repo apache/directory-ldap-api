@@ -48,8 +48,8 @@ import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectWrapper;
 import org.apache.directory.shared.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.model.schema.parsers.DITContentRuleDescriptionSchemaParser;
-import org.apache.directory.shared.ldap.model.schema.parsers.DITStructureRuleDescriptionSchemaParser;
+import org.apache.directory.shared.ldap.model.schema.parsers.DitContentRuleDescriptionSchemaParser;
+import org.apache.directory.shared.ldap.model.schema.parsers.DitStructureRuleDescriptionSchemaParser;
 import org.apache.directory.shared.ldap.model.schema.parsers.LdapComparatorDescription;
 import org.apache.directory.shared.ldap.model.schema.parsers.LdapComparatorDescriptionSchemaParser;
 import org.apache.directory.shared.ldap.model.schema.parsers.LdapSyntaxDescriptionSchemaParser;
@@ -88,8 +88,8 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
     /** The SubschemaSubentry descriptions parsers */
     private static AttributeTypeDescriptionSchemaParser AT_DESCR_SCHEMA_PARSER = new AttributeTypeDescriptionSchemaParser();
-    private static DITStructureRuleDescriptionSchemaParser DSR_DESCR_SCHEMA_PARSER = new DITStructureRuleDescriptionSchemaParser();
-    private static DITContentRuleDescriptionSchemaParser DCR_DESCR_SCHEMA_PARSER = new DITContentRuleDescriptionSchemaParser();
+    private static DitStructureRuleDescriptionSchemaParser DSR_DESCR_SCHEMA_PARSER = new DitStructureRuleDescriptionSchemaParser();
+    private static DitContentRuleDescriptionSchemaParser DCR_DESCR_SCHEMA_PARSER = new DitContentRuleDescriptionSchemaParser();
     private static MatchingRuleDescriptionSchemaParser MR_DESCR_SCHEMA_PARSER = new MatchingRuleDescriptionSchemaParser();
     private static MatchingRuleUseDescriptionSchemaParser MRU_DESCR_SCHEMA_PARSER = new MatchingRuleUseDescriptionSchemaParser();
     private static NameFormDescriptionSchemaParser NF_DESCR_SCHEMA_PARSER = new NameFormDescriptionSchemaParser();
