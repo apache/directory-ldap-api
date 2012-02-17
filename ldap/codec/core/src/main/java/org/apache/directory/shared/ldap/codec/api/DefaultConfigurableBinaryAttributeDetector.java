@@ -19,10 +19,12 @@
  */
 package org.apache.directory.shared.ldap.codec.api;
 
+
 import java.util.Set;
 
 import org.apache.directory.shared.util.Strings;
 import org.apache.mina.util.ConcurrentHashSet;
+
 
 /**
  * An implementation of the BinaryAttributeDetector interface. It's used
@@ -65,36 +67,37 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
 {
     /** A set of binary Attribute ID */
     private Set<String> binaryAttributes = new ConcurrentHashSet<String>();
-    
+
     /** A list of all the known binary attributes */
     public final static String[] DEFAULT_BINARY_ATTRIBUTES = new String[]
         {
-            "entryACI",                 // Syntax : ACI Item
-            "prescriptiveACI",          // Syntax : ACI Item
-            "subentryACI",              // Syntax : ACI Item
-            "audio",                    // Syntax : Audio
-            "javaByteCode",             // Syntax : Binary
-            "javaClassByteCode",        // Syntax : Binary
-            "krb5key",                  // Syntax : Binary
-            "m-byteCode",               // Syntax : Binary
-            "privateKey",               // Syntax : Binary
-            "publicKey",                // Syntax : Binary
-            "userPKCS12",               // Syntax : Binary
-            "userSMIMECertificate",     // Syntax : Binary
-            "cACertificate",            // Syntax : Certificate
-            "userCertificate",          // Syntax : Certificate
-            "authorityRevocationList",  // Syntax : Certificate List
+            "entryACI", // Syntax : ACI Item
+            "prescriptiveACI", // Syntax : ACI Item
+            "subentryACI", // Syntax : ACI Item
+            "audio", // Syntax : Audio
+            "javaByteCode", // Syntax : Binary
+            "javaClassByteCode", // Syntax : Binary
+            "krb5key", // Syntax : Binary
+            "m-byteCode", // Syntax : Binary
+            "privateKey", // Syntax : Binary
+            "publicKey", // Syntax : Binary
+            "userPKCS12", // Syntax : Binary
+            "userSMIMECertificate", // Syntax : Binary
+            "cACertificate", // Syntax : Certificate
+            "userCertificate", // Syntax : Certificate
+            "authorityRevocationList", // Syntax : Certificate List
             "certificateRevocationList",// Syntax : Certificate List
-            "deltaRevocationList",      // Syntax : Certificate List
-            "crossCertificatePair",     // Syntax : Certificate Pair
-            "personalSignature",        // Syntax : Fax
-            "photo",                    // Syntax : Fax
-            "jpegPhoto",                // Syntax : JPEG
-            "supportedAlgorithms",      // Syntax : Supported Algorithm
-            "javaSerializedData",       // Syntax : Octet String
-            "userPassword"              // Syntax : Octet String
+            "deltaRevocationList", // Syntax : Certificate List
+            "crossCertificatePair", // Syntax : Certificate Pair
+            "personalSignature", // Syntax : Fax
+            "photo", // Syntax : Fax
+            "jpegPhoto", // Syntax : JPEG
+            "supportedAlgorithms", // Syntax : Supported Algorithm
+            "javaSerializedData", // Syntax : Octet String
+            "userPassword" // Syntax : Octet String
         };
-    
+
+
     /**
      * Creates a new instance of a ConfigurableBinaryAttributeDetector. This will
      * load a set of default attribute ID that are known to be binary.
@@ -103,15 +106,15 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
     {
         setBinaryAttributes( DEFAULT_BINARY_ATTRIBUTES );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public boolean isBinary( String attributeId )
     {
         boolean isBinary = super.isBinary( attributeId );
-        
+
         if ( isBinary )
         {
             return true;
@@ -121,7 +124,7 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
 
         return binaryAttributes.contains( attrId );
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -137,7 +140,7 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
             }
         }
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -153,26 +156,22 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
             }
         }
     }
-    
+
 
     /**
      * {@inheritDoc}
      */
     public void setBinaryAttributes( String... binaryAttributes )
     {
+        this.binaryAttributes.clear();
+
+        // Special case for 'null'
         if ( binaryAttributes == null )
         {
-            // Clear the Set and reinject the default attributes
-            this.binaryAttributes.clear();
-            setBinaryAttributes( DEFAULT_BINARY_ATTRIBUTES );
-            
-            return;
+            // Reseting to the default list of binary attributes
+            binaryAttributes = DEFAULT_BINARY_ATTRIBUTES;
         }
 
-        for ( String binaryAttribute : binaryAttributes )
-        {
-            String attrId = Strings.toLowerCase( binaryAttribute );
-            this.binaryAttributes.add( attrId );
-        }
+        addBinaryAttribute( binaryAttributes );
     }
 }
