@@ -267,6 +267,7 @@ public class RdnTest
     public void testRdnQuotedAttributeValue() throws LdapException
     {
         assertEquals( "a=quoted \\\"value", new Rdn( "a = quoted \\\"value" ).getNormName() );
+        assertEquals( "quoted \"value", new Rdn( "a = quoted \\\"value" ).getValue( "a" ) );
     }
 
 
@@ -331,7 +332,7 @@ public class RdnTest
     @Test
     public void testRDNCompareToNull() throws LdapException
     {
-        Rdn rdn1 = new Rdn( " a = b + c = d + a = f + g = h " );
+        Rdn rdn1 = new Rdn( " a = b + c = d + e = f + g = h " );
         Rdn rdn2 = null;
         assertFalse( rdn1.equals( rdn2 ) );
     }
@@ -345,7 +346,7 @@ public class RdnTest
     @Test
     public void testRDNCompareToNCS2NC() throws LdapException
     {
-        Rdn rdn1 = new Rdn( " a = b + c = d + a = f + g = h " );
+        Rdn rdn1 = new Rdn( " a = b + c = d + e = f + g = h " );
         Rdn rdn2 = new Rdn( " a = b " );
         assertFalse( rdn1.equals( rdn2 ) );
     }
@@ -360,7 +361,7 @@ public class RdnTest
     public void testRDNCompareToNC2NCS() throws LdapException
     {
         Rdn rdn1 = new Rdn( " a = b " );
-        Rdn rdn2 = new Rdn( " a = b + c = d + a = f + g = h " );
+        Rdn rdn2 = new Rdn( " a = b + c = d + e = f + g = h " );
 
         assertFalse( rdn1.equals( rdn2 ) );
     }
@@ -374,8 +375,8 @@ public class RdnTest
     @Test
     public void testRDNCompareToNCS2NCSOrdered() throws LdapException
     {
-        Rdn rdn1 = new Rdn( " a = b + c = d + a = f + g = h " );
-        Rdn rdn2 = new Rdn( " a = b + c = d + a = f + g = h " );
+        Rdn rdn1 = new Rdn( " a = b + c = d + e = f + g = h " );
+        Rdn rdn2 = new Rdn( " a = b + c = d + e = f + g = h " );
 
         assertTrue( rdn1.equals( rdn2 ) );
     }
@@ -389,8 +390,8 @@ public class RdnTest
     @Test
     public void testRDNCompareToNCS2NCSUnordered() throws LdapException
     {
-        Rdn rdn1 = new Rdn( " a = b + a = f + g = h + c = d " );
-        Rdn rdn2 = new Rdn( " a = b + c = d + a = f + g = h " );
+        Rdn rdn1 = new Rdn( " a = b + b = f + g = h + c = d " );
+        Rdn rdn2 = new Rdn( " a = b + c = d + b = f + g = h " );
 
         assertTrue( rdn1.equals( rdn2 ) );
     }
@@ -434,8 +435,8 @@ public class RdnTest
         assertFalse( rdn4.equals( rdn3 ) );
 
         // the second ATAV differs in value only
-        Rdn rdn5 = new Rdn( " a = b + a = c " );
-        Rdn rdn6 = new Rdn( " a = b + a = y " );
+        Rdn rdn5 = new Rdn( " a = b + b = c " );
+        Rdn rdn6 = new Rdn( " a = b + b = y " );
         assertFalse( rdn5.equals( rdn6 ) );
         assertFalse( rdn6.equals( rdn5 ) );
     }
@@ -493,8 +494,8 @@ public class RdnTest
     @Test
     public void testCompareInvertableNCS2NCSDifferentValues() throws LdapException
     {
-        Rdn rdn1 = new Rdn( " a = b + a = c " );
-        Rdn rdn2 = new Rdn( " a = b + a = y " );
+        Rdn rdn1 = new Rdn( " a = b + b = c " );
+        Rdn rdn2 = new Rdn( " a = b + b = y " );
         assertFalse( rdn1.equals( rdn2 ) );
         assertFalse( rdn2.equals( rdn1 ) );
     }
@@ -600,7 +601,7 @@ public class RdnTest
     @Test
     public void testGetValue() throws LdapException
     {
-        Rdn rdn = new Rdn( " a = b + a = f + g = h + c = d " );
+        Rdn rdn = new Rdn( " a = b + b = f + g = h + c = d " );
 
         assertEquals( "b", rdn.getNormValue().getString() );
     }
@@ -615,7 +616,7 @@ public class RdnTest
     @Test
     public void testGetType() throws LdapException
     {
-        Rdn rdn = new Rdn( " a = b + a = f + g = h + c = d " );
+        Rdn rdn = new Rdn( " a = b + b = f + g = h + c = d " );
 
         assertEquals( "a", rdn.getNormType() );
     }
@@ -629,7 +630,7 @@ public class RdnTest
     @Test
     public void testGetSize() throws LdapException
     {
-        Rdn rdn = new Rdn( " a = b + a = f + g = h + c = d " );
+        Rdn rdn = new Rdn( " a = b + b = f + g = h + c = d " );
 
         assertEquals( 4, rdn.size() );
     }
@@ -656,15 +657,15 @@ public class RdnTest
     @Test
     public void testEquals() throws LdapException
     {
-        Rdn rdn = new Rdn( "a=b + c=d + a=f" );
+        Rdn rdn = new Rdn( "a=b + c=d + e=f" );
 
         assertFalse( rdn.equals( null ) );
         assertFalse( rdn.equals( "test" ) );
-        assertFalse( rdn.equals( new Rdn( "a=c + c=d + a=f" ) ) );
+        assertFalse( rdn.equals( new Rdn( "a=c + c=d + e=f" ) ) );
         assertFalse( rdn.equals( new Rdn( "a=b" ) ) );
-        assertTrue( rdn.equals( new Rdn( "a=b + c=d + a=f" ) ) );
-        assertTrue( rdn.equals( new Rdn( "a=b + C=d + A=f" ) ) );
-        assertTrue( rdn.equals( new Rdn( "c=d + a=f + a=b" ) ) );
+        assertTrue( rdn.equals( new Rdn( "a=b + c=d + e=f" ) ) );
+        assertTrue( rdn.equals( new Rdn( "a=b + C=d + E=f" ) ) );
+        assertTrue( rdn.equals( new Rdn( "c=d + e=f + a=b" ) ) );
     }
 
 
@@ -1220,5 +1221,15 @@ public class RdnTest
     public void testWrongRdn() throws LdapException
     {
         new Rdn( " A = b, C = d " );
+    }
+
+
+    /**
+     * test that a RDN with an attributeType used twice throws an exception
+     */
+    @Test( expected=LdapInvalidDnException.class )
+    public void testWrongRdnAtUsedTwice() throws LdapException
+    {
+        new Rdn( " A = b + A = d " );
     }
 }

@@ -1150,8 +1150,8 @@ public class DnTest
     @Test
     public void testAttributeTypeEqualsIsCaseInsensitive() throws Exception
     {
-        Dn name1 = new Dn( "cn=HomeDir+cn=WorkDir" );
-        Dn name2 = new Dn( "cn=HomeDir+CN=WorkDir" );
+        Dn name1 = new Dn( "cn=HomeDir+Sn=WorkDir" );
+        Dn name2 = new Dn( "cn=HomeDir+SN=WorkDir" );
 
         assertTrue( name1.equals( name2 ) );
     }
@@ -1161,8 +1161,8 @@ public class DnTest
     public void testNameEqualsIsInsensitiveToAttributesOrder() throws Exception
     {
 
-        Dn name1 = new Dn( "cn=HomeDir+cn=WorkDir" );
-        Dn name2 = new Dn( "cn=WorkDir+cn=HomeDir" );
+        Dn name1 = new Dn( "cn=HomeDir+sn=WorkDir" );
+        Dn name2 = new Dn( "sn=WorkDir+cn=HomeDir" );
 
         assertTrue( name1.equals( name2 ) );
     }
@@ -1181,8 +1181,8 @@ public class DnTest
     @Test
     public void testAttributeTypeComparisonIsCaseInsensitive() throws Exception
     {
-        Dn name1 = new Dn( "cn=HomeDir+cn=WorkDir" );
-        Dn name2 = new Dn( "cn=HomeDir+CN=WorkDir" );
+        Dn name1 = new Dn( "cn=HomeDir+sn=WorkDir" );
+        Dn name2 = new Dn( "cn=HomeDir+SN=WorkDir" );
 
         assertEquals( name1, name2 );
     }
@@ -1192,8 +1192,8 @@ public class DnTest
     public void testNameComparisonIsInsensitiveToAttributesOrder() throws Exception
     {
 
-        Dn name1 = new Dn( "cn=HomeDir+cn=WorkDir" );
-        Dn name2 = new Dn( "cn=WorkDir+cn=HomeDir" );
+        Dn name1 = new Dn( "cn=HomeDir+sn=WorkDir" );
+        Dn name2 = new Dn( "sn=WorkDir+cn=HomeDir" );
 
         assertEquals( name1, name2 );
     }
@@ -1203,8 +1203,8 @@ public class DnTest
     public void testNameComparisonIsInsensitiveToAttributesOrderFailure() throws Exception
     {
 
-        Dn name1 = new Dn( "cn= HomeDir+cn=Workdir" );
-        Dn name2 = new Dn( "cn = Work+cn=HomeDir" );
+        Dn name1 = new Dn( "cn= HomeDir+sn=Workdir" );
+        Dn name2 = new Dn( "sn = Work+cn=HomeDir" );
 
         assertNotSame( name1, name2 );
     }
@@ -2638,19 +2638,19 @@ public class DnTest
     @Test
     public void testNormalizeAsciiComposite() throws Exception
     {
-        Dn dn = new Dn( "  ou  =  Example + ou = TEST ,  ou  =  COM " );
+        Dn dn = new Dn( "  ou  =  Example + cn = TEST ,  ou  =  COM " );
 
         dn.apply( schemaManager );
-        assertEquals( "2.5.4.11=example+2.5.4.11=test,2.5.4.11=com", dn.getNormName() );
-        assertEquals( "  ou  =  Example + ou = TEST ,  ou  =  COM ", dn.getName() );
+        assertEquals( "2.5.4.11=example+2.5.4.3=test,2.5.4.11=com", dn.getNormName() );
+        assertEquals( "  ou  =  Example + cn = TEST ,  ou  =  COM ", dn.getName() );
 
         Rdn rdn = dn.getRdn();
         assertEquals( "2.5.4.11", rdn.getNormType() );
         assertEquals( "example", rdn.getNormValue().getString() );
-        assertEquals( "2.5.4.11=example+2.5.4.11=test", rdn.getNormName() );
+        assertEquals( "2.5.4.11=example+2.5.4.3=test", rdn.getNormName() );
         assertEquals( "ou", rdn.getUpType() );
         assertEquals( "  Example ", rdn.getUpValue().getString() );
-        assertEquals( "  ou  =  Example + ou = TEST ", rdn.getName() );
+        assertEquals( "  ou  =  Example + cn = TEST ", rdn.getName() );
 
         // The first ATAV
         Ava atav = rdn.getAva();
@@ -2675,13 +2675,13 @@ public class DnTest
                 continue;
             }
 
-            assertEquals( "2.5.4.11=test", ava.getNormName() );
-            assertEquals( "2.5.4.11", ava.getNormType() );
+            assertEquals( "2.5.4.3=test", ava.getNormName() );
+            assertEquals( "2.5.4.3", ava.getNormType() );
             assertEquals( "test", ava.getNormValue().getValue() );
 
-            assertEquals( "ou", ava.getUpType() );
+            assertEquals( "cn", ava.getUpType() );
             assertEquals( " TEST ", ava.getUpValue().getValue() );
-            assertEquals( " ou = TEST ", ava.getUpName() );
+            assertEquals( " cn = TEST ", ava.getUpName() );
         }
     }
 
@@ -2719,17 +2719,17 @@ public class DnTest
     @Test
     public void testNormalizeCompositeWithEscaped() throws Exception
     {
-        Dn dn = new Dn( "  OU  =  Ex\\+mple + ou = T\\+ST\\  ,  ou  =  COM " );
+        Dn dn = new Dn( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ,  ou  =  COM " );
 
         // ------------------------------------------------------------------
         // Before normalization
-        assertEquals( "  OU  =  Ex\\+mple + ou = T\\+ST\\  ,  ou  =  COM ", dn.getName() );
-        assertEquals( "ou=Ex\\+mple+ou=T\\+ST\\ ,ou=COM", dn.getNormName() );
+        assertEquals( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ,  ou  =  COM ", dn.getName() );
+        assertEquals( "ou=Ex\\+mple+cn=T\\+ST\\ ,ou=COM", dn.getNormName() );
 
         // Check the first Rdn
         Rdn rdn = dn.getRdn();
-        assertEquals( "  OU  =  Ex\\+mple + ou = T\\+ST\\  ", rdn.getName() );
-        assertEquals( "ou=Ex\\+mple+ou=T\\+ST\\ ", rdn.getNormName() );
+        assertEquals( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ", rdn.getName() );
+        assertEquals( "ou=Ex\\+mple+cn=T\\+ST\\ ", rdn.getNormName() );
 
         assertEquals( "OU", rdn.getUpType() );
         assertEquals( "ou", rdn.getNormType() );
@@ -2760,11 +2760,11 @@ public class DnTest
                 continue;
             }
 
-            assertEquals( " ou = T\\+ST\\  ", ava.getUpName() );
-            assertEquals( "ou=T\\+ST\\ ", ava.getNormName() );
+            assertEquals( " cn = T\\+ST\\  ", ava.getUpName() );
+            assertEquals( "cn=T\\+ST\\ ", ava.getNormName() );
 
-            assertEquals( "ou", ava.getUpType() );
-            assertEquals( "ou", ava.getNormType() );
+            assertEquals( "cn", ava.getUpType() );
+            assertEquals( "cn", ava.getNormType() );
 
             assertEquals( " T\\+ST\\  ", ava.getUpValue().getValue() );
             assertEquals( "T+ST ", ava.getNormValue().getValue() );
@@ -2774,13 +2774,13 @@ public class DnTest
         // Now normalize the Dn
         dn.apply( schemaManager );
 
-        assertEquals( "  OU  =  Ex\\+mple + ou = T\\+ST\\  ,  ou  =  COM ", dn.getName() );
-        assertEquals( "2.5.4.11=ex\\+mple+2.5.4.11=t\\+st,2.5.4.11=com", dn.getNormName() );
+        assertEquals( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ,  ou  =  COM ", dn.getName() );
+        assertEquals( "2.5.4.11=ex\\+mple+2.5.4.3=t\\+st,2.5.4.11=com", dn.getNormName() );
 
         // Check the first Rdn
         rdn = dn.getRdn();
-        assertEquals( "  OU  =  Ex\\+mple + ou = T\\+ST\\  ", rdn.getName() );
-        assertEquals( "2.5.4.11=ex\\+mple+2.5.4.11=t\\+st", rdn.getNormName() );
+        assertEquals( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ", rdn.getName() );
+        assertEquals( "2.5.4.11=ex\\+mple+2.5.4.3=t\\+st", rdn.getNormName() );
 
         assertEquals( "OU", rdn.getUpType() );
         assertEquals( "2.5.4.11", rdn.getNormType() );
@@ -2811,11 +2811,11 @@ public class DnTest
                 continue;
             }
 
-            assertEquals( " ou = T\\+ST\\  ", ava.getUpName() );
-            assertEquals( "2.5.4.11=t\\+st", ava.getNormName() );
+            assertEquals( " cn = T\\+ST\\  ", ava.getUpName() );
+            assertEquals( "2.5.4.3=t\\+st", ava.getNormName() );
 
-            assertEquals( "ou", ava.getUpType() );
-            assertEquals( "2.5.4.11", ava.getNormType() );
+            assertEquals( "cn", ava.getUpType() );
+            assertEquals( "2.5.4.3", ava.getNormType() );
 
             assertEquals( " T\\+ST\\  ", ava.getUpValue().getValue() );
             assertEquals( "t+st", ava.getNormValue().getValue() );

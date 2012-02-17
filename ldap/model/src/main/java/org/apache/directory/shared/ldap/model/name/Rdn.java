@@ -544,7 +544,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
     // WARNING : The protection level is left unspecified intentionally.
     // We need this method to be visible from the DnParser class, but not
     // from outside this package.
-    /* Unspecified protection */void addAVA( SchemaManager schemaManager, Ava value )
+    /* Unspecified protection */void addAVA( SchemaManager schemaManager, Ava value ) throws LdapInvalidDnException
     {
         this.schemaManager = schemaManager;
         String normalizedType = value.getNormType();
@@ -563,6 +563,12 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
             case 1:
                 // We already have an Ava. We have to put it in the HashMap
                 // before adding a new one.
+                // Check that the first AVA is not for the same attribute
+                if ( avaType.equals( normalizedType ) )
+                {
+                    throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType + " is already present in the RDN" );
+                }
+                
                 // First, create the HashMap,
                 avas = new ArrayList<Ava>();
 
@@ -577,6 +583,12 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 // NO BREAK !!!
 
             default:
+                // Check that the AT is not already present
+                if ( avaTypes.containsKey( normalizedType ) )
+                {
+                    throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType + " is already present in the RDN" );
+                }
+                
                 // add a new Ava
                 avas.add( value );
                 avaTypes.put( normalizedType, value );

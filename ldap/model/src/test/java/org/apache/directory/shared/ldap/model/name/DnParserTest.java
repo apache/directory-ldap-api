@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.name;
 
@@ -357,7 +357,7 @@ public class DnParserTest
 
         assertEquals( "RFC1779_1 : ",
             "CN=Marshall T. Rose, O=Dover Beach Consulting, L=Santa Clara, ST=California, C=US",
-            ( ( Dn ) nameRFC1779_1 ).getName() );
+            nameRFC1779_1.getName() );
         assertEquals( "RFC1779_1 : ", "cn=Marshall T. Rose,o=Dover Beach Consulting,l=Santa Clara,st=California,c=US",
             nameRFC1779_1.getNormName() );
     }
@@ -374,7 +374,7 @@ public class DnParserTest
     {
         Dn nameRFC2253_1 = new Dn( "CN=Steve Kille,O=Isode limited,C=GB" );
 
-        assertEquals( "RFC2253_1 : ", "CN=Steve Kille,O=Isode limited,C=GB", ( ( Dn ) nameRFC2253_1 ).getName() );
+        assertEquals( "RFC2253_1 : ", "CN=Steve Kille,O=Isode limited,C=GB", nameRFC2253_1.getName() );
     }
 
 
@@ -387,11 +387,11 @@ public class DnParserTest
     @Test
     public final void testParseStringRFC2253_2() throws LdapException
     {
-        Dn nameRFC2253_2 = new Dn( "CN = Sales + CN =   J. Smith , O = Widget Inc. , C = US" );
+        Dn nameRFC2253_2 = new Dn( "OU = Sales + CN =   J. Smith , O = Widget Inc. , C = US" );
 
-        assertEquals( "RFC2253_2 : ", "CN = Sales + CN =   J. Smith , O = Widget Inc. , C = US",
-            ( ( Dn ) nameRFC2253_2 ).getName() );
-        assertEquals( "RFC2253_2 : ", "cn=Sales+cn=J. Smith,o=Widget Inc.,c=US", nameRFC2253_2.getNormName() );
+        assertEquals( "RFC2253_2 : ", "OU = Sales + CN =   J. Smith , O = Widget Inc. , C = US",
+            nameRFC2253_2.getName() );
+        assertEquals( "RFC2253_2 : ", "ou=Sales+cn=J. Smith,o=Widget Inc.,c=US", nameRFC2253_2.getNormName() );
     }
 
 
@@ -406,7 +406,7 @@ public class DnParserTest
     {
         Dn nameRFC2253_3 = new Dn( "CN=L. Eagle,   O=Sue\\, Grabbit and Runn, C=GB" );
 
-        assertEquals( "RFC2253_3 : ", "CN=L. Eagle,   O=Sue\\, Grabbit and Runn, C=GB", ( ( Dn ) nameRFC2253_3 )
+        assertEquals( "RFC2253_3 : ", "CN=L. Eagle,   O=Sue\\, Grabbit and Runn, C=GB", nameRFC2253_3
             .getName() );
         assertEquals( "RFC2253_3 : ", "cn=L. Eagle,o=Sue\\, Grabbit and Runn,c=GB", nameRFC2253_3.getNormName() );
     }
@@ -422,7 +422,7 @@ public class DnParserTest
     public final void testParseStringRFC2253_4() throws LdapException
     {
         Dn nameRFC2253_4 = new Dn( "CN=Before\\0DAfter,O=Test,C=GB" );
-        assertEquals( "RFC2253_4 : ", "CN=Before\\0DAfter,O=Test,C=GB", ( ( Dn ) nameRFC2253_4 ).getName() );
+        assertEquals( "RFC2253_4 : ", "CN=Before\\0DAfter,O=Test,C=GB", nameRFC2253_4.getName() );
     }
 
 
@@ -437,7 +437,7 @@ public class DnParserTest
     {
         Dn nameRFC2253_5 = new Dn( "1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB" );
 
-        assertEquals( "RFC2253_5 : ", "1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB", ( ( Dn ) nameRFC2253_5 )
+        assertEquals( "RFC2253_5 : ", "1.3.6.1.4.1.1466.0=#04024869,O=Test,C=GB", nameRFC2253_5
             .getName() );
     }
 
@@ -453,7 +453,7 @@ public class DnParserTest
     {
         Dn nameRFC2253_6 = new Dn( "SN=Lu\\C4\\8Di\\C4\\87" );
 
-        assertEquals( "RFC2253_6 : ", "SN=Lu\\C4\\8Di\\C4\\87", ( ( Dn ) nameRFC2253_6 ).getName() );
+        assertEquals( "RFC2253_6 : ", "SN=Lu\\C4\\8Di\\C4\\87", nameRFC2253_6.getName() );
     }
 
 
