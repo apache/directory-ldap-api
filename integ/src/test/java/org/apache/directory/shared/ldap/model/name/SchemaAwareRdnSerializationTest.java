@@ -126,6 +126,6 @@ public class SchemaAwareRdnSerializationTest
 
         assertEquals( rdn1, rdn2 );
         assertEquals( "doe", rdn2.getValue( "cn" ) );
-        assertEquals( "Doe", rdn2.getUpValue().getString() );
+        assertEquals( "Doe", rdn2.getValue().getString() );
     }
 }

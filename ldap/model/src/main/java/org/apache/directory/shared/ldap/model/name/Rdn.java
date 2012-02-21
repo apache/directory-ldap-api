@@ -874,7 +874,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
      *
      * @return The first user provided type of this Rdn
      */
-    public String getUpType()
+    public String getType()
     {
         switch ( nbAvas )
         {
@@ -916,7 +916,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
      *
      * @return The first User provided value of this Rdn
      */
-    public Value<?> getUpValue()
+    public Value<?> getValue()
     {
         switch ( nbAvas )
         {

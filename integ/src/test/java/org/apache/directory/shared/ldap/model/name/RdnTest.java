@@ -75,14 +75,14 @@ public class RdnTest
             errors += "\nRdn.getNormValue fails '" + rdn.getNormValue().getString() + "'";
         }
         
-        if ( !"OU".equals( rdn.getUpType() ) )
+        if ( !"OU".equals( rdn.getType() ) )
         {
-            errors += "\nRdn.getUpType fails '" + rdn.getUpType() + "'";
+            errors += "\nRdn.getUpType fails '" + rdn.getType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4".equals( rdn.getUpValue().getString() ) )
+        if ( !"Exemple + Rdn\u00E4".equals( rdn.getValue().getString() ) )
         {
-            errors += "\nRdn.getUpValue fails '" + rdn.getUpValue() + "'";
+            errors += "\nRdn.getUpValue fails '" + rdn.getValue() + "'";
         }
         
         if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getValue( "ou" ) ) )
@@ -131,14 +131,14 @@ public class RdnTest
             errors += "\nRdn.getNormValue fails '" + rdn.getNormValue().getString() + "'";
         }
         
-        if ( !"OU".equals( rdn.getUpType() ) )
+        if ( !"OU".equals( rdn.getType() ) )
         {
-            errors += "\nRdn.getUpType fails '" + rdn.getUpType() + "'";
+            errors += "\nRdn.getUpType fails '" + rdn.getType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4".equals( rdn.getUpValue().getString() ) )
+        if ( !"Exemple + Rdn\u00E4".equals( rdn.getValue().getString() ) )
         {
-            errors += "\nRdn.getUpValue fails '" + rdn.getUpValue().getString() + "'";
+            errors += "\nRdn.getUpValue fails '" + rdn.getValue().getString() + "'";
         }
         
         if ( !"exemple + rdn\u00E4".equals( rdn.getValue( "ou" ) ) )

@@ -1971,7 +1971,7 @@ public class DnTest
 
         assertEquals( "ou= Some   People   ", rdn.getName() );
         assertEquals( "ou", rdn.getNormType() );
-        assertEquals( "ou", rdn.getUpType() );
+        assertEquals( "ou", rdn.getType() );
 
         Dn result = name.apply( schemaManager );
 
@@ -1983,7 +1983,7 @@ public class DnTest
 
         assertEquals( "ou= Some   People   ", rdn2.getName() );
         assertEquals( "2.5.4.11", rdn2.getNormType() );
-        assertEquals( "ou", rdn2.getUpType() );
+        assertEquals( "ou", rdn2.getType() );
     }
 
 
@@ -2434,7 +2434,7 @@ public class DnTest
     public void testPreserveAttributeIdCase() throws LdapException
     {
         Dn dn = new Dn( "uID=kevin" );
-        assertEquals( "uID", dn.getRdn().getUpType() );
+        assertEquals( "uID", dn.getRdn().getType() );
     }
 
 
@@ -2618,8 +2618,8 @@ public class DnTest
         assertEquals( "2.5.4.11", rdn.getNormType() );
         assertEquals( "example", rdn.getNormValue().getString() );
         assertEquals( "2.5.4.11=example", rdn.getNormName() );
-        assertEquals( "ou", rdn.getUpType() );
-        assertEquals( "Example", rdn.getUpValue().getString() );
+        assertEquals( "ou", rdn.getType() );
+        assertEquals( "Example", rdn.getValue().getString() );
         assertEquals( "  ou  =  Example ", rdn.getName() );
 
         Ava atav = rdn.getAva();
@@ -2648,8 +2648,8 @@ public class DnTest
         assertEquals( "2.5.4.11", rdn.getNormType() );
         assertEquals( "example", rdn.getNormValue().getString() );
         assertEquals( "2.5.4.11=example+2.5.4.3=test", rdn.getNormName() );
-        assertEquals( "ou", rdn.getUpType() );
-        assertEquals( "Example", rdn.getUpValue().getString() );
+        assertEquals( "ou", rdn.getType() );
+        assertEquals( "Example", rdn.getValue().getString() );
         assertEquals( "  ou  =  Example + cn = TEST ", rdn.getName() );
 
         // The first ATAV
@@ -2699,8 +2699,8 @@ public class DnTest
         assertEquals( "2.5.4.11", rdn.getNormType() );
         assertEquals( "ex+mple", rdn.getNormValue().getString() );
         assertEquals( "2.5.4.11=ex\\+mple", rdn.getNormName() );
-        assertEquals( "ou", rdn.getUpType() );
-        assertEquals( "Ex+mple", rdn.getUpValue().getString() );
+        assertEquals( "ou", rdn.getType() );
+        assertEquals( "Ex+mple", rdn.getValue().getString() );
         assertEquals( "  ou  =  Ex\\+mple ", rdn.getName() );
 
         Ava atav = rdn.getAva();
@@ -2731,10 +2731,10 @@ public class DnTest
         assertEquals( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ", rdn.getName() );
         assertEquals( "ou=Ex\\+mple+cn=T\\+ST\\ ", rdn.getNormName() );
 
-        assertEquals( "OU", rdn.getUpType() );
+        assertEquals( "OU", rdn.getType() );
         assertEquals( "ou", rdn.getNormType() );
 
-        assertEquals( "Ex+mple", rdn.getUpValue().getString() );
+        assertEquals( "Ex+mple", rdn.getValue().getString() );
         assertEquals( "Ex+mple", rdn.getNormValue().getString() );
 
         // The first ATAV
@@ -2782,10 +2782,10 @@ public class DnTest
         assertEquals( "  OU  =  Ex\\+mple + cn = T\\+ST\\  ", rdn.getName() );
         assertEquals( "2.5.4.11=ex\\+mple+2.5.4.3=t\\+st", rdn.getNormName() );
 
-        assertEquals( "OU", rdn.getUpType() );
+        assertEquals( "OU", rdn.getType() );
         assertEquals( "2.5.4.11", rdn.getNormType() );
 
-        assertEquals( "Ex+mple", rdn.getUpValue().getString() );
+        assertEquals( "Ex+mple", rdn.getValue().getString() );
         assertEquals( "ex+mple", rdn.getNormValue().getString() );
 
         // The first ATAV
