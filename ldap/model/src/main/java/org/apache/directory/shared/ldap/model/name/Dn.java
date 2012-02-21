@@ -1071,7 +1071,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             if ( !oidsMap.containsKey( type ) )
             {
                 // No AttributeType : this is an error
-                String msg = I18n.err( I18n.ERR_04268_OID_NOT_FOUND, atav.getUpType() );
+                String msg = I18n.err( I18n.ERR_04268_OID_NOT_FOUND, atav.getType() );
                 LOG.error( msg );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, msg );
             }
@@ -1083,11 +1083,11 @@ public class Dn implements Iterable<Rdn>, Externalizable
                 try
                 {
                     Ava newAva = new Ava(
-                        atav.getUpType(),
+                        atav.getType(),
                         oidNormalizer.getAttributeTypeOid(),
-                        atav.getUpValue(),
+                        atav.getValue(),
                         oidNormalizer.getNormalizer().normalize( atav.getNormValue() ),
-                        atav.getUpName() );
+                        atav.getName() );
                     newAva.apply( schemaManager );
 
                     return newAva;

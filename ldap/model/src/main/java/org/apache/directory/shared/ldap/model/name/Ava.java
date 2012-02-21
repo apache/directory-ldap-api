@@ -529,7 +529,7 @@ public class Ava implements Externalizable, Cloneable
      *
      * @return The user provided type
      */
-    public String getUpType()
+    public String getType()
     {
         return upType;
     }
@@ -551,7 +551,7 @@ public class Ava implements Externalizable, Cloneable
      *
      * @return The value
      */
-    public Value<?> getUpValue()
+    public Value<?> getValue()
     {
         return upValue.clone();
     }
@@ -573,7 +573,7 @@ public class Ava implements Externalizable, Cloneable
      *
      * @return The user provided form of this ava
      */
-    public String getUpName()
+    public String getName()
     {
         return upName;
     }

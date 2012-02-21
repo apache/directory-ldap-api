@@ -167,12 +167,12 @@ public class FastDnParserTest
         assertEquals( "a = b", dn.getRdn().getName() );
         assertEquals( "a=b", dn.getRdn().getNormName() );
 
-        assertEquals( "a = b", dn.getRdn().getAva().getUpName() );
+        assertEquals( "a = b", dn.getRdn().getAva().getName() );
         assertEquals( "a=b", dn.getRdn().getAva().getNormName() );
 
-        assertEquals( "a", dn.getRdn().getAva().getUpType() );
+        assertEquals( "a", dn.getRdn().getAva().getType() );
         assertEquals( "a", dn.getRdn().getAva().getNormType() );
-        assertEquals( "b", dn.getRdn().getAva().getUpValue().getValue() );
+        assertEquals( "b", dn.getRdn().getAva().getValue().getValue() );
         assertEquals( "b", dn.getRdn().getAva().getNormValue().getValue() );
     }
 

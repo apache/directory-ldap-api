@@ -62,7 +62,7 @@ public class AvaTest
     {
         Ava atav = new Ava( schemaManager );
         assertEquals( "", atav.toString() );
-        assertEquals( "", atav.getUpName() );
+        assertEquals( "", atav.getName() );
     }
 
 
@@ -112,22 +112,22 @@ public class AvaTest
         Ava ava = new Ava( schemaManager, "CN", " " );
         assertEquals( "CN=\\ ", ava.toString() );
         assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
-        assertEquals( "CN=\\ ", ava.getUpName() );
+        assertEquals( "CN=\\ ", ava.getName() );
 
         ava = new Ava( schemaManager, "  CN  ", " " );
         assertEquals( "  CN  =\\ ", ava.toString() );
         assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
-        assertEquals( "  CN  =\\ ", ava.getUpName() );
+        assertEquals( "  CN  =\\ ", ava.getName() );
 
         ava = new Ava( schemaManager, "cn", " " );
         assertEquals( "cn=\\ ", ava.toString() );
         assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
-        assertEquals( "cn=\\ ", ava.getUpName() );
+        assertEquals( "cn=\\ ", ava.getName() );
 
         ava = new Ava( schemaManager, "  cn  ", " " );
         assertEquals( "  cn  =\\ ", ava.toString() );
         assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
-        assertEquals( "  cn  =\\ ", ava.getUpName() );
+        assertEquals( "  cn  =\\ ", ava.getName() );
     }
 
 
@@ -158,7 +158,7 @@ public class AvaTest
         Ava atav = new Ava( schemaManager, "cn", "b" );
         assertEquals( "cn=b", atav.toString() );
         assertEquals( "2.5.4.3=b", atav.getNormName() );
-        assertEquals( "cn=b", atav.getUpName() );
+        assertEquals( "cn=b", atav.getName() );
     }
 
 
@@ -171,7 +171,7 @@ public class AvaTest
         Ava atav = new Ava( schemaManager, " CommonName ", " This is    a TEST " );
         assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.toString() );
         assertEquals( "2.5.4.3=this is a test", atav.getNormName() );
-        assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.getUpName() );
+        assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.getName() );
     }
 
 
@@ -227,19 +227,19 @@ public class AvaTest
             errors += "\nAva.getNormValue fails '" + ava.getNormValue().getString() + "'";
         }
         
-        if ( !"OU=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.getUpName() ) )
+        if ( !"OU=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.getName() ) )
         {
-            errors += "\nAva.getUpName fails '" + ava.getUpName() + "'";
+            errors += "\nAva.getUpName fails '" + ava.getName() + "'";
         }
         
-        if ( !"OU".equals( ava.getUpType() ) )
+        if ( !"OU".equals( ava.getType() ) )
         {
-            errors += "\nAva.getUpType fails '" + ava.getUpType() + "'";
+            errors += "\nAva.getUpType fails '" + ava.getType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getUpValue().getString() ) )
+        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getValue().getString() ) )
         {
-            errors += "\nAva.getUpValue fails '" + ava.getUpValue() .getString() + "'";
+            errors += "\nAva.getUpValue fails '" + ava.getValue() .getString() + "'";
         }
         
         if ( !"ou=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.normalize() ) )
@@ -282,19 +282,19 @@ public class AvaTest
             errors += "\nAva.getNormValue fails '" + ava.getNormValue().getString() + "'";
         }
         
-        if ( !"OU=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.getUpName() ) )
+        if ( !"OU=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.getName() ) )
         {
-            errors += "\nAva.getUpName fails '" + ava.getUpName() + "'";
+            errors += "\nAva.getUpName fails '" + ava.getName() + "'";
         }
         
-        if ( !"OU".equals( ava.getUpType() ) )
+        if ( !"OU".equals( ava.getType() ) )
         {
-            errors += "\nAva.getUpType fails '" + ava.getUpType() + "'";
+            errors += "\nAva.getUpType fails '" + ava.getType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getUpValue().getString() ) )
+        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getValue().getString() ) )
         {
-            errors += "\nAva.getUpValue fails '" + ava.getUpValue().getString() + "'";
+            errors += "\nAva.getUpValue fails '" + ava.getValue().getString() + "'";
         }
         
         if ( !"2.5.4.11=exemple \\+ rdn\\C3\\A4".equals( ava.normalize() ) )

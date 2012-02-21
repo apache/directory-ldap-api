@@ -882,10 +882,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 return null;
 
             case 1:
-                return ava.getUpType();
+                return ava.getType();
 
             default:
-                return avas.get( 0 ).getUpType();
+                return avas.get( 0 ).getType();
         }
     }
 
@@ -924,10 +924,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 return null;
 
             case 1:
-                return ava.getUpValue();
+                return ava.getValue();
 
             default:
-                return avas.get( 0 ).getUpValue();
+                return avas.get( 0 ).getValue();
         }
     }
 

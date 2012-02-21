@@ -56,7 +56,7 @@ public class AvaTest
     {
         Ava atav = new Ava();
         assertEquals( "", atav.toString() );
-        assertEquals( "", atav.getUpName() );
+        assertEquals( "", atav.getName() );
     }
 
 
@@ -106,12 +106,12 @@ public class AvaTest
         Ava atav = new Ava( schemaManager, "A", ( String ) null );
         assertEquals( "A=", atav.toString() );
         assertEquals( "a=", atav.getNormName() );
-        assertEquals( "A=", atav.getUpName() );
+        assertEquals( "A=", atav.getName() );
 
         atav = new Ava( schemaManager, "  A  ", ( String ) null );
         assertEquals( "a=", atav.getNormName() );
         assertEquals( "  A  =", atav.toString() );
-        assertEquals( "  A  =", atav.getUpName() );
+        assertEquals( "  A  =", atav.getName() );
 
         try
         {
@@ -151,7 +151,7 @@ public class AvaTest
     {
         Ava atav = new Ava( schemaManager, "a", "b" );
         assertEquals( "a=b", atav.toString() );
-        assertEquals( "a=b", atav.getUpName() );
+        assertEquals( "a=b", atav.getName() );
     }
 
 
@@ -254,6 +254,6 @@ public class AvaTest
         Ava atav = new Ava( schemaManager, " CommonName ", " This is    a TEST " );
         assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.toString() );
         assertEquals( "commonname=\\ This is    a TEST\\ ", atav.getNormName() );
-        assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.getUpName() );
+        assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.getName() );
     }
 }
