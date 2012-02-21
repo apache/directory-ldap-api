@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.name;
 
@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
  * and trailing spaces MUST have been trimmed before. The value MUST be in UTF8
  * format, according to RFC 2253. If the type is in OID form, then the value
  * must be a hexadecimal string prefixed by a '#' character. Otherwise, the
- * string must respect the RC 2253 grammar. 
+ * string must respect the RC 2253 grammar.
  *
  * We will also keep a User Provided form of the AVA (Attribute Type And Value),
  * called upName.
@@ -120,10 +120,10 @@ public class Ava implements Externalizable, Cloneable
 
 
     /**
-     * Construct an Ava containing a binary value. 
+     * Construct an Ava containing a binary value.
      * <p>
      * Note that the upValue should <b>not</b> be null or empty, or resolve
-     * to an empty string after having trimmed it. 
+     * to an empty string after having trimmed it.
      *
      * @param upType The User Provided type
      * @param upValue The User Provided binary value
@@ -141,7 +141,7 @@ public class Ava implements Externalizable, Cloneable
      * and value will be normalized accordingly to the given SchemaManager.
      * <p>
      * Note that the upValue should <b>not</b> be null or empty, or resolve
-     * to an empty string after having trimmed it. 
+     * to an empty string after having trimmed it.
      *
      * @param schemaManager The SchemaManager instance
      * @param upType The User Provided type
@@ -183,10 +183,10 @@ public class Ava implements Externalizable, Cloneable
 
 
     /**
-     * Construct an Ava with a String value. 
+     * Construct an Ava with a String value.
      * <p>
      * Note that the upValue should <b>not</b> be null or empty, or resolve
-     * to an empty string after having trimmed it. 
+     * to an empty string after having trimmed it.
      *
      * @param upType The User Provided type
      * @param upValue The User Provided String value
@@ -203,7 +203,7 @@ public class Ava implements Externalizable, Cloneable
      * Construct a schema aware Ava with a String value.
      * <p>
      * Note that the upValue should <b>not</b> be null or empty, or resolve
-     * to an empty string after having trimmed it. 
+     * to an empty string after having trimmed it.
      *
      * @param schemaManager The SchemaManager instance
      * @param upType The User Provided type
@@ -249,7 +249,7 @@ public class Ava implements Externalizable, Cloneable
      * to the SchemaManager.
      * <p>
      * Note that the upValue should <b>not</b> be null or empty, or resolve
-     * to an empty string after having trimmed it. 
+     * to an empty string after having trimmed it.
      *
      * @param schemaManager The SchemaManager instance
      * @param upType The User Provided type
@@ -285,7 +285,7 @@ public class Ava implements Externalizable, Cloneable
 
         this.upValue = upValue;
 
-        upName = this.upType + '=' + ( this.upValue == null ? "" : this.upValue.getString() );
+        upName = this.upType + '=' + ( this.upValue == null ? "" : Rdn.escapeValue( this.upValue.getString() ) );
         hashCode();
     }
 
@@ -296,7 +296,7 @@ public class Ava implements Externalizable, Cloneable
      * <li> the value is trimmed </li>
      * <p>
      * Note that the upValue should <b>not</b> be null or empty, or resolved
-     * to an empty string after having trimmed it. 
+     * to an empty string after having trimmed it.
      *
      * @param upType The User Provided type
      * @param upValue The User Provided value
@@ -339,7 +339,7 @@ public class Ava implements Externalizable, Cloneable
         this.normValue = upValue;
         this.upValue = upValue;
 
-        upName = this.upType + '=' + ( this.upValue == null ? "" : this.upValue.getString() );
+        upName = this.upType + '=' + ( this.upValue == null ? "" : Rdn.escapeValue( this.upValue.getString() ) );
         hashCode();
     }
 
@@ -350,7 +350,7 @@ public class Ava implements Externalizable, Cloneable
      * <li> the value is trimmed </li>
      * <p>
      * Note that the upValue should <b>not</b> be null or empty, or resolved
-     * to an empty string after having trimmed it. 
+     * to an empty string after having trimmed it.
      *
      * @param schemaManager The SchemaManager
      * @param upType The User Provided type
@@ -388,7 +388,7 @@ public class Ava implements Externalizable, Cloneable
      * <li> the value is trimmed </li>
      * <p>
      * Note that the upValue should <b>not</b> be null or empty, or resolved
-     * to an empty string after having trimmed it. 
+     * to an empty string after having trimmed it.
      *
      * @param upType The User Provided type
      * @param normType The normalized type
@@ -650,7 +650,7 @@ public class Ava implements Externalizable, Cloneable
             false,
             false,
             false,
-            false, // 0x30 -> 0x37 
+            false, // 0x30 -> 0x37
             false,
             false,
             false,
@@ -728,7 +728,7 @@ public class Ava implements Externalizable, Cloneable
 
     /**
      * Normalize the value in order to be able to use it in a DN as a String. Some
-     * characters will be escaped (prefixed with '\'), 
+     * characters will be escaped (prefixed with '\'),
      * 
      * @return The normalized Ava
      */
@@ -801,7 +801,7 @@ public class Ava implements Externalizable, Cloneable
     /**
      * A Normalized String representation of a Ava :
      * <ul>
-     * <li>type is trimed and lowercased</li> 
+     * <li>type is trimed and lowercased</li>
      * <li>value is trimed and lowercased, and special characters</li>
      * </ul>
      * are escaped if needed.
@@ -822,7 +822,7 @@ public class Ava implements Externalizable, Cloneable
 
             if ( normalizedValue.length() > 0 )
             {
-                sb.append( normalizeValue() );
+                sb.append( Rdn.escapeValue( normalizedValue ) );
             }
 
             return sb.toString();
@@ -1050,7 +1050,7 @@ public class Ava implements Externalizable, Cloneable
 
 
     /**
-     * We read back the data to create a new ATAV. The structure 
+     * We read back the data to create a new ATAV. The structure
      * read is exposed in the {@link Ava#writeExternal(ObjectOutput)}
      * method
      * 

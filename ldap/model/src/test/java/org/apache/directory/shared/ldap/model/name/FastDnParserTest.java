@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.name;
 
@@ -53,12 +53,12 @@ public class FastDnParserTest
     @Test
     public void testLdapDNEmpty() throws LdapException
     {
-        assertEquals( "", ( ( Dn ) FastDnParser.parse( "" ) ).getName() );
+        assertEquals( "", FastDnParser.parse( "" ).getName() );
     }
 
 
     /**
-     * Tests incomplete DNs, used to check that the parser does not 
+     * Tests incomplete DNs, used to check that the parser does not
      * run into infinite loops.
      */
     @Test
@@ -410,7 +410,7 @@ public class FastDnParserTest
         Dn name = FastDnParser.parse( dn );
 
         assertEquals( dn, name.getName() );
-        assertEquals( "cn=Emmanuel  L\u00e9charny", name.getNormName() );
+        assertEquals( "cn=Emmanuel  L\\C3\\A9charny", name.getNormName() );
     }
 
 
@@ -423,7 +423,7 @@ public class FastDnParserTest
         Dn name = FastDnParser.parse( dn );
 
         assertEquals( dn, name.getName() );
-        assertEquals( "c=E\u00e9c", name.getNormName() );
+        assertEquals( "c=E\\C3\\A9c", name.getNormName() );
     }
 
 
@@ -504,7 +504,7 @@ public class FastDnParserTest
     {
         Dn nameRFC2253_1 = FastDnParser.parse( "CN=Steve Kille,O=Isode limited,C=GB" );
 
-        assertEquals( "RFC2253_1 : ", "CN=Steve Kille,O=Isode limited,C=GB", ( ( Dn ) nameRFC2253_1 ).getName() );
+        assertEquals( "RFC2253_1 : ", "CN=Steve Kille,O=Isode limited,C=GB", nameRFC2253_1.getName() );
     }
 
 

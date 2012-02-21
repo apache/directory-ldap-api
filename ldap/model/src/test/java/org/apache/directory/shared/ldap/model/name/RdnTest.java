@@ -226,7 +226,7 @@ public class RdnTest
         String rdn = Strings.utf8ToString( new byte[]
             { 'a', '=', '\\', ',', '=', '\\', '+', '\\', '<', '\\', '>', '#', '\\', ';', '\\', '\\', '\\', '"', '\\',
                 'C', '3', '\\', 'A', '9' } );
-        assertEquals( "a=\\,=\\+\\<\\>#\\;\\\\\\\"\u00E9", new Rdn( rdn ).getNormName() );
+        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\\C3\\A9", new Rdn( rdn ).getNormName() );
     }
 
 

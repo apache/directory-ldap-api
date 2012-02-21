@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.name;
 
@@ -44,7 +44,6 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class AvaTest
 {
-
     private static SchemaManager schemaManager;
 
 
@@ -111,24 +110,24 @@ public class AvaTest
     public void testAttributeTypeAndValueValidType() throws LdapException
     {
         Ava ava = new Ava( schemaManager, "CN", " " );
-        assertEquals( "CN= ", ava.toString() );
+        assertEquals( "CN=\\ ", ava.toString() );
         assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
-        assertEquals( "CN= ", ava.getUpName() );
+        assertEquals( "CN=\\ ", ava.getUpName() );
 
         ava = new Ava( schemaManager, "  CN  ", " " );
-        assertEquals( "  CN  = ", ava.toString() );
+        assertEquals( "  CN  =\\ ", ava.toString() );
         assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
-        assertEquals( "  CN  = ", ava.getUpName() );
+        assertEquals( "  CN  =\\ ", ava.getUpName() );
 
         ava = new Ava( schemaManager, "cn", " " );
-        assertEquals( "cn= ", ava.toString() );
+        assertEquals( "cn=\\ ", ava.toString() );
         assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
-        assertEquals( "cn= ", ava.getUpName() );
+        assertEquals( "cn=\\ ", ava.getUpName() );
 
         ava = new Ava( schemaManager, "  cn  ", " " );
-        assertEquals( "  cn  = ", ava.toString() );
+        assertEquals( "  cn  =\\ ", ava.toString() );
         assertEquals( "2.5.4.3=\\ ", ava.getNormName() );
-        assertEquals( "  cn  = ", ava.getUpName() );
+        assertEquals( "  cn  =\\ ", ava.getUpName() );
     }
 
 
@@ -170,9 +169,9 @@ public class AvaTest
     public void testAvaSimpleNorm() throws LdapException
     {
         Ava atav = new Ava( schemaManager, " CommonName ", " This is    a TEST " );
-        assertEquals( " CommonName = This is    a TEST ", atav.toString() );
+        assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.toString() );
         assertEquals( "2.5.4.3=this is a test", atav.getNormName() );
-        assertEquals( " CommonName = This is    a TEST ", atav.getUpName() );
+        assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.getUpName() );
     }
 
 
@@ -199,5 +198,115 @@ public class AvaTest
         Ava atav2 = new Ava( schemaManager, "CN", "b" );
 
         assertTrue( atav1.equals( atav2 ) );
+    }
+    
+    
+    /**
+     * Test the returned values for Ava. \u00E4 is the unicode char for "ä", encoded
+     * \C3\A4 in UTF8
+     */
+    @Test
+    public void testAvaValuesNoSchema() throws LdapException
+    {
+        String errors = null;
+        
+        Ava ava = new Ava( "OU", "Exemple + Rdn\u00E4 " );
+        
+        if ( !"ou=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.getNormName() ) )
+        {
+            errors = "\nAva.getNormName fails '" + ava.getNormName() + "'";
+        }
+        
+        if ( !"ou".equals( ava.getNormType() ) )
+        {
+            errors += "\nAva.getNormType fails '" + ava.getNormType() + "'";
+        }
+        
+        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getNormValue().getString() ) )
+        {
+            errors += "\nAva.getNormValue fails '" + ava.getNormValue().getString() + "'";
+        }
+        
+        if ( !"OU=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.getUpName() ) )
+        {
+            errors += "\nAva.getUpName fails '" + ava.getUpName() + "'";
+        }
+        
+        if ( !"OU".equals( ava.getUpType() ) )
+        {
+            errors += "\nAva.getUpType fails '" + ava.getUpType() + "'";
+        }
+        
+        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getUpValue().getString() ) )
+        {
+            errors += "\nAva.getUpValue fails '" + ava.getUpValue() .getString() + "'";
+        }
+        
+        if ( !"ou=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.normalize() ) )
+        {
+            errors += "\nAva.normalize fails '" + ava.normalize() + "'";
+        }
+        
+        if ( !"OU=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.toString() ) )
+        {
+            errors += "\nAva.toString fails '" + ava.toString() + "'";
+        }
+        
+        assertEquals( null, errors );
+    }
+    
+    
+    /**
+     * Test the returned values for a schema aware Ava.
+     * \u00E4 is the unicode char for "ä", encoded \C3\A4 in UTF8
+     */
+    @Test
+    public void testAvaValuesSchemaAware() throws LdapException
+    {
+        String errors = null;
+        
+        Ava ava = new Ava( schemaManager, "OU", "Exemple + Rdn\u00E4 " );
+        
+        if ( !"2.5.4.11=exemple \\+ rdn\\C3\\A4".equals( ava.getNormName() ) )
+        {
+            errors = "\nAva.getNormName fails '" + ava.getNormName() + "'";
+        }
+        
+        if ( !"2.5.4.11".equals( ava.getNormType() ) )
+        {
+            errors += "\nAva.getNormType fails '" + ava.getNormType() + "'";
+        }
+        
+        if ( !"exemple + rdn\u00E4".equals( ava.getNormValue().getString() ) )
+        {
+            errors += "\nAva.getNormValue fails '" + ava.getNormValue().getString() + "'";
+        }
+        
+        if ( !"OU=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.getUpName() ) )
+        {
+            errors += "\nAva.getUpName fails '" + ava.getUpName() + "'";
+        }
+        
+        if ( !"OU".equals( ava.getUpType() ) )
+        {
+            errors += "\nAva.getUpType fails '" + ava.getUpType() + "'";
+        }
+        
+        if ( !"Exemple + Rdn\u00E4 ".equals( ava.getUpValue().getString() ) )
+        {
+            errors += "\nAva.getUpValue fails '" + ava.getUpValue().getString() + "'";
+        }
+        
+        if ( !"2.5.4.11=exemple \\+ rdn\\C3\\A4".equals( ava.normalize() ) )
+        {
+            errors += "\nAva.normalize fails '" + ava.normalize() + "'";
+        }
+        
+        if ( !"OU=Exemple \\+ Rdn\\C3\\A4\\ ".equals( ava.toString() ) )
+        {
+            errors += "\nAva.toString fails '" + ava.toString() + "'";
+        }
+        
+        assertEquals( null, errors );
     }
 }
