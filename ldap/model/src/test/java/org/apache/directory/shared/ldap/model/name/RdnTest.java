@@ -224,7 +224,7 @@ public class RdnTest
     public void testRdnPairCharAttributeValue() throws LdapException
     {
         String rdn = Strings.utf8ToString( new byte[]
-            { 'a', '=', '\\', ',', '=', '\\', '+', '\\', '<', '\\', '>', '#', '\\', ';', '\\', '\\', '\\', '"', '\\',
+            { 'a', '=', '\\', ',', '\\', '=', '\\', '+', '\\', '<', '\\', '>', '#', '\\', ';', '\\', '\\', '\\', '"', '\\',
                 'C', '3', '\\', 'A', '9' } );
         assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\\C3\\A9", new Rdn( rdn ).getNormName() );
     }

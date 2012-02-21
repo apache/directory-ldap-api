@@ -232,7 +232,7 @@ public class SchemaAwareRdnTest
     public void testRdnPairCharAttributeValue() throws LdapException
     {
         String rdn = Strings.utf8ToString( new byte[]
-            { 'l', '=', '\\', ',', '=', '\\', '+', '\\', '<', '\\', '>', '#', '\\', ';', '\\', '\\', '\\', '"', '\\',
+            { 'l', '=', '\\', ',', '\\', '=', '\\', '+', '\\', '<', '\\', '>', '#', '\\', ';', '\\', '\\', '\\', '"', '\\',
                 'C', '3', '\\', 'A', '9' } );
         assertEquals( "2.5.4.7=\\,\\=\\+\\<\\>#\\;\\\\\\\"\\C3\\A9", new Rdn( schemaManager, rdn ).getNormName() );
     }

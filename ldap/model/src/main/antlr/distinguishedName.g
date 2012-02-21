@@ -347,14 +347,29 @@ attributeTypeAndValue [Rdn rdn] returns [String upName = ""]
                     {
                         value.rawValue = upValue + value.rawValue;
                     }
-
-                    ava = new Ava(
-                        type,
-                        type,
-                        new StringValue( (String)value.rawValue ),
-                        new StringValue( (String)value.value ), 
-                        upName
-                    );
+                    
+                    Object unescapedValue = Rdn.unescapeValue( Strings.trim( (String)value.rawValue ) );
+                    
+                    if ( unescapedValue instanceof String )
+                    {
+                        ava = new Ava(
+                            type,
+                            type,
+                            new StringValue( (String)unescapedValue ),
+                            new StringValue( (String)value.value ), 
+                            upName
+                        );
+                    }
+                    else
+                    {
+                        ava = new Ava(
+                            type,
+                            type,
+                            new BinaryValue( (byte[])unescapedValue ),
+                            new StringValue( (String)value.value ), 
+                            upName
+                        );
+                    }
                 }
                 else
                 {

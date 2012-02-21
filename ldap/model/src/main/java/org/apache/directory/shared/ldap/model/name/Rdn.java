@@ -1065,6 +1065,12 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
         }
 
         char[] chars = value.toCharArray();
+        
+        // If the value is contained into double quotes, return it as is.
+        if ( ( chars[0] == '\"' ) && ( chars[chars.length - 1] == '\"' ) )
+        {
+            return value;
+        }
 
         if ( chars[0] == '#' )
         {
@@ -1145,6 +1151,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                         {
                             pair += Hex.getHexValue( chars[i] );
                             bytes[pos++] = pair;
+                            isHex = false;
                         }
                     }
                     else

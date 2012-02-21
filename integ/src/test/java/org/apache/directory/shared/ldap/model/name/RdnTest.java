@@ -25,6 +25,7 @@ import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.junit.Assert.assertEquals;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
@@ -50,7 +51,6 @@ public class RdnTest
     @Test
     public void testRdnValuesNoSchema() throws LdapException
     {
-        /*
         String errors = null;
         
         Rdn rdn = new Rdn( "OU = Exemple \\+ Rdn\\C3\\A4\\ +cn= TEST" );
@@ -80,7 +80,7 @@ public class RdnTest
             errors += "\nRdn.getUpType fails '" + rdn.getUpType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getUpValue().getString() ) )
+        if ( !"Exemple + Rdn\u00E4".equals( rdn.getUpValue().getString() ) )
         {
             errors += "\nRdn.getUpValue fails '" + rdn.getUpValue() + "'";
         }
@@ -116,7 +116,7 @@ public class RdnTest
             errors += "\nRdn.getName fails '" + rdn.getName() + "'";
         }
         
-        if ( !"2.5.4.11=exemple \\+ rdn\\C3\\A4\\ +2.5.4.3=test" .equals( rdn.getNormName() ) )
+        if ( !"2.5.4.11=exemple \\+ rdn\\C3\\A4+2.5.4.3=test" .equals( rdn.getNormName() ) )
         {
             errors = "\nRdn.getNormName fails '" + rdn.getNormName() + "'";
         }
@@ -126,7 +126,7 @@ public class RdnTest
             errors += "\nRdn.getNormType fails '" + rdn.getNormType() + "'";
         }
         
-        if ( !"exemple + rdn\u00E4 ".equals( rdn.getNormValue().getString() ) )
+        if ( !"exemple + rdn\u00E4".equals( rdn.getNormValue().getString() ) )
         {
             errors += "\nRdn.getNormValue fails '" + rdn.getNormValue().getString() + "'";
         }
@@ -136,19 +136,19 @@ public class RdnTest
             errors += "\nRdn.getUpType fails '" + rdn.getUpType() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getUpValue().getString() ) )
+        if ( !"Exemple + Rdn\u00E4".equals( rdn.getUpValue().getString() ) )
         {
             errors += "\nRdn.getUpValue fails '" + rdn.getUpValue().getString() + "'";
         }
         
-        if ( !"Exemple + Rdn\u00E4 ".equals( rdn.getValue( "ou" ).toString() ) )
+        if ( !"exemple + rdn\u00E4".equals( rdn.getValue( "ou" ) ) )
         {
-            errors += "\nRdn.getValue( 'ou' ) fails '" + rdn.getValue( "ou" ) + "'";
+            errors += "\nRdn.getValue( 'ou' ) fails '" + (String)rdn.getValue( "ou" ) + "'";
         }
         
-        if ( !"TEST".equals( rdn.getValue( "cn" ).toString() ) )
+        if ( !"test".equals( rdn.getValue( "cn" ) ) )
         {
-            errors += "\nRdn.getValue( 'test' ) fails '" + rdn.getValue( "cn" ) + "'";
+            errors += "\nRdn.getValue( 'cn' ) fails '" + (String)rdn.getValue( "cn" ) + "'";
         }
         
         if ( !"OU = Exemple \\+ Rdn\\C3\\A4\\ +cn= TEST".equals( rdn.toString() ) )
@@ -157,6 +157,5 @@ public class RdnTest
         }
         
         assertEquals( null, errors );
-    */
     }
 }
