@@ -35,6 +35,7 @@ import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.AttributesFactory;
@@ -77,6 +78,8 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultSchemaLoader extends AbstractSchemaLoader
 {
+    private static final String DEFAULT_APACHEDS_VENDOR_NAME = "Apache Software Foundation";
+
     /** the logger */
     private static final Logger LOG = LoggerFactory.getLogger( DefaultSchemaLoader.class );
 
@@ -115,22 +118,89 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             throw new InvalidConnectionException( "Cannot connect on the server, the connection is null" );
         }
 
-        // Get the subschemaSubentry Dn from the rootDSE
+        this.connection = connection;
+
+        // Flagging if the connection was already connected
+        boolean wasConnected = connection.isConnected();
+
         try
         {
-            this.connection = connection;
-            connection.connect();
+            // Connecting (if needed)
+            if ( !wasConnected )
+            {
+                connection.connect();
+            }
+
+            // Getting the subschemaSubentry DN from the rootDSE
             Entry rootDse = connection.lookup( Dn.ROOT_DSE, SchemaConstants.SUBSCHEMA_SUBENTRY_AT );
 
-            String subschemaSubentryStr = rootDse.get( SchemaConstants.SUBSCHEMA_SUBENTRY_AT ).getString();
-            subschemaSubentryDn = new Dn( connection.getSchemaManager(), subschemaSubentryStr );
+            if ( rootDse != null )
+            {
+                // Checking if this is an ApacheDS server
+                if ( isApacheDs( rootDse ) )
+                {
+                    System.out.println( "isApacheDS" );
 
-            loadSchemas();
+                    // Getting the subSchemaSubEntry attribute
+                    Attribute subschemaSubentryAttribute = rootDse.get( SchemaConstants.SUBSCHEMA_SUBENTRY_AT );
+
+                    if ( ( subschemaSubentryAttribute != null ) && ( subschemaSubentryAttribute.size() > 0 ) )
+                    {
+                        subschemaSubentryDn = new Dn( connection.getSchemaManager(),
+                            subschemaSubentryAttribute.getString() );
+                        
+                        loadSchemas();
+                    }
+                }
+                else
+                {
+                    // TODO Handle schema loading on other LDAP servers
+                }
+            }
         }
-        catch ( IOException ioe )
+        catch ( IOException e )
         {
-            throw new LdapException( ioe );
+            throw new LdapException( e );
         }
+        finally
+        {
+            // Checking if the connection needs to be closed
+            if ( ( !wasConnected ) && ( connection.isConnected() ) )
+            {
+                try
+                {
+                    connection.close();
+                }
+                catch ( IOException e )
+                {
+                    throw new LdapException( e );
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Indicates if the given Root DSE corresponds to an ApacheDS server.
+     *
+     * @param rootDse the Root DSE
+     * @return <code>true</code> if this is an ApacheDS server,
+     *         <code>false</code> if not.
+     * @throws LdapInvalidAttributeValueException 
+     */
+    private boolean isApacheDs( Entry rootDse ) throws LdapInvalidAttributeValueException
+    {
+        if ( rootDse != null )
+        {
+            Attribute vendorNameAttribute = rootDse.get( SchemaConstants.SUBSCHEMA_SUBENTRY_AT );
+
+            if ( ( vendorNameAttribute != null ) && vendorNameAttribute.size() == 1 )
+            {
+                return DEFAULT_APACHEDS_VENDOR_NAME.equalsIgnoreCase( vendorNameAttribute.getString() );
+            }
+        }
+
+        return false;
     }
 
 
