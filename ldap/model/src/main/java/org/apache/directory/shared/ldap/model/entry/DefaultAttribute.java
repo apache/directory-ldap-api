@@ -62,7 +62,7 @@ public class DefaultAttribute implements Attribute, Cloneable
     /** The normalized ID (will be the OID if we have a AttributeType) */
     private String id;
 
-    /** Tells if the attribute is Human Readable or not. When not set, 
+    /** Tells if the attribute is Human Readable or not. When not set,
      * this flag is null. */
     private Boolean isHR;
 
@@ -425,12 +425,12 @@ public class DefaultAttribute implements Attribute, Cloneable
      * If the initial Attribute is not schema aware, the copy will be if the attributeType
      * argument is not null.
      *
-     * @param attributeType The attribute's type 
+     * @param attributeType The attribute's type
      * @param attribute The attribute to be copied
      */
     public DefaultAttribute( AttributeType attributeType, Attribute attribute ) throws LdapException
     {
-        // Copy the common values. isHR is only available on a ServerAttribute 
+        // Copy the common values. isHR is only available on a ServerAttribute
         this.attributeType = attributeType;
         this.id = attribute.getId();
         this.upId = attribute.getUpId();
@@ -767,7 +767,13 @@ public class DefaultAttribute implements Attribute, Cloneable
                                 stringValue.apply( attributeType );
                             }
 
-                            if ( values.add( val ) )
+                            if ( values.contains( val ) )
+                            {
+                                // Replace the value
+                                values.remove( val );
+                                values.add( val );
+                            }
+                            else if ( values.add( val ) )
                             {
                                 nbAdded++;
                             }
@@ -847,11 +853,11 @@ public class DefaultAttribute implements Attribute, Cloneable
             {
                 if ( val == null )
                 {
-                    // We have a null value. If the HR flag is not set, we will consider 
+                    // We have a null value. If the HR flag is not set, we will consider
                     // that the attribute is not HR. We may change this later
                     if ( isHR == null )
                     {
-                        // This is the first value. Add both types, as we 
+                        // This is the first value. Add both types, as we
                         // don't know yet the attribute type's, but we may
                         // know later if we add some new value.
                         // We have to do that because we are using a Set,
@@ -869,7 +875,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                         // The attribute type is binary.
                         nullBinaryValue = new BinaryValue( ( byte[] ) null );
 
-                        // Don't add a value if it already exists. 
+                        // Don't add a value if it already exists.
                         if ( !values.contains( nullBinaryValue ) )
                         {
                             values.add( nullBinaryValue );
@@ -882,7 +888,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                         // The attribute is HR
                         nullStringValue = new StringValue( ( String ) null );
 
-                        // Don't add a value if it already exists. 
+                        // Don't add a value if it already exists.
                         if ( !values.contains( nullStringValue ) )
                         {
                             values.add( nullStringValue );
@@ -891,7 +897,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 }
                 else
                 {
-                    // Let's check the value type. 
+                    // Let's check the value type.
                     if ( val instanceof StringValue )
                     {
                         // We have a String value
@@ -960,7 +966,7 @@ public class DefaultAttribute implements Attribute, Cloneable
             }
         }
 
-        // Last, not least, if a nullValue has been added, and if other 
+        // Last, not least, if a nullValue has been added, and if other
         // values are all String, we have to keep the correct nullValue,
         // and to remove the other
         if ( nullValueAdded )
@@ -1244,7 +1250,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         }
         else
         {
-            // Iterate through all the values, and quit if we 
+            // Iterate through all the values, and quit if we
             // don't find one in the values. We have to separate the check
             // depending on the isHR flag value.
             if ( isHR )
@@ -1335,9 +1341,9 @@ public class DefaultAttribute implements Attribute, Cloneable
             }
             else
             {
-                // As the attribute type is binary, we have to convert 
+                // As the attribute type is binary, we have to convert
                 // the values before checking for them in the values
-                // Iterate through all the values, and quit if we 
+                // Iterate through all the values, and quit if we
                 // don't find one in the values
                 for ( String val : vals )
                 {
@@ -1354,7 +1360,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         {
             if ( isHR )
             {
-                // Iterate through all the values, and quit if we 
+                // Iterate through all the values, and quit if we
                 // don't find one in the values
                 for ( String val : vals )
                 {
@@ -1400,7 +1406,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         {
             if ( !isHR )
             {
-                // Iterate through all the values, and quit if we 
+                // Iterate through all the values, and quit if we
                 // don't find one in the values
                 for ( byte[] val : vals )
                 {
@@ -1412,9 +1418,9 @@ public class DefaultAttribute implements Attribute, Cloneable
             }
             else
             {
-                // As the attribute type is String, we have to convert 
+                // As the attribute type is String, we have to convert
                 // the values before checking for them in the values
-                // Iterate through all the values, and quit if we 
+                // Iterate through all the values, and quit if we
                 // don't find one in the values
                 for ( byte[] val : vals )
                 {
@@ -1431,7 +1437,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         {
             if ( !isHR )
             {
-                // Iterate through all the values, and quit if we 
+                // Iterate through all the values, and quit if we
                 // don't find one in the values
                 for ( byte[] val : vals )
                 {
@@ -1819,11 +1825,11 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * The hashCode is based on the id, the isHR flag and 
+     * The hashCode is based on the id, the isHR flag and
      * on the internal values.
-     *  
+     * 
      * @see Object#hashCode()
-     * @return the instance's hashcode 
+     * @return the instance's hashcode
      */
     public int hashCode()
     {
@@ -1936,7 +1942,7 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * @see Object#toString() 
+     * @see Object#toString()
      */
     public String toString()
     {
@@ -1971,7 +1977,7 @@ public class DefaultAttribute implements Attribute, Cloneable
 
     /**
      * This is the place where we serialize attributes, and all theirs
-     * elements. 
+     * elements.
      * 
      * {@inheritDoc}
      */

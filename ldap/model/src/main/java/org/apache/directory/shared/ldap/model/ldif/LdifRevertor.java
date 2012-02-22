@@ -475,14 +475,6 @@ public final class LdifRevertor
         if ( newRdn.size() == 1 )
         {
             // We have a simple new Rdn, something like A=a
-            if ( ( oldRdn.size() == 1 ) && ( oldRdn.equals( newRdn ) ) )
-            {
-                // We have a simple old Rdn, something like A=a
-                // If the values overlap, we can't rename the entry, just get out
-                // with an error
-                throw new LdapInvalidDnException( I18n.err( I18n.ERR_12080 ) );
-            }
-
             reverted = revertEntry( entry, newDn, newSuperior, oldRdn, newRdn );
 
             entries.add( reverted );
