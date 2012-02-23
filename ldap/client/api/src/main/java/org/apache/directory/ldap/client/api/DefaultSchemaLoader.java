@@ -132,7 +132,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             }
 
             // Getting the subschemaSubentry DN from the rootDSE
-            Entry rootDse = connection.lookup( Dn.ROOT_DSE, SchemaConstants.SUBSCHEMA_SUBENTRY_AT );
+            Entry rootDse = connection.lookup( Dn.ROOT_DSE, SchemaConstants.SUBSCHEMA_SUBENTRY_AT, SchemaConstants.VENDOR_NAME_AT );
 
             if ( rootDse != null )
             {
@@ -186,13 +186,13 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      * @param rootDse the Root DSE
      * @return <code>true</code> if this is an ApacheDS server,
      *         <code>false</code> if not.
-     * @throws LdapInvalidAttributeValueException 
+     * @throws LdapInvalidAttributeValueException
      */
     private boolean isApacheDs( Entry rootDse ) throws LdapInvalidAttributeValueException
     {
         if ( rootDse != null )
         {
-            Attribute vendorNameAttribute = rootDse.get( SchemaConstants.SUBSCHEMA_SUBENTRY_AT );
+            Attribute vendorNameAttribute = rootDse.get( SchemaConstants.VENDOR_NAME_AT );
 
             if ( ( vendorNameAttribute != null ) && vendorNameAttribute.size() == 1 )
             {
