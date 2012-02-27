@@ -24,7 +24,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
+
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.junit.BeforeClass;
@@ -179,7 +182,7 @@ public class AvaTest
      * Compares two equals atavs
      */
     @Test
-    public void testCompareToEquals() throws LdapException
+    public void testEqualsSameAva() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "cn", "b" );
         Ava atav2 = new Ava( schemaManager, "cn", "b" );
@@ -192,10 +195,23 @@ public class AvaTest
      * Compares two equals atavs but with a type in different case
      */
     @Test
-    public void testCompareToEqualsCase() throws LdapException
+    public void testEqualsUpperCaseAT() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "cn", "b" );
         Ava atav2 = new Ava( schemaManager, "CN", "b" );
+
+        assertTrue( atav1.equals( atav2 ) );
+    }
+
+
+    /**
+     * Compares two equals atavs but with a type in different case
+     */
+    @Test
+    public void testEqualsSameValues() throws LdapException
+    {
+        Ava atav1 = new Ava( schemaManager, "cn", "  B  a" );
+        Ava atav2 = new Ava( schemaManager, "CN", "b a" );
 
         assertTrue( atav1.equals( atav2 ) );
     }
@@ -308,5 +324,82 @@ public class AvaTest
         }
         
         assertEquals( null, errors );
+    }
+    
+    
+    @Test
+    public void testCompareToSameAva() throws LdapInvalidDnException
+    {
+        Ava atav1 = new Ava( schemaManager, "cn", "b" );
+        Ava atav2 = new Ava( schemaManager, "cn", "b" );
+        Ava atav3 = new Ava( schemaManager, "commonName", "b" );
+        Ava atav4 = new Ava( schemaManager, "2.5.4.3", "  B  " );
+
+        // 1 with others
+        assertEquals( 0, atav1.compareTo( atav1 ) );
+        assertEquals( 0, atav1.compareTo( atav2 ) );
+        assertEquals( 0, atav1.compareTo( atav3 ) );
+        assertEquals( 0, atav1.compareTo( atav4 ) );
+        
+        // 2 with others
+        assertEquals( 0, atav2.compareTo( atav1 ) );
+        assertEquals( 0, atav2.compareTo( atav2 ) );
+        assertEquals( 0, atav2.compareTo( atav3 ) );
+        assertEquals( 0, atav2.compareTo( atav4 ) );
+        
+        // 3 with others
+        assertEquals( 0, atav3.compareTo( atav1 ) );
+        assertEquals( 0, atav3.compareTo( atav2 ) );
+        assertEquals( 0, atav3.compareTo( atav3 ) );
+        assertEquals( 0, atav3.compareTo( atav4 ) );
+        
+        // 4 with others
+        assertEquals( 0, atav4.compareTo( atav1 ) );
+        assertEquals( 0, atav4.compareTo( atav2 ) );
+        assertEquals( 0, atav4.compareTo( atav3 ) );
+        assertEquals( 0, atav4.compareTo( atav4 ) );
+    }
+    
+    
+    @Test
+    public void testCompareAvaOrder() throws LdapInvalidDnException
+    {
+        Ava atav1 = new Ava( schemaManager, "cn", "  B  " );
+        Ava atav2 = new Ava( schemaManager, "sn", "  c" );
+        
+        // atav1 should be before atav2
+        assertEquals( -1, atav1.compareTo( atav2 ) );
+        assertEquals( 1, atav2.compareTo( atav1 ) );
+
+        Ava atav3 = new Ava( schemaManager, "2.5.4.3", "A " );
+        
+        // Atav1 shoud be after atav3
+        assertEquals( 1, atav1.compareTo( atav3 ) );
+        assertEquals( -1, atav3.compareTo( atav1 ) );
+    }
+    
+    
+    @Test
+    public void testSortAva() throws LdapInvalidDnException
+    {
+        Ava atav1 = new Ava( schemaManager, "cn", "  B  " );
+        Ava atav2 = new Ava( schemaManager, "sn", "  c" );
+        Ava atav3 = new Ava( schemaManager, "2.5.4.3", "A " );
+        Ava atav4 = new Ava( schemaManager, "2.5.4.11", " C  " );
+        Ava atav5 = new Ava( schemaManager, "ou", "B " );
+        Ava atav6 = new Ava( schemaManager, "ou", "D " );
+        Ava atav7 = new Ava( schemaManager, "CN", " " );
+
+        Ava[] avas = new Ava[] { atav1, atav2, atav3, atav4, atav5, atav6, atav7 };
+        
+        Arrays.sort( avas );
+        
+        assertEquals( atav5, avas[0] );
+        assertEquals( atav4, avas[1] );
+        assertEquals( atav6, avas[2] );
+        assertEquals( atav7, avas[3] );
+        assertEquals( atav3, avas[4] );
+        assertEquals( atav1, avas[5] );
+        assertEquals( atav2, avas[6] );
     }
 }

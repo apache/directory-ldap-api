@@ -159,7 +159,7 @@ public class AvaTest
      * Compares two equals atavs
      */
     @Test
-    public void testCompareToEquals() throws LdapException
+    public void testEqualsAttributeEquals() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "a", "b" );
         Ava atav2 = new Ava( schemaManager, "a", "b" );
@@ -172,7 +172,7 @@ public class AvaTest
      * Compares two equals atavs but with a type in different case
      */
     @Test
-    public void testCompareToEqualsCase() throws LdapException
+    public void testEqualsAttributeIdSameCase() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "a", "b" );
         Ava atav2 = new Ava( schemaManager, "A", "b" );
@@ -186,7 +186,7 @@ public class AvaTest
      * superior
      */
     @Test
-    public void testCompareAtav1TypeSuperior() throws LdapException
+    public void testEqualsAtav1TypeSuperior() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "b", "b" );
 
@@ -201,7 +201,7 @@ public class AvaTest
      * superior
      */
     @Test
-    public void testCompareAtav2TypeSuperior() throws LdapException
+    public void testEqualsAtav2TypeSuperior() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "a", "b" );
         Ava atav2 = new Ava( schemaManager, "b", "b" );
@@ -215,7 +215,7 @@ public class AvaTest
      * superior
      */
     @Test
-    public void testCompareAtav1ValueSuperior() throws LdapException
+    public void testEqualsAtav1ValueSuperior() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "a", "b" );
         Ava atav2 = new Ava( schemaManager, "a", "a" );
@@ -229,7 +229,7 @@ public class AvaTest
      * superior
      */
     @Test
-    public void testCompareAtav2ValueSuperior() throws LdapException
+    public void testEqualsAtav2ValueSuperior() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "a", "a" );
         Ava atav2 = new Ava( schemaManager, "a", "b" );

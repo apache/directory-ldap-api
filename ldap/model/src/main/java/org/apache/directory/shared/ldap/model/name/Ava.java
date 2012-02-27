@@ -24,6 +24,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.Arrays;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.entry.BinaryValue;
@@ -34,6 +35,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValu
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Strings;
@@ -54,7 +56,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class Ava implements Externalizable, Cloneable
+public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 {
     /**
      * Declares the Serial Version Uid.
@@ -153,6 +155,8 @@ public class Ava implements Externalizable, Cloneable
     {
         if ( schemaManager != null )
         {
+            this.schemaManager = schemaManager;
+            
             try
             {
                 attributeType = schemaManager.lookupAttributeTypeRegistry( upType );
@@ -215,6 +219,8 @@ public class Ava implements Externalizable, Cloneable
     {
         if ( schemaManager != null )
         {
+            this.schemaManager = schemaManager;
+
             try
             {
                 attributeType = schemaManager.lookupAttributeTypeRegistry( upType );
@@ -904,8 +910,18 @@ public class Ava implements Externalizable, Cloneable
                     return equalityMatchingRule.getLdapComparator().compare( normValue.getValue(),
                         instance.normValue.getValue() ) == 0;
                 }
-
-                return false;
+                else
+                {
+                    // No Equality MR, use a direct comparison
+                    if ( normValue instanceof BinaryValue )
+                    {
+                        return Arrays.equals( normValue.getBytes(), instance.normValue.getBytes() );
+                    }
+                    else
+                    {
+                        return normValue.getString().equals( instance.normValue.getString() );
+                    }
+                }
             }
             else
             {
@@ -1133,6 +1149,152 @@ public class Ava implements Externalizable, Cloneable
     public AttributeType getAttributeType()
     {
         return attributeType;
+    }
+    
+    
+    private int compareValues( Ava that )
+    {
+        int comp = 0;
+        
+        if ( normValue.getNormValue() instanceof String )
+        {
+            comp = ((String)normValue.getNormValue()).compareTo( ((String)that.normValue.getNormValue()) );
+            
+            return comp;
+        }
+        else
+        {
+            byte[] bytes1 = (byte[])normValue.getNormValue();
+            byte[] bytes2 = (byte[])that.normValue.getNormValue();
+            
+            for ( int pos = 0; pos < bytes1.length; pos++ )
+            {
+                int v1 = ( bytes1[pos] & 0x00FF );
+                int v2 = ( bytes2[pos] & 0x00FF );
+                
+                if ( v1 > v2 )
+                {
+                    return 1;
+                }
+                else if ( v2 > v1 )
+                {
+                    return -1;
+                }
+            }
+            
+            return 0;
+        }
+        
+    }
+
+
+    /**
+     * @see Comparable#compareTo(Object)
+     */
+    public int compareTo( Ava that )
+    {
+        if ( that == null )
+        {
+            return 1;
+        }
+        
+        int comp = 0;
+        
+        if ( schemaManager == null )
+        {
+            // Compare the ATs
+            comp = normType.compareTo( that.normType );
+            
+            if ( comp != 0 )
+            {
+                return comp;
+            }
+            
+            // and compare the values
+            if ( normValue == null )
+            {
+                if ( that.normValue == null )
+                {
+                    return 0;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            else
+            {
+                if ( that.normValue == null )
+                {
+                    return 1;
+                }
+                else
+                {
+                    if ( normValue instanceof StringValue )
+                    {
+                        comp = ((StringValue)normValue).compareTo( (StringValue)that.normValue );
+                        
+                        return comp;
+                    }
+                    else
+                    {
+                        comp = ((BinaryValue)normValue).compareTo( (BinaryValue)that.normValue );
+                        
+                        return comp;
+                    }
+                }
+            }
+        }
+        else
+        {
+            if ( that.schemaManager == null )
+            {
+                // Problem : we will apply the current Ava SchemaManager to the given Ava
+                try
+                {
+                    that.apply( schemaManager );
+                }
+                catch ( LdapInvalidDnException lide )
+                {
+                    return 1;
+                }
+            }
+            
+            // First compare the AT OID
+            comp = attributeType.getOid().compareTo( that.attributeType.getOid() );
+            
+            if ( comp != 0 )
+            {
+                return comp;
+            }
+            
+            // Now, compare the two values using the ordering matchingRule comparator, if any
+            MatchingRule orderingMR = attributeType.getOrdering();
+            
+            if ( orderingMR != null )
+            {
+                LdapComparator<Object> comparator = (LdapComparator<Object>)orderingMR.getLdapComparator();
+                
+                if ( comparator != null )
+                {
+                    comp = comparator.compare( normValue.getNormValue(), that.normValue.getNormValue() );
+                    
+                    return comp;
+                }
+                else
+                {
+                    comp = compareValues( that );
+                    
+                    return comp;
+                }
+            }
+            else
+            {
+                comp = compareValues( that );
+                
+                return comp;
+            }
+        }
     }
 
 
