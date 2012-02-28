@@ -1,15 +1,14 @@
 version: 1
 dn: m-oid=1.3.6.1.4.1.18060.0.4.0.3.3,ou=objectClasses,cn=apachemeta,ou=schema
 m-oid: 1.3.6.1.4.1.18060.0.4.0.3.3
+m-name: metaAttributeType
+m-description: meta definition of the AttributeType object
+objectclass: top
+objectclass: metaTop
+objectclass: metaObjectClass
 m-obsolete: FALSE
 m-supobjectclass: metaTop
-m-description: meta definition of the AttributeType object
-objectclass: metaObjectClass
-objectclass: metaTop
-objectclass: top
-m-name: metaAttributeType
 m-typeobjectclass: STRUCTURAL
-creatorsname: uid=admin,ou=system
 m-may: m-name
 m-may: m-obsolete
 m-may: m-supAttributeType
@@ -22,3 +21,4 @@ m-may: m-collective
 m-may: m-noUserModification
 m-may: m-usage
 m-may: m-length
+creatorsname: uid=admin,ou=system

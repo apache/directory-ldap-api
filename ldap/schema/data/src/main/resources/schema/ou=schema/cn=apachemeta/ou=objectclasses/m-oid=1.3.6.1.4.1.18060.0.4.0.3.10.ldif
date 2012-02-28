@@ -1,14 +1,14 @@
 version: 1
 dn: m-oid=1.3.6.1.4.1.18060.0.4.0.3.10,ou=objectClasses,cn=apachemeta,ou=schema
-m-must: m-fqcn
 m-oid: 1.3.6.1.4.1.18060.0.4.0.3.10
+m-name: metaSyntaxChecker
+m-description: meta definition of the SyntaxChecker object
+objectclass: top
+objectclass: metaTop
+objectclass: metaObjectClass
 m-obsolete: FALSE
 m-supobjectclass: metaTop
-m-description: meta definition of the SyntaxChecker object
-objectclass: metaObjectClass
-objectclass: metaTop
-objectclass: top
-m-name: metaSyntaxChecker
 m-typeobjectclass: STRUCTURAL
-creatorsname: uid=admin,ou=system
+m-must: m-fqcn
 m-may: m-bytecode
+creatorsname: uid=admin,ou=system
