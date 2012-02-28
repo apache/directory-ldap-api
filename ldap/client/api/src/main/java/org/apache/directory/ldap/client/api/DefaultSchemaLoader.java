@@ -139,8 +139,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
                 // Checking if this is an ApacheDS server
                 if ( isApacheDs( rootDse ) )
                 {
-                    System.out.println( "isApacheDS" );
-
                     // Getting the subSchemaSubEntry attribute
                     Attribute subschemaSubentryAttribute = rootDse.get( SchemaConstants.SUBSCHEMA_SUBENTRY_AT );
 
