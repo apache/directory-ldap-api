@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.dsmlv2;
 
@@ -89,9 +89,9 @@ public final class ParserUtils
     /**
      * Returns the value of the attribute 'type' of the "XMLSchema-instance' namespace if it exists
      *
-     * @param xpp 
+     * @param xpp
      *      the XPP parser to use
-     * @return 
+     * @return
      *      the value of the attribute 'type' of the "XMLSchema-instance' namespace if it exists
      */
     public static String getXsiTypeAttributeValue( XmlPullParser xpp )
@@ -117,9 +117,9 @@ public final class ParserUtils
      * 
      * @param parser
      *      the XPP parser to use
-     * @param attrValue 
+     * @param attrValue
      *      the attribute value
-     * @return 
+     * @return
      *      true if the value of the current tag is Base64BinaryEncoded, false if not
      */
     public static boolean isBase64BinaryValue( XmlPullParser parser, String attrValue )
@@ -139,9 +139,9 @@ public final class ParserUtils
     /**
      * Indicates if the value needs to be encoded as Base64
      *
-     * @param value 
+     * @param value
      *      the value to check
-     * @return 
+     * @return
      *      true if the value needs to be encoded as Base64
      */
     public static boolean needsBase64Encoding( Object value )
@@ -161,10 +161,10 @@ public final class ParserUtils
     /**
      * Encodes the value as a Base64 String
      *
-     * @param value 
+     * @param value
      *      the value to encode
-     * @return 
-     *      the value encoded as a Base64 String 
+     * @return
+     *      the value encoded as a Base64 String
      */
     public static String base64Encode( Object value )
     {
@@ -184,9 +184,9 @@ public final class ParserUtils
     /**
      * Parses and verify the parsed value of the requestID
      * 
-     * @param attributeValue 
+     * @param attributeValue
      *      the value of the attribute
-     * @param xpp 
+     * @param xpp
      *      the XmlPullParser
      * @return
      *      the int value of the resquestID
@@ -199,9 +199,9 @@ public final class ParserUtils
         {
             int requestID = Integer.parseInt( attributeValue );
 
-            if ( requestID == 0 )
+            if ( requestID < 0 )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03038 ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03038, requestID ), xpp, null );
             }
 
             return requestID;

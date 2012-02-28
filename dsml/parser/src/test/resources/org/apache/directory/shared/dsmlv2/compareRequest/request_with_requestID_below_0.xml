@@ -17,8 +17,8 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="1234567890">
-	<delResponse requestID="0">
-		<resultCode code="0" descr="success"/>
-	</delResponse>	
-</batchResponse>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+	<compareRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM" requestID="-1">
+		<assertion name="sn"><value>Johnson</value></assertion>
+	</compareRequest>
+</batchRequest>

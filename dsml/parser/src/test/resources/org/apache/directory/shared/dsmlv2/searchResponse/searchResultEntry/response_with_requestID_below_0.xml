@@ -18,7 +18,9 @@
   under the License.
 -->
 <batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="1234567890">
-	<searchResponse requestID="0">
+	<searchResponse>
+		<searchResultEntry dn="dc=example,dc=com" requestID="-1">
+		</searchResultEntry>
 		<searchResultDone>
 			<resultCode code="0" descr="success"/>
 		</searchResultDone>

@@ -17,5 +17,15 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" requestID="0">
-</batchResponse>
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+<searchRequest requestID="-1"
+				dn="ou=marketing,dc=microsoft,dc=com"
+				scope="singleLevel"
+				derefAliases="neverDerefAliases">
+		<filter>
+			<approxMatch name="sn">
+				<value>toto</value>
+			</approxMatch>
+		</filter>
+	</searchRequest>
+</batchRequest>

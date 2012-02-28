@@ -17,7 +17,13 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
-	<authRequest requestID="0" principal="CN=Bob Rush,OU=Dev,DC=Example,DC=COM">
-	</authRequest>
-</batchRequest>
+<batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="1234567890">
+	<searchResponse>
+		<searchResultReference requestID="-1">
+			<ref>ldap://localhost</ref>
+		</searchResultReference>
+		<searchResultDone>
+			<resultCode code="0" descr="success"/>
+		</searchResultDone>
+	</searchResponse>
+</batchResponse>

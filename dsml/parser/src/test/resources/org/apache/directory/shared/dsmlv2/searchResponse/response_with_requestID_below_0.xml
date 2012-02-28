@@ -17,7 +17,10 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
-	<modifyRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM" requestID="0">
-	</modifyRequest>
-</batchRequest>
+<batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="1234567890">
+	<searchResponse requestID="-1">
+		<searchResultDone>
+			<resultCode code="0" descr="success"/>
+		</searchResultDone>
+	</searchResponse>
+</batchResponse>

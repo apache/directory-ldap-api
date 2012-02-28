@@ -17,5 +17,7 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core" requestID="0">
+<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
+	<abandonRequest abandonID="123" requestID="-1">
+	</abandonRequest>
 </batchRequest>

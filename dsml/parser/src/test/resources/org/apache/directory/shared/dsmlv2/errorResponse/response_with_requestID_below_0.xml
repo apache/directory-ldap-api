@@ -17,8 +17,7 @@
   specific language governing permissions and limitations
   under the License.
 -->
-<batchRequest xmlns="urn:oasis:names:tc:DSML:2.0:core">
-	<compareRequest dn="CN=Bob Rush,OU=Dev,DC=Example,DC=COM" requestID="0">
-		<assertion name="sn"><value>Johnson</value></assertion>
-	</compareRequest>
-</batchRequest>
+<batchResponse xmlns="urn:oasis:names:tc:DSML:2.0:core" resquestID="-1">
+	<errorResponse requestID="-1" type="couldNotConnect">
+	</errorResponse>	
+</batchResponse>

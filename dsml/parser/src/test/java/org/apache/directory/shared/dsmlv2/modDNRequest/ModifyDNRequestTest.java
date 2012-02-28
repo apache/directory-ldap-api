@@ -79,12 +79,12 @@ public class ModifyDNRequestTest extends AbstractTest
 
 
     /**
-     * Test parsing of a request with the (optional) requestID attribute equals to 0
+     * Test parsing of a request with the (optional) requestID attribute below 0
      */
     @Test
-    public void testRequestWithRequestIdEquals0()
+    public void testRequestWithRequestIdbelowBelow0()
     {
-        testParsingFail( ModifyDNRequestTest.class, "request_with_requestID_equals_0.xml" );
+        testParsingFail( ModifyDNRequestTest.class, "request_with_requestID_below_0.xml" );
     }
 
 
