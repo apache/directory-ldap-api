@@ -1,14 +1,14 @@
 version: 1
 dn: m-oid=1.3.6.1.4.1.7165.2.2.11,ou=objectClasses,cn=samba,ou=schema
-m-must: sambaShareName
 m-oid: 1.3.6.1.4.1.7165.2.2.11
+m-name: sambaShare
+m-description: Samba Share Section
+objectclass: top
+objectclass: metaTop
+objectclass: metaObjectClass
 m-obsolete: FALSE
 m-supobjectclass: top
-m-description: Samba Share Section
-objectclass: metaObjectClass
-objectclass: metaTop
-objectclass: top
-m-name: sambaShare
 m-typeobjectclass: STRUCTURAL
-creatorsname: uid=admin,ou=system
+m-must: sambaShareName
 m-may: description
+creatorsname: uid=admin,ou=system

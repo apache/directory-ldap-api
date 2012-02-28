@@ -1,15 +1,15 @@
 version: 1
 dn: m-oid=1.3.6.1.4.1.7165.2.2.14,ou=objectClasses,cn=samba,ou=schema
+m-oid: 1.3.6.1.4.1.7165.2.2.14
+m-name: sambaTrustPassword
+m-description: Samba Trust Password
+objectclass: top
+objectclass: metaTop
+objectclass: metaObjectClass
+m-supobjectclass: top
 m-must: sambaDomainName
 m-must: sambaNTPassword
 m-must: sambaTrustFlags
-m-oid: 1.3.6.1.4.1.7165.2.2.14
-m-supobjectclass: top
-m-description: Samba Trust Password
-objectclass: metaObjectClass
-objectclass: metaTop
-objectclass: top
-m-name: sambaTrustPassword
-creatorsname: uid=admin,ou=system
-m-may: sambaSID
 m-may: sambaPwdLastSet
+m-may: sambaSID
+creatorsname: uid=admin,ou=system
