@@ -2204,7 +2204,7 @@ public class DnTest
      * @throws LdapException
      */
     @Test
-    public void testDoubleQuoteInNameDIRSERVER_642() throws LdapException, InvalidNameException
+    public void testDoubleQuoteInNameDIRSERVER_642() throws LdapException, LdapException
     {
         Dn name1 = new Dn( "cn=\"Kylie Minogue\",dc=example,dc=com" );
 

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.entry;
 
@@ -37,8 +37,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import javax.naming.directory.InvalidAttributeValueException;
 
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.BinaryValue;
@@ -201,7 +199,7 @@ public class SchemaAwareAttributeTest
 
 
     /**
-     * Test method isValid( SyntaxChecker ) 
+     * Test method isValid( SyntaxChecker )
      */
     @Test
     public void testIsValidSyntaxChecker() throws LdapException
@@ -1127,7 +1125,7 @@ public class SchemaAwareAttributeTest
      * Test method put( byte[]... )
      */
     @Test
-    public void testPutByteArray() throws InvalidAttributeValueException, Exception
+    public void testPutByteArray() throws LdapException, Exception
     {
         Attribute attr1 = new DefaultAttribute( atPwd );
 
@@ -1822,7 +1820,7 @@ public class SchemaAwareAttributeTest
 
 
     /**
-     * Test constructor DefaultEntryAttribute( AttributeType, String... ) 
+     * Test constructor DefaultEntryAttribute( AttributeType, String... )
      */
     @Test
     public void testDefaultServerAttributeAttributeTypeStringArray() throws LdapException
@@ -1889,7 +1887,7 @@ public class SchemaAwareAttributeTest
 
 
     /**
-     * Test method DefaultEntryAttribute( AttributeType, byte[]... ) 
+     * Test method DefaultEntryAttribute( AttributeType, byte[]... )
      */
     @Test
     public void testDefaultServerAttributeAttributeTypeByteArray() throws LdapException
@@ -2014,7 +2012,7 @@ public class SchemaAwareAttributeTest
 
 
     /**
-     * Test the conversion method 
+     * Test the conversion method
      */
     @Test
     public void testToClientAttribute() throws LdapException

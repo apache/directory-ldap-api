@@ -32,14 +32,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.naming.NamingException;
-
 import org.apache.directory.shared.dsmlv2.AbstractTest;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.ModifyRequest;
 import org.apache.directory.shared.util.Strings;
@@ -285,7 +284,7 @@ public class ModifyRequestTest extends AbstractTest
      * @throws NamingException
      */
     @Test
-    public void testRequestWith1Modification() throws NamingException
+    public void testRequestWith1Modification() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -323,7 +322,7 @@ public class ModifyRequestTest extends AbstractTest
      * @throws UnsupportedEncodingException
      */
     @Test
-    public void testRequestWith1ModificationBase64Value() throws NamingException, UnsupportedEncodingException
+    public void testRequestWith1ModificationBase64Value() throws LdapException, UnsupportedEncodingException
     {
         Dsmlv2Parser parser = null;
         try
@@ -366,7 +365,7 @@ public class ModifyRequestTest extends AbstractTest
      * @throws NamingException
      */
     @Test
-    public void testRequestWith2Modifications() throws NamingException
+    public void testRequestWith2Modifications() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -434,7 +433,7 @@ public class ModifyRequestTest extends AbstractTest
      * @throws NamingException
      */
     @Test
-    public void testRequestWithOperationAdd() throws NamingException
+    public void testRequestWithOperationAdd() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -467,7 +466,7 @@ public class ModifyRequestTest extends AbstractTest
      * @throws NamingException
      */
     @Test
-    public void testRequestWithOperationDelete() throws NamingException
+    public void testRequestWithOperationDelete() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -500,7 +499,7 @@ public class ModifyRequestTest extends AbstractTest
      * @throws NamingException
      */
     @Test
-    public void testRequestWithOperationReplace() throws NamingException
+    public void testRequestWithOperationReplace() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -543,7 +542,7 @@ public class ModifyRequestTest extends AbstractTest
      * @throws NamingException
      */
     @Test
-    public void testRequestWithModificationWithoutValue() throws NamingException
+    public void testRequestWithModificationWithoutValue() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -580,7 +579,7 @@ public class ModifyRequestTest extends AbstractTest
      * @throws NamingException
      */
     @Test
-    public void testRequestWithModificationWith2Values() throws NamingException
+    public void testRequestWithModificationWith2Values() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -621,7 +620,7 @@ public class ModifyRequestTest extends AbstractTest
      * @throws NamingException
      */
     @Test
-    public void testRequestWithModificationWithEmptyValue() throws NamingException
+    public void testRequestWithModificationWithEmptyValue() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try

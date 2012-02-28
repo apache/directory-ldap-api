@@ -31,13 +31,12 @@ import static org.junit.Assert.fail;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.NamingException;
-
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.dsmlv2.AbstractTest;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.filter.AndNode;
 import org.apache.directory.shared.ldap.model.filter.ApproximateNode;
 import org.apache.directory.shared.ldap.model.filter.EqualityNode;
@@ -808,7 +807,7 @@ public class SearchRequestTest extends AbstractTest
      * @throws NamingException
      */
     @Test
-    public void testRequestWithAttributes1Attribute() throws NamingException
+    public void testRequestWithAttributes1Attribute() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -840,7 +839,7 @@ public class SearchRequestTest extends AbstractTest
      * @throws NamingException
      */
     @Test
-    public void testRequestWithAttributes2Attribute() throws NamingException
+    public void testRequestWithAttributes2Attribute() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
