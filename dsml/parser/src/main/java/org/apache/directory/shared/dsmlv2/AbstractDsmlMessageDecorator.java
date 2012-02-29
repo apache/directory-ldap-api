@@ -33,16 +33,18 @@ import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 /**
  * An abstract DSML Message decorator base class.
  *
+ * @param <M> The message to decorate
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractDsmlMessageDecorator<E extends Message>
-    implements DsmlDecorator<E>, Message
+public abstract class AbstractDsmlMessageDecorator<M extends Message>
+    implements DsmlDecorator<M>, Message
 {
     /** The LDAP message codec */
     private final LdapApiService codec;
 
     /** The LDAP message */
-    private final E message;
+    private final M message;
 
     /** Map of message controls using OID Strings for keys and Control values */
     private final Map<String, Control> controls;
@@ -51,7 +53,13 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
     private DsmlControl<? extends Control> currentControl;
 
 
-    public AbstractDsmlMessageDecorator( LdapApiService codec, E message )
+    /**
+     * Create a new instance of AbstractDsmlMessageDecorator
+     * 
+     * @param codec The codec to use
+     * @param message The message to decorate
+     */
+    public AbstractDsmlMessageDecorator( LdapApiService codec, M message )
     {
         this.codec = codec;
         this.message = message;
@@ -70,6 +78,9 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
     }
 
 
+    /**
+     * @return The codec to use to encode or decode this message
+     */
     public LdapApiService getCodecService()
     {
         return codec;
@@ -206,7 +217,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
     /**
      * {@inheritDoc}
      */
-    public E getDecorated()
+    public M getDecorated()
     {
         return message;
     }
