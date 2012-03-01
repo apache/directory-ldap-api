@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 import org.apache.directory.shared.util.Strings;
 
 
@@ -210,17 +209,6 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             return oid;
         }
-    }
-
-
-    /**
-     * Inject the Registries into the SchemaObject
-     *
-     * @param registries The Registries
-     */
-    public void setRegistries( Registries registries )
-    {
-        // do nothing
     }
 
 

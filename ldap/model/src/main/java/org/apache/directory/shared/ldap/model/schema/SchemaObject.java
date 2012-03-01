@@ -23,8 +23,6 @@ package org.apache.directory.shared.ldap.model.schema;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.model.schema.registries.Registries;
-
 
 /**
  * Most schema objects have some common attributes. This class
@@ -313,14 +311,6 @@ public interface SchemaObject
      * and all the Maps.
      */
     void clear();
-
-
-    /**
-     * Inject the Registries into the SchemaObject
-     *
-     * @param registries The Registries
-     */
-    void setRegistries( Registries registries );
 
 
     /**
