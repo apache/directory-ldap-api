@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema;
 
@@ -24,10 +24,6 @@ import java.util.List;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
-import org.apache.directory.shared.ldap.model.exception.LdapSchemaExceptionCodes;
-import org.apache.directory.shared.ldap.model.schema.comparators.ComparableComparator;
-import org.apache.directory.shared.ldap.model.schema.normalizers.NoOpNormalizer;
 import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,13 +40,13 @@ import org.slf4j.LoggerFactory;
  * 
  * <pre>
  *  4.1.3. Matching Rules
- *  
+ * 
  *    Matching rules are used by servers to compare attribute values against
  *    assertion values when performing Search and Compare operations.  They
  *    are also used to identify the value to be added or deleted when
  *    modifying entries, and are used when comparing a purported
  *    distinguished name with the name of an entry.
- *  
+ * 
  *    A matching rule specifies the syntax of the assertion value.
  * 
  *    Each matching rule is identified by an object identifier (OID) and,
@@ -115,99 +111,21 @@ public class MatchingRule extends AbstractSchemaObject
 
 
     /**
-     * Inject the MatchingRule into the registries, updating the references to
-     * other SchemaObject
-     *
-     * @param registries The Registries
-     * @exception If the addition failed
-     */
-    @SuppressWarnings(
-        { "unchecked", "rawtypes" })
-    public void addToRegistries( List<Throwable> errors, Registries registries ) throws LdapException
-    {
-        if ( registries != null )
-        {
-            try
-            {
-                // Gets the associated Comparator 
-                ldapComparator = ( LdapComparator<? super Object> ) registries.getComparatorRegistry().lookup( oid );
-            }
-            catch ( LdapException ne )
-            {
-                // Default to a catch all comparator
-                ldapComparator = new ComparableComparator( oid );
-            }
-
-            try
-            {
-                // Gets the associated Normalizer
-                normalizer = registries.getNormalizerRegistry().lookup( oid );
-            }
-            catch ( LdapException ne )
-            {
-                // Default to the NoOp normalizer
-                normalizer = new NoOpNormalizer( oid );
-            }
-
-            try
-            {
-                // Get the associated LdapSyntax
-                ldapSyntax = registries.getLdapSyntaxRegistry().lookup( ldapSyntaxOid );
-            }
-            catch ( LdapException ne )
-            {
-                // The Syntax is a mandatory element, it must exist.
-                String msg = I18n.err( I18n.ERR_04317 );
-
-                LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.MR_NONEXISTENT_SYNTAX, msg, ne );
-                ldapSchemaException.setSourceObject( this );
-                ldapSchemaException.setRelatedId( ldapSyntaxOid );
-                errors.add( ldapSchemaException );
-                LOG.info( msg );
-            }
-
-            /**
-             * Add the MR references (using and usedBy) : 
-             * MR -> C
-             * MR -> N
-             * MR -> S
-             */
-            if ( ldapComparator != null )
-            {
-                registries.addReference( this, ldapComparator );
-            }
-
-            if ( normalizer != null )
-            {
-                registries.addReference( this, normalizer );
-            }
-
-            if ( ldapSyntax != null )
-            {
-                registries.addReference( this, ldapSyntax );
-            }
-
-        }
-    }
-
-
-    /**
      * Remove the MatchingRule from the registries, updating the references to
      * other SchemaObject.
      * 
-     * If one of the referenced SchemaObject does not exist (), 
+     * If one of the referenced SchemaObject does not exist (),
      * an exception is thrown.
      *
      * @param registries The Registries
-     * @exception If the MatchingRule is not valid 
+     * @exception If the MatchingRule is not valid
      */
     public void removeFromRegistries( List<Throwable> errors, Registries registries ) throws LdapException
     {
         if ( registries != null )
         {
             /**
-             * Remove the MR references (using and usedBy) : 
+             * Remove the MR references (using and usedBy) :
              * MR -> C
              * MR -> N
              * MR -> S

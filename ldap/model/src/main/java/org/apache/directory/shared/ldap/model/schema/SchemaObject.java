@@ -106,17 +106,6 @@ public interface SchemaObject
 
 
     /**
-     * Inject this SchemaObject into the given registries, updating the references to
-     * other SchemaObject
-     *
-     * @param errors the errors we got
-     * @param registries the registries
-     * @throws LdapException if one of the referenced schema objects does not exist
-     */
-    void addToRegistries( List<Throwable> errors, Registries registries ) throws LdapException;
-
-
-    /**
      * Remove this SchemaObject from the given registries, updating the references to
      * other SchemaObject.
      *

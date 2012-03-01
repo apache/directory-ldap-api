@@ -54,6 +54,10 @@ import org.apache.directory.shared.ldap.model.schema.SchemaObjectWrapper;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.registries.helper.AttributeTypeHelper;
 import org.apache.directory.shared.ldap.model.schema.registries.helper.DitContentRuleHelper;
+import org.apache.directory.shared.ldap.model.schema.registries.helper.LdapSyntaxHelper;
+import org.apache.directory.shared.ldap.model.schema.registries.helper.MatchingRuleHelper;
+import org.apache.directory.shared.ldap.model.schema.registries.helper.MatchingRuleUseHelper;
+import org.apache.directory.shared.ldap.model.schema.registries.helper.NameFormHelper;
 import org.apache.directory.shared.ldap.model.schema.registries.helper.ObjectClassHelper;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -673,12 +677,24 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     DitContentRuleHelper.addToRegistries( (DitContentRule)schemaObject, errors, this );
                     break;
                     
-                case OBJECT_CLASS :
-                    ObjectClassHelper.addToRegistries( (ObjectClass)schemaObject, errors, this );
+                case LDAP_SYNTAX :
+                    LdapSyntaxHelper.addToRegistries( (LdapSyntax)schemaObject, errors, this );
                     break;
                     
-                default :
-                    schemaObject.addToRegistries( errors, this );
+                case MATCHING_RULE :
+                    MatchingRuleHelper.addToRegistries( (MatchingRule)schemaObject, errors, this );
+                    break;
+                    
+                case MATCHING_RULE_USE :
+                    MatchingRuleUseHelper.addToRegistries( (MatchingRuleUse)schemaObject, errors, this );
+                    break;
+                    
+                case NAME_FORM :
+                    NameFormHelper.addToRegistries( (NameForm)schemaObject, errors, this );
+                    break;
+                    
+                case OBJECT_CLASS :
+                    ObjectClassHelper.addToRegistries( (ObjectClass)schemaObject, errors, this );
                     break;
             }
         }
@@ -873,7 +889,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // or to the OctetString SyntaxChecker
         try
         {
-            syntax.addToRegistries( errors, this );
+            LdapSyntaxHelper.addToRegistries( syntax, errors, this );
         }
         catch ( LdapException e )
         {
@@ -891,14 +907,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
     private void resolve( Normalizer normalizer, List<Throwable> errors )
     {
         // This is currently doing nothing.
-        try
-        {
-            normalizer.addToRegistries( errors, this );
-        }
-        catch ( LdapException e )
-        {
-            errors.add( e );
-        }
     }
 
 
@@ -911,16 +919,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
     private void resolve( LdapComparator<?> comparator, List<Throwable> errors )
     {
         // This is currently doing nothing.
-        try
-        {
-            comparator.addToRegistries( errors, this );
-        }
-        catch ( LdapException e )
-        {
-            errors.add( e );
-        }
     }
-
+    
 
     /**
      * Attempts to resolve the SyntaxChecker
@@ -931,14 +931,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
     private void resolve( SyntaxChecker syntaxChecker, List<Throwable> errors )
     {
         // This is currently doing nothing.
-        try
-        {
-            syntaxChecker.addToRegistries( errors, this );
-        }
-        catch ( LdapException e )
-        {
-            errors.add( e );
-        }
     }
 
 

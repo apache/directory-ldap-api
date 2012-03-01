@@ -26,7 +26,6 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.registries.Registries;
-import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
 
 
 /**
@@ -260,34 +259,6 @@ public class LdapSyntax extends AbstractSchemaObject
     public String toString()
     {
         return objectType + " " + DescriptionUtils.getDescription( this );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void addToRegistries( List<Throwable> errors, Registries registries ) throws LdapException
-    {
-        if ( registries != null )
-        {
-            try
-            {
-                // Gets the associated SyntaxChecker
-                syntaxChecker = registries.getSyntaxCheckerRegistry().lookup( oid );
-            }
-            catch ( LdapException ne )
-            {
-                // No SyntaxChecker ? Associate the Syntax to a catch all SyntaxChecker
-                syntaxChecker = new OctetStringSyntaxChecker( oid );
-            }
-
-            // Add the references for S :
-            // S -> SC
-            if ( syntaxChecker != null )
-            {
-                registries.addReference( this, syntaxChecker );
-            }
-        }
     }
 
 
