@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 import org.apache.directory.shared.util.Strings;
 
@@ -794,20 +793,6 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             return this.description.equalsIgnoreCase( that.description );
         }
-    }
-
-
-    /**
-     * Register the given SchemaObject into the given registries' globalOidRegistry
-     *
-     * @param schemaObject the SchemaObject we want to register
-     * @param registries The registries in which we want it to be stored
-     * @throws LdapException If the OID is invalid
-     */
-    public void registerOid( SchemaObject schemaObject, Registries registries ) throws LdapException
-    {
-        // Add the SchemaObject into the globalOidRegistry
-        registries.getGlobalOidRegistry().register( schemaObject );
     }
 
 

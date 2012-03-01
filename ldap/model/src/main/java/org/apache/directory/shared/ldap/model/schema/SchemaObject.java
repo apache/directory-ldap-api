@@ -23,7 +23,6 @@ package org.apache.directory.shared.ldap.model.schema;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 
 
@@ -290,16 +289,6 @@ public interface SchemaObject
      * {@inheritDoc}
      */
     boolean equals( Object o1 );
-
-
-    /**
-     * Register the given SchemaObject into the given registries' globalOidRegistry
-     *
-     * @param schemaObject the SchemaObject we want to register
-     * @param registries The registries in which we want it to be stored
-     * @throws LdapException If the OID is invalid
-     */
-    void registerOid( SchemaObject schemaObject, Registries registries ) throws LdapException;
 
 
     /**
