@@ -44,6 +44,8 @@ public class DitContentRuleHelper
      * Inject the DitContentRule into the registries, updating the references to
      * other SchemaObject
      *
+     * @param ditContentRule The DitContentRule to add to the Registries
+     * @param errors The errors we got while adding the DitContentRule to the Registries
      * @param registries The Registries
      * @exception If the addition failed
      */

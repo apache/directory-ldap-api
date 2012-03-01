@@ -48,10 +48,16 @@ public class AttributeTypeHelper
     private static final Logger LOG = LoggerFactory.getLogger( AttributeTypeHelper.class );
 
     /**
-     * {@inheritDoc}
+     * Inject the AttributeType into the Registries, updating the references to
+     * other SchemaObject
      *
      * If one of the referenced SchemaObject does not exist (SUP, EQUALITY, ORDERING, SUBSTR, SYNTAX),
      * an exception is thrown.
+     * 
+     * @param attributeType The AttributeType to add to the Registries
+     * @param errors The errors we got while adding the AttributeType to the Registries
+     * @param registries The Registries
+     * @exception If the AttributeType is not valid
      */
     public static void addToRegistries( AttributeType attributeType, List<Throwable> errors, Registries registries ) throws LdapException
     {
@@ -600,6 +606,64 @@ public class AttributeTypeHelper
             ldapSchemaException.setSourceObject( attributeType );
             errors.add( ldapSchemaException );
             LOG.info( msg );
+        }
+    }
+    
+    
+    /**
+     * Remove the AttributeType from the registries, updating the references to
+     * other SchemaObject.
+     *
+     * If one of the referenced SchemaObject does not exist (SUP, EQUALITY, ORDERING, SUBSTR, SYNTAX),
+     * an exception is thrown.
+     * 
+     * @param attributeType The AttributeType to remove from the Registries
+     * @param errors The errors we got while removing the AttributeType from the Registries
+     * @param registries The Registries
+     * @exception If the AttributeType is not valid
+     */
+    public static void removeFromRegistries( AttributeType attributeType, List<Throwable> errors, Registries registries ) throws LdapException
+    {
+        if ( registries != null )
+        {
+            AttributeTypeRegistry attributeTypeRegistry = registries.getAttributeTypeRegistry();
+
+            // Remove the attributeType from the oid/normalizer map
+            attributeTypeRegistry.removeMappingFor( attributeType );
+
+            // Unregister this AttributeType into the Descendant map
+            attributeTypeRegistry.unregisterDescendants( attributeType, attributeType.getSuperior() );
+
+            /**
+             * Remove the AT references (using and usedBy) :
+             * AT -> MR (for EQUALITY, ORDERING and SUBSTR)
+             * AT -> S
+             * AT -> AT
+             */
+            if ( attributeType.getEquality() != null )
+            {
+                registries.delReference( attributeType, attributeType.getEquality() );
+            }
+
+            if ( attributeType.getOrdering() != null )
+            {
+                registries.delReference( attributeType, attributeType.getOrdering() );
+            }
+
+            if ( attributeType.getSubstring() != null )
+            {
+                registries.delReference( attributeType, attributeType.getSubstring() );
+            }
+
+            if ( attributeType.getSyntax() != null )
+            {
+                registries.delReference( attributeType, attributeType.getSyntax() );
+            }
+
+            if ( attributeType.getSuperior() != null )
+            {
+                registries.delReference( attributeType, attributeType.getSuperior() );
+            }
         }
     }
 }

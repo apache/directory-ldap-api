@@ -43,6 +43,8 @@ public class MatchingRuleUseHelper
      * Inject the MatchingRuleUse into the registries, updating the references to
      * other SchemaObject
      *
+     * @param matchingRuleUse The MatchingRuleUse to add to the Registries
+     * @param errors The errors we got while adding the MatchingRuleUse to the Registries
      * @param registries The Registries
      * @exception If the addition failed
      */

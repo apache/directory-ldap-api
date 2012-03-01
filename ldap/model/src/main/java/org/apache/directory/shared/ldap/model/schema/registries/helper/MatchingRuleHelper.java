@@ -47,9 +47,11 @@ public class MatchingRuleHelper
     private static final Logger LOG = LoggerFactory.getLogger( MatchingRuleHelper.class );
 
     /**
-     * Inject the MatchingRule into the registries, updating the references to
+     * Inject the MatchingRule into the Registries, updating the references to
      * other SchemaObject
      *
+     * @param matchingRule The MatchingRule to add to the Registries
+     * @param errors The errors we got while adding the MatchingRule to the registries
      * @param registries The Registries
      * @exception If the addition failed
      */
@@ -135,6 +137,46 @@ public class MatchingRuleHelper
             finally
             {
                 matchingRule.lock();
+            }
+        }
+    }
+
+
+    /**
+     * Remove the MatchingRule from the Registries, updating the references to
+     * other SchemaObject.
+     * 
+     * If one of the referenced SchemaObject does not exist,
+     * an exception is thrown.
+     *
+     * @param matchingRule The MatchingRule to remove from the Registries
+     * @param errors The errors we got while removing the MatchingRule from the registries
+     * @param registries The Registries
+     * @exception If the MatchingRule is not valid
+     */
+    public static void removeFromRegistries( MatchingRule matchingRule, List<Throwable> errors, Registries registries ) throws LdapException
+    {
+        if ( registries != null )
+        {
+            /**
+             * Remove the MR references (using and usedBy) :
+             * MR -> C
+             * MR -> N
+             * MR -> S
+             */
+            if ( matchingRule.getLdapComparator() != null )
+            {
+                registries.delReference( matchingRule, matchingRule.getLdapComparator() );
+            }
+
+            if ( matchingRule.getSyntax() != null )
+            {
+                registries.delReference( matchingRule, matchingRule.getSyntax() );
+            }
+
+            if ( matchingRule.getNormalizer() != null )
+            {
+                registries.delReference( matchingRule, matchingRule.getNormalizer() );
             }
         }
     }

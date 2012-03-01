@@ -106,17 +106,6 @@ public interface SchemaObject
 
 
     /**
-     * Remove this SchemaObject from the given registries, updating the references to
-     * other SchemaObject.
-     *
-     * @param errors the errors we got
-     * @param registries The registries
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException if one of the referenced schema objects does not exist
-     */
-    void removeFromRegistries( List<Throwable> errors, Registries registries ) throws LdapException;
-
-
-    /**
      * Add a new name to the list of names for this SchemaObject. The name
      * is lower cased and trimmed.
      * 

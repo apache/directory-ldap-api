@@ -24,9 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.registries.ObjectClassRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 
 
 /**
@@ -114,58 +111,6 @@ public class ObjectClass extends AbstractSchemaObject
         mustAttributeTypes = new ArrayList<AttributeType>();
         superiors = new ArrayList<ObjectClass>();
         objectClassType = ObjectClassTypeEnum.STRUCTURAL;
-    }
-
-
-    /**
-     * Remove the ObjectClass from the registries, updating the references to
-     * other SchemaObject.
-     *
-     * If one of the referenced SchemaObject does not exist (SUPERIORS, MAY, MUST),
-     * an exception is thrown.
-     *
-     * @param errors The errors we got while removing the ObjectClass from the registries
-     * @param registries The Registries
-     * @exception If the ObjectClass is not valid
-     */
-    public void removeFromRegistries( List<Throwable> errors, Registries registries ) throws LdapException
-    {
-        if ( registries != null )
-        {
-            ObjectClassRegistry objectClassRegistry = registries.getObjectClassRegistry();
-
-            // Unregister this ObjectClass into the Descendant map
-            objectClassRegistry.unregisterDescendants( this, superiors );
-
-            /**
-             * Remove the OC references (using and usedBy) :
-             * OC -> AT (for MAY and MUST)
-             * OC -> OC
-             */
-            if ( mayAttributeTypes != null )
-            {
-                for ( AttributeType may : mayAttributeTypes )
-                {
-                    registries.delReference( this, may );
-                }
-            }
-
-            if ( mustAttributeTypes != null )
-            {
-                for ( AttributeType must : mustAttributeTypes )
-                {
-                    registries.delReference( this, must );
-                }
-            }
-
-            if ( superiors != null )
-            {
-                for ( ObjectClass superior : superiors )
-                {
-                    registries.delReference( this, superior );
-                }
-            }
-        }
     }
 
 

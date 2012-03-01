@@ -44,6 +44,8 @@ public class LdapSyntaxHelper
      * Inject the LdapSyntax into the registries, updating the references to
      * other SchemaObject
      *
+     * @param ldapSyntax The LdapSyntax to add to the Registries
+     * @param errors The errors we got while adding the LdapSyntax to the Registries
      * @param registries The Registries
      * @exception If the addition failed
      */
@@ -82,6 +84,34 @@ public class LdapSyntaxHelper
             finally
             {
                 ldapSyntax.lock();
+            }
+        }
+    }
+
+
+    /**
+     * Remove the LdapSyntax from the Registries, updating the references to
+     * other SchemaObject.
+     * 
+     * If one of the referenced SchemaObject does not exist,
+     * an exception is thrown.
+     *
+     * @param ldapSyntax The LdapSyntax to remove from the Registries
+     * @param errors The errors we got while removing the LdapSyntax from the Registries
+     * @param registries The Registries
+     * @exception If the LdapSyntax is not valid
+     */
+    public static void removeFromRegistries( LdapSyntax ldapSyntax, List<Throwable> errors, Registries registries ) throws LdapException
+    {
+        if ( registries != null )
+        {
+            /**
+             * Remove the Syntax references (using and usedBy) :
+             * S -> SC
+             */
+            if ( ldapSyntax.getSyntaxChecker() != null )
+            {
+                registries.delReference( ldapSyntax, ldapSyntax.getSyntaxChecker() );
             }
         }
     }

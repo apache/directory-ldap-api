@@ -44,10 +44,12 @@ public class NameFormHelper
      * Inject the NameForm into the registries, updating the references to
      * other SchemaObject
      *
+     * @param nameForm The NameForm to add to the Registries
+     * @param errors The errors we got while adding the NameForm to the Registries
      * @param registries The Registries
      * @exception If the addition failed
      */
-    public static void addToRegistries( NameForm nameForm, List<Throwable> errors,  Registries registries ) throws LdapException
+    public static void addToRegistries( NameForm nameForm, List<Throwable> errors, Registries registries ) throws LdapException
     {
         if ( registries != null )
         {

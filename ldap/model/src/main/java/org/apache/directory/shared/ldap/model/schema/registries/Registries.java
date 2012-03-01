@@ -717,7 +717,24 @@ public class Registries implements SchemaLoaderListener, Cloneable
     {
         try
         {
-            schemaObject.removeFromRegistries( errors, this );
+            switch ( schemaObject.getObjectType() )
+            {
+                case ATTRIBUTE_TYPE :
+                    AttributeTypeHelper.removeFromRegistries( (AttributeType)schemaObject, errors, this );
+                    break;
+
+                case LDAP_SYNTAX :
+                    LdapSyntaxHelper.removeFromRegistries( (LdapSyntax)schemaObject, errors, this );
+                    break;
+
+                case MATCHING_RULE :
+                    MatchingRuleHelper.removeFromRegistries( (MatchingRule)schemaObject, errors, this );
+                    break;
+
+                case OBJECT_CLASS :
+                    ObjectClassHelper.removeFromRegistries( (ObjectClass)schemaObject, errors, this );
+                    break;
+            }
         }
         catch ( LdapException ne )
         {

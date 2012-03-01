@@ -24,8 +24,6 @@ import java.util.List;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 
 
 /**
@@ -259,27 +257,6 @@ public class LdapSyntax extends AbstractSchemaObject
     public String toString()
     {
         return objectType + " " + DescriptionUtils.getDescription( this );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("PMD.CollapsibleIfStatements")
-    // Used because of comments
-    public void removeFromRegistries( List<Throwable> errors, Registries registries ) throws LdapException
-    {
-        if ( registries != null )
-        {
-            /**
-             * Remove the Syntax references (using and usedBy) :
-             * S -> SC
-             */
-            if ( syntaxChecker != null )
-            {
-                registries.delReference( this, syntaxChecker );
-            }
-        }
     }
 
 

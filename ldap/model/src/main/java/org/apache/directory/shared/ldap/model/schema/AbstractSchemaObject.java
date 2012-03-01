@@ -215,15 +215,6 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
 
     /**
-     * {@inheritDoc}
-     */
-    public void removeFromRegistries( List<Throwable> errors, Registries registries ) throws LdapException
-    {
-        // do nothing
-    }
-
-
-    /**
      * Inject the Registries into the SchemaObject
      *
      * @param registries The Registries

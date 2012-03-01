@@ -20,11 +20,7 @@
 package org.apache.directory.shared.ldap.model.schema;
 
 
-import java.util.List;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -193,58 +189,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public AttributeType( String oid )
     {
         super( SchemaObjectType.ATTRIBUTE_TYPE, oid );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     *
-     * If one of the referenced SchemaObject does not exist (SUP, EQUALITY, ORDERING, SUBSTR, SYNTAX),
-     * an exception is thrown.
-     */
-    public void removeFromRegistries( List<Throwable> errors, Registries registries ) throws LdapException
-    {
-        if ( registries != null )
-        {
-            AttributeTypeRegistry attributeTypeRegistry = registries.getAttributeTypeRegistry();
-
-            // Remove the attributeType from the oid/normalizer map
-            attributeTypeRegistry.removeMappingFor( this );
-
-            // Unregister this AttributeType into the Descendant map
-            attributeTypeRegistry.unregisterDescendants( this, superior );
-
-            /**
-             * Remove the AT references (using and usedBy) :
-             * AT -> MR (for EQUALITY, ORDERING and SUBSTR)
-             * AT -> S
-             * AT -> AT
-             */
-            if ( equality != null )
-            {
-                registries.delReference( this, equality );
-            }
-
-            if ( ordering != null )
-            {
-                registries.delReference( this, ordering );
-            }
-
-            if ( substring != null )
-            {
-                registries.delReference( this, substring );
-            }
-
-            if ( syntax != null )
-            {
-                registries.delReference( this, syntax );
-            }
-
-            if ( superior != null )
-            {
-                registries.delReference( this, superior );
-            }
-        }
     }
 
 

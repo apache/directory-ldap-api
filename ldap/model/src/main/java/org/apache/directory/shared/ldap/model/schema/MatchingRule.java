@@ -20,11 +20,7 @@
 package org.apache.directory.shared.ldap.model.schema;
 
 
-import java.util.List;
-
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -107,44 +103,6 @@ public class MatchingRule extends AbstractSchemaObject
     public MatchingRule( String oid )
     {
         super( SchemaObjectType.MATCHING_RULE, oid );
-    }
-
-
-    /**
-     * Remove the MatchingRule from the registries, updating the references to
-     * other SchemaObject.
-     * 
-     * If one of the referenced SchemaObject does not exist (),
-     * an exception is thrown.
-     *
-     * @param registries The Registries
-     * @exception If the MatchingRule is not valid
-     */
-    public void removeFromRegistries( List<Throwable> errors, Registries registries ) throws LdapException
-    {
-        if ( registries != null )
-        {
-            /**
-             * Remove the MR references (using and usedBy) :
-             * MR -> C
-             * MR -> N
-             * MR -> S
-             */
-            if ( ldapComparator != null )
-            {
-                registries.delReference( this, ldapComparator );
-            }
-
-            if ( ldapSyntax != null )
-            {
-                registries.delReference( this, ldapSyntax );
-            }
-
-            if ( normalizer != null )
-            {
-                registries.delReference( this, normalizer );
-            }
-        }
     }
 
 
