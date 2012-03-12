@@ -41,6 +41,7 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
@@ -1387,7 +1388,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
         objectClass.addMayAttributeTypeOids( "cn", "none", "sn" );
 
         assertFalse( schemaManager.add( objectClass ) );
@@ -1414,7 +1415,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
         objectClass.addMustAttributeTypeOids( "cn", "none", "sn" );
 
         assertFalse( schemaManager.add( objectClass ) );
@@ -1441,7 +1442,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
         objectClass.addMayAttributeTypeOids( "cn", "ref", "commonName" );
 
         assertFalse( schemaManager.add( objectClass ) );
@@ -1466,7 +1467,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
         objectClass.addMustAttributeTypeOids( "cn", "ref", "2.5.4.3" );
 
         assertFalse( schemaManager.add( objectClass ) );
@@ -1491,7 +1492,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
         objectClass.addMustAttributeTypeOids( "cn", "ref" );
         objectClass.addMayAttributeTypeOids( "2.5.4.3" );
 
@@ -1520,7 +1521,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         // Check a addition in MUST
-        ObjectClass objectClassMust = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClassMust = new MutableObjectClass( "1.1.1" );
         objectClassMust.addMustAttributeTypeOids( "c-o", "ref" );
 
         // collective attribute in MUST : failure expected
@@ -1535,7 +1536,7 @@ public class SchemaManagerAddTest
         assertEquals( goidSize, schemaManager.getGlobalOidRegistry().size() );
 
         // Check an addition in MAY
-        ObjectClass objectClassMay = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClassMay = new MutableObjectClass( "1.1.1" );
         objectClassMay.addMayAttributeTypeOids( "c-o", "ref" );
 
         // collective attribute in MAY : failure expected
@@ -1564,7 +1565,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
         objectClass.addSuperiorOids( "alias", "referral", "top" );
@@ -1606,7 +1607,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
         objectClass.addSuperiorOids( "alias", "Test", "referral" );
@@ -1631,7 +1632,7 @@ public class SchemaManagerAddTest
         SchemaManager schemaManager = loadSystem();
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
 
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
@@ -1658,7 +1659,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
         objectClass.addSuperiorOids( "alias", "refessal" );
@@ -1684,7 +1685,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.ABSTRACT );
         objectClass.addSuperiorOids( "extensibleObject" );
@@ -1710,7 +1711,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.ABSTRACT );
         objectClass.addSuperiorOids( "referral" );
@@ -1736,7 +1737,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.AUXILIARY );
         objectClass.addSuperiorOids( "referral" );
@@ -1762,7 +1763,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
         objectClass.addSuperiorOids( "extensibleObject" );
@@ -1789,7 +1790,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
         objectClass.addSuperiorOids( "alias", "OpenLDAProotDSE" );
@@ -1832,7 +1833,7 @@ public class SchemaManagerAddTest
         int ocrSize = schemaManager.getObjectClassRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        ObjectClass objectClass = new ObjectClass( "1.1.1" );
+        MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
         objectClass.setNames( "Test" );
         objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
         objectClass.addSuperiorOids( "alias", "OpenLDAProotDSE" );

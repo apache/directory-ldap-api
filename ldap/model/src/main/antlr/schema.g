@@ -36,7 +36,7 @@ import org.apache.directory.shared.ldap.model.schema.NameForm;
 import org.apache.directory.shared.ldap.model.schema.parsers.NormalizerDescription;
 import org.apache.directory.shared.ldap.model.schema.parsers.ParserMonitor;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.SyntaxCheckerDescription;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OpenLdapObjectIdentifierMacro;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
@@ -244,7 +244,7 @@ options    {
 openLdapSchema returns [List<Object> list = new ArrayList<Object>()]
     {
         AttributeType attributeType = null;
-        ObjectClass objectClass = null;
+        MutableObjectClass objectClass = null;
         OpenLdapObjectIdentifierMacro oloid = null;
     }
     :
@@ -274,7 +274,7 @@ openLdapObjectIdentifier returns [OpenLdapObjectIdentifierMacro oloid]
     ;
     
 
-openLdapObjectClass returns [ObjectClass objectClass]
+openLdapObjectClass returns [MutableObjectClass objectClass]
     {
         matchedProduction( "openLdapObjectClass()" );
     }
@@ -320,13 +320,13 @@ openLdapAttributeType returns [AttributeType attributeType]
      * xstring = "X" HYPHEN 1*( ALPHA / HYPHEN / USCORE ) 
      * </pre>
     */
-objectClassDescription returns [ObjectClass objectClass]
+objectClassDescription returns [MutableObjectClass objectClass]
     {
         matchedProduction( "objectClassDescription()" );
         ElementTracker et = new ElementTracker();
     }
     :
-    ( oid:STARTNUMERICOID { objectClass = new ObjectClass(numericoid(oid.getText())); } )
+    ( oid:STARTNUMERICOID { objectClass = new MutableObjectClass(numericoid(oid.getText())); } )
     (
         ( name:NAME { et.track("NAME", name); objectClass.setNames(qdescrs(name.getText())); } )
         |

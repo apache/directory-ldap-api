@@ -23,8 +23,6 @@ package org.apache.directory.shared.ldap.model.schema;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.i18n.I18n;
-
 
 /**
  * An objectClass definition.
@@ -74,25 +72,25 @@ import org.apache.directory.shared.i18n.I18n;
 public class ObjectClass extends AbstractSchemaObject
 {
     /** The ObjectClass type : ABSTRACT, AUXILIARY or STRUCTURAL */
-    private ObjectClassTypeEnum objectClassType = ObjectClassTypeEnum.STRUCTURAL;
+    protected ObjectClassTypeEnum objectClassType = ObjectClassTypeEnum.STRUCTURAL;
 
     /** The ObjectClass superior OIDs */
-    private List<String> superiorOids;
+    protected List<String> superiorOids;
 
     /** The ObjectClass superiors */
-    private List<ObjectClass> superiors;
+    protected List<ObjectClass> superiors;
 
     /** The list of allowed AttributeType OIDs */
-    private List<String> mayAttributeTypeOids;
+    protected List<String> mayAttributeTypeOids;
 
     /** The list of allowed AttributeTypes */
-    private List<AttributeType> mayAttributeTypes;
+    protected List<AttributeType> mayAttributeTypes;
 
     /** The list of required AttributeType OIDs */
-    private List<String> mustAttributeTypeOids;
+    protected List<String> mustAttributeTypeOids;
 
     /** The list of required AttributeTypes */
-    private List<AttributeType> mustAttributeTypes;
+    protected List<AttributeType> mustAttributeTypes;
 
 
     /**
@@ -133,118 +131,6 @@ public class ObjectClass extends AbstractSchemaObject
 
 
     /**
-     * Add some allowed AttributeType
-     *
-     * @param oids The attributeType oids
-     */
-    public void addMayAttributeTypeOids( String... oids )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            for ( String oid : oids )
-            {
-                mayAttributeTypeOids.add( oid );
-            }
-        }
-    }
-
-
-    /**
-     * Add some allowed AttributeTypes
-     *
-     * @param attributeTypes The attributeTypes
-     */
-    public void addMayAttributeTypes( AttributeType... attributeTypes )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            for ( AttributeType attributeType : attributeTypes )
-            {
-                if ( !mayAttributeTypeOids.contains( attributeType.getOid() ) )
-                {
-                    mayAttributeTypes.add( attributeType );
-                    mayAttributeTypeOids.add( attributeType.getOid() );
-                }
-            }
-        }
-    }
-
-
-    /**
-     * @param mayAttributeTypeOids the mayAttributeTypeOids to set
-     */
-    public void setMayAttributeTypeOids( List<String> mayAttributeTypeOids )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.mayAttributeTypeOids = mayAttributeTypeOids;
-        }
-    }
-
-
-    /**
-     * Sets the list of allowed AttributeTypes
-     *
-     * @param mayAttributeTypes the list of allowed AttributeTypes
-     */
-    public void setMayAttributeTypes( List<AttributeType> mayAttributeTypes )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.mayAttributeTypes = mayAttributeTypes;
-
-            // update the OIDS now
-            mayAttributeTypeOids.clear();
-
-            for ( AttributeType may : mayAttributeTypes )
-            {
-                mayAttributeTypeOids.add( may.getOid() );
-            }
-        }
-    }
-
-
-    /**
-     * Update the associated MAY AttributeType, even if the SchemaObject is readOnly
-     *
-     * @param mayAttributeTypes the list of allowed AttributeTypes
-     */
-    public void updateMayAttributeTypes( List<AttributeType> mayAttributeTypes )
-    {
-        this.mayAttributeTypes.clear();
-        this.mayAttributeTypes.addAll( mayAttributeTypes );
-
-        // update the OIDS now
-        mayAttributeTypeOids.clear();
-
-        for ( AttributeType may : mayAttributeTypes )
-        {
-            mayAttributeTypeOids.add( may.getOid() );
-        }
-    }
-
-
-    /**
      * @return the mustAttributeTypeOids
      */
     public List<String> getMustAttributeTypeOids()
@@ -259,118 +145,6 @@ public class ObjectClass extends AbstractSchemaObject
     public List<AttributeType> getMustAttributeTypes()
     {
         return mustAttributeTypes;
-    }
-
-
-    /**
-     * Add some required AttributeType OIDs
-     *
-     * @param oids The attributeType OIDs
-     */
-    public void addMustAttributeTypeOids( String... oids )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            for ( String oid : oids )
-            {
-                mustAttributeTypeOids.add( oid );
-            }
-        }
-    }
-
-
-    /**
-     * Add some required AttributeTypes
-     *
-     * @param attributeTypes The attributeTypse
-     */
-    public void addMustAttributeTypes( AttributeType... attributeTypes )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            for ( AttributeType attributeType : attributeTypes )
-            {
-                if ( !mustAttributeTypeOids.contains( attributeType.getOid() ) )
-                {
-                    mustAttributeTypes.add( attributeType );
-                    mustAttributeTypeOids.add( attributeType.getOid() );
-                }
-            }
-        }
-    }
-
-
-    /**
-     * @param mustAttributeTypeOids the mustAttributeTypeOids to set
-     */
-    public void setMustAttributeTypeOids( List<String> mustAttributeTypeOids )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.mustAttributeTypeOids = mustAttributeTypeOids;
-        }
-    }
-
-
-    /**
-     * Sets the list of required AttributeTypes
-     *
-     * @param mustAttributeTypes the list of required AttributeTypes
-     */
-    public void setMustAttributeTypes( List<AttributeType> mustAttributeTypes )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.mustAttributeTypes = mustAttributeTypes;
-
-            // update the OIDS now
-            mustAttributeTypeOids.clear();
-
-            for ( AttributeType may : mustAttributeTypes )
-            {
-                mustAttributeTypeOids.add( may.getOid() );
-            }
-        }
-    }
-
-
-    /**
-     * Update the associated MUST AttributeType, even if the SchemaObject is readOnly
-     *
-     * @param mustAttributeTypes the list of allowed AttributeTypes
-     */
-    public void updateMustAttributeTypes( List<AttributeType> mustAttributeTypes )
-    {
-        this.mustAttributeTypes.clear();
-        this.mustAttributeTypes.addAll( mustAttributeTypes );
-
-        // update the OIDS now
-        mustAttributeTypeOids.clear();
-
-        for ( AttributeType must : mustAttributeTypes )
-        {
-            mustAttributeTypeOids.add( must.getOid() );
-        }
     }
 
 
@@ -397,123 +171,6 @@ public class ObjectClass extends AbstractSchemaObject
 
 
     /**
-     * Add some superior ObjectClass OIDs
-     *
-     * @param oids The superior ObjectClass OIDs
-     */
-    public void addSuperiorOids( String... oids )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            for ( String oid : oids )
-            {
-                if ( !superiorOids.contains( oid ) )
-                {
-                    superiorOids.add( oid );
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Add some superior ObjectClasses
-     *
-     * @param objectClasses The superior ObjectClasses
-     */
-    public void addSuperior( ObjectClass... objectClasses )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            for ( ObjectClass objectClass : objectClasses )
-            {
-                if ( !superiorOids.contains( objectClass.getOid() ) )
-                {
-                    superiorOids.add( objectClass.getOid() );
-                    superiors.add( objectClass );
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Sets the superior object classes
-     *
-     * @param superiors the object classes to set
-     */
-    public void setSuperiors( List<ObjectClass> superiors )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.superiors = superiors;
-
-            // update the OIDS now
-            superiorOids.clear();
-
-            for ( ObjectClass oc : superiors )
-            {
-                superiorOids.add( oc.getOid() );
-            }
-        }
-    }
-
-
-    /**
-     * Update the associated SUPERIORS ObjectClasses, even if the SchemaObject is readOnly
-     *
-     * @param superiors the object classes to set
-     */
-    public void updateSuperiors( List<ObjectClass> superiors )
-    {
-        this.superiors.clear();
-        this.superiors.addAll( superiors );
-
-        // update the OIDS now
-        superiorOids.clear();
-
-        for ( ObjectClass oc : superiors )
-        {
-            superiorOids.add( oc.getOid() );
-        }
-    }
-
-
-    /**
-     * Sets the superior object class OIDs
-     *
-     * @param superiorOids the object class OIDs to set
-     */
-    public void setSuperiorOids( List<String> superiorOids )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.superiorOids = superiorOids;
-        }
-    }
-
-
-    /**
      * Gets the type of this ObjectClass as a type safe enum.
      *
      * @return the ObjectClass type as an enum
@@ -521,25 +178,6 @@ public class ObjectClass extends AbstractSchemaObject
     public ObjectClassTypeEnum getType()
     {
         return objectClassType;
-    }
-
-
-    /**
-     * Set the ObjectClass type, one of ABSTRACT, AUXILIARY or STRUCTURAL.
-     *
-     * @param objectClassType The ObjectClassType value
-     */
-    public void setType( ObjectClassTypeEnum objectClassType )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.objectClassType = objectClassType;
-        }
     }
 
 
@@ -804,23 +442,5 @@ public class ObjectClass extends AbstractSchemaObject
         }
 
         return true;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void clear()
-    {
-        // Clear the common elements
-        super.clear();
-
-        // Clear the references
-        mayAttributeTypes.clear();
-        mayAttributeTypeOids.clear();
-        mustAttributeTypes.clear();
-        mustAttributeTypeOids.clear();
-        superiors.clear();
-        superiorOids.clear();
     }
 }
