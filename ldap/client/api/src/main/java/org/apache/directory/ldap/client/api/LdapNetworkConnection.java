@@ -39,7 +39,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.net.ssl.SSLContext;
@@ -154,7 +153,6 @@ import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
 import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.service.IoConnector;
-import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.ProtocolEncoderException;
@@ -174,7 +172,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsyncConnection
+public class LdapNetworkConnection extends AbstractLdapConnection implements LdapAsyncConnection
 {
     /** logger for reporting errors that might not be handled properly upstream */
     private static final Logger LOG = LoggerFactory.getLogger( LdapNetworkConnection.class );
@@ -197,9 +195,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     private IoSession ldapSession;
 
-    /** A Message ID which is incremented for each operation */
-    private AtomicInteger messageId;
-
     /** a map to hold the ResponseFutures for all operations */
     private Map<Integer, ResponseFuture<? extends Response>> futureMap = new ConcurrentHashMap<Integer, ResponseFuture<? extends Response>>();
 
@@ -219,12 +214,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      *  connection's session gets closed cause of network issues
      */
     private List<ConnectionClosedEventListener> conCloseListeners;
-
-    /** the schema manager */
-    private SchemaManager schemaManager;
-
-    /** the ldap codec service */
-    LdapApiService codec = LdapApiServiceFactory.getSingleton();
 
     /** The Ldap codec protocol filter */
     private IoFilter ldapProtocolFilter = new ProtocolCodecFilter( codec.getProtocolCodecFactory() );
@@ -346,12 +335,12 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public LdapNetworkConnection()
     {
+        super();
         config = new LdapConnectionConfig();
         config.setUseSsl( false );
         config.setLdapPort( config.getDefaultLdapPort() );
         config.setLdapHost( config.getDefaultLdapHost() );
         config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
-        messageId = new AtomicInteger( 0 );
     }
 
 
@@ -363,14 +352,13 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public LdapNetworkConnection( LdapConnectionConfig config )
     {
+        super();
         this.config = config;
         
         if ( config.getBinaryAttributeDetector() == null )
         {
             config.setBinaryAttributeDetector( new DefaultConfigurableBinaryAttributeDetector() );
         }
-        
-        messageId = new AtomicInteger( 0 );
     }
 
 
@@ -382,12 +370,12 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public LdapNetworkConnection( boolean useSsl )
     {
+        super();
         config = new LdapConnectionConfig();
         config.setUseSsl( useSsl );
         config.setLdapPort( useSsl ? config.getDefaultLdapsPort() : config.getDefaultLdapPort() );
         config.setLdapHost( config.getDefaultLdapHost() );
         config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
-        messageId = new AtomicInteger( 0 );
     }
 
 
@@ -400,6 +388,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public LdapNetworkConnection( String server )
     {
+        super();
         config = new LdapConnectionConfig();
         config.setUseSsl( false );
         config.setLdapPort( config.getDefaultLdapPort() );
@@ -415,8 +404,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         }
 
         config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
-
-        messageId = new AtomicInteger( 0 );
     }
 
 
@@ -431,6 +418,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public LdapNetworkConnection( String server, boolean useSsl )
     {
+        super();
         config = new LdapConnectionConfig();
         config.setUseSsl( useSsl );
         config.setLdapPort( useSsl ? config.getDefaultLdapsPort() : config.getDefaultLdapPort() );
@@ -446,8 +434,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         }
 
         config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
-
-        messageId = new AtomicInteger( 0 );
     }
 
 
@@ -476,6 +462,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public LdapNetworkConnection( String server, int port, boolean useSsl )
     {
+        super();
         config = new LdapConnectionConfig();
         config.setUseSsl( useSsl );
         config.setLdapPort( port );
@@ -491,7 +478,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         }
 
         config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
-        messageId = new AtomicInteger();
     }
 
 
@@ -992,45 +978,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
 
     /**
-     * {@inheritDoc}
-     */
-    public void bind( String name ) throws LdapException, IOException
-    {
-        LOG.debug( "Bind request : {}", name );
-
-        // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( name, StringConstants.EMPTY_BYTES );
-
-        BindResponse bindResponse = bind( bindRequest );
-
-        processResponse( bindResponse );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void bind( String name, String credentials ) throws LdapException, IOException
-    {
-        LOG.debug( "Bind request : {}", name );
-
-        // The password must not be empty or null
-        if ( Strings.isEmpty( credentials ) && Strings.isNotEmpty( name ) )
-        {
-            LOG.debug( "The password is missing" );
-            throw new LdapAuthenticationException( "The password is missing" );
-        }
-
-        // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( name, Strings.getBytesUtf8( credentials ) );
-
-        BindResponse bindResponse = bind( bindRequest );
-
-        processResponse( bindResponse );
-    }
-
-
-    /**
      * Asynchronous unauthenticated authentication bind
      *
      * @param name The name we use to authenticate the user. It must be a
@@ -1068,45 +1015,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         BindRequest bindRequest = createBindRequest( name, Strings.getBytesUtf8( credentials ) );
 
         return bindAsync( bindRequest );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void bind( Dn name ) throws LdapException, IOException
-    {
-        LOG.debug( "Unauthenticated authentication Bind request : {}", name );
-
-        // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( name.getName(), StringConstants.EMPTY_BYTES, null );
-
-        BindResponse bindResponse = bind( bindRequest );
-
-        processResponse( bindResponse );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void bind( Dn name, String credentials ) throws LdapException, IOException
-    {
-        LOG.debug( "Bind request : {}", name );
-
-        // The password must not be empty or null
-        if ( Strings.isEmpty( credentials ) && ( !Dn.EMPTY_DN.equals( name ) ) )
-        {
-            LOG.debug( "The password is missing" );
-            throw new LdapAuthenticationException( "The password is missing" );
-        }
-
-        // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( name.getName(), Strings.getBytesUtf8( credentials ), null );
-
-        BindResponse bindResponse = bind( bindRequest );
-
-        processResponse( bindResponse );
     }
 
 
@@ -1225,48 +1133,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     {
         return createBindRequest( name.getName(), credentials, null, ( Control[] ) null );
     }
-
-
-    /**
-     * Create a complete BindRequest ready to be sent.
-     */
-    private BindRequest createBindRequest( String name, byte[] credentials, String saslMechanism, Control... controls )
-        throws LdapException
-    {
-        // Set the new messageId
-        BindRequest bindRequest = new BindRequestImpl();
-
-        // Set the version
-        bindRequest.setVersion3( true );
-
-        // Set the name
-        bindRequest.setName( name );
-
-        // Set the credentials
-        if ( Strings.isEmpty( saslMechanism ) )
-        {
-            // Simple bind
-            bindRequest.setSimple( true );
-            bindRequest.setCredentials( credentials );
-        }
-        else
-        {
-            // SASL bind
-            bindRequest.setSimple( false );
-            bindRequest.setCredentials( credentials );
-            bindRequest.setSaslMechanism( saslMechanism );
-        }
-
-        // Add the controls
-        if ( ( controls != null ) && ( controls.length != 0 ) )
-        {
-            bindRequest.addAllControls( controls );
-        }
-
-        return bindRequest;
-    }
-
-
     /**
      * {@inheritDoc}
      */
