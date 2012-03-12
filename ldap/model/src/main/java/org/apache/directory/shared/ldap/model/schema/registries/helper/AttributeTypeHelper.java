@@ -30,6 +30,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapSchemaExceptionCodes
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
 import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.Registries;
@@ -59,7 +60,7 @@ public class AttributeTypeHelper
      * @param registries The Registries
      * @exception If the AttributeType is not valid
      */
-    public static void addToRegistries( AttributeType attributeType, List<Throwable> errors, Registries registries ) throws LdapException
+    public static void addToRegistries( MutableAttributeType attributeType, List<Throwable> errors, Registries registries ) throws LdapException
     {
         if ( registries != null )
         {
@@ -141,9 +142,9 @@ public class AttributeTypeHelper
     /**
      * Build the Superior AttributeType reference for an AttributeType
      */
-    private static boolean buildSuperior( AttributeType attributeType, List<Throwable> errors, Registries registries )
+    private static boolean buildSuperior( MutableAttributeType attributeType, List<Throwable> errors, Registries registries )
     {
-        AttributeType currentSuperior = null;
+        MutableAttributeType currentSuperior = null;
         AttributeTypeRegistry attributeTypeRegistry = registries.getAttributeTypeRegistry();
         
         String superiorOid = attributeType.getSuperiorOid();
@@ -153,7 +154,7 @@ public class AttributeTypeHelper
             // This AT has a superior
             try
             {
-                currentSuperior = attributeTypeRegistry.lookup( superiorOid );
+                currentSuperior = (MutableAttributeType)attributeTypeRegistry.lookup( superiorOid );
             }
             catch ( Exception e )
             {
@@ -272,7 +273,7 @@ public class AttributeTypeHelper
     /**
      * Build the SYNTAX reference for an AttributeType
      */
-    private static void buildSyntax( AttributeType attributeType, List<Throwable> errors, Registries registries )
+    private static void buildSyntax( MutableAttributeType attributeType, List<Throwable> errors, Registries registries )
     {
         String syntaxOid = attributeType.getSyntaxOid();
         
@@ -346,7 +347,7 @@ public class AttributeTypeHelper
     /**
      * Build the EQUALITY MR reference for an AttributeType
      */
-    private static void buildEquality( AttributeType attributeType, List<Throwable> errors, Registries registries )
+    private static void buildEquality( MutableAttributeType attributeType, List<Throwable> errors, Registries registries )
     {
         String equalityOid = attributeType.getEqualityOid();
         
@@ -410,7 +411,7 @@ public class AttributeTypeHelper
     /**
      * Build the SUBSTR MR reference for an AttributeType
      */
-    private static void buildSubstring( AttributeType attributeType, List<Throwable> errors, Registries registries )
+    private static void buildSubstring( MutableAttributeType attributeType, List<Throwable> errors, Registries registries )
     {
         String substringOid = attributeType.getSubstringOid();
         
@@ -477,7 +478,7 @@ public class AttributeTypeHelper
     /**
      * Build the ORDERING MR reference for an AttributeType
      */
-    private static void buildOrdering( AttributeType attributeType, List<Throwable> errors, Registries registries )
+    private static void buildOrdering( MutableAttributeType attributeType, List<Throwable> errors, Registries registries )
     {
         String orderingOid = attributeType.getOrderingOid();
         
@@ -574,7 +575,7 @@ public class AttributeTypeHelper
     /**
      * Check the constraints for the Collective field.
      */
-    private static void checkCollective( AttributeType attributeType, List<Throwable> errors )
+    private static void checkCollective( MutableAttributeType attributeType, List<Throwable> errors )
     {
         AttributeType superior = attributeType.getSuperior();
 

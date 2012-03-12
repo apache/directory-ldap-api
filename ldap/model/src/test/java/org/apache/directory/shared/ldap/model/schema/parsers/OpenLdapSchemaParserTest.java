@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema.parsers;
 
@@ -33,6 +33,7 @@ import java.util.Map;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.shared.ldap.model.schema.parsers.ConsoleParserMonitor;
@@ -79,7 +80,7 @@ public class OpenLdapSchemaParserTest
             + "        SYNTAX 1.3.6.1.4.1.1466.115.121.1.25 )";
 
         parser.parse( attributeTypeData );
-        List<AttributeType> attributeTypes = parser.getAttributeTypes();
+        List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
         Map<String, AttributeType> mapAttributeTypes = mapAttributeTypes( attributeTypes );
         AttributeType attributeType = mapAttributeTypes.get( "2.5.4.14" );
 
@@ -91,7 +92,7 @@ public class OpenLdapSchemaParserTest
     }
 
 
-    private Map<String, AttributeType> mapAttributeTypes( List<AttributeType> attributeTypes )
+    private Map<String, AttributeType> mapAttributeTypes( List<MutableAttributeType> attributeTypes )
     {
         Map<String, AttributeType> m = new HashMap<String, AttributeType>();
 
@@ -113,7 +114,7 @@ public class OpenLdapSchemaParserTest
             + "        EQUALITY caseIgnoreMatch\n"
             + "        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )";
         parser.parse( attributeTypeData );
-        List<AttributeType> attributeTypeList = parser.getAttributeTypes();
+        List<MutableAttributeType> attributeTypeList = parser.getAttributeTypes();
         Map<String, AttributeType> attributeTypes = mapAttributeTypes( attributeTypeList );
         AttributeType type = attributeTypes.get( "2.5.4.2" );
 
@@ -135,7 +136,7 @@ public class OpenLdapSchemaParserTest
             + "        EQUALITY caseIgnoreMatch\n"
             + "        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )";
         parser.parse( attributeTypeData );
-        List<AttributeType> attributeTypeList = parser.getAttributeTypes();
+        List<MutableAttributeType> attributeTypeList = parser.getAttributeTypes();
         Map<String, AttributeType> attributeTypes = mapAttributeTypes( attributeTypeList );
         AttributeType type = attributeTypes.get( "2.5.4.2" );
 
@@ -161,7 +162,7 @@ public class OpenLdapSchemaParserTest
             + "        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )";
 
         parser.parse( attributeTypeData );
-        List<AttributeType> attributeTypeList = parser.getAttributeTypes();
+        List<MutableAttributeType> attributeTypeList = parser.getAttributeTypes();
         Map<String, AttributeType> attributeTypes = mapAttributeTypes( attributeTypeList );
         AttributeType type = attributeTypes.get( "2.5.4.2" );
 
@@ -183,7 +184,7 @@ public class OpenLdapSchemaParserTest
             + "        EQUALITY caseIgnoreMatch\n"
             + "        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )";
         parser.parse( attributeTypeData );
-        List<AttributeType> attributeTypeList = parser.getAttributeTypes();
+        List<MutableAttributeType> attributeTypeList = parser.getAttributeTypes();
         Map<String, AttributeType> attributeTypes = mapAttributeTypes( attributeTypeList );
         AttributeType type = attributeTypes.get( "2.5.4.2" );
 
@@ -331,7 +332,7 @@ public class OpenLdapSchemaParserTest
         InputStream input = getClass().getResourceAsStream( "core.schema" );
         parser.parse( input );
 
-        List<AttributeType> attributeTypes = parser.getAttributeTypes();
+        List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
         List<ObjectClass> objectClassTypes = parser.getObjectClassTypes();
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros = parser.getObjectIdentifierMacros();
 
@@ -347,7 +348,7 @@ public class OpenLdapSchemaParserTest
         InputStream input = getClass().getResourceAsStream( "inetorgperson.schema" );
         parser.parse( input );
 
-        List<AttributeType> attributeTypes = parser.getAttributeTypes();
+        List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
         List<ObjectClass> objectClassTypes = parser.getObjectClassTypes();
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros = parser.getObjectIdentifierMacros();
 
@@ -363,7 +364,7 @@ public class OpenLdapSchemaParserTest
         InputStream input = getClass().getResourceAsStream( "collective.schema" );
         parser.parse( input );
 
-        List<AttributeType> attributeTypes = parser.getAttributeTypes();
+        List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
         List<ObjectClass> objectClassTypes = parser.getObjectClassTypes();
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros = parser.getObjectIdentifierMacros();
 
@@ -383,7 +384,7 @@ public class OpenLdapSchemaParserTest
         InputStream input = getClass().getResourceAsStream( "dyngroup.schema" );
         parser.parse( input );
 
-        List<AttributeType> attributeTypes = parser.getAttributeTypes();
+        List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
         List<ObjectClass> objectClassTypes = parser.getObjectClassTypes();
         Map<String, OpenLdapObjectIdentifierMacro> objectIdentifierMacros = parser.getObjectIdentifierMacros();
 
@@ -445,7 +446,7 @@ public class OpenLdapSchemaParserTest
             + "        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)";
 
         parser.parse( attributeTypeData );
-        List<AttributeType> attributeTypes = parser.getAttributeTypes();
+        List<MutableAttributeType> attributeTypes = parser.getAttributeTypes();
         Map<String, AttributeType> mapAttributeTypes = mapAttributeTypes( attributeTypes );
         AttributeType attributeType = mapAttributeTypes.get( "1.3.6.1.4.1.8104.1.1.37" );
 

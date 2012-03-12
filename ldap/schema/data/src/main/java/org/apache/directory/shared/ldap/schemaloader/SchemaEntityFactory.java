@@ -43,6 +43,7 @@ import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -889,7 +890,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Create the new AttributeType
-        AttributeType attributeType = new AttributeType( oid );
+        MutableAttributeType attributeType = new MutableAttributeType( oid );
 
         // Syntax
         Attribute mSyntax = entry.get( MetaSchemaConstants.M_SYNTAX_AT );

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema;
 
@@ -80,9 +80,9 @@ public class SchemaUtilsTest
 
     public AttributeType[] getAttributeTypes()
     {
-        AttributeType[] ats = new AttributeType[5];
+        MutableAttributeType[] ats = new MutableAttributeType[5];
 
-        ats[0] = new AttributeType( "2.5.4.41" );
+        ats[0] = new MutableAttributeType( "2.5.4.41" );
         ats[0].addName( "name" );
         ats[0].setSyntax( getSyntaxes()[1] );
         ats[0].setSyntaxLength( 32768 );
@@ -90,24 +90,24 @@ public class SchemaUtilsTest
         ats[0].setSubstring( getMatchingRules()[1] );
 
         // ( 2.5.4.3 NAME 'cn' SUP name )
-        ats[1] = new AttributeType( "2.5.4.3" );
+        ats[1] = new MutableAttributeType( "2.5.4.3" );
         ats[1].addName( "cn", "commonName" );
 
-        ats[2] = new AttributeType( "2.5.4.41" );
+        ats[2] = new MutableAttributeType( "2.5.4.41" );
         ats[2].addName( "name" );
         ats[2].setSyntax( getSyntaxes()[1] );
         ats[2].setSyntaxLength( 32768 );
         ats[2].setEquality( getMatchingRules()[0] );
         ats[2].setSubstring( getMatchingRules()[1] );
 
-        ats[3] = new AttributeType( "2.5.4.41" );
+        ats[3] = new MutableAttributeType( "2.5.4.41" );
         ats[3].addName( "name" );
         ats[3].setSyntax( getSyntaxes()[1] );
         ats[3].setSyntaxLength( 32768 );
         ats[3].setEquality( getMatchingRules()[0] );
         ats[3].setSubstring( getMatchingRules()[1] );
 
-        ats[4] = new AttributeType( "2.5.4.41" );
+        ats[4] = new MutableAttributeType( "2.5.4.41" );
         ats[4].addName( "name" );
         ats[4].setSyntax( getSyntaxes()[1] );
         ats[4].setSyntaxLength( 32768 );

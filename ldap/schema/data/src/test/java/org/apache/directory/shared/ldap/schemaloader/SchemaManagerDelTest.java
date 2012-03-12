@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.schemaloader;
 
@@ -39,6 +39,7 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
@@ -225,7 +226,7 @@ public class SchemaManagerDelTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( "2.5.13.1" );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -252,7 +253,7 @@ public class SchemaManagerDelTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "generationQualifier" );
+        MutableAttributeType attributeType = new MutableAttributeType( "generationQualifier" );
         attributeType.setOid( "2.5.4.44" );
 
         // It should not fail
@@ -300,7 +301,7 @@ public class SchemaManagerDelTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         // Try to delete an AT which is contained by a disabled schema
-        AttributeType attributeType = new AttributeType( "gecos" );
+        MutableAttributeType attributeType = new MutableAttributeType( "gecos" );
         attributeType.setOid( "1.3.6.1.1.1.1.2" );
 
         // It should fail
@@ -323,7 +324,7 @@ public class SchemaManagerDelTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        // Try to delete an AT which has descendant 
+        // Try to delete an AT which has descendant
         // (modifiersName has one descendant : schemaModifiersName)
         AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( "modifiersName" );
 
@@ -548,7 +549,7 @@ public class SchemaManagerDelTest
         assertTrue( errors.get( 0 ) instanceof LdapProtocolErrorException );
 
         // Now delete the using AT : it should be OK
-        AttributeType at = new AttributeType( AT_OID );
+        MutableAttributeType at = new MutableAttributeType( AT_OID );
         assertTrue( schemaManager.delete( at ) );
 
         assertEquals( atrSize - 1, schemaManager.getAttributeTypeRegistry().size() );
@@ -942,7 +943,7 @@ public class SchemaManagerDelTest
         assertTrue( errors.get( 0 ) instanceof LdapProtocolErrorException );
 
         // Now delete the using AT : it should be OK
-        AttributeType at = new AttributeType( AT_OID );
+        MutableAttributeType at = new MutableAttributeType( AT_OID );
         assertTrue( schemaManager.delete( at ) );
 
         assertEquals( atrSize - 1, schemaManager.getAttributeTypeRegistry().size() );

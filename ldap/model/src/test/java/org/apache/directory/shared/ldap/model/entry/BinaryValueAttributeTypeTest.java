@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.entry;
 
@@ -39,6 +39,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValu
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
@@ -69,7 +70,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 public class BinaryValueAttributeTypeTest
 {
     private LdapSyntax s;
-    private AttributeType at;
+    private MutableAttributeType at;
     private MatchingRule mr;
 
     private static final byte[] BYTES1 = new byte[]
@@ -79,7 +80,7 @@ public class BinaryValueAttributeTypeTest
 
 
     /**
-     * Initialize an AttributeType and the associated MatchingRule 
+     * Initialize an AttributeType and the associated MatchingRule
      * and Syntax
      */
     @Before
@@ -120,7 +121,7 @@ public class BinaryValueAttributeTypeTest
             }
         } );
 
-        at = new AttributeType( "1.1.3.1" );
+        at = new MutableAttributeType( "1.1.3.1" );
         at.setEquality( mr );
         at.setOrdering( mr );
         at.setSubstring( mr );
@@ -211,7 +212,7 @@ public class BinaryValueAttributeTypeTest
     public void testBadConstructor()
     {
         // create a AT without no syntax
-        AttributeType attribute = new AttributeType( "1.1.3.1" );
+        MutableAttributeType attribute = new MutableAttributeType( "1.1.3.1" );
 
         try
         {

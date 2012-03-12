@@ -137,6 +137,7 @@ import org.apache.directory.shared.ldap.model.message.extended.SearchNoDResponse
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
@@ -3291,7 +3292,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             olsp.setQuirksMode( true );
             olsp.parse( schemaFile );
 
-            List<AttributeType> atList = olsp.getAttributeTypes();
+            List<MutableAttributeType> atList = olsp.getAttributeTypes();
             AttributeTypeRegistry atRegistry = schemaManager.getRegistries().getAttributeTypeRegistry();
 
             for ( AttributeType atType : atList )

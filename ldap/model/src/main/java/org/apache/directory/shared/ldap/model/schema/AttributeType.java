@@ -20,7 +20,6 @@
 package org.apache.directory.shared.ldap.model.schema;
 
 
-import org.apache.directory.shared.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -136,49 +135,49 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     private static final Logger LOG = LoggerFactory.getLogger( AttributeType.class );
 
     /** The syntax OID associated with this AttributeType */
-    private String syntaxOid;
+    protected String syntaxOid;
 
     /** The syntax associated with the syntaxID */
-    private LdapSyntax syntax;
+    protected LdapSyntax syntax;
 
     /** The equality OID associated with this AttributeType */
-    private String equalityOid;
+    protected String equalityOid;
 
     /** The equality MatchingRule associated with the equalityID */
-    private MatchingRule equality;
+    protected MatchingRule equality;
 
     /** The substring OID associated with this AttributeType */
-    private String substringOid;
+    protected String substringOid;
 
     /** The substring MatchingRule associated with the substringID */
-    private MatchingRule substring;
+    protected MatchingRule substring;
 
     /** The ordering OID associated with this AttributeType */
-    private String orderingOid;
+    protected String orderingOid;
 
     /** The ordering MatchingRule associated with the orderingID */
-    private MatchingRule ordering;
+    protected MatchingRule ordering;
 
     /** The superior AttributeType OID */
-    private String superiorOid;
+    protected String superiorOid;
 
     /** The superior AttributeType */
-    private AttributeType superior;
+    protected AttributeType superior;
 
     /** whether or not this type is single valued */
-    private boolean isSingleValued = false;
+    protected boolean isSingleValued = false;
 
     /** whether or not this type is a collective attribute */
-    private boolean isCollective = false;
+    protected boolean isCollective = false;
 
     /** whether or not this type can be modified by directory users */
-    private boolean canUserModify = true;
+    protected boolean canUserModify = true;
 
     /** the usage for this attributeType */
-    private UsageEnum usage = UsageEnum.USER_APPLICATIONS;
+    protected UsageEnum usage = UsageEnum.USER_APPLICATIONS;
 
     /** the length of this attribute in bytes */
-    private long syntaxLength = 0L;
+    protected long syntaxLength = 0L;
 
 
     /**
@@ -205,25 +204,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
-     * Tells if this AttributeType is Single Valued or not
-     *
-     * @param singleValued True if the AttributeType is single-valued
-     */
-    public void setSingleValued( boolean singleValued )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.isSingleValued = singleValued;
-        }
-    }
-
-
-    /**
      * Gets whether or not this AttributeType can be modified by a user.
      *
      * @return true if users can modify it, false if only the directory can.
@@ -231,25 +211,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public boolean isUserModifiable()
     {
         return canUserModify;
-    }
-
-
-    /**
-     * Tells if this AttributeType can be modified by a user or not
-     *
-     * @param userModifiable The flag to set
-     */
-    public void setUserModifiable( boolean userModifiable )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.canUserModify = userModifiable;
-        }
     }
 
 
@@ -265,41 +226,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
-     * Updates the collective flag
-     *
-     * @param collective The new value to set
-     */
-    public void updateCollective( boolean collective )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        this.isCollective = collective;
-    }
-
-
-    /**
-     * Sets the collective flag
-     *
-     * @param collective The new value to set
-     */
-    public void setCollective( boolean collective )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.isCollective = collective;
-        }
-    }
-
-
-    /**
      * Determines the usage for this AttributeType.
      *
      * @return a type safe UsageEnum
@@ -311,55 +237,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
-     * Sets the AttributeType usage, one of :
-     * <ul>
-     *   <li>USER_APPLICATIONS</li>
-     *   <li>DIRECTORY_OPERATION</li>
-     *   <li>DISTRIBUTED_OPERATION</li>
-     *   <li>DSA_OPERATION</li>
-     * </ul>
-     * 
-     * @see UsageEnum
-     * @param usage The AttributeType usage
-     */
-    public void setUsage( UsageEnum usage )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.usage = usage;
-        }
-    }
-
-
-    /**
-     * Updates the AttributeType usage, one of :
-     * <ul>
-     *   <li>USER_APPLICATIONS</li>
-     *   <li>DIRECTORY_OPERATION</li>
-     *   <li>DISTRIBUTED_OPERATION</li>
-     *   <li>DSA_OPERATION</li>
-     * </ul>
-     * 
-     * @see UsageEnum
-     * @param newUsage The AttributeType usage
-     */
-    public void updateUsage( UsageEnum newUsage )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        this.usage = newUsage;
-    }
-
-
-    /**
      * Gets a length limit for this AttributeType.
      *
      * @return the length of the attribute
@@ -367,26 +244,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public long getSyntaxLength()
     {
         return syntaxLength;
-    }
-
-
-    /**
-     * Sets the length limit of this AttributeType based on its associated
-     * syntax.
-     *
-     * @param length the new length to set
-     */
-    public void setSyntaxLength( long length )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.syntaxLength = length;
-        }
     }
 
 
@@ -431,81 +288,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
-     * Sets the superior AttributeType OID of this AttributeType
-     *
-     * @param superiorOid The superior AttributeType OID of this AttributeType
-     */
-    public void setSuperiorOid( String superiorOid )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.superiorOid = superiorOid;
-        }
-    }
-
-
-    /**
-     * Sets the superior for this AttributeType
-     *
-     * @param superior The superior for this AttributeType
-     */
-    public void setSuperior( AttributeType superior )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.superior = superior;
-            this.superiorOid = superior.getOid();
-        }
-    }
-
-
-    /**
-     * Sets the superior oid for this AttributeType
-     *
-     * @param newSuperiorOid The superior oid for this AttributeType
-     */
-    public void setSuperior( String newSuperiorOid )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.superiorOid = newSuperiorOid;
-        }
-    }
-
-
-    /**
-     * Update the associated Superior AttributeType, even if the SchemaObject is readOnly
-     *
-     * @param newSuperior The superior for this AttributeType
-     */
-    public void updateSuperior( AttributeType newSuperior )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        this.superior = newSuperior;
-        this.superiorOid = newSuperior.getOid();
-    }
-
-
-    /**
      * Gets the Syntax for this AttributeType's values.
      *
      * @return the value syntax
@@ -542,62 +324,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public String getSyntaxOid()
     {
         return syntaxOid;
-    }
-
-
-    /**
-     * Sets the Syntax OID for this AttributeType
-     *
-     * @param syntaxOid The syntax OID for this AttributeType
-     */
-    public void setSyntaxOid( String syntaxOid )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.syntaxOid = syntaxOid;
-        }
-    }
-
-
-    /**
-     * Sets the Syntax for this AttributeType
-     *
-     * @param syntax The Syntax for this AttributeType
-     */
-    public void setSyntax( LdapSyntax syntax )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.syntax = syntax;
-            this.syntaxOid = syntax.getOid();
-        }
-    }
-
-
-    /**
-     * Update the associated Syntax, even if the SchemaObject is readOnly
-     *
-     * @param newSyntax The Syntax for this AttributeType
-     */
-    public void updateSyntax( LdapSyntax newSyntax )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        this.syntax = newSyntax;
-        this.syntaxOid = newSyntax.getOid();
     }
 
 
@@ -642,62 +368,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
-     * Sets the Equality OID for this AttributeType
-     *
-     * @param equalityOid The Equality OID for this AttributeType
-     */
-    public void setEqualityOid( String equalityOid )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.equalityOid = equalityOid;
-        }
-    }
-
-
-    /**
-     * Sets the Equality MR for this AttributeType
-     *
-     * @param equality The Equality MR for this AttributeType
-     */
-    public void setEquality( MatchingRule equality )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.equality = equality;
-            this.equalityOid = equality.getOid();
-        }
-    }
-
-
-    /**
-     * Update the associated Equality MatchingRule, even if the SchemaObject is readOnly
-     *
-     * @param newEquality The Equality MR for this AttributeType
-     */
-    public void updateEquality( MatchingRule newEquality )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        this.equality = newEquality;
-        this.equalityOid = newEquality.getOid();
-    }
-
-
-    /**
      * Gets the MatchingRule for this AttributeType used for Ordering matching.
      *
      * @return the Ordering matching rule
@@ -738,62 +408,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
-     * Sets the Ordering OID for this AttributeType
-     *
-     * @param orderingOid The Ordering OID for this AttributeType
-     */
-    public void setOrderingOid( String orderingOid )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.orderingOid = orderingOid;
-        }
-    }
-
-
-    /**
-     * Sets the Ordering MR for this AttributeType
-     *
-     * @param ordering The Ordering MR for this AttributeType
-     */
-    public void setOrdering( MatchingRule ordering )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.ordering = ordering;
-            this.orderingOid = ordering.getOid();
-        }
-    }
-
-
-    /**
-     * Update the associated Ordering MatchingRule, even if the SchemaObject is readOnly
-     *
-     * @param newOrdering The Ordering MR for this AttributeType
-     */
-    public void updateOrdering( MatchingRule newOrdering )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        this.ordering = newOrdering;
-        this.orderingOid = newOrdering.getOid();
-    }
-
-
-    /**
      * Gets the MatchingRule for this AttributeType used for Substr matching.
      *
      * @return the Substr matching rule
@@ -830,62 +444,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public String getSubstringOid()
     {
         return substringOid;
-    }
-
-
-    /**
-     * Sets the Substr OID for this AttributeType
-     *
-     * @param substrOid The Substr OID for this AttributeType
-     */
-    public void setSubstringOid( String substrOid )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.substringOid = substrOid;
-        }
-    }
-
-
-    /**
-     * Sets the Substr MR for this AttributeType
-     *
-     * @param substring The Substr MR for this AttributeType
-     */
-    public void setSubstring( MatchingRule substring )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.substring = substring;
-            this.substringOid = substring.getOid();
-        }
-    }
-
-
-    /**
-     * Update the associated Substring MatchingRule, even if the SchemaObject is readOnly
-     *
-     * @param newSubstring The Substr MR for this AttributeType
-     */
-    public void updateSubstring( MatchingRule newSubstring )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        this.substring = newSubstring;
-        this.substringOid = newSubstring.getOid();
     }
 
 
@@ -964,7 +522,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
      */
     public AttributeType copy()
     {
-        AttributeType copy = new AttributeType( oid );
+        MutableAttributeType copy = new MutableAttributeType( oid );
 
         // Copy the SchemaObject common data
         copy.copy( this );
@@ -1005,23 +563,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         copy.syntaxLength = syntaxLength;
 
         return copy;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void clear()
-    {
-        // Clear the common elements
-        super.clear();
-
-        // Clear the references
-        equality = null;
-        ordering = null;
-        substring = null;
-        superior = null;
-        syntax = null;
     }
 
 

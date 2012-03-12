@@ -41,6 +41,7 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -217,7 +218,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( "2.5.13.1" );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -247,7 +248,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( "2.5.13.1" );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -275,7 +276,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         // Create the collective attribute first
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( "2.5.13.1" );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -291,7 +292,7 @@ public class SchemaManagerAddTest
         assertEquals( goidSize + 1, schemaManager.getGlobalOidRegistry().size() );
 
         // Now try to create an AT which is a subtype of teh create collective attribute
-        AttributeType subType = new AttributeType( "1.1.1" );
+        MutableAttributeType subType = new MutableAttributeType( "1.1.1" );
         subType.setEqualityOid( "2.5.13.1" );
         subType.setOrderingOid( null );
         subType.setSubstringOid( null );
@@ -319,7 +320,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( "2.5.13.1" );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -352,7 +353,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( "2.5.13.1" );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -386,7 +387,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( "2.5.13.1" );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -419,7 +420,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( "2.5.13.1" );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -446,7 +447,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( "0.0" );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -478,7 +479,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.8 " );
         attributeType.setUsage( UsageEnum.USER_APPLICATIONS );
 
@@ -504,7 +505,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( null );
         attributeType.setOrderingOid( "0.0" );
         attributeType.setSubstringOid( null );
@@ -536,7 +537,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( null );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( "0.0" );
@@ -568,7 +569,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( "2.5.13.1" );
         attributeType.setOrderingOid( "2.5.13.1" );
         attributeType.setSubstringOid( "2.5.13.1" );
@@ -594,7 +595,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "2.5.18.4" );
+        MutableAttributeType attributeType = new MutableAttributeType( "2.5.18.4" );
         attributeType.setEqualityOid( "2.5.13.1" );
         attributeType.setOrderingOid( "2.5.13.1" );
         attributeType.setSubstringOid( "2.5.13.1" );
@@ -629,7 +630,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.1.0" );
         attributeType.setEqualityOid( "2.5.13.1" );
         attributeType.setOrderingOid( "2.5.13.1" );
         attributeType.setSubstringOid( "2.5.13.1" );
@@ -663,7 +664,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.1.0" );
         attributeType.setEqualityOid( "2.5.13.1" );
         attributeType.setOrderingOid( "2.5.13.1" );
         attributeType.setSubstringOid( "2.5.13.1" );
@@ -703,7 +704,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( null );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -732,7 +733,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( null );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -764,7 +765,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( null );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );
@@ -796,7 +797,7 @@ public class SchemaManagerAddTest
         int atrSize = schemaManager.getAttributeTypeRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        AttributeType attributeType = new AttributeType( "1.1.0" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.0" );
         attributeType.setEqualityOid( null );
         attributeType.setOrderingOid( null );
         attributeType.setSubstringOid( null );

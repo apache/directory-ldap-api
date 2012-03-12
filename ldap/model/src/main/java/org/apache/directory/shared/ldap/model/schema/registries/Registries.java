@@ -45,6 +45,7 @@ import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.NameForm;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -670,7 +671,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             switch ( schemaObject.getObjectType() )
             {
                 case ATTRIBUTE_TYPE :
-                    AttributeTypeHelper.addToRegistries( (AttributeType)schemaObject, errors, this );
+                    AttributeTypeHelper.addToRegistries( (MutableAttributeType)schemaObject, errors, this );
                     break;
                     
                 case DIT_CONTENT_RULE :

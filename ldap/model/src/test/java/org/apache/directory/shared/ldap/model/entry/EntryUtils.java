@@ -26,6 +26,7 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
@@ -43,7 +44,7 @@ public class EntryUtils
     /**
      * A local Syntax class for tests
      */
-    static class AT extends AttributeType
+    static class AT extends MutableAttributeType
     {
         private static final long serialVersionUID = 0L;
 
@@ -98,7 +99,7 @@ public class EntryUtils
 
     /* no protection*/static AttributeType getCaseIgnoringAttributeNoNumbersType()
     {
-        AttributeType attributeType = new AttributeType( "1.1.3.1" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1.3.1" );
         LdapSyntax syntax = new LdapSyntax( "1.1.1.1", "", true );
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.1.2.1" )
@@ -171,7 +172,7 @@ public class EntryUtils
 
     /* no protection*/static AttributeType getIA5StringAttributeType()
     {
-        AttributeType attributeType = new AttributeType( "1.1" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.1" );
         attributeType.addName( "1.1" );
         LdapSyntax syntax = new LdapSyntax( "1.1.1", "", true );
 
@@ -207,7 +208,7 @@ public class EntryUtils
 
     /* No protection */static AttributeType getBytesAttributeType()
     {
-        AttributeType attributeType = new AttributeType( "1.2" );
+        MutableAttributeType attributeType = new MutableAttributeType( "1.2" );
         LdapSyntax syntax = new LdapSyntax( "1.2.1", "", false );
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.2.1" )

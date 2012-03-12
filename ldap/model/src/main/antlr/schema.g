@@ -36,6 +36,8 @@ import org.apache.directory.shared.ldap.model.schema.NameForm;
 import org.apache.directory.shared.ldap.model.schema.parsers.NormalizerDescription;
 import org.apache.directory.shared.ldap.model.schema.parsers.ParserMonitor;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.SyntaxCheckerDescription;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OpenLdapObjectIdentifierMacro;
@@ -244,7 +246,7 @@ options    {
 openLdapSchema returns [List<Object> list = new ArrayList<Object>()]
     {
         AttributeType attributeType = null;
-        MutableObjectClass objectClass = null;
+        ObjectClass objectClass = null;
         OpenLdapObjectIdentifierMacro oloid = null;
     }
     :
@@ -274,7 +276,7 @@ openLdapObjectIdentifier returns [OpenLdapObjectIdentifierMacro oloid]
     ;
     
 
-openLdapObjectClass returns [MutableObjectClass objectClass]
+openLdapObjectClass returns [ObjectClass objectClass]
     {
         matchedProduction( "openLdapObjectClass()" );
     }
@@ -387,13 +389,13 @@ objectClassDescription returns [MutableObjectClass objectClass]
      * xstring = "X" HYPHEN 1*( ALPHA / HYPHEN / USCORE ) 
      * </pre>
     */
-attributeTypeDescription returns [AttributeType attributeType]
+attributeTypeDescription returns [MutableAttributeType attributeType]
     {
         matchedProduction( "attributeTypeDescription()" );
         ElementTracker et = new ElementTracker();
     }
     :
-    ( oid:STARTNUMERICOID { attributeType = new AttributeType(numericoid(oid.getText())); } )
+    ( oid:STARTNUMERICOID { attributeType = new MutableAttributeType(numericoid(oid.getText())); } )
     (
         ( name:NAME { et.track("NAME", name); attributeType.setNames(qdescrs(name.getText())); } )
         |
