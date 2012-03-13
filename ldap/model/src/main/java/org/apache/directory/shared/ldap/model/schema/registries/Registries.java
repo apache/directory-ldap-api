@@ -46,6 +46,7 @@ import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.NameForm;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -683,7 +684,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     break;
                     
                 case MATCHING_RULE :
-                    MatchingRuleHelper.addToRegistries( (MatchingRule)schemaObject, errors, this );
+                    MatchingRuleHelper.addToRegistries( (MutableMatchingRule)schemaObject, errors, this );
                     break;
                     
                 case MATCHING_RULE_USE :

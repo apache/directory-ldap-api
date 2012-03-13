@@ -20,6 +20,7 @@
 package org.apache.directory.shared.ldap.model.schema;
 
 
+import org.apache.directory.shared.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,83 +72,152 @@ import org.slf4j.LoggerFactory;
  * @see <a
  *      href="http://www.ietf.org/internet-drafts/draft-ietf-ldapbis-models-11.txt">ldapbis
  *      [MODELS]</a>
- * @see DescriptionUtils#getDescription(MatchingRule)
+ * @see DescriptionUtils#getDescription(MutableMatchingRule)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 // super.hashCode is final
 @SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
-public class MatchingRule extends AbstractSchemaObject
+public class MutableMatchingRule extends MatchingRule
 {
     /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( MatchingRule.class );
-
-    /** The associated Comparator */
-    protected LdapComparator<? super Object> ldapComparator;
-
-    /** The associated Normalizer */
-    protected Normalizer normalizer;
-
-    /** The associated LdapSyntax */
-    protected LdapSyntax ldapSyntax;
-
-    /** The associated LdapSyntax OID */
-    protected String ldapSyntaxOid;
-
+    private static final Logger LOG = LoggerFactory.getLogger( MutableMatchingRule.class );
 
     /**
      * Creates a new instance of MatchingRule.
      *
      * @param oid The MatchingRule OID
      */
-    public MatchingRule( String oid )
+    public MutableMatchingRule( String oid )
     {
-        super( SchemaObjectType.MATCHING_RULE, oid );
+        super( oid );
     }
 
 
     /**
-     * Gets the LdapSyntax used by this MatchingRule.
-     * 
-     * @return the LdapSyntax of this MatchingRule
+     * Sets the Syntax's OID
+     *
+     * @param oid The Syntax's OID
      */
-    public LdapSyntax getSyntax()
+    public void setSyntaxOid( String oid )
     {
-        return ldapSyntax;
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+        }
+
+        if ( !isReadOnly )
+        {
+            this.ldapSyntaxOid = oid;
+        }
     }
 
 
     /**
-     * Gets the LdapSyntax OID used by this MatchingRule.
-     * 
-     * @return the LdapSyntax of this MatchingRule
+     * Sets the Syntax
+     *
+     * @param ldapSyntax The Syntax
      */
-    public String getSyntaxOid()
+    public void setSyntax( LdapSyntax ldapSyntax )
     {
-        return ldapSyntaxOid;
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+        }
+
+        if ( !isReadOnly )
+        {
+            this.ldapSyntax = ldapSyntax;
+            this.ldapSyntaxOid = ldapSyntax.getOid();
+        }
     }
 
 
     /**
-     * Gets the LdapComparator enabling the use of this MatchingRule for ORDERING
-     * and sorted indexing.
-     * 
-     * @return the ordering LdapComparator
+     * Update the associated Syntax, even if the SchemaObject is readOnly
+     *
+     * @param ldapSyntax The Syntax
      */
-    public LdapComparator<? super Object> getLdapComparator()
+    public void updateSyntax( LdapSyntax ldapSyntax )
     {
-        return ldapComparator;
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+        }
+
+        this.ldapSyntax = ldapSyntax;
+        this.ldapSyntaxOid = ldapSyntax.getOid();
     }
 
 
     /**
-     * Gets the Normalizer enabling the use of this MatchingRule for EQUALITY
-     * matching and indexing.
-     * 
-     * @return the associated normalizer
+     * Sets the LdapComparator
+     *
+     * @param ldapComparator The LdapComparator
      */
-    public Normalizer getNormalizer()
+    @SuppressWarnings("unchecked")
+    public void setLdapComparator( LdapComparator<?> ldapComparator )
     {
-        return normalizer;
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+        }
+
+        if ( !isReadOnly )
+        {
+            this.ldapComparator = ( LdapComparator<? super Object> ) ldapComparator;
+        }
+    }
+
+
+    /**
+     * Update the associated Comparator, even if the SchemaObject is readOnly
+     *
+     * @param ldapComparator The LdapComparator
+     */
+    @SuppressWarnings("unchecked")
+    public void updateLdapComparator( LdapComparator<?> ldapComparator )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+        }
+
+        this.ldapComparator = ( LdapComparator<? super Object> ) ldapComparator;
+    }
+
+
+    /**
+     * Sets the Normalizer
+     *
+     * @param normalizer The Normalizer
+     */
+    public void setNormalizer( Normalizer normalizer )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+        }
+
+        if ( !isReadOnly )
+        {
+            this.normalizer = normalizer;
+        }
+    }
+
+
+    /**
+     * Update the associated Normalizer, even if the SchemaObject is readOnly
+     *
+     * @param normalizer The Normalizer
+     */
+    public void updateNormalizer( Normalizer normalizer )
+    {
+        if ( locked )
+        {
+            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
+        }
+
+        this.normalizer = normalizer;
     }
 
 
@@ -161,99 +231,16 @@ public class MatchingRule extends AbstractSchemaObject
 
 
     /**
-     * Copy an MatchingRule
+     * {@inheritDoc}
      */
-    public MatchingRule copy()
+    public void clear()
     {
-        MatchingRule copy = new MutableMatchingRule( oid );
+        // Clear the common elements
+        super.clear();
 
-        // Copy the SchemaObject common data
-        copy.copy( this );
-
-        // All the references to other Registries object are set to null.
-        copy.ldapComparator = null;
-        copy.ldapSyntax = null;
-        copy.normalizer = null;
-
-        // Copy the syntax OID
-        copy.ldapSyntaxOid = ldapSyntaxOid;
-
-        return copy;
-    }
-
-
-    /**
-     * @see Object#equals()
-     */
-    @Override
-    public boolean equals( Object o )
-    {
-        if ( !super.equals( o ) )
-        {
-            return false;
-        }
-
-        if ( !( o instanceof MatchingRule ) )
-        {
-            return false;
-        }
-
-        MatchingRule that = ( MatchingRule ) o;
-
-        // Check the Comparator
-        if ( ldapComparator != null )
-        {
-            if ( !ldapComparator.equals( that.ldapComparator ) )
-            {
-                return false;
-            }
-        }
-        else
-        {
-            if ( that.ldapComparator != null )
-            {
-                return false;
-            }
-        }
-
-        // Check the Normalizer
-        if ( normalizer != null )
-        {
-            if ( !normalizer.equals( that.normalizer ) )
-            {
-                return false;
-            }
-        }
-        else
-        {
-            if ( that.normalizer != null )
-            {
-                return false;
-            }
-        }
-
-        // Check the Syntax OID
-        if ( !compareOid( ldapSyntaxOid, that.ldapSyntaxOid ) )
-        {
-            return false;
-        }
-
-        // Check the Syntax
-        if ( ldapSyntax != null )
-        {
-            if ( !ldapSyntax.equals( that.ldapSyntax ) )
-            {
-                return false;
-            }
-        }
-        else
-        {
-            if ( that.ldapSyntax != null )
-            {
-                return false;
-            }
-        }
-
-        return true;
+        // Clear the references
+        ldapComparator = null;
+        ldapSyntax = null;
+        normalizer = null;
     }
 }

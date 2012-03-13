@@ -57,19 +57,19 @@ public class SchemaUtilsTest
 
     public static MatchingRule[] getMatchingRules()
     {
-        MatchingRule[] mrs = new MatchingRule[3];
+        MutableMatchingRule[] mrs = new MutableMatchingRule[3];
 
-        mrs[0] = new MatchingRule( "2.5.13.2" );
+        mrs[0] = new MutableMatchingRule( "2.5.13.2" );
         mrs[0].setSyntax( getSyntaxes()[1] );
         mrs[0].addName( "caseIgnoreMatch" );
         mrs[0].setDescription( "Ignores case in strings" );
 
-        mrs[1] = new MatchingRule( "2.5.13.4" );
+        mrs[1] = new MutableMatchingRule( "2.5.13.4" );
         mrs[0].setSyntax( getSyntaxes()[2] );
         mrs[1].addName( "caseIgnoreSubstringsMatch" );
         mrs[1].setDescription( "Ignores case in substrings" );
 
-        mrs[2] = new MatchingRule( "2.5.13.1" );
+        mrs[2] = new MutableMatchingRule( "2.5.13.1" );
         mrs[0].setSyntax( getSyntaxes()[0] );
         mrs[2].addName( "distinguishedNameMatch" );
         mrs[2].setDescription( "distinguishedNameMatch" );

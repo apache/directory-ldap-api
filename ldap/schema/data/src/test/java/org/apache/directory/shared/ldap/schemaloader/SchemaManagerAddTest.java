@@ -42,6 +42,7 @@ import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -947,7 +948,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.0" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
 
         // It should not fail
@@ -1004,7 +1005,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MatchingRule matchingRule = new MatchingRule( "2.5.13.0" );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( "2.5.13.0" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
 
         // It should fail (oid already registered)
@@ -1037,7 +1038,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.0" );
         matchingRule.setNames( "Test", "objectIdentifierMatch" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
 
@@ -1065,7 +1066,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.0" );
         matchingRule.setNames( "Test", "cn" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
 
@@ -1098,7 +1099,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.0" );
         matchingRule.setNames( "Test" );
         matchingRule.setSyntaxOid( "1.1.1" );
 
@@ -1127,7 +1128,7 @@ public class SchemaManagerAddTest
         int mrrSize = schemaManager.getMatchingRuleRegistry().size();
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.0" );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.0" );
         matchingRule.setNames( "Test" );
         matchingRule.setSyntaxOid( "1.3.6.1.4.1.1466.115.121.1.26" );
         matchingRule.setSchemaName( "bad" );

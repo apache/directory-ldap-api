@@ -40,6 +40,7 @@ import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
@@ -71,7 +72,7 @@ public class BinaryValueAttributeTypeTest
 {
     private LdapSyntax s;
     private MutableAttributeType at;
-    private MatchingRule mr;
+    private MutableMatchingRule mr;
 
     private static final byte[] BYTES1 = new byte[]
         { 0x01, 0x02, 0x03, 0x04 };

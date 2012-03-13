@@ -25,8 +25,8 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
@@ -56,9 +56,9 @@ public class EntryUtils
     }
 
 
-    public static MatchingRule matchingRuleFactory( String oid )
+    public static MutableMatchingRule matchingRuleFactory( String oid )
     {
-        MatchingRule matchingRule = new MatchingRule( oid );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( oid );
 
         return matchingRule;
     }
@@ -66,7 +66,7 @@ public class EntryUtils
     /**
      * A local MatchingRule class for tests
      */
-    static class MR extends MatchingRule
+    static class MR extends MutableMatchingRule
     {
         protected MR( String oid )
         {
@@ -129,7 +129,7 @@ public class EntryUtils
             }
         } );
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.2.1" );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.2.1" );
         matchingRule.setSyntax( syntax );
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
@@ -184,7 +184,7 @@ public class EntryUtils
             }
         } );
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.2" );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.2" );
         matchingRule.setSyntax( syntax );
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
@@ -219,7 +219,7 @@ public class EntryUtils
             }
         } );
 
-        MatchingRule matchingRule = new MatchingRule( "1.2.2" );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.2.2" );
         matchingRule.setSyntax( syntax );
 
         matchingRule.setLdapComparator( new ByteArrayComparator( "1.2.2" ) );

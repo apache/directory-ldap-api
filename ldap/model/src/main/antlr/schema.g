@@ -31,6 +31,7 @@ import org.apache.directory.shared.ldap.model.schema.DitContentRule;
 import org.apache.directory.shared.ldap.model.schema.DitStructureRule;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.NameForm;
 import org.apache.directory.shared.ldap.model.schema.parsers.NormalizerDescription;
@@ -513,13 +514,13 @@ ldapSyntaxDescription returns [LdapSyntax ldapSyntax]
      *    extensions WSP RPAREN      ; extensions
      * </pre>
     */
-matchingRuleDescription returns [MatchingRule matchingRule]
+matchingRuleDescription returns [MutableMatchingRule matchingRule]
     {
         matchedProduction( "matchingRuleDescription()" );
         ElementTracker et = new ElementTracker();
     }
     :
-    ( oid:STARTNUMERICOID { matchingRule = new MatchingRule(numericoid(oid.getText())); } )
+    ( oid:STARTNUMERICOID { matchingRule = new MutableMatchingRule(numericoid(oid.getText())); } )
     (
         ( name:NAME { et.track("NAME", name); matchingRule.setNames(qdescrs(name.getText())); } )
         |

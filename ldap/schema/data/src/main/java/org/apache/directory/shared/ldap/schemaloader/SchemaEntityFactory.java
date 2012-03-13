@@ -44,6 +44,7 @@ import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -743,7 +744,7 @@ public class SchemaEntityFactory implements EntityFactory
             schema = schemaManager.getLoadedSchema( schemaName );
         }
 
-        MatchingRule matchingRule = new MatchingRule( oid );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( oid );
 
         // The syntax field
         Attribute mSyntax = entry.get( MetaSchemaConstants.M_SYNTAX_AT );

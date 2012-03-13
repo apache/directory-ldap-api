@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
@@ -131,7 +132,7 @@ public class TestEntryUtils
             }
         } );
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.2.1" );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.2.1" );
         matchingRule.setSyntax( syntax );
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
@@ -205,7 +206,7 @@ public class TestEntryUtils
             }
         } );
 
-        MatchingRule matchingRule = new MatchingRule( "1.1.2" );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.1.2" );
         matchingRule.setSyntax( syntax );
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
@@ -240,7 +241,7 @@ public class TestEntryUtils
             }
         } );
 
-        MatchingRule matchingRule = new MatchingRule( "1.2.2" );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( "1.2.2" );
         matchingRule.setSyntax( syntax );
 
         matchingRule.setLdapComparator( new ByteArrayComparator( "1.2.2" ) );
