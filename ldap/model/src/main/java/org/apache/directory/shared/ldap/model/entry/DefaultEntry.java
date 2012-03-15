@@ -2535,12 +2535,12 @@ public final class DefaultEntry implements Entry
             return true;
         }
 
-        if ( !( o instanceof DefaultEntry ) )
+        if ( !( o instanceof Entry ) )
         {
             return false;
         }
 
-        DefaultEntry other = ( DefaultEntry ) o;
+        Entry other = ( Entry ) o;
 
         // Both Dn must be equal
         if ( dn == null )
@@ -2558,10 +2558,6 @@ public final class DefaultEntry implements Entry
             }
         }
 
-        // That's it
-        return true;
-
-        /*
         // They must have the same number of attributes
         if ( size() != other.size() )
         {
@@ -2569,7 +2565,7 @@ public final class DefaultEntry implements Entry
         }
 
         // Each attribute must be equal
-        for ( EntryAttribute attribute:other )
+        for ( Attribute attribute : other )
         {
             if ( !attribute.equals( this.get( attribute.getId() ) ) )
             {
@@ -2578,7 +2574,6 @@ public final class DefaultEntry implements Entry
         }
 
         return true;
-        */
     }
 
 
