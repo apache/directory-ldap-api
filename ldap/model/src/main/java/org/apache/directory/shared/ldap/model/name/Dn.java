@@ -27,9 +27,12 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.collections.list.UnmodifiableList;
 import org.apache.directory.shared.i18n.I18n;
@@ -1115,7 +1118,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Transform a Rdn by changing the value to its OID counterpart and
-     * normalizing the value accordingly to its type.
+     * normalizing the value accordingly to its type. We also sort the AVAs
      *
      * @param rdn The Rdn to modify.
      * @param SchemaManager The schema manager
@@ -1128,11 +1131,31 @@ public class Dn implements Iterable<Rdn>, Externalizable
         // ATAVs
         Rdn rdnCopy = rdn.clone();
         rdn.clear();
-
-        for ( Ava val : rdnCopy )
+        
+        if ( rdnCopy.size() < 2 )
         {
-            Ava newAtav = atavOidToName( val, schemaManager );
+            Ava newAtav = atavOidToName( rdnCopy.getAva(), schemaManager );
             rdn.addAVA( schemaManager, newAtav );
+        }
+        else
+        {
+            Set<String> sortedOids = new TreeSet<String>();
+            Map<String, Ava> avas = new HashMap<String, Ava>();
+
+            // Sort the OIDs
+            for ( Ava val : rdnCopy )
+            {
+                Ava newAtav = atavOidToName( val, schemaManager );
+                String oid = newAtav.getAttributeType().getOid();
+                sortedOids.add( oid );
+                avas.put( oid, newAtav );
+            }
+            
+            // And create the Rdn
+            for ( String oid : sortedOids )
+            {
+                rdn.addAVA( schemaManager, avas.get( oid ) );
+            }
         }
     }
 

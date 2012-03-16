@@ -158,4 +158,15 @@ public class RdnTest
         
         assertEquals( null, errors );
     }
+    
+    
+    @Test
+    public void testRdnMultipleAvas() throws Exception
+    {
+        Rdn rdn1 = new Rdn( schemaManager, "cn=doe+gn=john" );
+        Rdn rdn2 = new Rdn( schemaManager, "gn=john+cn=doe" );
+        
+        assertEquals( rdn1, rdn2 );
+        assertEquals( rdn1.getNormName(), rdn2.getNormName() );
+    }
 }
