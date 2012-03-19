@@ -2013,7 +2013,7 @@ public class DnTest
 
         assertEquals(
             ( result ).getNormName(),
-            "2.5.4.11=some people+0.9.2342.19200300.100.1.25=and some animals,0.9.2342.19200300.100.1.25=example,0.9.2342.19200300.100.1.25=com" );
+            "0.9.2342.19200300.100.1.25=and some animals+2.5.4.11=some people,0.9.2342.19200300.100.1.25=example,0.9.2342.19200300.100.1.25=com" );
         assertTrue( ( result )
             .getName()
             .equals(
@@ -2035,7 +2035,7 @@ public class DnTest
         assertTrue( result
             .getNormName()
             .equals(
-                "2.5.4.11=some people+0.9.2342.19200300.100.1.25=and some animals,0.9.2342.19200300.100.1.25=example,0.9.2342.19200300.100.1.25=com" ) );
+                "0.9.2342.19200300.100.1.25=and some animals+2.5.4.11=some people,0.9.2342.19200300.100.1.25=example,0.9.2342.19200300.100.1.25=com" ) );
         assertTrue( result
             .getName()
             .equals(
