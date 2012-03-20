@@ -25,6 +25,7 @@ import java.text.ParseException;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.BinaryValue;
+import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
@@ -107,7 +108,7 @@ public class FilterParser
                     pos.start++;
 
                     // Get the assertionValue
-                    node.setValue( parseAssertionValue( filter, pos ) );
+                    node.setValue( parseAssertionValue( schemaManager, attribute, filter, pos ) );
 
                     return node;
                 }
@@ -122,7 +123,7 @@ public class FilterParser
                         pos.start += 2;
 
                         // Get the assertionValue
-                        node.setValue( parseAssertionValue( filter, pos ) );
+                        node.setValue( parseAssertionValue( schemaManager, attribute, filter, pos ) );
 
                         return node;
                     }
@@ -169,7 +170,7 @@ public class FilterParser
                     pos.start++;
 
                     // Get the assertionValue
-                    node.setValue( parseAssertionValue( filter, pos ) );
+                    node.setValue( parseAssertionValue( schemaManager, attribute, filter, pos ) );
 
                     return node;
                 }
@@ -184,7 +185,7 @@ public class FilterParser
                         pos.start += 2;
 
                         // Get the assertionValue
-                        node.setValue( parseAssertionValue( filter, pos ) );
+                        node.setValue( parseAssertionValue( schemaManager, attribute, filter, pos ) );
 
                         return node;
                     }
@@ -234,7 +235,7 @@ public class FilterParser
      * HEX            = '0'-'9' / 'A'-'F' / 'a'-'f'
      * unicodeSubset     = %x01-27 / %x2B-5B / %x5D-FFFF
      */
-    private static Value<?> parseAssertionValue( byte[] filter, Position pos ) throws ParseException
+    private static Value<?> parseAssertionValue( SchemaManager schemaManager, String attribute, byte[] filter, Position pos ) throws ParseException
     {
         byte b = Strings.byteAt( filter, pos.start );
 
@@ -288,11 +289,48 @@ public class FilterParser
             byte[] result = new byte[current];
             System.arraycopy( value, 0, result, 0, current );
 
-            return new BinaryValue( result );
+            if ( schemaManager != null )
+            {
+                AttributeType attributeType = schemaManager.getAttributeType( attribute );
+                
+                if ( attributeType == null )
+                {
+                    return new BinaryValue( result );
+                }
+                
+                if ( attributeType.getSyntax().isHumanReadable() )
+                {
+                    return new StringValue( Strings.utf8ToString( result ) );
+                }
+                else
+                {
+                    return new BinaryValue( result );
+                }
+            }
+            else
+            {
+                return new BinaryValue( result );
+            }
         }
         else
         {
-            return new BinaryValue( ( byte[] ) null );
+            if ( schemaManager != null )
+            {
+                AttributeType attributeType = schemaManager.getAttributeType( attribute );
+                
+                if ( attributeType.getEquality().getSyntax().isHumanReadable() )
+                {
+                    return new StringValue( null );
+                }
+                else
+                {
+                    return new BinaryValue( null );
+                }
+            }
+            else
+            {
+                return new BinaryValue( ( byte[] ) null );
+            }
         }
     }
 
@@ -340,7 +378,7 @@ public class FilterParser
             //
             while ( true )
             {
-                Value<?> assertionValue = parseAssertionValue( filter, pos );
+                Value<?> assertionValue = parseAssertionValue( schemaManager, attribute, filter, pos );
 
                 // Is there anything else but a ')' after the value ?
                 if ( Strings.isCharASCII( filter, pos.start, ')' ) )
@@ -472,7 +510,7 @@ public class FilterParser
         else
         {
             // A substring or an equality node
-            Value<?> value = parseAssertionValue( filter, pos );
+            Value<?> value = parseAssertionValue( schemaManager, attribute, filter, pos );
 
             // Is there anything else but a ')' after the value ?
             if ( Strings.isCharASCII( filter, pos.start, ')' ) )
@@ -562,7 +600,7 @@ public class FilterParser
                     // Parse the value and create the node
                     if ( schemaManager == null )
                     {
-                        return new ApproximateNode( attribute, parseAssertionValue( filter, pos ) );
+                        return new ApproximateNode( attribute, parseAssertionValue( schemaManager, attribute, filter, pos ) );
                     }
                     else
                     {
@@ -570,7 +608,7 @@ public class FilterParser
 
                         if ( attributeType != null )
                         {
-                            return new ApproximateNode( attributeType, parseAssertionValue( filter, pos ) );
+                            return new ApproximateNode( attributeType, parseAssertionValue( schemaManager, attribute, filter, pos ) );
                         }
                         else
                         {
@@ -593,7 +631,7 @@ public class FilterParser
                     // Parse the value and create the node
                     if ( schemaManager == null )
                     {
-                        return new GreaterEqNode( attribute, parseAssertionValue( filter, pos ) );
+                        return new GreaterEqNode( attribute, parseAssertionValue( schemaManager, attribute, filter, pos ) );
                     }
                     else
                     {
@@ -601,7 +639,7 @@ public class FilterParser
 
                         if ( attributeType != null )
                         {
-                            return new GreaterEqNode( attributeType, parseAssertionValue( filter, pos ) );
+                            return new GreaterEqNode( attributeType, parseAssertionValue( schemaManager, attribute, filter, pos ) );
                         }
                         else
                         {
@@ -624,7 +662,7 @@ public class FilterParser
                     // Parse the value and create the node
                     if ( schemaManager == null )
                     {
-                        return new LessEqNode( attribute, parseAssertionValue( filter, pos ) );
+                        return new LessEqNode( attribute, parseAssertionValue( schemaManager, attribute, filter, pos ) );
                     }
                     else
                     {
@@ -632,7 +670,7 @@ public class FilterParser
 
                         if ( attributeType != null )
                         {
-                            return new LessEqNode( attributeType, parseAssertionValue( filter, pos ) );
+                            return new LessEqNode( attributeType, parseAssertionValue( schemaManager, attribute, filter, pos ) );
                         }
                         else
                         {
