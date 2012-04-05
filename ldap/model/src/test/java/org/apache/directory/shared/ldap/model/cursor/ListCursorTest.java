@@ -59,7 +59,6 @@ public class ListCursorTest
     public void testSingleElementList() throws Exception
     {
         ListCursor<String> cursor = new ListCursor<String>( Collections.singletonList( "singleton" ) );
-        cursor.close();
 
         // close test
         cursor.close();
