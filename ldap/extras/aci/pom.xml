@@ -92,6 +92,22 @@
       </plugin>
       
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <additionalBuildcommands>
+            <buildCommand>
+              <name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
+              <triggers>auto,full,incremental,</triggers>
+              <arguments>
+                <LaunchConfigHandle>&lt;project&gt;./.externalToolBuilders/IPojo Builder.launch</LaunchConfigHandle>
+              </arguments>
+            </buildCommand>
+          </additionalBuildcommands>
+        </configuration>
+      </plugin>
+      
+      <plugin>
         <groupId>org.apache.felix</groupId>
         <artifactId>maven-ipojo-plugin</artifactId>
         <version>1.8.0</version>
