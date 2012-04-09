@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+
+<project name="My iPOJO Bundle" default="package" basedir=".">
+
+  <property name="lib.dir" value="lib"/>
+  <property name="output.." value="target/classes"/>
+  <property name="input.." value="src/main/java"/>
+
+  <!-- Load Eclipse properties -->
+  <property file="${workspace_loc:holder/build.properties}"/>
+
+  <taskdef name="ipojo" classpath="lib/org.apache.felix.ipojo.ant-1.8.0.jar"
+    classname="org.apache.felix.ipojo.task.IPojoTask"/>
+
+  <target name="clean">
+    <delete dir="${output..}/org"/>
+  </target>
+
+
+  <target name="compile" depends="clean">
+    <mkdir dir="${output..}"/>
+
+    <javac   srcdir="${source..}"
+             destdir="${output..}"
+             debug="on"
+      >
+      <classpath>
+        <fileset dir="${lib.dir}">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+
+    </javac>
+
+  </target>
+
+  <target name="package">
+      <jar file="${bundle.name}"
+        manifest="META-INF/MANIFEST.MF"
+      >
+          <fileset dir="${output..}"/>
+      </jar>
+
+      <ipojo
+          input="${bundle.name}"
+
+      />
+  </target>
+
+
+  <target name="manipulate">
+      <ipojo
+          dir="${output..}"
+          manifest="META-INF/MANIFEST.MF"
+      />
+  </target>
+
+
+</project>
