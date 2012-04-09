@@ -9,8 +9,7 @@
   <!-- Load Eclipse properties -->
   <property file="${workspace_loc:holder/build.properties}"/>
 
-  <taskdef name="ipojo" classpath="lib/org.apache.felix.ipojo.ant-1.8.0.jar"
-    classname="org.apache.felix.ipojo.task.IPojoTask"/>
+  <taskdef name="ipojo" classname="org.apache.felix.ipojo.task.IPojoTask"/>
 
   <target name="clean">
     <delete dir="${output..}/org"/>
