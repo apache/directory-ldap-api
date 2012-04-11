@@ -36,6 +36,8 @@ import org.apache.directory.shared.ldap.model.message.Response;
 import org.apache.directory.shared.ldap.model.message.SearchResultDone;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.model.message.SearchResultReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -47,6 +49,9 @@ import org.apache.directory.shared.ldap.model.message.SearchResultReference;
  */
 public class SearchCursorImpl extends AbstractCursor<Response> implements SearchCursor
 {
+    /** A dedicated log for cursors */
+    private static final Logger LOG_CURSOR = LoggerFactory.getLogger( "CURSOR" );
+
     /** the search future */
     private SearchFuture future;
 
@@ -75,6 +80,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      */
     public SearchCursorImpl( SearchFuture future, long timeout, TimeUnit timeUnit )
     {
+        LOG_CURSOR.debug( "Creating SearchCursorImpl {}", this );
         this.future = future;
         this.timeout = timeout;
         this.timeUnit = timeUnit;
@@ -175,6 +181,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     @Override
     public void close() throws Exception
     {
+        LOG_CURSOR.debug( "Closing SearchCursorImpl {}", this );
         close( null );
     }
 
@@ -185,6 +192,8 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     @Override
     public void close( Exception cause ) throws Exception
     {
+        LOG_CURSOR.debug( "Closing SearchCursorImpl {}", this );
+        
         if ( done )
         {
             super.close();

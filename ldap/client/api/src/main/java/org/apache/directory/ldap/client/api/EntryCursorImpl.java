@@ -31,6 +31,8 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.Response;
 import org.apache.directory.shared.ldap.model.message.SearchResultDone;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -42,6 +44,9 @@ import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
  */
 public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCursor
 {
+    /** A dedicated log for cursors */
+    private static final Logger LOG_CURSOR = LoggerFactory.getLogger( "CURSOR" );
+
     /** a reference to hold the retrieved SearchResponse object from SearchFuture */
     private Response response;
 
@@ -59,6 +64,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      */
     public EntryCursorImpl( SearchCursor searchCursor )
     {
+        LOG_CURSOR.debug( "Creating EntryCursorImpl {}", this );
         this.searchCursor = searchCursor;
         messageId = -1;
     }
@@ -157,6 +163,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public void close() throws Exception
     {
+        LOG_CURSOR.debug( "Closing EntryCursorImpl {}", this );
         searchCursor.close();
     }
 
@@ -167,6 +174,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public void close( Exception cause ) throws Exception
     {
+        LOG_CURSOR.debug( "Closing EntryCursorImpl {}", this );
         searchCursor.close( cause );
     }
 

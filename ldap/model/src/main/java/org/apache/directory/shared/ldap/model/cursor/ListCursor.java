@@ -25,6 +25,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.shared.i18n.I18n;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -36,6 +38,9 @@ import org.apache.directory.shared.i18n.I18n;
  */
 public class ListCursor<E> extends AbstractCursor<E>
 {
+    /** A dedicated log for cursors */
+    private static final Logger LOG_CURSOR = LoggerFactory.getLogger( "CURSOR" );
+
     /** The inner List */
     private final List<E> list;
 
@@ -47,8 +52,8 @@ public class ListCursor<E> extends AbstractCursor<E>
 
     /** The ending position for the cursor in the list. It can be < List.size() */
     private final int end;
-
     /** The current position in the list */
+    
     private int index = -1;
 
 
@@ -89,6 +94,7 @@ public class ListCursor<E> extends AbstractCursor<E>
             throw new IllegalArgumentException( I18n.err( I18n.ERR_02007_START_INDEX_ABOVE_END_INDEX, start, end ) );
         }
 
+        LOG_CURSOR.debug( "Creating ListCursor {}", this );
         this.comparator = comparator;
         this.list = list;
         this.start = start;
@@ -488,5 +494,27 @@ public class ListCursor<E> extends AbstractCursor<E>
         }
 
         return list.get( index );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void close() throws Exception
+    {
+        LOG_CURSOR.debug( "Closing ListCursor {}", this );
+        super.close();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void close( Exception cause ) throws Exception
+    {
+        LOG_CURSOR.debug( "Closing ListCursor {}", this );
+        super.close( cause );
     }
 }
