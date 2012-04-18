@@ -133,22 +133,6 @@
           </archive>
         </configuration>
       </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <configuration>
-          <additionalBuildcommands>
-            <buildCommand>
-              <name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
-              <triggers>auto,incremental,</triggers>
-              <arguments>
-                <LaunchConfigHandle>&lt;project&gt;./.externalToolBuilders/IPojo Builder.launch</LaunchConfigHandle>
-              </arguments>
-            </buildCommand>
-          </additionalBuildcommands>
-        </configuration>
-      </plugin>
       
       <plugin>
         <groupId>org.apache.felix</groupId>
@@ -157,26 +141,24 @@
         <extensions>true</extensions>
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
+          <unpackBundle>true</unpackBundle>
           <instructions>
-            <Bundle-SymbolicName>${project.groupId}.ldap.model</Bundle-SymbolicName>
+            <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
+            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+            <Bundle-Activator>org.apache.directory.shared.ipojo.helpers.OSGIHelpersActivator</Bundle-Activator>
             <Export-Package>
                 {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
+            <_plugin>org.apache.felix.ipojo.bnd.PojoizationPlugin;use-local-schemas=true</_plugin>
           </instructions>
         </configuration>
-      </plugin>
-      
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-ipojo-plugin</artifactId>
-        <version>${maven.ipojo.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>ipojo-bundle</goal>
-            </goals>
-          </execution>
-        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>bnd-ipojo-plugin</artifactId>
+            <version>${bnd.ipojo.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
