@@ -31,13 +31,16 @@ import org.apache.directory.shared.ldap.model.name.Dn;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ScopeNode extends AbstractExprNode
+public class ScopeNode<ID> extends AbstractExprNode
 {
     /** the scope of this node */
     private final SearchScope scope;
 
     /** the search base */
     private final Dn baseDn;
+
+    /** the search ID */
+    private final ID baseId;
 
     /** the alias dereferencing mode */
     private final AliasDerefMode aliasDerefAliases;
@@ -50,12 +53,13 @@ public class ScopeNode extends AbstractExprNode
      * @param baseDn the search base
      * @param scope the search scope
      */
-    public ScopeNode( AliasDerefMode aliasDerefAliases, Dn baseDn, SearchScope scope )
+    public ScopeNode( AliasDerefMode aliasDerefAliases, Dn baseDn, ID baseId, SearchScope scope )
     {
         super( AssertionType.SCOPE );
         this.scope = scope;
         this.baseDn = baseDn;
         this.aliasDerefAliases = aliasDerefAliases;
+        this.baseId = baseId;
         isSchemaAware = true;
     }
 
@@ -91,6 +95,17 @@ public class ScopeNode extends AbstractExprNode
     public Dn getBaseDn()
     {
         return baseDn;
+    }
+
+
+    /**
+     * Gets the base ID.
+     * 
+     * @return the base ID
+     */
+    public ID getBaseId()
+    {
+        return baseId;
     }
 
 
