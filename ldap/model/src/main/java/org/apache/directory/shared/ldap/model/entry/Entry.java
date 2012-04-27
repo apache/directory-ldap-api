@@ -622,7 +622,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param attributes the AttributeTypes to be removed
      * @return the removed attributes, if any, as a list; otherwise <code>null</code>
      */
-    List<Attribute> removeAttributes( AttributeType... attributes );
+    void removeAttributes( AttributeType... attributes );
 
 
     /**
@@ -713,7 +713,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
       * @param attributes an aliased name of the attribute to be removed
       * @return the removed attributes, if any, as a list; otherwise <code>null</code>
       */
-    List<Attribute> removeAttributes( String... attributes );
+    void removeAttributes( String... attributes );
 
 
     // -----------------------------------------------------------------------

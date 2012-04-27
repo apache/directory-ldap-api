@@ -1775,7 +1775,7 @@ public class LdifReaderTest
         LdifEntry entry = entries.get( 0 );
 
         assertNotNull( entry.get( "uid" ) );
-        assertNotNull( entry.removeAttribute( "uid" ) );
+        entry.removeAttribute( "uid" );
         assertNull( entry.get( "uid" ) );
     }
 

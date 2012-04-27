@@ -971,11 +971,9 @@ public class SchemaAwareEntryTest
         assertFalse( entry.containsAttribute( "cn", "sn" ) );
         assertTrue( entry.containsAttribute( "objectclass", "userpassword" ) );
 
-        List<Attribute> removed = entry.removeAttributes( "badId" );
-        assertNull( removed );
+        entry.removeAttributes( "badId" );
 
-        removed = entry.removeAttributes( ( String ) null );
-        assertNull( removed );
+        entry.removeAttributes( ( String ) null );
     }
 
 

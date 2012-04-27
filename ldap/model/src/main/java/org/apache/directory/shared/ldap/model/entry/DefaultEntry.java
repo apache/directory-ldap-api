@@ -1929,14 +1929,12 @@ public final class DefaultEntry implements Entry
      * @param attributes the AttributeTypes to be removed
      * @return the removed attributes, if any, as a list; otherwise <code>null</code>
      */
-    public List<Attribute> removeAttributes( AttributeType... attributes )
+    public void removeAttributes( AttributeType... attributes )
     {
         if ( ( attributes == null ) || ( attributes.length == 0 ) || ( schemaManager == null ) )
         {
-            return null;
+            return;
         }
-
-        List<Attribute> removed = new ArrayList<Attribute>( attributes.length );
 
         for ( AttributeType attributeType : attributes )
         {
@@ -1945,21 +1943,7 @@ public final class DefaultEntry implements Entry
                 continue;
             }
 
-            Attribute attr = this.attributes.remove( attributeType.getOid() );
-
-            if ( attr != null )
-            {
-                removed.add( attr );
-            }
-        }
-
-        if ( removed.size() == 0 )
-        {
-            return null;
-        }
-        else
-        {
-            return removed;
+            this.attributes.remove( attributeType.getOid() );
         }
     }
 
@@ -1967,14 +1951,12 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public List<Attribute> removeAttributes( String... attributes )
+    public void removeAttributes( String... attributes )
     {
         if ( attributes.length == 0 )
         {
-            return null;
+            return;
         }
-
-        List<Attribute> removed = new ArrayList<Attribute>( attributes.length );
 
         if ( schemaManager == null )
         {
@@ -1984,7 +1966,7 @@ public final class DefaultEntry implements Entry
 
                 if ( attr != null )
                 {
-                    removed.add( this.attributes.remove( attr.getId() ) );
+                    this.attributes.remove( attr.getId() );
                 }
                 else
                 {
@@ -2011,22 +1993,8 @@ public final class DefaultEntry implements Entry
                     continue;
                 }
 
-                Attribute attr = this.attributes.remove( attributeType.getOid() );
-
-                if ( attr != null )
-                {
-                    removed.add( attr );
-                }
+                this.attributes.remove( attributeType.getOid() );
             }
-        }
-
-        if ( removed.size() == 0 )
-        {
-            return null;
-        }
-        else
-        {
-            return removed;
         }
     }
 

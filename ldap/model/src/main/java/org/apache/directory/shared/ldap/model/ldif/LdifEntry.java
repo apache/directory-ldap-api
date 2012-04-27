@@ -462,15 +462,11 @@ public class LdifEntry implements Cloneable, Externalizable
      * @param ids The Attributes to remove
      * @return The list of removed EntryAttributes
      */
-    public List<Attribute> removeAttribute( String... ids )
+    public void removeAttribute( String... ids )
     {
         if ( entry.containsAttribute( ids ) )
         {
-            return entry.removeAttributes( ids );
-        }
-        else
-        {
-            return null;
+            entry.removeAttributes( ids );
         }
     }
 

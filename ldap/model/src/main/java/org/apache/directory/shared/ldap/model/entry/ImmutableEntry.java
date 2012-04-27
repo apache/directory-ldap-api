@@ -442,7 +442,7 @@ public class ImmutableEntry implements Entry
      * @param attributes the AttributeTypes to be removed
      * @return the removed attributes, if any, as a list; otherwise <code>null</code>
      */
-    public List<Attribute> removeAttributes( AttributeType... attributes )
+    public void removeAttributes( AttributeType... attributes )
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
@@ -452,7 +452,7 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public List<Attribute> removeAttributes( String... attributes )
+    public void removeAttributes( String... attributes )
     {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot remove a value : the entry " + entry.getDn() + " is immutable." );
