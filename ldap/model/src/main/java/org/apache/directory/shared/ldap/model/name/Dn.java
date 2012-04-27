@@ -1025,6 +1025,11 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             Dn name = ( Dn ) obj;
 
+            if ( name.getNormName().equals( normName ) )
+            {
+                return true;
+            }
+            
             if ( name.size() != this.size() )
             {
                 return false;
