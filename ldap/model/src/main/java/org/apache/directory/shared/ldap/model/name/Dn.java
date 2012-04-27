@@ -377,6 +377,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
 
         apply( schemaManager );
+        toUpName();
     }
 
 
