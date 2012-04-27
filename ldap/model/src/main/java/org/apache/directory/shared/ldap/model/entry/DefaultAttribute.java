@@ -1930,9 +1930,6 @@ public class DefaultAttribute implements Attribute, Cloneable
                 attribute.attributeType = attributeType;
             }
             
-            // Compute the hashCode
-            rehash();
-    
             attribute.values = new LinkedHashSet<Value<?>>( values.size() );
 
             for ( Value<?> value : values )
