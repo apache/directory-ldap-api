@@ -1923,8 +1923,16 @@ public class DefaultAttribute implements Attribute, Cloneable
         try
         {
             DefaultAttribute attribute = ( DefaultAttribute ) super.clone();
-            attribute.setUpId( upId );
 
+            if ( this.attributeType != null )
+            {
+                attribute.id = attributeType.getOid();
+                attribute.attributeType = attributeType;
+            }
+            
+            // Compute the hashCode
+            rehash();
+    
             attribute.values = new LinkedHashSet<Value<?>>( values.size() );
 
             for ( Value<?> value : values )
