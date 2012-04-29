@@ -114,7 +114,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
+public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable<Rdn>
 {
     /** The LoggerFactory used by this class */
     protected static final Logger LOG = LoggerFactory.getLogger( Rdn.class );
@@ -977,6 +977,12 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
 
         Rdn rdn = ( Rdn ) that;
 
+        // Short cut : compare the normalized Rdn
+        if ( normName.equals( rdn.normName ) )
+        {
+            return true;
+        }
+
         if ( rdn.nbAvas != nbAvas )
         {
             // We don't have the same number of Avas. The Rdn which
@@ -1599,6 +1605,13 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
         }
 
         h = in.readInt();
+    }
+
+
+    public int compareTo( Rdn arg0 )
+    {
+        // TODO Auto-generated method stub
+        return 0;
     }
 
 
