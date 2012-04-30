@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.codec.decorators;
 
@@ -99,6 +99,9 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
     /** The SearchRequest TLV id */
     private int tlvId;
+    
+    /** The bytes containing the Dn */
+    private byte[] dnBytes;
 
 
     /**
@@ -333,7 +336,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                 {
                     // The parent is a filter ; it will become the new currentFilter
                     // and we will loop again.
-                    currentFilter = ( Filter ) filterParent;
+                    currentFilter = filterParent;
                     localFilter = currentFilter;
                     localParent = localParent.getParent();
                 }
@@ -926,12 +929,12 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
      *  +--> filter.computeLength()
      *  +--> 0x30 L3 (Attribute description list)
      *        |
-     *        +--> 0x04 L4-1 Attribute description 
-     *        +--> 0x04 L4-2 Attribute description 
-     *        +--> ... 
-     *        +--> 0x04 L4-i Attribute description 
-     *        +--> ... 
-     *        +--> 0x04 L4-n Attribute description 
+     *        +--> 0x04 L4-1 Attribute description
+     *        +--> 0x04 L4-2 Attribute description
+     *        +--> ...
+     *        +--> 0x04 L4-i Attribute description
+     *        +--> ...
+     *        +--> 0x04 L4-n Attribute description
      *        </pre>
      */
     public int computeLength()
@@ -939,7 +942,8 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
         int searchRequestLength = 0;
 
         // The baseObject
-        searchRequestLength += 1 + TLV.getNbBytes( Dn.getNbBytes( getBase() ) ) + Dn.getNbBytes( getBase() );
+        dnBytes = Strings.getBytesUtf8( getBase().getName() );
+        searchRequestLength += 1 + TLV.getNbBytes( dnBytes.length ) + dnBytes.length;
 
         // The scope
         searchRequestLength += 1 + 1 + 1;
@@ -1000,7 +1004,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
      *   filter.encode()
      *   0x30 LL attributeDescriptionList
      *     0x04 LL attributeDescription
-     *     ... 
+     *     ...
      *     0x04 LL attributeDescription
      * </pre>
      * @param buffer The buffer where to put the PDU
@@ -1015,7 +1019,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
             buffer.put( TLV.getBytes( getSearchRequestLength() ) );
 
             // The baseObject
-            org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, Dn.getBytes( getBase() ) );
+            org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, dnBytes );
 
             // The scope
             org.apache.directory.shared.asn1.ber.tlv.Value.encodeEnumerated( buffer, getScope().getScope() );
