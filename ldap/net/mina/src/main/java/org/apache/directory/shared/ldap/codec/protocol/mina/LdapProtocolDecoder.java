@@ -131,8 +131,6 @@ public class LdapProtocolDecoder implements ProtocolDecoder
 
                     System.arraycopy( buffer.array(), position, array, 0, pduLength );
 
-                    buffer.position( size );
-
                     if ( array.length == 0 )
                     {
                         LOG.debug( "NULL buffer, what the HELL ???" );
@@ -141,8 +139,6 @@ public class LdapProtocolDecoder implements ProtocolDecoder
                     {
                         LOG.debug( Strings.dumpBytes( array ) );
                     }
-
-                    buffer.reset();
                 }
 
                 asn1Decoder.decode( buffer, messageContainer );
