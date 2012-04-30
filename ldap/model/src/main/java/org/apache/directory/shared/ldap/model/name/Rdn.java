@@ -976,6 +976,12 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         }
 
         Rdn rdn = ( Rdn ) that;
+        
+        // Short cut : compare the normalized Rdn
+        if ( normName.equals( rdn.normName ) )
+        {
+            return true;
+        }
 
         // Short cut : compare the normalized Rdn
         if ( normName.equals( rdn.normName ) )
