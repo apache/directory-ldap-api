@@ -41,6 +41,7 @@ import org.apache.directory.shared.ldap.model.message.AddRequest;
 import org.apache.directory.shared.ldap.model.message.AddResponse;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.util.Strings;
 
 
 /**
@@ -350,8 +351,10 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
             throw new IllegalArgumentException( I18n.err( I18n.ERR_04481_ENTRY_NULL_VALUE ) );
         }
 
+        int dnLen = Strings.getBytesUtf8( entry.getDn().getName() ).length;
+        
         // The entry Dn
-        int addRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes( entry.getDn() ) ) + Dn.getNbBytes( entry.getDn() );
+        int addRequestLength = 1 + TLV.getNbBytes( dnLen ) + dnLen;
 
         // The attributes sequence
         int entryLength = 0;
@@ -438,7 +441,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
             buffer.put( TLV.getBytes( getAddRequestLength() ) );
 
             // The entry
-            org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, Dn.getBytes( getEntryDn() ) );
+            org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, Strings.getBytesUtf8( getDecorated().getEntryDn().getName() ) );
 
             // The attributes sequence
             buffer.put( UniversalTag.SEQUENCE.getValue() );
