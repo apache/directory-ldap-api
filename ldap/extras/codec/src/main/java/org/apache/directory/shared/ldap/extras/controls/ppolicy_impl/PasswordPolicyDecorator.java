@@ -28,7 +28,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
@@ -172,13 +172,13 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
                 {
                     buffer.put( ( byte ) PasswordPolicyTags.TIME_BEFORE_EXPIRATION_TAG.getValue() );
                     buffer.put( TLV.getBytes( timeBeforeExpirationTagLength ) );
-                    buffer.put( Value.getBytes( getResponse().getTimeBeforeExpiration() ) );
+                    buffer.put( BerValue.getBytes( getResponse().getTimeBeforeExpiration() ) );
                 }
                 else if ( getResponse().getGraceAuthNsRemaining() >= 0 )
                 {
                     buffer.put( ( byte ) PasswordPolicyTags.GRACE_AUTHNS_REMAINING_TAG.getValue() );
                     buffer.put( TLV.getBytes( graceAuthNsRemainingTagLength ) );
-                    buffer.put( Value.getBytes( getResponse().getGraceAuthNsRemaining() ) );
+                    buffer.put( BerValue.getBytes( getResponse().getGraceAuthNsRemaining() ) );
                 }
             }
 
@@ -186,7 +186,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
             {
                 buffer.put( ( byte ) PasswordPolicyTags.PPOLICY_ERROR_TAG.getValue() );
                 buffer.put( ( byte ) 0x01 );
-                buffer.put( Value.getBytes( getResponse().getPasswordPolicyError().getValue() ) );
+                buffer.put( BerValue.getBytes( getResponse().getPasswordPolicyError().getValue() ) );
             }
         }
 

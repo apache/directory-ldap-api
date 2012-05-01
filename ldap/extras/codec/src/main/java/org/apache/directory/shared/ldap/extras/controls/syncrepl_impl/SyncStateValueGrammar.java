@@ -27,7 +27,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.extras.controls.SyncStateTypeEnum;
@@ -109,7 +109,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar
             {
                 public void action( SyncStateValueContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
+                    BerValue value = container.getCurrentTLV().getValue();
 
                     try
                     {
@@ -154,7 +154,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar
             {
                 public void action( SyncStateValueContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
+                    BerValue value = container.getCurrentTLV().getValue();
 
                     byte[] entryUUID = value.getData();
 
@@ -186,7 +186,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar
             {
                 public void action( SyncStateValueContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
+                    BerValue value = container.getCurrentTLV().getValue();
 
                     byte[] cookie = value.getData();
 

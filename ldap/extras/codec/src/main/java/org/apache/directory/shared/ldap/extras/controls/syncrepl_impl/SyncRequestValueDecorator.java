@@ -28,7 +28,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
@@ -186,18 +186,18 @@ public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue
         // The mode
         buffer.put( UniversalTag.ENUMERATED.getValue() );
         buffer.put( ( byte ) 0x01 );
-        buffer.put( Value.getBytes( getMode().getValue() ) );
+        buffer.put( BerValue.getBytes( getMode().getValue() ) );
 
         // The cookie
         if ( getCookie() != null )
         {
-            Value.encode( buffer, getCookie() );
+            BerValue.encode( buffer, getCookie() );
         }
 
         // The reloadHint if not false
         if ( isReloadHint() )
         {
-            Value.encode( buffer, isReloadHint() );
+            BerValue.encode( buffer, isReloadHint() );
         }
 
         return buffer;
@@ -224,18 +224,18 @@ public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue
                 // The mode
                 buffer.put( UniversalTag.ENUMERATED.getValue() );
                 buffer.put( ( byte ) 0x01 );
-                buffer.put( Value.getBytes( getMode().getValue() ) );
+                buffer.put( BerValue.getBytes( getMode().getValue() ) );
 
                 // The cookie
                 if ( getCookie() != null )
                 {
-                    Value.encode( buffer, getCookie() );
+                    BerValue.encode( buffer, getCookie() );
                 }
 
                 // The reloadHint if not false
                 if ( isReloadHint() )
                 {
-                    Value.encode( buffer, isReloadHint() );
+                    BerValue.encode( buffer, isReloadHint() );
                 }
 
                 value = buffer.array();

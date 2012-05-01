@@ -28,7 +28,7 @@ import java.util.List;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
@@ -188,10 +188,10 @@ public class StoredProcedureRequestDecorator
             bb.put( TLV.getBytes( storedProcedureLength ) );
 
             // The language
-            Value.encode( bb, getDecorated().getLanguage() );
+            BerValue.encode( bb, getDecorated().getLanguage() );
 
             // The procedure
-            Value.encode( bb, getDecorated().getProcedure() );
+            BerValue.encode( bb, getDecorated().getProcedure() );
 
             // The parameters sequence
             bb.put( UniversalTag.SEQUENCE.getValue() );
@@ -210,10 +210,10 @@ public class StoredProcedureRequestDecorator
                     bb.put( TLV.getBytes( localParameterLength ) );
 
                     // The parameter type
-                    Value.encode( bb, spParam.getType() );
+                    BerValue.encode( bb, spParam.getType() );
 
                     // The parameter value
-                    Value.encode( bb, spParam.getValue() );
+                    BerValue.encode( bb, spParam.getValue() );
 
                     // Go to the next parameter;
                     parameterNumber++;

@@ -28,7 +28,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
@@ -170,15 +170,15 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
         // The mode
         buffer.put( UniversalTag.ENUMERATED.getValue() );
         buffer.put( ( byte ) 0x01 );
-        buffer.put( Value.getBytes( getSyncStateType().getValue() ) );
+        buffer.put( BerValue.getBytes( getSyncStateType().getValue() ) );
 
         // the entryUUID
-        Value.encode( buffer, getEntryUUID() );
+        BerValue.encode( buffer, getEntryUUID() );
 
         // The cookie
         if ( getCookie() != null )
         {
-            Value.encode( buffer, getCookie() );
+            BerValue.encode( buffer, getCookie() );
         }
 
         return buffer;
@@ -205,15 +205,15 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
                 // The mode
                 buffer.put( UniversalTag.ENUMERATED.getValue() );
                 buffer.put( ( byte ) 0x01 );
-                buffer.put( Value.getBytes( getSyncStateType().getValue() ) );
+                buffer.put( BerValue.getBytes( getSyncStateType().getValue() ) );
 
                 // the entryUUID
-                Value.encode( buffer, getEntryUUID() );
+                BerValue.encode( buffer, getEntryUUID() );
 
                 // The cookie
                 if ( getCookie() != null )
                 {
-                    Value.encode( buffer, getCookie() );
+                    BerValue.encode( buffer, getCookie() );
                 }
 
                 value = buffer.array();

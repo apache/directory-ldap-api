@@ -26,7 +26,7 @@ import org.apache.directory.shared.asn1.ber.grammar.Grammar;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
@@ -113,7 +113,7 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
                     public void action( Asn1Container container ) throws DecoderException
                     {
                         CancelContainer cancelContainer = ( CancelContainer ) container;
-                        Value value = cancelContainer.getCurrentTLV().getValue();
+                        BerValue value = cancelContainer.getCurrentTLV().getValue();
 
                         try
                         {

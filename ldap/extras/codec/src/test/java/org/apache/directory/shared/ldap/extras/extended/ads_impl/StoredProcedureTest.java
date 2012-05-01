@@ -30,7 +30,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureContainer;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureDecoder;
@@ -102,7 +102,7 @@ public class StoredProcedureTest
         assertEquals( 3, storedProcedure.size() );
 
         assertEquals( "int", Strings.utf8ToString( ( byte[] ) storedProcedure.getParameterType( 0 ) ) );
-        assertEquals( 1, IntegerDecoder.parse( new Value( ( byte[] ) storedProcedure.getParameterValue( 0 ) ) ) );
+        assertEquals( 1, IntegerDecoder.parse( new BerValue( ( byte[] ) storedProcedure.getParameterValue( 0 ) ) ) );
 
         assertEquals( "boolean", Strings.utf8ToString( ( byte[] ) storedProcedure.getParameterType( 1 ) ) );
         assertEquals( "true", Strings.utf8ToString( ( byte[] ) storedProcedure.getParameterValue( 1 ) ) );
@@ -226,7 +226,7 @@ public class StoredProcedureTest
         assertEquals( 1, storedProcedure.size() );
 
         assertEquals( "int", Strings.utf8ToString( ( byte[] ) storedProcedure.getParameterType( 0 ) ) );
-        assertEquals( 1, IntegerDecoder.parse( new Value( ( byte[] ) storedProcedure.getParameterValue( 0 ) ) ) );
+        assertEquals( 1, IntegerDecoder.parse( new BerValue( ( byte[] ) storedProcedure.getParameterValue( 0 ) ) ) );
 
         // Check the encoding
         try

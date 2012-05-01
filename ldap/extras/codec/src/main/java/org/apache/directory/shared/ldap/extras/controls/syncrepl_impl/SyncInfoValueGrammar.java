@@ -28,7 +28,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.extras.controls.SyncInfoValue;
 import org.apache.directory.shared.util.Strings;
@@ -101,7 +101,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         byte[] newCookie = value.getData();
 
@@ -164,7 +164,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         byte[] cookie = value.getData();
 
@@ -201,7 +201,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {
@@ -250,7 +250,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {
@@ -325,7 +325,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         byte[] cookie = value.getData();
 
@@ -362,7 +362,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {
@@ -411,7 +411,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {
@@ -482,7 +482,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         byte[] cookie = value.getData();
 
@@ -515,7 +515,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {
@@ -558,7 +558,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {
@@ -669,7 +669,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         byte[] uuid = value.getData();
 
@@ -714,7 +714,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         byte[] uuid = value.getData();
 

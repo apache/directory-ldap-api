@@ -30,7 +30,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
@@ -355,13 +355,13 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                 // The cookie, if any
                 if ( getCookie() != null )
                 {
-                    Value.encode( buffer, getCookie() );
+                    BerValue.encode( buffer, getCookie() );
                 }
 
                 // The refreshDone flag
                 if ( !isRefreshDone() )
                 {
-                    Value.encode( buffer, isRefreshDone() );
+                    BerValue.encode( buffer, isRefreshDone() );
                 }
 
                 break;
@@ -374,13 +374,13 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                 // The cookie, if any
                 if ( getCookie() != null )
                 {
-                    Value.encode( buffer, getCookie() );
+                    BerValue.encode( buffer, getCookie() );
                 }
 
                 // The refreshDone flag
                 if ( !isRefreshDone() )
                 {
-                    Value.encode( buffer, isRefreshDone() );
+                    BerValue.encode( buffer, isRefreshDone() );
                 }
 
                 break;
@@ -393,13 +393,13 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                 // The cookie, if any
                 if ( getCookie() != null )
                 {
-                    Value.encode( buffer, getCookie() );
+                    BerValue.encode( buffer, getCookie() );
                 }
 
                 // The refreshDeletes flag if not false
                 if ( isRefreshDeletes() )
                 {
-                    Value.encode( buffer, isRefreshDeletes() );
+                    BerValue.encode( buffer, isRefreshDeletes() );
                 }
 
                 // The syncUUIDs
@@ -411,7 +411,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                 {
                     for ( byte[] syncUUID : getSyncUUIDs() )
                     {
-                        Value.encode( buffer, syncUUID );
+                        BerValue.encode( buffer, syncUUID );
                     }
                 }
         }
@@ -461,13 +461,13 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                         // The cookie, if any
                         if ( getCookie() != null )
                         {
-                            Value.encode( buffer, getCookie() );
+                            BerValue.encode( buffer, getCookie() );
                         }
 
                         // The refreshDone flag
                         if ( !isRefreshDone() )
                         {
-                            Value.encode( buffer, isRefreshDone() );
+                            BerValue.encode( buffer, isRefreshDone() );
                         }
 
                         break;
@@ -480,13 +480,13 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                         // The cookie, if any
                         if ( getCookie() != null )
                         {
-                            Value.encode( buffer, getCookie() );
+                            BerValue.encode( buffer, getCookie() );
                         }
 
                         // The refreshDone flag
                         if ( !isRefreshDone() )
                         {
-                            Value.encode( buffer, isRefreshDone() );
+                            BerValue.encode( buffer, isRefreshDone() );
                         }
 
                         break;
@@ -499,13 +499,13 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                         // The cookie, if any
                         if ( getCookie() != null )
                         {
-                            Value.encode( buffer, getCookie() );
+                            BerValue.encode( buffer, getCookie() );
                         }
 
                         // The refreshDeletes flag if not false
                         if ( isRefreshDeletes() )
                         {
-                            Value.encode( buffer, isRefreshDeletes() );
+                            BerValue.encode( buffer, isRefreshDeletes() );
                         }
 
                         // The syncUUIDs
@@ -517,7 +517,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                         {
                             for ( byte[] syncUUID : getSyncUUIDs() )
                             {
-                                Value.encode( buffer, syncUUID );
+                                BerValue.encode( buffer, syncUUID );
                             }
                         }
                 }

@@ -27,7 +27,7 @@ import java.util.List;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.ldap.model.url.LdapUrl;
 
 
@@ -118,12 +118,12 @@ public class GracefulDisconnect extends GracefulAction
 
         if ( timeOffline != 0 )
         {
-            gracefulDisconnectSequenceLength += 1 + 1 + Value.getNbBytes( timeOffline );
+            gracefulDisconnectSequenceLength += 1 + 1 + BerValue.getNbBytes( timeOffline );
         }
 
         if ( delay != 0 )
         {
-            gracefulDisconnectSequenceLength += 1 + 1 + Value.getNbBytes( delay );
+            gracefulDisconnectSequenceLength += 1 + 1 + BerValue.getNbBytes( delay );
         }
 
         if ( replicatedContexts.size() > 0 )
@@ -161,14 +161,14 @@ public class GracefulDisconnect extends GracefulAction
 
         if ( timeOffline != 0 )
         {
-            Value.encode( bb, timeOffline );
+            BerValue.encode( bb, timeOffline );
         }
 
         if ( delay != 0 )
         {
             bb.put( ( byte ) GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG );
             bb.put( ( byte ) TLV.getNbBytes( delay ) );
-            bb.put( Value.getBytes( delay ) );
+            bb.put( BerValue.getBytes( delay ) );
         }
 
         if ( replicatedContexts.size() != 0 )
@@ -179,7 +179,7 @@ public class GracefulDisconnect extends GracefulAction
             // We may have more than one reference.
             for ( LdapUrl replicatedContext : replicatedContexts )
             {
-                Value.encode( bb, replicatedContext.getBytesReference() );
+                BerValue.encode( bb, replicatedContext.getBytesReference() );
             }
         }
 

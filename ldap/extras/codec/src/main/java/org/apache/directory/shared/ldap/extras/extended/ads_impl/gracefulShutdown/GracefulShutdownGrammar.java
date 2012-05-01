@@ -26,7 +26,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulActionConstants;
@@ -114,7 +114,7 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
                 {
                     public void action( GracefulShutdownContainer container ) throws DecoderException
                     {
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {
@@ -156,7 +156,7 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
                 {
                     public void action( GracefulShutdownContainer container ) throws DecoderException
                     {
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {
@@ -200,7 +200,7 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
                     public void action( GracefulShutdownContainer container ) throws DecoderException
                     {
                         GracefulShutdownContainer gracefulShutdownContainer = ( GracefulShutdownContainer ) container;
-                        Value value = gracefulShutdownContainer.getCurrentTLV().getValue();
+                        BerValue value = gracefulShutdownContainer.getCurrentTLV().getValue();
 
                         try
                         {

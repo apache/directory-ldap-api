@@ -44,7 +44,7 @@ public class PrimitivesTest
     @Test
     public void testIntegerPrimitive() throws IntegerDecoderException
     {
-        Value value = new Value();
+        BerValue value = new BerValue();
 
         value.init( 1 );
         value.setData( new byte[]

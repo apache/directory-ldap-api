@@ -61,7 +61,6 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.message.SearchRequest;
 import org.apache.directory.shared.ldap.model.message.SearchResultDoneImpl;
 import org.apache.directory.shared.ldap.model.message.SearchScope;
-import org.apache.directory.shared.ldap.model.message.controls.Subentries;
 import org.apache.directory.shared.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
 import org.apache.directory.shared.ldap.model.schema.normalizers.OidNormalizer;
 import org.apache.directory.shared.util.Strings;

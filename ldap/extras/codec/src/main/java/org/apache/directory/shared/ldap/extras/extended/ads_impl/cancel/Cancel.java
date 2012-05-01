@@ -26,7 +26,7 @@ import org.apache.directory.shared.asn1.AbstractAsn1Object;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 
 
 /**
@@ -103,7 +103,7 @@ public class Cancel extends AbstractAsn1Object
     public int computeLength()
     {
         // The messageId length
-        cancelSequenceLength = 1 + 1 + Value.getNbBytes( cancelId );
+        cancelSequenceLength = 1 + 1 + BerValue.getNbBytes( cancelId );
 
         // Add the sequence and the length
         return 1 + 1 + cancelSequenceLength;
@@ -126,7 +126,7 @@ public class Cancel extends AbstractAsn1Object
         bb.put( TLV.getBytes( cancelSequenceLength ) );
 
         // The messageId
-        Value.encode( bb, cancelId );
+        BerValue.encode( bb, cancelId );
 
         return bb;
     }

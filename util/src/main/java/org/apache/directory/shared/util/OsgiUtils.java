@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
@@ -46,8 +45,8 @@ public class OsgiUtils
 
 
     /**
-     * All the packages that are exported from all bundles found on the system 
-     * classpath. The provided filter if not null is used to prune classpath 
+     * All the packages that are exported from all bundles found on the system
+     * classpath. The provided filter if not null is used to prune classpath
      * elements. Any uses terms found are stripped from the bundles.
      *
      * @return All the exported packages of all bundles on the classpath.
@@ -80,7 +79,7 @@ public class OsgiUtils
 
 
     /**
-     * Splits an Package-Export OSGi Manifest Attribute value into packages 
+     * Splits an Package-Export OSGi Manifest Attribute value into packages
      * while stripping away the key/value properties.
      *
      * @param exports The Package-Export OSGi Manifest Attribute value.
@@ -176,8 +175,8 @@ public class OsgiUtils
      * Gets the attribute value for the Export-Bundle OSGi Manifest Attribute.
      * 
      * @param bundle The absolute path to a file bundle.
-     * @return The value as it appears in the Manifest, as a comma delimited 
-     * list of packages with possible "uses" phrases appended to each package 
+     * @return The value as it appears in the Manifest, as a comma delimited
+     * list of packages with possible "uses" phrases appended to each package
      * or null if the attribute does not exist.
      */
     public static String getBundleExports( File bundle )

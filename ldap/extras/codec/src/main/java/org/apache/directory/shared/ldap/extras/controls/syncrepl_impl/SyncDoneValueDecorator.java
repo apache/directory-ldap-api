@@ -28,7 +28,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
@@ -122,12 +122,12 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
 
         if ( getCookie() != null )
         {
-            Value.encode( buffer, getCookie() );
+            BerValue.encode( buffer, getCookie() );
         }
 
         if ( isRefreshDeletes() )
         {
-            Value.encode( buffer, isRefreshDeletes() );
+            BerValue.encode( buffer, isRefreshDeletes() );
         }
 
         return buffer;
@@ -153,12 +153,12 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
 
                 if ( getCookie() != null )
                 {
-                    Value.encode( buffer, getCookie() );
+                    BerValue.encode( buffer, getCookie() );
                 }
 
                 if ( isRefreshDeletes() )
                 {
-                    Value.encode( buffer, isRefreshDeletes() );
+                    BerValue.encode( buffer, isRefreshDeletes() );
                 }
 
                 value = buffer.array();

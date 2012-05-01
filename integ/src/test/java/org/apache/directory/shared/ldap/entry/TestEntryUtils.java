@@ -143,25 +143,6 @@ public class TestEntryUtils
                     ( o2 == null ? 0 : -1 ) :
                     ( o2 == null ? 1 : o1.compareTo( o2 ) ) );
             }
-
-
-            int getValue( String val )
-            {
-                if ( val.equals( "LOW" ) )
-                {
-                    return 0;
-                }
-                else if ( val.equals( "MEDIUM" ) )
-                {
-                    return 1;
-                }
-                else if ( val.equals( "HIGH" ) )
-                {
-                    return 2;
-                }
-
-                throw new IllegalArgumentException();
-            }
         } );
 
         Normalizer normalizer = new Normalizer( "1.1.1" )
