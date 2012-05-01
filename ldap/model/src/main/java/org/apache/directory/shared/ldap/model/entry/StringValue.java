@@ -45,6 +45,9 @@ public class StringValue extends AbstractValue<String>
 {
     /** Used for serialization */
     private static final long serialVersionUID = 2L;
+    
+    /** The UTF-8 bytes for this value */
+    private byte[] bytes;
 
 
     // -----------------------------------------------------------------------
@@ -85,6 +88,7 @@ public class StringValue extends AbstractValue<String>
     {
         this.wrappedValue = value;
         this.normalizedValue = value;
+        bytes = Strings.getBytesUtf8( value );
     }
 
 
@@ -93,7 +97,7 @@ public class StringValue extends AbstractValue<String>
      *
      * @param attributeType the schema type associated with this StringValue
      * @param value the value to wrap
-     * @throws LdapInvalidAttributeValueException If the added value is invalid accordingly 
+     * @throws LdapInvalidAttributeValueException If the added value is invalid accordingly
      * to the schema
      */
     public StringValue( AttributeType attributeType, String value ) throws LdapInvalidAttributeValueException
@@ -115,8 +119,8 @@ public class StringValue extends AbstractValue<String>
         // object without copying it.
         return wrappedValue;
     }
-
-
+    
+    
     /**
      * {@inheritDoc}
      */
@@ -212,14 +216,14 @@ public class StringValue extends AbstractValue<String>
     // -----------------------------------------------------------------------
     /**
      * @see Object#hashCode()
-     * @return the instance's hashcode 
+     * @return the instance's hashcode
      */
     public int hashCode()
     {
         if ( h == 0 )
         {
             // return zero if the value is null so only one null value can be
-            // stored in an attribute - the binary version does the same 
+            // stored in an attribute - the binary version does the same
             if ( isNull() )
             {
                 return 0;
@@ -306,7 +310,7 @@ public class StringValue extends AbstractValue<String>
         // Shortcut : compare the values without normalization
         // If they are equal, we may avoid a normalization.
         // Note : if two values are equal, then their normalized
-        // value are equal too if their attributeType are equal. 
+        // value are equal too if their attributeType are equal.
         if ( getReference().equals( other.getReference() ) )
         {
             return true;
@@ -373,7 +377,7 @@ public class StringValue extends AbstractValue<String>
      */
     public byte[] getBytes()
     {
-        return Strings.getBytesUtf8( wrappedValue );
+        return bytes;
     }
 
 
@@ -441,6 +445,7 @@ public class StringValue extends AbstractValue<String>
         if ( in.readBoolean() )
         {
             wrappedValue = in.readUTF();
+            bytes = Strings.getBytesUtf8( wrappedValue );
         }
 
         // Read the isNormalized flag
@@ -486,7 +491,7 @@ public class StringValue extends AbstractValue<String>
         // Write the isNormalized flag
         if ( attributeType != null )
         {
-            // This flag is present to tell that we have a normalized value different 
+            // This flag is present to tell that we have a normalized value different
             // from the upValue
             out.writeBoolean( true );
 
