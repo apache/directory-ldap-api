@@ -458,14 +458,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
                     {
                         for ( org.apache.directory.shared.ldap.model.entry.Value<?> value : attribute )
                         {
-                            if ( value.isHumanReadable() )
-                            {
-                                Value.encode( buffer, value.getString() );
-                            }
-                            else
-                            {
-                                Value.encode( buffer, value.getBytes() );
-                            }
+                            Value.encode( buffer, value.getBytes() );
                         }
                     }
 
