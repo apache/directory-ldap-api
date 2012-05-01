@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.codec.decorators;
 
@@ -53,6 +53,15 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
 
     /** The SASL credentials length */
     private int saslCredentialsLength;
+    
+    /** The bytes containing the Dn */
+    private byte[] dnBytes;
+    
+    /** The bytes containing the Name */
+    private byte[] nameBytes;
+    
+    /** The bytes containing the SaslMechanism */
+    private byte[] mechanismBytes;
 
 
     /**
@@ -318,19 +327,19 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     // The Decorator methods
     //-------------------------------------------------------------------------
     /**
-     * Compute the BindRequest length 
+     * Compute the BindRequest length
      * 
-     * BindRequest : 
+     * BindRequest :
      * <pre>
-     * 0x60 L1 
-     *   | 
-     *   +--> 0x02 0x01 (1..127) version 
-     *   +--> 0x04 L2 name 
-     *   +--> authentication 
-     *   
+     * 0x60 L1
+     *   |
+     *   +--> 0x02 0x01 (1..127) version
+     *   +--> 0x04 L2 name
+     *   +--> authentication
+     * 
      * L2 = Length(name)
-     * L3/4 = Length(authentication) 
-     * Length(BindRequest) = Length(0x60) + Length(L1) + L1 + Length(0x02) + 1 + 1 + 
+     * L3/4 = Length(authentication)
+     * Length(BindRequest) = Length(0x60) + Length(L1) + L1 + Length(0x02) + 1 + 1 +
      *      Length(0x04) + Length(L2) + L2 + Length(authentication)
      * </pre>
      */
@@ -343,14 +352,14 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
         if ( !Dn.isNullOrEmpty( dn ) )
         {
             // A DN has been provided
+            dnBytes = Strings.getBytesUtf8( dn.getName() );
+            int dnLength = dnBytes.length;
 
-            bindRequestLength += 1 + TLV.getNbBytes( Dn.getNbBytes( dn ) )
-                + Dn.getNbBytes( dn );
+            bindRequestLength += 1 + TLV.getNbBytes( dnLength ) + dnLength;
         }
         else
         {
             // No DN has been provided, let's use the name as a string instead
-
             String name = getName();
 
             if ( Strings.isEmpty( name ) )
@@ -358,8 +367,10 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
                 name = "";
             }
 
-            bindRequestLength += 1 + TLV.getNbBytes( name.getBytes().length )
-                + name.getBytes().length;
+            nameBytes = Strings.getBytesUtf8( name );
+            int nameLength = nameBytes.length;
+
+            bindRequestLength += 1 + TLV.getNbBytes( nameLength ) + nameLength;
         }
 
         byte[] credentials = getCredentials();
@@ -379,9 +390,8 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
         }
         else
         {
-            byte[] mechanismBytes = Strings.getBytesUtf8( getSaslMechanism() );
-            int saslMechanismLength = 1 + TLV.getNbBytes( mechanismBytes.length ) + mechanismBytes.length;
-            int saslCredentialsLength = 0;
+            mechanismBytes = Strings.getBytesUtf8( getSaslMechanism() );
+            saslMechanismLength = 1 + TLV.getNbBytes( mechanismBytes.length ) + mechanismBytes.length;
 
             if ( credentials != null )
             {
@@ -392,10 +402,6 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
                 + saslCredentialsLength;
 
             bindRequestLength += saslLength;
-
-            // Store the mechanism and credentials lengths
-            setSaslMechanismLength( saslMechanismLength );
-            setSaslCredentialsLength( saslCredentialsLength );
         }
 
         setBindRequestLength( bindRequestLength );
@@ -406,14 +412,14 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
 
 
     /**
-     * Encode the BindRequest message to a PDU. 
+     * Encode the BindRequest message to a PDU.
      * 
-     * BindRequest : 
+     * BindRequest :
      * <pre>
-     * 0x60 LL 
-     *   0x02 LL version         0x80 LL simple 
-     *   0x04 LL name           /   
-     *   authentication.encode() 
+     * 0x60 LL
+     *   0x02 LL version         0x80 LL simple
+     *   0x04 LL name           /
+     *   authentication.encode()
      *                          \ 0x83 LL mechanism [0x04 LL credential]
      * </pre>
      * 
@@ -442,21 +448,12 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
         if ( !Dn.isNullOrEmpty( dn ) )
         {
             // A DN has been provided
-
-            BerValue.encode( buffer, Dn.getBytes( dn ) );
+            BerValue.encode( buffer, dnBytes );
         }
         else
         {
             // No DN has been provided, let's use the name as a string instead
-
-            String name = getName();
-
-            if ( Strings.isEmpty( name ) )
-            {
-                name = "";
-            }
-
-            BerValue.encode( buffer, name.getBytes() );
+            BerValue.encode( buffer, nameBytes );
         }
 
         byte[] credentials = getCredentials();
@@ -498,10 +495,8 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
                 // The saslAuthentication Tag
                 buffer.put( ( byte ) LdapConstants.BIND_REQUEST_SASL_TAG );
 
-                byte[] mechanismBytes = Strings.getBytesUtf8( getSaslMechanism() );
-
                 buffer.put( TLV
-                    .getBytes( getSaslMechanismLength() + getSaslCredentialsLength() ) );
+                    .getBytes( saslMechanismLength + saslCredentialsLength ) );
 
                 BerValue.encode( buffer, mechanismBytes );
 

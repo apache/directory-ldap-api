@@ -36,6 +36,7 @@ import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
+import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -64,8 +65,8 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     /** The list of all attributes Id bytes */
     private List<byte[]> attributeIds;
 
-    /** The list of all vals length */
-    private List<Integer> valsLength;
+    /** The list of all values length */
+    private List<Integer> valuesLength;
 
     /** The current attribute being processed */
     private Attribute currentAttribute;
@@ -165,7 +166,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
      */
     public List<Integer> getValsLength()
     {
-        return valsLength;
+        return valuesLength;
     }
 
 
@@ -175,7 +176,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
      */
     public void setValsLength( List<Integer> valsLength )
     {
-        this.valsLength = valsLength;
+        this.valuesLength = valsLength;
     }
 
 
@@ -317,13 +318,13 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
 
         if ( ( entry != null ) && ( entry.size() != 0 ) )
         {
-            List<Integer> attributeLength = new LinkedList<Integer>();
+            attributeLength = new LinkedList<Integer>();
             attributeIds = new LinkedList<byte[]>();
-            List<Integer> valsLength = new LinkedList<Integer>();
+            valuesLength = new LinkedList<Integer>();
 
             // Store those lists in the object
             setAttributeLength( attributeLength );
-            setValsLength( valsLength );
+            setValsLength( valuesLength );
 
             // Compute the attributes length
             for ( Attribute attribute : entry )
@@ -332,9 +333,9 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
                 int localValuesLength = 0;
 
                 // Get the type length
-                byte[] atrributeIdBytes = attribute.getUpId().getBytes();
-                attributeIds.add( atrributeIdBytes );
-                int idLength = atrributeIdBytes.length;
+                byte[] attributeIdBytes = Strings.getBytesUtf8( attribute.getUpId() );
+                attributeIds.add( attributeIdBytes );
+                int idLength = attributeIdBytes.length;
                 localAttributeLength = 1 + TLV.getNbBytes( idLength ) + idLength;
 
                 if ( attribute.size() != 0 )
@@ -373,7 +374,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
 
                 // Store the lengths of the encoded attributes and values
                 attributeLength.add( localAttributeLength );
-                valsLength.add( localValuesLength );
+                valuesLength.add( localValuesLength );
             }
 
             // Store the lengths of the entry
@@ -443,7 +444,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
                 {
                     // The partial attribute list sequence
                     buffer.put( UniversalTag.SEQUENCE.getValue() );
-                    int localAttributeLength = getAttributeLength().get( attributeNumber );
+                    int localAttributeLength = attributeLength.get( attributeNumber );
                     buffer.put( TLV.getBytes( localAttributeLength ) );
 
                     // The attribute type
@@ -451,12 +452,12 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
 
                     // The values
                     buffer.put( UniversalTag.SET.getValue() );
-                    int localValuesLength = getValsLength().get( attributeNumber );
+                    int localValuesLength = valuesLength.get( attributeNumber );
                     buffer.put( TLV.getBytes( localValuesLength ) );
 
                     if ( attribute.size() > 0 )
                     {
-                        for ( org.apache.directory.shared.ldap.model.entry.Value<?> value : attribute )
+                        for ( Value<?> value : attribute )
                         {
                             BerValue.encode( buffer, value.getBytes() );
                         }

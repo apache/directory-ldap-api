@@ -62,6 +62,9 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
     /** The list of all attributes length */
     private List<Integer> attributesLength;
 
+    /** The list of all attributes Id bytes */
+    private List<byte[]> attributeIds;
+
     /** The list of all vals length */
     private List<Integer> valuesLength;
 
@@ -366,8 +369,9 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
 
         if ( entry.size() != 0 )
         {
-            List<Integer> attributesLength = new LinkedList<Integer>();
-            List<Integer> valuesLength = new LinkedList<Integer>();
+            attributesLength = new LinkedList<Integer>();
+            attributeIds = new LinkedList<byte[]>();
+            valuesLength = new LinkedList<Integer>();
 
             // Compute the attributes length
             for ( Attribute attribute : entry )
@@ -376,7 +380,10 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
                 int localValuesLength = 0;
 
                 // Get the type length
-                int idLength = attribute.getUpId().getBytes().length;
+                byte[] attributeIdBytes = Strings.getBytesUtf8( attribute.getUpId() );
+                attributeIds.add( attributeIdBytes );
+
+                int idLength = attributeIdBytes.length;
                 localAttributeLength = 1 + TLV.getNbBytes( idLength ) + idLength;
 
                 // The values
@@ -464,29 +471,22 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
                 {
                     // The attributes list sequence
                     buffer.put( UniversalTag.SEQUENCE.getValue() );
-                    int localAttributeLength = getAttributesLength().get( attributeNumber );
+                    int localAttributeLength = attributesLength.get( attributeNumber );
                     buffer.put( TLV.getBytes( localAttributeLength ) );
 
                     // The attribute type
-                    BerValue.encode( buffer, attribute.getUpId() );
+                    BerValue.encode( buffer, attributeIds.get( attributeNumber ) );
 
                     // The values
                     buffer.put( UniversalTag.SET.getValue() );
-                    int localValuesLength = getValuesLength().get( attributeNumber );
+                    int localValuesLength = valuesLength.get( attributeNumber );
                     buffer.put( TLV.getBytes( localValuesLength ) );
 
                     if ( attribute.size() != 0 )
                     {
                         for ( Value<?> value : attribute )
                         {
-                            if ( value.isHumanReadable() )
-                            {
-                                BerValue.encode( buffer, value.getString() );
-                            }
-                            else
-                            {
-                                BerValue.encode( buffer, value.getBytes() );
-                            }
+                            BerValue.encode( buffer, value.getBytes() );
                         }
                     }
 

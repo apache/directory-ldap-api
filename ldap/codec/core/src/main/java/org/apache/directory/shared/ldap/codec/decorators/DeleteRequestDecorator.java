@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.codec.decorators;
 
@@ -33,6 +33,7 @@ import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.DeleteRequest;
 import org.apache.directory.shared.ldap.model.message.DeleteResponse;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.util.Strings;
 
 
 /**
@@ -43,6 +44,10 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRequest, DeleteResponse>
     implements DeleteRequest
 {
+    
+    /** The bytes containing the Dn */
+    private byte[] dnBytes;
+
     /**
      * Makes a DeleteRequest a MessageDecorator.
      *
@@ -120,25 +125,28 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     // The Decorator methods
     //-------------------------------------------------------------------------
     /**
-     * Compute the DelRequest length 
+     * Compute the DelRequest length
      * 
-     * DelRequest : 
-     * 0x4A L1 entry 
+     * DelRequest :
+     * 0x4A L1 entry
      * 
-     * L1 = Length(entry) 
+     * L1 = Length(entry)
      * Length(DelRequest) = Length(0x4A) + Length(L1) + L1
      */
     public int computeLength()
     {
+        dnBytes = Strings.getBytesUtf8( getName().getName() );
+        int dnLength = dnBytes.length;
+        
         // The entry
-        return 1 + TLV.getNbBytes( Dn.getNbBytes( getName() ) ) + Dn.getNbBytes( getName() );
+        return 1 + TLV.getNbBytes( dnLength ) + dnLength;
     }
 
 
     /**
-     * Encode the DelRequest message to a PDU. 
+     * Encode the DelRequest message to a PDU.
      * 
-     * DelRequest : 
+     * DelRequest :
      * 0x4A LL entry
      * 
      * @param buffer The buffer where to put the PDU
@@ -151,8 +159,8 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
             buffer.put( LdapConstants.DEL_REQUEST_TAG );
 
             // The entry
-            buffer.put( TLV.getBytes( Dn.getNbBytes( getName() ) ) );
-            buffer.put( Dn.getBytes( getName() ) );
+            buffer.put( TLV.getBytes( dnBytes.length ) );
+            buffer.put( dnBytes );
         }
         catch ( BufferOverflowException boe )
         {
