@@ -25,7 +25,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
@@ -218,16 +218,16 @@ public class AttributeValueAssertionFilter extends Filter
         }
 
         // The attribute desc
-        Value.encode( buffer, assertion.getAttributeDesc() );
+        BerValue.encode( buffer, assertion.getAttributeDesc() );
 
         // The assertion desc
         if ( assertion.getAssertionValue().isHumanReadable() )
         {
-            Value.encode( buffer, assertion.getAssertionValue().getString() );
+            BerValue.encode( buffer, assertion.getAssertionValue().getString() );
         }
         else
         {
-            Value.encode( buffer, assertion.getAssertionValue().getBytes() );
+            BerValue.encode( buffer, assertion.getAssertionValue().getBytes() );
         }
 
         return buffer;

@@ -25,7 +25,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
@@ -435,7 +435,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
         }
 
         // The version (LDAP V3 only)
-        Value.encode( buffer, 3 );
+        BerValue.encode( buffer, 3 );
 
         Dn dn = getDn();
 
@@ -443,7 +443,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
         {
             // A DN has been provided
 
-            Value.encode( buffer, Dn.getBytes( dn ) );
+            BerValue.encode( buffer, Dn.getBytes( dn ) );
         }
         else
         {
@@ -456,7 +456,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
                 name = "";
             }
 
-            Value.encode( buffer, name.getBytes() );
+            BerValue.encode( buffer, name.getBytes() );
         }
 
         byte[] credentials = getCredentials();
@@ -503,11 +503,11 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
                 buffer.put( TLV
                     .getBytes( getSaslMechanismLength() + getSaslCredentialsLength() ) );
 
-                Value.encode( buffer, mechanismBytes );
+                BerValue.encode( buffer, mechanismBytes );
 
                 if ( credentials != null )
                 {
-                    Value.encode( buffer, credentials );
+                    BerValue.encode( buffer, credentials );
                 }
             }
             catch ( BufferOverflowException boe )

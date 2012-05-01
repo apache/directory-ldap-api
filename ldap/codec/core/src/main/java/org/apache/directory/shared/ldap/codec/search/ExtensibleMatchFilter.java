@@ -25,7 +25,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.util.Strings;
@@ -313,7 +313,7 @@ public class ExtensibleMatchFilter extends Filter
             {
                 buffer.put( ( byte ) LdapConstants.DN_ATTRIBUTES_FILTER_TAG );
                 buffer.put( ( byte ) 1 );
-                buffer.put( Value.TRUE_VALUE );
+                buffer.put( BerValue.TRUE_VALUE );
             }
         }
         catch ( BufferOverflowException boe )

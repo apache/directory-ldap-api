@@ -30,7 +30,7 @@ import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.message.controls.PersistentSearch;
 import org.slf4j.Logger;
@@ -108,7 +108,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                 {
                     public void action( PersistentSearchContainer container ) throws DecoderException
                     {
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {
@@ -149,7 +149,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                 {
                     public void action( PersistentSearchContainer container ) throws DecoderException
                     {
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {
@@ -187,7 +187,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
                 {
                     public void action( PersistentSearchContainer container ) throws DecoderException
                     {
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {

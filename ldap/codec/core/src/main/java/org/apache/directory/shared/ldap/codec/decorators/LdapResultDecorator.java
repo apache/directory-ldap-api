@@ -25,7 +25,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.Decorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
@@ -233,7 +233,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
         int ldapResultLength = 0;
 
         // The result code
-        ldapResultLength = 1 + 1 + Value.getNbBytes( getResultCode().getValue() );
+        ldapResultLength = 1 + 1 + BerValue.getNbBytes( getResultCode().getValue() );
 
         // The matchedDN length
         if ( getMatchedDn() == null )
@@ -280,7 +280,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
         try
         {
             // The result code
-            Value.encodeEnumerated( buffer, getResultCode().getValue() );
+            BerValue.encodeEnumerated( buffer, getResultCode().getValue() );
         }
         catch ( BufferOverflowException boe )
         {
@@ -288,10 +288,10 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
         }
 
         // The matchedDN
-        Value.encode( buffer, getMatchedDnBytes() );
+        BerValue.encode( buffer, getMatchedDnBytes() );
 
         // The error message
-        Value.encode( buffer, getErrorMessageBytes() );
+        BerValue.encode( buffer, getErrorMessageBytes() );
 
         // The referrals, if any
         Referral referral = getReferral();

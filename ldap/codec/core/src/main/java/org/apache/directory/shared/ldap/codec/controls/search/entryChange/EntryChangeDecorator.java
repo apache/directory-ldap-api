@@ -28,7 +28,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
@@ -118,7 +118,7 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
 
         if ( getChangeNumber() != UNDEFINED_CHANGE_NUMBER )
         {
-            changeNumberLength = 1 + 1 + Value.getNbBytes( getChangeNumber() );
+            changeNumberLength = 1 + 1 + BerValue.getNbBytes( getChangeNumber() );
         }
 
         eccSeqLength = changeTypesLength + previousDnLength + changeNumberLength;
@@ -147,16 +147,16 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
 
         buffer.put( UniversalTag.ENUMERATED.getValue() );
         buffer.put( ( byte ) 1 );
-        buffer.put( Value.getBytes( getChangeType().getValue() ) );
+        buffer.put( BerValue.getBytes( getChangeType().getValue() ) );
 
         if ( getPreviousDn() != null )
         {
-            Value.encode( buffer, previousDnBytes );
+            BerValue.encode( buffer, previousDnBytes );
         }
 
         if ( getChangeNumber() != UNDEFINED_CHANGE_NUMBER )
         {
-            Value.encode( buffer, getChangeNumber() );
+            BerValue.encode( buffer, getChangeNumber() );
         }
 
         return buffer;
@@ -180,16 +180,16 @@ public class EntryChangeDecorator extends ControlDecorator<EntryChange> implemen
 
                 buffer.put( UniversalTag.ENUMERATED.getValue() );
                 buffer.put( ( byte ) 1 );
-                buffer.put( Value.getBytes( getChangeType().getValue() ) );
+                buffer.put( BerValue.getBytes( getChangeType().getValue() ) );
 
                 if ( getPreviousDn() != null )
                 {
-                    Value.encode( buffer, previousDnBytes );
+                    BerValue.encode( buffer, previousDnBytes );
                 }
 
                 if ( getChangeNumber() != UNDEFINED_CHANGE_NUMBER )
                 {
-                    Value.encode( buffer, getChangeNumber() );
+                    BerValue.encode( buffer, getChangeNumber() );
                 }
 
                 value = buffer.array();

@@ -26,7 +26,7 @@ import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.TLVBerDecoderMBean;
 import org.apache.directory.shared.asn1.ber.tlv.TLVStateEnum;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.util.Asn1StringUtils;
 import org.apache.directory.shared.i18n.I18n;
 import org.slf4j.Logger;
@@ -168,7 +168,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
             parent = parent.getParent();
         }
 
-        Value value = current.getValue();
+        BerValue value = current.getValue();
 
         if ( ( value != null ) && ( value.getData() != null ) )
         {

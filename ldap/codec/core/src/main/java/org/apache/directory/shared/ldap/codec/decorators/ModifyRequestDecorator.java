@@ -29,7 +29,7 @@ import java.util.List;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
@@ -596,7 +596,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
             buffer.put( TLV.getBytes( getModifyRequestLength() ) );
 
             // The entry
-            Value.encode( buffer, Dn.getBytes( getName() ) );
+            BerValue.encode( buffer, Dn.getBytes( getName() ) );
 
             // The modifications sequence
             buffer.put( UniversalTag.SEQUENCE.getValue() );
@@ -629,7 +629,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
                     buffer.put( TLV.getBytes( localModificationLength ) );
 
                     // The modification type
-                    Value.encode( buffer, modification.getAttribute().getUpId() );
+                    BerValue.encode( buffer, modification.getAttribute().getUpId() );
 
                     // The values
                     buffer.put( UniversalTag.SET.getValue() );
@@ -642,11 +642,11 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
                         {
                             if ( value.isHumanReadable() )
                             {
-                                Value.encode( buffer, value.getString() );
+                                BerValue.encode( buffer, value.getString() );
                             }
                             else
                             {
-                                Value.encode( buffer, value.getBytes() );
+                                BerValue.encode( buffer, value.getBytes() );
                             }
                         }
                     }

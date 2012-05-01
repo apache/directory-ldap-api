@@ -35,7 +35,7 @@ import org.apache.directory.shared.i18n.I18n;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class Value
+public class BerValue
 {
     /** The data buffer. */
     private byte[] data;
@@ -105,7 +105,7 @@ public class Value
      *
      * @param value the associated value
      */
-    public Value( byte[] value )
+    public BerValue( byte[] value )
     {
         // Do a copy of the byte array
         data = new byte[value.length];
@@ -117,7 +117,7 @@ public class Value
     /**
      * The default constructor.
      */
-    public Value()
+    public BerValue()
     {
         data = null;
         currentPos = 0;

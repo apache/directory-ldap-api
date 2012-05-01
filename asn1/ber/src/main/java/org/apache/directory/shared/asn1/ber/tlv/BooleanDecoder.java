@@ -44,7 +44,7 @@ public final class BooleanDecoder
      * @return A boolean.
      * @throws BooleanDecoderException Thrown if the Value does not contains a boolean
      */
-    public static boolean parse( Value value ) throws BooleanDecoderException
+    public static boolean parse( BerValue value ) throws BooleanDecoderException
     {
         byte[] bytes = value.getData();
 

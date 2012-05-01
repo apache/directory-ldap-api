@@ -28,6 +28,7 @@ import java.util.List;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Container;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.i18n.I18n;
@@ -952,10 +953,10 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
         searchRequestLength += 1 + 1 + 1;
 
         // The sizeLimit
-        searchRequestLength += 1 + 1 + org.apache.directory.shared.asn1.ber.tlv.Value.getNbBytes( getSizeLimit() );
+        searchRequestLength += 1 + 1 + BerValue.getNbBytes( getSizeLimit() );
 
         // The timeLimit
-        searchRequestLength += 1 + 1 + org.apache.directory.shared.asn1.ber.tlv.Value.getNbBytes( getTimeLimit() );
+        searchRequestLength += 1 + 1 + BerValue.getNbBytes( getTimeLimit() );
 
         // The typesOnly
         searchRequestLength += 1 + 1 + 1;
@@ -1019,22 +1020,22 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
             buffer.put( TLV.getBytes( getSearchRequestLength() ) );
 
             // The baseObject
-            org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, dnBytes );
+            BerValue.encode( buffer, dnBytes );
 
             // The scope
-            org.apache.directory.shared.asn1.ber.tlv.Value.encodeEnumerated( buffer, getScope().getScope() );
+            BerValue.encodeEnumerated( buffer, getScope().getScope() );
 
             // The derefAliases
-            org.apache.directory.shared.asn1.ber.tlv.Value.encodeEnumerated( buffer, getDerefAliases().getValue() );
+            BerValue.encodeEnumerated( buffer, getDerefAliases().getValue() );
 
             // The sizeLimit
-            org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, getSizeLimit() );
+            BerValue.encode( buffer, getSizeLimit() );
 
             // The timeLimit
-            org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, getTimeLimit() );
+            BerValue.encode( buffer, getTimeLimit() );
 
             // The typesOnly
-            org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, getTypesOnly() );
+            BerValue.encode( buffer, getTypesOnly() );
 
             // The filter
             getCodecFilter().encode( buffer );
@@ -1048,7 +1049,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                 // encode each attribute
                 for ( String attribute : getAttributes() )
                 {
-                    org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, attribute );
+                    BerValue.encode( buffer, attribute );
                 }
             }
         }

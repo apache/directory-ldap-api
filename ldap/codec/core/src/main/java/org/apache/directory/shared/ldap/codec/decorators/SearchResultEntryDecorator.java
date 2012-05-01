@@ -28,7 +28,7 @@ import java.util.List;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
@@ -425,7 +425,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
             buffer.put( TLV.getBytes( getSearchResultEntryLength() ) );
 
             // The objectName
-            Value.encode( buffer, getObjectNameBytes() );
+            BerValue.encode( buffer, getObjectNameBytes() );
 
             // The attributes sequence
             buffer.put( UniversalTag.SEQUENCE.getValue() );
@@ -447,7 +447,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
                     buffer.put( TLV.getBytes( localAttributeLength ) );
 
                     // The attribute type
-                    Value.encode( buffer, attributeIds.get( attributeNumber ) );
+                    BerValue.encode( buffer, attributeIds.get( attributeNumber ) );
 
                     // The values
                     buffer.put( UniversalTag.SET.getValue() );
@@ -458,7 +458,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
                     {
                         for ( org.apache.directory.shared.ldap.model.entry.Value<?> value : attribute )
                         {
-                            Value.encode( buffer, value.getBytes() );
+                            BerValue.encode( buffer, value.getBytes() );
                         }
                     }
 

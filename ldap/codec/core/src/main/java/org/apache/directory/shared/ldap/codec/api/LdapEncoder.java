@@ -28,7 +28,7 @@ import java.util.Map;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.Message;
@@ -117,12 +117,12 @@ public class LdapEncoder
         }
 
         // The control type
-        Value.encode( buffer, control.getOid().getBytes() );
+        BerValue.encode( buffer, control.getOid().getBytes() );
 
         // The control criticality, if true
         if ( control.isCritical() )
         {
-            Value.encode( buffer, control.isCritical() );
+            BerValue.encode( buffer, control.isCritical() );
         }
 
         return buffer;
@@ -175,7 +175,7 @@ public class LdapEncoder
             }
 
             // The message Id
-            Value.encode( buffer, message.getMessageId() );
+            BerValue.encode( buffer, message.getMessageId() );
 
             // Add the protocolOp part
             decorator.encode( buffer );
@@ -241,7 +241,7 @@ public class LdapEncoder
         // - the tag (0x02), 1 byte
         // - the length of the Id length, 1 byte
         // - the Id length, 1 to 4 bytes
-        int ldapMessageLength = 1 + 1 + Value.getNbBytes( messageDecorator.getDecorated().getMessageId() );
+        int ldapMessageLength = 1 + 1 + BerValue.getNbBytes( messageDecorator.getDecorated().getMessageId() );
 
         // Get the protocolOp length
         ldapMessageLength += messageDecorator.computeLength();
@@ -321,7 +321,7 @@ public class LdapEncoder
             for ( byte[] ldapUrlBytes : ldapUrlsBytes )
             {
                 // Encode the current referral
-                Value.encode( buffer, ldapUrlBytes );
+                BerValue.encode( buffer, ldapUrlBytes );
             }
         }
     }

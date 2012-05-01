@@ -28,7 +28,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
@@ -89,7 +89,7 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
      */
     public int computeLength()
     {
-        int changeTypesLength = 1 + 1 + Value.getNbBytes( getChangeTypes() );
+        int changeTypesLength = 1 + 1 + BerValue.getNbBytes( getChangeTypes() );
         int changesOnlyLength = 1 + 1 + 1;
         int returnRCsLength = 1 + 1 + 1;
 
@@ -118,9 +118,9 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
         buffer.put( UniversalTag.SEQUENCE.getValue() );
         buffer.put( TLV.getBytes( psearchSeqLength ) );
 
-        Value.encode( buffer, getChangeTypes() );
-        Value.encode( buffer, isChangesOnly() );
-        Value.encode( buffer, isReturnECs() );
+        BerValue.encode( buffer, getChangeTypes() );
+        BerValue.encode( buffer, isChangesOnly() );
+        BerValue.encode( buffer, isReturnECs() );
 
         return buffer;
     }
@@ -142,9 +142,9 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
                 buffer.put( UniversalTag.SEQUENCE.getValue() );
                 buffer.put( TLV.getBytes( psearchSeqLength ) );
 
-                Value.encode( buffer, getChangeTypes() );
-                Value.encode( buffer, isChangesOnly() );
-                Value.encode( buffer, isReturnECs() );
+                BerValue.encode( buffer, getChangeTypes() );
+                BerValue.encode( buffer, isChangesOnly() );
+                BerValue.encode( buffer, isReturnECs() );
 
                 value = buffer.array();
             }

@@ -30,7 +30,7 @@ import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.LongDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.LongDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.message.controls.ChangeType;
@@ -97,7 +97,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                 {
                     public void action( EntryChangeContainer container ) throws DecoderException
                     {
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {
@@ -168,7 +168,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
                         }
                         else
                         {
-                            Value value = container.getCurrentTLV().getValue();
+                            BerValue value = container.getCurrentTLV().getValue();
                             Dn previousDn;
 
                             try
@@ -200,7 +200,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
         {
             public void action( EntryChangeContainer container ) throws DecoderException
             {
-                Value value = container.getCurrentTLV().getValue();
+                BerValue value = container.getCurrentTLV().getValue();
 
                 try
                 {

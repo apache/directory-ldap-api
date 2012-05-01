@@ -43,7 +43,7 @@ public class TLV
     private int lengthBytesRead;
 
     /** The current Value being processed */
-    private Value value;
+    private BerValue value;
 
     /** An identity for the TLV. It store the TLV hashCode */
     private int id;
@@ -106,7 +106,7 @@ public class TLV
         tag = 0;
         length = 0;
         lengthNbBytes = 0;
-        value = new Value();
+        value = new BerValue();
         this.id = id;
 
         expectedLength = 0;
@@ -198,7 +198,7 @@ public class TLV
     /**
      * @return Returns the value.
      */
-    public Value getValue()
+    public BerValue getValue()
     {
         return value;
     }

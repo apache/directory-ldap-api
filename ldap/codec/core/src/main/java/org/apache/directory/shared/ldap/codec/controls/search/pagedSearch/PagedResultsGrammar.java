@@ -26,7 +26,7 @@ import org.apache.directory.shared.asn1.ber.grammar.Grammar;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.i18n.I18n;
@@ -100,7 +100,7 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
                 {
                     public void action( PagedResultsContainer container ) throws DecoderException
                     {
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         try
                         {
@@ -146,7 +146,7 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
                 {
                     public void action( PagedResultsContainer container ) throws DecoderException
                     {
-                        Value value = container.getCurrentTLV().getValue();
+                        BerValue value = container.getCurrentTLV().getValue();
 
                         if ( container.getCurrentTLV().getLength() == 0 )
                         {

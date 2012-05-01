@@ -46,7 +46,7 @@ public final class LongDecoder
      * @return An integer
      * @throws LongDecoderException Thrown if the byte stream does not contains an integer
      */
-    public static long parse( Value value, long min, long max ) throws LongDecoderException
+    public static long parse( BerValue value, long min, long max ) throws LongDecoderException
     {
         long result = parseLong( value );
 
@@ -68,7 +68,7 @@ public final class LongDecoder
      * @return An integer
      * @throws LongDecoderException Thrown if the byte stream does not contains an integer
      */
-    public static long parse( Value value ) throws LongDecoderException
+    public static long parse( BerValue value ) throws LongDecoderException
     {
         return parseLong( value );
     }
@@ -78,7 +78,7 @@ public final class LongDecoder
      * Helper method used to parse the long. We don't check any minimal or maximal
      * bound.
      */
-    public static long parseLong( Value value ) throws LongDecoderException
+    public static long parseLong( BerValue value ) throws LongDecoderException
     {
         long result = 0;
 

@@ -25,7 +25,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
@@ -281,13 +281,13 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
 
             // The entry
 
-            Value.encode( buffer, Dn.getBytes( getName() ) );
+            BerValue.encode( buffer, Dn.getBytes( getName() ) );
 
             // The newRDN
-            Value.encode( buffer, getNewRdn().getName() );
+            BerValue.encode( buffer, getNewRdn().getName() );
 
             // The flag deleteOldRdn
-            Value.encode( buffer, getDeleteOldRdn() );
+            BerValue.encode( buffer, getDeleteOldRdn() );
 
             // The new superior, if any
             if ( getNewSuperior() != null )

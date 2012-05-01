@@ -46,7 +46,7 @@ public final class IntegerDecoder
      * @return An integer
      * @throws IntegerDecoderException Thrown if the byte[] does not contains an integer
      */
-    public static int parse( Value value, int min, int max ) throws IntegerDecoderException
+    public static int parse( BerValue value, int min, int max ) throws IntegerDecoderException
     {
         int result = parseInt( value );
 
@@ -68,7 +68,7 @@ public final class IntegerDecoder
      * @return An integer
      * @throws IntegerDecoderException Thrown if the byte stream does not contains an integer
      */
-    public static int parse( Value value ) throws IntegerDecoderException
+    public static int parse( BerValue value ) throws IntegerDecoderException
     {
         return parseInt( value );
     }
@@ -78,7 +78,7 @@ public final class IntegerDecoder
      * Helper method used to parse the integer. We don't check any minimal or maximal
      * bound.
      */
-    private static int parseInt( Value value ) throws IntegerDecoderException
+    private static int parseInt( BerValue value ) throws IntegerDecoderException
     {
         int result = 0;
 

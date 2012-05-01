@@ -24,7 +24,7 @@ import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Container;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,7 +96,7 @@ public abstract class AbstractReadOctetString<C extends Asn1Container> extends G
             throw new DecoderException( I18n.err( I18n.ERR_04067 ) );
         }
 
-        Value value = tlv.getValue();
+        BerValue value = tlv.getValue();
 
         // The data should not be null
         if ( ( value.getData() == null ) && ( !canBeNull ) )
