@@ -41,16 +41,6 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
 
 
     /**
-     * Apply an AttributeType to the current Value, normalizing it.
-     *
-     * @param attributeType The AttributeType to apply
-     * @throws LdapInvalidAttributeValueException If the value is not valid accordingly
-     * to the schema
-     */
-    void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
-
-
-    /**
      * Clone a Value
      * 
      * @return A cloned value
@@ -75,7 +65,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
 
 
     /**
-     * Check if the value is stored into an instance of the given 
+     * Check if the value is stored into an instance of the given
      * AttributeType, or one of its ascendant.
      * 
      * For instance, if the Value is associated with a CommonName,
@@ -107,7 +97,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
 
     /**
      * Get the wrapped value as a String. If the original value
-     * is binary, this method will return the value as if it was 
+     * is binary, this method will return the value as if it was
      * an UTF-8 encoded String.
      *
      * @return the wrapped value as a String
@@ -156,7 +146,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
 
 
     /**
-     * Gets a reference to the the normalized (canonical) representation 
+     * Gets a reference to the the normalized (canonical) representation
      * for the wrapped value.
      *
      * @return gets a reference to the normalized value

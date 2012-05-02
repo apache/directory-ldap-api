@@ -1772,8 +1772,14 @@ public class DefaultAttribute implements Attribute, Cloneable
 
             for ( Value<?> value : values )
             {
-                value.apply( attributeType );
-                newValues.add( value );
+                if ( value instanceof StringValue )
+                {
+                    newValues.add( new StringValue( attributeType, value.getString() ) );
+                }
+                else
+                {
+                    newValues.add( new BinaryValue( attributeType, value.getBytes() ) );
+                }
             }
 
             values = newValues;
@@ -1934,7 +1940,8 @@ public class DefaultAttribute implements Attribute, Cloneable
 
             for ( Value<?> value : values )
             {
-                attribute.values.add( value.clone() );
+                // No need to clone the value, it will never be changed
+                attribute.values.add( value );
             }
 
             return attribute;

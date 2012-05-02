@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.entry;
 
@@ -219,9 +219,9 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        bv1n.apply( userCertificate );
+        BinaryValue value = new BinaryValue( userCertificate, bv1n.getBytes() );
 
-        bv1n.writeExternal( out );
+        value.writeExternal( out );
 
         ObjectInputStream in = null;
 
@@ -230,7 +230,7 @@ public class SchemaAwareValueSerializationTest
 
         BinaryValue bvDeser = BinaryValue.deserialize( userCertificate, in );
 
-        assertEquals( bv1n, bvDeser );
+        assertEquals( value, bvDeser );
     }
 
 
@@ -240,9 +240,9 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        bv2n.apply( userCertificate );
+        BinaryValue value = new BinaryValue( userCertificate, bv2n.getBytes() );
 
-        bv2n.writeExternal( out );
+        value.writeExternal( out );
 
         ObjectInputStream in = null;
 
@@ -251,7 +251,7 @@ public class SchemaAwareValueSerializationTest
 
         BinaryValue bvDeser = BinaryValue.deserialize( userCertificate, in );
 
-        assertEquals( bv2n, bvDeser );
+        assertEquals( value, bvDeser );
     }
 
 
@@ -261,9 +261,9 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        bv3n.apply( userCertificate );
+        BinaryValue value = new BinaryValue( userCertificate, bv3n.getBytes() );
 
-        bv3n.writeExternal( out );
+        value.writeExternal( out );
 
         ObjectInputStream in = null;
 
@@ -272,7 +272,7 @@ public class SchemaAwareValueSerializationTest
 
         BinaryValue bvDeser = BinaryValue.deserialize( userCertificate, in );
 
-        assertEquals( bv3n, bvDeser );
+        assertEquals( value, bvDeser );
     }
 
 
@@ -282,9 +282,9 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        sv1n.apply( cn );
+        StringValue value = new StringValue( cn, sv1n.getString() );
 
-        sv1n.writeExternal( out );
+        value.writeExternal( out );
 
         ObjectInputStream in = null;
 
@@ -293,7 +293,7 @@ public class SchemaAwareValueSerializationTest
 
         StringValue svDeser = StringValue.deserialize( cn, in );
 
-        assertEquals( sv1n, svDeser );
+        assertEquals( value, svDeser );
     }
 
 
@@ -303,9 +303,9 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        sv2n.apply( dc );
+        StringValue value = new StringValue( dc, sv2n.getString() );
 
-        sv2n.writeExternal( out );
+        value.writeExternal( out );
 
         ObjectInputStream in = null;
 
@@ -314,7 +314,7 @@ public class SchemaAwareValueSerializationTest
 
         StringValue svDeser = StringValue.deserialize( cn, in );
 
-        assertEquals( sv2n, svDeser );
+        assertEquals( value, svDeser );
     }
 
 
@@ -324,9 +324,9 @@ public class SchemaAwareValueSerializationTest
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        sv3n.apply( dc );
+        StringValue value = new StringValue( dc, sv3n.getString() );
 
-        sv3n.writeExternal( out );
+        value.writeExternal( out );
 
         ObjectInputStream in = null;
 
@@ -335,6 +335,6 @@ public class SchemaAwareValueSerializationTest
 
         StringValue svDeser = StringValue.deserialize( cn, in );
 
-        assertEquals( sv3n, svDeser );
+        assertEquals( value, svDeser );
     }
 }
