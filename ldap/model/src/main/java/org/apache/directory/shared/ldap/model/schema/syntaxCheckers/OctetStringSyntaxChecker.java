@@ -22,6 +22,7 @@ package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
+import org.apache.felix.ipojo.annotations.Component;
 
 
 /**
@@ -35,6 +36,7 @@ import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Component
 @SuppressWarnings("serial")
 public class OctetStringSyntaxChecker extends SyntaxChecker
 {

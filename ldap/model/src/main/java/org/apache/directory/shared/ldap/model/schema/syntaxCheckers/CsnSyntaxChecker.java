@@ -24,6 +24,7 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.csn.Csn;
 import org.apache.directory.shared.ldap.model.csn.InvalidCSNException;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
+import org.apache.felix.ipojo.annotations.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Component
 @SuppressWarnings("serial")
 public class CsnSyntaxChecker extends SyntaxChecker
 {
