@@ -61,6 +61,10 @@
     <pax-exam-container-default.version>1.2.4</pax-exam-container-default.version>
     <pax-exam-junit.version>1.2.4</pax-exam-junit.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
+    <maven.ipojo.version>1.8.0</maven.ipojo.version>
+    <bnd.ipojo.version>1.8.4</bnd.ipojo.version>
+    <ipojo.version>1.9.0-SNAPSHOT</ipojo.version>
+    <ipojo.annotations.version>1.8.0</ipojo.annotations.version>
   </properties>
   
   <distributionManagement>
@@ -84,6 +88,7 @@
     <module>dsml</module>
     <module>integ</module>
     <module>distribution</module>
+    <module>ipojo-manager</module>
   </modules>
 
   <build>
@@ -532,7 +537,13 @@
         <version>${project.version}</version>
       </dependency>
 
-      <!-- Mina dependencies -->
+      <dependency>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>shared-ipojo-manager</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+     <!-- Mina dependencies -->
 
       <dependency>
         <groupId>org.apache.mina</groupId>
@@ -671,6 +682,18 @@
         <groupId>xpp3</groupId>
         <artifactId>xpp3</artifactId>
         <version>${xpp3.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>org.apache.felix.ipojo</artifactId>
+        <version>${ipojo.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>org.apache.felix.ipojo.annotations</artifactId>
+        <version>${ipojo.annotations.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
