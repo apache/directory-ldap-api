@@ -67,7 +67,8 @@ public class DelResponseTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x2B, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 0x6B,
                 0x26, // CHOICE { ..., delResponse DelResponse, ...
@@ -80,18 +81,49 @@ public class DelResponseTest extends AbstractCodecServiceTest
                 // },
                 0x04,
                 0x1F, // matchedDN LDAPDN,
-                'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', 0x04, 0x00 // errorMessage
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                0x04,
+                0x00 // errorMessage
             // LDAPString,
             // referral [3] Referral OPTIONAL }
             // }
-            } );
+        } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteResponseDecorator> container = 
+        LdapMessageContainer<DeleteResponseDecorator> container =
             new LdapMessageContainer<DeleteResponseDecorator>( codec );
 
         // Decode the DelResponse PDU
@@ -121,7 +153,7 @@ public class DelResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x2D, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -145,16 +177,18 @@ public class DelResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x05, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x6B, 0x00, // CHOICE { ..., delResponse DelResponse, ...
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x6B,
+                0x00, // CHOICE { ..., delResponse DelResponse, ...
             } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteResponseDecorator> container = 
+        LdapMessageContainer<DeleteResponseDecorator> container =
             new LdapMessageContainer<DeleteResponseDecorator>( codec );
-
 
         // Decode a DelResponse message
         try
@@ -183,35 +217,94 @@ public class DelResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             {
-                0x30, 0x48,               // LDAPMessage ::=SEQUENCE {
-                  0x02, 0x01, 0x01,       // messageID MessageID
-                  0x6B, 0x26,             // CHOICE { ..., delResponse DelResponse, ...
-                                          // DelResponse ::= [APPLICATION 11] LDAPResult
-                    0x0A, 0x01, 0x21,     // LDAPResult ::= SEQUENCE {
-                                          // resultCode ENUMERATED {
-                                          // success (0), ...
-                                          // },
-                    0x04, 0x1F,           // matchedDN LDAPDN,
-                  'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                  'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm',
-                    0x04, 0x00,           // errorMessage
-                                          // LDAPString,
-                                          // referral [3] Referral OPTIONAL }
-                                          // }
-                    ( byte ) 0xA0, 0x1B,  // A control
-                      0x30, 0x19, 
-                        0x04, 0x17, 
-                          0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30, 
-                          0x2E, 0x31, 0x2E, 0x31, 0x31, 0x33, 0x37, 0x33, 
-                          0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32
+                0x30, 0x48, // LDAPMessage ::=SEQUENCE {
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x6B,
+                0x26, // CHOICE { ..., delResponse DelResponse, ...
+                      // DelResponse ::= [APPLICATION 11] LDAPResult
+                0x0A,
+                0x01,
+                0x21, // LDAPResult ::= SEQUENCE {
+                      // resultCode ENUMERATED {
+                      // success (0), ...
+                      // },
+                0x04,
+                0x1F, // matchedDN LDAPDN,
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                0x04,
+                0x00, // errorMessage
+                      // LDAPString,
+                      // referral [3] Referral OPTIONAL }
+                      // }
+                ( byte ) 0xA0,
+                0x1B, // A control
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32
 
-            } );
+        } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteResponseDecorator> container = 
+        LdapMessageContainer<DeleteResponseDecorator> container =
             new LdapMessageContainer<DeleteResponseDecorator>( codec );
 
         // Decode the DelResponse PDU
@@ -239,7 +332,8 @@ public class DelResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 

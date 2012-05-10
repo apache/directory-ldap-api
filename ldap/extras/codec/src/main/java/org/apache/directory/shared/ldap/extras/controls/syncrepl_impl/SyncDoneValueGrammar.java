@@ -27,7 +27,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoder;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.util.Strings;
@@ -83,7 +83,8 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
          * Initialize the syncDoneValue object
          */
         super.transitions[SyncDoneValueStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = new GrammarTransition<SyncDoneValueContainer>(
-            SyncDoneValueStatesEnum.START_STATE, SyncDoneValueStatesEnum.SYNC_DONE_VALUE_SEQUENCE_STATE, UniversalTag.SEQUENCE.getValue(),
+            SyncDoneValueStatesEnum.START_STATE, SyncDoneValueStatesEnum.SYNC_DONE_VALUE_SEQUENCE_STATE,
+            UniversalTag.SEQUENCE.getValue(),
             new GrammarAction<SyncDoneValueContainer>( "Initialization" )
             {
                 public void action( SyncDoneValueContainer container ) throws DecoderException
@@ -91,7 +92,7 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
                     // As all the values are optional or defaulted, we can end here
                     container.setGrammarEndAllowed( true );
                 }
-            }  );
+            } );
 
         /**
          * transition from start to cookie
@@ -100,58 +101,59 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
          *    ....
          * }
          */
-        super.transitions[SyncDoneValueStatesEnum.SYNC_DONE_VALUE_SEQUENCE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
-            new GrammarTransition<SyncDoneValueContainer>( SyncDoneValueStatesEnum.SYNC_DONE_VALUE_SEQUENCE_STATE, 
-                SyncDoneValueStatesEnum.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(), 
-            new GrammarAction<SyncDoneValueContainer>( "Set SyncDoneValueControl cookie" )
+        super.transitions[SyncDoneValueStatesEnum.SYNC_DONE_VALUE_SEQUENCE_STATE.ordinal()][UniversalTag.OCTET_STRING
+            .getValue()] =
+            new GrammarTransition<SyncDoneValueContainer>( SyncDoneValueStatesEnum.SYNC_DONE_VALUE_SEQUENCE_STATE,
+                SyncDoneValueStatesEnum.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(),
+                new GrammarAction<SyncDoneValueContainer>( "Set SyncDoneValueControl cookie" )
+                {
+                    public void action( SyncDoneValueContainer container ) throws DecoderException
+                    {
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        byte[] cookie = value.getData();
+
+                        if ( IS_DEBUG )
+                        {
+                            LOG.debug( "cookie = {}", Strings.dumpBytes( cookie ) );
+                        }
+
+                        container.getSyncDoneValueControl().setCookie( cookie );
+
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
+
+        GrammarAction<SyncDoneValueContainer> refreshDeletesTagAction =
+            new GrammarAction<SyncDoneValueContainer>( "set SyncDoneValueControl refreshDeletes flag" )
             {
                 public void action( SyncDoneValueContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
+                    BerValue value = container.getCurrentTLV().getValue();
 
-                    byte[] cookie = value.getData();
-
-                    if ( IS_DEBUG )
+                    try
                     {
-                        LOG.debug( "cookie = {}", Strings.dumpBytes(cookie) );
+                        boolean refreshDeletes = BooleanDecoder.parse( value );
+
+                        if ( IS_DEBUG )
+                        {
+                            LOG.debug( "refreshDeletes = {}", refreshDeletes );
+                        }
+
+                        container.getSyncDoneValueControl().setRefreshDeletes( refreshDeletes );
+
+                        // the END transition for grammar
+                        container.setGrammarEndAllowed( true );
+                    }
+                    catch ( BooleanDecoderException be )
+                    {
+                        String msg = I18n.err( I18n.ERR_04024 );
+                        LOG.error( msg, be );
+                        throw new DecoderException( msg );
                     }
 
-                    container.getSyncDoneValueControl().setCookie( cookie );
-
-                    container.setGrammarEndAllowed( true );
                 }
-            } );
-
-        GrammarAction<SyncDoneValueContainer> refreshDeletesTagAction = 
-            new GrammarAction<SyncDoneValueContainer>( "set SyncDoneValueControl refreshDeletes flag" )
-        {
-            public void action( SyncDoneValueContainer container ) throws DecoderException
-            {
-                Value value = container.getCurrentTLV().getValue();
-
-                try
-                {
-                    boolean refreshDeletes = BooleanDecoder.parse( value );
-
-                    if ( IS_DEBUG )
-                    {
-                        LOG.debug( "refreshDeletes = {}", refreshDeletes );
-                    }
-
-                    container.getSyncDoneValueControl().setRefreshDeletes( refreshDeletes );
-
-                    // the END transition for grammar
-                    container.setGrammarEndAllowed( true );
-                }
-                catch ( BooleanDecoderException be )
-                {
-                    String msg = I18n.err( I18n.ERR_04024 );
-                    LOG.error( msg, be );
-                    throw new DecoderException( msg );
-                }
-
-            }
-        }; 
+            };
         /**
          * transition from cookie to refreshDeletes
          * {
@@ -159,11 +161,11 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
          *    refreshDeletes BOOLEAN DEFAULT FALSE
          * }
          */
-        super.transitions[SyncDoneValueStatesEnum.COOKIE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] = 
+        super.transitions[SyncDoneValueStatesEnum.COOKIE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
             new GrammarTransition<SyncDoneValueContainer>(
-            SyncDoneValueStatesEnum.COOKIE_STATE, SyncDoneValueStatesEnum.REFRESH_DELETES_STATE,
-            UniversalTag.BOOLEAN.getValue(), refreshDeletesTagAction );
-        
+                SyncDoneValueStatesEnum.COOKIE_STATE, SyncDoneValueStatesEnum.REFRESH_DELETES_STATE,
+                UniversalTag.BOOLEAN.getValue(), refreshDeletesTagAction );
+
         /**
          * transition from SEQUENCE to refreshDeletes
          * {
@@ -171,8 +173,9 @@ public final class SyncDoneValueGrammar extends AbstractGrammar<SyncDoneValueCon
          *    refreshDeletes BOOLEAN DEFAULT FALSE
          * }
          */
-        super.transitions[SyncDoneValueStatesEnum.SYNC_DONE_VALUE_SEQUENCE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] = 
-            new GrammarTransition<SyncDoneValueContainer>( SyncDoneValueStatesEnum.SYNC_DONE_VALUE_SEQUENCE_STATE, 
+        super.transitions[SyncDoneValueStatesEnum.SYNC_DONE_VALUE_SEQUENCE_STATE.ordinal()][UniversalTag.BOOLEAN
+            .getValue()] =
+            new GrammarTransition<SyncDoneValueContainer>( SyncDoneValueStatesEnum.SYNC_DONE_VALUE_SEQUENCE_STATE,
                 SyncDoneValueStatesEnum.REFRESH_DELETES_STATE, UniversalTag.BOOLEAN.getValue(), refreshDeletesTagAction );
     }
 

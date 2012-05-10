@@ -103,7 +103,7 @@ public class PresentFilter extends Filter
      */
     public int computeLength()
     {
-        attributeDescriptionBytes = Strings.getBytesUtf8(attributeDescription);
+        attributeDescriptionBytes = Strings.getBytesUtf8( attributeDescription );
         return 1 + TLV.getNbBytes( attributeDescriptionBytes.length ) + attributeDescriptionBytes.length;
     }
 

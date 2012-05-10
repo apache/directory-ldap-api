@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.NumericOidSy
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * A test case for the NameOrNumericId test.
  *
@@ -53,6 +54,7 @@ public class NameOrNumericIdSyntaxCheckerTest
     {
         assertFalse( checker.isValidSyntax( "" ) );
     }
+
 
     @Test
     public void testNumericIds()

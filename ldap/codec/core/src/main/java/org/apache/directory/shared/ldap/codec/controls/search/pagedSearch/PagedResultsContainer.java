@@ -34,7 +34,7 @@ public class PagedResultsContainer extends AbstractContainer
 {
     /** PagedSearchControl */
     private PagedResultsDecorator control;
-    
+
     private LdapApiService codec;
 
 
@@ -101,6 +101,7 @@ public class PagedResultsContainer extends AbstractContainer
     {
         this.control = control;
     }
+
 
     /**
      * Clean the container

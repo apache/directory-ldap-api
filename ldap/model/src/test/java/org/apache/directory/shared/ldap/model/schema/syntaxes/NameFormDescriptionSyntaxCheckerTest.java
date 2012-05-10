@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.NameFormDesc
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Test cases for NameFormDescriptionSyntaxChecker.
  * 
@@ -42,6 +43,7 @@ public class NameFormDescriptionSyntaxCheckerTest
 {
     private NameFormDescriptionSyntaxChecker checker = new NameFormDescriptionSyntaxChecker();
 
+
     @Test
     public void testValid()
     {
@@ -50,23 +52,26 @@ public class NameFormDescriptionSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( "( 2.5.15.3 OC o MUST m NAME 'orgNameForm' DESC 'orgNameForm' )" ) );
         assertTrue( checker.isValidSyntax( "( 2.5.15.3 MUST m NAME 'orgNameForm' DESC 'orgNameForm' OC organization )" ) );
         assertTrue( checker.isValidSyntax( "( 2.5.15.3 NAME 'orgNameForm' DESC 'orgNameForm' OC organization MUST o )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.15.3 NAME 'orgNameForm' DESC 'orgNameForm' OC organization MUST ( o ) MAY ( ou $ cn ) )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.15.3 NAME 'orgNameForm' DESC 'orgNameForm' OC organization MUST ( o ) MAY ( ou $ cn ) )" ) );
-       
+        assertTrue( checker
+            .isValidSyntax( "( 2.5.15.3 NAME 'orgNameForm' DESC 'orgNameForm' OC organization MUST ( o ) MAY ( ou $ cn ) )" ) );
+        assertTrue( checker
+            .isValidSyntax( "( 2.5.15.3 NAME 'orgNameForm' DESC 'orgNameForm' OC organization MUST ( o ) MAY ( ou $ cn ) )" ) );
 
         assertTrue( checker.isValidSyntax( "(2.5.15.3 OC o MUST m)" ) );
-        assertTrue( checker.isValidSyntax( "(   2.5.15.3   NAME   'orgNameForm'    DESC    'orgNameForm'   OC   organization   MUST   (o)   MAY   (ou$cn))" ) );
+        assertTrue( checker
+            .isValidSyntax( "(   2.5.15.3   NAME   'orgNameForm'    DESC    'orgNameForm'   OC   organization   MUST   (o)   MAY   (ou$cn))" ) );
     }
+
 
     @Test
     public void testInvalid()
     {
         // null 
         assertFalse( checker.isValidSyntax( null ) );
-        
+
         // empty 
         assertFalse( checker.isValidSyntax( "" ) );
-        
+
         // missing/invalid OID
         assertFalse( checker.isValidSyntax( "()" ) );
         assertFalse( checker.isValidSyntax( "(  )" ) );

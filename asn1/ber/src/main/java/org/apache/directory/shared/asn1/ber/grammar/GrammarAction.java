@@ -6,18 +6,19 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.asn1.ber.grammar;
+
 
 import org.apache.directory.shared.asn1.ber.Asn1Container;
 
@@ -26,9 +27,11 @@ import org.apache.directory.shared.asn1.ber.Asn1Container;
  * A top level grammar class that store meta informations about the actions.
  * Those informations are not mandatory, but they can be useful for debugging.
  * 
+ * @param C The container type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class GrammarAction<E extends Asn1Container> implements Action<E>
+public abstract class GrammarAction<C extends Asn1Container> implements Action<C>
 {
     /** The action's name */
     protected String name;
@@ -43,7 +46,7 @@ public abstract class GrammarAction<E extends Asn1Container> implements Action<E
     /**
      * Creates a new GrammarAction object.
      * 
-     * @param name The name of the create action
+     * @param name The name of the grammar action
      */
     public GrammarAction( String name )
     {
@@ -52,7 +55,7 @@ public abstract class GrammarAction<E extends Asn1Container> implements Action<E
 
 
     /**
-     * Print the action's name
+     * Prints the action's name
      * 
      * @return The action's name
      */

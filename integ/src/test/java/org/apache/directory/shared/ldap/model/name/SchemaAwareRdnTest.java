@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.name;
 
@@ -56,13 +56,14 @@ public class SchemaAwareRdnTest
 {
     /** A null schemaManager used in tests */
     private static SchemaManager schemaManager;
-    
+
+
     @BeforeClass
     public static void setup() throws Exception
     {
         schemaManager = new DefaultSchemaManager();
     }
-    
+
 
     /**
      * Test a null Rdn
@@ -230,10 +231,10 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnPairCharAttributeValue() throws LdapException
     {
-        String rdn = Strings.utf8ToString(new byte[]
-                {'l', '=', '\\', ',', '=', '\\', '+', '\\', '<', '\\', '>', '#', '\\', ';', '\\', '\\', '\\', '"', '\\',
-                        'C', '3', '\\', 'A', '9'});
-        assertEquals( "2.5.4.7=\\,=\\+\\<\\>#\\;\\\\\\\"\u00E9", new Rdn( schemaManager, rdn ).getNormName() );
+        String rdn = Strings.utf8ToString( new byte[]
+            { 'l', '=', '\\', ',', '\\', '=', '\\', '+', '\\', '<', '\\', '>', '#', '\\', ';', '\\', '\\', '\\', '"', '\\',
+                'C', '3', '\\', 'A', '9' } );
+        assertEquals( "2.5.4.7=\\,\\=\\+\\<\\>#\\;\\\\\\\"\\C3\\A9", new Rdn( schemaManager, rdn ).getNormName() );
     }
 
 
@@ -245,6 +246,7 @@ public class SchemaAwareRdnTest
     {
         assertEquals( "2.5.4.36=#0010A0AAFF", new Rdn( schemaManager, "userCertificate = #0010A0AAFF" ).getNormName() );
     }
+
 
     /**
      * test exception from illegal hexString attribute value : cn=#zz.
@@ -262,6 +264,7 @@ public class SchemaAwareRdnTest
             assertTrue( true );
         }
     }
+
 
     /**
      * test a simple Rdn with quoted attribute value : cn = "quoted \"value"
@@ -285,7 +288,7 @@ public class SchemaAwareRdnTest
     {
         Rdn rdn = new Rdn( schemaManager, "CN", "B" );
 
-        Rdn rdnClone = (Rdn) rdn.clone();
+        Rdn rdnClone = rdn.clone();
 
         rdn = new Rdn( schemaManager, "cn=d" );
 
@@ -317,10 +320,10 @@ public class SchemaAwareRdnTest
     {
         Rdn rdn = new Rdn( schemaManager, "cn = b + sn = bb" );
 
-        Rdn rdnClone = (Rdn) rdn.clone();
+        Rdn rdnClone = rdn.clone();
 
         rdn.clear();
-         rdn = new Rdn( schemaManager, "l=d" );
+        rdn = new Rdn( schemaManager, "l=d" );
 
         assertEquals( "b", rdnClone.getValue( "2.5.4.3" ) );
         assertEquals( "bb", rdnClone.getValue( "SN" ) );
@@ -427,20 +430,20 @@ public class SchemaAwareRdnTest
     public void testCompareSecondAtav() throws LdapException
     {
         // the second ATAV differs
-        Rdn rdn1 = new Rdn( schemaManager,  " cn = b + sn = d " );
-        Rdn rdn2 = new Rdn( schemaManager,  " cn = b + sn = y " );
+        Rdn rdn1 = new Rdn( schemaManager, " cn = b + sn = d " );
+        Rdn rdn2 = new Rdn( schemaManager, " cn = b + sn = y " );
         assertFalse( rdn1.equals( rdn2 ) );
         assertFalse( rdn2.equals( rdn1 ) );
 
         // the third ATAV differs
-        Rdn rdn3 = new Rdn( schemaManager,  " cn = b + sn = d + l = f " );
-        Rdn rdn4 = new Rdn( schemaManager,  " cn = b + sn = d + l = y " );
+        Rdn rdn3 = new Rdn( schemaManager, " cn = b + sn = d + l = f " );
+        Rdn rdn4 = new Rdn( schemaManager, " cn = b + sn = d + l = y " );
         assertFalse( rdn3.equals( rdn4 ) );
         assertFalse( rdn4.equals( rdn3 ) );
 
         // the second ATAV differs in value only
-        Rdn rdn5 = new Rdn( schemaManager,  " cn = b + sn = c " );
-        Rdn rdn6 = new Rdn( schemaManager,  " cn = b + sn = y " );
+        Rdn rdn5 = new Rdn( schemaManager, " cn = b + sn = c " );
+        Rdn rdn6 = new Rdn( schemaManager, " cn = b + sn = y " );
         assertFalse( rdn5.equals( rdn6 ) );
         assertFalse( rdn6.equals( rdn5 ) );
     }
@@ -456,17 +459,17 @@ public class SchemaAwareRdnTest
     @Test
     public void testCompareIndependentFromOrder() throws LdapException
     {
-        Rdn rdn1 = new Rdn( schemaManager,  " cn = b + sn = d " );
-        Rdn rdn2 = new Rdn( schemaManager,  " sn = d + cn = b " );
+        Rdn rdn1 = new Rdn( schemaManager, " cn = b + sn = d " );
+        Rdn rdn2 = new Rdn( schemaManager, " sn = d + cn = b " );
         assertTrue( rdn1.equals( rdn2 ) );
 
-        rdn1 = new Rdn( schemaManager,  " cn = b + sn = e " );
-        rdn2 = new Rdn( schemaManager,  " sn = d + cn = b " );
+        rdn1 = new Rdn( schemaManager, " cn = b + sn = e " );
+        rdn2 = new Rdn( schemaManager, " sn = d + cn = b " );
         assertFalse( rdn1.equals( rdn2 ) );
         assertFalse( rdn2.equals( rdn1 ) );
 
-        rdn1 = new Rdn( schemaManager,  " cn = b + sn = d " );
-        rdn2 = new Rdn( schemaManager,  " l = f + gn = h " );
+        rdn1 = new Rdn( schemaManager, " cn = b + sn = d " );
+        rdn2 = new Rdn( schemaManager, " l = f + gn = h " );
         assertFalse( rdn1.equals( rdn2 ) );
         assertFalse( rdn2.equals( rdn1 ) );
     }
@@ -481,8 +484,8 @@ public class SchemaAwareRdnTest
     @Test
     public void testCompareInvertableNC2NC() throws LdapException
     {
-        Rdn rdn1 = new Rdn( schemaManager,  " cn = b " );
-        Rdn rdn2 = new Rdn( schemaManager,  " cn = c " );
+        Rdn rdn1 = new Rdn( schemaManager, " cn = b " );
+        Rdn rdn2 = new Rdn( schemaManager, " cn = c " );
         assertFalse( rdn1.equals( rdn2 ) );
         assertFalse( rdn2.equals( rdn1 ) );
 
@@ -498,8 +501,8 @@ public class SchemaAwareRdnTest
     @Test
     public void testCompareInvertableNCS2NCSDifferentValues() throws LdapException
     {
-        Rdn rdn1 = new Rdn( schemaManager,  " cn = b + sn = c " );
-        Rdn rdn2 = new Rdn( schemaManager,  " cn = b + sn = y " );
+        Rdn rdn1 = new Rdn( schemaManager, " cn = b + sn = c " );
+        Rdn rdn2 = new Rdn( schemaManager, " cn = b + sn = y " );
         assertFalse( rdn1.equals( rdn2 ) );
         assertFalse( rdn2.equals( rdn1 ) );
     }
@@ -514,8 +517,8 @@ public class SchemaAwareRdnTest
     @Test
     public void testCompareInvertableNCS2NCSDifferentTypes() throws LdapException
     {
-        Rdn rdn1 = new Rdn( schemaManager,  " cn = b + sn = d  " );
-        Rdn rdn2 = new Rdn( schemaManager,  " l = f + gn = h " );
+        Rdn rdn1 = new Rdn( schemaManager, " cn = b + sn = d  " );
+        Rdn rdn2 = new Rdn( schemaManager, " l = f + gn = h " );
         assertFalse( rdn1.equals( rdn2 ) );
         assertFalse( rdn2.equals( rdn1 ) );
     }
@@ -530,8 +533,8 @@ public class SchemaAwareRdnTest
     @Test
     public void testCompareInvertableNCS2NCSUnordered() throws LdapException
     {
-        Rdn rdn1 = new Rdn( schemaManager,  " sn = d + cn = b " );
-        Rdn rdn2 = new Rdn( schemaManager,  " cn = b + l = f " );
+        Rdn rdn1 = new Rdn( schemaManager, " sn = d + cn = b " );
+        Rdn rdn2 = new Rdn( schemaManager, " cn = b + l = f " );
         assertFalse( rdn1.equals( rdn2 ) );
         assertFalse( rdn2.equals( rdn1 ) );
     }
@@ -545,7 +548,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testRDNCompareToNullRdn() throws LdapException
     {
-        Rdn rdn1 = new Rdn( schemaManager,  " cn = b " );
+        Rdn rdn1 = new Rdn( schemaManager, " cn = b " );
 
         assertFalse( rdn1.equals( null ) );
     }
@@ -559,8 +562,8 @@ public class SchemaAwareRdnTest
     @Test
     public void testRDNCompareToNC2NC() throws LdapException
     {
-        Rdn rdn1 = new Rdn( schemaManager,  " cn = b " );
-        Rdn rdn2 = new Rdn( schemaManager,  " cn = b " );
+        Rdn rdn1 = new Rdn( schemaManager, " cn = b " );
+        Rdn rdn2 = new Rdn( schemaManager, " cn = b " );
 
         assertTrue( rdn1.equals( rdn2 ) );
     }
@@ -574,8 +577,8 @@ public class SchemaAwareRdnTest
     @Test
     public void testRDNCompareToNC2NCUperCase() throws LdapException
     {
-        Rdn rdn1 = new Rdn( schemaManager,  " cn = b " );
-        Rdn rdn2 = new Rdn( schemaManager,  " CN = b " );
+        Rdn rdn1 = new Rdn( schemaManager, " cn = b " );
+        Rdn rdn2 = new Rdn( schemaManager, " CN = b " );
 
         assertTrue( rdn1.equals( rdn2 ) );
     }
@@ -589,8 +592,8 @@ public class SchemaAwareRdnTest
     @Test
     public void testRDNCompareToNC2NCNotEquals() throws LdapException
     {
-        Rdn rdn1 = new Rdn( schemaManager,  " cn = b " );
-        Rdn rdn2 = new Rdn( schemaManager,  " CN = d " );
+        Rdn rdn1 = new Rdn( schemaManager, " cn = b " );
+        Rdn rdn2 = new Rdn( schemaManager, " CN = d " );
 
         assertFalse( rdn1.equals( rdn2 ) );
     }
@@ -605,7 +608,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testGetValue() throws LdapException
     {
-        Rdn rdn = new Rdn( schemaManager,  " cn = b + sn = f + gn = h + l = d " );
+        Rdn rdn = new Rdn( schemaManager, " cn = b + sn = f + gn = h + l = d " );
 
         assertEquals( "b", rdn.getNormValue().getString() );
     }
@@ -620,7 +623,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testGetType() throws LdapException
     {
-        Rdn rdn = new Rdn( schemaManager,  " cn = b + sn = f + gn = h + l = d " );
+        Rdn rdn = new Rdn( schemaManager, " cn = b + sn = f + gn = h + l = d " );
 
         assertEquals( "2.5.4.3", rdn.getNormType() );
     }
@@ -634,7 +637,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testGetSize() throws LdapException
     {
-        Rdn rdn = new Rdn( schemaManager,  " cn = b + sn = f + gn = h + l = d " );
+        Rdn rdn = new Rdn( schemaManager, " cn = b + sn = f + gn = h + l = d " );
 
         assertEquals( 4, rdn.size() );
     }
@@ -661,27 +664,27 @@ public class SchemaAwareRdnTest
     @Test
     public void testEquals() throws LdapException
     {
-        Rdn rdn = new Rdn( schemaManager,  "cn=b + sn=d + gn=f" );
+        Rdn rdn = new Rdn( schemaManager, "cn=b + sn=d + gn=f" );
 
         assertFalse( rdn.equals( null ) );
         assertFalse( rdn.equals( "test" ) );
-        assertFalse( rdn.equals( new Rdn( schemaManager,  "cn=c + sn=d + gn=f" ) ) );
-        assertFalse( rdn.equals( new Rdn( schemaManager,  "cn=b" ) ) );
-        assertTrue( rdn.equals( new Rdn( schemaManager,  "cn=b + sn=d + gn=f" ) ) );
-        assertTrue( rdn.equals( new Rdn( schemaManager,  "cn=b + SN=d + GN=f" ) ) );
-        assertTrue( rdn.equals( new Rdn( schemaManager,  "sn=d + gn=f + CN=b" ) ) );
+        assertFalse( rdn.equals( new Rdn( schemaManager, "cn=c + sn=d + gn=f" ) ) );
+        assertFalse( rdn.equals( new Rdn( schemaManager, "cn=b" ) ) );
+        assertTrue( rdn.equals( new Rdn( schemaManager, "cn=b + sn=d + gn=f" ) ) );
+        assertTrue( rdn.equals( new Rdn( schemaManager, "cn=b + SN=d + GN=f" ) ) );
+        assertTrue( rdn.equals( new Rdn( schemaManager, "sn=d + gn=f + CN=b" ) ) );
     }
 
 
     @Test
     public void testUnescapeValueHexa()
     {
-        byte[] res = ( byte[] ) Rdn.unescapeValue("#fF");
+        byte[] res = ( byte[] ) Rdn.unescapeValue( "#fF" );
 
-        assertEquals( "0xFF ", Strings.dumpBytes(res) );
+        assertEquals( "0xFF ", Strings.dumpBytes( res ) );
 
-        res = ( byte[] ) Rdn.unescapeValue("#0123456789aBCDEF");
-        assertEquals( "0x01 0x23 0x45 0x67 0x89 0xAB 0xCD 0xEF ", Strings.dumpBytes(res) );
+        res = ( byte[] ) Rdn.unescapeValue( "#0123456789aBCDEF" );
+        assertEquals( "0x01 0x23 0x45 0x67 0x89 0xAB 0xCD 0xEF ", Strings.dumpBytes( res ) );
     }
 
 
@@ -690,7 +693,7 @@ public class SchemaAwareRdnTest
     {
         try
         {
-            Rdn.unescapeValue("#fF1");
+            Rdn.unescapeValue( "#fF1" );
             fail(); // Should not happen
         }
         catch ( IllegalArgumentException iae )
@@ -703,7 +706,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testUnescapeValueString()
     {
-        String res = ( String ) Rdn.unescapeValue("azerty");
+        String res = ( String ) Rdn.unescapeValue( "azerty" );
 
         assertEquals( "azerty", res );
     }
@@ -712,7 +715,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testUnescapeValueStringSpecial()
     {
-        String res = ( String ) Rdn.unescapeValue("\\\\\\#\\,\\+\\;\\<\\>\\=\\\"\\ ");
+        String res = ( String ) Rdn.unescapeValue( "\\\\\\#\\,\\+\\;\\<\\>\\=\\\"\\ " );
 
         assertEquals( "\\#,+;<>=\" ", res );
     }
@@ -721,7 +724,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testUnescapeValueStringWithSpaceInTheMiddle()
     {
-        String res = ( String ) Rdn.unescapeValue("a b");
+        String res = ( String ) Rdn.unescapeValue( "a b" );
 
         assertEquals( "a b", res );
     }
@@ -730,7 +733,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testUnescapeValueStringWithSpaceInAtTheBeginning()
     {
-        String res = ( String ) Rdn.unescapeValue("\\ a b");
+        String res = ( String ) Rdn.unescapeValue( "\\ a b" );
 
         assertEquals( " a b", res );
     }
@@ -739,34 +742,34 @@ public class SchemaAwareRdnTest
     @Test
     public void testUnescapeValueStringWithSpaceInAtTheEnd()
     {
-        String res = ( String ) Rdn.unescapeValue("a b\\ ");
+        String res = ( String ) Rdn.unescapeValue( "a b\\ " );
 
         assertEquals( "a b ", res );
     }
-    
-    
+
+
     @Test
     public void testUnescapeValueStringWithPoundInTheMiddle()
     {
-        String res = ( String ) Rdn.unescapeValue("a#b");
+        String res = ( String ) Rdn.unescapeValue( "a#b" );
 
         assertEquals( "a#b", res );
     }
-    
-    
+
+
     @Test
     public void testUnescapeValueStringWithPoundAtTheEnd()
     {
-        String res = ( String ) Rdn.unescapeValue("ab#");
+        String res = ( String ) Rdn.unescapeValue( "ab#" );
 
         assertEquals( "ab#", res );
     }
-    
-    
+
+
     @Test
     public void testEscapeValueString()
     {
-        String res = Rdn.escapeValue(Strings.getBytesUtf8("azerty"));
+        String res = Rdn.escapeValue( Strings.getBytesUtf8( "azerty" ) );
 
         assertEquals( "azerty", res );
     }
@@ -775,7 +778,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testEscapeValueStringSpecial()
     {
-        String res = Rdn.escapeValue(Strings.getBytesUtf8("\\#,+;<>=\" "));
+        String res = Rdn.escapeValue( Strings.getBytesUtf8( "\\#,+;<>=\" " ) );
 
         assertEquals( "\\\\#\\,\\+\\;\\<\\>\\=\\\"\\ ", res );
     }
@@ -784,8 +787,8 @@ public class SchemaAwareRdnTest
     @Test
     public void testEscapeValueNumeric()
     {
-        String res = Rdn.escapeValue(new byte[]
-                {'-', 0x00, '-', 0x1F, '-', 0x7F, '-'});
+        String res = Rdn.escapeValue( new byte[]
+            { '-', 0x00, '-', 0x1F, '-', 0x7F, '-' } );
 
         assertEquals( "-\\00-\\1F-\\7F-", res );
     }
@@ -794,8 +797,8 @@ public class SchemaAwareRdnTest
     @Test
     public void testEscapeValueMix()
     {
-        String res = Rdn.escapeValue(new byte[]
-                {'\\', 0x00, '-', '+', '#', 0x7F, '-'});
+        String res = Rdn.escapeValue( new byte[]
+            { '\\', 0x00, '-', '+', '#', 0x7F, '-' } );
 
         assertEquals( "\\\\\\00-\\+#\\7F-", res );
     }
@@ -804,7 +807,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testDIRSERVER_703() throws LdapException
     {
-        Rdn rdn = new Rdn( schemaManager,  "cn=Kate Bush+sn=Bush" );
+        Rdn rdn = new Rdn( schemaManager, "cn=Kate Bush+sn=Bush" );
         assertEquals( "cn=Kate Bush+sn=Bush", rdn.getName() );
     }
 
@@ -812,7 +815,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testMultiValuedIterator() throws LdapException
     {
-        Rdn rdn = new Rdn( schemaManager,  "cn=Kate Bush+sn=Bush" );
+        Rdn rdn = new Rdn( schemaManager, "cn=Kate Bush+sn=Bush" );
         Iterator<Ava> iterator = rdn.iterator();
         assertNotNull( iterator );
         assertTrue( iterator.hasNext() );
@@ -826,7 +829,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testSingleValuedIterator() throws LdapException
     {
-        Rdn rdn = new Rdn( schemaManager,  "cn=Kate Bush" );
+        Rdn rdn = new Rdn( schemaManager, "cn=Kate Bush" );
         Iterator<Ava> iterator = rdn.iterator();
         assertNotNull( iterator );
         assertTrue( iterator.hasNext() );
@@ -848,7 +851,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnWithSpaces() throws LdapException
     {
-        Rdn rdn = new Rdn( schemaManager,  "cn=a\\ b\\ c" );
+        Rdn rdn = new Rdn( schemaManager, "cn=a\\ b\\ c" );
         assertEquals( "2.5.4.3=a b c", rdn.getNormName() );
     }
 
@@ -856,14 +859,14 @@ public class SchemaAwareRdnTest
     @Test
     public void testEscapedSpaceInValue() throws LdapException
     {
-        Rdn rdn1 = new Rdn( schemaManager,  "cn=a b c" );
-        Rdn rdn2 = new Rdn( schemaManager,  "cn=a\\ b\\ c" );
+        Rdn rdn1 = new Rdn( schemaManager, "cn=a b c" );
+        Rdn rdn2 = new Rdn( schemaManager, "cn=a\\ b\\ c" );
         assertEquals( "2.5.4.3=a b c", rdn1.getNormName() );
         assertEquals( "2.5.4.3=a b c", rdn2.getNormName() );
         assertTrue( rdn1.equals( rdn2 ) );
 
-        Rdn rdn3 = new Rdn( schemaManager,  "cn=\\ a b c\\ " );
-        Rdn rdn4 = new Rdn( schemaManager,  "cn=\\ a\\ b\\ c\\ " );
+        Rdn rdn3 = new Rdn( schemaManager, "cn=\\ a b c\\ " );
+        Rdn rdn4 = new Rdn( schemaManager, "cn=\\ a\\ b\\ c\\ " );
         assertEquals( "2.5.4.3=a b c", rdn3.getNormName() );
         assertEquals( "cn=\\ a b c\\ ", rdn3.getName() );
         assertEquals( "2.5.4.3=a b c", rdn4.getNormName() );
@@ -875,14 +878,14 @@ public class SchemaAwareRdnTest
     @Test
     public void testEscapedHashInValue() throws LdapException
     {
-        Rdn rdn1 = new Rdn( schemaManager,  "cn=a#b#c" );
-        Rdn rdn2 = new Rdn( schemaManager,  "cn=a\\#b\\#c" );
+        Rdn rdn1 = new Rdn( schemaManager, "cn=a#b#c" );
+        Rdn rdn2 = new Rdn( schemaManager, "cn=a\\#b\\#c" );
         assertEquals( "2.5.4.3=a#b#c", rdn1.getNormName() );
         assertEquals( "2.5.4.3=a#b#c", rdn2.getNormName() );
         assertTrue( rdn1.equals( rdn2 ) );
 
-        Rdn rdn3 = new Rdn( schemaManager,  "cn=\\#a#b#c\\#" );
-        Rdn rdn4 = new Rdn( schemaManager,  "cn=\\#a\\#b\\#c\\#" );
+        Rdn rdn3 = new Rdn( schemaManager, "cn=\\#a#b#c\\#" );
+        Rdn rdn4 = new Rdn( schemaManager, "cn=\\#a\\#b\\#c\\#" );
         assertEquals( "2.5.4.3=\\#a#b#c#", rdn3.getNormName() );
         assertEquals( "2.5.4.3=\\#a#b#c#", rdn4.getNormName() );
         assertTrue( rdn3.equals( rdn4 ) );
@@ -893,27 +896,27 @@ public class SchemaAwareRdnTest
     public void testEscapedAttributeValue()
     {
         // space doesn't need to be escaped in the middle of a string
-        assertEquals( "a b", Rdn.escapeValue("a b") );
-        assertEquals( "a b c", Rdn.escapeValue("a b c") );
-        assertEquals( "a b c d", Rdn.escapeValue("a b c d") );
+        assertEquals( "a b", Rdn.escapeValue( "a b" ) );
+        assertEquals( "a b c", Rdn.escapeValue( "a b c" ) );
+        assertEquals( "a b c d", Rdn.escapeValue( "a b c d" ) );
 
         // space must be escaped at the beginning and the end of a string
-        assertEquals( "\\ a b", Rdn.escapeValue(" a b") );
-        assertEquals( "a b\\ ", Rdn.escapeValue("a b ") );
-        assertEquals( "\\ a b\\ ", Rdn.escapeValue(" a b ") );
-        assertEquals( "\\  a  b \\ ", Rdn.escapeValue("  a  b  ") );
+        assertEquals( "\\ a b", Rdn.escapeValue( " a b" ) );
+        assertEquals( "a b\\ ", Rdn.escapeValue( "a b " ) );
+        assertEquals( "\\ a b\\ ", Rdn.escapeValue( " a b " ) );
+        assertEquals( "\\  a  b \\ ", Rdn.escapeValue( "  a  b  " ) );
 
         // hash doesn't need to be escaped in the middle and the end of a string
-        assertEquals( "a#b", Rdn.escapeValue("a#b") );
-        assertEquals( "a#b#", Rdn.escapeValue("a#b#") );
-        assertEquals( "a#b#c", Rdn.escapeValue("a#b#c") );
-        assertEquals( "a#b#c#", Rdn.escapeValue("a#b#c#") );
-        assertEquals( "a#b#c#d", Rdn.escapeValue("a#b#c#d") );
-        assertEquals( "a#b#c#d#", Rdn.escapeValue("a#b#c#d#") );
+        assertEquals( "a#b", Rdn.escapeValue( "a#b" ) );
+        assertEquals( "a#b#", Rdn.escapeValue( "a#b#" ) );
+        assertEquals( "a#b#c", Rdn.escapeValue( "a#b#c" ) );
+        assertEquals( "a#b#c#", Rdn.escapeValue( "a#b#c#" ) );
+        assertEquals( "a#b#c#d", Rdn.escapeValue( "a#b#c#d" ) );
+        assertEquals( "a#b#c#d#", Rdn.escapeValue( "a#b#c#d#" ) );
 
         // hash must be escaped at the beginning of a string
-        assertEquals( "\\#a#b", Rdn.escapeValue("#a#b") );
-        assertEquals( "\\##a#b", Rdn.escapeValue("##a#b") );
+        assertEquals( "\\#a#b", Rdn.escapeValue( "#a#b" ) );
+        assertEquals( "\\##a#b", Rdn.escapeValue( "##a#b" ) );
     }
 
 
@@ -925,7 +928,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testEmptyRDNSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Rdn rdn = new Rdn( schemaManager,  "" );
+        Rdn rdn = new Rdn( schemaManager, "" );
 
         rdn.normalize();
 
@@ -939,7 +942,7 @@ public class SchemaAwareRdnTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        Rdn rdn2 = (Rdn)in.readObject();
+        Rdn rdn2 = ( Rdn ) in.readObject();
 
         assertEquals( rdn, rdn2 );
     }
@@ -962,7 +965,7 @@ public class SchemaAwareRdnTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        Rdn rdn2 = (Rdn)in.readObject();
+        Rdn rdn2 = ( Rdn ) in.readObject();
 
         assertEquals( rdn, rdn2 );
     }
@@ -974,7 +977,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testSimpleRdnSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Rdn rdn = new Rdn( schemaManager,  "cn=b" );
+        Rdn rdn = new Rdn( schemaManager, "cn=b" );
         rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1000,7 +1003,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testSimpleRdn2Serialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Rdn rdn = new Rdn( schemaManager,  " CN  = DEF " );
+        Rdn rdn = new Rdn( schemaManager, " CN  = DEF " );
         rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1026,7 +1029,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testSimpleRdnNoValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Rdn rdn = new Rdn( schemaManager,  " CN  =" );
+        Rdn rdn = new Rdn( schemaManager, " CN  =" );
         rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1052,7 +1055,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testSimpleRdnOneValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Rdn rdn = new Rdn( schemaManager,  " CN  = def " );
+        Rdn rdn = new Rdn( schemaManager, " CN  = def " );
         rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1078,7 +1081,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testSimpleRdnThreeValuesSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Rdn rdn = new Rdn( schemaManager,  " CN = a + SN = b + GN = c " );
+        Rdn rdn = new Rdn( schemaManager, " CN = a + SN = b + GN = c " );
         rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1105,7 +1108,7 @@ public class SchemaAwareRdnTest
     public void testSimpleRdnThreeValuesUnorderedSerialization() throws LdapException, IOException,
         ClassNotFoundException
     {
-        Rdn rdn = new Rdn( schemaManager,  " CN = b + SN = a + GN = c " );
+        Rdn rdn = new Rdn( schemaManager, " CN = b + SN = a + GN = c " );
         rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1131,10 +1134,10 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnWithEmptyValue() throws LdapException
     {
-        assertTrue( Rdn.isValid("cn=") );
+        assertTrue( Rdn.isValid( "cn=" ) );
         assertTrue( Rdn.isValid( "cn=\"\"" ) );
-        assertEquals( "2.5.4.3=", new Rdn( schemaManager,  "cn=\"\"" ).getNormName() );
-        assertEquals( "2.5.4.3=", new Rdn( schemaManager,  "cn=" ).getNormName() );
+        assertEquals( "2.5.4.3=", new Rdn( schemaManager, "cn=\"\"" ).getNormName() );
+        assertEquals( "2.5.4.3=", new Rdn( schemaManager, "cn=" ).getNormName() );
     }
 
 
@@ -1145,14 +1148,14 @@ public class SchemaAwareRdnTest
     public void testRdnWithEscapedComa() throws LdapException
     {
         assertTrue( Rdn.isValid( "cn=b\\,c" ) );
-        assertEquals( "2.5.4.3=b\\,c", new Rdn( schemaManager,  "cn=b\\,c" ).getNormName() );
+        assertEquals( "2.5.4.3=b\\,c", new Rdn( schemaManager, "cn=b\\,c" ).getNormName() );
 
         assertTrue( Rdn.isValid( "cn=\"b,c\"" ) );
-        assertEquals( "2.5.4.3=b\\,c", new Rdn( schemaManager,  "cn=\"b,c\"" ).getNormName() );
-        assertEquals( "cn=\"b,c\"", new Rdn( schemaManager,  "cn=\"b,c\"" ).getName() );
+        assertEquals( "2.5.4.3=b\\,c", new Rdn( schemaManager, "cn=\"b,c\"" ).getNormName() );
+        assertEquals( "cn=\"b,c\"", new Rdn( schemaManager, "cn=\"b,c\"" ).getName() );
 
         assertTrue( Rdn.isValid( "cn=\"b\\,c\"" ) );
-        Rdn rdn = new Rdn( schemaManager,  "cn=\"b\\,c\"" );
+        Rdn rdn = new Rdn( schemaManager, "cn=\"b\\,c\"" );
         assertEquals( "cn=\"b\\,c\"", rdn.getName() );
         assertEquals( "2.5.4.3=b\\,c", rdn.getNormName() );
     }
@@ -1167,10 +1170,10 @@ public class SchemaAwareRdnTest
     @Test
     public void testComparingOfClonedMultiValuedRDNs() throws LdapException
     {
-        // Use upper case attribute types to test if normalized types are used 
+        // Use upper case attribute types to test if normalized types are used
         // for comparison
-        Rdn rdn = new Rdn( schemaManager,  " CN = b + SN = d" );
-        Rdn clonedRdn = (Rdn) rdn.clone();
+        Rdn rdn = new Rdn( schemaManager, " CN = b + SN = d" );
+        Rdn clonedRdn = rdn.clone();
 
         assertTrue( rdn.equals( clonedRdn ) );
     }
@@ -1185,9 +1188,9 @@ public class SchemaAwareRdnTest
     @Test
     public void testComparingOfCopyConstructedMultiValuedRDNs() throws LdapException
     {
-        // Use upper case attribute types to test if normalized types are used 
+        // Use upper case attribute types to test if normalized types are used
         // for comparison
-        Rdn rdn = new Rdn( schemaManager,  " CN = b + SN = d" );
+        Rdn rdn = new Rdn( schemaManager, " CN = b + SN = d" );
         Rdn copiedRdn = new Rdn( rdn );
 
         assertTrue( rdn.equals( copiedRdn ) );
@@ -1197,20 +1200,20 @@ public class SchemaAwareRdnTest
     /**
      * test the UpName method on a Rdn with more than one atav
      */
-    @Test 
+    @Test
     public void testGetUpNameMultipleAtav() throws LdapException
     {
-        Rdn rdn = new Rdn( schemaManager,  " CN = b + SN = d " );
-        
+        Rdn rdn = new Rdn( schemaManager, " CN = b + SN = d " );
+
         assertEquals( " CN = b + SN = d ", rdn.getName() );
     }
-    
-    
+
+
     @Test
     public void testSchemaAware() throws LdapException
     {
         Rdn rdn = new Rdn( "cn=John" );
-        
+
         assertFalse( rdn.isSchemaAware() );
 
         rdn.apply( schemaManager );

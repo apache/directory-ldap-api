@@ -551,7 +551,7 @@ public class DefaultLdapCodecService implements LdapApiService
         else
         {
             req = new ExtendedRequestDecorator<ExtendedRequest<ExtendedResponse>, ExtendedResponse>( this,
-                    ( ExtendedRequest<ExtendedResponse> ) decoratedMessage );
+                ( ExtendedRequest<ExtendedResponse> ) decoratedMessage );
         }
 
         return req;

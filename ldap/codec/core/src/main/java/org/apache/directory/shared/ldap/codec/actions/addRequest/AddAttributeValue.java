@@ -82,23 +82,23 @@ public class AddAttributeValue extends GrammarAction<LdapMessageContainer<AddReq
                 if ( container.isBinary( addRequest.getCurrentAttributeType() ) )
                 {
                     value = tlv.getValue().getData();
-    
+
                     if ( IS_DEBUG )
                     {
-                        LOG.debug( "Adding value {}", Strings.dumpBytes((byte[]) value) );
+                        LOG.debug( "Adding value {}", Strings.dumpBytes( ( byte[] ) value ) );
                     }
-    
+
                     addRequest.addAttributeValue( ( byte[] ) value );
                 }
                 else
                 {
-                    value = Strings.utf8ToString(tlv.getValue().getData());
-    
+                    value = Strings.utf8ToString( tlv.getValue().getData() );
+
                     if ( IS_DEBUG )
                     {
                         LOG.debug( "Adding value {}" + value );
                     }
-    
+
                     addRequest.addAttributeValue( ( String ) value );
                 }
             }

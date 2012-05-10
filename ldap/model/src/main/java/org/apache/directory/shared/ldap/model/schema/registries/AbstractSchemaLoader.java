@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema.registries;
 
@@ -34,6 +34,7 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
+import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.StringConstants;
 import org.apache.directory.shared.util.Strings;
 
@@ -45,12 +46,12 @@ import org.apache.directory.shared.util.Strings;
  */
 public abstract class AbstractSchemaLoader implements SchemaLoader
 {
-    
+
     /** The listener. */
     protected SchemaLoaderListener listener;
 
-    /** 
-     * A map of all available schema names to schema objects. This map is 
+    /**
+     * A map of all available schema names to schema objects. This map is
      * populated when this class is created with all the schemas present in
      * the LDIF based schema repository.
      */
@@ -59,25 +60,28 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     /**
      * a map implementation which converts the keys to lower case before inserting
      */
-    private static class LowerCaseKeyMap extends HashMap<String,Schema>
+    private static class LowerCaseKeyMap extends HashMap<String, Schema>
     {
         private static final long serialVersionUID = 1L;
+
 
         @Override
         public Schema put( String key, Schema value )
         {
-            return super.put( Strings.lowerCase(key), value );
+            return super.put( Strings.lowerCase( key ), value );
         }
+
 
         @Override
         public void putAll( Map<? extends String, ? extends Schema> map )
         {
-            for( Map.Entry<? extends String, ? extends Schema> e : map.entrySet() )
+            for ( Map.Entry<? extends String, ? extends Schema> e : map.entrySet() )
             {
                 put( e.getKey(), e.getValue() );
             }
         }
     }
+
 
     /**
      * {@inheritDoc}
@@ -94,16 +98,16 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      * @param schema the schema
      * @param registries the registries
      */
-    protected final void notifyListenerOrRegistries( Schema schema, Registries registries )
+    protected final void notifyListenerOrRegistries( Schema schema, SchemaManager schemaManager )
     {
         if ( listener != null )
         {
             listener.schemaLoaded( schema );
         }
 
-        if ( registries != listener )
+        if ( schemaManager != listener )
         {
-            registries.schemaLoaded( schema );
+            schemaManager.getRegistries().schemaLoaded( schema );
         }
     }
 
@@ -114,7 +118,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     public final Collection<Schema> getAllEnabled() throws Exception
     {
         Collection<Schema> enabledSchemas = new ArrayList<Schema>();
-        
+
         for ( Schema schema : schemaMap.values() )
         {
             if ( schema.isEnabled() )
@@ -122,7 +126,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
                 enabledSchemas.add( schema );
             }
         }
-        
+
         return enabledSchemas;
     }
 
@@ -141,10 +145,10 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      */
     public Schema getSchema( String schemaName )
     {
-        return schemaMap.get( Strings.toLowerCase(schemaName) );
+        return schemaMap.get( Strings.toLowerCase( schemaName ) );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -152,14 +156,14 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     {
         schemaMap.put( schema.getSchemaName(), schema );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public void removeSchema( Schema schema )
     {
-        schemaMap.remove( Strings.toLowerCase(schema.getSchemaName()) );
+        schemaMap.remove( Strings.toLowerCase( schema.getSchemaName() ) );
     }
 
 
@@ -237,6 +241,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
         return new DefaultSchema( name, owner, dependencies, isDisabled );
     }
 
+
     // TODO: clean commented code
 
     /*
@@ -279,14 +284,14 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     
     
     /**
-     * Register the comparator contained in the given LdifEntry into the registries. 
+     * Register the comparator contained in the given LdifEntry into the registries.
      *
      * @param registries The Registries
      * @param entry The LdifEntry containing the comparator description
      * @param schema The associated schema
      * @throws Exception If the registering failed
      *
-    protected LdapComparator<?> registerComparator( Registries registries, LdifEntry entry, Schema schema ) 
+    protected LdapComparator<?> registerComparator( Registries registries, LdifEntry entry, Schema schema )
         throws Exception
     {
         return registerComparator( registries, entry.getEntry(), schema );
@@ -294,17 +299,17 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     
     
     /**
-     * Register the comparator contained in the given Entry into the registries. 
+     * Register the comparator contained in the given Entry into the registries.
      *
      * @param registries The Registries
      * @param entry The Entry containing the comparator description
      * @param schema The associated schema
      * @throws Exception If the registering failed
      *
-    protected LdapComparator<?> registerComparator( Registries registries, Entry entry, Schema schema ) 
+    protected LdapComparator<?> registerComparator( Registries registries, Entry entry, Schema schema )
         throws Exception
     {
-        LdapComparator<?> comparator = 
+        LdapComparator<?> comparator =
             factory.getLdapComparator( entry, registries, schema.getSchemaName() );
         comparator.setOid( entry.get( MetaSchemaConstants.M_OID_AT ).getString() );
 
@@ -332,7 +337,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     
     
     /**
-     * Register the SyntaxChecker contained in the given LdifEntry into the registries. 
+     * Register the SyntaxChecker contained in the given LdifEntry into the registries.
      *
      * @param registries The Registries
      * @param entry The LdifEntry containing the SyntaxChecker description
@@ -340,10 +345,10 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      * @return the created SyntaxChecker instance
      * @throws Exception If the registering failed
      *
-    protected SyntaxChecker registerSyntaxChecker( Registries registries, LdifEntry entry, Schema schema) 
+    protected SyntaxChecker registerSyntaxChecker( Registries registries, LdifEntry entry, Schema schema)
         throws Exception
     {
-        SyntaxChecker syntaxChecker = 
+        SyntaxChecker syntaxChecker =
             factory.getSyntaxChecker( entry.getEntry(), registries, schema.getSchemaName() );
         syntaxChecker.setOid( entry.get( MetaSchemaConstants.M_OID_AT ).getString() );
 
@@ -371,7 +376,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     
     
     /**
-     * Register the Normalizer contained in the given LdifEntry into the registries. 
+     * Register the Normalizer contained in the given LdifEntry into the registries.
      *
      * @param registries The Registries
      * @param entry The LdifEntry containing the Normalizer description
@@ -379,7 +384,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      * @return the created Normalizer instance
      * @throws Exception If the registering failed
      *
-    protected Normalizer registerNormalizer( Registries registries, LdifEntry entry, Schema schema) 
+    protected Normalizer registerNormalizer( Registries registries, LdifEntry entry, Schema schema)
         throws Exception
     {
         Normalizer normalizer =
@@ -409,7 +414,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     
     
     /**
-     * Register the MatchingRule contained in the given LdifEntry into the registries. 
+     * Register the MatchingRule contained in the given LdifEntry into the registries.
      *
      * @param registries The Registries
      * @param entry The LdifEntry containing the MatchingRule description
@@ -417,10 +422,10 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      * @return the created MatchingRule instance
      * @throws Exception If the registering failed
      *
-    protected MatchingRule registerMatchingRule( Registries registries, LdifEntry entry, Schema schema) 
+    protected MatchingRule registerMatchingRule( Registries registries, LdifEntry entry, Schema schema)
         throws Exception
     {
-        MatchingRule matchingRule = factory.getMatchingRule( 
+        MatchingRule matchingRule = factory.getMatchingRule(
             entry.getEntry(), registries, schema.getSchemaName() );
 
         if ( registries.isRelaxed() )
@@ -447,7 +452,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     
     
     /**
-     * Register the Syntax contained in the given LdifEntry into the registries. 
+     * Register the Syntax contained in the given LdifEntry into the registries.
      *
      * @param registries The Registries
      * @param entry The LdifEntry containing the Syntax description
@@ -455,10 +460,10 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      * @return the created Syntax instance
      * @throws Exception If the registering failed
      *
-    protected LdapSyntax registerSyntax( Registries registries, LdifEntry entry, Schema schema) 
+    protected LdapSyntax registerSyntax( Registries registries, LdifEntry entry, Schema schema)
         throws Exception
     {
-        LdapSyntax syntax = factory.getSyntax( 
+        LdapSyntax syntax = factory.getSyntax(
             entry.getEntry(), registries, schema.getSchemaName() );
 
         if ( registries.isRelaxed() )
@@ -485,7 +490,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     
     
     /**
-     * Register the AttributeType contained in the given LdifEntry into the registries. 
+     * Register the AttributeType contained in the given LdifEntry into the registries.
      *
      * @param registries The Registries
      * @param entry The LdifEntry containing the AttributeType description
@@ -493,7 +498,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      * @return the created AttributeType instance
      * @throws Exception If the registering failed
      *
-    protected AttributeType registerAttributeType( Registries registries, LdifEntry entry, Schema schema ) 
+    protected AttributeType registerAttributeType( Registries registries, LdifEntry entry, Schema schema )
         throws Exception
     {
         AttributeType attributeType = factory.getAttributeType( entry.getEntry(), registries, schema.getSchemaName() );
@@ -522,7 +527,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     
     
     /**
-     * Register the MatchingRuleUse contained in the given LdifEntry into the registries. 
+     * Register the MatchingRuleUse contained in the given LdifEntry into the registries.
      *
      * @param registries The Registries
      * @param entry The LdifEntry containing the MatchingRuleUse description
@@ -530,7 +535,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      * @return the created MatchingRuleUse instance
      * @throws Exception If the registering failed
      *
-    protected MatchingRuleUse registerMatchingRuleUse( Registries registries, LdifEntry entry, Schema schema) 
+    protected MatchingRuleUse registerMatchingRuleUse( Registries registries, LdifEntry entry, Schema schema)
         throws Exception
     {
         throw new NotImplementedException( "Need to implement factory " +
@@ -539,7 +544,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     
     
     /**
-     * Register the NameForm contained in the given LdifEntry into the registries. 
+     * Register the NameForm contained in the given LdifEntry into the registries.
      *
      * @param registries The Registries
      * @param entry The LdifEntry containing the NameForm description
@@ -547,7 +552,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      * @return the created NameForm instance
      * @throws Exception If the registering failed
      *
-    protected NameForm registerNameForm( Registries registries, LdifEntry entry, Schema schema) 
+    protected NameForm registerNameForm( Registries registries, LdifEntry entry, Schema schema)
         throws Exception
     {
         throw new NotImplementedException( "Need to implement factory " +
@@ -556,7 +561,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     
     
     /**
-     * Register the DitContentRule contained in the given LdifEntry into the registries. 
+     * Register the DitContentRule contained in the given LdifEntry into the registries.
      *
      * @param registries The Registries
      * @param entry The LdifEntry containing the DitContentRule description
@@ -564,7 +569,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      * @return the created DitContentRule instance
      * @throws Exception If the registering failed
      *
-    protected DITContentRule registerDitContentRule( Registries registries, LdifEntry entry, Schema schema) 
+    protected DitContentRule registerDitContentRule( Registries registries, LdifEntry entry, Schema schema)
         throws Exception
     {
         throw new NotImplementedException( "Need to implement factory " +
@@ -573,7 +578,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
     
     
     /**
-     * Register the DitStructureRule contained in the given LdifEntry into the registries. 
+     * Register the DitStructureRule contained in the given LdifEntry into the registries.
      *
      * @param registries The Registries
      * @param entry The LdifEntry containing the DitStructureRule description
@@ -581,7 +586,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      * @return the created DitStructureRule instance
      * @throws Exception If the registering failed
      *
-    protected DITStructureRule registerDitStructureRule( Registries registries, LdifEntry entry, Schema schema) 
+    protected DitStructureRule registerDitStructureRule( Registries registries, LdifEntry entry, Schema schema)
         throws Exception
     {
         throw new NotImplementedException( "Need to implement factory " +
@@ -590,7 +595,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
 
 
     /**
-     * Register the ObjectClass contained in the given LdifEntry into the registries. 
+     * Register the ObjectClass contained in the given LdifEntry into the registries.
      *
      * @param registries The Registries
      * @param entry The LdifEntry containing the ObjectClass description
@@ -598,7 +603,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      * @return the created ObjectClass instance
      * @throws Exception If the registering failed
      *
-    protected ObjectClass registerObjectClass( Registries registries, LdifEntry entry, Schema schema) 
+    protected ObjectClass registerObjectClass( Registries registries, LdifEntry entry, Schema schema)
         throws Exception
     {
         return registerObjectClass( registries, entry.getEntry(), schema );
@@ -606,7 +611,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
 
 
     /**
-     * Register the ObjectClass contained in the given LdifEntry into the registries. 
+     * Register the ObjectClass contained in the given LdifEntry into the registries.
      *
      * @param registries The Registries
      * @param entry The Entry containing the ObjectClass description
@@ -614,7 +619,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      * @return the created ObjectClass instance
      * @throws Exception If the registering failed
      *
-    protected ObjectClass registerObjectClass( Registries registries, Entry entry, Schema schema) 
+    protected ObjectClass registerObjectClass( Registries registries, Entry entry, Schema schema)
         throws Exception
     {
         ObjectClass objectClass = factory.getObjectClass( entry, registries, schema.getSchemaName() );

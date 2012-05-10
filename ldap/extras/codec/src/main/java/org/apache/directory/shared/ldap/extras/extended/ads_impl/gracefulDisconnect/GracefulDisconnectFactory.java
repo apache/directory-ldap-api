@@ -39,14 +39,14 @@ import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
 public class GracefulDisconnectFactory implements UnsolicitedResponseFactory<GracefulDisconnectResponse>
 {
     private LdapApiService codec;
-    
-    
+
+
     public GracefulDisconnectFactory( LdapApiService codec )
     {
         this.codec = codec;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -55,7 +55,7 @@ public class GracefulDisconnectFactory implements UnsolicitedResponseFactory<Gra
         return GracefulDisconnectResponse.EXTENSION_OID;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */

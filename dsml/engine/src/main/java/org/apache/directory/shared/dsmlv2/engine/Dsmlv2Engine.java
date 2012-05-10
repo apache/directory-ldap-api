@@ -83,7 +83,6 @@ import org.apache.directory.shared.ldap.model.message.SearchRequest;
 import org.apache.directory.shared.ldap.model.message.SearchResultDone;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.model.message.SearchResultReference;
-import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.util.Strings;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -123,13 +122,15 @@ public class Dsmlv2Engine
 
     /** The batch response. */
     protected BatchResponseDsml batchResponse = new BatchResponseDsml();
-    
+
     protected Dsmlv2Grammar grammar = new Dsmlv2Grammar();
 
     /** flag to indicate to generate the response in a SOAP envelope */
     protected boolean generateSoapResp = false;
 
+    /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( Dsmlv2Engine.class );
+
 
     /**
      * Creates a new instance of Dsmlv2Engine.
@@ -149,7 +150,6 @@ public class Dsmlv2Engine
 
 
     /**
-     * 
      * Creates a new instance of Dsmlv2Engine.
      *
      * @param connection an unbound active connection
@@ -164,16 +164,13 @@ public class Dsmlv2Engine
         this.connection = connection;
     }
 
-    
+
     /**
      * Processes the file given and return the result of the operations
      * 
-     * @param dsmlInput
-     *      the DSMLv2 formatted request input
-     * @return
-     *      the XML response in DSMLv2 Format
-     * @throws XmlPullParserException
-     *      if an error occurs in the parser
+     * @param dsmlInput the DSMLv2 formatted request input
+     * @return the XML response in DSMLv2 Format
+     * @throws XmlPullParserException if an error occurs in the parser
      */
     public String processDSML( String dsmlInput ) throws XmlPullParserException
     {
@@ -187,14 +184,10 @@ public class Dsmlv2Engine
     /**
      * Processes the file given and return the result of the operations
      * 
-     * @param fileName
-     *      the path to the file
-     * @return
-     *      the XML response in DSMLv2 Format
-     * @throws XmlPullParserException
-     *      if an error occurs in the parser
-     * @throws FileNotFoundException
-     *      if the file does not exist
+     * @param fileName the path to the file
+     * @return the XML response in DSMLv2 Format
+     * @throws XmlPullParserException if an error occurs in the parser
+     * @throws FileNotFoundException if the file does not exist
      */
     public String processDSMLFile( String fileName ) throws XmlPullParserException, FileNotFoundException
     {
@@ -206,16 +199,16 @@ public class Dsmlv2Engine
 
 
     /**
-     * process the given file and optionally writing the output to the
+     * Process the given file and optionally writing the output to the
      * output stream(if not null)
      *
      * @param file the DSML file
      * @param respStream the output stream to which response will be written, skipped if null
-     * @throws Exception
+     * @throws Exception If the processing fails
      */
     public void processDSMLFile( File file, OutputStream respStream ) throws Exception
     {
-        parser = new Dsmlv2Parser(grammar);
+        parser = new Dsmlv2Parser( grammar );
         parser.setInputFile( file.getAbsolutePath() );
 
         processDSML( respStream );
@@ -223,7 +216,7 @@ public class Dsmlv2Engine
 
 
     /**
-     * uses the default UTF-8 encoding for processing the DSML
+     * Uses the default UTF-8 encoding for processing the DSML
      * 
      * @see #processDSML(InputStream, String, OutputStream)
      */
@@ -234,22 +227,22 @@ public class Dsmlv2Engine
 
 
     /**
-     * process the DSML request(s) from the given input stream with the specified encoding
+     * Processes the DSML request(s) from the given input stream with the specified encoding
      * and writes the response to the output stream
      * 
      * @param inputStream the input stream for DSML batch request
      * @param inputEncoding encoding to be used while reading the DSML request data
      * @param out the output stream to which DSML response will be written
-     * @throws Exception
+     * @throws Exception If the processing fails
      */
     public void processDSML( InputStream inputStream, String inputEncoding, OutputStream out ) throws Exception
     {
-        parser = new Dsmlv2Parser(grammar);
+        parser = new Dsmlv2Parser( grammar );
         parser.setInput( inputStream, inputEncoding );
         processDSML( out );
     }
 
-    
+
     /**
      * Processes the Request document
      * 
@@ -263,26 +256,26 @@ public class Dsmlv2Engine
             processDSML( byteOut );
             return new String( byteOut.toByteArray(), "UTF-8" );
         }
-        catch( IOException e )
+        catch ( IOException e )
         {
             LOG.error( "Failed to process the DSML", e );
         }
-        
+
         return null;
     }
 
 
     /**
-     * processes the DSML batch request and writes the response of each operation will be
+     * Processes the DSML batch request and writes the response of each operation will be
      * written to the given response stream if it is not null
      *
      * @param outStream the stream to which the responses will be written, can be null
-     * @throws IOException
+     * @throws IOException If we had an issue while reading or writing the data
      */
     protected void processDSML( OutputStream outStream ) throws IOException
     {
         BufferedWriter respWriter = null;
-       
+
         if ( outStream != null )
         {
             respWriter = new BufferedWriter( new OutputStreamWriter( outStream ) );
@@ -290,25 +283,25 @@ public class Dsmlv2Engine
             if ( generateSoapResp )
             {
                 respWriter.write( "<Envelope " );
-                
+
                 Namespace soapNs = new Namespace( null, "http://www.w3.org/2001/12/soap-envelope" );
                 soapNs.write( respWriter );
 
                 respWriter.write( "><Body>" );
             }
-            
+
             respWriter.write( "<batchResponse " );
-            
+
             ParserUtils.DSML_NAMESPACE.write( respWriter );
-            
+
             respWriter.write( " " ); // a space to separate the namespace declarations
-            
+
             ParserUtils.XSD_NAMESPACE.write( respWriter );
-            
+
             respWriter.write( " " ); // a space to separate the namespace declarations
-            
+
             ParserUtils.XSI_NAMESPACE.write( respWriter );
-            
+
             respWriter.write( '>' ); // the end tag
         }
 
@@ -320,11 +313,12 @@ public class Dsmlv2Engine
         catch ( Exception e )
         {
             LOG.warn( "Failed to bind", e );
-            
+
             // Unable to connect to server
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.COULD_NOT_CONNECT, e
                 .getLocalizedMessage() );
+            
             if ( respWriter != null )
             {
                 writeResponse( respWriter, errorResponse );
@@ -334,7 +328,7 @@ public class Dsmlv2Engine
             {
                 batchResponse.addResponse( errorResponse );
             }
-            
+
             return;
         }
 
@@ -360,7 +354,7 @@ public class Dsmlv2Engine
             {
                 batchResponse.addResponse( errorResponse );
             }
-            
+
             return;
         }
 
@@ -379,12 +373,13 @@ public class Dsmlv2Engine
         catch ( XmlPullParserException e )
         {
             LOG.warn( "Failed while getting next request", e );
-            
+
             int reqId = 0;
-            
+
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( reqId, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
                 I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
+            
             if ( respWriter != null )
             {
                 writeResponse( respWriter, errorResponse );
@@ -394,7 +389,7 @@ public class Dsmlv2Engine
             {
                 batchResponse.addResponse( errorResponse );
             }
-            
+
             return;
         }
 
@@ -417,7 +412,7 @@ public class Dsmlv2Engine
                 {
                     batchResponse.addResponse( errorResponse );
                 }
-                
+
                 break;
             }
 
@@ -428,10 +423,12 @@ public class Dsmlv2Engine
             catch ( Exception e )
             {
                 LOG.warn( "Failed to process request", e );
-                
+
                 // We create a new ErrorResponse and return the XML response.
-                ErrorResponse errorResponse = new ErrorResponse( request.getDecorated().getMessageId(), ErrorResponseType.GATEWAY_INTERNAL_ERROR, I18n.err(
-                    I18n.ERR_03003, e.getMessage() ) );
+                ErrorResponse errorResponse = new ErrorResponse( request.getDecorated().getMessageId(),
+                    ErrorResponseType.GATEWAY_INTERNAL_ERROR, I18n.err(
+                        I18n.ERR_03003, e.getMessage() ) );
+                
                 if ( respWriter != null )
                 {
                     writeResponse( respWriter, errorResponse );
@@ -440,7 +437,7 @@ public class Dsmlv2Engine
                 {
                     batchResponse.addResponse( errorResponse );
                 }
-                
+
                 break;
             }
 
@@ -460,6 +457,7 @@ public class Dsmlv2Engine
                 // We create a new ErrorResponse and return the XML response.
                 ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
                     I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
+                
                 if ( respWriter != null )
                 {
                     writeResponse( respWriter, errorResponse );
@@ -468,7 +466,7 @@ public class Dsmlv2Engine
                 {
                     batchResponse.addResponse( errorResponse );
                 }
-                
+
                 break;
             }
         }
@@ -476,7 +474,7 @@ public class Dsmlv2Engine
         if ( respWriter != null )
         {
             respWriter.write( "</batchResponse>" );
-            
+
             if ( generateSoapResp )
             {
                 respWriter.write( "</Body>" );
@@ -486,23 +484,24 @@ public class Dsmlv2Engine
             respWriter.flush();
         }
     }
-    
-    
+
+
     /**
-     * write the response to the writer of the underlying output stream
-     * @param respWriter
-     * @param respDsml
-     * @throws IOException
+     * Writes the response to the writer of the underlying output stream
+     * 
+     * @param respWriter The writer used to write the response
+     * @param respDsml The decorator containing the response
+     * @throws IOException If we had an error while writing the DSML response
      */
-    protected void writeResponse( BufferedWriter respWriter, DsmlDecorator respDsml ) throws IOException
+    protected void writeResponse( BufferedWriter respWriter, DsmlDecorator<?> respDsml ) throws IOException
     {
-        if( respWriter != null )
+        if ( respWriter != null )
         {
             Element xml = respDsml.toDsml( null );
             xml.write( respWriter );
         }
     }
-    
+
 
     /**
      * @return the generateSoapResp
@@ -521,7 +520,7 @@ public class Dsmlv2Engine
         this.generateSoapResp = generateSoapResp;
     }
 
-    
+
     /**
      * @return the batchResponse
      */
@@ -530,7 +529,7 @@ public class Dsmlv2Engine
         return batchResponse;
     }
 
-    
+
     /**
      * @return the connection
      */
@@ -539,13 +538,16 @@ public class Dsmlv2Engine
         return connection;
     }
 
-    
+
     /**
      * Processes a single request
      * 
      * @param request the request to process
+     * @param respWriter The writer used to store the DSML response
+     * @exception Exception If we had an error while processing the request
      */
-    protected void processRequest( DsmlDecorator<? extends Request> request, BufferedWriter respWriter  ) throws Exception
+    protected void processRequest( DsmlDecorator<? extends Request> request, BufferedWriter respWriter )
+        throws Exception
     {
         ResultCodeEnum resultCode = null;
 
@@ -574,7 +576,8 @@ public class Dsmlv2Engine
             case COMPARE_REQUEST:
                 CompareResponse compareResponse = connection.compare( ( CompareRequest ) request );
                 resultCode = compareResponse.getLdapResult().getResultCode();
-                CompareResponseDsml compareResponseDsml = new CompareResponseDsml( connection.getCodecService(), compareResponse );
+                CompareResponseDsml compareResponseDsml = new CompareResponseDsml( connection.getCodecService(),
+                    compareResponse );
                 writeResponse( respWriter, compareResponseDsml );
 
                 break;
@@ -590,7 +593,8 @@ public class Dsmlv2Engine
             case EXTENDED_REQUEST:
                 ExtendedResponse extendedResponse = connection.extended( ( ExtendedRequest<?> ) request );
                 resultCode = extendedResponse.getLdapResult().getResultCode();
-                ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml( connection.getCodecService(), extendedResponse );
+                ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml( connection.getCodecService(),
+                    extendedResponse );
                 writeResponse( respWriter, extendedResponseDsml );
 
                 break;
@@ -598,41 +602,43 @@ public class Dsmlv2Engine
             case MODIFY_REQUEST:
                 ModifyResponse modifyResponse = connection.modify( ( ModifyRequest ) request );
                 resultCode = modifyResponse.getLdapResult().getResultCode();
-                ModifyResponseDsml modifyResponseDsml = new ModifyResponseDsml( connection.getCodecService(), modifyResponse );
+                ModifyResponseDsml modifyResponseDsml = new ModifyResponseDsml( connection.getCodecService(),
+                    modifyResponse );
                 writeResponse( respWriter, modifyResponseDsml );
-                
+
                 break;
 
             case MODIFYDN_REQUEST:
                 ModifyDnResponse modifyDnResponse = connection.modifyDn( ( ModifyDnRequest ) request );
                 resultCode = modifyDnResponse.getLdapResult().getResultCode();
-                ModDNResponseDsml modDNResponseDsml = new ModDNResponseDsml( connection.getCodecService(), modifyDnResponse );
+                ModDNResponseDsml modDNResponseDsml = new ModDNResponseDsml( connection.getCodecService(),
+                    modifyDnResponse );
                 writeResponse( respWriter, modDNResponseDsml );
-                
+
                 break;
 
             case SEARCH_REQUEST:
                 SearchCursor searchResponses = connection.search( ( SearchRequest ) request );
-                
+
                 SearchResponseDsml searchResponseDsml = new SearchResponseDsml( connection.getCodecService() );
-                
+
                 if ( respWriter != null )
                 {
                     StringBuilder sb = new StringBuilder();
                     sb.append( "<searchResponse" );
-                    
+
                     if ( request.getDecorated().getMessageId() > 0 )
                     {
                         sb.append( " requestID=\"" );
                         sb.append( request.getDecorated().getMessageId() );
                         sb.append( '"' );
                     }
-                    
+
                     sb.append( '>' );
-                    
+
                     respWriter.write( sb.toString() );
                 }
-                
+
                 while ( searchResponses.next() )
                 {
                     Response searchResponse = searchResponses.get();
@@ -643,7 +649,8 @@ public class Dsmlv2Engine
 
                         SearchResultEntryDsml searchResultEntryDsml = new SearchResultEntryDsml(
                             connection.getCodecService(), searchResultEntry );
-                        searchResponseDsml = new SearchResponseDsml( connection.getCodecService(), searchResultEntryDsml );
+                        searchResponseDsml = new SearchResponseDsml( connection.getCodecService(),
+                            searchResultEntryDsml );
 
                         if ( respWriter != null )
                         {
@@ -660,7 +667,8 @@ public class Dsmlv2Engine
 
                         SearchResultReferenceDsml searchResultReferenceDsml = new SearchResultReferenceDsml(
                             connection.getCodecService(), searchResultReference );
-                        searchResponseDsml = new SearchResponseDsml( connection.getCodecService(), searchResultReferenceDsml );
+                        searchResponseDsml = new SearchResponseDsml( connection.getCodecService(),
+                            searchResultReferenceDsml );
 
                         if ( respWriter != null )
                         {
@@ -678,12 +686,12 @@ public class Dsmlv2Engine
                 if ( srDone != null )
                 {
                     resultCode = srDone.getLdapResult().getResultCode();
-                    
+
                     SearchResultDoneDsml srdDsml = new SearchResultDoneDsml( connection.getCodecService(), srDone );
-                    
+
                     if ( respWriter != null )
                     {
-                        writeResponse( respWriter, srdDsml);
+                        writeResponse( respWriter, srdDsml );
                         respWriter.write( "</searchResponse>" );
                     }
                     else
@@ -692,7 +700,7 @@ public class Dsmlv2Engine
                         batchResponse.addResponse( searchResponseDsml );
                     }
                 }
-                
+
                 break;
 
             case UNBIND_REQUEST:
@@ -720,8 +728,7 @@ public class Dsmlv2Engine
      *     <li>Getting and registering options from BatchRequest</li>
      * </ul>
      * 
-     * @throws XmlPullParserException
-     *      if an error occurs in the parser
+     * @throws XmlPullParserException if an error occurs in the parser
      */
     protected void processBatchRequest() throws XmlPullParserException
     {
@@ -740,12 +747,9 @@ public class Dsmlv2Engine
             continueOnError = false;
         }
 
-        if ( batchRequest.getRequestID() != 0 )
+        if ( ( batchRequest.getRequestID() != 0 ) && ( batchResponse != null ) )
         {
-            if ( batchResponse != null )
-            {
-                batchResponse.setRequestID( batchRequest.getRequestID() );
-            }
+            batchResponse.setRequestID( batchRequest.getRequestID() );
         }
     }
 
@@ -754,9 +758,9 @@ public class Dsmlv2Engine
      * Binds to the ldap server
      * 
      * @param messageId the message Id
-     * @throws EncoderException
-     * @throws DecoderException
-     * @throws IOException
+     * @throws EncoderException If we had an issue while encoding the request
+     * @throws DecoderException If we had an issue while decoding the request
+     * @throws IOException If we had an issue while transmitting the request or re ceiving the response
      */
     protected void bind( int messageId ) throws LdapException, EncoderException, DecoderException, IOException
     {
@@ -764,16 +768,16 @@ public class Dsmlv2Engine
         {
             return;
         }
-        
+
         if ( connection == null )
         {
             throw new IOException( I18n.err( I18n.ERR_03101_MISSING_CONNECTION_TO ) );
         }
-        
+
         BindRequest bindRequest = new BindRequestImpl();
         bindRequest.setSimple( true );
-        bindRequest.setCredentials( Strings.getBytesUtf8(password) );
-        bindRequest.setName( new Dn( user ) );
+        bindRequest.setCredentials( Strings.getBytesUtf8( password ) );
+        bindRequest.setName( user );
         bindRequest.setVersion3( true );
         bindRequest.setMessageId( messageId );
 

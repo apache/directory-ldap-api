@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.CountrySynta
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Test cases for BitStringSyntaxChecker.
  *
@@ -63,8 +64,8 @@ public class CountrySyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "1" ) );
         assertFalse( checker.isValidSyntax( "B" ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectCase()
     {

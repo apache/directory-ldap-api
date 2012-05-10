@@ -41,7 +41,7 @@ public class LdapURLEncodingException extends LdapException
         super( message );
     }
 
-    
+
     /**
      * Creates a LdapStringEncodingException
      * 

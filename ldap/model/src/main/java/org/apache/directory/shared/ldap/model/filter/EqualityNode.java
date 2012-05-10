@@ -42,7 +42,7 @@ public class EqualityNode<T> extends SimpleNode<T>
         super( attributeType, value, AssertionType.EQUALITY );
     }
 
-    
+
     /**
      * Creates a new Equality object.
      * 
@@ -62,9 +62,9 @@ public class EqualityNode<T> extends SimpleNode<T>
     public String toString()
     {
         StringBuilder buf = new StringBuilder();
-    
+
         buf.append( '(' );
-        
+
         if ( attributeType != null )
         {
             buf.append( attributeType.getName() );
@@ -73,19 +73,19 @@ public class EqualityNode<T> extends SimpleNode<T>
         {
             buf.append( attribute );
         }
-        
+
         buf.append( "=" );
-        
+
         Value<?> escapedValue = getEscapedValue();
-        if ( !escapedValue.isNull())
+        if ( !escapedValue.isNull() )
         {
             buf.append( escapedValue );
         }
 
         buf.append( super.toString() );
-        
+
         buf.append( ')' );
-        
+
         return buf.toString();
     }
 }

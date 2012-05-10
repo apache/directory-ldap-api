@@ -32,12 +32,15 @@ import org.slf4j.LoggerFactory;
 /**
  * An action that checks the length is not null
  *
+ * @param C The container type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CheckNotNullLength<E extends Asn1Container> extends GrammarAction<E>
+public class CheckNotNullLength<C extends Asn1Container> extends GrammarAction<C>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( CheckNotNullLength.class );
+
 
     /**
      * Instantiates the action.
@@ -51,7 +54,7 @@ public class CheckNotNullLength<E extends Asn1Container> extends GrammarAction<E
     /**
      * {@inheritDoc}
      */
-    public void action( E container ) throws DecoderException
+    public void action( C container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();
 

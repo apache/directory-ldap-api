@@ -23,8 +23,6 @@ package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,12 +58,11 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class PrintableStringSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( PrintableStringSyntaxChecker.class );
+
 
     /**
      * Creates a new instance of PrintableStringSyntaxChecker.
@@ -75,7 +72,7 @@ public class PrintableStringSyntaxChecker extends SyntaxChecker
         super( SchemaConstants.PRINTABLE_STRING_SYNTAX );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -88,14 +85,14 @@ public class PrintableStringSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -107,7 +104,7 @@ public class PrintableStringSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // We must have at least one char
         if ( strValue.length() == 0 )
         {
@@ -115,8 +112,8 @@ public class PrintableStringSyntaxChecker extends SyntaxChecker
             return false;
         }
 
-        boolean result = Strings.isPrintableString(strValue);
-        
+        boolean result = Strings.isPrintableString( strValue );
+
         if ( result )
         {
             LOG.debug( "Syntax valid for '{}'", value );
@@ -125,7 +122,7 @@ public class PrintableStringSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax invalid for '{}'", value );
         }
-        
+
         return result;
     }
 }

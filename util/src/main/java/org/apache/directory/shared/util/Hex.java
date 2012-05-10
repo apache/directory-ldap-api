@@ -38,16 +38,107 @@ public class Hex
     public static final byte[] HEX_VALUE =
         {
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00 -> 0F
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10 -> 1F
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 20 -> 2F
-             0,  1,  2,  3,  4,  5,  6,  7,  8,  9, -1, -1, -1, -1, -1, -1, // 30 -> 3F ( 0, 1,2, 3, 4,5, 6, 7, 8, 9 )
-            -1, 10, 11, 12, 13, 14, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 40 -> 4F ( A, B, C, D, E, F )
-            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 50 -> 5F
-            -1, 10, 11, 12, 13, 14, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1  // 60 -> 6F ( a, b, c, d, e, f )
-        };
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1, // 10 -> 1F
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1, // 20 -> 2F
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1, // 30 -> 3F ( 0, 1,2, 3, 4,5, 6, 7, 8, 9 )
+            -1,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1, // 40 -> 4F ( A, B, C, D, E, F )
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1, // 50 -> 5F
+            -1,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1 // 60 -> 6F ( a, b, c, d, e, f )
+    };
     /** Used to build output as Hex */
     public static final char[] HEX_CHAR =
         { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+
 
     /**
      * Translate two chars to an hex value. The chars must be
@@ -64,8 +155,9 @@ public class Hex
             return -1;
         }
 
-        return (byte)( ( HEX_VALUE[high] << 4 ) | HEX_VALUE[low] );
+        return ( byte ) ( ( HEX_VALUE[high] << 4 ) | HEX_VALUE[low] );
     }
+
 
     /**
      * Translate two bytes to an hex value. The bytes must be
@@ -82,8 +174,9 @@ public class Hex
             return -1;
         }
 
-        return (byte)( ( HEX_VALUE[high] << 4 ) | HEX_VALUE[low] );
+        return ( byte ) ( ( HEX_VALUE[high] << 4 ) | HEX_VALUE[low] );
     }
+
 
     /**
      * Return an hex value from a sinle char
@@ -129,16 +222,16 @@ public class Hex
 
         // the bytes representing the encoded string of hex
         // this should be ( length - 1 )/2 in size
-        byte[] decoded = new byte[ ( chars.length - 1 ) >> 1 ];
+        byte[] decoded = new byte[( chars.length - 1 ) >> 1];
 
-        for ( int ii = 1, jj = 0 ; ii < chars.length; ii+=2, jj++ )
+        for ( int ii = 1, jj = 0; ii < chars.length; ii += 2, jj++ )
         {
             int ch = ( HEX_VALUE[chars[ii]] << 4 )
-                 + HEX_VALUE[chars[ii + 1]];
+                + HEX_VALUE[chars[ii + 1]];
             decoded[jj] = ( byte ) ch;
         }
 
-        return Strings.utf8ToString(decoded);
+        return Strings.utf8ToString( decoded );
     }
 
 
@@ -163,7 +256,7 @@ public class Hex
         }
 
         // create buffer and add everything before start of scan
-        byte[] buf = new byte[ str.length()/3];
+        byte[] buf = new byte[str.length() / 3];
         int pos = 0;
 
         // start scaning until we find an escaped series of bytes
@@ -174,12 +267,12 @@ public class Hex
             if ( c == '\\' )
             {
                 // we have the start of a hex escape sequence
-                if ( Chars.isHex(str, i + 1) && Chars.isHex(str, i + 2) )
+                if ( Chars.isHex( str, i + 1 ) && Chars.isHex( str, i + 2 ) )
                 {
                     byte value = ( byte ) ( ( HEX_VALUE[str.charAt( i + 1 )] << 4 )
                         + HEX_VALUE[str.charAt( i + 2 )] );
 
-                    i+=2;
+                    i += 2;
                     buf[pos++] = value;
                 }
             }
@@ -191,6 +284,7 @@ public class Hex
 
         return buf;
     }
+
 
     /**
      * Converts an array of bytes into an array of characters representing the

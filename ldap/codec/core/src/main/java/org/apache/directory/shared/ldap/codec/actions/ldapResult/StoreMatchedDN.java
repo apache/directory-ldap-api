@@ -99,7 +99,7 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<MessageDe
                 case INVALID_DN_SYNTAX:
                 case ALIAS_DEREFERENCING_PROBLEM:
                     byte[] dnBytes = tlv.getValue().getData();
-                    String dnStr = Strings.utf8ToString(dnBytes);
+                    String dnStr = Strings.utf8ToString( dnBytes );
 
                     try
                     {
@@ -108,7 +108,7 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<MessageDe
                     catch ( LdapInvalidDnException ine )
                     {
                         // This is for the client side. We will never decode LdapResult on the server
-                        String msg = I18n.err( I18n.ERR_04013, dnStr, Strings.dumpBytes(dnBytes), ine
+                        String msg = I18n.err( I18n.ERR_04013, dnStr, Strings.dumpBytes( dnBytes ), ine
                             .getLocalizedMessage() );
                         LOG.error( msg );
 
@@ -128,9 +128,9 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<MessageDe
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "The matchedDn is " + matchedDn);
+            LOG.debug( "The matchedDn is " + matchedDn );
         }
 
-        ldapResult.setMatchedDn(matchedDn);
+        ldapResult.setMatchedDn( matchedDn );
     }
 }

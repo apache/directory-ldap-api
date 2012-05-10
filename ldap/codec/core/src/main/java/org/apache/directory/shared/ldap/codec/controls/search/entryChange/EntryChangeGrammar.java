@@ -30,7 +30,7 @@ import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.LongDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.LongDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.message.controls.ChangeType;
@@ -67,7 +67,7 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
         setName( EntryChangeGrammar.class.getName() );
 
         // Create the transitions table
-        super.transitions = new GrammarTransition[ EntryChangeStates.LAST_EC_STATE.ordinal()][256];
+        super.transitions = new GrammarTransition[EntryChangeStates.LAST_EC_STATE.ordinal()][256];
 
         // ============================================================================================
         // Transition from start state to Entry Change sequence
@@ -76,10 +76,10 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
         //     ...
         //
         // Initialization of the structure
-        super.transitions[ EntryChangeStates.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
+        super.transitions[EntryChangeStates.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<EntryChangeContainer>( EntryChangeStates.START_STATE,
-                                    EntryChangeStates.EC_SEQUENCE_STATE,
-                                    UniversalTag.SEQUENCE.getValue(), null );
+                EntryChangeStates.EC_SEQUENCE_STATE,
+                UniversalTag.SEQUENCE.getValue(), null );
 
         // ============================================================================================
         // transition from Entry Change sequence to Change Type
@@ -89,57 +89,57 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
         //     ...
         //
         // Evaluates the changeType
-        super.transitions[ EntryChangeStates.EC_SEQUENCE_STATE.ordinal()][UniversalTag.ENUMERATED.getValue()] =
+        super.transitions[EntryChangeStates.EC_SEQUENCE_STATE.ordinal()][UniversalTag.ENUMERATED.getValue()] =
             new GrammarTransition<EntryChangeContainer>( EntryChangeStates.EC_SEQUENCE_STATE,
-                                    EntryChangeStates.CHANGE_TYPE_STATE,
-                                    UniversalTag.ENUMERATED.getValue(),
-            new GrammarAction<EntryChangeContainer>( "Set EntryChangeControl changeType" )
-        {
-            public void action( EntryChangeContainer container ) throws DecoderException
-            {
-                Value value = container.getCurrentTLV().getValue();
-
-                try
+                EntryChangeStates.CHANGE_TYPE_STATE,
+                UniversalTag.ENUMERATED.getValue(),
+                new GrammarAction<EntryChangeContainer>( "Set EntryChangeControl changeType" )
                 {
-                    int change = IntegerDecoder.parse( value, 1, 8 );
-                    
-                    switch ( ChangeType.getChangeType( change ) )
+                    public void action( EntryChangeContainer container ) throws DecoderException
                     {
-                        case ADD:
-                        case DELETE:
-                        case MODDN:
-                        case MODIFY:
-                            ChangeType changeType = ChangeType.getChangeType( change );
+                        BerValue value = container.getCurrentTLV().getValue();
 
-                            if ( IS_DEBUG )
+                        try
+                        {
+                            int change = IntegerDecoder.parse( value, 1, 8 );
+
+                            switch ( ChangeType.getChangeType( change ) )
                             {
-                                LOG.debug( "changeType = " + changeType );
+                                case ADD:
+                                case DELETE:
+                                case MODDN:
+                                case MODIFY:
+                                    ChangeType changeType = ChangeType.getChangeType( change );
+
+                                    if ( IS_DEBUG )
+                                    {
+                                        LOG.debug( "changeType = " + changeType );
+                                    }
+
+                                    container.getEntryChangeDecorator().setChangeType( changeType );
+                                    break;
+
+                                default:
+                                    String msg = I18n.err( I18n.ERR_04044 );
+                                    LOG.error( msg );
+                                    throw new DecoderException( msg );
                             }
 
-                            container.getEntryChangeDecorator().setChangeType( changeType );
-                            break;
-
-                        default:
+                            // We can have an END transition
+                            container.setGrammarEndAllowed( true );
+                        }
+                        catch ( IntegerDecoderException e )
+                        {
                             String msg = I18n.err( I18n.ERR_04044 );
-                            LOG.error( msg );
+                            LOG.error( msg, e );
                             throw new DecoderException( msg );
+                        }
+                        catch ( IllegalArgumentException e )
+                        {
+                            throw new DecoderException( e.getLocalizedMessage() );
+                        }
                     }
-
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-                catch ( IntegerDecoderException e )
-                {
-                    String msg = I18n.err( I18n.ERR_04044 );
-                    LOG.error( msg, e );
-                    throw new DecoderException( msg );
-                }
-                catch ( IllegalArgumentException e )
-                {
-                    throw new DecoderException( e.getLocalizedMessage() );
-                }
-            }
-        } );
+                } );
 
         // ============================================================================================
         // Transition from Change Type to Previous Dn
@@ -151,56 +151,56 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
         //
         // Set the previousDN into the structure. We first check that it's a
         // valid Dn
-        super.transitions[ EntryChangeStates.CHANGE_TYPE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
+        super.transitions[EntryChangeStates.CHANGE_TYPE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
             new GrammarTransition<EntryChangeContainer>( EntryChangeStates.CHANGE_TYPE_STATE,
-                                    EntryChangeStates.PREVIOUS_DN_STATE,
-                                    UniversalTag.OCTET_STRING.getValue(),
-            new GrammarAction<EntryChangeContainer>( "Set EntryChangeControl previousDN" )
-        {
-            public void action( EntryChangeContainer container ) throws DecoderException
-            {
-                ChangeType changeType = container.getEntryChangeDecorator().getChangeType();
-
-
-                if ( changeType != ChangeType.MODDN )
+                EntryChangeStates.PREVIOUS_DN_STATE,
+                UniversalTag.OCTET_STRING.getValue(),
+                new GrammarAction<EntryChangeContainer>( "Set EntryChangeControl previousDN" )
                 {
-                    LOG.error( I18n.err( I18n.ERR_04045 ) );
-                    throw new DecoderException( I18n.err( I18n.ERR_04046 ));
-                }
-                else
-                {
-                    Value value = container.getCurrentTLV().getValue();
-                    Dn previousDn;
-
-                    try
+                    public void action( EntryChangeContainer container ) throws DecoderException
                     {
-                        previousDn = new Dn( Strings.utf8ToString(value.getData()) );
-                    }
-                    catch ( LdapInvalidDnException ine )
-                    {
-                        LOG.error( I18n.err( I18n.ERR_04047, Strings.dumpBytes(value.getData()) ) );
-                        throw new DecoderException( I18n.err( I18n.ERR_04048 ) );
-                    }
+                        ChangeType changeType = container.getEntryChangeDecorator().getChangeType();
 
-                    if ( IS_DEBUG )
-                    {
-                        LOG.debug( "previousDN = " + previousDn );
+                        if ( changeType != ChangeType.MODDN )
+                        {
+                            LOG.error( I18n.err( I18n.ERR_04045 ) );
+                            throw new DecoderException( I18n.err( I18n.ERR_04046 ) );
+                        }
+                        else
+                        {
+                            BerValue value = container.getCurrentTLV().getValue();
+                            Dn previousDn;
+
+                            try
+                            {
+                                previousDn = new Dn( Strings.utf8ToString( value.getData() ) );
+                            }
+                            catch ( LdapInvalidDnException ine )
+                            {
+                                LOG.error( I18n.err( I18n.ERR_04047, Strings.dumpBytes( value.getData() ) ) );
+                                throw new DecoderException( I18n.err( I18n.ERR_04048 ) );
+                            }
+
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "previousDN = " + previousDn );
+                            }
+
+                            container.getEntryChangeDecorator().setPreviousDn( previousDn );
+
+                            // We can have an END transition
+                            container.setGrammarEndAllowed( true );
+                        }
                     }
-
-                    container.getEntryChangeDecorator().setPreviousDn( previousDn );
-
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            }
-        } );
+                } );
 
         // Change Number action
-        GrammarAction<EntryChangeContainer> setChangeNumberAction = new GrammarAction<EntryChangeContainer>( "Set EntryChangeControl changeNumber" )
+        GrammarAction<EntryChangeContainer> setChangeNumberAction = new GrammarAction<EntryChangeContainer>(
+            "Set EntryChangeControl changeNumber" )
         {
             public void action( EntryChangeContainer container ) throws DecoderException
             {
-                Value value = container.getCurrentTLV().getValue();
+                BerValue value = container.getCurrentTLV().getValue();
 
                 try
                 {
@@ -234,10 +234,10 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
         // }
         //
         // Set the changeNumber into the structure
-        super.transitions[ EntryChangeStates.PREVIOUS_DN_STATE.ordinal()][UniversalTag.INTEGER.getValue()] =
+        super.transitions[EntryChangeStates.PREVIOUS_DN_STATE.ordinal()][UniversalTag.INTEGER.getValue()] =
             new GrammarTransition<EntryChangeContainer>( EntryChangeStates.PREVIOUS_DN_STATE,
-                                    EntryChangeStates.CHANGE_NUMBER_STATE,
-                                    UniversalTag.INTEGER.getValue(),
+                EntryChangeStates.CHANGE_NUMBER_STATE,
+                UniversalTag.INTEGER.getValue(),
                 setChangeNumberAction );
 
         // ============================================================================================
@@ -249,10 +249,10 @@ public final class EntryChangeGrammar extends AbstractGrammar<EntryChangeContain
         // }
         //
         // Set the changeNumber into the structure
-        super.transitions[ EntryChangeStates.CHANGE_TYPE_STATE.ordinal()][UniversalTag.INTEGER.getValue()] =
+        super.transitions[EntryChangeStates.CHANGE_TYPE_STATE.ordinal()][UniversalTag.INTEGER.getValue()] =
             new GrammarTransition<EntryChangeContainer>( EntryChangeStates.CHANGE_TYPE_STATE,
-                                    EntryChangeStates.CHANGE_NUMBER_STATE,
-                                    UniversalTag.INTEGER.getValue(),
+                EntryChangeStates.CHANGE_NUMBER_STATE,
+                UniversalTag.INTEGER.getValue(),
                 setChangeNumberAction );
     }
 

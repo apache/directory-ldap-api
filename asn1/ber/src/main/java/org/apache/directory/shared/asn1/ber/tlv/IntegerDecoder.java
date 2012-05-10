@@ -21,6 +21,7 @@ package org.apache.directory.shared.asn1.ber.tlv;
 
 
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.util.Strings;
 
 
 /**
@@ -39,38 +40,15 @@ public final class IntegerDecoder
      * Parse a byte buffer and send back an integer, controlling that this number
      * is in a specified interval.
      *
-     * @param value The byte buffer to parse
+     * @param value The Value containing the byte[] to parse
      * @param min Lowest value allowed, included
      * @param max Highest value allowed, included
      * @return An integer
-     * @throws IntegerDecoderException Thrown if the byte stream does not contains an integer
+     * @throws IntegerDecoderException Thrown if the byte[] does not contains an integer
      */
-    public static int parse( Value value, int min, int max ) throws IntegerDecoderException
+    public static int parse( BerValue value, int min, int max ) throws IntegerDecoderException
     {
-
-        int result = 0;
-
-        byte[] bytes = value.getData();
-
-        if ( ( bytes == null ) || ( bytes.length == 0 ) )
-        {
-            throw new IntegerDecoderException( I18n.err( I18n.ERR_00036_0_BYTES_LONG_INTEGER ) );
-        }
-
-        if ( bytes.length > 4 )
-        {
-            throw new IntegerDecoderException( I18n.err( I18n.ERR_00037_ABOVE_4_BYTES_INTEGER ) );
-        }
-
-        for ( int i = 0; ( i < bytes.length ) && ( i < 5 ); i++ )
-        {
-            result = ( result << 8 ) | ( bytes[i] & 0x00FF );
-        }
-
-        if ( ( bytes[0] & 0x80 ) == 0x80 )
-        {
-            result = -( ( ( ~result ) + 1 ) & MASK[bytes.length - 1] );
-        }
+        int result = parseInt( value );
 
         if ( ( result >= min ) && ( result <= max ) )
         {
@@ -90,8 +68,42 @@ public final class IntegerDecoder
      * @return An integer
      * @throws IntegerDecoderException Thrown if the byte stream does not contains an integer
      */
-    public static int parse( Value value ) throws IntegerDecoderException
+    public static int parse( BerValue value ) throws IntegerDecoderException
     {
-        return parse( value, Integer.MIN_VALUE, Integer.MAX_VALUE );
+        return parseInt( value );
+    }
+    
+    
+    /**
+     * Helper method used to parse the integer. We don't check any minimal or maximal
+     * bound.
+     */
+    private static int parseInt( BerValue value ) throws IntegerDecoderException
+    {
+        int result = 0;
+
+        byte[] bytes = value.getData();
+
+        if ( Strings.isEmpty( bytes ) )
+        {
+            throw new IntegerDecoderException( I18n.err( I18n.ERR_00036_0_BYTES_LONG_INTEGER ) );
+        }
+
+        if ( bytes.length > 4 )
+        {
+            throw new IntegerDecoderException( I18n.err( I18n.ERR_00037_ABOVE_4_BYTES_INTEGER ) );
+        }
+
+        for ( int i = 0; ( i < bytes.length ); i++ )
+        {
+            result = ( result << 8 ) | ( bytes[i] & 0x00FF );
+        }
+
+        if ( ( bytes[0] & 0x80 ) == 0x80 )
+        {
+            result = -( ( ( ~result ) + 1 ) & MASK[bytes.length - 1] );
+        }
+        
+        return result;
     }
 }

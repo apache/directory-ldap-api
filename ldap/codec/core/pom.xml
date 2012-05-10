@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.shared</groupId>
     <artifactId>shared-ldap-codec-parent</artifactId>
-    <version>1.0.0-M9-SNAPSHOT</version>
+    <version>1.0.0-M13-SNAPSHOT</version>
   </parent>
   
   <artifactId>shared-ldap-codec-core</artifactId>
@@ -81,12 +81,6 @@
       <groupId>org.osgi</groupId>
       <artifactId>org.osgi</artifactId>
       <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.ipojo</artifactId>
-      <version>1.8.0</version>
     </dependency>
   </dependencies>
 

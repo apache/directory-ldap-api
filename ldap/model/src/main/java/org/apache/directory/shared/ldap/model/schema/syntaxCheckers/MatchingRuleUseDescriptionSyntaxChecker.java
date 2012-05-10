@@ -26,8 +26,6 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.parsers.MatchingRuleUseDescriptionSchemaParser;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,8 +48,6 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class MatchingRuleUseDescriptionSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
@@ -70,7 +66,7 @@ public class MatchingRuleUseDescriptionSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.MATCHING_RULE_USE_DESCRIPTION_SYNTAX );
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -91,7 +87,7 @@ public class MatchingRuleUseDescriptionSyntaxChecker extends SyntaxChecker
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -111,5 +107,5 @@ public class MatchingRuleUseDescriptionSyntaxChecker extends SyntaxChecker
             return false;
         }
     }
-    
+
 }

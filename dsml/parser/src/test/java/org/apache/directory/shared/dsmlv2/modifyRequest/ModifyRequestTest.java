@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.shared.dsmlv2.modifyRequest;
@@ -32,14 +32,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.naming.NamingException;
-
 import org.apache.directory.shared.dsmlv2.AbstractTest;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
+import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.ModifyRequest;
 import org.apache.directory.shared.util.Strings;
@@ -87,12 +86,12 @@ public class ModifyRequestTest extends AbstractTest
 
 
     /**
-     * Test parsing of a request with the (optional) requestID attribute equals to 0
+     * Test parsing of a request with the (optional) requestID attribute below 0
      */
     @Test
-    public void testRequestWithRequestIdEquals0()
+    public void testRequestWithRequestIdBelow0()
     {
-        testParsingFail( ModifyRequestTest.class, "request_with_requestID_equals_0.xml" );
+        testParsingFail( ModifyRequestTest.class, "request_with_requestID_below_0.xml" );
     }
 
 
@@ -126,7 +125,7 @@ public class ModifyRequestTest extends AbstractTest
         assertNotNull( control );
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
-        assertEquals( "Some text", Strings.utf8ToString((byte[]) ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "Some text", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -161,7 +160,7 @@ public class ModifyRequestTest extends AbstractTest
         assertNotNull( control );
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
-        assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString((byte[]) ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -231,7 +230,7 @@ public class ModifyRequestTest extends AbstractTest
         assertNotNull( control );
         assertFalse( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.789", control.getOid() );
-        assertEquals( "Some other text", Strings.utf8ToString((byte[]) ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "Some other text", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -282,10 +281,10 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with a Modification element
-     * @throws NamingException 
+     * @throws NamingException
      */
     @Test
-    public void testRequestWith1Modification() throws NamingException
+    public void testRequestWith1Modification() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -319,11 +318,11 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with a Modification element with Base64 Value
-     * @throws NamingException 
-     * @throws UnsupportedEncodingException 
+     * @throws NamingException
+     * @throws UnsupportedEncodingException
      */
     @Test
-    public void testRequestWith1ModificationBase64Value() throws NamingException, UnsupportedEncodingException
+    public void testRequestWith1ModificationBase64Value() throws LdapException, UnsupportedEncodingException
     {
         Dsmlv2Parser parser = null;
         try
@@ -363,10 +362,10 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with 2 Modification elements
-     * @throws NamingException 
+     * @throws NamingException
      */
     @Test
-    public void testRequestWith2Modifications() throws NamingException
+    public void testRequestWith2Modifications() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -431,10 +430,10 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with operation attribute to Add value
-     * @throws NamingException 
+     * @throws NamingException
      */
     @Test
-    public void testRequestWithOperationAdd() throws NamingException
+    public void testRequestWithOperationAdd() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -464,10 +463,10 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with operation attribute to Delete value
-     * @throws NamingException 
+     * @throws NamingException
      */
     @Test
-    public void testRequestWithOperationDelete() throws NamingException
+    public void testRequestWithOperationDelete() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -497,10 +496,10 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with operation attribute to Replace value
-     * @throws NamingException 
+     * @throws NamingException
      */
     @Test
-    public void testRequestWithOperationReplace() throws NamingException
+    public void testRequestWithOperationReplace() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -540,10 +539,10 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with a Modification element without Value element
-     * @throws NamingException 
+     * @throws NamingException
      */
     @Test
-    public void testRequestWithModificationWithoutValue() throws NamingException
+    public void testRequestWithModificationWithoutValue() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -577,10 +576,10 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with a Modification element
-     * @throws NamingException 
+     * @throws NamingException
      */
     @Test
-    public void testRequestWithModificationWith2Values() throws NamingException
+    public void testRequestWithModificationWith2Values() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try
@@ -610,7 +609,7 @@ public class ModifyRequestTest extends AbstractTest
         assertEquals( "directreport", attribute.getId() );
 
         assertEquals( 2, attribute.size() );
-        
+
         assertTrue( attribute.contains( "CN=John Smith, DC=microsoft, DC=com" ) );
         assertTrue( attribute.contains( "CN=Steve Jobs, DC=apple, DC=com" ) );
     }
@@ -618,10 +617,10 @@ public class ModifyRequestTest extends AbstractTest
 
     /**
      * Test parsing of a request with a Modification element with an empty value
-     * @throws NamingException 
+     * @throws NamingException
      */
     @Test
-    public void testRequestWithModificationWithEmptyValue() throws NamingException
+    public void testRequestWithModificationWithEmptyValue() throws LdapException
     {
         Dsmlv2Parser parser = null;
         try

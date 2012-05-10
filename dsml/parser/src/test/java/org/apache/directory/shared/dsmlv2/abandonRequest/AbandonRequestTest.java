@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.shared.dsmlv2.abandonRequest;
@@ -32,6 +32,7 @@ import java.util.Map;
 import org.apache.directory.shared.dsmlv2.AbstractTest;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
+import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.shared.ldap.model.message.AbandonRequest;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.util.Strings;
@@ -89,12 +90,12 @@ public class AbandonRequestTest extends AbstractTest
 
 
     /**
-     * Test parsing of a request with the (optional) requestID attribute equals to 0
+     * Test parsing of a request with the (optional) requestID attribute below 0
      */
     @Test
-    public void testRequestWithRequestIdEquals0()
+    public void testRequestWithRequestIdBelow0()
     {
-        testParsingFail( AbandonRequestTest.class, "request_with_requestID_equals_0.xml" );
+        testParsingFail( AbandonRequestTest.class, "request_with_requestID_below_0.xml" );
     }
 
 
@@ -147,17 +148,17 @@ public class AbandonRequestTest extends AbstractTest
             fail( e.getMessage() );
         }
 
-        AbandonRequest abandonRequest = (AbandonRequest) parser.getBatchRequest().getCurrentRequest();
+        AbandonRequest abandonRequest = ( AbandonRequest ) parser.getBatchRequest().getCurrentRequest();
         Map<String, Control> controls = abandonRequest.getControls();
 
         assertEquals( 1, abandonRequest.getControls().size() );
-        
+
         Control control = controls.get( "1.2.840.113556.1.4.643" );
 
         assertNotNull( control );
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
-        assertEquals( "Some text", Strings.utf8ToString(( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "Some text", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -187,13 +188,13 @@ public class AbandonRequestTest extends AbstractTest
         Map<String, Control> controls = abandonRequest.getControls();
 
         assertEquals( 1, abandonRequest.getControls().size() );
-        
+
         Control control = controls.get( "1.2.840.113556.1.4.643" );
 
         assertNotNull( control );
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
-        assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -229,7 +230,7 @@ public class AbandonRequestTest extends AbstractTest
         assertNotNull( control );
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
-        assertFalse(  ( ( DsmlControl<?> ) control ).hasValue() );
+        assertFalse( ( ( DsmlControl<?> ) control ).hasValue() );
     }
 
 
@@ -265,7 +266,7 @@ public class AbandonRequestTest extends AbstractTest
         assertNotNull( control );
         assertFalse( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.789", control.getOid() );
-        assertEquals( "Some other text", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "Some other text", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -301,7 +302,7 @@ public class AbandonRequestTest extends AbstractTest
         assertNotNull( control );
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.456", control.getOid() );
-        assertFalse(  ( ( DsmlControl<?> ) control ).hasValue() );
+        assertFalse( ( ( DsmlControl<?> ) control ).hasValue() );
     }
 
 
@@ -314,5 +315,33 @@ public class AbandonRequestTest extends AbstractTest
     public void testRequestWithNeededRequestId()
     {
         testParsingFail( AbandonRequestTest.class, "request_with_needed_requestID.xml" );
+    }
+    
+    
+    /**
+     * Test parsing of a request without the abandonID attribute with a value of 0
+     */
+    @Test
+    public void testRequestWithoutAbandonId0()
+    {
+        Dsmlv2Parser parser = null;
+
+        try
+        {
+            parser = newParser();
+
+            parser.setInput( AbandonRequestTest.class.getResource( "request_with_0_abandonID_attribute.xml" )
+                .openStream(), "UTF-8" );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+            fail( e.getMessage() );
+        }
+
+        BatchRequestDsml batchRequest = parser.getBatchRequest();
+        assertEquals( 0, batchRequest.getRequestID() );
     }
 }

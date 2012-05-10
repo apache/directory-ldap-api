@@ -27,16 +27,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.directory.shared.ldap.model.schema.parsers.LdapComparatorDescription;
-import org.apache.directory.shared.ldap.model.schema.DITContentRule;
-import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
+import org.apache.directory.shared.ldap.model.schema.DitContentRule;
+import org.apache.directory.shared.ldap.model.schema.DitStructureRule;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.shared.ldap.model.schema.NameForm;
 import org.apache.directory.shared.ldap.model.schema.parsers.NormalizerDescription;
 import org.apache.directory.shared.ldap.model.schema.parsers.ParserMonitor;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.parsers.SyntaxCheckerDescription;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OpenLdapObjectIdentifierMacro;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
@@ -320,13 +323,13 @@ openLdapAttributeType returns [AttributeType attributeType]
      * xstring = "X" HYPHEN 1*( ALPHA / HYPHEN / USCORE ) 
      * </pre>
     */
-objectClassDescription returns [ObjectClass objectClass]
+objectClassDescription returns [MutableObjectClass objectClass]
     {
         matchedProduction( "objectClassDescription()" );
         ElementTracker et = new ElementTracker();
     }
     :
-    ( oid:STARTNUMERICOID { objectClass = new ObjectClass(numericoid(oid.getText())); } )
+    ( oid:STARTNUMERICOID { objectClass = new MutableObjectClass(numericoid(oid.getText())); } )
     (
         ( name:NAME { et.track("NAME", name); objectClass.setNames(qdescrs(name.getText())); } )
         |
@@ -387,13 +390,13 @@ objectClassDescription returns [ObjectClass objectClass]
      * xstring = "X" HYPHEN 1*( ALPHA / HYPHEN / USCORE ) 
      * </pre>
     */
-attributeTypeDescription returns [AttributeType attributeType]
+attributeTypeDescription returns [MutableAttributeType attributeType]
     {
         matchedProduction( "attributeTypeDescription()" );
         ElementTracker et = new ElementTracker();
     }
     :
-    ( oid:STARTNUMERICOID { attributeType = new AttributeType(numericoid(oid.getText())); } )
+    ( oid:STARTNUMERICOID { attributeType = new MutableAttributeType(numericoid(oid.getText())); } )
     (
         ( name:NAME { et.track("NAME", name); attributeType.setNames(qdescrs(name.getText())); } )
         |
@@ -511,13 +514,13 @@ ldapSyntaxDescription returns [LdapSyntax ldapSyntax]
      *    extensions WSP RPAREN      ; extensions
      * </pre>
     */
-matchingRuleDescription returns [MatchingRule matchingRule]
+matchingRuleDescription returns [MutableMatchingRule matchingRule]
     {
         matchedProduction( "matchingRuleDescription()" );
         ElementTracker et = new ElementTracker();
     }
     :
-    ( oid:STARTNUMERICOID { matchingRule = new MatchingRule(numericoid(oid.getText())); } )
+    ( oid:STARTNUMERICOID { matchingRule = new MutableMatchingRule(numericoid(oid.getText())); } )
     (
         ( name:NAME { et.track("NAME", name); matchingRule.setNames(qdescrs(name.getText())); } )
         |
@@ -612,13 +615,13 @@ matchingRuleUseDescription returns [MatchingRuleUse matchingRuleUse]
      *    extensions WSP RPAREN      ; extensions
      * </pre>
     */
-ditContentRuleDescription returns [DITContentRule ditContentRule]
+ditContentRuleDescription returns [DitContentRule ditContentRule]
     {
         matchedProduction( "ditContentRuleDescription()" );
         ElementTracker et = new ElementTracker();
     }
     :
-    ( oid:STARTNUMERICOID { ditContentRule = new DITContentRule(numericoid(oid.getText())); } )
+    ( oid:STARTNUMERICOID { ditContentRule = new DitContentRule(numericoid(oid.getText())); } )
     (
         ( name:NAME { et.track("NAME", name); ditContentRule.setNames(qdescrs(name.getText())); } )
         |
@@ -663,13 +666,13 @@ ditContentRuleDescription returns [DITContentRule ditContentRule]
      * ruleid = number
      * </pre>
     */
-ditStructureRuleDescription returns [DITStructureRule ditStructureRule]
+ditStructureRuleDescription returns [DitStructureRule ditStructureRule]
     {
         matchedProduction( "ditStructureRuleDescription()" );
         ElementTracker et = new ElementTracker();
     }
     :
-    ( ruleid:STARTNUMERICOID { ditStructureRule = new DITStructureRule(ruleid(ruleid.getText())); } )
+    ( ruleid:STARTNUMERICOID { ditStructureRule = new DitStructureRule(ruleid(ruleid.getText())); } )
     (
         ( name:NAME { et.track("NAME", name); ditStructureRule.setNames(qdescrs(name.getText())); } )
         |

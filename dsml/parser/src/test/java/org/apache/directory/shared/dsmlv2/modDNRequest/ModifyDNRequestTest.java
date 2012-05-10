@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.shared.dsmlv2.modDNRequest;
@@ -79,12 +79,12 @@ public class ModifyDNRequestTest extends AbstractTest
 
 
     /**
-     * Test parsing of a request with the (optional) requestID attribute equals to 0
+     * Test parsing of a request with the (optional) requestID attribute below 0
      */
     @Test
-    public void testRequestWithRequestIdEquals0()
+    public void testRequestWithRequestIdbelowBelow0()
     {
-        testParsingFail( ModifyDNRequestTest.class, "request_with_requestID_equals_0.xml" );
+        testParsingFail( ModifyDNRequestTest.class, "request_with_requestID_below_0.xml" );
     }
 
 
@@ -119,7 +119,7 @@ public class ModifyDNRequestTest extends AbstractTest
         assertNotNull( control );
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
-        assertEquals( "Some text", Strings.utf8ToString((byte[]) ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "Some text", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -154,7 +154,7 @@ public class ModifyDNRequestTest extends AbstractTest
         assertNotNull( control );
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
-        assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString((byte[]) ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -224,7 +224,7 @@ public class ModifyDNRequestTest extends AbstractTest
         assertNotNull( control );
         assertFalse( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.789", control.getOid() );
-        assertEquals( "Some other text", Strings.utf8ToString((byte[]) ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "Some other text", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -308,7 +308,7 @@ public class ModifyDNRequestTest extends AbstractTest
 
         assertEquals( "cn=Bob Rush,ou=Dev,dc=Example,dc=COM", modifyDNRequest.getName().getNormName() );
 
-        assertEquals( "cn=Steve Jobs", modifyDNRequest.getNewRdn().getNormName() );
+        assertEquals( "CN=Steve Jobs", modifyDNRequest.getNewRdn().getName() );
     }
 
 
@@ -387,7 +387,7 @@ public class ModifyDNRequestTest extends AbstractTest
             fail( e.getMessage() );
         }
 
-        ModifyDnRequest modifyDNRequest = (ModifyDnRequest) parser.getBatchRequest().getCurrentRequest();
+        ModifyDnRequest modifyDNRequest = ( ModifyDnRequest ) parser.getBatchRequest().getCurrentRequest();
 
         assertFalse( modifyDNRequest.getDeleteOldRdn() );
     }

@@ -25,8 +25,6 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Chars;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,12 +51,11 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class OidSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( OidSyntaxChecker.class );
+
 
     /**
      * Creates a new instance of OidSyntaxChecker.
@@ -68,7 +65,7 @@ public class OidSyntaxChecker extends SyntaxChecker
         super( SchemaConstants.OID_SYNTAX );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -81,14 +78,14 @@ public class OidSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -100,12 +97,12 @@ public class OidSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // if the first character is a digit it's an attempt at an OID and must be
         // checked to make sure there are no other chars except '.' and digits.
-        if ( Chars.isDigit(strValue.charAt(0)) )
+        if ( Chars.isDigit( strValue.charAt( 0 ) ) )
         {
-            if ( ! Oid.isOid(strValue) )
+            if ( !Oid.isOid( strValue ) )
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
@@ -119,17 +116,17 @@ public class OidSyntaxChecker extends SyntaxChecker
 
         // here we just need to make sure that we have the right characters in the 
         // string and that it starts with a letter.
-        if ( Chars.isAlphaASCII(strValue, 0) )
+        if ( Chars.isAlphaASCII( strValue, 0 ) )
         {
             for ( int index = 0; index < strValue.length(); index++ )
             {
-                if ( ! Chars.isAlphaDigitMinus(strValue, index))
+                if ( !Chars.isAlphaDigitMinus( strValue, index ) )
                 {
                     LOG.debug( "Syntax invalid for '{}'", value );
                     return false;
                 }
             }
-            
+
             LOG.debug( "Syntax valid for '{}'", value );
             return true;
         }

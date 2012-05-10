@@ -42,7 +42,7 @@ public class LdapProtocolCodecFactory implements ProtocolCodecFactory
     /** The LdapEncoder key */
     public static final String LDAP_ENCODER = "LDAP_ENCODER";
 
-    
+
     /**
      * Get the LDAP decoder.
      *

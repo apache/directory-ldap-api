@@ -43,7 +43,8 @@ public class ResponseCarryingMessageException extends RuntimeMultiException
 
     /** The response with the error cause */
     private Message response;
-    
+
+
     /**
      * Constructs an Exception without a message.
      */
@@ -59,20 +60,22 @@ public class ResponseCarryingMessageException extends RuntimeMultiException
      * @param message
      *            The message associated with the exception.
      */
-    public ResponseCarryingMessageException(String message)
+    public ResponseCarryingMessageException( String message )
     {
         super( message );
     }
-    
+
+
     /**
      * Set a response if we get an exception while parsing the message
      * @param response the constructed response
      */
-    public void setResponse( Message response ) 
+    public void setResponse( Message response )
     {
         this.response = response;
     }
-    
+
+
     /**
      * Get the constructed response
      * @return The constructed response

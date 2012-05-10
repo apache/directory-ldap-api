@@ -27,9 +27,11 @@ import org.apache.directory.shared.asn1.ber.Asn1Container;
 /**
  * The interface which expose common behavior of a Grammar implementer.
  *
+ * @param C The container type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface Grammar<E extends Asn1Container>
+public interface Grammar<C extends Asn1Container>
 {
     /**
      * This method, when called, execute an action on the current data stored in
@@ -38,7 +40,7 @@ public interface Grammar<E extends Asn1Container>
      * @param asn1Container Store the data being processed.
      * @throws DecoderException Thrown when an unrecoverable error occurs.
      */
-    void executeAction( E asn1Container ) throws DecoderException;
+    void executeAction( C asn1Container ) throws DecoderException;
 
 
     /**

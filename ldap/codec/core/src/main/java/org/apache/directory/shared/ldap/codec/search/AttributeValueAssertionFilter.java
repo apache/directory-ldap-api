@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.codec.search;
 
@@ -25,7 +25,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.AttributeValueAssertion;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
@@ -134,16 +134,16 @@ public class AttributeValueAssertionFilter extends Filter
      *  |
      *  +--> 0x04 L2 attributeDesc
      *  +--> 0x04 L3 assertionValue
-     *  
+     * 
      * 
      * L2 = Length(attributeDesc)
      * L3 = Length(assertionValue)
-     * L1 = 1 + Length(L2) + L2 
+     * L1 = 1 + Length(L2) + L2
      *      + 1 + Length(L3) + L3
      * 
      * Length(AttributeValueFilter) = Length(0xA?) + Length(L1)
-     *                                + 1 + Length(L2) + L2 
-     *                                + 1 + Length(L3) + L3 
+     *                                + 1 + Length(L2) + L2
+     *                                + 1 + Length(L3) + L3
      */
     public int computeLength()
     {
@@ -165,16 +165,16 @@ public class AttributeValueAssertionFilter extends Filter
 
 
     /**
-     * Encode the AttributeValueAssertion Filters to a PDU. The 
+     * Encode the AttributeValueAssertion Filters to a PDU. The
      * following filters are to be encoded :
-     *  - equality match 
+     *  - equality match
      *  - greater or equal
      *  - less or equal
-     *  - approx match 
+     *  - approx match
      * 
      * AttributeValueAssertion filters :
      * 
-     * 0xA[3, 5, 6, 8] LL 
+     * 0xA[3, 5, 6, 8] LL
      * 0x04 LL attributeDesc
      * 0x04 LL assertionValue
      * 
@@ -218,16 +218,16 @@ public class AttributeValueAssertionFilter extends Filter
         }
 
         // The attribute desc
-        Value.encode( buffer, assertion.getAttributeDesc() );
+        BerValue.encode( buffer, assertion.getAttributeDesc() );
 
         // The assertion desc
         if ( assertion.getAssertionValue().isHumanReadable() )
         {
-            Value.encode( buffer, assertion.getAssertionValue().getBytes() );
+            BerValue.encode( buffer, assertion.getAssertionValue().getString() );
         }
         else
         {
-            Value.encode( buffer, assertion.getAssertionValue().getString() );
+            BerValue.encode( buffer, assertion.getAssertionValue().getBytes() );
         }
 
         return buffer;

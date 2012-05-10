@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.comparators;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -40,22 +41,23 @@ import org.junit.runner.RunWith;
 public class TelephoneNumberComparatorTest
 {
     private TelephoneNumberComparator comparator;
-    
+
+
     @Before
     public void init()
     {
         comparator = new TelephoneNumberComparator( null );
     }
-    
-    
+
+
     @Test
     public void testNullTelephoneNumbers()
     {
         String tel1 = null;
         String tel2 = null;
-        
+
         assertEquals( 0, comparator.compare( tel1, tel2 ) );
-        
+
         tel2 = "abc";
         assertEquals( -1, comparator.compare( tel1, tel2 ) );
 
@@ -69,38 +71,38 @@ public class TelephoneNumberComparatorTest
     {
         String tel1 = "";
         String tel2 = "";
-        
+
         assertEquals( 0, comparator.compare( tel1, tel2 ) );
-        
+
         tel2 = "abc";
         assertTrue( comparator.compare( tel1, tel2 ) < 0 );
 
         String tel3 = "";
         assertTrue( comparator.compare( tel2, tel3 ) > 0 );
     }
-    
-    
+
+
     @Test
     public void testSimpleTelephoneNumbers()
     {
         String tel1 = "01 02 03 04 05";
         String tel2 = "01 02 03 04 05";
-        
+
         assertEquals( 0, comparator.compare( tel1, tel2 ) );
-        
+
         tel2 = "0102030405";
         assertEquals( 0, comparator.compare( tel1, tel2 ) );
     }
-    
-    
+
+
     @Test
     public void testComplexTelephoneNumbers()
     {
         String tel1 = "  + 33 1 01-02-03-04-05  ";
         String tel2 = "+3310102030405";
-        
+
         assertEquals( 0, comparator.compare( tel1, tel2 ) );
-        
+
         tel1 = "1-801-555-1212";
         tel2 = "18015551212";
 

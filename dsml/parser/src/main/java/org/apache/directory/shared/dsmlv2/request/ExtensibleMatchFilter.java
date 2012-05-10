@@ -39,7 +39,6 @@ public class ExtensibleMatchFilter extends Filter
     /** The dnAttributes flag */
     private boolean dnAttributes = false;
 
-    
 
     /**
      * Get the dnAttributes flag

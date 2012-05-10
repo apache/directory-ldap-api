@@ -33,32 +33,40 @@ import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 /**
  * An abstract DSML Message decorator base class.
  *
+ * @param <M> The message to decorate
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractDsmlMessageDecorator<E extends Message> 
-    implements DsmlDecorator<E>, Message
+public abstract class AbstractDsmlMessageDecorator<M extends Message>
+    implements DsmlDecorator<M>, Message
 {
     /** The LDAP message codec */
     private final LdapApiService codec;
 
     /** The LDAP message */
-    private final E message;
-    
+    private final M message;
+
     /** Map of message controls using OID Strings for keys and Control values */
     private final Map<String, Control> controls;
 
     /** The current control */
     private DsmlControl<? extends Control> currentControl;
 
-    
-    public AbstractDsmlMessageDecorator( LdapApiService codec, E message )
+
+    /**
+     * Create a new instance of AbstractDsmlMessageDecorator
+     * 
+     * @param codec The codec to use
+     * @param message The message to decorate
+     */
+    public AbstractDsmlMessageDecorator( LdapApiService codec, M message )
     {
         this.codec = codec;
         this.message = message;
         controls = new HashMap<String, Control>();
     }
-    
-    
+
+
     /**
      * Get the current Control Object
      * 
@@ -69,13 +77,16 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return currentControl;
     }
 
-    
+
+    /**
+     * @return The codec to use to encode or decode this message
+     */
     public LdapApiService getCodecService()
     {
         return codec;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -84,7 +95,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return message.getType();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -93,7 +104,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return controls;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -102,7 +113,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return controls.get( oid );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -111,7 +122,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return controls.containsKey( oid );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -119,7 +130,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
     {
         Control decorated;
         DsmlControl<? extends Control> decorator;
-        
+
         if ( control instanceof DsmlControl )
         {
             decorator = ( DsmlControl<?> ) control;
@@ -130,15 +141,15 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
             decorator = new DsmlControl<Control>( codec, codec.newControl( control ) );
             decorated = control;
         }
-        
+
         message.addControl( decorated );
         controls.put( control.getOid(), decorator );
         currentControl = decorator;
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -148,11 +159,11 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         {
             addControl( control );
         }
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -160,11 +171,11 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
     {
         controls.remove( control.getOid() );
         message.removeControl( control );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -173,7 +184,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return message.getMessageId();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -182,7 +193,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return message.get( key );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -191,22 +202,22 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return message.put( key, value );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public Message setMessageId( int messageId )
     {
         message.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
-    public E getDecorated()
+    public M getDecorated()
     {
         return message;
     }

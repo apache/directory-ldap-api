@@ -25,7 +25,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.AbandonRequestDecorator;
@@ -52,6 +52,7 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -77,7 +78,7 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
         // We get it and store it in MessageId
         TLV tlv = container.getCurrentTLV();
 
-        Value value = tlv.getValue();
+        BerValue value = tlv.getValue();
 
         if ( ( value == null ) || ( value.getData() == null ) )
         {
@@ -108,7 +109,7 @@ public class InitAbandonRequest extends GrammarAction<LdapMessageContainer<Aband
         catch ( IntegerDecoderException ide )
         {
             LOG.error( I18n
-                .err( I18n.ERR_04076, Strings.dumpBytes(value.getData()), ide.getMessage() ) );
+                .err( I18n.ERR_04076, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( ide.getMessage(), ide );

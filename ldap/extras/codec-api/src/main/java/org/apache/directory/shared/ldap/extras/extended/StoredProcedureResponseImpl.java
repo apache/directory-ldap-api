@@ -34,6 +34,7 @@ public class StoredProcedureResponseImpl extends ExtendedResponseImpl implements
     /** The Constant serialVersionUID. */
     private static final long serialVersionUID = 7689434378578829994L;
 
+
     /**
      * Instantiates a new stored procedure response.
      *
@@ -44,7 +45,7 @@ public class StoredProcedureResponseImpl extends ExtendedResponseImpl implements
         super( messageId, EXTENSION_OID );
     }
 
-    
+
     /**
      * Instantiates a new stored procedure response.
      */

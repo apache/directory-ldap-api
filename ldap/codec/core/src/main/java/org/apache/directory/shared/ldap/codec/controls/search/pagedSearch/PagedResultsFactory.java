@@ -36,7 +36,7 @@ public class PagedResultsFactory implements ControlFactory<PagedResults, PagedRe
     /** The LDAP codec service */
     private LdapApiService codec;
 
-    
+
     /**
      * Creates a new instance of PagedResultsFactory.
      *
@@ -46,8 +46,8 @@ public class PagedResultsFactory implements ControlFactory<PagedResults, PagedRe
     {
         this.codec = codec;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -56,7 +56,7 @@ public class PagedResultsFactory implements ControlFactory<PagedResults, PagedRe
         return PagedResults.OID;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -64,7 +64,7 @@ public class PagedResultsFactory implements ControlFactory<PagedResults, PagedRe
     {
         return new PagedResultsDecorator( codec );
     }
-    
+
 
     /**
      * {@inheritDoc}

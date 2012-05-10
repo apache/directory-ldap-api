@@ -20,10 +20,6 @@
 package org.apache.directory.shared.ldap.model.schema.normalizers;
 
 
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
-
-
 /**
  * A deep trimming normalizer that caches normalizations to prevent repeat
  * normalizations from occurring needlessly.  Try to use this sparing for only
@@ -34,8 +30,6 @@ import org.apache.felix.ipojo.annotations.Provides;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class CachingDeepTrimNormalizer extends CachingNormalizer
 {
     public CachingDeepTrimNormalizer()

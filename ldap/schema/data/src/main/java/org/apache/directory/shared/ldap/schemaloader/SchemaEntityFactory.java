@@ -6,21 +6,20 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.schemaloader;
 
 
-import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,8 +28,6 @@ import java.util.Set;
 
 import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ipojo.helpers.OSGIHelper;
-import org.apache.directory.shared.ipojo.schema.SchemaElementsManager;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
@@ -42,11 +39,13 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValu
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.EntityFactory;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
@@ -54,14 +53,12 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.UsageEnum;
-import org.apache.directory.shared.ldap.model.schema.comparators.BooleanComparator;
 import org.apache.directory.shared.ldap.model.schema.parsers.LdapComparatorDescription;
 import org.apache.directory.shared.ldap.model.schema.parsers.NormalizerDescription;
 import org.apache.directory.shared.ldap.model.schema.parsers.SyntaxCheckerDescription;
 import org.apache.directory.shared.ldap.model.schema.registries.DefaultSchema;
 import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 import org.apache.directory.shared.ldap.model.schema.registries.Schema;
-import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.BooleanSyntaxChecker;
 import org.apache.directory.shared.util.Base64;
 import org.apache.directory.shared.util.StringConstants;
 import org.apache.directory.shared.util.Strings;
@@ -89,9 +86,6 @@ public class SchemaEntityFactory implements EntityFactory
     /** A special ClassLoader that loads a class from the bytecode attribute */
     private final AttributeClassLoader classLoader;
 
-    /** SchemaElementsManager class to OSGI load the classes */
-    private static SchemaElementsManager schemaElements = new SchemaElementsManager();
-
 
     /**
      * Instantiates a new schema entity factory.
@@ -103,7 +97,7 @@ public class SchemaEntityFactory implements EntityFactory
 
 
     /**
-     * Get an OID from an entry. Handles the bad cases (null OID, 
+     * Get an OID from an entry. Handles the bad cases (null OID,
      * not a valid OID, ...)
      */
     private String getOid( Entry entry, String objectType ) throws LdapInvalidAttributeValueException
@@ -132,7 +126,7 @@ public class SchemaEntityFactory implements EntityFactory
 
 
     /**
-     * Get an OID from an entry. Handles the bad cases (null OID, 
+     * Get an OID from an entry. Handles the bad cases (null OID,
      * not a valid OID, ...)
      */
     private String getOid( SchemaObject description, String objectType ) throws LdapInvalidAttributeValueException
@@ -274,45 +268,19 @@ public class SchemaEntityFactory implements EntityFactory
         SyntaxChecker syntaxChecker = null;
         String byteCodeStr = StringConstants.EMPTY;
 
-        // In OSGI and in normal JRE execution, we first try to load the element through 'Class.forName()'
-        // This is for speed. There are so much schema elements and letting IPojo manage every one of them 
-        // is not viable for server start-up time.
-        try
+        if ( byteCode == null )
         {
-            if ( byteCode == null )
-            {
-                clazz = Class.forName( className );
-            }
-            else
-            {
-                classLoader.setAttribute( byteCode );
-                clazz = classLoader.loadClass( className );
-                byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
-            }
-
-            // Create the syntaxChecker instance
-            syntaxChecker = ( SyntaxChecker ) clazz.newInstance();
+            clazz = Class.forName( className );
         }
-        catch ( ClassNotFoundException e )
+        else
         {
-            // Check if we're in OSGI context and byteCode is null 
-            if ( OSGIHelper.isAPIInOSGIContainer() && byteCode == null )
-            {
-                // That is the only case we have to OSGI load the class,
-                // The other cases are the monolithic load cases.
-                syntaxChecker = schemaElements.getSyntaxChecker( className );
-
-                if ( syntaxChecker == null )
-                {
-                    // We couldn't load the syntax checker using IPojo too.
-                    throw e;
-                }
-            }
-            else
-            {
-                throw e;
-            }
+            classLoader.setAttribute( byteCode );
+            clazz = classLoader.loadClass( className );
+            byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
         }
+
+        // Create the syntaxChecker instance
+        syntaxChecker = ( SyntaxChecker ) clazz.newInstance();
 
         // Update the common fields
         syntaxChecker.setBytecode( byteCodeStr );
@@ -432,65 +400,38 @@ public class SchemaEntityFactory implements EntityFactory
         Class<?> clazz = null;
         String byteCodeStr = StringConstants.EMPTY;
 
-        // In OSGI and in normal JRE execution, we first try to load the element through 'Class.forName()'
-        // This is for speed. There are so much schema elements and letting IPojo manage every one of them 
-        // is not viable for server start-up time.
+        if ( byteCode == null )
+        {
+            clazz = Class.forName( className );
+        }
+        else
+        {
+            classLoader.setAttribute( byteCode );
+            clazz = classLoader.loadClass( className );
+            byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
+        }
+
+        // Create the comparator instance. Either we have a no argument constructor,
+        // or we have one which takes an OID. Lets try the one with an OID argument first
         try
         {
-            if ( byteCode == null )
-            {
-                clazz = Class.forName( className );
-            }
-            else
-            {
-                classLoader.setAttribute( byteCode );
-                clazz = classLoader.loadClass( className );
-                byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
-            }
-
-            // Create the comparator instance. Either we have a no argument constructor,
-            // or we have one which takes an OID. Lets try the one with an OID argument first
-            try
-            {
-                Constructor<?> constructor = clazz.getConstructor( new Class[]
-                    { String.class } );
-                comparator = ( LdapComparator<?> ) constructor.newInstance( new Object[]
-                    { oid } );
-            }
-            catch ( NoSuchMethodException nsme )
-            {
-                // Ok, let's try with the constructor without argument.
-                // In this case, we will have to check that the OID is the same than
-                // the one we got in the Comparator entry
-                clazz.getConstructor();
-                comparator = ( LdapComparator<?> ) clazz.newInstance();
-
-                if ( !comparator.getOid().equals( oid ) )
-                {
-                    String msg = I18n.err( I18n.ERR_10015, oid, comparator.getOid() );
-                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg, nsme );
-                }
-            }
+            Constructor<?> constructor = clazz.getConstructor( new Class[]
+                { String.class } );
+            comparator = ( LdapComparator<?> ) constructor.newInstance( new Object[]
+                { oid } );
         }
-        catch ( ClassNotFoundException e )
+        catch ( NoSuchMethodException nsme )
         {
-            // Check if we're in OSGI context and byteCode is null 
-            if ( OSGIHelper.isAPIInOSGIContainer() && byteCode == null )
-            {
-                // That is the only case we have to OSGI load the class,
-                // The other cases are the monolithic load cases.
-                // Comparators are also oid bound classes, so we send it too.
-                comparator = schemaElements.getLdapComparator( className, oid );
+            // Ok, let's try with the constructor without argument.
+            // In this case, we will have to check that the OID is the same than
+            // the one we got in the Comparator entry
+            clazz.getConstructor();
+            comparator = ( LdapComparator<?> ) clazz.newInstance();
 
-                if ( comparator == null )
-                {
-                    // We couldn't load the comparator using IPojo too.
-                    throw e;
-                }
-            }
-            else
+            if ( !comparator.getOid().equals( oid ) )
             {
-                throw e;
+                String msg = I18n.err( I18n.ERR_10015, oid, comparator.getOid() );
+                throw new LdapInvalidAttributeValueException( ResultCodeEnum.UNWILLING_TO_PERFORM, msg, nsme );
             }
         }
 
@@ -593,7 +534,6 @@ public class SchemaEntityFactory implements EntityFactory
         }
         catch ( Exception e )
         {
-            e.printStackTrace();
             throw new LdapUnwillingToPerformException( ResultCodeEnum.UNWILLING_TO_PERFORM, e.getMessage(), e );
         }
     }
@@ -610,45 +550,19 @@ public class SchemaEntityFactory implements EntityFactory
         Normalizer normalizer = null;
         String byteCodeStr = StringConstants.EMPTY;
 
-        // In OSGI and in normal JRE execution, we first try to load the element through 'Class.forName()'
-        // This is for speed. There are so much schema elements and letting IPojo manage every one of them 
-        // is not viable for server start-up time.
-        try
+        if ( byteCode == null )
         {
-            if ( byteCode == null )
-            {
-                clazz = Class.forName( className );
-            }
-            else
-            {
-                classLoader.setAttribute( byteCode );
-                clazz = classLoader.loadClass( className );
-                byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
-            }
-
-            // Create the normalizer instance
-            normalizer = ( Normalizer ) clazz.newInstance();
+            clazz = Class.forName( className );
         }
-        catch ( ClassNotFoundException e )
+        else
         {
-            // Check if we're in OSGI context and byteCode is null 
-            if ( OSGIHelper.isAPIInOSGIContainer() && byteCode == null )
-            {
-                // That is the only case we have to OSGI load the class,
-                // The other cases are the monolithic load cases.
-                normalizer = schemaElements.getNormalizer( className );
-
-                if ( normalizer == null )
-                {
-                    // We couldn't load the normalizer using IPojo too.
-                    throw e;
-                }
-            }
-            else
-            {
-                throw e;
-            }
+            classLoader.setAttribute( byteCode );
+            clazz = classLoader.loadClass( className );
+            byteCodeStr = new String( Base64.encode( byteCode.getBytes() ) );
         }
+
+        // Create the normalizer instance
+        normalizer = ( Normalizer ) clazz.newInstance();
 
         // Update the common fields
         normalizer.setBytecode( byteCodeStr );
@@ -758,8 +672,8 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * {@inheritDoc}
-     * @throws LdapInvalidAttributeValueException 
-     * @throws LdapUnwillingToPerformException 
+     * @throws LdapInvalidAttributeValueException
+     * @throws LdapUnwillingToPerformException
      */
     public LdapSyntax getSyntax( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapInvalidAttributeValueException, LdapUnwillingToPerformException
@@ -791,15 +705,6 @@ public class SchemaEntityFactory implements EntityFactory
         // Create the new LdapSyntax instance
         LdapSyntax syntax = new LdapSyntax( oid );
 
-        // The isHumanReadable field
-        Attribute mHumanReadable = entry.get( MetaSchemaConstants.X_HUMAN_READABLE_AT );
-
-        if ( mHumanReadable != null )
-        {
-            String val = mHumanReadable.getString();
-            syntax.setHumanReadable( val.toUpperCase().equals( "TRUE" ) );
-        }
-
         // Common properties
         setSchemaObjectProperties( syntax, entry, schema );
 
@@ -809,8 +714,8 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * {@inheritDoc}
-     * @throws LdapUnwillingToPerformException 
-     * @throws LdapInvalidAttributeValueException 
+     * @throws LdapUnwillingToPerformException
+     * @throws LdapInvalidAttributeValueException
      */
     public MatchingRule getMatchingRule( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapUnwillingToPerformException, LdapInvalidAttributeValueException
@@ -839,7 +744,7 @@ public class SchemaEntityFactory implements EntityFactory
             schema = schemaManager.getLoadedSchema( schemaName );
         }
 
-        MatchingRule matchingRule = new MatchingRule( oid );
+        MutableMatchingRule matchingRule = new MutableMatchingRule( oid );
 
         // The syntax field
         Attribute mSyntax = entry.get( MetaSchemaConstants.M_SYNTAX_AT );
@@ -850,7 +755,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // The normalizer and comparator fields will be updated when we will
-        // apply the registry 
+        // apply the registry
 
         // Common properties
         setSchemaObjectProperties( matchingRule, entry, schema );
@@ -911,7 +816,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Create the ObjectClass instance
-        ObjectClass oc = new ObjectClass( oid );
+        MutableObjectClass oc = new MutableObjectClass( oid );
 
         // The Sup field
         Attribute mSuperiors = entry.get( MetaSchemaConstants.M_SUP_OBJECT_CLASS_AT );
@@ -955,8 +860,8 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * {@inheritDoc}
-     * @throws LdapInvalidAttributeValueException 
-     * @throws LdapUnwillingToPerformException 
+     * @throws LdapInvalidAttributeValueException
+     * @throws LdapUnwillingToPerformException
      */
     public AttributeType getAttributeType( SchemaManager schemaManager, Entry entry, Registries targetRegistries,
         String schemaName ) throws LdapInvalidAttributeValueException, LdapUnwillingToPerformException
@@ -986,7 +891,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
 
         // Create the new AttributeType
-        AttributeType attributeType = new AttributeType( oid );
+        MutableAttributeType attributeType = new MutableAttributeType( oid );
 
         // Syntax
         Attribute mSyntax = entry.get( MetaSchemaConstants.M_SYNTAX_AT );
@@ -1080,7 +985,7 @@ public class SchemaEntityFactory implements EntityFactory
 
     /**
      * Process the FQCN attribute
-     * @throws LdapInvalidAttributeValueException 
+     * @throws LdapInvalidAttributeValueException
      */
     private String getFqcn( Entry entry, String objectType ) throws LdapInvalidAttributeValueException
     {
@@ -1200,15 +1105,6 @@ public class SchemaEntityFactory implements EntityFactory
             schemaObject.setEnabled( schema != null && schema.isEnabled() );
         }
 
-        // The isReadOnly field
-        Attribute mIsReadOnly = entry.get( MetaSchemaConstants.M_NO_USER_MODIFICATION_AT );
-
-        if ( mIsReadOnly != null )
-        {
-            String val = mIsReadOnly.getString();
-            schemaObject.setReadOnly( val.equalsIgnoreCase( "TRUE" ) );
-        }
-
         // The specification field
         /*
          * TODO : create the M_SPECIFICATION_AT
@@ -1216,30 +1112,59 @@ public class SchemaEntityFactory implements EntityFactory
         
         if ( mSpecification != null )
         {
-            so.setSpecification( mSpecification.getString() ); 
+            so.setSpecification( mSpecification.getString() );
         }
         */
 
         // The schemaName field
         schemaObject.setSchemaName( schema.getSchemaName() );
 
-        // The extensions field
-        /*
-         * TODO create the M_EXTENSION_AT AT
-        EntryAttribute extensions = entry.get( MetaSchemaConstants.M_EXTENSION_AT );
+        // The extensions fields
+        // X-SCHEMA
+        Attribute xSchema = entry.get( MetaSchemaConstants.X_SCHEMA_AT );
         
-        if ( extensions != null )
+        if ( xSchema != null )
         {
-            List<String> extensions = new ArrayList<String>();
+            String schemaName = xSchema.getString();
             
-            for ( Value<?> extension:extensions )
+            if ( !schema.getSchemaName().equalsIgnoreCase( schemaName ) )
             {
-                values.add( extension() );
+               LOG.warn( "Schema (" + schema.getSchemaName() + ") and X-SCHEMA ("
+                   + schemaName + ") are different : " + entry );
             }
             
-            so.setExtensions( values );
+            schemaObject.addExtension( MetaSchemaConstants.X_SCHEMA_AT, schemaName );
         }
-        */
+        
+        // X-NOT-HUMAN-READABLE
+        Attribute xNotHumanReadable = entry.get( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT );
+        
+        if ( xNotHumanReadable != null )
+        {
+            String value = xNotHumanReadable.getString();
+            
+            schemaObject.addExtension( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT, value );
+        }
+        
+        // X-READ-ONLY
+        Attribute xReadOnly = entry.get( MetaSchemaConstants.X_READ_ONLY_AT );
+        
+        if ( xReadOnly != null )
+        {
+            String value = xReadOnly.getString();
+            
+            schemaObject.addExtension( MetaSchemaConstants.X_READ_ONLY_AT, value );
+        }
+        
+        // X-ENABLED
+        Attribute xEnabled = entry.get( MetaSchemaConstants.X_ENABLED_AT );
+        
+        if ( xEnabled != null )
+        {
+            String value = xEnabled.getString();
+            
+            schemaObject.addExtension( MetaSchemaConstants.X_ENABLED_AT, value );
+        }
     }
 
 
@@ -1265,7 +1190,7 @@ public class SchemaEntityFactory implements EntityFactory
         // The names field
         schemaObject.setNames( description.getNames() );
 
-        // The isEnabled field. Has the description does not hold a 
+        // The isEnabled field. Has the description does not hold a
         // Disable field, we will inherit from the schema enable field
         schemaObject.setEnabled( schema.isEnabled() );
 

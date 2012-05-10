@@ -181,7 +181,8 @@ public class MatchingRuleDescriptionSchemaParserTest
 
         assertEquals( "1.2.3.4.5.6.7.8.9.0", matchingRule.getOid() );
         assertEquals( 2, matchingRule.getNames().size() );
-        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", matchingRule.getNames().get( 0 ) );
+        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789",
+            matchingRule.getNames().get( 0 ) );
         assertEquals( "test", matchingRule.getNames().get( 1 ) );
         assertEquals( "Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577", matchingRule.getDescription() );
         assertTrue( matchingRule.isObsolete() );
@@ -327,7 +328,7 @@ public class MatchingRuleDescriptionSchemaParserTest
                 "( 2.5.13.5 NAME 'caseExactMatch' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )",
                 "( 2.5.13.5 NAME 'caseExactMatch' DESC 'Case Exact Matching on Directory String [defined in X.520]' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )",
                 "( 1.2.3.4.5.6.7.8.9.0 NAME ( 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' 'test' ) DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' OBSOLETE SYNTAX 0.1.2.3.4.5.6.7.8.9 X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )" };
-        SchemaParserTestUtils.testMultiThreaded(parser, testValues);
+        SchemaParserTestUtils.testMultiThreaded( parser, testValues );
     }
 
 

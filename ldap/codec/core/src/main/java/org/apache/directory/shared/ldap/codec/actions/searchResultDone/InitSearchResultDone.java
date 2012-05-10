@@ -41,6 +41,7 @@ public class InitSearchResultDone extends GrammarAction<LdapMessageContainer<Sea
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitSearchResultDone.class );
 
+
     /**
      * Instantiates a new action.
      */

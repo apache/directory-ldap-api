@@ -53,6 +53,7 @@ public class AddAttributeType extends GrammarAction<LdapMessageContainer<SearchR
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */

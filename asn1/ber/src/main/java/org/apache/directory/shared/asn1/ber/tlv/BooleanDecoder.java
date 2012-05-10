@@ -21,6 +21,7 @@ package org.apache.directory.shared.asn1.ber.tlv;
 
 
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,17 +38,17 @@ public final class BooleanDecoder
 
 
     /**
-     * Parse a byte buffer and send back a booelan.
+     * Parse a Value containing a byte[] and send back a boolean.
      *
-     * @param value The byte buffer to parse
+     * @param value The Value to parse
      * @return A boolean.
-     * @throws BooleanDecoderException Thrown if the byte stream does not contains a boolean
+     * @throws BooleanDecoderException Thrown if the Value does not contains a boolean
      */
-    public static boolean parse( Value value ) throws BooleanDecoderException
+    public static boolean parse( BerValue value ) throws BooleanDecoderException
     {
         byte[] bytes = value.getData();
 
-        if ( ( bytes == null ) || ( bytes.length == 0 ) )
+        if ( Strings.isEmpty( bytes ) )
         {
             throw new BooleanDecoderException( I18n.err( I18n.ERR_00034_0_BYTES_LONG_BOOLEAN ) );
         }

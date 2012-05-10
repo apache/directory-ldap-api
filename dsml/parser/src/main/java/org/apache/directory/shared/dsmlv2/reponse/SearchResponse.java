@@ -46,13 +46,21 @@ public class SearchResponse extends AbstractResponse
 
     /**
      * Creates a new instance of SearchResponse.
+     */
+    public SearchResponse()
+    {
+        super( -1, null );
+    }
+
+
+    /**
+     * Creates a new instance of SearchResponse.
      *
      * @param messageId the response eliciting this Request
-     * @param type the message type of the response
      */
-    public SearchResponse( int messageId, MessageTypeEnum type )
+    public SearchResponse( int messageId )
     {
-        super( messageId, type );
+        super( messageId, null );
     }
 
 
@@ -67,6 +75,20 @@ public class SearchResponse extends AbstractResponse
     public boolean addSearchResultEntry( SearchResultEntryDsml searchResultEntry )
     {
         return searchResultEntryList.add( searchResultEntry );
+    }
+
+
+    /**
+     * Removes a Search Result Entry
+     *
+     * @param searchResultEntry
+     *      the Search Result Entry to remove
+     * @return
+     *      true (as per the general contract of the Collection.remove method)
+     */
+    public boolean removeSearchResultEntry( SearchResultEntryDsml searchResultEntry )
+    {
+        return searchResultEntryList.remove( searchResultEntry );
     }
 
 
@@ -112,6 +134,20 @@ public class SearchResponse extends AbstractResponse
     public boolean addSearchResultReference( SearchResultReferenceDsml searchResultReference )
     {
         return searchResultReferenceList.add( searchResultReference );
+    }
+
+
+    /**
+     * Removes a Search Result Reference
+     *
+     * @param searchResultReference
+     *      the Search Result Reference to remove
+     * @return
+     *      true (as per the general contract of the Collection.remove method)
+     */
+    public boolean removeSearchResultReference( SearchResultReferenceDsml searchResultReference )
+    {
+        return searchResultReferenceList.remove( searchResultReference );
     }
 
 

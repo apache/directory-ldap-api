@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.filter;
 
+
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 
 
@@ -40,7 +41,7 @@ public final class PresenceNode extends LeafNode
         super( attributeType, AssertionType.PRESENCE );
     }
 
-    
+
     /**
      * Creates a PresenceNode object based on an attribute.
      * 
@@ -51,7 +52,7 @@ public final class PresenceNode extends LeafNode
         super( attribute, AssertionType.PRESENCE );
     }
 
-    
+
     /**
      * @see java.lang.Object#toString()
      * @return A string representing the AndNode
@@ -59,9 +60,9 @@ public final class PresenceNode extends LeafNode
     public String toString()
     {
         StringBuilder buf = new StringBuilder();
-        
+
         buf.append( '(' );
-        
+
         if ( attributeType != null )
         {
             buf.append( attributeType.getName() );
@@ -70,13 +71,13 @@ public final class PresenceNode extends LeafNode
         {
             buf.append( attribute );
         }
-        
+
         buf.append( "=*" );
 
         buf.append( super.toString() );
 
         buf.append( ')' );
-        
+
         return buf.toString();
     }
 }

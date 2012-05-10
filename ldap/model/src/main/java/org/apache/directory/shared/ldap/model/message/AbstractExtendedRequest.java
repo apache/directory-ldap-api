@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.message;
 
+
 import org.apache.directory.shared.ldap.model.exception.MessageException;
 
 
@@ -27,7 +28,8 @@ import org.apache.directory.shared.ldap.model.exception.MessageException;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extends AbstractRequest implements ExtendedRequest<R>
+public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extends AbstractRequest implements
+    ExtendedRequest<R>
 {
     static final long serialVersionUID = 7916990159044177480L;
 
@@ -64,7 +66,6 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
     // ExtendedRequest Interface Method Implementations
     // -----------------------------------------------------------------------
 
-
     /**
      * Gets the Object Identifier corresponding to the extended request type.
      * This is the <b>requestName</b> portion of the ext. req. PDU.
@@ -76,7 +77,7 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
         return oid;
     }
 
-    
+
     /**
      * Sets the Object Identifier corresponding to the extended request type.
      * 
@@ -85,46 +86,46 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
     public ExtendedRequest<R> setRequestName( String newOid )
     {
         this.oid = newOid;
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<R> setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<R> addControl( Control control ) throws MessageException
     {
-        return (ExtendedRequest<R>)super.addControl( control );
+        return ( ExtendedRequest<R> ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<R> addAllControls( Control[] controls ) throws MessageException
     {
-        return (ExtendedRequest<R>)super.addAllControls( controls );
+        return ( ExtendedRequest<R> ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<R> removeControl( Control control ) throws MessageException
     {
-        return (ExtendedRequest<R>)super.removeControl( control );
+        return ( ExtendedRequest<R> ) super.removeControl( control );
     }
 
 
@@ -208,7 +209,7 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
         {
             return false;
         }
-        
+
         return true;
     }
 

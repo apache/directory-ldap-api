@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.extras.extended.ads_impl.certGeneration
 import org.apache.directory.shared.asn1.ber.grammar.Grammar;
 import org.apache.directory.shared.asn1.ber.grammar.States;
 
+
 /**
  * This class store the CertGeneration's grammar constants. It is also used
  * for debugging purposes.
@@ -67,7 +68,7 @@ public enum CertGenerationStatesEnum implements States
         return "CERT_GENERATION_GRAMMER";
     }
 
-    
+
     /**
      * Get the grammar name
      * 
@@ -79,7 +80,7 @@ public enum CertGenerationStatesEnum implements States
         return "CERT_GENERATION_GRAMMER";
     }
 
-    
+
     /**
      * Get the string representing the state
      * 
@@ -91,7 +92,7 @@ public enum CertGenerationStatesEnum implements States
         return ( ( state == END_STATE.ordinal() ) ? "CERT_GENERATION_END_STATE" : this.name() );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -99,8 +100,8 @@ public enum CertGenerationStatesEnum implements States
     {
         return this == END_STATE;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

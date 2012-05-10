@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -28,6 +29,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.TelephoneNumberSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for NumericStringSyntaxChecker.
@@ -46,7 +48,8 @@ public class TelephoneNumberSyntaxCheckerTest
     {
         assertFalse( checker.isValidSyntax( null ) );
     }
-    
+
+
     @Test
     public void testOID()
     {
@@ -67,8 +70,8 @@ public class TelephoneNumberSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "A" ) );
         assertFalse( checker.isValidSyntax( "+" ) );
     }
-    
-    
+
+
     @Test
     public void testWrongCase()
     {
@@ -76,8 +79,8 @@ public class TelephoneNumberSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "+ ()" ) );
         assertFalse( checker.isValidSyntax( " +2 (123) 456-789 +" ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectCase()
     {
@@ -87,13 +90,14 @@ public class TelephoneNumberSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( "+ 123 ( 456 )7891   12345" ) );
         assertTrue( checker.isValidSyntax( " 12 34 56 78 90 " ) );
     }
-    
+
+
     @Test
     public void testWithNewMandatoryRegexp()
     {
         // Adding french telephone number regexp
         checker.setDefaultRegexp( " *0[1-8](( *|[-/.]{1})\\d\\d){4} *" );
-        
+
         assertFalse( checker.isValidSyntax( "+ 123 ( 456 )7891   12345" ) );
         assertTrue( checker.isValidSyntax( " 01 02 03 04 05 " ) );
         assertTrue( checker.isValidSyntax( " 0102 03 04 05 " ) );

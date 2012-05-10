@@ -55,17 +55,17 @@ public class ValueTest
     @Test
     public void testValueIntGetNbBytes()
     {
-        assertEquals( 1, Value.getNbBytes( 0x00000000 ) );
-        assertEquals( 1, Value.getNbBytes( 0x00000001 ) );
-        assertEquals( 2, Value.getNbBytes( 0x000000FF ) );
-        assertEquals( 2, Value.getNbBytes( 0x00000100 ) );
-        assertEquals( 3, Value.getNbBytes( 0x0000FFFF ) );
-        assertEquals( 3, Value.getNbBytes( 0x00010000 ) );
-        assertEquals( 4, Value.getNbBytes( 0x00FFFFFF ) );
-        assertEquals( 4, Value.getNbBytes( 0x01000000 ) );
-        assertEquals( 1, Value.getNbBytes( -1 ) );
-        assertEquals( 4, Value.getNbBytes( 0x7FFFFFFF ) );
-        assertEquals( 1, Value.getNbBytes( 0xFFFFFFFF ) );
+        assertEquals( 1, BerValue.getNbBytes( 0x00000000 ) );
+        assertEquals( 1, BerValue.getNbBytes( 0x00000001 ) );
+        assertEquals( 2, BerValue.getNbBytes( 0x000000FF ) );
+        assertEquals( 2, BerValue.getNbBytes( 0x00000100 ) );
+        assertEquals( 3, BerValue.getNbBytes( 0x0000FFFF ) );
+        assertEquals( 3, BerValue.getNbBytes( 0x00010000 ) );
+        assertEquals( 4, BerValue.getNbBytes( 0x00FFFFFF ) );
+        assertEquals( 4, BerValue.getNbBytes( 0x01000000 ) );
+        assertEquals( 1, BerValue.getNbBytes( -1 ) );
+        assertEquals( 4, BerValue.getNbBytes( 0x7FFFFFFF ) );
+        assertEquals( 1, BerValue.getNbBytes( 0xFFFFFFFF ) );
     }
 
 
@@ -75,25 +75,25 @@ public class ValueTest
     @Test
     public void testValueLongGetNbBytes()
     {
-        assertEquals( 1, Value.getNbBytes( 0x0000000000000000L ) );
-        assertEquals( 1, Value.getNbBytes( 0x0000000000000001L ) );
-        assertEquals( 2, Value.getNbBytes( 0x00000000000000FFL ) );
-        assertEquals( 2, Value.getNbBytes( 0x0000000000000100L ) );
-        assertEquals( 3, Value.getNbBytes( 0x000000000000FFFFL ) );
-        assertEquals( 3, Value.getNbBytes( 0x0000000000010000L ) );
-        assertEquals( 4, Value.getNbBytes( 0x0000000000FFFFFFL ) );
-        assertEquals( 4, Value.getNbBytes( 0x0000000001000000L ) );
-        assertEquals( 5, Value.getNbBytes( 0x00000000FFFFFFFFL ) );
-        assertEquals( 5, Value.getNbBytes( 0x0000000100000000L ) );
-        assertEquals( 6, Value.getNbBytes( 0x000000FFFFFFFFFFL ) );
-        assertEquals( 6, Value.getNbBytes( 0x0000010000000000L ) );
-        assertEquals( 7, Value.getNbBytes( 0x0000FFFFFFFFFFFFL ) );
-        assertEquals( 7, Value.getNbBytes( 0x0001000000000000L ) );
-        assertEquals( 8, Value.getNbBytes( 0x00FFFFFFFFFFFFFFL ) );
-        assertEquals( 8, Value.getNbBytes( 0x0100000000000000L ) );
-        assertEquals( 1, Value.getNbBytes( -1L ) );
-        assertEquals( 8, Value.getNbBytes( 0x7FFFFFFFFFFFFFFFL ) );
-        assertEquals( 1, Value.getNbBytes( 0xFFFFFFFFFFFFFFFFL ) );
+        assertEquals( 1, BerValue.getNbBytes( 0x0000000000000000L ) );
+        assertEquals( 1, BerValue.getNbBytes( 0x0000000000000001L ) );
+        assertEquals( 2, BerValue.getNbBytes( 0x00000000000000FFL ) );
+        assertEquals( 2, BerValue.getNbBytes( 0x0000000000000100L ) );
+        assertEquals( 3, BerValue.getNbBytes( 0x000000000000FFFFL ) );
+        assertEquals( 3, BerValue.getNbBytes( 0x0000000000010000L ) );
+        assertEquals( 4, BerValue.getNbBytes( 0x0000000000FFFFFFL ) );
+        assertEquals( 4, BerValue.getNbBytes( 0x0000000001000000L ) );
+        assertEquals( 5, BerValue.getNbBytes( 0x00000000FFFFFFFFL ) );
+        assertEquals( 5, BerValue.getNbBytes( 0x0000000100000000L ) );
+        assertEquals( 6, BerValue.getNbBytes( 0x000000FFFFFFFFFFL ) );
+        assertEquals( 6, BerValue.getNbBytes( 0x0000010000000000L ) );
+        assertEquals( 7, BerValue.getNbBytes( 0x0000FFFFFFFFFFFFL ) );
+        assertEquals( 7, BerValue.getNbBytes( 0x0001000000000000L ) );
+        assertEquals( 8, BerValue.getNbBytes( 0x00FFFFFFFFFFFFFFL ) );
+        assertEquals( 8, BerValue.getNbBytes( 0x0100000000000000L ) );
+        assertEquals( 1, BerValue.getNbBytes( -1L ) );
+        assertEquals( 8, BerValue.getNbBytes( 0x7FFFFFFFFFFFFFFFL ) );
+        assertEquals( 1, BerValue.getNbBytes( 0xFFFFFFFFFFFFFFFFL ) );
     }
 
 
@@ -186,7 +186,7 @@ public class ValueTest
          
          for ( int value:positiveValues )
          {
-             byte[] bb = Value.getBytes( value );
+             byte[] bb = BerValue.getBytes( value );
              assertEquals( expectedPositiveBytes[i].length, bb.length );
              assertTrue( Arrays.equals( expectedPositiveBytes[i], bb ) );
              i++;
@@ -196,154 +196,154 @@ public class ValueTest
          
          for ( int value:negativeValues )
          {
-             byte[] bb = Value.getBytes( value );
+             byte[] bb = BerValue.getBytes( value );
              assertEquals( expectedNegativeBytes[i].length, bb.length );
              assertTrue( Arrays.equals( expectedNegativeBytes[i], bb ) );
              i++;
          }
 
-        byte[] bb = Value.getBytes( 0x00000000 );
+        byte[] bb = BerValue.getBytes( 0x00000000 );
         assertEquals( 1, bb.length );
         assertEquals( 0, bb[0] );
 
-        bb = Value.getBytes( 0x00000001 );
+        bb = BerValue.getBytes( 0x00000001 );
         assertEquals( 1, bb.length );
         assertEquals( 1, bb[0] );
 
-        bb = Value.getBytes( 0x0000007F );
+        bb = BerValue.getBytes( 0x0000007F );
         assertEquals( 1, bb.length );
         assertEquals( 0x7F, bb[0] );
 
-        bb = Value.getBytes( 0x00000080 );
+        bb = BerValue.getBytes( 0x00000080 );
         assertEquals( 2, bb.length );
         assertEquals( 0x00, bb[0] );
         assertEquals( (byte)0x80, bb[1] );
 
-        bb = Value.getBytes( 0x000000FF );
+        bb = BerValue.getBytes( 0x000000FF );
         assertEquals( 2, bb.length );
         assertEquals( 0x00, bb[0] );
         assertEquals( (byte)0xFF, bb[1] );
 
-        bb = Value.getBytes( 0x00007FFF );
+        bb = BerValue.getBytes( 0x00007FFF );
         assertEquals( 2, bb.length );
         assertEquals( 0x7F, bb[0] );
         assertEquals( (byte)0xFF, bb[1] );
 
-        bb = Value.getBytes( 0x00008000 );
+        bb = BerValue.getBytes( 0x00008000 );
         assertEquals( 3, bb.length );
         assertEquals( 0x00, bb[0] );
         assertEquals( (byte)0x80, bb[1] );
         assertEquals( 0x00, bb[2] );
 
-        bb = Value.getBytes( 0x0000FFFF );
+        bb = BerValue.getBytes( 0x0000FFFF );
         assertEquals( 3, bb.length );
         assertEquals( 0x00, bb[0] );
         assertEquals( (byte)0xFF, bb[1] );
         assertEquals( (byte)0xFF, bb[2] );
 
-        bb = Value.getBytes( 0x00010000 );
+        bb = BerValue.getBytes( 0x00010000 );
         assertEquals( 3, bb.length );
         assertEquals( 0x01, bb[0] );
         assertEquals( 0x00, bb[1] );
         assertEquals( 0x00, bb[2] );
 
-        bb = Value.getBytes( 0x007FFFFF );
+        bb = BerValue.getBytes( 0x007FFFFF );
         assertEquals( 3, bb.length );
         assertEquals( 0x7F, bb[0] );
         assertEquals( (byte)0xFF, bb[1] );
         assertEquals( (byte)0xFF, bb[2] );
 
-        bb = Value.getBytes( 0x00800000 );
+        bb = BerValue.getBytes( 0x00800000 );
         assertEquals( 4, bb.length );
         assertEquals( 0x00, bb[0] );
         assertEquals( (byte)0x80, bb[1] );
         assertEquals( 0x00, bb[2] );
         assertEquals( 0x00, bb[3] );
 
-        bb = Value.getBytes( 0x00FFFFFF );
+        bb = BerValue.getBytes( 0x00FFFFFF );
         assertEquals( 4, bb.length );
         assertEquals( 0x00, bb[0] );
         assertEquals( (byte)0xFF, bb[1] );
         assertEquals( (byte)0xFF, bb[2] );
         assertEquals( (byte)0xFF, bb[3] );
 
-        bb = Value.getBytes( 0x01000000 );
+        bb = BerValue.getBytes( 0x01000000 );
         assertEquals( 4, bb.length );
         assertEquals( 0x01, bb[0] );
         assertEquals( 0x00, bb[1] );
         assertEquals( 0x00, bb[2] );
         assertEquals( 0x00, bb[3] );
 
-        bb = Value.getBytes( 0x7FFFFFFF );
+        bb = BerValue.getBytes( 0x7FFFFFFF );
         assertEquals( 4, bb.length );
         assertEquals( 0x7F, bb[0] );
         assertEquals( (byte)0xFF, bb[1] );
         assertEquals( (byte)0xFF, bb[2] );
         assertEquals( (byte)0xFF, bb[3] );
 
-        bb = Value.getBytes( 0x80000000 );
+        bb = BerValue.getBytes( 0x80000000 );
         assertEquals( 4, bb.length );
         assertEquals( (byte)0x80, bb[0] );
         assertEquals( (byte)0x00, bb[1] );
         assertEquals( (byte)0x00, bb[2] );
         assertEquals( (byte)0x00, bb[3] );
         
-        bb = Value.getBytes( 0xFFFFFFFF );
+        bb = BerValue.getBytes( 0xFFFFFFFF );
         assertEquals( 1, bb.length );
         assertEquals( (byte)0xFF, bb[0] );
         
-        bb = Value.getBytes( 0xFFFFFF80 );
+        bb = BerValue.getBytes( 0xFFFFFF80 );
         assertEquals( 1, bb.length );
         assertEquals( (byte)0x80, bb[0] );
 
-        bb = Value.getBytes( 0xFFFFFF7F );
+        bb = BerValue.getBytes( 0xFFFFFF7F );
         assertEquals( 2, bb.length );
         assertEquals( (byte)0xFF, bb[0] );
         assertEquals( 0x7F, bb[1] );
 
-        bb = Value.getBytes( 0xFFFFFF00 );
+        bb = BerValue.getBytes( 0xFFFFFF00 );
         assertEquals( 2, bb.length );
         assertEquals( (byte)0xFF, bb[0] );
         assertEquals( 0x00, bb[1] );
 
-        bb = Value.getBytes( 0xFFFF8000 );
+        bb = BerValue.getBytes( 0xFFFF8000 );
         assertEquals( 2, bb.length );
         assertEquals( (byte)0x80, bb[0] );
         assertEquals( 0x00, bb[1] );
 
-        bb = Value.getBytes( 0xFFFF7FFF );
+        bb = BerValue.getBytes( 0xFFFF7FFF );
         assertEquals( 3, bb.length );
         assertEquals( (byte)0xFF, bb[0] );
         assertEquals( 0x7F, bb[1] );
         assertEquals( (byte)0xFF, bb[2] );
 
-        bb = Value.getBytes( 0xFFFF0000 );
+        bb = BerValue.getBytes( 0xFFFF0000 );
         assertEquals( 3, bb.length );
         assertEquals( (byte)0xFF, bb[0] );
         assertEquals( 0x00, bb[1] );
         assertEquals( 0x00, bb[2] );
 
-        bb = Value.getBytes( 0xFF800000 );
+        bb = BerValue.getBytes( 0xFF800000 );
         assertEquals( 3, bb.length );
         assertEquals( (byte)0x80, bb[0] );
         assertEquals( 0x00, bb[1] );
         assertEquals( 0x00, bb[2] );
 
-        bb = Value.getBytes( 0xFF7FFFFF );
+        bb = BerValue.getBytes( 0xFF7FFFFF );
         assertEquals( 4, bb.length );
         assertEquals( (byte)0xFF, bb[0] );
         assertEquals( 0x7F, bb[1] );
         assertEquals( (byte)0xFF, bb[2] );
         assertEquals( (byte)0xFF, bb[3] );
 
-        bb = Value.getBytes( 0xFF000000 );
+        bb = BerValue.getBytes( 0xFF000000 );
         assertEquals( 4, bb.length );
         assertEquals( (byte)0xFF, bb[0] );
         assertEquals( 0x00, bb[1] );
         assertEquals( 0x00, bb[2] );
         assertEquals( 0x00, bb[3] );
 
-        bb = Value.getBytes( 0x80000000 );
+        bb = BerValue.getBytes( 0x80000000 );
         assertEquals( 4, bb.length );
         assertEquals( (byte)0x80, bb[0] );
         assertEquals( 0x00, bb[1] );
@@ -512,7 +512,7 @@ public class ValueTest
         
         for ( long value:positiveValues )
         {
-            byte[] bb = Value.getBytes( value );
+            byte[] bb = BerValue.getBytes( value );
             assertEquals( expectedPositiveBytes[i].length, bb.length );
             assertTrue( Arrays.equals( expectedPositiveBytes[i], bb ) );
             i++;
@@ -522,7 +522,7 @@ public class ValueTest
         
         for ( long value:negativeValues )
         {
-            byte[] bb = Value.getBytes( value );
+            byte[] bb = BerValue.getBytes( value );
             assertEquals( expectedNegativeBytes[i].length, bb.length );
             assertTrue( Arrays.equals( expectedNegativeBytes[i], bb ) );
             i++;
@@ -533,12 +533,12 @@ public class ValueTest
     @Test
     public void testEncodeInt2Bytes()
     {
-        byte[] encoded = Value.getBytes( 128 );
+        byte[] encoded = BerValue.getBytes( 128 );
 
         assertEquals( 0x00, encoded[0] );
         assertEquals( ( byte ) 0x80, encoded[1] );
 
-        encoded = Value.getBytes( -27066 );
+        encoded = BerValue.getBytes( -27066 );
 
         assertEquals( ( byte ) 0x96, encoded[0] );
         assertEquals( 0x46, encoded[1] );
@@ -550,7 +550,7 @@ public class ValueTest
     public void testEncodeInt3Bytes()
     {
 
-        byte[] encoded = Value.getBytes( 32787 );
+        byte[] encoded = BerValue.getBytes( 32787 );
 
         assertEquals( 0x00, encoded[0] );
         assertEquals( ( byte ) 0x80, encoded[1] );
@@ -597,7 +597,7 @@ public class ValueTest
 
         for ( int i:testedInt )
         {
-            encoded = Value.getBytes( i );
+            encoded = BerValue.getBytes( i );
 
             int value = new BigInteger( encoded ).intValue();
 
@@ -649,7 +649,7 @@ public class ValueTest
         {
             encoded = new BigInteger( Integer.toString( i ) ).toByteArray();
 
-            int value = IntegerDecoder.parse( new Value( encoded ) );
+            int value = IntegerDecoder.parse( new BerValue( encoded ) );
 
             assertEquals( i, value );
         }
@@ -741,7 +741,7 @@ public class ValueTest
         {
             encoded = new BigInteger( Long.toString( i ) ).toByteArray();
 
-            long value = LongDecoder.parse( new Value( encoded ) );
+            long value = LongDecoder.parse( new BerValue( encoded ) );
 
             assertEquals( i, value );
         }
@@ -754,7 +754,7 @@ public class ValueTest
     {
         byte[] bb = new byte[]{0x01, (byte)0xFF};
         
-        Value v = new Value( bb );
+        BerValue v = new BerValue( bb );
         byte[] vv = v.getData();
         
         assertEquals( 0x01, vv[0] );
@@ -775,7 +775,7 @@ public class ValueTest
         
         try
         {
-            Value.encode( buffer, bs );
+            BerValue.encode( buffer, bs );
         }
         catch ( EncoderException ee )
         {

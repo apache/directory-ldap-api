@@ -30,7 +30,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
@@ -81,12 +81,12 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     {
         this( codec );
 
-        setType( type);
+        setType( type );
     }
-
 
     /** The global length for this control */
     private int syncInfoValueLength;
+
 
     /**
      * {@inheritDoc}
@@ -240,7 +240,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
 
         switch ( getType() )
         {
-            case NEW_COOKIE :
+            case NEW_COOKIE:
                 if ( getCookie() != null )
                 {
                     syncInfoValueLength = 1 + TLV.getNbBytes( getCookie().length ) + getCookie().length;
@@ -255,15 +255,15 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                 // Call the super class to compute the global control length
                 return valueLength;
 
-            case REFRESH_DELETE :
-            case REFRESH_PRESENT :
+            case REFRESH_DELETE:
+            case REFRESH_PRESENT:
                 if ( getCookie() != null )
                 {
                     syncInfoValueLength = 1 + TLV.getNbBytes( getCookie().length ) + getCookie().length;
                 }
 
                 // The refreshDone flag, only if not true, as it default to true
-                if ( ! isRefreshDone() )
+                if ( !isRefreshDone() )
                 {
                     syncInfoValueLength += 1 + 1 + 1;
                 }
@@ -273,7 +273,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                 // Call the super class to compute the global control length
                 return valueLength;
 
-            case SYNC_ID_SET :
+            case SYNC_ID_SET:
                 if ( getCookie() != null )
                 {
                     syncInfoValueLength = 1 + TLV.getNbBytes( getCookie().length ) + getCookie().length;
@@ -290,7 +290,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
 
                 if ( getSyncUUIDs().size() != 0 )
                 {
-                    for ( byte[] syncUUID: getSyncUUIDs() )
+                    for ( byte[] syncUUID : getSyncUUIDs() )
                     {
                         int uuidLength = 1 + TLV.getNbBytes( syncUUID.length ) + syncUUID.length;
 
@@ -304,7 +304,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                 // Call the super class to compute the global control length
                 return valueLength;
 
-            default :
+            default:
 
         }
 
@@ -329,9 +329,9 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
 
         switch ( getType() )
         {
-            case NEW_COOKIE :
+            case NEW_COOKIE:
                 // The first case : newCookie
-                buffer.put( (byte)SyncInfoValueTags.NEW_COOKIE_TAG.getValue() );
+                buffer.put( ( byte ) SyncInfoValueTags.NEW_COOKIE_TAG.getValue() );
 
                 // As the OCTET_STRING is absorbed by the Application tag,
                 // we have to store the L and V separately
@@ -347,59 +347,59 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
 
                 break;
 
-            case REFRESH_DELETE :
+            case REFRESH_DELETE:
                 // The second case : refreshDelete
-                buffer.put( (byte)SyncInfoValueTags.REFRESH_DELETE_TAG.getValue() );
+                buffer.put( ( byte ) SyncInfoValueTags.REFRESH_DELETE_TAG.getValue() );
                 buffer.put( TLV.getBytes( syncInfoValueLength ) );
 
                 // The cookie, if any
                 if ( getCookie() != null )
                 {
-                    Value.encode( buffer, getCookie() );
+                    BerValue.encode( buffer, getCookie() );
                 }
 
                 // The refreshDone flag
-                if ( ! isRefreshDone() )
+                if ( !isRefreshDone() )
                 {
-                    Value.encode( buffer, isRefreshDone() );
+                    BerValue.encode( buffer, isRefreshDone() );
                 }
 
                 break;
 
-            case REFRESH_PRESENT :
+            case REFRESH_PRESENT:
                 // The third case : refreshPresent
-                buffer.put( (byte)SyncInfoValueTags.REFRESH_PRESENT_TAG.getValue() );
+                buffer.put( ( byte ) SyncInfoValueTags.REFRESH_PRESENT_TAG.getValue() );
                 buffer.put( TLV.getBytes( syncInfoValueLength ) );
 
                 // The cookie, if any
                 if ( getCookie() != null )
                 {
-                    Value.encode( buffer, getCookie() );
+                    BerValue.encode( buffer, getCookie() );
                 }
 
                 // The refreshDone flag
-                if ( ! isRefreshDone() )
+                if ( !isRefreshDone() )
                 {
-                    Value.encode( buffer, isRefreshDone() );
+                    BerValue.encode( buffer, isRefreshDone() );
                 }
 
                 break;
 
-            case SYNC_ID_SET :
+            case SYNC_ID_SET:
                 // The last case : syncIdSet
-                buffer.put( (byte)SyncInfoValueTags.SYNC_ID_SET_TAG.getValue() );
+                buffer.put( ( byte ) SyncInfoValueTags.SYNC_ID_SET_TAG.getValue() );
                 buffer.put( TLV.getBytes( syncInfoValueLength ) );
 
                 // The cookie, if any
                 if ( getCookie() != null )
                 {
-                    Value.encode( buffer, getCookie() );
+                    BerValue.encode( buffer, getCookie() );
                 }
 
                 // The refreshDeletes flag if not false
                 if ( isRefreshDeletes() )
                 {
-                    Value.encode( buffer, isRefreshDeletes() );
+                    BerValue.encode( buffer, isRefreshDeletes() );
                 }
 
                 // The syncUUIDs
@@ -409,9 +409,9 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                 // Loop on the UUIDs if any
                 if ( getSyncUUIDs().size() != 0 )
                 {
-                    for ( byte[] syncUUID: getSyncUUIDs() )
+                    for ( byte[] syncUUID : getSyncUUIDs() )
                     {
-                        Value.encode( buffer , syncUUID );
+                        BerValue.encode( buffer, syncUUID );
                     }
                 }
         }
@@ -435,7 +435,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
 
                 switch ( getType() )
                 {
-                    case NEW_COOKIE :
+                    case NEW_COOKIE:
                         // The first case : newCookie
                         buffer.put( ( byte ) SyncInfoValueTags.NEW_COOKIE_TAG.getValue() );
 
@@ -453,59 +453,59 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
 
                         break;
 
-                    case REFRESH_DELETE :
+                    case REFRESH_DELETE:
                         // The second case : refreshDelete
-                        buffer.put( (byte)SyncInfoValueTags.REFRESH_DELETE_TAG.getValue() );
+                        buffer.put( ( byte ) SyncInfoValueTags.REFRESH_DELETE_TAG.getValue() );
                         buffer.put( TLV.getBytes( syncInfoValueLength ) );
 
                         // The cookie, if any
                         if ( getCookie() != null )
                         {
-                            Value.encode( buffer, getCookie() );
+                            BerValue.encode( buffer, getCookie() );
                         }
 
                         // The refreshDone flag
-                        if ( ! isRefreshDone() )
+                        if ( !isRefreshDone() )
                         {
-                            Value.encode( buffer, isRefreshDone() );
+                            BerValue.encode( buffer, isRefreshDone() );
                         }
 
                         break;
 
-                    case REFRESH_PRESENT :
+                    case REFRESH_PRESENT:
                         // The third case : refreshPresent
-                        buffer.put( (byte)SyncInfoValueTags.REFRESH_PRESENT_TAG.getValue() );
+                        buffer.put( ( byte ) SyncInfoValueTags.REFRESH_PRESENT_TAG.getValue() );
                         buffer.put( TLV.getBytes( syncInfoValueLength ) );
 
                         // The cookie, if any
                         if ( getCookie() != null )
                         {
-                            Value.encode( buffer, getCookie() );
+                            BerValue.encode( buffer, getCookie() );
                         }
 
                         // The refreshDone flag
-                        if ( ! isRefreshDone() )
+                        if ( !isRefreshDone() )
                         {
-                            Value.encode( buffer, isRefreshDone() );
+                            BerValue.encode( buffer, isRefreshDone() );
                         }
 
                         break;
 
-                    case SYNC_ID_SET :
+                    case SYNC_ID_SET:
                         // The last case : syncIdSet
-                        buffer.put( (byte)SyncInfoValueTags.SYNC_ID_SET_TAG.getValue() );
+                        buffer.put( ( byte ) SyncInfoValueTags.SYNC_ID_SET_TAG.getValue() );
                         buffer.put( TLV.getBytes( syncInfoValueLength ) );
 
                         // The cookie, if any
                         if ( getCookie() != null )
                         {
-                            Value.encode( buffer, getCookie() );
+                            BerValue.encode( buffer, getCookie() );
                         }
 
                         // The refreshDeletes flag if not false
                         if ( isRefreshDeletes() )
                         {
-                            Value.encode( buffer, isRefreshDeletes() );
+                            BerValue.encode( buffer, isRefreshDeletes() );
                         }
 
                         // The syncUUIDs
@@ -515,9 +515,9 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                         // Loop on the UUIDs if any
                         if ( getSyncUUIDs().size() != 0 )
                         {
-                            for ( byte[] syncUUID: getSyncUUIDs() )
+                            for ( byte[] syncUUID : getSyncUUIDs() )
                             {
-                                Value.encode( buffer , syncUUID );
+                                BerValue.encode( buffer, syncUUID );
                             }
                         }
                 }

@@ -42,7 +42,6 @@ import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformEx
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.EntityFactory;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
@@ -56,12 +55,12 @@ import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.normalizers.OidNormalizer;
 import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ComparatorRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.DITContentRuleRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.DITStructureRuleRegistry;
+import org.apache.directory.shared.ldap.model.schema.registries.DitContentRuleRegistry;
+import org.apache.directory.shared.ldap.model.schema.registries.DitStructureRuleRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ImmutableAttributeTypeRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ImmutableComparatorRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.ImmutableDITContentRuleRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.ImmutableDITStructureRuleRegistry;
+import org.apache.directory.shared.ldap.model.schema.registries.ImmutableDitContentRuleRegistry;
+import org.apache.directory.shared.ldap.model.schema.registries.ImmutableDitStructureRuleRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ImmutableLdapSyntaxRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ImmutableMatchingRuleRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ImmutableMatchingRuleUseRegistry;
@@ -80,10 +79,10 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 import org.apache.directory.shared.ldap.model.schema.registries.Schema;
 import org.apache.directory.shared.ldap.model.schema.registries.SchemaLoader;
 import org.apache.directory.shared.ldap.model.schema.registries.SyntaxCheckerRegistry;
+import org.apache.directory.shared.ldap.schemaloader.EntityFactory;
 import org.apache.directory.shared.ldap.schemaloader.JarLdifSchemaLoader;
 import org.apache.directory.shared.ldap.schemaloader.SchemaEntityFactory;
 import org.apache.directory.shared.util.Strings;
-import org.apache.directory.shared.util.exception.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -258,10 +257,10 @@ public class DefaultSchemaManager implements SchemaManager
             addMatchingRules( schema, registries );
             addAttributeTypes( schema, registries );
             addObjectClasses( schema, registries );
-            addMatchingRuleUses( schema, registries );
-            addDitContentRules( schema, registries );
-            addNameForms( schema, registries );
-            addDitStructureRules( schema, registries );
+            //addMatchingRuleUses( schema, registries );
+            //addDitContentRules( schema, registries );
+            //addNameForms( schema, registries );
+            //addDitStructureRules( schema, registries );
         }
         catch ( IOException ioe )
         {
@@ -722,6 +721,7 @@ public class DefaultSchemaManager implements SchemaManager
                         LOG.info( msg );
                         Throwable error = new LdapProtocolErrorException( msg );
                         errors.add( error );
+
                         return false;
                     }
 
@@ -813,29 +813,27 @@ public class DefaultSchemaManager implements SchemaManager
      * Add all the Schema's DitContentRules
      */
     // Not yet implemented, but may be used
-    @SuppressWarnings("PMD.UnusedFormalParameter")
-    private void addDitContentRules( Schema schema, Registries registries ) throws LdapException, IOException
-    {
-        if ( !schemaLoader.loadDitContentRules( schema ).isEmpty() )
-        {
-            throw new NotImplementedException( I18n.err( I18n.ERR_11003 ) );
-        }
-    }
-
+    //    @SuppressWarnings("PMD.UnusedFormalParameter")
+    //    private void addDitContentRules( Schema schema, Registries registries ) throws LdapException, IOException
+    //    {
+    //        if ( !schemaLoader.loadDitContentRules( schema ).isEmpty() )
+    //        {
+    //            throw new NotImplementedException( I18n.err( I18n.ERR_11003 ) );
+    //        }
+    //    }
 
     /**
      * Add all the Schema's DitStructureRules
      */
     // Not yet implemented, but may be used
-    @SuppressWarnings("PMD.UnusedFormalParameter")
-    private void addDitStructureRules( Schema schema, Registries registries ) throws LdapException, IOException
-    {
-        if ( !schemaLoader.loadDitStructureRules( schema ).isEmpty() )
-        {
-            throw new NotImplementedException( I18n.err( I18n.ERR_11004 ) );
-        }
-    }
-
+    //    @SuppressWarnings("PMD.UnusedFormalParameter")
+    //    private void addDitStructureRules( Schema schema, Registries registries ) throws LdapException, IOException
+    //    {
+    //        if ( !schemaLoader.loadDitStructureRules( schema ).isEmpty() )
+    //        {
+    //            throw new NotImplementedException( I18n.err( I18n.ERR_11004 ) );
+    //        }
+    //    }
 
     /**
      * Add all the Schema's MatchingRules
@@ -855,33 +853,31 @@ public class DefaultSchemaManager implements SchemaManager
      * Add all the Schema's MatchingRuleUses
      */
     // Not yet implemented, but may be used
-    @SuppressWarnings("PMD.UnusedFormalParameter")
-    private void addMatchingRuleUses( Schema schema, Registries registries ) throws LdapException, IOException
-    {
-        if ( !schemaLoader.loadMatchingRuleUses( schema ).isEmpty() )
-        {
-            throw new NotImplementedException( I18n.err( I18n.ERR_11005 ) );
-        }
-        // for ( Entry entry : schemaLoader.loadMatchingRuleUses( schema ) )
-        // {
-        //     throw new NotImplementedException( I18n.err( I18n.ERR_11005 ) );
-        // }
-    }
-
+    //    @SuppressWarnings("PMD.UnusedFormalParameter")
+    //    private void addMatchingRuleUses( Schema schema, Registries registries ) throws LdapException, IOException
+    //    {
+    //        if ( !schemaLoader.loadMatchingRuleUses( schema ).isEmpty() )
+    //        {
+    //            throw new NotImplementedException( I18n.err( I18n.ERR_11005 ) );
+    //        }
+    //        // for ( Entry entry : schemaLoader.loadMatchingRuleUses( schema ) )
+    //        // {
+    //        //     throw new NotImplementedException( I18n.err( I18n.ERR_11005 ) );
+    //        // }
+    //    }
 
     /**
      * Add all the Schema's NameForms
      */
     // Not yet implemented, but may be used
-    @SuppressWarnings("PMD.UnusedFormalParameter")
-    private void addNameForms( Schema schema, Registries registries ) throws LdapException, IOException
-    {
-        if ( !schemaLoader.loadNameForms( schema ).isEmpty() )
-        {
-            throw new NotImplementedException( I18n.err( I18n.ERR_11006 ) );
-        }
-    }
-
+    //    @SuppressWarnings("PMD.UnusedFormalParameter")
+    //    private void addNameForms( Schema schema, Registries registries ) throws LdapException, IOException
+    //    {
+    //        if ( !schemaLoader.loadNameForms( schema ).isEmpty() )
+    //        {
+    //            throw new NotImplementedException( I18n.err( I18n.ERR_11006 ) );
+    //        }
+    //    }
 
     /**
      * Add all the Schema's Normalizers
@@ -955,7 +951,7 @@ public class DefaultSchemaManager implements SchemaManager
         {
             if ( registries.isDisabledAccepted() || ( schema.isEnabled() && schemaObject.isEnabled() ) )
             {
-                registries.add( errors, schemaObject );
+                registries.add( errors, schemaObject, false );
             }
             else
             {
@@ -966,7 +962,7 @@ public class DefaultSchemaManager implements SchemaManager
         {
             if ( schema.isEnabled() && schemaObject.isEnabled() )
             {
-                registries.add( errors, schemaObject );
+                registries.add( errors, schemaObject, false );
             }
             else
             {
@@ -1516,18 +1512,18 @@ public class DefaultSchemaManager implements SchemaManager
     /**
      * {@inheritDoc}
      */
-    public DITContentRuleRegistry getDITContentRuleRegistry()
+    public DitContentRuleRegistry getDITContentRuleRegistry()
     {
-        return new ImmutableDITContentRuleRegistry( registries.getDitContentRuleRegistry() );
+        return new ImmutableDitContentRuleRegistry( registries.getDitContentRuleRegistry() );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public DITStructureRuleRegistry getDITStructureRuleRegistry()
+    public DitStructureRuleRegistry getDITStructureRuleRegistry()
     {
-        return new ImmutableDITStructureRuleRegistry( registries.getDitStructureRuleRegistry() );
+        return new ImmutableDitStructureRuleRegistry( registries.getDitStructureRuleRegistry() );
     }
 
 
@@ -1813,7 +1809,7 @@ public class DefaultSchemaManager implements SchemaManager
         if ( registries.isRelaxed() )
         {
             // Apply the addition right away
-            registries.add( errors, copy );
+            registries.add( errors, copy, true );
 
             return errors.isEmpty();
         }
@@ -1878,7 +1874,7 @@ public class DefaultSchemaManager implements SchemaManager
                 }
 
                 // Inject the new SchemaObject in the cloned registries
-                clonedRegistries.add( errors, copy );
+                clonedRegistries.add( errors, copy, true );
 
                 // Remove the cloned registries
                 clonedRegistries.clear();
@@ -1890,7 +1886,7 @@ public class DefaultSchemaManager implements SchemaManager
                     copy = copy( schemaObject );
 
                     // Apply the addition to the real registries
-                    registries.add( errors, copy );
+                    registries.add( errors, copy, true );
 
                     LOG.debug( "Added {} into the enabled schema {}", copy.getName(), schemaName );
 

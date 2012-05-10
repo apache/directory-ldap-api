@@ -52,7 +52,7 @@ public class ReusableAntlrSubtreeSpecificationCheckerLexer extends AntlrSubtreeS
      * @param in
      *            the input to the lexer
      */
-    public ReusableAntlrSubtreeSpecificationCheckerLexer(Reader in)
+    public ReusableAntlrSubtreeSpecificationCheckerLexer( Reader in )
     {
         super( in );
         savedCaseSensitive = getCaseSensitive();

@@ -28,7 +28,6 @@ import org.apache.directory.shared.ldap.model.message.controls.AbstractControl;
 import org.apache.directory.shared.util.Strings;
 
 
-
 /**
  * A simple {@link SyncInfoValue} implementation to store control properties.
  *
@@ -186,16 +185,16 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
     {
         int h = 37;
 
-        h = h*17 + super.hashCode();
-        h = h*17 + type.getValue();
-        h = h*17 + ( refreshDone ? 1 : 0 );
-        h = h*17 + ( refreshDeletes ? 1 : 0 );
+        h = h * 17 + super.hashCode();
+        h = h * 17 + type.getValue();
+        h = h * 17 + ( refreshDone ? 1 : 0 );
+        h = h * 17 + ( refreshDeletes ? 1 : 0 );
 
         if ( cookie != null )
         {
             for ( byte b : cookie )
             {
-                h = h*17 + b;
+                h = h * 17 + b;
             }
         }
 
@@ -207,7 +206,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
                 {
                     for ( byte b : bytes )
                     {
-                        h = h*17 + b;
+                        h = h * 17 + b;
                     }
                 }
             }
@@ -293,12 +292,12 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
 
         switch ( getType() )
         {
-            case NEW_COOKIE :
+            case NEW_COOKIE:
                 sb.append( "        newCookie : '" ).
                     append( Strings.dumpBytes( getCookie() ) ).append( "'\n" );
                 break;
 
-            case REFRESH_DELETE :
+            case REFRESH_DELETE:
                 sb.append( "        refreshDelete : \n" );
 
                 if ( getCookie() != null )
@@ -307,10 +306,10 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
                         append( Strings.dumpBytes( getCookie() ) ).append( "'\n" );
                 }
 
-                sb.append( "            refreshDone : " ).append(  isRefreshDone() ).append( '\n' );
+                sb.append( "            refreshDone : " ).append( isRefreshDone() ).append( '\n' );
                 break;
 
-            case REFRESH_PRESENT :
+            case REFRESH_PRESENT:
                 sb.append( "        refreshPresent : \n" );
 
                 if ( getCookie() != null )
@@ -319,10 +318,10 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
                         append( Strings.dumpBytes( getCookie() ) ).append( "'\n" );
                 }
 
-                sb.append( "            refreshDone : " ).append(  isRefreshDone() ).append( '\n' );
+                sb.append( "            refreshDone : " ).append( isRefreshDone() ).append( '\n' );
                 break;
 
-            case SYNC_ID_SET :
+            case SYNC_ID_SET:
                 sb.append( "        syncIdSet : \n" );
 
                 if ( getCookie() != null )
@@ -331,14 +330,14 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
                         append( Strings.dumpBytes( getCookie() ) ).append( "'\n" );
                 }
 
-                sb.append( "            refreshDeletes : " ).append(  isRefreshDeletes() ).append( '\n' );
-                sb.append(  "            syncUUIDS : " );
+                sb.append( "            refreshDeletes : " ).append( isRefreshDeletes() ).append( '\n' );
+                sb.append( "            syncUUIDS : " );
 
                 if ( getSyncUUIDs().size() != 0 )
                 {
                     boolean isFirst = true;
 
-                    for ( byte[] syncUUID: getSyncUUIDs() )
+                    for ( byte[] syncUUID : getSyncUUIDs() )
                     {
                         if ( isFirst )
                         {
@@ -349,14 +348,14 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
                             sb.append( ", " );
                         }
 
-                        sb.append( Arrays.toString ( syncUUID ) );
+                        sb.append( Arrays.toString( syncUUID ) );
                     }
 
                     sb.append( '\n' );
                 }
                 else
                 {
-                    sb.append(  "empty\n" );
+                    sb.append( "empty\n" );
                 }
 
                 break;

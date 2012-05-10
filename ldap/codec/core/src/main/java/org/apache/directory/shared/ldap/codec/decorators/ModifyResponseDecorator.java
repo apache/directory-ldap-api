@@ -36,7 +36,7 @@ import org.apache.directory.shared.ldap.model.message.ModifyResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModifyResponseDecorator extends ResponseDecorator<ModifyResponse> 
+public class ModifyResponseDecorator extends ResponseDecorator<ModifyResponse>
     implements ModifyResponse
 {
     /** The encoded modifyResponse length */
@@ -72,12 +72,11 @@ public class ModifyResponseDecorator extends ResponseDecorator<ModifyResponse>
         return modifyResponseLength;
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * Compute the ModifyResponse length 
      * 
@@ -93,7 +92,7 @@ public class ModifyResponseDecorator extends ResponseDecorator<ModifyResponse>
      */
     public int computeLength()
     {
-        int modifyResponseLength = ((LdapResultDecorator)getLdapResult()).computeLength();
+        int modifyResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         setModifyResponseLength( modifyResponseLength );
 
@@ -115,13 +114,13 @@ public class ModifyResponseDecorator extends ResponseDecorator<ModifyResponse>
             buffer.put( TLV.getBytes( getModifyResponseLength() ) );
 
             // The LdapResult
-            ((LdapResultDecorator)getLdapResult()).encode( buffer );
+            ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
         }
         catch ( BufferOverflowException boe )
         {
             throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
         }
-        
+
         return buffer;
     }
 }

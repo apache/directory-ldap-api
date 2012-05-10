@@ -32,10 +32,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The action used read a BITSTRING from a TLV
+ * 
+ * @param C The container type
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractReadBitString<E extends Asn1Container> extends GrammarAction<E>
+public abstract class AbstractReadBitString<C extends Asn1Container> extends GrammarAction<C>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( AbstractReadBitString.class );
@@ -46,6 +48,8 @@ public abstract class AbstractReadBitString<E extends Asn1Container> extends Gra
 
     /**
      * Instantiates a new AbstractReadByteArray action.
+     * 
+     * @param name the action's name
      */
     public AbstractReadBitString( String name )
     {
@@ -54,19 +58,19 @@ public abstract class AbstractReadBitString<E extends Asn1Container> extends Gra
 
 
     /**
-     * gives a byte array to be set to the appropriate field of the ASN.1 object
+     * Gives a byte array to be set to the appropriate field of the ASN.1 object
      * present in the container
      *
      * @param data the data of the read TLV present in byte array format
      * @param container the container holding the ASN.1 object
      */
-    protected abstract void setBitString( byte[] data, E container );
+    protected abstract void setBitString( byte[] data, C container );
 
 
     /**
      * {@inheritDoc}
      */
-    public final void action( E container ) throws DecoderException
+    public final void action( C container ) throws DecoderException
     {
         TLV tlv = container.getCurrentTLV();
 

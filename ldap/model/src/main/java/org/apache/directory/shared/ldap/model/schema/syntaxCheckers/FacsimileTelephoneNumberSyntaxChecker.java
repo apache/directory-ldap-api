@@ -25,8 +25,6 @@ import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,25 +51,23 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( FacsimileTelephoneNumberSyntaxChecker.class );
 
     /** Fax parameters possible values */
-    private static final String TWO_DIMENSIONAL  = "twoDimensional";
-    private static final String FINE_RESOLUTION  = "fineResolution";
+    private static final String TWO_DIMENSIONAL = "twoDimensional";
+    private static final String FINE_RESOLUTION = "fineResolution";
     private static final String UNLIMITED_LENGTH = "unlimitedLength";
-    private static final String B4_LENGTH        = "b4Length";
-    private static final String A3_LENGTH        = "a3Width";
-    private static final String B4_WIDTH         = "b4Width";
-    private static final String UNCOMPRESSED     = "uncompressed";
-    
+    private static final String B4_LENGTH = "b4Length";
+    private static final String A3_LENGTH = "a3Width";
+    private static final String B4_WIDTH = "b4Width";
+    private static final String UNCOMPRESSED = "uncompressed";
+
     /** A set which contaons all the possible fax parameters values */
     private static Set<String> faxParameters = new HashSet<String>();
-    
+
     /** Initialization of the fax parameters set of values */
     static
     {
@@ -83,7 +79,8 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
         faxParameters.add( Strings.toLowerCase( B4_WIDTH ) );
         faxParameters.add( Strings.toLowerCase( UNCOMPRESSED ) );
     }
-    
+
+
     /**
      * Creates a new instance of TelephoneNumberSyntaxChecker.
      */
@@ -106,14 +103,14 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -125,16 +122,16 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // The facsimile telephone number might be composed
         // of two parts separated by a '$'.
         int dollarPos = strValue.indexOf( '$' );
-        
+
         if ( dollarPos == -1 )
         {
             // We have no fax-parameter : check the Telephone number
             boolean result = super.isValidSyntax( strValue );
-            
+
             if ( result )
             {
                 LOG.debug( "Syntax valid for '{}'", value );
@@ -143,24 +140,24 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
             }
-            
+
             return result;
         }
-        
+
         // First check the telephone number if the '$' is not at the first position
         if ( dollarPos > 0 )
         {
-            if ( !super.isValidSyntax( strValue.substring( 0, dollarPos -1 ) ) )
+            if ( !super.isValidSyntax( strValue.substring( 0, dollarPos - 1 ) ) )
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
             }
-            
+
             // Now, try to validate the fax-parameters : we may
             // have more than one, so we will store the seen params
             // in a set to check that we don't have the same param twice
-            Set<String> paramsSeen = new HashSet<String>(); 
-           
+            Set<String> paramsSeen = new HashSet<String>();
+
             while ( dollarPos > 0 )
             {
                 String faxParam = null;
@@ -168,23 +165,23 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
 
                 if ( newDollar == -1 )
                 {
-                    faxParam = strValue.substring(  dollarPos+1 );
+                    faxParam = strValue.substring( dollarPos + 1 );
                 }
                 else
                 {
-                    faxParam = strValue.substring(  dollarPos+1, newDollar );
+                    faxParam = strValue.substring( dollarPos + 1, newDollar );
                 }
-                
+
                 if ( faxParam == null )
                 {
                     // Not allowed
                     LOG.debug( "Syntax invalid for '{}'", value );
                     return false;
                 }
-                
+
                 // Relax a little bit the syntax by lowercasing the param
                 faxParam = Strings.toLowerCase( faxParam );
-                
+
                 if ( !faxParameters.contains( faxParam ) )
                 {
                     // This parameter is not in the possible set
@@ -196,21 +193,21 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
                     // We have the same parameters twice...
                     LOG.debug( "Syntax invalid for '{}'", value );
                     return false;
-                } 
+                }
                 else
                 {
                     // It's a correct param, let's add it to the seen 
                     // params.
                     paramsSeen.add( faxParam );
                 }
-                
+
                 dollarPos = newDollar;
             }
-            
+
             LOG.debug( "Syntax valid for '{}'", value );
             return true;
         }
-        
+
         // We must have a valid telephone number !
         LOG.debug( "Syntax invalid for '{}'", value );
         return false;

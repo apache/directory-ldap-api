@@ -22,15 +22,14 @@
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>24</version>
-    <relativePath />
+    <version>27</version>
   </parent>
 
   <groupId>org.apache.directory.shared</groupId>
   <artifactId>shared-parent</artifactId>
   <name>Apache Directory Shared</name>
   <packaging>pom</packaging>
-  <version>1.0.0-M9-SNAPSHOT</version>
+  <version>1.0.0-M13-SNAPSHOT</version>
 
   <properties>
     <projectName>ApacheDS-Shared</projectName>
@@ -44,28 +43,24 @@
     <!-- Set versions for depending jars -->
     <antlr.version>2.7.7</antlr.version>
     <commons.collections.version>3.2.1</commons.collections.version>
-    <commons.io.version>2.0.1</commons.io.version>
+    <commons.io.version>2.3</commons.io.version>
     <commons.lang.version>2.6</commons.lang.version>
-    <commons.pool.version>1.5.6</commons.pool.version>
+    <commons.pool.version>1.6</commons.pool.version>
     <dom4j.version>1.6.1</dom4j.version>
-    <junit.version>4.9</junit.version>
+    <junit.version>4.10</junit.version>
     <log4j.version>1.2.16</log4j.version>
     <mina.core.version>2.0.4</mina.core.version>
     <org.osgi.version>3.0.0</org.osgi.version>
     <org.osgi.core.version>4.3.0</org.osgi.core.version>
-    <org.apache.felix.version>3.2.2</org.apache.felix.version>
+    <org.apache.felix.version>4.0.2</org.apache.felix.version>
     <slf4j.api.version>1.6.4</slf4j.api.version>
     <slf4j.log4j12.version>1.6.4</slf4j.log4j12.version>
     <xml.apis.version>2.0.2</xml.apis.version>
     <xpp3.version>1.1.4c</xpp3.version>
-    <pax-exam.version>2.2.0</pax-exam.version>
+    <pax-exam.version>2.4.0.RC1</pax-exam.version>
     <pax-exam-container-default.version>1.2.4</pax-exam-container-default.version>
     <pax-exam-junit.version>1.2.4</pax-exam-junit.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
-    <maven.ipojo.version>1.8.0</maven.ipojo.version>
-    <bnd.ipojo.version>1.8.4</bnd.ipojo.version>
-    <ipojo.version>1.8.0</ipojo.version>
-    <ipojo.annotations.version>1.8.0</ipojo.annotations.version>
   </properties>
   
   <distributionManagement>
@@ -89,12 +84,18 @@
     <module>dsml</module>
     <module>integ</module>
     <module>distribution</module>
-    <module>ipojo-manager</module>
   </modules>
 
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <configuration>
+            <tagNameFormat>@{project.version}</tagNameFormat>
+          </configuration>
+        </plugin>
         <plugin>
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
@@ -143,7 +144,7 @@
                   <pluginExecutionFilter>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
-                    <versionRange>[1.6,)</versionRange>
+                    <versionRange>[1.7,)</versionRange>
                     <goals>
                       <goal>run</goal>
                     </goals>
@@ -192,6 +193,20 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
+        <dependencies>
+          <!-- Add support for 'scp'/'sftp' -->
+          <dependency>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-ssh</artifactId>
+            <version>2.1</version>
+          </dependency>
+          <!-- Add support for 'scpexe' -->
+          <dependency>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-ssh-external</artifactId>
+            <version>2.1</version>
+          </dependency>
+        </dependencies>
         <configuration>
           <reportPlugins>
             <plugin>
@@ -517,12 +532,6 @@
         <version>${project.version}</version>
       </dependency>
 
-      <dependency>
-        <groupId>${project.groupId}</groupId>
-        <artifactId>shared-ipojo-manager</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
       <!-- Mina dependencies -->
 
       <dependency>
@@ -662,18 +671,6 @@
         <groupId>xpp3</groupId>
         <artifactId>xpp3</artifactId>
         <version>${xpp3.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>org.apache.felix.ipojo</artifactId>
-        <version>${ipojo.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-        <version>${ipojo.annotations.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

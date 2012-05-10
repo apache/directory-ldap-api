@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.shared.ldap.sp;
@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.naming.NamingException;
@@ -73,8 +74,32 @@ public final class JavaStoredProcUtils
         int lastDot = fullClassName.lastIndexOf( '.' );
         String classFileName = fullClassName.substring( lastDot + 1 ) + ".class";
         URL url = clazz.getResource( classFileName );
-        InputStream in = clazz.getResourceAsStream( classFileName );
-        File file = new File( url.getFile() );
+        InputStream in;
+        
+        try
+        {
+            in = url.openStream();
+        }
+        catch ( IOException ioe )
+        {
+            NamingException ne = new NamingException();
+            ne.setRootCause( ioe );
+            throw ne;
+        }
+        
+        File file;
+        
+        try
+        {
+            file = new File( url.toURI() );
+        }
+        catch ( URISyntaxException urie )
+        {
+            NamingException ne = new NamingException();
+            ne.setRootCause( urie );
+            throw ne;
+        }
+        
         int size = ( int ) file.length();
         byte[] buf = new byte[size];
 
@@ -103,7 +128,7 @@ public final class JavaStoredProcUtils
      * @param ctx
      *           The parent context of the Java class entry to be loaded.
      * @param clazz
-     *           Class to be loaded. 
+     *           Class to be loaded.
      * @throws NamingException
      *           If an error occurs during creating the subcontext.
      */

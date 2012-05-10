@@ -25,7 +25,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
@@ -57,6 +57,7 @@ public class StoreSearchRequestScope extends GrammarAction<LdapMessageContainer<
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -76,7 +77,7 @@ public class StoreSearchRequestScope extends GrammarAction<LdapMessageContainer<
         TLV tlv = container.getCurrentTLV();
 
         // We have to check that this is a correct scope
-        Value value = tlv.getValue();
+        BerValue value = tlv.getValue();
         int scope = 0;
 
         try
@@ -91,7 +92,7 @@ public class StoreSearchRequestScope extends GrammarAction<LdapMessageContainer<
             throw new DecoderException( msg );
         }
 
-        searchRequest.setScope( SearchScope.getSearchScope(scope) );
+        searchRequest.setScope( SearchScope.getSearchScope( scope ) );
 
         if ( IS_DEBUG )
         {

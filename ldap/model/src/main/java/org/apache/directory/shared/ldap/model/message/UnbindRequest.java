@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.message;
 
+
 import org.apache.directory.shared.ldap.model.exception.MessageException;
 
 
@@ -37,20 +38,20 @@ public interface UnbindRequest extends Request
      * {@inheritDoc}
      */
     UnbindRequest setMessageId( int messageId );
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     UnbindRequest addControl( Control control ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     UnbindRequest addAllControls( Control[] controls ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

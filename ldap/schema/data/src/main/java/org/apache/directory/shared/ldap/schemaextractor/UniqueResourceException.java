@@ -114,7 +114,7 @@ public class UniqueResourceException extends RuntimeException
         else
         {
             buf.append( "Multiple copies of resource named '" ).append( resourceName ).append(
-                    "' located on classpath at urls" );
+                "' located on classpath at urls" );
             for ( URL url : urls )
             {
                 buf.append( "\n    " ).append( url );

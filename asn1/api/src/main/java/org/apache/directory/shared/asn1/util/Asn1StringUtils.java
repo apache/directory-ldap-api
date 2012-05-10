@@ -24,7 +24,7 @@ import java.io.UnsupportedEncodingException;
 
 
 /**
- * Little helper class.
+ * Little helper class for the asn1 package.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -98,8 +98,7 @@ public final class Asn1StringUtils
         }
         catch ( UnsupportedEncodingException uee )
         {
-            return new byte[]
-                {};
+            return EMPTY_BYTES;
         }
     }
 

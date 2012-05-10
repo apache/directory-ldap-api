@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.entry;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -40,6 +41,7 @@ import org.junit.runner.RunWith;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
+
 /**
  * Test the Entry Serialization
  * 
@@ -51,6 +53,7 @@ public class SchemaAwareEntrySerializationTest
 {
     private static SchemaManager schemaManager;
 
+
     /**
      * Initialize OIDs maps for normalization
      */
@@ -59,24 +62,24 @@ public class SchemaAwareEntrySerializationTest
     {
         schemaManager = new DefaultSchemaManager();
     }
-    
-    
+
+
     @Test
     public void testEntryFullSerialization() throws IOException, LdapException, ClassNotFoundException
     {
-        Entry entry1 = new DefaultEntry( 
+        Entry entry1 = new DefaultEntry(
             schemaManager,
-            "dc=example, dc=com", 
+            "dc=example, dc=com",
             "ObjectClass: top",
             "ObjectClass: domain",
             "dc: example",
             "l: test" );
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         entry1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -84,28 +87,28 @@ public class SchemaAwareEntrySerializationTest
 
         Entry entry2 = new DefaultEntry( schemaManager );
         entry2.readExternal( in );
-        
+
         assertEquals( entry1, entry2 );
         assertTrue( entry2.contains( "2.5.4.0", "top", "domain" ) );
     }
-    
-    
+
+
     @Test
     public void testEntryNoDnSerialization() throws IOException, LdapException, ClassNotFoundException
     {
-        Entry entry1 = new DefaultEntry( 
+        Entry entry1 = new DefaultEntry(
             schemaManager,
-            "", 
+            "",
             "ObjectClass: top",
             "ObjectClass: domain",
             "dc: example",
             "l: test" );
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         entry1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -123,13 +126,13 @@ public class SchemaAwareEntrySerializationTest
     @Test
     public void testEntryNoAttributesSerialization() throws IOException, LdapException, ClassNotFoundException
     {
-        Entry entry1 = new DefaultEntry( schemaManager, "dc=example, dc=com" ); 
-        
+        Entry entry1 = new DefaultEntry( schemaManager, "dc=example, dc=com" );
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         entry1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -146,13 +149,13 @@ public class SchemaAwareEntrySerializationTest
     @Test
     public void testEntryNoAttributesNoDnSerialization() throws IOException, LdapException, ClassNotFoundException
     {
-        Entry entry1 = new DefaultEntry( schemaManager, "" ); 
-        
+        Entry entry1 = new DefaultEntry( schemaManager, "" );
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         entry1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();

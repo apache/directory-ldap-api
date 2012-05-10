@@ -19,9 +19,9 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
+
 
 /**
  * A SyntaxChecker for the SyntaxChecker schema element
@@ -29,8 +29,6 @@ import org.apache.felix.ipojo.annotations.Provides;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class SyntaxCheckerSyntaxChecker extends Ia5StringSyntaxChecker
 {
     /**

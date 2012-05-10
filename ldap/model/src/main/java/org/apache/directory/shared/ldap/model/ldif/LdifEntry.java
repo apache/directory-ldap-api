@@ -106,7 +106,7 @@ public class LdifEntry implements Cloneable, Externalizable
         changeType = ChangeType.None; // Default LDIF content
         modificationList = new LinkedList<Modification>();
         modifications = new HashMap<String, Modification>();
-        entry = new DefaultEntry( (Dn) null );
+        entry = new DefaultEntry( ( Dn ) null );
         entryDn = null;
         controls = null;
     }
@@ -124,8 +124,8 @@ public class LdifEntry implements Cloneable, Externalizable
         entryDn = entry.getDn();
         controls = null;
     }
-    
-    
+
+
     /**
      * Creates a LdifEntry using a list of strings representing the Ldif element
      * 
@@ -142,7 +142,7 @@ public class LdifEntry implements Cloneable, Externalizable
         int pos = 0;
         boolean valueExpected = false;
         String dnStr = null;
-        
+
         if ( dn == null )
         {
             dnStr = "";
@@ -151,7 +151,7 @@ public class LdifEntry implements Cloneable, Externalizable
         {
             dnStr = dn.getName();
         }
-        
+
         if ( LdifUtils.isLDIFSafe( dnStr ) )
         {
             sb.append( "dn: " ).append( dnStr ).append( '\n' );
@@ -160,7 +160,7 @@ public class LdifEntry implements Cloneable, Externalizable
         {
             sb.append( "dn:: " ).append( Base64.encode( Strings.getBytesUtf8( dnStr ) ) ).append( '\n' );
         }
-        
+
         for ( Object ava : avas )
         {
             if ( !valueExpected )
@@ -218,33 +218,33 @@ public class LdifEntry implements Cloneable, Externalizable
         if ( ( ldifEntries != null ) && ( ldifEntries.size() == 1 ) )
         {
             LdifEntry ldifEntry = ldifEntries.get( 0 );
-            
+
             changeType = ldifEntry.getChangeType();
             controls = ldifEntry.getControls();
             entryDn = ldifEntry.getDn();
-            
+
             switch ( ldifEntry.getChangeType() )
             {
-                case Add :
+                case Add:
                     // Fallback
-                case None :
+                case None:
                     entry = ldifEntry.getEntry();
                     break;
-                    
-                case Delete :
+
+                case Delete:
                     break;
-                    
-                case ModDn :
-                case ModRdn :
+
+                case ModDn:
+                case ModRdn:
                     newRdn = ldifEntry.getNewRdn();
                     newSuperior = ldifEntry.getNewSuperior();
                     deleteOldRdn = ldifEntry.isDeleteOldRdn();
                     break;
-                    
-                case Modify :
+
+                case Modify:
                     modificationList = ldifEntry.getModifications();
                     modifications = new HashMap<String, Modification>();
-                    
+
                     for ( Modification modification : modificationList )
                     {
                         modifications.put( modification.getAttribute().getId(), modification );
@@ -253,8 +253,8 @@ public class LdifEntry implements Cloneable, Externalizable
             }
         }
     }
-    
-    
+
+
     /**
      * Creates a LdifEntry using a list of strings representing the Ldif element
      * 
@@ -265,7 +265,7 @@ public class LdifEntry implements Cloneable, Externalizable
      * is incorrect
      * @throws LdapLdifException If we get any other exception
      */
-    public LdifEntry( String dn, Object... strings ) 
+    public LdifEntry( String dn, Object... strings )
         throws LdapInvalidAttributeValueException, LdapLdifException, LdapInvalidDnException
     {
         this( new Dn( dn ), strings );
@@ -451,7 +451,7 @@ public class LdifEntry implements Cloneable, Externalizable
         }
         else
         {
-            entry.add( id, (Value<?>)null );
+            entry.add( id, ( Value<?> ) null );
         }
     }
 
@@ -462,15 +462,11 @@ public class LdifEntry implements Cloneable, Externalizable
      * @param ids The Attributes to remove
      * @return The list of removed EntryAttributes
      */
-    public List<Attribute> removeAttribute( String... ids )
+    public void removeAttribute( String... ids )
     {
         if ( entry.containsAttribute( ids ) )
         {
-            return entry.removeAttributes( ids );
-        }
-        else
-        {
-            return null;
+            entry.removeAttributes( ids );
         }
     }
 
@@ -773,12 +769,12 @@ public class LdifEntry implements Cloneable, Externalizable
             {
                 changeType = ChangeType.Add;
             }
-    
+
             if ( this.controls == null )
             {
                 this.controls = new ConcurrentHashMap<String, LdifControl>();
             }
-            
+
             if ( control instanceof LdifControl )
             {
                 this.controls.put( control.getOid(), ( LdifControl ) control );
@@ -807,7 +803,7 @@ public class LdifEntry implements Cloneable, Externalizable
             for ( Modification modif : modificationList )
             {
                 Modification modifClone = new DefaultModification( modif.getOperation(),
-                        modif.getAttribute().clone() );
+                    modif.getAttribute().clone() );
                 clone.modificationList.add( modifClone );
             }
         }
@@ -818,7 +814,7 @@ public class LdifEntry implements Cloneable, Externalizable
             {
                 Modification modif = modifications.get( key );
                 Modification modifClone = new DefaultModification( modif.getOperation(),
-                        modif.getAttribute().clone() );
+                    modif.getAttribute().clone() );
                 clone.modifications.put( key, modifClone );
             }
 
@@ -1145,7 +1141,7 @@ public class LdifEntry implements Cloneable, Externalizable
         // Read the changeType
         int type = in.readInt();
         changeType = ChangeType.getChangeType( type );
-        
+
         // Read the modification
         switch ( changeType )
         {
@@ -1154,14 +1150,14 @@ public class LdifEntry implements Cloneable, Externalizable
                 // Read the entry
                 entry.readExternal( in );
                 entryDn = entry.getDn();
-                
+
                 break;
-                
+
             case Delete:
                 // Read the Dn
                 entryDn = new Dn();
                 entryDn.readExternal( in );
-                
+
                 break;
 
             case ModDn:
@@ -1170,9 +1166,9 @@ public class LdifEntry implements Cloneable, Externalizable
                 // Read the Dn
                 entryDn = new Dn();
                 entryDn.readExternal( in );
-                
+
                 deleteOldRdn = in.readBoolean();
-                
+
                 if ( in.readBoolean() )
                 {
                     newRdn = in.readUTF();
@@ -1197,7 +1193,7 @@ public class LdifEntry implements Cloneable, Externalizable
                 {
                     Modification modification = new DefaultModification();
                     modification.readExternal( in );
-                    
+
                     addModification( modification );
                 }
 
@@ -1214,7 +1210,7 @@ public class LdifEntry implements Cloneable, Externalizable
             for ( int i = 0; i < nbControls; i++ )
             {
                 LdifControl control = new LdifControl();
-                
+
                 control.readExternal( in );
 
                 controls.put( control.getOid(), control );
@@ -1237,11 +1233,11 @@ public class LdifEntry implements Cloneable, Externalizable
         switch ( changeType )
         {
             case Add:
-            case None :
+            case None:
                 entry.writeExternal( out );
                 break;
-                
-                // Fallback
+
+            // Fallback
             case Delete:
                 // we write the Dn
                 entryDn.writeExternal( out );
@@ -1252,9 +1248,9 @@ public class LdifEntry implements Cloneable, Externalizable
             case ModRdn:
                 // Write the Dn
                 entryDn.writeExternal( out );
-                
+
                 out.writeBoolean( deleteOldRdn );
-                
+
                 if ( newRdn == null )
                 {
                     out.writeBoolean( false );
@@ -1279,7 +1275,7 @@ public class LdifEntry implements Cloneable, Externalizable
             case Modify:
                 // Write the Dn
                 entryDn.writeExternal( out );
-                
+
                 // Write the modifications
                 out.writeInt( modificationList.size() );
 

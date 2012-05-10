@@ -41,6 +41,7 @@ public interface StringConstants
     /**
      * The empty String[]
      */
-    String[] EMPTY_STRINGS = new String[] {};
+    String[] EMPTY_STRINGS = new String[]
+        {};
     int NOT_EQUAL = -1;
 }

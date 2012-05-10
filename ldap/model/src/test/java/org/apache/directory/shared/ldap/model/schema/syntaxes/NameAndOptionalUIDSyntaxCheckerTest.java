@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
@@ -28,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.NameAndOptionalUIDSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for NameAndOptionalUIDSyntaxChecker.
@@ -63,8 +64,8 @@ public class NameAndOptionalUIDSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "1" ) );
         assertFalse( checker.isValidSyntax( "#" ) );
     }
-    
-    
+
+
     @Test
     public void testWrongDN()
     {
@@ -73,7 +74,8 @@ public class NameAndOptionalUIDSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "a=b+" ) );
         assertFalse( checker.isValidSyntax( "a=b,c=d," ) );
     }
-    
+
+
     @Test
     public void testWrongUID()
     {
@@ -82,8 +84,8 @@ public class NameAndOptionalUIDSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "a=b##'0101'B" ) );
         assertFalse( checker.isValidSyntax( "a=b#'0101'C" ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectDN()
     {
@@ -91,8 +93,9 @@ public class NameAndOptionalUIDSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( "a = b" ) );
         assertTrue( checker.isValidSyntax( "a=b + c=d" ) );
         assertTrue( checker.isValidSyntax( "a=b,c=d" ) );
-        assertTrue( checker.isValidSyntax( "a=b\\,c = d, e=f" ) );
+        assertTrue( checker.isValidSyntax( "a=b\\,c \\= d, e=f" ) );
     }
+
 
     @Test
     public void testCorrectDNAndUID()
@@ -101,6 +104,6 @@ public class NameAndOptionalUIDSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( "a = b#'1010'B" ) );
         assertTrue( checker.isValidSyntax( "a=b + c=d#'1010'B" ) );
         assertTrue( checker.isValidSyntax( "a=b,c=d#'1010'B" ) );
-        assertTrue( checker.isValidSyntax( "a=b\\,c = d, e=f#'1010'B" ) );
+        assertTrue( checker.isValidSyntax( "a=b\\,c \\= d, e=f#'1010'B" ) );
     }
 }

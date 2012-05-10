@@ -6,18 +6,19 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.dsmlv2;
+
 
 import org.apache.directory.shared.util.Strings;
 
@@ -51,10 +52,8 @@ public class Tag
     /**
      * Creates a new instance of Tag.
      *
-     * @param name
-     *      the name of the tag
-     * @param type
-     *      the type of the tag
+     * @param name the name of the tag
+     * @param type the type of the tag
      */
     public Tag( String name, int type )
     {
@@ -66,8 +65,7 @@ public class Tag
     /**
      * Gets the name of the tag
      *
-     * @return
-     *      the name of the tag
+     * @return the name of the tag
      */
     public String getName()
     {
@@ -78,8 +76,7 @@ public class Tag
     /**
      * Sets the name of the tag
      *
-     * @param name
-     *      the name to set
+     * @param name the name to set
      */
     public void setName( String name )
     {
@@ -90,8 +87,7 @@ public class Tag
     /**
      * Gets the type of the tag
      *
-     * @return
-     *      the type of the tag
+     * @return the type of the tag
      */
     public int getType()
     {
@@ -102,8 +98,7 @@ public class Tag
     /**
      * Sets the type of the tag
      *
-     * @param type
-     *      the type to set
+     * @param type the type to set
      */
     public void setType( int type )
     {
@@ -119,6 +114,7 @@ public class Tag
         if ( obj instanceof Tag )
         {
             Tag tag = ( Tag ) obj;
+            
             return ( ( this.name.equals( tag.getName() ) ) && ( this.type == tag.getType() ) );
 
         }

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.shared.dsmlv2.batchRequest;
@@ -85,12 +85,12 @@ public class BatchRequestTest extends AbstractTest
 
 
     /**
-     * Test parsing of a request with the (optional) requestID attribute equals to 0
+     * Test parsing of a request with the (optional) requestID attribute below 0
      */
     @Test
-    public void testRequestWithRequestIdEquals0()
+    public void testRequestWithRequestIdBelow0()
     {
-        testParsingFail( BatchRequestTest.class, "request_with_requestID_equals_0.xml" );
+        testParsingFail( BatchRequestTest.class, "request_with_requestID_below_0.xml" );
     }
 
 
@@ -146,7 +146,7 @@ public class BatchRequestTest extends AbstractTest
 
         assertEquals( 1, batchRequest.getRequests().size() );
 
-        if ( batchRequest.getCurrentRequest() instanceof BindRequest)
+        if ( batchRequest.getCurrentRequest() instanceof BindRequest )
         {
             assertTrue( true );
         }
@@ -326,7 +326,7 @@ public class BatchRequestTest extends AbstractTest
 
         assertEquals( 1, batchRequest.getRequests().size() );
 
-        if ( batchRequest.getCurrentRequest() instanceof ExtendedRequest)
+        if ( batchRequest.getCurrentRequest() instanceof ExtendedRequest )
         {
             assertTrue( true );
         }
@@ -398,7 +398,7 @@ public class BatchRequestTest extends AbstractTest
 
         assertEquals( 1, batchRequest.getRequests().size() );
 
-        if ( batchRequest.getCurrentRequest() instanceof ModifyRequest)
+        if ( batchRequest.getCurrentRequest() instanceof ModifyRequest )
         {
             assertTrue( true );
         }
@@ -756,7 +756,7 @@ public class BatchRequestTest extends AbstractTest
 
         BatchRequestDsml batchRequest = parser.getBatchRequest();
 
-        List<DsmlDecorator<? extends Request>> requests = 
+        List<DsmlDecorator<? extends Request>> requests =
             batchRequest.getRequests();
 
         assertEquals( 2, requests.size() );

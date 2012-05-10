@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.name;
 
@@ -34,6 +34,7 @@ import java.io.ObjectOutputStream;
 import java.util.Iterator;
 
 import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
@@ -54,7 +55,8 @@ public class RdnTest
 {
     /** A null schemaManager used in tests */
     SchemaManager schemaManager = null;
-    
+
+
     /**
      * Test a null Rdn
      */
@@ -221,10 +223,10 @@ public class RdnTest
     @Test
     public void testRdnPairCharAttributeValue() throws LdapException
     {
-        String rdn = Strings.utf8ToString(new byte[]
-                {'a', '=', '\\', ',', '=', '\\', '+', '\\', '<', '\\', '>', '#', '\\', ';', '\\', '\\', '\\', '"', '\\',
-                        'C', '3', '\\', 'A', '9'});
-        assertEquals( "a=\\,=\\+\\<\\>#\\;\\\\\\\"\u00E9", new Rdn( rdn ).getNormName() );
+        String rdn = Strings.utf8ToString( new byte[]
+            { 'a', '=', '\\', ',', '\\', '=', '\\', '+', '\\', '<', '\\', '>', '#', '\\', ';', '\\', '\\', '\\', '"', '\\',
+                'C', '3', '\\', 'A', '9' } );
+        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\\C3\\A9", new Rdn( rdn ).getNormName() );
     }
 
 
@@ -236,6 +238,7 @@ public class RdnTest
     {
         assertEquals( "a=#0010A0AAFF", new Rdn( "a = #0010A0AAFF" ).getNormName() );
     }
+
 
     /**
      * test exception from illegal hexString attribute value : a=#zz.
@@ -254,6 +257,7 @@ public class RdnTest
         }
     }
 
+
     /**
      * test a simple Rdn with quoted attribute value : a = "quoted \"value"
      * 
@@ -263,6 +267,7 @@ public class RdnTest
     public void testRdnQuotedAttributeValue() throws LdapException
     {
         assertEquals( "a=quoted \\\"value", new Rdn( "a = quoted \\\"value" ).getNormName() );
+        assertEquals( "quoted \"value", new Rdn( "a = quoted \\\"value" ).getValue( "a" ) );
     }
 
 
@@ -276,7 +281,7 @@ public class RdnTest
     {
         Rdn rdn = new Rdn( "a", "b" );
 
-        Rdn rdnClone = (Rdn) rdn.clone();
+        Rdn rdnClone = rdn.clone();
 
         rdn = new Rdn( "c=d" );
 
@@ -308,7 +313,7 @@ public class RdnTest
     {
         Rdn rdn = new Rdn( "a = b + aa = bb" );
 
-        Rdn rdnClone = (Rdn) rdn.clone();
+        Rdn rdnClone = rdn.clone();
 
         rdn.clear();
         rdn = new Rdn( "c=d" );
@@ -327,7 +332,7 @@ public class RdnTest
     @Test
     public void testRDNCompareToNull() throws LdapException
     {
-        Rdn rdn1 = new Rdn( " a = b + c = d + a = f + g = h " );
+        Rdn rdn1 = new Rdn( " a = b + c = d + e = f + g = h " );
         Rdn rdn2 = null;
         assertFalse( rdn1.equals( rdn2 ) );
     }
@@ -341,7 +346,7 @@ public class RdnTest
     @Test
     public void testRDNCompareToNCS2NC() throws LdapException
     {
-        Rdn rdn1 = new Rdn( " a = b + c = d + a = f + g = h " );
+        Rdn rdn1 = new Rdn( " a = b + c = d + e = f + g = h " );
         Rdn rdn2 = new Rdn( " a = b " );
         assertFalse( rdn1.equals( rdn2 ) );
     }
@@ -356,7 +361,7 @@ public class RdnTest
     public void testRDNCompareToNC2NCS() throws LdapException
     {
         Rdn rdn1 = new Rdn( " a = b " );
-        Rdn rdn2 = new Rdn( " a = b + c = d + a = f + g = h " );
+        Rdn rdn2 = new Rdn( " a = b + c = d + e = f + g = h " );
 
         assertFalse( rdn1.equals( rdn2 ) );
     }
@@ -370,8 +375,8 @@ public class RdnTest
     @Test
     public void testRDNCompareToNCS2NCSOrdered() throws LdapException
     {
-        Rdn rdn1 = new Rdn( " a = b + c = d + a = f + g = h " );
-        Rdn rdn2 = new Rdn( " a = b + c = d + a = f + g = h " );
+        Rdn rdn1 = new Rdn( " a = b + c = d + e = f + g = h " );
+        Rdn rdn2 = new Rdn( " a = b + c = d + e = f + g = h " );
 
         assertTrue( rdn1.equals( rdn2 ) );
     }
@@ -385,8 +390,8 @@ public class RdnTest
     @Test
     public void testRDNCompareToNCS2NCSUnordered() throws LdapException
     {
-        Rdn rdn1 = new Rdn( " a = b + a = f + g = h + c = d " );
-        Rdn rdn2 = new Rdn( " a = b + c = d + a = f + g = h " );
+        Rdn rdn1 = new Rdn( " a = b + b = f + g = h + c = d " );
+        Rdn rdn2 = new Rdn( " a = b + c = d + b = f + g = h " );
 
         assertTrue( rdn1.equals( rdn2 ) );
     }
@@ -430,8 +435,8 @@ public class RdnTest
         assertFalse( rdn4.equals( rdn3 ) );
 
         // the second ATAV differs in value only
-        Rdn rdn5 = new Rdn( " a = b + a = c " );
-        Rdn rdn6 = new Rdn( " a = b + a = y " );
+        Rdn rdn5 = new Rdn( " a = b + b = c " );
+        Rdn rdn6 = new Rdn( " a = b + b = y " );
         assertFalse( rdn5.equals( rdn6 ) );
         assertFalse( rdn6.equals( rdn5 ) );
     }
@@ -489,8 +494,8 @@ public class RdnTest
     @Test
     public void testCompareInvertableNCS2NCSDifferentValues() throws LdapException
     {
-        Rdn rdn1 = new Rdn( " a = b + a = c " );
-        Rdn rdn2 = new Rdn( " a = b + a = y " );
+        Rdn rdn1 = new Rdn( " a = b + b = c " );
+        Rdn rdn2 = new Rdn( " a = b + b = y " );
         assertFalse( rdn1.equals( rdn2 ) );
         assertFalse( rdn2.equals( rdn1 ) );
     }
@@ -596,7 +601,7 @@ public class RdnTest
     @Test
     public void testGetValue() throws LdapException
     {
-        Rdn rdn = new Rdn( " a = b + a = f + g = h + c = d " );
+        Rdn rdn = new Rdn( " a = b + b = f + g = h + c = d " );
 
         assertEquals( "b", rdn.getNormValue().getString() );
     }
@@ -611,7 +616,7 @@ public class RdnTest
     @Test
     public void testGetType() throws LdapException
     {
-        Rdn rdn = new Rdn( " a = b + a = f + g = h + c = d " );
+        Rdn rdn = new Rdn( " a = b + b = f + g = h + c = d " );
 
         assertEquals( "a", rdn.getNormType() );
     }
@@ -625,7 +630,7 @@ public class RdnTest
     @Test
     public void testGetSize() throws LdapException
     {
-        Rdn rdn = new Rdn( " a = b + a = f + g = h + c = d " );
+        Rdn rdn = new Rdn( " a = b + b = f + g = h + c = d " );
 
         assertEquals( 4, rdn.size() );
     }
@@ -652,27 +657,27 @@ public class RdnTest
     @Test
     public void testEquals() throws LdapException
     {
-        Rdn rdn = new Rdn( "a=b + c=d + a=f" );
+        Rdn rdn = new Rdn( "a=b + c=d + e=f" );
 
         assertFalse( rdn.equals( null ) );
         assertFalse( rdn.equals( "test" ) );
-        assertFalse( rdn.equals( new Rdn( "a=c + c=d + a=f" ) ) );
+        assertFalse( rdn.equals( new Rdn( "a=c + c=d + e=f" ) ) );
         assertFalse( rdn.equals( new Rdn( "a=b" ) ) );
-        assertTrue( rdn.equals( new Rdn( "a=b + c=d + a=f" ) ) );
-        assertTrue( rdn.equals( new Rdn( "a=b + C=d + A=f" ) ) );
-        assertTrue( rdn.equals( new Rdn( "c=d + a=f + a=b" ) ) );
+        assertTrue( rdn.equals( new Rdn( "a=b + c=d + e=f" ) ) );
+        assertTrue( rdn.equals( new Rdn( "a=b + C=d + E=f" ) ) );
+        assertTrue( rdn.equals( new Rdn( "c=d + e=f + a=b" ) ) );
     }
 
 
     @Test
     public void testUnescapeValueHexa()
     {
-        byte[] res = ( byte[] ) Rdn.unescapeValue("#fF");
+        byte[] res = ( byte[] ) Rdn.unescapeValue( "#fF" );
 
-        assertEquals( "0xFF ", Strings.dumpBytes(res) );
+        assertEquals( "0xFF ", Strings.dumpBytes( res ) );
 
-        res = ( byte[] ) Rdn.unescapeValue("#0123456789aBCDEF");
-        assertEquals( "0x01 0x23 0x45 0x67 0x89 0xAB 0xCD 0xEF ", Strings.dumpBytes(res) );
+        res = ( byte[] ) Rdn.unescapeValue( "#0123456789aBCDEF" );
+        assertEquals( "0x01 0x23 0x45 0x67 0x89 0xAB 0xCD 0xEF ", Strings.dumpBytes( res ) );
     }
 
 
@@ -681,7 +686,7 @@ public class RdnTest
     {
         try
         {
-            Rdn.unescapeValue("#fF1");
+            Rdn.unescapeValue( "#fF1" );
             fail(); // Should not happen
         }
         catch ( IllegalArgumentException iae )
@@ -694,7 +699,7 @@ public class RdnTest
     @Test
     public void testUnescapeValueString()
     {
-        String res = ( String ) Rdn.unescapeValue("azerty");
+        String res = ( String ) Rdn.unescapeValue( "azerty" );
 
         assertEquals( "azerty", res );
     }
@@ -703,7 +708,7 @@ public class RdnTest
     @Test
     public void testUnescapeValueStringSpecial()
     {
-        String res = ( String ) Rdn.unescapeValue("\\\\\\#\\,\\+\\;\\<\\>\\=\\\"\\ ");
+        String res = ( String ) Rdn.unescapeValue( "\\\\\\#\\,\\+\\;\\<\\>\\=\\\"\\ " );
 
         assertEquals( "\\#,+;<>=\" ", res );
     }
@@ -712,7 +717,7 @@ public class RdnTest
     @Test
     public void testUnescapeValueStringWithSpaceInTheMiddle()
     {
-        String res = ( String ) Rdn.unescapeValue("a b");
+        String res = ( String ) Rdn.unescapeValue( "a b" );
 
         assertEquals( "a b", res );
     }
@@ -721,7 +726,7 @@ public class RdnTest
     @Test
     public void testUnescapeValueStringWithSpaceInAtTheBeginning()
     {
-        String res = ( String ) Rdn.unescapeValue("\\ a b");
+        String res = ( String ) Rdn.unescapeValue( "\\ a b" );
 
         assertEquals( " a b", res );
     }
@@ -730,34 +735,34 @@ public class RdnTest
     @Test
     public void testUnescapeValueStringWithSpaceInAtTheEnd()
     {
-        String res = ( String ) Rdn.unescapeValue("a b\\ ");
+        String res = ( String ) Rdn.unescapeValue( "a b\\ " );
 
         assertEquals( "a b ", res );
     }
-    
-    
+
+
     @Test
     public void testUnescapeValueStringWithPoundInTheMiddle()
     {
-        String res = ( String ) Rdn.unescapeValue("a#b");
+        String res = ( String ) Rdn.unescapeValue( "a#b" );
 
         assertEquals( "a#b", res );
     }
-    
-    
+
+
     @Test
     public void testUnescapeValueStringWithPoundAtTheEnd()
     {
-        String res = ( String ) Rdn.unescapeValue("ab#");
+        String res = ( String ) Rdn.unescapeValue( "ab#" );
 
         assertEquals( "ab#", res );
     }
-    
-    
+
+
     @Test
     public void testEscapeValueString()
     {
-        String res = Rdn.escapeValue(Strings.getBytesUtf8("azerty"));
+        String res = Rdn.escapeValue( Strings.getBytesUtf8( "azerty" ) );
 
         assertEquals( "azerty", res );
     }
@@ -766,7 +771,7 @@ public class RdnTest
     @Test
     public void testEscapeValueStringSpecial()
     {
-        String res = Rdn.escapeValue(Strings.getBytesUtf8("\\#,+;<>=\" "));
+        String res = Rdn.escapeValue( Strings.getBytesUtf8( "\\#,+;<>=\" " ) );
 
         assertEquals( "\\\\#\\,\\+\\;\\<\\>\\=\\\"\\ ", res );
     }
@@ -775,8 +780,8 @@ public class RdnTest
     @Test
     public void testEscapeValueNumeric()
     {
-        String res = Rdn.escapeValue(new byte[]
-                {'-', 0x00, '-', 0x1F, '-', 0x7F, '-'});
+        String res = Rdn.escapeValue( new byte[]
+            { '-', 0x00, '-', 0x1F, '-', 0x7F, '-' } );
 
         assertEquals( "-\\00-\\1F-\\7F-", res );
     }
@@ -785,8 +790,8 @@ public class RdnTest
     @Test
     public void testEscapeValueMix()
     {
-        String res = Rdn.escapeValue(new byte[]
-                {'\\', 0x00, '-', '+', '#', 0x7F, '-'});
+        String res = Rdn.escapeValue( new byte[]
+            { '\\', 0x00, '-', '+', '#', 0x7F, '-' } );
 
         assertEquals( "\\\\\\00-\\+#\\7F-", res );
     }
@@ -882,27 +887,27 @@ public class RdnTest
     public void testEscapedAttributeValue()
     {
         // space doesn't need to be escaped in the middle of a string
-        assertEquals( "a b", Rdn.escapeValue("a b") );
-        assertEquals( "a b c", Rdn.escapeValue("a b c") );
-        assertEquals( "a b c d", Rdn.escapeValue("a b c d") );
+        assertEquals( "a b", Rdn.escapeValue( "a b" ) );
+        assertEquals( "a b c", Rdn.escapeValue( "a b c" ) );
+        assertEquals( "a b c d", Rdn.escapeValue( "a b c d" ) );
 
         // space must be escaped at the beginning and the end of a string
-        assertEquals( "\\ a b", Rdn.escapeValue(" a b") );
-        assertEquals( "a b\\ ", Rdn.escapeValue("a b ") );
-        assertEquals( "\\ a b\\ ", Rdn.escapeValue(" a b ") );
-        assertEquals( "\\  a  b \\ ", Rdn.escapeValue("  a  b  ") );
+        assertEquals( "\\ a b", Rdn.escapeValue( " a b" ) );
+        assertEquals( "a b\\ ", Rdn.escapeValue( "a b " ) );
+        assertEquals( "\\ a b\\ ", Rdn.escapeValue( " a b " ) );
+        assertEquals( "\\  a  b \\ ", Rdn.escapeValue( "  a  b  " ) );
 
         // hash doesn't need to be escaped in the middle and the end of a string
-        assertEquals( "a#b", Rdn.escapeValue("a#b") );
-        assertEquals( "a#b#", Rdn.escapeValue("a#b#") );
-        assertEquals( "a#b#c", Rdn.escapeValue("a#b#c") );
-        assertEquals( "a#b#c#", Rdn.escapeValue("a#b#c#") );
-        assertEquals( "a#b#c#d", Rdn.escapeValue("a#b#c#d") );
-        assertEquals( "a#b#c#d#", Rdn.escapeValue("a#b#c#d#") );
+        assertEquals( "a#b", Rdn.escapeValue( "a#b" ) );
+        assertEquals( "a#b#", Rdn.escapeValue( "a#b#" ) );
+        assertEquals( "a#b#c", Rdn.escapeValue( "a#b#c" ) );
+        assertEquals( "a#b#c#", Rdn.escapeValue( "a#b#c#" ) );
+        assertEquals( "a#b#c#d", Rdn.escapeValue( "a#b#c#d" ) );
+        assertEquals( "a#b#c#d#", Rdn.escapeValue( "a#b#c#d#" ) );
 
         // hash must be escaped at the beginning of a string
-        assertEquals( "\\#a#b", Rdn.escapeValue("#a#b") );
-        assertEquals( "\\##a#b", Rdn.escapeValue("##a#b") );
+        assertEquals( "\\#a#b", Rdn.escapeValue( "#a#b" ) );
+        assertEquals( "\\##a#b", Rdn.escapeValue( "##a#b" ) );
     }
 
 
@@ -928,7 +933,7 @@ public class RdnTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        Rdn rdn2 = (Rdn)in.readObject();
+        Rdn rdn2 = ( Rdn ) in.readObject();
 
         assertEquals( rdn, rdn2 );
     }
@@ -951,7 +956,7 @@ public class RdnTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        Rdn rdn2 = (Rdn)in.readObject();
+        Rdn rdn2 = ( Rdn ) in.readObject();
 
         assertEquals( rdn, rdn2 );
     }
@@ -976,7 +981,7 @@ public class RdnTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        Rdn rdn2 = (Rdn)in.readObject();
+        Rdn rdn2 = ( Rdn ) in.readObject();
 
         assertEquals( rdn, rdn2 );
     }
@@ -1001,7 +1006,7 @@ public class RdnTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        Rdn rdn2 = (Rdn)in.readObject();
+        Rdn rdn2 = ( Rdn ) in.readObject();
 
         assertEquals( rdn, rdn2 );
     }
@@ -1026,7 +1031,7 @@ public class RdnTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        Rdn rdn2 = (Rdn)in.readObject();
+        Rdn rdn2 = ( Rdn ) in.readObject();
 
         assertEquals( rdn, rdn2 );
     }
@@ -1051,7 +1056,7 @@ public class RdnTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        Rdn rdn2 = (Rdn)in.readObject();
+        Rdn rdn2 = ( Rdn ) in.readObject();
 
         assertEquals( rdn, rdn2 );
     }
@@ -1076,7 +1081,7 @@ public class RdnTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        Rdn rdn2 = (Rdn)in.readObject();
+        Rdn rdn2 = ( Rdn ) in.readObject();
 
         assertEquals( rdn, rdn2 );
     }
@@ -1102,7 +1107,7 @@ public class RdnTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        Rdn rdn2 = (Rdn)in.readObject();
+        Rdn rdn2 = ( Rdn ) in.readObject();
 
         assertEquals( rdn, rdn2 );
     }
@@ -1150,10 +1155,10 @@ public class RdnTest
     @Test
     public void testComparingOfClonedMultiValuedRDNs() throws LdapException
     {
-        // Use upper case attribute types to test if normalized types are used 
+        // Use upper case attribute types to test if normalized types are used
         // for comparison
         Rdn rdn = new Rdn( " A = b + C = d" );
-        Rdn clonedRdn = (Rdn) rdn.clone();
+        Rdn clonedRdn = rdn.clone();
 
         assertTrue( rdn.equals( clonedRdn ) );
     }
@@ -1168,7 +1173,7 @@ public class RdnTest
     @Test
     public void testComparingOfCopyConstructedMultiValuedRDNs() throws LdapException
     {
-        // Use upper case attribute types to test if normalized types are used 
+        // Use upper case attribute types to test if normalized types are used
         // for comparison
         Rdn rdn = new Rdn( " A = b + C = d" );
         Rdn copiedRdn = new Rdn( rdn );
@@ -1180,11 +1185,11 @@ public class RdnTest
     /**
      * test the UpName method on a Rdn with more than one atav
      */
-    @Test 
+    @Test
     public void testGetUpNameMultipleAtav() throws LdapException
     {
         Rdn rdn = new Rdn( " A = b + C = d " );
-        
+
         assertEquals( " A = b + C = d ", rdn.getName() );
     }
 
@@ -1192,18 +1197,39 @@ public class RdnTest
     /**
      * test the iterator over a RDN
      */
-    @Test 
+    @Test
     public void testIterator() throws LdapException
     {
         Rdn rdn = new Rdn( "cn=John + sn=Doe" );
-        
-        String[] expected = new String[]{ "cn=John ", " sn=Doe" };
+
+        String[] expected = new String[]
+            { "cn=John ", " sn=Doe" };
         int i = 0;
-        
+
         for ( Ava ava : rdn )
         {
             assertEquals( expected[i], ava.toString() );
             i++;
         }
+    }
+
+
+    /**
+     * test that a RDN with two AVAs throws an exception
+     */
+    @Test( expected=LdapInvalidDnException.class )
+    public void testWrongRdn() throws LdapException
+    {
+        new Rdn( " A = b, C = d " );
+    }
+
+
+    /**
+     * test that a RDN with an attributeType used twice throws an exception
+     */
+    @Test( expected=LdapInvalidDnException.class )
+    public void testWrongRdnAtUsedTwice() throws LdapException
+    {
+        new Rdn( " A = b + A = d " );
     }
 }

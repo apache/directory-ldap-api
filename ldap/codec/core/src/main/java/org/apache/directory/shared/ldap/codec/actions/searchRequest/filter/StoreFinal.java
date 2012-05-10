@@ -81,7 +81,7 @@ public class StoreFinal extends GrammarAction<LdapMessageContainer<SearchRequest
             throw new DecoderException( msg );
         }
 
-        String finalValue = Strings.utf8ToString(tlv.getValue().getData());
+        String finalValue = Strings.utf8ToString( tlv.getValue().getData() );
         substringFilter.setFinalSubstrings( finalValue );
 
         // We now have to get back to the nearest filter which is

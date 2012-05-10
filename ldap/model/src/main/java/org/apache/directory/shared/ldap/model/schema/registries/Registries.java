@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema.registries;
 
@@ -38,13 +38,15 @@ import org.apache.directory.shared.ldap.model.exception.LdapSchemaViolationExcep
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.DITContentRule;
-import org.apache.directory.shared.ldap.model.schema.DITStructureRule;
+import org.apache.directory.shared.ldap.model.schema.DitContentRule;
+import org.apache.directory.shared.ldap.model.schema.DitStructureRule;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
 import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.shared.ldap.model.schema.NameForm;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
@@ -52,6 +54,13 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectWrapper;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.shared.ldap.model.schema.registries.helper.AttributeTypeHelper;
+import org.apache.directory.shared.ldap.model.schema.registries.helper.DitContentRuleHelper;
+import org.apache.directory.shared.ldap.model.schema.registries.helper.LdapSyntaxHelper;
+import org.apache.directory.shared.ldap.model.schema.registries.helper.MatchingRuleHelper;
+import org.apache.directory.shared.ldap.model.schema.registries.helper.MatchingRuleUseHelper;
+import org.apache.directory.shared.ldap.model.schema.registries.helper.NameFormHelper;
+import org.apache.directory.shared.ldap.model.schema.registries.helper.ObjectClassHelper;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,10 +92,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
     protected ComparatorRegistry comparatorRegistry;
 
     /** The DitContentRule registry */
-    protected DITContentRuleRegistry ditContentRuleRegistry;
+    protected DitContentRuleRegistry ditContentRuleRegistry;
 
     /** The DitStructureRule registry */
-    protected DITStructureRuleRegistry ditStructureRuleRegistry;
+    protected DitStructureRuleRegistry ditStructureRuleRegistry;
 
     /** The MatchingRule registry */
     protected MatchingRuleRegistry matchingRuleRegistry;
@@ -123,13 +132,13 @@ public class Registries implements SchemaLoaderListener, Cloneable
     public static final boolean RELAXED = true;
 
     /**
-     *  A map storing a relation between a SchemaObject and all the 
+     *  A map storing a relation between a SchemaObject and all the
      *  referencing SchemaObjects.
      */
     protected Map<SchemaObjectWrapper, Set<SchemaObjectWrapper>> usedBy;
 
     /**
-     *  A map storing a relation between a SchemaObject and all the 
+     *  A map storing a relation between a SchemaObject and all the
      *  SchemaObjects it uses.
      */
     protected Map<SchemaObjectWrapper, Set<SchemaObjectWrapper>> using;
@@ -137,7 +146,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /** A reference on the schema Manager */
     @SuppressWarnings(
         { "PMD.UnusedPrivateField", "unused" })
-    // False positive 
+    // False positive
     private SchemaManager schemaManager;
 
 
@@ -151,8 +160,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
         globalOidRegistry = new OidRegistry<SchemaObject>();
         attributeTypeRegistry = new DefaultAttributeTypeRegistry();
         comparatorRegistry = new DefaultComparatorRegistry();
-        ditContentRuleRegistry = new DefaultDITContentRuleRegistry();
-        ditStructureRuleRegistry = new DefaultDITStructureRuleRegistry();
+        ditContentRuleRegistry = new DefaultDitContentRuleRegistry();
+        ditStructureRuleRegistry = new DefaultDitStructureRuleRegistry();
         ldapSyntaxRegistry = new DefaultLdapSyntaxRegistry();
         matchingRuleRegistry = new DefaultMatchingRuleRegistry();
         matchingRuleUseRegistry = new DefaultMatchingRuleUseRegistry();
@@ -189,18 +198,18 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
 
     /**
-     * @return The DITContentRule registry
+     * @return The DitContentRule registry
      */
-    public DITContentRuleRegistry getDitContentRuleRegistry()
+    public DitContentRuleRegistry getDitContentRuleRegistry()
     {
         return ditContentRuleRegistry;
     }
 
 
     /**
-     * @return The DITStructureRule registry
+     * @return The DitStructureRule registry
      */
-    public DITStructureRuleRegistry getDitStructureRuleRegistry()
+    public DitStructureRuleRegistry getDitStructureRuleRegistry()
     {
         return ditStructureRuleRegistry;
     }
@@ -279,7 +288,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
 
     /**
-     * Get an OID from a name. As we have many possible registries, we 
+     * Get an OID from a name. As we have many possible registries, we
      * have to look in all of them to get the one containing the OID.
      *
      * @param name The name we are looking at
@@ -380,10 +389,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Fall down to the next registry
         }
 
-        // DITContentRule
+        // DitContentRule
         try
         {
-            DITContentRule ditContentRule = ditContentRuleRegistry.lookup( name );
+            DitContentRule ditContentRule = ditContentRuleRegistry.lookup( name );
 
             if ( ditContentRule != null )
             {
@@ -395,10 +404,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
             // Fall down to the next registry
         }
 
-        // DITStructureRule
+        // DitStructureRule
         try
         {
-            DITStructureRule ditStructureRule = ditStructureRuleRegistry.lookup( name );
+            DitStructureRule ditStructureRule = ditStructureRuleRegistry.lookup( name );
 
             if ( ditStructureRule != null )
             {
@@ -456,7 +465,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * <li/>6) MatchingRuleUses (depend on matchingRules and AttributeTypes)
      * <li/>7) DitContentRules (depend on ObjectClasses and AttributeTypes)
      * <li/>8) NameForms (depends on ObjectClasses and AttributeTypes)
-     * <li/>9) DitStructureRules (depends onNameForms and DitStructureRules)      * 
+     * <li/>9) DitStructureRules (depends onNameForms and DitStructureRules)      *
      *
      * @return a list of exceptions encountered while resolving entities
      */
@@ -520,7 +529,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Add the SchemaObjectReferences. This method does nothing, it's just
-     * a catch all. The other methods will be called for each specific 
+     * a catch all. The other methods will be called for each specific
      * schemaObject
      *
     public void addCrossReferences( SchemaObject schemaObject )
@@ -530,7 +539,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     
     
     /**
-     * Delete the AT references (using and usedBy) : 
+     * Delete the AT references (using and usedBy) :
      * AT -> MR (for EQUALITY, ORDERING and SUBSTR)
      * AT -> S
      * AT -> AT
@@ -561,75 +570,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             delReference( attributeType, attributeType.getSuperior() );
         }
-    }
-
-
-    /**
-     * Some specific controls must be checked : 
-     * - an AT must have either a SYNTAX or a SUP. If there is no SYNTAX, then
-     * the AT will take it's superior SYNTAX;
-     * - if there is no EQUALITY, ORDERING or SUBSTRING MR, and if there is 
-     * a SUP, then the AT will use its parent MR, if any;
-     * - if an AT has a superior, then its usage must be the same than its
-     * superior Usage;
-     * - if an AT is COLLECTIVE, then its usage must be userApplications;
-     * - if an AT is NO-USER-MODIFICATION, then its usage must be one of
-     * directoryOperation, distributedOperation or dSAOperation;
-     * - if an AT has a superior, and if its superior is COLLECTIVE, then
-     * the AT will be COLLECTIVE too
-     * 
-     *
-    private void buildRecursiveAttributeTypeReferences( List<Throwable> errors, Set<String> done, AttributeType attributeType )
-    {
-        buildReference( errors, attributeType );
-        // An attributeType has references on Syntax, MatchingRule and itself
-        try
-        {
-            attributeType.addToRegistries( this );
-        }
-        catch ( LdapException ne )
-        {
-            String msg = "Cannot build the AttributeType references for the object " + attributeType.getName() +
-                ", error : " + ne.getMessage();
-            
-            Throwable error = new LdapSchemaViolationException( 
-                msg, ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX );
-            errors.add( error );
-            LOG.info( msg );
-        }
-        
-        // First, check if the AT has a superior
-        //buildSuperior( errors, done, attributeType );
-        
-        // The LdapSyntax (cannot be null)
-        //buildSyntax( errors, attributeType );
-        
-        // The equality MR. 
-        //buildEquality( errors, attributeType );
-
-        // The ORDERING MR.
-        //buildOrdering( errors, attributeType );
-        
-        // The SUBSTR MR.
-        //buildSubstring( errors, attributeType );
-        
-        // Last, not least, check some of the other constraints
-        //checkUsage( errors, attributeType );
-        //checkCollective( errors, attributeType );
-        
-        // Update the dedicated fields
-        /*try
-        {
-            attributeTypeRegistry.addMappingFor( attributeType );
-        }
-        catch ( LdapException ne )
-        {
-            errors.add( ne );
-            LOG.info( ne.getMessage() );
-        }
-        
-        // Update the cross references
-        addCrossReferences( attributeType );
     }
     
     
@@ -675,7 +615,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     private void buildDitContentRuleReferences( List<Throwable> errors )
     {
         for ( @SuppressWarnings("unused")
-        DITContentRule ditContentRule : ditContentRuleRegistry )
+        DitContentRule ditContentRule : ditContentRuleRegistry )
         {
             // TODO
         }
@@ -690,7 +630,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     private void buildDitStructureRuleReferences( List<Throwable> errors )
     {
         for ( @SuppressWarnings("unused")
-        DITStructureRule ditStructureRule : ditStructureRuleRegistry )
+        DitStructureRule ditStructureRule : ditStructureRuleRegistry )
         {
             // TODO
         }
@@ -698,7 +638,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
 
     /**
-     * Delete the MR references (using and usedBy) : 
+     * Delete the MR references (using and usedBy) :
      * MR -> C
      * MR -> N
      * MR -> S
@@ -729,7 +669,36 @@ public class Registries implements SchemaLoaderListener, Cloneable
     {
         try
         {
-            schemaObject.addToRegistries( errors, this );
+            switch ( schemaObject.getObjectType() )
+            {
+                case ATTRIBUTE_TYPE :
+                    AttributeTypeHelper.addToRegistries( (MutableAttributeType)schemaObject, errors, this );
+                    break;
+                    
+                case DIT_CONTENT_RULE :
+                    DitContentRuleHelper.addToRegistries( (DitContentRule)schemaObject, errors, this );
+                    break;
+                    
+                case LDAP_SYNTAX :
+                    LdapSyntaxHelper.addToRegistries( (LdapSyntax)schemaObject, errors, this );
+                    break;
+                    
+                case MATCHING_RULE :
+                    MatchingRuleHelper.addToRegistries( (MutableMatchingRule)schemaObject, errors, this );
+                    break;
+                    
+                case MATCHING_RULE_USE :
+                    MatchingRuleUseHelper.addToRegistries( (MatchingRuleUse)schemaObject, errors, this );
+                    break;
+                    
+                case NAME_FORM :
+                    NameFormHelper.addToRegistries( (NameForm)schemaObject, errors, this );
+                    break;
+                    
+                case OBJECT_CLASS :
+                    ObjectClassHelper.addToRegistries( (ObjectClass)schemaObject, errors, this );
+                    break;
+            }
         }
         catch ( LdapException ne )
         {
@@ -750,7 +719,24 @@ public class Registries implements SchemaLoaderListener, Cloneable
     {
         try
         {
-            schemaObject.removeFromRegistries( errors, this );
+            switch ( schemaObject.getObjectType() )
+            {
+                case ATTRIBUTE_TYPE :
+                    AttributeTypeHelper.removeFromRegistries( (AttributeType)schemaObject, errors, this );
+                    break;
+
+                case LDAP_SYNTAX :
+                    LdapSyntaxHelper.removeFromRegistries( (LdapSyntax)schemaObject, errors, this );
+                    break;
+
+                case MATCHING_RULE :
+                    MatchingRuleHelper.removeFromRegistries( (MatchingRule)schemaObject, errors, this );
+                    break;
+
+                case OBJECT_CLASS :
+                    ObjectClassHelper.removeFromRegistries( (ObjectClass)schemaObject, errors, this );
+                    break;
+            }
         }
         catch ( LdapException ne )
         {
@@ -922,7 +908,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // or to the OctetString SyntaxChecker
         try
         {
-            syntax.addToRegistries( errors, this );
+            LdapSyntaxHelper.addToRegistries( syntax, errors, this );
         }
         catch ( LdapException e )
         {
@@ -940,14 +926,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
     private void resolve( Normalizer normalizer, List<Throwable> errors )
     {
         // This is currently doing nothing.
-        try
-        {
-            normalizer.addToRegistries( errors, this );
-        }
-        catch ( LdapException e )
-        {
-            errors.add( e );
-        }
     }
 
 
@@ -960,16 +938,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
     private void resolve( LdapComparator<?> comparator, List<Throwable> errors )
     {
         // This is currently doing nothing.
-        try
-        {
-            comparator.addToRegistries( errors, this );
-        }
-        catch ( LdapException e )
-        {
-            errors.add( e );
-        }
     }
-
+    
 
     /**
      * Attempts to resolve the SyntaxChecker
@@ -980,19 +950,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
     private void resolve( SyntaxChecker syntaxChecker, List<Throwable> errors )
     {
         // This is currently doing nothing.
-        try
-        {
-            syntaxChecker.addToRegistries( errors, this );
-        }
-        catch ( LdapException e )
-        {
-            errors.add( e );
-        }
     }
 
 
     /**
-     * Check if the Comparator, Normalizer and the syntax are 
+     * Check if the Comparator, Normalizer and the syntax are
      * existing for a matchingRule.
      */
     private void resolve( MatchingRule matchingRule, List<Throwable> errors )
@@ -1011,14 +973,15 @@ public class Registries implements SchemaLoaderListener, Cloneable
             {
                 // This MR's syntax has not been loaded into the Registries.
                 LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, I18n.err( I18n.ERR_04294, matchingRule.getOid() ), ne );
+                    LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, I18n.err( I18n.ERR_04294, matchingRule.getOid() ),
+                    ne );
                 ldapSchemaException.setSourceObject( matchingRule );
                 errors.add( ldapSchemaException );
             }
         }
         else
         {
-            // This is an error. 
+            // This is an error.
             LdapSchemaException ldapSchemaException = new LdapSchemaException(
                 LdapSchemaExceptionCodes.OID_ALREADY_REGISTERED, I18n.err( I18n.ERR_04294, matchingRule.getOid() ) );
             ldapSchemaException.setSourceObject( matchingRule );
@@ -1075,7 +1038,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 }
             }
 
-            // We now have to process the superior, if it hasn't been 
+            // We now have to process the superior, if it hasn't been
             // processed yet.
             if ( superior != null )
             {
@@ -1095,7 +1058,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             }
         }
 
-        // Process the Syntax. If it's null, the attributeType must have 
+        // Process the Syntax. If it's null, the attributeType must have
         // a Superior.
         String syntaxOid = attributeType.getSyntaxOid();
 
@@ -1183,13 +1146,13 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
     /**
      * Check the inheritance, and the existence of MatchingRules and LdapSyntax
-     * for an attribute 
+     * for an attribute
      */
     private void resolve( AttributeType attributeType, List<Throwable> errors )
     {
         // This set is used to avoid having more than one error
         // for an AttributeType. It's mandatory when processing
-        // a Superior, as it may be broken and referenced more than once. 
+        // a Superior, as it may be broken and referenced more than once.
         Set<String> processed = new HashSet<String>();
 
         // Store the AttributeType itself in the processed, to avoid cycle
@@ -1207,7 +1170,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             if ( processed.contains( objectClass ) )
             {
-                // We have found a cycle. It has already been reported, 
+                // We have found a cycle. It has already been reported,
                 // don't add a new error, just exit.
                 return null;
             }
@@ -1233,7 +1196,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     {
         // This set is used to avoid having more than one error
         // for an ObjectClass. It's mandatory when processing
-        // the Superiors, as they may be broken and referenced more than once. 
+        // the Superiors, as they may be broken and referenced more than once.
         Set<String> processed = new HashSet<String>();
 
         // Store the ObjectClass itself in the processed, to avoid cycle
@@ -1259,7 +1222,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     ldapSchemaException.setSourceObject( objectClass );
                     ldapSchemaException.setOtherObject( may );
                     errors.add( ldapSchemaException );
-                    return;
                 }
             }
         }
@@ -1294,7 +1256,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 }
             }
 
-            // We now have to process the superior, if it hasn't been 
+            // We now have to process the superior, if it hasn't been
             // processed yet.
             if ( superior != null )
             {
@@ -1316,7 +1278,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             }
         }
 
-        // Process the MAY attributeTypes.  
+        // Process the MAY attributeTypes.
         for ( String mayOid : objectClass.getMayAttributeTypeOids() )
         {
             // Check if the MAY AttributeType is present in the registries
@@ -1331,7 +1293,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
             }
         }
 
-        // Process the MUST attributeTypes.  
+        // Process the MUST attributeTypes.
         for ( String mustOid : objectClass.getMustAttributeTypeOids() )
         {
             // Check if the MUST AttributeType is present in the registries
@@ -1349,11 +1311,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // All is done for this ObjectClass, let's apply the registries
         try
         {
-            objectClass.addToRegistries( errors, this );
+            ObjectClassHelper.addToRegistries( objectClass, errors, this );
         }
         catch ( LdapException ne )
         {
-            // Do nothing. We may have a broken OC, 
+            // Do nothing. We may have a broken OC,
             // but at this point, it doesn't matter.
         }
     }
@@ -1362,7 +1324,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Applies the added SchemaObject to the given register
      */
-    public List<Throwable> add( List<Throwable> errors, SchemaObject schemaObject ) throws LdapException
+    public List<Throwable> add( List<Throwable> errors, SchemaObject schemaObject, boolean check ) throws LdapException
     {
         // Relax the registries
         boolean wasRelaxed = isRelaxed;
@@ -1375,17 +1337,23 @@ public class Registries implements SchemaLoaderListener, Cloneable
         associateWithSchema( errors, schemaObject );
 
         // Build the SchemaObject references
-        buildReference( errors, schemaObject );
+        if ( check )
+        {
+            buildReference( errors, schemaObject );
+        }
 
         // Lock the SchemaObject
         schemaObject.lock();
 
-        if ( errors.isEmpty() )
+        if ( check )
         {
-            // Check the registries now
-            List<Throwable> checkErrors = checkRefInteg();
+            if ( errors.isEmpty() )
+            {
+                // Check the registries now
+                List<Throwable> checkErrors = checkRefInteg();
 
-            errors.addAll( checkErrors );
+                errors.addAll( checkErrors );
+            }
         }
 
         // Get back to Strict mode
@@ -1461,7 +1429,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
 
     /**
-     * Gets an unmodifiable Map of schema names to loaded Schema objects. 
+     * Gets an unmodifiable Map of schema names to loaded Schema objects.
      * 
      * @return the map of loaded Schema objects
      */
@@ -1578,11 +1546,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     break;
 
                 case DIT_CONTENT_RULE:
-                    ditContentRuleRegistry.register( ( DITContentRule ) schemaObject );
+                    ditContentRuleRegistry.register( ( DitContentRule ) schemaObject );
                     break;
 
                 case DIT_STRUCTURE_RULE:
-                    ditStructureRuleRegistry.register( ( DITStructureRule ) schemaObject );
+                    ditStructureRuleRegistry.register( ( DitStructureRule ) schemaObject );
                     break;
 
                 case LDAP_SYNTAX:
@@ -1796,11 +1764,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 break;
 
             case DIT_CONTENT_RULE:
-                unregistered = ditContentRuleRegistry.unregister( ( DITContentRule ) schemaObject );
+                unregistered = ditContentRuleRegistry.unregister( ( DitContentRule ) schemaObject );
                 break;
 
             case DIT_STRUCTURE_RULE:
-                unregistered = ditStructureRuleRegistry.unregister( ( DITStructureRule ) schemaObject );
+                unregistered = ditStructureRuleRegistry.unregister( ( DitStructureRule ) schemaObject );
                 break;
 
             case LDAP_SYNTAX:
@@ -1911,7 +1879,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Gets the Set of SchemaObjects referencing the given SchemaObject
      *
      * @param schemaObject The SchemaObject we are looking for
-     * @return The Set of referencing SchemaObject, or null 
+     * @return The Set of referencing SchemaObject, or null
      */
     public Set<SchemaObjectWrapper> getUsedBy( SchemaObject schemaObject )
     {
@@ -1997,7 +1965,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Gets the Set of SchemaObjects referenced by the given SchemaObject
      *
      * @param schemaObject The SchemaObject we are looking for
-     * @return The Set of referenced SchemaObject, or null 
+     * @return The Set of referenced SchemaObject, or null
      */
     public Set<SchemaObjectWrapper> getUsing( SchemaObject schemaObject )
     {
@@ -2265,7 +2233,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 return false;
             }
 
-            // Check the references : Syntax -> SyntaxChecker and SyntaxChecker -> Syntax 
+            // Check the references : Syntax -> SyntaxChecker and SyntaxChecker -> Syntax
             if ( !checkReferences( syntax, syntax.getSyntaxChecker(), "SyntaxChecker" ) )
             {
                 return false;
@@ -2326,19 +2294,19 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 return false;
             }
 
-            // Check the references : MR -> S and S -> MR 
+            // Check the references : MR -> S and S -> MR
             if ( !checkReferences( matchingRule, matchingRule.getSyntax(), "Syntax" ) )
             {
                 return false;
             }
 
-            // Check the references : MR -> N 
+            // Check the references : MR -> N
             if ( !checkReferences( matchingRule, matchingRule.getNormalizer(), "Normalizer" ) )
             {
                 return false;
             }
 
-            // Check the references : MR -> C and C -> MR 
+            // Check the references : MR -> C and C -> MR
             if ( !checkReferences( matchingRule, matchingRule.getLdapComparator(), "Comparator" ) )
             {
                 return false;
@@ -2362,7 +2330,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                         return false;
                     }
 
-                    // Check the references : OC -> AT  and AT -> OC (MAY) 
+                    // Check the references : OC -> AT  and AT -> OC (MAY)
                     if ( !checkReferences( objectClass, may, "AttributeType" ) )
                     {
                         return false;
@@ -2382,7 +2350,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                         return false;
                     }
 
-                    // Check the references : OC -> AT  and AT -> OC (MUST) 
+                    // Check the references : OC -> AT  and AT -> OC (MUST)
                     if ( !checkReferences( objectClass, must, "AttributeType" ) )
                     {
                         return false;
@@ -2403,7 +2371,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                         return false;
                     }
 
-                    // Check the references : OC -> OC  and OC -> OC (SUPERIORS) 
+                    // Check the references : OC -> OC  and OC -> OC (SUPERIORS)
                     if ( !checkReferences( objectClass, superior, "ObjectClass" ) )
                     {
                         return false;
@@ -2417,7 +2385,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         for ( AttributeType attributeType : attributeTypeRegistry )
         {
-            // Check that each AttributeType has a SYNTAX 
+            // Check that each AttributeType has a SYNTAX
             if ( attributeType.getSyntax() == null )
             {
                 LOG.debug( "The AttributeType {} has no Syntax", attributeType );
@@ -2506,7 +2474,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     return false;
                 }
 
-                // Check the references : AT -> AT  and AT -> AT (SUPERIOR) 
+                // Check the references : AT -> AT  and AT -> AT (SUPERIOR)
                 if ( !checkReferences( attributeType, superior, "AttributeType" ) )
                 {
                     return false;
@@ -2552,12 +2520,12 @@ public class Registries implements SchemaLoaderListener, Cloneable
             clone.globalOidRegistry.put( attributeType );
         }
 
-        for ( DITContentRule ditContentRule : clone.ditContentRuleRegistry )
+        for ( DitContentRule ditContentRule : clone.ditContentRuleRegistry )
         {
             clone.globalOidRegistry.put( ditContentRule );
         }
 
-        for ( DITStructureRule ditStructureRule : clone.ditStructureRuleRegistry )
+        for ( DitStructureRule ditStructureRule : clone.ditStructureRuleRegistry )
         {
             clone.globalOidRegistry.put( ditStructureRule );
         }
@@ -2647,10 +2615,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
 
     /**
-     * Tells if the Registries is permissive or if it must be checked 
+     * Tells if the Registries is permissive or if it must be checked
      * against inconsistencies.
      *
-     * @return True if SchemaObjects can be added even if they break the consistency 
+     * @return True if SchemaObjects can be added even if they break the consistency
      */
     public boolean isRelaxed()
     {
@@ -2661,7 +2629,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Tells if the Registries is strict.
      *
-     * @return True if SchemaObjects cannot be added if they break the consistency 
+     * @return True if SchemaObjects cannot be added if they break the consistency
      */
     public boolean isStrict()
     {
@@ -2692,7 +2660,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     /**
      * Tells if the Registries accept disabled elements.
      *
-     * @return True if disabled SchemaObjects can be added 
+     * @return True if disabled SchemaObjects can be added
      */
     public boolean isDisabledAccepted()
     {
@@ -2719,7 +2687,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      * Change the Registries behavior regarding disabled SchemaObject element.
      *
      * @param disabledAccepted If <code>false</code>, then the Registries won't accept
-     * disabled SchemaObject or enabled SchemaObject from disabled schema 
+     * disabled SchemaObject or enabled SchemaObject from disabled schema
      */
     public void setDisabledAccepted( boolean disabledAccepted )
     {
@@ -2836,6 +2804,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Clear the loadedSchema Map
         loadedSchemas.clear();
     }
+
+
 
 
     /**

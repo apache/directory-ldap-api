@@ -53,7 +53,7 @@ public class LdifEntryTest
     /**
      * Check that we can't create an empty LdifEntry
      */
-    @Test( expected=LdapInvalidAttributeValueException.class)
+    @Test(expected = LdapInvalidAttributeValueException.class)
     public void testLdifEntryEmpty() throws Exception
     {
         new LdifEntry( "", "" );
@@ -68,7 +68,7 @@ public class LdifEntryTest
     {
         Entry entry = new DefaultEntry( "", "cn: test" );
         LdifEntry ldifEntry = new LdifEntry( "", "cn: test" );
-        
+
         assertNotNull( ldifEntry );
         assertEquals( Dn.EMPTY_DN, ldifEntry.getDn() );
         assertEquals( ChangeType.None, ldifEntry.getChangeType() );
@@ -83,8 +83,8 @@ public class LdifEntryTest
     public void testLdifEntryNullDn() throws Exception
     {
         Entry entry = new DefaultEntry( "", "cn: test" );
-        LdifEntry ldifEntry = new LdifEntry( (Dn)null, "cn: test" );
-        
+        LdifEntry ldifEntry = new LdifEntry( ( Dn ) null, "cn: test" );
+
         assertNotNull( ldifEntry );
         assertEquals( Dn.EMPTY_DN, ldifEntry.getDn() );
         assertEquals( ChangeType.None, ldifEntry.getChangeType() );
@@ -100,11 +100,11 @@ public class LdifEntryTest
     public void testSimpleLdifEntry() throws Exception
     {
         String cn = "app1";
-        
-        LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", 
+
+        LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org",
             "cn", cn,
-            "objectClass: top", 
-            "objectClass: apApplication", 
+            "objectClass: top",
+            "objectClass: apApplication",
             "displayName:   app1   ",
             "dependencies:",
             "envVars:" );
@@ -115,12 +115,12 @@ public class LdifEntryTest
 
         Attribute attr = ldifEntry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
-        
+
         Attribute cnAttr = ldifEntry.get( "cn" );
         assertTrue( cnAttr.contains( "app1" ) );
     }
-    
-    
+
+
     /**
      * Test a Delete changeType LdifEntry with no control
      * 
@@ -129,39 +129,39 @@ public class LdifEntryTest
     @Test
     public void testLdifParserChangeTypeDeleteNoControl() throws Exception
     {
-        String ldif = 
+        String ldif =
             "# Delete an entry. The operation will attach the LDAPv3\n" +
-            "# Tree Delete Control defined in [9]. The criticality\n" +
-            "# field is \"true\" and the controlValue field is\n" + 
-            "# absent, as required by [9].\n" +
-            "changetype: delete\n";
+                "# Tree Delete Control defined in [9]. The criticality\n" +
+                "# field is \"true\" and the controlValue field is\n" +
+                "# absent, as required by [9].\n" +
+                "changetype: delete\n";
 
         LdifEntry ldifEntry = new LdifEntry( "ou=Product Development, dc=airius, dc=com", ldif );
-        
+
         assertNotNull( ldifEntry );
         assertEquals( ChangeType.Delete, ldifEntry.getChangeType() );
         assertNull( ldifEntry.getEntry() );
         assertEquals( "ou=Product Development, dc=airius, dc=com", ldifEntry.getDn().getName() );
         assertFalse( ldifEntry.hasControls() );
     }
-    
-    
+
+
     /**
      * Test a Delete changeType LdifEntry with no control and following Attrs :
      * should get an exception
      * 
      * @throws Exception
      */
-    @Test( expected = LdapLdifException.class )
+    @Test(expected = LdapLdifException.class)
     public void testLdifParserChangeTypeDeleteNoControlAttribute() throws Exception
     {
-        String ldif = 
+        String ldif =
             "# Delete an entry. The operation will attach the LDAPv3\n" +
-            "# Tree Delete Control defined in [9]. The criticality\n" +
-            "# field is \"true\" and the controlValue field is\n" + 
-            "# absent, as required by [9].\n" +
-            "changetype: delete\n"+
-            "cn: bad !!\n";
+                "# Tree Delete Control defined in [9]. The criticality\n" +
+                "# field is \"true\" and the controlValue field is\n" +
+                "# absent, as required by [9].\n" +
+                "changetype: delete\n" +
+                "cn: bad !!\n";
 
         new LdifEntry( "ou=Product Development, dc=airius, dc=com", ldif );
     }
@@ -175,29 +175,29 @@ public class LdifEntryTest
     @Test
     public void testLdifParserChangeTypeDeleteWithControl() throws Exception
     {
-        String ldif = 
+        String ldif =
             "# Delete an entry. The operation will attach the LDAPv3\n" +
-            "# Tree Delete Control defined in [9]. The criticality\n" +
-            "# field is \"true\" and the controlValue field is\n" + 
-            "# absent, as required by [9].\n" +
-            "control: 1.2.840.113556.1.4.805 true\n" +
-            "changetype: delete\n";
+                "# Tree Delete Control defined in [9]. The criticality\n" +
+                "# field is \"true\" and the controlValue field is\n" +
+                "# absent, as required by [9].\n" +
+                "control: 1.2.840.113556.1.4.805 true\n" +
+                "changetype: delete\n";
 
         LdifEntry ldifEntry = new LdifEntry( "ou=Product Development, dc=airius, dc=com", ldif );
-        
+
         assertNotNull( ldifEntry );
         assertEquals( ChangeType.Delete, ldifEntry.getChangeType() );
         assertNull( ldifEntry.getEntry() );
         assertEquals( "ou=Product Development, dc=airius, dc=com", ldifEntry.getDn().getName() );
         assertTrue( ldifEntry.hasControls() );
-        
+
         LdifControl ldifControl = ldifEntry.getControl( "1.2.840.113556.1.4.805" );
         assertNotNull( ldifControl );
         assertEquals( "1.2.840.113556.1.4.805", ldifControl.getOid() );
         assertTrue( ldifControl.isCritical() );
         assertNull( ldifControl.getValue() );
     }
-    
+
 
     /**
      * Test a Delete changeType LdifEntry with controls
@@ -207,29 +207,29 @@ public class LdifEntryTest
     @Test
     public void testLdifParserChangeTypeDeleteWithControls() throws Exception
     {
-        String ldif = 
+        String ldif =
             "# Delete an entry. The operation will attach the LDAPv3\n" +
-            "# Tree Delete Control defined in [9]. The criticality\n" +
-            "# field is \"true\" and the controlValue field is\n" + 
-            "# absent, as required by [9].\n" +
-            "control: 1.2.840.113556.1.4.805 true\n" +
-            "control: 1.2.840.113556.1.4.806 false: test\n" +
-            "changetype: delete\n";
+                "# Tree Delete Control defined in [9]. The criticality\n" +
+                "# field is \"true\" and the controlValue field is\n" +
+                "# absent, as required by [9].\n" +
+                "control: 1.2.840.113556.1.4.805 true\n" +
+                "control: 1.2.840.113556.1.4.806 false: test\n" +
+                "changetype: delete\n";
 
         LdifEntry ldifEntry = new LdifEntry( "ou=Product Development, dc=airius, dc=com", ldif );
-        
+
         assertNotNull( ldifEntry );
         assertEquals( ChangeType.Delete, ldifEntry.getChangeType() );
         assertNull( ldifEntry.getEntry() );
         assertEquals( "ou=Product Development, dc=airius, dc=com", ldifEntry.getDn().getName() );
         assertTrue( ldifEntry.hasControls() );
-        
+
         LdifControl ldifControl = ldifEntry.getControl( "1.2.840.113556.1.4.805" );
         assertNotNull( ldifControl );
         assertEquals( "1.2.840.113556.1.4.805", ldifControl.getOid() );
         assertTrue( ldifControl.isCritical() );
         assertNull( ldifControl.getValue() );
-        
+
         ldifControl = ldifEntry.getControl( "1.2.840.113556.1.4.806" );
         assertNotNull( ldifControl );
         assertEquals( "1.2.840.113556.1.4.806", ldifControl.getOid() );
@@ -246,14 +246,14 @@ public class LdifEntryTest
     @Test
     public void testLdifEntryChangeTypeAddNoControl() throws Exception
     {
-        String ldif = 
+        String ldif =
             "changetype: add\n" +
-            "cn: app1\n" + 
-            "objectClass: top\n" + 
-            "objectClass: apApplication\n" + 
-            "displayName:   app1   \n" +
-            "dependencies:\n" + 
-            "envVars:";
+                "cn: app1\n" +
+                "objectClass: top\n" +
+                "objectClass: apApplication\n" +
+                "displayName:   app1   \n" +
+                "dependencies:\n" +
+                "envVars:";
 
         LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
 
@@ -267,8 +267,8 @@ public class LdifEntryTest
         Attribute attr = ldifEntry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
     }
-    
-    
+
+
     /**
      * Test a Add changeType LdifEntry with a control
      * @throws Exception
@@ -276,15 +276,15 @@ public class LdifEntryTest
     @Test
     public void testLdifEntryChangeTypeAddWithControl() throws Exception
     {
-        String ldif = 
+        String ldif =
             "control: 1.2.840.113556.1.4.805 true\n" +
-            "changetype: add\n" +
-            "cn: app1\n" + 
-            "objectClass: top\n" + 
-            "objectClass: apApplication\n" + 
-            "displayName:   app1   \n" +
-            "dependencies:\n" + 
-            "envVars:";
+                "changetype: add\n" +
+                "cn: app1\n" +
+                "objectClass: top\n" +
+                "objectClass: apApplication\n" +
+                "displayName:   app1   \n" +
+                "dependencies:\n" +
+                "envVars:";
 
         LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
 
@@ -297,15 +297,15 @@ public class LdifEntryTest
         Attribute attr = ldifEntry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
         assertTrue( ldifEntry.hasControls() );
-        
+
         LdifControl ldifControl = ldifEntry.getControl( "1.2.840.113556.1.4.805" );
         assertNotNull( ldifControl );
         assertEquals( "1.2.840.113556.1.4.805", ldifControl.getOid() );
         assertTrue( ldifControl.isCritical() );
         assertNull( ldifControl.getValue() );
     }
-    
-    
+
+
     /**
      * Test a Add changeType LdifEntry with controls
      * @throws Exception
@@ -313,16 +313,16 @@ public class LdifEntryTest
     @Test
     public void testLdifEntryChangeTypeAddWithControls() throws Exception
     {
-        String ldif = 
+        String ldif =
             "control: 1.2.840.113556.1.4.805 true\n" +
-            "control: 1.2.840.113556.1.4.806 false: test\n" +
-            "changetype: add\n" +
-            "cn: app1\n" + 
-            "objectClass: top\n" + 
-            "objectClass: apApplication\n" + 
-            "displayName:   app1   \n" +
-            "dependencies:\n" + 
-            "envVars:";
+                "control: 1.2.840.113556.1.4.806 false: test\n" +
+                "changetype: add\n" +
+                "cn: app1\n" +
+                "objectClass: top\n" +
+                "objectClass: apApplication\n" +
+                "displayName:   app1   \n" +
+                "dependencies:\n" +
+                "envVars:";
 
         LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
 
@@ -335,13 +335,13 @@ public class LdifEntryTest
         Attribute attr = ldifEntry.get( "displayname" );
         assertTrue( attr.contains( "app1" ) );
         assertTrue( ldifEntry.hasControls() );
-        
+
         LdifControl ldifControl = ldifEntry.getControl( "1.2.840.113556.1.4.805" );
         assertNotNull( ldifControl );
         assertEquals( "1.2.840.113556.1.4.805", ldifControl.getOid() );
         assertTrue( ldifControl.isCritical() );
         assertNull( ldifControl.getValue() );
-        
+
         ldifControl = ldifEntry.getControl( "1.2.840.113556.1.4.806" );
         assertNotNull( ldifControl );
         assertEquals( "1.2.840.113556.1.4.806", ldifControl.getOid() );
@@ -357,10 +357,10 @@ public class LdifEntryTest
     @Test
     public void testLdifEntryChangeTypeModDnNoControl() throws Exception
     {
-        String ldif = 
+        String ldif =
             "changetype: moddn\n" +
-            "newrdn: cn=app2\n" + 
-            "deleteoldrdn: 1\n"; 
+                "newrdn: cn=app2\n" +
+                "deleteoldrdn: 1\n";
 
         LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
 
@@ -374,17 +374,17 @@ public class LdifEntryTest
         assertTrue( ldifEntry.isDeleteOldRdn() );
         assertNull( ldifEntry.getNewSuperior() );
     }
-    
-    
+
+
     /**
      * Test a ModDn changeType LdifEntry with no newRdn
      */
-    @Test( expected = LdapLdifException.class )
+    @Test(expected = LdapLdifException.class)
     public void testLdifEntryChangeTypeModDnNoNewRdn() throws Exception
     {
-        String ldif = 
+        String ldif =
             "changetype: moddn\n" +
-            "deleteoldrdn: 1\n"; 
+                "deleteoldrdn: 1\n";
 
         new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
     }
@@ -393,12 +393,12 @@ public class LdifEntryTest
     /**
      * Test a ModDn changeType LdifEntry with no deleteOldRdn flag
      */
-    @Test( expected = LdapLdifException.class )
+    @Test(expected = LdapLdifException.class)
     public void testLdifEntryChangeTypeModDnNoDeleteOldRdn() throws Exception
     {
-        String ldif = 
+        String ldif =
             "changetype: moddn\n" +
-            "newrdn: cn=app2\n"; 
+                "newrdn: cn=app2\n";
 
         new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
     }
@@ -410,11 +410,11 @@ public class LdifEntryTest
     @Test
     public void testLdifEntryChangeTypeModDnRenameNoControlNewSuperior() throws Exception
     {
-        String ldif = 
+        String ldif =
             "changetype: moddn\n" +
-            "newrdn: cn=app2\n" + 
-            "deleteoldrdn: 1\n" +
-            "newsuperior: dc=example, dc=com"; 
+                "newrdn: cn=app2\n" +
+                "deleteoldrdn: 1\n" +
+                "newsuperior: dc=example, dc=com";
 
         LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
 
@@ -429,7 +429,7 @@ public class LdifEntryTest
         assertEquals( "dc=example, dc=com", ldifEntry.getNewSuperior() );
     }
 
-    
+
     /**
      * Test a ModDn changeType LdifEntry with a control
      * @throws Exception
@@ -437,11 +437,11 @@ public class LdifEntryTest
     @Test
     public void testLdifEntryChangeTypeModdnWithControl() throws Exception
     {
-        String ldif = 
+        String ldif =
             "control: 1.2.840.113556.1.4.805 true\n" +
-            "changetype: moddn\n" +
-            "newrdn: cn=app2\n" + 
-            "deleteoldrdn: 1\n"; 
+                "changetype: moddn\n" +
+                "newrdn: cn=app2\n" +
+                "deleteoldrdn: 1\n";
 
         LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
 
@@ -455,15 +455,15 @@ public class LdifEntryTest
         assertTrue( ldifEntry.isDeleteOldRdn() );
 
         assertTrue( ldifEntry.hasControls() );
-        
+
         LdifControl ldifControl = ldifEntry.getControl( "1.2.840.113556.1.4.805" );
         assertNotNull( ldifControl );
         assertEquals( "1.2.840.113556.1.4.805", ldifControl.getOid() );
         assertTrue( ldifControl.isCritical() );
         assertNull( ldifControl.getValue() );
     }
-    
-    
+
+
     /**
      * Test a ModDN changeType LdifEntry with controls
      * @throws Exception
@@ -471,12 +471,12 @@ public class LdifEntryTest
     @Test
     public void testLdifEntryChangeTypeModddnWithControls() throws Exception
     {
-        String ldif = 
+        String ldif =
             "control: 1.2.840.113556.1.4.805 true\n" +
-            "control: 1.2.840.113556.1.4.806 false: test\n" +
-            "changetype: moddn\n" +
-            "newrdn: cn=app2\n" + 
-            "deleteoldrdn: 1\n"; 
+                "control: 1.2.840.113556.1.4.806 false: test\n" +
+                "changetype: moddn\n" +
+                "newrdn: cn=app2\n" +
+                "deleteoldrdn: 1\n";
 
         LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
 
@@ -489,13 +489,13 @@ public class LdifEntryTest
         assertTrue( ldifEntry.isDeleteOldRdn() );
         assertNull( ldifEntry.getNewSuperior() );
         assertTrue( ldifEntry.hasControls() );
-        
+
         LdifControl ldifControl = ldifEntry.getControl( "1.2.840.113556.1.4.805" );
         assertNotNull( ldifControl );
         assertEquals( "1.2.840.113556.1.4.805", ldifControl.getOid() );
         assertTrue( ldifControl.isCritical() );
         assertNull( ldifControl.getValue() );
-        
+
         ldifControl = ldifEntry.getControl( "1.2.840.113556.1.4.806" );
         assertNotNull( ldifControl );
         assertEquals( "1.2.840.113556.1.4.806", ldifControl.getOid() );
@@ -503,20 +503,20 @@ public class LdifEntryTest
         assertNotNull( ldifControl.getValue() );
         assertEquals( "test", Strings.utf8ToString( ldifControl.getValue() ) );
     }
-    
-    
+
+
     /**
      * Test a Modify changeType LdifEntry with no control
      */
     @Test
     public void testLdifEntryChangeTypeModifySimple() throws Exception
     {
-        String ldif = 
+        String ldif =
             "changetype: modify\n" +
-            "add: cn\n" +
-            "cn: v1\n" + 
-            "cn: v2\n" +
-            "-"; 
+                "add: cn\n" +
+                "cn: v1\n" +
+                "cn: v2\n" +
+                "-";
 
         LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
 
@@ -526,10 +526,10 @@ public class LdifEntryTest
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldifEntry.getDn().getName() );
         assertFalse( ldifEntry.hasControls() );
         assertTrue( ldifEntry.isLdifChange() );
-        
+
         // Check the modification
         assertNotNull( ldifEntry.getModifications() );
-        
+
         for ( Modification modification : ldifEntry.getModifications() )
         {
             assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
@@ -538,22 +538,22 @@ public class LdifEntryTest
             assertNotNull( attribute );
             assertEquals( "cn", attribute.getId() );
             assertTrue( attribute.contains( "v1", "v2" ) );
-            
+
         }
     }
-    
-    
+
+
     /**
      * Test a Modify changeType LdifEntry with no end separator ("-")
      */
-    @Test( expected = LdapLdifException.class )
+    @Test(expected = LdapLdifException.class)
     public void testLdifEntryChangeTypeModifyNoEndSeparator() throws Exception
     {
-        String ldif = 
+        String ldif =
             "changetype: modify\n" +
-            "add: cn\n" +
-            "cn: v1\n" + 
-            "cn: v2\n";
+                "add: cn\n" +
+                "cn: v1\n" +
+                "cn: v2\n";
 
         new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
     }
@@ -562,14 +562,14 @@ public class LdifEntryTest
     /**
      * Test a Modify changeType LdifEntry with no operation
      */
-    @Test( expected = LdapLdifException.class )
+    @Test(expected = LdapLdifException.class)
     public void testLdifEntryChangeTypeModifyNoOperator() throws Exception
     {
-        String ldif = 
+        String ldif =
             "changetype: modify\n" +
-            "cn: v1\n" + 
-            "dn: v2\n" +
-            "-";
+                "cn: v1\n" +
+                "dn: v2\n" +
+                "-";
 
         new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
     }
@@ -581,10 +581,10 @@ public class LdifEntryTest
     @Test
     public void testLdifEntryChangeTypeModifyNoAttribute() throws Exception
     {
-        String ldif = 
+        String ldif =
             "changetype: modify\n" +
-            "add: cn\n" +
-            "-"; 
+                "add: cn\n" +
+                "-";
 
         LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
 
@@ -594,10 +594,10 @@ public class LdifEntryTest
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldifEntry.getDn().getName() );
         assertFalse( ldifEntry.hasControls() );
         assertTrue( ldifEntry.isLdifChange() );
-        
+
         // Check the modification
         assertNotNull( ldifEntry.getModifications() );
-        
+
         for ( Modification modification : ldifEntry.getModifications() )
         {
             assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
@@ -609,54 +609,54 @@ public class LdifEntryTest
             assertTrue( attribute.get().isNull() );
         }
     }
-    
-    
+
+
     /**
      * Test a Modify changeType LdifEntry with a different attribute used
      */
-    @Test( expected = LdapLdifException.class )
+    @Test(expected = LdapLdifException.class)
     public void testLdifEntryChangeTypeModifyNotSameAttr() throws Exception
     {
-        String ldif = 
+        String ldif =
             "changetype: modify\n" +
-            "add: cn\n" +
-            "sn: v1\n" + 
-            "sn: v2\n" +
-            "-"; 
+                "add: cn\n" +
+                "sn: v1\n" +
+                "sn: v2\n" +
+                "-";
 
         new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
     }
-    
-    
+
+
     /**
      * Test a Modify changeType LdifEntry with a different attribute used
      */
-    @Test( expected = LdapLdifException.class )
+    @Test(expected = LdapLdifException.class)
     public void testLdifEntryChangeTypeModifyNotSameAttr2() throws Exception
     {
-        String ldif = 
+        String ldif =
             "changetype: modify\n" +
-            "add: cn\n" +
-            "cn: v1\n" + 
-            "sn: v2\n" +
-            "-"; 
+                "add: cn\n" +
+                "cn: v1\n" +
+                "sn: v2\n" +
+                "-";
 
         new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
     }
-    
-    
+
+
     /**
      * Test a Modify changeType LdifEntry with no attributes and controls
      */
     @Test
     public void testLdifEntryChangeTypeModifyNoAttributeWithControls() throws Exception
     {
-        String ldif = 
+        String ldif =
             "control: 1.2.840.113556.1.4.805 true\n" +
-            "control: 1.2.840.113556.1.4.806 false: test\n" +
-            "changetype: modify\n" +
-            "add: cn\n" +
-            "-"; 
+                "control: 1.2.840.113556.1.4.806 false: test\n" +
+                "changetype: modify\n" +
+                "add: cn\n" +
+                "-";
 
         LdifEntry ldifEntry = new LdifEntry( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldif );
 
@@ -665,10 +665,10 @@ public class LdifEntryTest
         assertNull( ldifEntry.getEntry() );
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", ldifEntry.getDn().getName() );
         assertTrue( ldifEntry.isLdifChange() );
-        
+
         // Check the modification
         assertNotNull( ldifEntry.getModifications() );
-        
+
         for ( Modification modification : ldifEntry.getModifications() )
         {
             assertEquals( ModificationOperation.ADD_ATTRIBUTE, modification.getOperation() );
@@ -677,17 +677,17 @@ public class LdifEntryTest
             assertNotNull( attribute );
             assertEquals( "cn", attribute.getId() );
             assertEquals( 1, attribute.size() );
-            assertTrue(  attribute.get().isNull() );
+            assertTrue( attribute.get().isNull() );
         }
-        
+
         assertTrue( ldifEntry.hasControls() );
-        
+
         LdifControl ldifControl = ldifEntry.getControl( "1.2.840.113556.1.4.805" );
         assertNotNull( ldifControl );
         assertEquals( "1.2.840.113556.1.4.805", ldifControl.getOid() );
         assertTrue( ldifControl.isCritical() );
         assertNull( ldifControl.getValue() );
-        
+
         ldifControl = ldifEntry.getControl( "1.2.840.113556.1.4.806" );
         assertNotNull( ldifControl );
         assertEquals( "1.2.840.113556.1.4.806", ldifControl.getOid() );

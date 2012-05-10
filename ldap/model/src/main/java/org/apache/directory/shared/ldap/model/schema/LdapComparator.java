@@ -35,6 +35,7 @@ public abstract class LdapComparator<T> extends LoadableSchemaObject implements 
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
+
     /**
      * Create a new instance of a Comparator
      * @param oid The associated OID

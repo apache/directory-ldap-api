@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes.parser;
 
@@ -33,6 +33,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Tests the LdapSyntaxDescriptionSchemaParser class.
@@ -81,7 +82,7 @@ public class LdapSyntaxDescriptionSchemaParserTest
     @Test
     public void testNames() throws ParseException
     {
-        SchemaParserTestUtils.testNames(parser, "1.1", "");
+        SchemaParserTestUtils.testNames( parser, "1.1", "" );
     }
 
 
@@ -178,11 +179,11 @@ public class LdapSyntaxDescriptionSchemaParserTest
     @Test
     public void testSyntaxWithExtensions() throws ParseException
     {
-        String substrate = "( 1.3.6.1.4.1.18060.0.4.0.2.10000 DESC 'bogus description' X-SCHEMA 'blah' X-IS-HUMAN-READABLE 'true' )";
+        String substrate = "( 1.3.6.1.4.1.18060.0.4.0.2.10000 DESC 'bogus description' X-SCHEMA 'blah' X-NOT-HUMAN-READABLE 'false' )";
         LdapSyntax ldapSyntax = parser.parseLdapSyntaxDescription( substrate );
         assertEquals( "1.3.6.1.4.1.18060.0.4.0.2.10000", ldapSyntax.getOid() );
         assertEquals( "bogus description", ldapSyntax.getDescription() );
-        assertNotNull( ldapSyntax.getExtensions().get( "X-IS-HUMAN-READABLE" ) );
+        assertNotNull( ldapSyntax.getExtensions().get( "X-NOT-HUMAN-READABLE" ) );
         assertEquals( substrate, ldapSyntax.getSpecification() );
     }
 

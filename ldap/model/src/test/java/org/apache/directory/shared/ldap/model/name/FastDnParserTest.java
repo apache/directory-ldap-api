@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.name;
 
@@ -32,6 +32,7 @@ import org.junit.runner.RunWith;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+
 
 /**
  * Tests the fast Dn parser.
@@ -52,12 +53,12 @@ public class FastDnParserTest
     @Test
     public void testLdapDNEmpty() throws LdapException
     {
-        assertEquals( "", ( (Dn) FastDnParser.parse( "" ) ).getName() );
+        assertEquals( "", FastDnParser.parse( "" ).getName() );
     }
 
 
     /**
-     * Tests incomplete DNs, used to check that the parser does not 
+     * Tests incomplete DNs, used to check that the parser does not
      * run into infinite loops.
      */
     @Test
@@ -144,7 +145,7 @@ public class FastDnParserTest
         {
             // expected
         }
-        
+
         FastDnParser.parse( " 0.5=" );
         FastDnParser.parse( " 0.5 = " );
         FastDnParser.parse( " 0.5 = b" );
@@ -166,12 +167,12 @@ public class FastDnParserTest
         assertEquals( "a = b", dn.getRdn().getName() );
         assertEquals( "a=b", dn.getRdn().getNormName() );
 
-        assertEquals( "a = b", dn.getRdn().getAva().getUpName() );
+        assertEquals( "a = b", dn.getRdn().getAva().getName() );
         assertEquals( "a=b", dn.getRdn().getAva().getNormName() );
 
-        assertEquals( "a", dn.getRdn().getAva().getUpType() );
+        assertEquals( "a", dn.getRdn().getAva().getType() );
         assertEquals( "a", dn.getRdn().getAva().getNormType() );
-        assertEquals( "b", dn.getRdn().getAva().getUpValue().getValue() );
+        assertEquals( "b", dn.getRdn().getAva().getValue().getValue() );
         assertEquals( "b", dn.getRdn().getAva().getNormValue().getValue() );
     }
 
@@ -392,37 +393,37 @@ public class FastDnParserTest
     {
         Dn dn = FastDnParser.parse( "cn = John, ou = People, OU = Marketing" );
 
-        byte[] bytes = Dn.getBytes(dn);
+        byte[] bytes = Dn.getBytes( dn );
 
         assertEquals( 30, bytes.length );
-        assertEquals( "cn=John,ou=People,ou=Marketing", Strings.utf8ToString(bytes) );
+        assertEquals( "cn=John,ou=People,ou=Marketing", Strings.utf8ToString( bytes ) );
     }
 
 
     @Test
     public void testStringParser() throws LdapException
     {
-        String dn = Strings.utf8ToString(new byte[]
-                {'C', 'N', ' ', '=', ' ', 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', ' ', 'L', (byte) 0xc3,
-                        (byte) 0xa9, 'c', 'h', 'a', 'r', 'n', 'y'});
+        String dn = Strings.utf8ToString( new byte[]
+            { 'C', 'N', ' ', '=', ' ', 'E', 'm', 'm', 'a', 'n', 'u', 'e', 'l', ' ', ' ', 'L', ( byte ) 0xc3,
+                ( byte ) 0xa9, 'c', 'h', 'a', 'r', 'n', 'y' } );
 
         Dn name = FastDnParser.parse( dn );
 
         assertEquals( dn, name.getName() );
-        assertEquals( "cn=Emmanuel  L\u00e9charny", name.getNormName() );
+        assertEquals( "cn=Emmanuel  L\\C3\\A9charny", name.getNormName() );
     }
 
 
     @Test
     public void testStringParserShort() throws LdapException
     {
-        String dn = Strings.utf8ToString(new byte[]
-                {'C', '=', ' ', 'E', (byte) 0xc3, (byte) 0xa9, 'c'});
+        String dn = Strings.utf8ToString( new byte[]
+            { 'C', '=', ' ', 'E', ( byte ) 0xc3, ( byte ) 0xa9, 'c' } );
 
         Dn name = FastDnParser.parse( dn );
 
         assertEquals( dn, name.getName() );
-        assertEquals( "c=E\u00e9c", name.getNormName() );
+        assertEquals( "c=E\\C3\\A9c", name.getNormName() );
     }
 
 
@@ -486,7 +487,7 @@ public class FastDnParserTest
 
         assertEquals( "RFC1779_1 : ",
             "CN=Marshall T. Rose, O=Dover Beach Consulting, L=Santa Clara, ST=California, C=US",
-            nameRFC1779_1 .getName() );
+            nameRFC1779_1.getName() );
         assertEquals( "RFC1779_1 : ", "cn=Marshall T. Rose,o=Dover Beach Consulting,l=Santa Clara,st=California,c=US",
             nameRFC1779_1.getNormName() );
     }
@@ -503,7 +504,7 @@ public class FastDnParserTest
     {
         Dn nameRFC2253_1 = FastDnParser.parse( "CN=Steve Kille,O=Isode limited,C=GB" );
 
-        assertEquals( "RFC2253_1 : ", "CN=Steve Kille,O=Isode limited,C=GB", ( (Dn) nameRFC2253_1 ).getName() );
+        assertEquals( "RFC2253_1 : ", "CN=Steve Kille,O=Isode limited,C=GB", nameRFC2253_1.getName() );
     }
 
 
@@ -646,7 +647,7 @@ public class FastDnParserTest
     public final void testPreserveSpaceAfterEscape() throws LdapException
     {
         String input = "ou=some test\\,  something else";
-        
+
         try
         {
             FastDnParser.parse( input ).toString();

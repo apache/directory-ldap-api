@@ -25,8 +25,6 @@ import java.util.regex.Pattern;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,8 +68,6 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class GeneralizedTimeSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
@@ -79,16 +75,16 @@ public class GeneralizedTimeSyntaxChecker extends SyntaxChecker
 
     /** The GeneralizedDate pattern matching */
     private static final String GENERALIZED_TIME_PATTERN =
-                "^\\d{4}" // century + year : 0000 to 9999
-                    + "(0[1-9]|1[0-2])" // month : 01 to 12
-                    + "(0[1-9]|[12]\\d|3[01])" // day : 01 to 31
-                    + "([01]\\d|2[0-3])" // hour : 00 to 23
-                    + "("
-                    + "([0-5]\\d)" // optional minute : 00 to 59
-                    + "([0-5]\\d|60)?" // optional second | leap second
-                    + ")?"
-                    + "([.,]\\d+)?" // fraction       
-                    + "(Z|[+-]([01]\\d|2[0-3])([0-5]\\d)?)$"; // time-zone
+        "^\\d{4}" // century + year : 0000 to 9999
+            + "(0[1-9]|1[0-2])" // month : 01 to 12
+            + "(0[1-9]|[12]\\d|3[01])" // day : 01 to 31
+            + "([01]\\d|2[0-3])" // hour : 00 to 23
+            + "("
+            + "([0-5]\\d)" // optional minute : 00 to 59
+            + "([0-5]\\d|60)?" // optional second | leap second
+            + ")?"
+            + "([.,]\\d+)?" // fraction       
+            + "(Z|[+-]([01]\\d|2[0-3])([0-5]\\d)?)$"; // time-zone
 
     /** The date pattern. The regexp pattern is immutable, only one instance needed. */
     private static final Pattern DATE_PATTERN = Pattern.compile( GENERALIZED_TIME_PATTERN );
@@ -122,7 +118,7 @@ public class GeneralizedTimeSyntaxChecker extends SyntaxChecker
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {

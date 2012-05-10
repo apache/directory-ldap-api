@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.asn1.ber.tlv;
 
@@ -24,7 +24,7 @@ import org.apache.directory.shared.asn1.util.Asn1StringUtils;
 
 
 /**
- * This class is used to store Tag, Length and Value decoded from a PDU.
+ * This class is used to store Tags, Lengths and Values decoded from a PDU.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -43,7 +43,7 @@ public class TLV
     private int lengthBytesRead;
 
     /** The current Value being processed */
-    private Value value;
+    private BerValue value;
 
     /** An identity for the TLV. It store the TLV hashCode */
     private int id;
@@ -85,6 +85,7 @@ public class TLV
     /** A speedup for single bytes length */
     private static final byte[][] ONE_BYTE = new byte[256][];
 
+    // Initialize an array of byte[] used for encoding lengths below 128
     static
     {
         for ( int i = 0; i < 256; i++ )
@@ -105,7 +106,7 @@ public class TLV
         tag = 0;
         length = 0;
         lengthNbBytes = 0;
-        value = new Value();
+        value = new BerValue();
         this.id = id;
 
         expectedLength = 0;
@@ -115,7 +116,7 @@ public class TLV
     /**
      * Checks to see if the tag is constructed.
      * 
-     * @param tag the TLV's tag 
+     * @param tag the TLV's tag
      * @return true if constructed, false if primitive
      */
     public static boolean isConstructed( byte tag )
@@ -139,7 +140,7 @@ public class TLV
      * Checks to see if the tag represented by this Tag is primitive or
      * constructed.
      * 
-     * @param tag the tag to be checked 
+     * @param tag the tag to be checked
      * @return true if it is primitive, false if it is constructed
      */
     public static boolean isPrimitive( byte tag )
@@ -197,7 +198,7 @@ public class TLV
     /**
      * @return Returns the value.
      */
-    public Value getValue()
+    public BerValue getValue()
     {
         return value;
     }
@@ -318,7 +319,7 @@ public class TLV
 
 
     /**
-     * @return Returns the parent.
+     * @return The parent.
      */
     public TLV getParent()
     {
@@ -338,7 +339,7 @@ public class TLV
     /**
      * Get the TLV expected length.
      * 
-     * @return Returns the expectedLength.
+     * @return The expectedLength.
      */
     public int getExpectedLength()
     {
@@ -358,7 +359,7 @@ public class TLV
 
 
     /**
-     * @return the number of bytes necessary to store the TLV's length
+     * @return The number of bytes necessary to store the TLV's length
      */
     public int getLengthNbBytes()
     {
@@ -367,8 +368,9 @@ public class TLV
 
 
     /**
-     * Set the number of bytes we should use to store the TLV's length
-     *  @param lengthNbBytes the number of bytes necessary to store the TLV's length
+     * Set the number of bytes we should use to store the TLV's length.
+     * 
+     * @param lengthNbBytes The number of bytes necessary to store the TLV's length
      */
     public void setLengthNbBytes( int lengthNbBytes )
     {
@@ -377,7 +379,7 @@ public class TLV
 
 
     /**
-     * @return the tLV's length
+     * @return the TLV's length
      */
     public int getLength()
     {
@@ -397,7 +399,7 @@ public class TLV
 
 
     /**
-     * @return the currently read TLV's length bytes
+     * @return The currently read TLV's length bytes
      */
     public int getLengthBytesRead()
     {
@@ -427,7 +429,7 @@ public class TLV
 
 
     /**
-     * @return the TLV's ID 
+     * @return The TLV's ID
      */
     public int getId()
     {

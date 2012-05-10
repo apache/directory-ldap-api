@@ -20,6 +20,7 @@
 
 package org.apache.directory.shared.ldap.codec.api;
 
+
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.ldap.model.message.Message;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
@@ -45,13 +46,14 @@ public class ResponseCarryingException extends DecoderException
 
     /** The response with the error cause */
     private Message response;
-    
+
+
     /**
      * Creates a DecoderException
      * 
      * @param message A message with meaning to a human
      */
-    public ResponseCarryingException(String message)
+    public ResponseCarryingException( String message )
     {
         super( message );
     }
@@ -63,27 +65,29 @@ public class ResponseCarryingException extends DecoderException
      * @param message A message with meaning to a human
      * @param cause The Exception which caused the error
      */
-    public ResponseCarryingException(String message, ResultResponse response, ResultCodeEnum code,
-        Dn matchedDn, Throwable cause)
+    public ResponseCarryingException( String message, ResultResponse response, ResultCodeEnum code,
+        Dn matchedDn, Throwable cause )
     {
         super( message, cause );
 
         response.getLdapResult().setDiagnosticMessage( message );
         response.getLdapResult().setResultCode( code );
         response.getLdapResult().setMatchedDn( matchedDn );
-    
-        this.response = response; 
+
+        this.response = response;
     }
-    
+
+
     /**
      * Set a response if we get an exception while parsing the message
      * @param response the constructed response
      */
-    public void setResponse( Message response ) 
+    public void setResponse( Message response )
     {
         this.response = response;
     }
-    
+
+
     /**
      * Get the constructed response
      * @return The constructed response

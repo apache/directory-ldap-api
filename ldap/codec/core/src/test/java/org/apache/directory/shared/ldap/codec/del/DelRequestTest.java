@@ -76,14 +76,47 @@ public class DelRequestTest extends AbstractCodecServiceTest
                 0x01, // messageID MessageID
                 // CHOICE { ..., delRequest DelRequest, ...
                 // DelRequest ::= [APPLICATION 10] LDAPDN;
-                0x4A, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm' } );
+                0x4A,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm' } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<DeleteRequestDecorator>( codec );
+        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<DeleteRequestDecorator>(
+            codec );
 
         // Decode a DelRequest PDU
         try
@@ -115,7 +148,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x27, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -145,13 +178,46 @@ public class DelRequestTest extends AbstractCodecServiceTest
                 0x01, // messageID MessageID
                 // CHOICE { ..., delRequest DelRequest, ...
                 // DelRequest ::= [APPLICATION 10] LDAPDN;
-                0x4A, 0x20, 'c', 'n', ':', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm' } );
+                0x4A,
+                0x20,
+                'c',
+                'n',
+                ':',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm' } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<DeleteRequestDecorator>( codec );
+        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<DeleteRequestDecorator>(
+            codec );
 
         // Decode a DelRequest PDU
         try
@@ -184,16 +250,20 @@ public class DelRequestTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x05, // LDAPMessage ::= SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
                 // CHOICE { ..., delRequest DelRequest, ...
                 // DelRequest ::= [APPLICATION 10] LDAPDN;
-                0x4A, 0x00 // Empty Dn
-            } );
+                0x4A,
+                0x00 // Empty Dn
+        } );
 
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<DeleteRequestDecorator>( codec );
+        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<DeleteRequestDecorator>(
+            codec );
 
         // Decode a DelRequest PDU
         try
@@ -227,17 +297,76 @@ public class DelRequestTest extends AbstractCodecServiceTest
                 0x01, // messageID MessageID
                 // CHOICE { ..., delRequest DelRequest, ...
                 // DelRequest ::= [APPLICATION 10] LDAPDN;
-                0x4A, 0x20, 'c', 'n', '=', 't', 'e', 's', 't', 'M', 'o', 'd', 'i', 'f', 'y', ',', 'o', 'u', '=', 'u',
-                's', 'e', 'r', 's', ',', 'o', 'u', '=', 's', 'y', 's', 't', 'e', 'm', ( byte ) 0xA0,
+                0x4A,
+                0x20,
+                'c',
+                'n',
+                '=',
+                't',
+                'e',
+                's',
+                't',
+                'M',
+                'o',
+                'd',
+                'i',
+                'f',
+                'y',
+                ',',
+                'o',
+                'u',
+                '=',
+                'u',
+                's',
+                'e',
+                'r',
+                's',
+                ',',
+                'o',
+                'u',
+                '=',
+                's',
+                'y',
+                's',
+                't',
+                'e',
+                'm',
+                ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, 0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30, 0x2E, 0x31, 0x2E, 0x31, 0x31,
-                0x33, 0x37, 0x33, 0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32 } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<DeleteRequestDecorator>( codec );
+        LdapMessageContainer<DeleteRequestDecorator> container = new LdapMessageContainer<DeleteRequestDecorator>(
+            codec );
 
         // Decode a DelRequest PDU
         try
@@ -262,7 +391,8 @@ public class DelRequestTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
@@ -279,7 +409,7 @@ public class DelRequestTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x44, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }

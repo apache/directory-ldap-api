@@ -267,7 +267,8 @@ public class MatchingRuleUseDescriptionSchemaParserTest
 
         assertEquals( "1.2.3.4.5.6.7.8.9.0", matchingRuleUse.getOid() );
         assertEquals( 2, matchingRuleUse.getNames().size() );
-        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", matchingRuleUse.getNames().get( 0 ) );
+        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", matchingRuleUse.getNames()
+            .get( 0 ) );
         assertEquals( "test", matchingRuleUse.getNames().get( 1 ) );
         assertEquals( "Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577", matchingRuleUse.getDescription() );
         assertTrue( matchingRuleUse.isObsolete() );
@@ -378,7 +379,7 @@ public class MatchingRuleUseDescriptionSchemaParserTest
     @Test
     public void testQuirksMode() throws ParseException
     {
-        SchemaParserTestUtils.testQuirksMode(parser, "APPLIES 1.1");
+        SchemaParserTestUtils.testQuirksMode( parser, "APPLIES 1.1" );
 
         try
         {

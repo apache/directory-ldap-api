@@ -25,7 +25,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.BindRequestDecorator;
@@ -73,7 +73,7 @@ public class StoreVersion extends GrammarAction<LdapMessageContainer<BindRequest
         // We get it and store it in Version
         TLV tlv = container.getCurrentTLV();
 
-        Value value = tlv.getValue();
+        BerValue value = tlv.getValue();
 
         try
         {
@@ -89,7 +89,7 @@ public class StoreVersion extends GrammarAction<LdapMessageContainer<BindRequest
         catch ( IntegerDecoderException ide )
         {
             LOG.error( I18n
-                .err( I18n.ERR_04078, Strings.dumpBytes(value.getData()), ide.getMessage() ) );
+                .err( I18n.ERR_04078, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( ide.getMessage() );

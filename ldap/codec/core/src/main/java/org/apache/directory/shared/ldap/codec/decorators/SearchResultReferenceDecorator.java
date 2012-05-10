@@ -25,7 +25,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
@@ -40,7 +40,7 @@ import org.apache.directory.shared.ldap.model.message.SearchResultReference;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SearchResultReferenceDecorator extends MessageDecorator<SearchResultReference> 
+public class SearchResultReferenceDecorator extends MessageDecorator<SearchResultReference>
     implements SearchResultReference
 {
     /** The length of the referral */
@@ -102,8 +102,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
     //-------------------------------------------------------------------------
     // The SearchResultReference methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -118,15 +117,14 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
      */
     public void setReferral( Referral referral )
     {
-        getDecorated().setReferral( referral );        
+        getDecorated().setReferral( referral );
     }
 
 
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * Compute the SearchResultReference length
      * 
@@ -200,7 +198,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
                 for ( byte[] ldapUrlBytes : referral.getLdapUrlsBytes() )
                 {
                     // Encode the current referral
-                    Value.encode( buffer, ldapUrlBytes );
+                    BerValue.encode( buffer, ldapUrlBytes );
                 }
             }
         }
@@ -208,7 +206,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
         {
             throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
         }
-        
+
         return buffer;
     }
 }

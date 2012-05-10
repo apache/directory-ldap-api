@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema;
 
@@ -23,9 +23,7 @@ package org.apache.directory.shared.ldap.model.schema;
 import java.util.List;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.registries.Registries;
-import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
+import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 
 
 /**
@@ -41,7 +39,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OctetStringS
  * 
  * <pre>
  *  4.1.5. LDAP Syntaxes
- *  
+ * 
  *    LDAP Syntaxes of (attribute and assertion) values are described in
  *    terms of ASN.1 [X.680] and, optionally, have an octet string encoding
  *    known as the LDAP-specific encoding.  Commonly, the LDAP-specific
@@ -76,6 +74,9 @@ public class LdapSyntax extends AbstractSchemaObject
 {
     /** the human readable flag */
     protected boolean isHumanReadable = false;
+    
+    /** A flag set to true if the Syntax has a X-NOT-HUMAN-READABLE extension */
+    private boolean hasHumanReadableFlag = false;
 
     /** The associated SyntaxChecker */
     protected SyntaxChecker syntaxChecker;
@@ -102,6 +103,7 @@ public class LdapSyntax extends AbstractSchemaObject
     {
         super( SchemaObjectType.LDAP_SYNTAX, oid );
         this.description = description;
+        this.hasHumanReadableFlag = false;
     }
 
 
@@ -117,6 +119,7 @@ public class LdapSyntax extends AbstractSchemaObject
         super( SchemaObjectType.LDAP_SYNTAX, oid );
         this.description = description;
         this.isHumanReadable = isHumanReadable;
+        this.hasHumanReadableFlag = true;
     }
 
 
@@ -127,7 +130,36 @@ public class LdapSyntax extends AbstractSchemaObject
      */
     public boolean isHumanReadable()
     {
-        return isHumanReadable;
+        if ( hasHumanReadableFlag )
+        {
+            return isHumanReadable;
+        }
+        else
+        {
+            List<String> values = extensions.get( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT );
+
+            if ( ( values == null ) || ( values.size() == 0 ) )
+            {
+                // Default to String if the flag is not set
+                return false;
+            }
+            else
+            {
+                String value = values.get( 0 );
+                hasHumanReadableFlag = true;
+                
+                if ( value.equalsIgnoreCase( "FALSE" ) )
+                {
+                    isHumanReadable = true;
+                    return true;
+                }
+                else
+                {
+                    isHumanReadable = false;
+                    return false;
+                }
+            }
+        }
     }
 
 
@@ -146,7 +178,28 @@ public class LdapSyntax extends AbstractSchemaObject
         if ( !isReadOnly )
         {
             this.isHumanReadable = humanReadable;
+            this.hasHumanReadableFlag = true;
         }
+    }
+
+
+    /**
+     * Gets whether or not the Human Readable extension is present in the Syntax.
+     * 
+     * @return true if the syntax contains teh X-NOT-HUMAN-READABLE extension
+     *
+    public boolean hasHumanReadableFlag()
+    {
+        return hasHumanReadableFlag;
+    }
+
+
+    /**
+     * Sets the hasHumanReadableFlag to true if we have a X-NOT-HUMAN-READABLE extension
+     *
+    public void setHasHumanReadableFlag()
+    {
+        hasHumanReadableFlag = true;
     }
 
 
@@ -210,55 +263,6 @@ public class LdapSyntax extends AbstractSchemaObject
     /**
      * {@inheritDoc}
      */
-    public void addToRegistries( List<Throwable> errors, Registries registries ) throws LdapException
-    {
-        if ( registries != null )
-        {
-            try
-            {
-                // Gets the associated SyntaxChecker
-                syntaxChecker = registries.getSyntaxCheckerRegistry().lookup( oid );
-            }
-            catch ( LdapException ne )
-            {
-                // No SyntaxChecker ? Associate the Syntax to a catch all SyntaxChecker
-                syntaxChecker = new OctetStringSyntaxChecker( oid );
-            }
-
-            // Add the references for S :
-            // S -> SC
-            if ( syntaxChecker != null )
-            {
-                registries.addReference( this, syntaxChecker );
-            }
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("PMD.CollapsibleIfStatements")
-    // Used because of comments
-    public void removeFromRegistries( List<Throwable> errors, Registries registries ) throws LdapException
-    {
-        if ( registries != null )
-        {
-            /**
-             * Remove the Syntax references (using and usedBy) : 
-             * S -> SC
-             */
-            if ( syntaxChecker != null )
-            {
-                registries.delReference( this, syntaxChecker );
-            }
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public LdapSyntax copy()
     {
         LdapSyntax copy = new LdapSyntax( oid );
@@ -268,6 +272,9 @@ public class LdapSyntax extends AbstractSchemaObject
 
         // Copy the HR flag
         copy.isHumanReadable = isHumanReadable;
+
+        // Copy the HR presence flag
+        copy.hasHumanReadableFlag = hasHumanReadableFlag;
 
         // All the references to other Registries object are set to null.
         copy.syntaxChecker = null;

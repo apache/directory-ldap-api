@@ -82,10 +82,10 @@ public class UnicodeTest
         ObjectOutputStream dos = new ObjectOutputStream( fos );
         ObjectInputStream dis = new ObjectInputStream( fis );
         String testString = null;
-        Unicode.writeUTF(dos, testString);
+        Unicode.writeUTF( dos, testString );
         dos.flush();
         dos.close();
-        assertEquals( testString, Unicode.readUTF(dis) );
+        assertEquals( testString, Unicode.readUTF( dis ) );
         dis.close();
     }
 
@@ -102,10 +102,10 @@ public class UnicodeTest
         ObjectOutputStream dos = new ObjectOutputStream( fos );
         ObjectInputStream dis = new ObjectInputStream( fis );
         String testString = "";
-        Unicode.writeUTF(dos, testString);
+        Unicode.writeUTF( dos, testString );
         dos.flush();
         dos.close();
-        assertEquals( testString, Unicode.readUTF(dis) );
+        assertEquals( testString, Unicode.readUTF( dis ) );
         dis.close();
     }
 
@@ -124,10 +124,10 @@ public class UnicodeTest
         char[] fill = new char[196622]; // 65535 * 3 + 17
         Arrays.fill( fill, '\u00fc' ); // German &&uuml
         String testString = new String( fill );
-        Unicode.writeUTF(dos, testString);
+        Unicode.writeUTF( dos, testString );
         dos.flush();
         dos.close();
-        assertEquals( testString, Unicode.readUTF(dis) );
+        assertEquals( testString, Unicode.readUTF( dis ) );
         dis.close();
     }
 
@@ -135,8 +135,8 @@ public class UnicodeTest
     @Test
     public void testOneByteChar()
     {
-        char res = Unicode.bytesToChar(new byte[]
-                {0x30});
+        char res = Unicode.bytesToChar( new byte[]
+            { 0x30 } );
 
         assertEquals( '0', res );
     }
@@ -145,8 +145,8 @@ public class UnicodeTest
     @Test
     public void testOneByteChar00()
     {
-        char res = Unicode.bytesToChar(new byte[]
-                {0x00});
+        char res = Unicode.bytesToChar( new byte[]
+            { 0x00 } );
 
         assertEquals( 0x00, res );
     }
@@ -155,8 +155,8 @@ public class UnicodeTest
     @Test
     public void testOneByteChar7F()
     {
-        char res = Unicode.bytesToChar(new byte[]
-                {0x7F});
+        char res = Unicode.bytesToChar( new byte[]
+            { 0x7F } );
 
         assertEquals( 0x7F, res );
     }
@@ -165,48 +165,48 @@ public class UnicodeTest
     @Test
     public void testTwoBytesChar()
     {
-        char res = Unicode.bytesToChar(new byte[]
-                {(byte) 0xCE, (byte) 0x91});
+        char res = Unicode.bytesToChar( new byte[]
+            { ( byte ) 0xCE, ( byte ) 0x91 } );
 
-        assertEquals(0x0391, res);
+        assertEquals( 0x0391, res );
     }
 
 
     @Test
     public void testThreeBytesChar()
     {
-        char res = Unicode.bytesToChar(new byte[]
-                {(byte) 0xE2, (byte) 0x89, (byte) 0xA2});
+        char res = Unicode.bytesToChar( new byte[]
+            { ( byte ) 0xE2, ( byte ) 0x89, ( byte ) 0xA2 } );
 
-        assertEquals(0x2262, res);
+        assertEquals( 0x2262, res );
     }
 
 
     @Test
     public void testcharToBytesOne()
     {
-        assertEquals( "0x00 ", Strings.dumpBytes(Unicode.charToBytes((char) 0x0000)) );
-        assertEquals( "0x61 ", Strings.dumpBytes(Unicode.charToBytes('a')) );
-        assertEquals("0x7F ", Strings.dumpBytes(Unicode.charToBytes((char) 0x007F)));
+        assertEquals( "0x00 ", Strings.dumpBytes( Unicode.charToBytes( ( char ) 0x0000 ) ) );
+        assertEquals( "0x61 ", Strings.dumpBytes( Unicode.charToBytes( 'a' ) ) );
+        assertEquals( "0x7F ", Strings.dumpBytes( Unicode.charToBytes( ( char ) 0x007F ) ) );
     }
 
 
     @Test
     public void testcharToBytesTwo()
     {
-        assertEquals( "0xC2 0x80 ", Strings.dumpBytes(Unicode.charToBytes((char) 0x0080)) );
-        assertEquals( "0xC3 0xBF ", Strings.dumpBytes(Unicode.charToBytes((char) 0x00FF)) );
-        assertEquals("0xC4 0x80 ", Strings.dumpBytes(Unicode.charToBytes((char) 0x0100)));
-        assertEquals("0xDF 0xBF ", Strings.dumpBytes(Unicode.charToBytes((char) 0x07FF)));
+        assertEquals( "0xC2 0x80 ", Strings.dumpBytes( Unicode.charToBytes( ( char ) 0x0080 ) ) );
+        assertEquals( "0xC3 0xBF ", Strings.dumpBytes( Unicode.charToBytes( ( char ) 0x00FF ) ) );
+        assertEquals( "0xC4 0x80 ", Strings.dumpBytes( Unicode.charToBytes( ( char ) 0x0100 ) ) );
+        assertEquals( "0xDF 0xBF ", Strings.dumpBytes( Unicode.charToBytes( ( char ) 0x07FF ) ) );
     }
 
 
     @Test
     public void testcharToBytesThree()
     {
-        assertEquals( "0xE0 0xA0 0x80 ", Strings.dumpBytes(Unicode.charToBytes((char) 0x0800)) );
-        assertEquals( "0xE0 0xBF 0xBF ", Strings.dumpBytes(Unicode.charToBytes((char) 0x0FFF)) );
-        assertEquals("0xE1 0x80 0x80 ", Strings.dumpBytes(Unicode.charToBytes((char) 0x1000)));
-        assertEquals("0xEF 0xBF 0xBF ", Strings.dumpBytes(Unicode.charToBytes((char) 0xFFFF)));
+        assertEquals( "0xE0 0xA0 0x80 ", Strings.dumpBytes( Unicode.charToBytes( ( char ) 0x0800 ) ) );
+        assertEquals( "0xE0 0xBF 0xBF ", Strings.dumpBytes( Unicode.charToBytes( ( char ) 0x0FFF ) ) );
+        assertEquals( "0xE1 0x80 0x80 ", Strings.dumpBytes( Unicode.charToBytes( ( char ) 0x1000 ) ) );
+        assertEquals( "0xEF 0xBF 0xBF ", Strings.dumpBytes( Unicode.charToBytes( ( char ) 0xFFFF ) ) );
     }
 }

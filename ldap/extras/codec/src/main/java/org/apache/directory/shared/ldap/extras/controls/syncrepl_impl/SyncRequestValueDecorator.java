@@ -28,7 +28,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
@@ -43,7 +43,7 @@ import org.apache.directory.shared.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SyncRequestValueDecorator  extends ControlDecorator<SyncRequestValue> implements SyncRequestValue
+public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue> implements SyncRequestValue
 {
     /** The global length for this control */
     private int syncRequestValueLength;
@@ -157,7 +157,7 @@ public class SyncRequestValueDecorator  extends ControlDecorator<SyncRequestValu
             syncRequestValueLength += 1 + 1 + 1;
         }
 
-        valueLength =  1 + TLV.getNbBytes( syncRequestValueLength ) + syncRequestValueLength;
+        valueLength = 1 + TLV.getNbBytes( syncRequestValueLength ) + syncRequestValueLength;
 
         // Call the super class to compute the global control length
         return valueLength;
@@ -184,20 +184,20 @@ public class SyncRequestValueDecorator  extends ControlDecorator<SyncRequestValu
         buffer.put( TLV.getBytes( syncRequestValueLength ) );
 
         // The mode
-        buffer.put(  UniversalTag.ENUMERATED.getValue() );
-        buffer.put( ( byte )0x01 );
-        buffer.put( Value.getBytes( getMode().getValue() ) );
+        buffer.put( UniversalTag.ENUMERATED.getValue() );
+        buffer.put( ( byte ) 0x01 );
+        buffer.put( BerValue.getBytes( getMode().getValue() ) );
 
         // The cookie
         if ( getCookie() != null )
         {
-            Value.encode( buffer, getCookie() );
+            BerValue.encode( buffer, getCookie() );
         }
 
         // The reloadHint if not false
         if ( isReloadHint() )
         {
-            Value.encode( buffer, isReloadHint() );
+            BerValue.encode( buffer, isReloadHint() );
         }
 
         return buffer;
@@ -222,20 +222,20 @@ public class SyncRequestValueDecorator  extends ControlDecorator<SyncRequestValu
                 buffer.put( TLV.getBytes( syncRequestValueLength ) );
 
                 // The mode
-                buffer.put(  UniversalTag.ENUMERATED.getValue() );
+                buffer.put( UniversalTag.ENUMERATED.getValue() );
                 buffer.put( ( byte ) 0x01 );
-                buffer.put( Value.getBytes( getMode().getValue() ) );
+                buffer.put( BerValue.getBytes( getMode().getValue() ) );
 
                 // The cookie
                 if ( getCookie() != null )
                 {
-                    Value.encode( buffer, getCookie() );
+                    BerValue.encode( buffer, getCookie() );
                 }
 
                 // The reloadHint if not false
                 if ( isReloadHint() )
                 {
-                    Value.encode( buffer, isReloadHint() );
+                    BerValue.encode( buffer, isReloadHint() );
                 }
 
                 value = buffer.array();

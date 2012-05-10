@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.name;
 
@@ -46,7 +46,8 @@ public class AvaTest
 {
     /** A null schemaManager used in tests */
     SchemaManager schemaManager = null;
-    
+
+
     /**
      * Test a null AttributeTypeAndValue
      */
@@ -55,7 +56,7 @@ public class AvaTest
     {
         Ava atav = new Ava();
         assertEquals( "", atav.toString() );
-        assertEquals( "", atav.getUpName() );
+        assertEquals( "", atav.getName() );
     }
 
 
@@ -67,7 +68,7 @@ public class AvaTest
     {
         try
         {
-            new Ava( schemaManager, null, (String)null );
+            new Ava( schemaManager, null, ( String ) null );
             fail();
         }
         catch ( LdapException ine )
@@ -77,6 +78,7 @@ public class AvaTest
 
     }
 
+
     /**
      * Test an invalid type for an AttributeTypeAndValue
      */
@@ -85,7 +87,7 @@ public class AvaTest
     {
         try
         {
-            new Ava( schemaManager, "  ", (String)null );
+            new Ava( schemaManager, "  ", ( String ) null );
             fail();
         }
         catch ( LdapException ine )
@@ -101,19 +103,19 @@ public class AvaTest
     @Test
     public void testAttributeTypeAndValueValidType() throws LdapException
     {
-        Ava atav = new Ava( schemaManager, "A", (String)null );
+        Ava atav = new Ava( schemaManager, "A", ( String ) null );
         assertEquals( "A=", atav.toString() );
         assertEquals( "a=", atav.getNormName() );
-        assertEquals( "A=", atav.getUpName() );
-        
-        atav = new Ava( schemaManager, "  A  ", (String)null );
+        assertEquals( "A=", atav.getName() );
+
+        atav = new Ava( schemaManager, "  A  ", ( String ) null );
         assertEquals( "a=", atav.getNormName() );
         assertEquals( "  A  =", atav.toString() );
-        assertEquals( "  A  =", atav.getUpName() );
-        
+        assertEquals( "  A  =", atav.getName() );
+
         try
         {
-            atav = new Ava( schemaManager, null, (String)null );
+            atav = new Ava( schemaManager, null, ( String ) null );
             fail();
         }
         catch ( LdapInvalidDnException lide )
@@ -121,6 +123,7 @@ public class AvaTest
             assertTrue( true );
         }
     }
+
 
     /**
      * test an empty AttributeTypeAndValue
@@ -148,7 +151,7 @@ public class AvaTest
     {
         Ava atav = new Ava( schemaManager, "a", "b" );
         assertEquals( "a=b", atav.toString() );
-        assertEquals( "a=b", atav.getUpName() );
+        assertEquals( "a=b", atav.getName() );
     }
 
 
@@ -156,7 +159,7 @@ public class AvaTest
      * Compares two equals atavs
      */
     @Test
-    public void testCompareToEquals() throws LdapException
+    public void testEqualsAttributeEquals() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "a", "b" );
         Ava atav2 = new Ava( schemaManager, "a", "b" );
@@ -169,7 +172,7 @@ public class AvaTest
      * Compares two equals atavs but with a type in different case
      */
     @Test
-    public void testCompareToEqualsCase() throws LdapException
+    public void testEqualsAttributeIdSameCase() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "a", "b" );
         Ava atav2 = new Ava( schemaManager, "A", "b" );
@@ -183,10 +186,10 @@ public class AvaTest
      * superior
      */
     @Test
-    public void testCompareAtav1TypeSuperior() throws LdapException
+    public void testEqualsAtav1TypeSuperior() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "b", "b" );
-            
+
         Ava atav2 = new Ava( schemaManager, "a", "b" );
 
         assertFalse( atav1.equals( atav2 ) );
@@ -198,7 +201,7 @@ public class AvaTest
      * superior
      */
     @Test
-    public void testCompareAtav2TypeSuperior() throws LdapException
+    public void testEqualsAtav2TypeSuperior() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "a", "b" );
         Ava atav2 = new Ava( schemaManager, "b", "b" );
@@ -212,7 +215,7 @@ public class AvaTest
      * superior
      */
     @Test
-    public void testCompareAtav1ValueSuperior() throws LdapException
+    public void testEqualsAtav1ValueSuperior() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "a", "b" );
         Ava atav2 = new Ava( schemaManager, "a", "a" );
@@ -226,7 +229,7 @@ public class AvaTest
      * superior
      */
     @Test
-    public void testCompareAtav2ValueSuperior() throws LdapException
+    public void testEqualsAtav2ValueSuperior() throws LdapException
     {
         Ava atav1 = new Ava( schemaManager, "a", "a" );
         Ava atav2 = new Ava( schemaManager, "a", "b" );
@@ -243,14 +246,14 @@ public class AvaTest
         assertEquals( "a=a", atav.normalize() );
 
     }
-    
-    
+
+
     @Test
     public void testAvaSimpleNorm() throws LdapException
     {
         Ava atav = new Ava( schemaManager, " CommonName ", " This is    a TEST " );
-        assertEquals( " CommonName = This is    a TEST ", atav.toString() );
+        assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.toString() );
         assertEquals( "commonname=\\ This is    a TEST\\ ", atav.getNormName() );
-        assertEquals( " CommonName = This is    a TEST ", atav.getUpName() );
+        assertEquals( " CommonName =\\ This is    a TEST\\ ", atav.getName() );
     }
 }

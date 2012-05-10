@@ -54,11 +54,11 @@ public interface StoredProcedureRequest extends ExtendedRequest<StoredProcedureR
 
 
     byte[] getProcedure();
-    
-    
+
+
     void setProcedure( byte[] procedure );
 
-    
+
     /**
      * Gets the procedure specification.
      *
@@ -119,8 +119,9 @@ public interface StoredProcedureRequest extends ExtendedRequest<StoredProcedureR
      */
     void addParameter( Object type, Object value );
 
-    
+
     void addParameter( StoredProcedureParameter parameter );
+
 
     List<StoredProcedureParameter> getParameters();
 }

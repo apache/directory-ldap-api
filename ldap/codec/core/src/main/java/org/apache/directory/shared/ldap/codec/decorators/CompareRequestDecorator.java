@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.codec.decorators;
 
@@ -24,6 +24,7 @@ import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.EncoderException;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.i18n.I18n;
@@ -44,7 +45,7 @@ import org.apache.directory.shared.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CompareRequestDecorator extends SingleReplyRequestDecorator<CompareRequest, CompareResponse> 
+public class CompareRequestDecorator extends SingleReplyRequestDecorator<CompareRequest, CompareResponse>
     implements CompareRequest
 {
     /** The bytes of the attribute id used in the comparison */
@@ -157,7 +158,6 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     // The CompareRequest methods
     //-------------------------------------------------------------------------
 
-    
     /**
      * {@inheritDoc}
      */
@@ -173,7 +173,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     public CompareRequest setName( Dn name )
     {
         getDecorated().setName( name );
-        
+
         return this;
     }
 
@@ -193,7 +193,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     public CompareRequest setAssertionValue( String value )
     {
         getDecorated().setAssertionValue( value );
-        
+
         return this;
     }
 
@@ -204,7 +204,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     public CompareRequest setAssertionValue( byte[] value )
     {
         getDecorated().setAssertionValue( value );
-        
+
         return this;
     }
 
@@ -224,66 +224,66 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     public CompareRequest setAttributeId( String attrId )
     {
         getDecorated().setAttributeId( attrId );
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest addControl( Control control ) throws MessageException
     {
-        return (CompareRequest)super.addControl( control );
+        return ( CompareRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (CompareRequest)super.addAllControls( controls );
+        return ( CompareRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest removeControl( Control control ) throws MessageException
     {
-        return (CompareRequest)super.removeControl( control );
+        return ( CompareRequest ) super.removeControl( control );
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
     /**
-     * Compute the CompareRequest length 
+     * Compute the CompareRequest length
      * 
-     * CompareRequest : 
-     * 0x6E L1 
-     *   | 
-     *   +--> 0x04 L2 entry 
-     *   +--> 0x30 L3 (ava) 
-     *         | 
-     *         +--> 0x04 L4 attributeDesc 
-     *         +--> 0x04 L5 assertionValue 
-     *         
+     * CompareRequest :
+     * 0x6E L1
+     *   |
+     *   +--> 0x04 L2 entry
+     *   +--> 0x30 L3 (ava)
+     *         |
+     *         +--> 0x04 L4 attributeDesc
+     *         +--> 0x04 L5 assertionValue
+     * 
      * L3 = Length(0x04) + Length(L4) + L4 + Length(0x04) +
-     *      Length(L5) + L5 
+     *      Length(L5) + L5
      * Length(CompareRequest) = Length(0x6E) + Length(L1) + L1 +
      *      Length(0x04) + Length(L2) + L2 + Length(0x30) + Length(L3) + L3
      * 
@@ -324,13 +324,13 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
 
 
     /**
-     * Encode the CompareRequest message to a PDU. 
+     * Encode the CompareRequest message to a PDU.
      * 
-     * CompareRequest : 
-     *   0x6E LL 
-     *     0x04 LL entry 
-     *     0x30 LL attributeValueAssertion 
-     *       0x04 LL attributeDesc 
+     * CompareRequest :
+     *   0x6E LL
+     *     0x04 LL entry
+     *     0x30 LL attributeValueAssertion
+     *       0x04 LL attributeDesc
      *       0x04 LL assertionValue
      * 
      * @param buffer The buffer where to put the PDU
@@ -344,7 +344,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
             buffer.put( TLV.getBytes( getCompareRequestLength() ) );
 
             // The entry
-            org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, Dn.getBytes( getName() ) );
+            BerValue.encode( buffer, Dn.getBytes( getName() ) );
 
             // The attributeValueAssertion sequence Tag
             buffer.put( UniversalTag.SEQUENCE.getValue() );
@@ -356,11 +356,11 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
         }
 
         // The attributeDesc
-        org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, getAttrIdBytes() );
+        BerValue.encode( buffer, getAttrIdBytes() );
 
         // The assertionValue
-        org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, ( byte[] ) getAttrValBytes() );
-        
+        BerValue.encode( buffer, getAttrValBytes() );
+
         return buffer;
     }
- }
+}

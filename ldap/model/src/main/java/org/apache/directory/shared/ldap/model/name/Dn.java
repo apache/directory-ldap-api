@@ -27,9 +27,12 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.collections.list.UnmodifiableList;
 import org.apache.directory.shared.i18n.I18n;
@@ -114,7 +117,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /** the schema manager */
     private SchemaManager schemaManager;
-    
+
     /**
      * An iterator over RDNs
      */
@@ -122,6 +125,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         // The current index
         int index;
+
 
         private RdnIterator()
         {
@@ -202,7 +206,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * @param upRdns The list of String composing the Dn
      * @throws LdapInvalidDnException If the resulting Dn is invalid
      */
-    public Dn(String... upRdns) throws LdapInvalidDnException
+    public Dn( String... upRdns ) throws LdapInvalidDnException
     {
         this( null, upRdns );
     }
@@ -243,7 +247,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             {
                 continue;
             }
-            
+
             if ( isFirst )
             {
                 isFirst = false;
@@ -269,7 +273,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
                 valueExpected = false;
             }
         }
-        
+
         if ( !isFirst && valueExpected )
         {
             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04202 ) );
@@ -294,7 +298,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * @param normName the normalized name
      * @param rdns the list of RDNs for this Dn
      */
-    /* No protection */ Dn( SchemaManager schemaManager, String upName, String normName, Rdn... rdns )
+    /* No protection */Dn( SchemaManager schemaManager, String upName, String normName, Rdn... rdns )
     {
         this.schemaManager = schemaManager;
         this.upName = upName;
@@ -316,8 +320,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             return;
         }
-        
-        for ( Rdn rdn : rdns)
+
+        for ( Rdn rdn : rdns )
         {
             this.rdns.add( rdn.clone() );
         }
@@ -340,12 +344,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             throw new IllegalArgumentException( "Either the dn or the rdn is null" );
         }
-        
+
         for ( Rdn rdnParent : dn )
         {
             rdns.add( 0, rdnParent );
         }
-        
+
         rdns.add( 0, rdn );
 
         apply( dn.schemaManager );
@@ -366,13 +370,14 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             return;
         }
-        
-        for ( Rdn rdn : rdns)
+
+        for ( Rdn rdn : rdns )
         {
             this.rdns.add( rdn.clone() );
         }
 
         apply( schemaManager );
+        toUpName();
     }
 
 
@@ -385,8 +390,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         return schemaManager;
     }
-    
-    
+
+
     /**
      * Return the User Provided Dn as a String,
      *
@@ -422,8 +427,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         return upName;
     }
-    
-    
+
+
     /**
      * Gets the hash code of this Dn.
      *
@@ -462,7 +467,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      *
      * @param upName the new up name
      */
-    /* No qualifier */ void setUpName( String upName )
+    /* No qualifier */void setUpName( String upName )
     {
         this.upName = upName;
     }
@@ -661,7 +666,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             return null;
         }
-        
+
         if ( ( posn < 0 ) || ( posn >= rdns.size() ) )
         {
             throw new IllegalArgumentException( "Invalid position : " + posn );
@@ -684,7 +689,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             return Rdn.EMPTY_RDN;
         }
-        
+
         return rdns.get( 0 ).clone();
     }
 
@@ -719,9 +724,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         return getDescendantOf( new Dn( schemaManager, ancestor ) );
     }
-    
 
-    
+
     /**
      * Get the descendant of a given DN, using the ancestr DN. Assuming that
      * a DN has two parts :<br/>
@@ -742,14 +746,14 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             return this;
         }
-        
+
         if ( rdns.size() == 0 )
         {
             return EMPTY_DN;
         }
-        
+
         int length = ancestor.size();
-        
+
         if ( length > rdns.size() )
         {
             String message = I18n.err( I18n.ERR_04206, length, rdns.size() );
@@ -759,12 +763,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         Dn newDn = new Dn( schemaManager );
         List<Rdn> rdnsAncestor = ancestor.getRdns();
-        
+
         for ( int i = 0; i < ancestor.size(); i++ )
         {
-            Rdn rdn = rdns.get( size() -1 - i );
+            Rdn rdn = rdns.get( size() - 1 - i );
             Rdn rdnDescendant = rdnsAncestor.get( ancestor.size() - 1 - i );
-            
+
             if ( !rdn.equals( rdnDescendant ) )
             {
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX );
@@ -782,6 +786,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         return newDn;
     }
+
 
     /**
      * Get the ancestor of a given DN, using the descendant DN. Assuming that
@@ -801,7 +806,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         return getAncestorOf( new Dn( schemaManager, descendant ) );
     }
-    
+
 
     /**
      * Get the ancestor of a given DN, using the descendant DN. Assuming that
@@ -823,14 +828,14 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             return this;
         }
-        
+
         if ( rdns.size() == 0 )
         {
             return EMPTY_DN;
         }
-        
+
         int length = descendant.size();
-        
+
         if ( length > rdns.size() )
         {
             String message = I18n.err( I18n.ERR_04206, length, rdns.size() );
@@ -840,12 +845,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         Dn newDn = new Dn( schemaManager );
         List<Rdn> rdnsDescendant = descendant.getRdns();
-        
+
         for ( int i = 0; i < descendant.size(); i++ )
         {
             Rdn rdn = rdns.get( i );
             Rdn rdnDescendant = rdnsDescendant.get( i );
-            
+
             if ( !rdn.equals( rdnDescendant ) )
             {
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX );
@@ -886,7 +891,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             if ( clonedDn.size() != 0 )
             {
                 clonedDn.normName = suffix.getNormName() + "," + normName;
-                clonedDn.bytes = Strings.getBytesUtf8(normName);
+                clonedDn.bytes = Strings.getBytesUtf8( normName );
                 clonedDn.upName = suffix.getName() + "," + upName;
             }
         }
@@ -930,13 +935,13 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * @param newRdn the Rdn to add
      * @return the updated cloned Dn
      */
-    public Dn add( Rdn newRdn )  throws LdapInvalidDnException
+    public Dn add( Rdn newRdn ) throws LdapInvalidDnException
     {
         if ( ( newRdn == null ) || ( newRdn.size() == 0 ) )
         {
             return this;
         }
-        
+
         Dn clonedDn = copy();
 
         clonedDn.rdns.add( 0, newRdn.clone() );
@@ -960,7 +965,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             return this;
         }
-        
+
         int posn = rdns.size() - 1;
 
         Dn newDn = new Dn( schemaManager );
@@ -1008,7 +1013,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
      * @return <code>true</code> if the two instances are equals
      */
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "EQ_CHECK_FOR_OPERAND_NOT_COMPATIBLE_WITH_THIS",
-            justification = "String is a special case")
+        justification = "String is a special case")
     @Override
     public boolean equals( Object obj )
     {
@@ -1016,10 +1021,15 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             return normName.equals( obj );
         }
-        else if ( obj instanceof Dn)
+        else if ( obj instanceof Dn )
         {
-            Dn name = (Dn) obj;
+            Dn name = ( Dn ) obj;
 
+            if ( name.getNormName().equals( normName ) )
+            {
+                return true;
+            }
+            
             if ( name.size() != this.size() )
             {
                 return false;
@@ -1063,14 +1073,14 @@ public class Dn implements Iterable<Rdn>, Externalizable
             {
                 return atav;
             }
-            
+
             type = Strings.toLowerCase( type );
-            
+
             // Check that we have an existing AttributeType for this type
             if ( !oidsMap.containsKey( type ) )
             {
                 // No AttributeType : this is an error
-                String msg = I18n.err( I18n.ERR_04268_OID_NOT_FOUND, atav.getUpType() );
+                String msg = I18n.err( I18n.ERR_04268_OID_NOT_FOUND, atav.getType() );
                 LOG.error( msg );
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, msg );
             }
@@ -1082,13 +1092,13 @@ public class Dn implements Iterable<Rdn>, Externalizable
                 try
                 {
                     Ava newAva = new Ava(
-                        atav.getUpType(),
+                        atav.getType(),
                         oidNormalizer.getAttributeTypeOid(),
-                        atav.getUpValue(),
+                        atav.getValue(),
                         oidNormalizer.getNormalizer().normalize( atav.getNormValue() ),
-                        atav.getUpName() );
+                        atav.getName() );
                     newAva.apply( schemaManager );
-                    
+
                     return newAva;
                 }
                 catch ( LdapException le )
@@ -1114,7 +1124,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
     /**
      * Transform a Rdn by changing the value to its OID counterpart and
-     * normalizing the value accordingly to its type.
+     * normalizing the value accordingly to its type. We also sort the AVAs
      *
      * @param rdn The Rdn to modify.
      * @param SchemaManager The schema manager
@@ -1127,11 +1137,31 @@ public class Dn implements Iterable<Rdn>, Externalizable
         // ATAVs
         Rdn rdnCopy = rdn.clone();
         rdn.clear();
-
-        for ( Ava val : rdnCopy )
+        
+        if ( rdnCopy.size() < 2 )
         {
-            Ava newAtav = atavOidToName( val, schemaManager );
+            Ava newAtav = atavOidToName( rdnCopy.getAva(), schemaManager );
             rdn.addAVA( schemaManager, newAtav );
+        }
+        else
+        {
+            Set<String> sortedOids = new TreeSet<String>();
+            Map<String, Ava> avas = new HashMap<String, Ava>();
+
+            // Sort the OIDs
+            for ( Ava val : rdnCopy )
+            {
+                Ava newAtav = atavOidToName( val, schemaManager );
+                String oid = newAtav.getAttributeType().getOid();
+                sortedOids.add( oid );
+                avas.put( oid, newAtav );
+            }
+            
+            // And create the Rdn
+            for ( String oid : sortedOids )
+            {
+                rdn.addAVA( schemaManager, avas.get( oid ) );
+            }
         }
     }
 
@@ -1155,7 +1185,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
                 {
                     bytes = null;
                     normName = "";
-                    
+
                     return this;
                 }
 
@@ -1182,7 +1212,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
                 if ( ( normName == null ) || !normName.equals( newNormName ) )
                 {
-                    bytes = Strings.getBytesUtf8(newNormName);
+                    bytes = Strings.getBytesUtf8( newNormName );
                     normName = newNormName;
                 }
 
@@ -1219,12 +1249,12 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
                 if ( ( normName == null ) || !normName.equals( newNormName ) )
                 {
-                    bytes = Strings.getBytesUtf8(newNormName);
+                    bytes = Strings.getBytesUtf8( newNormName );
                     normName = newNormName;
                 }
             }
         }
-        
+
         return this;
     }
 
@@ -1276,8 +1306,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         return ( dn == null ) || dn.isEmpty();
     }
-    
-    
+
+
     /**
      * Check if a DistinguishedName is syntactically valid.
      *
@@ -1288,7 +1318,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
     public static boolean isValid( String name )
     {
         Dn dn = new Dn();
-        
+
         try
         {
             parseInternal( name, dn.rdns );
@@ -1300,7 +1330,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
     }
 
-    
+
     /**
      * Parse a Dn.
      *
@@ -1343,9 +1373,9 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         // Read the RDNs. Is it's null, the number will be -1.
         int nbRdns = in.readInt();
-        
+
         rdns = new ArrayList<Rdn>( nbRdns );
-        
+
         for ( int i = 0; i < nbRdns; i++ )
         {
             Rdn rdn = new Rdn( schemaManager );
@@ -1353,8 +1383,8 @@ public class Dn implements Iterable<Rdn>, Externalizable
             rdns.add( rdn );
         }
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -1389,11 +1419,11 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             rdn.writeExternal( out );
         }
-        
+
         out.flush();
     }
-    
-    
+
+
     /**
      * Return the user provided Dn as a String. It returns the same value as the
      * getName method

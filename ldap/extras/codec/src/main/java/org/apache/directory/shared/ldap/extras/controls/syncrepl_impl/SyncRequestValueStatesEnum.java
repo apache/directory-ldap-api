@@ -49,7 +49,7 @@ public enum SyncRequestValueStatesEnum implements States
 
     /** mode Value */
     MODE_STATE,
-    
+
     /** cookie Value */
     COOKIE_STATE,
 
@@ -99,7 +99,7 @@ public enum SyncRequestValueStatesEnum implements States
         return ( ( state == END_STATE.ordinal() ) ? "SYNC_REQUEST_VALUE_END_STATE" : this.name() );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -107,8 +107,8 @@ public enum SyncRequestValueStatesEnum implements States
     {
         return this == END_STATE;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

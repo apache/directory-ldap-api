@@ -24,7 +24,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulAction;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulActionConstants;
@@ -76,12 +76,12 @@ public class GracefulShutdown extends GracefulAction
 
         if ( timeOffline != 0 )
         {
-            gracefulSequenceLength += 1 + 1 + Value.getNbBytes( timeOffline );
+            gracefulSequenceLength += 1 + 1 + BerValue.getNbBytes( timeOffline );
         }
 
         if ( delay != 0 )
         {
-            gracefulSequenceLength += 1 + 1 + Value.getNbBytes( delay );
+            gracefulSequenceLength += 1 + 1 + BerValue.getNbBytes( delay );
         }
 
         return gracefulLength + gracefulSequenceLength;
@@ -104,14 +104,14 @@ public class GracefulShutdown extends GracefulAction
 
         if ( timeOffline != 0 )
         {
-            Value.encode( bb, timeOffline );
+            BerValue.encode( bb, timeOffline );
         }
 
         if ( delay != 0 )
         {
             bb.put( ( byte ) GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG );
-            bb.put( ( byte ) Value.getNbBytes( delay ) );
-            bb.put( Value.getBytes( delay ) );
+            bb.put( ( byte ) BerValue.getNbBytes( delay ) );
+            bb.put( BerValue.getBytes( delay ) );
         }
         return bb;
     }

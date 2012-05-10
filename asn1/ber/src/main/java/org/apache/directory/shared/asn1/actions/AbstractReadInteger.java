@@ -26,7 +26,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
@@ -36,6 +36,8 @@ import org.slf4j.LoggerFactory;
 /**
  * The action used to read an integer value
  *
+ * @param C The container type
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public abstract class AbstractReadInteger<E extends Asn1Container> extends GrammarAction<E>
@@ -55,6 +57,8 @@ public abstract class AbstractReadInteger<E extends Asn1Container> extends Gramm
 
     /**
      * Instantiates a new AbstractReadInteger action.
+     * 
+     * @param name the action's name
      */
     public AbstractReadInteger( String name )
     {
@@ -105,7 +109,7 @@ public abstract class AbstractReadInteger<E extends Asn1Container> extends Gramm
             throw new DecoderException( I18n.err( I18n.ERR_04067 ) );
         }
 
-        Value value = tlv.getValue();
+        BerValue value = tlv.getValue();
 
         try
         {

@@ -37,7 +37,7 @@ import org.apache.directory.shared.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-/* No protection*/ enum FastDnParser
+/* No protection*/enum FastDnParser
 {
     INSTANCE;
 
@@ -48,7 +48,7 @@ import org.apache.directory.shared.util.Strings;
      * @return A valid Dn
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException If the Dn was invalid
      */
-    /* No protection*/ static Dn parse( String name ) throws LdapException
+    /* No protection*/static Dn parse( String name ) throws LdapException
     {
         Dn dn = new Dn();
         parseDn( name, dn );
@@ -64,15 +64,15 @@ import org.apache.directory.shared.util.Strings;
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    /* No protection*/ static void parseDn( String name, Dn dn ) throws LdapInvalidDnException
+    /* No protection*/static void parseDn( String name, Dn dn ) throws LdapInvalidDnException
     {
-        parseDn(name, dn.rdns);
+        parseDn( name, dn.rdns );
         dn.setUpName( name );
         dn.apply( null );
     }
-    
-    
-    /* No protection*/ static void parseDn( String name, List<Rdn> rdns ) throws LdapInvalidDnException
+
+
+    /* No protection*/static void parseDn( String name, List<Rdn> rdns ) throws LdapInvalidDnException
     {
         if ( ( name == null ) || ( name.trim().length() == 0 ) )
         {
@@ -104,7 +104,8 @@ import org.apache.directory.shared.util.Strings;
                     break;
 
                 default:
-                    throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04192, c, pos.start) );
+                    throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04192, c,
+                        pos.start ) );
             }
         }
     }
@@ -118,13 +119,13 @@ import org.apache.directory.shared.util.Strings;
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    /* No protection*/ static void parseRdn( String name, Rdn rdn ) throws LdapInvalidDnException
+    /* No protection*/static void parseRdn( String name, Rdn rdn ) throws LdapInvalidDnException
     {
         if ( name == null || name.length() == 0 )
         {
             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04193 ) );
         }
-        if( rdn == null )
+        if ( rdn == null )
         {
             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04194 ) );
         }
@@ -159,7 +160,7 @@ import org.apache.directory.shared.util.Strings;
         // here we only match "simple" values
         // stops at \ + # " -> Too Complex Exception
         String upValue = matchValue( name, pos );
-        String value = Strings.trimRight(upValue);
+        String value = Strings.trimRight( upValue );
         // TODO: trim, normalize, etc
 
         // SPACE*
@@ -282,7 +283,8 @@ import org.apache.directory.shared.util.Strings;
 
             default:
                 // error
-                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04195, c, pos.start) );
+                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04195, c,
+                    pos.start ) );
         }
     }
 
@@ -382,7 +384,8 @@ import org.apache.directory.shared.util.Strings;
 
                 default:
                     // error
-                    throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04196, c, pos.start ) );
+                    throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04196, c,
+                        pos.start ) );
             }
         }
         return descr.toString();
@@ -423,7 +426,8 @@ import org.apache.directory.shared.util.Strings;
                             pos.start--;
                             break;
                         default:
-                            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04197, c, pos.start ) );
+                            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err(
+                                I18n.ERR_04197, c, pos.start ) );
                     }
                     break;
 
@@ -465,7 +469,8 @@ import org.apache.directory.shared.util.Strings;
                                 numericOid.append( c );
                                 break;
                             default:
-                                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04197, c, pos.start ) );
+                                throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err(
+                                    I18n.ERR_04197, c, pos.start ) );
                         }
                     }
                     break;
@@ -481,7 +486,8 @@ import org.apache.directory.shared.util.Strings;
                         throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04198 ) );
                     }
                 default:
-                    throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04199, c, pos.start ) );
+                    throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04199, c,
+                        pos.start ) );
             }
         }
     }

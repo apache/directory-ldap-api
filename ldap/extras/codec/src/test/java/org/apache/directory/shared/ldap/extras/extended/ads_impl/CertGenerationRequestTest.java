@@ -107,7 +107,7 @@ public class CertGenerationRequestTest
             fail( e.getMessage() );
         }
 
-        CertGenerationRequestDecorator req = new CertGenerationRequestDecorator( 
+        CertGenerationRequestDecorator req = new CertGenerationRequestDecorator(
             LdapApiServiceFactory.getSingleton(), new CertGenerationRequestImpl() );
         req = container.getCertGenerationObject();
         assertEquals( dn, req.getTargetDN() );
@@ -142,7 +142,9 @@ public class CertGenerationRequestTest
 
         bb.put( new byte[]
             { 0x30, 0x03, // CertGenerateObject ::= SEQUENCE {
-              0x04, 0x01, ' ' } ); // empty targetDN value
+                0x04,
+                0x01,
+                ' ' } ); // empty targetDN value
 
         bb.flip();
 
@@ -157,14 +159,19 @@ public class CertGenerationRequestTest
         {
             assertTrue( true );
         }
-                
+
         String dn = "=sys";
 
         bb = ByteBuffer.allocate( dn.length() + 2 + 2 );
 
         bb.put( new byte[]
-            { 0x30, ( byte )( dn.length() + 2 ), // CertGenerateObject ::= SEQUENCE {
-              0x04, ( byte ) dn.length(), '=', 's', 'y', 's' } ); // empty targetDN value
+            { 0x30, ( byte ) ( dn.length() + 2 ), // CertGenerateObject ::= SEQUENCE {
+                0x04,
+                ( byte ) dn.length(),
+                '=',
+                's',
+                'y',
+                's' } ); // empty targetDN value
 
         bb.flip();
 
@@ -179,19 +186,26 @@ public class CertGenerationRequestTest
         }
 
     }
-    
-    
+
+
     @Test
     public void testCertGenerationDecodeIssuerDN()
     {
         Asn1Decoder decoder = new Asn1Decoder();
-        
+
         ByteBuffer bb = ByteBuffer.allocate( 11 );
 
         bb.put( new byte[]
             { 0x30, 0x09, // CertGenerateObject ::= SEQUENCE {
-              0x04, 0x04, 'c', 'n', '=', 'x', // target Dn string
-              0x04, 0x01, ' '} ); // empty issuer Dn
+                0x04,
+                0x04,
+                'c',
+                'n',
+                '=',
+                'x', // target Dn string
+                0x04,
+                0x01,
+                ' ' } ); // empty issuer Dn
 
         CertGenerationContainer container = new CertGenerationContainer();
         bb.flip();
@@ -206,13 +220,20 @@ public class CertGenerationRequestTest
             assertTrue( true );
         }
 
-
         bb = ByteBuffer.allocate( 12 );
 
         bb.put( new byte[]
-                         { 0x30, 0x10, // CertGenerateObject ::= SEQUENCE {
-                           0x04, 0x04, 'c', 'n', '=', 'x', // target Dn string
-                           0x04, 0x02, '=', 'x' } ); // empty issuer Dn
+            { 0x30, 0x10, // CertGenerateObject ::= SEQUENCE {
+                0x04,
+                0x04,
+                'c',
+                'n',
+                '=',
+                'x', // target Dn string
+                0x04,
+                0x02,
+                '=',
+                'x' } ); // empty issuer Dn
 
         bb.flip();
 
@@ -232,14 +253,26 @@ public class CertGenerationRequestTest
     public void testCertGenerationDecodeWithoutSubjectDN()
     {
         Asn1Decoder decoder = new Asn1Decoder();
-        
+
         ByteBuffer bb = ByteBuffer.allocate( 17 );
 
         bb.put( new byte[]
             { 0x30, 0x15, // CertGenerateObject ::= SEQUENCE {
-              0x04, 0x04, 'c', 'n', '=', 'x', // target Dn string
-              0x04, 0x04, 'c', 'n', '=', 'x', // issuer Dn
-              0x04, 0x01, ' ' } ); // empty subject Dn
+                0x04,
+                0x04,
+                'c',
+                'n',
+                '=',
+                'x', // target Dn string
+                0x04,
+                0x04,
+                'c',
+                'n',
+                '=',
+                'x', // issuer Dn
+                0x04,
+                0x01,
+                ' ' } ); // empty subject Dn
 
         CertGenerationContainer container = new CertGenerationContainer();
         bb.flip();
@@ -254,14 +287,26 @@ public class CertGenerationRequestTest
             assertTrue( true );
         }
 
-
         bb = ByteBuffer.allocate( 18 );
 
         bb.put( new byte[]
-                         { 0x30, 0x16, // CertGenerateObject ::= SEQUENCE {
-                           0x04, 0x04, 'c', 'n', '=', 'x', // target Dn string
-                           0x04, 0x04, 'c', 'n', '=', 'x', // issuer Dn
-                           0x04, 0x02, '=', 'x' } ); // invalid subject Dn
+            { 0x30, 0x16, // CertGenerateObject ::= SEQUENCE {
+                0x04,
+                0x04,
+                'c',
+                'n',
+                '=',
+                'x', // target Dn string
+                0x04,
+                0x04,
+                'c',
+                'n',
+                '=',
+                'x', // issuer Dn
+                0x04,
+                0x02,
+                '=',
+                'x' } ); // invalid subject Dn
 
         bb.flip();
 
@@ -275,17 +320,17 @@ public class CertGenerationRequestTest
             assertTrue( true );
         }
     }
-    
-    
+
+
     @Test
     public void testDecodeEmptySequence()
     {
         Asn1Decoder decoder = new Asn1Decoder();
-        
+
         ByteBuffer bb = ByteBuffer.allocate( 2 );
 
         bb.put( new byte[]
-            { 0x30, 0x00 }); // CertGenerateObject ::= SEQUENCE {
+            { 0x30, 0x00 } ); // CertGenerateObject ::= SEQUENCE {
 
         CertGenerationContainer container = new CertGenerationContainer();
         bb.flip();

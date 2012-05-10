@@ -28,7 +28,7 @@ import java.util.List;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
@@ -46,18 +46,17 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoredProcedureRequestDecorator 
-    extends ExtendedRequestDecorator<StoredProcedureRequest,StoredProcedureResponse> 
+public class StoredProcedureRequestDecorator
+    extends ExtendedRequestDecorator<StoredProcedureRequest, StoredProcedureResponse>
     implements StoredProcedureRequest
 {
     private static final Logger LOG = LoggerFactory.getLogger( StoredProcedureRequestDecorator.class );
 
-
     private StoredProcedureParameter currentParameter;
-    
+
     /** The stored procedure length */
     private int storedProcedureLength;
-    
+
     /** The parameters length */
     private int parametersLength;
 
@@ -69,14 +68,14 @@ public class StoredProcedureRequestDecorator
 
     /** The list of all parameter value lengths */
     private List<Integer> paramValueLength;
-    
-    
+
+
     public StoredProcedureRequestDecorator( LdapApiService codec )
     {
         super( codec, new StoredProcedureRequestImpl() );
     }
 
-    
+
     public StoredProcedureRequestDecorator( LdapApiService codec, StoredProcedureRequest decoratedRequest )
     {
         super( codec, decoratedRequest );
@@ -86,7 +85,7 @@ public class StoredProcedureRequestDecorator
         }
     }
 
-    
+
     public StoredProcedureParameter getCurrentParameter()
     {
         return currentParameter;
@@ -98,7 +97,7 @@ public class StoredProcedureRequestDecorator
         this.currentParameter = currentParameter;
     }
 
-    
+
     /**
      * Compute the StoredProcedure length 
      * 
@@ -129,47 +128,48 @@ public class StoredProcedureRequestDecorator
     {
         // The language
         byte[] languageBytes = Strings.getBytesUtf8( getDecorated().getLanguage() );
-        
+
         int languageLength = 1 + TLV.getNbBytes( languageBytes.length )
             + languageBytes.length;
-        
+
         byte[] procedure = getDecorated().getProcedure();
-        
+
         // The procedure
         int procedureLength = 1 + TLV.getNbBytes( procedure.length )
             + procedure.length;
-        
+
         // Compute parameters length value
         if ( getDecorated().getParameters() != null )
         {
             parameterLength = new LinkedList<Integer>();
             paramTypeLength = new LinkedList<Integer>();
             paramValueLength = new LinkedList<Integer>();
-            
+
             for ( StoredProcedureParameter spParam : getDecorated().getParameters() )
             {
                 int localParameterLength = 0;
                 int localParamTypeLength = 0;
                 int localParamValueLength = 0;
-                
+
                 localParamTypeLength = 1 + TLV.getNbBytes( spParam.getType().length ) + spParam.getType().length;
                 localParamValueLength = 1 + TLV.getNbBytes( spParam.getValue().length ) + spParam.getValue().length;
-                
+
                 localParameterLength = localParamTypeLength + localParamValueLength;
-                
+
                 parametersLength += 1 + TLV.getNbBytes( localParameterLength ) + localParameterLength;
-                
+
                 parameterLength.add( localParameterLength );
                 paramTypeLength.add( localParamTypeLength );
                 paramValueLength.add( localParamValueLength );
             }
         }
-        
-        int localParametersLength = 1 + TLV.getNbBytes( parametersLength ) + parametersLength; 
+
+        int localParametersLength = 1 + TLV.getNbBytes( parametersLength ) + parametersLength;
         storedProcedureLength = languageLength + procedureLength + localParametersLength;
 
-        return 1 + TLV.getNbBytes( storedProcedureLength ) + storedProcedureLength; 
+        return 1 + TLV.getNbBytes( storedProcedureLength ) + storedProcedureLength;
     }
+
 
     /**
      * Encode the StoredProcedure message to a PDU. 
@@ -188,11 +188,11 @@ public class StoredProcedureRequestDecorator
             bb.put( TLV.getBytes( storedProcedureLength ) );
 
             // The language
-            Value.encode( bb, getDecorated().getLanguage() );
+            BerValue.encode( bb, getDecorated().getLanguage() );
 
             // The procedure
-            Value.encode( bb, getDecorated().getProcedure() );
-            
+            BerValue.encode( bb, getDecorated().getProcedure() );
+
             // The parameters sequence
             bb.put( UniversalTag.SEQUENCE.getValue() );
             bb.put( TLV.getBytes( parametersLength ) );
@@ -210,10 +210,10 @@ public class StoredProcedureRequestDecorator
                     bb.put( TLV.getBytes( localParameterLength ) );
 
                     // The parameter type
-                    Value.encode( bb, spParam.getType() );
+                    BerValue.encode( bb, spParam.getType() );
 
                     // The parameter value
-                    Value.encode( bb, spParam.getValue() );
+                    BerValue.encode( bb, spParam.getValue() );
 
                     // Go to the next parameter;
                     parameterNumber++;
@@ -252,25 +252,24 @@ public class StoredProcedureRequestDecorator
             sb.append( "        Parameters\n" );
 
             int i = 1;
-            
+
             for ( StoredProcedureParameter spParam : getDecorated().getParameters() )
             {
-                sb.append( "            type[" ).append( i ) .append( "] : '" ).
-                    append( Strings.utf8ToString(spParam.getType()) ).append( "'\n" );
-                sb.append( "            value[" ).append( i ) .append( "] : '" ).
-                    append( Strings.dumpBytes(spParam.getValue()) ).append( "'\n" );
+                sb.append( "            type[" ).append( i ).append( "] : '" ).
+                    append( Strings.utf8ToString( spParam.getType() ) ).append( "'\n" );
+                sb.append( "            value[" ).append( i ).append( "] : '" ).
+                    append( Strings.dumpBytes( spParam.getValue() ) ).append( "'\n" );
             }
         }
 
         return sb.toString();
     }
 
-    
+
     public void setProcedure( byte[] procedure )
     {
         getDecorated().setProcedure( procedure );
     }
-
 
 
     /**
@@ -280,7 +279,7 @@ public class StoredProcedureRequestDecorator
     {
         StoredProcedureDecoder decoder = new StoredProcedureDecoder();
         StoredProcedureContainer container = new StoredProcedureContainer();
-        
+
         container.setStoredProcedure( this );
 
         try

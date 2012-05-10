@@ -20,16 +20,6 @@
 package org.apache.directory.shared.ldap.model.schema;
 
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
-import org.apache.directory.shared.ldap.model.exception.LdapSchemaExceptionCodes;
-import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -145,49 +135,49 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     private static final Logger LOG = LoggerFactory.getLogger( AttributeType.class );
 
     /** The syntax OID associated with this AttributeType */
-    private String syntaxOid;
+    protected String syntaxOid;
 
     /** The syntax associated with the syntaxID */
-    private LdapSyntax syntax;
+    protected LdapSyntax syntax;
 
     /** The equality OID associated with this AttributeType */
-    private String equalityOid;
+    protected String equalityOid;
 
     /** The equality MatchingRule associated with the equalityID */
-    private MatchingRule equality;
+    protected MatchingRule equality;
 
     /** The substring OID associated with this AttributeType */
-    private String substringOid;
+    protected String substringOid;
 
     /** The substring MatchingRule associated with the substringID */
-    private MatchingRule substring;
+    protected MatchingRule substring;
 
     /** The ordering OID associated with this AttributeType */
-    private String orderingOid;
+    protected String orderingOid;
 
     /** The ordering MatchingRule associated with the orderingID */
-    private MatchingRule ordering;
+    protected MatchingRule ordering;
 
     /** The superior AttributeType OID */
-    private String superiorOid;
+    protected String superiorOid;
 
     /** The superior AttributeType */
-    private AttributeType superior;
+    protected AttributeType superior;
 
     /** whether or not this type is single valued */
-    private boolean isSingleValued = false;
+    protected boolean isSingleValued = false;
 
     /** whether or not this type is a collective attribute */
-    private boolean isCollective = false;
+    protected boolean isCollective = false;
 
     /** whether or not this type can be modified by directory users */
-    private boolean canUserModify = true;
+    protected boolean canUserModify = true;
 
     /** the usage for this attributeType */
-    private UsageEnum usage = UsageEnum.USER_APPLICATIONS;
+    protected UsageEnum usage = UsageEnum.USER_APPLICATIONS;
 
     /** the length of this attribute in bytes */
-    private long syntaxLength = 0L;
+    protected long syntaxLength = 0L;
 
 
     /**
@@ -198,573 +188,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public AttributeType( String oid )
     {
         super( SchemaObjectType.ATTRIBUTE_TYPE, oid );
-    }
-
-
-    /**
-     * Build the Superior AttributeType reference for an AttributeType
-     */
-    private boolean buildSuperior( List<Throwable> errors, Registries registries )
-    {
-        AttributeType currentSuperior = null;
-        AttributeTypeRegistry attributeTypeRegistry = registries.getAttributeTypeRegistry();
-
-        if ( superiorOid != null )
-        {
-            // This AT has a superior
-            try
-            {
-                currentSuperior = attributeTypeRegistry.lookup( superiorOid );
-            }
-            catch ( Exception e )
-            {
-                // Not allowed.
-                String msg = I18n.err( I18n.ERR_04303, superiorOid, getName() );
-
-                LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.AT_NONEXISTENT_SUPERIOR, msg, e );
-                ldapSchemaException.setSourceObject( this );
-                ldapSchemaException.setRelatedId( superiorOid );
-                errors.add( ldapSchemaException );
-                LOG.info( msg );
-
-                // Get out now
-                return false;
-            }
-
-            if ( currentSuperior != null )
-            {
-                // a special case : if the superior is collective, this is an error
-                if ( currentSuperior.isCollective )
-                {
-                    String msg = I18n.err( I18n.ERR_04482_CANNOT_SUBTYPE_COLLECTIVE, currentSuperior, getName() );
-
-                    LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                        LdapSchemaExceptionCodes.AT_CANNOT_SUBTYPE_COLLECTIVE_AT, msg );
-                    ldapSchemaException.setSourceObject( this );
-                    errors.add( ldapSchemaException );
-                    LOG.info( msg );
-                    return false;
-                }
-
-                this.superior = currentSuperior;
-
-                // Recursively update the superior if not already done. We don't recurse
-                // if the superior's superior is not null, as it means it has already been
-                // handled.
-                if ( currentSuperior.getSuperior() == null )
-                {
-                    registries.buildReference( errors, currentSuperior );
-                }
-
-                // Update the descendant MAP
-                try
-                {
-                    attributeTypeRegistry.registerDescendants( this, currentSuperior );
-                }
-                catch ( LdapException ne )
-                {
-                    errors.add( ne );
-                    LOG.info( ne.getMessage() );
-                    return false;
-                }
-
-                // Check for cycles now
-                Set<String> superiors = new HashSet<String>();
-                superiors.add( oid );
-                AttributeType tmp = currentSuperior;
-                boolean isOk = true;
-
-                while ( tmp != null )
-                {
-                    if ( superiors.contains( tmp.getOid() ) )
-                    {
-                        // There is a cycle : bad bad bad !
-                        // Not allowed.
-                        String msg = I18n.err( I18n.ERR_04304, getName() );
-
-                        LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                            LdapSchemaExceptionCodes.AT_CYCLE_TYPE_HIERARCHY, msg );
-                        ldapSchemaException.setSourceObject( this );
-                        errors.add( ldapSchemaException );
-                        LOG.info( msg );
-                        isOk = false;
-
-                        break;
-                    }
-                    else
-                    {
-                        superiors.add( tmp.getOid() );
-                        tmp = tmp.getSuperior();
-                    }
-                }
-
-                superiors.clear();
-
-                return isOk;
-            }
-            else
-            {
-                // Not allowed.
-                String msg = I18n.err( I18n.ERR_04305, superiorOid, getName() );
-
-                LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.AT_NONEXISTENT_SUPERIOR, msg );
-                ldapSchemaException.setSourceObject( this );
-                ldapSchemaException.setRelatedId( superiorOid );
-                errors.add( ldapSchemaException );
-                LOG.info( msg );
-
-                // Get out now
-                return false;
-            }
-        }
-        else
-        {
-            // No superior, just return
-            return true;
-        }
-    }
-
-
-    /**
-     * Build the SYNTAX reference for an AttributeType
-     */
-    private void buildSyntax( List<Throwable> errors, Registries registries )
-    {
-        if ( syntaxOid != null )
-        {
-            LdapSyntax currentSyntax = null;
-
-            try
-            {
-                currentSyntax = registries.getLdapSyntaxRegistry().lookup( syntaxOid );
-            }
-            catch ( LdapException ne )
-            {
-                // Not allowed.
-                String msg = I18n.err( I18n.ERR_04306, syntaxOid, getName() );
-
-                LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.AT_NONEXISTENT_SYNTAX, msg, ne );
-                ldapSchemaException.setSourceObject( this );
-                ldapSchemaException.setRelatedId( syntaxOid );
-                errors.add( ldapSchemaException );
-                LOG.info( msg );
-                return;
-            }
-
-            if ( currentSyntax != null )
-            {
-                // Update the Syntax reference
-                this.syntax = currentSyntax;
-            }
-            else
-            {
-                // Not allowed.
-                String msg = I18n.err( I18n.ERR_04306, syntaxOid, getName() );
-
-                LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.AT_NONEXISTENT_SYNTAX, msg );
-                ldapSchemaException.setSourceObject( this );
-                ldapSchemaException.setRelatedId( syntaxOid );
-                errors.add( ldapSchemaException );
-                LOG.info( msg );
-                return;
-            }
-        }
-        else
-        {
-            // We inherit from the superior's syntax, if any
-            if ( superior != null )
-            {
-                this.syntax = superior.getSyntax();
-                this.syntaxOid = this.syntax.getOid();
-            }
-            else
-            {
-                // Not allowed.
-                String msg = I18n.err( I18n.ERR_04307, getName() );
-
-                LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.AT_SYNTAX_OR_SUPERIOR_REQUIRED, msg );
-                ldapSchemaException.setSourceObject( this );
-                errors.add( ldapSchemaException );
-                LOG.info( msg );
-                return;
-            }
-        }
-    }
-
-
-    /**
-     * Build the EQUALITY MR reference for an AttributeType
-     */
-    private void buildEquality( List<Throwable> errors, Registries registries )
-    {
-        // The equality MR. It can be null
-        if ( equalityOid != null )
-        {
-            MatchingRule currentEquality = null;
-
-            try
-            {
-                currentEquality = registries.getMatchingRuleRegistry().lookup( equalityOid );
-            }
-            catch ( LdapException ne )
-            {
-                // Not allowed.
-                String msg = I18n.err( I18n.ERR_04308, equalityOid, getName() );
-
-                LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.AT_NONEXISTENT_EQUALITY_MATCHING_RULE, msg, ne );
-                ldapSchemaException.setSourceObject( this );
-                ldapSchemaException.setRelatedId( equalityOid );
-                errors.add( ldapSchemaException );
-                LOG.info( msg );
-                return;
-            }
-
-            if ( currentEquality != null )
-            {
-                this.equality = currentEquality;
-            }
-            else
-            {
-                // Not allowed.
-                String msg = I18n.err( I18n.ERR_04309, equalityOid, getName() );
-
-                LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.AT_NONEXISTENT_EQUALITY_MATCHING_RULE, msg );
-                ldapSchemaException.setSourceObject( this );
-                ldapSchemaException.setRelatedId( equalityOid );
-                errors.add( ldapSchemaException );
-                LOG.info( msg );
-            }
-        }
-        else
-        {
-            // If the AT has a superior, take its Equality MR if any
-            if ( ( superior != null ) && ( superior.getEquality() != null ) )
-            {
-                this.equality = superior.getEquality();
-                this.equalityOid = this.equality.getOid();
-            }
-        }
-    }
-
-
-    /**
-     * Build the ORDERING MR reference for an AttributeType
-     */
-    private void buildOrdering( List<Throwable> errors, Registries registries )
-    {
-        if ( orderingOid != null )
-        {
-            MatchingRule currentOrdering = null;
-
-            try
-            {
-                currentOrdering = registries.getMatchingRuleRegistry().lookup( orderingOid );
-            }
-            catch ( LdapException ne )
-            {
-                // Not allowed.
-                String msg = I18n.err( I18n.ERR_04310, orderingOid, getName() );
-
-                LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.AT_NONEXISTENT_ORDERING_MATCHING_RULE, msg, ne );
-                ldapSchemaException.setSourceObject( this );
-                ldapSchemaException.setRelatedId( orderingOid );
-                errors.add( ldapSchemaException );
-                LOG.info( msg );
-                return;
-            }
-
-            if ( currentOrdering != null )
-            {
-                this.ordering = currentOrdering;
-            }
-            else
-            {
-                // Not allowed.
-                String msg = I18n.err( I18n.ERR_04311, orderingOid, getName() );
-
-                LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.AT_NONEXISTENT_ORDERING_MATCHING_RULE, msg );
-                ldapSchemaException.setSourceObject( this );
-                ldapSchemaException.setRelatedId( orderingOid );
-                errors.add( ldapSchemaException );
-                LOG.info( msg );
-            }
-        }
-        else
-        {
-            // If the AT has a superior, take its Ordering MR if any
-            if ( ( superior != null ) && ( superior.getOrdering() != null ) )
-            {
-                this.ordering = superior.getOrdering();
-                this.orderingOid = this.ordering.getOid();
-            }
-        }
-    }
-
-
-    /**
-     * Build the SUBSTR MR reference for an AttributeType
-     */
-    private void buildSubstring( List<Throwable> errors, Registries registries )
-    {
-        // The Substring MR. It can be null
-        if ( substringOid != null )
-        {
-            MatchingRule currentSubstring = null;
-
-            try
-            {
-                currentSubstring = registries.getMatchingRuleRegistry().lookup( substringOid );
-            }
-            catch ( LdapException ne )
-            {
-                // Not allowed.
-                String msg = I18n.err( I18n.ERR_04312, substringOid, getName() );
-
-                LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.AT_NONEXISTENT_SUBSTRING_MATCHING_RULE, msg, ne );
-                ldapSchemaException.setSourceObject( this );
-                ldapSchemaException.setRelatedId( substringOid );
-                errors.add( ldapSchemaException );
-                LOG.info( msg );
-                return;
-            }
-
-            if ( currentSubstring != null )
-            {
-                this.substring = currentSubstring;
-            }
-            else
-            {
-                // Not allowed.
-                String msg = I18n.err( I18n.ERR_04313, substringOid, getName() );
-
-                LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                    LdapSchemaExceptionCodes.AT_NONEXISTENT_SUBSTRING_MATCHING_RULE, msg );
-                ldapSchemaException.setSourceObject( this );
-                ldapSchemaException.setRelatedId( substringOid );
-                errors.add( ldapSchemaException );
-                LOG.info( msg );
-                return;
-            }
-        }
-        else
-        {
-            // If the AT has a superior, take its Substring MR if any
-            if ( ( superior != null ) && ( superior.getSubstring() != null ) )
-            {
-                this.substring = superior.getSubstring();
-                this.substringOid = this.substring.getOid();
-            }
-        }
-    }
-
-
-    /**
-     * Check the constraints for the Usage field.
-     */
-    private void checkUsage( List<Throwable> errors )
-    {
-        // Check that the AT usage is the same that its superior
-        if ( ( superior != null ) && ( usage != superior.getUsage() ) )
-        {
-            // This is an error
-            String msg = I18n.err( I18n.ERR_04314, getName() );
-
-            LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                LdapSchemaExceptionCodes.AT_MUST_HAVE_SAME_USAGE_THAN_SUPERIOR, msg );
-            ldapSchemaException.setSourceObject( this );
-            errors.add( ldapSchemaException );
-            LOG.info( msg );
-            return;
-        }
-
-        // Now, check that the AttributeType's USAGE does not conflict
-        if ( !isUserModifiable() && ( usage == UsageEnum.USER_APPLICATIONS ) )
-        {
-            // Cannot have a not user modifiable AT which is not an operational AT
-            String msg = I18n.err( I18n.ERR_04315, getName() );
-
-            LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                LdapSchemaExceptionCodes.AT_USER_APPLICATIONS_USAGE_MUST_BE_USER_MODIFIABLE, msg );
-            ldapSchemaException.setSourceObject( this );
-            errors.add( ldapSchemaException );
-            LOG.info( msg );
-        }
-    }
-
-
-    /**
-     * Check the constraints for the Collective field.
-     */
-    private void checkCollective( List<Throwable> errors )
-    {
-        if ( ( superior != null ) && superior.isCollective() )
-        {
-            // An AttributeType will be collective if its superior is collective
-            this.isCollective = true;
-        }
-
-        if ( isCollective() && ( usage != UsageEnum.USER_APPLICATIONS ) )
-        {
-            // An AttributeType which is collective must be a USER attributeType
-            String msg = I18n.err( I18n.ERR_04316, getName() );
-
-            LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                LdapSchemaExceptionCodes.AT_COLLECTIVE_MUST_HAVE_USER_APPLICATIONS_USAGE, msg );
-            ldapSchemaException.setSourceObject( this );
-            errors.add( ldapSchemaException );
-            LOG.info( msg );
-        }
-
-        if ( isCollective() && isSingleValued() )
-        {
-            // A collective attribute must be multi-valued
-            String msg = I18n.err( I18n.ERR_04483_COLLECTIVE_NOT_MULTI_VALUED, getName() );
-
-            LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                LdapSchemaExceptionCodes.AT_COLLECTIVE_CANNOT_BE_SINGLE_VALUED, msg );
-            ldapSchemaException.setSourceObject( this );
-            errors.add( ldapSchemaException );
-            LOG.info( msg );
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     *
-     * If one of the referenced SchemaObject does not exist (SUP, EQUALITY, ORDERING, SUBSTR, SYNTAX),
-     * an exception is thrown.
-     */
-    public void addToRegistries( List<Throwable> errors, Registries registries ) throws LdapException
-    {
-        if ( registries != null )
-        {
-            AttributeTypeRegistry attributeTypeRegistry = registries.getAttributeTypeRegistry();
-
-            // The superior
-            if ( !buildSuperior( errors, registries ) )
-            {
-                // We have had errors, let's stop here as we need a correct superior to continue
-                return;
-            }
-
-            // The Syntax
-            buildSyntax( errors, registries );
-
-            // The EQUALITY matching rule
-            buildEquality( errors, registries );
-
-            // The ORDERING matching rule
-            buildOrdering( errors, registries );
-
-            // The SUBSTR matching rule
-            buildSubstring( errors, registries );
-
-            // Check the USAGE
-            checkUsage( errors );
-
-            // Check the COLLECTIVE element
-            checkCollective( errors );
-
-            // Inject the attributeType into the oid/normalizer map
-            attributeTypeRegistry.addMappingFor( this );
-
-            // Register this AttributeType into the Descendant map
-            attributeTypeRegistry.registerDescendants( this, superior );
-
-            /**
-             * Add the AT references (using and usedBy) :
-             * AT -> MR (for EQUALITY, ORDERING and SUBSTR)
-             * AT -> S
-             * AT -> AT
-             */
-            if ( equality != null )
-            {
-                registries.addReference( this, equality );
-            }
-
-            if ( ordering != null )
-            {
-                registries.addReference( this, ordering );
-            }
-
-            if ( substring != null )
-            {
-                registries.addReference( this, substring );
-            }
-
-            if ( syntax != null )
-            {
-                registries.addReference( this, syntax );
-            }
-
-            if ( superior != null )
-            {
-                registries.addReference( this, superior );
-            }
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
-     *
-     * If one of the referenced SchemaObject does not exist (SUP, EQUALITY, ORDERING, SUBSTR, SYNTAX),
-     * an exception is thrown.
-     */
-    public void removeFromRegistries( List<Throwable> errors, Registries registries ) throws LdapException
-    {
-        if ( registries != null )
-        {
-            AttributeTypeRegistry attributeTypeRegistry = registries.getAttributeTypeRegistry();
-
-            // Remove the attributeType from the oid/normalizer map
-            attributeTypeRegistry.removeMappingFor( this );
-
-            // Unregister this AttributeType into the Descendant map
-            attributeTypeRegistry.unregisterDescendants( this, superior );
-
-            /**
-             * Remove the AT references (using and usedBy) :
-             * AT -> MR (for EQUALITY, ORDERING and SUBSTR)
-             * AT -> S
-             * AT -> AT
-             */
-            if ( equality != null )
-            {
-                registries.delReference( this, equality );
-            }
-
-            if ( ordering != null )
-            {
-                registries.delReference( this, ordering );
-            }
-
-            if ( substring != null )
-            {
-                registries.delReference( this, substring );
-            }
-
-            if ( syntax != null )
-            {
-                registries.delReference( this, syntax );
-            }
-
-            if ( superior != null )
-            {
-                registries.delReference( this, superior );
-            }
-        }
     }
 
 
@@ -781,25 +204,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
-     * Tells if this AttributeType is Single Valued or not
-     *
-     * @param singleValued True if the AttributeType is single-valued
-     */
-    public void setSingleValued( boolean singleValued )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.isSingleValued = singleValued;
-        }
-    }
-
-
-    /**
      * Gets whether or not this AttributeType can be modified by a user.
      *
      * @return true if users can modify it, false if only the directory can.
@@ -807,25 +211,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public boolean isUserModifiable()
     {
         return canUserModify;
-    }
-
-
-    /**
-     * Tells if this AttributeType can be modified by a user or not
-     *
-     * @param userModifiable The flag to set
-     */
-    public void setUserModifiable( boolean userModifiable )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.canUserModify = userModifiable;
-        }
     }
 
 
@@ -841,41 +226,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
-     * Updates the collective flag
-     *
-     * @param collective The new value to set
-     */
-    public void updateCollective( boolean collective )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        this.isCollective = collective;
-    }
-
-
-    /**
-     * Sets the collective flag
-     *
-     * @param collective The new value to set
-     */
-    public void setCollective( boolean collective )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.isCollective = collective;
-        }
-    }
-
-
-    /**
      * Determines the usage for this AttributeType.
      *
      * @return a type safe UsageEnum
@@ -887,55 +237,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
-     * Sets the AttributeType usage, one of :
-     * <ul>
-     *   <li>USER_APPLICATIONS</li>
-     *   <li>DIRECTORY_OPERATION</li>
-     *   <li>DISTRIBUTED_OPERATION</li>
-     *   <li>DSA_OPERATION</li>
-     * </ul>
-     * 
-     * @see UsageEnum
-     * @param usage The AttributeType usage
-     */
-    public void setUsage( UsageEnum usage )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.usage = usage;
-        }
-    }
-
-
-    /**
-     * Updates the AttributeType usage, one of :
-     * <ul>
-     *   <li>USER_APPLICATIONS</li>
-     *   <li>DIRECTORY_OPERATION</li>
-     *   <li>DISTRIBUTED_OPERATION</li>
-     *   <li>DSA_OPERATION</li>
-     * </ul>
-     * 
-     * @see UsageEnum
-     * @param newUsage The AttributeType usage
-     */
-    public void updateUsage( UsageEnum newUsage )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        this.usage = newUsage;
-    }
-
-
-    /**
      * Gets a length limit for this AttributeType.
      *
      * @return the length of the attribute
@@ -943,26 +244,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public long getSyntaxLength()
     {
         return syntaxLength;
-    }
-
-
-    /**
-     * Sets the length limit of this AttributeType based on its associated
-     * syntax.
-     *
-     * @param length the new length to set
-     */
-    public void setSyntaxLength( long length )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.syntaxLength = length;
-        }
     }
 
 
@@ -1007,81 +288,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
-     * Sets the superior AttributeType OID of this AttributeType
-     *
-     * @param superiorOid The superior AttributeType OID of this AttributeType
-     */
-    public void setSuperiorOid( String superiorOid )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.superiorOid = superiorOid;
-        }
-    }
-
-
-    /**
-     * Sets the superior for this AttributeType
-     *
-     * @param superior The superior for this AttributeType
-     */
-    public void setSuperior( AttributeType superior )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.superior = superior;
-            this.superiorOid = superior.getOid();
-        }
-    }
-
-
-    /**
-     * Sets the superior oid for this AttributeType
-     *
-     * @param newSuperiorOid The superior oid for this AttributeType
-     */
-    public void setSuperior( String newSuperiorOid )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.superiorOid = newSuperiorOid;
-        }
-    }
-
-
-    /**
-     * Update the associated Superior AttributeType, even if the SchemaObject is readOnly
-     *
-     * @param newSuperior The superior for this AttributeType
-     */
-    public void updateSuperior( AttributeType newSuperior )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        this.superior = newSuperior;
-        this.superiorOid = newSuperior.getOid();
-    }
-
-
-    /**
      * Gets the Syntax for this AttributeType's values.
      *
      * @return the value syntax
@@ -1118,62 +324,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public String getSyntaxOid()
     {
         return syntaxOid;
-    }
-
-
-    /**
-     * Sets the Syntax OID for this AttributeType
-     *
-     * @param syntaxOid The syntax OID for this AttributeType
-     */
-    public void setSyntaxOid( String syntaxOid )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.syntaxOid = syntaxOid;
-        }
-    }
-
-
-    /**
-     * Sets the Syntax for this AttributeType
-     *
-     * @param syntax The Syntax for this AttributeType
-     */
-    public void setSyntax( LdapSyntax syntax )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.syntax = syntax;
-            this.syntaxOid = syntax.getOid();
-        }
-    }
-
-
-    /**
-     * Update the associated Syntax, even if the SchemaObject is readOnly
-     *
-     * @param newSyntax The Syntax for this AttributeType
-     */
-    public void updateSyntax( LdapSyntax newSyntax )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        this.syntax = newSyntax;
-        this.syntaxOid = newSyntax.getOid();
     }
 
 
@@ -1218,62 +368,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
-     * Sets the Equality OID for this AttributeType
-     *
-     * @param equalityOid The Equality OID for this AttributeType
-     */
-    public void setEqualityOid( String equalityOid )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.equalityOid = equalityOid;
-        }
-    }
-
-
-    /**
-     * Sets the Equality MR for this AttributeType
-     *
-     * @param equality The Equality MR for this AttributeType
-     */
-    public void setEquality( MatchingRule equality )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.equality = equality;
-            this.equalityOid = equality.getOid();
-        }
-    }
-
-
-    /**
-     * Update the associated Equality MatchingRule, even if the SchemaObject is readOnly
-     *
-     * @param newEquality The Equality MR for this AttributeType
-     */
-    public void updateEquality( MatchingRule newEquality )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        this.equality = newEquality;
-        this.equalityOid = newEquality.getOid();
-    }
-
-
-    /**
      * Gets the MatchingRule for this AttributeType used for Ordering matching.
      *
      * @return the Ordering matching rule
@@ -1314,62 +408,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
 
 
     /**
-     * Sets the Ordering OID for this AttributeType
-     *
-     * @param orderingOid The Ordering OID for this AttributeType
-     */
-    public void setOrderingOid( String orderingOid )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.orderingOid = orderingOid;
-        }
-    }
-
-
-    /**
-     * Sets the Ordering MR for this AttributeType
-     *
-     * @param ordering The Ordering MR for this AttributeType
-     */
-    public void setOrdering( MatchingRule ordering )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.ordering = ordering;
-            this.orderingOid = ordering.getOid();
-        }
-    }
-
-
-    /**
-     * Update the associated Ordering MatchingRule, even if the SchemaObject is readOnly
-     *
-     * @param newOrdering The Ordering MR for this AttributeType
-     */
-    public void updateOrdering( MatchingRule newOrdering )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        this.ordering = newOrdering;
-        this.orderingOid = newOrdering.getOid();
-    }
-
-
-    /**
      * Gets the MatchingRule for this AttributeType used for Substr matching.
      *
      * @return the Substr matching rule
@@ -1406,62 +444,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     public String getSubstringOid()
     {
         return substringOid;
-    }
-
-
-    /**
-     * Sets the Substr OID for this AttributeType
-     *
-     * @param substrOid The Substr OID for this AttributeType
-     */
-    public void setSubstringOid( String substrOid )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.substringOid = substrOid;
-        }
-    }
-
-
-    /**
-     * Sets the Substr MR for this AttributeType
-     *
-     * @param substring The Substr MR for this AttributeType
-     */
-    public void setSubstring( MatchingRule substring )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        if ( !isReadOnly )
-        {
-            this.substring = substring;
-            this.substringOid = substring.getOid();
-        }
-    }
-
-
-    /**
-     * Update the associated Substring MatchingRule, even if the SchemaObject is readOnly
-     *
-     * @param newSubstring The Substr MR for this AttributeType
-     */
-    public void updateSubstring( MatchingRule newSubstring )
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-
-        this.substring = newSubstring;
-        this.substringOid = newSubstring.getOid();
     }
 
 
@@ -1540,7 +522,7 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
      */
     public AttributeType copy()
     {
-        AttributeType copy = new AttributeType( oid );
+        MutableAttributeType copy = new MutableAttributeType( oid );
 
         // Copy the SchemaObject common data
         copy.copy( this );
@@ -1581,23 +563,6 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
         copy.syntaxLength = syntaxLength;
 
         return copy;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void clear()
-    {
-        // Clear the common elements
-        super.clear();
-
-        // Clear the references
-        equality = null;
-        ordering = null;
-        substring = null;
-        superior = null;
-        syntax = null;
     }
 
 

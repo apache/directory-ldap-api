@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.dsmlv2;
 
@@ -71,33 +71,27 @@ public final class ParserUtils
     /** XSD namespace prefix. */
     public static final String XSD = "xsd";
 
+    /** The DSML namespace */
     public static final Namespace DSML_NAMESPACE = new Namespace( null, "urn:oasis:names:tc:DSML:2:0:core" );
 
+    /** The XSD namespace */
     public static final Namespace XSD_NAMESPACE = new Namespace( XSD, XML_SCHEMA_URI );
 
+    /** The XSI namespace */
     public static final Namespace XSI_NAMESPACE = new Namespace( XSI, XML_SCHEMA_INSTANCE_URI );
-
-
-    /**
-     * Private contstructor.
-     */
-    private ParserUtils()
-    {
-    }
 
 
     /**
      * Returns the value of the attribute 'type' of the "XMLSchema-instance' namespace if it exists
      *
-     * @param xpp 
-     *      the XPP parser to use
-     * @return 
-     *      the value of the attribute 'type' of the "XMLSchema-instance' namespace if it exists
+     * @param xpp the XPP parser to use
+     * @return the value of the attribute 'type' of the "XMLSchema-instance' namespace if it exists
      */
     public static String getXsiTypeAttributeValue( XmlPullParser xpp )
     {
         String type = null;
         int nbAttributes = xpp.getAttributeCount();
+        
         for ( int i = 0; i < nbAttributes; i++ )
         {
             // Checking if the attribute 'type' from XML Schema Instance namespace is used.
@@ -108,6 +102,7 @@ public final class ParserUtils
                 break;
             }
         }
+        
         return type;
     }
 
@@ -115,12 +110,9 @@ public final class ParserUtils
     /**
      * Tells is the given value is a Base64 binary value
      * 
-     * @param parser
-     *      the XPP parser to use
-     * @param attrValue 
-     *      the attribute value
-     * @return 
-     *      true if the value of the current tag is Base64BinaryEncoded, false if not
+     * @param parser the XPP parser to use
+     * @param attrValue the attribute value
+     * @return true if the value of the current tag is Base64BinaryEncoded, false if not
      */
     public static boolean isBase64BinaryValue( XmlPullParser parser, String attrValue )
     {
@@ -128,9 +120,11 @@ public final class ParserUtils
         {
             return false;
         }
+        
         // We are looking for something that should look like that: "aNameSpace:base64Binary"
         // We split the String. The first element should be the namespace prefix and the second "base64Binary"
         String[] splitedString = attrValue.split( ":" );
+        
         return ( splitedString.length == 2 ) && ( XML_SCHEMA_URI.equals( parser.getNamespace( splitedString[0] ) ) )
             && ( BASE64BINARY.equals( splitedString[1] ) );
     }
@@ -139,10 +133,8 @@ public final class ParserUtils
     /**
      * Indicates if the value needs to be encoded as Base64
      *
-     * @param value 
-     *      the value to check
-     * @return 
-     *      true if the value needs to be encoded as Base64
+     * @param value the value to check
+     * @return true if the value needs to be encoded as Base64
      */
     public static boolean needsBase64Encoding( Object value )
     {
@@ -154,6 +146,7 @@ public final class ParserUtils
         {
             return !LdifUtils.isLDIFSafe( ( String ) value );
         }
+        
         return true;
     }
 
@@ -161,10 +154,8 @@ public final class ParserUtils
     /**
      * Encodes the value as a Base64 String
      *
-     * @param value 
-     *      the value to encode
-     * @return 
-     *      the value encoded as a Base64 String 
+     * @param value the value to encode
+     * @return the value encoded as a Base64 String
      */
     public static String base64Encode( Object value )
     {
@@ -174,7 +165,7 @@ public final class ParserUtils
         }
         else if ( value instanceof String )
         {
-            return new String( Base64.encode( Strings.getBytesUtf8((String) value) ) );
+            return new String( Base64.encode( Strings.getBytesUtf8( ( String ) value ) ) );
         }
 
         return "";
@@ -184,14 +175,10 @@ public final class ParserUtils
     /**
      * Parses and verify the parsed value of the requestID
      * 
-     * @param attributeValue 
-     *      the value of the attribute
-     * @param xpp 
-     *      the XmlPullParser
-     * @return
-     *      the int value of the resquestID
-     * @throws XmlPullParserException
-     *      if RequestID isn't an Integer and if requestID equals 0
+     * @param attributeValue the value of the attribute
+     * @param xpp the XmlPullParser
+     * @return the int value of the resquestID
+     * @throws XmlPullParserException if RequestID isn't an Integer and if requestID is below 0
      */
     public static int parseAndVerifyRequestID( String attributeValue, XmlPullParser xpp ) throws XmlPullParserException
     {
@@ -199,9 +186,9 @@ public final class ParserUtils
         {
             int requestID = Integer.parseInt( attributeValue );
 
-            if ( requestID == 0 )
+            if ( requestID < 0 )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03038 ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03038, requestID ), xpp, null );
             }
 
             return requestID;
@@ -238,15 +225,16 @@ public final class ParserUtils
                 }
 
                 byte[] value;
+                
                 if ( control instanceof CodecControl<?> )
                 {
-                    value = ( (org.apache.directory.shared.ldap.codec.api.CodecControl<?> ) control ).getValue();
+                    value = ( ( org.apache.directory.shared.ldap.codec.api.CodecControl<?> ) control ).getValue();
                 }
                 else
                 {
                     value = codec.newControl( control ).getValue();
                 }
-                
+
                 if ( value != null )
                 {
                     if ( ParserUtils.needsBase64Encoding( value ) )
@@ -272,12 +260,9 @@ public final class ParserUtils
     /**
      * Indicates if a request ID is needed.
      *
-     * @param container
-     *      the associated container
-     * @return
-     *      true if a request ID is needed (ie Processing=Parallel and ResponseOrder=Unordered)
-     * @throws XmlPullParserException
-     *      if the batch request has not been parsed yet
+     * @param container the associated container
+     * @return true if a request ID is needed (ie Processing=Parallel and ResponseOrder=Unordered)
+     * @throws XmlPullParserException if the batch request has not been parsed yet
      */
     public static boolean isRequestIdNeeded( Dsmlv2Container container ) throws XmlPullParserException
     {
@@ -295,16 +280,15 @@ public final class ParserUtils
     /**
      * XML Pretty Printer XSLT Transformation
      * 
-     * @param document
-     *      the Dom4j Document
-     * @return
-     *      the transformed document
+     * @param document the Dom4j Document
+     * @return the transformed document
      */
     public static Document styleDocument( Document document )
     {
         // load the transformer using JAXP
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = null;
+        
         try
         {
             transformer = factory.newTransformer( new StreamSource( ParserUtils.class
@@ -320,6 +304,7 @@ public final class ParserUtils
         // now lets style the given document
         DocumentSource source = new DocumentSource( document );
         DocumentResult result = new DocumentResult();
+        
         try
         {
             transformer.transform( source, result );

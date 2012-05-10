@@ -129,7 +129,7 @@ public class TriggerSpecificationParser
             String msg = I18n.err( I18n.ERR_04333, spec, e.getLocalizedMessage() );
             throw new ParseException( msg, e.getColumn() );
         }
-        
+
         return triggerSpecification;
 
     }

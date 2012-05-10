@@ -40,7 +40,8 @@ public interface SearchCursor extends Cursor<Response>
      * @return true if the cursor has processed all the elements we were searching
      */
     boolean isDone();
-    
+
+
     /**
      * gives the SearchResultDone message received at the end of search results
      * 
@@ -48,37 +49,39 @@ public interface SearchCursor extends Cursor<Response>
      */
     SearchResultDone getSearchResultDone();
 
-    
+
     /**
      * @return true if the next element in the cursor is a referral 
      */
     boolean isReferral();
-    
-    
+
+
     /**
      * @return The next referral element, if it's a referral 
      * @throws LdapException If the 
      */
     Referral getReferral() throws LdapException;
-    
-    
+
+
     /**
      * @return true if the next element in the cursor is an entry 
      */
     boolean isEntry();
-    
+
+
     /**
      * @return The next entry element, if it's an entry 
      * @throws LdapException If the 
      */
     Entry getEntry() throws LdapException;
-    
+
 
     /**
      * @return true if the next element in the cursor is an intermediate response 
      */
     boolean isIntermediate();
-    
+
+
     /**
      * @return The next intermediate response element, if it's an intermediate response 
      * @throws LdapException If the 

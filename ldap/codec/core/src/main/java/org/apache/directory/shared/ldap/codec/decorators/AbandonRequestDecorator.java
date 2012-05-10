@@ -24,7 +24,7 @@ import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.EncoderException;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
@@ -55,8 +55,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     //-------------------------------------------------------------------------
     // The AbandonRequest methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -72,54 +71,53 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     public AbandonRequest setAbandoned( int requestId )
     {
         getDecorated().setAbandoned( requestId );
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AbandonRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public AbandonRequest addControl( Control control ) throws MessageException
     {
-        return (AbandonRequest)super.addControl( control );
+        return ( AbandonRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AbandonRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (AbandonRequest)super.addAllControls( controls );
+        return ( AbandonRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AbandonRequest removeControl( Control control ) throws MessageException
     {
-        return (AbandonRequest)super.removeControl( control );
+        return ( AbandonRequest ) super.removeControl( control );
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * Encode the Abandon protocolOp part
      */
@@ -132,17 +130,17 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
 
             // The length. It has to be evaluated depending on
             // the abandoned messageId value.
-            buffer.put( ( byte ) Value.getNbBytes( getAbandoned() ) );
+            buffer.put( ( byte ) BerValue.getNbBytes( getAbandoned() ) );
 
             // The abandoned messageId
-            buffer.put( Value.getBytes( getAbandoned() ) );
+            buffer.put( BerValue.getBytes( getAbandoned() ) );
         }
         catch ( BufferOverflowException boe )
         {
             String msg = I18n.err( I18n.ERR_04005 );
             throw new EncoderException( msg );
         }
-        
+
         return buffer;
     }
 
@@ -157,7 +155,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
      */
     public int computeLength()
     {
-        int length = 1 + 1 + Value.getNbBytes( getAbandoned() );
+        int length = 1 + 1 + BerValue.getNbBytes( getAbandoned() );
 
         return length;
     }

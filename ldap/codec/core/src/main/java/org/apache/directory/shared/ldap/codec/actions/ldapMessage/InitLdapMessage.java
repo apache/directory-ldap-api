@@ -47,6 +47,7 @@ public class InitLdapMessage extends GrammarAction<LdapMessageContainer<MessageD
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitLdapMessage.class );
 
+
     /**
      * Instantiates a new action.
      */

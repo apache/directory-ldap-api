@@ -25,7 +25,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.util.Strings;
@@ -46,13 +46,13 @@ public class ExtensibleMatchFilter extends Filter
 
     /** Matching rule */
     private String matchingRule;
-    
+
     /** Matching rule bytes */
     private byte[] matchingRuleBytes;
 
     /** Matching rule type */
     private String type;
-    
+
     private byte[] typeBytes;
 
     /** Matching rule value */
@@ -64,6 +64,7 @@ public class ExtensibleMatchFilter extends Filter
     /** The extensible match length */
     private int extensibleMatchLength;
 
+
     // ~ Constructors
     // -------------------------------------------------------------------------------
     /**
@@ -74,8 +75,8 @@ public class ExtensibleMatchFilter extends Filter
     {
         super( tlvId );
     }
-    
-    
+
+
     /**
      * Creates a new ExtensibleMatchFilter object. The dnAttributes flag
      * defaults to false.
@@ -213,13 +214,13 @@ public class ExtensibleMatchFilter extends Filter
     {
         if ( matchingRule != null )
         {
-            matchingRuleBytes = Strings.getBytesUtf8(matchingRule);
+            matchingRuleBytes = Strings.getBytesUtf8( matchingRule );
             extensibleMatchLength = 1 + TLV.getNbBytes( matchingRuleBytes.length ) + matchingRuleBytes.length;
         }
 
         if ( type != null )
         {
-            typeBytes = Strings.getBytesUtf8(type);
+            typeBytes = Strings.getBytesUtf8( type );
             extensibleMatchLength += 1 + TLV.getNbBytes( typeBytes.length ) + typeBytes.length;
         }
 
@@ -312,7 +313,7 @@ public class ExtensibleMatchFilter extends Filter
             {
                 buffer.put( ( byte ) LdapConstants.DN_ATTRIBUTES_FILTER_TAG );
                 buffer.put( ( byte ) 1 );
-                buffer.put( Value.TRUE_VALUE );
+                buffer.put( BerValue.TRUE_VALUE );
             }
         }
         catch ( BufferOverflowException boe )

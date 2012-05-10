@@ -44,15 +44,15 @@ import org.dom4j.QName;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AddRequestDsml 
-    extends AbstractResultResponseRequestDsml<AddRequest, AddResponse> 
+public class AddRequestDsml
+    extends AbstractResultResponseRequestDsml<AddRequest, AddResponse>
     implements AddRequest
 {
 
     /** The current attribute being decoded */
     private Attribute currentAttribute;
-    
-    
+
+
     /**
      * Creates a new getDecoratedMessage() of AddRequestDsml.
      */
@@ -73,9 +73,7 @@ public class AddRequestDsml
         super( codec, ldapMessage );
     }
 
-    
 
-    
     /**
      * Create a new attributeValue
      * 
@@ -136,8 +134,8 @@ public class AddRequestDsml
     {
         currentAttribute.add( value );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -224,7 +222,7 @@ public class AddRequestDsml
     {
         if ( value instanceof Value<?> )
         {
-            ( ( AddRequestDsml ) getDecorated() ).addAttributeValue( (Value<?>) value );
+            ( ( AddRequestDsml ) getDecorated() ).addAttributeValue( ( Value<?> ) value );
         }
         else if ( value instanceof String )
         {
@@ -254,7 +252,7 @@ public class AddRequestDsml
     public AddRequest setEntryDn( Dn entryDn )
     {
         getDecorated().setEntryDn( entryDn );
-        
+
         return this;
     }
 
@@ -265,44 +263,46 @@ public class AddRequestDsml
     public AddRequest setEntry( Entry entry )
     {
         getDecorated().setEntry( entry );
-        
+
         return this;
     }
+
+
     /**
      * {@inheritDoc}
      */
     public AddRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public AddRequest addControl( Control control ) throws MessageException
     {
-        return (AddRequest)super.addControl( control );
+        return ( AddRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AddRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (AddRequest)super.addAllControls( controls );
+        return ( AddRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AddRequest removeControl( Control control ) throws MessageException
     {
-        return (AddRequest)super.removeControl( control );
+        return ( AddRequest ) super.removeControl( control );
     }
 
 

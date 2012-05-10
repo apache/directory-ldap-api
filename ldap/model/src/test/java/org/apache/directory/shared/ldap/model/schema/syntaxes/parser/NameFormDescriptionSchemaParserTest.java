@@ -37,6 +37,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Tests the NameFormDescriptionSchemaParser class.
  * 
@@ -48,7 +49,8 @@ public class NameFormDescriptionSchemaParserTest
 {
     /** the parser instance */
     private NameFormDescriptionSchemaParser parser;
-    
+
+
     @Before
     public void setUp() throws Exception
     {
@@ -521,7 +523,7 @@ public class NameFormDescriptionSchemaParserTest
                 "( 2.5.15.3 NAME 'orgNameForm' OC organization MUST o )",
                 "( 2.5.15.3 NAME 'orgNameForm' OC organization MUST o )",
                 "( 1.2.3.4.5.6.7.8.9.0 NAME ( 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' 'test' ) DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' OBSOLETE OC bcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789a MUST ( 3.4.5.6.7.8.9.0.1.2 $ cdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789ab ) MAY ( 4.5.6.7.8.9.0.1.2.3 $ defghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789abc ) X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )" };
-        SchemaParserTestUtils.testMultiThreaded(parser, testValues);
+        SchemaParserTestUtils.testMultiThreaded( parser, testValues );
 
     }
 

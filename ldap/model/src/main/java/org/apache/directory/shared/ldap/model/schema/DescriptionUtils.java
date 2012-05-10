@@ -31,8 +31,8 @@ import java.util.Map;
  * the following objects:
  * <ul>
  * <li><a href="./AttributeType.html">AttributeType</a></li>
- * <li><a href="./DITContentRule.html">DITContentRule</a></li>
- * <li><a href="./DITContentRule.html">DITStructureRule</a></li>
+ * <li><a href="./DitContentRule.html">DitContentRule</a></li>
+ * <li><a href="./DitContentRule.html">DitStructureRule</a></li>
  * <li><a href="./LdapComparator.html">Syntax</a></li>
  * <li><a href="./MatchingRule.html">MatchingRule</a></li>
  * <li><a href="./MatchingRuleUse.html">MatchingRuleUse</a></li>
@@ -206,7 +206,7 @@ public final class DescriptionUtils
 
 
     /**
-     * Generates the DITContentRuleDescription for a DITContentRule as defined
+     * Generates the DITContentRuleDescription for a DitContentRule as defined
      * by the syntax: 1.3.6.1.4.1.1466.115.121.1.16. Only the right hand side of
      * the description starting at the opening parenthesis is generated: that
      * is 'DITContentRuleDescription = ' is not generated.
@@ -229,7 +229,7 @@ public final class DescriptionUtils
      * @return the specification according to the DITContentRuleDescription
      *         syntax
      */
-    public static String getDescription( DITContentRule dITContentRule )
+    public static String getDescription( DitContentRule dITContentRule )
     {
         StringBuilder buf = new StringBuilder( "( " );
         buf.append( dITContentRule.getOid() );
@@ -298,7 +298,7 @@ public final class DescriptionUtils
 
 
     /**
-     * Generates the DITStructureRuleDescription for a DITStructureRule as
+     * Generates the DITStructureRuleDescription for a DitStructureRule as
      * defined by the syntax: 1.3.6.1.4.1.1466.115.121.1.17. Only the right hand
      * side of the description starting at the opening parenthesis is
      * generated: that is 'DITStructureRuleDescription = ' is not generated.
@@ -315,40 +315,40 @@ public final class DescriptionUtils
      *       &quot;)&quot;
      * </pre>
      * 
-     * @param dITStructureRule
-     *            the DITStructureRule to generate the description for
+     * @param ditStructureRule
+     *            the DitStructureRule to generate the description for
      * @return the description in the DITStructureRuleDescription syntax
      */
-    public static String getDescription( DITStructureRule dITStructureRule )
+    public static String getDescription( DitStructureRule ditStructureRule )
     {
         StringBuilder buf = new StringBuilder( "( " );
-        buf.append( dITStructureRule.getOid() );
+        buf.append( ditStructureRule.getOid() );
         buf.append( '\n' );
 
-        if ( dITStructureRule.getNames() != null )
+        if ( ditStructureRule.getNames() != null )
         {
             buf.append( " NAME " );
-            getQDescrs( buf, dITStructureRule.getNames() );
+            getQDescrs( buf, ditStructureRule.getNames() );
         }
 
-        if ( dITStructureRule.getDescription() != null )
+        if ( ditStructureRule.getDescription() != null )
         {
             buf.append( " DESC " );
-            buf.append( dITStructureRule.getDescription() );
+            buf.append( ditStructureRule.getDescription() );
             buf.append( '\n' );
         }
 
-        if ( dITStructureRule.isObsolete() )
+        if ( ditStructureRule.isObsolete() )
         {
             buf.append( " OBSOLETE\n" );
         }
 
         buf.append( " FORM " );
-        buf.append( dITStructureRule.getForm() );
+        buf.append( ditStructureRule.getForm() );
         buf.append( '\n' );
 
         // TODO : Shouldn't we get the ruleId OID ? 
-        List<Integer> sups = dITStructureRule.getSuperRules();
+        List<Integer> sups = ditStructureRule.getSuperRules();
 
         if ( ( sups != null ) && ( sups.size() > 0 ) )
         {
@@ -797,7 +797,7 @@ public final class DescriptionUtils
 
     private static void getExtensions( StringBuilder sb, Map<String, List<String>> extensions )
     {
-        for ( Map.Entry<String, List<String>> extension : extensions.entrySet())
+        for ( Map.Entry<String, List<String>> extension : extensions.entrySet() )
         {
             sb.append( " " + extension.getKey() ).append( " " );
 

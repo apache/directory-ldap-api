@@ -6,18 +6,19 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.ldif;
+
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -28,9 +29,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import javax.naming.directory.Attributes;
-import javax.naming.directory.BasicAttributes;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
@@ -49,6 +47,7 @@ import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Tests the LdifReverter methods
  *
@@ -61,29 +60,30 @@ public class LdifRevertorTest
     /**
      * Helper method to build a basic entry used by the Modify tests
      */
-    private Entry buildEntry()
+    private Entry buildEntry() throws LdapException
     {
-        Entry entry = new DefaultEntry();
-        entry.put( "objectclass", "top", "person" );
-        entry.put( "cn", "test" );
-        entry.put( "sn", "joe doe" );
-        entry.put( "l", "USA" );
-        
+        Entry entry = new DefaultEntry( "",
+            "objectclass: top",
+            "objectclass: person",
+            "cn: test",
+            "sn: joe doe",
+            "l: USA" );
+
         return entry;
     }
 
-    
+
     /**
      * Test a AddRequest reverse
      *
-     * @throws LdapInvalidDnException 
+     * @throws LdapInvalidDnException
      */
     @Test
     public void testReverseAdd() throws LdapInvalidDnException
     {
         Dn dn = new Dn( "dc=apache, dc=com" );
         LdifEntry reversed = LdifRevertor.reverseAdd( dn );
-        
+
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Delete, reversed.getChangeType() );
@@ -93,34 +93,30 @@ public class LdifRevertorTest
 
     /**
      * Test a DelRequest reverse
-     * @throws LdapException 
+     * @throws LdapException
      */
     @Test
     public void testReverseDel() throws LdapException
     {
         Dn dn = new Dn( "dc=apache, dc=com" );
-        
-        Entry deletedEntry = new DefaultEntry( dn );
-        
-        Attribute oc = new DefaultAttribute( "objectClass" );
-        oc.add( "top", "person" );
-        
-        deletedEntry.put( oc );
-        
-        deletedEntry.put( "cn", "test" );
-        deletedEntry.put( "sn", "apache" );
-        deletedEntry.put( "dc", "apache" );
-        
+
+        Entry deletedEntry = new DefaultEntry( dn ,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "sn: apache",
+            "dc: apache" );
+
         LdifEntry reversed = LdifRevertor.reverseDel( dn, deletedEntry );
-        
+
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Add, reversed.getChangeType() );
         assertNotNull( reversed.getEntry() );
         assertEquals( deletedEntry, reversed.getEntry() );
     }
-    
-    
+
+
     /**
      * Test a reversed Modify adding a existing value from an existing attribute
      */
@@ -128,36 +124,34 @@ public class LdifRevertorTest
     public void testReverseModifyDelExistingOuValue() throws LdapException
     {
         Entry modifiedEntry = buildEntry();
-        
-        Attribute ou = new DefaultAttribute( "ou" );
-        ou.add( "apache", "acme corp" );
-        modifiedEntry.put( ou );
+
+        modifiedEntry.put( "ou", "apache", "acme corp" );
 
         Dn dn = new Dn( "cn=test, ou=system" );
 
-        Modification mod = new DefaultModification( 
-            ModificationOperation.REMOVE_ATTRIBUTE, 
+        Modification mod = new DefaultModification(
+            ModificationOperation.REMOVE_ATTRIBUTE,
             new DefaultAttribute( "ou", "acme corp" ) );
 
         LdifEntry reversed = LdifRevertor.reverseModify( dn,
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
-        
+
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
-        
+
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
 
         assertEquals( "ou", attr.getId() );
@@ -172,44 +166,41 @@ public class LdifRevertorTest
     public void testReverseModifyDeleteOU() throws LdapException
     {
         Entry modifiedEntry = buildEntry();
-        
-        Attribute ou = new DefaultAttribute( "ou" );
-        ou.add( "apache", "acme corp" );
-        modifiedEntry.put( ou );
+
+        modifiedEntry.put( "ou", "apache", "acme corp" );
 
         Dn dn = new Dn( "cn=test, ou=system" );
 
         Modification mod = new DefaultModification(
-            ModificationOperation.REMOVE_ATTRIBUTE, 
+            ModificationOperation.REMOVE_ATTRIBUTE,
             new DefaultAttribute( "ou" ) );
 
         LdifEntry reversed = LdifRevertor.reverseModify( dn,
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
-
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
-        
+
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
-        
+
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
-        
-        assertEquals( ou, attr );
+
+        assertTrue( attr.contains( "apache", "acme corp" ) );
     }
 
-   
+
     /**
      * Test a reversed Modify deleting all values of an existing attribute
      */
@@ -220,39 +211,38 @@ public class LdifRevertorTest
 
         Attribute ou = new DefaultAttribute( "ou", "apache", "acme corp" );
         modifiedEntry.put( ou );
-        
+
         Dn dn = new Dn( "cn=test, ou=system" );
-        
+
         Modification mod = new DefaultModification(
             ModificationOperation.REMOVE_ATTRIBUTE, ou );
 
-        LdifEntry reversed = LdifRevertor.reverseModify( dn, 
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
-
+        LdifEntry reversed = LdifRevertor.reverseModify( dn,
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
-        
+
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
-        
+
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
-        
-        assertEquals( ou, attr );
+
+        assertTrue( ou.contains( "apache", "acme corp" ) );
     }
 
-    
+
     /**
      * Test a reversed Modify replacing existing values with new values
      */
@@ -260,41 +250,36 @@ public class LdifRevertorTest
     public void testReverseModifyReplaceExistingOuValues() throws LdapException
     {
         Entry modifiedEntry = buildEntry();
-        
-        Attribute ou = new DefaultAttribute( "ou" );
-        ou.add( "apache", "acme corp" );
+
+        Attribute ou = new DefaultAttribute( "ou", "apache", "acme corp" );
         modifiedEntry.put( ou );
 
         Dn dn = new Dn( "cn=test, ou=system" );
 
-        Attribute ouModified = new DefaultAttribute( "ou" );
-        ouModified.add( "directory" );
-        ouModified.add( "BigCompany inc." );
-        
+        Attribute ouModified = new DefaultAttribute( "ou", "directory", "BigCompany inc." );
+
         Modification mod = new DefaultModification(
             ModificationOperation.REPLACE_ATTRIBUTE, ouModified );
 
         LdifEntry reversed = LdifRevertor.reverseModify( dn,
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
-
-
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
-        
+
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
-        
+
         assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
         assertEquals( ou, attr );
     }
@@ -307,43 +292,40 @@ public class LdifRevertorTest
     public void testReverseModifyReplaceNewAttribute() throws LdapException
     {
         Entry modifiedEntry = buildEntry();
-        
-        Dn dn = new Dn( "cn=test, ou=system" );
-        
-        Attribute newOu = new DefaultAttribute( "ou" );
-        newOu.add( "apache" );
-        newOu.add( "acme corp" );
 
-        
+        Dn dn = new Dn( "cn=test, ou=system" );
+
+        Attribute newOu = new DefaultAttribute( "ou", "apache", "acme corp" );
+
         Modification mod = new DefaultModification(
             ModificationOperation.REPLACE_ATTRIBUTE, newOu );
 
         LdifEntry reversed = LdifRevertor.reverseModify( dn,
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
-        
+
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
-        
+
         assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
-        
+
         assertNull( attr.get() );
     }
 
-   
+
     /**
      * Test a reversed Modify replace by removing an attribute
      */
@@ -352,42 +334,39 @@ public class LdifRevertorTest
     {
         Entry modifiedEntry = buildEntry();
 
-        Attribute ou = new DefaultAttribute( "ou" );
-        ou.add( "apache" );
-        ou.add( "acme corp" );
-        modifiedEntry.put( ou );
-        
+        modifiedEntry.put( "ou", "apache", "acme corp" );
+
         Dn dn = new Dn( "cn=test, ou=system" );
-        
-        Modification mod = new DefaultModification( 
+
+        Modification mod = new DefaultModification(
             ModificationOperation.REPLACE_ATTRIBUTE, new DefaultAttribute( "ou" ) );
 
         LdifEntry reversed = LdifRevertor.reverseModify( dn,
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
-        
+
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
-        
+
         assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
-        
-        assertEquals( ou, attr );
+
+        assertTrue( attr.contains( "apache", "acme corp" ) );
     }
-    
-    
+
+
     /**
      * Test a multiple modifications reverse.
      * 
@@ -407,7 +386,7 @@ public class LdifRevertorTest
      *  - add the 'l=FR' attribute
      *  - replace the 'l=FR' by a 'l=USA' attribute
      *  - replace the 'ou' attribute with 'apache' value.
-     *  
+     * 
      * The modify ldif will be :
      * 
      *  dn: cn=test, ou=system
@@ -426,7 +405,7 @@ public class LdifRevertorTest
      *  replace: ou
      *  ou: apache
      *  -
-     *  
+     * 
      * At the end, the entry will looks like :
      *  dn: cn=test, ou=system
      *  objectclass: top
@@ -435,7 +414,7 @@ public class LdifRevertorTest
      *  sn: joe doe
      *  l: USA
      *  ou: apache
-     *  
+     * 
      * and the reversed LDIF will be :
      * 
      *  dn: cn=test, ou=system
@@ -453,7 +432,7 @@ public class LdifRevertorTest
      *  add: l
      *  l: USA
      *  -
-     *  delete: ou 
+     *  delete: ou
      *  ou: BigCompany inc.
      *  -
      * 
@@ -461,22 +440,22 @@ public class LdifRevertorTest
     @Test
     public void testReverseMultipleModifications() throws Exception
     {
-        String initialEntryLdif = 
-                "dn: cn=test, ou=system\n" + 
-                "objectclass: top\n" + 
-                "objectclass: person\n" + 
-                "cn: test\n" + 
-                "sn: joe doe\n" + 
-                "l: USA\n" + 
-                "ou: apache\n" + 
-                "ou: acme corp\n"; 
-        
+        String initialEntryLdif =
+            "dn: cn=test, ou=system\n" +
+                "objectclass: top\n" +
+                "objectclass: person\n" +
+                "cn: test\n" +
+                "sn: joe doe\n" +
+                "l: USA\n" +
+                "ou: apache\n" +
+                "ou: acme corp\n";
+
         LdifReader reader = new LdifReader();
         List<LdifEntry> entries = reader.parseLdif( initialEntryLdif );
         reader.close();
-        
+
         LdifEntry initialEntry = entries.get( 0 );
- 
+
         // We will :
         //   - add an 'ou' value 'BigCompany inc.'
         //   - delete the 'l' attribute
@@ -484,12 +463,11 @@ public class LdifRevertorTest
         //   - replace the 'l=FR' by a 'l=USA' attribute
         //   - replace the 'ou' attribute with 'apache' value.
         Dn dn = new Dn( "cn=test, ou=system" );
-        
+
         List<Modification> modifications = new ArrayList<Modification>();
 
         // First, inject the 'ou'
-        
-        Modification mod = new DefaultModification( 
+        Modification mod = new DefaultModification(
             ModificationOperation.ADD_ATTRIBUTE, new DefaultAttribute( "ou", "BigCompany inc." ) );
         modifications.add( mod );
 
@@ -497,51 +475,51 @@ public class LdifRevertorTest
         mod = new DefaultModification(
             ModificationOperation.REMOVE_ATTRIBUTE, new DefaultAttribute( "l" ) );
         modifications.add( mod );
-        
+
         // Add 'l=FR'
         mod = new DefaultModification(
             ModificationOperation.ADD_ATTRIBUTE, new DefaultAttribute( "l", "FR" ) );
         modifications.add( mod );
 
         // Replace it with 'l=USA'
-        mod = new DefaultModification( 
+        mod = new DefaultModification(
             ModificationOperation.REPLACE_ATTRIBUTE, new DefaultAttribute( "l", "USA" ) );
         modifications.add( mod );
 
         // Replace the ou value
-        mod = new DefaultModification( 
+        mod = new DefaultModification(
             ModificationOperation.REPLACE_ATTRIBUTE, new DefaultAttribute( "ou", "apache" ) );
         modifications.add( mod );
-        
+
         LdifEntry reversedEntry = LdifRevertor.reverseModify( dn, modifications, initialEntry.getEntry() );
 
-        String expectedEntryLdif = 
+        String expectedEntryLdif =
             "dn: cn=test, ou=system\n" +
-            "changetype: modify\n" +
-            "replace: ou\n" +
-            "ou: apache\n" +
-            "ou: acme corp\n" +
-            "ou: BigCompany inc.\n" +
-            "-\n" +
-            "replace: l\n" +
-            "l: FR\n" +
-            "-\n" +
-            "delete: l\n" +
-            "l: FR\n" +
-            "-\n" +
-            "add: l\n" +
-            "l: USA\n" +
-            "-\n" +
-            "delete: ou\n" + 
-            "ou: BigCompany inc.\n" +
-            "-\n\n";
-    
+                "changetype: modify\n" +
+                "replace: ou\n" +
+                "ou: apache\n" +
+                "ou: acme corp\n" +
+                "ou: BigCompany inc.\n" +
+                "-\n" +
+                "replace: l\n" +
+                "l: FR\n" +
+                "-\n" +
+                "delete: l\n" +
+                "l: FR\n" +
+                "-\n" +
+                "add: l\n" +
+                "l: USA\n" +
+                "-\n" +
+                "delete: ou\n" +
+                "ou: BigCompany inc.\n" +
+                "-\n\n";
+
         reader = new LdifReader();
         entries = reader.parseLdif( expectedEntryLdif );
         reader.close();
 
         LdifEntry expectedEntry = entries.get( 0 );
-        
+
         assertEquals( expectedEntry, reversedEntry );
     }
 
@@ -555,34 +533,31 @@ public class LdifRevertorTest
     {
         Entry modifiedEntry = buildEntry();
 
-        Attribute ou = new DefaultAttribute( "ou" );
-        ou.add( "apache" );
-        ou.add( "acme corp" );
-        modifiedEntry.put( ou );
-        
+        modifiedEntry.put( "ou", "apache", "acme corp" );
+
         Dn dn = new Dn( "cn=test, ou=system" );
         Modification mod = new DefaultModification(
             ModificationOperation.ADD_ATTRIBUTE,
             new DefaultAttribute( "ou", "BigCompany inc." ) );
 
         LdifEntry reversed = LdifRevertor.reverseModify( dn,
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
-        
+
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
         assertEquals( "BigCompany inc.", attr.getString() );
@@ -596,36 +571,36 @@ public class LdifRevertorTest
     public void testReverseModifyAddNewOu() throws LdapException
     {
         Entry modifiedEntry = buildEntry();
-        
+
         Dn dn = new Dn( "cn=test, ou=system" );
         Modification mod = new DefaultModification(
-            ModificationOperation.ADD_ATTRIBUTE, 
+            ModificationOperation.ADD_ATTRIBUTE,
             new DefaultAttribute( "ou", "BigCompany inc." ) );
 
         LdifEntry reversed = LdifRevertor.reverseModify( dn,
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
 
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
         assertEquals( "BigCompany inc.", attr.getString() );
     }
-    
-    
+
+
     /**
      * Test a AddRequest reverse where the Dn is to be base64 encoded
      *
@@ -655,22 +630,15 @@ public class LdifRevertorTest
         Dn newSuperior = new Dn( "ou=system" );
         Rdn rdn = new Rdn( "cn=john doe" );
 
-        Attributes attrs = new BasicAttributes( "objectClass", "person", true );
-        attrs.get( "objectClass" ).add( "uidObject" );
-        attrs.put( "cn", "john doe" );
-        attrs.put( "cn", "jack doe" );
-        attrs.put( "sn", "doe" );
-        attrs.put( "uid", "jdoe" );
-
         LdifEntry reversed = LdifRevertor.reverseMove( newSuperior, dn );
 
         assertNotNull( reversed );
-        
+
         assertEquals( "cn=john doe,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModDn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
         assertEquals( rdn.getName(), reversed.getNewRdn() );
-        assertEquals( "dc=example, dc=com", Strings.trim(reversed.getNewSuperior()) );
+        assertEquals( "dc=example, dc=com", Strings.trim( reversed.getNewSuperior() ) );
         assertNull( reversed.getEntry() );
     }
 
@@ -686,7 +654,7 @@ public class LdifRevertorTest
      * objectclass: top
      * objectclass: person
      * cn: test
-     * sn: This is a test 
+     * sn: This is a test
      * 
      * new Rdn : cn=joe
      *
@@ -699,17 +667,18 @@ public class LdifRevertorTest
         Rdn oldRdn = new Rdn( "cn=test" );
         Rdn newRdn = new Rdn( "cn=joe" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.KEEP_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -730,7 +699,7 @@ public class LdifRevertorTest
      * objectclass: person
      * cn: test
      * cn: small
-     * sn: This is a test 
+     * sn: This is a test
      * 
      * new Rdn : cn=small
      *
@@ -743,17 +712,19 @@ public class LdifRevertorTest
         Rdn oldRdn = new Rdn( "cn=test" );
         Rdn newRdn = new Rdn( "cn=small" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "cn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.KEEP_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=small,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -773,7 +744,7 @@ public class LdifRevertorTest
      * objectclass: top
      * objectclass: person
      * cn: test
-     * sn: This is a test 
+     * sn: This is a test
      * 
      * new Rdn : cn=joe
      *
@@ -786,17 +757,18 @@ public class LdifRevertorTest
         Rdn oldRdn = new Rdn( "cn=test" );
         Rdn newRdn = new Rdn( "cn=joe" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.DELETE_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -817,7 +789,7 @@ public class LdifRevertorTest
      * objectclass: person
      * cn: test
      * cn: small
-     * sn: This is a test 
+     * sn: This is a test
      * 
      * new Rdn : cn=small
      *
@@ -830,17 +802,19 @@ public class LdifRevertorTest
         Rdn oldRdn = new Rdn( "cn=test" );
         Rdn newRdn = new Rdn( "cn=small" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "cn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.DELETE_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=small,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -857,12 +831,12 @@ public class LdifRevertorTest
      * Covers case 3 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
-     * dn: cn=small+cn=test,ou=system
+     * dn: sn=small+cn=test,ou=system
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
-     * sn: This is a test 
+     * sn: small
+     * sn: This is a test
      * 
      * new Rdn : cn=joe
      *
@@ -871,21 +845,23 @@ public class LdifRevertorTest
     @Test
     public void test3ReverseRenameCompositeSimpleNotOverlappingKeepOldRdnDontExistInEntry() throws LdapException
     {
-        Dn dn = new Dn( "cn=small+cn=test,ou=system" );
-        Rdn oldRdn = new Rdn( "cn=small+cn=test" );
+        Dn dn = new Dn( "sn=small+cn=test,ou=system" );
+        Rdn oldRdn = new Rdn( "sn=small+cn=test" );
         Rdn newRdn = new Rdn( "cn=joe" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "sn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.KEEP_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -902,13 +878,13 @@ public class LdifRevertorTest
      * Covers case 3 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
-     * dn: cn=small+cn=test,ou=system
+     * dn: sn=small+cn=test,ou=system
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
      * cn: big
-     * sn: This is a test 
+     * sn: small
+     * sn: This is a test
      * 
      * new Rdn : cn=big
      *
@@ -917,21 +893,24 @@ public class LdifRevertorTest
     @Test
     public void test3ReverseRenameCompositeSimpleNotOverlappingKeepOldRdnExistsInEntry() throws LdapException
     {
-        Dn dn = new Dn( "cn=small+cn=test,ou=system" );
-        Rdn oldRdn = new Rdn( "cn=small+cn=test" );
+        Dn dn = new Dn( "sn=small+cn=test,ou=system" );
+        Rdn oldRdn = new Rdn( "sn=small+cn=test" );
         Rdn newRdn = new Rdn( "cn=big" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "small", "big" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "cn: big",
+            "sn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.KEEP_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=big,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -948,12 +927,12 @@ public class LdifRevertorTest
      * Covers case 4 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
-     * dn: c,=small+cn=test,ou=system
+     * dn: sn=small+cn=test,ou=system
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
-     * sn: This is a test 
+     * sn: small
+     * sn: This is a test
      * 
      * new Rdn : cn=joe
      *
@@ -962,21 +941,23 @@ public class LdifRevertorTest
     @Test
     public void test4ReverseRenameCompositeSimpleNotOverlappingDeleteOldRdnDontExistsInEntry() throws LdapException
     {
-        Dn dn = new Dn( "cn=small+cn=test,ou=system" );
-        Rdn oldRdn = new Rdn( "cn=small+cn=test" );
+        Dn dn = new Dn( "sn=small+cn=test,ou=system" );
+        Rdn oldRdn = new Rdn( "sn=small+cn=test" );
         Rdn newRdn = new Rdn( "cn=joe" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "sn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.DELETE_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -993,13 +974,13 @@ public class LdifRevertorTest
      * Covers case 4 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
-     * dn: cn=small+cn=test,ou=system
+     * dn: sn=small+cn=test,ou=system
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
      * cn: big
-     * sn: This is a test 
+     * sn: small
+     * sn: This is a test
      * 
      * new Rdn : cn=big
      *
@@ -1008,21 +989,24 @@ public class LdifRevertorTest
     @Test
     public void test4ReverseRenameCompositeSimpleNotOverlappingDeleteOldRdnExistInEntry() throws LdapException
     {
-        Dn dn = new Dn( "cn=small+cn=test,ou=system" );
-        Rdn oldRdn = new Rdn( "cn=small+cn=test" );
+        Dn dn = new Dn( "sn=small+cn=test,ou=system" );
+        Rdn oldRdn = new Rdn( "sn=small+cn=test" );
         Rdn newRdn = new Rdn( "cn=big" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "small", "big" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "cn: big",
+            "sn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.DELETE_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=big,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -1038,12 +1022,12 @@ public class LdifRevertorTest
      * Covers case 5 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
-     * dn: cn=small+cn=test,ou=system
+     * dn: sn=small+cn=test,ou=system
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
-     * sn: This is a test 
+     * sn: small
+     * sn: This is a test
      * 
      * new Rdn : cn=test
      *
@@ -1052,21 +1036,23 @@ public class LdifRevertorTest
     @Test
     public void test5ReverseRenameCompositeSimpleOverlappingKeepOldRdn() throws LdapException
     {
-        Dn dn = new Dn( "cn=small+cn=test,ou=system" );
-        Rdn oldRdn = new Rdn( "cn=small+cn=test" );
+        Dn dn = new Dn( "sn=small+cn=test,ou=system" );
+        Rdn oldRdn = new Rdn( "sn=small+cn=test" );
         Rdn newRdn = new Rdn( "cn=test" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "sn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.KEEP_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -1082,12 +1068,12 @@ public class LdifRevertorTest
      * Covers case 5 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
-     * dn: cn=small+cn=test,ou=system
+     * dn: sn=small+cn=test,ou=system
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
-     * sn: This is a test 
+     * sn: small
+     * sn: This is a test
      * 
      * new Rdn : cn=test
      *
@@ -1096,21 +1082,23 @@ public class LdifRevertorTest
     @Test
     public void test5ReverseRenameCompositeSimpleOverlappingDeleteOldRdn() throws LdapException
     {
-        Dn dn = new Dn( "cn=small+cn=test,ou=system" );
-        Rdn oldRdn = new Rdn( "cn=small+cn=test" );
+        Dn dn = new Dn( "sn=small+cn=test,ou=system" );
+        Rdn oldRdn = new Rdn( "sn=small+cn=test" );
         Rdn newRdn = new Rdn( "cn=test" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "sn: small",
+            "sn: this is a test" );
 
-        List<LdifEntry> reverseds = LdifRevertor.reverseRename(entry, newRdn, LdifRevertor.DELETE_OLD_RDN);
+        List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.DELETE_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -1132,9 +1120,9 @@ public class LdifRevertorTest
      * objectclass: person
      * cn: test
      * cn: small
-     * sn: This is a test 
+     * sn: This is a test
      * 
-     * new Rdn : cn=joe+cn=plumber
+     * new Rdn : cn=joe+sn=plumber
      *
      * @throws LdapException on error
      */
@@ -1143,20 +1131,22 @@ public class LdifRevertorTest
     {
         Dn dn = new Dn( "cn=test,ou=system" );
         Rdn oldRdn = new Rdn( "cn=test" );
-        Rdn newRdn = new Rdn( "cn=joe+cn=plumber" );
+        Rdn newRdn = new Rdn( "cn=joe+sn=plumber" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "cn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.KEEP_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=joe+cn=plumber,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "cn=joe+sn=plumber,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
@@ -1176,10 +1166,10 @@ public class LdifRevertorTest
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
-     * sn: This is a test 
+     * sn: small
+     * sn: This is a test
      * 
-     * new Rdn : cn=joe+cn=small
+     * new Rdn : cn=joe+sn=small
      *
      * @throws LdapException on error
      */
@@ -1188,31 +1178,33 @@ public class LdifRevertorTest
     {
         Dn dn = new Dn( "cn=test,ou=system" );
         Rdn oldRdn = new Rdn( "cn=test" );
-        Rdn newRdn = new Rdn( "cn=joe+cn=small" );
+        Rdn newRdn = new Rdn( "cn=joe+sn=small" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "sn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.KEEP_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 2, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=joe+cn=small,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "cn=joe+sn=small,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
 
         reversed = reverseds.get( 1 );
-        
+
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         Modification[] mods = reversed.getModificationArray();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.length );
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, mods[0].getOperation() );
@@ -1235,9 +1227,9 @@ public class LdifRevertorTest
      * objectclass: person
      * cn: test
      * cn: small
-     * sn: This is a test 
+     * sn: This is a test
      * 
-     * new Rdn : cn=joe+cn=plumber
+     * new Rdn : cn=joe+sn=plumber
      *
      * @throws LdapException on error
      */
@@ -1246,20 +1238,22 @@ public class LdifRevertorTest
     {
         Dn dn = new Dn( "cn=test,ou=system" );
         Rdn oldRdn = new Rdn( "cn=test" );
-        Rdn newRdn = new Rdn( "cn=joe+cn=plumber" );
+        Rdn newRdn = new Rdn( "cn=joe+sn=plumber" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "cn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.DELETE_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=joe+cn=plumber,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "cn=joe+sn=plumber,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
@@ -1279,10 +1273,10 @@ public class LdifRevertorTest
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
-     * sn: This is a test 
+     * sn: small
+     * sn: This is a test
      * 
-     * new Rdn : cn=joe+cn=small
+     * new Rdn : cn=joe+sn=small
      *
      * @throws LdapException on error
      */
@@ -1291,31 +1285,33 @@ public class LdifRevertorTest
     {
         Dn dn = new Dn( "cn=test,ou=system" );
         Rdn oldRdn = new Rdn( "cn=test" );
-        Rdn newRdn = new Rdn( "cn=joe+cn=small" );
+        Rdn newRdn = new Rdn( "cn=joe+sn=small" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "sn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.DELETE_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 2, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=joe+cn=small,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "cn=joe+sn=small,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
-        
+
         reversed = reverseds.get( 1 );
-        
+
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         Modification[] mods = reversed.getModificationArray();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.length );
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, mods[0].getOperation() );
@@ -1338,9 +1334,9 @@ public class LdifRevertorTest
      * objectclass: person
      * cn: test
      * cn: big
-     * sn: This is a test 
+     * sn: This is a test
      * 
-     * new Rdn : cn=small+cn=test
+     * new Rdn : sn=small+cn=test
      *
      * @throws LdapException on error
      */
@@ -1349,27 +1345,27 @@ public class LdifRevertorTest
     {
         Dn dn = new Dn( "cn=test,ou=system" );
         Rdn oldRdn = new Rdn( "cn=test" );
-        Rdn newRdn = new Rdn( "cn=small+cn=test" );
+        Rdn newRdn = new Rdn( "sn=small+cn=test" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "big" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "cn: big",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.KEEP_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=small+cn=test,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "sn=small+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
     }
-
-
 
 
     /**
@@ -1384,10 +1380,10 @@ public class LdifRevertorTest
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: big
-     * sn: This is a test 
+     * sn: This is a test
+     * seeAlso: big
      * 
-     * new Rdn : cn=small+cn=test
+     * new Rdn : sn=small+cn=test+seeAlso=big
      *
      * @throws LdapException on error
      */
@@ -1396,36 +1392,38 @@ public class LdifRevertorTest
     {
         Dn dn = new Dn( "cn=test,ou=system" );
         Rdn oldRdn = new Rdn( "cn=test" );
-        Rdn newRdn = new Rdn( "cn=small+cn=test+cn=big" );
+        Rdn newRdn = new Rdn( "sn=small+cn=test+seeAlso=big" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "big" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "seeAlso: big",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.KEEP_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 2, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=small+cn=test+cn=big,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "sn=small+cn=test+seeAlso=big,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
 
         reversed = reverseds.get( 1 );
-        
+
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         Modification[] mods = reversed.getModificationArray();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.length );
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, mods[0].getOperation() );
         assertNotNull( mods[0].getAttribute() );
-        assertEquals( "cn", mods[0].getAttribute().getId() );
+        assertEquals( "sn", mods[0].getAttribute().getId() );
         assertEquals( "small", mods[0].getAttribute().getString() );
     }
 
@@ -1443,9 +1441,9 @@ public class LdifRevertorTest
      * objectclass: person
      * cn: test
      * cn: big
-     * sn: This is a test 
+     * sn: This is a test
      * 
-     * new Rdn : cn=small+cn=test
+     * new Rdn : sn=small+cn=test
      *
      * @throws LdapException on error
      */
@@ -1454,20 +1452,22 @@ public class LdifRevertorTest
     {
         Dn dn = new Dn( "cn=test,ou=system" );
         Rdn oldRdn = new Rdn( "cn=test" );
-        Rdn newRdn = new Rdn( "cn=small+cn=test" );
+        Rdn newRdn = new Rdn( "sn=small+cn=test" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "big" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "cn: big",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.DELETE_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=small+cn=test,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "sn=small+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
@@ -1487,8 +1487,8 @@ public class LdifRevertorTest
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: big
-     * sn: This is a test 
+     * seeAlso: big
+     * sn: This is a test
      * 
      * new Rdn : cn=small+cn=test+cn=big
      *
@@ -1499,36 +1499,38 @@ public class LdifRevertorTest
     {
         Dn dn = new Dn( "cn=test,ou=system" );
         Rdn oldRdn = new Rdn( "cn=test" );
-        Rdn newRdn = new Rdn( "cn=small+cn=test+cn=big" );
+        Rdn newRdn = new Rdn( "sn=small+cn=test+seeAlso=big" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "big" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "seeAlso: big",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.DELETE_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 2, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=small+cn=test+cn=big,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "sn=small+cn=test+seeAlso=big,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
 
         reversed = reverseds.get( 1 );
-        
+
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         Modification[] mods = reversed.getModificationArray();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.length );
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, mods[0].getOperation() );
         assertNotNull( mods[0].getAttribute() );
-        assertEquals( "cn", mods[0].getAttribute().getId() );
+        assertEquals( "sn", mods[0].getAttribute().getId() );
         assertEquals( "small", mods[0].getAttribute().getString() );
     }
 
@@ -1541,13 +1543,13 @@ public class LdifRevertorTest
      * Covers case 10.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
-     * dn: cn=small+cn=test,ou=system
+     * dn: sn=small+cn=test,ou=system
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
      * cn: big
-     * sn: This is a test 
+     * sn: small
+     * sn: This is a test
      * 
      * new Rdn : cn=joe+cn=plumber
      *
@@ -1556,22 +1558,25 @@ public class LdifRevertorTest
     @Test
     public void test101ReverseRenameCompositeCompositeNotOverlappingKeepOldRdnDontExistInEntry() throws LdapException
     {
-        Dn dn = new Dn( "cn=small+cn=test,ou=system" );
-        Rdn oldRdn = new Rdn( "cn=small+cn=test" );
-        Rdn newRdn = new Rdn( "cn=joe+cn=plumber" );
+        Dn dn = new Dn( "sn=small+cn=test,ou=system" );
+        Rdn oldRdn = new Rdn( "sn=small+cn=test" );
+        Rdn newRdn = new Rdn( "cn=joe+sn=plumber" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "big", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "cn: big",
+            "sn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.KEEP_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=joe+cn=plumber,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "cn=joe+sn=plumber,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
@@ -1587,53 +1592,56 @@ public class LdifRevertorTest
      * Covers case 10.2 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
-     * dn: cn=small+cn=test,ou=system
+     * dn: sn=small+cn=test,ou=system
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
      * cn: big
-     * sn: This is a test 
+     * sn: small
+     * sn: This is a test
      * 
-     * new Rdn : cn=joe+cn=big
+     * new Rdn : sn=joe+cn=big
      *
      * @throws LdapException on error
      */
     @Test
     public void test102ReverseRenameCompositeCompositeNotOverlappingKeepOldRdnExistInEntry() throws LdapException
     {
-        Dn dn = new Dn( "cn=small+cn=test,ou=system" );
-        Rdn oldRdn = new Rdn( "cn=small+cn=test" );
-        Rdn newRdn = new Rdn( "cn=joe+cn=big" );
+        Dn dn = new Dn( "sn=small+cn=test,ou=system" );
+        Rdn oldRdn = new Rdn( "sn=small+cn=test" );
+        Rdn newRdn = new Rdn( "sn=joe+cn=big" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "big", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "cn: big",
+            "sn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.KEEP_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 2, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=joe+cn=big,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "sn=joe+cn=big,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
 
         reversed = reverseds.get( 1 );
-        
-        assertEquals( "cn=small+cn=test,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "sn=small+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         Modification[] mods = reversed.getModificationArray();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.length );
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, mods[0].getOperation() );
         assertNotNull( mods[0].getAttribute() );
-        assertEquals( "cn", mods[0].getAttribute().getId() );
+        assertEquals( "sn", mods[0].getAttribute().getId() );
         assertEquals( "joe", mods[0].getAttribute().getString() );
     }
 
@@ -1646,37 +1654,40 @@ public class LdifRevertorTest
      * Covers case 11.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
-     * dn: cn=small+cn=test,ou=system
+     * dn: sn=small+cn=test,ou=system
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
-     * cn: big
-     * sn: This is a test 
+     * sn: big
+     * sn: small
+     * sn: This is a test
      * 
-     * new Rdn : cn=joe+cn=plumber
+     * new Rdn : cn=joe+sn=plumber
      *
      * @throws LdapException on error
      */
     @Test
     public void test111ReverseRenameCompositeCompositeNotOverlappingDeleteOldRdnDontExistInEntry() throws LdapException
     {
-        Dn dn = new Dn( "cn=small+cn=test,ou=system" );
-        Rdn oldRdn = new Rdn( "cn=small+cn=test" );
-        Rdn newRdn = new Rdn( "cn=joe+cn=plumber" );
+        Dn dn = new Dn( "sn=small+cn=test,ou=system" );
+        Rdn oldRdn = new Rdn( "sn=small+cn=test" );
+        Rdn newRdn = new Rdn( "cn=joe+sn=plumber" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "big", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "sn: big",
+            "sn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.DELETE_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=joe+cn=plumber,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "cn=joe+sn=plumber,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
@@ -1692,48 +1703,51 @@ public class LdifRevertorTest
      * Covers case 11.2 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
-     * dn: cn=small+cn=test,ou=system
+     * dn: sn=small+cn=test,ou=system
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
-     * cn: big
-     * sn: This is a test 
+     * sn: big
+     * sn: small
+     * sn: This is a test
      * 
-     * new Rdn : cn=joe+cn=plumber
+     * new Rdn : cn=joe+sn=big
      *
      * @throws LdapException on error
      */
     @Test
     public void test112ReverseRenameCompositeCompositeNotOverlappingDeleteOldRdnExistInEntry() throws LdapException
     {
-        Dn dn = new Dn( "cn=small+cn=test,ou=system" );
-        Rdn oldRdn = new Rdn( "cn=small+cn=test" );
-        Rdn newRdn = new Rdn( "cn=joe+cn=big" );
+        Dn dn = new Dn( "sn=small+cn=test,ou=system" );
+        Rdn oldRdn = new Rdn( "sn=small+cn=test" );
+        Rdn newRdn = new Rdn( "cn=joe+sn=big" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "big", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "sn: big",
+            "sn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.DELETE_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 2, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=joe+cn=big,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "cn=joe+sn=big,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
 
         reversed = reverseds.get( 1 );
-        
-        assertEquals( "cn=small+cn=test,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "sn=small+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         Modification[] mods = reversed.getModificationArray();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.length );
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, mods[0].getOperation() );
@@ -1751,13 +1765,13 @@ public class LdifRevertorTest
      * Covers case 12.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
-     * dn: cn=small+cn=test,ou=system
+     * dn: sn=small+cn=test,ou=system
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
      * cn: big
-     * sn: This is a test 
+     * sn: small
+     * sn: This is a test
      * 
      * new Rdn : cn=joe+cn=test
      *
@@ -1766,22 +1780,25 @@ public class LdifRevertorTest
     @Test
     public void test121ReverseRenameCompositeCompositeOverlappingKeepOldRdnDontExistInEntry() throws LdapException
     {
-        Dn dn = new Dn( "cn=small+cn=test,ou=system" );
-        Rdn oldRdn = new Rdn( "cn=small+cn=test" );
-        Rdn newRdn = new Rdn( "cn=joe+cn=test" );
+        Dn dn = new Dn( "sn=small+cn=test,ou=system" );
+        Rdn oldRdn = new Rdn( "sn=small+cn=test" );
+        Rdn newRdn = new Rdn( "sn=joe+cn=test" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "big", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "cn: big",
+            "sn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.KEEP_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=joe+cn=test,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "sn=joe+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
@@ -1797,37 +1814,40 @@ public class LdifRevertorTest
      * Covers case 12.2 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
-     * dn: cn=small+cn=test,ou=system
+     * dn: sn=small+cn=test,ou=system
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
-     * cn: big
-     * sn: This is a test 
+     * sn: big
+     * sn: small
+     * sn: This is a test
      * 
-     * new Rdn : cn=joe+cn=test
+     * new Rdn : sn=big+cn=test
      *
      * @throws LdapException on error
      */
     @Test
     public void test122ReverseRenameCompositeCompositeOverlappingKeepOldRdnExistInEntry() throws LdapException
     {
-        Dn dn = new Dn( "cn=small+cn=test,ou=system" );
-        Rdn oldRdn = new Rdn( "cn=small+cn=test" );
-        Rdn newRdn = new Rdn( "cn=big+cn=test" );
+        Dn dn = new Dn( "sn=small+cn=test,ou=system" );
+        Rdn oldRdn = new Rdn( "sn=small+cn=test" );
+        Rdn newRdn = new Rdn( "sn=big+cn=test" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "big", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "sn: big",
+            "sn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.KEEP_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=big+cn=test,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "sn=big+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
@@ -1843,37 +1863,40 @@ public class LdifRevertorTest
      * Covers case 13.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
-     * dn: cn=small+cn=test,ou=system
+     * dn: sn=small+cn=test,ou=system
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
      * cn: big
-     * sn: This is a test 
+     * sn: small
+     * sn: This is a test
      * 
-     * new Rdn : cn=joe+cn=test
+     * new Rdn : sn=joe+cn=test
      *
      * @throws LdapException on error
      */
     @Test
     public void test131ReverseRenameCompositeCompositeOverlappingDeleteOldRdnDontExistInEntry() throws LdapException
     {
-        Dn dn = new Dn( "cn=small+cn=test,ou=system" );
-        Rdn oldRdn = new Rdn( "cn=small+cn=test" );
-        Rdn newRdn = new Rdn( "cn=joe+cn=test" );
+        Dn dn = new Dn( "sn=small+cn=test,ou=system" );
+        Rdn oldRdn = new Rdn( "sn=small+cn=test" );
+        Rdn newRdn = new Rdn( "sn=joe+cn=test" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "big", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "cn: big",
+            "sn: small",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.DELETE_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=joe+cn=test,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "sn=joe+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
@@ -1889,37 +1912,40 @@ public class LdifRevertorTest
      * Covers case 13.1 of http://cwiki.apache.org/confluence/display/DIRxSRVx11/Reverse+LDIF
      * 
      * Initial entry
-     * dn: cn=small+cn=test,ou=system
+     * dn: sn=small+cn=test,ou=system
      * objectclass: top
      * objectclass: person
      * cn: test
-     * cn: small
-     * cn: big
-     * sn: This is a test 
+     * sn: small
+     * sn: big
+     * sn: This is a test
      * 
-     * new Rdn : cn=big+cn=test
+     * new Rdn : sn=big+cn=test
      *
      * @throws LdapException on error
      */
     @Test
     public void test132ReverseRenameCompositeCompositeOverlappingDeleteOldRdnExistInEntry() throws LdapException
     {
-        Dn dn = new Dn( "cn=small+cn=test,ou=system" );
-        Rdn oldRdn = new Rdn( "cn=small+cn=test" );
-        Rdn newRdn = new Rdn( "cn=big+cn=test" );
+        Dn dn = new Dn( "sn=small+cn=test,ou=system" );
+        Rdn oldRdn = new Rdn( "sn=small+cn=test" );
+        Rdn newRdn = new Rdn( "sn=big+cn=test" );
 
-        Entry entry = new DefaultEntry( dn );
-        entry.put( "cn", "test", "big", "small" );
-        entry.put( "objectClass", "person", "top" );
-        entry.put( "sn", "this is a test" );
+        Entry entry = new DefaultEntry( dn,
+            "objectClass: top",
+            "objectClass: person",
+            "cn: test",
+            "sn: small",
+            "sn: big",
+            "sn: this is a test" );
 
         List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.DELETE_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
-        assertEquals( "cn=big+cn=test,ou=system", reversed.getDn().getName() );
+
+        assertEquals( "sn=big+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );

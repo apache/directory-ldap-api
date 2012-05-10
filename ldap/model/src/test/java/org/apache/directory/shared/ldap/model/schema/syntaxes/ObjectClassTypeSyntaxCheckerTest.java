@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.ObjectClassTypeSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for ObjectClassTypeSyntaxChecker.
@@ -62,8 +64,8 @@ public class ObjectClassTypeSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "a" ) );
         assertFalse( checker.isValidSyntax( "-" ) );
     }
-    
-    
+
+
     @Test
     public void testWrongCase()
     {
@@ -71,8 +73,8 @@ public class ObjectClassTypeSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "abstract" ) );
         assertFalse( checker.isValidSyntax( "structural" ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectCase()
     {

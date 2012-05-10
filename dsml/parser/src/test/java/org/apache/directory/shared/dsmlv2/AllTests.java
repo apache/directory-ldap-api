@@ -56,32 +56,32 @@ import com.mycila.junit.concurrent.ConcurrentSuite;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentSuite.class)
-@Suite.SuiteClasses({
-    AbandonRequestTest.class,
-    AddRequestTest.class,
-    AddResponseTest.class,
-    AuthRequestTest.class,
-    AuthResponseTest.class,
-    BatchRequestTest.class,
-    BatchResponseTest.class,
-    CompareRequestTest.class,
-    CompareResponseTest.class,
-    DelRequestTest.class,
-    DelResponseTest.class,
-    ErrorResponseTest.class,
-    ExtendedRequestTest.class,
-    ExtendedResponseTest.class,
-    ModifyDNRequestTest.class,
-    ModifyDNResponseTest.class,
-    ModifyRequestTest.class,
-    ModifyResponseTest.class,
-    SearchRequestTest.class,
-    SearchResponseTest.class,
-    SearchResultDoneTest.class,
-    SearchResultEntryTest.class,
-    SearchResultReferenceTest.class
+@Suite.SuiteClasses(
+    {
+        AbandonRequestTest.class,
+        AddRequestTest.class,
+        AddResponseTest.class,
+        AuthRequestTest.class,
+        AuthResponseTest.class,
+        BatchRequestTest.class,
+        BatchResponseTest.class,
+        CompareRequestTest.class,
+        CompareResponseTest.class,
+        DelRequestTest.class,
+        DelResponseTest.class,
+        ErrorResponseTest.class,
+        ExtendedRequestTest.class,
+        ExtendedResponseTest.class,
+        ModifyDNRequestTest.class,
+        ModifyDNResponseTest.class,
+        ModifyRequestTest.class,
+        ModifyResponseTest.class,
+        SearchRequestTest.class,
+        SearchResponseTest.class,
+        SearchResultDoneTest.class,
+        SearchResultEntryTest.class,
+        SearchResultReferenceTest.class
 })
-
 public class AllTests
 {
 }

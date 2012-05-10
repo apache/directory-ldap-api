@@ -26,8 +26,6 @@ import java.util.regex.Pattern;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,17 +47,16 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class ObjectNameSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ObjectNameSyntaxChecker.class );
 
     private static final String REGEXP = "^([a-zA-Z][a-zA-Z0-9-;]*)$";
-    
-    private static final Pattern PATTERN =  Pattern.compile( REGEXP );
-    
+
+    private static final Pattern PATTERN = Pattern.compile( REGEXP );
+
+
     /**
      * Creates a new instance of ObjectNameSyntaxChecker.
      */
@@ -67,8 +64,8 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.OBJECT_NAME_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -81,14 +78,14 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -102,10 +99,10 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
         }
 
         // Search for the '$' separator
-        Matcher match = PATTERN.matcher ( strValue );
-        
+        Matcher match = PATTERN.matcher( strValue );
+
         boolean result = match.matches();
-        
+
         if ( result )
         {
             LOG.debug( "Syntax valid for '{}'", value );
@@ -114,7 +111,7 @@ public class ObjectNameSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax invalid for '{}'", value );
         }
-        
+
         return result;
     }
 }

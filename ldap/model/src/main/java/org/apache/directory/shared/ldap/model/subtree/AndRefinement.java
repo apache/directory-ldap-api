@@ -19,8 +19,10 @@
  */
 package org.apache.directory.shared.ldap.model.subtree;
 
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * A class holding a AND refinement, as defined in RFC 3672
@@ -33,6 +35,7 @@ public class AndRefinement implements Refinement
     /** The set of refinements */
     private List<Refinement> refinements = new ArrayList<Refinement>();
 
+
     /**
      * Creates a new instance of AndRefinement.
      *
@@ -42,8 +45,8 @@ public class AndRefinement implements Refinement
     {
         this.refinements = refinements;
     }
-    
-    
+
+
     /**
      * @return Gets the set of refinements
      */
@@ -51,20 +54,20 @@ public class AndRefinement implements Refinement
     {
         return refinements;
     }
-    
-    
+
+
     /**
      * @see Object#toString()
      */
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        
+
         sb.append( "and: { " );
 
         boolean isFirst = true;
-        
-        for ( Refinement refinement:refinements )
+
+        for ( Refinement refinement : refinements )
         {
             if ( isFirst )
             {
@@ -77,7 +80,7 @@ public class AndRefinement implements Refinement
 
             sb.append( refinement );
         }
-     
+
         sb.append( " }" );
         return sb.toString();
     }

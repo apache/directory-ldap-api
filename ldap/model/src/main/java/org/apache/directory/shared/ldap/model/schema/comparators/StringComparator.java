@@ -23,9 +23,6 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 import java.io.Serializable;
 
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Property;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,8 +32,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
-@Provides
 public class StringComparator extends LdapComparator<String> implements Serializable
 {
     /** The serial version UID */
@@ -50,7 +45,7 @@ public class StringComparator extends LdapComparator<String> implements Serializ
      * The StringComparator constructor. Its OID is the StringMatch matching
      * rule OID.
      */
-    public StringComparator( @Property(name = "ads.comp.comparator.oid") String oid )
+    public StringComparator( String oid )
     {
         super( oid );
     }
@@ -60,7 +55,7 @@ public class StringComparator extends LdapComparator<String> implements Serializ
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ES_COMPARING_PARAMETER_STRING_WITH_EQ",
-            justification ="false positive")
+        justification = "false positive")
     public int compare( String s1, String s2 )
     {
         LOG.debug( "comparing String objects '{}' with '{}'", s1, s2 );

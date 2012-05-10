@@ -128,7 +128,7 @@ public class MultiException extends Exception
         out.println( "Nested exceptions to follow:\n" );
         boolean isFirst = true;
 
-        for ( Throwable throwable:nestedExceptions )
+        for ( Throwable throwable : nestedExceptions )
         {
             if ( isFirst )
             {
@@ -141,7 +141,7 @@ public class MultiException extends Exception
 
             throwable.printStackTrace();
         }
-        
+
         out.println( "\n\t<<========= Last Nested Exception" + " ========>>\n" );
     }
 
@@ -160,7 +160,7 @@ public class MultiException extends Exception
         out.println( "Nested exceptions to follow:\n" );
         boolean isFirst = true;
 
-        for ( Throwable throwable:nestedExceptions )
+        for ( Throwable throwable : nestedExceptions )
         {
             if ( isFirst )
             {
@@ -173,7 +173,7 @@ public class MultiException extends Exception
 
             throwable.printStackTrace();
         }
-        
+
         out.println( "\n\t<<========= Last Nested Exception" + " ========>>\n" );
     }
 

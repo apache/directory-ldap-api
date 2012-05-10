@@ -149,15 +149,15 @@ public class SyncRequestValueImpl extends AbstractControl implements SyncRequest
     {
         int h = 37;
 
-        h = h*17 + super.hashCode();
-        h = h*17 + ( isReloadHint ? 1 : 0 );
-        h = h*17 + mode.getValue();
+        h = h * 17 + super.hashCode();
+        h = h * 17 + ( isReloadHint ? 1 : 0 );
+        h = h * 17 + mode.getValue();
 
         if ( cookie != null )
         {
             for ( byte b : cookie )
             {
-                h = h*17 + b;
+                h = h * 17 + b;
             }
         }
 

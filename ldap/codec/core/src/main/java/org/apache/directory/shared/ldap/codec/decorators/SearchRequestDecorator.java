@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.codec.decorators;
 
@@ -28,6 +28,7 @@ import java.util.List;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Container;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.i18n.I18n;
@@ -99,6 +100,9 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
     /** The SearchRequest TLV id */
     private int tlvId;
+    
+    /** The bytes containing the Dn */
+    private byte[] dnBytes;
 
 
     /**
@@ -216,7 +220,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest setFilter( ExprNode filter )
     {
         topFilter = transform( filter );
-        
+
         return this;
     }
 
@@ -228,7 +232,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     {
         getDecorated().setFilter( filter );
         this.currentFilter = transform( getDecorated().getFilter() );
-        
+
         return this;
     }
 
@@ -333,7 +337,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                 {
                     // The parent is a filter ; it will become the new currentFilter
                     // and we will loop again.
-                    currentFilter = ( Filter ) filterParent;
+                    currentFilter = filterParent;
                     localFilter = currentFilter;
                     localParent = localParent.getParent();
                 }
@@ -761,7 +765,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest setBase( Dn baseDn )
     {
         getDecorated().setBase( baseDn );
-        
+
         return this;
     }
 
@@ -781,7 +785,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest setScope( SearchScope scope )
     {
         getDecorated().setScope( scope );
-        
+
         return this;
     }
 
@@ -801,7 +805,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest setDerefAliases( AliasDerefMode aliasDerefAliases )
     {
         getDecorated().setDerefAliases( aliasDerefAliases );
-        
+
         return this;
     }
 
@@ -821,7 +825,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest setSizeLimit( long entriesMax )
     {
         getDecorated().setSizeLimit( entriesMax );
-        
+
         return this;
     }
 
@@ -841,7 +845,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest setTimeLimit( int secondsMax )
     {
         getDecorated().setTimeLimit( secondsMax );
-        
+
         return this;
     }
 
@@ -861,7 +865,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest setTypesOnly( boolean typesOnly )
     {
         getDecorated().setTypesOnly( typesOnly );
-        
+
         return this;
     }
 
@@ -890,7 +894,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest addAttributes( String... attributes )
     {
         getDecorated().addAttributes( attributes );
-        
+
         return this;
     }
 
@@ -901,7 +905,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest removeAttribute( String attribute )
     {
         getDecorated().removeAttribute( attribute );
-        
+
         return this;
     }
 
@@ -926,12 +930,12 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
      *  +--> filter.computeLength()
      *  +--> 0x30 L3 (Attribute description list)
      *        |
-     *        +--> 0x04 L4-1 Attribute description 
-     *        +--> 0x04 L4-2 Attribute description 
-     *        +--> ... 
-     *        +--> 0x04 L4-i Attribute description 
-     *        +--> ... 
-     *        +--> 0x04 L4-n Attribute description 
+     *        +--> 0x04 L4-1 Attribute description
+     *        +--> 0x04 L4-2 Attribute description
+     *        +--> ...
+     *        +--> 0x04 L4-i Attribute description
+     *        +--> ...
+     *        +--> 0x04 L4-n Attribute description
      *        </pre>
      */
     public int computeLength()
@@ -939,7 +943,8 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
         int searchRequestLength = 0;
 
         // The baseObject
-        searchRequestLength += 1 + TLV.getNbBytes( Dn.getNbBytes( getBase() ) ) + Dn.getNbBytes( getBase() );
+        dnBytes = Strings.getBytesUtf8( getBase().getName() );
+        searchRequestLength += 1 + TLV.getNbBytes( dnBytes.length ) + dnBytes.length;
 
         // The scope
         searchRequestLength += 1 + 1 + 1;
@@ -948,10 +953,10 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
         searchRequestLength += 1 + 1 + 1;
 
         // The sizeLimit
-        searchRequestLength += 1 + 1 + org.apache.directory.shared.asn1.ber.tlv.Value.getNbBytes( getSizeLimit() );
+        searchRequestLength += 1 + 1 + BerValue.getNbBytes( getSizeLimit() );
 
         // The timeLimit
-        searchRequestLength += 1 + 1 + org.apache.directory.shared.asn1.ber.tlv.Value.getNbBytes( getTimeLimit() );
+        searchRequestLength += 1 + 1 + BerValue.getNbBytes( getTimeLimit() );
 
         // The typesOnly
         searchRequestLength += 1 + 1 + 1;
@@ -1000,7 +1005,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
      *   filter.encode()
      *   0x30 LL attributeDescriptionList
      *     0x04 LL attributeDescription
-     *     ... 
+     *     ...
      *     0x04 LL attributeDescription
      * </pre>
      * @param buffer The buffer where to put the PDU
@@ -1015,22 +1020,22 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
             buffer.put( TLV.getBytes( getSearchRequestLength() ) );
 
             // The baseObject
-            org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, Dn.getBytes( getBase() ) );
+            BerValue.encode( buffer, dnBytes );
 
             // The scope
-            org.apache.directory.shared.asn1.ber.tlv.Value.encodeEnumerated( buffer, getScope().getScope() );
+            BerValue.encodeEnumerated( buffer, getScope().getScope() );
 
             // The derefAliases
-            org.apache.directory.shared.asn1.ber.tlv.Value.encodeEnumerated( buffer, getDerefAliases().getValue() );
+            BerValue.encodeEnumerated( buffer, getDerefAliases().getValue() );
 
             // The sizeLimit
-            org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, getSizeLimit() );
+            BerValue.encode( buffer, getSizeLimit() );
 
             // The timeLimit
-            org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, getTimeLimit() );
+            BerValue.encode( buffer, getTimeLimit() );
 
             // The typesOnly
-            org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, getTypesOnly() );
+            BerValue.encode( buffer, getTypesOnly() );
 
             // The filter
             getCodecFilter().encode( buffer );
@@ -1044,7 +1049,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                 // encode each attribute
                 for ( String attribute : getAttributes() )
                 {
-                    org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, attribute );
+                    BerValue.encode( buffer, attribute );
                 }
             }
         }
@@ -1084,7 +1089,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest addAbandonListener( AbandonListener listener )
     {
         getDecorated().addAbandonListener( listener );
-        
+
         return this;
     }
 
@@ -1094,33 +1099,33 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
      */
     public SearchRequest setMessageId( int messageId )
     {
-        return (SearchRequest)super.setMessageId( messageId );
+        return ( SearchRequest ) super.setMessageId( messageId );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public SearchRequest addControl( Control control ) throws MessageException
     {
-        return (SearchRequest)super.addControl( control );
+        return ( SearchRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public SearchRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (SearchRequest)super.addAllControls( controls );
+        return ( SearchRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public SearchRequest removeControl( Control control ) throws MessageException
     {
-        return (SearchRequest)super.removeControl( control );
+        return ( SearchRequest ) super.removeControl( control );
     }
 }

@@ -55,7 +55,7 @@ public class JoinIterator implements Iterator<Object>
             throw new IllegalArgumentException( I18n.err( I18n.ERR_04397 ) );
         }
 
-        this.iterators = new Iterator[ iterators.length ];
+        this.iterators = new Iterator[iterators.length];
         System.arraycopy( iterators, 0, this.iterators, 0, iterators.length );
         this.index = 0;
     }

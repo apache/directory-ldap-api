@@ -48,7 +48,7 @@ public class BooleanNormalizerTest
     @Test
     public void testNormalizeNullValue() throws Exception
     {
-        assertNull( normalizer.normalize( (Value<?>)null ) );
+        assertNull( normalizer.normalize( ( Value<?> ) null ) );
     }
 
 

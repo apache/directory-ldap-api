@@ -35,19 +35,20 @@ package org.apache.directory.shared.ldap.model.schema;
 public enum UsageEnum
 {
     /** value for attributes with userApplications usage */
-    USER_APPLICATIONS( 0 ),
+    USER_APPLICATIONS(0),
 
     /** value for attributes with directoryOperation usage */
-    DIRECTORY_OPERATION( 1 ),
+    DIRECTORY_OPERATION(1),
 
     /** value for attributes with distributedOperation usage */
-    DISTRIBUTED_OPERATION( 2 ),
+    DISTRIBUTED_OPERATION(2),
 
     /** value for attributes with dSAOperation usage */
-    DSA_OPERATION( 3 );
+    DSA_OPERATION(3);
 
     /** Stores the integer value of each element of the enumeration */
     private int value;
+
 
     /**
      * Private construct so no other instances can be created other than the
@@ -59,7 +60,8 @@ public enum UsageEnum
     {
         this.value = value;
     }
-    
+
+
     /**
      * @return The value associated with the current element.
      */
@@ -67,6 +69,7 @@ public enum UsageEnum
     {
         return value;
     }
+
 
     /**
      * Gets the enumeration type for the attributeType usage string regardless
@@ -80,10 +83,10 @@ public enum UsageEnum
         try
         {
             UsageEnum result = valueOf( usage );
-            
+
             return result;
         }
-        catch( IllegalArgumentException iae )
+        catch ( IllegalArgumentException iae )
         {
             if ( "directoryOperation".equals( usage ) )
             {
@@ -95,19 +98,20 @@ public enum UsageEnum
             }
             else if ( "dSAOperation".equals( usage ) )
             {
-                return DSA_OPERATION;    
+                return DSA_OPERATION;
             }
-            else if ( "userApplications".equals( usage ) ) 
+            else if ( "userApplications".equals( usage ) )
             {
                 return USER_APPLICATIONS;
             }
-            else 
+            else
             {
                 return null;
             }
         }
     }
-    
+
+
     /**
      * Get the string representation for UsageEnum, which will be
      * used by the AttributeType rendering 
@@ -116,20 +120,26 @@ public enum UsageEnum
      */
     public static String render( UsageEnum usage )
     {
-        if ( usage == null)
+        if ( usage == null )
         {
             return "userApplications";
         }
-        
+
         switch ( usage )
         {
-            case DIRECTORY_OPERATION    : return "directoryOperation";
-            case DISTRIBUTED_OPERATION  : return "distributedOperation";
-            case DSA_OPERATION          : return "dSAOperation";
-            case USER_APPLICATIONS      : return "userApplications";
-            default : return "";
+            case DIRECTORY_OPERATION:
+                return "directoryOperation";
+            case DISTRIBUTED_OPERATION:
+                return "distributedOperation";
+            case DSA_OPERATION:
+                return "dSAOperation";
+            case USER_APPLICATIONS:
+                return "userApplications";
+            default:
+                return "";
         }
     }
+
 
     /**
      * Get the string representation for UsageEnum, which will be

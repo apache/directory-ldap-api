@@ -23,8 +23,6 @@ package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,12 +37,11 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class PostalAddressSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( PostalAddressSyntaxChecker.class );
+
 
     /**
      * Creates a new instance of PostalAddressSyntaxChecker.
@@ -53,8 +50,8 @@ public class PostalAddressSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.POSTAL_ADDRESS_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -67,14 +64,14 @@ public class PostalAddressSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -89,7 +86,7 @@ public class PostalAddressSyntaxChecker extends SyntaxChecker
 
         // Search for the '$' separator
         int dollar = strValue.indexOf( '$' );
-        
+
         if ( dollar == -1 )
         {
             // No '$' => only a dstring
@@ -102,25 +99,26 @@ public class PostalAddressSyntaxChecker extends SyntaxChecker
         {
             // check that the element between each '$' is not empty
             String address = strValue.substring( pos, dollar );
-            
-            if ( Strings.isEmpty(address) )
+
+            if ( Strings.isEmpty( address ) )
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
             }
-            
+
             pos = dollar + 1;
-            
+
             if ( pos == strValue.length() )
             {
                 // we should not have a '$' at the end
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
             }
-            
+
             dollar = strValue.indexOf( '$', pos );
-        } while ( dollar > -1 );
-        
+        }
+        while ( dollar > -1 );
+
         return true;
     }
 }

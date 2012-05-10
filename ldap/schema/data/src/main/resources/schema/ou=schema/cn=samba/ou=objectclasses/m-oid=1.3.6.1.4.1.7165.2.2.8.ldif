@@ -1,15 +1,15 @@
 version: 1
 dn: m-oid=1.3.6.1.4.1.7165.2.2.8,ou=objectClasses,cn=samba,ou=schema
-m-must: sambaSID
 m-oid: 1.3.6.1.4.1.7165.2.2.8
+m-name: sambaIdmapEntry
+m-description: Mapping from a SID to an ID
+objectclass: top
+objectclass: metaTop
+objectclass: metaObjectClass
 m-obsolete: FALSE
 m-supobjectclass: top
-m-description: Mapping from a SID to an ID
-objectclass: metaObjectClass
-objectclass: metaTop
-objectclass: top
-m-name: sambaIdmapEntry
 m-typeobjectclass: AUXILIARY
-creatorsname: uid=admin,ou=system
-m-may: uidNumber
+m-must: sambaSID
 m-may: gidNumber
+m-may: uidNumber
+creatorsname: uid=admin,ou=system

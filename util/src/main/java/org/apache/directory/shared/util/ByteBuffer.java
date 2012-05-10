@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.util;
 
+
 import org.apache.directory.shared.i18n.I18n;
 
 
@@ -31,21 +32,21 @@ public class ByteBuffer
 {
     /** the default initial buffer size */
     private static final int DEFAULT_INITIAL_SIZE = 10;
-    
+
     /** the initial size of the buffer in number of bytes: also increment for allocations */
     private final int initialSize;
     /** the position into the buffer */
     private int pos = 0;
     /** the bytes of the buffer */
     private byte[] buf;
-    
-    
+
+
     public ByteBuffer()
     {
-        this ( DEFAULT_INITIAL_SIZE );
+        this( DEFAULT_INITIAL_SIZE );
     }
-    
-    
+
+
     public ByteBuffer( int initialSize )
     {
         if ( initialSize <= 0 )
@@ -55,32 +56,32 @@ public class ByteBuffer
         this.initialSize = initialSize;
         this.buf = new byte[initialSize];
     }
-    
-    
+
+
     public final void clear()
     {
         pos = 0;
     }
-    
-    
+
+
     public final int position()
     {
         return pos;
     }
-    
-    
+
+
     public final int capacity()
     {
         return buf.length;
     }
-    
-    
+
+
     public final byte get( int ii )
     {
         return buf[ii];
     }
-    
-    
+
+
     /**
      * Get's the bytes, the backing store for this buffer.  Note
      * that you need to use the position index to determine where
@@ -90,8 +91,8 @@ public class ByteBuffer
     {
         return buf;
     }
-    
-    
+
+
     /**
      * Get's a copy of the bytes used.
      */
@@ -101,8 +102,8 @@ public class ByteBuffer
         System.arraycopy( buf, 0, copy, 0, pos );
         return copy;
     }
-    
-    
+
+
     /**
      * Appends the bytes to this buffer.
      */
@@ -113,8 +114,8 @@ public class ByteBuffer
             append( b );
         }
     }
-    
-    
+
+
     /**
      * Appends a byte to this buffer.
      */
@@ -124,12 +125,12 @@ public class ByteBuffer
         {
             growBuffer();
         }
-        
+
         buf[pos] = bite;
         pos++;
     }
-    
-    
+
+
     /**
      * Appends an int to this buffer.  WARNING: the int is truncated to 
      * a byte value.
@@ -140,15 +141,15 @@ public class ByteBuffer
         {
             growBuffer();
         }
-        
+
         buf[pos] = ( byte ) val;
         pos++;
     }
-    
-    
+
+
     private void growBuffer()
     {
-        byte[] copy = new byte[buf.length+initialSize];
+        byte[] copy = new byte[buf.length + initialSize];
         System.arraycopy( buf, 0, copy, 0, pos );
         this.buf = copy;
     }

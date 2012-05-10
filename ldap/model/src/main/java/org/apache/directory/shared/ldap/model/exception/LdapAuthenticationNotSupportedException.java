@@ -35,6 +35,7 @@ public class LdapAuthenticationNotSupportedException extends LdapOperationExcept
     /** The serial version UUID */
     static final long serialVersionUID = 1L;
 
+
     /**
      * Creates a new instance of LdapAuthenticationNotSupportedException.
      *
@@ -76,11 +77,11 @@ public class LdapAuthenticationNotSupportedException extends LdapOperationExcept
     {
         switch ( resultCode )
         {
-            case INAPPROPRIATE_AUTHENTICATION :
-            case CONFIDENTIALITY_REQUIRED :
-            case AUTH_METHOD_NOT_SUPPORTED :
+            case INAPPROPRIATE_AUTHENTICATION:
+            case CONFIDENTIALITY_REQUIRED:
+            case AUTH_METHOD_NOT_SUPPORTED:
                 return;
-                
+
             default:
                 throw new IllegalArgumentException( I18n.err( I18n.ERR_04140_UNACCEPTABLE_RESUT_CODE, resultCode ) );
         }

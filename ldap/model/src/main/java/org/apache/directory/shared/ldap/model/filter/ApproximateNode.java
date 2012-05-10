@@ -19,8 +19,10 @@
  */
 package org.apache.directory.shared.ldap.model.filter;
 
+
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+
 
 /**
  * A simple assertion value node.
@@ -40,7 +42,7 @@ public class ApproximateNode<T> extends SimpleNode<T>
         super( attributeType, value, AssertionType.APPROXIMATE );
     }
 
-    
+
     /**
      * Creates a new ApproximateNode object.
      * 
@@ -52,7 +54,7 @@ public class ApproximateNode<T> extends SimpleNode<T>
         super( attribute, value, AssertionType.APPROXIMATE );
     }
 
-    
+
     /**
      * @see Object#toString()
      * @return A string representing the AndNode
@@ -60,9 +62,9 @@ public class ApproximateNode<T> extends SimpleNode<T>
     public String toString()
     {
         StringBuilder buf = new StringBuilder();
-    
+
         buf.append( '(' );
-        
+
         if ( attributeType != null )
         {
             buf.append( attributeType.getName() );
@@ -71,19 +73,19 @@ public class ApproximateNode<T> extends SimpleNode<T>
         {
             buf.append( attribute );
         }
-        
+
         buf.append( "~=" );
 
         Value<?> escapedValue = getEscapedValue();
-        if ( !escapedValue.isNull())
+        if ( !escapedValue.isNull() )
         {
             buf.append( escapedValue );
         }
 
         buf.append( super.toString() );
-        
+
         buf.append( ')' );
-        
+
         return buf.toString();
     }
 }

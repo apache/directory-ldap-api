@@ -1,18 +1,18 @@
 version: 1
 dn: m-oid=1.3.6.1.4.1.7165.2.2.4,ou=objectClasses,cn=samba,ou=schema
-m-must: gidNumber
-m-must: sambaSID
-m-must: sambaGroupType
 m-oid: 1.3.6.1.4.1.7165.2.2.4
+m-name: sambaGroupMapping
+m-description: Samba Group Mapping
+objectclass: top
+objectclass: metaTop
+objectclass: metaObjectClass
 m-obsolete: FALSE
 m-supobjectclass: top
-m-description: Samba Group Mapping
-objectclass: metaObjectClass
-objectclass: metaTop
-objectclass: top
-m-name: sambaGroupMapping
 m-typeobjectclass: AUXILIARY
-creatorsname: uid=admin,ou=system
-m-may: displayName
+m-must: gidNumber
+m-must: sambaGroupType
+m-must: sambaSID
 m-may: description
+m-may: displayName
 m-may: sambaSIDList
+creatorsname: uid=admin,ou=system

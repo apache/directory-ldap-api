@@ -102,11 +102,11 @@ public class LdapSchemaException extends LdapException
      */
     public LdapSchemaException( LdapSchemaExceptionCodes code, Throwable cause )
     {
-        super(cause);
+        super( cause );
         this.code = code;
     }
 
-    
+
     /**
      * Creates a new instance of LdapSchemaException.
      *
@@ -120,7 +120,7 @@ public class LdapSchemaException extends LdapException
         this.code = code;
     }
 
-    
+
     /**
      * Gets the code of the exception.
      *

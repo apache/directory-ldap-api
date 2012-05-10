@@ -28,7 +28,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.extras.controls.SyncInfoValue;
 import org.apache.directory.shared.util.Strings;
@@ -91,34 +91,33 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Initialize the syncInfoValue object
          */
-        super.transitions[SyncInfoValueStatesEnum.START_STATE.ordinal()][SyncInfoValueTags.NEW_COOKIE_TAG.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.START_STATE, 
-                                    SyncInfoValueStatesEnum.NEW_COOKIE_STATE, 
-                                    SyncInfoValueTags.NEW_COOKIE_TAG.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.START_STATE.ordinal()][SyncInfoValueTags.NEW_COOKIE_TAG.getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.START_STATE,
+                SyncInfoValueStatesEnum.NEW_COOKIE_STATE,
+                SyncInfoValueTags.NEW_COOKIE_TAG.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "NewCookie choice for SyncInfoValueControl" )
-            {
-                public void action( SyncInfoValueContainer container )
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-
-                    Value value = container.getCurrentTLV().getValue();
-
-                    byte[] newCookie = value.getData();
-
-                    if ( IS_DEBUG )
+                    public void action( SyncInfoValueContainer container )
                     {
-                        LOG.debug( "newcookie = " + Strings.dumpBytes(newCookie) );
+                        SyncInfoValue control = container.getSyncInfoValueControl();
+
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        byte[] newCookie = value.getData();
+
+                        if ( IS_DEBUG )
+                        {
+                            LOG.debug( "newcookie = " + Strings.dumpBytes( newCookie ) );
+                        }
+
+                        control.setCookie( newCookie );
+
+                        // We can have an END transition
+                        container.setGrammarEndAllowed( true );
+
+                        container.setSyncInfoValueControl( control );
                     }
-
-                    control.setCookie( newCookie );
-
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                    
-                    container.setSyncInfoValueControl( control );
-                }
-            } );
-
+                } );
 
         /** 
          * Transition from initial state to SyncInfoValue refreshDelete choice
@@ -129,23 +128,23 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Initialize the syncInfoValue object
          */
-        super.transitions[SyncInfoValueStatesEnum.START_STATE.ordinal()][SyncInfoValueTags.REFRESH_DELETE_TAG.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.START_STATE, 
-                                    SyncInfoValueStatesEnum.REFRESH_DELETE_STATE, 
-                                    SyncInfoValueTags.REFRESH_DELETE_TAG.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.START_STATE.ordinal()][SyncInfoValueTags.REFRESH_DELETE_TAG
+            .getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.START_STATE,
+                SyncInfoValueStatesEnum.REFRESH_DELETE_STATE,
+                SyncInfoValueTags.REFRESH_DELETE_TAG.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshDelete choice for SyncInfoValueControl" )
-            {
-                public void action( SyncInfoValueContainer container )
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-                    
-                    container.setSyncInfoValueControl( control );
+                    public void action( SyncInfoValueContainer container )
+                    {
+                        SyncInfoValue control = container.getSyncInfoValueControl();
 
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
+                        container.setSyncInfoValueControl( control );
 
+                        // We can have an END transition
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
 
         /** 
          * Transition from refreshDelete state to cookie
@@ -155,33 +154,32 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Load the cookie object
          */
-        super.transitions[SyncInfoValueStatesEnum.REFRESH_DELETE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_DELETE_STATE, 
-                                    SyncInfoValueStatesEnum.REFRESH_DELETE_COOKIE_STATE, 
-                                    UniversalTag.OCTET_STRING.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.REFRESH_DELETE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_DELETE_STATE,
+                SyncInfoValueStatesEnum.REFRESH_DELETE_COOKIE_STATE,
+                UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshDelete cookie" )
-            {
-                public void action( SyncInfoValueContainer container )
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-                    
-                    Value value = container.getCurrentTLV().getValue();
-
-                    byte[] cookie = value.getData();
-
-                    if ( IS_DEBUG )
+                    public void action( SyncInfoValueContainer container )
                     {
-                        LOG.debug( "cookie = " + Strings.dumpBytes(cookie) );
+                        SyncInfoValue control = container.getSyncInfoValueControl();
+
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        byte[] cookie = value.getData();
+
+                        if ( IS_DEBUG )
+                        {
+                            LOG.debug( "cookie = " + Strings.dumpBytes( cookie ) );
+                        }
+
+                        container.getSyncInfoValueControl().setCookie( cookie );
+                        container.setSyncInfoValueControl( control );
+
+                        // We can have an END transition
+                        container.setGrammarEndAllowed( true );
                     }
-
-                    container.getSyncInfoValueControl().setCookie( cookie );
-                    container.setSyncInfoValueControl( control );
-
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
-
+                } );
 
         /** 
          * Transition from refreshDelete cookie state to refreshDone
@@ -192,47 +190,46 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Load the refreshDone flag
          */
-        super.transitions[SyncInfoValueStatesEnum.REFRESH_DELETE_COOKIE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_DELETE_COOKIE_STATE, 
-                                    SyncInfoValueStatesEnum.LAST_SYNC_INFO_VALUE_STATE, 
-                                    UniversalTag.BOOLEAN.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.REFRESH_DELETE_COOKIE_STATE.ordinal()][UniversalTag.BOOLEAN
+            .getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_DELETE_COOKIE_STATE,
+                SyncInfoValueStatesEnum.LAST_SYNC_INFO_VALUE_STATE,
+                UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshDelete refreshDone flag" )
-            {
-                public void action( SyncInfoValueContainer container ) throws DecoderException
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-                    
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        boolean refreshDone = BooleanDecoder.parse( value );
+                        SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        if ( IS_DEBUG )
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        try
                         {
-                            LOG.debug( "refreshDone = {}", refreshDone );
+                            boolean refreshDone = BooleanDecoder.parse( value );
+
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "refreshDone = {}", refreshDone );
+                            }
+
+                            control.setRefreshDone( refreshDone );
+
+                            container.setSyncInfoValueControl( control );
+
+                            // the END transition for grammar
+                            container.setGrammarEndAllowed( true );
+                        }
+                        catch ( BooleanDecoderException be )
+                        {
+                            String msg = I18n.err( I18n.ERR_04025 );
+                            LOG.error( msg, be );
+                            throw new DecoderException( msg );
                         }
 
-                        control.setRefreshDone( refreshDone );
-
-                        container.setSyncInfoValueControl( control );
-
-                        // the END transition for grammar
+                        // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                    catch ( BooleanDecoderException be )
-                    {
-                        String msg = I18n.err( I18n.ERR_04025 );
-                        LOG.error( msg, be );
-                        throw new DecoderException( msg );
-                    }
-
-
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
-
+                } );
 
         /** 
          * Transition from refreshDelete choice state to refreshDone
@@ -243,48 +240,46 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Load the refreshDone flag
          */
-        super.transitions[SyncInfoValueStatesEnum.REFRESH_DELETE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_DELETE_STATE, 
-                                    SyncInfoValueStatesEnum.LAST_SYNC_INFO_VALUE_STATE, 
-                                    UniversalTag.BOOLEAN.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.REFRESH_DELETE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_DELETE_STATE,
+                SyncInfoValueStatesEnum.LAST_SYNC_INFO_VALUE_STATE,
+                UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshDelete refreshDone flag" )
-            {
-                public void action( SyncInfoValueContainer container ) throws DecoderException
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-                    
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        boolean refreshDone = BooleanDecoder.parse( value );
+                        SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        if ( IS_DEBUG )
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        try
                         {
-                            LOG.debug( "refreshDone = {}", refreshDone );
+                            boolean refreshDone = BooleanDecoder.parse( value );
+
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "refreshDone = {}", refreshDone );
+                            }
+
+                            control.setRefreshDone( refreshDone );
+
+                            container.setSyncInfoValueControl( control );
+
+                            // the END transition for grammar
+                            container.setGrammarEndAllowed( true );
+                        }
+                        catch ( BooleanDecoderException be )
+                        {
+                            String msg = I18n.err( I18n.ERR_04025 );
+                            LOG.error( msg, be );
+                            throw new DecoderException( msg );
                         }
 
-                        control.setRefreshDone( refreshDone );
-
-                        container.setSyncInfoValueControl( control );
-
-                        // the END transition for grammar
+                        // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                    catch ( BooleanDecoderException be )
-                    {
-                        String msg = I18n.err( I18n.ERR_04025 );
-                        LOG.error( msg, be );
-                        throw new DecoderException( msg );
-                    }
+                } );
 
-
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
-        
-        
         /** 
          * Transition from initial state to SyncInfoValue refreshPresent choice
          * SyncInfoValue ::= CHOICE {
@@ -294,24 +289,24 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Initialize the syncInfoValue object
          */
-        super.transitions[SyncInfoValueStatesEnum.START_STATE.ordinal()][SyncInfoValueTags.REFRESH_PRESENT_TAG.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.START_STATE, 
-                                    SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE, 
-                                    SyncInfoValueTags.REFRESH_PRESENT_TAG.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.START_STATE.ordinal()][SyncInfoValueTags.REFRESH_PRESENT_TAG
+            .getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.START_STATE,
+                SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE,
+                SyncInfoValueTags.REFRESH_PRESENT_TAG.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshDelete choice for SyncInfoValueControl" )
-            {
-                public void action( SyncInfoValueContainer container )
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-                    
-                    container.setSyncInfoValueControl( control );
+                    public void action( SyncInfoValueContainer container )
+                    {
+                        SyncInfoValue control = container.getSyncInfoValueControl();
 
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
+                        container.setSyncInfoValueControl( control );
 
-    
+                        // We can have an END transition
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
+
         /** 
          * Transition from refreshPresent state to cookie
          *     refreshPresent [2] SEQUENCE {
@@ -320,35 +315,32 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Load the cookie object
          */
-        super.transitions[SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE, 
-                                    SyncInfoValueStatesEnum.REFRESH_PRESENT_COOKIE_STATE, 
-                                    UniversalTag.OCTET_STRING.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE,
+                SyncInfoValueStatesEnum.REFRESH_PRESENT_COOKIE_STATE,
+                UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshPresent cookie" )
-            {
-                public void action( SyncInfoValueContainer container )
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-                    
-                    Value value = container.getCurrentTLV().getValue();
-
-                    byte[] cookie = value.getData();
-
-                    if ( IS_DEBUG )
+                    public void action( SyncInfoValueContainer container )
                     {
-                        LOG.debug( "cookie = " + Strings.dumpBytes(cookie) );
+                        SyncInfoValue control = container.getSyncInfoValueControl();
+
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        byte[] cookie = value.getData();
+
+                        if ( IS_DEBUG )
+                        {
+                            LOG.debug( "cookie = " + Strings.dumpBytes( cookie ) );
+                        }
+
+                        container.getSyncInfoValueControl().setCookie( cookie );
+                        container.setSyncInfoValueControl( control );
+
+                        // We can have an END transition
+                        container.setGrammarEndAllowed( true );
                     }
-
-                    container.getSyncInfoValueControl().setCookie( cookie );
-                    container.setSyncInfoValueControl( control );
-
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
-        
-        
-
+                } );
 
         /** 
          * Transition from refreshPresent cookie state to refreshDone
@@ -359,47 +351,46 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Load the refreshDone flag
          */
-        super.transitions[SyncInfoValueStatesEnum.REFRESH_PRESENT_COOKIE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_PRESENT_COOKIE_STATE, 
-                                    SyncInfoValueStatesEnum.LAST_SYNC_INFO_VALUE_STATE, 
-                                    UniversalTag.BOOLEAN.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.REFRESH_PRESENT_COOKIE_STATE.ordinal()][UniversalTag.BOOLEAN
+            .getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_PRESENT_COOKIE_STATE,
+                SyncInfoValueStatesEnum.LAST_SYNC_INFO_VALUE_STATE,
+                UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshPresent refreshDone flag" )
-            {
-                public void action( SyncInfoValueContainer container ) throws DecoderException
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-                    
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        boolean refreshDone = BooleanDecoder.parse( value );
+                        SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        if ( IS_DEBUG )
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        try
                         {
-                            LOG.debug( "refreshDone = {}", refreshDone );
+                            boolean refreshDone = BooleanDecoder.parse( value );
+
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "refreshDone = {}", refreshDone );
+                            }
+
+                            control.setRefreshDone( refreshDone );
+
+                            container.setSyncInfoValueControl( control );
+
+                            // the END transition for grammar
+                            container.setGrammarEndAllowed( true );
+                        }
+                        catch ( BooleanDecoderException be )
+                        {
+                            String msg = I18n.err( I18n.ERR_04025 );
+                            LOG.error( msg, be );
+                            throw new DecoderException( msg );
                         }
 
-                        control.setRefreshDone( refreshDone );
-
-                        container.setSyncInfoValueControl( control );
-
-                        // the END transition for grammar
+                        // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                    catch ( BooleanDecoderException be )
-                    {
-                        String msg = I18n.err( I18n.ERR_04025 );
-                        LOG.error( msg, be );
-                        throw new DecoderException( msg );
-                    }
-
-
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
-
+                } );
 
         /** 
          * Transition from refreshPresent choice state to refreshDone
@@ -410,47 +401,46 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Load the refreshDone flag
          */
-        super.transitions[SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE, 
-                                    SyncInfoValueStatesEnum.LAST_SYNC_INFO_VALUE_STATE, 
-                                    UniversalTag.BOOLEAN.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE,
+                SyncInfoValueStatesEnum.LAST_SYNC_INFO_VALUE_STATE,
+                UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshPresent refreshDone flag" )
-            {
-                public void action( SyncInfoValueContainer container ) throws DecoderException
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-                    
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        boolean refreshDone = BooleanDecoder.parse( value );
+                        SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        if ( IS_DEBUG )
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        try
                         {
-                            LOG.debug( "refreshDone = {}", refreshDone );
+                            boolean refreshDone = BooleanDecoder.parse( value );
+
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "refreshDone = {}", refreshDone );
+                            }
+
+                            control.setRefreshDone( refreshDone );
+
+                            container.setSyncInfoValueControl( control );
+
+                            // the END transition for grammar
+                            container.setGrammarEndAllowed( true );
+                        }
+                        catch ( BooleanDecoderException be )
+                        {
+                            String msg = I18n.err( I18n.ERR_04025 );
+                            LOG.error( msg, be );
+                            throw new DecoderException( msg );
                         }
 
-                        control.setRefreshDone( refreshDone );
-
-                        container.setSyncInfoValueControl( control );
-
-                        // the END transition for grammar
+                        // We can have an END transition
                         container.setGrammarEndAllowed( true );
                     }
-                    catch ( BooleanDecoderException be )
-                    {
-                        String msg = I18n.err( I18n.ERR_04025 );
-                        LOG.error( msg, be );
-                        throw new DecoderException( msg );
-                    }
+                } );
 
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
-        
-        
         /** 
          * Transition from initial state to SyncInfoValue syncIdSet choice
          * SyncInfoValue ::= CHOICE {
@@ -460,21 +450,20 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Initialize the syncInfoValue object
          */
-        super.transitions[SyncInfoValueStatesEnum.START_STATE.ordinal()][SyncInfoValueTags.SYNC_ID_SET_TAG.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.START_STATE, 
-                                    SyncInfoValueStatesEnum.SYNC_ID_SET_STATE, 
-                                    SyncInfoValueTags.SYNC_ID_SET_TAG.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.START_STATE.ordinal()][SyncInfoValueTags.SYNC_ID_SET_TAG.getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.START_STATE,
+                SyncInfoValueStatesEnum.SYNC_ID_SET_STATE,
+                SyncInfoValueTags.SYNC_ID_SET_TAG.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet choice for SyncInfoValueControl" )
-            {
-                public void action( SyncInfoValueContainer container )
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-                    
-                    container.setSyncInfoValueControl( control );
-                }
-            } );
-        
-        
+                    public void action( SyncInfoValueContainer container )
+                    {
+                        SyncInfoValue control = container.getSyncInfoValueControl();
+
+                        container.setSyncInfoValueControl( control );
+                    }
+                } );
+
         /** 
          * Transition from syncIdSet state to cookie
          *     syncIdSet [3] SEQUENCE {
@@ -483,31 +472,30 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Load the cookie object
          */
-        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_STATE, 
-                                    SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE, 
-                                    UniversalTag.OCTET_STRING.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_STATE,
+                SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE,
+                UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet cookie" )
-            {
-                public void action( SyncInfoValueContainer container )
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-                    
-                    Value value = container.getCurrentTLV().getValue();
-
-                    byte[] cookie = value.getData();
-
-                    if ( IS_DEBUG )
+                    public void action( SyncInfoValueContainer container )
                     {
-                        LOG.debug( "cookie = " + Strings.dumpBytes(cookie) );
-                    }
+                        SyncInfoValue control = container.getSyncInfoValueControl();
 
-                    container.getSyncInfoValueControl().setCookie( cookie );
-                    container.setSyncInfoValueControl( control );
-                }
-            } );
-        
-        
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        byte[] cookie = value.getData();
+
+                        if ( IS_DEBUG )
+                        {
+                            LOG.debug( "cookie = " + Strings.dumpBytes( cookie ) );
+                        }
+
+                        container.getSyncInfoValueControl().setCookie( cookie );
+                        container.setSyncInfoValueControl( control );
+                    }
+                } );
+
         /** 
          * Transition from syncIdSet state to refreshDeletes
          *     syncIdSet [3] SEQUENCE {
@@ -517,41 +505,40 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Load the refreshDeletes flag
          */
-        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_STATE, 
-                                    SyncInfoValueStatesEnum.SYNC_ID_SET_REFRESH_DELETES_STATE, 
-                                    UniversalTag.BOOLEAN.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_STATE,
+                SyncInfoValueStatesEnum.SYNC_ID_SET_REFRESH_DELETES_STATE,
+                UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet refreshDeletes" )
-            {
-                public void action( SyncInfoValueContainer container ) throws DecoderException
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-                    
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        boolean refreshDeletes = BooleanDecoder.parse( value );
+                        SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        if ( IS_DEBUG )
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        try
                         {
-                            LOG.debug( "refreshDeletes = {}", refreshDeletes );
+                            boolean refreshDeletes = BooleanDecoder.parse( value );
+
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "refreshDeletes = {}", refreshDeletes );
+                            }
+
+                            control.setRefreshDeletes( refreshDeletes );
+
+                            container.setSyncInfoValueControl( control );
                         }
-
-                        control.setRefreshDeletes( refreshDeletes );
-
-                        container.setSyncInfoValueControl( control );
+                        catch ( BooleanDecoderException be )
+                        {
+                            String msg = I18n.err( I18n.ERR_04026 );
+                            LOG.error( msg, be );
+                            throw new DecoderException( msg );
+                        }
                     }
-                    catch ( BooleanDecoderException be )
-                    {
-                        String msg = I18n.err( I18n.ERR_04026 );
-                        LOG.error( msg, be );
-                        throw new DecoderException( msg );
-                    }
-                }
-            } );
-        
-        
+                } );
+
         /** 
          * Transition from syncIdSet cookie state to refreshDeletes
          *     syncIdSet [3] SEQUENCE {
@@ -561,41 +548,40 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Load the refreshDeletes flag
          */
-        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE, 
-                                    SyncInfoValueStatesEnum.SYNC_ID_SET_REFRESH_DELETES_STATE, 
-                                    UniversalTag.BOOLEAN.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE,
+                SyncInfoValueStatesEnum.SYNC_ID_SET_REFRESH_DELETES_STATE,
+                UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet refreshDeletes" )
-            {
-                public void action( SyncInfoValueContainer container ) throws DecoderException
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-                    
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        boolean refreshDeletes = BooleanDecoder.parse( value );
+                        SyncInfoValue control = container.getSyncInfoValueControl();
 
-                        if ( IS_DEBUG )
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        try
                         {
-                            LOG.debug( "refreshDeletes = {}", refreshDeletes );
+                            boolean refreshDeletes = BooleanDecoder.parse( value );
+
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "refreshDeletes = {}", refreshDeletes );
+                            }
+
+                            control.setRefreshDeletes( refreshDeletes );
+
+                            container.setSyncInfoValueControl( control );
                         }
-
-                        control.setRefreshDeletes( refreshDeletes );
-
-                        container.setSyncInfoValueControl( control );
+                        catch ( BooleanDecoderException be )
+                        {
+                            String msg = I18n.err( I18n.ERR_04024 );
+                            LOG.error( msg, be );
+                            throw new DecoderException( msg );
+                        }
                     }
-                    catch ( BooleanDecoderException be )
-                    {
-                        String msg = I18n.err( I18n.ERR_04024 );
-                        LOG.error( msg, be );
-                        throw new DecoderException( msg );
-                    }
-                }
-            } );
-        
-        
+                } );
+
         /** 
          * Transition from syncIdSet state to syncUUIDs
          *     syncIdSet [3] SEQUENCE {
@@ -605,20 +591,19 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Initialize the UUID set : no action associated, except allowing a grammar end
          */
-        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_STATE.ordinal()][UniversalTag.SET.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_STATE, 
-                                    SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE, 
-                                    UniversalTag.SET.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_STATE.ordinal()][UniversalTag.SET.getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_STATE,
+                SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE,
+                UniversalTag.SET.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet syncUUIDs" )
-            {
-                public void action( SyncInfoValueContainer container ) throws DecoderException
                 {
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
-        
-        
+                    public void action( SyncInfoValueContainer container ) throws DecoderException
+                    {
+                        // We can have an END transition
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
+
         /** 
          * Transition from syncIdSet cookie state to syncUUIDs
          *     syncIdSet [3] SEQUENCE {
@@ -628,20 +613,19 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Initialize the UUID set : no action associated
          */
-        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE.ordinal()][UniversalTag.SET.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE, 
-                                    SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE, 
-                                    UniversalTag.SET.getValue(),
+        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE.ordinal()][UniversalTag.SET.getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE,
+                SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE,
+                UniversalTag.SET.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet syncUUIDs" )
-            {
-                public void action( SyncInfoValueContainer container ) throws DecoderException
                 {
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
-          
-        
+                    public void action( SyncInfoValueContainer container ) throws DecoderException
+                    {
+                        // We can have an END transition
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
+
         /** 
          * Transition from syncIdSet refreshDeletes state to syncUUIDs
          *     syncIdSet [3] SEQUENCE {
@@ -651,20 +635,20 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Initialize the UUID set : no action associated
          */
-        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_REFRESH_DELETES_STATE.ordinal()][UniversalTag.SET.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_REFRESH_DELETES_STATE, 
-                                    SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE, 
-                                    UniversalTag.SET.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_REFRESH_DELETES_STATE.ordinal()][UniversalTag.SET
+            .getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_REFRESH_DELETES_STATE,
+                SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE,
+                UniversalTag.SET.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet syncUUIDs" )
-            {
-                public void action( SyncInfoValueContainer container ) throws DecoderException
                 {
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
-        
-        
+                    public void action( SyncInfoValueContainer container ) throws DecoderException
+                    {
+                        // We can have an END transition
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
+
         /** 
          * Transition from syncIdSet syncUUIDs to syncUUID
          *     syncIdSet [3] SEQUENCE {
@@ -674,42 +658,42 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Add the first UUID in the UUIDs list
          */
-        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE, 
-                                    SyncInfoValueStatesEnum.SYNC_ID_SET_UUID_STATE, 
-                                    UniversalTag.OCTET_STRING.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE.ordinal()][UniversalTag.OCTET_STRING
+            .getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE,
+                SyncInfoValueStatesEnum.SYNC_ID_SET_UUID_STATE,
+                UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet first UUID" )
-            {
-                public void action( SyncInfoValueContainer container ) throws DecoderException
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-                    
-                    Value value = container.getCurrentTLV().getValue();
-
-                    byte[] uuid = value.getData();
-                    
-                    // UUID must be exactly 16 bytes long
-                    if ( ( uuid == null ) || ( uuid.length != 16 ) )
+                    public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        String msg = I18n.err( I18n.ERR_04027 );
-                        LOG.error( msg );
-                        throw new DecoderException( msg );
-                    }
+                        SyncInfoValue control = container.getSyncInfoValueControl();
 
-                    if ( IS_DEBUG )
-                    {
-                        LOG.debug( "UUID = " + Strings.dumpBytes(uuid) );
-                    }
+                        BerValue value = container.getCurrentTLV().getValue();
 
-                    // Store the UUID in the UUIDs list
-                    control.addSyncUUID( uuid );
-                    
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
-        
-        
+                        byte[] uuid = value.getData();
+
+                        // UUID must be exactly 16 bytes long
+                        if ( ( uuid == null ) || ( uuid.length != 16 ) )
+                        {
+                            String msg = I18n.err( I18n.ERR_04027 );
+                            LOG.error( msg );
+                            throw new DecoderException( msg );
+                        }
+
+                        if ( IS_DEBUG )
+                        {
+                            LOG.debug( "UUID = " + Strings.dumpBytes( uuid ) );
+                        }
+
+                        // Store the UUID in the UUIDs list
+                        control.addSyncUUID( uuid );
+
+                        // We can have an END transition
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
+
         /** 
          * Transition from syncIdSet syncUUID to syncUUID
          *     syncIdSet [3] SEQUENCE {
@@ -719,40 +703,41 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          *     
          * Add a new UUID in the UUIDs list
          */
-        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_UUID_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_UUID_STATE, 
-                                    SyncInfoValueStatesEnum.SYNC_ID_SET_UUID_STATE, 
-                                    UniversalTag.OCTET_STRING.getValue(), 
+        super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_UUID_STATE.ordinal()][UniversalTag.OCTET_STRING
+            .getValue()] =
+            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_UUID_STATE,
+                SyncInfoValueStatesEnum.SYNC_ID_SET_UUID_STATE,
+                UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet UUID" )
-            {
-                public void action( SyncInfoValueContainer container ) throws DecoderException
                 {
-                    SyncInfoValue control = container.getSyncInfoValueControl();
-                    
-                    Value value = container.getCurrentTLV().getValue();
-
-                    byte[] uuid = value.getData();
-                    
-                    // UUID must be exactly 16 bytes long
-                    if ( ( uuid == null ) || ( uuid.length != 16 ) )
+                    public void action( SyncInfoValueContainer container ) throws DecoderException
                     {
-                        String msg = I18n.err( I18n.ERR_04027 );
-                        LOG.error( msg );
-                        throw new DecoderException( msg );
-                    }
+                        SyncInfoValue control = container.getSyncInfoValueControl();
 
-                    if ( IS_DEBUG )
-                    {
-                        LOG.debug( "UUID = " + Strings.dumpBytes(uuid) );
-                    }
+                        BerValue value = container.getCurrentTLV().getValue();
 
-                    // Store the UUID in the UUIDs list
-                    control.getSyncUUIDs().add( uuid );
-                    
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
+                        byte[] uuid = value.getData();
+
+                        // UUID must be exactly 16 bytes long
+                        if ( ( uuid == null ) || ( uuid.length != 16 ) )
+                        {
+                            String msg = I18n.err( I18n.ERR_04027 );
+                            LOG.error( msg );
+                            throw new DecoderException( msg );
+                        }
+
+                        if ( IS_DEBUG )
+                        {
+                            LOG.debug( "UUID = " + Strings.dumpBytes( uuid ) );
+                        }
+
+                        // Store the UUID in the UUIDs list
+                        control.getSyncUUIDs().add( uuid );
+
+                        // We can have an END transition
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
     }
 
 

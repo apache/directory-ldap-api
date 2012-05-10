@@ -25,7 +25,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.ModifyDnRequestDecorator;
@@ -53,6 +53,7 @@ public class StoreModifyDnRequestDeleteOldRdn extends GrammarAction<LdapMessageC
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -77,7 +78,7 @@ public class StoreModifyDnRequestDeleteOldRdn extends GrammarAction<LdapMessageC
         // something
         // which is not 0, it will be interpreted as TRUE, but we
         // will generate a warning.
-        Value value = tlv.getValue();
+        BerValue value = tlv.getValue();
 
         try
         {
@@ -86,7 +87,7 @@ public class StoreModifyDnRequestDeleteOldRdn extends GrammarAction<LdapMessageC
         catch ( BooleanDecoderException bde )
         {
             LOG.error( I18n
-                .err( I18n.ERR_04091, Strings.dumpBytes(value.getData()), bde.getMessage() ) );
+                .err( I18n.ERR_04091, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( bde.getMessage() );

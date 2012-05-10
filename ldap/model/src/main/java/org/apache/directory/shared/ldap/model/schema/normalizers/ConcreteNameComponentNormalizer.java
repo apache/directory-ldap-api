@@ -48,7 +48,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
 
     /** the schemaManager used to dynamically resolve Normalizers */
     private final SchemaManager schemaManager;
-    
+
 
     /**
      * Creates a Dn Name component Normalizer which uses the bootstrap
@@ -62,7 +62,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
         this.schemaManager = schemaManager;
     }
 
-    
+
     private String unescape( String value )
     {
         char[] newVal = new char[value.length()];
@@ -70,12 +70,12 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
         char high = 0;
         char low = 0;
         int pos = 0;
-        
-        for ( char c:value.toCharArray() )
+
+        for ( char c : value.toCharArray() )
         {
             switch ( escaped )
             {
-                case 0 :
+                case 0:
                     if ( c == '\\' )
                     {
                         escaped = 1;
@@ -84,24 +84,25 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
                     {
                         newVal[pos++] = c;
                     }
-                    
+
                     break;
 
-                case 1 :
+                case 1:
                     escaped++;
                     high = c;
                     break;
-                    
-                case 2 :
-                    escaped=0;
+
+                case 2:
+                    escaped = 0;
                     low = c;
-                    newVal[pos++] = (char) Hex.getHexValue(high, low);
-                    
+                    newVal[pos++] = ( char ) Hex.getHexValue( high, low );
+
             }
         }
-        
+
         return new String( newVal, 0, pos );
     }
+
 
     /**
      * {@inheritDoc}
@@ -109,7 +110,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
     public Object normalizeByName( String name, String value ) throws LdapException
     {
         AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( name );
-        
+
         if ( attributeType.getSyntax().isHumanReadable() )
         {
             return lookup( name ).normalize( value );
@@ -120,8 +121,8 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
             {
                 String unescaped = unescape( value );
                 byte[] valBytes = unescaped.getBytes( "UTF-8" );
-                
-                return lookup( name ).normalize( new BinaryValue( valBytes ) ); 
+
+                return lookup( name ).normalize( new BinaryValue( valBytes ) );
             }
             catch ( UnsupportedEncodingException uee )
             {
@@ -130,7 +131,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
                 throw new LdapException( message, uee );
             }
         }
-        
+
     }
 
 
@@ -140,7 +141,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
     public Object normalizeByName( String name, byte[] value ) throws LdapException
     {
         AttributeType attributeType = schemaManager.lookupAttributeTypeRegistry( name );
-        
+
         if ( !attributeType.getSyntax().isHumanReadable() )
         {
             return lookup( name ).normalize( new BinaryValue( value ) );
@@ -150,7 +151,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
             try
             {
                 String valStr = new String( value, "UTF-8" );
-                return lookup( name ).normalize( valStr ); 
+                return lookup( name ).normalize( valStr );
             }
             catch ( UnsupportedEncodingException uee )
             {
@@ -195,12 +196,12 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
     {
         AttributeType type = schemaManager.lookupAttributeTypeRegistry( id );
         MatchingRule mrule = type.getEquality();
-        
+
         if ( mrule == null )
         {
             return new NoOpNormalizer( id );
         }
-        
+
         return mrule.getNormalizer();
     }
 

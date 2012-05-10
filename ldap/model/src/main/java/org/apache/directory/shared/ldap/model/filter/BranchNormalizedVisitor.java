@@ -59,12 +59,12 @@ public class BranchNormalizedVisitor implements FilterVisitor
 
         List<ExprNode> children = branch.getChildren();
 
-        for ( ExprNode child:branch.getChildren() )
+        for ( ExprNode child : branch.getChildren() )
         {
             if ( !child.isLeaf() )
             {
-                ExprNode newChild = (ExprNode)visit( child );
-                
+                ExprNode newChild = ( ExprNode ) visit( child );
+
                 if ( newChild != null )
                 {
                     set.add( newChild );
@@ -79,7 +79,7 @@ public class BranchNormalizedVisitor implements FilterVisitor
         children.clear();
 
         children.addAll( set );
-        
+
         return branch;
     }
 
@@ -131,7 +131,7 @@ public class BranchNormalizedVisitor implements FilterVisitor
     {
         BranchNormalizedVisitor visitor = new BranchNormalizedVisitor();
 
-        ExprNode result = (ExprNode)visitor.visit( filter );
+        ExprNode result = ( ExprNode ) visitor.visit( filter );
 
         return result.toString().trim();
     }

@@ -6,18 +6,19 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.entry;
+
 
 import static org.junit.Assert.assertEquals;
 
@@ -41,6 +42,7 @@ import org.junit.runner.RunWith;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
+
 /**
  * Test the Value Serialization
  * 
@@ -50,7 +52,8 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class SchemaAwareValueSerializationTest
 {
-    private static byte[] data = new byte[] {0x01, 0x02, 0x03, 0x04};
+    private static byte[] data = new byte[]
+        { 0x01, 0x02, 0x03, 0x04 };
     private static BinaryValue bv1;
     private static BinaryValue bv2;
     private static BinaryValue bv3;
@@ -63,11 +66,12 @@ public class SchemaAwareValueSerializationTest
     private static StringValue sv1n;
     private static StringValue sv2n;
     private static StringValue sv3n;
-    
+
     private static SchemaManager schemaManager;
     private static AttributeType cn = null;
     private static AttributeType dc = null;
     private static AttributeType userCertificate = null;
+
 
     /**
      * Initialize OIDs maps for normalization
@@ -79,7 +83,7 @@ public class SchemaAwareValueSerializationTest
         cn = schemaManager.getAttributeType( "cn" );
         dc = schemaManager.getAttributeType( "dc" );
         userCertificate = schemaManager.getAttributeType( "userCertificate" );
-        
+
         bv1 = new BinaryValue( userCertificate, data );
         bv2 = new BinaryValue( userCertificate, StringConstants.EMPTY_BYTES );
         bv3 = new BinaryValue( userCertificate, null );
@@ -88,13 +92,13 @@ public class SchemaAwareValueSerializationTest
         bv3n = new BinaryValue( userCertificate, null );
         sv1 = new StringValue( cn, "test" );
         sv2 = new StringValue( dc, "" );
-        sv3 = new StringValue( dc, (String)null );
+        sv3 = new StringValue( dc, ( String ) null );
         sv1n = new StringValue( cn, "test" );
         sv2n = new StringValue( dc, "" );
-        sv3n = new StringValue( dc, (String)null );
+        sv3n = new StringValue( dc, ( String ) null );
     }
 
-    
+
     @Test
     public void testBinaryValueWithDataSerialization() throws IOException, ClassNotFoundException
     {
@@ -102,7 +106,7 @@ public class SchemaAwareValueSerializationTest
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         bv1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -112,8 +116,8 @@ public class SchemaAwareValueSerializationTest
 
         assertEquals( bv1, bvDeser );
     }
-    
-    
+
+
     @Test
     public void testBinaryValueWithEmptyDataSerialization() throws IOException, ClassNotFoundException
     {
@@ -121,7 +125,7 @@ public class SchemaAwareValueSerializationTest
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         bv2.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -131,8 +135,8 @@ public class SchemaAwareValueSerializationTest
 
         assertEquals( bv2, bvDeser );
     }
-    
-    
+
+
     @Test
     public void testBinaryValueNoDataSerialization() throws IOException, ClassNotFoundException
     {
@@ -140,7 +144,7 @@ public class SchemaAwareValueSerializationTest
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         bv3.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -150,8 +154,8 @@ public class SchemaAwareValueSerializationTest
 
         assertEquals( bv3, bvDeser );
     }
-    
-    
+
+
     @Test
     public void testStringValueWithDataSerialization() throws IOException, ClassNotFoundException
     {
@@ -159,7 +163,7 @@ public class SchemaAwareValueSerializationTest
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         sv1.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -169,8 +173,8 @@ public class SchemaAwareValueSerializationTest
 
         assertEquals( sv1, svDeser );
     }
-    
-    
+
+
     @Test
     public void testStringValueWithEmptyDataSerialization() throws IOException, ClassNotFoundException
     {
@@ -178,7 +182,7 @@ public class SchemaAwareValueSerializationTest
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         sv2.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -188,8 +192,8 @@ public class SchemaAwareValueSerializationTest
 
         assertEquals( sv2, svDeser );
     }
-    
-    
+
+
     @Test
     public void testStringValueNoDataSerialization() throws IOException, ClassNotFoundException
     {
@@ -197,7 +201,7 @@ public class SchemaAwareValueSerializationTest
         ObjectOutputStream out = new ObjectOutputStream( baos );
 
         sv3.writeExternal( out );
-        
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -207,17 +211,18 @@ public class SchemaAwareValueSerializationTest
 
         assertEquals( sv3, svDeser );
     }
-    
-    
+
+
     @Test
-    public void testBinaryValueWithDataNormalizedSerialization() throws IOException, LdapException, ClassNotFoundException
+    public void testBinaryValueWithDataNormalizedSerialization() throws IOException, LdapException,
+        ClassNotFoundException
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        bv1n.apply( userCertificate );
+        BinaryValue value = new BinaryValue( userCertificate, bv1n.getBytes() );
 
-        bv1n.writeExternal( out );
-        
+        value.writeExternal( out );
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -225,19 +230,20 @@ public class SchemaAwareValueSerializationTest
 
         BinaryValue bvDeser = BinaryValue.deserialize( userCertificate, in );
 
-        assertEquals( bv1n, bvDeser );
+        assertEquals( value, bvDeser );
     }
-    
-    
+
+
     @Test
-    public void testBinaryValueWithEmptyDataNormalizedSerialization() throws IOException, LdapException, ClassNotFoundException
+    public void testBinaryValueWithEmptyDataNormalizedSerialization() throws IOException, LdapException,
+        ClassNotFoundException
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        bv2n.apply( userCertificate );
+        BinaryValue value = new BinaryValue( userCertificate, bv2n.getBytes() );
 
-        bv2n.writeExternal( out );
-        
+        value.writeExternal( out );
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -245,19 +251,20 @@ public class SchemaAwareValueSerializationTest
 
         BinaryValue bvDeser = BinaryValue.deserialize( userCertificate, in );
 
-        assertEquals( bv2n, bvDeser );
+        assertEquals( value, bvDeser );
     }
-    
-    
+
+
     @Test
-    public void testBinaryValueNoDataNormalizedSerialization() throws IOException, LdapException, ClassNotFoundException
+    public void testBinaryValueNoDataNormalizedSerialization() throws IOException, LdapException,
+        ClassNotFoundException
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        bv3n.apply( userCertificate );
+        BinaryValue value = new BinaryValue( userCertificate, bv3n.getBytes() );
 
-        bv3n.writeExternal( out );
-        
+        value.writeExternal( out );
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -265,19 +272,20 @@ public class SchemaAwareValueSerializationTest
 
         BinaryValue bvDeser = BinaryValue.deserialize( userCertificate, in );
 
-        assertEquals( bv3n, bvDeser );
+        assertEquals( value, bvDeser );
     }
-    
-    
+
+
     @Test
-    public void testStringValueWithDataNormalizedSerialization() throws IOException, LdapException, ClassNotFoundException
+    public void testStringValueWithDataNormalizedSerialization() throws IOException, LdapException,
+        ClassNotFoundException
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        sv1n.apply( cn );
+        StringValue value = new StringValue( cn, sv1n.getString() );
 
-        sv1n.writeExternal( out );
-        
+        value.writeExternal( out );
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -285,19 +293,20 @@ public class SchemaAwareValueSerializationTest
 
         StringValue svDeser = StringValue.deserialize( cn, in );
 
-        assertEquals( sv1n, svDeser );
+        assertEquals( value, svDeser );
     }
-    
-    
+
+
     @Test
-    public void testStringValueWithEmptyDataNormalizedSerialization() throws IOException, LdapException, ClassNotFoundException
+    public void testStringValueWithEmptyDataNormalizedSerialization() throws IOException, LdapException,
+        ClassNotFoundException
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        sv2n.apply( dc );
+        StringValue value = new StringValue( dc, sv2n.getString() );
 
-        sv2n.writeExternal( out );
-        
+        value.writeExternal( out );
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -305,19 +314,20 @@ public class SchemaAwareValueSerializationTest
 
         StringValue svDeser = StringValue.deserialize( cn, in );
 
-        assertEquals( sv2n, svDeser );
+        assertEquals( value, svDeser );
     }
-    
-    
+
+
     @Test
-    public void testStringValueNoDataNormalizedSerialization() throws IOException, LdapException, ClassNotFoundException
+    public void testStringValueNoDataNormalizedSerialization() throws IOException, LdapException,
+        ClassNotFoundException
     {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
-        sv3n.apply( dc );
+        StringValue value = new StringValue( dc, sv3n.getString() );
 
-        sv3n.writeExternal( out );
-        
+        value.writeExternal( out );
+
         ObjectInputStream in = null;
 
         byte[] data = baos.toByteArray();
@@ -325,6 +335,6 @@ public class SchemaAwareValueSerializationTest
 
         StringValue svDeser = StringValue.deserialize( cn, in );
 
-        assertEquals( sv3n, svDeser );
+        assertEquals( value, svDeser );
     }
 }

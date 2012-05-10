@@ -28,13 +28,14 @@ package org.apache.directory.shared.ldap.extras.controls.syncrepl_impl;
 public enum SyncInfoValueTags
 {
     /** The tags */
-    NEW_COOKIE_TAG( 0x0080 ),
-    REFRESH_DELETE_TAG( 0x00A1 ),
-    REFRESH_PRESENT_TAG( 0x00A2 ),
-    SYNC_ID_SET_TAG( 0x00A3 );
+    NEW_COOKIE_TAG(0x0080),
+    REFRESH_DELETE_TAG(0x00A1),
+    REFRESH_PRESENT_TAG(0x00A2),
+    SYNC_ID_SET_TAG(0x00A3);
 
     /** Internal value for each tag */
     private int value;
+
 
     /**
      * Create the private instance
@@ -44,8 +45,8 @@ public enum SyncInfoValueTags
     {
         this.value = value;
     }
-    
-    
+
+
     /**
      * @return The ASN.1 BER value for this tag.
      */

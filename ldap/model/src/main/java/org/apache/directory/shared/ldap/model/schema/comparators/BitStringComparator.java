@@ -6,24 +6,21 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema.comparators;
 
 
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Property;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,8 +30,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
-@Provides
 public class BitStringComparator extends LdapComparator<String>
 {
     /** The serial version UID */
@@ -48,7 +43,7 @@ public class BitStringComparator extends LdapComparator<String>
      * The BitStringComparator constructor. Its OID is the IntegerOrderingMatch matching
      * rule OID.
      */
-    public BitStringComparator( @Property(name = "ads.comp.comparator.oid") String oid )
+    public BitStringComparator( String oid )
     {
         super( oid );
     }
@@ -72,7 +67,7 @@ public class BitStringComparator extends LdapComparator<String>
         }
 
         // Then, deal with one of bs1 or bs2 being null
-        // Both can't be null, because then they would 
+        // Both can't be null, because then they would
         // have been caught by the previous test
         if ( ( bs1 == null ) || ( bs2 == null ) )
         {

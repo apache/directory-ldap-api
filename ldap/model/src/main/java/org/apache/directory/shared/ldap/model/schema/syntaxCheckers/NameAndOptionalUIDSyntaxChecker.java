@@ -24,8 +24,6 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,12 +43,11 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( NameAndOptionalUIDSyntaxChecker.class );
+
 
     /**
      * Creates a new instance of NameAndOptionalUIDSyntaxChecker.
@@ -59,7 +56,7 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.NAME_AND_OPTIONAL_UID_SYNTAX );
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -73,14 +70,14 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -92,10 +89,10 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // Let's see if we have an UID part
         int sharpPos = strValue.lastIndexOf( '#' );
-        
+
         if ( sharpPos != -1 )
         {
             // Now, check that we don't have another '#'
@@ -106,7 +103,7 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
             }
-            
+
             // This is an UID if the '#' is immediatly
             // followed by a BitString, except if the '#' is
             // on the last position
@@ -118,8 +115,8 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
                 // except if the '#' is in first position
                 if ( sharpPos > 0 )
                 {
-                    boolean result = Dn.isValid(strValue.substring(0, sharpPos));
-                    
+                    boolean result = Dn.isValid( strValue.substring( 0, sharpPos ) );
+
                     if ( result )
                     {
                         LOG.debug( "Syntax valid for '{}'", value );
@@ -128,9 +125,9 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
                     {
                         LOG.debug( "Syntax invalid for '{}'", value );
                     }
-                    
+
                     return result;
-                    
+
                 }
                 else
                 {
@@ -150,8 +147,8 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
         {
             // No UID, the strValue is a Dn
             // Check that the value is a valid Dn
-            boolean result = Dn.isValid(strValue);
-            
+            boolean result = Dn.isValid( strValue );
+
             if ( result )
             {
                 LOG.debug( "Syntax valid for '{}'", value );
@@ -160,7 +157,7 @@ public class NameAndOptionalUIDSyntaxChecker extends SyntaxChecker
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
             }
-            
+
             return result;
         }
     }

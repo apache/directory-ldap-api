@@ -29,6 +29,7 @@ import org.apache.directory.shared.util.StringConstants;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Test cases for OctetStringSyntaxChecker.
  *
@@ -66,10 +67,10 @@ public class OctetStringSyntaxCheckerTest
     public void testCorrectCase()
     {
         byte[] array = new byte[256];
-        
+
         for ( int i = 0; i < 256; i++ )
         {
-            array[ i ] = (byte)i;
+            array[i] = ( byte ) i;
         }
 
         assertTrue( checker.isValidSyntax( array ) );

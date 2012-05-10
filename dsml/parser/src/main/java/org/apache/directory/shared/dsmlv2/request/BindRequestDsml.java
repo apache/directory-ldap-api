@@ -36,7 +36,7 @@ import org.dom4j.Element;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class BindRequestDsml 
+public class BindRequestDsml
     extends AbstractResultResponseRequestDsml<BindRequest, BindResponse>
     implements BindRequest
 {
@@ -78,10 +78,21 @@ public class BindRequestDsml
 
         BindRequest request = ( BindRequest ) getDecorated();
 
-        // AbandonID
-        String name = request.getName().getName();
-        if ( ( name != null ) && ( !"".equals( name ) ) )
+        // Principal
+        Dn dn = request.getDn();
+
+        if ( !Dn.isNullOrEmpty( dn ) )
         {
+            // A DN has been provided
+
+            element.addAttribute( "principal", dn.getName() );
+        }
+        else
+        {
+            // No DN has been provided, let's use the name as a string instead
+
+            String name = request.getName();
+
             element.addAttribute( "principal", name );
         }
 
@@ -161,7 +172,7 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public Dn getName()
+    public String getName()
     {
         return getDecorated().getName();
     }
@@ -170,9 +181,29 @@ public class BindRequestDsml
     /**
      * {@inheritDoc}
      */
-    public BindRequest setName( Dn name )
+    public BindRequest setName( String name )
     {
         getDecorated().setName( name );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Dn getDn()
+    {
+        return getDecorated().getDn();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest setDn( Dn dn )
+    {
+        getDecorated().setDn( dn );
 
         return this;
     }
@@ -225,42 +256,42 @@ public class BindRequestDsml
 
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public BindRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public BindRequest addControl( Control control ) throws MessageException
     {
-        return (BindRequest)super.addControl( control );
+        return ( BindRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public BindRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (BindRequest)super.addAllControls( controls );
+        return ( BindRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public BindRequest removeControl( Control control ) throws MessageException
     {
-        return (BindRequest)super.removeControl( control );
+        return ( BindRequest ) super.removeControl( control );
     }
 }

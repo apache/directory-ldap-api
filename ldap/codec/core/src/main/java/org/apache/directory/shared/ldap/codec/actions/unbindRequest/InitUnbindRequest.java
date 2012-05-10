@@ -45,6 +45,7 @@ public class InitUnbindRequest extends GrammarAction<LdapMessageContainer<Unbind
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitUnbindRequest.class );
 
+
     /**
      * Instantiates a new action.
      */
@@ -63,7 +64,7 @@ public class InitUnbindRequest extends GrammarAction<LdapMessageContainer<Unbind
         UnbindRequest unbindRequestInternal = new UnbindRequestImpl();
         unbindRequestInternal.setMessageId( container.getMessageId() );
         UnbindRequestDecorator unbindRequest = new UnbindRequestDecorator(
-            container.getLdapCodecService(),unbindRequestInternal );
+            container.getLdapCodecService(), unbindRequestInternal );
         container.setMessage( unbindRequest );
 
         TLV tlv = container.getCurrentTLV();

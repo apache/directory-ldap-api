@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.ObjectNameSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for ObjectNameSyntaxChecker.
@@ -64,8 +66,8 @@ public class ObjectNameSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( "AzErTy" ) );
         assertTrue( checker.isValidSyntax( "a123;-bcdEf0" ) );
     }
-    
-    
+
+
     @Test
     public void testWrongName()
     {

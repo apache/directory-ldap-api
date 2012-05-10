@@ -52,7 +52,6 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     // Constructors
     // ------------------------------------------------------------------------
 
-    
     /**
      * Creates an AddRequest implementation to create a new entry.
      */
@@ -129,7 +128,6 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     // AddRequest Interface Method Implementations
     // ------------------------------------------------------------------------
 
-    
     /**
      * Gets the distinguished name of the entry to add.
      * 
@@ -147,7 +145,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     public AddRequest setEntryDn( Dn dn )
     {
         entry.setDn( dn );
-        
+
         return this;
     }
 
@@ -167,49 +165,49 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
     public AddRequest setEntry( Entry entry )
     {
         this.entry = entry;
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AddRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public AddRequest addControl( Control control ) throws MessageException
     {
-        return (AddRequest)super.addControl( control );
+        return ( AddRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AddRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (AddRequest)super.addAllControls( controls );
+        return ( AddRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AddRequest removeControl( Control control ) throws MessageException
     {
-        return (AddRequest)super.removeControl( control );
+        return ( AddRequest ) super.removeControl( control );
     }
 
-    
+
     // ------------------------------------------------------------------------
     // SingleReplyRequest Interface Method Implementations
     // ------------------------------------------------------------------------

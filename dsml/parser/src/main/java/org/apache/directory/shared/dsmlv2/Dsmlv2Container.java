@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.dsmlv2;
 
@@ -59,32 +59,33 @@ public class Dsmlv2Container implements Container
     /** The codec service */
     private final LdapApiService codec;
 
+
     /**
-     * Creates a new LdapMessageContainer object. We will store ten grammars,
-     * it's enough ...
+     * Creates a new LdapMessageContainer object.
+     * 
+     * @param codec the Codec used to encode/decode the messages
      */
     public Dsmlv2Container( LdapApiService codec )
     {
-        this.codec= codec;
+        this.codec = codec;
     }
-    
-    
+
+
     /**
      * Gets the {@link LdapApiService} associated with this {@link Asn1Container}.
      *
-     * @return
+     * @return The codec used to encode/decode the messages
      */
     public LdapApiService getLdapCodecService()
     {
         return codec;
     }
-    
-    
+
+
     /**
      * Gets the DSML Batch Request
      * 
-     * @return
-     *      Returns the Batch Request
+     * @return Returns the Batch Request
      */
     public BatchRequestDsml getBatchRequest()
     {
@@ -95,8 +96,7 @@ public class Dsmlv2Container implements Container
     /**
      * Sets the DSML Batch Request
      * 
-     * @param batchRequest
-     *      the Batch Request to set
+     * @param batchRequest the Batch Request to set
      */
     public void setBatchRequest( BatchRequestDsml batchRequest )
     {
@@ -107,8 +107,7 @@ public class Dsmlv2Container implements Container
     /**
      * Gets the DSML Batch Response
      * 
-     * @return
-     *      Returns the Batch Response
+     * @return Returns the Batch Response
      */
     public BatchResponseDsml getBatchResponse()
     {
@@ -119,8 +118,7 @@ public class Dsmlv2Container implements Container
     /**
      * Sets the DSML Batch Request
      * 
-     * @param batchResponse
-     *      the Batch Response to set
+     * @param batchResponse the Batch Response to set
      */
     public void setBatchResponse( BatchResponseDsml batchResponse )
     {
@@ -131,8 +129,7 @@ public class Dsmlv2Container implements Container
     /**
      * Gets the parser
      * 
-     * @return
-     *      the parser
+     * @return the parser
      */
     public XmlPullParser getParser()
     {
@@ -143,8 +140,7 @@ public class Dsmlv2Container implements Container
     /**
      * Sets the parser
      * 
-     * @param parser
-     *      the parser to set
+     * @param parser the parser to set
      */
     public void setParser( XmlPullParser parser )
     {
@@ -155,8 +151,7 @@ public class Dsmlv2Container implements Container
     /**
      * Get the current grammar state
      * 
-     * @return
-     *      the current grammar state
+     * @return the current grammar state
      */
     public Enum<Dsmlv2StatesEnum> getState()
     {
@@ -167,8 +162,7 @@ public class Dsmlv2Container implements Container
     /**
      * Set the new current state
      * 
-     * @param state
-     *      the new state
+     * @param state the new state
      */
     public void setState( Enum<Dsmlv2StatesEnum> state )
     {
@@ -179,8 +173,7 @@ public class Dsmlv2Container implements Container
     /**
      * Get the transition
      * 
-     * @return
-     *      the transition from the previous state to the new state
+     * @return the transition from the previous state to the new state
      */
     public Enum<Dsmlv2StatesEnum> getTransition()
     {
@@ -191,8 +184,7 @@ public class Dsmlv2Container implements Container
     /**
      * Update the transition from a state to another
      * 
-     * @param transition
-     *      the transition to set
+     * @param transition the transition to set
      */
     public void setTransition( Enum<Dsmlv2StatesEnum> transition )
     {
@@ -203,11 +195,10 @@ public class Dsmlv2Container implements Container
     /**
      * Get the states for this container's grammars
      * 
-     * @return
-     *      the states.
+     * @return the states.
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value="UWF_UNWRITTEN_FIELD",
-        justification="it exists a setter for 'states'")
+    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "UWF_UNWRITTEN_FIELD",
+        justification = "it exists a setter for 'states'")
     public Enum<Dsmlv2StatesEnum>[] getStates()
     {
         return states;
@@ -217,8 +208,7 @@ public class Dsmlv2Container implements Container
     /**
      * Gets the grammar
      *
-     * @return
-     *      the grammar
+     * @return the grammar
      */
     public AbstractGrammar getGrammar()
     {
@@ -229,8 +219,7 @@ public class Dsmlv2Container implements Container
     /**
      * Sets the Grammar
      * 
-     * @param grammar
-     *      the grammar to set
+     * @param grammar the grammar to set
      */
     public void setGrammar( AbstractGrammar grammar )
     {
@@ -241,12 +230,9 @@ public class Dsmlv2Container implements Container
     /**
      * Get the transition associated with the state and tag
      * 
-     * @param currentState
-     *      the current state
-     * @param currentTag
-     *      the current tag
-     * @return
-     *      a valid transition if any, or null.
+     * @param currentState the current state
+     * @param currentTag the current tag
+     * @return a valid transition if any, or null.
      */
     public GrammarTransition getTransition( Enum<Dsmlv2StatesEnum> currentState, Tag currentTag )
     {

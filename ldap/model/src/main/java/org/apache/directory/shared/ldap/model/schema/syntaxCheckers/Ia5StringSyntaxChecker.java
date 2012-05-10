@@ -23,8 +23,6 @@ package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,12 +36,11 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class Ia5StringSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( Ia5StringSyntaxChecker.class );
+
 
     /**
      * Creates a new instance of Ia5StringSyntaxChecker.
@@ -52,7 +49,7 @@ public class Ia5StringSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.IA5_STRING_SYNTAX );
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -66,22 +63,22 @@ public class Ia5StringSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return true;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
             strValue = value.toString();
         }
 
-        boolean result = Strings.isIA5String(strValue);
-        
+        boolean result = Strings.isIA5String( strValue );
+
         if ( result )
         {
             LOG.debug( "Syntax valid for '{}'", value );
@@ -90,7 +87,7 @@ public class Ia5StringSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax invalid for '{}'", value );
         }
-        
+
         return result;
     }
 }

@@ -32,7 +32,7 @@ public class EntryChangeContainer extends AbstractContainer
 {
     /** EntryChangeControl */
     private EntryChangeDecorator control;
-    
+
     /** The codec that encodes and decodes */
     private LdapApiService codec;
 

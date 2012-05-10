@@ -33,7 +33,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
- 
+
 /**
  * Tests the DefaultSchemaLdifExtractor class.
  *
@@ -45,7 +45,7 @@ public class SchemaLdifExtractorTest
 {
     private static String workingDirectory;
 
-    
+
     @BeforeClass
     public static void setup() throws IOException
     {
@@ -57,12 +57,12 @@ public class SchemaLdifExtractorTest
             int targetPos = path.indexOf( "target" );
             workingDirectory = path.substring( 0, targetPos + 6 );
         }
-        
+
         // Cleanup the target directory
         FileUtils.deleteDirectory( new File( workingDirectory + "/schema" ) );
     }
-    
-    
+
+
     @AfterClass
     public static void cleanup() throws IOException
     {
@@ -70,7 +70,7 @@ public class SchemaLdifExtractorTest
         FileUtils.deleteDirectory( new File( workingDirectory + "/schema" ) );
     }
 
-    
+
     @Test
     public void testExtract() throws Exception
     {

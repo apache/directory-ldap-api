@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.schema.syntaxCheckers;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -33,6 +34,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Test cases for SubtreeSpecificationSyntaxChecker.
  *
@@ -42,7 +44,7 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class SubtreeSpecificationSyntaxCheckerTest
 {
-    private static SubtreeSpecificationSyntaxChecker checker ;
+    private static SubtreeSpecificationSyntaxChecker checker;
 
 
     /**
@@ -53,13 +55,14 @@ public class SubtreeSpecificationSyntaxCheckerTest
     {
         JarLdifSchemaLoader loader = new JarLdifSchemaLoader();
         SchemaManager schemaManager = new DefaultSchemaManager( loader );
-        
+
         schemaManager.loadAllEnabled();
 
         checker = new SubtreeSpecificationSyntaxChecker();
         checker.setSchemaManager( schemaManager );
     }
-        
+
+
     @Test
     public void testNullString()
     {
@@ -73,17 +76,19 @@ public class SubtreeSpecificationSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "" ) );
     }
 
+
     @Test
     public void testOid()
     {
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.45", checker.getOid() );
     }
 
+
     @Test
     public void testCorrectCase()
     {
     }
-    
+
     /** A valid empty specification with single white space between brackets */
     private static final String EMPTY_SPEC = "{ }";
 
@@ -130,10 +135,11 @@ public class SubtreeSpecificationSyntaxCheckerTest
 
     /** An invalid specification with completely unrelated content */
     private static final String INVALID_SILLY_THING = "How much wood would a wood chuck chuck if a wood chuck would chuck wood?";
-    
+
     /** A valid specification with filter expression */
     private static final String SPEC_WITH_FILTER = "{ base \"ou=system\", specificationFilter (&(cn=test)(sn=test)) }";
-    
+
+
     /**
      * Tests the parser with a valid empty specification.
      */
@@ -141,7 +147,7 @@ public class SubtreeSpecificationSyntaxCheckerTest
     public void testEmptySpec() throws Exception
     {
         assertTrue( checker.isValidSyntax( EMPTY_SPEC ) );
-       
+
         // try a second time
         assertTrue( checker.isValidSyntax( EMPTY_SPEC ) );
 
@@ -267,6 +273,7 @@ public class SubtreeSpecificationSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( SPEC_ORDER_OF_COMPONENTS_DOES_NOT_MATTER ) );
     }
 
+
     /**
      * Tests the parser with a valid specification with unordinary component
      * order.
@@ -276,8 +283,8 @@ public class SubtreeSpecificationSyntaxCheckerTest
     {
         assertFalse( checker.isValidSyntax( INVALID_SILLY_THING ) );
     }
-    
-    
+
+
     /**
      * Tests the parser with a valid specification with refinement set.
      */

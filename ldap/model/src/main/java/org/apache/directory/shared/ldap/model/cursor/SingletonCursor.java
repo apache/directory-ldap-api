@@ -22,6 +22,8 @@ package org.apache.directory.shared.ldap.model.cursor;
 import java.util.Comparator;
 
 import org.apache.directory.shared.i18n.I18n;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -32,6 +34,9 @@ import org.apache.directory.shared.i18n.I18n;
  */
 public class SingletonCursor<E> extends AbstractCursor<E>
 {
+    /** A dedicated log for cursors */
+    private static final Logger LOG_CURSOR = LoggerFactory.getLogger( "CURSOR" );
+
     /** A flag to tell if the cursor is set before the first element */
     private boolean beforeFirst = true;
 
@@ -68,6 +73,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
      */
     public SingletonCursor( E singleton, Comparator<E> comparator )
     {
+        LOG_CURSOR.debug( "Creating SingletonCursor {}", this );
         this.singleton = singleton;
         this.comparator = comparator;
     }
@@ -312,5 +318,27 @@ public class SingletonCursor<E> extends AbstractCursor<E>
         {
             throw new InvalidCursorPositionException( I18n.err( I18n.ERR_02013_CANNOT_ACCESS_IF_AFTER_LAST ) );
         }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void close() throws Exception
+    {
+        LOG_CURSOR.debug( "Closing SingletonCursor {}", this );
+        super.close();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void close( Exception cause ) throws Exception
+    {
+        LOG_CURSOR.debug( "Closing SingletonCursor {}", this );
+        super.close( cause );
     }
 }

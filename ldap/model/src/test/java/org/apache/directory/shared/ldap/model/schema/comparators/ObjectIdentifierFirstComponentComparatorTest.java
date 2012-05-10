@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.comparators;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 
@@ -40,21 +41,22 @@ import org.junit.runner.RunWith;
 public class ObjectIdentifierFirstComponentComparatorTest
 {
     private ObjectIdentifierFirstComponentComparator comparator;
-    
+
+
     @Before
     public void init()
     {
         comparator = new ObjectIdentifierFirstComponentComparator( null );
     }
-    
-    
+
+
     @Test
     public void testNullObjectIdentifiers()
     {
         assertEquals( 0, comparator.compare( null, null ) );
-        
+
         String c2 = "( 1.1 FQCN org.apache.directory.SimpleComparator BYTECODE ABCDEFGHIJKLMNOPQRSTUVWXYZ+/abcdefghijklmnopqrstuvwxyz0123456789==== )";
-        
+
         assertEquals( -1, comparator.compare( null, c2 ) );
 
         assertEquals( -1, comparator.compare( c2, null ) );

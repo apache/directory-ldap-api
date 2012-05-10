@@ -44,8 +44,8 @@ public interface PasswordPolicy extends Control
      * @return true if this Control carries a response, false if it is a request
      */
     boolean hasResponse();
-    
-    
+
+
     /**
      * Sets the response. If null hasResponse() will return null and this will be
      * handled as a password policy request control rather than a response control.
@@ -53,8 +53,8 @@ public interface PasswordPolicy extends Control
      * @param response a valid response object, or null to make this a request
      */
     void setResponse( PasswordPolicyResponse response );
-    
-    
+
+
     /**
      * If true sets the response to a default newly initialized response object. 
      * If this was previously a request, it automatically becomes a response. If it 
@@ -68,8 +68,8 @@ public interface PasswordPolicy extends Control
      * @return the old response object, if one did not exist null is returned
      */
     PasswordPolicyResponse setResponse( boolean hasResponse );
-    
-    
+
+
     /**
      * Get's the response component of this control if this control carries a 
      * response. If {@link #hasResponse()} returns true, this will return a non-null

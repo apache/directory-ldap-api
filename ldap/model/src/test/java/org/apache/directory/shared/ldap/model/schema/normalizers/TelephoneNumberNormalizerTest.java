@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.normalizers;
 
+
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.exception.LdapException;

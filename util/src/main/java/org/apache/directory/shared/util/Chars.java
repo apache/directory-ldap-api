@@ -38,15 +38,15 @@ public final class Chars
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
-            false, true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  false, false, false, false, false,
-            false, true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  false, false, false, false, false
-        };
+            false, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, false, false, false, false, false,
+            false, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, false, false, false, false, false
+    };
     /** &lt;alpha-lower-case> ::= [0x61-0x7A] */
     public static final boolean[] ALPHA_LOWER_CASE =
         {
@@ -62,11 +62,11 @@ public final class Chars
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
-            false, true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  false, false, false, false, false
-        };
+            false, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, false, false, false, false, false
+    };
     /** &lt;alpha-upper-case> ::= [0x41-0x5A] */
     public static final boolean[] ALPHA_UPPER_CASE =
         {
@@ -78,15 +78,15 @@ public final class Chars
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
-            false, true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  false, false, false, false, false,
+            false, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
-        };
+    };
     /** &lt;alpha-digit> | &lt;digit> */
     public static final boolean[] ALPHA_DIGIT =
         {
@@ -96,17 +96,17 @@ public final class Chars
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  false, false, false, false, false, false,
-            false, true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  false, false, false, false, false,
-            false, true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  false, false, false, false, false
-        };
+            true, true, true, true, true, true, true, true,
+            true, true, false, false, false, false, false, false,
+            false, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, false, false, false, false, false,
+            false, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, false, false, false, false, false
+    };
     /** &lt;alpha> | &lt;digit> | '-' */
     public static final boolean[] CHAR =
         {
@@ -115,18 +115,18 @@ public final class Chars
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
-            false, false, false, false, false, true,  false, false,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  false, false, false, false, false, false,
-            false, true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  false, false, false, false, false,
-            false, true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  false, false, false, false, false
-        };
+            false, false, false, false, false, true, false, false,
+            true, true, true, true, true, true, true, true,
+            true, true, false, false, false, false, false, false,
+            false, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, false, false, false, false, false,
+            false, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true,
+            true, true, true, false, false, false, false, false
+    };
     /** '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' */
     public static final boolean[] DIGIT =
         {
@@ -136,8 +136,8 @@ public final class Chars
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  false, false, false, false, false, false,
+            true, true, true, true, true, true, true, true,
+            true, true, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
@@ -146,7 +146,7 @@ public final class Chars
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false
-        };
+    };
     /** &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66] */
     public static final boolean[] HEX =
         {
@@ -156,16 +156,17 @@ public final class Chars
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
-            true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  false, false, false, false, false, false,
-            false, true,  true,  true,  true,  true,  true,  false,
+            true, true, true, true, true, true, true, true,
+            true, true, false, false, false, false, false, false,
+            false, true, true, true, true, true, true, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
-            false, true,  true,  true,  true,  true,  true,  false,
+            false, true, true, true, true, true, true, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false };
+
 
     /* *
     * Test if the current character is equal to a specific character.
@@ -187,6 +188,7 @@ public final class Chars
             return ( ( chars[index] == car ) ? true : false );
         }
     }
+
 
     /**
      * Test if the current character is equal to a specific character.
@@ -217,6 +219,7 @@ public final class Chars
         }
     }
 
+
     /**
      * Test if the current character is equal to a specific character.
      *
@@ -246,6 +249,7 @@ public final class Chars
         }
     }
 
+
     /**
      * Test if the current character is equal to a specific character.
      *
@@ -271,9 +275,10 @@ public final class Chars
         }
         else
         {
-            return ( ( bytes[ index ] | 0x20 ) & car ) == car;
+            return ( ( bytes[index] | 0x20 ) & car ) == car;
         }
     }
+
 
     /**
      * Test if the current byte is an Alpha character :
@@ -289,6 +294,7 @@ public final class Chars
         return ( ( c > 0 ) && ( c <= 127 ) && ALPHA[c] );
     }
 
+
     /**
      * Test if the current character is an Alpha character :
      * &lt;alpha> ::= [0x41-0x5A] | [0x61-0x7A]
@@ -302,6 +308,7 @@ public final class Chars
     {
         return ( ( c > 0 ) && ( c <= 127 ) && ALPHA[c] );
     }
+
 
     /**
      * Test if the current character is an Alpha character : &lt;alpha> ::=
@@ -333,6 +340,7 @@ public final class Chars
         }
     }
 
+
     /**
      * Test if the current character is an Alpha character : &lt;alpha> ::=
      * [0x41-0x5A] | [0x61-0x7A]
@@ -362,6 +370,7 @@ public final class Chars
             }
         }
     }
+
 
     /**
      * Test if the current character is an Alpha character : &lt;alpha> ::=
@@ -400,6 +409,7 @@ public final class Chars
         }
     }
 
+
     /**
      * Test if the current character is a lowercased Alpha character : <br/>
      * &lt;alpha> ::= [0x61-0x7A]
@@ -436,6 +446,7 @@ public final class Chars
             }
         }
     }
+
 
     /**
      * Test if the current character is a uppercased Alpha character : <br/>
@@ -474,6 +485,7 @@ public final class Chars
         }
     }
 
+
     /**
      * Check if the current character is an 7 bits ASCII CHAR (between 0 and
      * 127).
@@ -511,6 +523,7 @@ public final class Chars
         }
     }
 
+
     /**
      * Check if the current character is an 7 bits ASCII CHAR (between 0 and
      * 127). &lt;char> ::= &lt;alpha> | &lt;digit> | '-'
@@ -540,6 +553,7 @@ public final class Chars
         }
     }
 
+
     /**
      * Check if the current character is an 7 bits ASCII CHAR (between 0 and
      * 127). &lt;char> ::= &lt;alpha> | &lt;digit> | '-'
@@ -568,6 +582,7 @@ public final class Chars
             }
         }
     }
+
 
     /**
      * Check if the current character is an 7 bits ASCII CHAR (between 0 and
@@ -605,6 +620,7 @@ public final class Chars
         }
     }
 
+
     /**
      * Test if the current character is a bit, ie 0 or 1.
      *
@@ -629,10 +645,11 @@ public final class Chars
         }
         else
         {
-            char c =  string.charAt(  index );
+            char c = string.charAt( index );
             return ( ( c == '0' ) || ( c == '1' ) );
         }
     }
+
 
     /**
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
@@ -653,6 +670,7 @@ public final class Chars
         }
     }
 
+
     /**
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
      * '3' | '4' | '5' | '6' | '7' | '8' | '9'
@@ -665,6 +683,21 @@ public final class Chars
     {
         return ( car >= '0' ) && ( car <= '9' );
     }
+
+
+    /**
+     * Test if the current byte is a digit &lt;digit> ::= '0' | '1' | '2' |
+     * '3' | '4' | '5' | '6' | '7' | '8' | '9'
+     *
+     * @param car the byte to test
+     *
+     * @return <code>true</code> if the character is a Digit
+     */
+    public static boolean isDigit( byte car )
+    {
+        return ( car >= '0' ) && ( car <= '9' );
+    }
+
 
     /**
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
@@ -682,9 +715,10 @@ public final class Chars
         }
         else
         {
-            return ( ( ( ( bytes[index] | 0x7F ) !=  0x7F ) || !DIGIT[bytes[index]] ) ? false : true );
+            return ( ( ( ( bytes[index] | 0x7F ) != 0x7F ) || !DIGIT[bytes[index]] ) ? false : true );
         }
     }
+
 
     /**
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
@@ -705,6 +739,7 @@ public final class Chars
             return ( ( ( chars[index] > 127 ) || !DIGIT[chars[index]] ) ? false : true );
         }
     }
+
 
     /**
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
@@ -729,10 +764,11 @@ public final class Chars
         }
         else
         {
-            char c = string.charAt(  index  );
+            char c = string.charAt( index );
             return ( ( ( c > 127 ) || !DIGIT[c] ) ? false : true );
         }
     }
+
 
     /**
      * Test if the current character is a digit &lt;digit> ::= '0' | '1' | '2' |
@@ -753,6 +789,7 @@ public final class Chars
         }
     }
 
+
     /**
      * Check if the current byte is an Hex Char
      * &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66]
@@ -764,6 +801,7 @@ public final class Chars
     {
         return ( ( b | 0x7F ) == 0x7F ) || HEX[b];
     }
+
 
     /**
      * Check if the current character is an Hex Char &lt;hex> ::= [0x30-0x39] |
@@ -794,6 +832,7 @@ public final class Chars
         }
     }
 
+
     /**
      * Check if the current character is an Hex Char &lt;hex> ::= [0x30-0x39] |
      * [0x41-0x46] | [0x61-0x66]
@@ -822,6 +861,7 @@ public final class Chars
             }
         }
     }
+
 
     /**
      * Check if the current character is an Hex Char &lt;hex> ::= [0x30-0x39] |

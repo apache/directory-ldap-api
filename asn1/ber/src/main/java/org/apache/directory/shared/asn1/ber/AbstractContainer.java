@@ -74,6 +74,7 @@ public abstract class AbstractContainer implements Asn1Container
      * for constructed types */
     private boolean isGathering = false;
 
+
     /**
      * Creates a new instance of AbstractContainer with a starting state.
      *
@@ -97,20 +98,17 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * Get the current grammar
-     *
-     * @return Returns the grammar used to decode a LdapMessage.
+     * {@inheritDoc}
      */
-    public Grammar<?> getGrammar()
+    @SuppressWarnings("rawtypes")
+    public Grammar getGrammar()
     {
         return grammar;
     }
 
 
     /**
-     * Get the current grammar state
-     *
-     * @return Returns the current grammar state
+     * {@inheritDoc}
      */
     public TLVStateEnum getState()
     {
@@ -119,9 +117,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * Set the new current state
-     *
-     * @param state The new state
+     * {@inheritDoc}
      */
     public void setState( TLVStateEnum state )
     {
@@ -130,9 +126,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * Check that we can have a end state after this transition
-     *
-     * @return true if this can be the last transition
+     * {@inheritDoc}
      */
     public boolean isGrammarEndAllowed()
     {
@@ -141,10 +135,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * Set the flag to allow a end transition
-     *
-     * @param grammarEndAllowed true or false, depending on the next transition
-     * being an end or not.
+     * {@inheritDoc}
      */
     public void setGrammarEndAllowed( boolean grammarEndAllowed )
     {
@@ -153,9 +144,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * Get the transition
-     *
-     * @return Returns the transition from the previous state to the new state
+     * {@inheritDoc}
      */
     public Enum<?> getTransition()
     {
@@ -164,9 +153,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * Update the transition from a state to another
-     *
-     * @param transition The transition to set
+     * {@inheritDoc}
      */
     public void setTransition( Enum<?> transition )
     {
@@ -175,9 +162,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * Set the current TLV
-     *
-     * @param currentTLV The current TLV
+     * {@inheritDoc}
      */
     public void setCurrentTLV( TLV currentTLV )
     {
@@ -186,9 +171,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * Get the current TLV
-     *
-     * @return Returns the current TLV being decoded
+     * {@inheritDoc}
      */
     public TLV getCurrentTLV()
     {
@@ -197,9 +180,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * Get the parent TLV;
-     *
-     * @return Returns the parent TLV, if any.
+     * {@inheritDoc}
      */
     public TLV getParentTLV()
     {
@@ -208,9 +189,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * Set the parent TLV.
-     *
-     * @param parentTLV The parent TLV to set.
+     * {@inheritDoc}
      */
     public void setParentTLV( TLV parentTLV )
     {
@@ -231,8 +210,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * Return a new ID and increment the counter
-     * @return A new TLV id.
+     * {@inheritDoc}
      */
     public int getNewTlvId()
     {
@@ -241,7 +219,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * @return The TLV Id
+     * {@inheritDoc}
      */
     public int getTlvId()
     {
@@ -250,9 +228,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * @return The number of decoded bytes for this message. This is used
-     * to control the PDU size and avoid PDU exceeding the maximum allowed
-     * size to break the server.
+     * {@inheritDoc}
      */
     public int getDecodeBytes()
     {
@@ -261,8 +237,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * Increment the decodedBytes by the latest received buffer's size.
-     * @param nb The buffer size.
+     * {@inheritDoc}
      */
     public void incrementDecodeBytes( int nb )
     {
@@ -271,7 +246,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * @return The maximum PDU size.
+     * {@inheritDoc}
      */
     public int getMaxPDUSize()
     {
@@ -280,9 +255,7 @@ public abstract class AbstractContainer implements Asn1Container
 
 
     /**
-     * Set the maximum PDU size.
-     * @param maxPDUSize The maximum PDU size (if negative or null, will be
-     * replaced by the max integer value)
+     * {@inheritDoc}
      */
     public void setMaxPDUSize( int maxPDUSize )
     {

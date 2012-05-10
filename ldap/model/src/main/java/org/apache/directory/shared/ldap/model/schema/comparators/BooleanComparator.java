@@ -21,9 +21,6 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Property;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,8 +30,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
-@Provides
 public class BooleanComparator extends LdapComparator<String>
 {
     /** The serial version UID */
@@ -48,7 +43,7 @@ public class BooleanComparator extends LdapComparator<String>
      * The BooleanComparator constructor. Its OID is the BooleanMatch matching
      * rule OID.
      */
-    public BooleanComparator( @Property(name = "ads.comp.comparator.oid") String oid )
+    public BooleanComparator( String oid )
     {
         super( oid );
     }

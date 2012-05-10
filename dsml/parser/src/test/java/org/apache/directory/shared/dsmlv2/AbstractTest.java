@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.xmlpull.v1.XmlPullParserException;
 
+
 /**
  * This class had to be used to create a Request TestCase
  *
@@ -38,25 +39,22 @@ public abstract class AbstractTest
 {
     /** The LDAP encoder decoder service */
     private LdapApiService codec = LdapApiServiceFactory.getSingleton();
-    
+
     private Dsmlv2Grammar grammar = new Dsmlv2Grammar();
-    
-    
+
+
     public Dsmlv2Parser newParser() throws Exception
     {
         return new Dsmlv2Parser( grammar );
     }
-    
-    
+
+
     public LdapApiService getCodec()
     {
         return codec;
     }
-    
-    
-    
-    
-    
+
+
     /**
      * Asserts that parsing throws a correct XmlPullParserException due to an incorrect file
      *

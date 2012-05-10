@@ -25,7 +25,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
@@ -58,6 +58,7 @@ public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageConta
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -77,13 +78,13 @@ public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageConta
         TLV tlv = container.getCurrentTLV();
 
         // We have to check that this is a correct derefAliases
-        Value value = tlv.getValue();
+        BerValue value = tlv.getValue();
         int derefAliases = 0;
 
         try
         {
-            derefAliases = IntegerDecoder.parse(value, LdapConstants.NEVER_DEREF_ALIASES,
-                    LdapConstants.DEREF_ALWAYS);
+            derefAliases = IntegerDecoder.parse( value, LdapConstants.NEVER_DEREF_ALIASES,
+                LdapConstants.DEREF_ALWAYS );
         }
         catch ( IntegerDecoderException ide )
         {

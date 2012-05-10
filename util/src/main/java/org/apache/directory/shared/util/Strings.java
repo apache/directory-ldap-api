@@ -39,6 +39,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * Various string manipulation methods that are more efficient then chaining
  * string operations: all is done in the same buffer without creating a bunch of
@@ -54,7 +55,6 @@ public final class Strings
     /** The default charset, because it's not provided by JDK 1.5 */
     static String defaultCharset = null;
 
-
     /** Hex chars */
     private static final byte[] HEX_CHAR = new byte[]
         { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
@@ -62,23 +62,128 @@ public final class Strings
     /** A table containing booleans when the corresponding char is printable */
     public static final boolean[] IS_PRINTABLE_CHAR =
         {
-        false, false, false, false, false, false, false, false, // ---, ---, ---, ---, ---, ---, ---, ---
-        false, false, false, false, false, false, false, false, // ---, ---, ---, ---, ---, ---, ---, ---
-        false, false, false, false, false, false, false, false, // ---, ---, ---, ---, ---, ---, ---, ---
-        false, false, false, false, false, false, false, false, // ---, ---, ---, ---, ---, ---, ---, ---
-        true,  false, false, false, false, false, false, true,  // ' ', ---, ---, ---, ---, ---, ---, "'"
-        true,  true,  false, true,  true,  true,  true,  true,  // '(', ')', ---, '+', ',', '-', '.', '/'
-        true,  true,  true,  true,  true,  true,  true,  true,  // '0', '1', '2', '3', '4', '5', '6', '7',
-        true,  true,  true,  false, false, true,  false, true,  // '8', '9', ':', ---, ---, '=', ---, '?'
-        false, true,  true,  true,  true,  true,  true,  true,  // ---, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
-        true,  true,  true,  true,  true,  true,  true,  true,  // 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'
-        true,  true,  true,  true,  true,  true,  true,  true,  // 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
-        true,  true,  true,  false, false, false, false, false, // 'X', 'Y', 'Z', ---, ---, ---, ---, ---
-        false, true,  true,  true,  true,  true,  true,  true,  // ---, 'a', 'b', 'c', 'd', 'e', 'f', 'g'
-        true,  true,  true,  true,  true,  true,  true,  true,  // 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'
-        true,  true,  true,  true,  true,  true,  true,  true,  // 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'
-        true,  true,  true,  false, false, false, false, false  // 'x', 'y', 'z', ---, ---, ---, ---, ---
-        };
+            false, false, false, false, false, false, false, false, // ---, ---, ---, ---, ---, ---, ---, ---
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false, // ---, ---, ---, ---, ---, ---, ---, ---
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false, // ---, ---, ---, ---, ---, ---, ---, ---
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false, // ---, ---, ---, ---, ---, ---, ---, ---
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true, // ' ', ---, ---, ---, ---, ---, ---, "'"
+            true,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true, // '(', ')', ---, '+', ',', '-', '.', '/'
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true, // '0', '1', '2', '3', '4', '5', '6', '7',
+            true,
+            true,
+            true,
+            false,
+            false,
+            true,
+            false,
+            true, // '8', '9', ':', ---, ---, '=', ---, '?'
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true, // ---, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true, // 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true, // 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false, // 'X', 'Y', 'Z', ---, ---, ---, ---, ---
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true, // ---, 'a', 'b', 'c', 'd', 'e', 'f', 'g'
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true, // 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true, // 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false // 'x', 'y', 'z', ---, ---, ---, ---, ---
+    };
 
     public static final char[] TO_LOWER_CASE =
         {
@@ -86,18 +191,18 @@ public final class Strings
             0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
             0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
             0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
-            ' ',  0x21, 0x22, 0x23, 0x24, 0x25, 0x26, '\'',
-            '(',  ')',  0x2A, '+',  ',',  '-',  '.',  '/',
-            '0',  '1',  '2',  '3',  '4',  '5',  '6',  '7',
-            '8',  '9',  ':',  0x3B, 0x3C, '=',  0x3E, '?',
-            0x40, 'a',  'b',  'c',  'd',  'e',  'f',  'g',
-            'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
-            'p',  'q',  'r',  's',  't',  'u',  'v',  'w',
-            'x',  'y',  'z',  0x5B, 0x5C, 0x5D, 0x5E, 0x5F,
-            0x60, 'a',  'b',  'c',  'd',  'e',  'f',  'g',
-            'h',  'i',  'j',  'k',  'l',  'm',  'n',  'o',
-            'p',  'q',  'r',  's',  't',  'u',  'v',  'w',
-            'x',  'y',  'z',  0x7B, 0x7C, 0x7D, 0x7E, 0x7F,
+            ' ', 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, '\'',
+            '(', ')', 0x2A, '+', ',', '-', '.', '/',
+            '0', '1', '2', '3', '4', '5', '6', '7',
+            '8', '9', ':', 0x3B, 0x3C, '=', 0x3E, '?',
+            0x40, 'a', 'b', 'c', 'd', 'e', 'f', 'g',
+            'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+            'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
+            'x', 'y', 'z', 0x5B, 0x5C, 0x5D, 0x5E, 0x5F,
+            0x60, 'a', 'b', 'c', 'd', 'e', 'f', 'g',
+            'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+            'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
+            'x', 'y', 'z', 0x7B, 0x7C, 0x7D, 0x7E, 0x7F,
             0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87,
             0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F,
             0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97,
@@ -114,36 +219,36 @@ public final class Strings
             0xE8, 0xE9, 0xEA, 0xEB, 0xEC, 0xED, 0xEE, 0xEF,
             0xF0, 0xF1, 0xF2, 0xF3, 0xF4, 0xF5, 0xF6, 0xF7,
             0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF,
-        };
+    };
 
     /** upperCase = 'A' .. 'Z', '0'..'9', '-' */
     public static final char[] UPPER_CASE =
         {
-              0,   0,   0,   0,   0,   0,   0,   0,
-              0,   0,   0,   0,   0,   0,   0,   0,
-              0,   0,   0,   0,   0,   0,   0,   0,
-              0,   0,   0,   0,   0,   0,   0,   0,
-              0,   0,   0,   0,   0,   0,   0,   0,
-              0,   0,   0,   0,   0, '-',   0,   0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, '-', 0, 0,
             '0', '1', '2', '3', '4', '5', '6', '7',
-            '8', '9',   0,   0,   0,   0,   0,   0,
-              0, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+            '8', '9', 0, 0, 0, 0, 0, 0,
+            0, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
             'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
             'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
-            'X', 'Y', 'Z',   0,   0,   0,   0,   0,
-              0, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+            'X', 'Y', 'Z', 0, 0, 0, 0, 0,
+            0, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
             'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
             'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
-            'X', 'Y', 'Z',   0,   0,   0,   0,   0,
-              0,   0,   0,   0,   0,   0,   0,   0,
-              0,   0,   0,   0,   0,   0,   0,   0,
-              0,   0,   0,   0,   0,   0,   0,   0,
-              0,   0,   0,   0,   0,   0,   0,   0,
-              0,   0,   0,   0,   0,   0,   0,   0,
-              0,   0,   0,   0,   0,   0,   0,   0,
-              0,   0,   0,   0,   0,   0,   0,   0,
-              0,   0,   0,   0,   0,   0,   0,   0
-        };
+            'X', 'Y', 'Z', 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0
+    };
 
 
     /**
@@ -444,7 +549,7 @@ public final class Strings
     public static byte[] toByteArray( String hexString )
     {
         int arrLength = hexString.length() >> 1;
-        byte [] buf = new byte[arrLength];
+        byte[] buf = new byte[arrLength];
 
         for ( int ii = 0; ii < arrLength; ii++ )
         {
@@ -1070,7 +1175,7 @@ public final class Strings
 
         int length = bytes.length;
 
-        while ( ( pos.start < length ) && ( bytes[ pos.start ] == ' ' ) )
+        while ( ( pos.start < length ) && ( bytes[pos.start] == ' ' ) )
         {
             pos.start++;
         }
@@ -1144,7 +1249,7 @@ public final class Strings
 
         while ( ( end > 0 ) && ( str.charAt( end - 1 ) == ' ' ) )
         {
-            if ( ( end > 1 ) && ( str.charAt(  end - 2 ) == '\\' ) )
+            if ( ( end > 1 ) && ( str.charAt( end - 2 ) == '\\' ) )
             {
                 break;
             }
@@ -1187,7 +1292,7 @@ public final class Strings
 
         while ( ( end > 0 ) && ( str.charAt( end - 1 ) == ' ' ) && ( end > escapedSpace ) )
         {
-            if ( ( end > 1 ) && ( str.charAt(  end - 2 ) == '\\' ) )
+            if ( ( end > 1 ) && ( str.charAt( end - 2 ) == '\\' ) )
             {
                 break;
             }
@@ -1262,7 +1367,7 @@ public final class Strings
 
         while ( ( pos.end >= 0 ) && ( string.charAt( pos.end - 1 ) == ' ' ) )
         {
-            if ( ( pos.end > 1 ) && ( string.charAt(  pos.end - 2 ) == '\\' ) )
+            if ( ( pos.end > 1 ) && ( string.charAt( pos.end - 2 ) == '\\' ) )
             {
                 break;
             }
@@ -1312,11 +1417,11 @@ public final class Strings
 
         if ( pos.end == bytes.length )
         {
-            return utf8ToString(bytes);
+            return utf8ToString( bytes );
         }
         else
         {
-            return utf8ToString(bytes, pos.end);
+            return utf8ToString( bytes, pos.end );
         }
     }
 
@@ -1357,11 +1462,11 @@ public final class Strings
 
 
     /**
-     * Get the character at a given position in a string, checking fo limits
+     * Get the character at a given position in a string, checking for limits
      *
      * @param string The string which contains the data
      * @param index Current position in the string
-     * @return The character ar the given position, or '\0' if something went wrong
+     * @return The character at the given position, or '\0' if something went wrong
      */
     public static char charAt( String string, int index )
     {
@@ -1378,7 +1483,34 @@ public final class Strings
         }
         else
         {
-            return string.charAt( index ) ;
+            return string.charAt( index );
+        }
+    }
+
+
+    /**
+     * Get the byte at a given position in a byte array, checking for limits
+     *
+     * @param bytes The byte[] which contains the data
+     * @param index Current position in the byte[]
+     * @return The byte at the given position, or '\0' if something went wrong
+     */
+    public static byte byteAt( byte[] bytes, int index )
+    {
+        if ( bytes == null )
+        {
+            return '\0';
+        }
+
+        int length = bytes.length;
+
+        if ( ( length == 0 ) || ( index < 0 ) || ( index >= length ) )
+        {
+            return '\0';
+        }
+        else
+        {
+            return bytes[index];
         }
     }
 
@@ -1392,7 +1524,7 @@ public final class Strings
      */
     public static String asciiBytesToString( byte[] bytes )
     {
-        if ( (bytes == null) || (bytes.length == 0 ) )
+        if ( ( bytes == null ) || ( bytes.length == 0 ) )
         {
             return "";
         }
@@ -1401,7 +1533,7 @@ public final class Strings
 
         for ( int i = 0; i < bytes.length; i++ )
         {
-            result[i] = (char)bytes[i];
+            result[i] = ( char ) bytes[i];
         }
 
         return new String( result );
@@ -1446,19 +1578,19 @@ public final class Strings
             {
                 // Try with jdk 1.5 method, if we are using a 1.5 jdk :)
                 Method method = Charset.class.getMethod( "defaultCharset", new Class[0] );
-                defaultCharset = ((Charset) method.invoke( null, new Object[0]) ).name();
+                defaultCharset = ( ( Charset ) method.invoke( null, new Object[0] ) ).name();
             }
-            catch (NoSuchMethodException e)
+            catch ( NoSuchMethodException e )
             {
                 // fall back to old method
                 defaultCharset = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
             }
-            catch (InvocationTargetException e)
+            catch ( InvocationTargetException e )
             {
                 // fall back to old method
                 defaultCharset = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
             }
-            catch (IllegalAccessException e)
+            catch ( IllegalAccessException e )
             {
                 // fall back to old method
                 defaultCharset = new OutputStreamWriter( new ByteArrayOutputStream() ).getEncoding();
@@ -1601,7 +1733,7 @@ public final class Strings
      * @param map The map to transform to a string
      * @return A csv string
      */
-    public static String mapToString( Map<?,?> map )
+    public static String mapToString( Map<?, ?> map )
     {
         if ( ( map == null ) || ( map.size() == 0 ) )
         {
@@ -1611,7 +1743,7 @@ public final class Strings
         StringBuffer sb = new StringBuffer();
         boolean isFirst = true;
 
-        for ( Map.Entry<?, ?> entry:map.entrySet() )
+        for ( Map.Entry<?, ?> entry : map.entrySet() )
         {
             if ( isFirst )
             {
@@ -1638,7 +1770,7 @@ public final class Strings
      * @param tabs The tabs to add in ffront of the elements
      * @return A csv string
      */
-    public static String mapToString( Map<?,?> map, String tabs )
+    public static String mapToString( Map<?, ?> map, String tabs )
     {
         if ( ( map == null ) || ( map.size() == 0 ) )
         {
@@ -1647,7 +1779,7 @@ public final class Strings
 
         StringBuffer sb = new StringBuffer();
 
-        for ( Map.Entry<?, ?> entry:map.entrySet() )
+        for ( Map.Entry<?, ?> entry : map.entrySet() )
         {
             sb.append( tabs );
             sb.append( entry.getKey() );
@@ -1678,7 +1810,7 @@ public final class Strings
 
         for ( int i = 0; i < chars.length; i++ )
         {
-            chars[i] = TO_LOWER_CASE[ chars[i] ];
+            chars[i] = TO_LOWER_CASE[chars[i]];
         }
 
         return new String( chars );
@@ -1704,7 +1836,7 @@ public final class Strings
 
         for ( int i = 0; i < chars.length; i++ )
         {
-            chars[i] = UPPER_CASE[ chars[i] ];
+            chars[i] = UPPER_CASE[chars[i]];
         }
 
         return new String( chars );
@@ -1786,7 +1918,7 @@ public final class Strings
         char[] chars = str.toCharArray();
         int pos = 0;
 
-        for ( char c:chars )
+        for ( char c : chars )
         {
             chars[pos++] = TO_LOWER_CASE[c];
         }
@@ -1812,9 +1944,9 @@ public final class Strings
             return true;
         }
 
-        for ( char c:str.toCharArray() )
+        for ( char c : str.toCharArray() )
         {
-            if ( ( c > 127 ) || !IS_PRINTABLE_CHAR[ c ] )
+            if ( ( c > 127 ) || !IS_PRINTABLE_CHAR[c] )
             {
                 return false;
             }
@@ -1863,7 +1995,7 @@ public final class Strings
         }
 
         // All the chars must be in [0x00, 0x7F]
-        for ( char c:str.toCharArray() )
+        for ( char c : str.toCharArray() )
         {
             if ( ( c < 0 ) || ( c > 0x7F ) )
             {
@@ -1885,7 +2017,7 @@ public final class Strings
     {
         byte[] b = uuid.getBytes();
 
-        if ( b.length < 36)
+        if ( b.length < 36 )
         {
             return false;
         }
@@ -1926,7 +2058,7 @@ public final class Strings
             return "Invalid UUID";
         }
 
-        char[] hex = encodeHex(bytes);
+        char[] hex = encodeHex( bytes );
         StringBuffer sb = new StringBuffer();
         sb.append( hex, 0, 8 );
         sb.append( '-' );
@@ -1950,33 +2082,33 @@ public final class Strings
      */
     public static byte[] uuidToBytes( String string )
     {
-        if ( ! isValidUuid(string) )
+        if ( !isValidUuid( string ) )
         {
             return null;
         }
 
         char[] chars = string.toCharArray();
         byte[] bytes = new byte[16];
-        bytes[0] = getHexValue(chars[0], chars[1]);
-        bytes[1] = getHexValue(chars[2], chars[3]);
-        bytes[2] = getHexValue(chars[4], chars[5]);
-        bytes[3] = getHexValue(chars[6], chars[7]);
+        bytes[0] = getHexValue( chars[0], chars[1] );
+        bytes[1] = getHexValue( chars[2], chars[3] );
+        bytes[2] = getHexValue( chars[4], chars[5] );
+        bytes[3] = getHexValue( chars[6], chars[7] );
 
-        bytes[4] = getHexValue(chars[9], chars[10]);
-        bytes[5] = getHexValue(chars[11], chars[12]);
+        bytes[4] = getHexValue( chars[9], chars[10] );
+        bytes[5] = getHexValue( chars[11], chars[12] );
 
-        bytes[6] = getHexValue(chars[14], chars[15]);
-        bytes[7] = getHexValue(chars[16], chars[17]);
+        bytes[6] = getHexValue( chars[14], chars[15] );
+        bytes[7] = getHexValue( chars[16], chars[17] );
 
-        bytes[8] = getHexValue(chars[19], chars[20]);
-        bytes[9] = getHexValue(chars[21], chars[22]);
+        bytes[8] = getHexValue( chars[19], chars[20] );
+        bytes[9] = getHexValue( chars[21], chars[22] );
 
-        bytes[10] = getHexValue(chars[24], chars[25]);
-        bytes[11] = getHexValue(chars[26], chars[27]);
-        bytes[12] = getHexValue(chars[28], chars[29]);
-        bytes[13] = getHexValue(chars[30], chars[31]);
-        bytes[14] = getHexValue(chars[32], chars[33]);
-        bytes[15] = getHexValue(chars[34], chars[35]);
+        bytes[10] = getHexValue( chars[24], chars[25] );
+        bytes[11] = getHexValue( chars[26], chars[27] );
+        bytes[12] = getHexValue( chars[28], chars[29] );
+        bytes[13] = getHexValue( chars[30], chars[31] );
+        bytes[14] = getHexValue( chars[32], chars[33] );
+        bytes[15] = getHexValue( chars[34], chars[35] );
 
         return bytes;
     }
@@ -2000,8 +2132,8 @@ public final class Strings
 
         return copy;
     }
-    
-    
+
+
     /**
      * From commons-httpclients. Converts the byte array of HTTP content
      * characters to a string. If the specified charset is not supported,

@@ -55,7 +55,7 @@ public class ProtectedItem_ClassesTest
     public void initNames() throws Exception
     {
         ExprNode filterA = FilterParser.parse( "(&(cn=test)(sn=test))" );
-        ExprNode filterB = FilterParser.parse("(&(cn=test)(sn=test))");
+        ExprNode filterB = FilterParser.parse( "(&(cn=test)(sn=test))" );
         ExprNode filterC = FilterParser.parse( "(&(cn=sample)(sn=sample))" );
         classesA = new ClassesItem( filterA );
         classesACopy = new ClassesItem( filterA );

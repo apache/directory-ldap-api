@@ -25,7 +25,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
@@ -43,7 +43,7 @@ import org.apache.directory.shared.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<ModifyDnRequest,ModifyDnResponse> 
+public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<ModifyDnRequest, ModifyDnResponse>
     implements ModifyDnRequest
 {
     /** The modify Dn request length */
@@ -83,8 +83,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     //-------------------------------------------------------------------------
     // The ModifyDnResponse methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -100,7 +99,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     public ModifyDnRequest setName( Dn name )
     {
         getDecorated().setName( name );
-        
+
         return this;
     }
 
@@ -120,7 +119,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     public ModifyDnRequest setNewRdn( Rdn newRdn )
     {
         getDecorated().setNewRdn( newRdn );
-        
+
         return this;
     }
 
@@ -140,7 +139,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     public ModifyDnRequest setDeleteOldRdn( boolean deleteOldRdn )
     {
         getDecorated().setDeleteOldRdn( deleteOldRdn );
-        
+
         return this;
     }
 
@@ -160,7 +159,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     public ModifyDnRequest setNewSuperior( Dn newSuperior )
     {
         getDecorated().setNewSuperior( newSuperior );
-        
+
         return this;
     }
 
@@ -172,51 +171,50 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     {
         return getDecorated().isMove();
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyDnRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public ModifyDnRequest addControl( Control control ) throws MessageException
     {
-        return (ModifyDnRequest)super.addControl( control );
+        return ( ModifyDnRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyDnRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (ModifyDnRequest)super.addAllControls( controls );
+        return ( ModifyDnRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ModifyDnRequest removeControl( Control control ) throws MessageException
     {
-        return (ModifyDnRequest)super.removeControl( control );
+        return ( ModifyDnRequest ) super.removeControl( control );
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * Compute the ModifyDNRequest length
      * 
@@ -283,13 +281,13 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
 
             // The entry
 
-            Value.encode( buffer, Dn.getBytes( getName() ) );
+            BerValue.encode( buffer, Dn.getBytes( getName() ) );
 
             // The newRDN
-            Value.encode( buffer, getNewRdn().getName() );
+            BerValue.encode( buffer, getNewRdn().getName() );
 
             // The flag deleteOldRdn
-            Value.encode( buffer, getDeleteOldRdn() );
+            BerValue.encode( buffer, getDeleteOldRdn() );
 
             // The new superior, if any
             if ( getNewSuperior() != null )

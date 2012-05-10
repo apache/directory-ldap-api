@@ -30,7 +30,6 @@ import java.net.SocketAddress;
 import java.nio.channels.UnresolvedAddressException;
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -40,7 +39,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.net.ssl.SSLContext;
@@ -64,11 +62,14 @@ import org.apache.directory.ldap.client.api.future.SearchFuture;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
+import org.apache.directory.shared.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
+import org.apache.directory.shared.ldap.codec.api.LdapDecoder;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.codec.api.MessageEncoderException;
+import org.apache.directory.shared.ldap.codec.api.SchemaBinaryAttributeDetector;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.cursor.Cursor;
 import org.apache.directory.shared.ldap.model.cursor.EntryCursor;
@@ -112,6 +113,7 @@ import org.apache.directory.shared.ldap.model.message.ModifyDnResponse;
 import org.apache.directory.shared.ldap.model.message.ModifyRequest;
 import org.apache.directory.shared.ldap.model.message.ModifyRequestImpl;
 import org.apache.directory.shared.ldap.model.message.ModifyResponse;
+import org.apache.directory.shared.ldap.model.message.Request;
 import org.apache.directory.shared.ldap.model.message.Response;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.message.SearchRequest;
@@ -135,14 +137,13 @@ import org.apache.directory.shared.ldap.model.message.extended.SearchNoDResponse
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.name.Rdn;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.ObjectClassRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.Schema;
 import org.apache.directory.shared.ldap.model.schema.registries.SchemaLoader;
-import org.apache.directory.shared.ldap.schemaloader.JarLdifSchemaLoader;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.apache.directory.shared.util.StringConstants;
 import org.apache.directory.shared.util.Strings;
@@ -153,7 +154,6 @@ import org.apache.mina.core.future.IoFuture;
 import org.apache.mina.core.future.IoFutureListener;
 import org.apache.mina.core.future.WriteFuture;
 import org.apache.mina.core.service.IoConnector;
-import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.ProtocolEncoderException;
@@ -173,7 +173,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsyncConnection
+public class LdapNetworkConnection extends AbstractLdapConnection implements LdapAsyncConnection
 {
     /** logger for reporting errors that might not be handled properly upstream */
     private static final Logger LOG = LoggerFactory.getLogger( LdapNetworkConnection.class );
@@ -196,9 +196,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     private IoSession ldapSession;
 
-    /** A Message ID which is incremented for each operation */
-    private AtomicInteger messageId;
-
     /** a map to hold the ResponseFutures for all operations */
     private Map<Integer, ResponseFuture<? extends Response>> futureMap = new ConcurrentHashMap<Integer, ResponseFuture<? extends Response>>();
 
@@ -219,24 +216,21 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     private List<ConnectionClosedEventListener> conCloseListeners;
 
-    /** the schema manager */
-    private SchemaManager schemaManager;
-
-    /** the ldap codec service */
-    LdapApiService codec = LdapApiServiceFactory.getSingleton();
-
     /** The Ldap codec protocol filter */
     private IoFilter ldapProtocolFilter = new ProtocolCodecFilter( codec.getProtocolCodecFactory() );
 
     /** the SslFilter key */
     private static final String SSL_FILTER_KEY = "sslFilter";
 
+    /** The exception stored in the session if we've got one */
+    private static final String EXCEPTION_KEY = "sessionException";
+
     /** the StartTLS extended operation's OID */
     private static final String START_TLS_REQ_OID = "1.3.6.1.4.1.1466.20037";
 
     // ~~~~~~~~~~~~~~~~~ common error messages ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    static final String TIME_OUT_ERROR = "TimeOut occured";
+    static final String TIME_OUT_ERROR = "TimeOut occurred";
 
     static final String NO_RESPONSE_ERROR = "The response queue has been emptied, no response was found.";
 
@@ -342,11 +336,12 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public LdapNetworkConnection()
     {
+        super();
         config = new LdapConnectionConfig();
         config.setUseSsl( false );
         config.setLdapPort( config.getDefaultLdapPort() );
         config.setLdapHost( config.getDefaultLdapHost() );
-        messageId = new AtomicInteger( 0 );
+        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
     }
 
 
@@ -358,8 +353,13 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public LdapNetworkConnection( LdapConnectionConfig config )
     {
+        super();
         this.config = config;
-        messageId = new AtomicInteger( 0 );
+        
+        if ( config.getBinaryAttributeDetector() == null )
+        {
+            config.setBinaryAttributeDetector( new DefaultConfigurableBinaryAttributeDetector() );
+        }
     }
 
 
@@ -371,11 +371,12 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public LdapNetworkConnection( boolean useSsl )
     {
+        super();
         config = new LdapConnectionConfig();
         config.setUseSsl( useSsl );
         config.setLdapPort( useSsl ? config.getDefaultLdapsPort() : config.getDefaultLdapPort() );
         config.setLdapHost( config.getDefaultLdapHost() );
-        messageId = new AtomicInteger( 0 );
+        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
     }
 
 
@@ -388,6 +389,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public LdapNetworkConnection( String server )
     {
+        super();
         config = new LdapConnectionConfig();
         config.setUseSsl( false );
         config.setLdapPort( config.getDefaultLdapPort() );
@@ -402,7 +404,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             config.setLdapHost( server );
         }
 
-        messageId = new AtomicInteger( 0 );
+        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
     }
 
 
@@ -417,6 +419,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public LdapNetworkConnection( String server, boolean useSsl )
     {
+        super();
         config = new LdapConnectionConfig();
         config.setUseSsl( useSsl );
         config.setLdapPort( useSsl ? config.getDefaultLdapsPort() : config.getDefaultLdapPort() );
@@ -431,7 +434,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             config.setLdapHost( server );
         }
 
-        messageId = new AtomicInteger( 0 );
+        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
     }
 
 
@@ -460,6 +463,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public LdapNetworkConnection( String server, int port, boolean useSsl )
     {
+        super();
         config = new LdapConnectionConfig();
         config.setUseSsl( useSsl );
         config.setLdapPort( port );
@@ -474,7 +478,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             config.setLdapHost( server );
         }
 
-        messageId = new AtomicInteger();
+        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
     }
 
 
@@ -524,7 +528,9 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         // Wait until it's established
         connectionFuture.awaitUninterruptibly();
 
-        if ( !connectionFuture.isConnected() )
+        boolean isConnected = connectionFuture.isConnected();
+
+        if ( !isConnected )
         {
             // disposing connector if not connected
             try
@@ -633,8 +639,16 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         ldapSession = connectionFuture.getSession();
         connected.set( true );
 
-        // Store the container into the session
-        ldapSession.setAttribute( "LDAP-Container", codec.newMessageContainer() );
+        // Store the container into the session if we don't have one
+        LdapMessageContainer<MessageDecorator<? extends Message>> container =
+            (LdapMessageContainer<MessageDecorator<? extends Message>>)ldapSession.getAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR );
+        
+        if ( container == null )
+        {
+            ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
+                new LdapMessageContainer<MessageDecorator<? extends Message>>( codec,
+                    new DefaultConfigurableBinaryAttributeDetector() ) );
+        }
 
         // Initialize the MessageId
         messageId.set( 0 );
@@ -659,13 +673,13 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         // And close the connector if it has been created locally
         // Release the connector
         connectorMutex.lock();
-        
+
         if ( connector != null )
         {
             connector.dispose();
             connector = null;
         }
-        
+
         connectorMutex.unlock();
 
         // Reset the messageId
@@ -749,7 +763,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             if ( addResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Add failed : timeout occured" );
+                LOG.error( "Add failed : timeout occurred" );
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -775,7 +789,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             }
 
             // We didn't received anything : this is an error
-            LOG.error( "Add failed : timeout occured" );
+            LOG.error( "Add failed : timeout occurred" );
             throw new LdapException( TIME_OUT_ERROR, te );
         }
         catch ( Exception ie )
@@ -822,16 +836,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addToFutureMap( newId, addFuture );
 
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( addRequest );
-
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Add failed : timeout occured" );
-
-            throw new LdapException( TIME_OUT_ERROR );
-        }
+        writeRequest( addRequest );
 
         // Ok, done return the future
         return addFuture;
@@ -974,45 +979,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
 
     /**
-     * {@inheritDoc}
-     */
-    public void bind( String name ) throws LdapException, IOException
-    {
-        LOG.debug( "Bind request : {}", name );
-
-        // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( name, StringConstants.EMPTY_BYTES );
-
-        BindResponse bindResponse = bind( bindRequest );
-
-        processResponse( bindResponse );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void bind( String name, String credentials ) throws LdapException, IOException
-    {
-        LOG.debug( "Bind request : {}", name );
-
-        // The password must not be empty or null
-        if ( Strings.isEmpty( credentials ) && Strings.isNotEmpty( name ) )
-        {
-            LOG.debug( "The password is missing" );
-            throw new LdapAuthenticationException( "The password is missing" );
-        }
-
-        // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( name, Strings.getBytesUtf8( credentials ) );
-
-        BindResponse bindResponse = bind( bindRequest );
-
-        processResponse( bindResponse );
-    }
-
-
-    /**
      * Asynchronous unauthenticated authentication bind
      *
      * @param name The name we use to authenticate the user. It must be a
@@ -1050,45 +1016,6 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         BindRequest bindRequest = createBindRequest( name, Strings.getBytesUtf8( credentials ) );
 
         return bindAsync( bindRequest );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void bind( Dn name ) throws LdapException, IOException
-    {
-        LOG.debug( "Unauthenticated authentication Bind request : {}", name );
-
-        // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( name, StringConstants.EMPTY_BYTES, null );
-
-        BindResponse bindResponse = bind( bindRequest );
-
-        processResponse( bindResponse );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void bind( Dn name, String credentials ) throws LdapException, IOException
-    {
-        LOG.debug( "Bind request : {}", name );
-
-        // The password must not be empty or null
-        if ( Strings.isEmpty( credentials ) && ( !Dn.EMPTY_DN.equals( name ) ) )
-        {
-            LOG.debug( "The password is missing" );
-            throw new LdapAuthenticationException( "The password is missing" );
-        }
-
-        // Create the BindRequest
-        BindRequest bindRequest = createBindRequest( name, Strings.getBytesUtf8( credentials ), null );
-
-        BindResponse bindResponse = bind( bindRequest );
-
-        processResponse( bindResponse );
     }
 
 
@@ -1157,7 +1084,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             if ( bindResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Bind failed : timeout occured" );
+                LOG.error( "Bind failed : timeout occurred" );
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -1179,7 +1106,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         catch ( TimeoutException te )
         {
             // We didn't received anything : this is an error
-            LOG.error( "Bind failed : timeout occured" );
+            LOG.error( "Bind failed : timeout occurred" );
             throw new LdapException( TIME_OUT_ERROR, te );
         }
         catch ( Exception ie )
@@ -1205,73 +1132,8 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     private BindRequest createBindRequest( Dn name, byte[] credentials ) throws LdapException
     {
-        return createBindRequest( name, credentials, null, ( Control[] ) null );
+        return createBindRequest( name.getName(), credentials, null, ( Control[] ) null );
     }
-
-
-    /**
-     * Create a complete BindRequest ready to be sent.
-     */
-    private BindRequest createBindRequest( String name, byte[] credentials, String saslMechanism, Control... controls )
-        throws LdapException
-    {
-        // Set the name
-        try
-        {
-            Dn dn = new Dn( name );
-
-            return createBindRequest( dn, credentials, saslMechanism, controls );
-        }
-        catch ( LdapInvalidDnException ine )
-        {
-            String msg = "The given dn '" + name + "' is not valid";
-            LOG.error( msg );
-
-            throw new LdapInvalidDnException( msg, ine );
-        }
-    }
-
-
-    /**
-     * Create a complete BindRequest ready to be sent.
-     */
-    private BindRequest createBindRequest( Dn name, byte[] credentials, String saslMechanism, Control... controls )
-        throws LdapException
-    {
-        // Set the new messageId
-        BindRequest bindRequest = new BindRequestImpl();
-
-        // Set the version
-        bindRequest.setVersion3( true );
-
-        // Set the name
-        bindRequest.setName( name );
-
-        // Set the credentials
-        if ( Strings.isEmpty( saslMechanism ) )
-        {
-            // Simple bind
-            bindRequest.setSimple( true );
-            bindRequest.setCredentials( credentials );
-        }
-        else
-        {
-            // SASL bind
-            bindRequest.setSimple( false );
-            bindRequest.setCredentials( credentials );
-            bindRequest.setSaslMechanism( saslMechanism );
-        }
-
-        // Add the controls
-        if ( ( controls != null ) && ( controls.length != 0 ) )
-        {
-            bindRequest.addAllControls( controls );
-        }
-
-        return bindRequest;
-    }
-
-
     /**
      * {@inheritDoc}
      */
@@ -1305,7 +1167,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
         addToFutureMap( newId, bindFuture );
 
-        writeBindRequest( bindRequest );
+        writeRequest( bindRequest );
 
         // Ok, done return the future
         return bindFuture;
@@ -1341,7 +1203,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             if ( bindResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Bind failed : timeout occured" );
+                LOG.error( "Bind failed : timeout occurred" );
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -1363,7 +1225,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         catch ( TimeoutException te )
         {
             // We didn't received anything : this is an error
-            LOG.error( "Bind failed : timeout occured" );
+            LOG.error( "Bind failed : timeout occurred" );
             throw new LdapException( TIME_OUT_ERROR, te );
         }
         catch ( Exception ie )
@@ -1420,7 +1282,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             if ( bindResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Bind failed : timeout occured" );
+                LOG.error( "Bind failed : timeout occurred" );
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -1442,7 +1304,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         catch ( TimeoutException te )
         {
             // We didn't received anything : this is an error
-            LOG.error( "Bind failed : timeout occured" );
+            LOG.error( "Bind failed : timeout occurred" );
             throw new LdapException( TIME_OUT_ERROR, te );
         }
         catch ( Exception ie )
@@ -1499,7 +1361,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             if ( bindResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Bind failed : timeout occured" );
+                LOG.error( "Bind failed : timeout occurred" );
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -1521,7 +1383,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         catch ( TimeoutException te )
         {
             // We didn't received anything : this is an error
-            LOG.error( "Bind failed : timeout occured" );
+            LOG.error( "Bind failed : timeout occurred" );
             throw new LdapException( TIME_OUT_ERROR, te );
         }
         catch ( Exception ie )
@@ -1691,21 +1553,12 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addToFutureMap( searchRequest.getMessageId(), searchFuture );
 
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( searchRequest );
+        writeRequest( searchRequest );
 
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Search failed : timeout occured" );
-
-            throw new LdapException( TIME_OUT_ERROR );
-        }
-
-        // Chekc that the future hasn't be canceled
+        // Check that the future hasn't be canceled
         if ( searchFuture.isCancelled() )
         {
-            // Thow an exception here
+            // Throw an exception here
             throw new LdapException( searchFuture.getCause() );
         }
 
@@ -1826,6 +1679,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     public void exceptionCaught( IoSession session, Throwable cause ) throws Exception
     {
         LOG.warn( cause.getMessage(), cause );
+        session.setAttribute( EXCEPTION_KEY, cause );
 
         if ( cause instanceof ProtocolEncoderException )
         {
@@ -1840,10 +1694,8 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
                 response.setCause( realCause );
             }
         }
-        else
-        {
-            cause.printStackTrace();
-        }
+
+        session.close( true );
     }
 
 
@@ -2293,7 +2145,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             if ( modifyResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Modify failed : timeout occured" );
+                LOG.error( "Modify failed : timeout occurred" );
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -2325,7 +2177,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             }
 
             // We didn't received anything : this is an error
-            LOG.error( "Modify failed : timeout occured" );
+            LOG.error( "Modify failed : timeout occurred" );
             throw new LdapException( TIME_OUT_ERROR, te );
         }
         catch ( Exception ie )
@@ -2365,16 +2217,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addToFutureMap( newId, modifyFuture );
 
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( modRequest );
-
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Modify failed : timeout occured" );
-
-            throw new LdapException( TIME_OUT_ERROR );
-        }
+        writeRequest( modRequest );
 
         // Ok, done return the future
         return modifyFuture;
@@ -2613,7 +2456,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             if ( modifyDnResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "ModifyDN failed : timeout occured" );
+                LOG.error( "ModifyDN failed : timeout occurred" );
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -2639,7 +2482,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             }
 
             // We didn't received anything : this is an error
-            LOG.error( "Modify failed : timeout occured" );
+            LOG.error( "Modify failed : timeout occurred" );
             throw new LdapException( TIME_OUT_ERROR, te );
         }
         catch ( Exception ie )
@@ -2679,16 +2522,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addToFutureMap( newId, modifyDnFuture );
 
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( modDnRequest );
-
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Modify failed : timeout occured" );
-
-            throw new LdapException( TIME_OUT_ERROR );
-        }
+        writeRequest( modDnRequest );
 
         // Ok, done return the future
         return modifyDnFuture;
@@ -2811,7 +2645,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             if ( delResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Delete failed : timeout occured" );
+                LOG.error( "Delete failed : timeout occurred" );
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -2837,7 +2671,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             }
 
             // We didn't received anything : this is an error
-            LOG.error( "Del failed : timeout occured" );
+            LOG.error( "Del failed : timeout occurred" );
             throw new LdapException( TIME_OUT_ERROR, te );
         }
         catch ( Exception ie )
@@ -2878,16 +2712,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addToFutureMap( newId, deleteFuture );
 
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( deleteRequest );
-
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Delete failed : timeout occured" );
-
-            throw new LdapException( TIME_OUT_ERROR );
-        }
+        writeRequest( deleteRequest );
 
         // Ok, done return the future
         return deleteFuture;
@@ -3001,7 +2826,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             if ( compareResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Compare failed : timeout occured" );
+                LOG.error( "Compare failed : timeout occurred" );
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -3027,7 +2852,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             }
 
             // We didn't received anything : this is an error
-            LOG.error( "Compare failed : timeout occured" );
+            LOG.error( "Compare failed : timeout occurred" );
             throw new LdapException( TIME_OUT_ERROR, te );
         }
         catch ( Exception ie )
@@ -3068,16 +2893,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addToFutureMap( newId, compareFuture );
 
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( compareRequest );
-
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Compare failed : timeout occured" );
-
-            throw new LdapException( TIME_OUT_ERROR );
-        }
+        writeRequest( compareRequest );
 
         // Ok, done return the future
         return compareFuture;
@@ -3156,7 +2972,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             if ( extendedResponse == null )
             {
                 // We didn't received anything : this is an error
-                LOG.error( "Extended failed : timeout occured" );
+                LOG.error( "Extended failed : timeout occurred" );
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
@@ -3182,7 +2998,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             }
 
             // We didn't received anything : this is an error
-            LOG.error( "Extended failed : timeout occured" );
+            LOG.error( "Extended failed : timeout occurred" );
             throw new LdapException( TIME_OUT_ERROR, te );
         }
         catch ( Exception ie )
@@ -3222,16 +3038,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         addToFutureMap( newId, extendedFuture );
 
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( extendedRequest );
-
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
-        {
-            // We didn't received anything : this is an error
-            LOG.error( "Extended failed : timeout occured" );
-
-            throw new LdapException( TIME_OUT_ERROR );
-        }
+        writeRequest( extendedRequest );
 
         // Ok, done return the future
         return extendedFuture;
@@ -3422,31 +3229,8 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
      */
     public void loadSchema() throws LdapException
     {
-        try
-        {
-            JarLdifSchemaLoader jarSchemaLoader = new JarLdifSchemaLoader();
-
-            // we enable all the schemas so that need not check with server for enabled schemas
-            Collection<Schema> schemas = jarSchemaLoader.getAllSchemas();
-            for ( Schema s : schemas )
-            {
-                s.enable();
-            }
-
-            loadSchema( jarSchemaLoader );
-        }
-        catch ( LdapException e )
-        {
-            throw e;
-        }
-        catch ( Exception e )
-        {
-            LOG.error( "failed to load the schema using JarLdifSchemaLoader", e );
-            throw new LdapException( e );
-        }
+        loadSchema( new DefaultSchemaLoader( this ) );
     }
-
-
     /**
      * loads schema using the specified schema loader
      *
@@ -3464,11 +3248,17 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             if ( !tmp.getErrors().isEmpty() )
             {
                 String msg = "there are errors while loading the schema";
-                LOG.error( msg + " {}", schemaManager.getErrors() );
+                LOG.error( msg + " {}", tmp.getErrors() );
                 throw new LdapException( msg );
             }
 
             schemaManager = tmp;
+            
+            // Change the container's BinaryDetector
+            ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
+                new LdapMessageContainer<MessageDecorator<? extends Message>>( codec,
+                    new SchemaBinaryAttributeDetector( schemaManager ) ) );
+
         }
         catch ( LdapException le )
         {
@@ -3502,7 +3292,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             olsp.setQuirksMode( true );
             olsp.parse( schemaFile );
 
-            List<AttributeType> atList = olsp.getAttributeTypes();
+            List<MutableAttributeType> atList = olsp.getAttributeTypes();
             AttributeTypeRegistry atRegistry = schemaManager.getRegistries().getAttributeTypeRegistry();
 
             for ( AttributeType atType : atList )
@@ -3680,24 +3470,9 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         // Last, store the message container
         LdapMessageContainer<? extends MessageDecorator<Message>> ldapMessageContainer =
             new LdapMessageContainer<MessageDecorator<Message>>(
-                codec,
-                new BinaryAttributeDetector()
-                {
-                    public boolean isBinary( String id )
-                    {
-                        try
-                        {
-                            AttributeType type = schemaManager.lookupAttributeTypeRegistry( id );
-                            return !type.getSyntax().isHumanReadable();
-                        }
-                        catch ( Exception e )
-                        {
-                            return !Strings.isEmpty( id ) && id.endsWith( ";binary" );
-                        }
-                    }
-                } );
+                codec, config.getBinaryAttributeDetector() );
 
-        session.setAttribute( "messageContainer", ldapMessageContainer );
+        session.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR, ldapMessageContainer );
     }
 
 
@@ -3719,7 +3494,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         messageId.set( 0 );
 
         connectorMutex.lock();
-        
+
         if ( connector != null )
         {
             connector.dispose();
@@ -3733,7 +3508,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         if ( conCloseListeners != null )
         {
             LOG.debug( "notifying the registered ConnectionClosedEventListeners.." );
-            
+
             for ( ConnectionClosedEventListener listener : conCloseListeners )
             {
                 listener.connectionClosed();
@@ -3793,7 +3568,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
             SSLContext sslContext = SSLContext.getInstance( config.getSslProtocol() );
             sslContext.init( config.getKeyManagers(), config.getTrustManagers(), config.getSecureRandom() );
 
-            SslFilter sslFilter = new SslFilter( sslContext );
+            SslFilter sslFilter = new SslFilter( sslContext, true );
             sslFilter.setUseClientMode( true );
             sslFilter.setEnabledCipherSuites( config.getEnabledCipherSuites() );
 
@@ -3903,7 +3678,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
                 // Stores the challenge's response, and send it to the server
                 bindRequest.setCredentials( challengeResponse );
-                writeBindRequest( bindRequest );
+                writeRequest( bindRequest );
 
                 // Get the server's response, blocking
                 bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
@@ -3911,7 +3686,7 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
                 if ( bindResponse == null )
                 {
                     // We didn't received anything : this is an error
-                    LOG.error( "bind failed : timeout occured" );
+                    LOG.error( "bind failed : timeout occurred" );
                     throw new LdapException( TIME_OUT_ERROR );
                 }
 
@@ -3929,14 +3704,14 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
                 bindRequestCopy.setVersion3( bindRequest.getVersion3() );
                 bindRequestCopy.addAllControls( bindRequest.getControls().values().toArray( new Control[0] ) );
 
-                writeBindRequest( bindRequestCopy );
+                writeRequest( bindRequestCopy );
 
                 bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
 
                 if ( bindResponse == null )
                 {
                     // We didn't received anything : this is an error
-                    LOG.error( "bind failed : timeout occured" );
+                    LOG.error( "bind failed : timeout occurred" );
                     throw new LdapException( TIME_OUT_ERROR );
                 }
 
@@ -3963,14 +3738,14 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
 
                     addToFutureMap( newId, bindFuture );
 
-                    writeBindRequest( bindRequest );
+                    writeRequest( bindRequest );
 
                     bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
 
                     if ( bindResponse == null )
                     {
                         // We didn't received anything : this is an error
-                        LOG.error( "bind failed : timeout occured" );
+                        LOG.error( "bind failed : timeout occurred" );
                         throw new LdapException( TIME_OUT_ERROR );
                     }
 
@@ -3997,19 +3772,51 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
     /**
      * a reusable code block to be used in various bind methods
      */
-    private void writeBindRequest( BindRequest bindRequest ) throws LdapException
+    private void writeRequest( Request request ) throws LdapException
     {
         // Send the request to the server
-        WriteFuture writeFuture = ldapSession.write( bindRequest );
+        WriteFuture writeFuture = ldapSession.write( request );
 
-        // Wait for the message to be sent to the server
-        if ( !writeFuture.awaitUninterruptibly( timeout ) )
+        long localTimeout = timeout;
+
+        while ( localTimeout > 0 )
         {
-            // We didn't received anything : this is an error
-            LOG.error( "Bind failed : timeout occured" );
+            // Wait only 100 ms
+            boolean done = writeFuture.awaitUninterruptibly( 100 );
 
-            throw new LdapException( TIME_OUT_ERROR );
+            if ( done )
+            {
+                return;
+            }
+
+            // Wait for the message to be sent to the server
+            if ( !ldapSession.isConnected() )
+            {
+                // We didn't received anything : this is an error
+                LOG.error( "Message failed : something wrong has occurred" );
+
+                Exception exception = ( Exception ) ldapSession.removeAttribute( EXCEPTION_KEY );
+
+                if ( exception != null )
+                {
+                    if ( exception instanceof LdapException )
+                    {
+                        throw ( LdapException ) exception;
+                    }
+                    else
+                    {
+                        throw new InvalidConnectionException( exception.getMessage() );
+                    }
+                }
+
+                throw new InvalidConnectionException( "Error while sending some message : the session has been closed" );
+            }
+
+            localTimeout -= 100;
         }
+
+        LOG.error( "TimeOut has occurred" );
+        throw new LdapException( TIME_OUT_ERROR );
     }
 
 
@@ -4067,5 +3874,33 @@ public class LdapNetworkConnection extends IoHandlerAdapter implements LdapAsync
         LOG.debug( "krb 5 config file created at {}", krb5ConfPath );
 
         return krb5ConfPath;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public BinaryAttributeDetector getBinaryAttributeDetector()
+    {
+        if ( config != null )
+        {
+            return config.getBinaryAttributeDetector();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetector )
+    {
+        if ( config != null )
+        {
+            config.setBinaryAttributeDetector( binaryAttributeDetector );
+        }
     }
 }

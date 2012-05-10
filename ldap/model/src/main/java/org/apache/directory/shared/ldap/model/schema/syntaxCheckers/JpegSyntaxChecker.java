@@ -6,23 +6,22 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +32,7 @@ import org.slf4j.LoggerFactory;
  * The JFIF (Jpeg File Interchange Format) specify that a jpeg image starts with
  * the following bytes :
  * 0xFF 0xD8 (SOI, Start Of Image)
- * 0xFF 0xE0 (App0)
+ * 0xFF 0xE0 (App0 for JFIF) or 0xDD 0xE1 (App1 for Exif)
  * 0xNN 0xNN (Header length)
  * "JFIF\0" (JFIF string with an ending \0)
  * some other bytes which are related to the image.
@@ -43,8 +42,6 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class JpegSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
@@ -57,8 +54,8 @@ public class JpegSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.JPEG_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -69,15 +66,15 @@ public class JpegSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         // The value must be a byte array
-        if ( ! ( value instanceof byte[] ) )
+        if ( !( value instanceof byte[] ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
-        byte[] bytes = (byte[])value;
+
+        byte[] bytes = ( byte[] ) value;
 
         // The header must be at least 11 bytes long
         if ( bytes.length < 11 )
@@ -88,20 +85,34 @@ public class JpegSyntaxChecker extends SyntaxChecker
 
         if ( ( bytes[0] == ( byte ) 0x00FF ) // SOI
             && ( bytes[1] == ( byte ) 0x00D8 )
-            && ( bytes[2] == ( byte ) 0x00FF ) // APP0
-            && ( bytes[3] == ( byte ) 0x00E0 )
-            && ( bytes[6] == 'J' ) // JFIF
-            && ( bytes[7] == 'F' ) // JFIF
-            && ( bytes[8] == 'I' ) // JFIF
-            && ( bytes[9] == 'F' )
-            && ( bytes[10] == 0x00 ) ) // \0
+            && ( bytes[2] == ( byte ) 0x00FF ) ) // APP0 or APP1
         {
-            // Note : this is not because the header is correct
-            // that the file is a jpeg file. There are much more
-            // elements to check, but we are not writing a jpeg
-            // file checker...
-            LOG.debug( "Syntax valid for '{}'", value );
-            return true;
+            if ( bytes[3] == (byte)0x00E0 )
+            {
+                // JFIF format
+                if ( ( bytes[6] == 'J' ) // JFIF
+                    && ( bytes[7] == 'F' ) // JFIF
+                    && ( bytes[8] == 'I' ) // JFIF
+                    && ( bytes[9] == 'F' )
+                    && ( bytes[10] == 0x00 ) ) // \0
+                {
+                    LOG.debug( "Syntax valid for '{}'", value );
+                    return true;
+                }
+            }
+            else if ( bytes[3] == (byte)0x00E1 )
+            {
+                // Exif format
+                if ( ( bytes[6] == 'E' )   // Exif
+                    && ( bytes[7] == 'x' ) // Exif
+                    && ( bytes[8] == 'i' ) // Exif
+                    && ( bytes[9] == 'f' ) // Exif
+                    && ( bytes[10] == 0x00 ) ) // \0
+                {
+                    LOG.debug( "Syntax valid for '{}'", value );
+                    return true;
+                }
+            }
         }
 
         LOG.debug( "Syntax invalid for '{}'", value );

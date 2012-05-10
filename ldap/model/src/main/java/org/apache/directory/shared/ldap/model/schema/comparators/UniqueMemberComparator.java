@@ -26,9 +26,6 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Property;
-import org.apache.felix.ipojo.annotations.Provides;
 
 
 /**
@@ -38,8 +35,6 @@ import org.apache.felix.ipojo.annotations.Provides;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
-@Provides
 public class UniqueMemberComparator extends LdapComparator<String>
 {
     /** The serial version UID */
@@ -53,7 +48,7 @@ public class UniqueMemberComparator extends LdapComparator<String>
      * The IntegerComparator constructor. Its OID is the IntegerOrderingMatch matching
      * rule OID.
      */
-    public UniqueMemberComparator( @Property(name = "ads.comp.comparator.oid") String oid )
+    public UniqueMemberComparator( String oid )
     {
         super( oid );
     }

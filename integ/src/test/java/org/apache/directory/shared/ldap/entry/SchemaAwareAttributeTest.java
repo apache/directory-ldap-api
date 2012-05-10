@@ -6,18 +6,19 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.entry;
+
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -36,8 +37,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import javax.naming.directory.InvalidAttributeValueException;
 
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.BinaryValue;
@@ -58,6 +57,7 @@ import org.junit.runner.RunWith;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
+
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
 /**
@@ -71,7 +71,7 @@ public class SchemaAwareAttributeTest
     private static AttributeType atDC;
     private static AttributeType atSN;
     private static AttributeType atName;
-    
+
     // A SINGLE-VALUE attribute
     private static AttributeType atC;
 
@@ -80,7 +80,7 @@ public class SchemaAwareAttributeTest
 
     // A String attribute which allows null value
     private static AttributeType atEMail;
-    
+
     private static final Value<String> NULL_STRING_VALUE = new StringValue( ( String ) null );
     private static final Value<byte[]> NULL_BINARY_VALUE = new BinaryValue( ( byte[] ) null );
     private static final byte[] BYTES1 = new byte[]
@@ -103,6 +103,7 @@ public class SchemaAwareAttributeTest
     private static final BinaryValue BIN_VALUE4 = new BinaryValue( BYTES4 );
 
     private static SchemaManager schemaManager;
+
 
     /**
      * Serialize a DefaultEntryAttribute
@@ -196,24 +197,24 @@ public class SchemaAwareAttributeTest
         atName = schemaManager.lookupAttributeTypeRegistry( "name" );
     }
 
-    
+
     /**
-     * Test method isValid( SyntaxChecker ) 
+     * Test method isValid( SyntaxChecker )
      */
     @Test
     public void testIsValidSyntaxChecker() throws LdapException
     {
         Attribute attr = new DefaultAttribute( "test" );
-        
+
         attr.add( "test", "another test" );
-        
+
         assertTrue( attr.isValid( atCN ) );
-        
+
         attr.add( "test an invalid '\uFFFD' char" );
         assertFalse( attr.isValid( atCN ) );
     }
-    
-    
+
+
     @Test
     public void testAddOneValue() throws Exception
     {
@@ -613,7 +614,7 @@ public class SchemaAwareAttributeTest
     {
         Attribute attr1 = new DefaultAttribute( atDC );
 
-        int nbAdded = attr1.add( (String)null );
+        int nbAdded = attr1.add( ( String ) null );
         assertEquals( 1, nbAdded );
         assertTrue( attr1.isHumanReadable() );
         assertEquals( NULL_STRING_VALUE, attr1.get() );
@@ -1124,7 +1125,7 @@ public class SchemaAwareAttributeTest
      * Test method put( byte[]... )
      */
     @Test
-    public void testPutByteArray() throws InvalidAttributeValueException, Exception
+    public void testPutByteArray() throws LdapException, Exception
     {
         Attribute attr1 = new DefaultAttribute( atPwd );
 
@@ -1505,7 +1506,7 @@ public class SchemaAwareAttributeTest
         Attribute attr = new DefaultAttribute( atCN );
 
         assertTrue( attr.isInstanceOf( atCN ) );
-        assertTrue( attr.isInstanceOf( atName) );
+        assertTrue( attr.isInstanceOf( atName ) );
         assertFalse( attr.isInstanceOf( atSN ) );
     }
 
@@ -1596,7 +1597,7 @@ public class SchemaAwareAttributeTest
 
         // Now check wrong IDs
         attr = new DefaultAttribute( atCN );
-        
+
         try
         {
             attr.setUpId( "sn" );
@@ -1606,7 +1607,7 @@ public class SchemaAwareAttributeTest
         {
             // Expected
         }
-        
+
         assertEquals( "2.5.4.3", attr.getId() );
         assertEquals( "cn", attr.getUpId() );
         assertEquals( atCN, attr.getAttributeType() );
@@ -1620,7 +1621,7 @@ public class SchemaAwareAttributeTest
         {
             // Expected
         }
-    
+
         assertEquals( "2.5.4.3", attr.getId() );
         assertEquals( "cn", attr.getUpId() );
         assertEquals( atCN, attr.getAttributeType() );
@@ -1634,7 +1635,7 @@ public class SchemaAwareAttributeTest
         {
             // Expected
         }
-        
+
         assertEquals( "2.5.4.3", attr.getId() );
         assertEquals( "cn", attr.getUpId() );
         assertEquals( atCN, attr.getAttributeType() );
@@ -1819,7 +1820,7 @@ public class SchemaAwareAttributeTest
 
 
     /**
-     * Test constructor DefaultEntryAttribute( AttributeType, String... ) 
+     * Test constructor DefaultEntryAttribute( AttributeType, String... )
      */
     @Test
     public void testDefaultServerAttributeAttributeTypeStringArray() throws LdapException
@@ -1886,7 +1887,7 @@ public class SchemaAwareAttributeTest
 
 
     /**
-     * Test method DefaultEntryAttribute( AttributeType, byte[]... ) 
+     * Test method DefaultEntryAttribute( AttributeType, byte[]... )
      */
     @Test
     public void testDefaultServerAttributeAttributeTypeByteArray() throws LdapException
@@ -2011,7 +2012,7 @@ public class SchemaAwareAttributeTest
 
 
     /**
-     * Test the conversion method 
+     * Test the conversion method
      */
     @Test
     public void testToClientAttribute() throws LdapException
@@ -2096,7 +2097,7 @@ public class SchemaAwareAttributeTest
     public void testSerializeAttributeBinaryValue() throws LdapException, IOException, ClassNotFoundException
     {
         DefaultAttribute dsa = new DefaultAttribute( atPwd );
-        byte[] password = Strings.getBytesUtf8("secret");
+        byte[] password = Strings.getBytesUtf8( "secret" );
         dsa.add( password );
 
         DefaultAttribute dsaSer = deserializeValue( serializeValue( dsa ), atPwd );

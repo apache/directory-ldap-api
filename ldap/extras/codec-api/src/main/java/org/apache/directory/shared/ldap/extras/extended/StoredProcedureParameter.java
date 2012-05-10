@@ -45,8 +45,8 @@ public class StoredProcedureParameter
     {
         return Strings.utf8ToString( type );
     }
-    
-    
+
+
     /**
      * Gets the value as a UTF8 String.
      *
@@ -56,8 +56,8 @@ public class StoredProcedureParameter
     {
         return Strings.utf8ToString( value );
     }
-    
-    
+
+
     /**
      * Gets the type as a byte[].
      *
@@ -70,7 +70,7 @@ public class StoredProcedureParameter
             return null;
         }
 
-        final byte[] copy = new byte[ type.length ];
+        final byte[] copy = new byte[type.length];
         System.arraycopy( type, 0, copy, 0, type.length );
         return copy;
     }
@@ -85,10 +85,10 @@ public class StoredProcedureParameter
     {
         if ( type != null )
         {
-            this.type = new byte[ type.length ];
+            this.type = new byte[type.length];
             System.arraycopy( type, 0, this.type, 0, type.length );
-        } 
-        else 
+        }
+        else
         {
             this.type = null;
         }
@@ -107,7 +107,7 @@ public class StoredProcedureParameter
             return null;
         }
 
-        final byte[] copy = new byte[ value.length ];
+        final byte[] copy = new byte[value.length];
         System.arraycopy( value, 0, copy, 0, value.length );
         return copy;
     }
@@ -122,10 +122,10 @@ public class StoredProcedureParameter
     {
         if ( value != null )
         {
-            this.value = new byte[ value.length ];
+            this.value = new byte[value.length];
             System.arraycopy( value, 0, this.value, 0, value.length );
-        } 
-        else 
+        }
+        else
         {
             this.value = null;
         }

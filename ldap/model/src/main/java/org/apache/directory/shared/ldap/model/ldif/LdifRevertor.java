@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.ldif;
 
@@ -41,7 +41,7 @@ import org.apache.directory.shared.ldap.model.name.Rdn;
 
 
 /**
- * A helper class which provides methods to reverse a LDIF modification operation. 
+ * A helper class which provides methods to reverse a LDIF modification operation.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -127,7 +127,7 @@ public final class LdifRevertor
         throws LdapException
     {
         // First, protect the original entry by cloning it : we will modify it
-        Entry clonedEntry = ( Entry ) modifiedEntry.clone();
+        Entry clonedEntry = modifiedEntry.clone();
 
         LdifEntry entry = new LdifEntry();
         entry.setChangeType( ChangeType.Modify );
@@ -188,13 +188,13 @@ public final class LdifRevertor
                     previous = clonedEntry.get( mod.getId() );
 
                     /*
-                     * The server accepts without complaint replace 
-                     * modifications to non-existing attributes in the 
+                     * The server accepts without complaint replace
+                     * modifications to non-existing attributes in the
                      * entry.  When this occurs nothing really happens
                      * but this method freaks out.  To prevent that we
                      * make such no-op modifications produce the same
                      * modification for the reverse direction which should
-                     * do nothing as well.  
+                     * do nothing as well.
                      */
                     if ( ( mod.get() == null ) && ( previous == null ) )
                     {
@@ -230,7 +230,7 @@ public final class LdifRevertor
 
             }
 
-            AttributeUtils.applyModification(clonedEntry, modification);
+            AttributeUtils.applyModification( clonedEntry, modification );
 
         }
 
@@ -364,7 +364,7 @@ public final class LdifRevertor
             {
                 // Create the modification, which is an Remove
                 Modification modification = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE,
-                    new DefaultAttribute( ava.getUpType(), ava.getUpValue().getString() ) );
+                    new DefaultAttribute( ava.getType(), ava.getValue().getString() ) );
 
                 restored.addModification( modification );
             }
@@ -412,13 +412,13 @@ public final class LdifRevertor
 
     /**
      * Revert a Dn to it's previous version by removing the first Rdn and adding the given Rdn.
-     * It's a rename operation. The biggest issue is that we have many corner cases, depending 
+     * It's a rename operation. The biggest issue is that we have many corner cases, depending
      * on the RDNs we are manipulating, and on the content of the initial entry.
      * 
      * @param entry The initial Entry
      * @param newRdn The new Rdn
      * @param deleteOldRdn A flag which tells to delete the old Rdn AVAs
-     * @return A list of LDIF reverted entries 
+     * @return A list of LDIF reverted entries
      * @throws LdapInvalidDnException If the name reverting failed
      */
     public static List<LdifEntry> reverseRename( Entry entry, Rdn newRdn, boolean deleteOldRdn )
@@ -430,14 +430,14 @@ public final class LdifRevertor
 
     /**
      * Revert a Dn to it's previous version by removing the first Rdn and adding the given Rdn.
-     * It's a rename operation. The biggest issue is that we have many corner cases, depending 
+     * It's a rename operation. The biggest issue is that we have many corner cases, depending
      * on the RDNs we are manipulating, and on the content of the initial entry.
      * 
      * @param entry The initial Entry
      * @param newSuperior The new superior Dn (can be null if it's just a rename)
      * @param newRdn The new Rdn
      * @param deleteOldRdn A flag which tells to delete the old Rdn AVAs
-     * @return A list of LDIF reverted entries 
+     * @return A list of LDIF reverted entries
      * @throws LdapInvalidDnException If the name reverting failed
      */
     public static List<LdifEntry> reverseMoveAndRename( Entry entry, Dn newSuperior, Rdn newRdn, boolean deleteOldRdn )
@@ -475,14 +475,6 @@ public final class LdifRevertor
         if ( newRdn.size() == 1 )
         {
             // We have a simple new Rdn, something like A=a
-            if ( ( oldRdn.size() == 1 ) && ( oldRdn.equals( newRdn ) ) )
-            {
-                // We have a simple old Rdn, something like A=a
-                // If the values overlap, we can't rename the entry, just get out
-                // with an error
-                throw new LdapInvalidDnException( I18n.err( I18n.ERR_12080 ) );
-            }
-
             reverted = revertEntry( entry, newDn, newSuperior, oldRdn, newRdn );
 
             entries.add( reverted );
@@ -573,7 +565,7 @@ public final class LdifRevertor
 
                 Set<Ava> oldAtavs = new HashSet<Ava>();
 
-                // We first build a set with all the oldRDN ATAVs 
+                // We first build a set with all the oldRDN ATAVs
                 for ( Ava atav : oldRdn )
                 {
                     oldAtavs.add( atav );

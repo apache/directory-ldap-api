@@ -34,11 +34,13 @@ public interface PasswordPolicyResponse
      */
     int getTimeBeforeExpiration();
 
+
     /**
      * Set a date of expiration for the password
      * @param timeBeforeExpiration The time before the password will expire
      */
     void setTimeBeforeExpiration( int timeBeforeExpiration );
+
 
     /**
      * @return The number of possible attempts on the password before it's locked

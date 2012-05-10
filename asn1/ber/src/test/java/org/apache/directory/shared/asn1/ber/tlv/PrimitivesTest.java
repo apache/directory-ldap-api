@@ -44,7 +44,7 @@ public class PrimitivesTest
     @Test
     public void testIntegerPrimitive() throws IntegerDecoderException
     {
-        Value value = new Value();
+        BerValue value = new BerValue();
 
         value.init( 1 );
         value.setData( new byte[]
@@ -73,7 +73,7 @@ public class PrimitivesTest
         value.init( 2 );
         value.setData( new byte[]
             { 0x01, 0x00 } ); // res = 256
-        assertEquals( 256, IntegerDecoder.parse(value) );
+        assertEquals( 256, IntegerDecoder.parse( value ) );
         value.reset();
 
         value.init( 2 );
@@ -103,21 +103,21 @@ public class PrimitivesTest
         value.init( 4 );
         value.setData( new byte[]
             { ( byte ) 0x7F, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF } ); // res
-                                                                                // =
-                                                                                // 2^31
-                                                                                // - 1
-                                                                                // =
-                                                                                // MaxInt
+                                                                              // =
+                                                                              // 2^31
+                                                                              // - 1
+                                                                              // =
+                                                                              // MaxInt
         assertEquals( Integer.MAX_VALUE, IntegerDecoder.parse( value ) );
         value.reset();
 
         value.init( 4 );
         value.setData( new byte[]
             { ( byte ) 0x80, ( byte ) 0x00, ( byte ) 0x00, ( byte ) 0x00 } ); // res
-                                                                                // =
-                                                                                // 2^31
-                                                                                // =
-                                                                                // MinInt
+                                                                              // =
+                                                                              // 2^31
+                                                                              // =
+                                                                              // MinInt
         assertEquals( Integer.MIN_VALUE, IntegerDecoder.parse( value ) );
         value.reset();
     }

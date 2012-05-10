@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.apache.directory.shared</groupId>
     <artifactId>shared-parent</artifactId>
-    <version>1.0.0-M9-SNAPSHOT</version>
+    <version>1.0.0-M13-SNAPSHOT</version>
   </parent>
   
   <artifactId>shared-asn1-parent</artifactId>

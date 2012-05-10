@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.message;
 
@@ -33,6 +33,7 @@ import org.apache.directory.shared.ldap.model.filter.BranchNormalizedVisitor;
 import org.apache.directory.shared.ldap.model.filter.ExprNode;
 import org.apache.directory.shared.ldap.model.filter.FilterParser;
 import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.shared.util.Strings;
 
 
 /**
@@ -89,7 +90,6 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     // SearchRequest Interface Method Implementations
     // ------------------------------------------------------------------------
 
-
     /**
      * {@inheritDoc}
      */
@@ -116,7 +116,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     public SearchRequest setBase( Dn base )
     {
         baseDn = base;
-        
+
         return this;
     }
 
@@ -136,7 +136,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     public SearchRequest setDerefAliases( AliasDerefMode aliasDerefAliases )
     {
         this.aliasDerefMode = aliasDerefAliases;
-        
+
         return this;
     }
 
@@ -167,14 +167,14 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     {
         try
         {
-            filterNode = FilterParser.parse( filter );
+            filterNode = FilterParser.parse( Strings.getBytesUtf8( filter ) );
         }
         catch ( ParseException pe )
         {
             String msg = "The filter" + filter + " is invalid.";
             throw new LdapProtocolErrorException( msg, pe );
         }
-        
+
         return this;
     }
 
@@ -203,7 +203,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     public SearchRequest setScope( SearchScope scope )
     {
         this.scope = scope;
-        
+
         return this;
     }
 
@@ -223,7 +223,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     public SearchRequest setSizeLimit( long entriesMax )
     {
         sizeLimit = entriesMax;
-        
+
         return this;
     }
 
@@ -243,7 +243,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     public SearchRequest setTimeLimit( int secondsMax )
     {
         timeLimit = secondsMax;
-        
+
         return this;
     }
 
@@ -263,7 +263,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     public SearchRequest setTypesOnly( boolean typesOnly )
     {
         this.typesOnly = typesOnly;
-        
+
         return this;
     }
 
@@ -274,7 +274,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     public SearchRequest addAttributes( String... attributesToAdd )
     {
         this.attributes.addAll( Arrays.asList( attributesToAdd ) );
-        
+
         return this;
     }
 
@@ -285,7 +285,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     public SearchRequest removeAttribute( String attribute )
     {
         attributes.remove( attribute );
-        
+
         return this;
     }
 
@@ -302,43 +302,43 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
 
         return response;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public SearchRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public SearchRequest addControl( Control control ) throws MessageException
     {
-        return (SearchRequest)super.addControl( control );
+        return ( SearchRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public SearchRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (SearchRequest)super.addAllControls( controls );
+        return ( SearchRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public SearchRequest removeControl( Control control ) throws MessageException
     {
-        return (SearchRequest)super.removeControl( control );
+        return ( SearchRequest ) super.removeControl( control );
     }
 
 
@@ -400,7 +400,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
             return true;
         }
 
-        if ( ! super.equals( obj ) )
+        if ( !super.equals( obj ) )
         {
             return false;
         }
@@ -456,7 +456,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
 
             for ( String attribute : attributes )
             {
-                if ( ! req.getAttributes().contains( attribute ) )
+                if ( !req.getAttributes().contains( attribute ) )
                 {
                     return false;
                 }
@@ -575,10 +575,10 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
                 }
                 else
                 {
-                    sb.append(", ");
+                    sb.append( ", " );
                 }
 
-                sb.append('\'').append( attribute ).append('\'');
+                sb.append( '\'' ).append( attribute ).append( '\'' );
             }
         }
 

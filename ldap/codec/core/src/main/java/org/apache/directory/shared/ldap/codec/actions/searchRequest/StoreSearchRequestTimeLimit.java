@@ -25,7 +25,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.SearchRequestDecorator;
@@ -52,6 +52,7 @@ public class StoreSearchRequestTimeLimit extends GrammarAction<LdapMessageContai
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */
@@ -72,7 +73,7 @@ public class StoreSearchRequestTimeLimit extends GrammarAction<LdapMessageContai
 
         // The current TLV should be a integer
         // We get it and store it in timeLimit
-        Value value = tlv.getValue();
+        BerValue value = tlv.getValue();
 
         int timeLimit = 0;
 

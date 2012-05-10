@@ -229,7 +229,7 @@ public class ImmutableAttributeTypeRegistry implements AttributeTypeRegistry
         }
         catch ( LdapException le )
         {
-            throw new LdapNoSuchAttributeException( le.getMessage() , le);
+            throw new LdapNoSuchAttributeException( le.getMessage(), le );
         }
     }
 

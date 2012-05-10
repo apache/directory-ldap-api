@@ -38,23 +38,23 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class DnParserDIRSERVER_584_Test
 {
-   /**
-    * Need this testa() to run first to mess up the state of the static parser.
-    */
-    @Test( expected=LdapException.class )
+    /**
+     * Need this testa() to run first to mess up the state of the static parser.
+     */
+    @Test(expected = LdapException.class)
     public void testa() throws Exception
-   {
-       new Dn( "ou=test+testing"  );
-   }
+    {
+        new Dn( "ou=test+testing" );
+    }
 
 
-   /**
-    * Need this testb() to run second to use the mess up static parser.  This
-    * test should succeed but fails.
-    */
+    /**
+     * Need this testb() to run second to use the mess up static parser.  This
+     * test should succeed but fails.
+     */
     @Test
     public void testb() throws Exception
-   {
-       new Dn( "ou=system" );
-   }
+    {
+        new Dn( "ou=system" );
+    }
 }

@@ -23,8 +23,6 @@ package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,12 +42,11 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( TeletexTerminalIdentifierSyntaxChecker.class );
+
 
     /**
      * Creates a new instance of TeletexTerminalIdentifier.
@@ -58,8 +55,8 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.TELETEX_TERMINAL_IDENTIFIER_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -72,14 +69,14 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -94,52 +91,52 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
 
         // Search for the first '$' separator
         int dollar = strValue.indexOf( '$' );
-        
+
         String terminalIdentifier = ( ( dollar == -1 ) ? strValue : strValue.substring( 0, dollar ) );
-        
+
         if ( terminalIdentifier.length() == 0 )
         {
             // It should not be null
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
-        if ( !Strings.isPrintableString(terminalIdentifier) )
+
+        if ( !Strings.isPrintableString( terminalIdentifier ) )
         {
             // It's not a valid PrintableString 
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         if ( dollar == -1 )
         {
             // No ttx-param : let's get out
             LOG.debug( "Syntax valid for '{}'", value );
             return true;
         }
-        
+
         // Ok, now let's deal withh optional ttx-params
         String[] ttxParams = strValue.substring( dollar + 1 ).split( "\\$" );
-        
+
         if ( ttxParams.length == 0 )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
-        for ( String ttxParam:ttxParams )
+
+        for ( String ttxParam : ttxParams )
         {
             int colon = ttxParam.indexOf( ':' );
-            
+
             if ( colon == -1 )
             {
                 // we must have a ':' separator
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
             }
-            
+
             String key = ttxParam.substring( 0, colon );
-            
+
             if ( key.startsWith( "graphic" )
                 || key.startsWith( "control" )
                 || key.startsWith( "misc" )
@@ -151,19 +148,19 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
                     LOG.debug( "Syntax invalid for '{}'", value );
                     return false;
                 }
-                
+
                 boolean hasEsc = false;
-                
-                for ( byte b: Strings.getBytesUtf8(ttxParam) )
+
+                for ( byte b : Strings.getBytesUtf8( ttxParam ) )
                 {
                     switch ( b )
                     {
-                        case 0x24 :
+                        case 0x24:
                             // '$' is not accepted
                             LOG.debug( "Syntax invalid for '{}'", value );
                             return false;
-                            
-                        case 0x5c :
+
+                        case 0x5c:
                             if ( hasEsc )
                             {
                                 // two following \ are not accepted
@@ -174,34 +171,34 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
                             {
                                 hasEsc = true;
                             }
-                            
-                            continue;
-                        
-                        case '2' :
+
                             continue;
 
-                        case '4' :
+                        case '2':
+                            continue;
+
+                        case '4':
                             // We have found a "\24"
                             hasEsc = false;
                             continue;
-                            
-                        case '5' :
+
+                        case '5':
                             continue;
 
-                        case 'c' :
-                        case 'C' :
+                        case 'c':
+                        case 'C':
                             // We have found a "\5c" or a "\5C"
                             hasEsc = false;
                             continue;
-                            
-                        default :
+
+                        default:
                             if ( hasEsc )
                             {
                                 // A \ should be followed by "24" or "5c" or "5C"
                                 return false;
                             }
-                            
-                        continue;
+
+                            continue;
                     }
                 }
             }
@@ -211,7 +208,7 @@ public class TeletexTerminalIdentifierSyntaxChecker extends SyntaxChecker
                 return false;
             }
         }
-        
+
         LOG.debug( "Syntax valid for '{}'", value );
         return true;
     }

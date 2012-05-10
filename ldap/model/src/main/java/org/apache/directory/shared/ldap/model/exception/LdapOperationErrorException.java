@@ -34,6 +34,7 @@ public class LdapOperationErrorException extends LdapOperationException
     /** The serial version UUID */
     static final long serialVersionUID = 1L;
 
+
     /**
      * Creates a new instance of LdapOperationErrorException.
      *
@@ -55,8 +56,8 @@ public class LdapOperationErrorException extends LdapOperationException
     {
         super( ResultCodeEnum.OPERATIONS_ERROR, message, cause );
     }
-    
-    
+
+
     /**
      * Creates a new instance of LdapOperationErrorException.
      */

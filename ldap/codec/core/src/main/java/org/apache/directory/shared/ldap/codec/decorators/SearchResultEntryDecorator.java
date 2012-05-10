@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.codec.decorators;
 
@@ -28,8 +28,7 @@ import java.util.List;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
-import org.apache.directory.shared.asn1.util.Asn1StringUtils;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
@@ -37,6 +36,7 @@ import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
+import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
 import org.apache.directory.shared.ldap.model.name.Dn;
@@ -62,9 +62,12 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     /** The list of all attributes length */
     private List<Integer> attributeLength;
 
-    /** The list of all vals length */
-    private List<Integer> valsLength;
-    
+    /** The list of all attributes Id bytes */
+    private List<byte[]> attributeIds;
+
+    /** The list of all values length */
+    private List<Integer> valuesLength;
+
     /** The current attribute being processed */
     private Attribute currentAttribute;
 
@@ -163,7 +166,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
      */
     public List<Integer> getValsLength()
     {
-        return valsLength;
+        return valuesLength;
     }
 
 
@@ -173,10 +176,10 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
      */
     public void setValsLength( List<Integer> valsLength )
     {
-        this.valsLength = valsLength;
+        this.valuesLength = valsLength;
     }
-    
-    
+
+
     public Attribute getCurrentAttribute()
     {
         return currentAttribute;
@@ -217,8 +220,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     //-------------------------------------------------------------------------
     // The IntermediateResponse methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -258,8 +260,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * Compute the SearchResultEntry length
      * 
@@ -304,7 +305,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     {
         Dn dn = getObjectName();
 
-        byte[] dnBytes = Strings.getBytesUtf8(dn.getName());
+        byte[] dnBytes = Strings.getBytesUtf8( dn.getName() );
 
         // The entry
         int searchResultEntryLength = 1 + TLV.getNbBytes( dnBytes.length ) + dnBytes.length;
@@ -317,12 +318,13 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
 
         if ( ( entry != null ) && ( entry.size() != 0 ) )
         {
-            List<Integer> attributeLength = new LinkedList<Integer>();
-            List<Integer> valsLength = new LinkedList<Integer>();
+            attributeLength = new LinkedList<Integer>();
+            attributeIds = new LinkedList<byte[]>();
+            valuesLength = new LinkedList<Integer>();
 
             // Store those lists in the object
             setAttributeLength( attributeLength );
-            setValsLength( valsLength );
+            setValsLength( valuesLength );
 
             // Compute the attributes length
             for ( Attribute attribute : entry )
@@ -331,7 +333,9 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
                 int localValuesLength = 0;
 
                 // Get the type length
-                int idLength = attribute.getUpId().getBytes().length;
+                byte[] attributeIdBytes = Strings.getBytesUtf8( attribute.getUpId() );
+                attributeIds.add( attributeIdBytes );
+                int idLength = attributeIdBytes.length;
                 localAttributeLength = 1 + TLV.getNbBytes( idLength ) + idLength;
 
                 if ( attribute.size() != 0 )
@@ -370,7 +374,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
 
                 // Store the lengths of the encoded attributes and values
                 attributeLength.add( localAttributeLength );
-                valsLength.add( localValuesLength );
+                valuesLength.add( localValuesLength );
             }
 
             // Store the lengths of the entry
@@ -379,7 +383,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
 
         searchResultEntryLength += 1 + TLV.getNbBytes( attributesLength ) + attributesLength;
 
-        // Store the length of the response 
+        // Store the length of the response
         setSearchResultEntryLength( searchResultEntryLength );
 
         // Return the result.
@@ -399,15 +403,15 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
      *       0x04 LL type
      *       0x31 LL vals
      *         0x04 LL attributeValue
-     *         ... 
+     *         ...
      *         0x04 LL attributeValue
-     *     ... 
+     *     ...
      *     0x30 LL partialAttributeList
      *       0x04 LL type
      *       0x31 LL vals
      *         0x04 LL attributeValue
-     *         ... 
-     *         0x04 LL attributeValue 
+     *         ...
+     *         0x04 LL attributeValue
      * </pre>
      * @param buffer The buffer where to put the PDU
      * @param searchResultEntryDecorator the SearchResultEntry decorator
@@ -422,7 +426,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
             buffer.put( TLV.getBytes( getSearchResultEntryLength() ) );
 
             // The objectName
-            Value.encode( buffer, getObjectNameBytes() );
+            BerValue.encode( buffer, getObjectNameBytes() );
 
             // The attributes sequence
             buffer.put( UniversalTag.SEQUENCE.getValue() );
@@ -440,29 +444,22 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
                 {
                     // The partial attribute list sequence
                     buffer.put( UniversalTag.SEQUENCE.getValue() );
-                    int localAttributeLength = getAttributeLength().get( attributeNumber );
+                    int localAttributeLength = attributeLength.get( attributeNumber );
                     buffer.put( TLV.getBytes( localAttributeLength ) );
 
                     // The attribute type
-                    Value.encode( buffer, Asn1StringUtils.asciiStringToByte( attribute.getUpId() ) );
+                    BerValue.encode( buffer, attributeIds.get( attributeNumber ) );
 
                     // The values
                     buffer.put( UniversalTag.SET.getValue() );
-                    int localValuesLength = getValsLength().get( attributeNumber );
+                    int localValuesLength = valuesLength.get( attributeNumber );
                     buffer.put( TLV.getBytes( localValuesLength ) );
 
                     if ( attribute.size() > 0 )
                     {
-                        for ( org.apache.directory.shared.ldap.model.entry.Value<?> value : attribute )
+                        for ( Value<?> value : attribute )
                         {
-                            if ( value.isHumanReadable() )
-                            {
-                                Value.encode( buffer, value.getString() );
-                            }
-                            else
-                            {
-                                Value.encode( buffer, value.getBytes() );
-                            }
+                            BerValue.encode( buffer, value.getBytes() );
                         }
                     }
 
@@ -475,7 +472,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
         {
             throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
         }
-        
+
         return buffer;
     }
 }

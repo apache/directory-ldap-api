@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema;
 
@@ -24,9 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.i18n.I18n;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 
 
 /**
@@ -38,7 +35,7 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
  * <pre>
  *  Values of the matchingRuleUse list the attributes which are suitable
  *  for use with an extensible matching rule.
- *  
+ * 
  *    Matching rule use descriptions are written according to the following
  *    ABNF:
  * 
@@ -49,7 +46,7 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
  *          [ SP &quot;OBSOLETE&quot; ]         ; not active
  *          SP &quot;APPLIES&quot; SP oids      ; attribute types
  *          extensions WSP RPAREN     ; extensions
- *  
+ * 
  *    where:
  *      [numericoid] is the object identifier of the matching rule
  *          associated with this matching rule use description;
@@ -62,13 +59,13 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
  *      [extensions] describe extensions.
  * 
  *  The matchingRule within the MatchingRuleUse definition can be used by an
- *  extensible match assertion if the assertion is based on the attributes 
- *  listed within the MatchingRuleUse definition.  If an extensible match 
- *  assertion is based on attributes other than those listed within the 
+ *  extensible match assertion if the assertion is based on the attributes
+ *  listed within the MatchingRuleUse definition.  If an extensible match
+ *  assertion is based on attributes other than those listed within the
  *  MatchingRuleUse definition then the assertion is deemed undefined.
- *  
+ * 
  *  Also according to 3.3.20 of [SYNTAXES] (ldapbis working group):
- *  
+ * 
  *  A value of the Matching Rule Use Description syntax indicates the
  *  attribute types to which a matching rule may be applied in an
  *  extensibleMatch search filter [PROT].  The LDAP-specific encoding of
@@ -108,37 +105,6 @@ public class MatchingRuleUse extends AbstractSchemaObject
 
 
     /**
-     * Inject the MatchingRuleUse into the registries, updating the references to
-     * other SchemaObject
-     *
-     * @param registries The Registries
-     * @exception If the addition failed
-     */
-    public void addToRegistries( Registries registries ) throws LdapException
-    {
-        if ( locked )
-        {
-            throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
-        }
-        
-        if ( registries != null )
-        {
-            AttributeTypeRegistry atRegistry = registries.getAttributeTypeRegistry();
-
-            if ( applicableAttributeOids != null )
-            {
-                applicableAttributes = new ArrayList<AttributeType>( applicableAttributeOids.size() );
-
-                for ( String oid : applicableAttributeOids )
-                {
-                    applicableAttributes.add( atRegistry.lookup( oid ) );
-                }
-            }
-        }
-    }
-
-
-    /**
      * @return The matchingRule's list of AttributeType OIDs the MRU applies to
      */
     public List<String> getApplicableAttributeOids()
@@ -167,7 +133,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.applicableAttributeOids = applicableAttributeOids;
@@ -186,7 +152,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.applicableAttributes = applicableAttributes;
@@ -213,7 +179,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly && !applicableAttributeOids.contains( oid ) )
         {
             applicableAttributeOids.add( oid );
@@ -232,7 +198,7 @@ public class MatchingRuleUse extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly && !applicableAttributeOids.contains( attributeType.getOid() ) )
         {
             applicableAttributes.add( attributeType );
@@ -280,7 +246,8 @@ public class MatchingRuleUse extends AbstractSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    @SuppressWarnings("PMD.UnusedLocalVariable") // Remove me when the TODO is fixed 
+    @SuppressWarnings("PMD.UnusedLocalVariable")
+    // Remove me when the TODO is fixed
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )

@@ -83,7 +83,7 @@ public class BranchNormalizedVisitorTest
 
         filter += "(|(uid=akarasulu)(ou=Human Resources))) ";
 
-        ExprNode ori = FilterParser.parse(filter);
+        ExprNode ori = FilterParser.parse( filter );
 
         ExprNode altered = FilterParser.parse( filter );
 
@@ -128,19 +128,19 @@ public class BranchNormalizedVisitorTest
         assertEquals( normalizedFilter1, normalizedFilter2 );
     }
 
-   public void testBranchNormalizedVisitor4() throws Exception
-   {
-       ExprNode ori = FilterParser.parse( "(&(!(sn=Bob))(ou=Human Resources)(uid=akarasulu))" );
 
-       ExprNode altered = FilterParser.parse( "(&(ou=Human Resources)(uid=akarasulu)(!(sn=Bob)))" );
+    public void testBranchNormalizedVisitor4() throws Exception
+    {
+        ExprNode ori = FilterParser.parse( "(&(!(sn=Bob))(ou=Human Resources)(uid=akarasulu))" );
 
-       BranchNormalizedVisitor visitor = new BranchNormalizedVisitor();
+        ExprNode altered = FilterParser.parse( "(&(ou=Human Resources)(uid=akarasulu)(!(sn=Bob)))" );
 
-       visitor.visit( altered );
+        BranchNormalizedVisitor visitor = new BranchNormalizedVisitor();
 
-       assertTrue( ori.toString().equals( altered.toString() ) );
-       
-   }
-     
-    
+        visitor.visit( altered );
+
+        assertTrue( ori.toString().equals( altered.toString() ) );
+
+    }
+
 }

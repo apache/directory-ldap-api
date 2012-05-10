@@ -27,7 +27,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.shared.i18n.I18n;
@@ -60,41 +60,41 @@ public final class SubentriesGrammar extends AbstractGrammar<SubentriesContainer
         setName( SubentriesGrammar.class.getName() );
 
         // Create the transitions table
-        super.transitions = new GrammarTransition[ SubentriesStates.LAST_SUB_ENTRY_STATE.ordinal()][256];
+        super.transitions = new GrammarTransition[SubentriesStates.LAST_SUB_ENTRY_STATE.ordinal()][256];
 
-        super.transitions[ SubentriesStates.START_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
+        super.transitions[SubentriesStates.START_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
             new GrammarTransition<SubentriesContainer>( SubentriesStates.START_STATE,
-                                    SubentriesStates.SUB_ENTRY_VISIBILITY_STATE, UniversalTag.BOOLEAN.getValue(),
+                SubentriesStates.SUB_ENTRY_VISIBILITY_STATE, UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SubentriesContainer>( "SubEntryControl visibility" )
-            {
-                public void action( SubentriesContainer container ) throws DecoderException
                 {
-                    TLV tlv = container.getCurrentTLV();
-
-                    // We get the value. If it's a 0, it's a FALSE. If it's
-                    // a FF, it's a TRUE. Any other value should be an error,
-                    // but we could relax this constraint. So if we have
-                    // something
-                    // which is not 0, it will be interpreted as TRUE, but we
-                    // will generate a warning.
-                    Value value = tlv.getValue();
-
-                    try
+                    public void action( SubentriesContainer container ) throws DecoderException
                     {
-                        container.getSubentriesControl().setVisibility( BooleanDecoder.parse( value ) );
+                        TLV tlv = container.getCurrentTLV();
 
-                        // We can have an END transition
-                        container.setGrammarEndAllowed( true );
-                    }
-                    catch ( BooleanDecoderException bde )
-                    {
-                        LOG.error( I18n.err( I18n.ERR_04054, Strings.dumpBytes( value.getData()), bde.getMessage() ) );
+                        // We get the value. If it's a 0, it's a FALSE. If it's
+                        // a FF, it's a TRUE. Any other value should be an error,
+                        // but we could relax this constraint. So if we have
+                        // something
+                        // which is not 0, it will be interpreted as TRUE, but we
+                        // will generate a warning.
+                        BerValue value = tlv.getValue();
 
-                        // This will generate a PROTOCOL_ERROR
-                        throw new DecoderException( bde.getMessage() );
+                        try
+                        {
+                            container.getSubentriesControl().setVisibility( BooleanDecoder.parse( value ) );
+
+                            // We can have an END transition
+                            container.setGrammarEndAllowed( true );
+                        }
+                        catch ( BooleanDecoderException bde )
+                        {
+                            LOG.error( I18n.err( I18n.ERR_04054, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
+
+                            // This will generate a PROTOCOL_ERROR
+                            throw new DecoderException( bde.getMessage() );
+                        }
                     }
-                }
-            } );
+                } );
     }
 
 

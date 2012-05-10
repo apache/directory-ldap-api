@@ -52,6 +52,7 @@ public class GeneralizedTimeTest
 {
     private static final Logger LOG = LoggerFactory.getLogger( GeneralizedTimeTest.class );
 
+
     // Test all valid variants:
     // Time: min + sec / min + no sec / no min + no sec 
     // Fraction: no fraction, dot, comma
@@ -509,8 +510,8 @@ public class GeneralizedTimeTest
             TimeZoneFormat.DIFF_HOUR_MINUTE );
         assertEquals( "2008010212+0000", result );
     }
-    
-    
+
+
     /**
      * Test adjustment of time while formatting. 
      */
@@ -521,7 +522,7 @@ public class GeneralizedTimeTest
         GeneralizedTime generalizedTime = new GeneralizedTime( gt );
         String result = generalizedTime.toGeneralizedTime();
         assertEquals( gt, result );
-        
+
         result = generalizedTime.toGeneralizedTime( Format.YEAR_MONTH_DAY_HOUR_MIN_SEC, null, 0, TimeZoneFormat.Z );
         assertEquals( "20080102104314Z", result );
     }
@@ -1147,6 +1148,7 @@ public class GeneralizedTimeTest
         assertFalse( generalizedTime1.equals( null ) );
     }
 
+
     /**
      * Tests DIRSHARED-29 (GeneralizedTime.toString() generates wrong output 
      * when TimeZone has hours < 10 and minutes > 10).
@@ -1158,8 +1160,8 @@ public class GeneralizedTimeTest
         String result = generalizedTime.toGeneralizedTime();
         assertEquals( gt, result );
     }
-    
-    
+
+
     /**
      * Tests to make sure the GeneralizedTime parser preserves the milliseconds 
      * component.
@@ -1173,9 +1175,9 @@ public class GeneralizedTimeTest
         long originalTime = 0;
         long millisLost = 0;
         long trimmedMillis = 0;
-        
+
         // Get the current date and time now, also with trimmed milliseconds
-        
+
         while ( millisLost == 0 )
         {
             date = new Date();
@@ -1184,7 +1186,7 @@ public class GeneralizedTimeTest
             trimmedMillis = trimmedMillis * 1000;
             millisLost = originalTime - trimmedMillis;
         }
-        
+
         LOG.info( "original time = {}", originalTime );
         LOG.info( "trimmed milliseconds = {}", trimmedMillis );
         LOG.info( "milliseconds lost = {}", millisLost );
@@ -1202,8 +1204,8 @@ public class GeneralizedTimeTest
         long recalculatedTime = recalculatedGt.getCalendar().getTime().getTime();
         LOG.info( "recalculated time = {}", recalculatedTime );
         LOG.info( "generalized time string of recalculated time = {}", recalculatedGt.toGeneralizedTime() );
-        
-        assertEquals( "The time after round trip GeneralizedTime generation should stay the same", 
+
+        assertEquals( "The time after round trip GeneralizedTime generation should stay the same",
             originalTime, recalculatedTime );
     }
 }

@@ -76,7 +76,7 @@ public class StoreTypeMatchingRule extends GrammarAction<LdapMessageContainer<Se
             // Store the value.
             ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) searchRequest.getTerminalFilter();
 
-            String type = Strings.utf8ToString(tlv.getValue().getData());
+            String type = Strings.utf8ToString( tlv.getValue().getData() );
             extensibleMatchFilter.setType( type );
 
             if ( IS_DEBUG )

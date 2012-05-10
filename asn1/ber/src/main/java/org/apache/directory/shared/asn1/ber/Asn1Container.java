@@ -51,7 +51,7 @@ public interface Asn1Container
 
 
     /**
-     * Get the current grammar state
+     * Gets the current grammar state
      *
      * @return Returns the current grammar state
      */
@@ -59,7 +59,7 @@ public interface Asn1Container
 
 
     /**
-     * Set the new current state
+     * Sets the new current state
      *
      * @param state The new state
      */
@@ -67,7 +67,7 @@ public interface Asn1Container
 
 
     /**
-     * Get the currentTLV
+     * Gets the currentTLV
      *
      * @return Returns the current TLV being decoded
      */
@@ -75,7 +75,7 @@ public interface Asn1Container
 
 
     /**
-     * Set the current TLV
+     * Sets the current TLV
      *
      * @param tlv The current TLV
      */
@@ -83,15 +83,16 @@ public interface Asn1Container
 
 
     /**
-     * Get the grammar
+     * Gets the grammar
      *
      * @return Returns the grammar used to decode a LdapMessage.
      */
+    @SuppressWarnings("rawtypes")
     Grammar getGrammar();
 
 
     /**
-     * Get the transition
+     * Gets the transition
      *
      * @return Returns the transition from the previous state to the new state
      */
@@ -99,7 +100,7 @@ public interface Asn1Container
 
 
     /**
-     * Update the transition from a state to another
+     * Updates the transition from a state to another
      *
      * @param transition The transition to set
      */
@@ -107,13 +108,13 @@ public interface Asn1Container
 
 
     /**
-     * @return get the parent TLV.
+     * @return The parent TLV.
      */
     TLV getParentTLV();
 
 
     /**
-     * Set the parent TLV
+     * Sets the parent TLV
      *
      * @param parentTLV The new parent TLV
      */
@@ -121,7 +122,7 @@ public interface Asn1Container
 
 
     /**
-     * Check that we can have a end state after this transition
+     * Checks that we can have a end state after this transition
      *
      * @return true if this can be the last transition
      */
@@ -129,7 +130,7 @@ public interface Asn1Container
 
 
     /**
-     * Set the flag to allow a end transition
+     * Sets the flag to allow a end transition
      *
      * @param grammarEndAllowed true or false, depending on the next transition
      * being an end or not.
@@ -138,14 +139,14 @@ public interface Asn1Container
 
 
     /**
-     * Get a new TLV id
+     * Gets a new TLV id
      * @return a unique value representing the current TLV id
      */
     int getNewTlvId();
 
 
     /**
-     * Get the current TLV id
+     * Gets the current TLV id
      * @return a unique value representing the current TLV id
      */
     int getTlvId();
@@ -184,13 +185,13 @@ public interface Asn1Container
      * Move backward in the stream to the first byte for a given TLV. This is useful when we have
      * read some Tag and Length in order to define the next transition, and if this transition
      * do a grammar switch.
-     * @param tlv The TLV to rollback
+     * @param tlv The TLV to roll-back
      */
     void rewind();
 
 
     /**
-     * Look for the closest parent which has an expected length above 0
+     * Update the parent's length
      */
     void updateParent();
 

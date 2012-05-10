@@ -90,7 +90,7 @@ public class StoreReference extends GrammarAction<LdapMessageContainer<SearchRes
         }
         else
         {
-            String urlStr = Strings.utf8ToString(tlv.getValue().getData());
+            String urlStr = Strings.utf8ToString( tlv.getValue().getData() );
 
             try
             {

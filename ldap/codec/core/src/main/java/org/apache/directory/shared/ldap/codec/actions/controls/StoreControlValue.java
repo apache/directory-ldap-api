@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.codec.actions.controls;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.ldap.codec.api.CodecControl;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
@@ -76,7 +76,7 @@ public class StoreControlValue extends GrammarAction<LdapMessageContainer<Messag
         CodecControl<? extends Control> control = message.getCurrentControl();
 
         // Get the current control
-        Value value = tlv.getValue();
+        BerValue value = tlv.getValue();
 
         // Store the value - have to handle the special case of a 0 length value
         if ( tlv.getLength() == 0 )
@@ -98,7 +98,7 @@ public class StoreControlValue extends GrammarAction<LdapMessageContainer<Messag
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "Control value : " + Strings.dumpBytes(control.getValue()) );
+            LOG.debug( "Control value : " + Strings.dumpBytes( control.getValue() ) );
         }
     }
 }

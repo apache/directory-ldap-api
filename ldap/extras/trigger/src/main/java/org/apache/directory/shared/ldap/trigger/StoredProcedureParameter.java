@@ -34,46 +34,50 @@ public abstract class StoredProcedureParameter
     public static final class Generic_LDAP_CONTEXT extends StoredProcedureParameter
     {
         private Dn ctxName;
-        
+
+
         private Generic_LDAP_CONTEXT( Dn ctxName )
         {
             super( "$ldapContext" );
             this.ctxName = ctxName;
         }
-        
+
+
         public static StoredProcedureParameter instance( Dn ctxName )
         {
             return new Generic_LDAP_CONTEXT( ctxName );
         }
-        
+
+
         public Dn getCtxName()
         {
             return ctxName;
         }
-        
+
+
         public String toString()
         {
             return name + " \"" + ctxName.getName() + "\"";
         }
     }
 
-    
     public static final class Generic_OPERATION_PRINCIPAL extends StoredProcedureParameter
     {
         private static Generic_OPERATION_PRINCIPAL instance = new Generic_OPERATION_PRINCIPAL( "$operationPrincipal" );
-        
+
+
         private Generic_OPERATION_PRINCIPAL( String identifier )
         {
             super( identifier );
         }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
-    
     protected final String name;
 
 
@@ -96,7 +100,7 @@ public abstract class StoredProcedureParameter
     {
         return name;
     }
-    
+
 
     /**
      * @see java.lang.Object#hashCode()
@@ -105,9 +109,9 @@ public abstract class StoredProcedureParameter
     public int hashCode()
     {
         int h = 37;
-        
-        h = h*17 + ( ( name == null ) ? 0 : name.hashCode() );
-        
+
+        h = h * 17 + ( ( name == null ) ? 0 : name.hashCode() );
+
         return h;
     }
 
@@ -144,240 +148,255 @@ public abstract class StoredProcedureParameter
         return true;
     }
 
-    
     public static final class Modify_OBJECT extends StoredProcedureParameter
     {
         private static Modify_OBJECT instance = new Modify_OBJECT( "$object" );
-        
+
+
         private Modify_OBJECT( String identifier )
         {
             super( identifier );
         }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
-    
-    
+
     public static final class Modify_MODIFICATION extends StoredProcedureParameter
     {
         private static Modify_MODIFICATION instance = new Modify_MODIFICATION( "$modification" );
-        
+
+
         private Modify_MODIFICATION( String identifier )
         {
             super( identifier );
         }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
-    
-    
+
     public static final class Modify_OLD_ENTRY extends StoredProcedureParameter
     {
         private static Modify_OLD_ENTRY instance = new Modify_OLD_ENTRY( "$oldEntry" );
-        
+
+
         private Modify_OLD_ENTRY( String identifier )
         {
             super( identifier );
         }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
-    
-    
+
     public static final class Modify_NEW_ENTRY extends StoredProcedureParameter
     {
         private static Modify_NEW_ENTRY instance = new Modify_NEW_ENTRY( "$newEntry" );
-        
+
+
         private Modify_NEW_ENTRY( String identifier )
         {
             super( identifier );
         }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
-    
     public static final class Add_ENTRY extends StoredProcedureParameter
     {
         private static Add_ENTRY instance = new Add_ENTRY( "$entry" );
-        
+
+
         private Add_ENTRY( String identifier )
         {
             super( identifier );
         }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
-    
-    
+
     public static final class Add_ATTRIBUTES extends StoredProcedureParameter
     {
         private static Add_ATTRIBUTES instance = new Add_ATTRIBUTES( "$attributes" );
-        
+
+
         private Add_ATTRIBUTES( String identifier )
         {
             super( identifier );
         }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
-    
     public static final class Delete_NAME extends StoredProcedureParameter
     {
         private static Delete_NAME instance = new Delete_NAME( "$name" );
-        
+
+
         private Delete_NAME( String identifier )
         {
             super( identifier );
         }
-        
-        public static StoredProcedureParameter instance()
-        {
-            return instance;
-        }
-    }
-    
-    
-    public static final class Delete_DELETED_ENTRY extends StoredProcedureParameter
-    {
-        private static Delete_DELETED_ENTRY instance = new Delete_DELETED_ENTRY( "$deletedEntry" );
-        
-        private Delete_DELETED_ENTRY( String identifier )
-        {
-            super( identifier );
-        }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
 
-    
+    public static final class Delete_DELETED_ENTRY extends StoredProcedureParameter
+    {
+        private static Delete_DELETED_ENTRY instance = new Delete_DELETED_ENTRY( "$deletedEntry" );
+
+
+        private Delete_DELETED_ENTRY( String identifier )
+        {
+            super( identifier );
+        }
+
+
+        public static StoredProcedureParameter instance()
+        {
+            return instance;
+        }
+    }
+
     public static final class ModifyDN_ENTRY extends StoredProcedureParameter
     {
         private static ModifyDN_ENTRY instance = new ModifyDN_ENTRY( "$entry" );
-        
+
+
         private ModifyDN_ENTRY( String identifier )
         {
             super( identifier );
         }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
-    
-    
+
     public static final class ModifyDN_NEW_RDN extends StoredProcedureParameter
     {
         private static ModifyDN_NEW_RDN instance = new ModifyDN_NEW_RDN( "$newrdn" );
-        
+
+
         private ModifyDN_NEW_RDN( String identifier )
         {
             super( identifier );
         }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
-    
-    
+
     public static final class ModifyDN_DELETE_OLD_RDN extends StoredProcedureParameter
     {
         private static ModifyDN_DELETE_OLD_RDN instance = new ModifyDN_DELETE_OLD_RDN( "$deleteoldrdn" );
-        
+
+
         private ModifyDN_DELETE_OLD_RDN( String identifier )
         {
             super( identifier );
         }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
-    
-    
+
     public static final class ModifyDN_NEW_SUPERIOR extends StoredProcedureParameter
     {
         private static ModifyDN_NEW_SUPERIOR instance = new ModifyDN_NEW_SUPERIOR( "$newSuperior" );
-        
+
+
         private ModifyDN_NEW_SUPERIOR( String identifier )
         {
             super( identifier );
         }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
-    
-    
+
     public static final class ModifyDN_OLD_RDN extends StoredProcedureParameter
     {
         private static ModifyDN_OLD_RDN instance = new ModifyDN_OLD_RDN( "$oldRDN" );
-        
+
+
         private ModifyDN_OLD_RDN( String identifier )
         {
             super( identifier );
         }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
-    
-    
+
     public static final class ModifyDN_OLD_SUPERIOR_DN extends StoredProcedureParameter
     {
         private static ModifyDN_OLD_SUPERIOR_DN instance = new ModifyDN_OLD_SUPERIOR_DN( "$oldRDN" );
-        
+
+
         private ModifyDN_OLD_SUPERIOR_DN( String identifier )
         {
             super( identifier );
         }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;
         }
     }
-    
-    
+
     public static final class ModifyDN_NEW_DN extends StoredProcedureParameter
     {
         private static ModifyDN_NEW_DN instance = new ModifyDN_NEW_DN( "$oldRDN" );
-        
+
+
         private ModifyDN_NEW_DN( String identifier )
         {
             super( identifier );
         }
-        
+
+
         public static StoredProcedureParameter instance()
         {
             return instance;

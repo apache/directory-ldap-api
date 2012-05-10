@@ -27,8 +27,6 @@ import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Chars;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,31 +50,30 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class DeliveryMethodSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DeliveryMethodSyntaxChecker.class );
 
-    private static final String[] PDMS = 
+    private static final String[] PDMS =
         {
             "any", "mhs", "physical", "telex", "teletex",
             "g3fax", "g4fax", "ia5", "videotex", "telephone"
-        };
+    };
 
     /** The Set which contains the delivery methods */
     private static final Set<String> DELIVERY_METHODS = new HashSet<String>();
-    
+
     /** Initialization of the delivery methods set */
     static
     {
-        for ( String country:PDMS )
+        for ( String country : PDMS )
         {
             DELIVERY_METHODS.add( country );
         }
     }
-    
+
+
     /**
      * 
      * Creates a new instance of DeliveryMethodSyntaxChecker.
@@ -86,8 +83,8 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.DELIVERY_METHOD_SYNTAX );
     }
-    
-    
+
+
     /**
      * 
      * Check if the string contains a delivery method which has 
@@ -102,21 +99,21 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
     private int isPdm( String strValue, int start, Set<String> pdms )
     {
         int pos = start;
-        
-        while ( Chars.isAlphaDigit(strValue, pos) )
+
+        while ( Chars.isAlphaDigit( strValue, pos ) )
         {
             pos++;
         }
-        
+
         // No ascii string, this is not a delivery method
         if ( pos == start )
         {
             return -1;
         }
-        
+
         String pdm = strValue.substring( start, pos );
-        
-        if ( ! DELIVERY_METHODS.contains( pdm ) )
+
+        if ( !DELIVERY_METHODS.contains( pdm ) )
         {
             // The delivery method is unknown
             return -1;
@@ -149,14 +146,14 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -168,18 +165,18 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // We will get the first delivery method
         int length = strValue.length();
         int pos = 0;
         Set<String> pmds = new HashSet<String>();
-            
-        if ( ( pos = isPdm( strValue, pos, pmds ) ) == -1)
+
+        if ( ( pos = isPdm( strValue, pos, pmds ) ) == -1 )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // We have found at least the first pmd,
         // now iterate through the other ones. We may have
         // SP* '$' SP* before each pmd.
@@ -190,8 +187,8 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
             {
                 pos++;
             }
-            
-            if ( ! Strings.isCharASCII( strValue, pos, '$' ) )
+
+            if ( !Strings.isCharASCII( strValue, pos, '$' ) )
             {
                 // A '$' was expected
                 LOG.debug( "Syntax invalid for '{}'", value );
@@ -201,7 +198,7 @@ public class DeliveryMethodSyntaxChecker extends SyntaxChecker
             {
                 pos++;
             }
-            
+
             // Skip spaces
             while ( Strings.isCharASCII( strValue, pos, ' ' ) )
             {

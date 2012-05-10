@@ -85,7 +85,7 @@ public class CompareResponseDsml extends AbstractResultResponseDsml<CompareRespo
             element = new DefaultElement( COMPARE_RESPONSE_TAG );
         }
 
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(), 
+        LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),
             getDecorated().getLdapResult(), getDecorated() );
         ldapResultDsml.toDsml( element );
         return element;

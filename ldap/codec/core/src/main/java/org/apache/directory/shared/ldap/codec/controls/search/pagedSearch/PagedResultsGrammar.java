@@ -26,7 +26,7 @@ import org.apache.directory.shared.asn1.ber.grammar.Grammar;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.i18n.I18n;
@@ -69,7 +69,7 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
         setName( PagedResultsGrammar.class.getName() );
 
         // Create the transitions table
-        super.transitions = new GrammarTransition[ PagedResultsStates.LAST_PAGED_SEARCH_STATE.ordinal()][256];
+        super.transitions = new GrammarTransition[PagedResultsStates.LAST_PAGED_SEARCH_STATE.ordinal()][256];
 
         /** 
          * Transition from initial state to PagedSearch sequence
@@ -78,11 +78,10 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
          *     
          * Nothing to do
          */
-        super.transitions[ PagedResultsStates.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
+        super.transitions[PagedResultsStates.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<PagedResultsContainer>( PagedResultsStates.START_STATE,
-                                    PagedResultsStates.PAGED_SEARCH_SEQUENCE_STATE,
-                                    UniversalTag.SEQUENCE.getValue(), null );
-
+                PagedResultsStates.PAGED_SEARCH_SEQUENCE_STATE,
+                UniversalTag.SEQUENCE.getValue(), null );
 
         /** 
          * Transition from PagedSearch sequence to size
@@ -93,43 +92,43 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
          *     
          * Stores the size value
          */
-        super.transitions[ PagedResultsStates.PAGED_SEARCH_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER.getValue()] =
+        super.transitions[PagedResultsStates.PAGED_SEARCH_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER.getValue()] =
             new GrammarTransition<PagedResultsContainer>( PagedResultsStates.PAGED_SEARCH_SEQUENCE_STATE,
                 PagedResultsStates.SIZE_STATE,
                 UniversalTag.INTEGER.getValue(),
                 new GrammarAction<PagedResultsContainer>( "Set PagedSearchControl size" )
-            {
-                public void action( PagedResultsContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( PagedResultsContainer container ) throws DecoderException
                     {
-                        // Check that the value is into the allowed interval
-                        int size = IntegerDecoder.parse( value, Integer.MIN_VALUE, Integer.MAX_VALUE );
-                        
-                        // We allow negative value to absorb a bug in some M$ client.
-                        // Those negative values will be transformed to Integer.MAX_VALUE.
-                        if ( size < 0 )
-                        {
-                            size = Integer.MAX_VALUE;
-                        }
-                        
-                        if ( IS_DEBUG )
-                        {
-                            LOG.debug( "size = " + size );
-                        }
+                        BerValue value = container.getCurrentTLV().getValue();
 
-                        container.getDecorator().setSize( size );
+                        try
+                        {
+                            // Check that the value is into the allowed interval
+                            int size = IntegerDecoder.parse( value, Integer.MIN_VALUE, Integer.MAX_VALUE );
+
+                            // We allow negative value to absorb a bug in some M$ client.
+                            // Those negative values will be transformed to Integer.MAX_VALUE.
+                            if ( size < 0 )
+                            {
+                                size = Integer.MAX_VALUE;
+                            }
+
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "size = " + size );
+                            }
+
+                            container.getDecorator().setSize( size );
+                        }
+                        catch ( IntegerDecoderException e )
+                        {
+                            String msg = I18n.err( I18n.ERR_04050 );
+                            LOG.error( msg, e );
+                            throw new DecoderException( msg );
+                        }
                     }
-                    catch ( IntegerDecoderException e )
-                    {
-                        String msg = I18n.err( I18n.ERR_04050 );
-                        LOG.error( msg, e );
-                        throw new DecoderException( msg );
-                    }
-                }
-            } );
+                } );
 
         /** 
          * Transition from size to cookie
@@ -140,28 +139,28 @@ public final class PagedResultsGrammar extends AbstractGrammar<PagedResultsConta
          *     
          * Stores the cookie flag
          */
-        super.transitions[ PagedResultsStates.SIZE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
+        super.transitions[PagedResultsStates.SIZE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
             new GrammarTransition<PagedResultsContainer>( PagedResultsStates.SIZE_STATE,
-                                    PagedResultsStates.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(),
+                PagedResultsStates.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<PagedResultsContainer>( "Set PagedSearchControl cookie" )
-            {
-                public void action( PagedResultsContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    if ( container.getCurrentTLV().getLength() == 0 )
+                    public void action( PagedResultsContainer container ) throws DecoderException
                     {
-                        container.getDecorator().setCookie( StringConstants.EMPTY_BYTES );
-                    }
-                    else
-                    {
-                        container.getDecorator().setCookie( value.getData() );
-                    }
+                        BerValue value = container.getCurrentTLV().getValue();
 
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
+                        if ( container.getCurrentTLV().getLength() == 0 )
+                        {
+                            container.getDecorator().setCookie( StringConstants.EMPTY_BYTES );
+                        }
+                        else
+                        {
+                            container.getDecorator().setCookie( value.getData() );
+                        }
+
+                        // We can have an END transition
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
     }
 
 

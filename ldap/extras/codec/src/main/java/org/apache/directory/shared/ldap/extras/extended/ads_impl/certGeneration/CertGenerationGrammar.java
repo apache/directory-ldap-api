@@ -25,7 +25,7 @@ import org.apache.directory.shared.asn1.ber.grammar.Grammar;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
@@ -83,18 +83,19 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
          *     
          * Creates the CertGenerationObject object
          */
-        super.transitions[CertGenerationStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = 
+        super.transitions[CertGenerationStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<CertGenerationContainer>(
-            CertGenerationStatesEnum.START_STATE, CertGenerationStatesEnum.CERT_GENERATION_REQUEST_SEQUENCE_STATE,
-            UniversalTag.SEQUENCE.getValue(), new GrammarAction<CertGenerationContainer>( "Init CertGenerationObject" )
-            {
-                public void action( CertGenerationContainer container )
+                CertGenerationStatesEnum.START_STATE, CertGenerationStatesEnum.CERT_GENERATION_REQUEST_SEQUENCE_STATE,
+                UniversalTag.SEQUENCE.getValue(), new GrammarAction<CertGenerationContainer>(
+                    "Init CertGenerationObject" )
                 {
-                    CertGenerationRequestDecorator certGenerationObject = new CertGenerationRequestDecorator( 
-                        LdapApiServiceFactory.getSingleton(), new CertGenerationRequestImpl() );
-                    container.setCertGenerationObject( certGenerationObject );
-                }
-            } );
+                    public void action( CertGenerationContainer container )
+                    {
+                        CertGenerationRequestDecorator certGenerationObject = new CertGenerationRequestDecorator(
+                            LdapApiServiceFactory.getSingleton(), new CertGenerationRequestImpl() );
+                        container.setCertGenerationObject( certGenerationObject );
+                    }
+                } );
 
         /**
          * Transition from certificate generation request to targetDN
@@ -105,41 +106,43 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
          *     
          * Set the targetDN value into the CertGenerationObject instance.
          */
-        super.transitions[CertGenerationStatesEnum.CERT_GENERATION_REQUEST_SEQUENCE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
-            new GrammarTransition<CertGenerationContainer>( CertGenerationStatesEnum.CERT_GENERATION_REQUEST_SEQUENCE_STATE, 
-                CertGenerationStatesEnum.TARGETDN_STATE, UniversalTag.OCTET_STRING.getValue(), 
+        super.transitions[CertGenerationStatesEnum.CERT_GENERATION_REQUEST_SEQUENCE_STATE.ordinal()][UniversalTag.OCTET_STRING
+            .getValue()] =
+            new GrammarTransition<CertGenerationContainer>(
+                CertGenerationStatesEnum.CERT_GENERATION_REQUEST_SEQUENCE_STATE,
+                CertGenerationStatesEnum.TARGETDN_STATE, UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<CertGenerationContainer>( "Set Cert Generation target Dn value" )
-            {
-                public void action( CertGenerationContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    String targetDN = Strings.utf8ToString(value.getData());
-
-                    if ( IS_DEBUG )
+                    public void action( CertGenerationContainer container ) throws DecoderException
                     {
-                        LOG.debug( "Target Dn = " + targetDN );
-                    }
+                        BerValue value = container.getCurrentTLV().getValue();
 
-                    if ( ( targetDN != null ) && ( targetDN.trim().length() > 0 ) )
-                    {
-                        if( !Dn.isValid(targetDN) )
+                        String targetDN = Strings.utf8ToString( value.getData() );
+
+                        if ( IS_DEBUG )
                         {
-                            String msg = I18n.err( I18n.ERR_04032, targetDN );
+                            LOG.debug( "Target Dn = " + targetDN );
+                        }
+
+                        if ( ( targetDN != null ) && ( targetDN.trim().length() > 0 ) )
+                        {
+                            if ( !Dn.isValid( targetDN ) )
+                            {
+                                String msg = I18n.err( I18n.ERR_04032, targetDN );
+                                LOG.error( msg );
+                                throw new DecoderException( msg );
+                            }
+
+                            container.getCertGenerationObject().setTargetDN( targetDN );
+                        }
+                        else
+                        {
+                            String msg = I18n.err( I18n.ERR_04033, Strings.dumpBytes( value.getData() ) );
                             LOG.error( msg );
                             throw new DecoderException( msg );
                         }
-                        
-                        container.getCertGenerationObject().setTargetDN( targetDN );
                     }
-                    else
-                    {
-                        String msg = I18n.err( I18n.ERR_04033, Strings.dumpBytes(value.getData()) );
-                        LOG.error( msg );
-                        throw new DecoderException( msg );
-                    }
-                }
-            } );
+                } );
 
         /**
          * Transition from targetDN state to issuerDN
@@ -151,35 +154,35 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
          *     
          * Set the issuerDN value into the CertGenerationObject instance.
          */
-        super.transitions[CertGenerationStatesEnum.TARGETDN_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
-            new GrammarTransition<CertGenerationContainer>( CertGenerationStatesEnum.TARGETDN_STATE, 
+        super.transitions[CertGenerationStatesEnum.TARGETDN_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
+            new GrammarTransition<CertGenerationContainer>( CertGenerationStatesEnum.TARGETDN_STATE,
                 CertGenerationStatesEnum.ISSUER_STATE, UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<CertGenerationContainer>( "Set Cert Generation issuer Dn value" )
-            {
-                public void action( CertGenerationContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    String issuerDN = Strings.utf8ToString(value.getData());
-
-                    if ( IS_DEBUG )
+                    public void action( CertGenerationContainer container ) throws DecoderException
                     {
-                        LOG.debug( "Issuer Dn = " + issuerDN );
-                    }
+                        BerValue value = container.getCurrentTLV().getValue();
 
-                    if ( ( issuerDN != null ) && ( issuerDN.trim().length() > 0 ) )
-                    {
-                        if( !Dn.isValid(issuerDN) )
+                        String issuerDN = Strings.utf8ToString( value.getData() );
+
+                        if ( IS_DEBUG )
                         {
-                            String msg = I18n.err( I18n.ERR_04034, issuerDN );
-                            LOG.error( msg );
-                            throw new DecoderException( msg );
+                            LOG.debug( "Issuer Dn = " + issuerDN );
                         }
-                        
-                        container.getCertGenerationObject().setIssuerDN( issuerDN );
+
+                        if ( ( issuerDN != null ) && ( issuerDN.trim().length() > 0 ) )
+                        {
+                            if ( !Dn.isValid( issuerDN ) )
+                            {
+                                String msg = I18n.err( I18n.ERR_04034, issuerDN );
+                                LOG.error( msg );
+                                throw new DecoderException( msg );
+                            }
+
+                            container.getCertGenerationObject().setIssuerDN( issuerDN );
+                        }
                     }
-                }
-            } );
+                } );
 
         /**
          * Transition from issuerDN state to subjectDN
@@ -191,41 +194,41 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
          *     
          * Set the subjectDN value into the CertGenerationObject instance.
          */
-        super.transitions[CertGenerationStatesEnum.ISSUER_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
-            new GrammarTransition<CertGenerationContainer>( CertGenerationStatesEnum.ISSUER_STATE, 
+        super.transitions[CertGenerationStatesEnum.ISSUER_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
+            new GrammarTransition<CertGenerationContainer>( CertGenerationStatesEnum.ISSUER_STATE,
                 CertGenerationStatesEnum.SUBJECT_STATE, UniversalTag.OCTET_STRING.getValue(),
-            new GrammarAction<CertGenerationContainer>( "Set Cert Generation subject Dn value" )
-            {
-                public void action( CertGenerationContainer container ) throws DecoderException
+                new GrammarAction<CertGenerationContainer>( "Set Cert Generation subject Dn value" )
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    String subjectDN = Strings.utf8ToString(value.getData());
-
-                    if ( IS_DEBUG )
+                    public void action( CertGenerationContainer container ) throws DecoderException
                     {
-                        LOG.debug( "subject Dn = " + subjectDN );
-                    }
+                        BerValue value = container.getCurrentTLV().getValue();
 
-                    if ( ( subjectDN != null ) && ( subjectDN.trim().length() > 0 ) )
-                    {
-                        if( !Dn.isValid(subjectDN) )
+                        String subjectDN = Strings.utf8ToString( value.getData() );
+
+                        if ( IS_DEBUG )
                         {
-                            String msg = I18n.err( I18n.ERR_04035, subjectDN );
+                            LOG.debug( "subject Dn = " + subjectDN );
+                        }
+
+                        if ( ( subjectDN != null ) && ( subjectDN.trim().length() > 0 ) )
+                        {
+                            if ( !Dn.isValid( subjectDN ) )
+                            {
+                                String msg = I18n.err( I18n.ERR_04035, subjectDN );
+                                LOG.error( msg );
+                                throw new DecoderException( msg );
+                            }
+
+                            container.getCertGenerationObject().setSubjectDN( subjectDN );
+                        }
+                        else
+                        {
+                            String msg = I18n.err( I18n.ERR_04033, Strings.dumpBytes( value.getData() ) );
                             LOG.error( msg );
                             throw new DecoderException( msg );
                         }
-
-                        container.getCertGenerationObject().setSubjectDN( subjectDN );
                     }
-                    else
-                    {
-                        String msg = I18n.err( I18n.ERR_04033, Strings.dumpBytes(value.getData()) );
-                        LOG.error( msg );
-                        throw new DecoderException( msg );
-                    }
-                }
-            } );
+                } );
 
         /**
          * Transition from subjectDN state to keyAlgo
@@ -236,31 +239,31 @@ public class CertGenerationGrammar extends AbstractGrammar<CertGenerationContain
          *     
          * Set the key algorithm value into the CertGenerationObject instance.
          */
-        super.transitions[CertGenerationStatesEnum.SUBJECT_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
-            new GrammarTransition<CertGenerationContainer>( CertGenerationStatesEnum.SUBJECT_STATE, 
+        super.transitions[CertGenerationStatesEnum.SUBJECT_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
+            new GrammarTransition<CertGenerationContainer>( CertGenerationStatesEnum.SUBJECT_STATE,
                 CertGenerationStatesEnum.KEY_ALGORITHM_STATE,
-                UniversalTag.OCTET_STRING.getValue(), 
+                UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<CertGenerationContainer>( "Set Cert Generation key algorithm value" )
-            {
-                public void action( CertGenerationContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    String keyAlgorithm = Strings.utf8ToString(value.getData());
-
-                    if ( IS_DEBUG )
+                    public void action( CertGenerationContainer container ) throws DecoderException
                     {
-                        LOG.debug( "key algorithm = " + keyAlgorithm );
-                    }
+                        BerValue value = container.getCurrentTLV().getValue();
 
-                    if ( keyAlgorithm != null && ( keyAlgorithm.trim().length() > 0 ) )
-                    {
-                        container.getCertGenerationObject().setKeyAlgorithm( keyAlgorithm );
-                    }
+                        String keyAlgorithm = Strings.utf8ToString( value.getData() );
 
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
+                        if ( IS_DEBUG )
+                        {
+                            LOG.debug( "key algorithm = " + keyAlgorithm );
+                        }
+
+                        if ( keyAlgorithm != null && ( keyAlgorithm.trim().length() > 0 ) )
+                        {
+                            container.getCertGenerationObject().setKeyAlgorithm( keyAlgorithm );
+                        }
+
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
 
     }
 

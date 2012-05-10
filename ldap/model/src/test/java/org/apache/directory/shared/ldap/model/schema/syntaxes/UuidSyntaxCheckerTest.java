@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -29,6 +30,7 @@ import org.apache.directory.shared.util.StringConstants;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for UuidSyntaxChecker.
@@ -62,18 +64,18 @@ public class UuidSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "01234567788ABCDEF" ) );
     }
 
-    
+
     @Test
     public void testCorrectUuid()
     {
         byte[] array = new byte[16];
-        
+
         for ( int i = 0; i < 16; i++ )
         {
-            array[ i ] = (byte)i;
+            array[i] = ( byte ) i;
         }
 
-        assertTrue( checker.isValidSyntax( Strings.uuidToString(array) ) );
+        assertTrue( checker.isValidSyntax( Strings.uuidToString( array ) ) );
     }
 
 
@@ -81,10 +83,10 @@ public class UuidSyntaxCheckerTest
     public void testWrongSizeUuid()
     {
         byte[] array = new byte[15];
-        
+
         for ( int i = 0; i < 15; i++ )
         {
-            array[ i ] = (byte)i;
+            array[i] = ( byte ) i;
         }
 
         assertFalse( checker.isValidSyntax( array ) );

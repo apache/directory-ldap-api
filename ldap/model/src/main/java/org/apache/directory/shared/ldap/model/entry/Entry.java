@@ -86,7 +86,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      */
     boolean hasObjectClass( Attribute... objectClasses );
 
-    
+
     /**
      * <p>
      * Returns the attribute with the specified alias. The return value
@@ -102,7 +102,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      */
     Attribute get( String alias );
 
-    
+
     /**
      * Returns the attribute associated with an AttributeType
      * 
@@ -118,16 +118,16 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @return The combined set of all the attributes.
      */
     Collection<Attribute> getAttributes();
-    
-    
+
+
     /**
      * Set this entry's Dn.
      *
      * @param dn The Dn associated with this entry
      */
     void setDn( Dn dn );
-    
-    
+
+
     /**
      * Set this entry's Dn.
      *
@@ -174,7 +174,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      */
     void add( AttributeType attributeType, byte[]... values ) throws LdapException;
 
-    
+
     /**
      * <p>
      * Add an attribute (represented by its AttributeType and some String values) into an 
@@ -195,7 +195,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      */
     void add( AttributeType attributeType, String... values ) throws LdapException;
 
-    
+
     /**
      * <p>
      * Add an attribute (represented by its AttributeType and some values) into an 
@@ -216,7 +216,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      */
     void add( AttributeType attributeType, Value<?>... values ) throws LdapException;
 
-    
+
     /**
      * <p>
      * Add an attribute (represented by its AttributeType and some binary values) into an 
@@ -238,7 +238,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      */
     void add( String upId, AttributeType attributeType, byte[]... values ) throws LdapException;
 
-    
+
     /**
      * <p>
      * Add an attribute (represented by its AttributeType and some String values) into an 
@@ -260,7 +260,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      */
     void add( String upId, AttributeType attributeType, String... values ) throws LdapException;
 
-    
+
     /**
      * <p>
      * Add an attribute (represented by its AttributeType and some values) into an 
@@ -547,7 +547,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      */
     boolean remove( AttributeType attributeType, byte[]... values ) throws LdapException;
 
-    
+
     /**
      * <p>
      * Removes the specified String values from an attribute.
@@ -571,7 +571,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      */
     boolean remove( AttributeType attributeType, String... values ) throws LdapException;
 
-    
+
     /**
      * <p>
      * Removes the specified values from an attribute.
@@ -595,7 +595,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      */
     boolean remove( AttributeType attributeType, Value<?>... values ) throws LdapException;
 
-    
+
     /**
      * Removes the specified attributes. The removed attributes are
      * returned by this method. If there were no attribute the return value
@@ -605,7 +605,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @return the removed attribute, if exists; otherwise <code>null</code>
      */
     List<Attribute> remove( Attribute... attributes ) throws LdapException;
-    
+
 
     /**
      * <p>
@@ -622,7 +622,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param attributes the AttributeTypes to be removed
      * @return the removed attributes, if any, as a list; otherwise <code>null</code>
      */
-    List<Attribute> removeAttributes( AttributeType... attributes );
+    void removeAttributes( AttributeType... attributes );
 
 
     /**
@@ -713,7 +713,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
       * @param attributes an aliased name of the attribute to be removed
       * @return the removed attributes, if any, as a list; otherwise <code>null</code>
       */
-    List<Attribute> removeAttributes( String... attributes );
+    void removeAttributes( String... attributes );
 
 
     // -----------------------------------------------------------------------
@@ -760,7 +760,7 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      */
     boolean containsAttribute( AttributeType attributeType );
 
-    
+
     /**
      * <p>
      * Checks if an entry contains a list of attributes.
@@ -818,15 +818,15 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      */
     boolean containsAttribute( String... attributes );
 
-    
+
     /**
      * Returns the number of attributes.
      *
      * @return the number of attributes
      */
     int size();
-    
-    
+
+
     /**
      * Tells if the Entry is schema aware
      * @return true if the Entry is schema aware

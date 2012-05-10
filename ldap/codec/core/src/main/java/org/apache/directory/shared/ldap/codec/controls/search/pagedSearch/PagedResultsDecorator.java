@@ -29,7 +29,7 @@ import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
@@ -89,7 +89,7 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
      */
     public int computeLength()
     {
-        int sizeLength = 1 + 1 + Value.getNbBytes( getSize() );
+        int sizeLength = 1 + 1 + BerValue.getNbBytes( getSize() );
 
         int cookieLength;
 
@@ -127,8 +127,8 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
         buffer.put( UniversalTag.SEQUENCE.getValue() );
         buffer.put( TLV.getBytes( pscSeqLength ) );
 
-        Value.encode( buffer, getSize() );
-        Value.encode( buffer, getCookie() );
+        BerValue.encode( buffer, getSize() );
+        BerValue.encode( buffer, getCookie() );
 
         return buffer;
     }
@@ -150,8 +150,8 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
                 buffer.put( UniversalTag.SEQUENCE.getValue() );
                 buffer.put( TLV.getBytes( pscSeqLength ) );
 
-                Value.encode( buffer, getSize() );
-                Value.encode( buffer, getCookie() );
+                BerValue.encode( buffer, getSize() );
+                BerValue.encode( buffer, getCookie() );
 
                 value = buffer.array();
             }
@@ -234,12 +234,12 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
 
             case 3:
                 value = ( ( getCookie()[0] & 0x00FF ) << 16 ) + ( ( getCookie()[1] & 0x00FF ) << 8 )
-                        + ( getCookie()[2] & 0x00FF );
+                    + ( getCookie()[2] & 0x00FF );
                 break;
 
             case 4:
                 value = ( ( getCookie()[0] & 0x00FF ) << 24 ) + ( ( getCookie()[1] & 0x00FF ) << 16 )
-                        + ( ( getCookie()[2] & 0x00FF ) << 8 ) + ( getCookie()[3] & 0x00FF );
+                    + ( ( getCookie()[2] & 0x00FF ) << 8 ) + ( getCookie()[3] & 0x00FF );
                 break;
 
         }

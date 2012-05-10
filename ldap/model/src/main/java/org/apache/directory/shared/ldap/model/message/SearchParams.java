@@ -314,7 +314,7 @@ public class SearchParams
 
         if ( returningAttributesStr.size() != 0 )
         {
-            sb.append( "    returning attributes : " ).append( Strings.setToString(returningAttributesStr) )
+            sb.append( "    returning attributes : " ).append( Strings.setToString( returningAttributesStr ) )
                 .append( "\n" );
         }
 

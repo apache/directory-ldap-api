@@ -55,14 +55,20 @@ public class PSearchControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0B );
         bb.put( new byte[]
-            { 
-                0x30, 0x09,           // PersistentSearch ::= SEQUENCE {
-                  0x02, 0x01, 0x01,   // changeTypes INTEGER,
-                  0x01, 0x01, 0x00,   // changesOnly BOOLEAN,
-                  0x01, 0x01, 0x00    // returnECs BOOLEAN
-            } );
+            {
+                0x30, 0x09, // PersistentSearch ::= SEQUENCE {
+                0x02,
+                0x01,
+                0x01, // changeTypes INTEGER,
+                0x01,
+                0x01,
+                0x00, // changesOnly BOOLEAN,
+                0x01,
+                0x01,
+                0x00 // returnECs BOOLEAN
+        } );
 
-        String expected = Strings.dumpBytes(bb.array());
+        String expected = Strings.dumpBytes( bb.array() );
         bb.flip();
 
         PersistentSearchDecorator decorator = new PersistentSearchDecorator( codec );
@@ -70,10 +76,11 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         ctrl.setChangesOnly( false );
         ctrl.setReturnECs( false );
         ctrl.setChangeTypes( 1 );
-        bb = decorator.encode(ByteBuffer.allocate( decorator.computeLength() ) );
-        String decoded = Strings.dumpBytes(bb.array());
+        bb = decorator.encode( ByteBuffer.allocate( decorator.computeLength() ) );
+        String decoded = Strings.dumpBytes( bb.array() );
         assertEquals( expected, decoded );
     }
+
 
     /**
      * Test the decoding of a PSearchControl with combined changes types
@@ -83,17 +90,23 @@ public class PSearchControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0b );
         bb.put( new byte[]
-            { 
-            0x30, 0x09,         // PersistentSearch ::= SEQUENCE {
-              0x02, 0x01, 0x09, // changeTypes INTEGER,
-              0x01, 0x01, 0x00, // changesOnly BOOLEAN,
-              0x01, 0x01, 0x00  // returnECs BOOLEAN
-            } );
+            {
+                0x30, 0x09, // PersistentSearch ::= SEQUENCE {
+                0x02,
+                0x01,
+                0x09, // changeTypes INTEGER,
+                0x01,
+                0x01,
+                0x00, // changesOnly BOOLEAN,
+                0x01,
+                0x01,
+                0x00 // returnECs BOOLEAN
+        } );
         bb.flip();
 
         PersistentSearchDecorator decorator = new PersistentSearchDecorator( codec );
 
-        PersistentSearch ctrl = ( PersistentSearch )decorator.decode( bb.array() );
+        PersistentSearch ctrl = ( PersistentSearch ) decorator.decode( bb.array() );
 
         int changeTypes = ctrl.getChangeTypes();
         assertTrue( ChangeType.ADD.presentIn( changeTypes ) );
@@ -102,44 +115,57 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         assertEquals( false, ctrl.isReturnECs() );
     }
 
-    
+
     /**
      * Test the decoding of a PSearchControl with a changes types which
      * value is 0
      */
-    @Test( expected=DecoderException.class )
+    @Test(expected = DecoderException.class)
     public void testDecodeModifyDNRequestSuccessChangeTypes0() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0b );
         bb.put( new byte[]
-            { 
-            0x30, 0x09,         // PersistentSearch ::= SEQUENCE {
-              0x02, 0x01, 0x00, // changeTypes INTEGER,
-              0x01, 0x01, 0x00, // changesOnly BOOLEAN,
-              0x01, 0x01, 0x00  // returnECs BOOLEAN
-            } );
+            {
+                0x30, 0x09, // PersistentSearch ::= SEQUENCE {
+                0x02,
+                0x01,
+                0x00, // changeTypes INTEGER,
+                0x01,
+                0x01,
+                0x00, // changesOnly BOOLEAN,
+                0x01,
+                0x01,
+                0x00 // returnECs BOOLEAN
+        } );
         bb.flip();
 
         PersistentSearchDecorator decorator = new PersistentSearchDecorator( codec );
 
         decorator.decode( bb.array() );
     }
+
 
     /**
      * Test the decoding of a PSearchControl with a changes types which
      * value is above 15
      */
-    @Test( expected=DecoderException.class )
+    @Test(expected = DecoderException.class)
     public void testDecodeModifyDNRequestSuccessChangeTypes22() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0b );
         bb.put( new byte[]
-            { 
-            0x30, 0x09,         // PersistentSearch ::= SEQUENCE {
-              0x02, 0x01, 0x22, // changeTypes INTEGER,
-              0x01, 0x01, 0x00, // changesOnly BOOLEAN,
-              0x01, 0x01, 0x00  // returnECs BOOLEAN
-            } );
+            {
+                0x30, 0x09, // PersistentSearch ::= SEQUENCE {
+                0x02,
+                0x01,
+                0x22, // changeTypes INTEGER,
+                0x01,
+                0x01,
+                0x00, // changesOnly BOOLEAN,
+                0x01,
+                0x01,
+                0x00 // returnECs BOOLEAN
+        } );
         bb.flip();
 
         PersistentSearchDecorator decorator = new PersistentSearchDecorator( codec );
@@ -147,17 +173,17 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         decorator.decode( bb.array() );
     }
 
-    
+
     /**
      * Test the decoding of a PSearchControl with a null sequence
      */
-    @Test( expected=DecoderException.class )
+    @Test(expected = DecoderException.class)
     public void testDecodeModifyDNRequestSuccessNullSequence() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
-            { 
-            0x30, 0x00,         // PersistentSearch ::= SEQUENCE {
+            {
+                0x30, 0x00, // PersistentSearch ::= SEQUENCE {
             } );
         bb.flip();
 
@@ -166,20 +192,24 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         decorator.decode( bb.array() );
     }
 
-    
+
     /**
      * Test the decoding of a PSearchControl without changeTypes
      */
-    @Test( expected=DecoderException.class )
+    @Test(expected = DecoderException.class)
     public void testDecodeModifyDNRequestSuccessWithoutChangeTypes() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
         bb.put( new byte[]
-            { 
-            0x30, 0x06,         // PersistentSearch ::= SEQUENCE {
-              0x01, 0x01, 0x00, // changesOnly BOOLEAN,
-              0x01, 0x01, 0x00  // returnECs BOOLEAN
-            } );
+            {
+                0x30, 0x06, // PersistentSearch ::= SEQUENCE {
+                0x01,
+                0x01,
+                0x00, // changesOnly BOOLEAN,
+                0x01,
+                0x01,
+                0x00 // returnECs BOOLEAN
+        } );
         bb.flip();
 
         PersistentSearchDecorator decorator = new PersistentSearchDecorator( codec );
@@ -187,20 +217,24 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         decorator.decode( bb.array() );
     }
 
-    
+
     /**
      * Test the decoding of a PSearchControl without changeOnly
      */
-    @Test( expected=DecoderException.class )
+    @Test(expected = DecoderException.class)
     public void testDecodeModifyDNRequestSuccessWithoutChangesOnly() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
         bb.put( new byte[]
-            { 
-            0x30, 0x06,         // PersistentSearch ::= SEQUENCE {
-              0x02, 0x01, 0x01, // changeTypes INTEGER,
-              0x01, 0x01, 0x00  // returnECs BOOLEAN
-            } );
+            {
+                0x30, 0x06, // PersistentSearch ::= SEQUENCE {
+                0x02,
+                0x01,
+                0x01, // changeTypes INTEGER,
+                0x01,
+                0x01,
+                0x00 // returnECs BOOLEAN
+        } );
         bb.flip();
 
         PersistentSearchDecorator decorator = new PersistentSearchDecorator( codec );
@@ -208,19 +242,23 @@ public class PSearchControlTest extends AbstractCodecServiceTest
         decorator.decode( bb.array() );
     }
 
-    
+
     /**
      * Test the decoding of a PSearchControl without returnECs
      */
-    @Test( expected=DecoderException.class )
+    @Test(expected = DecoderException.class)
     public void testDecodeModifyDNRequestSuccessWithoutReturnECs() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x08 );
         bb.put( new byte[]
-            { 
-            0x30, 0x06,         // PersistentSearch ::= SEQUENCE {
-              0x02, 0x01, 0x01, // changeTypes INTEGER,
-              0x01, 0x01, 0x00, // changesOnly BOOLEAN,
+            {
+                0x30, 0x06, // PersistentSearch ::= SEQUENCE {
+                0x02,
+                0x01,
+                0x01, // changeTypes INTEGER,
+                0x01,
+                0x01,
+                0x00, // changesOnly BOOLEAN,
             } );
         bb.flip();
 

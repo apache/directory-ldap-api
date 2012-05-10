@@ -36,11 +36,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelRequest,CancelResponse> implements CancelRequest
+public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelRequest, CancelResponse> implements
+    CancelRequest
 {
     private static final Logger LOG = LoggerFactory.getLogger( CancelRequestDecorator.class );
-    
-    
+
+
     public CancelRequestDecorator( LdapApiService codec, CancelRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
@@ -59,12 +60,12 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
         {
             return;
         }
-        
+
         this.requestValue = null;
         getDecorated().setCancelId( cancelId );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -77,7 +78,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
             {
                 Cancel cancel = new Cancel();
                 cancel.setCancelId( getDecorated().getCancelId() );
-    
+
                 requestValue = cancel.encode().array();
             }
             catch ( EncoderException e )
@@ -86,11 +87,11 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
                 throw new RuntimeException( e );
             }
         }
-    
+
         return requestValue;
     }
 
-    
+
     /**
      * Sets the extended request's <b>requestValue</b> portion of the PDU.
      *
@@ -100,11 +101,11 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
     public void setRequestValue( byte[] requestValue )
     {
         CancelDecoder decoder = new CancelDecoder();
-    
+
         try
         {
             Cancel cancel = ( Cancel ) decoder.decode( requestValue );
-    
+
             if ( requestValue != null )
             {
                 this.requestValue = new byte[requestValue.length];
@@ -114,7 +115,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
             {
                 this.requestValue = null;
             }
-            
+
             getDecorated().setCancelId( cancel.getCancelId() );
         }
         catch ( DecoderException e )

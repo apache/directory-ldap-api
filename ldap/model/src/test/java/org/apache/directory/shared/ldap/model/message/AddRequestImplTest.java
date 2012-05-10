@@ -166,39 +166,6 @@ public class AddRequestImplTest
 
 
     /**
-     * Test for inequality when only the Dn names are different.
-     */
-    @Test
-    public void testNotEqualDiffAttributes() throws LdapException
-    {
-        AddRequestImpl req0 = new AddRequestImpl();
-        req0.setMessageId( 5 );
-        Entry entry0 = getEntry();
-        entry0.setDn( new Dn( "cn=admin,dc=apache,dc=org" ) );
-        req0.setEntry( entry0 );
-
-        AddRequestImpl req1 = new AddRequestImpl();
-        req1.setMessageId( 5 );
-        req1.setEntryDn( new Dn( "cn=admin,dc=apache,dc=org" ) );
-
-        assertTrue( req0.equals( req1 ) );
-        assertTrue( req1.equals( req0 ) );
-
-        Entry entry1 = getEntry();
-        entry1.setDn( new Dn( "cn=admin,dc=apache,dc=org" ) );
-        req1.setEntry( entry1 );
-
-        assertTrue( req0.equals( req1 ) );
-        assertTrue( req1.equals( req0 ) );
-
-        req1.getEntry().put( "asdf", "asdf" );
-
-        assertTrue( req0.equals( req1 ) );
-        assertTrue( req1.equals( req0 ) );
-    }
-
-
-    /**
      * Tests for equality even when another BindRequest implementation is used.
      */
     @Test
@@ -318,7 +285,7 @@ public class AddRequestImplTest
                 return false;
             }
 
-            
+
             public Control getControl( String oid )
             {
                 return null;

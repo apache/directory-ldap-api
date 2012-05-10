@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.dsmlv2.searchResponse.searchResultEntry;
 
@@ -77,11 +77,11 @@ public class SearchResultEntryTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResponse searchResponse = ( SearchResponse ) 
-            parser.getBatchResponse().getCurrentResponse().getDecorated(); 
-        SearchResultEntry searchResultEntry = 
+        SearchResponse searchResponse = ( SearchResponse )
+            parser.getBatchResponse().getCurrentResponse().getDecorated();
+        SearchResultEntry searchResultEntry =
             searchResponse.getCurrentSearchResultEntry();
-        Map<String, Control> controls = 
+        Map<String, Control> controls =
             searchResponse.getCurrentSearchResultEntry().getControls();
 
         assertEquals( 1, searchResultEntry.getControls().size() );
@@ -91,7 +91,7 @@ public class SearchResultEntryTest extends AbstractResponseTest
         assertNotNull( control );
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
-        assertEquals( "Some text", Strings.utf8ToString((byte[]) ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "Some text", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -116,9 +116,9 @@ public class SearchResultEntryTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResponse searchResponse = ( SearchResponse ) 
-            parser.getBatchResponse().getCurrentResponse().getDecorated(); 
-        SearchResultEntry searchResultEntry = 
+        SearchResponse searchResponse = ( SearchResponse )
+            parser.getBatchResponse().getCurrentResponse().getDecorated();
+        SearchResultEntry searchResultEntry =
             searchResponse.getCurrentSearchResultEntry();
         Map<String, Control> controls = searchResultEntry.getControls();
 
@@ -154,9 +154,9 @@ public class SearchResultEntryTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResponse searchResponse = ( SearchResponse ) 
-            parser.getBatchResponse().getCurrentResponse().getDecorated(); 
-        SearchResultEntry searchResultEntry = 
+        SearchResponse searchResponse = ( SearchResponse )
+            parser.getBatchResponse().getCurrentResponse().getDecorated();
+        SearchResultEntry searchResultEntry =
             searchResponse.getCurrentSearchResultEntry();
         Map<String, Control> controls = searchResultEntry.getControls();
 
@@ -167,7 +167,7 @@ public class SearchResultEntryTest extends AbstractResponseTest
         assertNotNull( control );
         assertFalse( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.789", control.getOid() );
-        assertEquals( "Some other text", Strings.utf8ToString((byte[]) ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "Some other text", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -192,9 +192,9 @@ public class SearchResultEntryTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResponse searchResponse = ( SearchResponse ) 
-            parser.getBatchResponse().getCurrentResponse().getDecorated(); 
-        SearchResultEntry searchResultEntry = 
+        SearchResponse searchResponse = ( SearchResponse )
+            parser.getBatchResponse().getCurrentResponse().getDecorated();
+        SearchResultEntry searchResultEntry =
             searchResponse.getCurrentSearchResultEntry();
         Map<String, Control> controls = searchResultEntry.getControls();
 
@@ -250,11 +250,11 @@ public class SearchResultEntryTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResponseDsml searchResponseDsml = ( SearchResponseDsml ) 
+        SearchResponseDsml searchResponseDsml = ( SearchResponseDsml )
             parser.getBatchResponse().getCurrentResponse();
         SearchResponse response = ( SearchResponse ) searchResponseDsml.getDecorated();
         SearchResultEntry searchResultEntry = response.getSearchResultEntryList().get( 0 );
-        
+
         assertEquals( "dc=example,dc=com", searchResultEntry.getObjectName().toString() );
     }
 
@@ -280,7 +280,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse().getDecorated() )
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse()
+            .getDecorated() )
             .getCurrentSearchResultEntry();
 
         assertEquals( 456, searchResultEntry.getMessageId() );
@@ -288,12 +289,12 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
 
     /**
-     * Test parsing of a Response with the (optional) requestID attribute equals 0
+     * Test parsing of a Response with the (optional) requestID attribute below 0
      */
     @Test
-    public void testResponseWithRequestIdEquals0()
+    public void testResponseWithRequestIdBelow0()
     {
-        testParsingFail( SearchResultEntryTest.class, "response_with_requestID_equals_0.xml" );
+        testParsingFail( SearchResultEntryTest.class, "response_with_requestID_below_0.xml" );
     }
 
 
@@ -343,7 +344,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse().getDecorated() )
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse()
+            .getDecorated() )
             .getCurrentSearchResultEntry();
 
         Entry entry = searchResultEntry.getEntry();
@@ -376,7 +378,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse().getDecorated() )
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse()
+            .getDecorated() )
             .getCurrentSearchResultEntry();
 
         Entry entry = searchResultEntry.getEntry();
@@ -395,7 +398,7 @@ public class SearchResultEntryTest extends AbstractResponseTest
 
     /**
      * Test parsing of a response with 1 Attr 1 Base64 Value
-     * @throws UnsupportedEncodingException 
+     * @throws UnsupportedEncodingException
      */
     @Test
     public void testResponseWith1Attr1Base64Value() throws UnsupportedEncodingException
@@ -415,7 +418,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse().getDecorated() )
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse()
+            .getDecorated() )
             .getCurrentSearchResultEntry();
 
         Entry entry = searchResultEntry.getEntry();
@@ -458,7 +462,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse().getDecorated() )
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse()
+            .getDecorated() )
             .getCurrentSearchResultEntry();
 
         Entry entry = searchResultEntry.getEntry();
@@ -497,7 +502,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse().getDecorated() )
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse()
+            .getDecorated() )
             .getCurrentSearchResultEntry();
 
         Entry entry = searchResultEntry.getEntry();
@@ -540,7 +546,8 @@ public class SearchResultEntryTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse().getDecorated() )
+        SearchResultEntry searchResultEntry = ( ( SearchResponse ) parser.getBatchResponse().getCurrentResponse()
+            .getDecorated() )
             .getCurrentSearchResultEntry();
 
         Entry entry = searchResultEntry.getEntry();

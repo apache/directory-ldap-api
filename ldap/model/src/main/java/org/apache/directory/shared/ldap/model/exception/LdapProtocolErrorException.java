@@ -34,6 +34,7 @@ public class LdapProtocolErrorException extends LdapOperationException
     /** The serial version UUID */
     static final long serialVersionUID = 1L;
 
+
     /**
      * Creates a new instance of LdapProtocolErrorException.
      *
@@ -43,6 +44,7 @@ public class LdapProtocolErrorException extends LdapOperationException
     {
         super( ResultCodeEnum.PROTOCOL_ERROR, message );
     }
+
 
     /**
      * Creates a new instance of LdapProtocolErrorException.

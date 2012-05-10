@@ -46,7 +46,39 @@ public final class LongDecoder
      * @return An integer
      * @throws LongDecoderException Thrown if the byte stream does not contains an integer
      */
-    public static long parse( Value value, long min, long max ) throws LongDecoderException
+    public static long parse( BerValue value, long min, long max ) throws LongDecoderException
+    {
+        long result = parseLong( value );
+
+        if ( ( result >= min ) && ( result <= max ) )
+        {
+            return result;
+        }
+        else
+        {
+            throw new LongDecoderException( I18n.err( I18n.ERR_00038_VALUE_NOT_IN_RANGE, min, max ) );
+        }
+    }
+
+
+    /**
+     * Parse a byte buffer and send back an integer
+     *
+     * @param value The byte buffer to parse
+     * @return An integer
+     * @throws LongDecoderException Thrown if the byte stream does not contains an integer
+     */
+    public static long parse( BerValue value ) throws LongDecoderException
+    {
+        return parseLong( value );
+    }
+    
+    
+    /**
+     * Helper method used to parse the long. We don't check any minimal or maximal
+     * bound.
+     */
+    public static long parseLong( BerValue value ) throws LongDecoderException
     {
         long result = 0;
 
@@ -71,27 +103,7 @@ public final class LongDecoder
         {
             result = -( ( ( ~result ) + 1 ) & MASK[bytes.length - 1] );
         }
-
-        if ( ( result >= min ) && ( result <= max ) )
-        {
-            return result;
-        }
-        else
-        {
-            throw new LongDecoderException( I18n.err( I18n.ERR_00038_VALUE_NOT_IN_RANGE, min, max ) );
-        }
-    }
-
-
-    /**
-     * Parse a byte buffer and send back an integer
-     *
-     * @param value The byte buffer to parse
-     * @return An integer
-     * @throws LongDecoderException Thrown if the byte stream does not contains an integer
-     */
-    public static long parse( Value value ) throws LongDecoderException
-    {
-        return parse( value, Long.MIN_VALUE, Long.MAX_VALUE );
+        
+        return result;
     }
 }

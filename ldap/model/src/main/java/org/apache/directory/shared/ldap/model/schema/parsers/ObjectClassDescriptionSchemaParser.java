@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema.parsers;
 
@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.model.schema.parsers;
 import java.text.ParseException;
 
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,14 +70,14 @@ public class ObjectClassDescriptionSchemaParser extends AbstractSchemaParser
      * kind = "ABSTRACT" / "STRUCTURAL" / "AUXILIARY"
      * 
      * extensions = *( SP xstring SP qdstrings )
-     * xstring = "X" HYPHEN 1*( ALPHA / HYPHEN / USCORE ) 
+     * xstring = "X" HYPHEN 1*( ALPHA / HYPHEN / USCORE )
      * </pre>
      * 
      * @param objectClassDescription the object class description to be parsed
      * @return the parsed ObjectClassDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized ObjectClass parseObjectClassDescription( String objectClassDescription )
+    public synchronized MutableObjectClass parseObjectClassDescription( String objectClassDescription )
         throws ParseException
     {
         LOG.debug( "Parsing an ObjectClass : {}", objectClassDescription );
@@ -91,7 +92,7 @@ public class ObjectClassDescriptionSchemaParser extends AbstractSchemaParser
 
         try
         {
-            ObjectClass objectClass = parser.objectClassDescription();
+            MutableObjectClass objectClass = parser.objectClassDescription();
 
             // Update the schemaName
             updateSchemaName( objectClass );

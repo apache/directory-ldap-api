@@ -27,7 +27,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.model.url.LdapUrl;
@@ -68,109 +68,108 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
     /** The instance of grammar. GracefulDisconnectnGrammar is a singleton */
     private static GracefulDisconnectGrammar instance = new GracefulDisconnectGrammar();
 
-
     /**
      * The action used to store a Time Offline.
      */
-    private GrammarAction<GracefulDisconnectContainer> storeDelay = 
+    private GrammarAction<GracefulDisconnectContainer> storeDelay =
         new GrammarAction<GracefulDisconnectContainer>( "Set Graceful Disconnect Delay" )
-    {
-        public void action( GracefulDisconnectContainer container ) throws DecoderException
         {
-            Value value = container.getCurrentTLV().getValue();
-    
-            try
+            public void action( GracefulDisconnectContainer container ) throws DecoderException
             {
-                int delay = IntegerDecoder.parse( value, 0, 86400 );
-    
-                if ( IS_DEBUG )
-                {
-                    LOG.debug( "Delay = " + delay );
-                }
-    
-                container.getGracefulDisconnect().setDelay( delay );
-                container.setGrammarEndAllowed( true );
-            }
-            catch ( IntegerDecoderException e )
-            {
-                String msg = I18n.err( I18n.ERR_04036, Strings.dumpBytes(value.getData()) );
-                LOG.error( msg );
-                throw new DecoderException( msg );
-            }
-        }
-    };
-    
-    /**
-     * The action used to store a referral.
-     */
-    private GrammarAction<GracefulDisconnectContainer> storeReferral = 
-        new GrammarAction<GracefulDisconnectContainer>( "Stores a referral" )
-    {
-        public void action( GracefulDisconnectContainer container ) throws DecoderException
-        {
-            Value value = container.getCurrentTLV().getValue();
+                BerValue value = container.getCurrentTLV().getValue();
 
-            try
-            {
-                if ( Strings.isEmpty( value.getData() ) )
+                try
                 {
-                    String msg = "failed to decode a null URL";
+                    int delay = IntegerDecoder.parse( value, 0, 86400 );
+
+                    if ( IS_DEBUG )
+                    {
+                        LOG.debug( "Delay = " + delay );
+                    }
+
+                    container.getGracefulDisconnect().setDelay( delay );
+                    container.setGrammarEndAllowed( true );
+                }
+                catch ( IntegerDecoderException e )
+                {
+                    String msg = I18n.err( I18n.ERR_04036, Strings.dumpBytes( value.getData() ) );
                     LOG.error( msg );
                     throw new DecoderException( msg );
                 }
-                
-                String url = Strings.utf8ToString( value.getData() );
-                
-                LdapUrl ldapUrl = new LdapUrl( url );
-                container.getGracefulDisconnect().addReplicatedContexts( ldapUrl );
-                container.setGrammarEndAllowed( true );
-                
-                if ( IS_DEBUG )
+            }
+        };
+
+    /**
+     * The action used to store a referral.
+     */
+    private GrammarAction<GracefulDisconnectContainer> storeReferral =
+        new GrammarAction<GracefulDisconnectContainer>( "Stores a referral" )
+        {
+            public void action( GracefulDisconnectContainer container ) throws DecoderException
+            {
+                BerValue value = container.getCurrentTLV().getValue();
+
+                try
                 {
-                    LOG.debug( "Stores a referral : {}", ldapUrl );
+                    if ( Strings.isEmpty( value.getData() ) )
+                    {
+                        String msg = "failed to decode a null URL";
+                        LOG.error( msg );
+                        throw new DecoderException( msg );
+                    }
+
+                    String url = Strings.utf8ToString( value.getData() );
+
+                    LdapUrl ldapUrl = new LdapUrl( url );
+                    container.getGracefulDisconnect().addReplicatedContexts( ldapUrl );
+                    container.setGrammarEndAllowed( true );
+
+                    if ( IS_DEBUG )
+                    {
+                        LOG.debug( "Stores a referral : {}", ldapUrl );
+                    }
+                }
+                catch ( LdapURLEncodingException e )
+                {
+                    String msg = "failed to decode the URL '" + Strings.dumpBytes( value.getData() ) + "'";
+                    LOG.error( msg );
+                    throw new DecoderException( msg );
                 }
             }
-            catch ( LdapURLEncodingException e )
-            {
-                String msg = "failed to decode the URL '" + Strings.dumpBytes(value.getData()) + "'";
-                LOG.error( msg );
-                throw new DecoderException( msg );
-            }
-        }
-    };
-    
+        };
+
     /**
      * The action used to store a Time Offline.
      */
-    private GrammarAction<GracefulDisconnectContainer> storeTimeOffline = 
+    private GrammarAction<GracefulDisconnectContainer> storeTimeOffline =
         new GrammarAction<GracefulDisconnectContainer>( "Set Graceful Disconnect time offline" )
-    {
-        public void action( GracefulDisconnectContainer container ) throws DecoderException
         {
-            Value value = container.getCurrentTLV().getValue();
-
-            try
+            public void action( GracefulDisconnectContainer container ) throws DecoderException
             {
-                int timeOffline = IntegerDecoder.parse( value, 0, 720 );
+                BerValue value = container.getCurrentTLV().getValue();
 
-                if ( IS_DEBUG )
+                try
                 {
-                    LOG.debug( "Time Offline = " + timeOffline );
+                    int timeOffline = IntegerDecoder.parse( value, 0, 720 );
+
+                    if ( IS_DEBUG )
+                    {
+                        LOG.debug( "Time Offline = " + timeOffline );
+                    }
+
+                    container.getGracefulDisconnect().setTimeOffline( timeOffline );
+                    container.setGrammarEndAllowed( true );
                 }
-
-                container.getGracefulDisconnect().setTimeOffline( timeOffline );
-                container.setGrammarEndAllowed( true );
+                catch ( IntegerDecoderException e )
+                {
+                    String msg = I18n.err( I18n.ERR_04037, Strings.dumpBytes( value.getData() ) );
+                    LOG.error( msg );
+                    throw new DecoderException( msg );
+                }
             }
-            catch ( IntegerDecoderException e )
-            {
-                String msg = I18n.err( I18n.ERR_04037, Strings.dumpBytes(value.getData()) );
-                LOG.error( msg );
-                throw new DecoderException( msg );
-            }
-        }
-    };
+        };
 
-    
+
     /**
      * Creates a new GracefulDisconnectGrammar object.
      */
@@ -189,19 +188,19 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
          * 
          * Creates the GracefulDisconnect object
          */
-        super.transitions[GracefulDisconnectStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = 
+        super.transitions[GracefulDisconnectStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<GracefulDisconnectContainer>( GracefulDisconnectStatesEnum.START_STATE,
-                                    GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE, 
-                                    UniversalTag.SEQUENCE.getValue(),
+                GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE,
+                UniversalTag.SEQUENCE.getValue(),
                 new GrammarAction<GracefulDisconnectContainer>( "Init Graceful Disconnect" )
-            {
-                public void action( GracefulDisconnectContainer container )
                 {
-                    GracefulDisconnect gracefulDisconnect = new GracefulDisconnect();
-                    container.setGracefulDisconnect( gracefulDisconnect );
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
+                    public void action( GracefulDisconnectContainer container )
+                    {
+                        GracefulDisconnect gracefulDisconnect = new GracefulDisconnect();
+                        container.setGracefulDisconnect( gracefulDisconnect );
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
 
         /**
          * Transition from graceful disconnect to time offline
@@ -212,12 +211,13 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
          *     
          * Set the time offline value into the GracefulDisconnect object.    
          */
-        super.transitions[GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER.getValue()] = 
-            new GrammarTransition<GracefulDisconnectContainer>( 
+        super.transitions[GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER
+            .getValue()] =
+            new GrammarTransition<GracefulDisconnectContainer>(
                 GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE,
-                GracefulDisconnectStatesEnum.TIME_OFFLINE_STATE, 
+                GracefulDisconnectStatesEnum.TIME_OFFLINE_STATE,
                 UniversalTag.INTEGER.getValue(), storeTimeOffline );
-        
+
         /**
          * Transition from graceful disconnect to delay
          * 
@@ -228,14 +228,13 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
          *     
          * Set the delay value into the GracefulDisconnect object.    
          */
-        super.transitions[GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE.ordinal()]
-                         [GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG] = 
-            new GrammarTransition<GracefulDisconnectContainer>( 
+        super.transitions[GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE.ordinal()][GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG] =
+            new GrammarTransition<GracefulDisconnectContainer>(
                 GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE,
-                GracefulDisconnectStatesEnum.DELAY_STATE, 
-                GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG, 
+                GracefulDisconnectStatesEnum.DELAY_STATE,
+                GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG,
                 storeDelay );
-        
+
         /**
          * Transition from graceful disconnect to replicated Contexts
          * 
@@ -247,11 +246,13 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
          *     
          * Get some replicated contexts. Nothing to do    
          */
-        super.transitions[GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = 
-            new GrammarTransition<GracefulDisconnectContainer>( GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE,
+        super.transitions[GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE.ordinal()][UniversalTag.SEQUENCE
+            .getValue()] =
+            new GrammarTransition<GracefulDisconnectContainer>(
+                GracefulDisconnectStatesEnum.GRACEFUL_DISCONNECT_SEQUENCE_STATE,
                 GracefulDisconnectStatesEnum.REPLICATED_CONTEXTS_STATE,
                 UniversalTag.SEQUENCE.getValue(), null );
-        
+
         /**
          * Transition from time offline to delay
          * 
@@ -262,9 +263,9 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
          *     
          * Set the delay value into the GracefulDisconnect object.    
          */
-        super.transitions[GracefulDisconnectStatesEnum.TIME_OFFLINE_STATE.ordinal()][GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG] = 
+        super.transitions[GracefulDisconnectStatesEnum.TIME_OFFLINE_STATE.ordinal()][GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG] =
             new GrammarTransition<GracefulDisconnectContainer>( GracefulDisconnectStatesEnum.TIME_OFFLINE_STATE,
-                GracefulDisconnectStatesEnum.DELAY_STATE, 
+                GracefulDisconnectStatesEnum.DELAY_STATE,
                 GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG,
                 storeDelay );
 
@@ -279,11 +280,11 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
          *     
          * Get some replicated contexts. Nothing to do    
          */
-        super.transitions[GracefulDisconnectStatesEnum.TIME_OFFLINE_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = 
+        super.transitions[GracefulDisconnectStatesEnum.TIME_OFFLINE_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<GracefulDisconnectContainer>( GracefulDisconnectStatesEnum.TIME_OFFLINE_STATE,
                 GracefulDisconnectStatesEnum.REPLICATED_CONTEXTS_STATE,
                 UniversalTag.SEQUENCE.getValue(), null );
-        
+
         /**
          * Transition from delay to replicated contexts
          * 
@@ -295,11 +296,11 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
          *     
          * Get some replicated contexts. Nothing to do    
          */
-        super.transitions[GracefulDisconnectStatesEnum.DELAY_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = 
+        super.transitions[GracefulDisconnectStatesEnum.DELAY_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<GracefulDisconnectContainer>( GracefulDisconnectStatesEnum.DELAY_STATE,
-                GracefulDisconnectStatesEnum.REPLICATED_CONTEXTS_STATE, 
+                GracefulDisconnectStatesEnum.REPLICATED_CONTEXTS_STATE,
                 UniversalTag.SEQUENCE.getValue(), null );
-        
+
         /**
          * Transition from replicated contexts to referral
          * 
@@ -311,9 +312,10 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
          *     
          * Stores the referral
          */
-        super.transitions[GracefulDisconnectStatesEnum.REPLICATED_CONTEXTS_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
+        super.transitions[GracefulDisconnectStatesEnum.REPLICATED_CONTEXTS_STATE.ordinal()][UniversalTag.OCTET_STRING
+            .getValue()] =
             new GrammarTransition<GracefulDisconnectContainer>( GracefulDisconnectStatesEnum.REPLICATED_CONTEXTS_STATE,
-                GracefulDisconnectStatesEnum.REFERRAL_STATE, 
+                GracefulDisconnectStatesEnum.REFERRAL_STATE,
                 UniversalTag.OCTET_STRING.getValue(),
                 storeReferral );
 
@@ -328,9 +330,9 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
          *     
          * Stores the referral
          */
-        super.transitions[GracefulDisconnectStatesEnum.REFERRAL_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
+        super.transitions[GracefulDisconnectStatesEnum.REFERRAL_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
             new GrammarTransition<GracefulDisconnectContainer>( GracefulDisconnectStatesEnum.REFERRAL_STATE,
-                GracefulDisconnectStatesEnum.REFERRAL_STATE, 
+                GracefulDisconnectStatesEnum.REFERRAL_STATE,
                 UniversalTag.OCTET_STRING.getValue(),
                 storeReferral );
 

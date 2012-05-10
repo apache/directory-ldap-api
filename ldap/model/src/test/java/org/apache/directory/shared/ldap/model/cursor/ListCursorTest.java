@@ -59,7 +59,6 @@ public class ListCursorTest
     public void testSingleElementList() throws Exception
     {
         ListCursor<String> cursor = new ListCursor<String>( Collections.singletonList( "singleton" ) );
-        cursor.close();
 
         // close test
         cursor.close();
@@ -70,11 +69,11 @@ public class ListCursorTest
         {
             cursor = new ListCursor<String>( Collections.singletonList( "singleton" ), 0 );
             cursor.close();
-            fail("when the start = end bounds this is senseless and should complain");
+            fail( "when the start = end bounds this is senseless and should complain" );
         }
         catch ( IllegalArgumentException e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         // bad bounds: start = end is senseless
@@ -82,11 +81,11 @@ public class ListCursorTest
         {
             cursor = new ListCursor<String>( 1, Collections.singletonList( "singleton" ) );
             cursor.close();
-            fail("when the start = end bounds this is senseless and should complain");
+            fail( "when the start = end bounds this is senseless and should complain" );
         }
         catch ( IllegalArgumentException e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         // bad bounds: start > end is senseless
@@ -94,11 +93,11 @@ public class ListCursorTest
         {
             cursor = new ListCursor<String>( 5, Collections.singletonList( "singleton" ) );
             cursor.close();
-            fail("when the start = end bounds this is senseless and should complain");
+            fail( "when the start = end bounds this is senseless and should complain" );
         }
         catch ( IllegalArgumentException e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         // bad bounds: end < start is senseless too in another way :)
@@ -106,11 +105,11 @@ public class ListCursorTest
         {
             cursor = new ListCursor<String>( Collections.singletonList( "singleton" ), -5 );
             cursor.close();
-            fail("when the start = end bounds this is senseless and should complain");
+            fail( "when the start = end bounds this is senseless and should complain" );
         }
         catch ( IllegalArgumentException e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         // bad bounds: start out of range
@@ -118,11 +117,11 @@ public class ListCursorTest
         {
             cursor = new ListCursor<String>( -5, Collections.singletonList( "singleton" ) );
             cursor.close();
-            fail("when the start = end bounds this is senseless and should complain");
+            fail( "when the start = end bounds this is senseless and should complain" );
         }
         catch ( IllegalArgumentException e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         // bad bounds: end out of range
@@ -130,11 +129,11 @@ public class ListCursorTest
         {
             cursor = new ListCursor<String>( Collections.singletonList( "singleton" ), 5 );
             cursor.close();
-            fail("when the start = end bounds this is senseless and should complain");
+            fail( "when the start = end bounds this is senseless and should complain" );
         }
         catch ( IllegalArgumentException e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
     }
 
@@ -169,11 +168,11 @@ public class ListCursorTest
         {
             cursor = new ListCursor<String>( list, 0 );
             cursor.close();
-            fail("when the start = end bounds this is senseless and should complain");
+            fail( "when the start = end bounds this is senseless and should complain" );
         }
         catch ( IllegalArgumentException e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         // bad bounds: start = end is senseless
@@ -181,11 +180,11 @@ public class ListCursorTest
         {
             cursor = new ListCursor<String>( 5, list );
             cursor.close();
-            fail("when the start = end bounds this is senseless and should complain");
+            fail( "when the start = end bounds this is senseless and should complain" );
         }
         catch ( IllegalArgumentException e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         // bad bounds: start > end is senseless
@@ -193,11 +192,11 @@ public class ListCursorTest
         {
             cursor = new ListCursor<String>( 10, list );
             cursor.close();
-            fail("when the start = end bounds this is senseless and should complain");
+            fail( "when the start = end bounds this is senseless and should complain" );
         }
         catch ( IllegalArgumentException e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         // bad bounds: end < start is senseless too in another way :)
@@ -205,11 +204,11 @@ public class ListCursorTest
         {
             cursor = new ListCursor<String>( list, -5 );
             cursor.close();
-            fail("when the start = end bounds this is senseless and should complain");
+            fail( "when the start = end bounds this is senseless and should complain" );
         }
         catch ( IllegalArgumentException e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         // bad bounds: start out of range
@@ -217,11 +216,11 @@ public class ListCursorTest
         {
             cursor = new ListCursor<String>( -5, list );
             cursor.close();
-            fail("when the start = end bounds this is senseless and should complain");
+            fail( "when the start = end bounds this is senseless and should complain" );
         }
         catch ( IllegalArgumentException e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         // bad bounds: end out of range
@@ -229,11 +228,11 @@ public class ListCursorTest
         {
             cursor = new ListCursor<String>( list, 10 );
             cursor.close();
-            fail("when the start = end bounds this is senseless and should complain");
+            fail( "when the start = end bounds this is senseless and should complain" );
         }
         catch ( IllegalArgumentException e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
     }
 
@@ -246,7 +245,7 @@ public class ListCursorTest
         }
         catch ( Exception e )
         {
-            fail("cursor.isClosed() test should not fail after closing the cursor");
+            fail( "cursor.isClosed() test should not fail after closing the cursor" );
         }
 
         try
@@ -255,78 +254,77 @@ public class ListCursorTest
         }
         catch ( Exception e )
         {
-            fail("cursor.close() after closing the cursor should not fail with exceptions");
+            fail( "cursor.close() after closing the cursor should not fail with exceptions" );
         }
-
 
         try
         {
             cursor.afterLast();
-            fail("cursor.afterLast() after closing the cursor should fail with an IOException");
+            fail( "cursor.afterLast() after closing the cursor should fail with an IOException" );
         }
         catch ( Exception e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         try
         {
             cursor.beforeFirst();
-            fail("cursor.beforeFirst() after closing the cursor should fail with an IOException");
+            fail( "cursor.beforeFirst() after closing the cursor should fail with an IOException" );
         }
         catch ( Exception e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         try
         {
             cursor.first();
-            fail("cursor.first() after closing the cursor should fail with an IOException");
+            fail( "cursor.first() after closing the cursor should fail with an IOException" );
         }
         catch ( Exception e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         try
         {
             cursor.get();
-            fail("cursor.get() after closing the cursor should fail with an IOException");
+            fail( "cursor.get() after closing the cursor should fail with an IOException" );
         }
         catch ( Exception e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         try
         {
             cursor.last();
-            fail("cursor.last() after closing the cursor should fail with an IOException");
+            fail( "cursor.last() after closing the cursor should fail with an IOException" );
         }
         catch ( Exception e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         try
         {
             cursor.next();
-            fail("cursor.next() after closing the cursor should fail with an IOException");
+            fail( "cursor.next() after closing the cursor should fail with an IOException" );
         }
         catch ( Exception e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
 
         try
         {
             cursor.previous();
-            fail("cursor.previous() after closing the cursor should fail with an IOException");
+            fail( "cursor.previous() after closing the cursor should fail with an IOException" );
         }
         catch ( Exception e )
         {
-            assertNotNull(e);
+            assertNotNull( e );
         }
     }
 }

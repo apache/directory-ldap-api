@@ -36,8 +36,8 @@ public class SubentriesFactory implements ControlFactory<Subentries, SubentriesD
 {
     /** The LDAP codec service */
     private LdapApiService codec;
-    
-    
+
+
     /**
      * Creates a new instance of SubentriesFactory.
      *
@@ -47,8 +47,8 @@ public class SubentriesFactory implements ControlFactory<Subentries, SubentriesD
     {
         this.codec = codec;
     }
-    
-    
+
+
     /**
      * 
      * {@inheritDoc}
@@ -58,7 +58,7 @@ public class SubentriesFactory implements ControlFactory<Subentries, SubentriesD
         return Subentries.OID;
     }
 
-    
+
     /**
      * 
      * {@inheritDoc}

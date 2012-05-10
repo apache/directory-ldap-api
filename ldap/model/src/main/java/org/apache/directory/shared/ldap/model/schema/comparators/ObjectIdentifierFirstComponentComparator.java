@@ -24,9 +24,6 @@ import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.util.Chars;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Property;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,8 +33,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
-@Provides
 public class ObjectIdentifierFirstComponentComparator extends LdapComparator<String>
 {
     /** The serial version UID */
@@ -51,7 +46,7 @@ public class ObjectIdentifierFirstComponentComparator extends LdapComparator<Str
      * The ObjectIdentifierFirstComponentComparator constructor. Its OID is the 
      * ObjectIdentifierFirstComponentMatch matching rule OID.
      */
-    public ObjectIdentifierFirstComponentComparator( @Property(name = "ads.comp.comparator.oid") String oid )
+    public ObjectIdentifierFirstComponentComparator( String oid )
     {
         super( oid );
     }

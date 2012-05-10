@@ -23,8 +23,6 @@ package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,12 +41,11 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class DerefAliasSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DerefAliasSyntaxChecker.class );
+
 
     /**
      * Creates a new instance of DerefAliasSyntaxChecker.
@@ -57,8 +54,8 @@ public class DerefAliasSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.DEREF_ALIAS_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -71,14 +68,14 @@ public class DerefAliasSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -86,10 +83,9 @@ public class DerefAliasSyntaxChecker extends SyntaxChecker
         }
 
         strValue = Strings.trim( Strings.toLowerCase( strValue ) );
-        
-        return ( "never".equals( strValue ) || 
-                 "finding".equals(  strValue ) || 
-                 "searching".equals( strValue ) ||
-                 "always".equals( strValue ));
+
+        return ( "never".equals( strValue ) ||
+            "finding".equals( strValue ) ||
+            "searching".equals( strValue ) || "always".equals( strValue ) );
     }
 }

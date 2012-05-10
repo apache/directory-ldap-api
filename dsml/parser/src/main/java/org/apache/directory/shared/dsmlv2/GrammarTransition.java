@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.dsmlv2;
 
@@ -37,29 +37,27 @@ public class GrammarTransition
     /** The current state */
     private Enum<Dsmlv2StatesEnum> currentState;
 
-    
+
     /**
      * Creates a new GrammarTransition object.
      * 
-     * @param currentState
-     *      The current transition
-     * @param nextState
-     *      The target state
-     * @param action
-     *      The action to execute. It could be null.
+     * @param currentState The current transition
+     * @param nextState The target state
+     * @param action The action to execute. It could be null.
      */
-    public GrammarTransition( Enum<Dsmlv2StatesEnum> currentState, Enum<Dsmlv2StatesEnum> nextState, GrammarAction action )
+    public GrammarTransition( Enum<Dsmlv2StatesEnum> currentState, Enum<Dsmlv2StatesEnum> nextState,
+        GrammarAction action )
     {
         this.currentState = currentState;
         this.nextState = nextState;
         this.action = action;
     }
 
+
     /**
      * Gets the target state
      * 
-     * @return
-     *      the target state.
+     * @return the target state.
      */
     public Enum<Dsmlv2StatesEnum> getNextState()
     {
@@ -70,9 +68,7 @@ public class GrammarTransition
     /**
      * Tells if the transition has an associated action.
      * 
-     * @return 
-     *      <code>true</code> if an action has been asociated to the
-     *         transition
+     * @return  <code>true</code> if an action has been associated to the transition
      */
     public boolean hasAction()
     {
@@ -83,8 +79,7 @@ public class GrammarTransition
     /**
      * Gets the action associated with the transition
      * 
-     * @return
-     *      the action associated with the transition
+     * @return the action associated with the transition
      */
     public GrammarAction getAction()
     {
@@ -95,12 +90,9 @@ public class GrammarTransition
     /**
      * Returns a representation of the transition as a string
      * 
-     * @param grammar
-     *      the grammar which state we want a String from
-     * @param statesEnum
-     *      the states enum that contains the states' names
-     * @return 
-     *      a representation of the transition as a string.
+     * @param grammar the grammar which state we want a String from
+     * @param statesEnum the states enum that contains the states' names
+     * @return  a representation of the transition as a string.
      */
     public String toString( int grammar, Enum<Dsmlv2StatesEnum> statesEnum )
     {

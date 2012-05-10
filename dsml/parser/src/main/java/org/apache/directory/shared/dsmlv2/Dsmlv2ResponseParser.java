@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.dsmlv2;
 
@@ -53,8 +53,7 @@ public class Dsmlv2ResponseParser
     /**
      * Creates a new instance of Dsmlv2ResponseParser.
      *
-     * @throws XmlPullParserException
-     *      if an error occurs while the initialization of the parser
+     * @throws XmlPullParserException if an error occurs while the initialization of the parser
      */
     public Dsmlv2ResponseParser( LdapApiService codec ) throws XmlPullParserException
     {
@@ -73,10 +72,8 @@ public class Dsmlv2ResponseParser
     /**
      * Sets the input string the parser is going to parse
      *
-     * @param str
-     *      the string the parser is going to parse
-     * @throws XmlPullParserException
-     *      if an error occurs in the parser
+     * @param str the string the parser is going to parse
+     * @throws XmlPullParserException if an error occurs in the parser
      */
     public void setInput( String str ) throws XmlPullParserException
     {
@@ -87,12 +84,9 @@ public class Dsmlv2ResponseParser
     /**
      * Sets the input file the parser is going to parse
      *
-     * @param fileName
-     *      the name of the file
-     * @throws FileNotFoundException
-     *      if the file does not exist
-     * @throws XmlPullParserException
-     *      if an error occurs in the parser
+     * @param fileName the name of the file
+     * @throws FileNotFoundException if the file does not exist
+     * @throws XmlPullParserException if an error occurs in the parser
      */
     public void setInputFile( String fileName ) throws FileNotFoundException, XmlPullParserException
     {
@@ -104,12 +98,9 @@ public class Dsmlv2ResponseParser
     /**
      * Sets the input stream the parser is going to process
      *
-     * @param inputStream
-     *      contains a raw byte input stream of possibly unknown encoding (when inputEncoding is null)
-     * @param inputEncoding
-     *      if not null it MUST be used as encoding for inputStream
-     * @throws XmlPullParserException
-     *      if an error occurs in the parser
+     * @param inputStream contains a raw byte input stream of possibly unknown encoding (when inputEncoding is null)
+     * @param inputEncoding if not null it MUST be used as encoding for inputStream
+     * @throws XmlPullParserException if an error occurs in the parser
      */
     public void setInput( InputStream inputStream, String inputEncoding ) throws XmlPullParserException
     {
@@ -120,10 +111,8 @@ public class Dsmlv2ResponseParser
     /**
      * Launches the parsing on the input
      * 
-     * @throws XmlPullParserException 
-     *      when an unrecoverable error occurs
-     * @throws IOException
-     *      when an IO exception occurs
+     * @throws XmlPullParserException when an unrecoverable error occurs
+     * @throws IOException when an IO exception occurs
      */
     public void parse() throws XmlPullParserException, IOException
     {
@@ -136,32 +125,35 @@ public class Dsmlv2ResponseParser
     /**
      * Launches the parsing of the Batch Response only
      *
-     * @throws XmlPullParserException
-     *      if an error occurs in the parser
+     * @throws XmlPullParserException if an error occurs in the parser
      */
     public void parseBatchResponse() throws XmlPullParserException
     {
         XmlPullParser xpp = container.getParser();
 
         int eventType = xpp.getEventType();
+        
         do
         {
-            if ( eventType == XmlPullParser.START_DOCUMENT )
+            switch ( eventType )
             {
-                container.setState( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE );
+                case XmlPullParser.START_DOCUMENT :
+                    container.setState( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE );
+                    break;
+
+                case XmlPullParser.END_DOCUMENT :
+                    container.setState( Dsmlv2StatesEnum.GRAMMAR_END );
+                    break;
+
+                case XmlPullParser.START_TAG :
+                    processTag( container, Tag.START );
+                    break;
+
+                case XmlPullParser.END_TAG :
+                    processTag( container, Tag.END );
+                    break;
             }
-            else if ( eventType == XmlPullParser.END_DOCUMENT )
-            {
-                container.setState( Dsmlv2StatesEnum.GRAMMAR_END );
-            }
-            else if ( eventType == XmlPullParser.START_TAG )
-            {
-                processTag( container, Tag.START );
-            }
-            else if ( eventType == XmlPullParser.END_TAG )
-            {
-                processTag( container, Tag.END );
-            }
+            
             try
             {
                 eventType = xpp.next();
@@ -178,12 +170,9 @@ public class Dsmlv2ResponseParser
     /**
      * Processes the task required in the grammar to the given tag type
      *
-     * @param container
-     *      the DSML container
-     * @param tagType
-     *      the tag type
-     * @throws XmlPullParserException 
-     *      when an error occurs during the parsing
+     * @param container the DSML container
+     * @param tagType the tag type
+     * @throws XmlPullParserException when an error occurs during the parsing
      */
     private static void processTag( Dsmlv2Container container, int tagType ) throws XmlPullParserException
     {
@@ -212,8 +201,7 @@ public class Dsmlv2ResponseParser
     /**
      * Gets the Batch Response or null if the it has not been parsed yet
      *
-     * @return 
-     *      the Batch Response or null if the it has not been parsed yet
+     * @return the Batch Response or null if the it has not been parsed yet
      */
     public BatchResponseDsml getBatchResponse()
     {
@@ -223,10 +211,8 @@ public class Dsmlv2ResponseParser
 
     /**
      * Returns the next Request or null if there's no more request
-     * @return
-     *      the next Request or null if there's no more request
-     * @throws XmlPullParserException 
-     *      when an error occurs during the parsing
+     * @return the next Request or null if there's no more request
+     * @throws XmlPullParserException when an error occurs during the parsing
      */
     public DsmlDecorator<? extends Response> getNextResponse() throws XmlPullParserException
     {
@@ -253,23 +239,25 @@ public class Dsmlv2ResponseParser
                 eventType = xpp.getEventType();
             }
 
-            if ( eventType == XmlPullParser.START_DOCUMENT )
+            switch ( eventType )
             {
-                container.setState( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE );
+                case XmlPullParser.START_DOCUMENT :
+                    container.setState( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE );
+                    break;
+
+                case XmlPullParser.END_DOCUMENT :
+                    container.setState( Dsmlv2StatesEnum.GRAMMAR_END );
+                    return null;
+
+                case XmlPullParser.START_TAG :
+                    processTag( container, Tag.START );
+                    break;
+
+                case XmlPullParser.END_TAG :
+                    processTag( container, Tag.END );
+                    break;
             }
-            else if ( eventType == XmlPullParser.END_DOCUMENT )
-            {
-                container.setState( Dsmlv2StatesEnum.GRAMMAR_END );
-                return null;
-            }
-            else if ( eventType == XmlPullParser.START_TAG )
-            {
-                processTag( container, Tag.START );
-            }
-            else if ( eventType == XmlPullParser.END_TAG )
-            {
-                processTag( container, Tag.END );
-            }
+            
             try
             {
                 eventType = xpp.next();
@@ -288,8 +276,7 @@ public class Dsmlv2ResponseParser
     /**
      * Parses all the responses
      *
-     * @throws XmlPullParserException
-     *      when an error occurs during the parsing
+     * @throws XmlPullParserException when an error occurs during the parsing
      */
     public void parseAllResponses() throws XmlPullParserException
     {

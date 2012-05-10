@@ -50,6 +50,7 @@ public class AttributeValueAssertion
     /** The assertion value */
     private Value<?> assertionValue;
 
+
     /**
      *
      * Helper method to render an object which can be a String or a byte[]
@@ -62,19 +63,19 @@ public class AttributeValueAssertion
         {
             if ( object instanceof String )
             {
-                return (String) object;
+                return ( String ) object;
             }
             else if ( object instanceof byte[] )
             {
-                return Strings.dumpBytes((byte[]) object);
+                return Strings.dumpBytes( ( byte[] ) object );
             }
-            else if ( object instanceof StringValue)
+            else if ( object instanceof StringValue )
             {
-                return ( (StringValue) object ).getValue();
+                return ( ( StringValue ) object ).getValue();
             }
             else if ( object instanceof BinaryValue )
             {
-                return Strings.dumpBytes(((BinaryValue) object).getValue());
+                return Strings.dumpBytes( ( ( BinaryValue ) object ).getValue() );
             }
             else
             {
@@ -149,7 +150,7 @@ public class AttributeValueAssertion
         sb.append( tabs ).append( "    Assertion description : '" );
         sb.append( attributeDesc != null ? attributeDesc : "null" );
         sb.append( "'\n" );
-        sb.append( tabs ).append( "    Assertion value : '" ).append( dumpObject(assertionValue) ).append( "'\n" );
+        sb.append( tabs ).append( "    Assertion value : '" ).append( dumpObject( assertionValue ) ).append( "'\n" );
 
         return sb.toString();
     }
@@ -187,7 +188,7 @@ public class AttributeValueAssertion
                 break;
         }
 
-        sb.append( dumpObject(assertionValue) );
+        sb.append( dumpObject( assertionValue ) );
 
         return sb.toString();
     }

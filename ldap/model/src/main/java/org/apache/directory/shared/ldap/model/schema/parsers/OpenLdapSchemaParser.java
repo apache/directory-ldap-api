@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema.parsers;
 
@@ -34,6 +34,7 @@ import java.util.Map;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.shared.ldap.model.schema.ObjectClass;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OpenLdapObjectIdentifierMacro;
@@ -54,7 +55,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser
     private List<Object> schemaDescriptions;
 
     /** The list of attribute type, initialized by splitParsedSchemaDescriptions() */
-    private List<AttributeType> attributeTypes;
+    private List<MutableAttributeType> attributeTypes;
 
     /** The list of object classes, initialized by splitParsedSchemaDescriptions()*/
     private List<ObjectClass> objectClasses;
@@ -79,7 +80,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser
 
 
     /**
-     * Reset the parser 
+     * Reset the parser
      */
     public void clear()
     {
@@ -91,7 +92,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser
      * 
      * @return the attribute types
      */
-    public List<AttributeType> getAttributeTypes()
+    public List<MutableAttributeType> getAttributeTypes()
     {
         return attributeTypes;
     }
@@ -128,7 +129,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser
     private void afterParse() throws ParseException
     {
         objectClasses = new ArrayList<ObjectClass>();
-        attributeTypes = new ArrayList<AttributeType>();
+        attributeTypes = new ArrayList<MutableAttributeType>();
         objectIdentifierMacros = new HashMap<String, OpenLdapObjectIdentifierMacro>();
 
         // split parsed schema descriptions
@@ -136,12 +137,12 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser
         {
             if ( obj instanceof OpenLdapObjectIdentifierMacro )
             {
-                OpenLdapObjectIdentifierMacro oid = (OpenLdapObjectIdentifierMacro) obj;
+                OpenLdapObjectIdentifierMacro oid = ( OpenLdapObjectIdentifierMacro ) obj;
                 objectIdentifierMacros.put( oid.getName(), oid );
             }
             else if ( obj instanceof AttributeType )
             {
-                AttributeType attributeType = ( AttributeType ) obj;
+                MutableAttributeType attributeType = ( MutableAttributeType ) obj;
 
                 attributeTypes.add( attributeType );
             }
@@ -168,7 +169,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser
             }
 
             // apply object identifier macros to attribute types
-            for ( AttributeType attributeType : attributeTypes )
+            for ( MutableAttributeType attributeType : attributeTypes )
             {
                 attributeType.setOid( getResolveOid( attributeType.getOid() ) );
                 attributeType.setSyntaxOid( getResolveOid( attributeType.getSyntaxOid() ) );
@@ -221,7 +222,7 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser
         }
         else
         {
-            // no :suffix, 
+            // no :suffix,
             if ( objectIdentifierMacros.containsKey( rawOidOrNameSuffix ) )
             {
                 OpenLdapObjectIdentifierMacro parentMacro = objectIdentifierMacros.get( rawOidOrNameSuffix );

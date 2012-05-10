@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.shared</groupId>
     <artifactId>shared-ldap-extras-parent</artifactId>
-    <version>1.0.0-M9-SNAPSHOT</version>
+    <version>1.0.0-M13-SNAPSHOT</version>
   </parent>
   
   <artifactId>shared-ldap-extras-aci</artifactId>
@@ -82,24 +82,13 @@
         <extensions>true</extensions>
         <configuration>
           <manifestLocation>META-INF</manifestLocation>
-          <unpackBundle>true</unpackBundle>
           <instructions>
-            <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
-            <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
-            <Bundle-Activator>org.apache.directory.shared.ipojo.helpers.OSGIHelpersActivator</Bundle-Activator>
+            <Bundle-SymbolicName>${project.groupId}.ldap.extras.aci</Bundle-SymbolicName>
             <Export-Package>
                 {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
-            <_plugin>org.apache.felix.ipojo.bnd.PojoizationPlugin;use-local-schemas=true</_plugin>
           </instructions>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>bnd-ipojo-plugin</artifactId>
-            <version>${bnd.ipojo.version}</version>
-          </dependency>
-        </dependencies>
       </plugin>
     </plugins>
   </build>

@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 
 package org.apache.directory.shared.dsmlv2.addRequest;
@@ -55,7 +55,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class AddRequestTest extends AbstractTest
 {
-    
+
     /**
      * Test parsing of a request without the dn attribute
      */
@@ -120,12 +120,12 @@ public class AddRequestTest extends AbstractTest
 
 
     /**
-     * Test parsing of a request with the (optional) requestID attribute equals to 0
+     * Test parsing of a request with the (optional) requestID attribute below 0
      */
     @Test
     public void testRequestWithRequestIdEquals0()
     {
-        testParsingFail( AddRequestTest.class, "request_with_requestID_equals_0.xml" );
+        testParsingFail( AddRequestTest.class, "request_with_requestID_below_0.xml" );
     }
 
 
@@ -188,13 +188,13 @@ public class AddRequestTest extends AbstractTest
         Map<String, Control> controls = addRequest.getControls();
 
         assertEquals( 1, addRequest.getControls().size() );
-        
+
         Control control = controls.get( "1.2.840.113556.1.4.643" );
 
         assertNotNull( control );
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
-        assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -223,7 +223,7 @@ public class AddRequestTest extends AbstractTest
         Map<String, Control> controls = addRequest.getControls();
 
         assertEquals( 1, addRequest.getControls().size() );
-        
+
         Control control = controls.get( "1.2.840.113556.1.4.643" );
 
         assertNotNull( control );
@@ -257,13 +257,13 @@ public class AddRequestTest extends AbstractTest
         Map<String, Control> controls = addRequest.getControls();
 
         assertEquals( 2, addRequest.getControls().size() );
-        
+
         Control control = controls.get( "1.2.840.113556.1.4.789" );
 
         assertNotNull( control );
         assertFalse( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.789", control.getOid() );
-        assertEquals( "Some other text", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "Some other text", Strings.utf8ToString( ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -292,7 +292,7 @@ public class AddRequestTest extends AbstractTest
         Map<String, Control> controls = addRequest.getControls();
 
         assertEquals( 3, addRequest.getControls().size() );
-        
+
         Control control = controls.get( "1.2.840.113556.1.4.456" );
 
         assertNotNull( control );
@@ -328,7 +328,7 @@ public class AddRequestTest extends AbstractTest
         Entry entry = addRequest.getEntry();
         assertEquals( 1, entry.size() );
 
-        // Getting the Attribute  
+        // Getting the Attribute
         Iterator<Attribute> attributeIterator = entry.iterator();
         Attribute attribute = attributeIterator.next();
         assertEquals( "objectclass", attribute.getUpId() );
@@ -365,7 +365,7 @@ public class AddRequestTest extends AbstractTest
         Entry entry = addRequest.getEntry();
         assertEquals( 1, entry.size() );
 
-        // Getting the Attribute       
+        // Getting the Attribute
         Iterator<Attribute> attributeIterator = entry.iterator();
         Attribute attribute = attributeIterator.next();
         assertEquals( "objectclass", attribute.getUpId() );
@@ -402,7 +402,7 @@ public class AddRequestTest extends AbstractTest
         Entry entry = addRequest.getEntry();
         assertEquals( 1, entry.size() );
 
-        // Getting the Attribute       
+        // Getting the Attribute
         Iterator<Attribute> attributeIterator = entry.iterator();
         Attribute attribute = attributeIterator.next();
         assertEquals( "objectclass", attribute.getUpId() );
@@ -441,7 +441,7 @@ public class AddRequestTest extends AbstractTest
         Entry entry = addRequest.getEntry();
         assertEquals( 1, entry.size() );
 
-        // Getting the Attribute       
+        // Getting the Attribute
         Iterator<Attribute> attributeIterator = entry.iterator();
         Attribute attribute = attributeIterator.next();
         assertEquals( "objectclass", attribute.getUpId() );
@@ -481,7 +481,7 @@ public class AddRequestTest extends AbstractTest
         Entry entry = addRequest.getEntry();
         assertEquals( 1, entry.size() );
 
-        // Getting the Attribute       
+        // Getting the Attribute
         Iterator<Attribute> attributeIterator = entry.iterator();
         Attribute attribute = attributeIterator.next();
         assertEquals( "objectclass", attribute.getUpId() );
@@ -534,7 +534,7 @@ public class AddRequestTest extends AbstractTest
         Entry entry = addRequest.getEntry();
         assertEquals( 1, entry.size() );
 
-        // Getting the Attribute       
+        // Getting the Attribute
         Iterator<Attribute> attributeIterator = entry.iterator();
         Attribute attribute = attributeIterator.next();
         assertEquals( "objectclass", attribute.getUpId() );

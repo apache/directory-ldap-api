@@ -97,7 +97,6 @@ public class GracefulShutdownResponseImpl extends ExtendedResponseImpl implement
     // ExtendedResponse Interface Method Implementations
     // ------------------------------------------------------------------------
 
-
     /**
      * Gets the OID uniquely identifying this extended response (a.k.a. its
      * name).

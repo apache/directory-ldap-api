@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.message;
 
+
 import org.apache.directory.shared.ldap.model.exception.MessageException;
 
 
@@ -52,7 +53,6 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
     // ExtendedRequest Interface Method Implementations
     // -----------------------------------------------------------------------
 
-
     /**
      * Gets the Object Identifier corresponding to the extended request type.
      * This is the <b>requestName</b> portion of the ext. req. PDU.
@@ -64,7 +64,7 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
         return oid;
     }
 
-    
+
     /**
      * Sets the Object Identifier corresponding to the extended request type.
      * 
@@ -73,49 +73,49 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
     public ExtendedRequest<ExtendedResponse> setRequestName( String newOid )
     {
         this.oid = newOid;
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<ExtendedResponse> setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<ExtendedResponse> addControl( Control control ) throws MessageException
     {
-        return (ExtendedRequest<ExtendedResponse>)super.addControl( control );
+        return ( ExtendedRequest<ExtendedResponse> ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<ExtendedResponse> addAllControls( Control[] controls ) throws MessageException
     {
-        return (ExtendedRequest<ExtendedResponse>)super.addAllControls( controls );
+        return ( ExtendedRequest<ExtendedResponse> ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public ExtendedRequest<ExtendedResponse> removeControl( Control control ) throws MessageException
     {
-        return (ExtendedRequest<ExtendedResponse>)super.removeControl( control );
+        return ( ExtendedRequest<ExtendedResponse> ) super.removeControl( control );
     }
 
-    
+
     // ------------------------------------------------------------------------
     // SingleReplyRequest Interface Method Implementations
     // ------------------------------------------------------------------------
@@ -143,7 +143,7 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
         {
             response = new ExtendedResponseImpl( getMessageId() );
         }
-        
+
         return response;
     }
 
@@ -204,7 +204,7 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
         {
             return false;
         }
-        
+
         return true;
     }
 

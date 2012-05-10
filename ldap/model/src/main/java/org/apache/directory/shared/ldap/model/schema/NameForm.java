@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema;
 
@@ -26,8 +26,6 @@ import java.util.List;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeRegistry;
-import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 
 
 /**
@@ -41,7 +39,7 @@ import org.apache.directory.shared.ldap.model.schema.registries.Registries;
  * 
  * <pre>
  *  4.1.7.2. Name Forms
- *  
+ * 
  *   A name form &quot;specifies a permissible Rdn for entries of a particular
  *   structural object class.  A name form identifies a named object
  *   class and one or more attribute types to be used for naming (i.e.
@@ -131,43 +129,6 @@ public class NameForm extends AbstractSchemaObject
 
         mustAttributeTypes = new ArrayList<AttributeType>();
         mayAttributeTypes = new ArrayList<AttributeType>();
-    }
-
-
-    /**
-     * Inject the NameForm into the registries, updating the references to
-     * other SchemaObject
-     *
-     * @param registries The Registries
-     */
-    public void addToRegistries( Registries registries ) throws LdapException
-    {
-        if ( registries != null )
-        {
-            AttributeTypeRegistry atRegistry = registries.getAttributeTypeRegistry();
-
-            structuralObjectClass = registries.getObjectClassRegistry().lookup( structuralObjectClassOid );
-
-            if ( mayAttributeTypeOids != null )
-            {
-                mayAttributeTypes = new ArrayList<AttributeType>( mayAttributeTypeOids.size() );
-
-                for ( String oid : mayAttributeTypeOids )
-                {
-                    mayAttributeTypes.add( atRegistry.lookup( oid ) );
-                }
-            }
-
-            if ( mustAttributeTypeOids != null )
-            {
-                mustAttributeTypes = new ArrayList<AttributeType>( mustAttributeTypeOids.size() );
-
-                for ( String oid : mustAttributeTypeOids )
-                {
-                    mustAttributeTypes.add( atRegistry.lookup( oid ) );
-                }
-            }
-        }
     }
 
 
@@ -515,7 +476,7 @@ public class NameForm extends AbstractSchemaObject
      */
     @Override
     @SuppressWarnings("PMD.UnusedLocalVariable")
-    // Remove me when the TODO is fixed 
+    // Remove me when the TODO is fixed
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )

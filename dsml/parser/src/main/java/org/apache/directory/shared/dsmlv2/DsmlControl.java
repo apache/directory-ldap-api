@@ -28,30 +28,36 @@ import org.dom4j.Element;
 /**
  * A DSML decorator for a {@link Control}.
  *
+ * @param <C> The decorated Control
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DsmlControl<E extends Control> 
-    implements Control, DsmlDecorator<E>
+public class DsmlControl<C extends Control> implements Control, DsmlDecorator<C>
 {
     /** The decorated Control */
-    private E decorated;
+    private C decorated;
 
     /** The encoded value of the control. */
     protected byte[] value;
-    
+
     /** The codec service responsible for encoding decoding this object */
     private LdapApiService codec;
-    
-    
-    public DsmlControl( LdapApiService codec, E decorated )
+
+
+    /**
+     * Creates a new instance of DsmlControl
+     * @param codec The Codec used to encode/decode the Control
+     * @param decorated The decorated control
+     */
+    public DsmlControl( LdapApiService codec, C decorated )
     {
         this.codec = codec;
         this.decorated = decorated;
     }
-    
-    
+
+
     /**
-     * Gets the LDAP codec service.
+     * @return The LDAP codec service.
      */
     public LdapApiService getCodecService()
     {
@@ -71,7 +77,7 @@ public class DsmlControl<E extends Control>
 
 
     /**
-     * Get the control value
+     * Gets the control value
      * 
      * @return The control value
      */
@@ -82,7 +88,7 @@ public class DsmlControl<E extends Control>
 
 
     /**
-     * Set the encoded control value
+     * Sets the encoded control value
      * 
      * @param value The encoded control value to store
      */
@@ -90,17 +96,17 @@ public class DsmlControl<E extends Control>
     {
         if ( value != null )
         {
-            byte[] copy = new byte[ value.length ];
+            byte[] copy = new byte[value.length];
             System.arraycopy( value, 0, copy, 0, value.length );
             this.value = copy;
-        } 
-        else 
+        }
+        else
         {
             this.value = null;
         }
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -109,7 +115,7 @@ public class DsmlControl<E extends Control>
         return decorated.getOid();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -140,7 +146,7 @@ public class DsmlControl<E extends Control>
     /**
      * {@inheritDoc}
      */
-    public E getDecorated()
+    public C getDecorated()
     {
         return decorated;
     }

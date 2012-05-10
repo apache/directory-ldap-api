@@ -19,10 +19,9 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,12 +32,11 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class DataQualitySyntaxSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DataQualitySyntaxSyntaxChecker.class );
+
 
     /**
      * Creates a new instance of DataQualitySyntaxSyntaxChecker.
@@ -48,7 +46,7 @@ public class DataQualitySyntaxSyntaxChecker extends SyntaxChecker
         super( SchemaConstants.DATA_QUALITY_SYNTAX );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */

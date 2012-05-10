@@ -91,11 +91,11 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
         {
             element = new DefaultElement( EXTENDED_RESPONSE_TAG );
         }
-        
+
         ExtendedResponse extendedResponse = ( ExtendedResponse ) getDecorated();
 
         // LDAP Result
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(), 
+        LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),
             getDecorated().getLdapResult(), getDecorated() );
         ldapResultDsml.toDsml( element );
 
@@ -125,7 +125,7 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
             }
             else
             {
-                element.addElement( "response" ).addText( Strings.utf8ToString((byte[]) response) );
+                element.addElement( "response" ).addText( Strings.utf8ToString( ( byte[] ) response ) );
             }
         }
 
@@ -141,7 +141,7 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
         getDecorated().setResponseName( oid );
     }
 
-    
+
     /**
      * Get the extended response name
      * 

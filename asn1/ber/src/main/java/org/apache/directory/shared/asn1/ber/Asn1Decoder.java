@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.asn1.ber;
 
@@ -26,7 +26,7 @@ import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.TLVBerDecoderMBean;
 import org.apache.directory.shared.asn1.ber.tlv.TLVStateEnum;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.asn1.util.Asn1StringUtils;
 import org.apache.directory.shared.i18n.I18n;
 import org.slf4j.Logger;
@@ -79,9 +79,9 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * Treat the start of a TLV. It reads the tag and get its value.
      * 
      * @param stream The ByteBuffer containing the PDU to decode
-     * @param container The container that stores the current state, 
+     * @param container The container that stores the current state,
      * the result and other informations.
-     * @return <code>true</code> if there are more bytes to read, <code>false 
+     * @return <code>true</code> if there are more bytes to read, <code>false
      * </code> otherwise
      */
     private boolean treatTagStartState( ByteBuffer stream, Asn1Container container )
@@ -168,7 +168,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
             parent = parent.getParent();
         }
 
-        Value value = current.getValue();
+        BerValue value = current.getValue();
 
         if ( ( value != null ) && ( value.getData() != null ) )
         {
@@ -186,9 +186,9 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * the LENGTH, which can be multi-bytes.
      * 
      * @param stream  The ByteBuffer containing the PDU to decode
-     * @param container The container that stores the current state, 
+     * @param container The container that stores the current state,
      * the result and other informations.
-     * @return <code>true</code> if there are more bytes to read, <code>false 
+     * @return <code>true</code> if there are more bytes to read, <code>false
      * </code> otherwise
      * @throws DecoderException Thrown if anything went wrong
      */
@@ -245,9 +245,9 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * but the lack of bytes in the buffer stopped the process.
      * 
      * @param stream The ByteBuffer containing the PDU to decode
-     * @param container The container that stores the current state, 
+     * @param container The container that stores the current state,
      * the result and other informations.
-     * @return <code>true</code> if there are more bytes to read, <code>false 
+     * @return <code>true</code> if there are more bytes to read, <code>false
      * </code> otherwise
      */
     private boolean treatLengthPendingState( ByteBuffer stream, Asn1Container container )
@@ -333,7 +333,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
     /**
      * The Length is fully decoded. We have to call an action to check the size.
      * 
-     * @param container The container that stores the current state, 
+     * @param container The container that stores the current state,
      * the result and other informations.
      * @throws DecoderException Thrown if anything went wrong
      */
@@ -499,9 +499,9 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * nothing will be done.
      * 
      * @param stream The ByteBuffer containing the PDU to decode
-     * @param container The container that stores the current state, 
+     * @param container The container that stores the current state,
      * the result and other informations.
-     * @return <code>true</code> if there are more bytes to read, <code>false 
+     * @return <code>true</code> if there are more bytes to read, <code>false
      * </code> otherwise
      */
     private boolean treatValueStartState( ByteBuffer stream, Asn1Container container )
@@ -543,10 +543,10 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * Treat a pending Value when we get more bytes in the buffer.
      * 
      * @param stream The ByteBuffer containing the PDU to decode
-     * @param container The container that stores the current state, 
+     * @param container The container that stores the current state,
      * the result and other informations.
      * @return <code>MORE</code> if some bytes remain in the buffer when the
-     * value has been decoded, <code>END</code> if whe still need to get some 
+     * value has been decoded, <code>END</code> if whe still need to get some
      * more bytes.
      */
     private boolean treatValuePendingState( ByteBuffer stream, Asn1Container container )
@@ -582,9 +582,9 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * action and switch to the next TLV, which will start with a Tag.
      * 
      * @param stream The ByteBuffer containing the PDU to decode
-     * @param container The container that stores the current state, 
+     * @param container The container that stores the current state,
      * the result and other informations.
-     * @return <code>true</code> if there are more bytes to read, <code>false 
+     * @return <code>true</code> if there are more bytes to read, <code>false
      * </code> otherwise
      * @throws DecoderException Thrown if anything went wrong
      */
@@ -637,7 +637,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * or if the PDU has been fully decoded.
      * 
      * @param stream The ByteBuffer containing the PDU to decode
-     * @param container The container that store the state, the result 
+     * @param container The container that store the state, the result
      * and other elements.
      * @throws DecoderException Thrown if anything went wrong!
      */
@@ -645,9 +645,9 @@ public class Asn1Decoder implements TLVBerDecoderMBean
     {
         /*
          * We have to deal with the current state. This is an infinite loop,
-         * which will stop for any of these reasons : 
-         * - STATE_END has been reached (hopefully, the most frequent case) 
-         * - buffer is empty (it could happen) 
+         * which will stop for any of these reasons :
+         * - STATE_END has been reached (hopefully, the most frequent case)
+         * - buffer is empty (it could happen)
          * - STATE_OVERFLOW : bad situation ! The PDU may be a
          * malevolous hand crafted ones, that try to "kill" our decoder. We
          * must log it with all information to track back this case, and punish
@@ -783,9 +783,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
 
     /**
-     * Get the length's Length.
-     * 
-     * @return Returns the length's Length.
+     * {@inheritDoc}
      */
     public int getMaxLengthLength()
     {
@@ -794,9 +792,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
 
     /**
-     * Get the maximum Tag's length
-     * 
-     * @return Returns the maximum tag Length.
+     * {@inheritDoc}
      */
     public int getMaxTagLength()
     {
@@ -805,7 +801,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
 
     /**
-     * Disallow indefinite length.
+     * {@inheritDoc}
      */
     public void disallowIndefiniteLength()
     {
@@ -814,7 +810,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
 
     /**
-     * Allow indefinite length.
+     * {@inheritDoc}
      */
     public void allowIndefiniteLength()
     {
@@ -823,10 +819,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
 
     /**
-     * Tells if indefinite length form could be used for Length
-     * 
-     * @return Returns <code>true</code> if the current decoder support
-     * indefinite length
+     * {@inheritDoc}
      */
     public boolean isIndefiniteLengthAllowed()
     {
@@ -850,9 +843,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
 
 
     /**
-     * Set the maximum Tag length
-     * 
-     * @param maxTagLength The tagLength to set.
+     * {@inheritDoc}
      */
     public void setMaxTagLength( int maxTagLength )
     {

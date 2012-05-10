@@ -31,6 +31,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +43,8 @@ import org.slf4j.LoggerFactory;
  */
 public class LdapConnectionConfig
 {
+    /** A logger for this class */
+    private static final Logger LOG = LoggerFactory.getLogger( LdapConnectionConfig.class );
 
     /** Default ports for LDAP */
     public static final int DEFAULT_LDAP_PORT = 389;
@@ -62,7 +65,6 @@ public class LdapConnectionConfig
     public static final String DEFAULT_SSL_PROTOCOL = "TLS";
 
     // --- private members ----
-
     /** A flag indicating if we are using SSL or not, default value is false */
     private boolean useSsl = false;
 
@@ -93,14 +95,18 @@ public class LdapConnectionConfig
     /** name of the protocol used for creating SSL context, default value is "TLS" */
     private String sslProtocol = DEFAULT_SSL_PROTOCOL;
 
-    private static final Logger LOG = LoggerFactory.getLogger( LdapConnectionConfig.class );
-    
+    /** The class used to detect if an attribute is HR or not */
+    private BinaryAttributeDetector binaryAttributeDetector;
+
+    /**
+     * Creates a default LdapConnectionConfig instance
+     */
     public LdapConnectionConfig()
     {
         setDefaultTrustManager();
     }
 
-    
+
     /**
      * sets the default trust manager based on the SunX509 trustManagement algorithm
      */
@@ -119,23 +125,24 @@ public class LdapConnectionConfig
             {
                 if ( factoryTrustManagers[i] instanceof X509TrustManager )
                 {
-                    trustManagers = new TrustManager[] { factoryTrustManagers[i] };
+                    trustManagers = new TrustManager[]
+                        { factoryTrustManagers[i] };
                     LOG.debug( "found X509TrustManager {}", factoryTrustManagers[i] );
                     break;
                 }
             }
         }
-        catch( NoSuchAlgorithmException e )
+        catch ( NoSuchAlgorithmException e )
         {
             LOG.warn( "couldn't find any default X509 TrustManager with algorithm {}", trustMgmtAlgo );
         }
-        catch( KeyStoreException e )
+        catch ( KeyStoreException e )
         {
             LOG.warn( "couldn't initialize TrustManagerFactory with keystore {}", KeyStore.getDefaultType() );
         }
     }
-    
-    
+
+
     /**
      * Checks if SSL (ldaps://) is used.
      *
@@ -408,5 +415,23 @@ public class LdapConnectionConfig
     public void setEnabledCipherSuites( String[] enabledCipherSuites )
     {
         this.enabledCipherSuites = enabledCipherSuites;
+    }
+    
+    
+    /**
+     * @return the binaryAttributeDetector
+     */
+    public BinaryAttributeDetector getBinaryAttributeDetector()
+    {
+        return binaryAttributeDetector;
+    }
+
+
+    /**
+     * @param binaryAttributeDetector the binaryAttributeDetector to set
+     */
+    public void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetector )
+    {
+        this.binaryAttributeDetector = binaryAttributeDetector;
     }
 }

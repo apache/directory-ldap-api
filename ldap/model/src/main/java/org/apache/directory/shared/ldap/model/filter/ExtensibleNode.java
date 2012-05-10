@@ -49,11 +49,11 @@ public class ExtensibleNode extends LeafNode
     public ExtensibleNode( AttributeType attributeType )
     {
         super( attributeType, AssertionType.EXTENSIBLE );
-        
+
         dnAttributes = false;
     }
 
-    
+
     /**
      * Creates a new emptyExtensibleNode object.
      * 
@@ -62,11 +62,11 @@ public class ExtensibleNode extends LeafNode
     public ExtensibleNode( String attribute )
     {
         super( attribute, AssertionType.EXTENSIBLE );
-        
+
         dnAttributes = false;
     }
 
-    
+
     /**
      * Creates a new ExtensibleNode object.
      * 
@@ -84,9 +84,7 @@ public class ExtensibleNode extends LeafNode
         this.dnAttributes = dnAttributes;
     }
 
-    
 
-    
     /**
      * Creates a new ExtensibleNode object.
      * 
@@ -103,25 +101,27 @@ public class ExtensibleNode extends LeafNode
         this.matchingRuleId = matchingRuleId;
         this.dnAttributes = dnAttributes;
     }
-    
-    
+
+
     /**
      * Makes a full clone in new memory space of the current node and children
      * 
      * @return the clone
      */
-    @Override public ExprNode clone()
+    @Override
+    public ExprNode clone()
     {
-        ExprNode clone = (ExprNode)super.clone();
-        
+        ExprNode clone = ( ExprNode ) super.clone();
+
         // Copy the value
         if ( value != null )
         {
-            ((ExtensibleNode)clone).value = value.clone();
+            ( ( ExtensibleNode ) clone ).value = value.clone();
         }
-        
+
         return clone;
     }
+
 
     /**
      * Gets the Dn attributes.
@@ -132,8 +132,8 @@ public class ExtensibleNode extends LeafNode
     {
         return dnAttributes;
     }
-    
-    
+
+
     /**
      * Set the dnAttributes flag
      *
@@ -187,22 +187,22 @@ public class ExtensibleNode extends LeafNode
         {
             return escapeFilterValue( value );
         }
-        
+
         return value;
     }
 
-    
+
     /**
      * Sets the value.
      * 
      * @param value the value
      */
-    public final void setValue( Value<?> value)
+    public final void setValue( Value<?> value )
     {
         this.value = value;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -219,7 +219,7 @@ public class ExtensibleNode extends LeafNode
             return false;
         }
         ExtensibleNode that = ( ExtensibleNode ) obj;
-        
+
         if ( dnAttributes != that.dnAttributes )
         {
             return false;
@@ -232,7 +232,7 @@ public class ExtensibleNode extends LeafNode
         {
             return false;
         }
-        
+
         return super.equals( obj );
     }
 
@@ -245,12 +245,12 @@ public class ExtensibleNode extends LeafNode
     public int hashCode()
     {
         int h = 37;
-        
-        h = h*17 + super.hashCode();
-        h = h*17 + ( dnAttributes ? 1 : 0 );
-        h = h*17 + matchingRuleId.hashCode();
-        h = h*17 + value.hashCode();
-        
+
+        h = h * 17 + super.hashCode();
+        h = h * 17 + ( dnAttributes ? 1 : 0 );
+        h = h * 17 + matchingRuleId.hashCode();
+        h = h * 17 + value.hashCode();
+
         return h;
     }
 
@@ -262,9 +262,9 @@ public class ExtensibleNode extends LeafNode
     public String toString()
     {
         StringBuilder buf = new StringBuilder();
-        
+
         buf.append( '(' );
-        
+
         if ( attributeType != null )
         {
             buf.append( attributeType.getName() );
@@ -273,7 +273,7 @@ public class ExtensibleNode extends LeafNode
         {
             buf.append( attribute );
         }
-        
+
         buf.append( "-" );
         buf.append( dnAttributes );
         buf.append( "-EXTENSIBLE-" );
@@ -282,9 +282,9 @@ public class ExtensibleNode extends LeafNode
         buf.append( value );
 
         buf.append( super.toString() );
-        
+
         buf.append( ')' );
-        
+
         return buf.toString();
     }
 }

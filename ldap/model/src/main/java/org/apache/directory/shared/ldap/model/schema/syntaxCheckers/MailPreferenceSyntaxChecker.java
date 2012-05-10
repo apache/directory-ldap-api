@@ -23,8 +23,6 @@ package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,12 +38,11 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class MailPreferenceSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( MailPreferenceSyntaxChecker.class );
+
 
     /**
      * Creates a new instance of MailPreferenceSyntaxChecker.
@@ -54,7 +51,8 @@ public class MailPreferenceSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.MAIL_PREFERENCE_SYNTAX );
     }
-    
+
+
     /**
      * 
      * Creates a new instance of MailPreferenceSyntaxChecker.
@@ -66,28 +64,28 @@ public class MailPreferenceSyntaxChecker extends SyntaxChecker
     {
         super( oid );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public boolean isValidSyntax( Object value )
     {
-        String strValue =null;
+        String strValue = null;
 
         if ( value == null )
         {
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -99,7 +97,7 @@ public class MailPreferenceSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         boolean result = ( ( "NO-LISTS".equals( strValue ) ) || ( "ANY-LIST".equals( strValue ) )
             || ( "PROFESSIONAL-LISTS".equals( strValue ) ) );
 
@@ -111,7 +109,7 @@ public class MailPreferenceSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax invalid for '{}'", value );
         }
-        
+
         return result;
     }
 }

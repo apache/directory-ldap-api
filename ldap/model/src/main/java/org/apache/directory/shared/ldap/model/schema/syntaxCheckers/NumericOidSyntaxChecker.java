@@ -20,13 +20,10 @@
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
 
-
 import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,12 +44,11 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class NumericOidSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( NumericOidSyntaxChecker.class );
+
 
     /**
      * Creates a new instance of NumericOidSyntaxChecker.
@@ -61,8 +57,8 @@ public class NumericOidSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.NUMERIC_OID_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -75,14 +71,14 @@ public class NumericOidSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -97,7 +93,7 @@ public class NumericOidSyntaxChecker extends SyntaxChecker
 
         // Just check that the value is a valid OID
         boolean result = ( Oid.isOid( strValue ) );
-        
+
         if ( result )
         {
             LOG.debug( "Syntax valid for '{}'", value );
@@ -106,7 +102,7 @@ public class NumericOidSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax invalid for '{}'", value );
         }
-        
+
         return result;
     }
 }

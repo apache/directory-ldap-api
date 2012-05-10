@@ -1,15 +1,15 @@
 version: 1
 dn: m-oid=1.3.6.1.4.1.18060.0.4.0.3.8,ou=objectClasses,cn=apachemeta,ou=schema
-m-must: m-applies
 m-oid: 1.3.6.1.4.1.18060.0.4.0.3.8
+m-name: metaMatchingRuleUse
+m-description: meta definition of the MatchingRuleUse object
+objectclass: top
+objectclass: metaTop
+objectclass: metaObjectClass
 m-obsolete: FALSE
 m-supobjectclass: metaTop
-m-description: meta definition of the MatchingRuleUse object
-objectclass: metaObjectClass
-objectclass: metaTop
-objectclass: top
-m-name: metaMatchingRuleUse
 m-typeobjectclass: STRUCTURAL
-creatorsname: uid=admin,ou=system
+m-must: m-applies
 m-may: m-name
 m-may: m-obsolete
+creatorsname: uid=admin,ou=system

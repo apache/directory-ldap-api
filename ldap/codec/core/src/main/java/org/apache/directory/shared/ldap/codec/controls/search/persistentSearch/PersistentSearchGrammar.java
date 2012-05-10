@@ -30,7 +30,7 @@ import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.message.controls.PersistentSearch;
 import org.slf4j.Logger;
@@ -78,7 +78,7 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
         setName( PersistentSearchGrammar.class.getName() );
 
         // Create the transitions table
-        super.transitions = new GrammarTransition[ PersistentSearchStates.LAST_PSEARCH_STATE.ordinal()][256];
+        super.transitions = new GrammarTransition[PersistentSearchStates.LAST_PSEARCH_STATE.ordinal()][256];
 
         /** 
          * Transition from initial state to Psearch sequence
@@ -87,11 +87,10 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
          *     
          * Initialize the persistence search object
          */
-        super.transitions[ PersistentSearchStates.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
+        super.transitions[PersistentSearchStates.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<PersistentSearchContainer>( PersistentSearchStates.START_STATE,
-                                    PersistentSearchStates.PSEARCH_SEQUENCE_STATE,
-                                    UniversalTag.SEQUENCE.getValue(), null );
-
+                PersistentSearchStates.PSEARCH_SEQUENCE_STATE,
+                UniversalTag.SEQUENCE.getValue(), null );
 
         /** 
          * Transition from Psearch sequence to Change types
@@ -101,38 +100,38 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
          *     
          * Stores the change types value
          */
-        super.transitions[ PersistentSearchStates.PSEARCH_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER.getValue()] =
+        super.transitions[PersistentSearchStates.PSEARCH_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER.getValue()] =
             new GrammarTransition<PersistentSearchContainer>( PersistentSearchStates.PSEARCH_SEQUENCE_STATE,
                 PersistentSearchStates.CHANGE_TYPES_STATE,
                 UniversalTag.INTEGER.getValue(),
                 new GrammarAction<PersistentSearchContainer>( "Set PSearchControl changeTypes" )
-            {
-                public void action( PersistentSearchContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( PersistentSearchContainer container ) throws DecoderException
                     {
-                        // Check that the value is into the allowed interval
-                        int changeTypes = IntegerDecoder.parse( value, 
-                            PersistentSearch.CHANGE_TYPES_MIN,
-                            PersistentSearch.CHANGE_TYPES_MAX );
-                        
-                        if ( IS_DEBUG )
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        try
                         {
-                            LOG.debug( "changeTypes = " + changeTypes );
-                        }
+                            // Check that the value is into the allowed interval
+                            int changeTypes = IntegerDecoder.parse( value,
+                                PersistentSearch.CHANGE_TYPES_MIN,
+                                PersistentSearch.CHANGE_TYPES_MAX );
 
-                        container.getPersistentSearchDecorator().setChangeTypes( changeTypes );
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "changeTypes = " + changeTypes );
+                            }
+
+                            container.getPersistentSearchDecorator().setChangeTypes( changeTypes );
+                        }
+                        catch ( IntegerDecoderException e )
+                        {
+                            String msg = I18n.err( I18n.ERR_04051 );
+                            LOG.error( msg, e );
+                            throw new DecoderException( msg );
+                        }
                     }
-                    catch ( IntegerDecoderException e )
-                    {
-                        String msg = I18n.err( I18n.ERR_04051 );
-                        LOG.error( msg, e );
-                        throw new DecoderException( msg );
-                    }
-                }
-            } );
+                } );
 
         /** 
          * Transition from Change types to Changes only
@@ -143,34 +142,34 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
          *     
          * Stores the change only flag
          */
-        super.transitions[ PersistentSearchStates.CHANGE_TYPES_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
+        super.transitions[PersistentSearchStates.CHANGE_TYPES_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
             new GrammarTransition<PersistentSearchContainer>( PersistentSearchStates.CHANGE_TYPES_STATE,
-                                    PersistentSearchStates.CHANGES_ONLY_STATE, UniversalTag.BOOLEAN.getValue(),
+                PersistentSearchStates.CHANGES_ONLY_STATE, UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<PersistentSearchContainer>( "Set PSearchControl changesOnly" )
-            {
-                public void action( PersistentSearchContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( PersistentSearchContainer container ) throws DecoderException
                     {
-                        boolean changesOnly = BooleanDecoder.parse( value );
+                        BerValue value = container.getCurrentTLV().getValue();
 
-                        if ( IS_DEBUG )
+                        try
                         {
-                            LOG.debug( "changesOnly = " + changesOnly );
-                        }
+                            boolean changesOnly = BooleanDecoder.parse( value );
 
-                        container.getPersistentSearchDecorator().setChangesOnly( changesOnly );
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "changesOnly = " + changesOnly );
+                            }
+
+                            container.getPersistentSearchDecorator().setChangesOnly( changesOnly );
+                        }
+                        catch ( BooleanDecoderException e )
+                        {
+                            String msg = I18n.err( I18n.ERR_04052 );
+                            LOG.error( msg, e );
+                            throw new DecoderException( msg );
+                        }
                     }
-                    catch ( BooleanDecoderException e )
-                    {
-                        String msg = I18n.err( I18n.ERR_04052 );
-                        LOG.error( msg, e );
-                        throw new DecoderException( msg );
-                    }
-                }
-            } );
+                } );
 
         /** 
          * Transition from Change types to Changes only
@@ -181,37 +180,37 @@ public final class PersistentSearchGrammar extends AbstractGrammar<PersistentSea
          *     
          * Stores the return ECs flag 
          */
-        super.transitions[ PersistentSearchStates.CHANGES_ONLY_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
+        super.transitions[PersistentSearchStates.CHANGES_ONLY_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
             new GrammarTransition<PersistentSearchContainer>( PersistentSearchStates.CHANGES_ONLY_STATE,
-                                    PersistentSearchStates.RETURN_ECS_STATE, UniversalTag.BOOLEAN.getValue(),
+                PersistentSearchStates.RETURN_ECS_STATE, UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<PersistentSearchContainer>( "Set PSearchControl returnECs" )
-            {
-                public void action( PersistentSearchContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( PersistentSearchContainer container ) throws DecoderException
                     {
-                        boolean returnECs = BooleanDecoder.parse( value );
+                        BerValue value = container.getCurrentTLV().getValue();
 
-                        if ( IS_DEBUG )
+                        try
                         {
-                            LOG.debug( "returnECs = " + returnECs );
+                            boolean returnECs = BooleanDecoder.parse( value );
+
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "returnECs = " + returnECs );
+                            }
+
+                            container.getPersistentSearchDecorator().setReturnECs( returnECs );
+
+                            // We can have an END transition
+                            container.setGrammarEndAllowed( true );
                         }
-
-                        container.getPersistentSearchDecorator().setReturnECs( returnECs );
-
-                        // We can have an END transition
-                        container.setGrammarEndAllowed( true );
+                        catch ( BooleanDecoderException e )
+                        {
+                            String msg = I18n.err( I18n.ERR_04053 );
+                            LOG.error( msg, e );
+                            throw new DecoderException( msg );
+                        }
                     }
-                    catch ( BooleanDecoderException e )
-                    {
-                        String msg = I18n.err( I18n.ERR_04053 );
-                        LOG.error( msg, e );
-                        throw new DecoderException( msg );
-                    }
-                }
-            } );
+                } );
     }
 
 

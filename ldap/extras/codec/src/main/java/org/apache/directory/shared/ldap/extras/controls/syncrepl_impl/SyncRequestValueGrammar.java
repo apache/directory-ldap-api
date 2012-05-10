@@ -30,7 +30,7 @@ import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.extras.controls.SynchronizationModeEnum;
 import org.apache.directory.shared.util.Strings;
@@ -86,12 +86,11 @@ public final class SyncRequestValueGrammar extends AbstractGrammar
          *     
          * Initialize the syncRequestValue object
          */
-        super.transitions[SyncRequestValueStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = 
-            new GrammarTransition( SyncRequestValueStatesEnum.START_STATE, 
-                                    SyncRequestValueStatesEnum.SYNC_REQUEST_VALUE_SEQUENCE_STATE, 
-                                    UniversalTag.SEQUENCE.getValue(), 
+        super.transitions[SyncRequestValueStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
+            new GrammarTransition( SyncRequestValueStatesEnum.START_STATE,
+                SyncRequestValueStatesEnum.SYNC_REQUEST_VALUE_SEQUENCE_STATE,
+                UniversalTag.SEQUENCE.getValue(),
                 null );
-
 
         /** 
          * Transition from SyncRequestValue sequence to Change types
@@ -106,44 +105,44 @@ public final class SyncRequestValueGrammar extends AbstractGrammar
          *     
          * Stores the mode value
          */
-        super.transitions[SyncRequestValueStatesEnum.SYNC_REQUEST_VALUE_SEQUENCE_STATE.ordinal()][UniversalTag.ENUMERATED.getValue()] = 
-            new GrammarTransition( SyncRequestValueStatesEnum.SYNC_REQUEST_VALUE_SEQUENCE_STATE, 
-                SyncRequestValueStatesEnum.MODE_STATE, 
+        super.transitions[SyncRequestValueStatesEnum.SYNC_REQUEST_VALUE_SEQUENCE_STATE.ordinal()][UniversalTag.ENUMERATED
+            .getValue()] =
+            new GrammarTransition( SyncRequestValueStatesEnum.SYNC_REQUEST_VALUE_SEQUENCE_STATE,
+                SyncRequestValueStatesEnum.MODE_STATE,
                 UniversalTag.ENUMERATED.getValue(),
                 new GrammarAction<SyncRequestValueContainer>( "Set SyncRequestValueControl mode" )
-            {
-                public void action( SyncRequestValueContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( SyncRequestValueContainer container ) throws DecoderException
                     {
-                        // Check that the value is into the allowed interval
-                        int mode = IntegerDecoder.parse( value, 
-                            SynchronizationModeEnum.UNUSED.getValue(), 
-                            SynchronizationModeEnum.REFRESH_AND_PERSIST.getValue() );
-                        
-                        SynchronizationModeEnum modeEnum = SynchronizationModeEnum.getSyncMode( mode );
-                        
-                        if ( IS_DEBUG )
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        try
                         {
-                            LOG.debug( "Mode = " + modeEnum );
+                            // Check that the value is into the allowed interval
+                            int mode = IntegerDecoder.parse( value,
+                                SynchronizationModeEnum.UNUSED.getValue(),
+                                SynchronizationModeEnum.REFRESH_AND_PERSIST.getValue() );
+
+                            SynchronizationModeEnum modeEnum = SynchronizationModeEnum.getSyncMode( mode );
+
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "Mode = " + modeEnum );
+                            }
+
+                            container.getSyncRequestValueControl().setMode( modeEnum );
+
+                            // We can have an END transition
+                            container.setGrammarEndAllowed( true );
                         }
-
-                        container.getSyncRequestValueControl().setMode( modeEnum );
-
-                        // We can have an END transition
-                        container.setGrammarEndAllowed( true );
+                        catch ( IntegerDecoderException e )
+                        {
+                            String msg = I18n.err( I18n.ERR_04028 );
+                            LOG.error( msg, e );
+                            throw new DecoderException( msg );
+                        }
                     }
-                    catch ( IntegerDecoderException e )
-                    {
-                        String msg = I18n.err( I18n.ERR_04028 );
-                        LOG.error( msg, e );
-                        throw new DecoderException( msg );
-                    }
-                }
-            } );
-
+                } );
 
         /** 
          * Transition from mode to cookie
@@ -154,29 +153,28 @@ public final class SyncRequestValueGrammar extends AbstractGrammar
          *     
          * Stores the cookie
          */
-        super.transitions[SyncRequestValueStatesEnum.MODE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = 
+        super.transitions[SyncRequestValueStatesEnum.MODE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
             new GrammarTransition( SyncRequestValueStatesEnum.MODE_STATE,
-                                    SyncRequestValueStatesEnum.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(),
+                SyncRequestValueStatesEnum.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<SyncRequestValueContainer>( "Set SyncRequestValueControl cookie" )
-            {
-                public void action( SyncRequestValueContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    byte[] cookie = value.getData();
-
-                    if ( IS_DEBUG )
+                    public void action( SyncRequestValueContainer container ) throws DecoderException
                     {
-                        LOG.debug( "cookie = " + Strings.dumpBytes(cookie) );
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        byte[] cookie = value.getData();
+
+                        if ( IS_DEBUG )
+                        {
+                            LOG.debug( "cookie = " + Strings.dumpBytes( cookie ) );
+                        }
+
+                        container.getSyncRequestValueControl().setCookie( cookie );
+
+                        // We can have an END transition
+                        container.setGrammarEndAllowed( true );
                     }
-
-                    container.getSyncRequestValueControl().setCookie( cookie );
-
-                    // We can have an END transition
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
-
+                } );
 
         /** 
          * Transition from mode to reloadHint
@@ -187,38 +185,37 @@ public final class SyncRequestValueGrammar extends AbstractGrammar
          *     
          * Stores the reloadHint flag
          */
-        super.transitions[SyncRequestValueStatesEnum.MODE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] = 
+        super.transitions[SyncRequestValueStatesEnum.MODE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
             new GrammarTransition( SyncRequestValueStatesEnum.MODE_STATE,
-                                    SyncRequestValueStatesEnum.RELOAD_HINT_STATE, UniversalTag.BOOLEAN.getValue(),
+                SyncRequestValueStatesEnum.RELOAD_HINT_STATE, UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncRequestValueContainer>( "Set SyncRequestValueControl reloadHint flag" )
-            {
-                public void action( SyncRequestValueContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( SyncRequestValueContainer container ) throws DecoderException
                     {
-                        boolean reloadHint = BooleanDecoder.parse(value);
+                        BerValue value = container.getCurrentTLV().getValue();
 
-                        if ( IS_DEBUG )
+                        try
                         {
-                            LOG.debug( "reloadHint = " + reloadHint );
+                            boolean reloadHint = BooleanDecoder.parse( value );
+
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "reloadHint = " + reloadHint );
+                            }
+
+                            container.getSyncRequestValueControl().setReloadHint( reloadHint );
+
+                            // We can have an END transition
+                            container.setGrammarEndAllowed( true );
                         }
-
-                        container.getSyncRequestValueControl().setReloadHint( reloadHint );
-
-                        // We can have an END transition
-                        container.setGrammarEndAllowed( true );
+                        catch ( BooleanDecoderException e )
+                        {
+                            String msg = I18n.err( I18n.ERR_04029 );
+                            LOG.error( msg, e );
+                            throw new DecoderException( msg );
+                        }
                     }
-                    catch ( BooleanDecoderException e )
-                    {
-                        String msg = I18n.err( I18n.ERR_04029 );
-                        LOG.error( msg, e );
-                        throw new DecoderException( msg );
-                    }
-                }
-            } );
-
+                } );
 
         /** 
          * Transition from cookie to reloadHint
@@ -229,37 +226,37 @@ public final class SyncRequestValueGrammar extends AbstractGrammar
          *     
          * Stores the reloadHint flag
          */
-        super.transitions[SyncRequestValueStatesEnum.COOKIE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] = 
+        super.transitions[SyncRequestValueStatesEnum.COOKIE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
             new GrammarTransition( SyncRequestValueStatesEnum.COOKIE_STATE,
-                                    SyncRequestValueStatesEnum.RELOAD_HINT_STATE, UniversalTag.BOOLEAN.getValue(),
+                SyncRequestValueStatesEnum.RELOAD_HINT_STATE, UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncRequestValueContainer>( "Set SyncRequestValueControl reloadHint flag" )
-            {
-                public void action( SyncRequestValueContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( SyncRequestValueContainer container ) throws DecoderException
                     {
-                        boolean reloadHint = BooleanDecoder.parse( value );
+                        BerValue value = container.getCurrentTLV().getValue();
 
-                        if ( IS_DEBUG )
+                        try
                         {
-                            LOG.debug( "reloadHint = " + reloadHint );
+                            boolean reloadHint = BooleanDecoder.parse( value );
+
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "reloadHint = " + reloadHint );
+                            }
+
+                            container.getSyncRequestValueControl().setReloadHint( reloadHint );
+
+                            // We can have an END transition
+                            container.setGrammarEndAllowed( true );
                         }
-
-                        container.getSyncRequestValueControl().setReloadHint( reloadHint );
-
-                        // We can have an END transition
-                        container.setGrammarEndAllowed( true );
+                        catch ( BooleanDecoderException e )
+                        {
+                            String msg = I18n.err( I18n.ERR_04029 );
+                            LOG.error( msg, e );
+                            throw new DecoderException( msg );
+                        }
                     }
-                    catch ( BooleanDecoderException e )
-                    {
-                        String msg = I18n.err( I18n.ERR_04029 );
-                        LOG.error( msg, e );
-                        throw new DecoderException( msg );
-                    }
-                }
-            } );
+                } );
     }
 
 

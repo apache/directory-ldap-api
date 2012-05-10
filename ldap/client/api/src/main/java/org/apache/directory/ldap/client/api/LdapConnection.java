@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.directory.shared.asn1.util.Oid;
+import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.cursor.EntryCursor;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
@@ -671,8 +672,8 @@ public interface LdapConnection
      * @throws LdapException if some error occurred
      */
     boolean exists( Dn dn ) throws LdapException;
-    
-    
+
+
     /**
      * Get back the RooDSE from the connected server. We only return the user attributes.
      * 
@@ -680,8 +681,8 @@ public interface LdapConnection
      * @throws LdapException If the rootDSE can't be read
      */
     Entry getRootDse() throws LdapException;
-    
-    
+
+
     /**
      * Get back the RooDSE from the connected server. The user can provide the
      * list of attributes he wants to get back. Sending "*" will return all the
@@ -737,7 +738,6 @@ public interface LdapConnection
      * @throws LdapException in case of any problems while searching for the Dn or if the returned response contains a referral
      */
     Entry lookup( Dn dn, Control[] controls, String... attributes ) throws LdapException;
-
 
 
     /**
@@ -797,7 +797,7 @@ public interface LdapConnection
      */
     SchemaManager getSchemaManager();
 
-    
+
     /**
      * Gets the LDAP CODEC service responsible for encoding and decoding
      * messages.
@@ -805,8 +805,8 @@ public interface LdapConnection
      * @return The LDAP CODEC service.
      */
     LdapApiService getCodecService();
-    
-    
+
+
     /**
      * Checks if there is a ResponseFuture associated with the given message ID.
      *
@@ -814,4 +814,17 @@ public interface LdapConnection
      * @return true if there is a non-null future exists, false otherwise
      */
     boolean doesFutureExistFor( int messageId );
+    
+    
+    /**
+     * @return the object responsible for the detection of binary attributes
+     */
+    BinaryAttributeDetector getBinaryAttributeDetector();
+    
+    
+    /**
+     * Sets the object responsible for the detection of binary attributes
+     * @return
+     */
+    void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetecter);
 }

@@ -73,7 +73,7 @@ public class StoreSaslMechanism extends GrammarAction<LdapMessageContainer<BindR
         }
         else
         {
-            bindRequestMessage.setSaslMechanism( Strings.utf8ToString(tlv.getValue().getData()) );
+            bindRequestMessage.setSaslMechanism( Strings.utf8ToString( tlv.getValue().getData() ) );
         }
 
         // We can have an END transition

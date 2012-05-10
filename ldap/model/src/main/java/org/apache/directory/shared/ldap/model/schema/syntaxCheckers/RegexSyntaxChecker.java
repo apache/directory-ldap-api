@@ -19,12 +19,11 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Provides;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,8 +35,6 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("serial")
-@Component
-@Provides
 public class RegexSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
@@ -45,6 +42,7 @@ public class RegexSyntaxChecker extends SyntaxChecker
 
     /** the set of regular expressions */
     private List<String> expressions;
+
 
     /**
      * Creates a Syntax validator for a specific Syntax using Perl5 matching
@@ -58,12 +56,12 @@ public class RegexSyntaxChecker extends SyntaxChecker
     public RegexSyntaxChecker( String oid, String[] matchExprArray )
     {
         super( oid );
-        
+
         if ( ( matchExprArray != null ) && ( matchExprArray.length != 0 ) )
         {
             expressions = new ArrayList<String>( matchExprArray.length );
-            
-            for ( String regexp:matchExprArray )
+
+            for ( String regexp : matchExprArray )
             {
                 expressions.add( regexp );
             }
@@ -87,7 +85,7 @@ public class RegexSyntaxChecker extends SyntaxChecker
         super( oid );
         expressions = new ArrayList<String>();
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -101,7 +99,7 @@ public class RegexSyntaxChecker extends SyntaxChecker
         {
             str = ( String ) value;
 
-            for ( String regexp:expressions )
+            for ( String regexp : expressions )
             {
                 match = match && str.matches( regexp );
 
@@ -112,17 +110,18 @@ public class RegexSyntaxChecker extends SyntaxChecker
             }
         }
 
-         if ( match )
-         {
-             LOG.debug( "Syntax valid for '{}'", value );
-         }
-         else
-         {
-             LOG.debug( "Syntax invalid for '{}'", value );
-         }
-         
-         return match;
+        if ( match )
+        {
+            LOG.debug( "Syntax valid for '{}'", value );
+        }
+        else
+        {
+            LOG.debug( "Syntax invalid for '{}'", value );
+        }
+
+        return match;
     }
+
 
     /**
      * Get the list of regexp stored into this SyntaxChecker
@@ -131,9 +130,10 @@ public class RegexSyntaxChecker extends SyntaxChecker
      */
     public String[] getExpressions()
     {
-        String[] exprs = new String[ expressions.size() ];
+        String[] exprs = new String[expressions.size()];
         return expressions.toArray( exprs );
     }
+
 
     /**
      * Add a list of regexp to be applied by this SyntaxChecker
@@ -142,7 +142,7 @@ public class RegexSyntaxChecker extends SyntaxChecker
      */
     public void setExpressions( String[] expressions )
     {
-        for ( String regexp:expressions )
+        for ( String regexp : expressions )
         {
             this.expressions.add( regexp );
         }

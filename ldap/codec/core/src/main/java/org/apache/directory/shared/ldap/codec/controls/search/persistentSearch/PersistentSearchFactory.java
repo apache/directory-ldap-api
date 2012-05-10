@@ -34,14 +34,14 @@ import org.apache.directory.shared.ldap.model.message.controls.PersistentSearch;
 public class PersistentSearchFactory implements ControlFactory<PersistentSearch, PersistentSearchDecorator>
 {
     private LdapApiService codec;
-    
-    
+
+
     public PersistentSearchFactory( LdapApiService codec )
     {
         this.codec = codec;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -50,7 +50,7 @@ public class PersistentSearchFactory implements ControlFactory<PersistentSearch,
         return PersistentSearch.OID;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -59,7 +59,7 @@ public class PersistentSearchFactory implements ControlFactory<PersistentSearch,
         return new PersistentSearchDecorator( codec );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */

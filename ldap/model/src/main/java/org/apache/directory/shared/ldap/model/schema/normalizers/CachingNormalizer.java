@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.model.schema.normalizers;
 
@@ -24,7 +24,6 @@ import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.directory.shared.ldap.model.schema.registries.Registries;
 
 
 /**
@@ -48,7 +47,7 @@ public class CachingNormalizer extends Normalizer
 
     /**
      * Creates a CachingNormalizer that decorates another normalizer using a
-     * default cache size.  This Normalizer delegates 
+     * default cache size.  This Normalizer delegates
      * 
      * @param normalizer the underlying Normalizer being decorated
      */
@@ -73,7 +72,7 @@ public class CachingNormalizer extends Normalizer
 
 
     /**
-     * Overrides default behavior by returning the OID of the wrapped 
+     * Overrides default behavior by returning the OID of the wrapped
      * Normalizer.
      */
     @Override
@@ -107,7 +106,7 @@ public class CachingNormalizer extends Normalizer
         }
 
         Value<?> normalized = normalizer.normalize( value );
-        
+
         return normalized;
     }
 
@@ -125,15 +124,6 @@ public class CachingNormalizer extends Normalizer
         String normalized = normalizer.normalize( value );
 
         return normalized;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setRegistries( Registries registries )
-    {
-        normalizer.setRegistries( registries );
     }
 
 

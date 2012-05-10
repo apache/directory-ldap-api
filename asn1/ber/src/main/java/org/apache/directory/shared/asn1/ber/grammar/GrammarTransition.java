@@ -28,13 +28,15 @@ import org.apache.directory.shared.asn1.util.Asn1StringUtils;
 /**
  * Define a transition between two states of a grammar. It stores the next
  * state, and the action to execute while executing the transition.
+ * 
+ * @param C The container type
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GrammarTransition<E extends Asn1Container>
+public class GrammarTransition<C extends Asn1Container>
 {
     /** The action associated to the transition */
-    private Action<E> action;
+    private Action<C> action;
 
     /** The previous state */
     private Enum<?> previousState;
@@ -54,7 +56,7 @@ public class GrammarTransition<E extends Asn1Container>
      * @param currentTag the current TLV's tag
      * @param action The action to execute. It could be null.
      */
-    public GrammarTransition( Enum<?> previousState, Enum<?> currentState, int currentTag, Action<E> action )
+    public GrammarTransition( Enum<?> previousState, Enum<?> currentState, int currentTag, Action<C> action )
     {
         this.previousState = previousState;
         this.currentState = currentState;
@@ -86,7 +88,7 @@ public class GrammarTransition<E extends Asn1Container>
      * @param currentTag the current TLV's tag
      * @param action The action to execute. It could be null.
      */
-    public GrammarTransition( Enum<?> previousState, Enum<?> currentState, UniversalTag currentTag, Action<E> action )
+    public GrammarTransition( Enum<?> previousState, Enum<?> currentState, UniversalTag currentTag, Action<C> action )
     {
         this.previousState = previousState;
         this.currentState = currentState;
@@ -124,7 +126,7 @@ public class GrammarTransition<E extends Asn1Container>
     /**
      * @return Returns the action associated with the transition
      */
-    public Action<E> getAction()
+    public Action<C> getAction()
     {
         return action;
     }
@@ -149,11 +151,10 @@ public class GrammarTransition<E extends Asn1Container>
 
 
     /**
-     * @param statesEnum Starting state.
      * @return A representation of the transition as a string.
      */
     @Override
-    public String toString( )
+    public String toString()
     {
         StringBuilder sb = new StringBuilder();
 

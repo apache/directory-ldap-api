@@ -112,7 +112,9 @@ public class LdapUrl
     private boolean forceScopeRendering;
 
     /** A regexp for attributes */
-    private static final Pattern ATTRIBUTE = Pattern.compile( "(?:(?:\\d|[1-9]\\d*)(?:\\.(?:\\d|[1-9]\\d*))+)|(?:[a-zA-Z][a-zA-Z0-9-]*)" );
+    private static final Pattern ATTRIBUTE = Pattern
+        .compile( "(?:(?:\\d|[1-9]\\d*)(?:\\.(?:\\d|[1-9]\\d*))+)|(?:[a-zA-Z][a-zA-Z0-9-]*)" );
+
 
     /**
      * Construct an empty LdapUrl
@@ -160,8 +162,8 @@ public class LdapUrl
         int pos = 0;
 
         // The scheme
-        if ( ( ( pos = Strings.areEquals(chars, 0, LDAP_SCHEME) ) == StringConstants.NOT_EQUAL )
-            && ( ( pos = Strings.areEquals(chars, 0, LDAPS_SCHEME) ) == StringConstants.NOT_EQUAL ) )
+        if ( ( ( pos = Strings.areEquals( chars, 0, LDAP_SCHEME ) ) == StringConstants.NOT_EQUAL )
+            && ( ( pos = Strings.areEquals( chars, 0, LDAPS_SCHEME ) ) == StringConstants.NOT_EQUAL ) )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04398 ) );
         }
@@ -182,7 +184,7 @@ public class LdapUrl
         }
 
         // An optional '/'
-        if ( !Chars.isCharASCII(chars, pos, '/') )
+        if ( !Chars.isCharASCII( chars, pos, '/' ) )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04400, pos, chars[pos] ) );
         }
@@ -206,7 +208,7 @@ public class LdapUrl
         }
 
         // Optionals attributes
-        if ( !Chars.isCharASCII(chars, pos, '?') )
+        if ( !Chars.isCharASCII( chars, pos, '?' ) )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04402, pos, chars[pos] ) );
         }
@@ -224,7 +226,7 @@ public class LdapUrl
         }
 
         // Optional scope
-        if ( !Chars.isCharASCII(chars, pos, '?') )
+        if ( !Chars.isCharASCII( chars, pos, '?' ) )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04402, pos, chars[pos] ) );
         }
@@ -242,7 +244,7 @@ public class LdapUrl
         }
 
         // Optional filter
-        if ( !Chars.isCharASCII(chars, pos, '?') )
+        if ( !Chars.isCharASCII( chars, pos, '?' ) )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04402, pos, chars[pos] ) );
         }
@@ -265,7 +267,7 @@ public class LdapUrl
         }
 
         // Optional extensions
-        if ( !Chars.isCharASCII(chars, pos, '?') )
+        if ( !Chars.isCharASCII( chars, pos, '?' ) )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04402, pos, chars[pos] ) );
         }
@@ -296,7 +298,7 @@ public class LdapUrl
      */
     public LdapUrl( String string ) throws LdapURLEncodingException
     {
-        if (string == null )
+        if ( string == null )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04408 ) );
         }
@@ -350,7 +352,7 @@ public class LdapUrl
         // the end.
         // We will search the end of the host part, and we will check some
         // elements.
-        if ( Chars.isCharASCII(chars, pos, '-') )
+        if ( Chars.isCharASCII( chars, pos, '-' ) )
         {
 
             // We can't have a '-' on first position
@@ -360,7 +362,7 @@ public class LdapUrl
         while ( ( pos < chars.length ) && ( chars[pos] != ':' ) && ( chars[pos] != '/' ) )
         {
 
-            if ( Chars.isCharASCII(chars, pos, '.') )
+            if ( Chars.isCharASCII( chars, pos, '.' ) )
             {
 
                 if ( ( hadMinus ) || ( hadDot ) )
@@ -390,7 +392,7 @@ public class LdapUrl
             else
             {
 
-                if ( hadDot && Chars.isCharASCII(chars, pos, '-') )
+                if ( hadDot && Chars.isCharASCII( chars, pos, '-' ) )
                 {
 
                     // We can't have a '-' just after a '.'
@@ -400,7 +402,7 @@ public class LdapUrl
                 hadDot = false;
             }
 
-            if ( Chars.isDigit(chars, pos) )
+            if ( Chars.isDigit( chars, pos ) )
             {
 
                 if ( isHostNumber && ( nbDots < 4 ) )
@@ -415,11 +417,11 @@ public class LdapUrl
 
                 hadMinus = false;
             }
-            else if ( Chars.isAlphaDigitMinus(chars, pos) )
+            else if ( Chars.isAlphaDigitMinus( chars, pos ) )
             {
                 isHostNumber = false;
 
-                hadMinus = Chars.isCharASCII(chars, pos, '-');
+                hadMinus = Chars.isCharASCII( chars, pos, '-' );
             }
             else
             {
@@ -482,7 +484,7 @@ public class LdapUrl
     private int parsePort( char[] chars, int pos )
     {
 
-        if ( !Chars.isDigit(chars, pos) )
+        if ( !Chars.isDigit( chars, pos ) )
         {
             return -1;
         }
@@ -491,7 +493,7 @@ public class LdapUrl
 
         pos++;
 
-        while ( Chars.isDigit(chars, pos) )
+        while ( Chars.isDigit( chars, pos ) )
         {
             port = ( port * 10 ) + ( chars[pos] - '0' );
 
@@ -528,7 +530,7 @@ public class LdapUrl
         }
 
         // We may have a port.
-        if ( Chars.isCharASCII(chars, pos, ':') )
+        if ( Chars.isCharASCII( chars, pos, ':' ) )
         {
             if ( pos == hostPos )
             {
@@ -551,8 +553,8 @@ public class LdapUrl
 
         return pos;
     }
-    
-    
+
+
     /**
      * Converts the specified string to byte array of ASCII characters.
      *
@@ -687,6 +689,7 @@ public class LdapUrl
         return end;
     }
 
+
     /**
      * Parse the following rule :
      * <pre>
@@ -704,12 +707,13 @@ public class LdapUrl
     private void validateAttribute( String attribute ) throws LdapURLEncodingException
     {
         Matcher matcher = ATTRIBUTE.matcher( attribute );
-        
+
         if ( !matcher.matches() )
         {
             throw new LdapURLEncodingException( "Attribute " + attribute + " is invalid" );
         }
     }
+
 
     /**
      * Parse the attributes part
@@ -731,7 +735,7 @@ public class LdapUrl
             for ( int i = pos; ( i < chars.length ) && ( chars[i] != '?' ); i++ )
             {
 
-                if ( Chars.isCharASCII(chars, i, ',') )
+                if ( Chars.isCharASCII( chars, i, ',' ) )
                 {
                     hadComma = true;
 
@@ -752,7 +756,7 @@ public class LdapUrl
                         {
                             return -1;
                         }
-                        
+
                         // Check that the attribute is valid
                         try
                         {
@@ -879,19 +883,19 @@ public class LdapUrl
     private int parseScope( char[] chars, int pos )
     {
 
-        if ( Chars.isCharASCII(chars, pos, 'b') || Chars.isCharASCII(chars, pos, 'B') )
+        if ( Chars.isCharASCII( chars, pos, 'b' ) || Chars.isCharASCII( chars, pos, 'B' ) )
         {
             pos++;
 
-            if ( Chars.isCharASCII(chars, pos, 'a') || Chars.isCharASCII(chars, pos, 'A') )
+            if ( Chars.isCharASCII( chars, pos, 'a' ) || Chars.isCharASCII( chars, pos, 'A' ) )
             {
                 pos++;
 
-                if ( Chars.isCharASCII(chars, pos, 's') || Chars.isCharASCII(chars, pos, 'S') )
+                if ( Chars.isCharASCII( chars, pos, 's' ) || Chars.isCharASCII( chars, pos, 'S' ) )
                 {
                     pos++;
 
-                    if ( Chars.isCharASCII(chars, pos, 'e') || Chars.isCharASCII(chars, pos, 'E') )
+                    if ( Chars.isCharASCII( chars, pos, 'e' ) || Chars.isCharASCII( chars, pos, 'E' ) )
                     {
                         pos++;
                         scope = SearchScope.OBJECT;
@@ -900,15 +904,15 @@ public class LdapUrl
                 }
             }
         }
-        else if ( Chars.isCharASCII(chars, pos, 'o') || Chars.isCharASCII(chars, pos, 'O') )
+        else if ( Chars.isCharASCII( chars, pos, 'o' ) || Chars.isCharASCII( chars, pos, 'O' ) )
         {
             pos++;
 
-            if ( Chars.isCharASCII(chars, pos, 'n') || Chars.isCharASCII(chars, pos, 'N') )
+            if ( Chars.isCharASCII( chars, pos, 'n' ) || Chars.isCharASCII( chars, pos, 'N' ) )
             {
                 pos++;
 
-                if ( Chars.isCharASCII(chars, pos, 'e') || Chars.isCharASCII(chars, pos, 'E') )
+                if ( Chars.isCharASCII( chars, pos, 'e' ) || Chars.isCharASCII( chars, pos, 'E' ) )
                 {
                     pos++;
 
@@ -917,15 +921,15 @@ public class LdapUrl
                 }
             }
         }
-        else if ( Chars.isCharASCII(chars, pos, 's') || Chars.isCharASCII(chars, pos, 'S') )
+        else if ( Chars.isCharASCII( chars, pos, 's' ) || Chars.isCharASCII( chars, pos, 'S' ) )
         {
             pos++;
 
-            if ( Chars.isCharASCII(chars, pos, 'u') || Chars.isCharASCII(chars, pos, 'U') )
+            if ( Chars.isCharASCII( chars, pos, 'u' ) || Chars.isCharASCII( chars, pos, 'U' ) )
             {
                 pos++;
 
-                if ( Chars.isCharASCII(chars, pos, 'b') || Chars.isCharASCII(chars, pos, 'B') )
+                if ( Chars.isCharASCII( chars, pos, 'b' ) || Chars.isCharASCII( chars, pos, 'B' ) )
                 {
                     pos++;
 
@@ -934,7 +938,7 @@ public class LdapUrl
                 }
             }
         }
-        else if ( Chars.isCharASCII(chars, pos, '?') )
+        else if ( Chars.isCharASCII( chars, pos, '?' ) )
         {
             // An empty scope. This is valid
             return pos;
@@ -980,7 +984,7 @@ public class LdapUrl
         {
             for ( int i = pos; ( i < chars.length ); i++ )
             {
-                if ( Chars.isCharASCII(chars, i, ',') )
+                if ( Chars.isCharASCII( chars, i, ',' ) )
                 {
                     if ( isNewExtension )
                     {
@@ -1010,7 +1014,7 @@ public class LdapUrl
                         value = null;
                     }
                 }
-                else if ( Chars.isCharASCII(chars, i, '=') )
+                else if ( Chars.isCharASCII( chars, i, '=' ) )
                 {
                     if ( hasValue )
                     {
@@ -1030,7 +1034,7 @@ public class LdapUrl
                     hasValue = true;
                     start = i + 1;
                 }
-                else if ( Chars.isCharASCII(chars, i, '!') )
+                else if ( Chars.isCharASCII( chars, i, '!' ) )
                 {
                     if ( hasValue )
                     {
@@ -1130,11 +1134,11 @@ public class LdapUrl
             switch ( c )
 
             {
-                // reserved and unreserved characters:
-                // just append to the buffer
+            // reserved and unreserved characters:
+            // just append to the buffer
 
-                // reserved gen-delims, excluding '?'
-                // gen-delims  = ":" / "/" / "?" / "#" / "[" / "]" / "@"
+            // reserved gen-delims, excluding '?'
+            // gen-delims  = ":" / "/" / "?" / "#" / "[" / "]" / "@"
                 case ':':
                 case '/':
                 case '#':
@@ -1247,7 +1251,7 @@ public class LdapUrl
                 default:
 
                     // percent encoding
-                    byte[] bytes = Unicode.charToBytes(c);
+                    byte[] bytes = Unicode.charToBytes( c );
                     char[] hex = Strings.toHexString( bytes ).toCharArray();
                     for ( int j = 0; j < hex.length; j++ )
                     {
@@ -1726,7 +1730,6 @@ public class LdapUrl
     {
         this.forceScopeRendering = forceScopeRendering;
     }
-
 
     /**
      * An inner bean to hold extension information.

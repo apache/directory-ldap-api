@@ -25,7 +25,7 @@ import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.Value;
+import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
@@ -74,17 +74,18 @@ public class StoreResultCode extends GrammarAction<LdapMessageContainer<MessageD
         // We get it and store it in MessageId
         TLV tlv = container.getCurrentTLV();
 
-        Value value = tlv.getValue();
+        BerValue value = tlv.getValue();
         ResultCodeEnum resultCode = ResultCodeEnum.SUCCESS;
 
         try
         {
-            resultCode = ResultCodeEnum.getResultCode( IntegerDecoder.parse(value, 0, ResultCodeEnum.E_SYNC_REFRESH_REQUIRED
-                    .getResultCode()) );
+            resultCode = ResultCodeEnum.getResultCode( IntegerDecoder.parse( value, 0,
+                ResultCodeEnum.E_SYNC_REFRESH_REQUIRED
+                    .getResultCode() ) );
         }
         catch ( IntegerDecoderException ide )
         {
-            LOG.error( I18n.err( I18n.ERR_04018, Strings.dumpBytes(value.getData()), ide.getMessage() ) );
+            LOG.error( I18n.err( I18n.ERR_04018, Strings.dumpBytes( value.getData() ), ide.getMessage() ) );
 
             throw new DecoderException( ide.getMessage() );
         }

@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.TelexNumberSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for TelexNumberSyntaxChecker.
@@ -63,10 +65,11 @@ public class TelexNumberSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "test$$test" ) );
         assertFalse( checker.isValidSyntax( "$test$test" ) );
         assertFalse( checker.isValidSyntax( "test$test$test$test" ) );
-        assertFalse( checker.isValidSyntax( new String( new byte[]{ 't', 'e', 's', 't', '$', 0x00, 0x7F, (byte)0x80, '$', 't', 'e', 's', 't' }, "UTF-8" ) ) );
+        assertFalse( checker.isValidSyntax( new String( new byte[]
+            { 't', 'e', 's', 't', '$', 0x00, 0x7F, ( byte ) 0x80, '$', 't', 'e', 's', 't' }, "UTF-8" ) ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectCase()
     {

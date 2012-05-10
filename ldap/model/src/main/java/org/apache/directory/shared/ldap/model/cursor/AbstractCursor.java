@@ -39,7 +39,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
-    public final void setClosureMonitor( ClosureMonitor monitor )
+    public void setClosureMonitor( ClosureMonitor monitor )
     {
         if ( monitor == null )
         {
@@ -65,7 +65,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
-    public final boolean isClosed()
+    public boolean isClosed() throws Exception
     {
         return monitor.isClosed();
     }

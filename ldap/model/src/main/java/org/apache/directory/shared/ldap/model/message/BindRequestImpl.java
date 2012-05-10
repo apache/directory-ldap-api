@@ -23,9 +23,12 @@ package org.apache.directory.shared.ldap.model.message;
 import java.util.Arrays;
 
 import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -36,11 +39,21 @@ import org.apache.directory.shared.util.Strings;
  */
 public class BindRequestImpl extends AbstractAbandonableRequest implements BindRequest
 {
+
+    /** A logger */
+    private static final Logger LOG = LoggerFactory.getLogger( BindRequestImpl.class );
+
     /**
      * Distinguished name identifying the name of the authenticating subject -
      * defaults to the empty string
      */
-    private Dn name;
+    private Dn dn;
+
+    /**
+     * String identifying the name of the authenticating subject -
+     * defaults to the empty string
+     */
+    private String name;
 
     /** The passwords, keys or tickets used to verify user identity */
     private byte[] credentials;
@@ -102,7 +115,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     public BindRequest setSimple( boolean simple )
     {
         this.isSimple = simple;
-        
+
         return this;
     }
 
@@ -121,7 +134,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
      */
     public BindRequest setCredentials( String credentials )
     {
-        return setCredentials( Strings.getBytesUtf8(credentials) );
+        return setCredentials( Strings.getBytesUtf8( credentials ) );
     }
 
 
@@ -154,7 +167,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
         {
             hCredentials = 0;
         }
-        
+
         return this;
     }
 
@@ -175,7 +188,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     {
         this.isSimple = false;
         this.mechanism = saslMechanism;
-        
+
         return this;
     }
 
@@ -183,7 +196,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
-    public Dn getName()
+    public String getName()
     {
         return name;
     }
@@ -192,10 +205,41 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
-    public BindRequest setName( Dn name )
+    public BindRequest setName( String name )
     {
         this.name = name;
-        
+
+        try
+        {
+            this.dn = new Dn( name );
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            LOG.warn( "Enable to convert the name to a DN.", e );
+            this.dn = null;
+        }
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Dn getDn()
+    {
+        return dn;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public BindRequest setDn( Dn dn )
+    {
+        this.dn = dn;
+        this.name = dn.getName();
+
         return this;
     }
 
@@ -224,46 +268,46 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     public BindRequest setVersion3( boolean version3 )
     {
         this.isVersion3 = version3;
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public BindRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public BindRequest addControl( Control control ) throws MessageException
     {
-        return (BindRequest)super.addControl( control );
+        return ( BindRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public BindRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (BindRequest)super.addAllControls( controls );
+        return ( BindRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public BindRequest removeControl( Control control ) throws MessageException
     {
-        return (BindRequest)super.removeControl( control );
+        return ( BindRequest ) super.removeControl( control );
     }
 
 
@@ -319,7 +363,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
             return true;
         }
 
-        if ( ( obj == null ) || !( obj instanceof BindRequest) )
+        if ( ( obj == null ) || !( obj instanceof BindRequest ) )
         {
             return false;
         }
@@ -341,10 +385,32 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
             return false;
         }
 
-        Dn dn1 = req.getName();
-        Dn dn2 = getName();
+        String name1 = req.getName();
+        String name2 = getName();
 
-        if ( Dn.isNullOrEmpty( dn1) )
+        if ( Strings.isEmpty( name1 ) )
+        {
+            if ( !Strings.isEmpty( name2 ) )
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if ( Strings.isEmpty( name2 ) )
+            {
+                return false;
+            }
+            else if ( !name2.equals( name1 ) )
+            {
+                return false;
+            }
+        }
+
+        Dn dn1 = req.getDn();
+        Dn dn2 = getDn();
+
+        if ( Dn.isNullOrEmpty( dn1 ) )
         {
             if ( !Dn.isNullOrEmpty( dn2 ) )
             {
@@ -394,11 +460,12 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
-        
+
         sb.append( "    BindRequest\n" );
         sb.append( "        Version : '" ).append( isVersion3 ? "3" : "2" ).append( "'\n" );
 
-        if ( ( (name == null ) || Strings.isEmpty(name.getNormName() ) ) && isSimple )
+        if ( ( ( Strings.isEmpty( name ) ) || ( dn == null ) || Strings.isEmpty( dn.getNormName() ) )
+            && isSimple )
         {
             sb.append( "        Name : anonymous\n" );
         }
@@ -408,8 +475,8 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
 
             if ( isSimple )
             {
-                sb.append( "        Simple authentication : '" ).append( Strings.utf8ToString(credentials) )
-                    .append( '/' ).append( Strings.dumpBytes(credentials) ).append( "'\n" );
+                sb.append( "        Simple authentication : '" ).append( Strings.utf8ToString( credentials ) )
+                    .append( '/' ).append( Strings.dumpBytes( credentials ) ).append( "'\n" );
             }
             else
             {
