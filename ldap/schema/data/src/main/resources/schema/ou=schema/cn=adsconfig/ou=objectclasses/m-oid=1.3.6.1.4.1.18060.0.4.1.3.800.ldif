@@ -1,0 +1,18 @@
+version: 1
+dn: m-oid=1.3.6.1.4.1.18060.0.4.1.3.800,ou=objectClasses,cn=adsconfig,ou=schema
+m-oid: 1.3.6.1.4.1.18060.0.4.1.3.800
+m-supobjectclass: ads-dsBasedServer
+m-description: The ChangePassword ObjectClass
+objectclass: metaObjectClass
+objectclass: metaTop
+objectclass: top
+m-name: ads-changePasswordServer
+creatorsname: uid=admin,ou=system
+m-may: ads-krbAllowableClockSkew
+m-may: ads-krbEmptyAddressesAllowed
+m-may: ads-krbEncryptionTypes
+m-may: ads-krbPrimaryRealm
+m-may: ads-chgPwdPolicyCategoryCount
+m-may: ads-chgPwdPolicyPasswordLength
+m-may: ads-chgPwdPolicyTokenSize
+m-may: ads-chgPwdServicePrincipal

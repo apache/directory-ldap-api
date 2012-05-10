@@ -1,0 +1,23 @@
+version: 1
+dn: m-oid=1.3.6.1.4.1.18060.0.4.1.3.400,ou=objectClasses,cn=adsconfig,ou=schema
+m-oid: 1.3.6.1.4.1.18060.0.4.1.3.400
+m-supobjectclass: ads-dsBasedServer
+m-description: The KerberosServer ObjectClass
+objectclass: metaObjectClass
+objectclass: metaTop
+objectclass: top
+m-name: ads-kdcServer
+creatorsname: uid=admin,ou=system
+m-may: ads-krbAllowableClockSkew
+m-may: ads-krbEncryptionTypes
+m-may: ads-krbEmptyAddressesAllowed
+m-may: ads-krbForwardableAllowed
+m-may: ads-krbPaEncTimestampRequired
+m-may: ads-krbPostdatedAllowed
+m-may: ads-krbProxiableAllowed
+m-may: ads-krbRenewableAllowed
+m-may: ads-krbKdcPrincipal
+m-may: ads-krbMaximumRenewableLifetime
+m-may: ads-krbMaximumTicketLifetime
+m-may: ads-krbPrimaryRealm
+m-may: ads-krbBodyChecksumVerified

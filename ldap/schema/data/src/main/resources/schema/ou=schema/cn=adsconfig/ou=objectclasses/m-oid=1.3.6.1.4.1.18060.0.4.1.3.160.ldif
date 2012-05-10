@@ -1,0 +1,12 @@
+version: 1
+dn: m-oid=1.3.6.1.4.1.18060.0.4.1.3.160,ou=objectClasses,cn=adsconfig,ou=schema
+m-must: ads-indexAttributeId
+m-oid: 1.3.6.1.4.1.18060.0.4.1.3.160
+m-supobjectclass: ads-base
+m-description: A generic indexed attribute
+objectclass: metaObjectClass
+objectclass: metaTop
+objectclass: top
+m-name: ads-index
+m-typeobjectclass: ABSTRACT
+creatorsname: uid=admin,ou=system
