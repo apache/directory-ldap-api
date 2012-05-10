@@ -53,6 +53,11 @@
 
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>shared-ipojo-manager</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>shared-ldap-extras-aci</artifactId>
       <scope>test</scope>
     </dependency>
