@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ * 
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ * 
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ * 
  */
 package org.apache.directory.shared.ldap.extras.controls.syncrepl_impl;
 
@@ -31,6 +31,7 @@ import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.shared.ldap.extras.controls.SyncRequestValue;
+import org.apache.directory.shared.ldap.extras.controls.SyncRequestValueImpl;
 import org.apache.directory.shared.ldap.extras.controls.SynchronizationModeEnum;
 import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
@@ -49,6 +50,21 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class SyncRequestValueControlTest extends AbstractCodecServiceTest
 {
+    @Test
+    public void testEncodeSyncRequestValue() throws Exception
+    {
+        SyncRequestValue syncRequestValue = new SyncRequestValueImpl();
+        syncRequestValue.setMode( SynchronizationModeEnum.REFRESH_ONLY );
+        
+        SyncRequestValueDecorator decorator = new SyncRequestValueDecorator( codec, syncRequestValue );
+        
+        ByteBuffer buffer = decorator.encode( ByteBuffer.allocate( decorator.computeLength() ) );
+        
+        String expected = Strings.dumpBytes( new byte[]{ 0x30, 0x03, 0x0A, 0x01, 0x01 } );
+        assertEquals( expected, Strings.dumpBytes( buffer.array() ) );
+    }
+    
+    
     /**
      * Test the decoding of a SyncRequestValue control with a refreshOnly mode
      */
@@ -58,21 +74,15 @@ public class SyncRequestValueControlTest extends AbstractCodecServiceTest
         ByteBuffer bb = ByteBuffer.allocate( 0x0D );
         bb.put( new byte[]
             {
-                0x30, 0x0B, // syncRequestValue ::= SEQUENCE {
-                0x0A,
-                0x01,
-                0x01, //     mode ENUMERATED {
-                      //         refreshOnly (1)
-                      //     }
-                0x04,
-                0x03,
-                'a',
-                'b',
-                'c', //     cookie syncCookie OPTIONAL,
-                0x01,
-                0x01,
-                0x00 //     reloadHint BOOLEAN DEFAULT FALSE
+                0x30, 0x0B,         // syncRequestValue ::= SEQUENCE {
+                  0x0A, 0x01, 0x01, //     mode ENUMERATED {
+                                    //         refreshOnly (1)
+                                    //     }
+                  0x04, 0x03,
+                    'a', 'b', 'c',  //     cookie syncCookie OPTIONAL,
+                  0x01, 0x01, 0x00  //     reloadHint BOOLEAN DEFAULT FALSE
         } );
+        
         bb.flip();
 
         SyncRequestValue decorator = new SyncRequestValueDecorator( codec );
