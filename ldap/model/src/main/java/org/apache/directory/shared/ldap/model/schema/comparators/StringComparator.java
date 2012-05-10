@@ -23,6 +23,8 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 import java.io.Serializable;
 
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +34,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Component
 public class StringComparator extends LdapComparator<String> implements Serializable
 {
     /** The serial version UID */
@@ -45,7 +48,7 @@ public class StringComparator extends LdapComparator<String> implements Serializ
      * The StringComparator constructor. Its OID is the StringMatch matching
      * rule OID.
      */
-    public StringComparator( String oid )
+    public StringComparator( @Property(name = "ads.comp.comparator.oid") String oid )
     {
         super( oid );
     }

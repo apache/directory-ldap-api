@@ -27,6 +27,8 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
+import org.apache.felix.ipojo.annotations.Component;
+import org.apache.felix.ipojo.annotations.Property;
 
 
 /**
@@ -36,6 +38,7 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
+@Component
 public class SerializableComparator<E> extends LdapComparator<E> implements Serializable
 {
     /** The serial version UID */
@@ -54,7 +57,7 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
     // ------------------------------------------------------------------------
     // C O N T R U C T O R S
     // ------------------------------------------------------------------------
-    public SerializableComparator( String matchingRuleOid )
+    public SerializableComparator( @Property(name = "ads.comp.comparator.oid") String matchingRuleOid )
     {
         super( matchingRuleOid );
         this.matchingRuleOid = matchingRuleOid;
