@@ -38,7 +38,6 @@ import org.apache.felix.ipojo.annotations.Property;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
 public class SerializableComparator<E> extends LdapComparator<E> implements Serializable
 {
     /** The serial version UID */
@@ -57,7 +56,7 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
     // ------------------------------------------------------------------------
     // C O N T R U C T O R S
     // ------------------------------------------------------------------------
-    public SerializableComparator( @Property(name = "ads.comp.comparator.oid") String matchingRuleOid )
+    public SerializableComparator(String matchingRuleOid )
     {
         super( matchingRuleOid );
         this.matchingRuleOid = matchingRuleOid;
