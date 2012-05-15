@@ -1,6 +1,5 @@
 dn: m-oid=1.3.6.1.4.1.18060.0.4.4.0.2.12,ou=objectclasses,cn=componenthub,ou=sch
  ema
-m-must: ads-pd-context
 m-must: ads-pd-name
 m-must: ads-pd-type
 m-may: ads-pd-constant
