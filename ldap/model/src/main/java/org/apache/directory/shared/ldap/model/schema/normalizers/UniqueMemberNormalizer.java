@@ -29,7 +29,6 @@ import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
 
 
 /**
@@ -37,7 +36,6 @@ import org.apache.felix.ipojo.annotations.Component;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
 @SuppressWarnings("serial")
 public class UniqueMemberNormalizer extends Normalizer
 {

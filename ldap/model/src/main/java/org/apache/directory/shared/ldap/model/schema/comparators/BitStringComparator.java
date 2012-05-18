@@ -21,8 +21,6 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +30,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
 public class BitStringComparator extends LdapComparator<String>
 {
     /** The serial version UID */
@@ -46,7 +43,7 @@ public class BitStringComparator extends LdapComparator<String>
      * The BitStringComparator constructor. Its OID is the IntegerOrderingMatch matching
      * rule OID.
      */
-    public BitStringComparator( @Property(name = "ads.comp.comparator.oid") String oid )
+    public BitStringComparator( String oid )
     {
         super( oid );
     }

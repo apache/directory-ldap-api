@@ -30,7 +30,6 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValu
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.PrepareString;
-import org.apache.felix.ipojo.annotations.Component;
 
 
 /**
@@ -40,7 +39,6 @@ import org.apache.felix.ipojo.annotations.Component;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
 @SuppressWarnings("serial")
 public class DeepTrimNormalizer extends Normalizer
 {

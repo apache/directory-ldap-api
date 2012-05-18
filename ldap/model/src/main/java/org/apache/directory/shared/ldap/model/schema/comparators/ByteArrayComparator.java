@@ -22,8 +22,6 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.util.Strings;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +31,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
 public class ByteArrayComparator extends LdapComparator<byte[]>
 {
     /** The serial version UID */
@@ -47,7 +44,7 @@ public class ByteArrayComparator extends LdapComparator<byte[]>
      * The ByteArrayComparator constructor. Its OID is the OctetStringMatch matching
      * rule OID.
      */
-    public ByteArrayComparator( @Property(name = "ads.comp.comparator.oid") String oid )
+    public ByteArrayComparator( String oid )
     {
         super( oid );
     }

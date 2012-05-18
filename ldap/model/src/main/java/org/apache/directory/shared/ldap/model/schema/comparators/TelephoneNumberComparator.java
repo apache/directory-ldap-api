@@ -21,8 +21,6 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +33,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
 public class TelephoneNumberComparator extends LdapComparator<String>
 {
     /** The serial version UID */
@@ -49,7 +46,7 @@ public class TelephoneNumberComparator extends LdapComparator<String>
      * The TelephoneNumberComparator constructor. Its OID is the TelephoneNumberMatch matching
      * rule OID.
      */
-    public TelephoneNumberComparator( @Property(name = "ads.comp.comparator.oid") String oid )
+    public TelephoneNumberComparator( String oid )
     {
         super( oid );
     }

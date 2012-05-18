@@ -19,8 +19,6 @@
  */
 package org.apache.directory.shared.ldap.model.schema.normalizers;
 
-import org.apache.felix.ipojo.annotations.Component;
-
 
 /**
  * A deep trimming normalizer that caches normalizations to prevent repeat
@@ -31,7 +29,6 @@ import org.apache.felix.ipojo.annotations.Component;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
 @SuppressWarnings("serial")
 public class CachingDeepTrimNormalizer extends CachingNormalizer
 {

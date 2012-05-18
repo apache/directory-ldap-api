@@ -25,8 +25,6 @@ import java.io.IOException;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.PrepareString;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Property;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +34,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
 public class NumericStringComparator extends LdapComparator<String>
 {
     /** The serial version UID */
@@ -50,7 +47,7 @@ public class NumericStringComparator extends LdapComparator<String>
      * The IntegerComparator constructor. Its OID is the numericStringOrderingMatch matching
      * rule OID.
      */
-    public NumericStringComparator( @Property(name = "ads.comp.comparator.oid") String oid )
+    public NumericStringComparator( String oid )
     {
         super( oid );
     }

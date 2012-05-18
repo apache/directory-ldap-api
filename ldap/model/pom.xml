@@ -76,16 +76,6 @@
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
     </dependency>
-    
-    <dependency>
-      <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.ipojo.annotations</artifactId>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.ipojo</artifactId>
-    </dependency>
   </dependencies>
 
   <build>
@@ -153,16 +143,8 @@
             <Export-Package>
                 {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
-            <_plugin>org.apache.felix.ipojo.bnd.PojoizationPlugin;use-local-schemas=true</_plugin>
           </instructions>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.felix</groupId>
-            <artifactId>bnd-ipojo-plugin</artifactId>
-            <version>${bnd.ipojo.version}</version>
-          </dependency>
-        </dependencies>
       </plugin>
     </plugins>
   </build>

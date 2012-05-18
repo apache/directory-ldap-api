@@ -26,8 +26,6 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Property;
 
 
 /**
@@ -35,7 +33,6 @@ import org.apache.felix.ipojo.annotations.Property;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
 public class DnComparator extends LdapComparator<Object>
 {
     /** The serial version UID */
@@ -45,7 +42,7 @@ public class DnComparator extends LdapComparator<Object>
     private SchemaManager schemaManager;
 
 
-    public DnComparator( @Property(name = "ads.comp.comparator.oid") String oid )
+    public DnComparator( String oid )
     {
         super( oid );
     }

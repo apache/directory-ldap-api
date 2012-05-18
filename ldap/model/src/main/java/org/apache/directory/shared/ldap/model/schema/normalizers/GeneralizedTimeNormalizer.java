@@ -36,7 +36,6 @@ import org.apache.directory.shared.util.GeneralizedTime;
 import org.apache.directory.shared.util.GeneralizedTime.Format;
 import org.apache.directory.shared.util.GeneralizedTime.FractionDelimiter;
 import org.apache.directory.shared.util.GeneralizedTime.TimeZoneFormat;
-import org.apache.felix.ipojo.annotations.Component;
 
 
 /**
@@ -51,7 +50,6 @@ import org.apache.felix.ipojo.annotations.Component;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
 @SuppressWarnings("serial")
 public class GeneralizedTimeNormalizer extends Normalizer
 {

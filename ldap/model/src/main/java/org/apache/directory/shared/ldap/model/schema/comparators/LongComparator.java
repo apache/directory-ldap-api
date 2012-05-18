@@ -24,8 +24,6 @@ import java.io.Serializable;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
-import org.apache.felix.ipojo.annotations.Component;
-import org.apache.felix.ipojo.annotations.Property;
 
 
 /**
@@ -33,7 +31,6 @@ import org.apache.felix.ipojo.annotations.Property;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@Component
 public class LongComparator extends LdapComparator<Long> implements Serializable
 {
     /** The serial version UID */
@@ -44,7 +41,7 @@ public class LongComparator extends LdapComparator<Long> implements Serializable
      * The LongComparator constructor. Its OID is the IntegerOrderingMatch matching
      * rule OID.
      */
-    public LongComparator( @Property(name = "ads.comp.comparator.oid") String oid )
+    public LongComparator( String oid )
     {
         super( oid );
     }
