@@ -23,6 +23,7 @@
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
     <version>27</version>
+    <relativePath>../project</relativePath>
   </parent>
 
   <groupId>org.apache.directory.shared</groupId>
@@ -96,6 +97,7 @@
             <tagNameFormat>@{project.version}</tagNameFormat>
           </configuration>
         </plugin>
+
         <plugin>
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
@@ -132,6 +134,7 @@
             </excludes>
           </configuration>
         </plugin>
+
         <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
@@ -176,6 +179,20 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>        
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <configuration>
           <configLocation>directory-checks.xml</configLocation>
@@ -190,6 +207,7 @@
           </dependency>
         </dependencies>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
