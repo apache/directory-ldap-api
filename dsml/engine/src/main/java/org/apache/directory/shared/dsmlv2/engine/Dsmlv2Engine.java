@@ -323,6 +323,7 @@ public class Dsmlv2Engine
             {
                 writeResponse( respWriter, errorResponse );
                 respWriter.write( "</batchResponse>" );
+                respWriter.flush();
             }
             else
             {
@@ -349,6 +350,7 @@ public class Dsmlv2Engine
             {
                 writeResponse( respWriter, errorResponse );
                 respWriter.write( "</batchResponse>" );
+                respWriter.flush();
             }
             else
             {
@@ -384,6 +386,7 @@ public class Dsmlv2Engine
             {
                 writeResponse( respWriter, errorResponse );
                 respWriter.write( "</batchResponse>" );
+                respWriter.flush();
             }
             else
             {
