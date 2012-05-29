@@ -20,6 +20,7 @@
 package org.apache.directory.shared.dsmlv2;
 
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -319,4 +320,55 @@ public final class ParserUtils
         Document transformedDoc = result.getDocument();
         return transformedDoc;
     }
+    
+    
+    /**
+     * GrammarAction that reads the SOAP header data
+     */
+    public static final GrammarAction readSoapHeader = new GrammarAction( "Reads SOAP header" )
+    {
+        public void action( Dsmlv2Container container ) throws XmlPullParserException
+        {
+            try
+            {
+                XmlPullParser xpp = container.getParser();
+                StringBuilder sb = new StringBuilder();
+
+                String startTag = xpp.getText();
+                sb.append( startTag );
+
+                // string '<' and '>'
+                startTag = startTag.substring( 1, startTag.length() - 1 );
+
+                int tagType = -1;
+                String endTag = "";
+
+                // continue parsing till we get to the end tag of SOAP header
+                // and match the tag values including the namespace
+                while ( !startTag.equals( endTag ) )
+                {
+                    tagType = xpp.next();
+                    endTag = xpp.getText();
+                    sb.append( endTag );
+
+                    if ( tagType == XmlPullParser.END_TAG )
+                    {
+                        // strip '<', '/' and '>'
+                        endTag = endTag.substring( 2, endTag.length() - 1 );
+                    }
+                }
+
+                // change the state to header end
+                container.setState( Dsmlv2StatesEnum.SOAP_HEADER_END_TAG );
+
+                //System.out.println( sb );
+            }
+            catch ( IOException e )
+            {
+                e.printStackTrace();
+            }
+
+        }
+    };
+    
 }

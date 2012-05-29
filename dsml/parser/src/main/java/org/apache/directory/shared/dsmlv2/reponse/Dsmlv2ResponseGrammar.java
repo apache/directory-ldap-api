@@ -72,7 +72,6 @@ import org.apache.directory.shared.util.Strings;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
-
 /**
  * This Class represents the DSMLv2 Response Grammar
  * 
@@ -814,6 +813,59 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
                 searchResultDoneCreation ) );
+        
+        //------------------------------------------ handle SOAP envelopes --------------------------
+        super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
+        super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_START_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
+        super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_END_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
+        super.transitions[Dsmlv2StatesEnum.SOAP_BODY_START_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
+        super.transitions[Dsmlv2StatesEnum.SOAP_BODY_END_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
+
+        super.transitions[Dsmlv2StatesEnum.GRAMMAR_END.ordinal()] = new HashMap<Tag, GrammarTransition>();
+
+        // State: [INIT_GRAMMAR_STATE] - Tag: <envelope>
+        super.transitions[Dsmlv2StatesEnum.INIT_GRAMMAR_STATE.ordinal()].put( new Tag( "envelope", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE, Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG,
+                null ) );
+
+        // state: [SOAP_ENVELOPE_START_TAG] -> Tag: <header>
+        super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()].put( new Tag( "header", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG, Dsmlv2StatesEnum.SOAP_HEADER_START_TAG,
+            		ParserUtils.readSoapHeader ) );
+
+        // state: [SOAP_HEADER_START_TAG] -> Tag: </header>
+        super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_START_TAG.ordinal()]
+            .put( new Tag( "header", Tag.END ),
+                new GrammarTransition( Dsmlv2StatesEnum.SOAP_HEADER_START_TAG, Dsmlv2StatesEnum.SOAP_HEADER_END_TAG,
+                    null ) );
+
+        // state: [SOAP_HEADER_END_TAG] -> Tag: <body>
+        super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_END_TAG.ordinal()].put( new Tag( "body", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SOAP_HEADER_END_TAG, Dsmlv2StatesEnum.SOAP_BODY_START_TAG, null ) );
+
+        // state: [SOAP_BODY_START_TAG] -> Tag: <batchResponse>
+        super.transitions[Dsmlv2StatesEnum.SOAP_BODY_START_TAG.ordinal()].put( new Tag( "batchResponse", Tag.START ),
+            new GrammarTransition( Dsmlv2StatesEnum.SOAP_BODY_START_TAG, Dsmlv2StatesEnum.BATCH_RESPONSE_LOOP,
+                batchResponseCreation ) );
+
+        // the optional transition if no soap header is present
+        // state: [SOAP_ENVELOPE_START_TAG] -> Tag: <body>
+        super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()]
+            .put( new Tag( "body", Tag.START ),
+                new GrammarTransition( Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG, Dsmlv2StatesEnum.SOAP_BODY_START_TAG,
+                    null ) );
+
+        // the below two transitions are a bit unconventional, technically the container's state is set to GRAMMAR_END
+        // when the </batchRequest> tag is encountered by the parser and the corresponding action gets executed but in
+        // a SOAP envelop we still have two more end tags(</body> and </envelope>) are left so we set those corresponding
+        // current and next transition states always to GRAMMAR_END
+        super.transitions[Dsmlv2StatesEnum.GRAMMAR_END.ordinal()].put( new Tag( "body", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.GRAMMAR_END, Dsmlv2StatesEnum.GRAMMAR_END, null ) );
+
+        super.transitions[Dsmlv2StatesEnum.GRAMMAR_END.ordinal()].put( new Tag( "envelope", Tag.END ),
+            new GrammarTransition( Dsmlv2StatesEnum.GRAMMAR_END, Dsmlv2StatesEnum.GRAMMAR_END, null ) );
+
+        //------------------------------------------
     }
 
     /**

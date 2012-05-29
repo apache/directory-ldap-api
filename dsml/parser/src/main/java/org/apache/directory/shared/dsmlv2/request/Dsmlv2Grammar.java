@@ -73,6 +73,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 
+
 /**
  * This Class represents the DSMLv2 Request Grammar
  *
@@ -1138,7 +1139,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
         // state: [SOAP_ENVELOPE_START_TAG] -> Tag: <header>
         super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()].put( new Tag( "header", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG, Dsmlv2StatesEnum.SOAP_HEADER_START_TAG,
-                readSoapHeader ) );
+                ParserUtils.readSoapHeader ) );
 
         // state: [SOAP_HEADER_START_TAG] -> Tag: </header>
         super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_START_TAG.ordinal()]
@@ -1190,7 +1191,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
     //*************************
 
     /**
-     * GrammarAction that creates an Abandon Request
+     * GrammarAction that creates a Batch Request
      */
     private final GrammarAction batchRequestCreation = new GrammarAction( "Create Batch Request" )
     {
@@ -2991,55 +2992,6 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
             }
-        }
-    };
-
-    /**
-     * GrammarAction that reads the SOAP header data
-     */
-    private final GrammarAction readSoapHeader = new GrammarAction( "Reads SOAP header" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            try
-            {
-                XmlPullParser xpp = container.getParser();
-                StringBuilder sb = new StringBuilder();
-
-                String startTag = xpp.getText();
-                sb.append( startTag );
-
-                // string '<' and '>'
-                startTag = startTag.substring( 1, startTag.length() - 1 );
-
-                int tagType = -1;
-                String endTag = "";
-
-                // continue parsing till we get to the end tag of SOAP header
-                // and match the tag values including the namespace
-                while ( !startTag.equals( endTag ) )
-                {
-                    tagType = xpp.next();
-                    endTag = xpp.getText();
-                    sb.append( endTag );
-
-                    if ( tagType == XmlPullParser.END_TAG )
-                    {
-                        // strip '<', '/' and '>'
-                        endTag = endTag.substring( 2, endTag.length() - 1 );
-                    }
-                }
-
-                // change the state to header end
-                container.setState( Dsmlv2StatesEnum.SOAP_HEADER_END_TAG );
-
-                //System.out.println( sb );
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-            }
-
         }
     };
 }
