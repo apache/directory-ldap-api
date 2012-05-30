@@ -678,6 +678,11 @@ sutf1 returns [String sutf1=""]
     | 
     space:SPACE  { sutf1 = space.getText(); }
     | 
+    // This is a hack to deal with #NN included into the value, due to 
+    // some collision with the HEXVALUE token. In this case, we should
+    // consider that a hex value is in fact a String
+    hex:HEXVALUE { sutf1 = "#" + hex.getText(); }
+    |
     numericoid:NUMERICOID  { sutf1 = numericoid.getText(); }    
     ;    
 

@@ -28,7 +28,6 @@ import static org.junit.Assert.fail;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.util.Strings;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -617,19 +616,12 @@ public class DnParserTest
      * Test case for DIRAPI-88 (RDN parsing fails with values containing a # character followed by other characters)
      */
     @Test
-    @Ignore
     public final void testDIRAPI88()
     {
-        String dnString = "workforceID=200511230101#38SA";
-
-        try
-        {
-            Dn dn = new Dn( dnString );
-//            System.out.println( dn );
-        }
-        catch ( LdapInvalidDnException e )
-        {
-            fail( e.getMessage() );
-        }
+        assertTrue( Dn.isValid( "workforceID=2#28" ) );
+        assertTrue( Dn.isValid( "workforceID=2# + a=b" ) );
+        assertTrue( Dn.isValid( "workforceID=2#2Z" ) );
+        assertTrue( Dn.isValid( "workforceID=2#2" ) );
+        assertTrue( Dn.isValid( "workforceID=2#ZZ" ) );
     }
 }
