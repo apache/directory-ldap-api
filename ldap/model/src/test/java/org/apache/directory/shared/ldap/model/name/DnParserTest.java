@@ -28,6 +28,7 @@ import static org.junit.Assert.fail;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.util.Strings;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -588,7 +589,7 @@ public class DnParserTest
         try
         {
             new Dn( input ).toString();
-            fail( "Should never rech this point" );
+            fail( "Should never reach this point" );
         }
         catch ( LdapException ne )
         {
@@ -609,5 +610,26 @@ public class DnParserTest
         assertEquals( "cn=test", dn.getRdn( 0 ).getName() );
         assertEquals( "dc=example", dn.getRdn( 1 ).getName() );
         assertEquals( "dc=org", dn.getRdn( 2 ).getName() );
+    }
+
+
+    /**
+     * Test case for DIRAPI-88 (RDN parsing fails with values containing a # character followed by other characters)
+     */
+    @Test
+    @Ignore
+    public final void testDIRAPI88()
+    {
+        String dnString = "workforceID=200511230101#38SA";
+
+        try
+        {
+            Dn dn = new Dn( dnString );
+//            System.out.println( dn );
+        }
+        catch ( LdapInvalidDnException e )
+        {
+            fail( e.getMessage() );
+        }
     }
 }
