@@ -618,10 +618,45 @@ public class DnParserTest
     @Test
     public final void testDIRAPI88()
     {
-        assertTrue( Dn.isValid( "workforceID=2#28" ) );
-        assertTrue( Dn.isValid( "workforceID=2# + a=b" ) );
-        assertTrue( Dn.isValid( "workforceID=2#2Z" ) );
-        assertTrue( Dn.isValid( "workforceID=2#2" ) );
-        assertTrue( Dn.isValid( "workforceID=2#ZZ" ) );
+        String[] values = new String[]
+            {
+                "200511230101#38SA",
+                "2#28",
+                "2#2Z",
+                "2#2",
+                "2#ZZ"
+            };
+        
+        for ( String value : values )
+        {
+            try
+            {
+                String dnStr = "workforceID=" + value;
+                assertTrue( Dn.isValid( dnStr ) );
+                
+                Dn dn = new Dn( dnStr );
+                Rdn rdn = dn.getRdn();
+                assertEquals( value, rdn.getValue().getString() );
+            }
+            catch ( Exception e )
+            {
+                fail();
+            }
+        }
+        
+        try
+        {
+            String dnStr = "workforceID=2# + a=b";
+            assertTrue( Dn.isValid( dnStr ) );
+            
+            Dn dn = new Dn( dnStr );
+            Rdn rdn = dn.getRdn();
+            assertEquals( "2#", rdn.getValue().getString() );
+        }
+        catch ( Exception e )
+        {
+            fail();
+        }
     }
+
 }
