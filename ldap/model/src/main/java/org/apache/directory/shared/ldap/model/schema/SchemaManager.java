@@ -55,6 +55,15 @@ public interface SchemaManager
     //---------------------------------------------------------------------------------
     // Schema loading methods
     //---------------------------------------------------------------------------------
+    /**                                                                         
+     *                                                                          
+     * Realoads all enabled schemas into the registries                         
+     *                                                                          
+     * @return True if reload was successful                                    
+     */
+    boolean reloadAllEnabled() throws LdapException;
+
+
     /**
      * Load some Schemas into the registries. The Registries is checked after the 
      * schemas have been loaded, and if there is an error, the method returns false

@@ -977,6 +977,56 @@ public class DefaultSchemaManager implements SchemaManager
         return schemaObject;
     }
 
+    /**                                                                         
+     * {@inheritDoc}                                                            
+     */
+    public boolean reloadAllEnabled() throws LdapException
+    {
+        boolean loaded = false;
+
+        try
+	    {
+		Schema[] schemas = schemaLoader.getAllEnabled().toArray( new Schema[0] );
+
+		// Reset the errors if not null                                     
+		if ( errors != null )
+		    {
+			errors.clear();
+		    }
+
+		Registries newRegistries = new Registries( this );
+		newRegistries.setRelaxed();
+
+		// Load the schemas                                                 
+		for ( Schema schema : schemas )
+		    {
+			loadDepsFirst( newRegistries, schema );
+		    }
+
+		// Build the cross references                                       
+		errors = newRegistries.buildReferences();
+
+		if ( errors.isEmpty() )
+		    {
+			// Check the registries now                                     
+			errors = newRegistries.checkRefInteg();
+
+			if ( errors.isEmpty() )
+			    {
+				registries = newRegistries;
+				registries.setStrict();
+				loaded = true;
+			    }
+		    }
+	    }
+        catch ( Exception e )
+	    {
+		throw new LdapException( e );
+	    }
+
+        return loaded;
+    }
+
 
     /**
      * {@inheritDoc}
