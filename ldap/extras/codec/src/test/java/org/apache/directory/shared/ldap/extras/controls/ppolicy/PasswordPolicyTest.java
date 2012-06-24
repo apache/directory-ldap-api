@@ -49,13 +49,9 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x08,
-                ( byte ) 0xA0, 0x03, // timeBeforeExpiration
-                ( byte ) 0x80,
-                0x01,
-                0x01,
-                ( byte ) 0x81,
-                0x01,
-                0x01 // ppolicyError
+                  ( byte ) 0xA0, 0x03, // timeBeforeExpiration
+                    ( byte ) 0x80, 0x01, 0x01,
+                  ( byte ) 0x81, 0x01, 0x01 // ppolicyError
         } );
 
         bb.flip();
@@ -81,13 +77,9 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x08,
-                ( byte ) 0xA0, 0x03, // warning
-                ( byte ) 0x81,
-                0x01,
-                0x01, // graceAuthNsRemaining
-                ( byte ) 0x81,
-                0x01,
-                0x01 // error
+                  ( byte ) 0xA0, 0x03, // warning
+                    ( byte ) 0x81, 0x01, 0x01, // graceAuthNsRemaining
+                  ( byte ) 0x81, 0x01, 0x01 // error
         } );
 
         bb.flip();
@@ -113,8 +105,8 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x05,
-                ( byte ) 0xA0, 0x03,
-                ( byte ) 0x80, 0x01, 0x01 //  timeBeforeExpiration
+                  ( byte ) 0xA0, 0x03,
+                    ( byte ) 0x80, 0x01, 0x01 //  timeBeforeExpiration
         } );
 
         bb.flip();
@@ -139,8 +131,8 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x05,
-                ( byte ) 0xA0, 0x03,
-                ( byte ) 0x81, 0x01, 0x01 //  graceAuthNsRemaining
+                  ( byte ) 0xA0, 0x03,
+                    ( byte ) 0x81, 0x01, 0x01 //  graceAuthNsRemaining
         } );
 
         bb.flip();
@@ -165,7 +157,7 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x03,
-                ( byte ) 0x81, 0x01, 0x01 //  error
+                  ( byte ) 0x81, 0x01, 0x01 //  error
         } );
 
         bb.flip();
@@ -190,7 +182,7 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x00
-        } );
+            } );
 
         bb.flip();
 
