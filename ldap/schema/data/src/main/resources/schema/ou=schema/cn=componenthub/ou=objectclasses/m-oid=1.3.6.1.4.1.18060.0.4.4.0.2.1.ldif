@@ -1,6 +1,6 @@
 dn: m-oid=1.3.6.1.4.1.18060.0.4.4.0.2.1,ou=objectclasses,cn=componenthub,ou=sche
  ma
-m-must: ads-instance
+m-may: ads-instance
 m-typeObjectClass: ABSTRACT
 objectclass: metaObjectClass
 objectclass: metaTop
