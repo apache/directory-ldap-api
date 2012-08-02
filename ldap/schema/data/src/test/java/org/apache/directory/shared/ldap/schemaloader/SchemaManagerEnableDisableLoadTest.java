@@ -71,11 +71,11 @@ public class SchemaManagerEnableDisableLoadTest
     // List of all the available schemas, enabled or disabled
     private List<String> allSchemas = Arrays.asList( "system", "core", "cosine", "inetorgperson", "apache",
         "apachemeta", "collective", "java", "krb5kdc", "other", "nis", "autofs",
-        "apachedns", "dhcp", "samba", "corba", "adsconfig", "pwdpolicy","components","componenthub" );
+        "apachedns", "dhcp", "samba", "corba", "adsconfig", "pwdpolicy", "components", "componenthub" );
 
     // List of all the enabled schemas
     private List<String> enabledSchemas = Arrays.asList( "system", "core", "cosine", "inetorgperson", "apache",
-        "apachemeta", "collective", "java", "krb5kdc", "other", "adsconfig", "pwdpolicy","components","componenthub" );
+        "apachemeta", "collective", "java", "krb5kdc", "other", "adsconfig", "pwdpolicy", "components", "componenthub" );
 
     // List of all the disabled schemas
     @SuppressWarnings("unused")
