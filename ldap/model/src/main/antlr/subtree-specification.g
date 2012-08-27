@@ -110,8 +110,11 @@ options
     public void init( SchemaManager schemaManager )
     {
         this.schemaManager = schemaManager;
-        OBJECT_CLASS_AT = schemaManager.getAttributeType( SchemaConstants.OBJECT_CLASS_AT );
         
+        if ( schemaManager != null )
+        {
+            OBJECT_CLASS_AT = schemaManager.getAttributeType( SchemaConstants.OBJECT_CLASS_AT );
+        }
     }
     
     
