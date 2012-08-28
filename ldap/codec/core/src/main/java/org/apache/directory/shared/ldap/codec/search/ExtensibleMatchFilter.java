@@ -46,13 +46,13 @@ public class ExtensibleMatchFilter extends Filter
 
     /** Matching rule */
     private String matchingRule;
-    
+
     /** Matching rule bytes */
     private byte[] matchingRuleBytes;
 
     /** Matching rule type */
     private String type;
-    
+
     private byte[] typeBytes;
 
     /** Matching rule value */
@@ -64,6 +64,7 @@ public class ExtensibleMatchFilter extends Filter
     /** The extensible match length */
     private int extensibleMatchLength;
 
+
     // ~ Constructors
     // -------------------------------------------------------------------------------
     /**
@@ -74,8 +75,8 @@ public class ExtensibleMatchFilter extends Filter
     {
         super( tlvId );
     }
-    
-    
+
+
     /**
      * Creates a new ExtensibleMatchFilter object. The dnAttributes flag
      * defaults to false.
@@ -213,13 +214,13 @@ public class ExtensibleMatchFilter extends Filter
     {
         if ( matchingRule != null )
         {
-            matchingRuleBytes = Strings.getBytesUtf8(matchingRule);
+            matchingRuleBytes = Strings.getBytesUtf8( matchingRule );
             extensibleMatchLength = 1 + TLV.getNbBytes( matchingRuleBytes.length ) + matchingRuleBytes.length;
         }
 
         if ( type != null )
         {
-            typeBytes = Strings.getBytesUtf8(type);
+            typeBytes = Strings.getBytesUtf8( type );
             extensibleMatchLength += 1 + TLV.getNbBytes( typeBytes.length ) + typeBytes.length;
         }
 

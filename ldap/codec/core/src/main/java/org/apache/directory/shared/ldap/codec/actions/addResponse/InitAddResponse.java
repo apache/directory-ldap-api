@@ -44,6 +44,7 @@ public class InitAddResponse extends GrammarAction<LdapMessageContainer<AddRespo
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitAddResponse.class );
 
+
     /**
      * Instantiates a new action.
      */

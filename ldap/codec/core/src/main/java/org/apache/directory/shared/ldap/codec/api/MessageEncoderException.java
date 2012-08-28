@@ -36,6 +36,7 @@ public class MessageEncoderException extends EncoderException
     /** The message ID */
     private int messageId;
 
+
     /**
      * Creates a new instance of MessageEncoderException.
      *

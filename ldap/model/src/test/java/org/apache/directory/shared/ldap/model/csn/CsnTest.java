@@ -47,11 +47,12 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 public class CsnTest
 {
     private static final SimpleDateFormat SDF = new SimpleDateFormat( "yyyyMMddHHmmss.123456'Z'" );
-    
+
     static
     {
         SDF.setTimeZone( DateUtils.UTC_TIME_ZONE );
     }
+
 
     @Test
     public void testCSN()
@@ -59,11 +60,11 @@ public class CsnTest
         synchronized ( SDF )
         {
             long ts = System.currentTimeMillis();
-    
+
             Csn csn = new Csn( SDF.format( new Date( ts ) ) + "#123456#abc#654321" );
-    
-            assertEquals( ts/1000, csn.getTimestamp()/1000 );
-            
+
+            assertEquals( ts / 1000, csn.getTimestamp() / 1000 );
+
             // ALl the value are converted from hex to int
             assertEquals( 1193046, csn.getChangeCount() );
             assertEquals( 6636321, csn.getOperationNumber() );
@@ -77,7 +78,7 @@ public class CsnTest
     {
         try
         {
-            new Csn( (String)null );
+            new Csn( ( String ) null );
             fail();
         }
         catch ( InvalidCSNException ice )
@@ -107,11 +108,11 @@ public class CsnTest
     {
         try
         {
-            synchronized( SDF )
+            synchronized ( SDF )
             {
                 new Csn( SDF.format( new Date( System.currentTimeMillis() ) ) );
             }
-            
+
             fail();
         }
         catch ( InvalidCSNException ice )
@@ -134,7 +135,7 @@ public class CsnTest
         {
             assertTrue( true );
         }
-        
+
         try
         {
             // Missing milliseconds
@@ -234,8 +235,8 @@ public class CsnTest
             assertTrue( true );
         }
     }
-    
-    
+
+
     @Test
     public void testCSNNoReplica()
     {
@@ -249,8 +250,8 @@ public class CsnTest
             assertTrue( true );
         }
     }
-    
-    
+
+
     @Test
     public void testCSNInvalidReplica()
     {
@@ -278,7 +279,7 @@ public class CsnTest
         {
             assertTrue( true );
         }
-        
+
         try
         {
             new Csn( "20010101000000.000000Z#000000#abc#  " );
@@ -344,14 +345,14 @@ public class CsnTest
         byte[] bytes = csn.getBytes();
 
         byte[] expected = new byte[]
-            { 
-                '2', '0', '0', '1', '0', '1', '0', '1', 
+            {
+                '2', '0', '0', '1', '0', '1', '0', '1',
                 '0', '0', '0', '0', '0', '0', '.', '0',
-                '0', '0', '0', '0', '0', 'Z', '#', '0', 
-                '0', '0', '0', '0', '0', '#', 'a', 'b', 
-                'c', '#', '0', '0', '0', '0', '0', '1' 
-            };
-        
+                '0', '0', '0', '0', '0', 'Z', '#', '0',
+                '0', '0', '0', '0', '0', '#', 'a', 'b',
+                'c', '#', '0', '0', '0', '0', '0', '1'
+        };
+
         assertTrue( Arrays.equals( expected, bytes ) );
 
         Csn deserializedCSN = new Csn( bytes );

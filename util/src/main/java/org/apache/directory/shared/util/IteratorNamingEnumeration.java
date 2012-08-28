@@ -42,7 +42,7 @@ public class IteratorNamingEnumeration<T> implements NamingEnumeration<T>
      * @param iterator
      *            the Iterator the NamingEnumeration is based on.
      */
-    public IteratorNamingEnumeration( Iterator<T> iterator)
+    public IteratorNamingEnumeration( Iterator<T> iterator )
     {
         this.iterator = iterator;
     }

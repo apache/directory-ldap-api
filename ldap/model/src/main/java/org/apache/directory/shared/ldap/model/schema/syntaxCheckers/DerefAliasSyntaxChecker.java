@@ -46,6 +46,7 @@ public class DerefAliasSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DerefAliasSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of DerefAliasSyntaxChecker.
      */
@@ -53,8 +54,8 @@ public class DerefAliasSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.DEREF_ALIAS_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -67,14 +68,14 @@ public class DerefAliasSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -82,10 +83,9 @@ public class DerefAliasSyntaxChecker extends SyntaxChecker
         }
 
         strValue = Strings.trim( Strings.toLowerCase( strValue ) );
-        
-        return ( "never".equals( strValue ) || 
-                 "finding".equals(  strValue ) || 
-                 "searching".equals( strValue ) ||
-                 "always".equals( strValue ));
+
+        return ( "never".equals( strValue ) ||
+            "finding".equals( strValue ) ||
+            "searching".equals( strValue ) || "always".equals( strValue ) );
     }
 }

@@ -39,7 +39,8 @@ public class DnNormalizer extends Normalizer
 {
     /** A reference to the schema manager used to normalize the Dn */
     private SchemaManager schemaManager;
-    
+
+
     /**
      * Empty constructor
      */
@@ -55,11 +56,11 @@ public class DnNormalizer extends Normalizer
     public Value<?> normalize( Value<?> value ) throws LdapException
     {
         Dn dn = null;
-        
+
         String dnStr = value.getString();
-        
+
         dn = new Dn( schemaManager, dnStr );
-        
+
         return new StringValue( dn.getNormName() );
     }
 
@@ -70,9 +71,9 @@ public class DnNormalizer extends Normalizer
     public String normalize( String value ) throws LdapException
     {
         Dn dn = null;
-        
+
         dn = new Dn( schemaManager, value );
-        
+
         return dn.getNormName();
     }
 
@@ -86,9 +87,9 @@ public class DnNormalizer extends Normalizer
     public String normalize( Dn value ) throws LdapException
     {
         Dn dn = null;
-        
+
         dn = value.apply( schemaManager );
-        
+
         return dn.getNormName();
     }
 

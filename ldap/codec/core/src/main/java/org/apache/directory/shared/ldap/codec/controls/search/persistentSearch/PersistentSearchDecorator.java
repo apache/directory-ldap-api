@@ -50,7 +50,7 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
     /** An instance of this decoder */
     private static final Asn1Decoder decoder = new Asn1Decoder();
 
-    
+
     /**
      * Default constructor creates a PersistentSearch Control automatically
      * wrapped in a decorator object inside this container.
@@ -121,11 +121,11 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
         Value.encode( buffer, getChangeTypes() );
         Value.encode( buffer, isChangesOnly() );
         Value.encode( buffer, isReturnECs() );
-        
+
         return buffer;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -134,10 +134,10 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
         if ( value == null )
         {
             try
-            { 
+            {
                 computeLength();
                 ByteBuffer buffer = ByteBuffer.allocate( valueLength );
-                
+
                 // Now encode the PagedSearch specific part
                 buffer.put( UniversalTag.SEQUENCE.getValue() );
                 buffer.put( TLV.getBytes( psearchSeqLength ) );
@@ -153,10 +153,9 @@ public class PersistentSearchDecorator extends ControlDecorator<PersistentSearch
                 return null;
             }
         }
-        
+
         return value;
     }
-
 
 
     private PersistentSearch getPersistentSearch()

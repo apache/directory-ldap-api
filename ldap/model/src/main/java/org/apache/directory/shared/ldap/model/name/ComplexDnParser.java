@@ -32,7 +32,7 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-/* No protection*/ class ComplexDnParser
+/* No protection*/class ComplexDnParser
 {
 
     /**
@@ -43,10 +43,10 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    /* No protection*/ void parseDn( String name, List<Rdn> rdns ) throws LdapInvalidDnException
+    /* No protection*/void parseDn( String name, List<Rdn> rdns ) throws LdapInvalidDnException
     {
         AntlrDnParser dnParser = new AntlrDnParser( new AntlrDnLexer( new StringReader( name ) ) );
-        
+
         try
         {
             dnParser.relativeDistinguishedNames( rdns );
@@ -66,10 +66,10 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
      * 
      * @throws LdapInvalidDnException the invalid name exception
      */
-    /* No protection*/ void parseRdn( String name, Rdn rdn ) throws LdapInvalidDnException
+    /* No protection*/void parseRdn( String name, Rdn rdn ) throws LdapInvalidDnException
     {
         AntlrDnParser dnParser = new AntlrDnParser( new AntlrDnLexer( new StringReader( name ) ) );
-        
+
         try
         {
             dnParser.relativeDistinguishedName( rdn );

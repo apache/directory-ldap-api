@@ -76,7 +76,7 @@ public class AbstractRequest extends AbstractMessage implements Request
             return false;
         }
 
-        if ( hasResponse != ( (Request) obj ).hasResponse() )
+        if ( hasResponse != ( ( Request ) obj ).hasResponse() )
         {
             return false;
         }

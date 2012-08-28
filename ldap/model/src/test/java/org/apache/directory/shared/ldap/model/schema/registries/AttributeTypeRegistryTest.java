@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.registries;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -45,21 +46,22 @@ import org.junit.runner.RunWith;
 public class AttributeTypeRegistryTest
 {
     AttributeTypeRegistry atRegistry;
-    
+
+
     @Before
     public void setup()
     {
         atRegistry = new DefaultAttributeTypeRegistry();
     }
-    
-    
+
+
     @Test
     public void testUnregister() throws LdapException
     {
         AttributeType at0 = new AttributeType( "1.1" );
         at0.addName( "t", "test", "Test", "T" );
         atRegistry.register( at0 );
-        
+
         atRegistry.unregister( "1.1" );
         assertFalse( atRegistry.contains( "1.1" ) );
         assertFalse( atRegistry.contains( "t" ) );
@@ -76,21 +78,21 @@ public class AttributeTypeRegistryTest
             assertTrue( true );
         }
     }
-    
-    
+
+
     @Test
     public void testRegister() throws LdapException
     {
         AttributeType at0 = new AttributeType( "1.1" );
         at0.addName( "t", "test", "Test", "T" );
         atRegistry.register( at0 );
-        
+
         assertTrue( atRegistry.contains( "1.1" ) );
         assertTrue( atRegistry.contains( "t" ) );
         assertTrue( atRegistry.contains( "T" ) );
         assertTrue( atRegistry.contains( "tEsT" ) );
         assertEquals( "1.1", atRegistry.getOidByName( "T" ) );
-        
+
         try
         {
             atRegistry.register( at0 );

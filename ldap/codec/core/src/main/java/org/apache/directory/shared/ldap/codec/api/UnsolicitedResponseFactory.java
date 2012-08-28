@@ -39,8 +39,8 @@ public interface UnsolicitedResponseFactory<R extends ExtendedResponse>
      * @return the extended response OID
      */
     String getOid();
-    
-    
+
+
     /**
      *  @return A new instance of the ExtendedResponse.
      */

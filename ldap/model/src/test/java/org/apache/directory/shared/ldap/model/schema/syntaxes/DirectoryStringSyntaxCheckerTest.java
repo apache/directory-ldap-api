@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DirectoryStringSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for DirectoryStringSyntaxChecker.
@@ -58,16 +60,16 @@ public class DirectoryStringSyntaxCheckerTest
     public void testWrongCase()
     {
         assertFalse( checker.isValidSyntax( "" ) );
-        
+
         byte[] bytes = new byte[2];
-        
-        bytes[0] = (byte)0x80;
-        bytes[1] = (byte)0x00;
-        
+
+        bytes[0] = ( byte ) 0x80;
+        bytes[1] = ( byte ) 0x00;
+
         assertFalse( checker.isValidSyntax( bytes ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectCase()
     {
@@ -75,14 +77,14 @@ public class DirectoryStringSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( "abcdefghijklmnopqrstuvwxyz" ) );
         assertTrue( checker.isValidSyntax( "ABCDEFGHIJKLMNOPQRSTUVWXYZ" ) );
         assertTrue( checker.isValidSyntax( "'()+,-.=/:? " ) );
-        
+
         byte[] bytes = new byte[128];
-        
+
         for ( int i = 0; i < 128; i++ )
         {
-            bytes[i] = (byte)i;
+            bytes[i] = ( byte ) i;
         }
-        
+
         assertTrue( checker.isValidSyntax( new String( bytes ) ) );
     }
 }

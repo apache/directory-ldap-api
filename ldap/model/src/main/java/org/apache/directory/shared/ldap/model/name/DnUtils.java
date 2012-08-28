@@ -20,7 +20,6 @@
 package org.apache.directory.shared.ldap.model.name;
 
 
-
 /**
  * Utility class used to manipulate Dn or Rdn elements.
  * 
@@ -40,6 +39,7 @@ public final class DnUtils
         int index = rdn.indexOf( '=' );
         return rdn.substring( 0, index );
     }
+
 
     /**
      * Gets the value of a RDN ( the right part of the RDN). The RDN is supposed

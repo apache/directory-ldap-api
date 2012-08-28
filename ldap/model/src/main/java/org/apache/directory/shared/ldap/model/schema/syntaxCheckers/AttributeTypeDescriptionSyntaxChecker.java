@@ -80,6 +80,7 @@ public class AttributeTypeDescriptionSyntaxChecker extends SyntaxChecker
     /** The schema parser used to parse the AttributeTypeDescription Syntax */
     private AttributeTypeDescriptionSchemaParser schemaParser = new AttributeTypeDescriptionSchemaParser();
 
+
     /**
      * 
      * Creates a new instance of AttributeTypeDescriptionSchemaParser.
@@ -89,7 +90,8 @@ public class AttributeTypeDescriptionSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.ATTRIBUTE_TYPE_DESCRIPTION_SYNTAX );
     }
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -109,7 +111,7 @@ public class AttributeTypeDescriptionSyntaxChecker extends SyntaxChecker
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {

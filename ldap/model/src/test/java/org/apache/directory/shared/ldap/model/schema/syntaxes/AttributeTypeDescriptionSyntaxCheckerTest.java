@@ -43,32 +43,43 @@ public class AttributeTypeDescriptionSyntaxCheckerTest
 {
     private AttributeTypeDescriptionSyntaxChecker checker = new AttributeTypeDescriptionSyntaxChecker();
 
+
     @Test
     public void testValid()
     {
         assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15  )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name  )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name EQUALITY caseIgnoreMatch  )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch  )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )" ) );
+        assertTrue( checker
+            .isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )" ) );
+        assertTrue( checker
+            .isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15  )" ) );
+        assertTrue( checker
+            .isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name  )" ) );
+        assertTrue( checker
+            .isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name EQUALITY caseIgnoreMatch  )" ) );
+        assertTrue( checker
+            .isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch  )" ) );
+        assertTrue( checker
+            .isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )" ) );
+        assertTrue( checker
+            .isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )" ) );
         assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME cn SUP name )" ) );
         assertTrue( checker.isValidSyntax( "( 2.5.4.3 name ( 'cn' 'commonName' )  sup name )" ) );
 
         // spaces
         assertTrue( checker.isValidSyntax( "(2.5.4.3 SUP name)" ) );
-        assertTrue( checker.isValidSyntax( "(      2.5.4.3      NAME ('cn'   'commonName')     SYNTAX       1.3.6.1.4.1.1466.115.121.1.15   )" ) );
-        
+        assertTrue( checker
+            .isValidSyntax( "(      2.5.4.3      NAME ('cn'   'commonName')     SYNTAX       1.3.6.1.4.1.1466.115.121.1.15   )" ) );
+
         // COLLECTIVE requires usage userApplications
         assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name COLLECTIVE )" ) );
         assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name COLLECTIVE USAGE userApplications )" ) );
 
         // NO-USER-MODIFICATION requires an operational usage.
         assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name NO-USER-MODIFICATION USAGE dSAOperation )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name NO-USER-MODIFICATION USAGE directoryOperation )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name NO-USER-MODIFICATION USAGE distributedOperation )" ) );
+        assertTrue( checker
+            .isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name NO-USER-MODIFICATION USAGE directoryOperation )" ) );
+        assertTrue( checker
+            .isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name NO-USER-MODIFICATION USAGE distributedOperation )" ) );
     }
 
 
@@ -77,10 +88,10 @@ public class AttributeTypeDescriptionSyntaxCheckerTest
     {
         // null 
         assertFalse( checker.isValidSyntax( null ) );
-        
+
         // empty 
         assertFalse( checker.isValidSyntax( "" ) );
-        
+
         // missing/invalid OID
         assertFalse( checker.isValidSyntax( "()" ) );
         assertFalse( checker.isValidSyntax( "(  )" ) );
@@ -95,21 +106,26 @@ public class AttributeTypeDescriptionSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name" ) );
 
         // SYNTAX or SUP must be contained
-        assertFalse( checker.isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by' )" ) );
-        
+        assertFalse( checker
+            .isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by' )" ) );
+
         // COLLECTIVE requires usage userApplications
         assertFalse( checker.isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name COLLECTIVE USAGE dSAOperation)" ) );
         assertFalse( checker.isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name COLLECTIVE USAGE directoryOperation )" ) );
         assertFalse( checker.isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name COLLECTIVE USAGE distributedOperation )" ) );
-        
+
         // NO-USER-MODIFICATION requires an operational usage.
         assertFalse( checker.isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name NO-USER-MODIFICATION )" ) );
-        assertFalse( checker.isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name NO-USER-MODIFICATION USAGE userApplications )" ) );
+        assertFalse( checker
+            .isValidSyntax( "( 2.5.4.3 NAME 'cn' SUP name NO-USER-MODIFICATION USAGE userApplications )" ) );
 
         // invalid characters
-        assertFalse( checker.isValidSyntax( "( 2.5.4.3 NAME ( 'cn#' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )" ) );
-        assertFalse( checker.isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'common_name' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )" ) );
-        assertFalse( checker.isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP na=me EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )" ) );
+        assertFalse( checker
+            .isValidSyntax( "( 2.5.4.3 NAME ( 'cn#' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )" ) );
+        assertFalse( checker
+            .isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'common_name' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP name EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )" ) );
+        assertFalse( checker
+            .isValidSyntax( "( 2.5.4.3 NAME ( 'cn' 'commonName' ) DESC 'RFC2256: common name(s) for which the entity is known by'  SUP na=me EQUALITY caseIgnoreMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )" ) );
     }
 
 }

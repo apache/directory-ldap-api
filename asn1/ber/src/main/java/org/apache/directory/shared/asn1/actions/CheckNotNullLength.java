@@ -39,6 +39,7 @@ public class CheckNotNullLength<E extends Asn1Container> extends GrammarAction<E
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( CheckNotNullLength.class );
 
+
     /**
      * Instantiates the action.
      */

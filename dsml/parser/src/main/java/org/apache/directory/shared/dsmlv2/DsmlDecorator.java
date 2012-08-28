@@ -39,8 +39,8 @@ public interface DsmlDecorator<E>
      *      the dom4j Element corresponding to the entry.
      */
     Element toDsml( Element root );
-    
-    
+
+
     /**
      * Gets the Message this DsmlDecorator decorates.
      * 

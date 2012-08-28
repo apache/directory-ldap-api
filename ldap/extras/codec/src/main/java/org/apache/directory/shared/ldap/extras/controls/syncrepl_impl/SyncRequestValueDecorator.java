@@ -43,7 +43,7 @@ import org.apache.directory.shared.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SyncRequestValueDecorator  extends ControlDecorator<SyncRequestValue> implements SyncRequestValue
+public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue> implements SyncRequestValue
 {
     /** The global length for this control */
     private int syncRequestValueLength;
@@ -157,7 +157,7 @@ public class SyncRequestValueDecorator  extends ControlDecorator<SyncRequestValu
             syncRequestValueLength += 1 + 1 + 1;
         }
 
-        valueLength =  1 + TLV.getNbBytes( syncRequestValueLength ) + syncRequestValueLength;
+        valueLength = 1 + TLV.getNbBytes( syncRequestValueLength ) + syncRequestValueLength;
 
         // Call the super class to compute the global control length
         return valueLength;
@@ -184,8 +184,8 @@ public class SyncRequestValueDecorator  extends ControlDecorator<SyncRequestValu
         buffer.put( TLV.getBytes( syncRequestValueLength ) );
 
         // The mode
-        buffer.put(  UniversalTag.ENUMERATED.getValue() );
-        buffer.put( ( byte )0x01 );
+        buffer.put( UniversalTag.ENUMERATED.getValue() );
+        buffer.put( ( byte ) 0x01 );
         buffer.put( Value.getBytes( getMode().getValue() ) );
 
         // The cookie
@@ -222,7 +222,7 @@ public class SyncRequestValueDecorator  extends ControlDecorator<SyncRequestValu
                 buffer.put( TLV.getBytes( syncRequestValueLength ) );
 
                 // The mode
-                buffer.put(  UniversalTag.ENUMERATED.getValue() );
+                buffer.put( UniversalTag.ENUMERATED.getValue() );
                 buffer.put( ( byte ) 0x01 );
                 buffer.put( Value.getBytes( getMode().getValue() ) );
 

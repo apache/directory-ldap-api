@@ -37,7 +37,7 @@ public class GrammarTransition
     /** The current state */
     private Enum<Dsmlv2StatesEnum> currentState;
 
-    
+
     /**
      * Creates a new GrammarTransition object.
      * 
@@ -48,12 +48,14 @@ public class GrammarTransition
      * @param action
      *      The action to execute. It could be null.
      */
-    public GrammarTransition( Enum<Dsmlv2StatesEnum> currentState, Enum<Dsmlv2StatesEnum> nextState, GrammarAction action )
+    public GrammarTransition( Enum<Dsmlv2StatesEnum> currentState, Enum<Dsmlv2StatesEnum> nextState,
+        GrammarAction action )
     {
         this.currentState = currentState;
         this.nextState = nextState;
         this.action = action;
     }
+
 
     /**
      * Gets the target state

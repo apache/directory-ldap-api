@@ -56,11 +56,11 @@ public class BooleanNormalizer extends Normalizer
         }
 
         String strValue = value.getString();
-        
+
         return new StringValue( strValue.trim().toUpperCase() );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */

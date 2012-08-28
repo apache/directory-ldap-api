@@ -153,7 +153,7 @@ public class GrammarTransition<E extends Asn1Container>
      * @return A representation of the transition as a string.
      */
     @Override
-    public String toString( )
+    public String toString()
     {
         StringBuilder sb = new StringBuilder();
 

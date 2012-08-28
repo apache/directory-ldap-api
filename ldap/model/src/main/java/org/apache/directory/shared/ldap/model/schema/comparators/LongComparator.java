@@ -36,6 +36,7 @@ public class LongComparator extends LdapComparator<Long> implements Serializable
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
+
     /**
      * The LongComparator constructor. Its OID is the IntegerOrderingMatch matching
      * rule OID.
@@ -54,7 +55,7 @@ public class LongComparator extends LdapComparator<Long> implements Serializable
      * @return 1 if obj1 > obj2, 0 if obj1 == obj2, -1 if obj1 < obj2
      */
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "RC_REF_COMPARISON",
-            justification ="false positive")
+        justification = "false positive")
     public int compare( Long obj1, Long obj2 )
     {
         if ( obj1 == obj2 )

@@ -44,23 +44,23 @@ public interface DITStructureRuleRegistry extends SchemaObjectRegistry<DITStruct
      */
     boolean contains( int ruleId );
 
-    
+
     /**
      * Gets an iterator over the registered descriptions in the registry.
      *
      * @return an Iterator of descriptions
      */
     Iterator<DITStructureRule> iterator();
-    
-    
+
+
     /**
      * Gets an iterator over the registered ruleId in the registry.
      *
      * @return an Iterator of ruleId
      */
     Iterator<Integer> ruleIdIterator();
-    
-    
+
+
     /**
      * Gets the name of the schema this schema object is associated with.
      *
@@ -70,7 +70,7 @@ public interface DITStructureRuleRegistry extends SchemaObjectRegistry<DITStruct
      */
     String getSchemaName( int ruleId ) throws LdapException;
 
-    
+
     /**
      * Registers a new DITStructureRule with this registry.
      *
@@ -80,7 +80,7 @@ public interface DITStructureRuleRegistry extends SchemaObjectRegistry<DITStruct
      */
     void register( DITStructureRule ditStructureRule ) throws LdapException;
 
-    
+
     /**
      * Looks up an dITStructureRule by its unique Object IDentifier or by its
      * name.
@@ -99,8 +99,8 @@ public interface DITStructureRuleRegistry extends SchemaObjectRegistry<DITStruct
      * @throws LdapException if no such DITStructureRule exists
      */
     void unregister( int ruleId ) throws LdapException;
-    
-    
+
+
     /**
      * Unregisters all DITStructureRules defined for a specific schema from
      * this registry.
@@ -110,7 +110,7 @@ public interface DITStructureRuleRegistry extends SchemaObjectRegistry<DITStruct
      */
     void unregisterSchemaElements( String schemaName ) throws LdapException;
 
-    
+
     /**
      * Modify all the DITStructureRule using a schemaName when this name changes.
      *
@@ -119,8 +119,8 @@ public interface DITStructureRuleRegistry extends SchemaObjectRegistry<DITStruct
      * @throws org.apache.directory.shared.ldap.model.exception.LdapException if the schema can't be renamed
      */
     void renameSchema( String originalSchemaName, String newSchemaName ) throws LdapException;
-    
-    
+
+
     /**
      * Copy the DITStructureRuleRegistry
      */

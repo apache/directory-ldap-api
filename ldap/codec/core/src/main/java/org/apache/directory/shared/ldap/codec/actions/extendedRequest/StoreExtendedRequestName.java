@@ -43,13 +43,14 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer<ExtendedRequestDecorator<?,?>>>
+public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer<ExtendedRequestDecorator<?, ?>>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreExtendedRequestName.class );
 
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
+
 
     /**
      * Instantiates a new action.
@@ -63,10 +64,10 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<ExtendedRequestDecorator<?,?>> container ) throws DecoderException
+    public void action( LdapMessageContainer<ExtendedRequestDecorator<?, ?>> container ) throws DecoderException
     {
         ExtendedRequest<?> req;
-        
+
         // Get the Value and store it in the ExtendedRequest
         TLV tlv = container.getCurrentTLV();
 
@@ -85,14 +86,14 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
 
             try
             {
-                String requestName = Strings.utf8ToString(requestNameBytes);
+                String requestName = Strings.utf8ToString( requestNameBytes );
 
                 if ( !Oid.isOid( requestName ) )
                 {
 
                     String msg = "The Request name is not a valid OID : "
-                        + Strings.utf8ToString(requestNameBytes) + " ("
-                        + Strings.dumpBytes(requestNameBytes) + ") is invalid";
+                        + Strings.utf8ToString( requestNameBytes ) + " ("
+                        + Strings.dumpBytes( requestNameBytes ) + ") is invalid";
                     LOG.error( msg );
 
                     // throw an exception, we will get a PROTOCOL_ERROR
@@ -106,8 +107,8 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
             catch ( DecoderException de )
             {
                 String msg = "The Request name is not a valid OID : "
-                    + Strings.utf8ToString(requestNameBytes) + " ("
-                    + Strings.dumpBytes(requestNameBytes) + ") is invalid";
+                    + Strings.utf8ToString( requestNameBytes ) + " ("
+                    + Strings.dumpBytes( requestNameBytes ) + ") is invalid";
                 LOG.error( "{} : {}", msg, de.getMessage() );
 
                 // Rethrow the exception, we will get a PROTOCOL_ERROR

@@ -54,7 +54,6 @@ public class Dsmlv2Parser
      */
     private boolean storeMsgInBatchReq = true;
 
-    
     /** The thread safe DSMLv2 Grammar */
     private Dsmlv2Grammar grammar;
 
@@ -69,7 +68,8 @@ public class Dsmlv2Parser
     {
         this( true );
     }
-    
+
+
     /**
      * 
      * Creates a new instance of Dsmlv2Parser.
@@ -80,7 +80,7 @@ public class Dsmlv2Parser
     public Dsmlv2Parser( boolean storeMsgInBatchReq ) throws XmlPullParserException
     {
         this.storeMsgInBatchReq = storeMsgInBatchReq;
-        
+
         this.grammar = new Dsmlv2Grammar();
         this.container = new Dsmlv2Container( grammar.getLdapCodecService() );
 
@@ -105,7 +105,7 @@ public class Dsmlv2Parser
         this.container = new Dsmlv2Container( grammar.getLdapCodecService() );
         this.container.setGrammar( grammar );
         this.grammar = grammar;
-        
+
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
         factory.setNamespaceAware( true );
         XmlPullParser xpp = factory.newPullParser();
@@ -214,9 +214,9 @@ public class Dsmlv2Parser
             }
         }
         while ( container.getState() != Dsmlv2StatesEnum.BATCHREQUEST_START_TAG );
-        
+
         BatchRequestDsml br = container.getBatchRequest();
-        
+
         if ( br != null )
         {
             br.setStoreReq( storeMsgInBatchReq );

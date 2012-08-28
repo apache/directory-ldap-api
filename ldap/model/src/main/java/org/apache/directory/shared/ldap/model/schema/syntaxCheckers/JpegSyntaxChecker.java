@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.slf4j.Logger;
@@ -46,6 +47,7 @@ public class JpegSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( JpegSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of JpegSyntaxChecker.
      */
@@ -53,8 +55,8 @@ public class JpegSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.JPEG_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -65,15 +67,15 @@ public class JpegSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         // The value must be a byte array
-        if ( ! ( value instanceof byte[] ) )
+        if ( !( value instanceof byte[] ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
-        byte[] bytes = (byte[])value;
+
+        byte[] bytes = ( byte[] ) value;
 
         // The header must be at least 11 bytes long
         if ( bytes.length < 11 )

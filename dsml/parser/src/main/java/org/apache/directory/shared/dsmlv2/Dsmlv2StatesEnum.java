@@ -492,22 +492,22 @@ public enum Dsmlv2StatesEnum
 
     /** The soap envelop start state */
     SOAP_ENVELOPE_START_TAG,
-    
+
     /** The soap envelop end state */
     SOAP_ENVELOPE_END_TAG,
-    
+
     /** The soap header start state */
     SOAP_HEADER_START_TAG,
-    
+
     /** The soap header end state */
     SOAP_HEADER_END_TAG,
-    
+
     /** The soap body start state */
     SOAP_BODY_START_TAG,
-    
+
     /** The soap body end state */
     SOAP_BODY_END_TAG,
-    
+
     /** The Search Result Done End state */
     SEARCH_RESULT_DONE_END
 }

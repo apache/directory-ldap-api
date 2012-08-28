@@ -135,7 +135,7 @@ public class BitString
         byte[] copy = new byte[bytes.length + 1];
 
         System.arraycopy( bytes, 0, copy, 1, bytes.length );
-        copy[0] = (byte)nbUnusedBits;
+        copy[0] = ( byte ) nbUnusedBits;
 
         return copy;
     }
@@ -166,9 +166,9 @@ public class BitString
             throw new IndexOutOfBoundsException( I18n.err( I18n.ERR_00030_BIT_NUMBER_OUT_OF_BOUND ) );
         }
 
-        int posBytes = pos>>>3;
+        int posBytes = pos >>> 3;
         int bitNumber = 7 - pos % 8;
-        byte mask = (byte)( 1 << bitNumber );
+        byte mask = ( byte ) ( 1 << bitNumber );
 
         bytes[posBytes] |= mask;
     }
@@ -189,9 +189,9 @@ public class BitString
             throw new IndexOutOfBoundsException( I18n.err( I18n.ERR_00030_BIT_NUMBER_OUT_OF_BOUND ) );
         }
 
-        int posBytes = pos>>>3;
+        int posBytes = pos >>> 3;
         int bitNumber = 7 - pos % 8;
-        byte mask = (byte)( 1 << bitNumber );
+        byte mask = ( byte ) ( 1 << bitNumber );
 
         bytes[posBytes] &= ~mask;
     }
@@ -223,9 +223,9 @@ public class BitString
             throw new IndexOutOfBoundsException( I18n.err( I18n.ERR_00031_CANNOT_FIND_BIT, pos, nbBits ) );
         }
 
-        int posBytes = pos>>>3;
+        int posBytes = pos >>> 3;
         int bitNumber = 7 - pos % 8;
-        byte mask = (byte)( 1 << bitNumber );
+        byte mask = ( byte ) ( 1 << bitNumber );
 
         int res = bytes[posBytes] & mask;
 

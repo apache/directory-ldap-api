@@ -53,7 +53,6 @@ public class BatchRequestDsml
     /** The response order */
     private ResponseOrder responseOrder;
 
-
     /**
      * This enum represents the different types of processing for a Batch Request 
      *
@@ -62,12 +61,11 @@ public class BatchRequestDsml
     public enum Processing
     {
         /** Sequential processing. */
-        SEQUENTIAL, 
+        SEQUENTIAL,
         /** Parallel processing. */
         PARALLEL
     }
 
-    
     /**
      * This enum represents the different types of on error handling for a BatchRequest
      *
@@ -76,11 +74,10 @@ public class BatchRequestDsml
     public enum OnError
     {
         /** Resume on error. */
-        RESUME, 
+        RESUME,
         /** Exit on error. */
         EXIT
     }
-
 
     /**
      * This enum represents the different types of response order for a Batch Request
@@ -94,8 +91,7 @@ public class BatchRequestDsml
         /** Unordered response order. */
         UNORDERED
     }
-    
-    
+
     /**
      * flag to indicate to store the request objects present in 
      * this batch request. Default is true
@@ -103,7 +99,8 @@ public class BatchRequestDsml
     private boolean storeReq = true;
 
     private DsmlDecorator currentReq;
-    
+
+
     /**
      * Creates a new instance of BatchResponseDsml.
      */
@@ -127,7 +124,7 @@ public class BatchRequestDsml
         return currentReq;
     }
 
-    
+
     /**
      * Adds a request to the Batch Request DSML.
      *
@@ -139,7 +136,7 @@ public class BatchRequestDsml
     public boolean addRequest( DsmlDecorator<? extends Request> request )
     {
         currentReq = request;
-        
+
         if ( storeReq )
         {
             return requests.add( request );
@@ -271,7 +268,7 @@ public class BatchRequestDsml
         return requests;
     }
 
-    
+
     /**
      * Converts this Batch Request to its XML representation in the DSMLv2 format.
      * 

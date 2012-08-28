@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.entry;
 
+
 /**
  * An enum storing the different modification operation which can be used
  * in a Modification. There is a one to one mapping with the DirContext.ADD_ATTRIBUTE,
@@ -28,14 +29,14 @@ package org.apache.directory.shared.ldap.model.entry;
  */
 public enum ModificationOperation
 {
-    ADD_ATTRIBUTE( 0 ),
-    REMOVE_ATTRIBUTE( 1 ),
-    REPLACE_ATTRIBUTE( 2 );
+    ADD_ATTRIBUTE(0),
+    REMOVE_ATTRIBUTE(1),
+    REPLACE_ATTRIBUTE(2);
 
     /** Internal value */
     private int value;
-    
-    
+
+
     /**
      * Creates a new instance of ModificationOperation.
      */
@@ -43,8 +44,8 @@ public enum ModificationOperation
     {
         this.value = value;
     }
-    
-    
+
+
     /**
      * @return The integer value associated with the element. This value
      * is equivalent to the one found in DirContext.
@@ -53,8 +54,8 @@ public enum ModificationOperation
     {
         return value;
     }
-    
-    
+
+
     /**
      * Get the ModificationOperation from an int value
      *
@@ -80,7 +81,8 @@ public enum ModificationOperation
             return null;
         }
     }
-    
+
+
     /**
      * @see Object#toString()
      */
@@ -88,16 +90,16 @@ public enum ModificationOperation
     {
         switch ( this )
         {
-            case ADD_ATTRIBUTE :
+            case ADD_ATTRIBUTE:
                 return "add";
-                
-            case REPLACE_ATTRIBUTE :
+
+            case REPLACE_ATTRIBUTE:
                 return "replace";
-                
-            case REMOVE_ATTRIBUTE :
+
+            case REMOVE_ATTRIBUTE:
                 return "remove";
-                
-            default :
+
+            default:
                 return "";
         }
     }

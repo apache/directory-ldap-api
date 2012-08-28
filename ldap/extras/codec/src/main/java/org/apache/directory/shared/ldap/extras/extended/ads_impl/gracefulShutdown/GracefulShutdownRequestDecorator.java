@@ -36,11 +36,12 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<GracefulShutdownRequest,GracefulShutdownResponse> 
+public class GracefulShutdownRequestDecorator extends
+    ExtendedRequestDecorator<GracefulShutdownRequest, GracefulShutdownResponse>
     implements GracefulShutdownRequest
 {
     private static final Logger LOG = LoggerFactory.getLogger( GracefulShutdownRequestDecorator.class );
-    
+
 
     /**
      * Creates a new instance of GracefulShutdownRequestDecorator.
@@ -52,8 +53,8 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
     {
         super( codec, decoratedMessage );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -63,7 +64,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
 
         try
         {
-            GracefulShutdown gs = (GracefulShutdown) decoder.decode( requestValue );
+            GracefulShutdown gs = ( GracefulShutdown ) decoder.decode( requestValue );
 
             if ( requestValue != null )
             {

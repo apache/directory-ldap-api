@@ -117,8 +117,8 @@ public abstract class AbstractSchemaParser
      * @throws ParseException If the parsing failed
      */
     public abstract SchemaObject parse( String schemaDescription ) throws ParseException;
-    
-    
+
+
     /**
      * Update the schemaName for the given SchemaObject, accordingly to the X-SCHEMA parameter. If
      * not present, default to 'other'
@@ -129,12 +129,12 @@ public abstract class AbstractSchemaParser
     {
         // Update the Schema if we have the X-SCHEMA extension
         List<String> schemaExtension = schemaObject.getExtensions().get( MetaSchemaConstants.X_SCHEMA );
-        
+
         if ( schemaExtension != null )
         {
             String schemaName = schemaExtension.get( 0 );
-            
-            if ( Strings.isEmpty(schemaName) )
+
+            if ( Strings.isEmpty( schemaName ) )
             {
                 schemaObject.setSchemaName( MetaSchemaConstants.SCHEMA_OTHER );
             }

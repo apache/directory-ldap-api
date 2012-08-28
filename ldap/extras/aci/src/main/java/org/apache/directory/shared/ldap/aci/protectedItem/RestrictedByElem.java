@@ -90,16 +90,16 @@ public class RestrictedByElem
     @Override
     public boolean equals( Object o )
     {
-        if (o == null)
+        if ( o == null )
         {
             return false;
         }
-        
+
         if ( this == o )
         {
             return true;
         }
-        
+
         if ( o instanceof RestrictedByElem )
         {
             RestrictedByElem that = ( RestrictedByElem ) o;
@@ -120,7 +120,7 @@ public class RestrictedByElem
             }
             else
             {
-                if ( this.attributeType.equals( that.attributeType ))
+                if ( this.attributeType.equals( that.attributeType ) )
                 {
                     if ( this.valuesIn == null )
                     {

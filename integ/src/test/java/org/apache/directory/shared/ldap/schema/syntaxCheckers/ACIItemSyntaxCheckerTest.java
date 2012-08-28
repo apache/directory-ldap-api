@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.schema.syntaxCheckers;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -46,6 +47,7 @@ public class ACIItemSyntaxCheckerTest
 {
     private static ACIItemSyntaxChecker checker;
 
+
     @BeforeClass
     public static void init() throws Exception
     {
@@ -55,6 +57,7 @@ public class ACIItemSyntaxCheckerTest
         checker = new org.apache.directory.shared.ldap.aci.ACIItemSyntaxChecker();
         checker.setSchemaManager( schemaManager );
     }
+
 
     @Test
     public void testNullString()
@@ -69,16 +72,19 @@ public class ACIItemSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "" ) );
     }
 
+
     @Test
     public void testOid()
     {
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.1", checker.getOid() );
     }
 
+
     @Test
     public void testCorrectCase()
     {
     }
+
 
     /**
      * Tests the checker with an ACIItem of ItemFirst main component.
@@ -247,7 +253,7 @@ public class ACIItemSyntaxCheckerTest
     public void testInvalidAttributeValue()
     {
         String spec;
-        
+
         // no name-value-pair
         spec = "{ identificationTag \"id2\"   , precedence 14, authenticationLevel none  , "
             + "itemOrUserFirst userFirst:  { userPermissions { { protectedItems{ entry  , attributeType { cn  , ou }  , attributeValue { must_be_a_name_value_pair } , "
@@ -255,7 +261,7 @@ public class ACIItemSyntaxCheckerTest
             + "subtree {{ minimum 7, maximum 9, base \"ou=system\" }, { base \"ou=ORGANIZATIONUNIT\","
             + " maximum   2, minimum  1 } } }  }  }   ";
         assertFalse( checker.isValidSyntax( spec ) );
-        
+
         // no name-value-pair
         spec = "{ identificationTag \"id2\"   , precedence 14, authenticationLevel none  , "
             + "itemOrUserFirst userFirst:  { userPermissions { { protectedItems{ entry  , attributeType { cn  , ou }  , attributeValue { x=y,m=n,k=l,x } , "
@@ -264,8 +270,8 @@ public class ACIItemSyntaxCheckerTest
             + " maximum   2, minimum  1 } } }  }  }   ";
         assertFalse( checker.isValidSyntax( spec ) );
     }
-    
-    
+
+
     /**
      * Test case for DIRSERVER-891
      */
@@ -273,16 +279,16 @@ public class ACIItemSyntaxCheckerTest
     public void testIncomplete()
     {
         String spec;
-        
+
         spec = "{ }";
         assertFalse( checker.isValidSyntax( spec ) );
-        
+
         spec = "{ identificationTag \"id2\" }";
         assertFalse( checker.isValidSyntax( spec ) );
-        
+
         spec = "{ identificationTag \"id2\", precedence 14 } ";
         assertFalse( checker.isValidSyntax( spec ) );
-        
+
         spec = "{ identificationTag \"id2\", precedence 14, authenticationLevel none } ";
         assertFalse( checker.isValidSyntax( spec ) );
     }

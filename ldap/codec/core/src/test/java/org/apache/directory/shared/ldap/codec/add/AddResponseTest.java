@@ -67,20 +67,27 @@ public class AddResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x0C, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x69, 0x07, // CHOICE { ..., addResponse AddResponse, ...
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x69,
+                0x07, // CHOICE { ..., addResponse AddResponse, ...
                 // AddResponse ::= [APPLICATION 9] LDAPResult
-                0x0A, 0x01, 0x00, // LDAPResult ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x00, // LDAPResult ::= SEQUENCE {
                 // resultCode ENUMERATED {
                 // success (0), ...
                 // },
-                0x04, 0x00, // matchedDN LDAPDN,
-                0x04, 0x00 // errorMessage LDAPString,
+                0x04,
+                0x00, // matchedDN LDAPDN,
+                0x04,
+                0x00 // errorMessage LDAPString,
             // referral [3] Referral OPTIONAL }
             // }
-            } );
+        } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -112,7 +119,7 @@ public class AddResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x0E, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -136,8 +143,11 @@ public class AddResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x0C, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x69, 0x00, // CHOICE { ..., addResponse AddResponse, ...
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x69,
+                0x00, // CHOICE { ..., addResponse AddResponse, ...
             } );
 
         stream.flip();
@@ -173,7 +183,8 @@ public class AddResponseTest extends AbstractCodecServiceTest
         stream.put( new byte[]
             { 0x30,
                 0x29, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01,
+                0x02,
+                0x01,
                 0x01, // messageID MessageID
                 0x69,
                 0x07, // CHOICE { ..., addResponse AddResponse, ...
@@ -192,15 +203,39 @@ public class AddResponseTest extends AbstractCodecServiceTest
                 // }
                 ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, 0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30, 0x2E, 0x31, 0x2E, 0x31, 0x31,
-                0x33, 0x37, 0x33, 0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32 } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<AddResponseDecorator> container 
-            = new LdapMessageContainer<AddResponseDecorator>( codec );
+        LdapMessageContainer<AddResponseDecorator> container = new LdapMessageContainer<AddResponseDecorator>( codec );
 
         // Decode the AddResponse PDU
         try
@@ -227,9 +262,10 @@ public class AddResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue()) );
+        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
         try
         {
@@ -239,7 +275,7 @@ public class AddResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x02B, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }

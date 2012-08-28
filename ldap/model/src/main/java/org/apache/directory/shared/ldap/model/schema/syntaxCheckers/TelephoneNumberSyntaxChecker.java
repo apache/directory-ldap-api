@@ -53,19 +53,20 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
 
     /** Other regexps to extend the initial one */
     private List<String> regexps;
-    
+
     /** Other regexp to extend the initial one, compiled */
     private List<Pattern> compiledREs;
-    
+
     /** The default pattern used to check a TelephoneNumber */
     private static final String DEFAULT_REGEXP = "^ *[+]? *((\\([0-9- ]+\\))|[0-9- ]+)+$";
-    
+
     /** The compiled default pattern */
-    private Pattern defaultPattern =  Pattern.compile( DEFAULT_REGEXP );
-    
+    private Pattern defaultPattern = Pattern.compile( DEFAULT_REGEXP );
+
     /** A flag set when only the default regexp should be tested */
     protected boolean defaultMandatory = false;
-    
+
+
     /**
      * Creates a new instance of TelephoneNumberSyntaxChecker.
      */
@@ -85,17 +86,17 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
         {
             return;
         }
-        
+
         try
         {
             Pattern compiledRE = Pattern.compile( regexp );
 
             if ( regexps == null )
-            { 
+            {
                 regexps = new ArrayList<String>();
                 compiledREs = new ArrayList<Pattern>();
             }
-            
+
             regexps.add( regexp );
             compiledREs.add( compiledRE );
         }
@@ -126,7 +127,8 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
             return;
         }
     }
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -139,14 +141,14 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -158,13 +160,13 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // We will use a regexp to check the TelephoneNumber.
         if ( defaultMandatory )
         {
             // We have a unique regexp to check, the default one
             boolean result = defaultPattern.matcher( strValue ).matches();
-            
+
             if ( result )
             {
                 LOG.debug( "Syntax valid for '{}'", value );
@@ -173,7 +175,7 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
             }
-            
+
             return result;
         }
         else
@@ -190,10 +192,10 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
                     LOG.debug( "Syntax invalid for '{}'", value );
                     return false;
                 }
-                
+
                 // The default is not enough, let's try
                 // the other regexps
-                for ( Pattern pattern:compiledREs )
+                for ( Pattern pattern : compiledREs )
                 {
                     if ( pattern.matcher( strValue ).matches() )
                     {
@@ -201,7 +203,7 @@ public class TelephoneNumberSyntaxChecker extends SyntaxChecker
                         return true;
                     }
                 }
-                
+
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
             }

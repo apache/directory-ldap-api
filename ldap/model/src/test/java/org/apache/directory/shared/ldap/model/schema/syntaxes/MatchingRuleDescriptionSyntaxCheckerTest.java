@@ -43,17 +43,22 @@ public class MatchingRuleDescriptionSyntaxCheckerTest
 {
     private MatchingRuleDescriptionSyntaxChecker checker = new MatchingRuleDescriptionSyntaxChecker();
 
+
     @Test
     public void testValid()
     {
         assertTrue( checker.isValidSyntax( ( "( 2.5.13.5 SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )" ) ) );
-        assertTrue( checker.isValidSyntax( ( "( 2.5.13.5 NAME 'caseExactMatch' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )" ) ) );
-        assertTrue( checker.isValidSyntax( ( "( 2.5.13.5 NAME 'caseExactMatch' DESC 'caseExactMatch' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )" ) ) );
-        assertTrue( checker.isValidSyntax( ( "( 2.5.13.5 NAME 'caseExactMatch' DESC 'caseExactMatch' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ABC-DEF 'test' )" ) ) );
+        assertTrue( checker
+            .isValidSyntax( ( "( 2.5.13.5 NAME 'caseExactMatch' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )" ) ) );
+        assertTrue( checker
+            .isValidSyntax( ( "( 2.5.13.5 NAME 'caseExactMatch' DESC 'caseExactMatch' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )" ) ) );
+        assertTrue( checker
+            .isValidSyntax( ( "( 2.5.13.5 NAME 'caseExactMatch' DESC 'caseExactMatch' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ABC-DEF 'test' )" ) ) );
 
         // spaces
         assertTrue( checker.isValidSyntax( "(2.5.13.5 SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)" ) );
-        assertTrue( checker.isValidSyntax( "(    2.5.13.5     NAME    'caseExactMatch'     DESC    'caseExactMatch'      SYNTAX       1.3.6.1.4.1.1466.115.121.1.15     X-ABC-DEF     'test')" ) );
+        assertTrue( checker
+            .isValidSyntax( "(    2.5.13.5     NAME    'caseExactMatch'     DESC    'caseExactMatch'      SYNTAX       1.3.6.1.4.1.1466.115.121.1.15     X-ABC-DEF     'test')" ) );
     }
 
 
@@ -62,10 +67,10 @@ public class MatchingRuleDescriptionSyntaxCheckerTest
     {
         // null 
         assertFalse( checker.isValidSyntax( null ) );
-        
+
         // empty 
         assertFalse( checker.isValidSyntax( "" ) );
-        
+
         // missing/invalid OID
         assertFalse( checker.isValidSyntax( "()" ) );
         assertFalse( checker.isValidSyntax( "(  )" ) );
@@ -86,9 +91,11 @@ public class MatchingRuleDescriptionSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "( 2.5.13.5 desc 'Directory String' )" ) );
 
         // invalid extension
-        assertFalse( checker.isValidSyntax( "( 2.5.13.5 DESC 'Description' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ABC-DEF )" ) );
-        assertFalse( checker.isValidSyntax( "( 2.5.13.5 DESC 'Description' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ABC-123 'test' )" ) );
-        
+        assertFalse( checker
+            .isValidSyntax( "( 2.5.13.5 DESC 'Description' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ABC-DEF )" ) );
+        assertFalse( checker
+            .isValidSyntax( "( 2.5.13.5 DESC 'Description' SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 X-ABC-123 'test' )" ) );
+
         // SYNTAX is required
         assertFalse( checker.isValidSyntax( "( 2.5.13.5 NAME 'caseExactMatch' )" ) );
 

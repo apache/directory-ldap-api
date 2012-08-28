@@ -276,7 +276,7 @@ class SchemaMarker
 {
     /** The start marker. */
     private int start;
-    
+
     /** The end marker. */
     private int end;
 

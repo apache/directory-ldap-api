@@ -48,8 +48,8 @@ public class OrFilter extends ConnectorFilter
     {
         super( tlvId );
     }
-    
-    
+
+
     /**
      * The constructor. We wont initialize the ArrayList as they may not be
      * used.

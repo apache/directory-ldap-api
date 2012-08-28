@@ -39,13 +39,14 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreExtendedRequestValue extends GrammarAction<LdapMessageContainer<ExtendedRequestDecorator<?,?>>>
+public class StoreExtendedRequestValue extends GrammarAction<LdapMessageContainer<ExtendedRequestDecorator<?, ?>>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreExtendedRequestValue.class );
 
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
+
 
     /**
      * Instantiates a new action.
@@ -59,10 +60,10 @@ public class StoreExtendedRequestValue extends GrammarAction<LdapMessageContaine
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<ExtendedRequestDecorator<?,?>> container ) throws DecoderException
+    public void action( LdapMessageContainer<ExtendedRequestDecorator<?, ?>> container ) throws DecoderException
     {
         // We can allocate the ExtendedRequest Object
-        ExtendedRequestDecorator<?,?> extendedRequest = container.getMessage();
+        ExtendedRequestDecorator<?, ?> extendedRequest = container.getMessage();
 
         // Get the Value and store it in the ExtendedRequest
         TLV tlv = container.getCurrentTLV();

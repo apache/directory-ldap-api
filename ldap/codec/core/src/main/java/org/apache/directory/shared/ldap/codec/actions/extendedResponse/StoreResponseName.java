@@ -83,7 +83,7 @@ public class StoreResponseName extends GrammarAction<LdapMessageContainer<Extend
         }
         else
         {
-            extendedResponse.setResponseName( new Oid( Strings.asciiBytesToString(tlv.getValue().getData()) )
+            extendedResponse.setResponseName( new Oid( Strings.asciiBytesToString( tlv.getValue().getData() ) )
                 .toString() );
         }
 

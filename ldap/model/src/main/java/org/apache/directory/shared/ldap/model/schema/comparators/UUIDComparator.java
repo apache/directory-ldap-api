@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.comparators;
 
+
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,7 @@ public class UUIDComparator extends LdapComparator<Object>
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( UUIDComparator.class );
 
+
     /**
      * The UUIDComparator constructor. Its OID is the UUIDMatch matching
      * rule OID.
@@ -46,7 +48,7 @@ public class UUIDComparator extends LdapComparator<Object>
         super( oid );
     }
 
-    
+
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
@@ -61,12 +63,12 @@ public class UUIDComparator extends LdapComparator<Object>
         {
             return ( uuid2 == null ) ? 0 : -1;
         }
-        
+
         if ( uuid2 == null )
         {
             return 1;
         }
-        
+
         String uuidStr1 = uuid1.toString();
         String uuidStr2 = uuid2.toString();
 

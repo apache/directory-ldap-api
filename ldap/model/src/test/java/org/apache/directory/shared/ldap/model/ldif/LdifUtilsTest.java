@@ -60,7 +60,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 public class LdifUtilsTest
 {
     private String testString = "this is a test";
-    
+
 
     /**
      * Tests the method IsLdifSafe with a null String
@@ -70,7 +70,7 @@ public class LdifUtilsTest
     {
         assertTrue( LdifUtils.isLDIFSafe( null ) );
     }
-    
+
 
     /**
      * Tests the method IsLdifSafe with an empty String
@@ -80,7 +80,7 @@ public class LdifUtilsTest
     {
         assertTrue( LdifUtils.isLDIFSafe( "" ) );
     }
-    
+
 
     /**
      * Tests the method IsLdifSafe with a String starting with the
@@ -90,11 +90,11 @@ public class LdifUtilsTest
     public void testIsLdifSafeStartingWithNUL()
     {
         char c = ( char ) 0;
-        
+
         assertFalse( LdifUtils.isLDIFSafe( c + testString ) );
     }
-    
-    
+
+
     /**
      * Tests the method IsLdifSafe with a String starting with the
      * char LF (ASCII code 10)
@@ -103,9 +103,10 @@ public class LdifUtilsTest
     public void testIsLdifSafeStartingWithLF()
     {
         char c = ( char ) 10;
-        
+
         assertFalse( LdifUtils.isLDIFSafe( c + testString ) );
     }
+
 
     /**
      * Tests the method IsLdifSafe with a String starting with the
@@ -115,9 +116,10 @@ public class LdifUtilsTest
     public void testIsLdifSafeStartingWithCR()
     {
         char c = ( char ) 13;
-        
+
         assertFalse( LdifUtils.isLDIFSafe( c + testString ) );
     }
+
 
     /**
      * Tests the method IsLdifSafe with a String starting with the
@@ -127,10 +129,11 @@ public class LdifUtilsTest
     public void testIsLdifSafeStartingWithSpace()
     {
         char c = ( char ) 32;
-        
+
         assertFalse( LdifUtils.isLDIFSafe( c + testString ) );
     }
-    
+
+
     /**
      * Tests the method IsLdifSafe with a String starting with the
      * char COLON (:) (ASCII code 58)
@@ -139,10 +142,11 @@ public class LdifUtilsTest
     public void testIsLdifSafeStartingWithColon()
     {
         char c = ( char ) 58;
-        
+
         assertFalse( LdifUtils.isLDIFSafe( c + testString ) );
     }
-    
+
+
     /**
      * Tests the method IsLdifSafe with a String starting with the
      * char LESS_THAN (<) (ASCII code 60)
@@ -151,10 +155,11 @@ public class LdifUtilsTest
     public void testIsLdifSafeStartingWithLessThan()
     {
         char c = ( char ) 60;
-        
+
         assertFalse( LdifUtils.isLDIFSafe( c + testString ) );
     }
-    
+
+
     /**
      * Tests the method IsLdifSafe with a String starting with the
      * char with ASCII code 127
@@ -163,10 +168,11 @@ public class LdifUtilsTest
     public void testIsLdifSafeStartingWithCharGreaterThan127()
     {
         char c = ( char ) 127;
-        
+
         assertTrue( LdifUtils.isLDIFSafe( c + testString ) );
     }
-    
+
+
     /**
      * Tests the method IsLdifSafe with a String starting with the
      * char with ASCII code greater than 127
@@ -175,10 +181,11 @@ public class LdifUtilsTest
     public void testIsLdifSafeStartingWithCharGreaterThan127Bis()
     {
         char c = ( char ) 222;
-        
+
         assertFalse( LdifUtils.isLDIFSafe( c + testString ) );
     }
-    
+
+
     /**
      * Tests the method IsLdifSafe with a String containing the
      * char NUL (ASCII code 0)
@@ -187,10 +194,11 @@ public class LdifUtilsTest
     public void testIsLdifSafeContainsNUL()
     {
         char c = ( char ) 0;
-        
+
         assertFalse( LdifUtils.isLDIFSafe( testString + c + testString ) );
     }
-    
+
+
     /**
      * Tests the method IsLdifSafe with a String containing the
      * char LF (ASCII code 10)
@@ -199,10 +207,11 @@ public class LdifUtilsTest
     public void testIsLdifSafeContainsLF()
     {
         char c = ( char ) 10;
-        
+
         assertFalse( LdifUtils.isLDIFSafe( testString + c + testString ) );
     }
-    
+
+
     /**
      * Tests the method IsLdifSafe with a String containing the
      * char CR (ASCII code 13)
@@ -211,10 +220,11 @@ public class LdifUtilsTest
     public void testIsLdifSafeContainsCR()
     {
         char c = ( char ) 13;
-        
+
         assertFalse( LdifUtils.isLDIFSafe( testString + c + testString ) );
     }
-    
+
+
     /**
      * Tests the method IsLdifSafe with a String containing the
      * char with ASCII code 127
@@ -223,10 +233,11 @@ public class LdifUtilsTest
     public void testIsLdifSafeContainsCharGreaterThan127()
     {
         char c = ( char ) 127;
-        
+
         assertTrue( LdifUtils.isLDIFSafe( testString + c + testString ) );
     }
-    
+
+
     /**
      * Tests the method IsLdifSafe with a String containing a
      * char with ASCII code greater than 127
@@ -235,10 +246,11 @@ public class LdifUtilsTest
     public void testIsLdifSafeContainsCharGreaterThan127Bis()
     {
         char c = ( char ) 328;
-        
+
         assertFalse( LdifUtils.isLDIFSafe( testString + c + testString ) );
     }
-    
+
+
     /**
      * Tests the method IsLdifSafe with a String ending with the
      * char SPACE (ASCII code 32)
@@ -247,20 +259,21 @@ public class LdifUtilsTest
     public void testIsLdifSafeEndingWithSpace()
     {
         char c = ( char ) 32;
-        
-        assertFalse( LdifUtils.isLDIFSafe( testString  + c) );
+
+        assertFalse( LdifUtils.isLDIFSafe( testString + c ) );
     }
-    
+
+
     /**
      * Tests the method IsLdifSafe with a correct String
      */
     @Test
     public void testIsLdifSafeCorrectString()
-    {        
+    {
         assertTrue( LdifUtils.isLDIFSafe( testString ) );
     }
-    
-    
+
+
     /**
      * Test the way LDIF lines are stripped to a number of chars
      */
@@ -268,7 +281,7 @@ public class LdifUtilsTest
     public void testStripLineToNChars()
     {
         String line = "abc";
-        
+
         try
         {
             LdifUtils.stripLineToNChars( line, 1 );
@@ -278,11 +291,12 @@ public class LdifUtilsTest
         {
             // This is correct
         }
-        
+
         String res = LdifUtils.stripLineToNChars( line, 2 );
         assertEquals( "ab\n c", res );
         assertEquals( "abc", LdifUtils.stripLineToNChars( line, 3 ) );
     }
+
 
     /**
      * Test that the LDIF is stripped to 5 chars per line
@@ -306,10 +320,10 @@ public class LdifUtilsTest
         assertEquals( "abcde\n fghi\n jklm", LdifUtils.stripLineToNChars( "abcdefghijklm", 5 ) );
         assertEquals( "abcde\n fghi\n jklm\n n", LdifUtils.stripLineToNChars( "abcdefghijklmn", 5 ) );
         assertEquals( "abcde\n fghi\n jklm\n no", LdifUtils.stripLineToNChars( "abcdefghijklmno", 5 ) );
-        assertEquals( "abcde\n fghi\n jklm\n nop", LdifUtils.stripLineToNChars("abcdefghijklmnop", 5) );
+        assertEquals( "abcde\n fghi\n jklm\n nop", LdifUtils.stripLineToNChars( "abcdefghijklmnop", 5 ) );
     }
-    
-    
+
+
     /**
      * Tests that unsafe characters are encoded using UTF-8 charset. 
      * @throws LdapException 
@@ -323,8 +337,8 @@ public class LdifUtilsTest
         String ldif = LdifUtils.convertToLdif( attributes );
         assertEquals( "cn:: U2FhcmJyw7xja2Vu\n", ldif );
     }
-    
-    
+
+
     /**
      * Tests that null values are correctly encoded 
      * 
@@ -337,8 +351,8 @@ public class LdifUtilsTest
         String ldif = LdifUtils.convertToLdif( attributes );
         assertEquals( "cn:\n", ldif );
     }
-    
-    
+
+
     /**
      * Test a conversion of an entry from a LDIF file
      */
@@ -348,15 +362,15 @@ public class LdifUtilsTest
         LdifEntry entry = new LdifEntry();
         entry.setDn( "cn=Saarbr\u00FCcken, dc=example, dc=com" );
         entry.setChangeType( ChangeType.Add );
-        
+
         entry.addAttribute( "objectClass", "top", "person", "inetorgPerson" );
         entry.addAttribute( "cn", "Saarbr\u00FCcken" );
         entry.addAttribute( "sn", "test" );
 
         LdifUtils.convertToLdif( entry, 15 );
     }
-    
-    
+
+
     /**
      * Test a conversion of an attributes from a LDIF file
      * @throws org.apache.directory.shared.ldap.model.ldif.LdapLdifException
@@ -365,23 +379,23 @@ public class LdifUtilsTest
     public void testConvertAttributesfromLdif() throws LdapException, LdapLdifException
     {
         Attributes attributes = new BasicAttributes( true );
-        
+
         Attribute oc = new BasicAttribute( "objectclass" );
         oc.add( "top" );
         oc.add( "person" );
         oc.add( "inetorgPerson" );
-        
+
         attributes.put( oc );
-        
+
         attributes.put( "cn", "Saarbrucken" );
         attributes.put( "sn", "test" );
 
-        String ldif = LdifUtils.convertToLdif( attributes, (Dn)null, 15 );
+        String ldif = LdifUtils.convertToLdif( attributes, ( Dn ) null, 15 );
         Attributes result = LdifUtils.getJndiAttributesFromLdif( ldif );
         assertEquals( attributes, result );
     }
 
-    
+
     /**
      * Check that the correct reverse LDIF is produced for a modifyDn
      * operation that moves and renames the entry while preserving the
@@ -401,11 +415,12 @@ public class LdifUtilsTest
         entry.add( "sn", "doe" );
         entry.add( "uid", "jdoe" );
 
-        List<LdifEntry> reverseds = LdifRevertor.reverseMoveAndRename(entry, newSuperior, new Rdn("cn=jack doe"), false);
+        List<LdifEntry> reverseds = LdifRevertor.reverseMoveAndRename( entry, newSuperior, new Rdn( "cn=jack doe" ),
+            false );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
-        
+
         LdifEntry reversed = reverseds.get( 0 );
         assertEquals( "cn=jack doe,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
@@ -433,34 +448,35 @@ public class LdifUtilsTest
         entry.add( "sn", "doe" );
         entry.add( "uid", "jdoe" );
 
-        List<LdifEntry> reverseds = LdifRevertor.reverseMoveAndRename( entry, newSuperior, new Rdn( "cn=jack doe" ), false );
+        List<LdifEntry> reverseds = LdifRevertor.reverseMoveAndRename( entry, newSuperior, new Rdn( "cn=jack doe" ),
+            false );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
-        
+
         LdifEntry reversed = reverseds.get( 0 );
         assertEquals( "cn=jack doe,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
         assertEquals( "cn=john doe", reversed.getNewRdn() );
-        assertEquals( "dc=example, dc=com", Strings.trim(reversed.getNewSuperior()) );
+        assertEquals( "dc=example, dc=com", Strings.trim( reversed.getNewSuperior() ) );
         assertNull( reversed.getEntry() );
     }
-    
-    
+
+
     @Test
     public void testCreateAttributesVarargs() throws LdapException, LdapLdifException, NamingException
     {
         String mOid = "m-oid: 1.2.3.4";
         String description = "description";
-        
-        Attributes attrs = LdifUtils.createJndiAttributes( 
+
+        Attributes attrs = LdifUtils.createJndiAttributes(
             "objectClass: top",
             "objectClass: metaTop",
             "objectClass: metaSyntax",
             mOid,
             "m-description", description );
-        
+
         assertEquals( "top", attrs.get( "objectClass" ).get( 0 ) );
         assertEquals( "metaTop", attrs.get( "objectClass" ).get( 1 ) );
         assertEquals( "metaSyntax", attrs.get( "objectClass" ).get( 2 ) );
@@ -469,7 +485,7 @@ public class LdifUtilsTest
 
         try
         {
-            LdifUtils.createJndiAttributes( 
+            LdifUtils.createJndiAttributes(
                 "objectClass", "top",
                 "objectClass" );
             fail();
@@ -479,35 +495,35 @@ public class LdifUtilsTest
             assertTrue( true );
         }
     }
-    
-    
+
+
     @Test
-    public void testConvertEntryNoControls() throws Exception 
+    public void testConvertEntryNoControls() throws Exception
     {
         LdifReader reader = new LdifReader();
 
-        String expected = 
+        String expected =
             "dn: ou=test\n" +
-            "ObjectClass: top\n" +
-            "ObjectClass: metaTop\n" +
-            "ObjectClass: metaSyntax\n" +
-            "m-oid: 1.2.3.4\n" +
-            "m-description: description\n\n";
-        
+                "ObjectClass: top\n" +
+                "ObjectClass: metaTop\n" +
+                "ObjectClass: metaSyntax\n" +
+                "m-oid: 1.2.3.4\n" +
+                "m-description: description\n\n";
+
         List<LdifEntry> entries = reader.parseLdif( expected );
         LdifEntry expectedEntry = entries.get( 0 );
 
         LdifEntry entry = new LdifEntry();
-        
+
         entry.setDn( "ou=test" );
         entry.addAttribute( "ObjectClass", "top", "metaTop", "metaSyntax" );
         entry.addAttribute( "m-oid", "1.2.3.4" );
         entry.addAttribute( "m-description", "description" );
-        
+
         String converted = LdifUtils.convertToLdif( entry );
-        
+
         assertNotNull( converted );
-        
+
         entries = reader.parseLdif( converted );
         LdifEntry convertedEntry = entries.get( 0 );
 
@@ -515,41 +531,39 @@ public class LdifUtilsTest
     }
 
 
-    
-    
     @Test
-    public void testConvertEntryOneControl() throws Exception 
+    public void testConvertEntryOneControl() throws Exception
     {
         LdifReader reader = new LdifReader();
 
-        String expected = 
+        String expected =
             "dn: ou=test\n" +
-            "control: 2.16.840.1.113730.3.4.2 false\n" +
-            "changetype: add\n" +
-            "ObjectClass: top\n" +
-            "ObjectClass: metaTop\n" +
-            "ObjectClass: metaSyntax\n" +
-            "m-oid: 1.2.3.4\n" +
-            "m-description: description\n\n";
+                "control: 2.16.840.1.113730.3.4.2 false\n" +
+                "changetype: add\n" +
+                "ObjectClass: top\n" +
+                "ObjectClass: metaTop\n" +
+                "ObjectClass: metaSyntax\n" +
+                "m-oid: 1.2.3.4\n" +
+                "m-description: description\n\n";
 
         List<LdifEntry> entries = reader.parseLdif( expected );
         LdifEntry expectedEntry = entries.get( 0 );
 
         LdifEntry entry = new LdifEntry();
-        
+
         entry.setDn( "ou=test" );
         entry.addAttribute( "ObjectClass", "top", "metaTop", "metaSyntax" );
         entry.addAttribute( "m-oid", "1.2.3.4" );
         entry.addAttribute( "m-description", "description" );
-        
+
         ManageDsaITImpl control = new ManageDsaITImpl();
-        
+
         entry.addControl( control );
-        
+
         String converted = LdifUtils.convertToLdif( entry );
-        
+
         assertNotNull( converted );
-        
+
         entries = reader.parseLdif( converted );
         LdifEntry convertedEntry = entries.get( 0 );
 

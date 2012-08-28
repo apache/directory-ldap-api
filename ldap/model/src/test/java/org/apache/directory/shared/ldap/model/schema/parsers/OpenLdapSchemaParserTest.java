@@ -55,6 +55,7 @@ public class OpenLdapSchemaParserTest
 {
     private OpenLdapSchemaParser parser;
 
+
     @Before
     public void setUp() throws Exception
     {
@@ -106,9 +107,9 @@ public class OpenLdapSchemaParserTest
     @Test
     public void testSimpleAttributeTypeParse() throws Exception
     {
-        String attributeTypeData = "# adding a comment  \n" 
+        String attributeTypeData = "# adding a comment  \n"
             + "attributetype ( 2.5.4.2 NAME 'knowledgeInformation'\n"
-            + "        DESC 'RFC2256: knowledge information'\n" 
+            + "        DESC 'RFC2256: knowledge information'\n"
             + "        EQUALITY caseIgnoreMatch\n"
             + "        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )";
         parser.parse( attributeTypeData );
@@ -128,9 +129,9 @@ public class OpenLdapSchemaParserTest
     @Test
     public void testAttributeTypeParseWithDescQuotes() throws Exception
     {
-        String attributeTypeData = "# adding a comment  \n" 
+        String attributeTypeData = "# adding a comment  \n"
             + "attributetype ( 2.5.4.2 NAME 'knowledgeInformation'\n"
-            + "        DESC 'RFC2256: \"knowledge\" information'\n" 
+            + "        DESC 'RFC2256: \"knowledge\" information'\n"
             + "        EQUALITY caseIgnoreMatch\n"
             + "        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )";
         parser.parse( attributeTypeData );
@@ -178,7 +179,7 @@ public class OpenLdapSchemaParserTest
     {
         String attributeTypeData = "# adding a comment  \n"
             + "attributetype ( 2.5.4.2 NAME ( 'knowledgeInformation' 'asdf' ) \n"
-            + "        DESC 'RFC2256: knowledge information'\n" 
+            + "        DESC 'RFC2256: knowledge information'\n"
             + "        EQUALITY caseIgnoreMatch\n"
             + "        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{32768} )";
         parser.parse( attributeTypeData );
@@ -211,9 +212,9 @@ public class OpenLdapSchemaParserTest
     @Test
     public void testObjectClassParse() throws Exception
     {
-        String objectClassData = "objectclass ( 2.5.6.6 NAME 'person'\n" 
+        String objectClassData = "objectclass ( 2.5.6.6 NAME 'person'\n"
             + "        DESC 'RFC2256: a person'\n"
-            + "        SUP top STRUCTURAL\n" 
+            + "        SUP top STRUCTURAL\n"
             + "        MUST ( sn $ cn )\n"
             + "        MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) )";
         parser.parse( objectClassData );
@@ -226,23 +227,21 @@ public class OpenLdapSchemaParserTest
         assertEquals( "person", objectClass.getName() );
         assertEquals( "RFC2256: a person", objectClass.getDescription() );
         assertEquals( ObjectClassTypeEnum.STRUCTURAL, objectClass.getType() );
-        assertEquals( "sn", objectClass.getMustAttributeTypeOids().get(0) );
-        assertEquals( "cn", objectClass.getMustAttributeTypeOids().get(1) );
-        assertEquals( "userPassword", objectClass.getMayAttributeTypeOids().get(0) );
-        assertEquals( "telephoneNumber", objectClass.getMayAttributeTypeOids().get(1) );
-        assertEquals( "seeAlso", objectClass.getMayAttributeTypeOids().get(2) );
-        assertEquals( "description", objectClass.getMayAttributeTypeOids().get(3) );
+        assertEquals( "sn", objectClass.getMustAttributeTypeOids().get( 0 ) );
+        assertEquals( "cn", objectClass.getMustAttributeTypeOids().get( 1 ) );
+        assertEquals( "userPassword", objectClass.getMayAttributeTypeOids().get( 0 ) );
+        assertEquals( "telephoneNumber", objectClass.getMayAttributeTypeOids().get( 1 ) );
+        assertEquals( "seeAlso", objectClass.getMayAttributeTypeOids().get( 2 ) );
+        assertEquals( "description", objectClass.getMayAttributeTypeOids().get( 3 ) );
     }
-
-
 
 
     @Test
     public void testObjectClassWithExtensionsParse() throws Exception
     {
-        String objectClassData = "objectclass ( 2.5.6.6 NAME 'person'\n" 
+        String objectClassData = "objectclass ( 2.5.6.6 NAME 'person'\n"
             + "        DESC 'RFC2256: a person'\n"
-            + "        SUP top STRUCTURAL\n" 
+            + "        SUP top STRUCTURAL\n"
             + "        MUST ( sn $ cn )\n"
             + "        MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) \n"
             + "        X-extension 'test' X-otherExtension ( 'test1' 'test2' ) )";
@@ -256,30 +255,30 @@ public class OpenLdapSchemaParserTest
         assertEquals( "person", objectClass.getName() );
         assertEquals( "RFC2256: a person", objectClass.getDescription() );
         assertEquals( ObjectClassTypeEnum.STRUCTURAL, objectClass.getType() );
-        assertEquals( "sn", objectClass.getMustAttributeTypeOids().get(0) );
-        assertEquals( "cn", objectClass.getMustAttributeTypeOids().get(1) );
-        assertEquals( "userPassword", objectClass.getMayAttributeTypeOids().get(0) );
-        assertEquals( "telephoneNumber", objectClass.getMayAttributeTypeOids().get(1) );
-        assertEquals( "seeAlso", objectClass.getMayAttributeTypeOids().get(2) );
-        assertEquals( "description", objectClass.getMayAttributeTypeOids().get(3) );
+        assertEquals( "sn", objectClass.getMustAttributeTypeOids().get( 0 ) );
+        assertEquals( "cn", objectClass.getMustAttributeTypeOids().get( 1 ) );
+        assertEquals( "userPassword", objectClass.getMayAttributeTypeOids().get( 0 ) );
+        assertEquals( "telephoneNumber", objectClass.getMayAttributeTypeOids().get( 1 ) );
+        assertEquals( "seeAlso", objectClass.getMayAttributeTypeOids().get( 2 ) );
+        assertEquals( "description", objectClass.getMayAttributeTypeOids().get( 3 ) );
         Map<String, List<String>> extensions = objectClass.getExtensions();
 
         assertNotNull( extensions );
-        
+
         List<String> ext1 = extensions.get( "X-extension" );
         assertNotNull( ext1 );
         assertEquals( 1, ext1.size() );
         assertTrue( ext1.contains( "test" ) );
-        
+
         List<String> ext2 = extensions.get( "X-otherExtension" );
         assertNotNull( ext2 );
         assertEquals( 2, ext2.size() );
         assertTrue( ext2.contains( "test1" ) );
         assertTrue( ext2.contains( "test2" ) );
-        
+
     }
 
-    
+
     @Test
     public void testObjectClassMultipleNames() throws Exception
     {
@@ -300,29 +299,29 @@ public class OpenLdapSchemaParserTest
         assertNotNull( objectClass );
         assertEquals( "0.9.2342.19200300.100.4.4", objectClass.getOid() );
         assertEquals( "pilotPerson", objectClass.getName() );
-        assertEquals( "newPilotPerson", objectClass.getNames().get(1) );
+        assertEquals( "newPilotPerson", objectClass.getNames().get( 1 ) );
         assertEquals( ObjectClassTypeEnum.STRUCTURAL, objectClass.getType() );
-        assertEquals( "person", objectClass.getSuperiorOids().get(0) );
+        assertEquals( "person", objectClass.getSuperiorOids().get( 0 ) );
 
-        assertEquals( "userid", objectClass.getMayAttributeTypeOids().get(0) );
-        assertEquals( "textEncodedORAddress", objectClass.getMayAttributeTypeOids().get(1) );
-        assertEquals( "rfc822Mailbox", objectClass.getMayAttributeTypeOids().get(2) );
-        assertEquals( "favouriteDrink", objectClass.getMayAttributeTypeOids().get(3) );
-        assertEquals( "roomNumber", objectClass.getMayAttributeTypeOids().get(4) );
-        assertEquals( "userClass", objectClass.getMayAttributeTypeOids().get(5) );
-        assertEquals( "homeTelephoneNumber", objectClass.getMayAttributeTypeOids().get(6) );
-        assertEquals( "homePostalAddress", objectClass.getMayAttributeTypeOids().get(7) );
-        assertEquals( "secretary", objectClass.getMayAttributeTypeOids().get(8) );
-        assertEquals( "personalTitle", objectClass.getMayAttributeTypeOids().get(9) );
-        assertEquals( "preferredDeliveryMethod", objectClass.getMayAttributeTypeOids().get(10) );
-        assertEquals( "businessCategory", objectClass.getMayAttributeTypeOids().get(11) );
-        assertEquals( "janetMailbox", objectClass.getMayAttributeTypeOids().get(12) );
-        assertEquals( "otherMailbox", objectClass.getMayAttributeTypeOids().get(13) );
-        assertEquals( "mobileTelephoneNumber", objectClass.getMayAttributeTypeOids().get(14) );
-        assertEquals( "pagerTelephoneNumber", objectClass.getMayAttributeTypeOids().get(15) );
-        assertEquals( "organizationalStatus", objectClass.getMayAttributeTypeOids().get(16) );
-        assertEquals( "mailPreferenceOption", objectClass.getMayAttributeTypeOids().get(17) );
-        assertEquals( "personalSignature", objectClass.getMayAttributeTypeOids().get(18) );
+        assertEquals( "userid", objectClass.getMayAttributeTypeOids().get( 0 ) );
+        assertEquals( "textEncodedORAddress", objectClass.getMayAttributeTypeOids().get( 1 ) );
+        assertEquals( "rfc822Mailbox", objectClass.getMayAttributeTypeOids().get( 2 ) );
+        assertEquals( "favouriteDrink", objectClass.getMayAttributeTypeOids().get( 3 ) );
+        assertEquals( "roomNumber", objectClass.getMayAttributeTypeOids().get( 4 ) );
+        assertEquals( "userClass", objectClass.getMayAttributeTypeOids().get( 5 ) );
+        assertEquals( "homeTelephoneNumber", objectClass.getMayAttributeTypeOids().get( 6 ) );
+        assertEquals( "homePostalAddress", objectClass.getMayAttributeTypeOids().get( 7 ) );
+        assertEquals( "secretary", objectClass.getMayAttributeTypeOids().get( 8 ) );
+        assertEquals( "personalTitle", objectClass.getMayAttributeTypeOids().get( 9 ) );
+        assertEquals( "preferredDeliveryMethod", objectClass.getMayAttributeTypeOids().get( 10 ) );
+        assertEquals( "businessCategory", objectClass.getMayAttributeTypeOids().get( 11 ) );
+        assertEquals( "janetMailbox", objectClass.getMayAttributeTypeOids().get( 12 ) );
+        assertEquals( "otherMailbox", objectClass.getMayAttributeTypeOids().get( 13 ) );
+        assertEquals( "mobileTelephoneNumber", objectClass.getMayAttributeTypeOids().get( 14 ) );
+        assertEquals( "pagerTelephoneNumber", objectClass.getMayAttributeTypeOids().get( 15 ) );
+        assertEquals( "organizationalStatus", objectClass.getMayAttributeTypeOids().get( 16 ) );
+        assertEquals( "mailPreferenceOption", objectClass.getMayAttributeTypeOids().get( 17 ) );
+        assertEquals( "personalSignature", objectClass.getMayAttributeTypeOids().get( 18 ) );
     }
 
 
@@ -417,11 +416,11 @@ public class OpenLdapSchemaParserTest
                 fail( "object class 'groupOfURLs' or 'dgIdentityAux' expected" );
             }
         }
-        
+
         for ( AttributeType attributeType : attributeTypes )
         {
             List<String> asList = attributeType.getNames();
-            
+
             if ( asList.contains( "memberURL" ) )
             {
                 assertEquals( "2.16.840.1.113730.3.1.198", attributeType.getOid() );

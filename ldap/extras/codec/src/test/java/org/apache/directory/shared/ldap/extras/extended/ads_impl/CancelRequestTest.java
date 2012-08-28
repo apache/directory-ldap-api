@@ -64,10 +64,10 @@ public class CancelRequestTest
         stream.put( new byte[]
             {
                 0x30, 0x03,
-                    0x02, 0x01, 0x01
-            } ).flip();
+                0x02, 0x01, 0x01
+        } ).flip();
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
 
         // Allocate a Cancel Container
         Asn1Container cancelContainer = new CancelContainer();
@@ -92,7 +92,7 @@ public class CancelRequestTest
         {
             ByteBuffer bb = cancel.encode();
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -103,7 +103,7 @@ public class CancelRequestTest
         }
     }
 
-    
+
     /**
      * Test a Cancel message with no cancelId
      */
@@ -117,11 +117,11 @@ public class CancelRequestTest
         stream.put( new byte[]
             {
                 0x30, 0x00
-            } ).flip();
+        } ).flip();
 
         // Allocate a Cancel Container
         Asn1Container cancelContainer = new CancelContainer();
-        
+
         // Decode a Cancel message
         try
         {
@@ -134,7 +134,7 @@ public class CancelRequestTest
         }
     }
 
-    
+
     /**
      * Test a Cancel message with an empty cancelId
      */
@@ -148,8 +148,8 @@ public class CancelRequestTest
         stream.put( new byte[]
             {
                 0x30, 0x02,
-                  0x02, 0x00
-            } ).flip();
+                0x02, 0x00
+        } ).flip();
 
         // Allocate a Cancel Container
         Asn1Container cancelContainer = new CancelContainer();
@@ -166,7 +166,7 @@ public class CancelRequestTest
         }
     }
 
-    
+
     /**
      * Test a Cancel message with a bad cancelId
      */
@@ -180,8 +180,8 @@ public class CancelRequestTest
         stream.put( new byte[]
             {
                 0x30, 0x06,
-                  0x02, 0x04, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF
-            } ).flip();
+                0x02, 0x04, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF
+        } ).flip();
 
         // Allocate a Cancel Container
         Asn1Container cancelContainer = new CancelContainer();
@@ -198,7 +198,7 @@ public class CancelRequestTest
         }
     }
 
-    
+
     /**
      * Test a Cancel message with more than one cancelId
      */
@@ -212,9 +212,9 @@ public class CancelRequestTest
         stream.put( new byte[]
             {
                 0x30, 0x06,
-                  0x02, 0x01, 0x01,
-                  0x02, 0x01, 0x02
-            } ).flip();
+                0x02, 0x01, 0x01,
+                0x02, 0x01, 0x02
+        } ).flip();
 
         // Allocate a Cancel Container
         Asn1Container cancelContainer = new CancelContainer();

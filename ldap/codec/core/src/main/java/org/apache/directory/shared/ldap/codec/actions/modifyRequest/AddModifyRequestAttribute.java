@@ -58,6 +58,7 @@ public class AddModifyRequestAttribute extends GrammarAction<LdapMessageContaine
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */

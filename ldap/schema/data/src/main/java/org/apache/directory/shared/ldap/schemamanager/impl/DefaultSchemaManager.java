@@ -977,6 +977,7 @@ public class DefaultSchemaManager implements SchemaManager
         return schemaObject;
     }
 
+
     /**                                                                         
      * {@inheritDoc}                                                            
      */
@@ -985,44 +986,44 @@ public class DefaultSchemaManager implements SchemaManager
         boolean loaded = false;
 
         try
-	    {
-		Schema[] schemas = schemaLoader.getAllEnabled().toArray( new Schema[0] );
+        {
+            Schema[] schemas = schemaLoader.getAllEnabled().toArray( new Schema[0] );
 
-		// Reset the errors if not null                                     
-		if ( errors != null )
-		    {
-			errors.clear();
-		    }
+            // Reset the errors if not null                                     
+            if ( errors != null )
+            {
+                errors.clear();
+            }
 
-		Registries newRegistries = new Registries( this );
-		newRegistries.setRelaxed();
+            Registries newRegistries = new Registries( this );
+            newRegistries.setRelaxed();
 
-		// Load the schemas                                                 
-		for ( Schema schema : schemas )
-		    {
-			loadDepsFirst( newRegistries, schema );
-		    }
+            // Load the schemas                                                 
+            for ( Schema schema : schemas )
+            {
+                loadDepsFirst( newRegistries, schema );
+            }
 
-		// Build the cross references                                       
-		errors = newRegistries.buildReferences();
+            // Build the cross references                                       
+            errors = newRegistries.buildReferences();
 
-		if ( errors.isEmpty() )
-		    {
-			// Check the registries now                                     
-			errors = newRegistries.checkRefInteg();
+            if ( errors.isEmpty() )
+            {
+                // Check the registries now                                     
+                errors = newRegistries.checkRefInteg();
 
-			if ( errors.isEmpty() )
-			    {
-				registries = newRegistries;
-				registries.setStrict();
-				loaded = true;
-			    }
-		    }
-	    }
+                if ( errors.isEmpty() )
+                {
+                    registries = newRegistries;
+                    registries.setStrict();
+                    loaded = true;
+                }
+            }
+        }
         catch ( Exception e )
-	    {
-		throw new LdapException( e );
-	    }
+        {
+            throw new LdapException( e );
+        }
 
         return loaded;
     }
@@ -1643,7 +1644,7 @@ public class DefaultSchemaManager implements SchemaManager
         return new ImmutableSyntaxCheckerRegistry( registries.getSyntaxCheckerRegistry() );
     }
 
-    
+
     /**
      * Get rid of AT's options (everything after the ';'
      * @param oid
@@ -1652,7 +1653,7 @@ public class DefaultSchemaManager implements SchemaManager
     private String stripOptions( String oid )
     {
         int semiColonPos = oid.indexOf( ';' );
-        
+
         if ( semiColonPos != -1 )
         {
             return oid.substring( 0, semiColonPos );
@@ -1662,6 +1663,7 @@ public class DefaultSchemaManager implements SchemaManager
             return oid;
         }
     }
+
 
     /**
      * {@inheritDoc}

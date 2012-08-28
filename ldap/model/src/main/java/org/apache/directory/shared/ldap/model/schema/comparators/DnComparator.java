@@ -38,24 +38,25 @@ public class DnComparator extends LdapComparator<Object>
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
-    /** A reference to the schema manager */ 
+    /** A reference to the schema manager */
     private SchemaManager schemaManager;
-    
+
+
     public DnComparator( String oid )
     {
         super( oid );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
-    public int compare( Object obj0, Object obj1 ) 
+    public int compare( Object obj0, Object obj1 )
     {
         Dn dn0 = null;
         Dn dn1 = null;
-        
-        try 
+
+        try
         {
             dn0 = getDn( obj0 );
             dn1 = getDn( obj1 );
@@ -65,7 +66,7 @@ public class DnComparator extends LdapComparator<Object>
             // -- what do we do here ?
             return -1;
         }
-        
+
         if ( dn0.equals( dn1 ) )
         {
             return 0;
@@ -80,11 +81,11 @@ public class DnComparator extends LdapComparator<Object>
     private Dn getDn( Object obj ) throws LdapInvalidDnException
     {
         Dn dn = null;
-        
-        if ( obj instanceof Dn)
+
+        if ( obj instanceof Dn )
         {
-            dn = (Dn)obj;
-            
+            dn = ( Dn ) obj;
+
             dn = ( dn.isSchemaAware() ? dn : dn.apply( schemaManager ) );
         }
         else if ( obj instanceof String )
@@ -93,9 +94,9 @@ public class DnComparator extends LdapComparator<Object>
         }
         else
         {
-            throw new IllegalStateException( I18n.err( I18n.ERR_04218, (obj == null ? null : obj.getClass() ) ) );
+            throw new IllegalStateException( I18n.err( I18n.ERR_04218, ( obj == null ? null : obj.getClass() ) ) );
         }
-        
+
         return dn;
     }
 

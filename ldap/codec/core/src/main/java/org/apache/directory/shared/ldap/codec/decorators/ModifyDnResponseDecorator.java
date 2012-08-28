@@ -36,7 +36,7 @@ import org.apache.directory.shared.ldap.model.message.ModifyDnResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModifyDnResponseDecorator extends ResponseDecorator<ModifyDnResponse> 
+public class ModifyDnResponseDecorator extends ResponseDecorator<ModifyDnResponse>
     implements ModifyDnResponse
 {
     /** The encoded modifyDnResponse length */
@@ -91,14 +91,14 @@ public class ModifyDnResponseDecorator extends ResponseDecorator<ModifyDnRespons
      */
     public int computeLength()
     {
-        int modifyDnResponseLength = ((LdapResultDecorator)getLdapResult()).computeLength();
+        int modifyDnResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         setModifyDnResponseLength( modifyDnResponseLength );
 
         return 1 + TLV.getNbBytes( modifyDnResponseLength ) + modifyDnResponseLength;
     }
-    
-    
+
+
     /**
      * Encode the ModifyDnResponse message to a PDU.
      * 
@@ -113,13 +113,13 @@ public class ModifyDnResponseDecorator extends ResponseDecorator<ModifyDnRespons
             buffer.put( TLV.getBytes( getModifyDnResponseLength() ) );
 
             // The LdapResult
-            ((LdapResultDecorator)getLdapResult()).encode( buffer );
+            ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
         }
         catch ( BufferOverflowException boe )
         {
             throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
         }
-        
+
         return buffer;
     }
 }

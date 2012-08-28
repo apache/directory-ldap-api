@@ -45,7 +45,7 @@ public abstract class ResponseDecorator<M extends ResultResponse> extends Messag
     public ResponseDecorator( LdapApiService codec, M decoratedMessage )
     {
         super( codec, decoratedMessage );
-        
+
         ldapResultDecorator = new LdapResultDecorator( ( ( ResultResponse ) decoratedMessage ).getLdapResult() );
     }
 

@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DSETypeSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for DSETypeSyntaxChecker.
@@ -68,15 +70,15 @@ public class DSETypeSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "(sa$ )" ) );
         assertFalse( checker.isValidSyntax( "( sa $ sa )" ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectCase()
     {
         assertTrue( checker.isValidSyntax( "(sa)" ) );
         assertTrue( checker.isValidSyntax( "(  sa   )" ) );
         assertTrue( checker.isValidSyntax( "( root $ glue $ cp $ entry $ alias $ subr $ " +
-                                            "nssr $ supr $ xr $ admPoint $ subentry $ " +
-                                            "shadow $ zombie $ immSupr $ rhob $ sa )" ) );
+            "nssr $ supr $ xr $ admPoint $ subentry $ " +
+            "shadow $ zombie $ immSupr $ rhob $ sa )" ) );
     }
 }

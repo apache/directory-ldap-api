@@ -44,6 +44,7 @@ public class NumberSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( NumberSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of NumberSyntaxChecker.
      */
@@ -51,7 +52,7 @@ public class NumberSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.NUMBER_SYNTAX );
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -65,14 +66,14 @@ public class NumberSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -85,30 +86,30 @@ public class NumberSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // Check that each char is either a digit or a space
         for ( int i = 0; i < strValue.length(); i++ )
         {
             switch ( strValue.charAt( i ) )
             {
-                case '0': 
-                case '1' :
-                case '2' :
-                case '3' :
-                case '4' :
-                case '5' :
-                case '6' :
-                case '7' :
-                case '8' :
-                case '9' :
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
                     continue;
-                    
-                default : 
+
+                default:
                     LOG.debug( "Syntax invalid for '{}'", value );
                     return false;
             }
         }
-        
+
         if ( ( strValue.charAt( 0 ) == '0' ) && strValue.length() > 1 )
         {
             // A number can't start with a '0' unless it's the only

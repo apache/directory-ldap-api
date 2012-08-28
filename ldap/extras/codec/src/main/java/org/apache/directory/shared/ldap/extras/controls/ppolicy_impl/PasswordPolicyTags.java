@@ -20,6 +20,7 @@
 
 package org.apache.directory.shared.ldap.extras.controls.ppolicy_impl;
 
+
 /**
  * Tags used for decoding PasswordPolicyResponseControl.
  *
@@ -27,10 +28,10 @@ package org.apache.directory.shared.ldap.extras.controls.ppolicy_impl;
  */
 public enum PasswordPolicyTags
 {
-    PPOLICY_WARNING_TAG(0xA0),          // warning [0]
-    PPOLICY_ERROR_TAG(0x81),            // error [1]
-    TIME_BEFORE_EXPIRATION_TAG(0x80),   // timeBeforeExpiration [0]
-    GRACE_AUTHNS_REMAINING_TAG(0x81);   // graceAuthNsRemaining [1]
+    PPOLICY_WARNING_TAG(0xA0), // warning [0]
+    PPOLICY_ERROR_TAG(0x81), // error [1]
+    TIME_BEFORE_EXPIRATION_TAG(0x80), // timeBeforeExpiration [0]
+    GRACE_AUTHNS_REMAINING_TAG(0x81); // graceAuthNsRemaining [1]
 
     /** Internal value for each tag */
     private int value;

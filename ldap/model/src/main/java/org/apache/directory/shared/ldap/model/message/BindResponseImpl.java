@@ -140,7 +140,7 @@ public class BindResponseImpl extends AbstractResultResponse implements BindResp
             return true;
         }
 
-        if ( ( obj == null ) || !( obj instanceof BindResponse) )
+        if ( ( obj == null ) || !( obj instanceof BindResponse ) )
         {
             return false;
         }
@@ -183,7 +183,7 @@ public class BindResponseImpl extends AbstractResultResponse implements BindResp
 
         if ( serverSaslCreds != null )
         {
-            sb.append( "        Server sasl credentials : '" ).append( Strings.dumpBytes(serverSaslCreds) )
+            sb.append( "        Server sasl credentials : '" ).append( Strings.dumpBytes( serverSaslCreds ) )
                 .append( "'\n" );
         }
 

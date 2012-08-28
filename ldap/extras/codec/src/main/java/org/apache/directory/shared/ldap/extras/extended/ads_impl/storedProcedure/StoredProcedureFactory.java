@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.extras.extended.ads_impl.storedProcedure;
 
 
-import org.apache.directory.shared.asn1.DecoderException; 
+import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.shared.ldap.codec.api.ExtendedRequestFactory;
 import org.apache.directory.shared.ldap.codec.api.ExtendedResponseDecorator;
@@ -41,8 +41,8 @@ import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
 public class StoredProcedureFactory implements ExtendedRequestFactory<StoredProcedureRequest, StoredProcedureResponse>
 {
     private LdapApiService codec;
-    
-    
+
+
     /**
      * Creates a new instance of StoredProcedureFactory.
      *
@@ -52,8 +52,8 @@ public class StoredProcedureFactory implements ExtendedRequestFactory<StoredProc
     {
         this.codec = codec;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -62,7 +62,7 @@ public class StoredProcedureFactory implements ExtendedRequestFactory<StoredProc
         return StoredProcedureRequest.EXTENSION_OID;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -77,7 +77,8 @@ public class StoredProcedureFactory implements ExtendedRequestFactory<StoredProc
      */
     public StoredProcedureResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
-        StoredProcedureResponseDecorator response = new StoredProcedureResponseDecorator( codec, new StoredProcedureResponseImpl() );
+        StoredProcedureResponseDecorator response = new StoredProcedureResponseDecorator( codec,
+            new StoredProcedureResponseImpl() );
         response.setResponseValue( encodedValue );
         return response;
     }
@@ -89,7 +90,7 @@ public class StoredProcedureFactory implements ExtendedRequestFactory<StoredProc
     public StoredProcedureRequest newRequest( byte[] value )
     {
         StoredProcedureRequestDecorator req = new StoredProcedureRequestDecorator( codec );
-        
+
         if ( value != null )
         {
             req.setRequestValue( value );
@@ -108,8 +109,7 @@ public class StoredProcedureFactory implements ExtendedRequestFactory<StoredProc
         {
             return ( StoredProcedureRequestDecorator ) modelRequest;
         }
-        
-        
+
         return new StoredProcedureRequestDecorator( codec, ( StoredProcedureRequest ) modelRequest );
     }
 
@@ -123,7 +123,7 @@ public class StoredProcedureFactory implements ExtendedRequestFactory<StoredProc
         {
             return ( StoredProcedureResponseDecorator ) decoratedMessage;
         }
-        
+
         return new StoredProcedureResponseDecorator( codec, ( StoredProcedureResponse ) decoratedMessage );
     }
 }

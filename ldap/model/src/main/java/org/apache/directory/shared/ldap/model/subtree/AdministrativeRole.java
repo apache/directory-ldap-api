@@ -19,7 +19,9 @@
  */
 package org.apache.directory.shared.ldap.model.subtree;
 
+
 import org.apache.directory.shared.util.Strings;
+
 
 /**
  * The Administrative roles
@@ -29,38 +31,39 @@ import org.apache.directory.shared.util.Strings;
 public enum AdministrativeRole
 {
     /** The AutonomousArea role */
-    AutonomousArea( "autonomousArea" ),
+    AutonomousArea("autonomousArea"),
 
     /** The AccessControlSpecificArea role */
-    AccessControlSpecificArea( "accessControlSpecificArea" ),
+    AccessControlSpecificArea("accessControlSpecificArea"),
 
     /** The AccessControlInnerArea role */
-    AccessControlInnerArea( "accessControlInnerArea" ),
+    AccessControlInnerArea("accessControlInnerArea"),
 
     /** The CollectiveAttributeSpecificArea role */
-    CollectiveAttributeSpecificArea( "collectiveAttributeSpecificArea" ),
+    CollectiveAttributeSpecificArea("collectiveAttributeSpecificArea"),
 
     /** The CollectiveAttributeInnerArea role */
-    CollectiveAttributeInnerArea( "collectiveAttributeInnerArea" ),
+    CollectiveAttributeInnerArea("collectiveAttributeInnerArea"),
 
     /** The SubSchemaSpecificArea role */
-    SubSchemaSpecificArea( "subSchemaSpecificArea" ),
+    SubSchemaSpecificArea("subSchemaSpecificArea"),
 
     /** The TriggerExecutionSpecificArea role */
-    TriggerExecutionSpecificArea( "triggerExecutionSpecificArea" ),
+    TriggerExecutionSpecificArea("triggerExecutionSpecificArea"),
 
     /** The TriggerExecutionInnerArea role */
-    TriggerExecutionInnerArea( "triggerExecutionInnerArea" );
+    TriggerExecutionInnerArea("triggerExecutionInnerArea");
 
     /** The AdministrativeRole as a String */
     private String role;
+
 
     /**
      * Creates an instance of AdministrativeRole
      */
     private AdministrativeRole( String role )
     {
-        this.role = Strings.toLowerCase(Strings.trim(role));
+        this.role = Strings.toLowerCase( Strings.trim( role ) );
     }
 
 

@@ -35,7 +35,7 @@ import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractDsmlMessageDecorator<E extends Message> 
+public abstract class AbstractDsmlMessageDecorator<E extends Message>
     implements DsmlDecorator<E>, Message
 {
     /** The LDAP message codec */
@@ -43,22 +43,22 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
 
     /** The LDAP message */
     private final E message;
-    
+
     /** Map of message controls using OID Strings for keys and Control values */
     private final Map<String, Control> controls;
 
     /** The current control */
     private DsmlControl<? extends Control> currentControl;
 
-    
+
     public AbstractDsmlMessageDecorator( LdapApiService codec, E message )
     {
         this.codec = codec;
         this.message = message;
         controls = new HashMap<String, Control>();
     }
-    
-    
+
+
     /**
      * Get the current Control Object
      * 
@@ -69,13 +69,13 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return currentControl;
     }
 
-    
+
     public LdapApiService getCodecService()
     {
         return codec;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -84,7 +84,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return message.getType();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -93,7 +93,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return controls;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -102,7 +102,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return controls.get( oid );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -111,7 +111,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return controls.containsKey( oid );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -119,7 +119,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
     {
         Control decorated;
         DsmlControl<? extends Control> decorator;
-        
+
         if ( control instanceof DsmlControl )
         {
             decorator = ( DsmlControl<?> ) control;
@@ -130,15 +130,15 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
             decorator = new DsmlControl<Control>( codec, codec.newControl( control ) );
             decorated = control;
         }
-        
+
         message.addControl( decorated );
         controls.put( control.getOid(), decorator );
         currentControl = decorator;
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -148,11 +148,11 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         {
             addControl( control );
         }
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -160,11 +160,11 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
     {
         controls.remove( control.getOid() );
         message.removeControl( control );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -173,7 +173,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return message.getMessageId();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -182,7 +182,7 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return message.get( key );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -191,18 +191,18 @@ public abstract class AbstractDsmlMessageDecorator<E extends Message>
         return message.put( key, value );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public Message setMessageId( int messageId )
     {
         message.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */

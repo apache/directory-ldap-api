@@ -59,7 +59,7 @@ public class SubtreeSpecificationChecker
         this.lexer = new ReusableAntlrSubtreeSpecificationCheckerLexer( in );
         this.parser = new ReusableAntlrSubtreeSpecificationChecker( lexer );
         this.parser.init( schemaManager ); // this method MUST be called while we cannot do
-                            // constructor overloading for antlr generated parser
+        // constructor overloading for antlr generated parser
     }
 
 

@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.registries;
 
+
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.junit.Test;
@@ -37,6 +38,6 @@ public class RegistriesTest
     @Test
     public void testClone()
     {
-        
+
     }
 }

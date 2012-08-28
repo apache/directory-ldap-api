@@ -56,28 +56,41 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 16 );
         bb.put( new byte[]
-            { 
-              0x30, ( byte ) 14,               // SyncStateValue ::= SEQUENCE {
-                0x0A, 0x01, 0x00,              //     state ENUMERATED {
-                                               //         present (0)
-                                               //     }
-                0x04, 0x03, 'a', 'b', 'c',     //     entryUUID syncUUID OPTIONAL,
-                0x04, 0x04, 'x', 'k', 'c', 'd' //     cookie syncCookie OPTIONAL,
-            } );
+            {
+                0x30, ( byte ) 14, // SyncStateValue ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x00, //     state ENUMERATED {
+                      //         present (0)
+                      //     }
+                0x04,
+                0x03,
+                'a',
+                'b',
+                'c', //     entryUUID syncUUID OPTIONAL,
+                0x04,
+                0x04,
+                'x',
+                'k',
+                'c',
+                'd' //     cookie syncCookie OPTIONAL,
+        } );
         bb.flip();
 
         SyncStateValue decorator = new SyncStateValueDecorator( codec );
 
-        SyncStateValue syncStateValue = (SyncStateValue)((SyncStateValueDecorator)decorator).decode( bb.array() );
+        SyncStateValue syncStateValue = ( SyncStateValue ) ( ( SyncStateValueDecorator ) decorator )
+            .decode( bb.array() );
 
         assertEquals( SyncStateTypeEnum.PRESENT, syncStateValue.getSyncStateType() );
-        assertEquals( "abc", Strings.utf8ToString(syncStateValue.getEntryUUID()) );
-        assertEquals( "xkcd", Strings.utf8ToString(syncStateValue.getCookie()) );
+        assertEquals( "abc", Strings.utf8ToString( syncStateValue.getEntryUUID() ) );
+        assertEquals( "xkcd", Strings.utf8ToString( syncStateValue.getCookie() ) );
 
         // Check the encoding
         try
         {
-            ByteBuffer encoded = ((SyncStateValueDecorator)syncStateValue).encode( ByteBuffer.allocate( ((SyncStateValueDecorator)syncStateValue).computeLength() ) );
+            ByteBuffer encoded = ( ( SyncStateValueDecorator ) syncStateValue ).encode( ByteBuffer
+                .allocate( ( ( SyncStateValueDecorator ) syncStateValue ).computeLength() ) );
             assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
         }
         catch ( EncoderException ee )
@@ -95,26 +108,34 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 10 );
         bb.put( new byte[]
-            { 0x30, 0x08,                 // SyncStateValue ::= SEQUENCE {
-                0x0A, 0x01, 0x01,         //     state ENUMERATED {
-                                          //         add (1)
-                                          //     }
-                0x04, 0x03, 'a', 'b', 'c' //     entryUUID syncUUID OPTIONAL
-            } );
+            { 0x30, 0x08, // SyncStateValue ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x01, //     state ENUMERATED {
+                      //         add (1)
+                      //     }
+                0x04,
+                0x03,
+                'a',
+                'b',
+                'c' //     entryUUID syncUUID OPTIONAL
+        } );
         bb.flip();
 
         SyncStateValue decorator = new SyncStateValueDecorator( codec );
 
-        SyncStateValue syncStateValue = (SyncStateValue)((SyncStateValueDecorator)decorator).decode( bb.array() );
+        SyncStateValue syncStateValue = ( SyncStateValue ) ( ( SyncStateValueDecorator ) decorator )
+            .decode( bb.array() );
 
         assertEquals( SyncStateTypeEnum.ADD, syncStateValue.getSyncStateType() );
-        assertEquals( "abc", Strings.utf8ToString(syncStateValue.getEntryUUID()) );
+        assertEquals( "abc", Strings.utf8ToString( syncStateValue.getEntryUUID() ) );
         assertNull( syncStateValue.getCookie() );
 
         // Check the encoding
         try
         {
-            ByteBuffer encoded = ((SyncStateValueDecorator)syncStateValue).encode( ByteBuffer.allocate( ((SyncStateValueDecorator)syncStateValue).computeLength() ) );
+            ByteBuffer encoded = ( ( SyncStateValueDecorator ) syncStateValue ).encode( ByteBuffer
+                .allocate( ( ( SyncStateValueDecorator ) syncStateValue ).computeLength() ) );
             assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
         }
         catch ( EncoderException ee )
@@ -132,37 +153,52 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x0C );
         bb.put( new byte[]
-            { 0x30, 0x0A,                  // SyncStateValue ::= SEQUENCE {
-                0x0A, 0x01, 0x02,          //     state ENUMERATED {
-                                           //         modify (2)
-                                           //     }
-                0x04, 0x03, 'a', 'b', 'c', //     entryUUID syncUUID OPTIONAL
-                0x04, 0x00                 //     cookie syncCookie OPTIONAL,
-            } );
+            { 0x30, 0x0A, // SyncStateValue ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x02, //     state ENUMERATED {
+                      //         modify (2)
+                      //     }
+                0x04,
+                0x03,
+                'a',
+                'b',
+                'c', //     entryUUID syncUUID OPTIONAL
+                0x04,
+                0x00 //     cookie syncCookie OPTIONAL,
+        } );
         bb.flip();
 
         SyncStateValue decorator = new SyncStateValueDecorator( codec );
 
-        SyncStateValue syncStateValue = (SyncStateValue)((SyncStateValueDecorator)decorator).decode( bb.array() );
+        SyncStateValue syncStateValue = ( SyncStateValue ) ( ( SyncStateValueDecorator ) decorator )
+            .decode( bb.array() );
 
         assertEquals( SyncStateTypeEnum.MODIFY, syncStateValue.getSyncStateType() );
-        assertEquals( "abc", Strings.utf8ToString(syncStateValue.getEntryUUID()) );
-        assertEquals( "", Strings.utf8ToString(syncStateValue.getCookie()) );
+        assertEquals( "abc", Strings.utf8ToString( syncStateValue.getEntryUUID() ) );
+        assertEquals( "", Strings.utf8ToString( syncStateValue.getCookie() ) );
 
         // Check the encoding
         try
         {
             bb = ByteBuffer.allocate( 0x0A );
             bb.put( new byte[]
-                { 0x30, 0x08,                  // SyncStateValue ::= SEQUENCE {
-                    0x0A, 0x01, 0x02,          //     state ENUMERATED {
-                                               //         modify (2)
-                                               //     }
-                    0x04, 0x03, 'a', 'b', 'c'  //     entryUUID syncUUID OPTIONAL
-                } );
+                { 0x30, 0x08, // SyncStateValue ::= SEQUENCE {
+                    0x0A,
+                    0x01,
+                    0x02, //     state ENUMERATED {
+                          //         modify (2)
+                          //     }
+                    0x04,
+                    0x03,
+                    'a',
+                    'b',
+                    'c' //     entryUUID syncUUID OPTIONAL
+            } );
             bb.flip();
 
-            ByteBuffer encoded = ((SyncStateValueDecorator)syncStateValue).encode( ByteBuffer.allocate( ((SyncStateValueDecorator)syncStateValue).computeLength() ) );
+            ByteBuffer encoded = ( ( SyncStateValueDecorator ) syncStateValue ).encode( ByteBuffer
+                .allocate( ( ( SyncStateValueDecorator ) syncStateValue ).computeLength() ) );
             assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
         }
         catch ( EncoderException ee )
@@ -175,64 +211,70 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SyncStateValue control with an empty sequence
      */
-    @Test( expected = DecoderException.class )
+    @Test(expected = DecoderException.class)
     public void testDecodeSyncStateValueControlEmptySequence() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
         bb.put( new byte[]
-            { 
-              0x30, 0x00 // SyncStateValue ::= SEQUENCE {
-            } );
+            {
+                0x30, 0x00 // SyncStateValue ::= SEQUENCE {
+        } );
         bb.flip();
 
         SyncStateValue decorator = new SyncStateValueDecorator( codec );
 
-        ((SyncStateValueDecorator)decorator).decode( bb.array() );
+        ( ( SyncStateValueDecorator ) decorator ).decode( bb.array() );
     }
 
 
     /**
      * Test the decoding of a SyncStateValue control with no syncState
      */
-    @Test( expected=DecoderException.class )
+    @Test(expected = DecoderException.class)
     public void testDecodeSyncStateValueControlNoSyancState() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x07 );
         bb.put( new byte[]
-            { 
-              0x30, 0x05,                 // SyncStateValue ::= SEQUENCE {
-                0x04, 0x03, 'a', 'b', 'c' //     cookie syncCookie OPTIONAL,
-            } );
+            {
+                0x30, 0x05, // SyncStateValue ::= SEQUENCE {
+                0x04,
+                0x03,
+                'a',
+                'b',
+                'c' //     cookie syncCookie OPTIONAL,
+        } );
         bb.flip();
 
         SyncStateValue decorator = new SyncStateValueDecorator( codec );
 
-        ((SyncStateValueDecorator)decorator).decode( bb.array() );
+        ( ( SyncStateValueDecorator ) decorator ).decode( bb.array() );
     }
 
 
     /**
      * Test the decoding of a SyncStateValue control with no syncUUID
      */
-    @Test( expected=DecoderException.class )
+    @Test(expected = DecoderException.class)
     public void testDecodeSyncStateValueControlNoSyncUUID() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x05 );
         bb.put( new byte[]
-            { 
-              0x30, 0x03,                  // SyncStateValue ::= SEQUENCE {
-                0x0A, 0x01, 0x02,          //     state ENUMERATED {
-                                           //         modify (2)
-                                           //     }
+            {
+                0x30, 0x03, // SyncStateValue ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x02, //     state ENUMERATED {
+                      //         modify (2)
+                      //     }
             } );
         bb.flip();
 
         SyncStateValue decorator = new SyncStateValueDecorator( codec );
 
-        ((SyncStateValueDecorator)decorator).decode( bb.array() );
+        ( ( SyncStateValueDecorator ) decorator ).decode( bb.array() );
     }
-    
-    
+
+
     /**
      * Test the decoding of a SyncStateValue control with a refreshOnly mode
      * and MODDN state type
@@ -242,28 +284,41 @@ public class SyncStateValueControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 16 );
         bb.put( new byte[]
-            { 
-              0x30, ( byte ) 14,               // SyncStateValue ::= SEQUENCE {
-                0x0A, 0x01, 0x04,              //     state ENUMERATED {
-                                               //         present (0)
-                                               //     }
-                0x04, 0x03, 'a', 'b', 'c',     //     entryUUID syncUUID OPTIONAL,
-                0x04, 0x04, 'x', 'k', 'c', 'd' //     cookie syncCookie OPTIONAL,
-            } );
+            {
+                0x30, ( byte ) 14, // SyncStateValue ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x04, //     state ENUMERATED {
+                      //         present (0)
+                      //     }
+                0x04,
+                0x03,
+                'a',
+                'b',
+                'c', //     entryUUID syncUUID OPTIONAL,
+                0x04,
+                0x04,
+                'x',
+                'k',
+                'c',
+                'd' //     cookie syncCookie OPTIONAL,
+        } );
         bb.flip();
 
         SyncStateValue decorator = new SyncStateValueDecorator( codec );
 
-        SyncStateValue syncStateValue = (SyncStateValue)((SyncStateValueDecorator)decorator).decode( bb.array() );
+        SyncStateValue syncStateValue = ( SyncStateValue ) ( ( SyncStateValueDecorator ) decorator )
+            .decode( bb.array() );
 
         assertEquals( SyncStateTypeEnum.MODDN, syncStateValue.getSyncStateType() );
-        assertEquals( "abc", Strings.utf8ToString(syncStateValue.getEntryUUID()) );
-        assertEquals( "xkcd", Strings.utf8ToString(syncStateValue.getCookie()) );
+        assertEquals( "abc", Strings.utf8ToString( syncStateValue.getEntryUUID() ) );
+        assertEquals( "xkcd", Strings.utf8ToString( syncStateValue.getCookie() ) );
 
         // Check the encoding
         try
         {
-            ByteBuffer encoded = ((SyncStateValueDecorator)syncStateValue).encode( ByteBuffer.allocate( ((SyncStateValueDecorator)syncStateValue).computeLength() ) );
+            ByteBuffer encoded = ( ( SyncStateValueDecorator ) syncStateValue ).encode( ByteBuffer
+                .allocate( ( ( SyncStateValueDecorator ) syncStateValue ).computeLength() ) );
             assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
         }
         catch ( EncoderException ee )

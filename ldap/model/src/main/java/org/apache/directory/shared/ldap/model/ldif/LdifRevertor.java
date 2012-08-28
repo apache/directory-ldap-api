@@ -230,7 +230,7 @@ public final class LdifRevertor
 
             }
 
-            AttributeUtils.applyModification(clonedEntry, modification);
+            AttributeUtils.applyModification( clonedEntry, modification );
 
         }
 

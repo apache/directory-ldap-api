@@ -73,7 +73,6 @@ public enum StoredProcedureStatesEnum implements States
     /** Last Stored Procedure */
     LAST_STORED_PROCEDURE_STATE;
 
-
     /**
      * Get the grammar name
      * @param grammar The grammar code
@@ -107,7 +106,7 @@ public enum StoredProcedureStatesEnum implements States
         return ( ( state == END_STATE.ordinal() ) ? "STORED_PROCEDURE_END_STATE" : name() );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -115,8 +114,8 @@ public enum StoredProcedureStatesEnum implements States
     {
         return this == END_STATE;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

@@ -49,39 +49,38 @@ public class TelephoneNumberNormalizer extends Normalizer
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    public Value<?> normalize( Value<?> value ) throws LdapException
+    {
+        try
+        {
+            String normalized = PrepareString.normalize( value.getString(),
+                PrepareString.StringType.TELEPHONE_NUMBER );
 
-   /**
-    * {@inheritDoc}
-    */
-   public Value<?> normalize( Value<?> value ) throws LdapException
-   {
-       try
-       {
-           String normalized = PrepareString.normalize( value.getString(),
-               PrepareString.StringType.TELEPHONE_NUMBER );
-           
-           return new StringValue( normalized );
-       }
-       catch ( IOException ioe )
-       {
-           throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ), ioe );
-       }
-   }
+            return new StringValue( normalized );
+        }
+        catch ( IOException ioe )
+        {
+            throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ), ioe );
+        }
+    }
 
 
-   /**
-    * {@inheritDoc}
-    */
-   public String normalize( String value ) throws LdapException
-   {
-       try
-       {
-           return PrepareString.normalize( value,
-               PrepareString.StringType.TELEPHONE_NUMBER );
-       }
-       catch ( IOException ioe )
-       {
-           throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ), ioe );
-       }
-   }
+    /**
+     * {@inheritDoc}
+     */
+    public String normalize( String value ) throws LdapException
+    {
+        try
+        {
+            return PrepareString.normalize( value,
+                PrepareString.StringType.TELEPHONE_NUMBER );
+        }
+        catch ( IOException ioe )
+        {
+            throw new LdapInvalidDnException( I18n.err( I18n.ERR_04224, value ), ioe );
+        }
+    }
 }

@@ -43,6 +43,7 @@ public class UniqueMemberComparator extends LdapComparator<String>
     /** A reference to the schema manager */
     private SchemaManager schemaManager;
 
+
     /**
      * The IntegerComparator constructor. Its OID is the IntegerOrderingMatch matching
      * rule OID.
@@ -68,7 +69,7 @@ public class UniqueMemberComparator extends LdapComparator<String>
             {
                 Dn dn1 = getDn( dnstr1 );
                 Dn dn2 = getDn( dnstr2 );
-                
+
                 if ( dn1.equals( dn2 ) )
                 {
                     return 0;
@@ -168,9 +169,9 @@ public class UniqueMemberComparator extends LdapComparator<String>
     {
         Dn dn = null;
 
-        if ( obj instanceof Dn)
+        if ( obj instanceof Dn )
         {
-            dn = (Dn) obj;
+            dn = ( Dn ) obj;
 
             dn = ( dn.isSchemaAware() ? dn : dn.apply( schemaManager ) );
         }

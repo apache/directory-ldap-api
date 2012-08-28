@@ -38,6 +38,7 @@ public class ObjectIdentifierComparator extends LdapComparator<Object>
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ObjectIdentifierComparator.class );
 
+
     /**
      * The ObjectIdentifierComparator constructor. Its OID is the ObjectIdentifierMatch matching
      * rule OID.
@@ -84,6 +85,6 @@ public class ObjectIdentifierComparator extends LdapComparator<Object>
         }
 
         // Here, we should leverage the SchemaManager to compare the String and teh OID
-        return ((String)o1).compareToIgnoreCase( (String)o2 );
+        return ( ( String ) o1 ).compareToIgnoreCase( ( String ) o2 );
     }
 }

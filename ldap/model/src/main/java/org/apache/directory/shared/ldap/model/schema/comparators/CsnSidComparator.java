@@ -40,6 +40,7 @@ public class CsnSidComparator extends LdapComparator<String>
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( CsnSidComparator.class );
 
+
     /**
      * The CsnSidComparator constructor. Its OID is the CsnSidMatch matching
      * rule OID.
@@ -48,8 +49,8 @@ public class CsnSidComparator extends LdapComparator<String>
     {
         super( oid );
     }
-    
-    
+
+
     /**
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
@@ -64,15 +65,15 @@ public class CsnSidComparator extends LdapComparator<String>
         {
             return ( sidStr2 == null ) ? 0 : -1;
         }
-        
+
         if ( sidStr2 == null )
         {
             return 1;
         }
-        
+
         int sid1 = 0;
         int sid2 = 0;
-        
+
         try
         {
             sid1 = Integer.parseInt( sidStr1, 16 );
@@ -81,7 +82,7 @@ public class CsnSidComparator extends LdapComparator<String>
         {
             return -1;
         }
-        
+
         try
         {
             sid2 = Integer.parseInt( sidStr2, 16 );
@@ -90,7 +91,7 @@ public class CsnSidComparator extends LdapComparator<String>
         {
             return 1;
         }
-        
+
         if ( sid1 > sid2 )
         {
             return 1;
@@ -99,7 +100,7 @@ public class CsnSidComparator extends LdapComparator<String>
         {
             return -1;
         }
-        
+
         return 0;
     }
 }

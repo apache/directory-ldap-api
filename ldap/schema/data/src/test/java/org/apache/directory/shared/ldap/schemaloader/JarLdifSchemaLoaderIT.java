@@ -47,10 +47,10 @@ public class JarLdifSchemaLoaderIT
         SchemaManager sm = new DefaultSchemaManager( loader );
 
         sm.loadWithDeps( "system" );
-        
+
         assertTrue( sm.getRegistries().getAttributeTypeRegistry().contains( "cn" ) );
         assertFalse( sm.getRegistries().getAttributeTypeRegistry().contains( "m-aux" ) );
-        
+
         sm.loadWithDeps( "apachemeta" );
 
         assertTrue( sm.getRegistries().getAttributeTypeRegistry().contains( "m-aux" ) );

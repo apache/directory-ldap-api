@@ -438,7 +438,8 @@ public class DITContentRuleDescriptionSchemaParserTest
 
         assertEquals( "1.2.3.4.5.6.7.8.9.0", ditContentRule.getOid() );
         assertEquals( 2, ditContentRule.getNames().size() );
-        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", ditContentRule.getNames().get( 0 ) );
+        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", ditContentRule.getNames()
+            .get( 0 ) );
         assertEquals( "test", ditContentRule.getNames().get( 1 ) );
         assertEquals( "Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577", ditContentRule.getDescription() );
         assertTrue( ditContentRule.isObsolete() );
@@ -448,15 +449,18 @@ public class DITContentRuleDescriptionSchemaParserTest
             .getAuxObjectClassOids().get( 1 ) );
         assertEquals( 2, ditContentRule.getMustAttributeTypeOids().size() );
         assertEquals( "3.4.5.6.7.8.9.0.1.2", ditContentRule.getMustAttributeTypeOids().get( 0 ) );
-        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", ditContentRule.getMustAttributeTypeOids()
+        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", ditContentRule
+            .getMustAttributeTypeOids()
             .get( 1 ) );
         assertEquals( 2, ditContentRule.getMayAttributeTypeOids().size() );
         assertEquals( "4.5.6.7.8.9.0.1.2.3", ditContentRule.getMayAttributeTypeOids().get( 0 ) );
-        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", ditContentRule.getMayAttributeTypeOids()
+        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", ditContentRule
+            .getMayAttributeTypeOids()
             .get( 1 ) );
         assertEquals( 2, ditContentRule.getNotAttributeTypeOids().size() );
         assertEquals( "5.6.7.8.9.0.1.2.3.4", ditContentRule.getNotAttributeTypeOids().get( 0 ) );
-        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", ditContentRule.getNotAttributeTypeOids()
+        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", ditContentRule
+            .getNotAttributeTypeOids()
             .get( 1 ) );
         assertEquals( 2, ditContentRule.getExtensions().size() );
         assertNotNull( ditContentRule.getExtensions().get( "X-TEST-a" ) );
@@ -498,7 +502,7 @@ public class DITContentRuleDescriptionSchemaParserTest
                 "( 2.5.6.4 DESC 'content rule for organization' NOT ( x121Address $ telexNumber ) )",
                 "( 2.5.6.4 DESC 'content rule for organization' NOT ( x121Address $ telexNumber ) )",
                 "( 1.2.3.4.5.6.7.8.9.0 NAME ( 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789' 'test' ) DESC 'Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577' OBSOLETE AUX ( 2.3.4.5.6.7.8.9.0.1 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) MUST ( 3.4.5.6.7.8.9.0.1.2 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) MAY ( 4.5.6.7.8.9.0.1.2.3 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) NOT ( 5.6.7.8.9.0.1.2.3.4 $ abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789 ) X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2') )" };
-        SchemaParserTestUtils.testMultiThreaded(parser, testValues);
+        SchemaParserTestUtils.testMultiThreaded( parser, testValues );
 
     }
 

@@ -188,20 +188,20 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
      * {@inheritDoc}
      */
     BindRequest setMessageId( int messageId );
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     BindRequest addControl( Control control ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     BindRequest addAllControls( Control[] controls ) throws MessageException;
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

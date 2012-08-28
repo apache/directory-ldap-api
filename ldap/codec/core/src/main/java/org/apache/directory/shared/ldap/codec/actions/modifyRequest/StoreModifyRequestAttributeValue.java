@@ -75,14 +75,14 @@ public class StoreModifyRequestAttributeValue extends GrammarAction<LdapMessageC
             else
             {
                 value = tlv.getValue().getData();
-    
+
                 if ( container.isBinary( modifyRequestDecorator.getCurrentAttributeType() ) )
                 {
                     modifyRequestDecorator.addAttributeValue( value );
                 }
                 else
                 {
-                    modifyRequestDecorator.addAttributeValue( Strings.utf8ToString((byte[]) value) );
+                    modifyRequestDecorator.addAttributeValue( Strings.utf8ToString( ( byte[] ) value ) );
                 }
             }
         }

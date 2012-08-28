@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.ldif;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -49,6 +50,7 @@ import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Tests the LdifReverter methods
  *
@@ -68,11 +70,11 @@ public class LdifRevertorTest
         entry.put( "cn", "test" );
         entry.put( "sn", "joe doe" );
         entry.put( "l", "USA" );
-        
+
         return entry;
     }
 
-    
+
     /**
      * Test a AddRequest reverse
      *
@@ -83,7 +85,7 @@ public class LdifRevertorTest
     {
         Dn dn = new Dn( "dc=apache, dc=com" );
         LdifEntry reversed = LdifRevertor.reverseAdd( dn );
-        
+
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Delete, reversed.getChangeType() );
@@ -99,28 +101,28 @@ public class LdifRevertorTest
     public void testReverseDel() throws LdapException
     {
         Dn dn = new Dn( "dc=apache, dc=com" );
-        
+
         Entry deletedEntry = new DefaultEntry( dn );
-        
+
         Attribute oc = new DefaultAttribute( "objectClass" );
         oc.add( "top", "person" );
-        
+
         deletedEntry.put( oc );
-        
+
         deletedEntry.put( "cn", "test" );
         deletedEntry.put( "sn", "apache" );
         deletedEntry.put( "dc", "apache" );
-        
+
         LdifEntry reversed = LdifRevertor.reverseDel( dn, deletedEntry );
-        
+
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Add, reversed.getChangeType() );
         assertNotNull( reversed.getEntry() );
         assertEquals( deletedEntry, reversed.getEntry() );
     }
-    
-    
+
+
     /**
      * Test a reversed Modify adding a existing value from an existing attribute
      */
@@ -128,36 +130,36 @@ public class LdifRevertorTest
     public void testReverseModifyDelExistingOuValue() throws LdapException
     {
         Entry modifiedEntry = buildEntry();
-        
+
         Attribute ou = new DefaultAttribute( "ou" );
         ou.add( "apache", "acme corp" );
         modifiedEntry.put( ou );
 
         Dn dn = new Dn( "cn=test, ou=system" );
 
-        Modification mod = new DefaultModification( 
-            ModificationOperation.REMOVE_ATTRIBUTE, 
+        Modification mod = new DefaultModification(
+            ModificationOperation.REMOVE_ATTRIBUTE,
             new DefaultAttribute( "ou", "acme corp" ) );
 
         LdifEntry reversed = LdifRevertor.reverseModify( dn,
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
-        
+
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
-        
+
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
 
         assertEquals( "ou", attr.getId() );
@@ -172,7 +174,7 @@ public class LdifRevertorTest
     public void testReverseModifyDeleteOU() throws LdapException
     {
         Entry modifiedEntry = buildEntry();
-        
+
         Attribute ou = new DefaultAttribute( "ou" );
         ou.add( "apache", "acme corp" );
         modifiedEntry.put( ou );
@@ -180,36 +182,35 @@ public class LdifRevertorTest
         Dn dn = new Dn( "cn=test, ou=system" );
 
         Modification mod = new DefaultModification(
-            ModificationOperation.REMOVE_ATTRIBUTE, 
+            ModificationOperation.REMOVE_ATTRIBUTE,
             new DefaultAttribute( "ou" ) );
 
         LdifEntry reversed = LdifRevertor.reverseModify( dn,
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
-
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
-        
+
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
-        
+
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
-        
+
         assertEquals( ou, attr );
     }
 
-   
+
     /**
      * Test a reversed Modify deleting all values of an existing attribute
      */
@@ -220,39 +221,38 @@ public class LdifRevertorTest
 
         Attribute ou = new DefaultAttribute( "ou", "apache", "acme corp" );
         modifiedEntry.put( ou );
-        
+
         Dn dn = new Dn( "cn=test, ou=system" );
-        
+
         Modification mod = new DefaultModification(
             ModificationOperation.REMOVE_ATTRIBUTE, ou );
 
-        LdifEntry reversed = LdifRevertor.reverseModify( dn, 
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
-
+        LdifEntry reversed = LdifRevertor.reverseModify( dn,
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
-        
+
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
-        
+
         assertEquals( ModificationOperation.ADD_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
-        
+
         assertEquals( ou, attr );
     }
 
-    
+
     /**
      * Test a reversed Modify replacing existing values with new values
      */
@@ -260,7 +260,7 @@ public class LdifRevertorTest
     public void testReverseModifyReplaceExistingOuValues() throws LdapException
     {
         Entry modifiedEntry = buildEntry();
-        
+
         Attribute ou = new DefaultAttribute( "ou" );
         ou.add( "apache", "acme corp" );
         modifiedEntry.put( ou );
@@ -270,31 +270,29 @@ public class LdifRevertorTest
         Attribute ouModified = new DefaultAttribute( "ou" );
         ouModified.add( "directory" );
         ouModified.add( "BigCompany inc." );
-        
+
         Modification mod = new DefaultModification(
             ModificationOperation.REPLACE_ATTRIBUTE, ouModified );
 
         LdifEntry reversed = LdifRevertor.reverseModify( dn,
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
-
-
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
-        
+
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
-        
+
         assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
         assertEquals( ou, attr );
     }
@@ -307,43 +305,42 @@ public class LdifRevertorTest
     public void testReverseModifyReplaceNewAttribute() throws LdapException
     {
         Entry modifiedEntry = buildEntry();
-        
+
         Dn dn = new Dn( "cn=test, ou=system" );
-        
+
         Attribute newOu = new DefaultAttribute( "ou" );
         newOu.add( "apache" );
         newOu.add( "acme corp" );
 
-        
         Modification mod = new DefaultModification(
             ModificationOperation.REPLACE_ATTRIBUTE, newOu );
 
         LdifEntry reversed = LdifRevertor.reverseModify( dn,
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
-        
+
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
-        
+
         assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
-        
+
         assertNull( attr.get() );
     }
 
-   
+
     /**
      * Test a reversed Modify replace by removing an attribute
      */
@@ -356,38 +353,38 @@ public class LdifRevertorTest
         ou.add( "apache" );
         ou.add( "acme corp" );
         modifiedEntry.put( ou );
-        
+
         Dn dn = new Dn( "cn=test, ou=system" );
-        
-        Modification mod = new DefaultModification( 
+
+        Modification mod = new DefaultModification(
             ModificationOperation.REPLACE_ATTRIBUTE, new DefaultAttribute( "ou" ) );
 
         LdifEntry reversed = LdifRevertor.reverseModify( dn,
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
-        
+
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
-        
+
         assertEquals( ModificationOperation.REPLACE_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
-        
+
         assertEquals( ou, attr );
     }
-    
-    
+
+
     /**
      * Test a multiple modifications reverse.
      * 
@@ -461,22 +458,22 @@ public class LdifRevertorTest
     @Test
     public void testReverseMultipleModifications() throws Exception
     {
-        String initialEntryLdif = 
-                "dn: cn=test, ou=system\n" + 
-                "objectclass: top\n" + 
-                "objectclass: person\n" + 
-                "cn: test\n" + 
-                "sn: joe doe\n" + 
-                "l: USA\n" + 
-                "ou: apache\n" + 
-                "ou: acme corp\n"; 
-        
+        String initialEntryLdif =
+            "dn: cn=test, ou=system\n" +
+                "objectclass: top\n" +
+                "objectclass: person\n" +
+                "cn: test\n" +
+                "sn: joe doe\n" +
+                "l: USA\n" +
+                "ou: apache\n" +
+                "ou: acme corp\n";
+
         LdifReader reader = new LdifReader();
         List<LdifEntry> entries = reader.parseLdif( initialEntryLdif );
         reader.close();
-        
+
         LdifEntry initialEntry = entries.get( 0 );
- 
+
         // We will :
         //   - add an 'ou' value 'BigCompany inc.'
         //   - delete the 'l' attribute
@@ -484,12 +481,12 @@ public class LdifRevertorTest
         //   - replace the 'l=FR' by a 'l=USA' attribute
         //   - replace the 'ou' attribute with 'apache' value.
         Dn dn = new Dn( "cn=test, ou=system" );
-        
+
         List<Modification> modifications = new ArrayList<Modification>();
 
         // First, inject the 'ou'
-        
-        Modification mod = new DefaultModification( 
+
+        Modification mod = new DefaultModification(
             ModificationOperation.ADD_ATTRIBUTE, new DefaultAttribute( "ou", "BigCompany inc." ) );
         modifications.add( mod );
 
@@ -497,51 +494,51 @@ public class LdifRevertorTest
         mod = new DefaultModification(
             ModificationOperation.REMOVE_ATTRIBUTE, new DefaultAttribute( "l" ) );
         modifications.add( mod );
-        
+
         // Add 'l=FR'
         mod = new DefaultModification(
             ModificationOperation.ADD_ATTRIBUTE, new DefaultAttribute( "l", "FR" ) );
         modifications.add( mod );
 
         // Replace it with 'l=USA'
-        mod = new DefaultModification( 
+        mod = new DefaultModification(
             ModificationOperation.REPLACE_ATTRIBUTE, new DefaultAttribute( "l", "USA" ) );
         modifications.add( mod );
 
         // Replace the ou value
-        mod = new DefaultModification( 
+        mod = new DefaultModification(
             ModificationOperation.REPLACE_ATTRIBUTE, new DefaultAttribute( "ou", "apache" ) );
         modifications.add( mod );
-        
+
         LdifEntry reversedEntry = LdifRevertor.reverseModify( dn, modifications, initialEntry.getEntry() );
 
-        String expectedEntryLdif = 
+        String expectedEntryLdif =
             "dn: cn=test, ou=system\n" +
-            "changetype: modify\n" +
-            "replace: ou\n" +
-            "ou: apache\n" +
-            "ou: acme corp\n" +
-            "ou: BigCompany inc.\n" +
-            "-\n" +
-            "replace: l\n" +
-            "l: FR\n" +
-            "-\n" +
-            "delete: l\n" +
-            "l: FR\n" +
-            "-\n" +
-            "add: l\n" +
-            "l: USA\n" +
-            "-\n" +
-            "delete: ou\n" + 
-            "ou: BigCompany inc.\n" +
-            "-\n\n";
-    
+                "changetype: modify\n" +
+                "replace: ou\n" +
+                "ou: apache\n" +
+                "ou: acme corp\n" +
+                "ou: BigCompany inc.\n" +
+                "-\n" +
+                "replace: l\n" +
+                "l: FR\n" +
+                "-\n" +
+                "delete: l\n" +
+                "l: FR\n" +
+                "-\n" +
+                "add: l\n" +
+                "l: USA\n" +
+                "-\n" +
+                "delete: ou\n" +
+                "ou: BigCompany inc.\n" +
+                "-\n\n";
+
         reader = new LdifReader();
         entries = reader.parseLdif( expectedEntryLdif );
         reader.close();
 
         LdifEntry expectedEntry = entries.get( 0 );
-        
+
         assertEquals( expectedEntry, reversedEntry );
     }
 
@@ -559,30 +556,30 @@ public class LdifRevertorTest
         ou.add( "apache" );
         ou.add( "acme corp" );
         modifiedEntry.put( ou );
-        
+
         Dn dn = new Dn( "cn=test, ou=system" );
         Modification mod = new DefaultModification(
             ModificationOperation.ADD_ATTRIBUTE,
             new DefaultAttribute( "ou", "BigCompany inc." ) );
 
         LdifEntry reversed = LdifRevertor.reverseModify( dn,
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
-        
+
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
         assertEquals( "BigCompany inc.", attr.getString() );
@@ -596,36 +593,36 @@ public class LdifRevertorTest
     public void testReverseModifyAddNewOu() throws LdapException
     {
         Entry modifiedEntry = buildEntry();
-        
+
         Dn dn = new Dn( "cn=test, ou=system" );
         Modification mod = new DefaultModification(
-            ModificationOperation.ADD_ATTRIBUTE, 
+            ModificationOperation.ADD_ATTRIBUTE,
             new DefaultAttribute( "ou", "BigCompany inc." ) );
 
         LdifEntry reversed = LdifRevertor.reverseModify( dn,
-                Collections.<Modification>singletonList( mod ), modifiedEntry );
+            Collections.<Modification> singletonList( mod ), modifiedEntry );
 
         assertNotNull( reversed );
         assertEquals( dn.getName(), reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         assertNull( reversed.getEntry() );
         List<Modification> mods = reversed.getModifications();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.size() );
-        
+
         Modification modif = mods.get( 0 );
 
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, modif.getOperation() );
 
         Attribute attr = modif.getAttribute();
-        
+
         assertNotNull( attr );
         assertEquals( "ou", attr.getId() );
         assertEquals( "BigCompany inc.", attr.getString() );
     }
-    
-    
+
+
     /**
      * Test a AddRequest reverse where the Dn is to be base64 encoded
      *
@@ -665,12 +662,12 @@ public class LdifRevertorTest
         LdifEntry reversed = LdifRevertor.reverseMove( newSuperior, dn );
 
         assertNotNull( reversed );
-        
+
         assertEquals( "cn=john doe,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModDn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
         assertEquals( rdn.getName(), reversed.getNewRdn() );
-        assertEquals( "dc=example, dc=com", Strings.trim(reversed.getNewSuperior()) );
+        assertEquals( "dc=example, dc=com", Strings.trim( reversed.getNewSuperior() ) );
         assertNull( reversed.getEntry() );
     }
 
@@ -709,7 +706,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -753,7 +750,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=small,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -796,7 +793,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -840,7 +837,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=small,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -885,7 +882,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -931,7 +928,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=big,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -976,7 +973,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -1022,7 +1019,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=big,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -1066,7 +1063,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -1105,12 +1102,12 @@ public class LdifRevertorTest
         entry.put( "objectClass", "person", "top" );
         entry.put( "sn", "this is a test" );
 
-        List<LdifEntry> reverseds = LdifRevertor.reverseRename(entry, newRdn, LdifRevertor.DELETE_OLD_RDN);
+        List<LdifEntry> reverseds = LdifRevertor.reverseRename( entry, newRdn, LdifRevertor.DELETE_OLD_RDN );
 
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -1155,7 +1152,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe+cn=plumber,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -1200,7 +1197,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 2, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe+cn=small,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -1208,11 +1205,11 @@ public class LdifRevertorTest
         assertNull( reversed.getNewSuperior() );
 
         reversed = reverseds.get( 1 );
-        
+
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         Modification[] mods = reversed.getModificationArray();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.length );
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, mods[0].getOperation() );
@@ -1258,7 +1255,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe+cn=plumber,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -1303,19 +1300,19 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 2, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe+cn=small,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
-        
+
         reversed = reverseds.get( 1 );
-        
+
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         Modification[] mods = reversed.getModificationArray();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.length );
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, mods[0].getOperation() );
@@ -1361,15 +1358,13 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=small+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
         assertEquals( oldRdn.getName(), reversed.getNewRdn() );
         assertNull( reversed.getNewSuperior() );
     }
-
-
 
 
     /**
@@ -1408,7 +1403,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 2, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=small+cn=test+cn=big,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -1416,11 +1411,11 @@ public class LdifRevertorTest
         assertNull( reversed.getNewSuperior() );
 
         reversed = reverseds.get( 1 );
-        
+
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         Modification[] mods = reversed.getModificationArray();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.length );
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, mods[0].getOperation() );
@@ -1466,7 +1461,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=small+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -1511,7 +1506,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 2, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=small+cn=test+cn=big,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -1519,11 +1514,11 @@ public class LdifRevertorTest
         assertNull( reversed.getNewSuperior() );
 
         reversed = reverseds.get( 1 );
-        
+
         assertEquals( "cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         Modification[] mods = reversed.getModificationArray();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.length );
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, mods[0].getOperation() );
@@ -1570,7 +1565,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe+cn=plumber,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -1616,7 +1611,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 2, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe+cn=big,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -1624,11 +1619,11 @@ public class LdifRevertorTest
         assertNull( reversed.getNewSuperior() );
 
         reversed = reverseds.get( 1 );
-        
+
         assertEquals( "cn=small+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         Modification[] mods = reversed.getModificationArray();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.length );
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, mods[0].getOperation() );
@@ -1675,7 +1670,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe+cn=plumber,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -1721,7 +1716,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 2, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe+cn=big,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -1729,11 +1724,11 @@ public class LdifRevertorTest
         assertNull( reversed.getNewSuperior() );
 
         reversed = reverseds.get( 1 );
-        
+
         assertEquals( "cn=small+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.Modify, reversed.getChangeType() );
         Modification[] mods = reversed.getModificationArray();
-        
+
         assertNotNull( mods );
         assertEquals( 1, mods.length );
         assertEquals( ModificationOperation.REMOVE_ATTRIBUTE, mods[0].getOperation() );
@@ -1780,7 +1775,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -1826,7 +1821,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=big+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );
@@ -1872,7 +1867,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=joe+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertTrue( reversed.isDeleteOldRdn() );
@@ -1918,7 +1913,7 @@ public class LdifRevertorTest
         assertNotNull( reverseds );
         assertEquals( 1, reverseds.size() );
         LdifEntry reversed = reverseds.get( 0 );
-        
+
         assertEquals( "cn=big+cn=test,ou=system", reversed.getDn().getName() );
         assertEquals( ChangeType.ModRdn, reversed.getChangeType() );
         assertFalse( reversed.isDeleteOldRdn() );

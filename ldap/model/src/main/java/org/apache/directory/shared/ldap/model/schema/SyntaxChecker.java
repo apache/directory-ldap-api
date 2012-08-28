@@ -33,7 +33,8 @@ import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 // super.hashCode is final
-@SuppressWarnings({ "PMD.OverrideBothEqualsAndHashcode", "serial" })
+@SuppressWarnings(
+    { "PMD.OverrideBothEqualsAndHashcode", "serial" })
 public abstract class SyntaxChecker extends LoadableSchemaObject
 {
     /**

@@ -69,18 +69,19 @@ public class UtcTimeSyntaxChecker extends SyntaxChecker
 
     /** The GeneralizedDate pattern matching */
     private static final String UTC_TIME_PATTERN =
-                "^\\d{2}" // year : 00 to 99
-                    + "(0[1-9]|1[0-2])" // month : 01 to 12
-                    + "(0[1-9]|[12]\\d|3[01])" // day : 01 to 31
-                    + "([01]\\d|2[0-3])" // hour: 00 to 23
-                    + "([0-5]\\d)" // minute : 00 to 59
-                    + "("
-                    + "([0-5]\\d)?" // optional second : 00 to 59
-                    + "(Z|([+-]([01]\\d|2[0-3])[0-5]\\d))?" // optionnal time-zone
-                    + ")$";
-   
+        "^\\d{2}" // year : 00 to 99
+            + "(0[1-9]|1[0-2])" // month : 01 to 12
+            + "(0[1-9]|[12]\\d|3[01])" // day : 01 to 31
+            + "([01]\\d|2[0-3])" // hour: 00 to 23
+            + "([0-5]\\d)" // minute : 00 to 59
+            + "("
+            + "([0-5]\\d)?" // optional second : 00 to 59
+            + "(Z|([+-]([01]\\d|2[0-3])[0-5]\\d))?" // optionnal time-zone
+            + ")$";
+
     // The regexp pattern, java.util.regex.Pattern is immutable so only one instance is needed.
-    private static final Pattern DATE_PATTERN = Pattern.compile( UTC_TIME_PATTERN ); 
+    private static final Pattern DATE_PATTERN = Pattern.compile( UTC_TIME_PATTERN );
+
 
     /**
      * 
@@ -91,8 +92,8 @@ public class UtcTimeSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.UTC_TIME_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -105,14 +106,14 @@ public class UtcTimeSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -125,10 +126,10 @@ public class UtcTimeSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // Start the date parsing
         boolean result = DATE_PATTERN.matcher( strValue ).find();
-        
+
         if ( result )
         {
             LOG.debug( "Syntax valid for '{}'", value );

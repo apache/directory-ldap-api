@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ public class ProtocolInformationSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ProtocolInformationSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of ProtocolInformationSyntaxChecker.
      */
@@ -44,6 +46,7 @@ public class ProtocolInformationSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.PROTOCOL_INFORMATION_SYNTAX );
     }
+
 
     /**
      * {@inheritDoc}

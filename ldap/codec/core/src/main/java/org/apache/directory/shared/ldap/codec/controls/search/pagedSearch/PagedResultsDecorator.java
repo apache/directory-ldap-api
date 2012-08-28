@@ -234,12 +234,12 @@ public class PagedResultsDecorator extends ControlDecorator<PagedResults> implem
 
             case 3:
                 value = ( ( getCookie()[0] & 0x00FF ) << 16 ) + ( ( getCookie()[1] & 0x00FF ) << 8 )
-                        + ( getCookie()[2] & 0x00FF );
+                    + ( getCookie()[2] & 0x00FF );
                 break;
 
             case 4:
                 value = ( ( getCookie()[0] & 0x00FF ) << 24 ) + ( ( getCookie()[1] & 0x00FF ) << 16 )
-                        + ( ( getCookie()[2] & 0x00FF ) << 8 ) + ( getCookie()[3] & 0x00FF );
+                    + ( ( getCookie()[2] & 0x00FF ) << 8 ) + ( getCookie()[3] & 0x00FF );
                 break;
 
         }

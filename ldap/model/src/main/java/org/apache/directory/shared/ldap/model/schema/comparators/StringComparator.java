@@ -37,7 +37,6 @@ public class StringComparator extends LdapComparator<String> implements Serializ
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
-
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( StringComparator.class );
 
@@ -56,7 +55,7 @@ public class StringComparator extends LdapComparator<String> implements Serializ
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ES_COMPARING_PARAMETER_STRING_WITH_EQ",
-            justification ="false positive")
+        justification = "false positive")
     public int compare( String s1, String s2 )
     {
         LOG.debug( "comparing String objects '{}' with '{}'", s1, s2 );

@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.FaxSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for FaxSyntaxChecker.
@@ -53,16 +55,19 @@ public class FaxSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( "" ) );
     }
 
+
     @Test
     public void testOid()
     {
         assertEquals( "1.3.6.1.4.1.1466.115.121.1.23", checker.getOid() );
     }
 
+
     @Test
     public void testCorrectCase()
     {
         assertTrue( checker.isValidSyntax( "FALSE" ) );
-        assertTrue( checker.isValidSyntax( new byte[]{0x01, (byte)0xFF} ) );
+        assertTrue( checker.isValidSyntax( new byte[]
+            { 0x01, ( byte ) 0xFF } ) );
     }
 }

@@ -505,8 +505,8 @@ public class LdifAttributesReaderTest
                 { "ou;lang-ja", "\u55b6\u696d\u90e8" },
                 { "ou;lang-ja;phonetic", "\u3048\u3044\u304e\u3087\u3046\u3076" }, // 3048 = ���, 3044 = ���, 304e = ���
                     // 3087 = ���, 3046 = ���, 3076 = ���
-                { "ou;lang-en", "Sales" },
-                { "description", "Japanese office" } };
+                    { "ou;lang-en", "Sales" },
+                    { "description", "Japanese office" } };
 
         for ( int j = 0; j < values.length; j++ )
         {
@@ -551,7 +551,7 @@ public class LdifAttributesReaderTest
             if ( "jpegphoto".equalsIgnoreCase( values[i][0] ) )
             {
                 javax.naming.directory.Attribute attr = attributes.get( values[i][0] );
-                assertEquals( Strings.dumpBytes(data), Strings.dumpBytes((byte[]) attr.get()) );
+                assertEquals( Strings.dumpBytes( data ), Strings.dumpBytes( ( byte[] ) attr.get() ) );
             }
             else
             {

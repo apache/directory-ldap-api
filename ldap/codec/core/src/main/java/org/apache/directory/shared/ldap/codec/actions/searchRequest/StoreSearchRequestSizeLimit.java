@@ -52,6 +52,7 @@ public class StoreSearchRequestSizeLimit extends GrammarAction<LdapMessageContai
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
+
     /**
      * Instantiates a new action.
      */

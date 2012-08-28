@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+
 /**
  * Various unicode manipulation methods that are more efficient then chaining
  * operations: all is done in the same buffer without creating a bunch of string
@@ -81,6 +82,7 @@ public final class Unicode
         }
     }
 
+
     /**
      * Return the Unicode char which is coded in the bytes at position 0.
      *
@@ -91,6 +93,7 @@ public final class Unicode
     {
         return bytesToChar( bytes, 0 );
     }
+
 
     /**
      * Return the Unicode char which is coded in the bytes at the given
@@ -118,15 +121,15 @@ public final class Unicode
             {
                 // Two bytes char
                 return ( char ) ( ( ( bytes[pos] & 0x1C ) << 6 ) + // 110x-xxyy
-                                                                    // 10zz-zzzz
-                                                                    // ->
-                                                                    // 0000-0xxx
-                                                                    // 0000-0000
+                                                                   // 10zz-zzzz
+                                                                   // ->
+                                                                   // 0000-0xxx
+                                                                   // 0000-0000
                     ( ( bytes[pos] & 0x03 ) << 6 ) + // 110x-xxyy 10zz-zzzz
-                                                        // -> 0000-0000
-                                                        // yy00-0000
+                                                     // -> 0000-0000
+                                                     // yy00-0000
                 ( bytes[pos + 1] & 0x3F ) // 110x-xxyy 10zz-zzzz -> 0000-0000
-                                            // 00zz-zzzz
+                                          // 00zz-zzzz
                 ); // -> 0000-0xxx yyzz-zzzz (07FF)
             }
             else if ( ( bytes[pos] & UnicodeConstants.UTF8_THREE_BYTES_MASK ) == UnicodeConstants.UTF8_THREE_BYTES )
@@ -139,8 +142,8 @@ public final class Unicode
                     + ( ( bytes[pos + 1] & 0x3C ) << 6 )
                     // 1110-tttt 10xx-xxyy 10zz-zzzz -> 0000-0000-yy00-0000
                     + ( ( bytes[pos + 1] & 0x03 ) << 6 )
-                // 1110-tttt 10xx-xxyy 10zz-zzzz -> 0000-0000-00zz-zzzz
-                + ( bytes[pos + 2] & 0x3F )
+                    // 1110-tttt 10xx-xxyy 10zz-zzzz -> 0000-0000-00zz-zzzz
+                    + ( bytes[pos + 2] & 0x3F )
                 // -> tttt-xxxx yyzz-zzzz (FF FF)
                 );
             }
@@ -163,9 +166,9 @@ public final class Unicode
                     // 1111-0ttt 10uu-vvvv 10xx-xxyy 10zz-zzzz -> 0000-0000
                     // 0000-0000 yy00-0000
                     + ( ( bytes[pos + 2] & 0x03 ) << 6 )
-                // 1111-0ttt 10uu-vvvv 10xx-xxyy 10zz-zzzz -> 0000-0000
-                // 0000-0000 00zz-zzzz
-                + ( bytes[pos + 3] & 0x3F )
+                    // 1111-0ttt 10uu-vvvv 10xx-xxyy 10zz-zzzz -> 0000-0000
+                    // 0000-0000 00zz-zzzz
+                    + ( bytes[pos + 3] & 0x3F )
                 // -> 000t-ttuu vvvv-xxxx yyzz-zzzz (1FFFFF)
                 );
             }
@@ -191,9 +194,9 @@ public final class Unicode
                     // 1111-10tt 10uu-uuuu 10vv-wwww 10xx-xxyy 10zz-zzzz ->
                     // 0000-0000 0000-0000 0000-0000 yy00-0000
                     + ( ( bytes[pos + 3] & 0x03 ) << 6 )
-                // 1111-10tt 10uu-uuuu 10vv-wwww 10xx-xxyy 10zz-zzzz ->
-                // 0000-0000 0000-0000 0000-0000 00zz-zzzz
-                + ( bytes[pos + 4] & 0x3F )
+                    // 1111-10tt 10uu-uuuu 10vv-wwww 10xx-xxyy 10zz-zzzz ->
+                    // 0000-0000 0000-0000 0000-0000 00zz-zzzz
+                    + ( bytes[pos + 4] & 0x3F )
                 // -> 0000-00tt uuuu-uuvv wwww-xxxx yyzz-zzzz (03 FF FF FF)
                 );
             }
@@ -229,10 +232,10 @@ public final class Unicode
                     // 10zz-zzzz ->
                     // 0000-0000 0000-0000 0000-0000 yy00-0000
                     + ( ( bytes[pos + 4] & 0x03 ) << 6 )
-                // 1111-110s 10tt-tttt 10uu-uuuu 10vv-wwww 10xx-xxyy 10zz-zzzz
-                // ->
-                // 0000-0000 0000-0000 0000-0000 00zz-zzzz
-                + ( bytes[pos + 5] & 0x3F )
+                    // 1111-110s 10tt-tttt 10uu-uuuu 10vv-wwww 10xx-xxyy 10zz-zzzz
+                    // ->
+                    // 0000-0000 0000-0000 0000-0000 00zz-zzzz
+                    + ( bytes[pos + 5] & 0x3F )
                 // -> 0stt-tttt uuuu-uuvv wwww-xxxx yyzz-zzzz (7F FF FF FF)
                 );
             }
@@ -242,6 +245,7 @@ public final class Unicode
             }
         }
     }
+
 
     /**
      * Return the number of bytes that hold an Unicode char.
@@ -282,6 +286,7 @@ public final class Unicode
         }
     }
 
+
     /**
      * Count the number of bytes included in the given char[].
      *
@@ -311,6 +316,7 @@ public final class Unicode
         return nbBytes;
     }
 
+
     /**
      * Count the number of chars included in the given byte[].
      *
@@ -329,12 +335,13 @@ public final class Unicode
 
         while ( currentPos < bytes.length )
         {
-            currentPos += countBytesPerChar(bytes, currentPos);
+            currentPos += countBytesPerChar( bytes, currentPos );
             nbChars++;
         }
 
         return nbChars;
     }
+
 
     /**
      * Return the Unicode char which is coded in the bytes at the given
@@ -348,7 +355,7 @@ public final class Unicode
      */
     public static byte[] charToBytes( char car )
     {
-        byte[] bytes = new byte[countNbBytesPerChar(car)];
+        byte[] bytes = new byte[countNbBytesPerChar( car )];
 
         if ( car <= 0x7F )
         {
@@ -373,6 +380,7 @@ public final class Unicode
         return bytes;
     }
 
+
     /**
      * Check if the current char is in the unicodeSubset : all chars but
      * '\0', '(', ')', '*' and '\'
@@ -393,6 +401,7 @@ public final class Unicode
         return ( ( c > 127 ) || UnicodeConstants.UNICODE_SUBSET[c] );
     }
 
+
     /**
      * Check if the current char is in the unicodeSubset : all chars but
      * '\0', '(', ')', '*' and '\'
@@ -404,6 +413,7 @@ public final class Unicode
     {
         return ( ( c > 127 ) || UnicodeConstants.UNICODE_SUBSET[c] );
     }
+
 
     /**
      *
@@ -455,6 +465,7 @@ public final class Unicode
             }
         }
     }
+
 
     /**
      *

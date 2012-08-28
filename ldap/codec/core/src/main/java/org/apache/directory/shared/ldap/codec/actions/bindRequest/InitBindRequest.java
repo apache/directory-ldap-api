@@ -45,6 +45,7 @@ public class InitBindRequest extends GrammarAction<LdapMessageContainer<BindRequ
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitBindRequest.class );
 
+
     /**
      * Instantiates a new action.
      */

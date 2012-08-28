@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.filter;
 
+
 import org.apache.directory.shared.i18n.I18n;
 
 
@@ -44,7 +45,6 @@ public abstract class AssertionNode extends AbstractExprNode
     // C O N S T R U C T O R S
     // ------------------------------------------------------------------------
 
-
     /**
      * Creates an AssertionNode using an arbitrary candidate assertion.
      * 
@@ -53,7 +53,7 @@ public abstract class AssertionNode extends AbstractExprNode
     public AssertionNode( Assertion assertion )
     {
         this( assertion, "ASSERTION" );
-        
+
         isSchemaAware = true;
     }
 
@@ -79,16 +79,17 @@ public abstract class AssertionNode extends AbstractExprNode
         set( "count", Long.MAX_VALUE );
     }
 
+
     /**
      * Makes a full clone in new memory space of the current node and children
      * 
      * @return the clone
      */
-    @Override public ExprNode clone()
+    @Override
+    public ExprNode clone()
     {
-        return (ExprNode)super.clone();
+        return ( ExprNode ) super.clone();
     }
-    
 
 
     /**
@@ -106,7 +107,6 @@ public abstract class AssertionNode extends AbstractExprNode
     // A B S T R A C T M E T H O D I M P L E M E N T A T I O N S
     // ------------------------------------------------------------------------
 
-    
     /**
      * Always returns true since an AssertionNode has no children.
      * 
@@ -144,8 +144,9 @@ public abstract class AssertionNode extends AbstractExprNode
             return false;
         }
         AssertionNode that = ( AssertionNode ) obj;
-        if ( assertion == null ) {
-            if ( that.assertion != null)
+        if ( assertion == null )
+        {
+            if ( that.assertion != null )
             {
                 return false;
             }
@@ -157,8 +158,9 @@ public abstract class AssertionNode extends AbstractExprNode
                 return false;
             }
         }
-        if ( desc == null ) {
-            if ( that.desc != null)
+        if ( desc == null )
+        {
+            if ( that.desc != null )
             {
                 return false;
             }
@@ -182,11 +184,11 @@ public abstract class AssertionNode extends AbstractExprNode
     public int hashCode()
     {
         int h = 37;
-        
-        h = h*17 + super.hashCode();
-        h = h*17 + ( assertion != null ? assertion.hashCode() : 0 );
-        h = h*17 + ( desc != null ? desc.hashCode() : 0 );
-        
+
+        h = h * 17 + super.hashCode();
+        h = h * 17 + ( assertion != null ? assertion.hashCode() : 0 );
+        h = h * 17 + ( desc != null ? desc.hashCode() : 0 );
+
         return h;
     }
 
@@ -208,12 +210,12 @@ public abstract class AssertionNode extends AbstractExprNode
     public String toString()
     {
         StringBuilder buf = new StringBuilder();
-        
+
         buf.append( "(@" );
         buf.append( desc );
         buf.append( super.toString() );
         buf.append( ')' );
-        
+
         return buf.toString();
     }
 }

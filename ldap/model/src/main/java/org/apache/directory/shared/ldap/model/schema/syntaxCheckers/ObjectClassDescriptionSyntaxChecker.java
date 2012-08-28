@@ -63,6 +63,7 @@ public class ObjectClassDescriptionSyntaxChecker extends SyntaxChecker
     /** The schema parser used to parse the ObjectClassDescription Syntax */
     private ObjectClassDescriptionSchemaParser schemaParser = new ObjectClassDescriptionSchemaParser();
 
+
     /**
      * Creates a new instance of ObjectClassDescriptionSyntaxChecker.
      */
@@ -70,7 +71,7 @@ public class ObjectClassDescriptionSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.OBJECT_CLASS_DESCRIPTION_SYNTAX );
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -91,7 +92,7 @@ public class ObjectClassDescriptionSyntaxChecker extends SyntaxChecker
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {

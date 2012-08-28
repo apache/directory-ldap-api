@@ -75,8 +75,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
     //-------------------------------------------------------------------------
     // The BindResponse methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -93,8 +92,8 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
     {
         getDecorated().setServerSaslCreds( serverSaslCreds );
     }
-    
-    
+
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -115,7 +114,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
     public int computeLength()
     {
         BindResponse bindResponse = getDecorated();
-        int ldapResultLength = ((LdapResultDecorator)getLdapResult()).computeLength();
+        int ldapResultLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         int bindResponseLength = ldapResultLength;
 
@@ -156,7 +155,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
             buffer.put( TLV.getBytes( getBindResponseLength() ) );
 
             // The LdapResult
-            ((LdapResultDecorator)getLdapResult()).encode( buffer );
+            ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
 
             // The serverSaslCredential, if any
             byte[] serverSaslCreds = bindResponse.getServerSaslCreds();
@@ -177,7 +176,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
         {
             throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
         }
-        
+
         return buffer;
     }
 }

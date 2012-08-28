@@ -56,43 +56,42 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
     public UnbindRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public UnbindRequest addControl( Control control ) throws MessageException
     {
-        return (UnbindRequest)super.addControl( control );
+        return ( UnbindRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public UnbindRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (UnbindRequest)super.addAllControls( controls );
+        return ( UnbindRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public UnbindRequest removeControl( Control control ) throws MessageException
     {
-        return (UnbindRequest)super.removeControl( control );
+        return ( UnbindRequest ) super.removeControl( control );
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
 
-    
     /**
      * Compute the UnBindRequest length 
      * 
@@ -103,8 +102,8 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
     {
         return 2; // Always 2
     }
-    
-    
+
+
     /**
      * Encode the Unbind protocolOp part
      */
@@ -123,7 +122,7 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
             String msg = I18n.err( I18n.ERR_04005 );
             throw new EncoderException( msg );
         }
-        
+
         return buffer;
     }
 }

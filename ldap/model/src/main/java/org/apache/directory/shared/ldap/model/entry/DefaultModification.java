@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.entry;
 
+
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -31,6 +32,7 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * An internal implementation for a ModificationItem. The name has been
  * chosen so that it does not conflict with @see ModificationItem
@@ -41,17 +43,17 @@ public class DefaultModification implements Modification
 {
     /** The modification operation */
     private ModificationOperation operation;
-    
+
     /** The attribute which contains the modification */
     private Attribute attribute;
-    
+
     /** The AtributeType */
     private AttributeType attributeType;
- 
+
     /** logger for reporting errors that might not be handled properly upstream */
     protected static final Logger LOG = LoggerFactory.getLogger( Modification.class );
 
-    
+
     /**
      * Creates a new instance of DefaultModification.
      */
@@ -59,7 +61,7 @@ public class DefaultModification implements Modification
     {
     }
 
-    
+
     /**
      * Creates a new instance of DefaultModification.
      *
@@ -135,7 +137,7 @@ public class DefaultModification implements Modification
      * @param attributeType The associated attributeType
      * @param values the associated values
      */
-    public DefaultModification( ModificationOperation operation, AttributeType attributeType, String... values ) 
+    public DefaultModification( ModificationOperation operation, AttributeType attributeType, String... values )
         throws LdapInvalidAttributeValueException
     {
         this.operation = operation;
@@ -151,7 +153,7 @@ public class DefaultModification implements Modification
      * @param values the associated values
      */
     public DefaultModification( ModificationOperation operation, AttributeType attributeType, byte[]... values )
-    throws LdapInvalidAttributeValueException
+        throws LdapInvalidAttributeValueException
     {
         this.operation = operation;
         this.attribute = new DefaultAttribute( attributeType, values );
@@ -166,7 +168,7 @@ public class DefaultModification implements Modification
      * @param values the associated values
      */
     public DefaultModification( ModificationOperation operation, AttributeType attributeType, Value<?>... values )
-    throws LdapInvalidAttributeValueException
+        throws LdapInvalidAttributeValueException
     {
         this.operation = operation;
         this.attribute = new DefaultAttribute( attributeType, values );
@@ -180,7 +182,7 @@ public class DefaultModification implements Modification
      * @param attributeType The associated attributeType
      */
     public DefaultModification( ModificationOperation operation, AttributeType attributeType )
-    throws LdapInvalidAttributeValueException
+        throws LdapInvalidAttributeValueException
     {
         this.operation = operation;
         this.attribute = new DefaultAttribute( attributeType );
@@ -196,18 +198,18 @@ public class DefaultModification implements Modification
     public DefaultModification( SchemaManager schemaManager, Modification modification )
     {
         operation = modification.getOperation();
-        
+
         Attribute modAttribute = modification.getAttribute();
-        
+
         try
         {
             AttributeType at = modAttribute.getAttributeType();
-            
+
             if ( at == null )
             {
                 at = schemaManager.lookupAttributeTypeRegistry( modAttribute.getId() );
             }
-            
+
             attribute = new DefaultAttribute( at, modAttribute );
         }
         catch ( LdapException ne )
@@ -216,8 +218,8 @@ public class DefaultModification implements Modification
             LOG.error( I18n.err( I18n.ERR_04472, modAttribute.getId() ) );
         }
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -225,8 +227,8 @@ public class DefaultModification implements Modification
     {
         return operation;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -235,7 +237,7 @@ public class DefaultModification implements Modification
         this.operation = ModificationOperation.getOperation( operation );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -243,8 +245,8 @@ public class DefaultModification implements Modification
     {
         this.operation = operation;
     }
-        
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -252,8 +254,8 @@ public class DefaultModification implements Modification
     {
         return attribute;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -261,15 +263,15 @@ public class DefaultModification implements Modification
     {
         this.attribute = attribute;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
         this.attributeType = attributeType;
-        
+
         if ( attribute != null )
         {
             attribute.apply( attributeType );
@@ -284,8 +286,8 @@ public class DefaultModification implements Modification
     {
         return attributeType;
     }
-    
-    
+
+
     /**
      * @see Object#equals(Object)
      * @return <code>true</code> if both values are equal
@@ -297,14 +299,14 @@ public class DefaultModification implements Modification
         {
             return true;
         }
-        
-        if ( ! (that instanceof Modification ) )
+
+        if ( !( that instanceof Modification ) )
         {
             return false;
         }
-        
-        Modification otherModification = (Modification)that;
-        
+
+        Modification otherModification = ( Modification ) that;
+
         // Check the operation
         if ( operation != otherModification.getOperation() )
         {
@@ -316,11 +318,11 @@ public class DefaultModification implements Modification
         {
             return otherModification.getAttribute() == null;
         }
-        
+
         return attribute.equals( otherModification.getAttribute() );
     }
-    
-    
+
+
     /**
      * Compute the modification @see Object#hashCode
      * @return the instance's hash code 
@@ -328,13 +330,13 @@ public class DefaultModification implements Modification
     public int hashCode()
     {
         int h = 37;
-        
-        h += h*17 + operation.getValue();
-        h += h*17 + attribute.hashCode();
-        
+
+        h += h * 17 + operation.getValue();
+        h += h * 17 + attribute.hashCode();
+
         return h;
     }
-    
+
 
     /**
      * @see java.io.Externalizable#readExternal(ObjectInput)
@@ -346,15 +348,15 @@ public class DefaultModification implements Modification
 
         // The EntryAttribute if we have some
         boolean hasAttribute = in.readBoolean();
-        
+
         if ( hasAttribute )
         {
             attribute = new DefaultAttribute();
             attribute.readExternal( in );
         }
     }
-    
-    
+
+
     /**
      * @see java.io.Externalizable#writeExternal(ObjectOutput)
      */
@@ -362,7 +364,7 @@ public class DefaultModification implements Modification
     {
         // The operation
         out.writeInt( operation.getValue() );
-        
+
         // The EntryAttribute if not null
         if ( attribute != null )
         {
@@ -373,11 +375,11 @@ public class DefaultModification implements Modification
         {
             out.writeBoolean( false );
         }
-        
+
         out.flush();
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -385,8 +387,8 @@ public class DefaultModification implements Modification
     {
         try
         {
-            DefaultModification clone = (DefaultModification)super.clone();
-            
+            DefaultModification clone = ( DefaultModification ) super.clone();
+
             clone.attribute = this.attribute.clone();
             return clone;
         }
@@ -395,21 +397,21 @@ public class DefaultModification implements Modification
             return null;
         }
     }
-    
-    
+
+
     /**
      * @see Object#toString()
      */
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        
+
         sb.append( "Modification: " ).
             append( operation ).
             append( "\n" ).
             append( ", attribute : " ).
             append( attribute );
-        
+
         return sb.toString();
     }
 }

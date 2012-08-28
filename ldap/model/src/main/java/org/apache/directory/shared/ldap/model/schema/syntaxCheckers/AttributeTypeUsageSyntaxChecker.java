@@ -43,6 +43,7 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( AttributeTypeUsageSyntaxChecker.class );
 
+
     /**
      * 
      * Creates a new instance of AttributeTypeUsageSyntaxChecker.
@@ -66,14 +67,14 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -86,26 +87,26 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         char ch = strValue.charAt( 0 );
 
         switch ( ch )
         {
-            case( 'd' ):
+            case ( 'd' ):
                 if ( "dSAOperation".equals( strValue )
                     || "directoryOperation".equals( strValue )
                     || "distributedOperation".equals( strValue ) )
-               {
+                {
                     LOG.debug( "Syntax valid for '{}'", value );
                     return true;
                 }
 
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
-            
-            case( 'u' ):
+
+            case ( 'u' ):
                 boolean comp = "userApplications".equals( strValue );
-            
+
                 if ( comp )
                 {
                     LOG.debug( "Syntax valid for '{}'", value );
@@ -113,11 +114,11 @@ public class AttributeTypeUsageSyntaxChecker extends SyntaxChecker
                 else
                 {
                     LOG.debug( "Syntax invalid for '{}'", value );
-                    
+
                 }
-                
+
                 return comp;
-            
+
             default:
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;

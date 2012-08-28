@@ -182,6 +182,7 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
         return this.base;
     }
 
+
     /**
      * @return The set of ChopBefore exclusions
      */
@@ -249,7 +250,7 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
         buffer.append( '{' );
 
         // The base
-        if ( !base.isEmpty() ) 
+        if ( !base.isEmpty() )
         {
             buffer.append( " base \"" );
             buffer.append( base.getName() );
@@ -258,7 +259,7 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
         }
 
         // The minimum
-        if ( minBaseDistance > 0 ) 
+        if ( minBaseDistance > 0 )
         {
             if ( isFirst )
             {
@@ -269,13 +270,13 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
             {
                 buffer.append( ", " );
             }
-            
+
             buffer.append( "minimum " );
             buffer.append( minBaseDistance );
         }
 
         // The maximum
-        if ( maxBaseDistance > UNBOUNDED_MAX ) 
+        if ( maxBaseDistance > UNBOUNDED_MAX )
         {
             if ( isFirst )
             {
@@ -286,7 +287,7 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
             {
                 buffer.append( ", " );
             }
-            
+
             buffer.append( "maximum " );
             buffer.append( maxBaseDistance );
         }
@@ -303,9 +304,9 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
             {
                 buffer.append( ", " );
             }
-            
+
             buffer.append( "specificExclusions { " );
-            
+
             boolean isFirstExclusion = true;
 
             if ( chopBefore != null )
@@ -320,7 +321,7 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
                     {
                         buffer.append( ", " );
                     }
-                    
+
                     buffer.append( "chopBefore: \"" );
                     buffer.append( exclusion.getName() );
                     buffer.append( '"' );
@@ -339,7 +340,7 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
                     {
                         buffer.append( ", " );
                     }
-                    
+
                     buffer.append( "chopAfter: \"" );
                     buffer.append( exclusion.getName() );
                     buffer.append( '"' );
@@ -360,13 +361,13 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
             {
                 buffer.append( ", " );
             }
-            
+
             buffer.append( "specificationFilter " );
             buffer.append( refinement.toString() );
         }
 
         buffer.append( " }" );
-        
+
         return buffer.toString();
     }
 }

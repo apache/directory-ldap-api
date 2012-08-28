@@ -42,6 +42,7 @@ public class InitSearchResultReference extends GrammarAction<LdapMessageContaine
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitSearchResultReference.class );
 
+
     /**
      * Instantiates a new action.
      */

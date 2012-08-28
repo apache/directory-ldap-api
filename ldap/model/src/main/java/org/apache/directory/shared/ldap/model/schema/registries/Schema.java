@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.registries;
 
+
 import java.util.Set;
 
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectWrapper;
@@ -37,28 +38,28 @@ public interface Schema
      * @return true if this schema is disabled, false otherwise
      */
     boolean isDisabled();
-    
-    
+
+
     /**
      * Disable the schema
      */
     void disable();
-    
-    
+
+
     /**
      * Checks whether or not this schema is enabled or disabled.
      * 
      * @return true if this schema is enabled, false otherwise
      */
     boolean isEnabled();
-    
+
 
     /**
      * Enable the schema
      */
     void enable();
-    
-    
+
+
     /**
      * Gets the name of the owner of the schema objects within this
      * Schema.
@@ -84,16 +85,16 @@ public interface Schema
      * @return the String names of schema dependencies
      */
     String[] getDependencies();
-    
-    
+
+
     /**
      * Add a set of dependencies this schema uses.
      *
      * @param dependencies The dependencies to add
      */
     void addDependencies( String... dependencies );
-    
-    
+
+
     /**
      * Gets the set of SchemaObject elements declared in this schema
      *

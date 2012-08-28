@@ -44,7 +44,7 @@ import org.apache.directory.shared.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CompareRequestDecorator extends SingleReplyRequestDecorator<CompareRequest, CompareResponse> 
+public class CompareRequestDecorator extends SingleReplyRequestDecorator<CompareRequest, CompareResponse>
     implements CompareRequest
 {
     /** The bytes of the attribute id used in the comparison */
@@ -157,7 +157,6 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     // The CompareRequest methods
     //-------------------------------------------------------------------------
 
-    
     /**
      * {@inheritDoc}
      */
@@ -173,7 +172,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     public CompareRequest setName( Dn name )
     {
         getDecorated().setName( name );
-        
+
         return this;
     }
 
@@ -193,7 +192,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     public CompareRequest setAssertionValue( String value )
     {
         getDecorated().setAssertionValue( value );
-        
+
         return this;
     }
 
@@ -204,7 +203,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     public CompareRequest setAssertionValue( byte[] value )
     {
         getDecorated().setAssertionValue( value );
-        
+
         return this;
     }
 
@@ -224,49 +223,49 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     public CompareRequest setAttributeId( String attrId )
     {
         getDecorated().setAttributeId( attrId );
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest addControl( Control control ) throws MessageException
     {
-        return (CompareRequest)super.addControl( control );
+        return ( CompareRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (CompareRequest)super.addAllControls( controls );
+        return ( CompareRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest removeControl( Control control ) throws MessageException
     {
-        return (CompareRequest)super.removeControl( control );
+        return ( CompareRequest ) super.removeControl( control );
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -360,7 +359,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
 
         // The assertionValue
         org.apache.directory.shared.asn1.ber.tlv.Value.encode( buffer, ( byte[] ) getAttrValBytes() );
-        
+
         return buffer;
     }
- }
+}

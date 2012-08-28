@@ -45,8 +45,8 @@ public class LdapEncoder
 {
     /** The LdapCodecService */
     private LdapApiService codec;
-    
-    
+
+
     /**
      * Creates an instance of Ldap message encoder
      * 
@@ -59,19 +59,19 @@ public class LdapEncoder
         {
             throw new NullPointerException( "codec argument cannot be null" );
         }
-        
+
         this.codec = codec;
     }
-    
-    
+
+
     /**
      * Compute the control's encoded length
      */
     private int computeControlLength( Control control )
     {
         // First, compute the control's value length
-        int controlValueLength = ( ( CodecControl<?> ) control).computeLength();
-        
+        int controlValueLength = ( ( CodecControl<?> ) control ).computeLength();
+
         // Now, compute the envelop length
         // The OID
         int oidLengh = Strings.getBytesUtf8( control.getOid() ).length;
@@ -82,16 +82,16 @@ public class LdapEncoder
         {
             controlLength += 1 + 1 + 1; // Always 3 for a boolean
         }
-        
+
         if ( controlValueLength != 0 )
         {
             controlLength += 1 + TLV.getNbBytes( controlValueLength ) + controlValueLength;
         }
-       
+
         return controlLength;
     }
-    
-    
+
+
     /**
      * Encode a control to a byte[]
      */
@@ -127,7 +127,7 @@ public class LdapEncoder
 
         return buffer;
     }
-    
+
 
     /**
      * Generate the PDU which contains the encoded object. 
@@ -167,7 +167,7 @@ public class LdapEncoder
                 buffer.put( UniversalTag.SEQUENCE.getValue() );
 
                 // The length has been calculated by the computeLength method
-                buffer.put( TLV.getBytes(decorator.getMessageLength()) );
+                buffer.put( TLV.getBytes( decorator.getMessageLength() ) );
             }
             catch ( BufferOverflowException boe )
             {
@@ -193,17 +193,17 @@ public class LdapEncoder
                 for ( Control control : controls.values() )
                 {
                     encodeControl( buffer, control );
-                    
+
                     // The OctetString tag if the value is not null
-                    int controlValueLength = ( ( CodecControl<?> ) control).computeLength();
-                    
+                    int controlValueLength = ( ( CodecControl<?> ) control ).computeLength();
+
                     if ( controlValueLength > 0 )
                     {
                         buffer.put( UniversalTag.OCTET_STRING.getValue() );
                         buffer.put( TLV.getBytes( controlValueLength ) );
-    
+
                         // And now, the value
-                        ( (org.apache.directory.shared.ldap.codec.api.CodecControl<?> ) control ).encode( buffer );
+                        ( ( org.apache.directory.shared.ldap.codec.api.CodecControl<?> ) control ).encode( buffer );
                     }
                 }
             }
@@ -241,7 +241,7 @@ public class LdapEncoder
         // - the tag (0x02), 1 byte
         // - the length of the Id length, 1 byte
         // - the Id length, 1 to 4 bytes
-        int ldapMessageLength = 1 + 1 + Value.getNbBytes( messageDecorator.getDecorated().getMessageId());
+        int ldapMessageLength = 1 + 1 + Value.getNbBytes( messageDecorator.getDecorated().getMessageId() );
 
         // Get the protocolOp length
         ldapMessageLength += messageDecorator.computeLength();
@@ -276,7 +276,7 @@ public class LdapEncoder
             for ( Control control : controls.values() )
             {
                 int controlLength = computeControlLength( control );
-                
+
                 controlsSequenceLength += 1 + TLV.getNbBytes( controlLength ) + controlLength;
             }
 
@@ -345,7 +345,7 @@ public class LdapEncoder
                 // Each referral
                 for ( String ldapUrl : ldapUrls )
                 {
-                    byte[] ldapUrlBytes = Strings.getBytesUtf8(ldapUrl);
+                    byte[] ldapUrlBytes = Strings.getBytesUtf8( ldapUrl );
                     referralLength += 1 + TLV.getNbBytes( ldapUrlBytes.length ) + ldapUrlBytes.length;
                     referral.addLdapUrlBytes( ldapUrlBytes );
                 }

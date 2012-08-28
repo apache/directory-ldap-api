@@ -34,6 +34,7 @@ import org.junit.runner.RunWith;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
+
 /**
  * Tests for the Search Result Done Response parsing
  *
@@ -64,7 +65,8 @@ public class SearchResponseTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResponse searchResponse = ( SearchResponse ) parser.getBatchResponse().getCurrentResponse().getDecorated();
+        SearchResponse searchResponse = ( SearchResponse ) parser.getBatchResponse().getCurrentResponse()
+            .getDecorated();
 
         assertEquals( 456, searchResponse.getMessageId() );
     }
@@ -100,7 +102,8 @@ public class SearchResponseTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResponse searchResponse = ( SearchResponse ) parser.getBatchResponse().getCurrentResponse().getDecorated();
+        SearchResponse searchResponse = ( SearchResponse ) parser.getBatchResponse().getCurrentResponse()
+            .getDecorated();
 
         assertNotNull( searchResponse.getSearchResultDone() );
     }
@@ -127,7 +130,8 @@ public class SearchResponseTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResponse searchResponse = ( SearchResponse ) parser.getBatchResponse().getCurrentResponse().getDecorated();
+        SearchResponse searchResponse = ( SearchResponse ) parser.getBatchResponse().getCurrentResponse()
+            .getDecorated();
 
         assertEquals( 1, searchResponse.getSearchResultEntryList().size() );
 
@@ -156,7 +160,8 @@ public class SearchResponseTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResponse searchResponse = ( SearchResponse ) parser.getBatchResponse().getCurrentResponse().getDecorated();
+        SearchResponse searchResponse = ( SearchResponse ) parser.getBatchResponse().getCurrentResponse()
+            .getDecorated();
 
         assertEquals( 0, searchResponse.getSearchResultEntryList().size() );
 
@@ -185,7 +190,7 @@ public class SearchResponseTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResponse searchResponse = ( SearchResponse ) 
+        SearchResponse searchResponse = ( SearchResponse )
             parser.getBatchResponse().getCurrentResponse().getDecorated();
 
         assertEquals( 1, searchResponse.getSearchResultReferenceList().size() );
@@ -215,7 +220,7 @@ public class SearchResponseTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResponse searchResponse = ( SearchResponse ) 
+        SearchResponse searchResponse = ( SearchResponse )
             parser.getBatchResponse().getCurrentResponse().getDecorated();
 
         assertEquals( 1, searchResponse.getSearchResultEntryList().size() );
@@ -247,7 +252,7 @@ public class SearchResponseTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResponse searchResponse = ( SearchResponse ) 
+        SearchResponse searchResponse = ( SearchResponse )
             parser.getBatchResponse().getCurrentResponse().getDecorated();
 
         assertEquals( 2, searchResponse.getSearchResultEntryList().size() );
@@ -277,7 +282,7 @@ public class SearchResponseTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResponse searchResponse = ( SearchResponse ) 
+        SearchResponse searchResponse = ( SearchResponse )
             parser.getBatchResponse().getCurrentResponse().getDecorated();
 
         assertEquals( 2, searchResponse.getSearchResultReferenceList().size() );
@@ -307,7 +312,8 @@ public class SearchResponseTest extends AbstractResponseTest
             fail( e.getMessage() );
         }
 
-        SearchResponse searchResponse = ( SearchResponse ) parser.getBatchResponse().getCurrentResponse().getDecorated();
+        SearchResponse searchResponse = ( SearchResponse ) parser.getBatchResponse().getCurrentResponse()
+            .getDecorated();
 
         assertEquals( 2, searchResponse.getSearchResultEntryList().size() );
 

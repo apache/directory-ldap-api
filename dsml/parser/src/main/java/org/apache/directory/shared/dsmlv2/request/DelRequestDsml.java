@@ -36,7 +36,7 @@ import org.dom4j.Element;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DelRequestDsml 
+public class DelRequestDsml
     extends AbstractResultResponseRequestDsml<DeleteRequest, DeleteResponse>
     implements DeleteRequest
 {
@@ -133,45 +133,45 @@ public class DelRequestDsml
     public DeleteRequest setName( Dn name )
     {
         getDecorated().setName( name );
-    
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public DeleteRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public DeleteRequest addControl( Control control ) throws MessageException
     {
-        return (DeleteRequest)super.addControl( control );
+        return ( DeleteRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public DeleteRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (DeleteRequest)super.addAllControls( controls );
+        return ( DeleteRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public DeleteRequest removeControl( Control control ) throws MessageException
     {
-        return (DeleteRequest)super.removeControl( control );
+        return ( DeleteRequest ) super.removeControl( control );
     }
 }

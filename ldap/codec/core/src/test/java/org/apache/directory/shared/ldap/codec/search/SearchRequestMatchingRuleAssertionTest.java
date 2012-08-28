@@ -118,7 +118,14 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                 // SearchRequest ::= [APPLICATION 3] SEQUENCE {
                 0x04,
                 0x11, //   baseObject      LDAPDN, (dc=example,dc=com)
-                'd', 'c', '=', 'e', 'x', 'a', 'm', 'p',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
                 'l',
                 'e',
                 ',',
@@ -154,24 +161,67 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                 // MatchingRuleAssertion ::= SEQUENCE {
                 ( byte ) 0x81,
                 0x02, //   matchingRule    [1] MatchingRuleId OPTIONAL,
-                'c', 'n',
+                'c',
+                'n',
                 ( byte ) 0x82,
                 0x13, //    type            [2] AttributeDescription OPTIONAL,
-                '1', '.', '2', '.', '8', '4', '0', '.', '4', '8', '0', '1', '8', '.', '1', '.', '2', '.', '2',
+                '1',
+                '.',
+                '2',
+                '.',
+                '8',
+                '4',
+                '0',
+                '.',
+                '4',
+                '8',
+                '0',
+                '1',
+                '8',
+                '.',
+                '1',
+                '.',
+                '2',
+                '.',
+                '2',
                 ( byte ) 0x83,
                 0x03, //    matchValue      [3] AssertionValue,
-                'a', 'o', 'k',
+                'a',
+                'o',
+                'k',
                 //    dnAttributes    [4] BOOLEAN DEFAULT FALSE  }
-                ( byte ) 0x84, 0x01, ( byte ) 0xFF, 0x30,
+                ( byte ) 0x84,
+                0x01,
+                ( byte ) 0xFF,
+                0x30,
                 0x15, // attributes      AttributeDescriptionList }
-                0x04, 0x05, 'a', 't', 't', 'r', '0', 0x04, 0x05, 'a', 't', 't', 'r', '1', 0x04, 0x05, 'a', 't', 't',
-                'r', '2' } );
+                0x04,
+                0x05,
+                'a',
+                't',
+                't',
+                'r',
+                '0',
+                0x04,
+                0x05,
+                'a',
+                't',
+                't',
+                'r',
+                '1',
+                0x04,
+                0x05,
+                'a',
+                't',
+                't',
+                'r',
+                '2' } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a BindRequest Container
-        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchRequestDecorator>( codec );
 
         try
@@ -212,7 +262,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
             // Check the length
             assertEquals( 0x63, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu.substring( 0, 0x56 ), decodedPdu.substring( 0, 0x56 ) );
         }
@@ -236,10 +286,60 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                 0x04, // messageID
                 0x63,
                 0x36, // baseObject LDAPDN,
-                0x04, 0x1F, 'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e',
-                'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', 0x0A, 0x01, 0x01, 0x0A, 0x01, 0x03,
-                0x02, 0x01, 0x00, 0x02, 0x01, 0x00, 0x01, 0x01, ( byte ) 0xFF, ( byte ) 0xA9, 0x00, 0x30, 0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
-                0x04, 0x00 };
+                0x04,
+                0x1F,
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                0x0A,
+                0x01,
+                0x01,
+                0x0A,
+                0x01,
+                0x03,
+                0x02,
+                0x01,
+                0x00,
+                0x02,
+                0x01,
+                0x00,
+                0x01,
+                0x01,
+                ( byte ) 0xFF,
+                ( byte ) 0xA9,
+                0x00,
+                0x30,
+                0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
+                0x04,
+                0x00 };
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -248,7 +348,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchRequestDecorator>( codec );
 
         // Decode a SearchRequest message
@@ -277,14 +377,64 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
             { 0x30, 0x3D, 0x02,
                 0x01,
                 0x04, // messageID
-                0x63, 0x38,
+                0x63,
+                0x38,
                 0x04,
                 0x1F, // baseObject LDAPDN,
-                'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', 0x0A, 0x01, 0x01, 0x0A, 0x01, 0x03, 0x02, 0x01,
-                0x00, 0x02, 0x01, 0x00, 0x01, 0x01, ( byte ) 0xFF, ( byte ) 0xA9, 0x02, ( byte ) 0x81, 0x00, // matchingRule    [1] MatchingRuleId OPTIONAL,
-                0x30, 0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
-                0x04, 0x00 };
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                0x0A,
+                0x01,
+                0x01,
+                0x0A,
+                0x01,
+                0x03,
+                0x02,
+                0x01,
+                0x00,
+                0x02,
+                0x01,
+                0x00,
+                0x01,
+                0x01,
+                ( byte ) 0xFF,
+                ( byte ) 0xA9,
+                0x02,
+                ( byte ) 0x81,
+                0x00, // matchingRule    [1] MatchingRuleId OPTIONAL,
+                0x30,
+                0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
+                0x04,
+                0x00 };
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -293,7 +443,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchRequestDecorator>( codec );
 
         // Decode a SearchRequest message
@@ -322,14 +472,64 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
             { 0x30, 0x3D, 0x02,
                 0x01,
                 0x04, // messageID
-                0x63, 0x38,
+                0x63,
+                0x38,
                 0x04,
                 0x1F, // baseObject LDAPDN,
-                'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', 0x0A, 0x01, 0x01, 0x0A, 0x01, 0x03, 0x02, 0x01,
-                0x00, 0x02, 0x01, 0x00, 0x01, 0x01, ( byte ) 0xFF, ( byte ) 0xA9, 0x02, ( byte ) 0x82, 0x00, //    type            [2] AttributeDescription OPTIONAL
-                0x30, 0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
-                0x04, 0x00 };
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                0x0A,
+                0x01,
+                0x01,
+                0x0A,
+                0x01,
+                0x03,
+                0x02,
+                0x01,
+                0x00,
+                0x02,
+                0x01,
+                0x00,
+                0x01,
+                0x01,
+                ( byte ) 0xFF,
+                ( byte ) 0xA9,
+                0x02,
+                ( byte ) 0x82,
+                0x00, //    type            [2] AttributeDescription OPTIONAL
+                0x30,
+                0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
+                0x04,
+                0x00 };
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -338,7 +538,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchRequestDecorator>( codec );
 
         // Decode a SearchRequest message
@@ -372,12 +572,66 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                 0x3E,
                 0x04,
                 0x1F, // baseObject LDAPDN,
-                'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', 0x0A, 0x01, 0x01, 0x0A, 0x01, 0x03, 0x02, 0x01,
-                0x00, 0x02, 0x01, 0x00, 0x01, 0x01, ( byte ) 0xFF, ( byte ) 0xA9, 0x08, ( byte ) 0x81, 0x04, 't', 'e',
-                's', 't', ( byte ) 0x83, 0x00, //    matchValue      [3] AssertionValue,
-                0x30, 0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
-                0x04, 0x00 };
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                0x0A,
+                0x01,
+                0x01,
+                0x0A,
+                0x01,
+                0x03,
+                0x02,
+                0x01,
+                0x00,
+                0x02,
+                0x01,
+                0x00,
+                0x01,
+                0x01,
+                ( byte ) 0xFF,
+                ( byte ) 0xA9,
+                0x08,
+                ( byte ) 0x81,
+                0x04,
+                't',
+                'e',
+                's',
+                't',
+                ( byte ) 0x83,
+                0x00, //    matchValue      [3] AssertionValue,
+                0x30,
+                0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
+                0x04,
+                0x00 };
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -386,7 +640,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchRequestDecorator>( codec );
 
         // Decode a SearchRequest message
@@ -442,12 +696,66 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                 0x3E,
                 0x04,
                 0x1F, // baseObject LDAPDN,
-                'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', 0x0A, 0x01, 0x01, 0x0A, 0x01, 0x03, 0x02, 0x01,
-                0x00, 0x02, 0x01, 0x00, 0x01, 0x01, ( byte ) 0xFF, ( byte ) 0xA9, 0x08, ( byte ) 0x81, 0x04, 't', 'e',
-                's', 't', ( byte ) 0x82, 0x00, //    type            [2] AttributeDescription OPTIONAL,
-                0x30, 0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
-                0x04, 0x00 };
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                0x0A,
+                0x01,
+                0x01,
+                0x0A,
+                0x01,
+                0x03,
+                0x02,
+                0x01,
+                0x00,
+                0x02,
+                0x01,
+                0x00,
+                0x01,
+                0x01,
+                ( byte ) 0xFF,
+                ( byte ) 0xA9,
+                0x08,
+                ( byte ) 0x81,
+                0x04,
+                't',
+                'e',
+                's',
+                't',
+                ( byte ) 0x82,
+                0x00, //    type            [2] AttributeDescription OPTIONAL,
+                0x30,
+                0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
+                0x04,
+                0x00 };
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -456,7 +764,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchRequestDecorator>( codec );
 
         // Decode a SearchRequest message
@@ -495,7 +803,14 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                 // SearchRequest ::= [APPLICATION 3] SEQUENCE {
                 0x04,
                 0x11, //   baseObject      LDAPDN, (dc=example,dc=com)
-                'd', 'c', '=', 'e', 'x', 'a', 'm', 'p',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
                 'l',
                 'e',
                 ',',
@@ -531,18 +846,60 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                 // MatchingRuleAssertion ::= SEQUENCE {
                 ( byte ) 0x81,
                 0x02, //   matchingRule    [1] MatchingRuleId OPTIONAL,
-                'c', 'n',
+                'c',
+                'n',
                 ( byte ) 0x82,
                 0x13, //    type            [2] AttributeDescription OPTIONAL,
-                '1', '.', '2', '.', '8', '4', '0', '.', '4', '8', '0', '1', '8', '.', '1', '.', '2', '.', '2',
+                '1',
+                '.',
+                '2',
+                '.',
+                '8',
+                '4',
+                '0',
+                '.',
+                '4',
+                '8',
+                '0',
+                '1',
+                '8',
+                '.',
+                '1',
+                '.',
+                '2',
+                '.',
+                '2',
                 ( byte ) 0x83,
                 0x03, //    matchValue      [3] AssertionValue,
-                'a', 'o', 'k',
+                'a',
+                'o',
+                'k',
                 //    dnAttributes    [4] BOOLEAN DEFAULT FALSE  }
-                ( byte ) 0x84, 0x00, 0x30,
+                ( byte ) 0x84,
+                0x00,
+                0x30,
                 0x15, // attributes      AttributeDescriptionList }
-                0x04, 0x05, 'a', 't', 't', 'r', '0', 0x04, 0x05, 'a', 't', 't', 'r', '1', 0x04, 0x05, 'a', 't', 't',
-                'r', '2' };
+                0x04,
+                0x05,
+                'a',
+                't',
+                't',
+                'r',
+                '0',
+                0x04,
+                0x05,
+                'a',
+                't',
+                't',
+                'r',
+                '1',
+                0x04,
+                0x05,
+                'a',
+                't',
+                't',
+                'r',
+                '2' };
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -551,7 +908,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchRequestDecorator>( codec );
 
         // Decode a SearchRequest message
@@ -585,11 +942,64 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                 0x3C,
                 0x04,
                 0x1F, // baseObject LDAPDN,
-                'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', 0x0A, 0x01, 0x01, 0x0A, 0x01, 0x03, 0x02, 0x01,
-                0x00, 0x02, 0x01, 0x00, 0x01, 0x01, ( byte ) 0xFF, ( byte ) 0xA9, 0x06, ( byte ) 0x81, 0x04, 't', 'e',
-                's', 't', 0x30, 0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
-                0x04, 0x00 };
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                0x0A,
+                0x01,
+                0x01,
+                0x0A,
+                0x01,
+                0x03,
+                0x02,
+                0x01,
+                0x00,
+                0x02,
+                0x01,
+                0x00,
+                0x01,
+                0x01,
+                ( byte ) 0xFF,
+                ( byte ) 0xA9,
+                0x06,
+                ( byte ) 0x81,
+                0x04,
+                't',
+                'e',
+                's',
+                't',
+                0x30,
+                0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
+                0x04,
+                0x00 };
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -598,7 +1008,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchRequestDecorator>( codec );
 
         // Decode a SearchRequest message
@@ -632,11 +1042,64 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                 0x3E,
                 0x04,
                 0x1F, // baseObject LDAPDN,
-                'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', 0x0A, 0x01, 0x01, 0x0A, 0x01, 0x03, 0x02, 0x01,
-                0x00, 0x02, 0x01, 0x00, 0x01, 0x01, ( byte ) 0xFF, ( byte ) 0xA9, 0x06, ( byte ) 0x82, 0x04, 't', 'e',
-                's', 't', 0x30, 0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
-                0x04, 0x00 };
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                0x0A,
+                0x01,
+                0x01,
+                0x0A,
+                0x01,
+                0x03,
+                0x02,
+                0x01,
+                0x00,
+                0x02,
+                0x01,
+                0x00,
+                0x01,
+                0x01,
+                ( byte ) 0xFF,
+                ( byte ) 0xA9,
+                0x06,
+                ( byte ) 0x82,
+                0x04,
+                't',
+                'e',
+                's',
+                't',
+                0x30,
+                0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
+                0x04,
+                0x00 };
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -645,7 +1108,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchRequestDecorator>( codec );
 
         // Decode a SearchRequest message
@@ -679,11 +1142,64 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
                 0x3E,
                 0x04,
                 0x1F, // baseObject LDAPDN,
-                'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm', 0x0A, 0x01, 0x01, 0x0A, 0x01, 0x03, 0x02, 0x01,
-                0x00, 0x02, 0x01, 0x00, 0x01, 0x01, ( byte ) 0xFF, ( byte ) 0xA9, 0x06, ( byte ) 0x83, 0x04, 't', 'e',
-                's', 't', 0x30, 0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
-                0x04, 0x00 };
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
+                0x0A,
+                0x01,
+                0x01,
+                0x0A,
+                0x01,
+                0x03,
+                0x02,
+                0x01,
+                0x00,
+                0x02,
+                0x01,
+                0x00,
+                0x01,
+                0x01,
+                ( byte ) 0xFF,
+                ( byte ) 0xA9,
+                0x06,
+                ( byte ) 0x83,
+                0x04,
+                't',
+                'e',
+                's',
+                't',
+                0x30,
+                0x02, // AttributeDescriptionList ::= SEQUENCE OF AttributeDescription
+                0x04,
+                0x00 };
 
         Asn1Decoder ldapDecoder = new Asn1Decoder();
 
@@ -692,7 +1208,7 @@ public class SearchRequestMatchingRuleAssertionTest extends AbstractCodecService
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer = 
+        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer =
             new LdapMessageContainer<SearchRequestDecorator>( codec );
 
         // Decode a SearchRequest message

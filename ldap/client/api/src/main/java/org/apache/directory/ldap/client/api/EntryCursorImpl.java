@@ -51,6 +51,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     /** The underlying messageId */
     private int messageId;
 
+
     /**
      * Instantiates a new search cursor, embedding a SearchCursor.
      *
@@ -61,7 +62,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
         this.searchCursor = searchCursor;
         messageId = -1;
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -75,7 +76,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
 
         try
         {
-            
+
             do
             {
                 response = searchCursor.get();
@@ -93,7 +94,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
                 }
             }
             while ( !( response instanceof SearchResultDone ) );
-            
+
             return false;
         }
         catch ( Exception e )
@@ -123,11 +124,11 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
         {
             if ( response instanceof SearchResultEntry )
             {
-                return ((SearchResultEntry)response).getEntry();
+                return ( ( SearchResultEntry ) response ).getEntry();
             }
         }
         while ( next() && !( response instanceof SearchResultDone ) );
-        
+
         return null;
     }
 

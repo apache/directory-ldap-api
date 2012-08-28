@@ -64,7 +64,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
 
     /** The list of all vals length */
     private List<Integer> valsLength;
-    
+
     /** The current attribute being processed */
     private Attribute currentAttribute;
 
@@ -175,8 +175,8 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     {
         this.valsLength = valsLength;
     }
-    
-    
+
+
     public Attribute getCurrentAttribute()
     {
         return currentAttribute;
@@ -217,8 +217,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     //-------------------------------------------------------------------------
     // The IntermediateResponse methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -258,8 +257,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * Compute the SearchResultEntry length
      * 
@@ -304,7 +302,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     {
         Dn dn = getObjectName();
 
-        byte[] dnBytes = Strings.getBytesUtf8(dn.getName());
+        byte[] dnBytes = Strings.getBytesUtf8( dn.getName() );
 
         // The entry
         int searchResultEntryLength = 1 + TLV.getNbBytes( dnBytes.length ) + dnBytes.length;
@@ -475,7 +473,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
         {
             throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
         }
-        
+
         return buffer;
     }
 }

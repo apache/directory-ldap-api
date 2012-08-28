@@ -80,7 +80,7 @@ public class StoreSearchRequestBaseObject extends GrammarAction<LdapMessageConta
         if ( tlv.getLength() != 0 )
         {
             byte[] dnBytes = tlv.getValue().getData();
-            String dnStr = Strings.utf8ToString(dnBytes);
+            String dnStr = Strings.utf8ToString( dnBytes );
 
             try
             {
@@ -88,7 +88,7 @@ public class StoreSearchRequestBaseObject extends GrammarAction<LdapMessageConta
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = "Invalid root Dn given : " + dnStr + " (" + Strings.dumpBytes(dnBytes)
+                String msg = "Invalid root Dn given : " + dnStr + " (" + Strings.dumpBytes( dnBytes )
                     + ") is invalid";
                 LOG.error( "{} : {}", msg, ine.getMessage() );
 
@@ -102,7 +102,7 @@ public class StoreSearchRequestBaseObject extends GrammarAction<LdapMessageConta
             baseObject = Dn.EMPTY_DN;
         }
 
-        searchRequest.setBase(baseObject);
+        searchRequest.setBase( baseObject );
 
         LOG.debug( "Searching with root Dn : {}", baseObject );
     }

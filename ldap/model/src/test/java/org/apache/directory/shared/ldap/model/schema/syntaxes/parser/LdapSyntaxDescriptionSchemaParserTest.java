@@ -34,6 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Tests the LdapSyntaxDescriptionSchemaParser class.
  * 
@@ -81,7 +82,7 @@ public class LdapSyntaxDescriptionSchemaParserTest
     @Test
     public void testNames() throws ParseException
     {
-        SchemaParserTestUtils.testNames(parser, "1.1", "");
+        SchemaParserTestUtils.testNames( parser, "1.1", "" );
     }
 
 

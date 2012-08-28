@@ -35,7 +35,7 @@ public class SyncDoneValueFactory implements ControlFactory<SyncDoneValue, SyncD
 {
     /** The codec for this factory */
     private LdapApiService codec;
-    
+
 
     /**
      * Creates a new instance of SyncDoneValueFactory.
@@ -46,7 +46,7 @@ public class SyncDoneValueFactory implements ControlFactory<SyncDoneValue, SyncD
     {
         this.codec = codec;
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -56,7 +56,7 @@ public class SyncDoneValueFactory implements ControlFactory<SyncDoneValue, SyncD
         return SyncDoneValue.OID;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -64,7 +64,7 @@ public class SyncDoneValueFactory implements ControlFactory<SyncDoneValue, SyncD
     {
         return new SyncDoneValueDecorator( codec );
     }
-    
+
 
     /**
      * {@inheritDoc}

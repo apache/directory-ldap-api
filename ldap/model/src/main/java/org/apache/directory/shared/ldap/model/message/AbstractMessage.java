@@ -84,7 +84,7 @@ public abstract class AbstractMessage implements Message
     public Message setMessageId( int id )
     {
         this.id = id;
-        
+
         return this;
     }
 
@@ -122,7 +122,7 @@ public abstract class AbstractMessage implements Message
     public Message addControl( Control control ) throws MessageException
     {
         controls.put( control.getOid(), control );
-        
+
         return this;
     }
 
@@ -137,7 +137,7 @@ public abstract class AbstractMessage implements Message
     public Message removeControl( Control control ) throws MessageException
     {
         controls.remove( control.getOid() );
-        
+
         return this;
     }
 
@@ -230,7 +230,7 @@ public abstract class AbstractMessage implements Message
 
         for ( String key : this.controls.keySet() )
         {
-            if ( ! controls.containsKey( key ) )
+            if ( !controls.containsKey( key ) )
             {
                 return false;
             }
@@ -265,7 +265,7 @@ public abstract class AbstractMessage implements Message
         {
             this.controls.put( c.getOid(), c );
         }
-        
+
         return this;
     }
 
@@ -278,10 +278,10 @@ public abstract class AbstractMessage implements Message
     public String toString( String message )
     {
         StringBuilder sb = new StringBuilder();
-        
+
         sb.append( "MessageType : " ).append( type ).append( '\n' );
         sb.append( "Message ID : " ).append( id ).append( '\n' );
-        
+
         sb.append( message );
 
         if ( controls != null )

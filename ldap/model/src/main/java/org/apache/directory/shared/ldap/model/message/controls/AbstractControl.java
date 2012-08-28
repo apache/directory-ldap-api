@@ -74,7 +74,7 @@ public abstract class AbstractControl implements Control
         return oid == null ? "" : oid;
     }
 
-    
+
     /**
      * Get the criticality
      * 
@@ -95,21 +95,21 @@ public abstract class AbstractControl implements Control
     {
         this.criticality = criticality;
     }
-    
-    
+
+
     /**
      * @see Object#hashCode()
      */
     public int hashCode()
     {
         int h = 17;
-        h = h*37 + ( criticality ? 1 : 0 );
-        h = h*37 + ( oid == null ? 0 : oid.hashCode() );
-        
+        h = h * 37 + ( criticality ? 1 : 0 );
+        h = h * 37 + ( oid == null ? 0 : oid.hashCode() );
+
         return h;
     }
 
-    
+
     /**
      * @see Object#equals(Object)
      */
@@ -125,7 +125,7 @@ public abstract class AbstractControl implements Control
             return false;
         }
 
-        if ( !( o instanceof Control) )
+        if ( !( o instanceof Control ) )
         {
             return false;
         }

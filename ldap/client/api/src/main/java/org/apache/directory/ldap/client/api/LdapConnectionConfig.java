@@ -94,13 +94,14 @@ public class LdapConnectionConfig
     private String sslProtocol = DEFAULT_SSL_PROTOCOL;
 
     private static final Logger LOG = LoggerFactory.getLogger( LdapConnectionConfig.class );
-    
+
+
     public LdapConnectionConfig()
     {
         setDefaultTrustManager();
     }
 
-    
+
     /**
      * sets the default trust manager based on the SunX509 trustManagement algorithm
      */
@@ -119,23 +120,24 @@ public class LdapConnectionConfig
             {
                 if ( factoryTrustManagers[i] instanceof X509TrustManager )
                 {
-                    trustManagers = new TrustManager[] { factoryTrustManagers[i] };
+                    trustManagers = new TrustManager[]
+                        { factoryTrustManagers[i] };
                     LOG.debug( "found X509TrustManager {}", factoryTrustManagers[i] );
                     break;
                 }
             }
         }
-        catch( NoSuchAlgorithmException e )
+        catch ( NoSuchAlgorithmException e )
         {
             LOG.warn( "couldn't find any default X509 TrustManager with algorithm {}", trustMgmtAlgo );
         }
-        catch( KeyStoreException e )
+        catch ( KeyStoreException e )
         {
             LOG.warn( "couldn't initialize TrustManagerFactory with keystore {}", KeyStore.getDefaultType() );
         }
     }
-    
-    
+
+
     /**
      * Checks if SSL (ldaps://) is used.
      *

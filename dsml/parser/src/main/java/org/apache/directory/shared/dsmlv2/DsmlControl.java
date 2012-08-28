@@ -30,7 +30,7 @@ import org.dom4j.Element;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DsmlControl<E extends Control> 
+public class DsmlControl<E extends Control>
     implements Control, DsmlDecorator<E>
 {
     /** The decorated Control */
@@ -38,18 +38,18 @@ public class DsmlControl<E extends Control>
 
     /** The encoded value of the control. */
     protected byte[] value;
-    
+
     /** The codec service responsible for encoding decoding this object */
     private LdapApiService codec;
-    
-    
+
+
     public DsmlControl( LdapApiService codec, E decorated )
     {
         this.codec = codec;
         this.decorated = decorated;
     }
-    
-    
+
+
     /**
      * Gets the LDAP codec service.
      */
@@ -90,17 +90,17 @@ public class DsmlControl<E extends Control>
     {
         if ( value != null )
         {
-            byte[] copy = new byte[ value.length ];
+            byte[] copy = new byte[value.length];
             System.arraycopy( value, 0, copy, 0, value.length );
             this.value = copy;
-        } 
-        else 
+        }
+        else
         {
             this.value = null;
         }
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -109,7 +109,7 @@ public class DsmlControl<E extends Control>
         return decorated.getOid();
     }
 
-    
+
     /**
      * {@inheritDoc}
      */

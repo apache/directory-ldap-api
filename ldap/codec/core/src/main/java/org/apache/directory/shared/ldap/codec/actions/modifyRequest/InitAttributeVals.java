@@ -48,6 +48,7 @@ public class InitAttributeVals extends GrammarAction<LdapMessageContainer<Modify
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( InitAttributeVals.class );
 
+
     /**
      * Instantiates a new action.
      */

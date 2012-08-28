@@ -30,7 +30,8 @@ import org.apache.directory.shared.ldap.extras.extended.StoredProcedureResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoredProcedureResponseDecorator extends ExtendedResponseDecorator<StoredProcedureResponse> implements StoredProcedureResponse
+public class StoredProcedureResponseDecorator extends ExtendedResponseDecorator<StoredProcedureResponse> implements
+    StoredProcedureResponse
 {
     /**
      * Creates a new instance of CancelResponseDecorator.

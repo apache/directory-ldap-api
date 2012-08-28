@@ -146,7 +146,7 @@ public class BatchResponseTest extends AbstractResponseTest
 
         DsmlDecorator<? extends Response> response = batchResponse.getCurrentResponse();
 
-        if ( response instanceof AddResponse)
+        if ( response instanceof AddResponse )
         {
             assertTrue( true );
         }
@@ -678,7 +678,7 @@ public class BatchResponseTest extends AbstractResponseTest
 
         DsmlDecorator<? extends Response> response = batchResponse.getCurrentResponse();
 
-        if ( response instanceof ExtendedResponse)
+        if ( response instanceof ExtendedResponse )
         {
             assertTrue( true );
         }

@@ -45,7 +45,7 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
     /** The sub entry decoder */
     private static final Asn1Decoder decoder = new Asn1Decoder();
 
-    
+
     /**
      * Default constructor
      */
@@ -95,8 +95,8 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
 
         return buffer;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -105,13 +105,13 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
         if ( value == null )
         {
             try
-            { 
+            {
                 computeLength();
                 ByteBuffer buffer = ByteBuffer.allocate( valueLength );
-                
+
                 // Now encode the Subentries specific part
                 Value.encode( buffer, isVisible() );
-                
+
                 value = buffer.array();
             }
             catch ( Exception e )
@@ -119,7 +119,7 @@ public class SubentriesDecorator extends ControlDecorator<Subentries> implements
                 return null;
             }
         }
-        
+
         return value;
     }
 

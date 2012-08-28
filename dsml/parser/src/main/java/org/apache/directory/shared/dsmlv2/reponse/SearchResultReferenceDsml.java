@@ -37,7 +37,7 @@ import org.dom4j.tree.DefaultElement;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SearchResultReferenceDsml 
+public class SearchResultReferenceDsml
     extends AbstractResponseDsml<SearchResultReference>
     implements SearchResultReference
 {
@@ -89,7 +89,6 @@ public class SearchResultReferenceDsml
         {
             element = new DefaultElement( SEARCH_RESULT_REFERENCE_TAG );
         }
-
 
         // Adding References
         for ( String url : getDecorated().getReferral().getLdapUrls() )

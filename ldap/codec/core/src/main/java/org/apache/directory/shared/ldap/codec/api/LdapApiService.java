@@ -39,46 +39,46 @@ import org.apache.mina.filter.codec.ProtocolCodecFactory;
  */
 public interface LdapApiService
 {
-    String DEFAULT_PROTOCOL_CODEC_FACTORY = 
+    String DEFAULT_PROTOCOL_CODEC_FACTORY =
         "org.apache.directory.shared.ldap.codec.protocol.mina.LdapProtocolCodecFactory";
-    
+
+
     // ------------------------------------------------------------------------
     // Control Methods
     // ------------------------------------------------------------------------
 
-    
     /**
      * Returns an Iterator over the OID Strings of registered controls.
      * 
      * @return The registered control OID Strings
      */
     Iterator<String> registeredControls();
-    
-    
+
+
     /**
      * Checks if a control has been registered.
      * 
      * @return The OID of the control to check for registration
      */
     boolean isControlRegistered( String oid );
-    
-    
+
+
     /**
      * Registers an {@link ControlFactory} with this service.
      * 
      * @param factory The control factory
      */
-    ControlFactory<?,?> registerControl( ControlFactory<?,?> factory );
-    
-    
+    ControlFactory<?, ?> registerControl( ControlFactory<?, ?> factory );
+
+
     /**
      * Unregisters an {@link ControlFactory} with this service.
      * 
      * @param oid The oid of the control the factory is associated with.
      */
-    ControlFactory<?,?> unregisterControl( String oid );
-    
-    
+    ControlFactory<?, ?> unregisterControl( String oid );
+
+
     /**
      * Creates a new codec control decorator of the specified type.
      *
@@ -86,7 +86,7 @@ public interface LdapApiService
      * @return The newly created codec control.
      */
     CodecControl<? extends Control> newControl( String oid );
-    
+
 
     /**
      * Creates a new codec control decorator for the provided control.
@@ -95,8 +95,8 @@ public interface LdapApiService
      * @return The newly created codec control.
      */
     CodecControl<? extends Control> newControl( Control control );
-    
-    
+
+
     /**
      * Creates a JNDI control from the ldap model's control.
      *
@@ -105,8 +105,8 @@ public interface LdapApiService
      * @throws EncoderException if there are problems encoding the modelControl.
      */
     javax.naming.ldap.Control toJndiControl( Control modelControl ) throws EncoderException;
-    
-    
+
+
     /**
      * Creates a model control from the JNDI control.
      *
@@ -116,12 +116,11 @@ public interface LdapApiService
      */
     Control fromJndiControl( javax.naming.ldap.Control jndiControl ) throws DecoderException;
 
-    
+
     // ------------------------------------------------------------------------
     // Extended Request Methods
     // ------------------------------------------------------------------------
 
-    
     /**
      * Returns an Iterator over the OID Strings of registered extended 
      * requests.
@@ -129,8 +128,8 @@ public interface LdapApiService
      * @return The registered extended request OID Strings
      */
     Iterator<String> registeredExtendedRequests();
-    
-    
+
+
     /**
      * Registers an {@link ExtendedRequestFactory} for generating extended request 
      * response pairs.
@@ -138,9 +137,9 @@ public interface LdapApiService
      * @param factory The extended request factory
      * @return The displaced factory if one existed for the oid
      */
-    ExtendedRequestFactory<?,?> registerExtendedRequest( ExtendedRequestFactory<?,?> factory );
-    
-    
+    ExtendedRequestFactory<?, ?> registerExtendedRequest( ExtendedRequestFactory<?, ?> factory );
+
+
     /**
      * Unregisters an {@link ExtendedRequestFactory} for generating extended 
      * request response pairs.
@@ -148,9 +147,9 @@ public interface LdapApiService
      * @param oid The extended request oid
      * @return The displaced factory if one existed for the oid
      */
-    ExtendedRequestFactory<?,?> unregisterExtendedRequest( String oid );
-    
-    
+    ExtendedRequestFactory<?, ?> unregisterExtendedRequest( String oid );
+
+
     /**
      * Checks to see if an extended operation, either a standard request 
      * response, pair or just an unsolicited response is registered.
@@ -159,13 +158,12 @@ public interface LdapApiService
      * @return true if registered, false if not
      */
     boolean isExtendedOperationRegistered( String oid );
-    
-    
+
+
     // ------------------------------------------------------------------------
     // Extended Response Methods
     // ------------------------------------------------------------------------
 
-    
     /**
      * Returns an Iterator over the OID Strings of registered unsolicited 
      * extended responses.
@@ -173,8 +171,8 @@ public interface LdapApiService
      * @return The registered unsolicited extended response OID Strings
      */
     Iterator<String> registeredUnsolicitedResponses();
-    
-    
+
+
     /**
      * Registers an {@link UnsolicitedResponseFactory} for generating extended
      * responses sent by servers without an extended request.
@@ -184,7 +182,7 @@ public interface LdapApiService
      */
     UnsolicitedResponseFactory<?> registerUnsolicitedResponse( UnsolicitedResponseFactory<?> factory );
 
-    
+
     /**
      * Unregisters an {@link UnsolicitedResponseFactory} for generating 
      * extended responses sent by servers without an extended request.
@@ -193,7 +191,7 @@ public interface LdapApiService
      */
     UnsolicitedResponseFactory<?> unregisterUnsolicitedResponse( String oid );
 
-    
+
     /**
      * Creates a model ExtendedResponse from the JNDI ExtendedResponse.
      *
@@ -202,8 +200,8 @@ public interface LdapApiService
      * @throws DecoderException if the response value cannot be decoded.
      */
     ExtendedResponse fromJndi( javax.naming.ldap.ExtendedResponse jndiResponse ) throws DecoderException;
-    
-    
+
+
     /**
      * Creates a JNDI {@link javax.naming.ldap.ExtendedResponse} from the model 
      * {@link ExtendedResponse}.
@@ -214,7 +212,7 @@ public interface LdapApiService
      */
     javax.naming.ldap.ExtendedResponse toJndi( ExtendedResponse modelResponse ) throws EncoderException;
 
-    
+
     /**
      * Creates a model ExtendedResponse from the JNDI ExtendedResponse.
      *
@@ -223,8 +221,8 @@ public interface LdapApiService
      * @throws DecoderException if the response value cannot be decoded.
      */
     ExtendedRequest<?> fromJndi( javax.naming.ldap.ExtendedRequest jndiRequest ) throws DecoderException;
-    
-    
+
+
     /**
      * Creates a JNDI {@link javax.naming.ldap.ExtendedResponse} from the model 
      * {@link ExtendedResponse}.
@@ -234,21 +232,20 @@ public interface LdapApiService
      * @throws EncoderException
      */
     javax.naming.ldap.ExtendedRequest toJndi( ExtendedRequest<?> modelRequest ) throws EncoderException;
-    
-    
+
+
     // ------------------------------------------------------------------------
     // Other Methods
     // ------------------------------------------------------------------------
 
-    
     /**
      * Creates a new LDAP {@link ProtocolCodecFactory}.
      *
      * @return the {@link ProtocolCodecFactory}
      */
     ProtocolCodecFactory getProtocolCodecFactory();
-    
-    
+
+
     /**
      * Registers a ProtocolCodecFactory with this LdapCodecService.
      *
@@ -258,7 +255,7 @@ public interface LdapApiService
      */
     ProtocolCodecFactory registerProtocolCodecFactory( ProtocolCodecFactory factory );
 
-    
+
     /**
      * Creates a new MessageContainer.
      *
@@ -268,7 +265,8 @@ public interface LdapApiService
     Asn1Container newMessageContainer();
 
 
-    <E extends ExtendedResponse> E newExtendedResponse( ExtendedRequest<E> req, byte[] serializedResponse ) throws DecoderException;
+    <E extends ExtendedResponse> E newExtendedResponse( ExtendedRequest<E> req, byte[] serializedResponse )
+        throws DecoderException;
 
 
     /**
@@ -281,7 +279,7 @@ public interface LdapApiService
     ExtendedRequest<?> newExtendedRequest( String oid, byte[] value );
 
 
-    ExtendedRequestDecorator<?,?> decorate( ExtendedRequest<?> decoratedMessage );
+    ExtendedRequestDecorator<?, ?> decorate( ExtendedRequest<?> decoratedMessage );
 
 
     ExtendedResponseDecorator<?> decorate( ExtendedResponse decoratedMessage );

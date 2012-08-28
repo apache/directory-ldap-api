@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.UtcTimeSynta
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Test cases for UtcTimeSyntaxChecker.
  *
@@ -39,6 +40,7 @@ import org.junit.runner.RunWith;
 public class UtcTimeSyntaxCheckerTest
 {
     UtcTimeSyntaxChecker checker = new UtcTimeSyntaxChecker();
+
 
     @Test
     public void testNullString()
@@ -62,7 +64,8 @@ public class UtcTimeSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "1" ) );
         assertFalse( checker.isValidSyntax( "B" ) );
     }
-    
+
+
     @Test
     public void testErrorCase()
     {
@@ -81,8 +84,8 @@ public class UtcTimeSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "061205184527+1299" ) );
         assertFalse( checker.isValidSyntax( "061205184527-12" ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectCase()
     {

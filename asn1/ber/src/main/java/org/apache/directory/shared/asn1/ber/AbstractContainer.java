@@ -74,6 +74,7 @@ public abstract class AbstractContainer implements Asn1Container
      * for constructed types */
     private boolean isGathering = false;
 
+
     /**
      * Creates a new instance of AbstractContainer with a starting state.
      *

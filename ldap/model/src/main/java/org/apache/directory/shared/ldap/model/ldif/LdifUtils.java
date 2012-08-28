@@ -66,7 +66,7 @@ public final class LdifUtils
             LDIF_SAFE_STARTING_CHAR_ALPHABET[i] = true;
         }
 
-        LDIF_SAFE_STARTING_CHAR_ALPHABET[0]  = false; // 0 (NUL)
+        LDIF_SAFE_STARTING_CHAR_ALPHABET[0] = false; // 0 (NUL)
         LDIF_SAFE_STARTING_CHAR_ALPHABET[10] = false; // 10 (LF)
         LDIF_SAFE_STARTING_CHAR_ALPHABET[13] = false; // 13 (CR)
         LDIF_SAFE_STARTING_CHAR_ALPHABET[32] = false; // 32 (SPACE)
@@ -79,7 +79,7 @@ public final class LdifUtils
             LDIF_SAFE_OTHER_CHARS_ALPHABET[i] = true;
         }
 
-        LDIF_SAFE_OTHER_CHARS_ALPHABET[0]  = false; // 0 (NUL)
+        LDIF_SAFE_OTHER_CHARS_ALPHABET[0] = false; // 0 (NUL)
         LDIF_SAFE_OTHER_CHARS_ALPHABET[10] = false; // 10 (LF)
         LDIF_SAFE_OTHER_CHARS_ALPHABET[13] = false; // 13 (CR)
     }
@@ -125,7 +125,7 @@ public final class LdifUtils
      */
     public static boolean isLDIFSafe( String str )
     {
-        if ( Strings.isEmpty(str) )
+        if ( Strings.isEmpty( str ) )
         {
             // A null string is LDIF safe
             return true;
@@ -178,7 +178,7 @@ public final class LdifUtils
      */
     public static String convertToLdif( Attributes attrs, int length ) throws LdapException
     {
-        return convertAttributesToLdif( AttributeUtils.toEntry(attrs, null), length );
+        return convertAttributesToLdif( AttributeUtils.toEntry( attrs, null ), length );
     }
 
 
@@ -386,7 +386,7 @@ public final class LdifUtils
 
                     if ( control.hasValue() )
                     {
-                        controlStr.append( "::" ).append( Base64.encode(control.getValue()) );
+                        controlStr.append( "::" ).append( Base64.encode( control.getValue() ) );
                     }
 
                     sb.append( stripLineToNChars( controlStr.toString(), length ) );
@@ -456,7 +456,7 @@ public final class LdifUtils
                 sb.append( '\n' );
 
                 // Stores the optional newSuperior
-                if ( !Strings.isEmpty(entry.getNewSuperior()) )
+                if ( !Strings.isEmpty( entry.getNewSuperior() ) )
                 {
                     Attribute newSuperior = new DefaultAttribute( "newsuperior", entry.getNewSuperior() );
                     sb.append( convertToLdif( newSuperior, length ) );

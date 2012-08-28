@@ -35,6 +35,7 @@ public class LdapSchemaViolationException extends LdapOperationException
     /** The serial version UUID */
     static final long serialVersionUID = 1L;
 
+
     /**
      * Creates a new instance of LdapSchemaViolationException.
      *
@@ -61,8 +62,8 @@ public class LdapSchemaViolationException extends LdapOperationException
         checkResultCode( resultCode );
         this.resultCode = resultCode;
     }
-    
-    
+
+
     /**
      * Creates a new instance of LdapSchemaViolationException.
      * 
@@ -90,11 +91,11 @@ public class LdapSchemaViolationException extends LdapOperationException
     {
         switch ( resultCode )
         {
-            case OBJECT_CLASS_VIOLATION :
-            case NOT_ALLOWED_ON_RDN :
-            case OBJECT_CLASS_MODS_PROHIBITED :
+            case OBJECT_CLASS_VIOLATION:
+            case NOT_ALLOWED_ON_RDN:
+            case OBJECT_CLASS_MODS_PROHIBITED:
                 return;
-                
+
             default:
                 throw new IllegalArgumentException( I18n.err( I18n.ERR_04140_UNACCEPTABLE_RESUT_CODE, resultCode ) );
         }

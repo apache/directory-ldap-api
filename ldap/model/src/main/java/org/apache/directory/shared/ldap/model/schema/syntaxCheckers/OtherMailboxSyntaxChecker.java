@@ -43,6 +43,7 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( OtherMailboxSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of OtherMailboxSyntaxChecker.
      */
@@ -50,8 +51,8 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.OTHER_MAILBOX_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -64,14 +65,14 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -86,36 +87,36 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
 
         // Search for the '$' separator
         int dollar = strValue.indexOf( '$' );
-        
+
         if ( dollar == -1 )
         {
             // No '$' => error
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         String mailboxType = strValue.substring( 0, dollar );
-        
+
         String mailbox = ( ( dollar < strValue.length() - 1 )
             ? strValue.substring( dollar + 1 ) : "" );
-        
+
         // The mailbox should not contains a '$'
         if ( mailbox.indexOf( '$' ) != -1 )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-            
+
         // Check that the mailboxType is a PrintableString
-        if ( !Strings.isPrintableString(mailboxType) )
+        if ( !Strings.isPrintableString( mailboxType ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // Check that the mailbox is an IA5String
-        boolean result = ( Strings.isIA5String(mailbox) );
-        
+        boolean result = ( Strings.isIA5String( mailbox ) );
+
         if ( result )
         {
             LOG.debug( "Syntax valid for '{}'", value );
@@ -124,7 +125,7 @@ public class OtherMailboxSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax invalid for '{}'", value );
         }
-        
+
         return result;
     }
 }

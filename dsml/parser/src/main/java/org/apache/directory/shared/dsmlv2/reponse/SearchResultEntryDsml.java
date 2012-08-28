@@ -43,7 +43,7 @@ import org.dom4j.tree.DefaultElement;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SearchResultEntryDsml 
+public class SearchResultEntryDsml
     extends AbstractResponseDsml<SearchResultEntry>
     implements SearchResultEntry
 {
@@ -52,8 +52,8 @@ public class SearchResultEntryDsml
 
     /** The current attribute being processed */
     private Attribute currentAttribute;
-    
-    
+
+
     /**
      * Creates a new getDecoratedMessage() of SearchResultEntryDsml.
      */
@@ -74,9 +74,7 @@ public class SearchResultEntryDsml
         super( codec, ldapMessage );
     }
 
-    
-    
-    
+
     public Attribute getCurrentAttribute()
     {
         return currentAttribute;
@@ -112,7 +110,7 @@ public class SearchResultEntryDsml
             currentAttribute.add( ( byte[] ) value );
         }
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -156,8 +154,8 @@ public class SearchResultEntryDsml
                     Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
                     Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
                     Document doc = attributeElement.getDocument();
-                    
-                    if ( doc !=null )
+
+                    if ( doc != null )
                     {
                         Element docRoot = doc.getRootElement();
                         docRoot.add( xsdNamespace );

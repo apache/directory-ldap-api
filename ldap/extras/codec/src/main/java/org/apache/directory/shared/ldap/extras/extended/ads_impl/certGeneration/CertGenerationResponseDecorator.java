@@ -30,7 +30,8 @@ import org.apache.directory.shared.ldap.extras.extended.CertGenerationResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CertGenerationResponseDecorator extends ExtendedResponseDecorator<CertGenerationResponse> implements CertGenerationResponse
+public class CertGenerationResponseDecorator extends ExtendedResponseDecorator<CertGenerationResponse> implements
+    CertGenerationResponse
 {
     /**
      * Creates a new instance of CancelResponseDecorator.

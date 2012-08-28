@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.entry;
 
+
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
@@ -48,13 +49,14 @@ public abstract class AbstractValue<T> implements Value<T>
 
     /** the wrapped binary value */
     protected T wrappedValue;
-    
+
     /** the canonical representation of the wrapped value */
     protected T normalizedValue;
 
     /** The computed hashcode. We don't want to compute it each time the hashcode() method is called */
     protected volatile int h;
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -63,7 +65,7 @@ public abstract class AbstractValue<T> implements Value<T>
     {
         try
         {
-            return (Value<T>)super.clone();
+            return ( Value<T> ) super.clone();
         }
         catch ( CloneNotSupportedException cnse )
         {
@@ -71,8 +73,8 @@ public abstract class AbstractValue<T> implements Value<T>
             return null;
         }
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -89,7 +91,7 @@ public abstract class AbstractValue<T> implements Value<T>
      */
     public String getString()
     {
-        throw new UnsupportedOperationException( "Cannot call this method on a binary value");
+        throw new UnsupportedOperationException( "Cannot call this method on a binary value" );
     }
 
 
@@ -100,7 +102,7 @@ public abstract class AbstractValue<T> implements Value<T>
      */
     public byte[] getBytes()
     {
-        throw new UnsupportedOperationException( "Cannot call this method on a String value");
+        throw new UnsupportedOperationException( "Cannot call this method on a String value" );
     }
 
 
@@ -112,7 +114,7 @@ public abstract class AbstractValue<T> implements Value<T>
         return attributeType;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -124,24 +126,24 @@ public abstract class AbstractValue<T> implements Value<T>
             normalizedValue = wrappedValue;
             return;
         }
-        
+
         this.attributeType = attributeType;
-        
+
         // We first have to normalize the value before we can check its syntax
         // Get the Aequality matchingRule, if we have one
         MatchingRule equality = attributeType.getEquality();
-        
+
         if ( equality != null )
         {
             // If we have an Equality MR, we *must* have a normalizer
             Normalizer normalizer = equality.getNormalizer();
-            
+
             if ( normalizer != null )
             {
                 if ( wrappedValue != null )
                 {
                     boolean isHR = attributeType.getSyntax().isHumanReadable();
-                    
+
                     if ( isHR != isHumanReadable() )
                     {
                         String message = "The '" + attributeType.getName() + "' AttributeType and values must " +
@@ -149,16 +151,17 @@ public abstract class AbstractValue<T> implements Value<T>
                         LOG.error( message );
                         throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
                     }
-                        
+
                     try
                     {
                         if ( isHumanReadable() )
-                        {     
-                            normalizedValue = (T)normalizer.normalize( (String)wrappedValue );
+                        {
+                            normalizedValue = ( T ) normalizer.normalize( ( String ) wrappedValue );
                         }
                         else
                         {
-                            normalizedValue = (T)normalizer.normalize( new BinaryValue( (byte[])wrappedValue ) ).getNormReference();
+                            normalizedValue = ( T ) normalizer.normalize( new BinaryValue( ( byte[] ) wrappedValue ) )
+                                .getNormReference();
                         }
                     }
                     catch ( LdapException ne )
@@ -182,16 +185,16 @@ public abstract class AbstractValue<T> implements Value<T>
             // to be a reference on the user provided value
             normalizedValue = wrappedValue;
         }
-        
+
         // and checks that the value syntax is valid
         try
         {
             LdapSyntax syntax = attributeType.getSyntax();
-            
+
             if ( syntax != null )
             {
                 // Check the syntax
-                if ( ! isValid( syntax.getSyntaxChecker() ) )
+                if ( !isValid( syntax.getSyntaxChecker() ) )
                 {
                     String message = I18n.err( I18n.ERR_04473_NOT_VALID_VALUE, wrappedValue, attributeType );
                     LOG.info( message );
@@ -205,9 +208,9 @@ public abstract class AbstractValue<T> implements Value<T>
             LOG.info( message );
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message, le );
         }
-        
+
         // Rehash the Value now
-        h=0;
+        h = 0;
         hashCode();
     }
 
@@ -225,25 +228,25 @@ public abstract class AbstractValue<T> implements Value<T>
         if ( attributeType != null )
         {
             MatchingRule mr = attributeType.getEquality();
-    
+
             if ( mr != null )
             {
-                return (LdapComparator<T>)mr.getLdapComparator();
+                return ( LdapComparator<T> ) mr.getLdapComparator();
             }
         }
 
         return null;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public boolean isInstanceOf( AttributeType attributeType )
     {
-        return ( attributeType != null ) && 
-               ( this.attributeType.equals( attributeType ) || 
-                 this.attributeType.isDescendantOf( attributeType ) ); 
+        return ( attributeType != null ) &&
+            ( this.attributeType.equals( attributeType ) ||
+            this.attributeType.isDescendantOf( attributeType ) );
     }
 
 
@@ -265,16 +268,16 @@ public abstract class AbstractValue<T> implements Value<T>
         return normalizedValue;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public final boolean isNull()
     {
-        return wrappedValue == null; 
+        return wrappedValue == null;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -286,7 +289,7 @@ public abstract class AbstractValue<T> implements Value<T>
             LOG.error( message );
             throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
         }
-        
+
         return syntaxChecker.isValidSyntax( normalizedValue );
     }
 

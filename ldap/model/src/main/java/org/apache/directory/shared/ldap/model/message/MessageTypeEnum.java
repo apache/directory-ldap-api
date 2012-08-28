@@ -28,7 +28,7 @@ package org.apache.directory.shared.ldap.model.message;
 public enum MessageTypeEnum
 {
     ABANDON_REQUEST(0),
-    ADD_REQUEST (1),
+    ADD_REQUEST(1),
     ADD_RESPONSE(2),
     BIND_REQUEST(3),
     BIND_RESPONSE(4),
@@ -53,7 +53,7 @@ public enum MessageTypeEnum
     @SuppressWarnings("unused")
     private int value;
 
-    
+
     private MessageTypeEnum( int value )
     {
         this.value = value;

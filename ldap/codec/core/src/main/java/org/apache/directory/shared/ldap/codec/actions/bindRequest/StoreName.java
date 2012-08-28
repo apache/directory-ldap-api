@@ -82,7 +82,7 @@ public class StoreName extends GrammarAction<LdapMessageContainer<BindRequestDec
         else
         {
             byte[] dnBytes = tlv.getValue().getData();
-            String dnStr = Strings.utf8ToString(dnBytes);
+            String dnStr = Strings.utf8ToString( dnBytes );
 
             try
             {
@@ -91,7 +91,7 @@ public class StoreName extends GrammarAction<LdapMessageContainer<BindRequestDec
             }
             catch ( LdapInvalidDnException ine )
             {
-                String msg = "Incorrect Dn given : " + dnStr + " (" + Strings.dumpBytes(dnBytes)
+                String msg = "Incorrect Dn given : " + dnStr + " (" + Strings.dumpBytes( dnBytes )
                     + ") is invalid";
                 LOG.error( "{} : {}", msg, ine.getMessage() );
 

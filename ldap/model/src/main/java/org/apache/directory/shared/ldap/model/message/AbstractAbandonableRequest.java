@@ -60,7 +60,7 @@ public class AbstractAbandonableRequest extends AbstractRequest implements Aband
         {
             return;
         }
-        
+
         abandoned = true;
         if ( o == null )
         {
@@ -87,7 +87,7 @@ public class AbstractAbandonableRequest extends AbstractRequest implements Aband
         {
             o = new RequestObservable();
         }
-        
+
         o.addObserver( new Observer()
         {
             public void update( Observable o, Object arg )
@@ -95,10 +95,9 @@ public class AbstractAbandonableRequest extends AbstractRequest implements Aband
                 listener.requestAbandoned( AbstractAbandonableRequest.this );
             }
         } );
-        
+
         return this;
     }
-
 
     // False positive
     static class RequestObservable extends Observable

@@ -444,7 +444,7 @@ public class LdifAttributesReader extends LdifReader
 
         LOG.debug( "Starts parsing ldif buffer" );
 
-        if ( Strings.isEmpty(ldif) )
+        if ( Strings.isEmpty( ldif ) )
         {
             return new BasicAttributes( true );
         }
@@ -507,7 +507,7 @@ public class LdifAttributesReader extends LdifReader
 
         LOG.debug( "Starts parsing ldif buffer" );
 
-        if ( Strings.isEmpty(ldif) )
+        if ( Strings.isEmpty( ldif ) )
         {
             return new DefaultEntry();
         }
@@ -572,7 +572,7 @@ public class LdifAttributesReader extends LdifReader
 
         LOG.debug( "Starts parsing ldif buffer" );
 
-        if ( Strings.isEmpty(ldif) )
+        if ( Strings.isEmpty( ldif ) )
         {
             return new DefaultEntry( schemaManager );
         }

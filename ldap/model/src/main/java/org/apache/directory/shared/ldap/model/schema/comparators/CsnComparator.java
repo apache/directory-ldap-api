@@ -45,6 +45,7 @@ public class CsnComparator extends LdapComparator<Object>
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( CsnComparator.class );
 
+
     /**
      * The CsnComparator constructor. Its OID is the CsnMatch matching
      * rule OID.
@@ -61,7 +62,7 @@ public class CsnComparator extends LdapComparator<Object>
     public int compare( Object csnObj1, Object csnObj2 )
     {
         LOG.debug( "comparing CSN objects '{}' with '{}'", csnObj1, csnObj2 );
-        
+
         if ( csnObj1 == csnObj2 )
         {
             return 0;
@@ -74,15 +75,15 @@ public class CsnComparator extends LdapComparator<Object>
         {
             return ( csnObj2 == null ) ? 0 : -1;
         }
-        
+
         if ( csnObj2 == null )
         {
             return 1;
         }
-        
+
         String csnStr1 = null;
         String csnStr2 = null;
-        
+
         if ( csnObj1 instanceof StringValue )
         {
             csnStr1 = ( ( StringValue ) csnObj1 ).getValue();
@@ -94,13 +95,13 @@ public class CsnComparator extends LdapComparator<Object>
 
         if ( csnObj2 instanceof StringValue )
         {
-            csnStr2 = ( (StringValue) csnObj2 ).getValue();
+            csnStr2 = ( ( StringValue ) csnObj2 ).getValue();
         }
         else
         {
             csnStr2 = csnObj2.toString();
         }
-        
+
         return csnStr1.compareTo( csnStr2 );
     }
 }

@@ -142,14 +142,14 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      * @throws LdapInvalidAttributeValueException if some of the added values are not valid
      */
     int add( Value<?>... val ) throws LdapInvalidAttributeValueException;
-    
-    
+
+
     /**
      * Remove all the values from this attribute.
      */
     void clear();
-    
-    
+
+
     /**
      * @return A clone of the current object
      */
@@ -206,7 +206,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      */
     AttributeType getAttributeType();
 
-    
+
     /**
      * <p>
      * Set the attribute type associated with this EntryAttribute.
@@ -223,7 +223,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      */
     void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
 
-    
+
     /**
      * <p>
      * Check if the current attribute type has the same type (or is a descendant of)
@@ -235,7 +235,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      */
     boolean isInstanceOf( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
 
-    
+
     /**
      * <p>
      * Get the first value of this attribute. If there is none, 
@@ -263,8 +263,8 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      * @throws LdapInvalidAttributeValueException If the value is a String
      */
     byte[] getBytes() throws LdapInvalidAttributeValueException;
-    
-    
+
+
     /**
      * Get's the attribute identifier for this entry. This is the value
      * that will be used as the identifier for the attribute within the
@@ -274,7 +274,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      */
     String getId();
 
-    
+
     /**
      * Get's the user provided identifier for this entry.  This is the value
      * that will be used as the identifier for the attribute within the
@@ -287,8 +287,8 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      * @return the user provided identifier for this attribute
      */
     String getUpId();
-    
-    
+
+
     /**
      * <p>
      * Tells if the attribute is human readable. 
@@ -300,7 +300,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      */
     boolean isHumanReadable();
 
-    
+
     /**
      * <p>
      * Get the String value, if and only if the value is known to be a String,
@@ -315,7 +315,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      */
     String getString() throws LdapInvalidAttributeValueException;
 
-    
+
     /**
      * <p>
      * Removes all the  values that are equal to the given values.
@@ -332,8 +332,8 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      * @return true if all the values are removed, otherwise false
      */
     boolean remove( String... vals );
-    
-    
+
+
     /**
      * <p>
      * Removes all the  values that are equal to the given values.
@@ -369,7 +369,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      */
     boolean remove( Value<?>... vals );
 
-    
+
     /**
      * Set the user provided ID. It will also set the ID, normalizing
      * the upId (removing spaces before and after, and lower casing it)
@@ -403,7 +403,7 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      */
     void setUpId( String upId, AttributeType attributeType );
 
-    
+
     /**
       * Retrieves the number of values in this attribute.
       *
@@ -411,8 +411,8 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
       * wrapping a null value if there is one
       */
     int size();
-    
-    
+
+
     /**
      * Checks to see if this attribute is valid along with the values it contains.
      *

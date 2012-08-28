@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.DSAQualitySyntaxSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for DSAQualitySyntaxSyntaxChecker.
@@ -63,8 +65,8 @@ public class DSAQualitySyntaxSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "DEFUNCT$desc" ) );
         assertFalse( checker.isValidSyntax( "EXPERIMENTAL#test @ bad <desc>" ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectCase()
     {

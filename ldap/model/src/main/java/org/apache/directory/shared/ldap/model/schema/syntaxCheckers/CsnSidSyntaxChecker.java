@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.slf4j.Logger;
@@ -35,6 +36,7 @@ public class CsnSidSyntaxChecker extends SyntaxChecker
 {
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( CsnSidSyntaxChecker.class );
+
 
     /**
      * Creates a new instance of CsnSyntaxChecker.
@@ -55,15 +57,15 @@ public class CsnSidSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
-        if ( ! ( value instanceof String ) )
+
+        if ( !( value instanceof String ) )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
-        String sidStr = (String)value;
-        
+
+        String sidStr = ( String ) value;
+
         if ( sidStr.length() > 3 )
         {
             LOG.debug( "Syntax invalid for '{}'", value );
@@ -71,11 +73,11 @@ public class CsnSidSyntaxChecker extends SyntaxChecker
         }
 
         // The SID must be an hexadecimal number between 0x00 and 0xFFF
-        
+
         try
         {
             int sid = Integer.parseInt( sidStr, 16 );
-            
+
             if ( ( sid < 0 ) || ( sid > 0x0fff ) )
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
@@ -87,7 +89,7 @@ public class CsnSidSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         LOG.debug( "Syntax valid for '{}'", value );
         return true;
     }

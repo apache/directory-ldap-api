@@ -175,7 +175,7 @@ public class SchemaManagerLoadIT
 
     // The schema repository
     private static File schemaRepository;
-    
+
 
     @BeforeClass
     public static void setup() throws Exception
@@ -527,7 +527,7 @@ public class SchemaManagerLoadIT
         assertTrue( schemaManager.load( "core" ) );
         assertTrue( schemaManager.load( "cosine" ) );
         assertFalse( schemaManager.load( "nis" ) );
-        
+
         AttributeType at = schemaManager.getAttributeType( "uidNumber" );
         // if nis schema was loaded then the at will not be null
         assertNull( at );
@@ -664,9 +664,9 @@ public class SchemaManagerLoadIT
     {
         LdifSchemaLoader loader = new LdifSchemaLoader( schemaRepository );
         SchemaManager schemaManager = new DefaultSchemaManager( loader );
-        
+
         assertTrue( schemaManager.load( "system" ) );
-        
+
         // Try to load a disabled schema when the registries does
         // ot allow disabled schema to be loaded
         assertFalse( schemaManager.load( "core", "nis", "cosine", "InetOrgPerson" ) );
@@ -728,8 +728,8 @@ public class SchemaManagerLoadIT
         assertNotNull( schemaManager.getRegistries().getLoadedSchema( "InetOrgPerson" ) );
         assertNotNull( schemaManager.getRegistries().getLoadedSchema( "empty" ) );
     }
-    
-    
+
+
     /**
      * Test that we can load a new schema
      */
@@ -756,8 +756,8 @@ public class SchemaManagerLoadIT
         assertEquals( 1, schemaManager.getRegistries().getLoadedSchemas().size() );
         assertNotNull( schemaManager.getRegistries().getLoadedSchema( "dummy" ) );
     }
-    
-    
+
+
     /**
      * Test that we can't load a new schema with bad dependencies
      */
@@ -785,9 +785,9 @@ public class SchemaManagerLoadIT
         assertEquals( 0, schemaManager.getRegistries().getLoadedSchemas().size() );
         assertNull( schemaManager.getRegistries().getLoadedSchema( "dummy" ) );
     }
-    
 
-    @Ignore( "loadDisabled() method need to be fixed" )
+
+    @Ignore("loadDisabled() method need to be fixed")
     @Test
     public void testLoadDisabled() throws Exception
     {
@@ -797,7 +797,7 @@ public class SchemaManagerLoadIT
         assertTrue( schemaManager.loadDisabled( "nis" ) );
 
         assertFalse( schemaManager.getErrors().isEmpty() );
-        
+
         AttributeType at = schemaManager.getAttributeType( "uidNumber" );
         // if nis schema was loaded then the at will not be null
         assertNotNull( at );

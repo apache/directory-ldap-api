@@ -27,7 +27,6 @@ import java.util.Iterator;
 import java.util.List;
 
 
-
 /**
  * A Referral implementation. For the time being this implementation uses a
  * String representation for LDAPURLs. In the future an LdapUrl interface with
@@ -159,7 +158,7 @@ public class ReferralImpl implements Referral
             return true;
         }
 
-        if ( obj instanceof Referral)
+        if ( obj instanceof Referral )
         {
             Collection<String> refs = ( ( Referral ) obj ).getLdapUrls();
 

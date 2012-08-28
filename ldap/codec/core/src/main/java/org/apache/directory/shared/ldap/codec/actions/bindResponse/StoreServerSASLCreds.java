@@ -88,7 +88,7 @@ public class StoreServerSASLCreds extends GrammarAction<LdapMessageContainer<Bin
 
         if ( IS_DEBUG )
         {
-            LOG.debug( "The SASL credentials value is : {}", Strings.dumpBytes(serverSaslCreds) );
+            LOG.debug( "The SASL credentials value is : {}", Strings.dumpBytes( serverSaslCreds ) );
         }
     }
 }

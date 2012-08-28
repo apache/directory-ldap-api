@@ -41,6 +41,7 @@ public class Ia5StringSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( Ia5StringSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of Ia5StringSyntaxChecker.
      */
@@ -48,7 +49,7 @@ public class Ia5StringSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.IA5_STRING_SYNTAX );
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -62,22 +63,22 @@ public class Ia5StringSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return true;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
             strValue = value.toString();
         }
 
-        boolean result = Strings.isIA5String(strValue);
-        
+        boolean result = Strings.isIA5String( strValue );
+
         if ( result )
         {
             LOG.debug( "Syntax valid for '{}'", value );
@@ -86,7 +87,7 @@ public class Ia5StringSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax invalid for '{}'", value );
         }
-        
+
         return result;
     }
 }

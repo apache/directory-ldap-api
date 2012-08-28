@@ -32,7 +32,7 @@ import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface ExtendedRequestFactory<Q extends ExtendedRequest<P>,P extends ExtendedResponse>
+public interface ExtendedRequestFactory<Q extends ExtendedRequest<P>, P extends ExtendedResponse>
 {
     /**
      * Gets the OID of the extended requests this factory generates.
@@ -40,14 +40,14 @@ public interface ExtendedRequestFactory<Q extends ExtendedRequest<P>,P extends E
      * @return the extended request OID
      */
     String getOid();
-    
-    
+
+
     /**
      *  @return A new instance of the {@link ExtendedRequestDecorator}.
      */
     Q newRequest();
 
-    
+
     /**
      * Returns a new {@link ExtendedRequestDecorator} with the following encoded value.
      * 
@@ -55,8 +55,8 @@ public interface ExtendedRequestFactory<Q extends ExtendedRequest<P>,P extends E
      * @return the decorator for the extended request type
      */
     Q newRequest( byte[] value );
-    
-    
+
+
     /**
      * Decorates a non-decorated request.
      *
@@ -64,8 +64,8 @@ public interface ExtendedRequestFactory<Q extends ExtendedRequest<P>,P extends E
      * @return the decorated model request
      */
     ExtendedRequestDecorator<Q, P> decorate( ExtendedRequest<?> modelRequest );
-    
-    
+
+
     /**
      * Creates a new ExtendedResponse, for the ExtendedRequest with a specific
      * encoded value.

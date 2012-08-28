@@ -44,6 +44,7 @@ public class GeneralizedTimeComparator extends LdapComparator<String>
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( GeneralizedTimeComparator.class );
 
+
     /**
      * The GeneralizedTimeComparator constructor. Its OID is the
      * generalizedTimeOrderingMatch matching rule OID.
@@ -58,7 +59,7 @@ public class GeneralizedTimeComparator extends LdapComparator<String>
      * Implementation of the Compare method
      */
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ES_COMPARING_PARAMETER_STRING_WITH_EQ",
-            justification ="false positive")
+        justification = "false positive")
     public int compare( String backendValue, String assertValue )
     {
         LOG.debug( "comparing generalizedTimeOrdering objects '{}' with '{}'", backendValue, assertValue );

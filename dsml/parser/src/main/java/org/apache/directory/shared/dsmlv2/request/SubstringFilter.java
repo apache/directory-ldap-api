@@ -162,7 +162,7 @@ public class SubstringFilter extends Filter
 
         if ( anySubstrings != null )
         {
-            for ( String any:anySubstrings )
+            for ( String any : anySubstrings )
             {
                 sb.append( any ).append( '*' );
             }

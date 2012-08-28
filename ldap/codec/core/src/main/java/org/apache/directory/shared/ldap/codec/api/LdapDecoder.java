@@ -48,6 +48,7 @@ public class LdapDecoder
     /** The ASN 1 decoder instance */
     private Asn1Decoder asn1Decoder;
 
+
     /**
      * Creates an instance of a Ldap Decoder implementation.
      */
@@ -64,7 +65,8 @@ public class LdapDecoder
      * @param in The input stream to read and decode PDU bytes from
      * @return return The decoded message
      */
-    public Message decode( InputStream in, LdapMessageContainer<MessageDecorator<? extends Message>> container ) throws DecoderException
+    public Message decode( InputStream in, LdapMessageContainer<MessageDecorator<? extends Message>> container )
+        throws DecoderException
     {
         try
         {
@@ -72,7 +74,7 @@ public class LdapDecoder
 
             while ( in.available() > 0 )
             {
-                byte[]buf = new byte[in.available()];
+                byte[] buf = new byte[in.available()];
 
                 if ( ( amount = in.read( buf ) ) == -1 )
                 {

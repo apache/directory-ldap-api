@@ -42,7 +42,7 @@ import org.apache.directory.shared.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class BindRequestDecorator extends SingleReplyRequestDecorator<BindRequest,BindResponse> 
+public class BindRequestDecorator extends SingleReplyRequestDecorator<BindRequest, BindResponse>
     implements BindRequest
 {
     /** The bind request length */
@@ -121,50 +121,49 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     {
         return saslMechanismLength;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public BindRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public BindRequest addControl( Control control ) throws MessageException
     {
-        return (BindRequest)super.addControl( control );
+        return ( BindRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public BindRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (BindRequest)super.addAllControls( controls );
+        return ( BindRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public BindRequest removeControl( Control control ) throws MessageException
     {
-        return (BindRequest)super.removeControl( control );
+        return ( BindRequest ) super.removeControl( control );
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The BindRequest methods
     //-------------------------------------------------------------------------
-
 
     /**
      * {@inheritDoc}
@@ -190,7 +189,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     public BindRequest setSimple( boolean isSimple )
     {
         getDecorated().setSimple( isSimple );
-        
+
         return this;
     }
 
@@ -290,7 +289,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     public BindRequest setSaslMechanism( String saslMechanism )
     {
         getDecorated().setSaslMechanism( saslMechanism );
-        
+
         return this;
     }
 
@@ -318,12 +317,12 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     public int computeLength()
     {
         int bindRequestLength = 1 + 1 + 1; // Initialized with version
-        
+
         Dn name = getName();
-        
+
         // The name
         if ( name == null )
-        { 
+        {
             name = Dn.EMPTY_DN;
         }
 
@@ -407,10 +406,10 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
 
         // The name
         Dn name = getName();
-        
+
         // The name
         if ( name == null )
-        { 
+        {
             name = Dn.EMPTY_DN;
         }
 
@@ -473,7 +472,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
                 throw new EncoderException( msg );
             }
         }
-        
+
         return buffer;
     }
 }

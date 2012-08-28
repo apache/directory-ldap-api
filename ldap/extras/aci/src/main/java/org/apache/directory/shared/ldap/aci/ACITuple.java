@@ -68,12 +68,12 @@ public class ACITuple
      * @param precedence the precedence of this tuple (<tt>0</tt>-<tt>255</tt>)
      */
     public ACITuple(
-            Collection<UserClass> userClasses,
-            AuthenticationLevel authenticationLevel,
-            Collection<ProtectedItem> protectedItems,
-            Collection<MicroOperation> microOperations,
-            boolean grant,
-            Integer precedence )
+        Collection<UserClass> userClasses,
+        AuthenticationLevel authenticationLevel,
+        Collection<ProtectedItem> protectedItems,
+        Collection<MicroOperation> microOperations,
+        boolean grant,
+        Integer precedence )
     {
         if ( authenticationLevel == null )
         {

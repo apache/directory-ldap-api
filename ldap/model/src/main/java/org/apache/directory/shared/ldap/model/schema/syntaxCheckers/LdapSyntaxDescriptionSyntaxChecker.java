@@ -63,12 +63,13 @@ public class LdapSyntaxDescriptionSyntaxChecker extends SyntaxChecker
         super( SchemaConstants.LDAP_SYNTAX_DESCRIPTION_SYNTAX );
     }
 
+
     /**
      * {@inheritDoc}
      */
     public boolean isValidSyntax( Object value )
     {
-        String strValue =null;
+        String strValue = null;
 
         if ( value == null )
         {
@@ -82,7 +83,7 @@ public class LdapSyntaxDescriptionSyntaxChecker extends SyntaxChecker
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {

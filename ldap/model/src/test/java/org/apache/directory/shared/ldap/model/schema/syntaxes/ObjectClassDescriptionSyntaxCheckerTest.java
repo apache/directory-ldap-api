@@ -43,6 +43,7 @@ public class ObjectClassDescriptionSyntaxCheckerTest
 {
     private ObjectClassDescriptionSyntaxChecker checker = new ObjectClassDescriptionSyntaxChecker();
 
+
     @Test
     public void testValid()
     {
@@ -52,8 +53,10 @@ public class ObjectClassDescriptionSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( "( 2.5.6.6 NAME 'person' DESC 'RFC2256: a person' )" ) );
         assertTrue( checker.isValidSyntax( "( 2.5.6.6 NAME 'person' DESC 'RFC2256: a person' SUP top )" ) );
         assertTrue( checker.isValidSyntax( "( 2.5.6.6 NAME 'person' DESC 'RFC2256: a person' SUP top STRUCTURAL )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.6.6 NAME 'person' DESC 'RFC2256: a person' SUP top STRUCTURAL MUST ( sn $ cn ) )" ) );
-        assertTrue( checker.isValidSyntax( "( 2.5.6.6 NAME 'person' DESC 'RFC2256: a person' SUP top STRUCTURAL MUST ( sn $ cn ) MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) )" ) );
+        assertTrue( checker
+            .isValidSyntax( "( 2.5.6.6 NAME 'person' DESC 'RFC2256: a person' SUP top STRUCTURAL MUST ( sn $ cn ) )" ) );
+        assertTrue( checker
+            .isValidSyntax( "( 2.5.6.6 NAME 'person' DESC 'RFC2256: a person' SUP top STRUCTURAL MUST ( sn $ cn ) MAY ( userPassword $ telephoneNumber $ seeAlso $ description ) )" ) );
 
         assertTrue( checker.isValidSyntax( "(2.5.6.6)" ) );
         assertTrue( checker.isValidSyntax( "(      2.5.6.6      NAME      'person'      )" ) );
@@ -65,10 +68,10 @@ public class ObjectClassDescriptionSyntaxCheckerTest
     {
         // null 
         assertFalse( checker.isValidSyntax( null ) );
-        
+
         // empty 
         assertFalse( checker.isValidSyntax( "" ) );
-        
+
         // missing/invalid OID
         assertFalse( checker.isValidSyntax( "()" ) );
         assertFalse( checker.isValidSyntax( "(  )" ) );

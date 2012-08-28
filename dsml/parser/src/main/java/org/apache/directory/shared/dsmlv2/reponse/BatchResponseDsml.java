@@ -78,7 +78,7 @@ public class BatchResponseDsml
     {
         return responses.add( response );
     }
-    
+
 
     /**
      * Removes a request from the Batch Response DSML.
@@ -142,7 +142,7 @@ public class BatchResponseDsml
         element.add( ParserUtils.DSML_NAMESPACE );
         element.add( ParserUtils.XSD_NAMESPACE );
         element.add( ParserUtils.XSI_NAMESPACE );
-        
+
         // RequestID
         if ( requestID != 0 )
         {

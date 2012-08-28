@@ -42,7 +42,7 @@ public class LessEqNode<T> extends SimpleNode<T>
         super( attributeType, value, AssertionType.LESSEQ );
     }
 
-    
+
     /**
      * Creates a new LessEqNode object.
      * 
@@ -54,7 +54,7 @@ public class LessEqNode<T> extends SimpleNode<T>
         super( attribute, value, AssertionType.LESSEQ );
     }
 
-    
+
     /**
      * @see Object#toString()
      * @return A string representing the AndNode
@@ -64,7 +64,7 @@ public class LessEqNode<T> extends SimpleNode<T>
         StringBuilder buf = new StringBuilder();
 
         buf.append( '(' );
-        
+
         if ( attributeType != null )
         {
             buf.append( attributeType.getName() );
@@ -73,11 +73,11 @@ public class LessEqNode<T> extends SimpleNode<T>
         {
             buf.append( attribute );
         }
-        
+
         buf.append( "<=" );
 
         Value<?> escapedValue = getEscapedValue();
-        if ( !escapedValue.isNull())
+        if ( !escapedValue.isNull() )
         {
             buf.append( escapedValue );
         }

@@ -318,7 +318,7 @@ public class AddRequestImplTest
                 return false;
             }
 
-            
+
             public Control getControl( String oid )
             {
                 return null;

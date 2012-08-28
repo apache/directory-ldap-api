@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,7 @@ public class SupportedAlgorithmSyntaxChecker extends BinarySyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( SupportedAlgorithmSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of SupportedAlgorithmSyntaxChecker.
      */
@@ -46,7 +48,7 @@ public class SupportedAlgorithmSyntaxChecker extends BinarySyntaxChecker
         setOid( SchemaConstants.SUPPORTED_ALGORITHM_SYNTAX );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */

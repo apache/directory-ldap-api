@@ -98,7 +98,8 @@ public class BitStringTest
     public void testSingleBitBitString() throws DecoderException
     {
 
-        BitString bitString = new BitString(new byte[] {0x07, ( byte ) 0x80 });
+        BitString bitString = new BitString( new byte[]
+            { 0x07, ( byte ) 0x80 } );
 
         assertEquals( true, bitString.getBit( 0 ) );
     }
@@ -186,22 +187,23 @@ public class BitStringTest
             assertEquals( true, bitString128.getBit( i ) );
         }
     }
-    
+
+
     @Test
     public void testBitStringSet()
     {
         BitString bitString = new BitString( 32 );
 
         byte[] bytes = new byte[]
-            { 0x00, (byte)0xAA, 0x11, (byte)0x88, (byte)0xFE };
-        
+            { 0x00, ( byte ) 0xAA, 0x11, ( byte ) 0x88, ( byte ) 0xFE };
+
         int[] bits = new int[]
             {
-                1, 0, 1, 0 ,   1, 0, 1, 0,
-                0, 0, 0, 1,    0, 0, 0, 1,
-                1, 0, 0, 0,    1, 0, 0, 0,
-                1, 1, 1, 1,    1, 1, 1, 0
-            };
+                1, 0, 1, 0, 1, 0, 1, 0,
+                0, 0, 0, 1, 0, 0, 0, 1,
+                1, 0, 0, 0, 1, 0, 0, 0,
+                1, 1, 1, 1, 1, 1, 1, 0
+        };
 
         for ( int i = 0; i < bits.length; i++ )
         {
@@ -210,9 +212,10 @@ public class BitStringTest
                 bitString.setBit( i );
             }
         }
-        
+
         assertEquals( Asn1StringUtils.dumpBytes( bytes ), Asn1StringUtils.dumpBytes( bitString.getData() ) );
     }
+
 
     @Test
     public void testBitStringSetBit()
@@ -221,11 +224,18 @@ public class BitStringTest
 
         int[] bits = new int[]
             {
-                1, 0, 1, 0 ,   1, 0, 1, 0,
-                0, 0, 0, 1,    0, 0, 0, 1,
-                1, 0, 0, 0,    1, 0, 0, 0,  // After modification, will become 8A
-                1, 1, 1, 1,    1, 1, 1, 0
-            };
+                1, 0, 1, 0, 1, 0, 1, 0,
+                0, 0, 0, 1, 0, 0, 0, 1,
+                1, 0, 0, 0, 1, 0, 0, 0, // After modification, will become 8A
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                0
+        };
 
         for ( int i = 0; i < bits.length; i++ )
         {
@@ -234,13 +244,14 @@ public class BitStringTest
                 bitString.setBit( i );
             }
         }
-        
+
         bitString.setBit( 9 );
         byte[] bytesModified = new byte[]
-            { 0x00, (byte)0xAA, 0x51, (byte)0x88, (byte)0xFE };
-                            
+            { 0x00, ( byte ) 0xAA, 0x51, ( byte ) 0x88, ( byte ) 0xFE };
+
         assertEquals( Asn1StringUtils.dumpBytes( bytesModified ), Asn1StringUtils.dumpBytes( bitString.getData() ) );
     }
+
 
     @Test
     public void testBitStringClearBit()
@@ -249,11 +260,11 @@ public class BitStringTest
 
         int[] bits = new int[]
             {
-                1, 0, 1, 0 ,   1, 0, 1, 0,
-                0, 0, 0, 1,    0, 0, 0, 1,
-                1, 0, 0, 0,    1, 0, 0, 0,
-                1, 1, 1, 1,    1, 1, 1, 0
-            };
+                1, 0, 1, 0, 1, 0, 1, 0,
+                0, 0, 0, 1, 0, 0, 0, 1,
+                1, 0, 0, 0, 1, 0, 0, 0,
+                1, 1, 1, 1, 1, 1, 1, 0
+        };
 
         for ( int i = 0; i < bits.length; i++ )
         {
@@ -262,11 +273,11 @@ public class BitStringTest
                 bitString.setBit( i );
             }
         }
-        
+
         bitString.clearBit( 11 );
         byte[] bytesModified = new byte[]
-            { 0x00, (byte)0xAA, 0x01, (byte)0x88, (byte)0xFE };
-                            
+            { 0x00, ( byte ) 0xAA, 0x01, ( byte ) 0x88, ( byte ) 0xFE };
+
         assertEquals( Asn1StringUtils.dumpBytes( bytesModified ), Asn1StringUtils.dumpBytes( bitString.getData() ) );
     }
 }

@@ -94,7 +94,7 @@ public class StoreControlCriticality extends GrammarAction<LdapMessageContainer<
         catch ( BooleanDecoderException bde )
         {
             LOG.error( I18n
-                .err( I18n.ERR_04100, Strings.dumpBytes(value.getData()), bde.getMessage() ) );
+                .err( I18n.ERR_04100, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( bde.getMessage() );

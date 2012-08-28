@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.util;
 
+
 import static org.junit.Assert.assertEquals;
 
 import com.mycila.junit.concurrent.Concurrency;
@@ -27,6 +28,7 @@ import org.apache.directory.shared.util.Base32;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
 public class Base32Test
@@ -34,16 +36,18 @@ public class Base32Test
     @Test
     public void testEncode()
     {
-        String[] data = new String[]{ "", "a", "ab", "abc", "abcd", "abcde", "abcdef" };
-        String[] expected = new String[]{ "", "ME======", "MFRA====", "MFRGG===", "MFRGGZA=", "MFRGGZDF", "MFRGGZDFMY======"};
-        
+        String[] data = new String[]
+            { "", "a", "ab", "abc", "abcd", "abcde", "abcdef" };
+        String[] expected = new String[]
+            { "", "ME======", "MFRA====", "MFRGG===", "MFRGGZA=", "MFRGGZDF", "MFRGGZDFMY======" };
+
         for ( int i = 0; i < data.length; i++ )
         {
             String in = data[i];
-        
-            String res = Base32.encode(in);
-            
-            assertEquals(expected[i], res);
+
+            String res = Base32.encode( in );
+
+            assertEquals( expected[i], res );
         }
     }
 }

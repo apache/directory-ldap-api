@@ -42,14 +42,14 @@ import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
 public class CancelFactory implements ExtendedRequestFactory<CancelRequest, CancelResponse>
 {
     private LdapApiService codec;
-    
-    
+
+
     public CancelFactory( LdapApiService codec )
     {
         this.codec = codec;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -58,7 +58,7 @@ public class CancelFactory implements ExtendedRequestFactory<CancelRequest, Canc
         return CancelRequest.EXTENSION_OID;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -99,7 +99,7 @@ public class CancelFactory implements ExtendedRequestFactory<CancelRequest, Canc
         {
             return ( CancelRequestDecorator ) modelRequest;
         }
-        
+
         return new CancelRequestDecorator( codec, ( CancelRequest ) modelRequest );
     }
 

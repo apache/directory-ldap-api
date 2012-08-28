@@ -39,6 +39,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
     public static final boolean STRING = true;
     public static final boolean BINARY = false;
 
+
     /**
      * Apply an AttributeType to the current Value, normalizing it.
      *
@@ -47,7 +48,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * to the schema
      */
     void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
-    
+
 
     /**
      * Clone a Value
@@ -55,16 +56,16 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * @return A cloned value
      */
     Value<T> clone();
-    
-    
+
+
     /**
      * Check if the contained value is null or not
      * 
      * @return <code>true</code> if the inner value is null.
      */
     boolean isNull();
-    
-    
+
+
     /**
      * Get the associated AttributeType
      * 
@@ -72,7 +73,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      */
     AttributeType getAttributeType();
 
-    
+
     /**
      * Check if the value is stored into an instance of the given 
      * AttributeType, or one of its ascendant.
@@ -86,15 +87,15 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      */
     boolean isInstanceOf( AttributeType attributeType );
 
-    
+
     /**
      * Get the wrapped value. It will return a copy, not a reference.
      *
      * @return a copy of the wrapped value
      */
     T getValue();
-    
-    
+
+
     /**
      * Get the wrapped value as a byte[]. If the original value
      * is binary, this method will return a copy of the wrapped byte[]
@@ -102,8 +103,8 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * @return the wrapped value as a byte[]
      */
     byte[] getBytes();
-    
-    
+
+
     /**
      * Get the wrapped value as a String. If the original value
      * is binary, this method will return the value as if it was 
@@ -112,8 +113,8 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * @return the wrapped value as a String
      */
     String getString();
-    
-    
+
+
     /**
      * Gets a reference to the wrapped value.
      * 
@@ -122,16 +123,16 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * @return a direct handle on the value that is wrapped
      */
     T getReference();
-    
-    
+
+
     /**
      * Tells if the value is schema aware or not.
      *
      * @return <code>true</code> if the value is sxhema aware
      */
     boolean isSchemaAware();
-    
-    
+
+
     /**
      * Uses the syntaxChecker associated with the attributeType to check if the
      * value is valid.
@@ -142,7 +143,7 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      */
     boolean isValid( SyntaxChecker checker ) throws LdapInvalidAttributeValueException;
 
-    
+
     /**
      * Gets the normalized (canonical) representation for the wrapped string.
      * If the wrapped String is null, null is returned, otherwise the normalized
@@ -152,8 +153,8 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      * @return gets the normalized value
      */
     T getNormValue();
-    
-    
+
+
     /**
      * Gets a reference to the the normalized (canonical) representation 
      * for the wrapped value.
@@ -162,15 +163,15 @@ public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>
      */
     T getNormReference();
 
-    
+
     /**
      * Tells if the current value is Human Readable
      * 
      * @return <code>true</code> if the value is a String, <code>false</code> otherwise
      */
     boolean isHumanReadable();
-    
-    
+
+
     /**
      * @return The length of the interned value
      */

@@ -47,6 +47,7 @@ public class DSAQualitySyntaxSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( DSAQualitySyntaxSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of DSAQualitySyntaxSyntaxChecker.
      */
@@ -54,8 +55,8 @@ public class DSAQualitySyntaxSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.DSA_QUALITY_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -68,14 +69,14 @@ public class DSAQualitySyntaxSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -89,64 +90,64 @@ public class DSAQualitySyntaxSyntaxChecker extends SyntaxChecker
         }
 
         String remaining = null;
-        
+
         switch ( strValue.charAt( 0 ) )
         {
-            case 'B' :
+            case 'B':
                 if ( !strValue.startsWith( "BEST-EFFORT" ) )
                 {
                     LOG.debug( "Syntax invalid for '{}'", value );
                     return false;
                 }
-                
+
                 remaining = strValue.substring( "BEST-EFFORT".length() );
                 break;
-                
-            case 'D' :
+
+            case 'D':
                 if ( !strValue.startsWith( "DEFUNCT" ) )
                 {
                     LOG.debug( "Syntax invalid for '{}'", value );
                     return false;
                 }
-                
+
                 remaining = strValue.substring( "DEFUNCT".length() );
                 break;
-                
-            case 'E' :
+
+            case 'E':
                 if ( !strValue.startsWith( "EXPERIMENTAL" ) )
                 {
                     LOG.debug( "Syntax invalid for '{}'", value );
                     return false;
                 }
-                
+
                 remaining = strValue.substring( "EXPERIMENTAL".length() );
                 break;
-                
-            case 'F' :
+
+            case 'F':
                 if ( !strValue.startsWith( "FULL-SERVICE" ) )
                 {
                     LOG.debug( "Syntax invalid for '{}'", value );
                     return false;
                 }
-                
+
                 remaining = strValue.substring( "FULL-SERVICE".length() );
                 break;
-                
-            case 'P' :
+
+            case 'P':
                 if ( !strValue.startsWith( "PILOT-SERVICE" ) )
                 {
                     LOG.debug( "Syntax invalid for '{}'", value );
                     return false;
                 }
-                
+
                 remaining = strValue.substring( "PILOT-SERVICE".length() );
                 break;
-                
-            default :
+
+            default:
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
         }
-        
+
         // Now, we might have a description separated from the keyword by a '#'
         // but this is optional
         if ( remaining.length() == 0 )
@@ -154,17 +155,17 @@ public class DSAQualitySyntaxSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax valid for '{}'", value );
             return true;
         }
-        
+
         if ( remaining.charAt( 0 ) != '#' )
         {
             // We were expecting a '#'
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // Check that the description is a PrintableString
-        boolean result = Strings.isPrintableString(remaining.substring(1));
-        
+        boolean result = Strings.isPrintableString( remaining.substring( 1 ) );
+
         if ( result )
         {
             LOG.debug( "Syntax valid for '{}'", value );
@@ -173,7 +174,7 @@ public class DSAQualitySyntaxSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax invalid for '{}'", value );
         }
-        
+
         return result;
     }
 }

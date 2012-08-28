@@ -91,7 +91,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         Entry prev = null;
 
 
-        public Entry(Object key, Object value)
+        public Entry( Object key, Object value )
         {
             this.key = key;
             this.value = value;
@@ -208,7 +208,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      *            the initial size for the hash table
      * @see HashMap#HashMap(int)
      */
-    public SequencedHashMap(int initialSize)
+    public SequencedHashMap( int initialSize )
     {
         sentinel = createSentinel();
         entries = new HashMap( initialSize );
@@ -225,7 +225,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      *            the load factor for the hash table.
      * @see HashMap#HashMap(int,float)
      */
-    public SequencedHashMap(int initialSize, float loadFactor)
+    public SequencedHashMap( int initialSize, float loadFactor )
     {
         sentinel = createSentinel();
         entries = new HashMap( initialSize, loadFactor );
@@ -237,7 +237,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
      * specified map. The order in which the mappings in the specified map are
      * added is defined by {@link #putAll(Map)}.
      */
-    public SequencedHashMap(Map m)
+    public SequencedHashMap( Map m )
     {
         this();
         putAll( m );
@@ -898,7 +898,7 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
          * specified by <code>returnType</code> which must be either KEY,
          * VALUE, or ENTRY.
          */
-        public OrderedIterator(int returnType)
+        public OrderedIterator( int returnType )
         {
             // // Since this is a private inner class, nothing else should have
             // // access to the constructor. Since we know the rest of the outer

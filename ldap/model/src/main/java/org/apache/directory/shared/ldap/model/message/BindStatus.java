@@ -20,6 +20,7 @@
 
 package org.apache.directory.shared.ldap.model.message;
 
+
 /**
  * An enum used to store the BindRequest state.
  *
@@ -32,17 +33,17 @@ public enum BindStatus
      * be anonymous
      **/
     ANONYMOUS,
-    
+
     /**
      * We have received a Simple BindRequest
      */
     SIMPLE_AUTH_PENDING,
-    
+
     /**
      * We have received a SASL BindRequest
      */
     SASL_AUTH_PENDING,
-    
+
     /**
      * The user has been authenticated
      */

@@ -53,7 +53,6 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
 {
     private static final String ERROR_RESPONSE_TAG = "errorResponse";
 
-
     /**
      * This enum represents the different types of error response
      *
@@ -135,7 +134,7 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
         {
             element = new DefaultElement( ERROR_RESPONSE_TAG );
         }
-        
+
         // RequestID
         if ( requestID != 0 )
         {
@@ -279,8 +278,8 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
     public LdapApiService getCodecService()
     {
         throw new IllegalArgumentException( "This should not be a decorator " +
-                "but seems it was made into one. We need to do something about" +
-                "this if this exception is being raise." );
+            "but seems it was made into one. We need to do something about" +
+            "this if this exception is being raise." );
     }
 
 

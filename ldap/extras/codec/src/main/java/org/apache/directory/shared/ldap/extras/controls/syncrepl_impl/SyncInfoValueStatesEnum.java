@@ -49,40 +49,39 @@ public enum SyncInfoValueStatesEnum implements States
 
     /** RefreshDelete state */
     REFRESH_DELETE_STATE,
-    
+
     /** RefreshDelete cookie state */
     REFRESH_DELETE_COOKIE_STATE,
-    
+
     /** RefreshDelete refreshDone state */
     REFRESH_DELETE_REFRESH_DONE_STATE,
-    
+
     /** RefreshPresent state */
     REFRESH_PRESENT_STATE,
-    
+
     /** RefreshPresent cookie state */
     REFRESH_PRESENT_COOKIE_STATE,
-    
+
     /** RefreshPresent refreshDone state */
     REFRESH_PRESENT_REFRESH_DONE_STATE,
-    
+
     /** SyncIdSet state */
     SYNC_ID_SET_STATE,
-    
+
     /** SyncIdSet cookie state */
     SYNC_ID_SET_COOKIE_STATE,
-    
+
     /** SyncIdSet refreshDone state */
     SYNC_ID_SET_REFRESH_DELETES_STATE,
-    
+
     /** SyncIdSet SET OF UUIDs state */
     SYNC_ID_SET_SET_OF_UUIDS_STATE,
-    
+
     /** SyncIdSet UUID state */
     SYNC_ID_SET_UUID_STATE,
 
     /** terminal state */
     LAST_SYNC_INFO_VALUE_STATE;
-
 
     /**
      * Get the grammar name
@@ -124,7 +123,7 @@ public enum SyncInfoValueStatesEnum implements States
         return ( ( state == END_STATE.ordinal() ) ? "SYNC_INFO_VALUE_END_STATE" : this.name() );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -132,8 +131,8 @@ public enum SyncInfoValueStatesEnum implements States
     {
         return this == END_STATE;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

@@ -77,12 +77,13 @@ public class DeepTrimToLowerNormalizer extends Normalizer
         {
             String normalized = PrepareString.normalize( value.getString(),
                 PrepareString.StringType.CASE_IGNORE );
-            
+
             return new StringValue( normalized );
         }
         catch ( IOException ioe )
         {
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err( I18n.ERR_04224, value ), ioe );
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                I18n.ERR_04224, value ), ioe );
         }
     }
 
@@ -101,12 +102,13 @@ public class DeepTrimToLowerNormalizer extends Normalizer
         {
             String normalized = PrepareString.normalize( value,
                 PrepareString.StringType.CASE_IGNORE );
-            
+
             return normalized;
         }
         catch ( IOException ioe )
         {
-            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err( I18n.ERR_04224,  value ), ioe );
+            throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, I18n.err(
+                I18n.ERR_04224, value ), ioe );
         }
     }
 }

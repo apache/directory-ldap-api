@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.comparators;
 
+
 import static org.junit.Assert.assertEquals;
 
 import com.mycila.junit.concurrent.Concurrency;
@@ -39,19 +40,20 @@ import org.junit.runner.RunWith;
 public class CsnSidComparatorTest
 {
     private CsnSidComparator comparator;
-    
+
+
     @Before
     public void init()
     {
         comparator = new CsnSidComparator( null );
     }
-    
-    
+
+
     @Test
     public void testNullSids()
     {
         assertEquals( 0, comparator.compare( null, null ) );
-        
+
         assertEquals( -1, comparator.compare( null, "000" ) );
 
         assertEquals( 1, comparator.compare( "000", null ) );
@@ -65,9 +67,8 @@ public class CsnSidComparatorTest
         assertEquals( 0, comparator.compare( "000", "0" ) );
         assertEquals( 0, comparator.compare( "fff", "fff" ) );
     }
-    
-    
-    
+
+
     @Test
     public void testDifferentSids()
     {

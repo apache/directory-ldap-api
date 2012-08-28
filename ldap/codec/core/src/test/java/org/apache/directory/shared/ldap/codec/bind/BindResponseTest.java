@@ -69,21 +69,28 @@ public class BindResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x0C, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x61, 0x07, // CHOICE { ..., bindResponse BindResponse, ...
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x61,
+                0x07, // CHOICE { ..., bindResponse BindResponse, ...
                 // BindResponse ::= APPLICATION[1] SEQUENCE {
                 // COMPONENTS OF LDAPResult,
-                0x0A, 0x01, 0x00, // LDAPResult ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x00, // LDAPResult ::= SEQUENCE {
                 // resultCode ENUMERATED {
                 // success (0), ...
                 // },
-                0x04, 0x00, // matchedDN LDAPDN,
-                0x04, 0x00 // errorMessage LDAPString,
+                0x04,
+                0x00, // matchedDN LDAPDN,
+                0x04,
+                0x00 // errorMessage LDAPString,
             // referral [3] Referral OPTIONAL }
             // serverSaslCreds [7] OCTET STRING OPTIONAL }
-            } );
+        } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -116,7 +123,7 @@ public class BindResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x0E, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -139,32 +146,74 @@ public class BindResponseTest extends AbstractCodecServiceTest
         ByteBuffer stream = ByteBuffer.allocate( 0x3C );
 
         stream.put( new byte[]
-            { 0x30, 0x3A,                               // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01,                       // messageID MessageID
-                0x61, 0x07,                             // CHOICE { ..., bindResponse BindResponse, ...
-                                                        // BindResponse ::= APPLICATION[1] SEQUENCE {
-                                                        // COMPONENTS OF LDAPResult,
-                  0x0A,  0x01, 0x00,                    // LDAPResult ::= SEQUENCE {
-                                                        // resultCode ENUMERATED {
-                                                        // success (0), ...
-                                                        // },
-                  0x04, 0x00,                           // matchedDN LDAPDN,
-                  0x04, 0x00,                           // errorMessage LDAPString,
-                                                        // referral [3] Referral OPTIONAL }
-                                                        // serverSaslCreds [7] OCTET STRING OPTIONAL }
-                ( byte ) 0xa0, 0x2C,                    // controls
-                  0x30, 0x2A,                           // The PagedSearchControl
-                    0x04, 0x16,                         // Oid : 1.2.840.113556.1.4.319
-                      0x31, 0x2e, 0x32, 0x2e, 0x38, 0x34, 0x30, 0x2e, 
-                      0x31, 0x31, 0x33, 0x35, 0x35, 0x36, 0x2e, 0x31, 
-                      0x2e, 0x34, 0x2e, 0x33, 0x31, 0x39, 
-                    0x01, 0x01, ( byte ) 0xff,          // criticality: false
-                    0x04, 0x0D, 
-                      0x30, 0x0B, 
-                        0x02, 0x01, 0x05,               // Size = 5, cookie = "abcdef" 
-                        0x04, 0x06, 'a', 'b', 'c', 'd', 'e', 'f' } );
+            { 0x30, 0x3A, // LDAPMessage ::=SEQUENCE {
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x61,
+                0x07, // CHOICE { ..., bindResponse BindResponse, ...
+                      // BindResponse ::= APPLICATION[1] SEQUENCE {
+                      // COMPONENTS OF LDAPResult,
+                0x0A,
+                0x01,
+                0x00, // LDAPResult ::= SEQUENCE {
+                      // resultCode ENUMERATED {
+                      // success (0), ...
+                      // },
+                0x04,
+                0x00, // matchedDN LDAPDN,
+                0x04,
+                0x00, // errorMessage LDAPString,
+                      // referral [3] Referral OPTIONAL }
+                      // serverSaslCreds [7] OCTET STRING OPTIONAL }
+                ( byte ) 0xa0,
+                0x2C, // controls
+                0x30,
+                0x2A, // The PagedSearchControl
+                0x04,
+                0x16, // Oid : 1.2.840.113556.1.4.319
+                0x31,
+                0x2e,
+                0x32,
+                0x2e,
+                0x38,
+                0x34,
+                0x30,
+                0x2e,
+                0x31,
+                0x31,
+                0x33,
+                0x35,
+                0x35,
+                0x36,
+                0x2e,
+                0x31,
+                0x2e,
+                0x34,
+                0x2e,
+                0x33,
+                0x31,
+                0x39,
+                0x01,
+                0x01,
+                ( byte ) 0xff, // criticality: false
+                0x04,
+                0x0D,
+                0x30,
+                0x0B,
+                0x02,
+                0x01,
+                0x05, // Size = 5, cookie = "abcdef" 
+                0x04,
+                0x06,
+                'a',
+                'b',
+                'c',
+                'd',
+                'e',
+                'f' } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -235,22 +284,30 @@ public class BindResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x0E, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x61, 0x09, // CHOICE { ..., bindResponse BindResponse, ...
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x61,
+                0x09, // CHOICE { ..., bindResponse BindResponse, ...
                 // BindResponse ::= APPLICATION[1] SEQUENCE {
                 // COMPONENTS OF LDAPResult,
-                0x0A, 0x01, 0x00, // LDAPResult ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x00, // LDAPResult ::= SEQUENCE {
                 // resultCode ENUMERATED {
                 // success (0), ...
                 // },
-                0x04, 0x00, // matchedDN LDAPDN,
-                0x04, 0x00, // errorMessage LDAPString,
+                0x04,
+                0x00, // matchedDN LDAPDN,
+                0x04,
+                0x00, // errorMessage LDAPString,
                 // referral [3] Referral OPTIONAL }
-                ( byte ) 0x87, 0x00 // serverSaslCreds [7] OCTET STRING OPTIONAL
+                ( byte ) 0x87,
+                0x00 // serverSaslCreds [7] OCTET STRING OPTIONAL
             // }
-            } );
+        } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -274,7 +331,7 @@ public class BindResponseTest extends AbstractCodecServiceTest
         assertEquals( ResultCodeEnum.SUCCESS, bindResponse.getLdapResult().getResultCode() );
         assertEquals( "", bindResponse.getLdapResult().getMatchedDn().getName() );
         assertEquals( "", bindResponse.getLdapResult().getDiagnosticMessage() );
-        assertEquals( "", Strings.utf8ToString(bindResponse.getServerSaslCreds()) );
+        assertEquals( "", Strings.utf8ToString( bindResponse.getServerSaslCreds() ) );
 
         // Check the encoding
         try
@@ -284,7 +341,7 @@ public class BindResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x10, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -309,28 +366,59 @@ public class BindResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x2B, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x61, 0x09, // CHOICE { ..., bindResponse BindResponse, ...
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x61,
+                0x09, // CHOICE { ..., bindResponse BindResponse, ...
                 // BindResponse ::= APPLICATION[1] SEQUENCE {
                 // COMPONENTS OF LDAPResult,
-                  0x0A, 0x01, 0x00, // LDAPResult ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x00, // LDAPResult ::= SEQUENCE {
                 // resultCode ENUMERATED {
                 // success (0), ...
                 // },
-                  0x04, 0x00, // matchedDN LDAPDN,
-                  0x04, 0x00, // errorMessage LDAPString,
+                0x04,
+                0x00, // matchedDN LDAPDN,
+                0x04,
+                0x00, // errorMessage LDAPString,
                 // referral [3] Referral OPTIONAL }
-                  ( byte ) 0x87, 0x00, // serverSaslCreds [7] OCTET STRING
+                ( byte ) 0x87,
+                0x00, // serverSaslCreds [7] OCTET STRING
                 // OPTIONAL }
-                ( byte ) 0xA0, 0x1B, // A control
-                  0x30, 0x19, 
-                    0x04, 0x17, 
-                      0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30,
-                      0x2E, 0x31, 0x2E, 0x31, 0x31, 0x33, 0x37, 0x33, 
-                      0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32 
-              } );
+                ( byte ) 0xA0,
+                0x1B, // A control
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32
+        } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -354,7 +442,7 @@ public class BindResponseTest extends AbstractCodecServiceTest
         assertEquals( ResultCodeEnum.SUCCESS, bindResponse.getLdapResult().getResultCode() );
         assertEquals( "", bindResponse.getLdapResult().getMatchedDn().getName() );
         assertEquals( "", bindResponse.getLdapResult().getDiagnosticMessage() );
-        assertEquals( "", Strings.utf8ToString(bindResponse.getServerSaslCreds()) );
+        assertEquals( "", Strings.utf8ToString( bindResponse.getServerSaslCreds() ) );
 
         // Check the Control
         Map<String, Control> controls = bindResponse.getControls();
@@ -362,7 +450,8 @@ public class BindResponseTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
@@ -374,7 +463,7 @@ public class BindResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x2D, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -398,26 +487,36 @@ public class BindResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x10, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x61, 0x0B, // CHOICE { ..., bindResponse BindResponse, ...
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x61,
+                0x0B, // CHOICE { ..., bindResponse BindResponse, ...
                 // BindResponse ::= APPLICATION[1] SEQUENCE {
                 // COMPONENTS OF LDAPResult,
-                0x0A, 0x01, 0x00, // LDAPResult ::= SEQUENCE {
+                0x0A,
+                0x01,
+                0x00, // LDAPResult ::= SEQUENCE {
                 // resultCode ENUMERATED {
                 // success (0), ...
                 // },
-                0x04, 0x00, // matchedDN LDAPDN,
-                0x04, 0x00, // errorMessage LDAPString,
+                0x04,
+                0x00, // matchedDN LDAPDN,
+                0x04,
+                0x00, // errorMessage LDAPString,
                 // referral [3] Referral OPTIONAL }
-                ( byte ) 0x87, 0x02, 'A', 'B' // serverSaslCreds [7] OCTET
+                ( byte ) 0x87,
+                0x02,
+                'A',
+                'B' // serverSaslCreds [7] OCTET
             // STRING OPTIONAL }
-            } );
+        } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
-        LdapMessageContainer<BindResponseDecorator> container = 
+        LdapMessageContainer<BindResponseDecorator> container =
             new LdapMessageContainer<BindResponseDecorator>( codec );
 
         // Decode the BindResponse PDU
@@ -438,7 +537,7 @@ public class BindResponseTest extends AbstractCodecServiceTest
         assertEquals( ResultCodeEnum.SUCCESS, bindResponse.getLdapResult().getResultCode() );
         assertEquals( "", bindResponse.getLdapResult().getMatchedDn().getName() );
         assertEquals( "", bindResponse.getLdapResult().getDiagnosticMessage() );
-        assertEquals( "AB", Strings.utf8ToString(bindResponse.getServerSaslCreds()) );
+        assertEquals( "AB", Strings.utf8ToString( bindResponse.getServerSaslCreds() ) );
 
         // Check the encoding
         try
@@ -448,7 +547,7 @@ public class BindResponseTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x12, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -472,8 +571,11 @@ public class BindResponseTest extends AbstractCodecServiceTest
 
         stream.put( new byte[]
             { 0x30, 0x05, // LDAPMessage ::=SEQUENCE {
-                0x02, 0x01, 0x01, // messageID MessageID
-                0x61, 0x00, // CHOICE { ..., bindResponse BindResponse, ...
+                0x02,
+                0x01,
+                0x01, // messageID MessageID
+                0x61,
+                0x00, // CHOICE { ..., bindResponse BindResponse, ...
             } );
 
         stream.flip();

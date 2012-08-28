@@ -85,7 +85,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     public CompareRequest setName( Dn name )
     {
         this.name = name;
-        
+
         return this;
     }
 
@@ -107,7 +107,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     public CompareRequest setAssertionValue( String value )
     {
         this.attrVal = new StringValue( value );
-        
+
         return this;
     }
 
@@ -125,7 +125,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
         {
             this.attrVal = null;
         }
-        
+
         return this;
     }
 
@@ -147,53 +147,52 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     public CompareRequest setAttributeId( String attributeId )
     {
         this.attrId = attributeId;
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest addControl( Control control ) throws MessageException
     {
-        return (CompareRequest)super.addControl( control );
+        return ( CompareRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (CompareRequest)super.addAllControls( controls );
+        return ( CompareRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest removeControl( Control control ) throws MessageException
     {
-        return (CompareRequest)super.removeControl( control );
+        return ( CompareRequest ) super.removeControl( control );
     }
 
 
     // ------------------------------------------------------------------------
     // SingleReplyRequest Interface Method Implementations
     // ------------------------------------------------------------------------
-
 
     /**
      * Gets the protocol response message type for this request which produces
@@ -347,7 +346,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
         else
         {
             byte[] binVal = attrVal.getBytes();
-            sb.append( Strings.utf8ToString(binVal) ).append( '/' ).append( Strings.dumpBytes(binVal) )
+            sb.append( Strings.utf8ToString( binVal ) ).append( '/' ).append( Strings.dumpBytes( binVal ) )
                 .append( "'\n" );
         }
 

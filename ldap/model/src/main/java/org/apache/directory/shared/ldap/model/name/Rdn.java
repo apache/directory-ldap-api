@@ -188,7 +188,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
 
     /** the schema manager */
     private SchemaManager schemaManager;
-    
+
     /** The computed hashcode */
     private volatile int h;
 
@@ -230,7 +230,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
      */
     public Rdn( SchemaManager schemaManager, String rdn ) throws LdapInvalidDnException
     {
-        if ( Strings.isNotEmpty(rdn) )
+        if ( Strings.isNotEmpty( rdn ) )
         {
             // Parse the string. The Rdn will be updated.
             parse( rdn, this );
@@ -292,7 +292,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
 
         upName = upType + '=' + upValue;
 
-        if( schemaManager != null )
+        if ( schemaManager != null )
         {
             this.schemaManager = schemaManager;
             apply( schemaManager );
@@ -347,7 +347,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 return;
 
             case 1:
-                this.ava = (Ava) rdn.ava.clone();
+                this.ava = ( Ava ) rdn.ava.clone();
                 hashCode();
 
                 return;
@@ -359,7 +359,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
 
                 for ( Ava currentAva : rdn.avas )
                 {
-                    avas.add( (Ava) currentAva.clone() );
+                    avas.add( ( Ava ) currentAva.clone() );
                     avaTypes.put( currentAva.getNormType(), currentAva );
                 }
 
@@ -455,8 +455,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
 
         return this;
     }
-    
-    
+
+
     /**
      * Add an Ava to the current Rdn
      *
@@ -472,19 +472,19 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
     {
         // First, let's normalize the type
         Value<?> normalizedValue = value;
-        String normalizedType = Strings.lowerCaseAscii(type);
+        String normalizedType = Strings.lowerCaseAscii( type );
         this.schemaManager = schemaManager;
 
         if ( schemaManager != null )
         {
             OidNormalizer oidNormalizer = schemaManager.getNormalizerMapping().get( normalizedType );
             normalizedType = oidNormalizer.getAttributeTypeOid();
-            
+
             try
             {
                 normalizedValue = oidNormalizer.getNormalizer().normalize( value );
             }
-            catch( LdapException e )
+            catch ( LdapException e )
             {
                 throw new LdapInvalidDnException( e.getMessage(), e );
             }
@@ -589,7 +589,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
     // WARNING : The protection level is left unspecified intentionally.
     // We need this method to be visible from the DnParser class, but not
     // from outside this package.
-    /* No protection */ void clear()
+    /* No protection */void clear()
     {
         ava = null;
         avas = null;
@@ -615,15 +615,15 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
     {
         // First, let's normalize the type
         String normalizedType = Strings.lowerCaseAscii( Strings.trim( type ) );
-        
+
         if ( schemaManager != null )
         {
-             AttributeType attributeType = schemaManager.getAttributeType( normalizedType );
-             
-             if ( attributeType != null )
-             {
+            AttributeType attributeType = schemaManager.getAttributeType( normalizedType );
+
+            if ( attributeType != null )
+            {
                 normalizedType = attributeType.getOid();
-             }
+            }
         }
 
         switch ( nbAvas )
@@ -681,7 +681,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
     public Ava getAva( String type )
     {
         // First, let's normalize the type
-        String normalizedType = Strings.lowerCaseAscii(Strings.trim(type));
+        String normalizedType = Strings.lowerCaseAscii( Strings.trim( type ) );
 
         switch ( nbAvas )
         {
@@ -761,7 +761,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
     {
         try
         {
-            Rdn rdn = (Rdn) super.clone();
+            Rdn rdn = ( Rdn ) super.clone();
             rdn.normalized = normalized;
 
             // The Ava is immutable. We won't clone it
@@ -772,7 +772,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                     break;
 
                 case 1:
-                    rdn.ava = (Ava) this.ava.clone();
+                    rdn.ava = ( Ava ) this.ava.clone();
                     rdn.avaTypes = avaTypes;
                     break;
 
@@ -783,7 +783,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
 
                     for ( Ava currentAva : this.avas )
                     {
-                        rdn.avas.add( (Ava) currentAva.clone() );
+                        rdn.avas.add( ( Ava ) currentAva.clone() );
                         rdn.avaTypes.put( currentAva.getNormType(), currentAva );
                     }
 
@@ -953,12 +953,12 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
             return true;
         }
 
-        if ( !( that instanceof Rdn) )
+        if ( !( that instanceof Rdn ) )
         {
             return false;
         }
-        
-        Rdn rdn = (Rdn)that;
+
+        Rdn rdn = ( Rdn ) that;
 
         if ( rdn.nbAvas != nbAvas )
         {
@@ -995,7 +995,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                     while ( paramIterator.hasNext() )
                     {
                         Ava paramAva = paramIterator.next();
-                        
+
                         if ( localAva.equals( paramAva ) )
                         {
                             equals = true;
@@ -1042,7 +1042,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
      */
     public static Object unescapeValue( String value ) throws IllegalArgumentException
     {
-        if ( Strings.isEmpty(value) )
+        if ( Strings.isEmpty( value ) )
         {
             return "";
         }
@@ -1068,9 +1068,9 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
 
             for ( int i = 1; i < chars.length; i += 2 )
             {
-                if ( Chars.isHex(chars, i) && Chars.isHex(chars, i + 1) )
+                if ( Chars.isHex( chars, i ) && Chars.isHex( chars, i + 1 ) )
                 {
-                    hexValue[pos++] = Hex.getHexValue(chars[i], chars[i + 1]);
+                    hexValue[pos++] = Hex.getHexValue( chars[i], chars[i + 1] );
                 }
                 else
                 {
@@ -1111,10 +1111,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                             break;
 
                         default:
-                            if ( Chars.isHex(chars, i) )
+                            if ( Chars.isHex( chars, i ) )
                             {
                                 isHex = true;
-                                pair = ( ( byte ) ( Hex.getHexValue(chars[i]) << 4 ) );
+                                pair = ( ( byte ) ( Hex.getHexValue( chars[i] ) << 4 ) );
                             }
 
                             break;
@@ -1124,9 +1124,9 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 {
                     if ( isHex )
                     {
-                        if ( Chars.isHex(chars, i) )
+                        if ( Chars.isHex( chars, i ) )
                         {
-                            pair += Hex.getHexValue(chars[i]);
+                            pair += Hex.getHexValue( chars[i] );
                             bytes[pos++] = pair;
                         }
                     }
@@ -1175,7 +1175,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                                 }
                                 else
                                 {
-                                    byte[] result = Unicode.charToBytes(chars[i]);
+                                    byte[] result = Unicode.charToBytes( chars[i] );
                                     System.arraycopy( result, 0, bytes, pos, result.length );
                                     pos += result.length;
                                 }
@@ -1186,7 +1186,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
                 }
             }
 
-            return Strings.utf8ToString(bytes, pos);
+            return Strings.utf8ToString( bytes, pos );
         }
     }
 
@@ -1199,7 +1199,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
      */
     public static String escapeValue( String value )
     {
-        if ( Strings.isEmpty(value) )
+        if ( Strings.isEmpty( value ) )
         {
             return "";
         }
@@ -1318,12 +1318,12 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
      */
     public static String escapeValue( byte[] attrValue )
     {
-        if ( Strings.isEmpty(attrValue) )
+        if ( Strings.isEmpty( attrValue ) )
         {
             return "";
         }
 
-        String value = Strings.utf8ToString(attrValue);
+        String value = Strings.utf8ToString( attrValue );
 
         return escapeValue( value );
     }
@@ -1364,7 +1364,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
         }
     }
 
-    
+
     /**
      * Parse a NameComponent : <br>
      * <p>
@@ -1402,26 +1402,26 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
         if ( h == 0 )
         {
             h = 37;
-    
+
             switch ( nbAvas )
             {
                 case 0:
                     // An empty Rdn
                     break;
-    
+
                 case 1:
                     // We have a single Ava
                     h = h * 17 + ava.hashCode();
                     break;
-    
+
                 default:
                     // We have more than one Ava
-    
+
                     for ( Ava ata : avas )
                     {
                         h = h * 17 + ata.hashCode();
                     }
-    
+
                     break;
             }
         }
@@ -1501,9 +1501,9 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
 
                 break;
         }
-        
+
         out.writeInt( h );
-        
+
         out.flush();
     }
 
@@ -1529,7 +1529,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
         // Read the normName
         normName = in.readUTF();
 
-        if ( Strings.isEmpty(normName) )
+        if ( Strings.isEmpty( normName ) )
         {
             normName = upName;
         }
@@ -1565,11 +1565,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>
 
                 break;
         }
-        
+
         h = in.readInt();
     }
-    
-    
+
+
     /**
      * @return a String representation of the Rdn. The caller will get back the user
      * provided Rdn

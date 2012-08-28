@@ -36,7 +36,6 @@ public final class ActionTime
 
     //public static final ActionTime INSTEADOF = new ActionTime( "INSTEADOF" );
 
-    
     /** The name. */
     private final String name;
 
@@ -76,7 +75,7 @@ public final class ActionTime
     {
         int h = 37;
         h = h * 17 + ( ( name == null ) ? 0 : name.hashCode() );
-        
+
         return h;
     }
 

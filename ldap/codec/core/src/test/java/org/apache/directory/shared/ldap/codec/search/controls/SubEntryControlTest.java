@@ -56,17 +56,17 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x03 );
         bb.put( new byte[]
-            { 
-              0x01, 0x01, ( byte ) 0xFF // Visibility ::= BOOLEAN
-            } );
+            {
+                0x01, 0x01, ( byte ) 0xFF // Visibility ::= BOOLEAN
+        } );
         bb.flip();
 
         SubentriesDecorator decorator = new SubentriesDecorator( codec );
-        
-        Subentries subentries = (Subentries)decorator.decode( bb.array() );
+
+        Subentries subentries = ( Subentries ) decorator.decode( bb.array() );
 
         assertTrue( subentries.isVisible() );
-        
+
         // test encoding
         try
         {
@@ -75,7 +75,7 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
             String decoded = Strings.dumpBytes( buffer.array() );
             assertEquals( expected, decoded );
         }
-        catch( EncoderException e )
+        catch ( EncoderException e )
         {
             fail( e.getMessage() );
         }
@@ -90,17 +90,17 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x03 );
         bb.put( new byte[]
-            { 
-              0x01, 0x01, 0x00 // Visibility ::= BOOLEAN
-            } );
+            {
+                0x01, 0x01, 0x00 // Visibility ::= BOOLEAN
+        } );
         bb.flip();
 
         SubentriesDecorator decorator = new SubentriesDecorator( codec );
-        
-        Subentries subentries = (Subentries)decorator.decode( bb.array() );
+
+        Subentries subentries = ( Subentries ) decorator.decode( bb.array() );
 
         assertFalse( subentries.isVisible() );
-        
+
         // test encoding
         try
         {
@@ -109,7 +109,7 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
             String decoded = Strings.dumpBytes( buffer.array() );
             assertEquals( expected, decoded );
         }
-        catch( EncoderException e )
+        catch ( EncoderException e )
         {
             fail( e.getMessage() );
         }
@@ -119,21 +119,21 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a SubEntryControl with an empty visibility
      */
-    @Test( expected=DecoderException.class )
+    @Test(expected = DecoderException.class)
     public void testDecodeSubEntryEmptyVisibility() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x02 );
 
         bb.put( new byte[]
-            { 
-              0x01, 0x00 // Visibility ::= BOOLEAN
-            } );
+            {
+                0x01, 0x00 // Visibility ::= BOOLEAN
+        } );
 
         bb.flip();
 
         // Allocate a LdapMessage Container
         SubentriesDecorator decorator = new SubentriesDecorator( codec );
-        
+
         decorator.decode( bb.array() );
     }
 
@@ -141,21 +141,21 @@ public class SubEntryControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a bad SubEntryControl
      */
-    @Test( expected=DecoderException.class )
+    @Test(expected = DecoderException.class)
     public void testDecodeSubEntryBad() throws Exception
     {
         ByteBuffer bb = ByteBuffer.allocate( 0x03 );
 
         bb.put( new byte[]
-            { 
-              0x02, 0x01, 0x01 // Visibility ::= BOOLEAN
-            } );
+            {
+                0x02, 0x01, 0x01 // Visibility ::= BOOLEAN
+        } );
 
         bb.flip();
 
         // Allocate a LdapMessage Container
         SubentriesDecorator decorator = new SubentriesDecorator( codec );
-        
+
         decorator.decode( bb.array() );
     }
 }

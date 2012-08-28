@@ -81,12 +81,12 @@ public class AddControl extends GrammarAction<LdapMessageContainer<MessageDecora
         }
 
         byte[] value = tlv.getValue().getData();
-        String oidValue = Strings.asciiBytesToString(value);
+        String oidValue = Strings.asciiBytesToString( value );
 
         // The OID is encoded as a String, not an Object Id
-        if ( !Oid.isOid(oidValue) )
+        if ( !Oid.isOid( oidValue ) )
         {
-            LOG.error( I18n.err( I18n.ERR_04098, Strings.dumpBytes(value) ) );
+            LOG.error( I18n.err( I18n.ERR_04098, Strings.dumpBytes( value ) ) );
 
             // This will generate a PROTOCOL_ERROR
             throw new DecoderException( I18n.err( I18n.ERR_04099, oidValue ) );

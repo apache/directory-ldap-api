@@ -50,7 +50,7 @@ public class StoreError extends AbstractReadInteger
     protected void setIntegerValue( int value, Asn1Container container )
     {
         PasswordPolicyContainer ppolicyContainer = ( PasswordPolicyContainer ) container;
-        
+
         PasswordPolicyErrorEnum error = PasswordPolicyErrorEnum.get( value );
         ppolicyContainer.getPasswordPolicyResponseControl().getResponse().setPasswordPolicyError( error );
 

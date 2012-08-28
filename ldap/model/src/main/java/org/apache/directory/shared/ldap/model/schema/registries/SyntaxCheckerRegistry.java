@@ -50,8 +50,8 @@ public interface SyntaxCheckerRegistry extends SchemaObjectRegistry<SyntaxChecke
      * @throws LdapException if the numeric identifier is invalid
      */
     SyntaxChecker unregister( String numericOid ) throws LdapException;
-    
-    
+
+
     /**
      * Unregisters all SyntaxCheckers defined for a specific schema from
      * this registry.
@@ -59,8 +59,8 @@ public interface SyntaxCheckerRegistry extends SchemaObjectRegistry<SyntaxChecke
      * @param schemaName the name of the schema whose SyntaxCheckers will be removed from
      */
     void unregisterSchemaElements( String schemaName ) throws LdapException;
-    
-    
+
+
     /**
      * Copy the SyntaxCheckerRegistry
      */

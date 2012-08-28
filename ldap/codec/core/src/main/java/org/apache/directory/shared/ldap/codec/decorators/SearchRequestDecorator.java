@@ -216,7 +216,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest setFilter( ExprNode filter )
     {
         topFilter = transform( filter );
-        
+
         return this;
     }
 
@@ -228,7 +228,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     {
         getDecorated().setFilter( filter );
         this.currentFilter = transform( getDecorated().getFilter() );
-        
+
         return this;
     }
 
@@ -761,7 +761,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest setBase( Dn baseDn )
     {
         getDecorated().setBase( baseDn );
-        
+
         return this;
     }
 
@@ -781,7 +781,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest setScope( SearchScope scope )
     {
         getDecorated().setScope( scope );
-        
+
         return this;
     }
 
@@ -801,7 +801,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest setDerefAliases( AliasDerefMode aliasDerefAliases )
     {
         getDecorated().setDerefAliases( aliasDerefAliases );
-        
+
         return this;
     }
 
@@ -821,7 +821,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest setSizeLimit( long entriesMax )
     {
         getDecorated().setSizeLimit( entriesMax );
-        
+
         return this;
     }
 
@@ -841,7 +841,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest setTimeLimit( int secondsMax )
     {
         getDecorated().setTimeLimit( secondsMax );
-        
+
         return this;
     }
 
@@ -861,7 +861,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest setTypesOnly( boolean typesOnly )
     {
         getDecorated().setTypesOnly( typesOnly );
-        
+
         return this;
     }
 
@@ -890,7 +890,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest addAttributes( String... attributes )
     {
         getDecorated().addAttributes( attributes );
-        
+
         return this;
     }
 
@@ -901,7 +901,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest removeAttribute( String attribute )
     {
         getDecorated().removeAttribute( attribute );
-        
+
         return this;
     }
 
@@ -1084,7 +1084,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     public SearchRequest addAbandonListener( AbandonListener listener )
     {
         getDecorated().addAbandonListener( listener );
-        
+
         return this;
     }
 
@@ -1094,33 +1094,33 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
      */
     public SearchRequest setMessageId( int messageId )
     {
-        return (SearchRequest)super.setMessageId( messageId );
+        return ( SearchRequest ) super.setMessageId( messageId );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public SearchRequest addControl( Control control ) throws MessageException
     {
-        return (SearchRequest)super.addControl( control );
+        return ( SearchRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public SearchRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (SearchRequest)super.addAllControls( controls );
+        return ( SearchRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public SearchRequest removeControl( Control control ) throws MessageException
     {
-        return (SearchRequest)super.removeControl( control );
+        return ( SearchRequest ) super.removeControl( control );
     }
 }

@@ -61,7 +61,7 @@ public class BindResponseDsml extends AbstractResultResponseDsml<BindResponse> i
     {
         Element element = root.addElement( "authResponse" );
 
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(), 
+        LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),
             getDecorated().getLdapResult(), getDecorated() );
         ldapResultDsml.toDsml( element );
         return element;

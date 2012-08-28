@@ -161,7 +161,7 @@ public class DITStructureRuleDescriptionSchemaParserTest
     @Test
     public void testNames() throws ParseException
     {
-        SchemaParserTestUtils.testNames(parser, "1", "FORM 1.1");
+        SchemaParserTestUtils.testNames( parser, "1", "FORM 1.1" );
     }
 
 
@@ -367,7 +367,8 @@ public class DITStructureRuleDescriptionSchemaParserTest
 
         assertEquals( 1234567890, ditStructureRule.getRuleId() );
         assertEquals( 2, ditStructureRule.getNames().size() );
-        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", ditStructureRule.getNames().get( 0 ) );
+        assertEquals( "abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", ditStructureRule.getNames()
+            .get( 0 ) );
         assertEquals( "test", ditStructureRule.getNames().get( 1 ) );
         assertEquals( "Descripton \u00E4\u00F6\u00FC\u00DF \u90E8\u9577", ditStructureRule.getDescription() );
         assertTrue( ditStructureRule.isObsolete() );

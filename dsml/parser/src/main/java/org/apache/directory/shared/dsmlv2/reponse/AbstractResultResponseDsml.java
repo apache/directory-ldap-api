@@ -31,7 +31,7 @@ import org.dom4j.Element;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractResultResponseDsml<E extends ResultResponse> 
+public abstract class AbstractResultResponseDsml<E extends ResultResponse>
     extends AbstractResponseDsml<E> implements ResultResponse
 {
     /**

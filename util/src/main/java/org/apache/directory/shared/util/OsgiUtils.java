@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.util;
 
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -42,8 +43,8 @@ public class OsgiUtils
 {
     /** A logger */
     private static final Logger LOG = LoggerFactory.getLogger( OsgiUtils.class );
-    
-    
+
+
     /**
      * All the packages that are exported from all bundles found on the system 
      * classpath. The provided filter if not null is used to prune classpath 
@@ -57,27 +58,27 @@ public class OsgiUtils
         {
             pkgs = new HashSet<String>();
         }
-        
+
         Set<File> candidates = getClasspathCandidates( filter );
-        
+
         for ( File candidate : candidates )
         {
             String exports = getBundleExports( candidate );
-            
+
             if ( exports == null )
             {
                 LOG.debug( "No export found for candidate: {}", candidate );
                 continue;
             }
-            
+
             LOG.debug( "Processing exports for candidate: {}\n\n{}\n", candidate, exports );
             splitIntoPackages( exports, pkgs );
         }
-        
+
         return pkgs;
     }
 
-    
+
     /**
      * Splits an Package-Export OSGi Manifest Attribute value into packages 
      * while stripping away the key/value properties.
@@ -91,12 +92,12 @@ public class OsgiUtils
         {
             pkgs = new HashSet<String>();
         }
-        
+
         int index = 0;
         boolean inPkg = true;
         boolean inProps = false;
         StringBuilder pkg = new StringBuilder();
-        
+
         while ( index < exports.length() )
         {
             if ( inPkg && exports.charAt( index ) != ';' )
@@ -108,14 +109,14 @@ public class OsgiUtils
             {
                 inPkg = false;
                 inProps = true;
-                
+
                 pkgs.add( pkg.toString() );
                 LOG.debug( "Added package: {}", pkg.toString() );
                 pkg.setLength( 0 );
-                
+
                 index += 8;
             }
-            else if ( inProps && exports.charAt( index ) == '"' 
+            else if ( inProps && exports.charAt( index ) == '"'
                 && index + 1 < exports.length()
                 && exports.charAt( index + 1 ) == ',' )
             {
@@ -133,21 +134,21 @@ public class OsgiUtils
                 throw new IllegalStateException( "Should never get here!" );
             }
         }
-        
+
         return pkgs;
     }
-    
-    
+
+
     public static Set<File> getClasspathCandidates( FileFilter filter )
     {
         Set<File> candidates = new HashSet<File>();
         String separator = System.getProperty( "path.separator" );
         String[] cpElements = System.getProperty( "java.class.path" ).split( separator );
-        
+
         for ( String element : cpElements )
         {
             File candidate = new File( element );
-            
+
             if ( candidate.isFile() )
             {
                 if ( filter != null && filter.accept( candidate ) )
@@ -166,11 +167,11 @@ public class OsgiUtils
                 }
             }
         }
-        
+
         return candidates;
     }
 
-    
+
     /**
      * Gets the attribute value for the Export-Bundle OSGi Manifest Attribute.
      * 
@@ -180,26 +181,26 @@ public class OsgiUtils
      * or null if the attribute does not exist.
      */
     public static String getBundleExports( File bundle )
-    {   
+    {
         JarFile jar;
         try
         {
             jar = new JarFile( bundle );
             Manifest manifest = jar.getManifest();
-            
+
             if ( manifest == null )
             {
                 return null;
             }
-            
-            for (Map.Entry<Object, Object> attr : manifest.getMainAttributes().entrySet() )
+
+            for ( Map.Entry<Object, Object> attr : manifest.getMainAttributes().entrySet() )
             {
                 if ( attr.getKey().toString().equals( "Export-Package" ) )
                 {
                     return attr.getValue().toString();
                 }
             }
-            
+
             return null;
         }
         catch ( IOException e )

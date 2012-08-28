@@ -45,6 +45,7 @@ public class SearchScopeSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( SearchScopeSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of SearchScopeSyntaxChecker.
      */
@@ -52,8 +53,8 @@ public class SearchScopeSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.SEARCH_SCOPE_SYNTAX );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -66,14 +67,14 @@ public class SearchScopeSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -81,7 +82,7 @@ public class SearchScopeSyntaxChecker extends SyntaxChecker
         }
 
         strValue = Strings.trim( Strings.toLowerCase( strValue ) );
-        
-        return ( "base".equals( strValue ) || "one".equals(  strValue ) || "sub".equals( strValue ) );
+
+        return ( "base".equals( strValue ) || "one".equals( strValue ) || "sub".equals( strValue ) );
     }
 }

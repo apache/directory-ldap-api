@@ -73,7 +73,6 @@ public class ExtendedResponseImpl extends AbstractResultResponse implements Exte
     // ExtendedResponse Interface Method Implementations
     // ------------------------------------------------------------------------
 
-
     /**
      * Gets the OID uniquely identifying this extended response (a.k.a. its
      * name).
@@ -85,7 +84,7 @@ public class ExtendedResponseImpl extends AbstractResultResponse implements Exte
         return ( ( responseName == null ) ? "" : responseName.toString() );
     }
 
-    
+
     /**
      * Sets the OID uniquely identifying this extended response (a.k.a. its
      * name).

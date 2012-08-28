@@ -51,6 +51,7 @@ public class ImmutableEntry implements Entry
     /** The wrapped Entry for this entry */
     private Entry entry;
 
+
     //-------------------------------------------------------------------------
     // Constructors
     //-------------------------------------------------------------------------
@@ -132,7 +133,7 @@ public class ImmutableEntry implements Entry
      * {@inheritDoc}
      */
     public void add( Attribute... attributes ) throws LdapException
-    { 
+    {
         new Exception().printStackTrace();
         throw new NotImplementedException( "Cannot add an attribute : the entry " + entry.getDn() + " is immutable." );
     }
@@ -174,7 +175,8 @@ public class ImmutableEntry implements Entry
     public void apply( SchemaManager schemaManager )
     {
         new Exception().printStackTrace();
-        throw new NotImplementedException( "Cannot apply the schemaManager : the entry " + entry.getDn() + " is immutable." );
+        throw new NotImplementedException( "Cannot apply the schemaManager : the entry " + entry.getDn()
+            + " is immutable." );
     }
 
 
@@ -726,8 +728,8 @@ public class ImmutableEntry implements Entry
     {
         return entry.isSchemaAware();
     }
-    
-    
+
+
     /**
      * @see Object#equals(Object)
      */

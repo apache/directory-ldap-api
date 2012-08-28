@@ -47,7 +47,7 @@ public class CascadeImpl extends AbstractControl implements Cascade
     }
 
 
-    public void setValue( byte [] value )
+    public void setValue( byte[] value )
     {
     }
 

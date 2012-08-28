@@ -36,23 +36,31 @@ public interface PersistentSearch extends Control
     int CHANGE_TYPES_MIN = ChangeType.ADD.getValue();
 
     int CHANGE_TYPES_MAX = ChangeType.ADD.getValue()
-                           | ChangeType.DELETE.getValue()
-                           | ChangeType.MODIFY.getValue()
-                           | ChangeType.MODDN.getValue();
+        | ChangeType.DELETE.getValue()
+        | ChangeType.MODIFY.getValue()
+        | ChangeType.MODDN.getValue();
+
 
     void setChangesOnly( boolean changesOnly );
 
+
     boolean isChangesOnly();
+
 
     void setReturnECs( boolean returnECs );
 
+
     boolean isReturnECs();
+
 
     void setChangeTypes( int changeTypes );
 
+
     int getChangeTypes();
 
+
     boolean isNotificationEnabled( ChangeType changeType );
+
 
     void enableNotification( ChangeType changeType );
 }

@@ -65,7 +65,7 @@ public class BasicControlDecorator<E> extends ControlDecorator<Control>
         return null;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -80,7 +80,7 @@ public class BasicControlDecorator<E> extends ControlDecorator<Control>
         {
             valueLength = getValue().length;
         }
-        
+
         return valueLength;
     }
 

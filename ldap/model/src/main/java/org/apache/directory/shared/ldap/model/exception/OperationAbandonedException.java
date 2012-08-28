@@ -20,8 +20,6 @@
 package org.apache.directory.shared.ldap.model.exception;
 
 
-
-
 /**
  * Marker exception thrown when an operation is cancelled.
  * 

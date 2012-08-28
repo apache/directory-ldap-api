@@ -51,7 +51,7 @@ public class LdifSchemaLoaderIT
 {
     private static String workingDirectory;
 
-    
+
     @BeforeClass
     public static void setup() throws IOException
     {
@@ -63,12 +63,12 @@ public class LdifSchemaLoaderIT
             int targetPos = path.indexOf( "target" );
             workingDirectory = path.substring( 0, targetPos + 6 );
         }
-        
+
         // Cleanup the target directory
         FileUtils.deleteDirectory( new File( workingDirectory + "/schema" ) );
     }
-    
-    
+
+
     @AfterClass
     public static void cleanup() throws IOException
     {
@@ -76,23 +76,23 @@ public class LdifSchemaLoaderIT
         FileUtils.deleteDirectory( new File( workingDirectory + "/schema" ) );
     }
 
-    
+
     @Test
     public void testLoader() throws Exception
     {
         SchemaLdifExtractor extractor = new DefaultSchemaLdifExtractor( new File( workingDirectory ) );
         extractor.extractOrCopy();
-        
+
         LdifSchemaLoader loader = new LdifSchemaLoader( new File( workingDirectory, "schema" ) );
         SchemaManager sm = new DefaultSchemaManager( loader );
 
         boolean loaded = sm.loadAllEnabled();
-        
+
         if ( !loaded )
         {
-            fail( "Schema load failed : " + Exceptions.printErrors(sm.getErrors()) );
+            fail( "Schema load failed : " + Exceptions.printErrors( sm.getErrors() ) );
         }
-        
+
         assertTrue( sm.getRegistries().getAttributeTypeRegistry().contains( "cn" ) );
     }
 }

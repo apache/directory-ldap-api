@@ -39,18 +39,18 @@ import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CertGenerationFactory 
+public class CertGenerationFactory
     implements ExtendedRequestFactory<CertGenerationRequest, CertGenerationResponse>
 {
     private LdapApiService codec;
-    
-    
+
+
     public CertGenerationFactory( LdapApiService codec )
     {
         this.codec = codec;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -59,7 +59,7 @@ public class CertGenerationFactory
         return CertGenerationRequest.EXTENSION_OID;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -74,7 +74,8 @@ public class CertGenerationFactory
      */
     public CertGenerationResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
-        CertGenerationResponseDecorator response = new CertGenerationResponseDecorator( codec, new CertGenerationResponseImpl() );
+        CertGenerationResponseDecorator response = new CertGenerationResponseDecorator( codec,
+            new CertGenerationResponseImpl() );
         response.setResponseValue( encodedValue );
         return response;
     }
@@ -94,7 +95,8 @@ public class CertGenerationFactory
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestDecorator<CertGenerationRequest, CertGenerationResponse> decorate( ExtendedRequest<?> modelRequest )
+    public ExtendedRequestDecorator<CertGenerationRequest, CertGenerationResponse> decorate(
+        ExtendedRequest<?> modelRequest )
     {
         if ( modelRequest instanceof CertGenerationRequestDecorator )
         {

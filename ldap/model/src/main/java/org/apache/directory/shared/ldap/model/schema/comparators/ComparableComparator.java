@@ -40,6 +40,7 @@ public class ComparableComparator<T> extends LdapComparator<Comparable<T>>
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ComparableComparator.class );
 
+
     /**
      * The ComparableComparator constructor.
      *

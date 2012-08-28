@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.comparators;
 
+
 import static org.junit.Assert.assertEquals;
 
 import com.mycila.junit.concurrent.Concurrency;
@@ -39,19 +40,20 @@ import org.junit.runner.RunWith;
 public class CsnComparatorTest
 {
     private CsnComparator comparator;
-    
+
+
     @Before
     public void init()
     {
         comparator = new CsnComparator( null );
     }
-    
-    
+
+
     @Test
     public void testNullCSNs()
     {
         assertEquals( 0, comparator.compare( null, null ) );
-        
+
         Csn csn2 = new Csn( System.currentTimeMillis(), 1, 1, 1 );
         assertEquals( -1, comparator.compare( null, csn2.toString() ) );
 
@@ -65,11 +67,11 @@ public class CsnComparatorTest
         long t0 = System.currentTimeMillis();
         Csn csn1 = new Csn( t0, 0, 0, 0 );
         Csn csn2 = new Csn( t0, 0, 0, 0 );
-        
+
         assertEquals( 0, comparator.compare( csn1.toString(), csn2.toString() ) );
     }
-    
-    
+
+
     @Test
     public void testDifferentTimeStampCSNs()
     {
@@ -77,43 +79,43 @@ public class CsnComparatorTest
         long t1 = System.currentTimeMillis() + 1000;
         Csn csn1 = new Csn( t0, 0, 0, 0 );
         Csn csn2 = new Csn( t1, 0, 0, 0 );
-        
+
         assertEquals( -1, comparator.compare( csn1.toString(), csn2.toString() ) );
         assertEquals( 1, comparator.compare( csn2.toString(), csn1.toString() ) );
     }
-    
-    
+
+
     @Test
     public void testDifferentChangeCountCSNs()
     {
         long t0 = System.currentTimeMillis();
         Csn csn1 = new Csn( t0, 0, 0, 0 );
         Csn csn2 = new Csn( t0, 1, 0, 0 );
-        
+
         assertEquals( -1, comparator.compare( csn1.toString(), csn2.toString() ) );
         assertEquals( 1, comparator.compare( csn2.toString(), csn1.toString() ) );
     }
-    
-    
+
+
     @Test
     public void testDifferentReplicaIdCSNs()
     {
         long t0 = System.currentTimeMillis();
         Csn csn1 = new Csn( t0, 0, 0, 0 );
         Csn csn2 = new Csn( t0, 0, 1, 0 );
-        
+
         assertEquals( -1, comparator.compare( csn1.toString(), csn2.toString() ) );
         assertEquals( 1, comparator.compare( csn2.toString(), csn1.toString() ) );
     }
-    
-    
+
+
     @Test
     public void testDifferentOperationNumberCSNs()
     {
         long t0 = System.currentTimeMillis();
         Csn csn1 = new Csn( t0, 0, 0, 0 );
         Csn csn2 = new Csn( t0, 0, 0, 1 );
-        
+
         assertEquals( -1, comparator.compare( csn1.toString(), csn2.toString() ) );
         assertEquals( 1, comparator.compare( csn2.toString(), csn1.toString() ) );
     }

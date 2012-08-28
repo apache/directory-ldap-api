@@ -146,7 +146,7 @@ public class BatchRequestTest extends AbstractTest
 
         assertEquals( 1, batchRequest.getRequests().size() );
 
-        if ( batchRequest.getCurrentRequest() instanceof BindRequest)
+        if ( batchRequest.getCurrentRequest() instanceof BindRequest )
         {
             assertTrue( true );
         }
@@ -326,7 +326,7 @@ public class BatchRequestTest extends AbstractTest
 
         assertEquals( 1, batchRequest.getRequests().size() );
 
-        if ( batchRequest.getCurrentRequest() instanceof ExtendedRequest)
+        if ( batchRequest.getCurrentRequest() instanceof ExtendedRequest )
         {
             assertTrue( true );
         }
@@ -398,7 +398,7 @@ public class BatchRequestTest extends AbstractTest
 
         assertEquals( 1, batchRequest.getRequests().size() );
 
-        if ( batchRequest.getCurrentRequest() instanceof ModifyRequest)
+        if ( batchRequest.getCurrentRequest() instanceof ModifyRequest )
         {
             assertTrue( true );
         }
@@ -756,7 +756,7 @@ public class BatchRequestTest extends AbstractTest
 
         BatchRequestDsml batchRequest = parser.getBatchRequest();
 
-        List<DsmlDecorator<? extends Request>> requests = 
+        List<DsmlDecorator<? extends Request>> requests =
             batchRequest.getRequests();
 
         assertEquals( 2, requests.size() );

@@ -53,6 +53,7 @@ public class OidLenSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( OidLenSyntaxChecker.class );
 
+
     /**
      * 
      * Creates a new instance of OidLenSyntaxChecker.
@@ -62,7 +63,7 @@ public class OidLenSyntaxChecker extends SyntaxChecker
     {
         super( SchemaConstants.OID_LEN_SYNTAX );
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -76,14 +77,14 @@ public class OidLenSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -95,15 +96,15 @@ public class OidLenSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for '{}'", value );
             return false;
         }
-        
+
         // We are looking at the first position of the len part
         int pos = strValue.indexOf( '{' );
-            
+
         if ( pos < 0 )
         {
             // Not found ... but it may still be a valid OID
-            boolean result = Oid.isOid(strValue);
-            
+            boolean result = Oid.isOid( strValue );
+
             if ( result )
             {
                 LOG.debug( "Syntax valid for '{}'", value );
@@ -112,44 +113,52 @@ public class OidLenSyntaxChecker extends SyntaxChecker
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
             }
-            
+
             return result;
         }
         else
         {
             // we should have a len value. First check that the OID is valid
             String oid = strValue.substring( 0, pos );
-            
+
             if ( !Oid.isOid( oid ) )
             {
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
             }
-            
+
             String len = strValue.substring( pos );
-            
+
             // We must have a lnumber and a '}' at the end
-            if ( len.charAt( len.length() -1 ) != '}' )
+            if ( len.charAt( len.length() - 1 ) != '}' )
             {
                 // No final '}'
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
             }
-            
+
             for ( int i = 1; i < len.length() - 1; i++ )
             {
-                switch ( len.charAt(i) )
+                switch ( len.charAt( i ) )
                 {
-                    case '0': case '1': case '2' : case '3': case '4':
-                    case '5': case '6': case '7' : case '8': case '9':
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
                         break;
-                        
-                    default: 
+
+                    default:
                         LOG.debug( "Syntax invalid for '{}'", value );
                         return false;
                 }
             }
-            
+
             if ( ( len.charAt( 1 ) == '0' ) && len.length() > 3 )
             {
                 // A number can't start with a '0' unless it's the only
@@ -157,7 +166,7 @@ public class OidLenSyntaxChecker extends SyntaxChecker
                 LOG.debug( "Syntax invalid for '{}'", value );
                 return false;
             }
-            
+
             LOG.debug( "Syntax valid for '{}'", value );
             return true;
         }

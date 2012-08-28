@@ -51,7 +51,7 @@ public interface SchemaLoader
      */
     Schema getSchema( String schemaName );
 
-    
+
     /**
      * Build a list of AttributeTypes read from the underlying storage for
      * a list of specified schema
@@ -278,20 +278,20 @@ public interface SchemaLoader
      */
     Collection<Schema> getAllEnabled() throws Exception;
 
-    
+
     /**
      * @return the list of all schemas
      * @throws Exception TODO
      */
     Collection<Schema> getAllSchemas() throws Exception;
 
-    
+
     /**
      * Add a new schema to the schema's list
      */
     void addSchema( Schema schema );
 
-    
+
     /**
      * Remove a schema from the schema's list
      */

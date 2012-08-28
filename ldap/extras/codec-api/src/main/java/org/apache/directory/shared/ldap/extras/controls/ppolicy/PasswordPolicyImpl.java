@@ -33,11 +33,11 @@ public class PasswordPolicyImpl implements PasswordPolicy
 {
     /** The criticality of this {@link Control} */
     private boolean criticality;
-    
+
     /** The password policy response component if this is a response control */
     private PasswordPolicyResponse response;
-    
-    
+
+
     /**
      * Creates a new instance of a PasswordPolicy request Control without any
      * response data associated with it.
@@ -101,7 +101,7 @@ public class PasswordPolicyImpl implements PasswordPolicy
         this.criticality = isCritical;
     }
 
-    
+
     /**
      * 
      * {@inheritDoc}
@@ -110,7 +110,7 @@ public class PasswordPolicyImpl implements PasswordPolicy
     {
         this.response = response;
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -120,7 +120,7 @@ public class PasswordPolicyImpl implements PasswordPolicy
         return response != null;
     }
 
-    
+
     /**
      * 
      * {@inheritDoc}
@@ -128,7 +128,7 @@ public class PasswordPolicyImpl implements PasswordPolicy
     public PasswordPolicyResponse setResponse( boolean hasResponse )
     {
         PasswordPolicyResponse old = this.response;
-        
+
         if ( hasResponse )
         {
             this.response = new PasswordPolicyResponseImpl();
@@ -137,10 +137,10 @@ public class PasswordPolicyImpl implements PasswordPolicy
         {
             this.response = null;
         }
-        
+
         return old;
     }
-    
+
 
     /**
      * {@inheritDoc}

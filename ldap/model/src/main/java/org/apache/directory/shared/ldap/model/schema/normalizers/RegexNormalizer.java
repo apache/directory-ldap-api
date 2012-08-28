@@ -54,7 +54,7 @@ public class RegexNormalizer extends Normalizer
         super( oid );
         if ( regexes != null )
         {
-            this.regexes = new Pattern[ regexes.length ];
+            this.regexes = new Pattern[regexes.length];
             System.arraycopy( regexes, 0, this.regexes, 0, regexes.length );
 
             matchers = new Matcher[regexes.length];
@@ -63,8 +63,8 @@ public class RegexNormalizer extends Normalizer
             {
                 matchers[i] = regexes[i].matcher( "" );
             }
-        } 
-        else 
+        }
+        else
         {
             this.regexes = null;
             matchers = new Matcher[0];
@@ -99,8 +99,6 @@ public class RegexNormalizer extends Normalizer
     }
 
 
-
-
     /**
      * {@inheritDoc}
      */
@@ -112,7 +110,7 @@ public class RegexNormalizer extends Normalizer
         }
 
         String str = value;
-        
+
         for ( int i = 0; i < matchers.length; i++ )
         {
 
@@ -121,8 +119,8 @@ public class RegexNormalizer extends Normalizer
 
         return str;
     }
-    
-    
+
+
     /**
      * @see java.lang.Object#toString()
      */

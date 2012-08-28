@@ -29,6 +29,7 @@ import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.NameAndOptio
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
 /**
  * Test cases for NameAndOptionalUIDSyntaxChecker.
  *
@@ -63,8 +64,8 @@ public class NameAndOptionalUIDSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "1" ) );
         assertFalse( checker.isValidSyntax( "#" ) );
     }
-    
-    
+
+
     @Test
     public void testWrongDN()
     {
@@ -73,7 +74,8 @@ public class NameAndOptionalUIDSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "a=b+" ) );
         assertFalse( checker.isValidSyntax( "a=b,c=d," ) );
     }
-    
+
+
     @Test
     public void testWrongUID()
     {
@@ -82,8 +84,8 @@ public class NameAndOptionalUIDSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "a=b##'0101'B" ) );
         assertFalse( checker.isValidSyntax( "a=b#'0101'C" ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectDN()
     {
@@ -93,6 +95,7 @@ public class NameAndOptionalUIDSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( "a=b,c=d" ) );
         assertTrue( checker.isValidSyntax( "a=b\\,c = d, e=f" ) );
     }
+
 
     @Test
     public void testCorrectDNAndUID()

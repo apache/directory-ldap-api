@@ -97,7 +97,7 @@ public enum GracefulDisconnectStatesEnum implements States
         return ( ( state == END_STATE.ordinal() ) ? "GRACEFUL_DISCONNECT_END_STATE" : name() );
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -105,8 +105,8 @@ public enum GracefulDisconnectStatesEnum implements States
     {
         return this == END_STATE;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

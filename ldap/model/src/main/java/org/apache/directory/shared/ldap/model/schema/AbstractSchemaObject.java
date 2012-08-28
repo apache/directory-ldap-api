@@ -105,10 +105,10 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
     /** A map containing the list of supported extensions */
     protected Map<String, List<String>> extensions;
-    
+
     /** A locked to avoid modifications when set to true */
     protected volatile boolean locked;
-    
+
     /** The hashcode for this schemaObject */
     private int h;
 
@@ -170,7 +170,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         this.oid = oid;
     }
 
@@ -255,7 +255,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             // We must avoid duplicated names, as names are case insensitive
@@ -264,14 +264,14 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             // Fills a set with all the existing names
             for ( String name : this.names )
             {
-                lowerNames.add( Strings.toLowerCase(name) );
+                lowerNames.add( Strings.toLowerCase( name ) );
             }
 
             for ( String name : namesToAdd )
             {
                 if ( name != null )
                 {
-                    String lowerName = Strings.toLowerCase(name);
+                    String lowerName = Strings.toLowerCase( name );
                     // Check that the lower cased names is not already present
                     if ( !lowerNames.contains( lowerName ) )
                     {
@@ -296,7 +296,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( names == null )
         {
             return;
@@ -329,7 +329,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( names == null )
         {
             return;
@@ -338,7 +338,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         if ( !isReadOnly )
         {
             this.names.clear();
-            
+
             for ( String name : names )
             {
                 if ( name != null )
@@ -372,7 +372,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.description = description;
@@ -402,7 +402,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.specification = specification;
@@ -469,7 +469,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         this.isReadOnly = readOnly;
     }
 
@@ -499,7 +499,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.isObsolete = obsolete;
@@ -527,7 +527,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             extensions.put( key, values );
@@ -546,7 +546,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly && ( extensions != null ) )
         {
             this.extensions = new HashMap<String, List<String>>();
@@ -613,7 +613,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.schemaName = schemaName;
@@ -898,7 +898,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         // Clear the names
         names.clear();
     }
-    
+
 
     /**
      * {@inheritDoc}
@@ -909,7 +909,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         {
             return;
         }
-        
+
         h = 37;
 
         // The OID
@@ -957,7 +957,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
                 }
             }
         }
-        
+
         locked = true;
     }
 }

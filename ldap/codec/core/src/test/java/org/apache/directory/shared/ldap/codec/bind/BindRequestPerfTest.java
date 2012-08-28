@@ -53,7 +53,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-@Ignore( "Ignore performance tests: should not be with integration tests" )
+@Ignore("Ignore performance tests: should not be with integration tests")
 public class BindRequestPerfTest extends AbstractCodecServiceTest
 {
     /**
@@ -82,18 +82,80 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
                 0x03, // version INTEGER (1..127),
                 0x04,
                 0x1F, // name LDAPDN,
-                'u', 'i', 'd', '=', 'a', 'k', 'a', 'r', 'a', 's', 'u', 'l', 'u', ',', 'd', 'c', '=', 'e', 'x', 'a',
-                'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                'u',
+                'i',
+                'd',
+                '=',
+                'a',
+                'k',
+                'a',
+                'r',
+                'a',
+                's',
+                'u',
+                'l',
+                'u',
+                ',',
+                'd',
+                'c',
+                '=',
+                'e',
+                'x',
+                'a',
+                'm',
+                'p',
+                'l',
+                'e',
+                ',',
+                'd',
+                'c',
+                '=',
+                'c',
+                'o',
+                'm',
                 ( byte ) 0x80,
                 0x08, // authentication AuthenticationChoice
                 // AuthenticationChoice ::= CHOICE { simple [0] OCTET STRING,
                 // ...
-                'p', 'a', 's', 's', 'w', 'o', 'r', 'd', ( byte ) 0xA0,
+                'p',
+                'a',
+                's',
+                's',
+                'w',
+                'o',
+                'r',
+                'd',
+                ( byte ) 0xA0,
                 0x1B, // A control
-                0x30, 0x19, 0x04, 0x17, 0x32, 0x2E, 0x31, 0x36, 0x2E, 0x38, 0x34, 0x30, 0x2E, 0x31, 0x2E, 0x31, 0x31,
-                0x33, 0x37, 0x33, 0x30, 0x2E, 0x33, 0x2E, 0x34, 0x2E, 0x32 } );
+                0x30,
+                0x19,
+                0x04,
+                0x17,
+                0x32,
+                0x2E,
+                0x31,
+                0x36,
+                0x2E,
+                0x38,
+                0x34,
+                0x30,
+                0x2E,
+                0x31,
+                0x2E,
+                0x31,
+                0x31,
+                0x33,
+                0x37,
+                0x33,
+                0x30,
+                0x2E,
+                0x33,
+                0x2E,
+                0x34,
+                0x2E,
+                0x32 } );
 
-        String decodedPdu = Strings.dumpBytes(stream.array());
+        String decodedPdu = Strings.dumpBytes( stream.array() );
         stream.flip();
 
         // Allocate a LdapMessage Container
@@ -131,7 +193,7 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
         assertTrue( bindRequest.isVersion3() );
         assertEquals( "uid=akarasulu,dc=example,dc=com", bindRequest.getName().toString() );
         assertTrue( bindRequest.isSimple() );
-        assertEquals( "password", Strings.utf8ToString(bindRequest.getCredentials()) );
+        assertEquals( "password", Strings.utf8ToString( bindRequest.getCredentials() ) );
 
         // Check the Control
         Map<String, Control> controls = bindRequest.getControls();
@@ -139,7 +201,8 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
         assertEquals( 1, controls.size() );
 
         @SuppressWarnings("unchecked")
-        CodecControl<Control> control = (org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls.get( "2.16.840.1.113730.3.4.2" );
+        CodecControl<Control> control = ( org.apache.directory.shared.ldap.codec.api.CodecControl<Control> ) controls
+            .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
         assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
 
@@ -151,7 +214,7 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
             // Check the length
             assertEquals( 0x52, bb.limit() );
 
-            String encodedPdu = Strings.dumpBytes(bb.array());
+            String encodedPdu = Strings.dumpBytes( bb.array() );
 
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -183,7 +246,7 @@ public class BindRequestPerfTest extends AbstractCodecServiceTest
 
             bindRequest.setSimple( true );
             bindRequest.setName( name );
-            bindRequest.setCredentials( Strings.getBytesUtf8("password") );
+            bindRequest.setCredentials( Strings.getBytesUtf8( "password" ) );
             Control control = new OpaqueControl( "2.16.840.1.113730.3.4.2" );
 
             bindRequest.addControl( control );

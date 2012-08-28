@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema;
 
+
 import org.apache.directory.shared.i18n.I18n;
 
 
@@ -36,13 +37,13 @@ import org.apache.directory.shared.i18n.I18n;
 public enum ObjectClassTypeEnum
 {
     /** The enumeration constant value for the abstract objectClasses */
-    ABSTRACT( 0 ),
+    ABSTRACT(0),
 
     /** The enumeration constant value for the auxillary objectClasses */
-    AUXILIARY( 1 ),
+    AUXILIARY(1),
 
     /** The enumeration constant value for the structural objectClasses */
-    STRUCTURAL( 2 );
+    STRUCTURAL(2);
 
     /** The int constant value for the abstract objectClasses */
     public static final int ABSTRACT_VAL = 0;
@@ -51,11 +52,12 @@ public enum ObjectClassTypeEnum
     public static final int AUXILIARY_VAL = 1;
 
     /** The int constant value for the structural objectClasses */
-    public static final int STRUCTURAL_VAL=2;
-    
+    public static final int STRUCTURAL_VAL = 2;
+
     /** Stores the integer value of each element of the enumeration */
     private int value;
-    
+
+
     /**
      * Private constructor so no other instances can be created other than the
      * public static constants in this class.
@@ -70,7 +72,7 @@ public enum ObjectClassTypeEnum
         this.value = value;
     }
 
-    
+
     /**
      * @return The value associated with the current element.
      */
@@ -78,6 +80,7 @@ public enum ObjectClassTypeEnum
     {
         return value;
     }
+
 
     /**
      * Gets the objectClass type enumeration of AUXILIARY, STRUCTURAL, or,
@@ -104,6 +107,6 @@ public enum ObjectClassTypeEnum
             return ABSTRACT;
         }
 
-        throw new IllegalArgumentException( I18n.err( I18n.ERR_04327, name) );
+        throw new IllegalArgumentException( I18n.err( I18n.ERR_04327, name ) );
     }
 }

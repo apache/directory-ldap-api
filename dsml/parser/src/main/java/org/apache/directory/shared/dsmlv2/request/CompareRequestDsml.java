@@ -37,7 +37,7 @@ import org.dom4j.Element;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CompareRequestDsml 
+public class CompareRequestDsml
     extends AbstractResultResponseRequestDsml<CompareRequest, CompareResponse>
     implements CompareRequest
 {
@@ -120,7 +120,7 @@ public class CompareRequestDsml
     public CompareRequest setName( Dn entry )
     {
         getDecorated().setName( entry );
-        
+
         return this;
     }
 
@@ -180,7 +180,7 @@ public class CompareRequestDsml
     public CompareRequest setAssertionValue( String value )
     {
         getDecorated().setAssertionValue( value );
-        
+
         return this;
     }
 
@@ -191,7 +191,7 @@ public class CompareRequestDsml
     public CompareRequest setAssertionValue( byte[] value )
     {
         getDecorated().setAssertionValue( value );
-        
+
         return this;
     }
 
@@ -211,7 +211,7 @@ public class CompareRequestDsml
     public CompareRequest setAttributeId( String attrId )
     {
         getDecorated().setAttributeId( attrId );
-        
+
         return this;
     }
 
@@ -223,42 +223,42 @@ public class CompareRequestDsml
     {
         return getDecorated().getAssertionValue();
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest addControl( Control control ) throws MessageException
     {
-        return (CompareRequest)super.addControl( control );
+        return ( CompareRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (CompareRequest)super.addAllControls( controls );
+        return ( CompareRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public CompareRequest removeControl( Control control ) throws MessageException
     {
-        return (CompareRequest)super.removeControl( control );
+        return ( CompareRequest ) super.removeControl( control );
     }
 }

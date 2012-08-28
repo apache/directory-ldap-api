@@ -58,7 +58,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
     /** The ASN 1 decoder instance */
     private Asn1Decoder asn1Decoder;
 
-    
+
     /**
      * Creates a new instance of LdapProtocolEncoder.
      *
@@ -77,7 +77,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
     {
         @SuppressWarnings("unchecked")
         LdapMessageContainer<MessageDecorator<? extends Message>> messageContainer =
-            (LdapMessageContainer<MessageDecorator<? extends Message>> ) 
+            ( LdapMessageContainer<MessageDecorator<? extends Message>> )
             session.getAttribute( "messageContainer" );
 
         if ( session.containsAttribute( "maxPDUSize" ) )
@@ -91,7 +91,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
         ByteBuffer buf = in.buf();
 
         decode( buf, messageContainer, decodedMessages );
-        
+
         for ( Message message : decodedMessages )
         {
             out.write( message );
@@ -110,7 +110,8 @@ public class LdapProtocolDecoder implements ProtocolDecoder
      * @param decodedMessages The list of decoded messages
      * @throws Exception If the decoding failed
      */
-    private void decode( ByteBuffer buffer, LdapMessageContainer<MessageDecorator<? extends Message>> messageContainer, List<Message> decodedMessages ) throws DecoderException
+    private void decode( ByteBuffer buffer, LdapMessageContainer<MessageDecorator<? extends Message>> messageContainer,
+        List<Message> decodedMessages ) throws DecoderException
     {
         buffer.mark();
 
@@ -138,7 +139,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
                     }
                     else
                     {
-                        LOG.debug( Strings.dumpBytes(array) );
+                        LOG.debug( Strings.dumpBytes( array ) );
                     }
 
                     buffer.reset();
@@ -182,7 +183,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
         }
     }
 
-    
+
     /**
      * {@inheritDoc}
      */

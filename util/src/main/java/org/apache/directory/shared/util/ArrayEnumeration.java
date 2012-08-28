@@ -45,13 +45,15 @@ public class ArrayEnumeration implements Enumeration
      * @param array
      *            the underlying array that is wrapped
      */
-    public ArrayEnumeration(Object[] array)
+    public ArrayEnumeration( Object[] array )
     {
         if ( array != null )
         {
-            this.array = new Object[ array.length ];
+            this.array = new Object[array.length];
             System.arraycopy( array, 0, this.array, 0, array.length );
-        } else {
+        }
+        else
+        {
             this.array = null;
         }
     }

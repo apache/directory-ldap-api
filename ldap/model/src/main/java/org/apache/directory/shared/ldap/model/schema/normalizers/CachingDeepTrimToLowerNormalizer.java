@@ -20,8 +20,6 @@
 package org.apache.directory.shared.ldap.model.schema.normalizers;
 
 
-
-
 /**
  * A deep trimming normalizer that caches normalizations to prevent repeat
  * normalizations from occurring needlessly.  Try to use this sparing for only

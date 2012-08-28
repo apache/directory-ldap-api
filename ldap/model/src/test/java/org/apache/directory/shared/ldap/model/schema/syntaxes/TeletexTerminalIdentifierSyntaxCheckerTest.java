@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.TeletexTerminalIdentifierSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for TeletexTerminalIdentifierSyntaxChecker.
@@ -58,7 +60,8 @@ public class TeletexTerminalIdentifierSyntaxCheckerTest
     public void testWrongCase() throws Exception
     {
         assertFalse( checker.isValidSyntax( "test$" ) );
-        assertFalse( checker.isValidSyntax( new String( new byte[]{ 't', 'e', 's', 't', 0x00, 0x7F, (byte)0x80, '$', 't', 'e', 's', 't' }, "UTF-8" ) ) );
+        assertFalse( checker.isValidSyntax( new String( new byte[]
+            { 't', 'e', 's', 't', 0x00, 0x7F, ( byte ) 0x80, '$', 't', 'e', 's', 't' }, "UTF-8" ) ) );
         assertFalse( checker.isValidSyntax( "test$$" ) );
         assertFalse( checker.isValidSyntax( "test$a:b" ) );
         assertFalse( checker.isValidSyntax( "test$misc" ) );
@@ -70,8 +73,8 @@ public class TeletexTerminalIdentifierSyntaxCheckerTest
         assertFalse( checker.isValidSyntax( "test$misc:a\\2b" ) );
         assertFalse( checker.isValidSyntax( "test$misc:a\\5b" ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectCase() throws Exception
     {
@@ -82,7 +85,8 @@ public class TeletexTerminalIdentifierSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( "test$page:abc" ) );
         assertTrue( checker.isValidSyntax( "test$private:abc" ) );
         assertTrue( checker.isValidSyntax( "test$private:abc$misc:def" ) );
-        assertTrue( checker.isValidSyntax( "test$misc:" + new String( new byte[]{ 't', 'e', 's', 't', 0x00, 0x7F, (byte)0xFF}, "UTF-8" ) ) );
+        assertTrue( checker.isValidSyntax( "test$misc:" + new String( new byte[]
+            { 't', 'e', 's', 't', 0x00, 0x7F, ( byte ) 0xFF }, "UTF-8" ) ) );
         assertTrue( checker.isValidSyntax( "test$misc:a\\5c" ) );
         assertTrue( checker.isValidSyntax( "test$misc:a\\5C" ) );
         assertTrue( checker.isValidSyntax( "test$misc:a\\24" ) );

@@ -80,19 +80,19 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
          *     
          * Creates the GracefulShutdown object
          */
-        super.transitions[GracefulShutdownStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = 
-            new GrammarTransition<GracefulShutdownContainer>( GracefulShutdownStatesEnum.START_STATE, 
-                GracefulShutdownStatesEnum.GRACEFUL_SHUTDOWN_SEQUENCE_STATE, 
+        super.transitions[GracefulShutdownStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
+            new GrammarTransition<GracefulShutdownContainer>( GracefulShutdownStatesEnum.START_STATE,
+                GracefulShutdownStatesEnum.GRACEFUL_SHUTDOWN_SEQUENCE_STATE,
                 UniversalTag.SEQUENCE.getValue(),
                 new GrammarAction<GracefulShutdownContainer>( "Init GracefulShutdown" )
-            {
-                public void action( GracefulShutdownContainer container )
                 {
-                    GracefulShutdown gracefulShutdown = new GracefulShutdown();
-                    container.setGracefulShutdown( gracefulShutdown );
-                    container.setGrammarEndAllowed( true );
-                }
-            } );
+                    public void action( GracefulShutdownContainer container )
+                    {
+                        GracefulShutdown gracefulShutdown = new GracefulShutdown();
+                        container.setGracefulShutdown( gracefulShutdown );
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
 
         /**
          * Transition from graceful shutdown to time offline
@@ -104,36 +104,38 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
          * Set the time offline value into the GracefulShutdown
          * object.
          */
-        super.transitions[GracefulShutdownStatesEnum.GRACEFUL_SHUTDOWN_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER.getValue()] = 
-            new GrammarTransition<GracefulShutdownContainer>( GracefulShutdownStatesEnum.GRACEFUL_SHUTDOWN_SEQUENCE_STATE, 
-                                    GracefulShutdownStatesEnum.TIME_OFFLINE_STATE, 
-                                    UniversalTag.INTEGER.getValue(), 
+        super.transitions[GracefulShutdownStatesEnum.GRACEFUL_SHUTDOWN_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER
+            .getValue()] =
+            new GrammarTransition<GracefulShutdownContainer>(
+                GracefulShutdownStatesEnum.GRACEFUL_SHUTDOWN_SEQUENCE_STATE,
+                GracefulShutdownStatesEnum.TIME_OFFLINE_STATE,
+                UniversalTag.INTEGER.getValue(),
                 new GrammarAction<GracefulShutdownContainer>( "Set Graceful Shutdown time offline" )
-            {
-                public void action( GracefulShutdownContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( GracefulShutdownContainer container ) throws DecoderException
                     {
-                        int timeOffline = IntegerDecoder.parse( value, 0, 720 );
+                        Value value = container.getCurrentTLV().getValue();
 
-                        if ( IS_DEBUG )
+                        try
                         {
-                            LOG.debug( "Time Offline = " + timeOffline );
-                        }
+                            int timeOffline = IntegerDecoder.parse( value, 0, 720 );
 
-                        container.getGracefulShutdown().setTimeOffline( timeOffline );
-                        container.setGrammarEndAllowed( true );
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "Time Offline = " + timeOffline );
+                            }
+
+                            container.getGracefulShutdown().setTimeOffline( timeOffline );
+                            container.setGrammarEndAllowed( true );
+                        }
+                        catch ( IntegerDecoderException e )
+                        {
+                            String msg = I18n.err( I18n.ERR_04037, Strings.dumpBytes( value.getData() ) );
+                            LOG.error( msg );
+                            throw new DecoderException( msg );
+                        }
                     }
-                    catch ( IntegerDecoderException e )
-                    {
-                        String msg = I18n.err( I18n.ERR_04037, Strings.dumpBytes(value.getData()) );
-                        LOG.error( msg );
-                        throw new DecoderException( msg );
-                    }
-                }
-            } );
+                } );
 
         /**
          * Transition from time offline to delay
@@ -145,38 +147,38 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
          * Set the delay value into the GracefulShutdown
          * object.
          */
-        super.transitions[GracefulShutdownStatesEnum.TIME_OFFLINE_STATE.ordinal()][GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG] = 
-            new GrammarTransition<GracefulShutdownContainer>( GracefulShutdownStatesEnum.TIME_OFFLINE_STATE, 
-                                    GracefulShutdownStatesEnum.DELAY_STATE, 
-                                    GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG, 
+        super.transitions[GracefulShutdownStatesEnum.TIME_OFFLINE_STATE.ordinal()][GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG] =
+            new GrammarTransition<GracefulShutdownContainer>( GracefulShutdownStatesEnum.TIME_OFFLINE_STATE,
+                GracefulShutdownStatesEnum.DELAY_STATE,
+                GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG,
 
                 new GrammarAction<GracefulShutdownContainer>( "Set Graceful Shutdown Delay" )
-            {
-                public void action( GracefulShutdownContainer container ) throws DecoderException
                 {
-                    Value value = container.getCurrentTLV().getValue();
-
-                    try
+                    public void action( GracefulShutdownContainer container ) throws DecoderException
                     {
-                        int delay = IntegerDecoder.parse( value, 0, 86400 );
+                        Value value = container.getCurrentTLV().getValue();
 
-                        if ( IS_DEBUG )
+                        try
                         {
-                            LOG.debug( "Delay = " + delay );
-                        }
+                            int delay = IntegerDecoder.parse( value, 0, 86400 );
 
-                        container.getGracefulShutdown().setDelay( delay );
-                        container.setGrammarEndAllowed( true );
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "Delay = " + delay );
+                            }
+
+                            container.getGracefulShutdown().setDelay( delay );
+                            container.setGrammarEndAllowed( true );
+                        }
+                        catch ( IntegerDecoderException e )
+                        {
+                            String msg = I18n.err( I18n.ERR_04036, Strings.dumpBytes( value.getData() ) );
+                            LOG.error( msg );
+                            throw new DecoderException( msg );
+                        }
                     }
-                    catch ( IntegerDecoderException e )
-                    {
-                        String msg = I18n.err( I18n.ERR_04036, Strings.dumpBytes(value.getData()) );
-                        LOG.error( msg );
-                        throw new DecoderException( msg );
-                    }
-                }
-            } );
-        
+                } );
+
         /**
          * Transition from graceful shutdown to delay
          * 
@@ -187,39 +189,39 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
          * Set the delay value into the GracefulShutdown
          * object.
          */
-        super.transitions[GracefulShutdownStatesEnum.GRACEFUL_SHUTDOWN_SEQUENCE_STATE.ordinal()]
-                         [GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG] = 
-            new GrammarTransition<GracefulShutdownContainer>( GracefulShutdownStatesEnum.GRACEFUL_SHUTDOWN_SEQUENCE_STATE, 
-                                    GracefulShutdownStatesEnum.DELAY_STATE, 
-                                    GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG, 
+        super.transitions[GracefulShutdownStatesEnum.GRACEFUL_SHUTDOWN_SEQUENCE_STATE.ordinal()][GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG] =
+            new GrammarTransition<GracefulShutdownContainer>(
+                GracefulShutdownStatesEnum.GRACEFUL_SHUTDOWN_SEQUENCE_STATE,
+                GracefulShutdownStatesEnum.DELAY_STATE,
+                GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG,
 
                 new GrammarAction<GracefulShutdownContainer>( "Set Graceful Shutdown Delay" )
-            {
-                public void action( GracefulShutdownContainer container ) throws DecoderException
                 {
-                    GracefulShutdownContainer gracefulShutdownContainer = ( GracefulShutdownContainer ) container;
-                    Value value = gracefulShutdownContainer.getCurrentTLV().getValue();
-
-                    try
+                    public void action( GracefulShutdownContainer container ) throws DecoderException
                     {
-                        int delay = IntegerDecoder.parse( value, 0, 86400 );
+                        GracefulShutdownContainer gracefulShutdownContainer = ( GracefulShutdownContainer ) container;
+                        Value value = gracefulShutdownContainer.getCurrentTLV().getValue();
 
-                        if ( IS_DEBUG )
+                        try
                         {
-                            LOG.debug( "Delay = " + delay );
-                        }
+                            int delay = IntegerDecoder.parse( value, 0, 86400 );
 
-                        gracefulShutdownContainer.getGracefulShutdown().setDelay( delay );
-                        gracefulShutdownContainer.setGrammarEndAllowed( true );
+                            if ( IS_DEBUG )
+                            {
+                                LOG.debug( "Delay = " + delay );
+                            }
+
+                            gracefulShutdownContainer.getGracefulShutdown().setDelay( delay );
+                            gracefulShutdownContainer.setGrammarEndAllowed( true );
+                        }
+                        catch ( IntegerDecoderException e )
+                        {
+                            String msg = I18n.err( I18n.ERR_04036, Strings.dumpBytes( value.getData() ) );
+                            LOG.error( msg );
+                            throw new DecoderException( msg );
+                        }
                     }
-                    catch ( IntegerDecoderException e )
-                    {
-                        String msg = I18n.err( I18n.ERR_04036, Strings.dumpBytes(value.getData()) );
-                        LOG.error( msg );
-                        throw new DecoderException( msg );
-                    }
-                }
-            } );
+                } );
     }
 
 

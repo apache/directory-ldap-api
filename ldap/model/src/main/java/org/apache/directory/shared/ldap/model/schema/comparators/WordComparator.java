@@ -52,6 +52,7 @@ public class WordComparator extends LdapComparator<String>
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( WordComparator.class );
 
+
     /**
      * The StringComparator constructor. Its OID is the StringMatch matching
      * rule OID.
@@ -66,7 +67,7 @@ public class WordComparator extends LdapComparator<String>
      * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ES_COMPARING_PARAMETER_STRING_WITH_EQ",
-            justification ="false positive")
+        justification = "false positive")
     public int compare( String value, String assertion )
     {
         LOG.debug( "comparing String objects '{}' with '{}'", value, assertion );
@@ -85,7 +86,7 @@ public class WordComparator extends LdapComparator<String>
         }
 
         // Now, trim the assertion and find it in the value
-        String trimmedAssertion = Strings.trim(assertion);
+        String trimmedAssertion = Strings.trim( assertion );
         int pos = value.indexOf( trimmedAssertion );
 
         if ( pos != -1 )

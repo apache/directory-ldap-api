@@ -42,11 +42,11 @@ public abstract class ControlDecorator<E extends Control> extends AbstractAsn1Ob
 
     /** The encoded value of the control. */
     protected byte[] value;
-    
+
     /** The codec service responsible for encoding decoding this object */
     private LdapApiService codec;
 
-    
+
     /**
      * Creates a ControlDecorator to codec enable it.
      *
@@ -67,7 +67,7 @@ public abstract class ControlDecorator<E extends Control> extends AbstractAsn1Ob
         return decorated;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -76,7 +76,7 @@ public abstract class ControlDecorator<E extends Control> extends AbstractAsn1Ob
         this.decorated = decorated;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
@@ -84,13 +84,12 @@ public abstract class ControlDecorator<E extends Control> extends AbstractAsn1Ob
     {
         return codec;
     }
-    
+
 
     // ------------------------------------------------------------------------
     // Control Methods
     // ------------------------------------------------------------------------
-    
-    
+
     /**
      * Get the OID
      * 
@@ -131,11 +130,11 @@ public abstract class ControlDecorator<E extends Control> extends AbstractAsn1Ob
     {
         if ( value != null )
         {
-            byte[] copy = new byte[ value.length ];
+            byte[] copy = new byte[value.length];
             System.arraycopy( value, 0, copy, 0, value.length );
             this.value = copy;
-        } 
-        else 
+        }
+        else
         {
             this.value = null;
         }
@@ -163,12 +162,11 @@ public abstract class ControlDecorator<E extends Control> extends AbstractAsn1Ob
         decorated.setCritical( criticality );
     }
 
-    
+
     // ------------------------------------------------------------------------
     // CodecControl Methods
     // ------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -181,8 +179,7 @@ public abstract class ControlDecorator<E extends Control> extends AbstractAsn1Ob
     // ------------------------------------------------------------------------
     // Object Method Overrides
     // ------------------------------------------------------------------------
-    
-    
+
     /**
      * @see Object#hashCode()
      */
@@ -190,6 +187,7 @@ public abstract class ControlDecorator<E extends Control> extends AbstractAsn1Ob
     {
         return decorated.hashCode();
     }
+
 
     /**
      * @see Object#equals(Object)

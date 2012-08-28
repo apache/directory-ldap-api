@@ -41,26 +41,26 @@ public class UniqueMemberNormalizer extends Normalizer
 {
     /** A reference to the schema manager used to normalize the Dn */
     private SchemaManager schemaManager;
-    
-    
+
+
     public UniqueMemberNormalizer()
     {
         super( SchemaConstants.UNIQUE_MEMBER_MATCH_MR_OID );
     }
-    
+
 
     public Value<?> normalize( Value<?> value ) throws LdapException
     {
         String nameAndUid = value.getString();
-            
+
         if ( nameAndUid.length() == 0 )
         {
             return null;
         }
-        
+
         // Let's see if we have an UID part
         int sharpPos = nameAndUid.lastIndexOf( '#' );
-        
+
         if ( sharpPos != -1 )
         {
             // Now, check that we don't have another '#'
@@ -70,16 +70,16 @@ public class UniqueMemberNormalizer extends Normalizer
                 // escaped.
                 return null;
             }
-            
+
             // This is an UID if the '#' is immediately
             // followed by a BitString, except if the '#' is
             // on the last position
             String uid = nameAndUid.substring( sharpPos + 1 );
-            
+
             if ( sharpPos > 0 )
             {
                 Dn dn = new Dn( schemaManager, nameAndUid.substring( 0, sharpPos ) );
-                
+
                 return new StringValue( dn.getNormName() + '#' + uid );
             }
             else
@@ -98,14 +98,14 @@ public class UniqueMemberNormalizer extends Normalizer
 
     public String normalize( String value ) throws LdapException
     {
-        if ( Strings.isEmpty(value) )
+        if ( Strings.isEmpty( value ) )
         {
             return null;
         }
-        
+
         // Let's see if we have an UID part
         int sharpPos = value.lastIndexOf( '#' );
-        
+
         if ( sharpPos != -1 )
         {
             // Now, check that we don't have another '#'
@@ -115,16 +115,16 @@ public class UniqueMemberNormalizer extends Normalizer
                 // escaped.
                 return null;
             }
-            
+
             // This is an UID if the '#' is immediatly
             // followed by a BitString, except if the '#' is
             // on the last position
             String uid = value.substring( sharpPos + 1 );
-            
+
             if ( sharpPos > 0 )
             {
                 Dn dn = new Dn( schemaManager, value.substring( 0, sharpPos ) );
-                
+
                 return dn.getNormName() + '#' + uid;
             }
             else

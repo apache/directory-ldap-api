@@ -119,7 +119,7 @@ public class ModifyDNRequestTest extends AbstractTest
         assertNotNull( control );
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
-        assertEquals( "Some text", Strings.utf8ToString((byte[]) ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "Some text", Strings.utf8ToString( ( byte[] ) ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -154,7 +154,7 @@ public class ModifyDNRequestTest extends AbstractTest
         assertNotNull( control );
         assertTrue( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.643", control.getOid() );
-        assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString((byte[]) ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "DSMLv2.0 rocks!!", Strings.utf8ToString( ( byte[] ) ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -224,7 +224,7 @@ public class ModifyDNRequestTest extends AbstractTest
         assertNotNull( control );
         assertFalse( control.isCritical() );
         assertEquals( "1.2.840.113556.1.4.789", control.getOid() );
-        assertEquals( "Some other text", Strings.utf8ToString((byte[]) ( ( DsmlControl<?> ) control ).getValue()) );
+        assertEquals( "Some other text", Strings.utf8ToString( ( byte[] ) ( ( DsmlControl<?> ) control ).getValue() ) );
     }
 
 
@@ -387,7 +387,7 @@ public class ModifyDNRequestTest extends AbstractTest
             fail( e.getMessage() );
         }
 
-        ModifyDnRequest modifyDNRequest = (ModifyDnRequest) parser.getBatchRequest().getCurrentRequest();
+        ModifyDnRequest modifyDNRequest = ( ModifyDnRequest ) parser.getBatchRequest().getCurrentRequest();
 
         assertFalse( modifyDNRequest.getDeleteOldRdn() );
     }

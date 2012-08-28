@@ -39,8 +39,8 @@ public interface Decorator<E>
      * @return The decorated object
      */
     E getDecorated();
-    
-    
+
+
     /**
      * Compute the object length, which is the sum of all inner length.
      * 
@@ -57,8 +57,8 @@ public interface Decorator<E>
      * @throws EncoderException if the buffer can't be encoded
      */
     ByteBuffer encode( ByteBuffer buffer ) throws EncoderException;
-    
-    
+
+
     /**
      * Gets the codec service responsible for managing the encoding and 
      * decoding of the decorated objects.

@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.model.schema.syntaxes;
 
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.PrintableStringSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 
 /**
  * Test cases for PrintableStringSyntaxChecker.
@@ -66,32 +68,41 @@ public class PrintableStringSyntaxCheckerTest
     {
         for ( int i = 0; i < 0x1F; i++ )
         {
-            assertFalse( checker.isValidSyntax( new String( new byte[]{(byte)i} ) ) );
+            assertFalse( checker.isValidSyntax( new String( new byte[]
+                { ( byte ) i } ) ) );
         }
 
         for ( int i = 0x21; i < 0x26; i++ )
         {
-            assertFalse( checker.isValidSyntax( new String( new byte[]{(byte)i} ) ) );
+            assertFalse( checker.isValidSyntax( new String( new byte[]
+                { ( byte ) i } ) ) );
         }
 
         for ( int i = 0x5B; i < 0x60; i++ )
         {
-            assertFalse( checker.isValidSyntax( new String( new byte[]{(byte)i} ) ) );
+            assertFalse( checker.isValidSyntax( new String( new byte[]
+                { ( byte ) i } ) ) );
         }
 
         for ( int i = 0x7B; i < 0x7F; i++ )
         {
-            assertFalse( checker.isValidSyntax( new String( new byte[]{(byte)i} ) ) );
+            assertFalse( checker.isValidSyntax( new String( new byte[]
+                { ( byte ) i } ) ) );
         }
 
-        assertFalse( checker.isValidSyntax( new String( new byte[]{(byte)0x2A} ) ) );
-        assertFalse( checker.isValidSyntax( new String( new byte[]{(byte)0x3B} ) ) );
-        assertFalse( checker.isValidSyntax( new String( new byte[]{(byte)0x3C} ) ) );
-        assertFalse( checker.isValidSyntax( new String( new byte[]{(byte)0x3E} ) ) );
-        assertFalse( checker.isValidSyntax( new String( new byte[]{(byte)0x40} ) ) );
+        assertFalse( checker.isValidSyntax( new String( new byte[]
+            { ( byte ) 0x2A } ) ) );
+        assertFalse( checker.isValidSyntax( new String( new byte[]
+            { ( byte ) 0x3B } ) ) );
+        assertFalse( checker.isValidSyntax( new String( new byte[]
+            { ( byte ) 0x3C } ) ) );
+        assertFalse( checker.isValidSyntax( new String( new byte[]
+            { ( byte ) 0x3E } ) ) );
+        assertFalse( checker.isValidSyntax( new String( new byte[]
+            { ( byte ) 0x40 } ) ) );
     }
-    
-    
+
+
     @Test
     public void testCorrectCase()
     {

@@ -19,6 +19,7 @@
  */
 package org.apache.directory.shared.ldap.aci;
 
+
 import java.text.ParseException;
 
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
@@ -44,6 +45,7 @@ public class ACIItemSyntaxChecker extends SyntaxChecker
     /** An instance of ACI Item Checker */
     private ACIItemChecker aciItemChecker;
 
+
     /**
      * Creates a new instance of ACIItemSyntaxChecker
      */
@@ -65,14 +67,14 @@ public class ACIItemSyntaxChecker extends SyntaxChecker
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
         }
-        
+
         if ( value instanceof String )
         {
             strValue = ( String ) value;
         }
         else if ( value instanceof byte[] )
         {
-            strValue = Strings.utf8ToString((byte[]) value);
+            strValue = Strings.utf8ToString( ( byte[] ) value );
         }
         else
         {
@@ -87,11 +89,11 @@ public class ACIItemSyntaxChecker extends SyntaxChecker
 
         try
         {
-            synchronized( aciItemChecker )
+            synchronized ( aciItemChecker )
             {
                 aciItemChecker.parse( strValue );
             }
-            
+
             LOG.debug( "Syntax valid for '{}'", value );
             return true;
         }

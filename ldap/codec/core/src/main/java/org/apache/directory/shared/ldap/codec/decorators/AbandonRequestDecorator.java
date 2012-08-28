@@ -55,8 +55,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     //-------------------------------------------------------------------------
     // The AbandonRequest methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * {@inheritDoc}
      */
@@ -72,54 +71,53 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     public AbandonRequest setAbandoned( int requestId )
     {
         getDecorated().setAbandoned( requestId );
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AbandonRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
-        
+
         return this;
     }
 
-    
+
     /**
      * {@inheritDoc}
      */
     public AbandonRequest addControl( Control control ) throws MessageException
     {
-        return (AbandonRequest)super.addControl( control );
+        return ( AbandonRequest ) super.addControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AbandonRequest addAllControls( Control[] controls ) throws MessageException
     {
-        return (AbandonRequest)super.addAllControls( controls );
+        return ( AbandonRequest ) super.addAllControls( controls );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
     public AbandonRequest removeControl( Control control ) throws MessageException
     {
-        return (AbandonRequest)super.removeControl( control );
+        return ( AbandonRequest ) super.removeControl( control );
     }
 
-    
+
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
-    
-    
+
     /**
      * Encode the Abandon protocolOp part
      */
@@ -142,7 +140,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
             String msg = I18n.err( I18n.ERR_04005 );
             throw new EncoderException( msg );
         }
-        
+
         return buffer;
     }
 

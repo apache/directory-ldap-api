@@ -85,9 +85,8 @@ public class DelResponseDsml extends AbstractResultResponseDsml<DeleteResponse>
         {
             element = new DefaultElement( DEL_RESPONSE_TAG );
         }
-        
 
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(), 
+        LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),
             getDecorated().getLdapResult(), getDecorated() );
         ldapResultDsml.toDsml( element );
         return element;

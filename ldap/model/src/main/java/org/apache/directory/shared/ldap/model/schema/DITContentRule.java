@@ -185,7 +185,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             auxObjectClassOids.add( oid );
@@ -204,7 +204,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly && !auxObjectClassOids.contains( objectClass.getOid() ) )
         {
             auxObjectClasses.add( objectClass );
@@ -222,7 +222,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.auxObjectClassOids = auxObjectClassOids;
@@ -239,7 +239,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.auxObjectClasses = auxObjectClasses;
@@ -284,7 +284,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             mayAttributeTypeOids.add( oid );
@@ -303,7 +303,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly && !mayAttributeTypeOids.contains( attributeType.getOid() ) )
         {
             mayAttributeTypes.add( attributeType );
@@ -321,7 +321,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.mayAttributeTypeOids = mayAttributeTypeOids;
@@ -340,7 +340,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.mayAttributeTypes = mayAttributeTypes;
@@ -385,7 +385,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             mustAttributeTypeOids.add( oid );
@@ -404,7 +404,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly && !mustAttributeTypeOids.contains( attributeType.getOid() ) )
         {
             mustAttributeTypes.add( attributeType );
@@ -422,7 +422,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.mustAttributeTypeOids = mustAttributeTypeOids;
@@ -441,7 +441,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.mustAttributeTypes = mustAttributeTypes;
@@ -486,7 +486,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             notAttributeTypeOids.add( oid );
@@ -505,7 +505,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly && !notAttributeTypeOids.contains( attributeType.getOid() ) )
         {
             notAttributeTypes.add( attributeType );
@@ -523,7 +523,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.notAttributeTypeOids = notAttributeTypeOids;
@@ -542,7 +542,7 @@ public class DITContentRule extends AbstractSchemaObject
         {
             throw new UnsupportedOperationException( I18n.err( I18n.ERR_04441, getName() ) );
         }
-        
+
         if ( !isReadOnly )
         {
             this.notAttributeTypes = notAttributeTypes;
@@ -695,7 +695,8 @@ public class DITContentRule extends AbstractSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    @SuppressWarnings("PMD.UnusedLocalVariable") // Remove me when the TODO is fixed 
+    @SuppressWarnings("PMD.UnusedLocalVariable")
+    // Remove me when the TODO is fixed 
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )
