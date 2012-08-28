@@ -178,4 +178,77 @@
       </resource>
     </resources>
   </build>
+
+  <profiles>
+    <profile>
+      <id>integration</id>
+      <activation>
+        <property><name>integration</name></property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <includes>
+                <include>**/*IT.java</include>
+                <include>**/*Test.java</include>
+              </includes>
+              <excludes>
+                <exclude>**/*PerfIT.java</exclude>
+                <exclude>**/*PerfTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>quicktest</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <excludes>
+                <exclude>**/*PerfIT.java</exclude>
+                <exclude>**/*PerfTest.java</exclude>
+                <exclude>**/*ITest.java</exclude>
+                <exclude>**/*IT.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <phase>validate</phase>
+                <configuration>
+                  <tasks>
+                    <echo>
+=================================================================
+                   Q U I C K   T E S T S
+                   ---------------------
+                  
+WARNING: Long running integration tests have been disabled!
+=================================================================
+                    </echo>
+                  </tasks>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>

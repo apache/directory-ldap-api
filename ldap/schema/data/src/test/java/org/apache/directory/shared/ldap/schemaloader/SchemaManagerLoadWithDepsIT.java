@@ -60,7 +60,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class SchemaManagerLoadWithDepsTest
+public class SchemaManagerLoadWithDepsIT
 {
     // A directory in which the ldif files will be stored
     private static String workingDirectory;
@@ -76,7 +76,7 @@ public class SchemaManagerLoadWithDepsTest
 
         if ( workingDirectory == null )
         {
-            String path = SchemaManagerLoadWithDepsTest.class.getResource( "" ).getPath();
+            String path = SchemaManagerLoadWithDepsIT.class.getResource( "" ).getPath();
             int targetPos = path.indexOf( "target" );
             workingDirectory = path.substring( 0, targetPos + 6 );
         }

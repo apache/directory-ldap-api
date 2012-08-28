@@ -38,7 +38,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class JarLdifSchemaLoaderTest
+public class JarLdifSchemaLoaderIT
 {
     @Test
     public void testJarLdifSchemaLoader() throws Exception

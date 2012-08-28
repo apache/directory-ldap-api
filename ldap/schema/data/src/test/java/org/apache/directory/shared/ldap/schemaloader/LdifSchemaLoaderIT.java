@@ -47,7 +47,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class LdifSchemaLoaderTest
+public class LdifSchemaLoaderIT
 {
     private static String workingDirectory;
 
@@ -59,7 +59,7 @@ public class LdifSchemaLoaderTest
 
         if ( workingDirectory == null )
         {
-            String path = LdifSchemaLoaderTest.class.getResource( "" ).getPath();
+            String path = LdifSchemaLoaderIT.class.getResource( "" ).getPath();
             int targetPos = path.indexOf( "target" );
             workingDirectory = path.substring( 0, targetPos + 6 );
         }

@@ -58,7 +58,7 @@ import org.junit.runner.RunWith;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class MatchingRuleTest
+public class MatchingRuleIT
 {
     // A directory in which the ldif files will be stored
     private static String workingDirectory;
@@ -77,7 +77,7 @@ public class MatchingRuleTest
 
         if ( workingDirectory == null )
         {
-            String path = MatchingRuleTest.class.getResource( "" ).getPath();
+            String path = MatchingRuleIT.class.getResource( "" ).getPath();
             int targetPos = path.indexOf( "target" );
             workingDirectory = path.substring( 0, targetPos + 6 );
         }
