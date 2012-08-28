@@ -69,116 +69,7 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <groupId>org.apache.maven.plugins</groupId>
-        <configuration>
-          <systemPropertyVariables>
-            <workingDirectory>${basedir}/target</workingDirectory>
-          </systemPropertyVariables>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.6</version>
-        <executions>
-          <execution>
-            <phase>generate-resources</phase>
-            <configuration>
-              <target>
-                <!-- Various properties -->
-                <property name="schema.index" value="target/generated-resources/apacheds/META-INF/apacheds-schema.index" />
-                <property name="schema.location" value="src${file.separator}main${file.separator}resources${file.separator}" />
-              
-                <!-- Listing all LDIF files under schema location -->
-                <path id="schema.files.path">
-                  <fileset dir="${schema.location}">
-                    <include name="**/*.ldif" />
-                    <exclude name="schema-all.ldif" />
-                  </fileset>
-                </path>
-                <property name="schema.files" refid="schema.files.path" />
-                
-                <!-- Creating the schema index file -->
-                <echo message="${schema.files}" file="${schema.index}" />
-                <replace file="${schema.index}">
-                  <!-- Replace the path separator (':' on Unix, ';' on Windows) by a new line -->
-                  <replacefilter token="${path.separator}" value="${line.separator}" />
-                  <!-- Remove the full path of the schema location to get relative paths for files -->
-                  <replacefilter token="${basedir}${file.separator}${schema.location}" value="" />
-                  <!-- Replace the file separator ('/' on Unix, '\' on Windows) by a '/' - Useful on Windows -->
-                  <replacefilter token="${file.separator}" value="/" />
-                </replace>
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <archive>
-            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
-            <addMavenDescriptor>false</addMavenDescriptor>
-          </archive>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <inherited>true</inherited>
-        <extensions>true</extensions>
-        <executions>
-          <execution>
-            <id>bundle-manifest</id>
-            <phase>process-classes</phase>
-            <goals>
-              <goal>manifest</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <manifestLocation>META-INF</manifestLocation>
-          <instructions>
-            <Bundle-SymbolicName>${project.groupId}.ldap.schema</Bundle-SymbolicName>
-            <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true,
-                org.apache.directory.shared.ldap.schemaextractor.impl;version="${project.version}";-noimport:=true,
-                org.apache.directory.shared.ldap.schemamanager.impl;version="${project.version}";-noimport:=true
-            </Export-Package>
-            <Import-Package>
-              *,
-              org.apache.directory.shared.ldap.aci,
-              org.apache.directory.shared.ldap.model.schema.comparators,
-              org.apache.directory.shared.ldap.model.schema.normalizers,
-              org.apache.directory.shared.ldap.model.schema.parsers,
-              org.apache.directory.shared.ldap.model.schema.registries,
-              org.apache.directory.shared.ldap.model.schema.syntaxCheckers,
-              org.apache.directory.server.xdbm
-            </Import-Package>
-          </instructions>
-        </configuration>
-      </plugin>
-
-    </plugins>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-      </resource>
-      <resource>
-        <directory>target/generated-resources/apacheds</directory>
-      </resource>
-    </resources>
-  </build>
-
+  
   <profiles>
     <profile>
       <id>integration</id>
@@ -198,10 +89,111 @@
                 <exclude>**/*PerfIT.java</exclude>
                 <exclude>**/*PerfTest.java</exclude>
               </excludes>
+	          <systemPropertyVariables>
+	            <workingDirectory>${basedir}/target</workingDirectory>
+	          </systemPropertyVariables>
             </configuration>
           </plugin>
-        </plugins>
-      </build>
+      
+	      <plugin>
+	        <artifactId>maven-antrun-plugin</artifactId>
+	        <version>1.6</version>
+	        <executions>
+	          <execution>
+	            <phase>generate-resources</phase>
+	            <configuration>
+	              <target>
+	                <!-- Various properties -->
+	                <property name="schema.index" value="target/generated-resources/apacheds/META-INF/apacheds-schema.index" />
+	                <property name="schema.location" value="src${file.separator}main${file.separator}resources${file.separator}" />
+	              
+	                <!-- Listing all LDIF files under schema location -->
+	                <path id="schema.files.path">
+	                  <fileset dir="${schema.location}">
+	                    <include name="**/*.ldif" />
+	                    <exclude name="schema-all.ldif" />
+	                  </fileset>
+	                </path>
+	                <property name="schema.files" refid="schema.files.path" />
+	                
+	                <!-- Creating the schema index file -->
+	                <echo message="${schema.files}" file="${schema.index}" />
+	                <replace file="${schema.index}">
+	                  <!-- Replace the path separator (':' on Unix, ';' on Windows) by a new line -->
+	                  <replacefilter token="${path.separator}" value="${line.separator}" />
+	                  <!-- Remove the full path of the schema location to get relative paths for files -->
+	                  <replacefilter token="${basedir}${file.separator}${schema.location}" value="" />
+	                  <!-- Replace the file separator ('/' on Unix, '\' on Windows) by a '/' - Useful on Windows -->
+	                  <replacefilter token="${file.separator}" value="/" />
+	                </replace>
+	              </target>
+	            </configuration>
+	            <goals>
+	              <goal>run</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	      </plugin>
+
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-jar-plugin</artifactId>
+	        <configuration>
+	          <archive>
+	            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
+	            <addMavenDescriptor>false</addMavenDescriptor>
+	          </archive>
+	        </configuration>
+	      </plugin>
+	
+	      <plugin>
+	        <groupId>org.apache.felix</groupId>
+	        <artifactId>maven-bundle-plugin</artifactId>
+	        <inherited>true</inherited>
+	        <extensions>true</extensions>
+	        <executions>
+	          <execution>
+	            <id>bundle-manifest</id>
+	            <phase>process-classes</phase>
+	            <goals>
+	              <goal>manifest</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	        <configuration>
+	          <manifestLocation>META-INF</manifestLocation>
+	          <instructions>
+	            <Bundle-SymbolicName>${project.groupId}.ldap.schema</Bundle-SymbolicName>
+	            <Export-Package>
+	                {local-packages};version=${project.version};-noimport:=true,
+	                org.apache.directory.shared.ldap.schemaextractor.impl;version="${project.version}";-noimport:=true,
+	                org.apache.directory.shared.ldap.schemamanager.impl;version="${project.version}";-noimport:=true
+	            </Export-Package>
+	            <Import-Package>
+	              *,
+	              org.apache.directory.shared.ldap.aci,
+	              org.apache.directory.shared.ldap.model.schema.comparators,
+	              org.apache.directory.shared.ldap.model.schema.normalizers,
+	              org.apache.directory.shared.ldap.model.schema.parsers,
+	              org.apache.directory.shared.ldap.model.schema.registries,
+	              org.apache.directory.shared.ldap.model.schema.syntaxCheckers,
+	              org.apache.directory.server.xdbm
+	            </Import-Package>
+	          </instructions>
+	        </configuration>
+	      </plugin>
+
+	    </plugins>
+    
+	    <resources>
+	      <resource>
+	        <directory>src/main/resources</directory>
+	      </resource>
+	      <resource>
+	        <directory>target/generated-resources/apacheds</directory>
+	      </resource>
+	    </resources>
+	  </build>
     </profile>
 
     <profile>
@@ -220,13 +212,18 @@
                 <exclude>**/*ITest.java</exclude>
                 <exclude>**/*IT.java</exclude>
               </excludes>
+	          <systemPropertyVariables>
+	            <workingDirectory>${basedir}/target</workingDirectory>
+	          </systemPropertyVariables>
             </configuration>
           </plugin>
 
-          <plugin>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
+	      <plugin>
+	        <artifactId>maven-antrun-plugin</artifactId>
+	        <version>1.6</version>
+	        <executions>
               <execution>
+                <id>banner</id>
                 <phase>validate</phase>
                 <configuration>
                   <tasks>
@@ -244,11 +241,105 @@ WARNING: Long running integration tests have been disabled!
                   <goal>run</goal>
                 </goals>
               </execution>
-            </executions>
-          </plugin>
-        </plugins>
+	          <execution>
+	            <id>generate</id>
+	            <phase>generate-resources</phase>
+	            <configuration>
+	              <target>
+	                <!-- Various properties -->
+	                <property name="schema.index" value="target/generated-resources/apacheds/META-INF/apacheds-schema.index" />
+	                <property name="schema.location" value="src${file.separator}main${file.separator}resources${file.separator}" />
+	              
+	                <!-- Listing all LDIF files under schema location -->
+	                <path id="schema.files.path">
+	                  <fileset dir="${schema.location}">
+	                    <include name="**/*.ldif" />
+	                    <exclude name="schema-all.ldif" />
+	                  </fileset>
+	                </path>
+	                <property name="schema.files" refid="schema.files.path" />
+	                
+	                <!-- Creating the schema index file -->
+	                <echo message="${schema.files}" file="${schema.index}" />
+	                <replace file="${schema.index}">
+	                  <!-- Replace the path separator (':' on Unix, ';' on Windows) by a new line -->
+	                  <replacefilter token="${path.separator}" value="${line.separator}" />
+	                  <!-- Remove the full path of the schema location to get relative paths for files -->
+	                  <replacefilter token="${basedir}${file.separator}${schema.location}" value="" />
+	                  <!-- Replace the file separator ('/' on Unix, '\' on Windows) by a '/' - Useful on Windows -->
+	                  <replacefilter token="${file.separator}" value="/" />
+	                </replace>
+	              </target>
+	            </configuration>
+	            <goals>
+	              <goal>run</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	      </plugin>
+	
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-jar-plugin</artifactId>
+	        <configuration>
+	          <archive>
+	            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
+	            <addMavenDescriptor>false</addMavenDescriptor>
+	          </archive>
+	        </configuration>
+	      </plugin>
+	
+	      <plugin>
+	        <groupId>org.apache.felix</groupId>
+	        <artifactId>maven-bundle-plugin</artifactId>
+	        <inherited>true</inherited>
+	        <extensions>true</extensions>
+	        <executions>
+	          <execution>
+	            <id>bundle-manifest</id>
+	            <phase>process-classes</phase>
+	            <goals>
+	              <goal>manifest</goal>
+	            </goals>
+	          </execution>
+	        </executions>
+	        <configuration>
+	          <manifestLocation>META-INF</manifestLocation>
+	          <instructions>
+	            <Bundle-SymbolicName>${project.groupId}.ldap.schema</Bundle-SymbolicName>
+	            <Export-Package>
+	                {local-packages};version=${project.version};-noimport:=true,
+	                org.apache.directory.shared.ldap.schemaextractor.impl;version="${project.version}";-noimport:=true,
+	                org.apache.directory.shared.ldap.schemamanager.impl;version="${project.version}";-noimport:=true
+	            </Export-Package>
+	            <Import-Package>
+	              *,
+	              org.apache.directory.shared.ldap.aci,
+	              org.apache.directory.shared.ldap.model.schema.comparators,
+	              org.apache.directory.shared.ldap.model.schema.normalizers,
+	              org.apache.directory.shared.ldap.model.schema.parsers,
+	              org.apache.directory.shared.ldap.model.schema.registries,
+	              org.apache.directory.shared.ldap.model.schema.syntaxCheckers,
+	              org.apache.directory.server.xdbm
+	            </Import-Package>
+	          </instructions>
+	        </configuration>
+	      </plugin>
+	
+	    </plugins>
+    
+	    <resources>
+	      <resource>
+	        <directory>src/main/resources</directory>
+	      </resource>
+	      <resource>
+	        <directory>target/generated-resources/apacheds</directory>
+	      </resource>
+	    </resources>
+
+
       </build>
     </profile>
   </profiles>
-
+    
 </project>
