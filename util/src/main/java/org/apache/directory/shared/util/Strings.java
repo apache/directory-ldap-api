@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.slf4j.Logger;
@@ -2182,5 +2183,17 @@ public final class Strings
     public static String getString( final byte[] data, String charset )
     {
         return getString( data, 0, data.length, charset );
+    }
+
+
+    /**
+     * Create a new UUID using a long as the least significant bits
+     * 
+     * @param value The least significant bits.
+     * @return
+     */
+    public static UUID getUUID( long value )
+    {
+        return new UUID( 0, value );
     }
 }
