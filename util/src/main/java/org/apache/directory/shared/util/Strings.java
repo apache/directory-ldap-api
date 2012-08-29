@@ -2192,8 +2192,8 @@ public final class Strings
      * @param value The least significant bits.
      * @return
      */
-    public static UUID getUUID( long value )
+    public static String getUUID( long value )
     {
-        return new UUID( 0, value );
+        return new UUID( 0, value ).toString();
     }
 }

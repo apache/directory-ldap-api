@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class UuidComparator extends SerializableComparator<UUID>
+public class UuidComparator extends SerializableComparator<String>
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
