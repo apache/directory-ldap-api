@@ -42,6 +42,7 @@ import org.apache.directory.shared.ldap.model.filter.LessEqNode;
 import org.apache.directory.shared.ldap.model.filter.NotNode;
 import org.apache.directory.shared.ldap.model.filter.OrNode;
 import org.apache.directory.shared.ldap.model.filter.PresenceNode;
+import org.apache.directory.shared.ldap.model.filter.SimpleNode;
 import org.apache.directory.shared.ldap.model.filter.SubstringNode;
 import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.model.message.Control;
@@ -96,12 +97,6 @@ public class SearchRequestDsml
     }
 
 
-    public Filter getCurrentFilter()
-    {
-        return currentFilter;
-    }
-
-
     /**
      * Gets the search filter associated with this search request.
      *
@@ -147,13 +142,11 @@ public class SearchRequestDsml
 
 
     /**
-     * Set the current filter
-     *
-     * @param filter The filter to set.
+     * set the currentFilter to its parent
      */
-    public void setCurrentFilter( Filter filter )
+    public void endCurrentConnectorFilter( )
     {
-        currentFilter = filter;
+        currentFilter = currentFilter.getParent();
     }
 
 
@@ -514,73 +507,65 @@ public class SearchRequestDsml
         }
 
         // APPROXMATCH, EQUALITYMATCH, GREATEROREQUALS & LESSOREQUAL FILTERS
-        else if ( filter instanceof AttributeValueAssertionFilter )
+        else if ( filter instanceof SimpleNode )
         {
-            AttributeValueAssertionFilter avaFilter = ( AttributeValueAssertionFilter ) filter;
-
             Element newElement = null;
-            int filterType = avaFilter.getFilterType();
-            if ( filterType == LdapConstants.APPROX_MATCH_FILTER )
+            if ( filter instanceof ApproximateNode )
             {
                 newElement = element.addElement( "approxMatch" );
             }
-            else if ( filterType == LdapConstants.EQUALITY_MATCH_FILTER )
+            else if ( filter instanceof EqualityNode )
             {
                 newElement = element.addElement( "equalityMatch" );
             }
-            else if ( filterType == LdapConstants.GREATER_OR_EQUAL_FILTER )
+            else if ( filter instanceof GreaterEqNode )
             {
                 newElement = element.addElement( "greaterOrEqual" );
             }
-            else if ( filterType == LdapConstants.LESS_OR_EQUAL_FILTER )
+            else if ( filter instanceof LessEqNode )
             {
                 newElement = element.addElement( "lessOrEqual" );
             }
 
-            AttributeValueAssertion assertion = avaFilter.getAssertion();
-            if ( assertion != null )
+            String attributeName = ( ( SimpleNode ) filter ).getAttribute();
+            newElement.addAttribute( "name", attributeName );
+            
+            Value<?> value = ( ( SimpleNode ) filter ).getValue();
+            if ( value != null )
             {
-                newElement.addAttribute( "name", assertion.getAttributeDesc() );
-
-                Value<?> value = assertion.getAssertionValue();
-                if ( value != null )
+                if ( ParserUtils.needsBase64Encoding( value ) )
                 {
-                    if ( ParserUtils.needsBase64Encoding( value ) )
-                    {
-                        Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
-                        Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
-                        element.getDocument().getRootElement().add( xsdNamespace );
-                        element.getDocument().getRootElement().add( xsiNamespace );
-
-                        Element valueElement = newElement.addElement( "value" ).addText(
-                            ParserUtils.base64Encode( value ) );
-                        valueElement
-                            .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
-                    }
-                    else
-                    {
-                        newElement.addElement( "value" ).setText( value.getString() );
-                    }
+                    Namespace xsdNamespace = new Namespace( "xsd", ParserUtils.XML_SCHEMA_URI );
+                    Namespace xsiNamespace = new Namespace( "xsi", ParserUtils.XML_SCHEMA_INSTANCE_URI );
+                    element.getDocument().getRootElement().add( xsdNamespace );
+                    element.getDocument().getRootElement().add( xsiNamespace );
+                    
+                    Element valueElement = newElement.addElement( "value" ).addText(
+                        ParserUtils.base64Encode( value ) );
+                    valueElement
+                    .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
+                }
+                else
+                {
+                    newElement.addElement( "value" ).setText( value.getString() );
                 }
             }
         }
 
         // PRESENT FILTER
-        else if ( filter instanceof PresentFilter )
+        else if ( filter instanceof PresenceNode )
         {
             Element newElement = element.addElement( "present" );
 
-            newElement.addAttribute( "name", ( ( PresentFilter ) filter ).getAttributeDescription() );
+            newElement.addAttribute( "name", ( ( PresenceNode ) filter ).getAttribute() );
         }
 
         // EXTENSIBLEMATCH
-        else if ( filter instanceof ExtensibleMatchFilter )
+        else if ( filter instanceof ExtensibleNode )
         {
             Element newElement = element.addElement( "extensibleMatch" );
 
-            ExtensibleMatchFilter extensibleMatchFilter = ( ExtensibleMatchFilter ) filter;
-
-            Value<?> value = extensibleMatchFilter.getMatchValue();
+            Value<?> value = ( ( ExtensibleNode ) filter ).getValue();
             if ( value != null )
             {
                 if ( ParserUtils.needsBase64Encoding( value ) )
@@ -590,7 +575,7 @@ public class SearchRequestDsml
                     element.getDocument().getRootElement().add( xsdNamespace );
                     element.getDocument().getRootElement().add( xsiNamespace );
 
-                    Element valueElement = newElement.addElement( "value" ).addText( ParserUtils.base64Encode( value ) );
+                    Element valueElement = newElement.addElement( "value" ).addText( ParserUtils.base64Encode( value.getValue() ) );
                     valueElement.addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
                 }
                 else
@@ -599,12 +584,12 @@ public class SearchRequestDsml
                 }
             }
 
-            if ( extensibleMatchFilter.isDnAttributes() )
+            if ( ( ( ExtensibleNode ) filter ).hasDnAttributes() )
             {
                 newElement.addAttribute( "dnAttributes", "true" );
             }
 
-            String matchingRule = extensibleMatchFilter.getMatchingRule();
+            String matchingRule = ( ( ExtensibleNode ) filter ).getMatchingRuleId();
             if ( ( matchingRule != null ) && ( "".equals( matchingRule ) ) )
             {
                 newElement.addAttribute( "matchingRule", matchingRule );

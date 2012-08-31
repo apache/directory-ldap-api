@@ -2452,9 +2452,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             SearchRequestDsml searchRequestDecorator = ( SearchRequestDsml )
                 container.getBatchRequest().getCurrentRequest();
 
-            Filter filter = searchRequestDecorator.getCurrentFilter();
-
-            searchRequestDecorator.setCurrentFilter( filter );
+            searchRequestDecorator.endCurrentConnectorFilter();
         }
     };
 

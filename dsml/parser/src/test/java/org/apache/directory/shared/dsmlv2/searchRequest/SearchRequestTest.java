@@ -36,6 +36,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.dsmlv2.AbstractTest;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
+import org.apache.directory.shared.dsmlv2.request.SearchRequestDsml;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.filter.AndNode;
 import org.apache.directory.shared.ldap.model.filter.ApproximateNode;
@@ -53,6 +54,7 @@ import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.SearchRequest;
 import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.apache.directory.shared.util.Strings;
+import org.dom4j.tree.DefaultElement;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -2410,5 +2412,38 @@ public class SearchRequestTest extends AbstractTest
     public void testRequestWithNeededRequestId()
     {
         testParsingFail( SearchRequestTest.class, "request_with_needed_requestID.xml" );
+    }
+
+    
+    /**
+     * Test parsing of a request with a nested nodes DIRSHARED-137
+     */
+    @Test
+    public void testRequestWithNestedNodes()
+    {
+        Dsmlv2Parser parser = null;
+        try
+        {
+            parser = newParser();
+
+            parser.setInput( SearchRequestTest.class.getResource( "filters/request_with_nested_connector_nodes.xml" )
+                .openStream(), "UTF-8" );
+
+            parser.parse();
+        }
+        catch ( Exception e )
+        {
+            fail( e.getMessage() );
+        }
+
+        SearchRequestDsml searchRequest = ( SearchRequestDsml ) parser.getBatchRequest().getCurrentRequest();
+
+        ExprNode filter = searchRequest.getFilter();
+
+        assertTrue( filter instanceof AndNode );
+
+        assertEquals( "(&(|(sn=*foo*)(cn=*foo*))(|(ou=*josopuram*)(o=*k*)))", filter.toString() );
+        
+        System.out.println( searchRequest.toDsml( new DefaultElement( "root" ) ).asXML());
     }
 }
