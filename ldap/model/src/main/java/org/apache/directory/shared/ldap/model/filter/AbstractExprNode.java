@@ -190,7 +190,7 @@ public abstract class AbstractExprNode implements ExprNode
                 else
                 {
                     sb.append( '\\' );
-                    String digit = Integer.toHexString( ( ( byte ) b ) & 0x00FF );
+                    String digit = Integer.toHexString( b & 0x00FF );
 
                     if ( digit.length() == 1 )
                     {
@@ -379,7 +379,14 @@ public abstract class AbstractExprNode implements ExprNode
     {
         if ( ( null != annotations ) && annotations.containsKey( "count" ) )
         {
-            return ":[" + annotations.get( "count" ) + "]";
+            Long count = ( Long ) annotations.get( "count" );
+
+            if ( count == Long.MAX_VALUE )
+            {
+                return ":[\u221E]";
+            }
+
+            return ":[" + count + "]";
         }
         else
         {
