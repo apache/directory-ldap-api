@@ -782,7 +782,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
 
         newDn.toUpName();
-        newDn.apply( schemaManager );
+        newDn.apply( schemaManager, true );
 
         return newDn;
     }
@@ -864,7 +864,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
 
         newDn.toUpName();
-        newDn.apply( schemaManager );
+        newDn.apply( schemaManager, true );
 
         return newDn;
     }
@@ -897,7 +897,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         }
         else
         {
-            clonedDn.apply( schemaManager );
+            clonedDn.apply( schemaManager, true );
             clonedDn.toUpName();
         }
 
@@ -922,7 +922,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         clonedDn.rdns.add( 0, newRdn );
 
-        clonedDn.apply( schemaManager );
+        clonedDn.apply( schemaManager, true );
         clonedDn.toUpName();
 
         return clonedDn;
@@ -945,7 +945,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         Dn clonedDn = copy();
 
         clonedDn.rdns.add( 0, newRdn.clone() );
-        clonedDn.apply( schemaManager );
+        clonedDn.apply( schemaManager, true );
         clonedDn.toUpName();
 
         return clonedDn;
@@ -978,7 +978,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         try
         {
-            newDn.apply( schemaManager );
+            newDn.apply( schemaManager, true );
         }
         catch ( LdapInvalidDnException e )
         {
@@ -1029,7 +1029,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             {
                 return true;
             }
-            
+
             if ( name.size() != this.size() )
             {
                 return false;
@@ -1137,7 +1137,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         // ATAVs
         Rdn rdnCopy = rdn.clone();
         rdn.clear();
-        
+
         if ( rdnCopy.size() < 2 )
         {
             Ava newAtav = atavOidToName( rdnCopy.getAva(), schemaManager );
@@ -1156,7 +1156,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
                 sortedOids.add( oid );
                 avas.put( oid, newAtav );
             }
-            
+
             // And create the Rdn
             for ( String oid : sortedOids )
             {
@@ -1167,7 +1167,104 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
 
     /**
-     * Normalizes the Dn using the given the schema manager
+     * Normalizes the Dn using the given the schema manager. If the flag is set to true,
+     * we will replace the inner SchemaManager by the provided one.
+     *
+     * @param schemaManager The schemaManagerto use to normalize the Dn
+     * @param force Tells if we should replace an existing SchemaManager by a new one
+     * @return The normalized Dn
+     * @throws LdapInvalidDnException If the Dn is invalid.
+     */
+    public Dn apply( SchemaManager schemaManager, boolean force ) throws LdapInvalidDnException
+    {
+        if ( ( this.schemaManager == null ) || force )
+        {
+
+            this.schemaManager = schemaManager;
+
+            if ( this.schemaManager != null )
+            {
+                synchronized ( this )
+                {
+                    if ( size() == 0 )
+                    {
+                        bytes = null;
+                        normName = "";
+
+                        return this;
+                    }
+
+                    StringBuilder sb = new StringBuilder();
+                    boolean isFirst = true;
+
+                    for ( Rdn rdn : rdns )
+                    {
+                        rdn.apply( schemaManager );
+
+                        if ( isFirst )
+                        {
+                            isFirst = false;
+                        }
+                        else
+                        {
+                            sb.append( ',' );
+                        }
+
+                        sb.append( rdn.getNormName() );
+                    }
+
+                    String newNormName = sb.toString();
+
+                    if ( ( normName == null ) || !normName.equals( newNormName ) )
+                    {
+                        bytes = Strings.getBytesUtf8( newNormName );
+                        normName = newNormName;
+                    }
+                }
+            }
+            else
+            {
+                if ( rdns.size() == 0 )
+                {
+                    bytes = null;
+                    normName = "";
+                }
+                else
+                {
+                    StringBuffer sb = new StringBuffer();
+                    boolean isFirst = true;
+
+                    for ( Rdn rdn : rdns )
+                    {
+                        if ( isFirst )
+                        {
+                            isFirst = false;
+                        }
+                        else
+                        {
+                            sb.append( ',' );
+                        }
+
+                        sb.append( rdn.getNormName() );
+                    }
+
+                    String newNormName = sb.toString();
+
+                    if ( ( normName == null ) || !normName.equals( newNormName ) )
+                    {
+                        bytes = Strings.getBytesUtf8( newNormName );
+                        normName = newNormName;
+                    }
+                }
+            }
+        }
+
+        return this;
+    }
+
+
+    /**
+     * Normalizes the Dn using the given the schema manager, unless the Dn is already normalized
      *
      * @param schemaManager The schemaManagerto use to normalize the Dn
      * @return The normalized Dn
@@ -1175,87 +1272,14 @@ public class Dn implements Iterable<Rdn>, Externalizable
      */
     public Dn apply( SchemaManager schemaManager ) throws LdapInvalidDnException
     {
-        this.schemaManager = schemaManager;
-
         if ( this.schemaManager != null )
         {
-            synchronized ( this )
-            {
-                if ( size() == 0 )
-                {
-                    bytes = null;
-                    normName = "";
-
-                    return this;
-                }
-
-                StringBuilder sb = new StringBuilder();
-                boolean isFirst = true;
-
-                for ( Rdn rdn : rdns )
-                {
-                    rdn.apply( schemaManager );
-
-                    if ( isFirst )
-                    {
-                        isFirst = false;
-                    }
-                    else
-                    {
-                        sb.append( ',' );
-                    }
-
-                    sb.append( rdn.getNormName() );
-                }
-
-                String newNormName = sb.toString();
-
-                if ( ( normName == null ) || !normName.equals( newNormName ) )
-                {
-                    bytes = Strings.getBytesUtf8( newNormName );
-                    normName = newNormName;
-                }
-
-                return this;
-            }
+            return this;
         }
         else
         {
-            if ( rdns.size() == 0 )
-            {
-                bytes = null;
-                normName = "";
-            }
-            else
-            {
-                StringBuffer sb = new StringBuffer();
-                boolean isFirst = true;
-
-                for ( Rdn rdn : rdns )
-                {
-                    if ( isFirst )
-                    {
-                        isFirst = false;
-                    }
-                    else
-                    {
-                        sb.append( ',' );
-                    }
-
-                    sb.append( rdn.getNormName() );
-                }
-
-                String newNormName = sb.toString();
-
-                if ( ( normName == null ) || !normName.equals( newNormName ) )
-                {
-                    bytes = Strings.getBytesUtf8( newNormName );
-                    normName = newNormName;
-                }
-            }
+            return apply( schemaManager, true );
         }
-
-        return this;
     }
 
 
