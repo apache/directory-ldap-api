@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.model.message.extended;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.message.ExtendedResponseImpl;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.shared.util.Strings;
 
 
 /**
@@ -109,9 +110,6 @@ public final class NoticeOfDisconnect extends ExtendedResponseImpl
     /** The OID of the NotiveOfDisconnect extended operation. */
     public static final String EXTENSION_OID = "1.3.6.1.4.1.1466.20036";
 
-    /** The empty response */
-    private static final byte[] EMPTY_RESPONSE = new byte[0];
-
     /** The single instance with unavailable result code. */
     public static final NoticeOfDisconnect UNAVAILABLE = new NoticeOfDisconnect( ResultCodeEnum.UNAVAILABLE );
 
@@ -163,7 +161,7 @@ public final class NoticeOfDisconnect extends ExtendedResponseImpl
      */
     public byte[] getResponse()
     {
-        return EMPTY_RESPONSE;
+        return Strings.EMPTY_BYTES;
     }
 
 

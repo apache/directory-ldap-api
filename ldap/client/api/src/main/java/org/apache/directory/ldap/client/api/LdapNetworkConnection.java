@@ -355,7 +355,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         super();
         this.config = config;
-        
+
         if ( config.getBinaryAttributeDetector() == null )
         {
             config.setBinaryAttributeDetector( new DefaultConfigurableBinaryAttributeDetector() );
@@ -641,8 +641,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         // Store the container into the session if we don't have one
         LdapMessageContainer<MessageDecorator<? extends Message>> container =
-            (LdapMessageContainer<MessageDecorator<? extends Message>>)ldapSession.getAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR );
-        
+            ( LdapMessageContainer<MessageDecorator<? extends Message>> ) ldapSession
+                .getAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR );
+
         if ( container == null )
         {
             ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
@@ -1134,6 +1135,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         return createBindRequest( name.getName(), credentials, null, ( Control[] ) null );
     }
+
+
     /**
      * {@inheritDoc}
      */
@@ -3231,6 +3234,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         loadSchema( new DefaultSchemaLoader( this ) );
     }
+
+
     /**
      * loads schema using the specified schema loader
      *
@@ -3253,7 +3258,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
 
             schemaManager = tmp;
-            
+
             // Change the container's BinaryDetector
             ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
                 new LdapMessageContainer<MessageDecorator<? extends Message>>( codec,
@@ -3674,7 +3679,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             // deal with it immediately.
             if ( sc.hasInitialResponse() )
             {
-                byte[] challengeResponse = sc.evaluateChallenge( new byte[0] );
+                byte[] challengeResponse = sc.evaluateChallenge( Strings.EMPTY_BYTES );
 
                 // Stores the challenge's response, and send it to the server
                 bindRequest.setCredentials( challengeResponse );

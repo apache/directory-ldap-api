@@ -37,8 +37,7 @@ public final class Asn1StringUtils
     /**
      * The empty byte[]
      */
-    public static final byte[] EMPTY_BYTES = new byte[]
-        {};
+    public static final byte[] EMPTY_BYTES = new byte[0];
 
 
     /**
@@ -89,7 +88,7 @@ public final class Asn1StringUtils
     {
         if ( string == null )
         {
-            return new byte[0];
+            return EMPTY_BYTES;
         }
 
         try

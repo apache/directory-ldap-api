@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.model.message.extended;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.message.BindResponseImpl;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.shared.util.Strings;
 
 
 /**
@@ -34,9 +35,6 @@ public class BindNoDResponse extends BindResponseImpl
 {
     /** The OID of the NotiveOfDisconnect extended operation. */
     public static final String EXTENSION_OID = NoticeOfDisconnect.EXTENSION_OID;
-
-    /** The empty response */
-    private static final byte[] EMPTY_RESPONSE = new byte[0];
 
     /** The single instance with unavailable result code. */
     public static final BindNoDResponse UNAVAILABLE = new BindNoDResponse( ResultCodeEnum.UNAVAILABLE );
@@ -88,7 +86,7 @@ public class BindNoDResponse extends BindResponseImpl
      */
     public byte[] getResponse()
     {
-        return EMPTY_RESPONSE;
+        return Strings.EMPTY_BYTES;
     }
 
 

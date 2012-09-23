@@ -22,11 +22,12 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 import static org.junit.Assert.assertEquals;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
+import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -48,21 +49,21 @@ public class ByteArrayComparatorTest
     @Test
     public void testB2Null()
     {
-        assertEquals( 1, new ByteArrayComparator( null ).compare( new byte[0], null ) );
+        assertEquals( 1, new ByteArrayComparator( null ).compare( Strings.EMPTY_BYTES, null ) );
     }
 
 
     @Test
     public void testB1Null()
     {
-        assertEquals( -1, new ByteArrayComparator( null ).compare( null, new byte[0] ) );
+        assertEquals( -1, new ByteArrayComparator( null ).compare( null, Strings.EMPTY_BYTES ) );
     }
 
 
     @Test
     public void testBothEmpty()
     {
-        assertEquals( 0, new ByteArrayComparator( null ).compare( new byte[0], new byte[0] ) );
+        assertEquals( 0, new ByteArrayComparator( null ).compare( Strings.EMPTY_BYTES, Strings.EMPTY_BYTES ) );
     }
 
 
