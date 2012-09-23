@@ -24,8 +24,8 @@ import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.shared.asn1.EncoderException;
-import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.ber.tlv.BerValue;
+import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.Decorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
@@ -55,6 +55,9 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
 
     /** The codec responsible for encoding and decoding this object. */
     private LdapApiService codec;
+
+    private static final byte[] DEFAULT_SUCCESS = new byte[]
+        { 0x0A, 0x01, 0x00, 0x04, 0x00, 0x04, 0x00 };
 
 
     /**
@@ -208,7 +211,7 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
      * Compute the LdapResult length 
      * 
      * LdapResult : 
-     * 0x0A 01 resultCode (0..80)
+     *   0x0A 01 resultCode (0..80)
      *   0x04 L1 matchedDN (L1 = Length(matchedDN)) 
      *   0x04 L2 errorMessage (L2 = Length(errorMessage)) 
      *   [0x83 L3] referrals 
@@ -230,6 +233,12 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
      */
     public int computeLength()
     {
+        if ( decoratedLdapResult.isDefaultSuccess() )
+        {
+            // The length of a default success PDU : 0xA0 0x01 0x00 0x04 0x00 0x04 0x00
+            return DEFAULT_SUCCESS.length;
+        }
+
         int ldapResultLength = 0;
 
         // The result code
@@ -277,6 +286,14 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
             throw new EncoderException( I18n.err( I18n.ERR_04023 ) );
         }
 
+        if ( decoratedLdapResult.isDefaultSuccess() )
+        {
+            // The length of a default success PDU : 0xA0 0x01 0x00 0x04 0x00 0x04 0x00
+            buffer.put( DEFAULT_SUCCESS );
+
+            return buffer;
+        }
+
         try
         {
             // The result code
@@ -320,5 +337,14 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     public LdapApiService getCodecService()
     {
         return codec;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isDefaultSuccess()
+    {
+        return decoratedLdapResult.isDefaultSuccess();
     }
 }

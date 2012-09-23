@@ -140,6 +140,12 @@ public class LdapResultImplTest
             public void setReferral( Referral referral )
             {
             }
+
+
+            public boolean isDefaultSuccess()
+            {
+                return false;
+            }
         };
 
         assertTrue( "r0 equals should see other impl r1 as equal", r0.equals( r1 ) );

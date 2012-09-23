@@ -243,4 +243,13 @@ public class LdapResultDsml implements DsmlDecorator<LdapResult>, LdapResult
     {
         getDecorated().setReferral( referral );
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isDefaultSuccess()
+    {
+        return false;
+    }
 }
