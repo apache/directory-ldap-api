@@ -31,7 +31,7 @@ import org.apache.directory.shared.ldap.model.name.Dn;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ScopeNode<ID> extends AbstractExprNode
+public class ScopeNode extends AbstractExprNode
 {
     /** the scope of this node */
     private final SearchScope scope;
@@ -40,7 +40,7 @@ public class ScopeNode<ID> extends AbstractExprNode
     private final Dn baseDn;
 
     /** the search ID */
-    private final ID baseId;
+    private final String baseId;
 
     /** the alias dereferencing mode */
     private final AliasDerefMode aliasDerefAliases;
@@ -53,7 +53,7 @@ public class ScopeNode<ID> extends AbstractExprNode
      * @param baseDn the search base
      * @param scope the search scope
      */
-    public ScopeNode( AliasDerefMode aliasDerefAliases, Dn baseDn, ID baseId, SearchScope scope )
+    public ScopeNode( AliasDerefMode aliasDerefAliases, Dn baseDn, String baseId, SearchScope scope )
     {
         super( AssertionType.SCOPE );
         this.scope = scope;
@@ -103,7 +103,7 @@ public class ScopeNode<ID> extends AbstractExprNode
      * 
      * @return the base ID
      */
-    public ID getBaseId()
+    public String getBaseId()
     {
         return baseId;
     }

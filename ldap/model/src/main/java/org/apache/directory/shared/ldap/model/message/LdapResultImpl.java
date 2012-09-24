@@ -43,6 +43,9 @@ public class LdapResultImpl implements LdapResult
     /** Resultant operation error code - defaults to SUCCESS */
     private ResultCodeEnum resultCode = ResultCodeEnum.SUCCESS;
 
+    /** A flag set when the LdapResult is a SUCESS with no additional information */
+    private boolean isDefaultSuccess = true;
+
 
     // ------------------------------------------------------------------------
     // LdapResult Interface Method Implementations
@@ -62,6 +65,7 @@ public class LdapResultImpl implements LdapResult
     public void setDiagnosticMessage( String diagnosticMessage )
     {
         this.diagnosticMessage = diagnosticMessage;
+        isDefaultSuccess = false;
     }
 
 
@@ -80,6 +84,7 @@ public class LdapResultImpl implements LdapResult
     public void setMatchedDn( Dn matchedDn )
     {
         this.matchedDn = matchedDn;
+        isDefaultSuccess = false;
     }
 
 
@@ -98,6 +103,8 @@ public class LdapResultImpl implements LdapResult
     public void setResultCode( ResultCodeEnum resultCode )
     {
         this.resultCode = resultCode;
+
+        isDefaultSuccess = isDefaultSuccess & ( resultCode == ResultCodeEnum.SUCCESS );
     }
 
 
@@ -125,6 +132,16 @@ public class LdapResultImpl implements LdapResult
     public void setReferral( Referral referral )
     {
         this.referral = referral;
+        isDefaultSuccess = false;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isDefaultSuccess()
+    {
+        return isDefaultSuccess;
     }
 
 

@@ -136,4 +136,13 @@ public abstract class AbstractCursor<E> implements Cursor<E>
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "isLast()" ) ) );
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString( String tabs )
+    {
+        return tabs;
+    }
 }

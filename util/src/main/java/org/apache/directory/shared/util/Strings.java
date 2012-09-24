@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.slf4j.Logger;
@@ -249,6 +250,9 @@ public final class Strings
             0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0
     };
+
+    /** A empty byte array */
+    public static final byte[] EMPTY_BYTES = new byte[0];
 
 
     /**
@@ -733,6 +737,16 @@ public final class Strings
         }
     }
 
+    private static final byte[] UTF8 = new byte[]
+        { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A,
+            0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C,
+            0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E,
+            0x2F, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F, 0x40,
+            0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50, 0x51, 0x52,
+            0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60, 0x61, 0x62, 0x63, 0x64,
+            0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x73, 0x74, 0x75, 0x76,
+            0x77, 0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F };
+
 
     /**
      * Return an UTF-8 encoded String
@@ -747,15 +761,30 @@ public final class Strings
             return "";
         }
 
+        char[] chars = new char[bytes.length];
+        int pos = 0;
+
         try
         {
-            return new String( bytes, "UTF-8" );
+            for ( byte b : bytes )
+            {
+                chars[pos++] = ( char ) UTF8[b];
+            }
         }
-        catch ( UnsupportedEncodingException uee )
+        catch ( ArrayIndexOutOfBoundsException aioobe )
         {
-            // if this happens something is really strange
-            throw new RuntimeException( uee );
+            try
+            {
+                return new String( bytes, "UTF-8" );
+            }
+            catch ( UnsupportedEncodingException uee )
+            {
+                // if this happens something is really strange
+                throw new RuntimeException( uee );
+            }
         }
+
+        return new String( chars );
     }
 
 
@@ -1550,12 +1579,54 @@ public final class Strings
     {
         if ( string == null )
         {
-            return new byte[0];
+            return EMPTY_BYTES;
         }
 
         try
         {
             return string.getBytes( "UTF-8" );
+        }
+        catch ( UnsupportedEncodingException uee )
+        {
+            // if this happens something is really strange
+            throw new RuntimeException( uee );
+        }
+    }
+
+
+    /**
+     * When the string to convert to bytes is pure ascii, ths is a faster 
+     * method than the getBytesUtf8. Otherwis, it's slower.
+     * 
+     * @param string The string to convert to byte[]
+     * @return The bytes 
+     */
+    public static byte[] getBytesUtf8Ascii( String string )
+    {
+        if ( string == null )
+        {
+            return new byte[0];
+        }
+
+        try
+        {
+            try
+            {
+                char[] chars = string.toCharArray();
+                byte[] bytes = new byte[chars.length];
+                int pos = 0;
+
+                for ( char c : chars )
+                {
+                    bytes[pos++] = UTF8[c];
+                }
+
+                return bytes;
+            }
+            catch ( ArrayIndexOutOfBoundsException aioobe )
+            {
+                return string.getBytes( "UTF-8" );
+            }
         }
         catch ( UnsupportedEncodingException uee )
         {
@@ -2182,5 +2253,17 @@ public final class Strings
     public static String getString( final byte[] data, String charset )
     {
         return getString( data, 0, data.length, charset );
+    }
+
+
+    /**
+     * Create a new UUID using a long as the least significant bits
+     * 
+     * @param value The least significant bits.
+     * @return
+     */
+    public static String getUUID( long value )
+    {
+        return new UUID( 0, value ).toString();
     }
 }

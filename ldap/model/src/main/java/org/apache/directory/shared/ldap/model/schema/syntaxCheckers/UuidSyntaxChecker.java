@@ -20,6 +20,8 @@
 package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 
 
+import java.util.UUID;
+
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.util.Strings;
@@ -59,6 +61,11 @@ public class UuidSyntaxChecker extends SyntaxChecker
         {
             LOG.debug( "Syntax invalid for 'null'" );
             return false;
+        }
+
+        if ( value instanceof UUID )
+        {
+            return true;
         }
 
         if ( !( value instanceof String ) )

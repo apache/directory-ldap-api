@@ -184,4 +184,14 @@ public interface LdapResult
      * @param referral optional referral on REFERRAL errors.
      */
     void setReferral( Referral referral );
+
+
+    /**
+     * Tells if the LdapResult is a success, with no added information. The
+     * MatchedDn will be empty, as the diagnostic message and the referral.
+     * The ResultCode will always be 0.
+     * 
+     * @return True if the LdapResult is SUCCESS.
+     */
+    boolean isDefaultSuccess();
 }

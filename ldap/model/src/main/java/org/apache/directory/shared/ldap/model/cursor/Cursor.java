@@ -243,4 +243,12 @@ public interface Cursor<E> extends Iterable<E>
      * @param monitor the monitor to use for detecting Cursor close events
      */
     void setClosureMonitor( ClosureMonitor monitor );
+
+
+    /**
+     * Pretty-print a cursor and its wrapped cursor.
+     * @param tabs The spaces to add at each level
+     * @return The cursor and all it's wrapped elements, recursively printed
+     */
+    String toString( String tabs );
 }

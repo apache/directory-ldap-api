@@ -20,7 +20,8 @@
 package org.apache.directory.shared.ldap.model.schema.comparators;
 
 
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import java.util.UUID;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,13 +31,16 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class UuidComparator extends LdapComparator<String>
+public class UuidComparator extends SerializableComparator<String>
 {
     /** The serial version UID */
     private static final long serialVersionUID = 2L;
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( UuidComparator.class );
+    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
+
+    public static UuidComparator INSTANCE = new UuidComparator( "1.3.6.1.1.16.4" );
 
 
     /**
@@ -54,7 +58,37 @@ public class UuidComparator extends LdapComparator<String>
      */
     public int compare( String uuid1, String uuid2 )
     {
-        LOG.debug( "comparing UUID objects '{}' with '{}'", uuid1, uuid2 );
+        if ( IS_DEBUG )
+        {
+            LOG.debug( "comparing UUID objects '{}' with '{}'", uuid1, uuid2 );
+        }
+
+        // -------------------------------------------------------------------
+        // Handle some basis cases
+        // -------------------------------------------------------------------
+        if ( uuid1 == null )
+        {
+            return ( uuid2 == null ) ? 0 : -1;
+        }
+
+        if ( uuid2 == null )
+        {
+            return 1;
+        }
+
+        return uuid1.compareTo( uuid2 );
+    }
+
+
+    /**
+     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+     */
+    public int compare( UUID uuid1, UUID uuid2 )
+    {
+        if ( IS_DEBUG )
+        {
+            LOG.debug( "comparing UUID objects '{}' with '{}'", uuid1, uuid2 );
+        }
 
         // -------------------------------------------------------------------
         // Handle some basis cases
