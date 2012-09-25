@@ -305,7 +305,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     {
         Dn dn = getObjectName();
 
-        byte[] dnBytes = Strings.getBytesUtf8( dn.getName() );
+        byte[] dnBytes = Strings.getBytesUtf8Ascii( dn.getName() );
 
         // The entry
         int searchResultEntryLength = 1 + TLV.getNbBytes( dnBytes.length ) + dnBytes.length;
@@ -333,7 +333,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
                 int localValuesLength = 0;
 
                 // Get the type length
-                byte[] attributeIdBytes = Strings.getBytesUtf8( attribute.getUpId() );
+                byte[] attributeIdBytes = Strings.getBytesUtf8Ascii( attribute.getUpId() );
                 attributeIds.add( attributeIdBytes );
                 int idLength = attributeIdBytes.length;
                 localAttributeLength = 1 + TLV.getNbBytes( idLength ) + idLength;
@@ -355,10 +355,10 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
                     }
                     else
                     {
-                        // We have to deal with the special wase where
+                        // We have to deal with the special case where
                         // we don't have a value.
                         // It will be encoded as an empty OCTETSTRING,
-                        // so it will be two byte slong (0x04 0x00)
+                        // so it will be two bytes long (0x04 0x00)
                         localAttributeLength += 1 + 1;
                     }
                 }
