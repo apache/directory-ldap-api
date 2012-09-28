@@ -599,7 +599,15 @@ aMaxValueCount returns [ MaxValueCountElem maxValueCount ]
     {
         try
         {
-            attributeType = schemaManager.lookupAttributeTypeRegistry( oid );
+            if ( schemaManager != null )
+            {
+                attributeType = schemaManager.lookupAttributeTypeRegistry( oid );
+            }
+            else
+            {
+                attributeType = new AttributeType( oid );
+            }
+
             maxValueCount = new MaxValueCountElem( attributeType, token2Integer( token ) );
         }
         catch ( LdapException le )
@@ -670,8 +678,17 @@ restrictedValue returns [ RestrictedByElem restrictedValue ]
     {
         try
         {
-            attributeType = schemaManager.lookupAttributeTypeRegistry( typeOid );
-            valueInAttributeType = schemaManager.lookupAttributeTypeRegistry( valuesInOid );
+            if ( schemaManager != null )
+            {
+                attributeType = schemaManager.lookupAttributeTypeRegistry( typeOid );
+                valueInAttributeType = schemaManager.lookupAttributeTypeRegistry( valuesInOid );
+            }
+            else
+            {
+                attributeType = new AttributeType( typeOid );
+                valueInAttributeType = new AttributeType( valuesInOid );
+            }
+            
             restrictedValue = new RestrictedByElem( attributeType, valueInAttributeType );
         }
         catch ( LdapException le )
@@ -695,7 +712,15 @@ attributeTypeSet returns [ Set<AttributeType> attributeTypeSet ]
         {
             try
             {
-                attributeType = schemaManager.lookupAttributeTypeRegistry( oid );
+                if ( schemaManager != null )
+                {
+                    attributeType = schemaManager.lookupAttributeTypeRegistry( oid );
+                }
+                else
+                {
+                    attributeType = new AttributeType( oid );
+                }
+                
                 attributeTypeSet.add( attributeType );
             }
             catch ( LdapException le )
@@ -708,7 +733,15 @@ attributeTypeSet returns [ Set<AttributeType> attributeTypeSet ]
             {
                 try
                 {
-                    attributeType = schemaManager.lookupAttributeTypeRegistry( oid );
+                    if ( schemaManager != null )
+                    {
+                        attributeType = schemaManager.lookupAttributeTypeRegistry( oid );
+                    }
+                    else
+                    {
+                        attributeType = new AttributeType( oid );
+                    }
+
                     attributeTypeSet.add( attributeType );
                 }
                 catch ( LdapException le )
