@@ -282,15 +282,18 @@ public class DefaultSchemaManager implements SchemaManager
 
         List<SchemaObject> toBeDeleted = new ArrayList<SchemaObject>();
 
-        // Buid an intermediate list to avoid concurrent modifications
-        for ( SchemaObjectWrapper schemaObjectWrapper : content )
+        if ( content != null )
         {
-            toBeDeleted.add( schemaObjectWrapper.get() );
-        }
+            // Build an intermediate list to avoid concurrent modifications
+            for ( SchemaObjectWrapper schemaObjectWrapper : content )
+            {
+                toBeDeleted.add( schemaObjectWrapper.get() );
+            }
 
-        for ( SchemaObject schemaObject : toBeDeleted )
-        {
-            registries.delete( errors, schemaObject );
+            for ( SchemaObject schemaObject : toBeDeleted )
+            {
+                registries.delete( errors, schemaObject );
+            }
         }
     }
 
