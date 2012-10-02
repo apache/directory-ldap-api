@@ -32,8 +32,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.asn1.ber.Asn1Decoder;
@@ -67,6 +65,9 @@ import org.apache.directory.shared.util.Strings;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -7573,15 +7574,14 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
         ByteBuffer stream = ByteBuffer.allocate( 0x77 );
         stream.put( new byte[]
-            { 0x30,
-                0x75, // LdapMessage
+            { 0x30, 0x75, // LdapMessage
                 0x02,
                 0x01,
                 0x06, // message Id = 6
                 0x63,
                 0x53, // SearchRequest
                 0x04,
-                0x09, // BasDN 'ou=system'
+                0x09, // BaseDN 'ou=system'
                 0x6F,
                 0x75,
                 0x3D,
@@ -7624,7 +7624,7 @@ public class SearchRequestTest extends AbstractCodecServiceTest
                 0x73,
                 0x73,
                 0x04,
-                0x06, // 'person'
+                0x06, // 'person' 
                 0x70,
                 0x65,
                 0x72,
@@ -7691,7 +7691,8 @@ public class SearchRequestTest extends AbstractCodecServiceTest
                 '.',
                 '4',
                 '.',
-                '2' } );
+                '2'
+        } );
 
         stream.flip();
 
@@ -7759,5 +7760,104 @@ public class SearchRequestTest extends AbstractCodecServiceTest
 
         assertEquals( "sn", equalityNode.getAttribute() );
         assertEquals( "Jagger", equalityNode.getValue().getString() );
+    }
+
+
+    @Test
+    public void decodeComplexFilter()
+    {
+        Asn1Decoder ldapDecoder = new Asn1Decoder();
+
+        ByteBuffer stream = ByteBuffer.allocate( 0x77 );
+        stream.put( new byte[]
+            {
+                0x30, 0x53,
+                0x02, 0x01, 0x02,
+                0x63, 0x4E,
+                0x04, 0x11,
+                'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm',
+                0x0A, 0x01, 0x02,
+                0x0A, 0x01, 0x00,
+                0x02, 0x01, 0x00,
+                0x02, 0x01, 0x00,
+                0x01, 0x01, 0x00,
+                ( byte ) 0xA0, 0x28,
+                ( byte ) 0xA1, 0x1F,
+                ( byte ) 0xA0, 0x1D,
+                ( byte ) 0xA3, 0x1B,
+                0x04, 0x0B,
+                'o', 'b', 'j', 'e', 'c', 't', 'c', 'l', 'a', 's', 's',
+                0x04, 0x0C,
+                'g', 'r', 'o', 'u', 'p', 'o', 'f', 'n', 'a', 'm', 'e', 's',
+                ( byte ) 0x87, 0x05,
+                'o', 'w', 'n', 'e', 'r',
+                0x30, 0x00
+        } );
+
+        stream.flip();
+
+        // Allocate a BindRequest Container
+        LdapMessageContainer<SearchRequestDecorator> ldapMessageContainer =
+            new LdapMessageContainer<SearchRequestDecorator>( codec );
+
+        try
+        {
+            ldapDecoder.decode( stream, ldapMessageContainer );
+        }
+        catch ( DecoderException de )
+        {
+            de.printStackTrace();
+            fail( de.getMessage() );
+        }
+
+        assertEquals( TLVStateEnum.PDU_DECODED, ldapMessageContainer.getState() );
+
+        SearchRequest searchRequest = ldapMessageContainer.getMessage();
+
+        assertEquals( 2, searchRequest.getMessageId() );
+        assertEquals( "dc=example,dc=com", searchRequest.getBase().toString() );
+        assertEquals( SearchScope.SUBTREE, searchRequest.getScope() );
+        assertEquals( AliasDerefMode.NEVER_DEREF_ALIASES, searchRequest.getDerefAliases() );
+        assertEquals( 0, searchRequest.getSizeLimit() );
+        assertEquals( 0, searchRequest.getTimeLimit() );
+        assertEquals( false, searchRequest.getTypesOnly() );
+
+        ExprNode filter = searchRequest.getFilter();
+
+        // (&(...
+        AndNode andNode = ( AndNode ) filter;
+        assertNotNull( andNode );
+
+        List<ExprNode> andNodes = andNode.getChildren();
+        assertEquals( 2, andNodes.size() );
+
+        // (&(|(...
+        filter = searchRequest.getFilter();
+
+        OrNode orNode = ( OrNode ) andNodes.get( 0 );
+        assertNotNull( orNode );
+
+        List<ExprNode> orNodes = orNode.getChildren();
+        assertEquals( 1, orNodes.size() );
+
+        // (&(|(&...
+        AndNode andNode2 = ( AndNode ) orNodes.get( 0 );
+        assertNotNull( andNode2 );
+
+        List<ExprNode> andNodes2 = andNode2.getChildren();
+        assertEquals( 1, andNodes2.size() );
+
+        // (&(|(&(objectClass=groupOfNames)
+        EqualityNode<?> equalityNode = ( EqualityNode<?> ) andNodes2.get( 0 );
+        assertNotNull( equalityNode );
+
+        assertEquals( "objectclass", equalityNode.getAttribute() );
+        assertEquals( "groupofnames", equalityNode.getValue().getString() );
+
+        // (&(|(&(objectClass=groupOfNames)))(owner=*))
+        PresenceNode presenceNode = ( PresenceNode ) andNodes.get( 1 );
+        assertNotNull( presenceNode );
+
+        assertEquals( "owner", presenceNode.getAttribute() );
     }
 }
