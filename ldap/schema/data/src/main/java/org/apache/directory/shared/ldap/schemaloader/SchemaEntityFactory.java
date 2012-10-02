@@ -31,6 +31,7 @@ import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
+import org.apache.directory.shared.ldap.model.entry.BinaryValue;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Value;
@@ -1072,7 +1073,17 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mDescription != null )
         {
-            schemaObject.setDescription( mDescription.getString() );
+            Value<?> value = mDescription.get();
+
+            if ( value instanceof BinaryValue )
+            {
+                // We have to transform the value to a String
+                schemaObject.setDescription( Strings.utf8ToString( mDescription.getBytes() ) );
+            }
+            else
+            {
+                schemaObject.setDescription( mDescription.getString() );
+            }
         }
 
         // The names field
@@ -1122,47 +1133,47 @@ public class SchemaEntityFactory implements EntityFactory
         // The extensions fields
         // X-SCHEMA
         Attribute xSchema = entry.get( MetaSchemaConstants.X_SCHEMA_AT );
-        
+
         if ( xSchema != null )
         {
             String schemaName = xSchema.getString();
-            
+
             if ( !schema.getSchemaName().equalsIgnoreCase( schemaName ) )
             {
-               LOG.warn( "Schema (" + schema.getSchemaName() + ") and X-SCHEMA ("
-                   + schemaName + ") are different : " + entry );
+                LOG.warn( "Schema (" + schema.getSchemaName() + ") and X-SCHEMA ("
+                    + schemaName + ") are different : " + entry );
             }
-            
+
             schemaObject.addExtension( MetaSchemaConstants.X_SCHEMA_AT, schemaName );
         }
-        
+
         // X-NOT-HUMAN-READABLE
         Attribute xNotHumanReadable = entry.get( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT );
-        
+
         if ( xNotHumanReadable != null )
         {
             String value = xNotHumanReadable.getString();
-            
+
             schemaObject.addExtension( MetaSchemaConstants.X_NOT_HUMAN_READABLE_AT, value );
         }
-        
+
         // X-READ-ONLY
         Attribute xReadOnly = entry.get( MetaSchemaConstants.X_READ_ONLY_AT );
-        
+
         if ( xReadOnly != null )
         {
             String value = xReadOnly.getString();
-            
+
             schemaObject.addExtension( MetaSchemaConstants.X_READ_ONLY_AT, value );
         }
-        
+
         // X-ENABLED
         Attribute xEnabled = entry.get( MetaSchemaConstants.X_ENABLED_AT );
-        
+
         if ( xEnabled != null )
         {
             String value = xEnabled.getString();
-            
+
             schemaObject.addExtension( MetaSchemaConstants.X_ENABLED_AT, value );
         }
     }
