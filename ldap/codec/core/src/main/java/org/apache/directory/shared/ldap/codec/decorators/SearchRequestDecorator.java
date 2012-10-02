@@ -100,7 +100,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
     /** The SearchRequest TLV id */
     private int tlvId;
-    
+
     /** The bytes containing the Dn */
     private byte[] dnBytes;
 
@@ -337,8 +337,8 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
                 {
                     // The parent is a filter ; it will become the new currentFilter
                     // and we will loop again.
-                    currentFilter = filterParent;
                     localFilter = currentFilter;
+                    currentFilter = filterParent;
                     localParent = localParent.getParent();
                 }
                 else
