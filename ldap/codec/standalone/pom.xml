@@ -57,6 +57,11 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>shared-ldap-codec-core</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.apache.mina</groupId>
+      <artifactId>mina-core</artifactId>
+    </dependency>
   </dependencies>
   
 </project>
