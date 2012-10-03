@@ -77,6 +77,14 @@ public class BooleanComparator extends LdapComparator<String>
         // with normalized booleans, so no need to upper case them.
         // We don't need to check the assertion value, because we
         // are dealing with booleans.
-        return ( b1.equals( "TRUE" ) ? 1 : -1 );
+        boolean boolean1 = Boolean.valueOf( b1 );
+        boolean boolean2 = Boolean.valueOf( b2 );
+
+        if ( boolean1 == boolean2 )
+        {
+            return 0;
+        }
+
+        return ( boolean1 ? 1 : -1 );
     }
 }

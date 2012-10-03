@@ -22,12 +22,12 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 import static org.junit.Assert.assertEquals;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.schema.comparators.BooleanComparator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -67,5 +67,11 @@ public class BooleanComparatorTest
         assertEquals( 0, comparator.compare( "FALSE", "FALSE" ) );
         assertEquals( -1, comparator.compare( "FALSE", "TRUE" ) );
         assertEquals( 1, comparator.compare( "TRUE", "FALSE" ) );
+
+        // tested with two different strings
+        String b1 = "TRUE";
+        String b2 = "true";
+
+        assertEquals( 0, comparator.compare( b1, b2.toUpperCase() ) );
     }
 }
