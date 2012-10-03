@@ -1045,6 +1045,25 @@ public class SchemaEntityFactory implements EntityFactory
 
 
     /**
+     * Return a String value, from teh given Valu, even if it's a binary value
+     */
+    private String getStringValue( Attribute attribute )
+    {
+        Value<?> value = attribute.get();
+
+        if ( value instanceof BinaryValue )
+        {
+            // We have to transform the value to a String
+            return Strings.utf8ToString( value.getBytes() );
+        }
+        else
+        {
+            return value.getString();
+        }
+    }
+
+
+    /**
      * Process the common attributes to all SchemaObjects :
      *  - obsolete
      *  - description
@@ -1073,17 +1092,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         if ( mDescription != null )
         {
-            Value<?> value = mDescription.get();
-
-            if ( value instanceof BinaryValue )
-            {
-                // We have to transform the value to a String
-                schemaObject.setDescription( Strings.utf8ToString( mDescription.getBytes() ) );
-            }
-            else
-            {
-                schemaObject.setDescription( mDescription.getString() );
-            }
+            schemaObject.setDescription( getStringValue( mDescription ) );
         }
 
         // The names field
