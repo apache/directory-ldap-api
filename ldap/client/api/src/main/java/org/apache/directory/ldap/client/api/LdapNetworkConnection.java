@@ -355,7 +355,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         super();
         this.config = config;
-        
+
         if ( config.getBinaryAttributeDetector() == null )
         {
             config.setBinaryAttributeDetector( new DefaultConfigurableBinaryAttributeDetector() );
@@ -498,7 +498,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Create the connector if needed
         if ( connector == null )
         {
-            connector = new NioSocketConnector();
+            // Use only one thead inside the connector
+            connector = new NioSocketConnector( 1 );
 
             // Add the codec to the chain
             connector.getFilterChain().addLast( "ldapCodec", ldapProtocolFilter );
@@ -641,8 +642,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         // Store the container into the session if we don't have one
         LdapMessageContainer<MessageDecorator<? extends Message>> container =
-            (LdapMessageContainer<MessageDecorator<? extends Message>>)ldapSession.getAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR );
-        
+            ( LdapMessageContainer<MessageDecorator<? extends Message>> ) ldapSession
+                .getAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR );
+
         if ( container == null )
         {
             ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
@@ -1134,6 +1136,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         return createBindRequest( name.getName(), credentials, null, ( Control[] ) null );
     }
+
+
     /**
      * {@inheritDoc}
      */
@@ -3231,6 +3235,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         loadSchema( new DefaultSchemaLoader( this ) );
     }
+
+
     /**
      * loads schema using the specified schema loader
      *
@@ -3253,7 +3259,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
 
             schemaManager = tmp;
-            
+
             // Change the container's BinaryDetector
             ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
                 new LdapMessageContainer<MessageDecorator<? extends Message>>( codec,
