@@ -112,13 +112,13 @@ public class LdapConnectionConfig
      */
     private void setDefaultTrustManager()
     {
-        String trustMgmtAlgo = "SunX509";
+        String trustMgmtAlgo = TrustManagerFactory.getDefaultAlgorithm();
 
         try
         {
             TrustManagerFactory tmFactory = TrustManagerFactory.getInstance( trustMgmtAlgo );
-            tmFactory.init( KeyStore.getInstance( KeyStore.getDefaultType() ) );
-
+            tmFactory.init( ( KeyStore ) null );
+            
             TrustManager factoryTrustManagers[] = tmFactory.getTrustManagers();
 
             for ( int i = 0; i < factoryTrustManagers.length; i++ )
