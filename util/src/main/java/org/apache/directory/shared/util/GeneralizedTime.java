@@ -24,6 +24,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 import org.apache.directory.shared.i18n.I18n;
@@ -178,6 +179,21 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
 
     /**
+     * 
+     * Creates a new instance of GeneralizedTime by setting the date to an instance of Calendar.
+     * @see #GeneralizedTime(Calendar)
+     * 
+     * @param date the date
+     */
+    public GeneralizedTime( Date date )
+    {
+        calendar = Calendar.getInstance();
+        calendar.setTime( date );
+        setUp( calendar );
+    }
+    
+    
+    /**
      * Creates a new instance of GeneralizedTime, based on the given Calendar object.
      * Uses <pre>Format.YEAR_MONTH_DAY_HOUR_MIN_SEC</pre> as default format and
      * <pre>TimeZoneFormat.Z</pre> as default time zone format. 
@@ -185,6 +201,12 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
      * @param calendar the calendar containing the date, time and timezone information
      */
     public GeneralizedTime( Calendar calendar )
+    {
+        setUp( calendar );
+    }
+
+    
+    private void setUp( Calendar calendar )
     {
         if ( calendar == null )
         {
@@ -775,4 +797,61 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         return calendar.compareTo( other.calendar );
     }
 
+
+    public long getTime()
+    {
+        return calendar.getTimeInMillis();
+    }
+    
+    public Date getDate()
+    {
+        return calendar.getTime();
+    }
+
+    
+    public int getYear()
+    {
+        return calendar.get( Calendar.YEAR );
+    }
+
+
+    public int getMonth()
+    {
+        return calendar.get( Calendar.MONTH );
+    }
+
+    
+    public int getDay()
+    {
+        return calendar.get( Calendar.DATE );
+    }
+
+    
+    public int getHour()
+    {
+        return calendar.get( Calendar.HOUR_OF_DAY );
+    }
+
+
+    public int getMinutes()
+    {
+        return calendar.get( Calendar.MINUTE );
+    }
+
+    
+    public int getSeconds()
+    {
+        return calendar.get( Calendar.SECOND );
+    }
+
+    /**
+     * 
+     *
+     * @param zuluTime
+     * @return
+     */
+    public static Date getDate( String zuluTime ) throws ParseException
+    {
+        return new GeneralizedTime( zuluTime ).calendar.getTime();
+    }
 }

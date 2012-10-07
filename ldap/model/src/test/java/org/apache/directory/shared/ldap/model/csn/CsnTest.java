@@ -27,8 +27,8 @@ import static org.junit.Assert.fail;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.TimeZone;
 
-import org.apache.directory.shared.util.DateUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -48,9 +48,11 @@ public class CsnTest
 {
     private static final SimpleDateFormat SDF = new SimpleDateFormat( "yyyyMMddHHmmss.123456'Z'" );
 
+    private static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone( "UTC" );
+    
     static
     {
-        SDF.setTimeZone( DateUtils.UTC_TIME_ZONE );
+        SDF.setTimeZone( UTC_TIME_ZONE );
     }
 
 

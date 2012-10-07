@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.model.csn;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.util.Chars;
@@ -81,10 +82,12 @@ public class Csn implements Comparable<Csn>
     /** The Timestamp syntax. The last 'z' is _not_ the Time Zone */
     private static final SimpleDateFormat SDF = new SimpleDateFormat( "yyyyMMddHHmmss" );
 
+    private static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone( "UTC" );
+    
     // Initialize the dateFormat with the UTC TZ
     static
     {
-        SDF.setTimeZone( DateUtils.UTC_TIME_ZONE );
+        SDF.setTimeZone( UTC_TIME_ZONE );
     }
 
     /** Padding used to format number with a fixed size */
