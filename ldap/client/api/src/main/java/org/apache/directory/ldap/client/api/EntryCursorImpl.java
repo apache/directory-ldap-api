@@ -47,6 +47,9 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     /** A dedicated log for cursors */
     private static final Logger LOG_CURSOR = LoggerFactory.getLogger( "CURSOR" );
 
+    /** Speedup for logs */
+    private static final boolean IS_DEBUG = LOG_CURSOR.isDebugEnabled();
+
     /** a reference to hold the retrieved SearchResponse object from SearchFuture */
     private Response response;
 
@@ -64,7 +67,11 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      */
     public EntryCursorImpl( SearchCursor searchCursor )
     {
-        LOG_CURSOR.debug( "Creating EntryCursorImpl {}", this );
+    	if ( IS_DEBUG )
+    	{
+    		LOG_CURSOR.debug( "Creating EntryCursorImpl {}", this );
+    	}
+    	
         this.searchCursor = searchCursor;
         messageId = -1;
     }
@@ -163,7 +170,11 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public void close() throws Exception
     {
-        LOG_CURSOR.debug( "Closing EntryCursorImpl {}", this );
+    	if ( IS_DEBUG )
+    	{
+    		LOG_CURSOR.debug( "Closing EntryCursorImpl {}", this );
+    	}
+    	
         searchCursor.close();
     }
 
@@ -174,7 +185,11 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public void close( Exception cause ) throws Exception
     {
-        LOG_CURSOR.debug( "Closing EntryCursorImpl {}", this );
+    	if ( IS_DEBUG )
+    	{
+    		LOG_CURSOR.debug( "Closing EntryCursorImpl {}", this );
+    	}
+    	
         searchCursor.close( cause );
     }
 
