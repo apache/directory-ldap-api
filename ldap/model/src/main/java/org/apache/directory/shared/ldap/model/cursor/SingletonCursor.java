@@ -37,6 +37,9 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     /** A dedicated log for cursors */
     private static final Logger LOG_CURSOR = LoggerFactory.getLogger( "CURSOR" );
 
+    /** Speedup for logs */
+    private static final boolean IS_DEBUG = LOG_CURSOR.isDebugEnabled();
+
     /** A flag to tell if the cursor is set before the first element */
     private boolean beforeFirst = true;
 
@@ -73,7 +76,11 @@ public class SingletonCursor<E> extends AbstractCursor<E>
      */
     public SingletonCursor( E singleton, Comparator<E> comparator )
     {
-        LOG_CURSOR.debug( "Creating SingletonCursor {}", this );
+        if ( IS_DEBUG )
+        {
+        	LOG_CURSOR.debug( "Creating SingletonCursor {}", this );
+        }
+        
         this.singleton = singleton;
         this.comparator = comparator;
     }
@@ -327,7 +334,11 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     @Override
     public void close() throws Exception
     {
-        LOG_CURSOR.debug( "Closing SingletonCursor {}", this );
+        if ( IS_DEBUG )
+        {
+        	LOG_CURSOR.debug( "Closing SingletonCursor {}", this );
+        }
+        
         super.close();
     }
 
@@ -338,7 +349,11 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     @Override
     public void close( Exception cause ) throws Exception
     {
-        LOG_CURSOR.debug( "Closing SingletonCursor {}", this );
+        if ( IS_DEBUG )
+        {
+        	LOG_CURSOR.debug( "Closing SingletonCursor {}", this );
+        }
+        
         super.close( cause );
     }
 }

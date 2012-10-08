@@ -52,6 +52,9 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     /** A dedicated log for cursors */
     private static final Logger LOG_CURSOR = LoggerFactory.getLogger( "CURSOR" );
 
+    /** Speedup for logs */
+    private static final boolean IS_DEBUG = LOG_CURSOR.isDebugEnabled();
+
     /** the search future */
     private SearchFuture future;
 
@@ -80,7 +83,11 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      */
     public SearchCursorImpl( SearchFuture future, long timeout, TimeUnit timeUnit )
     {
-        LOG_CURSOR.debug( "Creating SearchCursorImpl {}", this );
+        if ( IS_DEBUG )
+        {
+        	LOG_CURSOR.debug( "Creating SearchCursorImpl {}", this );
+        }
+        
         this.future = future;
         this.timeout = timeout;
         this.timeUnit = timeUnit;
@@ -181,7 +188,11 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     @Override
     public void close() throws Exception
     {
-        LOG_CURSOR.debug( "Closing SearchCursorImpl {}", this );
+        if ( IS_DEBUG )
+        {
+        	LOG_CURSOR.debug( "Closing SearchCursorImpl {}", this );
+        }
+        
         close( null );
     }
 
@@ -192,7 +203,10 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     @Override
     public void close( Exception cause ) throws Exception
     {
-        LOG_CURSOR.debug( "Closing SearchCursorImpl {}", this );
+        if ( IS_DEBUG )
+        {
+        	LOG_CURSOR.debug( "Closing SearchCursorImpl {}", this );
+        }
         
         if ( done )
         {

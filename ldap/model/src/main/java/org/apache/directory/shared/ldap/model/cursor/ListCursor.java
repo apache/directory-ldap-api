@@ -41,6 +41,9 @@ public class ListCursor<E> extends AbstractCursor<E>
     /** A dedicated log for cursors */
     private static final Logger LOG_CURSOR = LoggerFactory.getLogger( "CURSOR" );
 
+    /** Speedup for logs */
+    private static final boolean IS_DEBUG = LOG_CURSOR.isDebugEnabled();
+
     /** The inner List */
     private final List<E> list;
 
@@ -94,7 +97,11 @@ public class ListCursor<E> extends AbstractCursor<E>
             throw new IllegalArgumentException( I18n.err( I18n.ERR_02007_START_INDEX_ABOVE_END_INDEX, start, end ) );
         }
 
-        LOG_CURSOR.debug( "Creating ListCursor {}", this );
+        if ( IS_DEBUG )
+        {
+        	LOG_CURSOR.debug( "Creating ListCursor {}", this );
+        }
+        
         this.comparator = comparator;
         this.list = list;
         this.start = start;
@@ -503,7 +510,11 @@ public class ListCursor<E> extends AbstractCursor<E>
     @Override
     public void close() throws Exception
     {
-        LOG_CURSOR.debug( "Closing ListCursor {}", this );
+        if ( IS_DEBUG )
+        {
+        	LOG_CURSOR.debug( "Closing ListCursor {}", this );
+        }
+        
         super.close();
     }
 
@@ -514,7 +525,11 @@ public class ListCursor<E> extends AbstractCursor<E>
     @Override
     public void close( Exception cause ) throws Exception
     {
-        LOG_CURSOR.debug( "Closing ListCursor {}", this );
+        if ( IS_DEBUG )
+        {
+        	LOG_CURSOR.debug( "Closing ListCursor {}", this );
+        }
+        
         super.close( cause );
     }
 }
