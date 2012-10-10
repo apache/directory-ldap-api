@@ -32,9 +32,8 @@ import org.apache.commons.pool.impl.GenericObjectPool;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapConnectionPool extends GenericObjectPool
+public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
 {
-
     /**
      * Instantiates a new LDAP connection pool.
      *
@@ -68,5 +67,4 @@ public class LdapConnectionPool extends GenericObjectPool
     {
         super.returnObject( connection );
     }
-
 }

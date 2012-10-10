@@ -31,9 +31,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PoolableLdapConnectionFactory implements PoolableObjectFactory
+public class PoolableLdapConnectionFactory implements PoolableObjectFactory<LdapConnection>
 {
-
     /** configuration object for the connection */
     private LdapConnectionConfig config;
 
@@ -57,19 +56,18 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory
     /**
      * {@inheritDoc}
      */
-    public void activateObject( Object obj ) throws Exception
+    public void activateObject( LdapConnection connection ) throws Exception
     {
-        LOG.debug( "activating {}", obj );
+        LOG.debug( "Activating {}", connection );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void destroyObject( Object obj ) throws Exception
+    public void destroyObject( LdapConnection connection ) throws Exception
     {
-        LOG.debug( "destroying {}", obj );
-        LdapConnection connection = ( LdapConnection ) obj;
+        LOG.debug( "Destroying {}", connection );
         connection.unBind();
         connection.close();
     }
@@ -78,9 +76,9 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory
     /**
      * {@inheritDoc}
      */
-    public Object makeObject() throws Exception
+    public LdapConnection makeObject() throws Exception
     {
-        LOG.debug( "creating a LDAP connection" );
+        LOG.debug( "Creating a LDAP connection" );
 
         LdapNetworkConnection connection = new LdapNetworkConnection( config );
         connection.bind( config.getName(), config.getCredentials() );
@@ -91,21 +89,19 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory
     /**
      * {@inheritDoc}
      */
-    public void passivateObject( Object obj ) throws Exception
+    public void passivateObject( LdapConnection connection ) throws Exception
     {
-        LOG.debug( "passivating {}", obj );
+        LOG.debug( "Passivating {}", connection );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public boolean validateObject( Object obj )
+    public boolean validateObject( LdapConnection connection )
     {
-        LOG.debug( "validating {}", obj );
+        LOG.debug( "Validating {}", connection );
 
-        LdapConnection connection = ( LdapConnection ) obj;
         return connection.isConnected();
     }
-
 }
