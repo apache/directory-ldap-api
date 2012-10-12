@@ -1175,16 +1175,6 @@ public class SchemaEntityFactory implements EntityFactory
 
             schemaObject.addExtension( MetaSchemaConstants.X_READ_ONLY_AT, value );
         }
-
-        // X-ENABLED
-        Attribute xEnabled = entry.get( MetaSchemaConstants.X_ENABLED_AT );
-
-        if ( xEnabled != null )
-        {
-            String value = xEnabled.getString();
-
-            schemaObject.addExtension( MetaSchemaConstants.X_ENABLED_AT, value );
-        }
     }
 
 

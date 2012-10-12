@@ -313,14 +313,14 @@ public class SchemaManagerLoadTest
         assertTrue( schemaManager.load( "apacheMeta" ) );
 
         assertTrue( schemaManager.getErrors().isEmpty() );
-        assertEquals( 70, schemaManager.getAttributeTypeRegistry().size() );
+        assertEquals( 71, schemaManager.getAttributeTypeRegistry().size() );
         assertEquals( 40, schemaManager.getComparatorRegistry().size() );
         assertEquals( 40, schemaManager.getMatchingRuleRegistry().size() );
         assertEquals( 40, schemaManager.getNormalizerRegistry().size() );
         assertEquals( 22, schemaManager.getObjectClassRegistry().size() );
         assertEquals( 63, schemaManager.getSyntaxCheckerRegistry().size() );
         assertEquals( 64, schemaManager.getLdapSyntaxRegistry().size() );
-        assertEquals( 196, schemaManager.getGlobalOidRegistry().size() );
+        assertEquals( 197, schemaManager.getGlobalOidRegistry().size() );
 
         assertEquals( 2, schemaManager.getRegistries().getLoadedSchemas().size() );
         assertNotNull( schemaManager.getRegistries().getLoadedSchema( "system" ) );

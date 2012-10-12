@@ -179,6 +179,7 @@ public final class MetaSchemaConstants
     public final static String X_NOT_HUMAN_READABLE_AT = "x-not-human-readable";
     public final static String X_NOT_HUMAN_READABLE_AT_OID = "1.3.6.1.4.1.18060.0.4.0.2.34";
     
+    // The x-read-only extension
     public final static String X_READ_ONLY_AT = "X-READ-ONLY";
-    public final static String X_ENABLED_AT = "X-ENABLED";
+    public final static String X_READ_ONLY_AT_OID = "1.3.6.1.4.1.18060.0.4.0.2.36";
 }
