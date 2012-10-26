@@ -1160,7 +1160,7 @@ public class DefaultSchemaManager implements SchemaManager
 
         if ( registries.isSchemaLoaded( schemaName ) )
         {
-            LOG.info( "{} schema has already been loaded" + schema.getSchemaName() );
+            LOG.info( "{} schema has already been loaded", schema.getSchemaName() );
             return;
         }
 
@@ -1258,7 +1258,7 @@ public class DefaultSchemaManager implements SchemaManager
 
         if ( registries.isSchemaLoaded( schemaName ) )
         {
-            LOG.info( "{} schema has already been loaded" + schema.getSchemaName() );
+            LOG.info( "{} schema has already been loaded", schema.getSchemaName() );
             return;
         }
 
