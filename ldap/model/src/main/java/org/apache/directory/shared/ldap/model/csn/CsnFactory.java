@@ -105,4 +105,10 @@ public class CsnFactory
     {
         return new Csn( expirationDate, Integer.MAX_VALUE, PURGE_INSTANCEID, Integer.MAX_VALUE );
     }
+
+
+    public void setReplicaId( int replicaId )
+    {
+        this.replicaId = replicaId;
+    }
 }
