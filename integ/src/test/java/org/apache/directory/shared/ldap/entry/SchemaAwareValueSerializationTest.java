@@ -312,7 +312,7 @@ public class SchemaAwareValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = StringValue.deserialize( cn, in );
+        StringValue svDeser = StringValue.deserialize( dc, in );
 
         assertEquals( value, svDeser );
     }
@@ -333,7 +333,7 @@ public class SchemaAwareValueSerializationTest
         byte[] data = baos.toByteArray();
         in = new ObjectInputStream( new ByteArrayInputStream( data ) );
 
-        StringValue svDeser = StringValue.deserialize( cn, in );
+        StringValue svDeser = StringValue.deserialize( dc, in );
 
         assertEquals( value, svDeser );
     }

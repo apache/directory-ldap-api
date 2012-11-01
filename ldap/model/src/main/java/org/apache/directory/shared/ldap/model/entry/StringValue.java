@@ -22,12 +22,15 @@ package org.apache.directory.shared.ldap.model.entry;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.util.Strings;
 import org.apache.directory.shared.util.exception.NotImplementedException;
@@ -267,88 +270,157 @@ public class StringValue extends AbstractValue<String>
         }
 
         StringValue other = ( StringValue ) obj;
-
-        if ( this.isNull() )
-        {
-            return other.isNull();
-        }
-
-        // First check the upValue. If they are equal, the Values are equal
-        if ( wrappedValue == other.wrappedValue )
-        {
-            return true;
-        }
-        else if ( wrappedValue != null )
-        {
-            if ( wrappedValue.equals( other.wrappedValue ) )
-            {
-                return true;
-            }
-        }
-
-        // If we have an attributeType, it must be equal
-        // We should also use the comparator if we have an AT
+        
+        // First check if we have an attrbuteType.
         if ( attributeType != null )
         {
+            // yes : check for the other value
             if ( other.attributeType != null )
             {
-                if ( !attributeType.equals( other.attributeType ) )
+                if ( attributeType.getOid().equals( other.getAttributeType().getOid() ) )
+                {
+                    // Both AttributeType have the same OID, we can assume they are 
+                    // equals. We don't check any further, because the unicity of OID
+                    // makes it unlikely that the two AT are different.
+                    // The values may be both null
+                    if ( isNull() )
+                    {
+                        return other.isNull();
+                    }
+
+                    // Shortcut : if we have an AT for both the values, check the 
+                    // already normalized values
+                    if ( wrappedValue.equals( other.wrappedValue ) )
+                    {
+                        return true;
+                    }
+                    
+                    // We have an AttributeType, we use the associated comparator
+                    try
+                    {
+                        Comparator<String> comparator = ( Comparator<String> ) getLdapComparator();
+
+                        // Compare normalized values
+                        if ( comparator == null )
+                        {
+                            return getNormReference().equals( other.getNormReference() );
+                        }
+                        else
+                        {
+                            return comparator.compare( getNormReference(), other.getNormReference() ) == 0;
+                        }
+                    }
+                    catch ( LdapException ne )
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    // We can't compare two values when the two ATs are different
+                    return false;
+                }
+            }
+            else
+            {
+                // We only have one AT : we will assume that both values are for the 
+                // same AT.
+                // The values may be both null
+                if ( isNull() )
+                {
+                    return other.isNull();
+                }
+
+                // We have an AttributeType on the base value, we need to use its comparator
+                try
+                {
+                    Comparator<String> comparator = ( Comparator<String> ) getLdapComparator();
+
+                    // Compare normalized values. We have to normalized the other value,
+                    // as it has no AT
+                    MatchingRule equality = getAttributeType().getEquality();
+                    
+                    if ( equality == null )
+                    {
+                        // No matching rule : compare the raw values
+                        return getNormReference().equals( other.getNormReference() );
+                    }
+                    
+                    Normalizer normalizer = equality.getNormalizer();
+                    
+                    StringValue otherValue = (StringValue)normalizer.normalize( other );
+                    
+                    if ( comparator == null )
+                    {
+                        return getNormReference().equals( otherValue.getNormReference() );
+                    }
+                    else
+                    {
+                        return comparator.compare( getNormReference(), otherValue.getNormReference() ) == 0;
+                    }
+                }
+                catch ( LdapException ne )
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            // No : check for the other value
+            if ( other.attributeType != null )
+            {
+                // We only have one AT : we will assume that both values are for the 
+                // same AT.
+                // The values may be both null
+                if ( isNull() )
+                {
+                    return other.isNull();
+                }
+                
+                try
+                {
+                    Comparator<String> comparator = ( Comparator<String> ) other.getLdapComparator();
+
+                    // Compare normalized values. We have to normalized the other value,
+                    // as it has no AT
+                    MatchingRule equality = other.getAttributeType().getEquality();
+                    
+                    if ( equality == null )
+                    {
+                        // No matching rule : compare the raw values
+                        return getNormReference().equals( other.getNormReference() );
+                    }
+                    
+                    Normalizer normalizer = equality.getNormalizer();
+                    
+                    StringValue thisValue = (StringValue)normalizer.normalize( this );
+                    
+                    if ( comparator == null )
+                    {
+                        return thisValue.getNormReference().equals( other.getNormReference() );
+                    }
+                    else
+                    {
+                        return comparator.compare( thisValue.getNormReference(), other.getNormReference() ) == 0;
+                    }
+                }
+                catch ( LdapException ne )
                 {
                     return false;
                 }
             }
             else
             {
-                return this.getNormValue().equals( other.getNormValue() );
-            }
-        }
-        else if ( other.attributeType != null )
-        {
-            return this.getNormValue().equals( other.getNormValue() );
-        }
-
-        // Shortcut : compare the values without normalization
-        // If they are equal, we may avoid a normalization.
-        // Note : if two values are equal, then their normalized
-        // value are equal too if their attributeType are equal.
-        if ( getReference().equals( other.getReference() ) )
-        {
-            return true;
-        }
-
-        if ( attributeType != null )
-        {
-            try
-            {
-                LdapComparator<String> comparator = getLdapComparator();
-
-                // Compare normalized values
-                if ( comparator == null )
+                // The values may be both null
+                if ( isNull() )
                 {
-                    return getNormValue().equals( other.getNormValue() );
+                    return other.isNull();
                 }
-                else
-                {
-                    if ( isSchemaAware() )
-                    {
-                        return comparator.compare( getNormValue(), other.getNormValue() ) == 0;
-                    }
-                    else
-                    {
-                        Normalizer normalizer = attributeType.getEquality().getNormalizer();
-                        return comparator.compare( normalizer.normalize( getValue() ),
-                            normalizer.normalize( other.getValue() ) ) == 0;
-                    }
-                }
+                
+                // Now check the normalized values
+                return getNormReference().equals( other.getNormReference() );
             }
-            catch ( LdapException ne )
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return this.getNormValue().equals( other.getNormValue() );
         }
     }
 
@@ -461,7 +533,21 @@ public class StringValue extends AbstractValue<String>
         }
         else
         {
-            normalizedValue = wrappedValue;
+            if ( attributeType != null )
+            {
+                try
+                {
+                    normalizedValue = attributeType.getEquality().getNormalizer().normalize( wrappedValue );
+                }
+                catch ( LdapException le )
+                {
+                    normalizedValue = wrappedValue;
+                }
+            }
+            else
+            {
+                normalizedValue = wrappedValue;
+            }
         }
 
         // The hashCoe

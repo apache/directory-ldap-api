@@ -50,6 +50,7 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.apache.directory.shared.util.StringConstants;
 import org.apache.directory.shared.util.Strings;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -67,40 +68,40 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 public class SchemaAwareAttributeTest
 {
-    private static AttributeType atCN = null;
-    private static AttributeType atDC;
-    private static AttributeType atSN;
-    private static AttributeType atName;
+    private AttributeType atCN = null;
+    private AttributeType atDC;
+    private AttributeType atSN;
+    private AttributeType atName;
 
     // A SINGLE-VALUE attribute
-    private static AttributeType atC;
+    private AttributeType atC;
 
     // A Binary attribute
-    private static AttributeType atPwd;
+    private AttributeType atPwd;
 
     // A String attribute which allows null value
-    private static AttributeType atEMail;
+    private AttributeType atEMail;
 
-    private static final Value<String> NULL_STRING_VALUE = new StringValue( ( String ) null );
-    private static final Value<byte[]> NULL_BINARY_VALUE = new BinaryValue( ( byte[] ) null );
-    private static final byte[] BYTES1 = new byte[]
+    private final Value<String> NULL_STRING_VALUE = new StringValue( ( String ) null );
+    private final Value<byte[]> NULL_BINARY_VALUE = new BinaryValue( ( byte[] ) null );
+    private final byte[] BYTES1 = new byte[]
         { 'a', 'b' };
-    private static final byte[] BYTES2 = new byte[]
+    private final byte[] BYTES2 = new byte[]
         { 'b' };
-    private static final byte[] BYTES3 = new byte[]
+    private final byte[] BYTES3 = new byte[]
         { 'c' };
-    private static final byte[] BYTES4 = new byte[]
+    private final byte[] BYTES4 = new byte[]
         { 'd' };
 
-    private static final StringValue STR_VALUE1 = new StringValue( "a" );
-    private static final StringValue STR_VALUE2 = new StringValue( "b" );
-    private static final StringValue STR_VALUE3 = new StringValue( "c" );
-    private static final StringValue STR_VALUE4 = new StringValue( "d" );
+    private final StringValue STR_VALUE1 = new StringValue( "a" );
+    private final StringValue STR_VALUE2 = new StringValue( "b" );
+    private final StringValue STR_VALUE3 = new StringValue( "c" );
+    private final StringValue STR_VALUE4 = new StringValue( "d" );
 
-    private static final BinaryValue BIN_VALUE1 = new BinaryValue( BYTES1 );
-    private static final BinaryValue BIN_VALUE2 = new BinaryValue( BYTES2 );
-    private static final BinaryValue BIN_VALUE3 = new BinaryValue( BYTES3 );
-    private static final BinaryValue BIN_VALUE4 = new BinaryValue( BYTES4 );
+    private final BinaryValue BIN_VALUE1 = new BinaryValue( BYTES1 );
+    private final BinaryValue BIN_VALUE2 = new BinaryValue( BYTES2 );
+    private final BinaryValue BIN_VALUE3 = new BinaryValue( BYTES3 );
+    private final BinaryValue BIN_VALUE4 = new BinaryValue( BYTES4 );
 
     private static SchemaManager schemaManager;
 
@@ -180,14 +181,20 @@ public class SchemaAwareAttributeTest
         }
     }
 
-
+    
+    @BeforeClass
+    public static void startup() throws Exception
+    {
+        schemaManager = new DefaultSchemaManager();
+    }
+    
+    
     /**
      * Initialize the schemaManager
      */
-    @BeforeClass
-    public static void setup() throws Exception
+    @Before
+    public void setup() throws Exception
     {
-        schemaManager = new DefaultSchemaManager();
         atCN = schemaManager.getAttributeType( "cn" );
         atDC = schemaManager.lookupAttributeTypeRegistry( "dc" );
         atC = schemaManager.lookupAttributeTypeRegistry( "c" );

@@ -30,6 +30,8 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
+import org.apache.directory.shared.ldap.model.schema.MatchingRule;
+import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.shared.util.Strings;
 
@@ -234,67 +236,157 @@ public class BinaryValue extends AbstractValue<byte[]>
         }
 
         BinaryValue other = ( BinaryValue ) obj;
-
-        if ( isNull() )
-        {
-            return other.isNull();
-        }
-
-        // If we have an attributeType, it must be equal
-        // We should also use the comparator if we have an AT
+        
+        // First check if we have an attrbuteType.
         if ( attributeType != null )
         {
+            // yes : check for the other value
             if ( other.attributeType != null )
             {
-                if ( !attributeType.equals( other.attributeType ) )
+                if ( attributeType.getOid().equals( other.getAttributeType().getOid() ) )
+                {
+                    // Both AttributeType have the same OID, we can assume they are 
+                    // equals. We don't check any further, because the unicity of OID
+                    // makes it unlikely that the two AT are different.
+                    // The values may be both null
+                    if ( isNull() )
+                    {
+                        return other.isNull();
+                    }
+
+                    // Shortcut : if we have an AT for both the values, check the 
+                    // already normalized values
+                    if ( Arrays.equals( wrappedValue, other.wrappedValue ) )
+                    {
+                        return true;
+                    }
+                    
+                    // We have an AttributeType, we use the associated comparator
+                    try
+                    {
+                        Comparator<byte[]> comparator = ( Comparator<byte[]> ) getLdapComparator();
+
+                        // Compare normalized values
+                        if ( comparator == null )
+                        {
+                            return Arrays.equals( getNormReference(), other.getNormReference() );
+                        }
+                        else
+                        {
+                            return comparator.compare( getNormReference(), other.getNormReference() ) == 0;
+                        }
+                    }
+                    catch ( LdapException ne )
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    // We can't compare two values when the two ATs are different
+                    return false;
+                }
+            }
+            else
+            {
+                // We only have one AT : we will assume that both values are for the 
+                // same AT.
+                // The values may be both null
+                if ( isNull() )
+                {
+                    return other.isNull();
+                }
+
+                // We have an AttributeType on the base value, we need to use its comparator
+                try
+                {
+                    Comparator<byte[]> comparator = ( Comparator<byte[]> ) getLdapComparator();
+
+                    // Compare normalized values. We have to normalized the other value,
+                    // as it has no AT
+                    MatchingRule equality = getAttributeType().getEquality();
+                    
+                    if ( equality == null )
+                    {
+                        // No matching rule : compare the raw values
+                        return Arrays.equals( getNormReference(), other.getNormReference() );
+                    }
+                    
+                    Normalizer normalizer = equality.getNormalizer();
+                    
+                    BinaryValue otherValue = (BinaryValue)normalizer.normalize( other );
+                    
+                    if ( comparator == null )
+                    {
+                        return Arrays.equals( getNormReference(), otherValue.getNormReference() );
+                    }
+                    else
+                    {
+                        return comparator.compare( getNormReference(), otherValue.getNormReference() ) == 0;
+                    }
+                }
+                catch ( LdapException ne )
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            // No : check for the other value
+            if ( other.attributeType != null )
+            {
+                // We only have one AT : we will assume that both values are for the 
+                // same AT.
+                // The values may be both null
+                if ( isNull() )
+                {
+                    return other.isNull();
+                }
+                
+                try
+                {
+                    Comparator<byte[]> comparator = ( Comparator<byte[]> ) other.getLdapComparator();
+
+                    // Compare normalized values. We have to normalized the other value,
+                    // as it has no AT
+                    MatchingRule equality = other.getAttributeType().getEquality();
+                    
+                    if ( equality == null )
+                    {
+                        // No matching rule : compare the raw values
+                        return Arrays.equals( getNormReference(), other.getNormReference() );
+                    }
+                    
+                    Normalizer normalizer = equality.getNormalizer();
+                    
+                    BinaryValue thisValue = (BinaryValue)normalizer.normalize( this );
+                    
+                    if ( comparator == null )
+                    {
+                        return Arrays.equals( thisValue.getNormReference(), other.getNormReference() );
+                    }
+                    else
+                    {
+                        return comparator.compare( thisValue.getNormReference(), other.getNormReference() ) == 0;
+                    }
+                }
+                catch ( LdapException ne )
                 {
                     return false;
                 }
             }
             else
             {
-                other.attributeType = attributeType;
-            }
-        }
-        else if ( other.attributeType != null )
-        {
-            attributeType = other.attributeType;
-        }
-
-        // Shortcut : if the values are equals, no need to compare
-        // the normalized values
-        if ( Arrays.equals( wrappedValue, other.wrappedValue ) )
-        {
-            return true;
-        }
-
-        if ( attributeType != null )
-        {
-            // We have an AttributeType, we eed to use the comparator
-            try
-            {
-                Comparator<byte[]> comparator = ( Comparator<byte[]> ) getLdapComparator();
-
-                // Compare normalized values
-                if ( comparator == null )
+                // The values may be both null
+                if ( isNull() )
                 {
-                    return Arrays.equals( getNormReference(), other.getNormReference() );
+                    return other.isNull();
                 }
-                else
-                {
-                    return comparator.compare( getNormReference(), other.getNormReference() ) == 0;
-                }
+                
+                // Now check the normalized values
+                return Arrays.equals( getNormReference(), other.getNormReference() );
             }
-            catch ( LdapException ne )
-            {
-                return false;
-            }
-
-        }
-        else
-        {
-            // now unlike regular values we have to compare the normalized values
-            return Arrays.equals( getNormReference(), other.getNormReference() );
         }
     }
 
@@ -461,12 +553,32 @@ public class BinaryValue extends AbstractValue<byte[]>
         }
         else
         {
-            // Copy the wrappedValue into the normalizedValue
-            if ( wrappedLength >= 0 )
+            if ( attributeType != null )
             {
-                normalizedValue = new byte[wrappedLength];
+                try
+                {
+                    normalizedValue = attributeType.getEquality().getNormalizer().normalize( this ).getBytes();
+                }
+                catch ( LdapException le )
+                {
+                    // Copy the wrappedValue into the normalizedValue
+                    if ( wrappedLength >= 0 )
+                    {
+                        normalizedValue = new byte[wrappedLength];
 
-                System.arraycopy( wrappedValue, 0, normalizedValue, 0, wrappedLength );
+                        System.arraycopy( wrappedValue, 0, normalizedValue, 0, wrappedLength );
+                    }
+                }
+            }
+            else
+            {
+                // Copy the wrappedValue into the normalizedValue
+                if ( wrappedLength >= 0 )
+                {
+                    normalizedValue = new byte[wrappedLength];
+
+                    System.arraycopy( wrappedValue, 0, normalizedValue, 0, wrappedLength );
+                }
             }
         }
 
