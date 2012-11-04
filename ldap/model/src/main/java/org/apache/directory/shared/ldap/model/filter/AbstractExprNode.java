@@ -205,51 +205,15 @@ public abstract class AbstractExprNode implements ExprNode
         }
 
         val = ( ( StringValue ) value ).getString();
-
-        for ( int i = 0; i < val.length(); i++ )
+        String encodedVal = FilterEncoder.encodeFilterValue( val );
+        if ( val.equals( encodedVal ) )
         {
-            char ch = val.charAt( i );
-            String replace = null;
-
-            switch ( ch )
-            {
-                case '*':
-                    replace = "\\2A";
-                    break;
-
-                case '(':
-                    replace = "\\28";
-                    break;
-
-                case ')':
-                    replace = "\\29";
-                    break;
-
-                case '\\':
-                    replace = "\\5C";
-                    break;
-
-                case '\0':
-                    replace = "\\00";
-                    break;
-            }
-
-            if ( replace != null )
-            {
-                if ( sb == null )
-                {
-                    sb = new StringBuilder( val.length() * 2 );
-                    sb.append( val.substring( 0, i ) );
-                }
-                sb.append( replace );
-            }
-            else if ( sb != null )
-            {
-                sb.append( ch );
-            }
+            return value;
         }
-
-        return ( sb == null ? value : new StringValue( sb.toString() ) );
+        else
+        {
+            return new StringValue( encodedVal );
+        }
     }
 
 
