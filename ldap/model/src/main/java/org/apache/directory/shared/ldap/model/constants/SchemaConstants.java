@@ -518,9 +518,14 @@ public final class SchemaConstants
     //-------------------------------------------------------------------------
     // ObjectClasses
     //-------------------------------------------------------------------------
-    // ads-replReqHandler AT
-    public final static String ADS_REPL_REQ_HANDLER = "ads-replReqHandler";
-    public final static String ADS_REPL_REQ_HANDLER_OID = "1.3.6.1.4.1.18060.0.4.1.2.832";
+    
+    
+    //=========================================================================
+    // DirectoryService AT and OC
+    //-------------------------------------------------------------------------
+    // ads-directoryServiceId AT
+    public final static String ADS_DIRECTORY_SERVICE_ID = "ads-directoryServiceId";
+    public final static String ADS_DIRECTORY_SERVICE_ID_OID = "1.3.6.1.4.1.18060.0.4.1.2.100";
 
     //=========================================================================
     // Replication AT and OC
@@ -606,6 +611,10 @@ public final class SchemaConstants
     public final static String ADS_REPL_COOKIE = "ads-replCookie";
     public final static String ADS_REPL_COOKIE_OID = "1.3.6.1.4.1.18060.0.4.1.2.831";
 
+    // ads-replReqHandler AT
+    public final static String ADS_REPL_REQ_HANDLER = "ads-replReqHandler";
+    public final static String ADS_REPL_REQ_HANDLER_OID = "1.3.6.1.4.1.18060.0.4.1.2.832";
+
     // ads-replUseTls AT
     public final static String ADS_REPL_USE_TLS = "ads-replUseTls";
     public final static String ADS_REPL_USE_TLS_OID = "1.3.6.1.4.1.18060.0.4.1.2.833";
@@ -625,6 +634,10 @@ public final class SchemaConstants
     // ads-replConsumerId AT
     public final static String ADS_REPL_CONSUMER_ID = "ads-replConsumerId";
     public final static String ADS_REPL_CONSUMER_ID_OID = "1.3.6.1.4.1.18060.0.4.1.2.837";
+
+    // ads-replEnabled AT
+    public final static String ADS_REPL_ENABLED = "ads-replEnabled";
+    public final static String ADS_REPL_ENABLED_OID = "1.3.6.1.4.1.18060.0.4.1.2.838";
 
     //-------------------------------------------------------------------------
     // ---- Syntaxes ----------------------------------------------------------
