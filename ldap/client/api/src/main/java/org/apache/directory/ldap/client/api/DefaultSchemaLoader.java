@@ -105,7 +105,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
 
 
     /**
-     * Creates a new instance of NetworkSchemaLoader.
+     * Creates a new instance of DefaultSchemaLoader.
      *
      * @param connection the LDAP connection
      * @throws Exception if the connection is not authenticated or if there are any problems
