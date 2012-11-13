@@ -236,24 +236,27 @@ public enum AliasDerefMode
      */
     public static AliasDerefMode getDerefMode( String val )
     {
-        if ( val.equals( NEVER_DEREF_ALIASES.jndiValue ) )
+        if ( val != null )
         {
-            return NEVER_DEREF_ALIASES;
-        }
+            if ( val.equals( NEVER_DEREF_ALIASES.jndiValue ) )
+            {
+                return NEVER_DEREF_ALIASES;
+            }
 
-        if ( val.equals( DEREF_IN_SEARCHING.jndiValue ) )
-        {
-            return DEREF_IN_SEARCHING;
-        }
+            if ( val.equals( DEREF_IN_SEARCHING.jndiValue ) )
+            {
+                return DEREF_IN_SEARCHING;
+            }
 
-        if ( val.equals( DEREF_FINDING_BASE_OBJ.jndiValue ) )
-        {
-            return DEREF_FINDING_BASE_OBJ;
-        }
+            if ( val.equals( DEREF_FINDING_BASE_OBJ.jndiValue ) )
+            {
+                return DEREF_FINDING_BASE_OBJ;
+            }
 
-        if ( val.equals( DEREF_ALWAYS.jndiValue ) )
-        {
-            return DEREF_ALWAYS;
+            if ( val.equals( DEREF_ALWAYS.jndiValue ) )
+            {
+                return DEREF_ALWAYS;
+            }
         }
 
         throw new IllegalArgumentException( "Unknown derefmode " + val );
