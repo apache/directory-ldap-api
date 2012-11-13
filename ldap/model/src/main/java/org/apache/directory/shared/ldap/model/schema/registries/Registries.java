@@ -1898,27 +1898,34 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         sb.append( "USED BY :\n" );
 
-        for ( SchemaObjectWrapper wrapper : usedBy.keySet() )
+        try
         {
-            sb.append( wrapper.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() ).append( "] : {" );
-
-            boolean isFirst = true;
-
-            for ( SchemaObjectWrapper uses : usedBy.get( wrapper ) )
+            for ( SchemaObjectWrapper wrapper : usedBy.keySet() )
             {
-                if ( isFirst )
+                sb.append( wrapper.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() ).append( "] : {" );
+    
+                boolean isFirst = true;
+    
+                for ( SchemaObjectWrapper uses : usedBy.get( wrapper ) )
                 {
-                    isFirst = false;
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        sb.append( ", " );
+                    }
+    
+                    sb.append( uses.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() ).append( "]" );
                 }
-                else
-                {
-                    sb.append( ", " );
-                }
-
-                sb.append( uses.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() ).append( "]" );
+    
+                sb.append( "}\n" );
             }
-
-            sb.append( "}\n" );
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
         }
 
         return sb.toString();
@@ -1934,27 +1941,34 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         sb.append( "USING :\n" );
 
-        for ( SchemaObjectWrapper wrapper : using.keySet() )
+        try
         {
-            sb.append( wrapper.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() ).append( "] : {" );
-
-            boolean isFirst = true;
-
-            for ( SchemaObjectWrapper uses : using.get( wrapper ) )
+            for ( SchemaObjectWrapper wrapper : using.keySet() )
             {
-                if ( isFirst )
+                sb.append( wrapper.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() ).append( "] : {" );
+    
+                boolean isFirst = true;
+    
+                for ( SchemaObjectWrapper uses : using.get( wrapper ) )
                 {
-                    isFirst = false;
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        sb.append( ", " );
+                    }
+    
+                    sb.append( uses.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() ).append( "]" );
                 }
-                else
-                {
-                    sb.append( ", " );
-                }
-
-                sb.append( uses.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() ).append( "]" );
+    
+                sb.append( "}\n" );
             }
-
-            sb.append( "}\n" );
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
         }
 
         return sb.toString();
