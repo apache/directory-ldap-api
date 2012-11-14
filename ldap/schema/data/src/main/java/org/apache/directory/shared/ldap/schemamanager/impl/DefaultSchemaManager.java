@@ -140,7 +140,7 @@ public class DefaultSchemaManager implements SchemaManager
         namingContext = Dn.ROOT_DSE;
         this.schemaLoader = new JarLdifSchemaLoader();
         errors = new ArrayList<Throwable>();
-        registries = new Registries( this );
+        registries = new Registries();
         factory = new SchemaEntityFactory();
         isRelaxed = STRICT;
         loadAllEnabled();
@@ -158,7 +158,7 @@ public class DefaultSchemaManager implements SchemaManager
         namingContext = Dn.ROOT_DSE;
         this.schemaLoader = loader;
         errors = new ArrayList<Throwable>();
-        registries = new Registries( this );
+        registries = new Registries();
         factory = new SchemaEntityFactory();
         isRelaxed = STRICT;
     }
@@ -176,7 +176,7 @@ public class DefaultSchemaManager implements SchemaManager
         this.namingContext = namingContext;
         this.schemaLoader = loader;
         errors = new ArrayList<Throwable>();
-        registries = new Registries( this );
+        registries = new Registries();
         factory = new SchemaEntityFactory();
         isRelaxed = STRICT;
     }

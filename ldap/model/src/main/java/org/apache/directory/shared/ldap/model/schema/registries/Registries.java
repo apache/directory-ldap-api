@@ -143,19 +143,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     protected Map<SchemaObjectWrapper, Set<SchemaObjectWrapper>> using;
 
-    /** A reference on the schema Manager */
-    @SuppressWarnings(
-        { "PMD.UnusedPrivateField", "unused" })
-    // False positive
-    private SchemaManager schemaManager;
-
 
     /**
      * Creates a new instance of Registries.
-     *
-     * @param schemaManager the schema manager
      */
-    public Registries( SchemaManager schemaManager )
+    public Registries()
     {
         globalOidRegistry = new OidRegistry<SchemaObject>();
         attributeTypeRegistry = new DefaultAttributeTypeRegistry();
@@ -175,7 +167,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         isRelaxed = STRICT;
         disabledAccepted = false;
-        this.schemaManager = schemaManager;
     }
 
 
