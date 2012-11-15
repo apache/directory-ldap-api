@@ -81,7 +81,20 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
         LOG.debug( "Creating a LDAP connection" );
 
         LdapNetworkConnection connection = new LdapNetworkConnection( config );
-        connection.bind( config.getName(), config.getCredentials() );
+        
+        try
+        {
+            connection.bind( config.getName(), config.getCredentials() );
+        }
+        catch ( Exception e )
+        {
+            // We weren't able to bind : close the connection
+            connection.close();
+            
+            // And rethrow the exception
+            throw e;
+        }
+        
         return connection;
     }
 
