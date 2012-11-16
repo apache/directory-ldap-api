@@ -88,10 +88,12 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
         }
         catch ( Exception e )
         {
+            LOG.warn( "Cannot bind : {}", e.getMessage() );
+            
             // We weren't able to bind : close the connection
             connection.close();
             
-            // And rethrow the exception
+            // And re-throw the exception
             throw e;
         }
         
