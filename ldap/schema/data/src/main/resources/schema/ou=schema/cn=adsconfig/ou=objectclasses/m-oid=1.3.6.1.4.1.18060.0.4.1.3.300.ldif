@@ -20,3 +20,4 @@ m-may: ads-replReqHandler
 m-may: ads-saslMechHandlers
 m-may: ads-extendedOpHandlers
 m-may: ads-replConsumers
+m-may: ads-replEnabled
