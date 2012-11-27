@@ -24,6 +24,7 @@ package org.apache.directory.shared.ldap.extras.controls;
  * This class describes the four possible synchronization mode, out of
  * which only two are presently valid :
  * 
+ * <pre>
  * syncRequestValue ::= SEQUENCE {
  *     mode ENUMERATED {
  *         -- 0 unused
@@ -31,6 +32,7 @@ package org.apache.directory.shared.ldap.extras.controls;
  *         -- 2 reserved
  *         refreshAndPersist (3)
  * ...
+ * </pre>
  * 
  * @see <a href="http://www.faqs.org/rfcs/rfc4533.html">RFC 4533</a>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
