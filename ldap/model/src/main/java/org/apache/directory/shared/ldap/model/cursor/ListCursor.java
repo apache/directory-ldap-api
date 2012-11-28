@@ -99,7 +99,7 @@ public class ListCursor<E> extends AbstractCursor<E>
 
         if ( IS_DEBUG )
         {
-        	LOG_CURSOR.debug( "Creating ListCursor {}", this );
+            LOG_CURSOR.debug( "Creating ListCursor {}", this );
         }
         
         this.comparator = comparator;
@@ -512,7 +512,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     {
         if ( IS_DEBUG )
         {
-        	LOG_CURSOR.debug( "Closing ListCursor {}", this );
+            LOG_CURSOR.debug( "Closing ListCursor {}", this );
         }
         
         super.close();
@@ -527,7 +527,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     {
         if ( IS_DEBUG )
         {
-        	LOG_CURSOR.debug( "Closing ListCursor {}", this );
+            LOG_CURSOR.debug( "Closing ListCursor {}", this );
         }
         
         super.close( cause );

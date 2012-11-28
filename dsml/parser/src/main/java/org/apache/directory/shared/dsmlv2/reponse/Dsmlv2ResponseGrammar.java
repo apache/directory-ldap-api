@@ -831,7 +831,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         // state: [SOAP_ENVELOPE_START_TAG] -> Tag: <header>
         super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()].put( new Tag( "header", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG, Dsmlv2StatesEnum.SOAP_HEADER_START_TAG,
-            		ParserUtils.readSoapHeader ) );
+                    ParserUtils.readSoapHeader ) );
 
         // state: [SOAP_HEADER_START_TAG] -> Tag: </header>
         super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_START_TAG.ordinal()]

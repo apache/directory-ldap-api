@@ -78,7 +78,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     {
         if ( IS_DEBUG )
         {
-        	LOG_CURSOR.debug( "Creating SingletonCursor {}", this );
+            LOG_CURSOR.debug( "Creating SingletonCursor {}", this );
         }
         
         this.singleton = singleton;
@@ -336,7 +336,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     {
         if ( IS_DEBUG )
         {
-        	LOG_CURSOR.debug( "Closing SingletonCursor {}", this );
+            LOG_CURSOR.debug( "Closing SingletonCursor {}", this );
         }
         
         super.close();
@@ -351,7 +351,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     {
         if ( IS_DEBUG )
         {
-        	LOG_CURSOR.debug( "Closing SingletonCursor {}", this );
+            LOG_CURSOR.debug( "Closing SingletonCursor {}", this );
         }
         
         super.close( cause );

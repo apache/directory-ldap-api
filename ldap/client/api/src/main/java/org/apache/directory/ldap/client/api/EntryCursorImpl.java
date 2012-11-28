@@ -67,11 +67,11 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      */
     public EntryCursorImpl( SearchCursor searchCursor )
     {
-    	if ( IS_DEBUG )
-    	{
-    		LOG_CURSOR.debug( "Creating EntryCursorImpl {}", this );
-    	}
-    	
+        if ( IS_DEBUG )
+        {
+            LOG_CURSOR.debug( "Creating EntryCursorImpl {}", this );
+        }
+        
         this.searchCursor = searchCursor;
         messageId = -1;
     }
@@ -170,11 +170,11 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public void close() throws Exception
     {
-    	if ( IS_DEBUG )
-    	{
-    		LOG_CURSOR.debug( "Closing EntryCursorImpl {}", this );
-    	}
-    	
+        if ( IS_DEBUG )
+        {
+            LOG_CURSOR.debug( "Closing EntryCursorImpl {}", this );
+        }
+        
         searchCursor.close();
     }
 
@@ -185,11 +185,11 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     @Override
     public void close( Exception cause ) throws Exception
     {
-    	if ( IS_DEBUG )
-    	{
-    		LOG_CURSOR.debug( "Closing EntryCursorImpl {}", this );
-    	}
-    	
+        if ( IS_DEBUG )
+        {
+            LOG_CURSOR.debug( "Closing EntryCursorImpl {}", this );
+        }
+        
         searchCursor.close( cause );
     }
 

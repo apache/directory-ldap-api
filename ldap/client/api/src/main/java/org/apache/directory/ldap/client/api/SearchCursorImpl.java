@@ -85,7 +85,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     {
         if ( IS_DEBUG )
         {
-        	LOG_CURSOR.debug( "Creating SearchCursorImpl {}", this );
+            LOG_CURSOR.debug( "Creating SearchCursorImpl {}", this );
         }
         
         this.future = future;
@@ -190,7 +190,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     {
         if ( IS_DEBUG )
         {
-        	LOG_CURSOR.debug( "Closing SearchCursorImpl {}", this );
+            LOG_CURSOR.debug( "Closing SearchCursorImpl {}", this );
         }
         
         close( null );
@@ -205,7 +205,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     {
         if ( IS_DEBUG )
         {
-        	LOG_CURSOR.debug( "Closing SearchCursorImpl {}", this );
+            LOG_CURSOR.debug( "Closing SearchCursorImpl {}", this );
         }
         
         if ( done )
