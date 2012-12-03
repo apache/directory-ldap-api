@@ -544,4 +544,13 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
         decoder.decode( bb, container );
         return this;
     }
+    
+    
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        return getDecorated().toString();
+    }
 }

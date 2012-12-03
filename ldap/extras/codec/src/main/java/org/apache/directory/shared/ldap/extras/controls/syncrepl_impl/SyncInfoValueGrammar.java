@@ -31,6 +31,7 @@ import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.extras.controls.SyncInfoValue;
+import org.apache.directory.shared.ldap.extras.controls.SynchronizationInfoEnum;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,6 +101,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     public void action( SyncInfoValueContainer container )
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
+                        control.setType( SynchronizationInfoEnum.NEW_COOKIE );
 
                         BerValue value = container.getCurrentTLV().getValue();
 
@@ -138,6 +140,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     public void action( SyncInfoValueContainer container )
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
+                        control.setType( SynchronizationInfoEnum.REFRESH_DELETE );
 
                         container.setSyncInfoValueControl( control );
 
@@ -299,6 +302,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     public void action( SyncInfoValueContainer container )
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
+                        control.setType( SynchronizationInfoEnum.REFRESH_PRESENT );
 
                         container.setSyncInfoValueControl( control );
 
@@ -459,6 +463,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
                     public void action( SyncInfoValueContainer container )
                     {
                         SyncInfoValue control = container.getSyncInfoValueControl();
+                        control.setType( SynchronizationInfoEnum.SYNC_ID_SET );
 
                         container.setSyncInfoValueControl( control );
                     }

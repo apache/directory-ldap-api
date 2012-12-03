@@ -294,7 +294,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
         {
             case NEW_COOKIE:
                 sb.append( "        newCookie : '" ).
-                    append( Strings.dumpBytes( getCookie() ) ).append( "'\n" );
+                    append( Strings.utf8ToString( getCookie() ) ).append( "'\n" );
                 break;
 
             case REFRESH_DELETE:
