@@ -177,14 +177,6 @@ public class SearchResultEntryImpl extends AbstractResponse implements SearchRes
             sb.append( "            No entry\n" );
         }
 
-        if ( ( controls != null ) && ( controls.size() != 0 ) )
-        {
-            for ( Control control : controls.values() )
-            {
-                sb.append( control );
-            }
-        }
-
         return super.toString( sb.toString() );
     }
 }

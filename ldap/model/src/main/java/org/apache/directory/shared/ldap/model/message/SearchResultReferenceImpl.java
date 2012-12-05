@@ -159,14 +159,6 @@ public class SearchResultReferenceImpl extends AbstractResponse implements Searc
             }
         }
 
-        if ( ( controls != null ) && ( controls.size() != 0 ) )
-        {
-            for ( Control control : controls.values() )
-            {
-                sb.append( control );
-            }
-        }
-
         return super.toString( sb.toString() );
     }
 }
