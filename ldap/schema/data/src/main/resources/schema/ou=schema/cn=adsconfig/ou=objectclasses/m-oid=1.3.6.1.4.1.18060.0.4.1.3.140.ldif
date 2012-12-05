@@ -10,5 +10,5 @@ objectclass: metaTop
 objectclass: top
 m-name: ads-journal
 creatorsname: uid=admin,ou=system
-m-may: ads-journalWorkingDir
-m-may: ads-journalRotation
+m-must: ads-journalWorkingDir
+m-must: ads-journalRotation

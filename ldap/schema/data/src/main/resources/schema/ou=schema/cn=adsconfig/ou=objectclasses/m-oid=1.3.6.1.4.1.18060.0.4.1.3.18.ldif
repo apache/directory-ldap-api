@@ -11,7 +11,7 @@ objectclass: top
 m-name: ads-transport
 m-typeobjectclass: ABSTRACT
 creatorsname: uid=admin,ou=system
-m-may: ads-transportAddress
+m-must: ads-transportAddress
 m-may: ads-transportBacklog
 m-may: ads-transportEnableSSL
 m-may: ads-transportNbThreads

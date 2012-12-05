@@ -9,4 +9,4 @@ objectclass: metaTop
 objectclass: top
 m-name: ads-changeLog
 creatorsname: uid=admin,ou=system
-m-may: ads-changeLogExposed
+m-must: ads-changeLogExposed

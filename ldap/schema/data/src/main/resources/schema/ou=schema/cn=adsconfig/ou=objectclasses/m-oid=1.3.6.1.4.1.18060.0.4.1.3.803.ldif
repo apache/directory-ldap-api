@@ -10,4 +10,4 @@ objectclass: metaTop
 objectclass: top
 m-name: ads-httpWebApp
 creatorsname: uid=admin,ou=system
-m-may: ads-httpAppCtxPath
+m-must: ads-httpAppCtxPath
