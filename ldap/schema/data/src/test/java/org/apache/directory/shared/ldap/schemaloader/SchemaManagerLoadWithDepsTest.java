@@ -170,14 +170,14 @@ public class SchemaManagerLoadWithDepsTest
         schemaManager.loadWithDeps( "apache" );
 
         assertTrue( schemaManager.getErrors().isEmpty() );
-        assertEquals( 145, schemaManager.getAttributeTypeRegistry().size() );
+        assertEquals( 146, schemaManager.getAttributeTypeRegistry().size() );
         assertEquals( 43, schemaManager.getComparatorRegistry().size() );
         assertEquals( 43, schemaManager.getMatchingRuleRegistry().size() );
         assertEquals( 43, schemaManager.getNormalizerRegistry().size() );
         assertEquals( 53, schemaManager.getObjectClassRegistry().size() );
         assertEquals( 62, schemaManager.getSyntaxCheckerRegistry().size() );
         assertEquals( 66, schemaManager.getLdapSyntaxRegistry().size() );
-        assertEquals( 307, schemaManager.getGlobalOidRegistry().size() );
+        assertEquals( 308, schemaManager.getGlobalOidRegistry().size() );
 
         assertEquals( 3, schemaManager.getRegistries().getLoadedSchemas().size() );
         assertNotNull( schemaManager.getRegistries().getLoadedSchema( "system" ) );
@@ -254,14 +254,14 @@ public class SchemaManagerLoadWithDepsTest
         schemaManager.loadWithDeps( "other" );
 
         assertTrue( schemaManager.getErrors().isEmpty() );
-        assertEquals( 178, schemaManager.getAttributeTypeRegistry().size() );
+        assertEquals( 179, schemaManager.getAttributeTypeRegistry().size() );
         assertEquals( 48, schemaManager.getComparatorRegistry().size() );
         assertEquals( 48, schemaManager.getMatchingRuleRegistry().size() );
         assertEquals( 48, schemaManager.getNormalizerRegistry().size() );
         assertEquals( 66, schemaManager.getObjectClassRegistry().size() );
         assertEquals( 66, schemaManager.getSyntaxCheckerRegistry().size() );
         assertEquals( 71, schemaManager.getLdapSyntaxRegistry().size() );
-        assertEquals( 363, schemaManager.getGlobalOidRegistry().size() );
+        assertEquals( 364, schemaManager.getGlobalOidRegistry().size() );
 
         assertEquals( 5, schemaManager.getRegistries().getLoadedSchemas().size() );
         assertNotNull( schemaManager.getRegistries().getLoadedSchema( "system" ) );
