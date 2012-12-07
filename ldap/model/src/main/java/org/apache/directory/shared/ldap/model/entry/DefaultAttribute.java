@@ -1954,40 +1954,6 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
-     * @see Object#toString()
-     */
-    public String toString()
-    {
-        StringBuilder sb = new StringBuilder();
-
-        if ( ( values != null ) && ( values.size() != 0 ) )
-        {
-            for ( Value<?> value : values )
-            {
-                sb.append( "    " ).append( upId ).append( ": " );
-
-                if ( value.isNull() )
-                {
-                    sb.append( "''" );
-                }
-                else
-                {
-                    sb.append( value );
-                }
-
-                sb.append( '\n' );
-            }
-        }
-        else
-        {
-            sb.append( "    " ).append( upId ).append( ": (null)\n" );
-        }
-
-        return sb.toString();
-    }
-
-
-    /**
      * This is the place where we serialize attributes, and all theirs
      * elements.
      * 
@@ -2066,5 +2032,48 @@ public class DefaultAttribute implements Attribute, Cloneable
                 values.add( value );
             }
         }
+    }
+
+
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        return toString( "" );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString( String tabs )
+    {
+        StringBuilder sb = new StringBuilder();
+
+        if ( ( values != null ) && ( values.size() != 0 ) )
+        {
+            for ( Value<?> value : values )
+            {
+                sb.append( tabs ).append( upId ).append( ": " );
+
+                if ( value.isNull() )
+                {
+                    sb.append( "''" );
+                }
+                else
+                {
+                    sb.append( value );
+                }
+
+                sb.append( '\n' );
+            }
+        }
+        else
+        {
+            sb.append( tabs ).append( upId ).append( ": (null)\n" );
+        }
+
+        return sb.toString();
     }
 }

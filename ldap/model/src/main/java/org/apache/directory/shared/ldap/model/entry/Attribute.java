@@ -421,4 +421,13 @@ public interface Attribute extends Iterable<Value<?>>, Externalizable
      * @throws LdapInvalidAttributeValueException if there is a failure to check syntaxes of values
      */
     boolean isValid( AttributeType attributeType ) throws LdapInvalidAttributeValueException;
+    
+    
+    /**
+     * A pretty-pinter for Attribute
+     * 
+     * @param tabs The tabs to add before any output
+     * @return The pretty-printed entry
+     */
+    String toString( String tabs );
 }

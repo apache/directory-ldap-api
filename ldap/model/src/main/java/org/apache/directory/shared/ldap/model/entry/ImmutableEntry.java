@@ -734,4 +734,13 @@ public class ImmutableEntry implements Entry
     {
         return entry.toString();
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString( String tabs )
+    {
+        return entry.toString( tabs );
+    }
 }

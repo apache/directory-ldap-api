@@ -1506,17 +1506,17 @@ public class SchemaAwareAttributeTest
     {
         Attribute attr = new DefaultAttribute( atEMail );
 
-        assertEquals( "    email: (null)\n", attr.toString() );
+        assertEquals( "email: (null)\n", attr.toString() );
 
         attr.setUpId( "EMail" );
-        assertEquals( "    EMail: (null)\n", attr.toString() );
+        assertEquals( "EMail: (null)\n", attr.toString() );
 
         attr.add( ( String ) null );
-        assertEquals( "    EMail: ''\n", attr.toString() );
+        assertEquals( "EMail: ''\n", attr.toString() );
 
         attr.clear();
         attr.add( "a", "b" );
-        assertEquals( "    EMail: a\n    EMail: b\n", attr.toString() );
+        assertEquals( "EMail: a\nEMail: b\n", attr.toString() );
     }
 
 

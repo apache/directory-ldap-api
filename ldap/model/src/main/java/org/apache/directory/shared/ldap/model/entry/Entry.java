@@ -832,4 +832,13 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @return true if the Entry is schema aware
      */
     boolean isSchemaAware();
+    
+    
+    /**
+     * A pretty-pinter for Entries
+     * 
+     * @param tabs The tabs to add before any output
+     * @return The pretty-printed entry
+     */
+    String toString( String tabs );
 }

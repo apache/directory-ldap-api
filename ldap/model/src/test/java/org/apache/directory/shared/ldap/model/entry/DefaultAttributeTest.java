@@ -1285,21 +1285,21 @@ public class DefaultAttributeTest
     {
         Attribute attr1 = new DefaultAttribute( "test" );
 
-        assertEquals( "    test: (null)\n", attr1.toString() );
+        assertEquals( "test: (null)\n", attr1.toString() );
 
         attr1.add( "a" );
-        assertEquals( "    test: a\n", attr1.toString() );
+        assertEquals( "test: a\n", attr1.toString() );
 
         attr1.add( "b" );
-        assertEquals( "    test: a\n    test: b\n", attr1.toString() );
+        assertEquals( "test: a\ntest: b\n", attr1.toString() );
 
         Attribute attr2 = new DefaultAttribute( "test" );
 
         attr2.add( BYTES1 );
-        assertEquals( "    test: '0x61 0x62 '\n", attr2.toString() );
+        assertEquals( "test: '0x61 0x62 '\n", attr2.toString() );
 
         attr2.add( BYTES3 );
-        assertEquals( "    test: '0x61 0x62 '\n    test: '0x63 '\n", attr2.toString() );
+        assertEquals( "test: '0x61 0x62 '\ntest: '0x63 '\n", attr2.toString() );
     }
 
 

@@ -2550,10 +2550,19 @@ public final class DefaultEntry implements Entry
      */
     public String toString()
     {
+        return toString( "" );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String toString( String tabs )
+    {
         StringBuilder sb = new StringBuilder();
 
-        sb.append( "Entry\n" );
-        sb.append( "    dn" );
+        sb.append( tabs ).append( "Entry\n" );
+        sb.append( tabs ).append( "    dn" );
 
         if ( dn.isSchemaAware() )
         {
@@ -2572,7 +2581,7 @@ public final class DefaultEntry implements Entry
             {
                 Attribute objectClass = get( objectClassAttributeType );
 
-                sb.append( objectClass );
+                sb.append( objectClass.toString( tabs + "    " ) );
             }
         }
         else
@@ -2581,7 +2590,7 @@ public final class DefaultEntry implements Entry
             {
                 Attribute objectClass = get( "objectclass" );
 
-                sb.append( objectClass );
+                sb.append( objectClass.toString( tabs + "    " ) );
             }
         }
 
@@ -2597,7 +2606,7 @@ public final class DefaultEntry implements Entry
 
                     if ( !attributeType.equals( objectClassAttributeType ) )
                     {
-                        sb.append( attribute );
+                        sb.append( attribute.toString( tabs + "    " ) );
                         continue;
                     }
                 }
@@ -2606,7 +2615,7 @@ public final class DefaultEntry implements Entry
                     if ( !id.equalsIgnoreCase( SchemaConstants.OBJECT_CLASS_AT )
                         && !id.equals( SchemaConstants.OBJECT_CLASS_AT_OID ) )
                     {
-                        sb.append( attribute );
+                        sb.append( attribute.toString( tabs + "    " ) );
                         continue;
                     }
                 }
