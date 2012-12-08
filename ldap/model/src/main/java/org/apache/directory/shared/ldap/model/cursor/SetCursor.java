@@ -417,4 +417,45 @@ public class SetCursor<E> extends AbstractCursor<E>
         
         super.close( cause );
     }
+    
+
+    /**
+     * @see Object#toString()
+     */
+    public String toString( String tabs )
+    {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append( tabs ).append( "SetCursor :\n" );
+        sb.append( tabs ).append( "    Index : " ).append( index ).append( "\n" );
+
+        if ( ( set != null ) && ( set.length > 0 ) )
+        {
+            sb.append( tabs ).append( "    Size : " ).append( set.length ).append( "\n" );
+
+            int counter = 0; // Don't print more than 100 elements...
+            
+            for ( E e : set )
+            {
+                sb.append( tabs ).append( "    " ).append( e ).append( "\n" );
+                counter++;
+                
+                if (counter == 100 )
+                {
+                    break;
+                }
+            }
+        }
+        
+        return sb.toString();
+    }
+    
+    
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        return toString( "" );
+    }
 }
