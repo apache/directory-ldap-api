@@ -260,13 +260,14 @@ public final class PrepareString
      * - lowercase
      * 
      * @param c The char to map
-     * @param target The array which will collect the transformed char
+     * @param array The array which will collect the transformed char
      * @param pos The current position in the target
      * @param lowerCase A mask to lowercase the char, if necessary
      * @return The transformed StringBuilder
      */
-    private static int map( char c, char[] target, int pos, char lowerCase )
+    private static int map( char c, char[] array, int pos, char lowerCase )
     {
+        char[] target = array;
         int start = pos;
 
         switch ( c )
