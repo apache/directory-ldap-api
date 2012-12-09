@@ -81,7 +81,7 @@ public class ExtendedResponseImpl extends AbstractResultResponse implements Exte
      */
     public String getResponseName()
     {
-        return ( ( responseName == null ) ? "" : responseName.toString() );
+        return ( ( responseName == null ) ? "" : responseName );
     }
 
 

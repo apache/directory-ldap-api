@@ -471,7 +471,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
         }
         else
         {
-            sb.append( "        Name : '" ).append( name.toString() ).append( "'\n" );
+            sb.append( "        Name : '" ).append( name ).append( "'\n" );
 
             if ( isSimple )
             {
