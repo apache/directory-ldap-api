@@ -1121,7 +1121,7 @@ public final class SchemaUtils
      */
     public static String stripOptions( String attributeId )
     {
-        int optionsPos = attributeId.indexOf( ";" );
+        int optionsPos = attributeId.indexOf( ';' );
 
         if ( optionsPos != -1 )
         {
@@ -1144,7 +1144,7 @@ public final class SchemaUtils
      */
     public static Set<String> getOptions( String attributeId )
     {
-        int optionsPos = attributeId.indexOf( ";" );
+        int optionsPos = attributeId.indexOf( ';' );
 
         if ( optionsPos != -1 )
         {
