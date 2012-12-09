@@ -149,6 +149,36 @@ public class AttributeTypeOptions
 
 
     /**
+     * @see Object#hashCode()
+     */
+    public int hashCode()
+    {
+        return attributeType.hashCode();
+    }
+    
+    
+    /**
+     * @see Object#equals(Object)
+     */
+    public boolean equals( Object o )
+    {
+        // Short circuit
+        if ( this == o )
+        {
+            return true;
+        }
+
+        if ( !( o instanceof AttributeTypeOptions ) )
+        {
+            return false;
+        }
+
+        AttributeTypeOptions that = ( AttributeTypeOptions ) o;
+        
+        return attributeType.equals( that.attributeType );
+    }
+
+    /**
      * {@inheritDoc}
      */
     public String toString()

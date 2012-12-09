@@ -285,49 +285,80 @@ public class UnixCrypt extends Object
 
         // inverse table.
         for ( int i = 0; i < 64; i++ )
+        {
             A64TOI[ITOA64[i]] = ( byte ) i;
+        }
 
         // PC1ROT - bit reverse, then PC1, then Rotate, then PC2
         for ( int i = 0; i < 64; i++ )
+        {
             perm[i] = ( byte ) 0;
+        }
+        
         for ( int i = 0; i < 64; i++ )
         {
             int k;
+            
             if ( ( k = PC2[i] ) == 0 )
+            {
                 continue;
+            }
+            
             k += Rotates[0] - 1;
+            
             if ( ( k % 28 ) < Rotates[0] )
+            {
                 k -= 28;
+            }
+            
             k = PC1[k];
+            
             if ( k > 0 )
             {
                 k--;
                 k = ( k | 0x07 ) - ( k & 0x07 );
                 k++;
             }
+            
             perm[i] = ( byte ) k;
         }
+        
         init_perm( PC1ROT, perm, 8 );
 
         // PC2ROT - PC2 inverse, then Rotate, then PC2
         for ( int j = 0; j < 2; j++ )
         {
             int k;
+            
             for ( int i = 0; i < 64; i++ )
+            {
                 perm[i] = temp[i] = 0;
+            }
+            
             for ( int i = 0; i < 64; i++ )
             {
                 if ( ( k = PC2[i] ) == 0 )
+                {
                     continue;
+                }
+                
                 temp[k - 1] = ( byte ) ( i + 1 );
             }
+            
             for ( int i = 0; i < 64; i++ )
             {
                 if ( ( k = PC2[i] ) == 0 )
+                {
                     continue;
+                }
+                
                 k += j;
+                
                 if ( ( k % 28 ) <= j )
+                {
                     k -= 28;
+                }
+                
                 perm[i] = temp[k];
             }
 
@@ -340,16 +371,23 @@ public class UnixCrypt extends Object
             for ( int j = 0; j < 8; j++ )
             {
                 int k = ( j < 2 ) ? 0 : IP[ExpandTr[i * 6 + j - 2] - 1];
+                
                 if ( k > 32 )
+                {
                     k -= 32;
+                }
                 else if ( k > 0 )
+                {
                     k--;
+                }
+                
                 if ( k > 0 )
                 {
                     k--;
                     k = ( k | 0x07 ) - ( k & 0x07 );
                     k++;
                 }
+                
                 perm[i * 8 + j] = ( byte ) k;
             }
         }
@@ -360,12 +398,14 @@ public class UnixCrypt extends Object
         for ( int i = 0; i < 64; i++ )
         {
             int k = IP[CIFP[i] - 1];
+            
             if ( k > 0 )
             {
                 k--;
                 k = ( k | 0x07 ) - ( k & 0x07 );
                 k++;
             }
+            
             perm[k - 1] = ( byte ) ( i + 1 );
         }
 
@@ -373,7 +413,10 @@ public class UnixCrypt extends Object
 
         // SPE table
         for ( int i = 0; i < 48; i++ )
+        {
             perm[i] = P32Tr[ExpandTr[i] - 1];
+        }
+        
         for ( int t = 0; t < 8; t++ )
         {
             for ( int j = 0; j < 64; j++ )
@@ -384,15 +427,25 @@ public class UnixCrypt extends Object
                 k = S[t][k];
                 k = ( ( ( k >> 3 ) & 0x01 ) << 0 ) | ( ( ( k >> 2 ) & 0x01 ) << 1 ) |
                     ( ( ( k >> 1 ) & 0x01 ) << 2 ) | ( ( ( k >> 0 ) & 0x01 ) << 3 );
+                
                 for ( int i = 0; i < 32; i++ )
+                {
                     temp[i] = 0;
+                }
+                
                 for ( int i = 0; i < 4; i++ )
+                {
                     temp[4 * t + i] = ( byte ) ( ( k >> i ) & 0x01 );
+                }
+                
                 long kk = 0;
+                
                 for ( int i = 24; --i >= 0; )
+                {
                     kk = ( ( kk << 1 ) |
                         ( ( long ) temp[perm[i] - 1] ) << 32 |
                         ( temp[perm[i + 24] - 1] ) );
+                }
 
                 SPE[t][j] = to_six_bit( kk );
             }
@@ -437,6 +490,7 @@ public class UnixCrypt extends Object
     private static long perm6464( long c, long[][] p )
     {
         long out = 0L;
+        
         for ( int i = 8; --i >= 0; )
         {
             int t = ( int ) ( 0x00ff & c );
@@ -446,6 +500,7 @@ public class UnixCrypt extends Object
             tp = p[( i << 1 ) + 1][t >> 4];
             out |= tp;
         }
+        
         return out;
     }
 
@@ -457,6 +512,7 @@ public class UnixCrypt extends Object
     private static long perm3264( int c, long[][] p )
     {
         long out = 0L;
+        
         for ( int i = 4; --i >= 0; )
         {
             int t = ( 0x00ff & c );
@@ -466,6 +522,7 @@ public class UnixCrypt extends Object
             tp = p[( i << 1 ) + 1][t >> 4];
             out |= tp;
         }
+        
         return out;
     }
 
@@ -558,15 +615,23 @@ public class UnixCrypt extends Object
         {
 
             int l = p[k] - 1;
+            
             if ( l < 0 )
+            {
                 continue;
+            }
+            
             int i = l >> 2;
             l = 1 << ( l & 0x03 );
+            
             for ( int j = 0; j < 16; j++ )
             {
                 int s = ( ( k & 0x07 ) + ( ( 7 - ( k >> 3 ) ) << 3 ) );
+                
                 if ( ( j & l ) != 0x00 )
+                {
                     perm[i][j] |= ( 1L << s );
+                }
             }
         }
     }
@@ -584,9 +649,12 @@ public class UnixCrypt extends Object
         long constdatablock = 0L; /* encryption constant */
         byte[] cryptresult = new byte[13]; /* encrypted result */
         long keyword = 0L;
+        
         /* invalid parameters! */
         if ( key == null || setting == null )
+        {
             return "*"; // will NOT match under ANY circumstances!
+        } 
 
         int keylen = key.length();
 
@@ -598,6 +666,7 @@ public class UnixCrypt extends Object
         long[] KS = des_setkey( keyword );
 
         int salt = 0;
+        
         for ( int i = 2; --i >= 0; )
         {
             char c = ( i < setting.length() ) ? setting.charAt( i ) : '.';
@@ -609,6 +678,7 @@ public class UnixCrypt extends Object
 
         cryptresult[12] = ITOA64[( ( ( int ) rsltblock ) << 2 ) & 0x3f];
         rsltblock >>= 4;
+        
         for ( int i = 12; --i >= 2; )
         {
             cryptresult[i] = ITOA64[( ( int ) rsltblock ) & 0x3f];
@@ -629,5 +699,4 @@ public class UnixCrypt extends Object
 
         System.err.println( I18n.err( I18n.ERR_04440, crypt( arg[0], arg[1] ) ) );
     }
-
 }
