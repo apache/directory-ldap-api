@@ -256,7 +256,7 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
                     }
                 }
 
-                if ( found == false )
+                if ( !found )
                 {
                     return false;
                 }

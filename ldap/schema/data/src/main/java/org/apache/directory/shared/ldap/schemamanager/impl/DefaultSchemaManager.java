@@ -733,7 +733,7 @@ public class DefaultSchemaManager implements SchemaManager
                     {
                         dependencySchema.enable();
 
-                        if ( load( registries, dependencySchema ) == false )
+                        if ( !load( registries, dependencySchema ) )
                         {
                             dependencySchema.disable();
 
