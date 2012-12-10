@@ -345,11 +345,11 @@ public class BatchRequestDsml
         StringBuffer sb = new StringBuffer();
 
         sb.append( "[" );
-        sb.append( "processing: " + processing );
+        sb.append( "processing: " ).append( processing );
         sb.append( " - " );
-        sb.append( "onError: " + onError );
+        sb.append( "onError: " ).append( onError );
         sb.append( " - " );
-        sb.append( "responseOrder: " + responseOrder );
+        sb.append( "responseOrder: " ).append( responseOrder );
         sb.append( "]" );
 
         return sb.toString();
