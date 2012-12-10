@@ -135,11 +135,19 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
         public boolean equals( Object obj )
         {
             if ( obj == null )
+            {
                 return false;
+            }
+            
             if ( obj == this )
+            {
                 return true;
+            }
+            
             if ( !( obj instanceof Map.Entry ) )
+            {
                 return false;
+            }
 
             Map.Entry other = ( Map.Entry ) obj;
 
@@ -321,7 +329,9 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
             for ( Entry pos = sentinel.next; pos != sentinel; pos = pos.next )
             {
                 if ( pos.getValue() == null )
+                {
                     return true;
+                }
             }
         }
         else
@@ -329,7 +339,9 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
             for ( Entry pos = sentinel.next; pos != sentinel; pos = pos.next )
             {
                 if ( value.equals( pos.getValue() ) )
+                {
                     return true;
+                }
             }
         }
         return false;
@@ -343,8 +355,11 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     {
         // find entry for the specified key object
         Entry entry = ( Entry ) entries.get( o );
+        
         if ( entry == null )
+        {
             return null;
+        }
 
         return entry.getValue();
     }
@@ -564,10 +579,15 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     private Entry removeImpl( Object key )
     {
         Entry e = ( Entry ) entries.remove( key );
+        
         if ( e == null )
+        {
             return null;
+        }
+        
         modCount++;
         removeEntry( e );
+        
         return e;
     }
 
@@ -616,12 +636,19 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     public boolean equals( Object obj )
     {
         if ( obj == null )
+        {
             return false;
+        }
+        
         if ( obj == this )
+        {
             return true;
+        }
 
         if ( !( obj instanceof Map ) )
+        {
             return false;
+        }
 
         return entrySet().equals( ( ( Map ) obj ).entrySet() );
     }
@@ -648,16 +675,19 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
     {
         StringBuffer buf = new StringBuffer();
         buf.append( '[' );
+        
         for ( Entry pos = sentinel.next; pos != sentinel; pos = pos.next )
         {
             buf.append( pos.getKey() );
             buf.append( '=' );
             buf.append( pos.getValue() );
+            
             if ( pos.next != sentinel )
             {
                 buf.append( ',' );
             }
         }
+        
         buf.append( ']' );
 
         return buf.toString();
@@ -800,16 +830,26 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
             private Entry findEntry( Object o )
             {
                 if ( o == null )
+                {
                     return null;
+                }
+                
                 if ( !( o instanceof Map.Entry ) )
+                {
                     return null;
+                }
 
                 Map.Entry e = ( Map.Entry ) o;
                 Entry entry = ( Entry ) entries.get( e.getKey() );
+                
                 if ( entry != null && entry.equals( e ) )
+                {
                     return entry;
+                }
                 else
+                {
                     return null;
+                }
             }
 
 
@@ -823,8 +863,11 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
             public boolean remove( Object o )
             {
                 Entry e = findEntry( o );
+                
                 if ( e == null )
+                {
                     return false;
+                }
 
                 return SequencedHashMap.this.removeImpl( e.getKey() ) != null;
             }
