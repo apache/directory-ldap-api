@@ -10,4 +10,3 @@ objectclass: top
 m-name: ads-server
 m-typeobjectclass: ABSTRACT
 creatorsname: uid=admin,ou=system
-m-may: ads-transports

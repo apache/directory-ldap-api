@@ -18,7 +18,4 @@ m-must: ads-saslRealms
 m-may: ads-keystoreFile
 m-may: ads-certificatePassword
 m-may: ads-replReqHandler
-m-may: ads-saslMechHandlers
-m-may: ads-extendedOpHandlers
-m-may: ads-replConsumers
 m-must: ads-replEnabled

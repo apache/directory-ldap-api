@@ -9,14 +9,9 @@ objectclass: metaObjectClass
 m-supobjectclass: ads-base
 m-must: ads-directoryServiceId
 m-must: ads-dsReplicaId
-m-may: ads-interceptors
-m-may: ads-partitions
-m-may: ads-servers
 m-must: ads-dsAccessControlEnabled
 m-must: ads-dsAllowAnonymousAccess
-m-may: ads-changeLog
 m-must: ads-dsDenormalizeOpAttrsEnabled
-m-may: ads-journal
 m-must: ads-dsPasswordHidden
 m-must: ads-dsSyncPeriodMillis
 m-may: ads-dsTestEntries

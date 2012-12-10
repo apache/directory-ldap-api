@@ -9,4 +9,3 @@ objectclass: metaObjectClass
 m-name: ads-httpServer
 creatorsname: uid=admin,ou=system
 m-may: ads-httpConfFile
-m-may: ads-httpwebApps
