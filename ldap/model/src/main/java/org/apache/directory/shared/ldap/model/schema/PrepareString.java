@@ -265,9 +265,9 @@ public final class PrepareString
      * @param lowerCase A mask to lowercase the char, if necessary
      * @return The transformed StringBuilder
      */
-    private static int map( char c, char[] array, int pos, char lowerCase )
+    // CHECKSTYLE:OFF
+    private static int map( char c, char[] target, int pos, char lowerCase )
     {
-        char[] target = array;
         int start = pos;
 
         switch ( c )
