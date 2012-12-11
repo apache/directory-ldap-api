@@ -445,6 +445,26 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     {
         return substringOid;
     }
+    
+    
+    /**
+     * Tells if the attributeType is a USER attribute or not
+     * @return true if this is a USER attributeType
+     */
+    public boolean isUser()
+    {
+        return usage == UsageEnum.USER_APPLICATIONS;
+    }
+    
+    
+    /**
+     * Tells if the attributeType is an OPERATIONAL attribute or not
+     * @return true if this is an OPERATIONAL attributeType
+     */
+    public boolean isOperational()
+    {
+        return usage != UsageEnum.USER_APPLICATIONS;
+    }
 
 
     /**
