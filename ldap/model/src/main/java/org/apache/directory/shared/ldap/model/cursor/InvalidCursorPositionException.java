@@ -25,7 +25,7 @@ package org.apache.directory.shared.ldap.model.cursor;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InvalidCursorPositionException extends Exception
+public class InvalidCursorPositionException extends CursorException
 {
     /** The serialVersion UID */
     private static final long serialVersionUID = 5730037129071653272L;

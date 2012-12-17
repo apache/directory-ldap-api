@@ -21,6 +21,7 @@
 package org.apache.directory.ldap.client.api;
 
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.directory.ldap.client.api.future.SearchFuture;
@@ -153,7 +154,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     /**
      * {@inheritDoc}
      */
-    public Response get() throws Exception
+    public Response get() throws InvalidCursorPositionException, IOException
     {
         if ( !available() )
         {
@@ -186,7 +187,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * {@inheritDoc}
      */
     @Override
-    public void close() throws Exception
+    public void close()
     {
         if ( IS_DEBUG )
         {
@@ -201,7 +202,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * {@inheritDoc}
      */
     @Override
-    public void close( Exception cause ) throws Exception
+    public void close( Exception cause )
     {
         if ( IS_DEBUG )
         {

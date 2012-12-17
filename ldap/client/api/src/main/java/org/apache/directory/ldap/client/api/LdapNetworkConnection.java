@@ -676,13 +676,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Release the connector
         connectorMutex.lock();
 
-        if ( connector != null )
+        try
         {
-            connector.dispose();
-            connector = null;
+            if ( connector != null )
+            {
+                connector.dispose();
+                connector = null;
+            }
         }
-
-        connectorMutex.unlock();
+        finally
+        {
+            connectorMutex.unlock();
+        }
 
         // Reset the messageId
         messageId.set( 0 );
@@ -3501,13 +3506,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         connectorMutex.lock();
 
-        if ( connector != null )
+        try
         {
-            connector.dispose();
-            connector = null;
+            if ( connector != null )
+            {
+                connector.dispose();
+                connector = null;
+            }
         }
-
-        connectorMutex.unlock();
+        finally
+        {
+            connectorMutex.unlock();
+        }
 
         clearMaps();
 

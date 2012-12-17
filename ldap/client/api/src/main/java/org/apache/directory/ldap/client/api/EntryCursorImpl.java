@@ -21,8 +21,11 @@
 package org.apache.directory.ldap.client.api;
 
 
+import java.io.IOException;
+
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.cursor.AbstractCursor;
+import org.apache.directory.shared.ldap.model.cursor.CursorException;
 import org.apache.directory.shared.ldap.model.cursor.EntryCursor;
 import org.apache.directory.shared.ldap.model.cursor.InvalidCursorPositionException;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
@@ -126,21 +129,29 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     /**
      * {@inheritDoc}
      */
-    public Entry get() throws Exception
+    public Entry get() throws CursorException, IOException
     {
         if ( !searchCursor.available() )
         {
             throw new InvalidCursorPositionException();
         }
 
-        do
+        try
         {
-            if ( response instanceof SearchResultEntry )
+            do
             {
-                return ( ( SearchResultEntry ) response ).getEntry();
+                if ( response instanceof SearchResultEntry )
+                {
+                    return ( ( SearchResultEntry ) response ).getEntry();
+                }
             }
+            while ( next() && !( response instanceof SearchResultDone ) );
         }
-        while ( next() && !( response instanceof SearchResultDone ) );
+        catch ( Exception e )
+        {
+            throw new CursorException( e.getMessage(), e );
+        }
+
 
         return null;
     }
@@ -168,7 +179,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * {@inheritDoc}
      */
     @Override
-    public void close() throws Exception
+    public void close()
     {
         if ( IS_DEBUG )
         {
@@ -183,7 +194,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * {@inheritDoc}
      */
     @Override
-    public void close( Exception cause ) throws Exception
+    public void close( Exception cause )
     {
         if ( IS_DEBUG )
         {

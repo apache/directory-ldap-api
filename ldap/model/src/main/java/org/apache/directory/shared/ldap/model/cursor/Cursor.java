@@ -18,6 +18,8 @@
  */
 package org.apache.directory.shared.ldap.model.cursor;
 
+import java.io.IOException;
+
 
 /**
  * A Cursor for bidirectional traversal over elements in a dataSet. Cursors
@@ -172,9 +174,8 @@ public interface Cursor<E> extends Iterable<E>
      * fail with exceptions if and only if the cursor is in the closed state.
      *
      * @return true if this Cursor is closed, false otherwise
-     * @throws Exception if there are problems determining the cursor's closed state
      */
-    boolean isClosed() throws Exception;
+    boolean isClosed();
 
 
     /**
@@ -208,20 +209,18 @@ public interface Cursor<E> extends Iterable<E>
      * instead of creating new objects on each advance.
      *
      * @return the object at the current position
-     * @throws Exception if the object at this Cursor's current position
+     * @throws CursorException if the object at this Cursor's current position
      * cannot be retrieved, or if this Cursor is closed
      */
-    E get() throws Exception;
+    E get() throws CursorException, IOException;
 
 
     /**
      * Closes this Cursor and frees any resources it my have allocated.
      * Repeated calls to this method after this Cursor has already been
      * called should not fail with exceptions.
-     *
-     * @throws Exception if for some reason this Cursor could not be closed
      */
-    void close() throws Exception;
+    void close();
 
 
     /**
@@ -232,9 +231,8 @@ public interface Cursor<E> extends Iterable<E>
      * CursorClosedException.
      *
      * @param reason exception thrown when this Cursor is accessed after close
-     * @throws Exception if for some reason this Cursor could not be closed
      */
-    void close( Exception reason ) throws Exception;
+    void close( Exception reason );
 
 
     /**

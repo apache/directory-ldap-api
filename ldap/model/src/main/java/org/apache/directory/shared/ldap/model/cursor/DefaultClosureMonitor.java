@@ -19,6 +19,8 @@
  */
 package org.apache.directory.shared.ldap.model.cursor;
 
+import java.nio.channels.ClosedChannelException;
+
 
 /**
  * A basic ClosureMonitor that simply uses a boolean for state and a cause
@@ -115,12 +117,12 @@ public class DefaultClosureMonitor implements ClosureMonitor
     /**
      * {@inheritDoc}
      */
-    public void checkNotClosed() throws Exception
+    public void checkNotClosed() throws CursorClosedException
     {
         // lack of synchronization may cause pass but eventually it will work
         if ( closed )
         {
-            throw cause;
+            throw new CursorClosedException( cause.getMessage() );
         }
     }
 }

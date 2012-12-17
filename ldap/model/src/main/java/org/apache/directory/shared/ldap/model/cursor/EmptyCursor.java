@@ -19,6 +19,8 @@
 package org.apache.directory.shared.ldap.model.cursor;
 
 
+import java.io.IOException;
+
 import org.apache.directory.shared.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,7 +136,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public E get() throws Exception
+    public E get() throws CursorException, IOException
     {
         checkNotClosed( "get()" );
         throw new InvalidCursorPositionException( I18n.err( I18n.ERR_02004_EMPTY_CURSOR ) );
@@ -145,7 +147,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
      * {@inheritDoc}
      */
     @Override
-    public void close() throws Exception
+    public void close()
     {
         if ( IS_DEBUG )
         {
@@ -160,7 +162,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
      * {@inheritDoc}
      */
     @Override
-    public void close( Exception cause ) throws Exception
+    public void close( Exception cause )
     {
         if ( IS_DEBUG )
         {

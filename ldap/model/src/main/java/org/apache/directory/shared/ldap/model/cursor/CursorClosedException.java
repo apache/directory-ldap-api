@@ -25,7 +25,7 @@ package org.apache.directory.shared.ldap.model.cursor;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CursorClosedException extends Exception
+public class CursorClosedException extends CursorException
 {
     /** The serialVersion UID */
     private static final long serialVersionUID = -5723233489761854394L;
@@ -50,5 +50,17 @@ public class CursorClosedException extends Exception
     public CursorClosedException( String message )
     {
         super( message );
+    }
+
+
+    /**
+     * Creates a new instance of CursorClosedException.
+     *
+     * @param message The associated message
+     * @param cause The original cause
+     */
+    public CursorClosedException( String message, Throwable cause )
+    {
+        super( message, cause );
     }
 }

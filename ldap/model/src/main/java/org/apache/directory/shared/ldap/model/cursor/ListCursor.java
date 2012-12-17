@@ -491,7 +491,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public E get() throws Exception
+    public E get() throws CursorException, IOException
     {
         checkNotClosed( "get()" );
 
@@ -508,7 +508,7 @@ public class ListCursor<E> extends AbstractCursor<E>
      * {@inheritDoc}
      */
     @Override
-    public void close() throws Exception
+    public void close()
     {
         if ( IS_DEBUG )
         {
@@ -523,7 +523,7 @@ public class ListCursor<E> extends AbstractCursor<E>
      * {@inheritDoc}
      */
     @Override
-    public void close( Exception cause ) throws Exception
+    public void close( Exception cause )
     {
         if ( IS_DEBUG )
         {

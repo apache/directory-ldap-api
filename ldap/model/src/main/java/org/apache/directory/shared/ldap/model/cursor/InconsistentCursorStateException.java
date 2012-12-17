@@ -26,7 +26,7 @@ package org.apache.directory.shared.ldap.model.cursor;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class InconsistentCursorStateException extends Exception
+public class InconsistentCursorStateException extends CursorException
 {
     /** The serialVersion UID */
     private static final long serialVersionUID = 6222645005251534704L;

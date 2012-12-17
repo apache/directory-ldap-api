@@ -66,9 +66,9 @@ public interface ClosureMonitor
      * Checks if state of this ClosureMonitor is set to closed and if so, 
      * throws the causing Exception.
      *
-     * @throws Exception the cause of the closure
+     * @throws CursorClosedException the cause of the closure
      */
-    void checkNotClosed() throws Exception;
+    void checkNotClosed() throws CursorClosedException;
 
 
     /**
