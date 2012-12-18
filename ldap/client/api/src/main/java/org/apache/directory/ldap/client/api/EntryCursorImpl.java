@@ -34,6 +34,7 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.message.Response;
 import org.apache.directory.shared.ldap.model.message.SearchResultDone;
 import org.apache.directory.shared.ldap.model.message.SearchResultEntry;
+import org.apache.directory.shared.ldap.model.message.SearchResultReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,6 +106,11 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
                 messageId = response.getMessageId();
 
                 if ( response instanceof SearchResultEntry )
+                {
+                    return true;
+                }
+
+                if ( response instanceof SearchResultReference )
                 {
                     return true;
                 }
