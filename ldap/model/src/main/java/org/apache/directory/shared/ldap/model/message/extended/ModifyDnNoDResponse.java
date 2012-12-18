@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.model.message.extended;
 
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.ldap.model.message.ModifyDnResponseImpl;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 

@@ -23,10 +23,10 @@ package org.apache.directory.shared.ldap.extras.extended;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
-import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
-import org.apache.directory.shared.asn1.ber.tlv.BerValue;
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
+import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.ldap.model.message.AbstractExtendedRequest;
 import org.apache.directory.shared.util.exception.NotImplementedException;
 import org.apache.directory.shared.util.StringConstants;

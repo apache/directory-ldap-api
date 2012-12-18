@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.dsmlv2.AbstractGrammar;
@@ -39,7 +40,6 @@ import org.apache.directory.shared.dsmlv2.Tag;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml.OnError;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml.Processing;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml.ResponseOrder;
-import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.CodecControl;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;

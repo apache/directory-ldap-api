@@ -20,8 +20,8 @@
 package org.apache.directory.shared.ldap.codec.actions.extendedResponse;
 
 
+import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.shared.ldap.model.message.ExtendedResponseImpl;

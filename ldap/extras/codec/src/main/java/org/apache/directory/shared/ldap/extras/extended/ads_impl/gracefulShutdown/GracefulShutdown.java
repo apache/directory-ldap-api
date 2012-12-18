@@ -22,9 +22,9 @@ package org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulShutdo
 
 import java.nio.ByteBuffer;
 
-import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulAction;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulActionConstants;
@@ -92,7 +92,7 @@ public class GracefulShutdown extends GracefulAction
      * Encodes the gracefulShutdown extended operation.
      * 
      * @return A ByteBuffer that contains the encoded PDU
-     * @throws org.apache.directory.shared.asn1.EncoderException If anything goes wrong.
+     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
     public ByteBuffer encode() throws EncoderException
     {

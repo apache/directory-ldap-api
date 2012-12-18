@@ -25,7 +25,7 @@ import java.io.ObjectOutput;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;

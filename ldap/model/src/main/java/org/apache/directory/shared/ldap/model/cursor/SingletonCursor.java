@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.model.cursor;
 import java.io.IOException;
 import java.util.Comparator;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -20,18 +20,18 @@
 package org.apache.directory.shared.ldap.extras.controls.syncrepl_impl;
 
 
+import org.apache.directory.api.asn1.ber.grammar.AbstractGrammar;
+import org.apache.directory.api.asn1.ber.grammar.Grammar;
+import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.asn1.ber.grammar.GrammarTransition;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.BooleanDecoder;
+import org.apache.directory.api.asn1.ber.tlv.BooleanDecoderException;
+import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
+import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
+import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.ber.grammar.AbstractGrammar;
-import org.apache.directory.shared.asn1.ber.grammar.Grammar;
-import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
-import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
-import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoder;
-import org.apache.directory.shared.asn1.ber.tlv.BooleanDecoderException;
-import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
-import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
-import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.BerValue;
-import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.extras.controls.SynchronizationModeEnum;
 import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;

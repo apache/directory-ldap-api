@@ -35,7 +35,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.collections.list.UnmodifiableList;
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;

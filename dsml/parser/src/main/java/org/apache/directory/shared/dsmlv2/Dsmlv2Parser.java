@@ -27,9 +27,9 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.shared.dsmlv2.request.Dsmlv2Grammar;
-import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.message.Request;
 import org.apache.directory.shared.util.Strings;
 import org.xmlpull.v1.XmlPullParser;

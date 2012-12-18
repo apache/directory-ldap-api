@@ -20,18 +20,18 @@
 package org.apache.directory.shared.ldap.codec.controls.search.entryChange;
 
 
+import org.apache.directory.api.asn1.ber.grammar.AbstractGrammar;
+import org.apache.directory.api.asn1.ber.grammar.Grammar;
+import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.asn1.ber.grammar.GrammarTransition;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
+import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
+import org.apache.directory.api.asn1.ber.tlv.LongDecoder;
+import org.apache.directory.api.asn1.ber.tlv.LongDecoderException;
+import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.ber.grammar.AbstractGrammar;
-import org.apache.directory.shared.asn1.ber.grammar.Grammar;
-import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
-import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
-import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoder;
-import org.apache.directory.shared.asn1.ber.tlv.IntegerDecoderException;
-import org.apache.directory.shared.asn1.ber.tlv.LongDecoder;
-import org.apache.directory.shared.asn1.ber.tlv.LongDecoderException;
-import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.BerValue;
-import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.message.controls.ChangeType;
 import org.apache.directory.shared.ldap.model.name.Dn;

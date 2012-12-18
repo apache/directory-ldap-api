@@ -20,7 +20,7 @@ package org.apache.directory.shared.util.exception;
 
 import java.io.IOException;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 
 
 /**

@@ -23,10 +23,10 @@ package org.apache.directory.shared.ldap.codec.search;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 
+import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.ber.tlv.TLV;
 import org.apache.directory.shared.asn1.EncoderException;
-import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
 
 

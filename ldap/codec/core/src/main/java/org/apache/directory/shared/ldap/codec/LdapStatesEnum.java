@@ -20,9 +20,9 @@
 package org.apache.directory.shared.ldap.codec;
 
 
-import org.apache.directory.shared.asn1.ber.Asn1Container;
-import org.apache.directory.shared.asn1.ber.grammar.Grammar;
-import org.apache.directory.shared.asn1.ber.grammar.States;
+import org.apache.directory.api.asn1.ber.Asn1Container;
+import org.apache.directory.api.asn1.ber.grammar.Grammar;
+import org.apache.directory.api.asn1.ber.grammar.States;
 
 
 /**

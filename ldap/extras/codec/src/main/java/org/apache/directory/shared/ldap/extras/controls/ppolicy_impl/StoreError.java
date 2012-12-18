@@ -20,8 +20,8 @@
 package org.apache.directory.shared.ldap.extras.controls.ppolicy_impl;
 
 
-import org.apache.directory.shared.asn1.actions.AbstractReadInteger;
-import org.apache.directory.shared.asn1.ber.Asn1Container;
+import org.apache.directory.api.asn1.actions.AbstractReadInteger;
+import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicyErrorEnum;
 
 

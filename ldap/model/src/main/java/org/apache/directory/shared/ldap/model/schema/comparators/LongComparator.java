@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 import java.io.Serializable;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 
 

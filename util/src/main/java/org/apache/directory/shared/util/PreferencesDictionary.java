@@ -25,7 +25,7 @@ import java.util.Enumeration;
 import java.util.prefs.Preferences;
 import java.util.prefs.BackingStoreException;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 
 
 /**

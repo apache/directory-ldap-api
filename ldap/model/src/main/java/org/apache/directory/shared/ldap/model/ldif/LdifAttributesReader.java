@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttributes;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.Entry;

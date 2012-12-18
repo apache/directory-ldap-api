@@ -24,8 +24,8 @@ package org.apache.directory.ldap.client.api;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.ldap.client.api.future.SearchFuture;
-import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.cursor.AbstractCursor;
 import org.apache.directory.shared.ldap.model.cursor.CursorException;
 import org.apache.directory.shared.ldap.model.cursor.InvalidCursorPositionException;

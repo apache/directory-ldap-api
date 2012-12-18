@@ -20,21 +20,21 @@
 package org.apache.directory.shared.ldap.codec;
 
 
-import static org.apache.directory.shared.asn1.ber.tlv.UniversalTag.BOOLEAN;
-import static org.apache.directory.shared.asn1.ber.tlv.UniversalTag.ENUMERATED;
-import static org.apache.directory.shared.asn1.ber.tlv.UniversalTag.INTEGER;
-import static org.apache.directory.shared.asn1.ber.tlv.UniversalTag.OCTET_STRING;
-import static org.apache.directory.shared.asn1.ber.tlv.UniversalTag.SEQUENCE;
-import static org.apache.directory.shared.asn1.ber.tlv.UniversalTag.SET;
+import static org.apache.directory.api.asn1.ber.tlv.UniversalTag.BOOLEAN;
+import static org.apache.directory.api.asn1.ber.tlv.UniversalTag.ENUMERATED;
+import static org.apache.directory.api.asn1.ber.tlv.UniversalTag.INTEGER;
+import static org.apache.directory.api.asn1.ber.tlv.UniversalTag.OCTET_STRING;
+import static org.apache.directory.api.asn1.ber.tlv.UniversalTag.SEQUENCE;
+import static org.apache.directory.api.asn1.ber.tlv.UniversalTag.SET;
 
+import org.apache.directory.api.asn1.actions.CheckNotNullLength;
+import org.apache.directory.api.asn1.ber.grammar.AbstractGrammar;
+import org.apache.directory.api.asn1.ber.grammar.Grammar;
+import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.asn1.ber.grammar.GrammarTransition;
+import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.actions.CheckNotNullLength;
-import org.apache.directory.shared.asn1.ber.grammar.AbstractGrammar;
-import org.apache.directory.shared.asn1.ber.grammar.Grammar;
-import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
-import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
-import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.actions.AllowGrammarEnd;
 import org.apache.directory.shared.ldap.codec.actions.CheckLengthNotNull;
 import org.apache.directory.shared.ldap.codec.actions.abandonRequest.InitAbandonRequest;

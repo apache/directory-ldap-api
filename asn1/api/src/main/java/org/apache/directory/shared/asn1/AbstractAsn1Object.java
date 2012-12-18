@@ -22,7 +22,7 @@ package org.apache.directory.shared.asn1;
 
 import java.nio.ByteBuffer;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 
 
 /**

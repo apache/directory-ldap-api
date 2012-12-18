@@ -22,8 +22,8 @@ package org.apache.directory.shared.asn1.util;
 
 import java.util.Arrays;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.i18n.I18n;
 
 
 /**

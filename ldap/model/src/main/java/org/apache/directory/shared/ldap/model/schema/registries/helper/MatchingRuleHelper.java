@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.model.schema.registries.helper;
 
 import java.util.List;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaExceptionCodes;

@@ -601,7 +601,7 @@ public interface LdapConnection
      * @param oid the object identifier of the extended operation
      * @return extended operation's response
      * @throws {@link LdapException} if some error occurred
-     * @see #extended(org.apache.directory.shared.asn1.util.Oid, byte[])
+     * @see #extended(org.apache.directory.api.asn1.util.Oid, byte[])
      */
     ExtendedResponse extended( String oid ) throws LdapException;
 
@@ -613,7 +613,7 @@ public interface LdapConnection
      * @param value value to be used by the extended operation, can be a null value
      * @return extended operation's response
      * @throws {@link LdapException} if some error occurred
-     * @see #extended(org.apache.directory.shared.asn1.util.Oid, byte[])
+     * @see #extended(org.apache.directory.api.asn1.util.Oid, byte[])
      */
     ExtendedResponse extended( String oid, byte[] value ) throws LdapException;
 
@@ -624,7 +624,7 @@ public interface LdapConnection
      * @param oid the object identifier of the extended operation
      * @return extended operation's response
      * @throws {@link LdapException} if some error occurred
-     * @see #extended(org.apache.directory.shared.asn1.util.Oid, byte[])
+     * @see #extended(org.apache.directory.api.asn1.util.Oid, byte[])
      */
     ExtendedResponse extended( Oid oid ) throws LdapException;
 

@@ -35,7 +35,7 @@ import java.util.UUID;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.ldif.LdapLdifException;

@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.util.Chars;
 import org.apache.directory.shared.util.DateUtils;
 import org.apache.directory.shared.util.Strings;

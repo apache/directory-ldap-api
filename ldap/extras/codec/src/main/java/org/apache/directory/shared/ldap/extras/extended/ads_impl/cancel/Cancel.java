@@ -22,11 +22,11 @@ package org.apache.directory.shared.ldap.extras.extended.ads_impl.cancel;
 
 import java.nio.ByteBuffer;
 
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.shared.asn1.AbstractAsn1Object;
 import org.apache.directory.shared.asn1.EncoderException;
-import org.apache.directory.shared.asn1.ber.tlv.TLV;
-import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.BerValue;
 
 
 /**
@@ -114,7 +114,7 @@ public class Cancel extends AbstractAsn1Object
      * Encodes the cancel extended operation.
      * 
      * @return A ByteBuffer that contains the encoded PDU
-     * @throws org.apache.directory.shared.asn1.EncoderException If anything goes wrong.
+     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
     public ByteBuffer encode() throws EncoderException
     {

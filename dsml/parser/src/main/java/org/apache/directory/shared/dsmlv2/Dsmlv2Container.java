@@ -20,7 +20,7 @@
 package org.apache.directory.shared.dsmlv2;
 
 
-import org.apache.directory.shared.asn1.ber.Asn1Container;
+import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.shared.dsmlv2.reponse.BatchResponseDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;

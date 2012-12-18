@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.codec.controls.search.persistentSearch;
 
 
-import org.apache.directory.shared.asn1.ber.AbstractContainer;
+import org.apache.directory.api.asn1.ber.AbstractContainer;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.controls.PersistentSearch;
 

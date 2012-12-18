@@ -23,7 +23,7 @@ package org.apache.directory.shared.util;
 
 import java.util.HashMap;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 
 
 /**

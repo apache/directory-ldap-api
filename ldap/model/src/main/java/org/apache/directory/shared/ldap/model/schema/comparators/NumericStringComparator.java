@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.model.schema.comparators;
 
 import java.io.IOException;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.PrepareString;
 import org.slf4j.Logger;

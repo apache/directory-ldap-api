@@ -20,7 +20,7 @@
 package org.apache.directory.shared.converter.schema;
 
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

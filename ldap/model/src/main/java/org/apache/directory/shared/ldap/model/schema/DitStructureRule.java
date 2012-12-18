@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.model.schema;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.util.exception.NotImplementedException;
 
 

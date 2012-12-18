@@ -20,14 +20,14 @@
 package org.apache.directory.shared.ldap.extras.extended.ads_impl.certGeneration;
 
 
-import org.apache.directory.shared.asn1.ber.grammar.AbstractGrammar;
-import org.apache.directory.shared.asn1.ber.grammar.Grammar;
-import org.apache.directory.shared.asn1.ber.grammar.GrammarAction;
-import org.apache.directory.shared.asn1.ber.grammar.GrammarTransition;
-import org.apache.directory.shared.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.grammar.AbstractGrammar;
+import org.apache.directory.api.asn1.ber.grammar.Grammar;
+import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.asn1.ber.grammar.GrammarTransition;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.shared.ldap.extras.extended.CertGenerationRequestImpl;
 import org.apache.directory.shared.ldap.model.name.Dn;

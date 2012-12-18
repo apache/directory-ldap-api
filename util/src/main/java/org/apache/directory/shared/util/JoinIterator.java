@@ -23,7 +23,7 @@ package org.apache.directory.shared.util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 
 
 /**

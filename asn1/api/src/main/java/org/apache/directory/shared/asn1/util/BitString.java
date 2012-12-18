@@ -20,7 +20,7 @@
 package org.apache.directory.shared.asn1.util;
 
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 
 
 /**

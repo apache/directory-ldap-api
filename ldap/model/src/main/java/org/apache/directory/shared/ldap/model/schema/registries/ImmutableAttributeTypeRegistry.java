@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.model.schema.registries;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapNoSuchAttributeException;
 import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;

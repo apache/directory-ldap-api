@@ -24,7 +24,7 @@ package org.apache.directory.shared.ldap.model.subtree;
 import java.io.StringReader;
 import java.text.ParseException;
 
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.ldap.model.schema.NormalizerMappingResolver;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 

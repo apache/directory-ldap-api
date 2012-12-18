@@ -23,7 +23,7 @@ package org.apache.directory.shared.converter.schema;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.directory.shared.i18n.I18n;
+import org.apache.directory.api.i18n.I18n;
 
 import java.io.*;
 import java.text.ParseException;

@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.shared.asn1.util.Oid;
-import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.slf4j.Logger;
