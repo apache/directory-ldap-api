@@ -101,7 +101,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean isAfterLast() throws Exception
+    public boolean isAfterLast()
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "isAfterLast()" ) ) );
@@ -111,7 +111,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean isBeforeFirst() throws Exception
+    public boolean isBeforeFirst()
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "isBeforeFirst()" ) ) );
@@ -121,7 +121,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean isFirst() throws Exception
+    public boolean isFirst()
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "isFirst()" ) ) );
@@ -131,7 +131,7 @@ public abstract class AbstractCursor<E> implements Cursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean isLast() throws Exception
+    public boolean isLast()
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "isLast()" ) ) );

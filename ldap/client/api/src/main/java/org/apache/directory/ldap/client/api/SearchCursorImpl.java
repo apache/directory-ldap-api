@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.directory.ldap.client.api.future.SearchFuture;
 import org.apache.directory.shared.i18n.I18n;
 import org.apache.directory.shared.ldap.model.cursor.AbstractCursor;
+import org.apache.directory.shared.ldap.model.cursor.CursorException;
 import org.apache.directory.shared.ldap.model.cursor.InvalidCursorPositionException;
 import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
 import org.apache.directory.shared.ldap.model.entry.Entry;
@@ -98,7 +99,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     /**
      * {@inheritDoc}
      */
-    public boolean next() throws Exception
+    public boolean next() throws LdapException, CursorException, IOException
     {
         if ( done )
         {
@@ -237,7 +238,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void after( Response element ) throws Exception
+    public void after( Response element ) throws LdapException, CursorException, IOException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "after( Response element )" ) ) );
@@ -248,7 +249,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void afterLast() throws Exception
+    public void afterLast() throws LdapException, CursorException, IOException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "afterLast()" ) ) );
@@ -259,7 +260,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void before( Response element ) throws Exception
+    public void before( Response element ) throws LdapException, CursorException, IOException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "before( Response element )" ) ) );
@@ -270,7 +271,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void beforeFirst() throws Exception
+    public void beforeFirst() throws LdapException, CursorException, IOException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "beforeFirst()" ) ) );
@@ -281,7 +282,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public boolean first() throws Exception
+    public boolean first() throws LdapException, CursorException, IOException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "first()" ) ) );
@@ -292,7 +293,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public boolean last() throws Exception
+    public boolean last() throws LdapException, CursorException, IOException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "last()" ) ) );
@@ -303,7 +304,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public boolean previous() throws Exception
+    public boolean previous() throws LdapException, CursorException, IOException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "previous()" ) ) );

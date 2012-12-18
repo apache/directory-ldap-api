@@ -20,6 +20,8 @@ package org.apache.directory.shared.ldap.model.cursor;
 
 import java.io.IOException;
 
+import org.apache.directory.shared.ldap.model.exception.LdapException;
+
 
 /**
  * A Cursor for bidirectional traversal over elements in a dataSet. Cursors
@@ -64,7 +66,7 @@ public interface Cursor<E> extends Iterable<E>
      * @param element the element to be positioned before
      * @throws Exception with problems accessing the underlying btree
      */
-    void before( E element ) throws Exception;
+    void before( E element ) throws LdapException, CursorException, IOException;
 
 
     /**
@@ -82,7 +84,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this cursor or if
      * this Cursor is closed
      */
-    void after( E element ) throws Exception;
+    void after( E element ) throws LdapException, CursorException, IOException;
 
 
     /**
@@ -91,7 +93,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this cursor or if
      * this Cursor is closed
      */
-    void beforeFirst() throws Exception;
+    void beforeFirst() throws LdapException, CursorException, IOException;
 
 
     /**
@@ -100,7 +102,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this Cursor or if
      * this Cursor is closed
      */
-    void afterLast() throws Exception;
+    void afterLast() throws LdapException, CursorException, IOException;
 
 
     /**
@@ -111,7 +113,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this Cursor or if
      * this Cursor is closed
      */
-    boolean first() throws Exception;
+    boolean first() throws LdapException, CursorException, IOException;
 
 
     /**
@@ -122,7 +124,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems querying the position of this Cursor
      * or if this Cursor is closed
      */
-    boolean isFirst() throws Exception;
+    boolean isFirst();
 
 
     /**
@@ -133,7 +135,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems querying the position of this Cursor
      * or if this Cursor is closed
      */
-    boolean isBeforeFirst() throws Exception;
+    boolean isBeforeFirst();
 
 
     /**
@@ -144,7 +146,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this Cursor or if
      * this Cursor is closed
      */
-    boolean last() throws Exception;
+    boolean last() throws LdapException, CursorException, IOException;
 
 
     /**
@@ -155,7 +157,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems querying the position of this Cursor
      * or if this Cursor is closed
      */
-    boolean isLast() throws Exception;
+    boolean isLast();
 
 
     /**
@@ -166,7 +168,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems querying the position of this Cursor
      * or if this Cursor is closed
      */
-    boolean isAfterLast() throws Exception;
+    boolean isAfterLast();
 
 
     /**
@@ -187,7 +189,7 @@ public interface Cursor<E> extends Iterable<E>
      * @return true if the advance succeeded, false otherwise
      * @throws Exception if there are problems advancing to the next position
      */
-    boolean previous() throws Exception;
+    boolean previous() throws LdapException, CursorException, IOException;
 
 
     /**
@@ -197,10 +199,13 @@ public interface Cursor<E> extends Iterable<E>
      * the first element.
      *
      * @return true if the advance succeeded, false otherwise
-     * @throws Exception if there are problems advancing to this Cursor to
-     * the next position, or if this Cursor is closed
+     * @throws LdapException if we have get any LDAP exception while operating
+     * the cursor
+     * @throws CursorException if there are problems advancing to this Cursor to
+     * the next position, or if this Cursor is closed 
+     * @throws IOException If we have had any IO Exception
      */
-    boolean next() throws Exception;
+    boolean next() throws LdapException, CursorException, IOException;
 
 
     /**
@@ -211,6 +216,7 @@ public interface Cursor<E> extends Iterable<E>
      * @return the object at the current position
      * @throws CursorException if the object at this Cursor's current position
      * cannot be retrieved, or if this Cursor is closed
+     * @throws IOException If we have had any IO Exception
      */
     E get() throws CursorException, IOException;
 
