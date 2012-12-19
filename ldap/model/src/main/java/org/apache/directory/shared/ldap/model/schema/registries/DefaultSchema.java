@@ -25,8 +25,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.shared.ldap.model.schema.SchemaObjectWrapper;
-import org.apache.directory.shared.util.StringConstants;
 
 
 /**

@@ -21,6 +21,7 @@ package org.apache.directory.shared.ldap.model.entry;
 
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
@@ -31,7 +32,6 @@ import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.shared.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
-import org.apache.directory.shared.util.Strings;
 
 
 /**

@@ -20,7 +20,7 @@
 package org.apache.directory.shared.dsmlv2;
 
 
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.util.Strings;
 
 
 /**

@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Entry;
@@ -82,7 +83,6 @@ import org.apache.directory.shared.ldap.model.schema.registries.SyntaxCheckerReg
 import org.apache.directory.shared.ldap.schemaloader.EntityFactory;
 import org.apache.directory.shared.ldap.schemaloader.JarLdifSchemaLoader;
 import org.apache.directory.shared.ldap.schemaloader.SchemaEntityFactory;
-import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

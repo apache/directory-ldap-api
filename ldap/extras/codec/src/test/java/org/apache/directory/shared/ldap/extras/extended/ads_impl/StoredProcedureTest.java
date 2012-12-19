@@ -32,10 +32,10 @@ import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureContainer;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureDecoder;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureRequestDecorator;
-import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

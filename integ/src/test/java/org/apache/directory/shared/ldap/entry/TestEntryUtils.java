@@ -20,6 +20,7 @@
 package org.apache.directory.shared.ldap.entry;
 
 
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.model.entry.BinaryValue;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.entry.Value;
@@ -34,7 +35,6 @@ import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
 import org.apache.directory.shared.ldap.model.schema.normalizers.DeepTrimToLowerNormalizer;
-import org.apache.directory.shared.util.Strings;
 
 
 /**

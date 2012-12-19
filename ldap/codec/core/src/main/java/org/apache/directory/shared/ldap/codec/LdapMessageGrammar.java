@@ -35,6 +35,7 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.codec.actions.AllowGrammarEnd;
 import org.apache.directory.shared.ldap.codec.actions.CheckLengthNotNull;
 import org.apache.directory.shared.ldap.codec.actions.abandonRequest.InitAbandonRequest;
@@ -134,7 +135,6 @@ import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
 import org.apache.directory.shared.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.shared.ldap.codec.search.ExtensibleMatchFilter;
 import org.apache.directory.shared.ldap.model.message.Message;
-import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

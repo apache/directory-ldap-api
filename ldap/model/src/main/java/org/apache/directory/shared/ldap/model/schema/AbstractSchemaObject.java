@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.util.Strings;
 
 
 /**

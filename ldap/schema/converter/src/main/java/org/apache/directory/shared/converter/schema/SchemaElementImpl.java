@@ -20,13 +20,13 @@
 package org.apache.directory.shared.converter.schema;
 
 
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.ldif.LdifUtils;
-import org.apache.directory.shared.util.Strings;
 
 import java.util.ArrayList;
 import java.util.HashMap;

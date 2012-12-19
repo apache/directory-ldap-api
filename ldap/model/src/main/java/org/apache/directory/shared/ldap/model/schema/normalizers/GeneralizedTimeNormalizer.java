@@ -24,6 +24,10 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.GeneralizedTime;
+import org.apache.directory.api.util.GeneralizedTime.Format;
+import org.apache.directory.api.util.GeneralizedTime.FractionDelimiter;
+import org.apache.directory.api.util.GeneralizedTime.TimeZoneFormat;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.entry.Value;
@@ -32,10 +36,6 @@ import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValu
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.PrepareString;
-import org.apache.directory.shared.util.GeneralizedTime;
-import org.apache.directory.shared.util.GeneralizedTime.Format;
-import org.apache.directory.shared.util.GeneralizedTime.FractionDelimiter;
-import org.apache.directory.shared.util.GeneralizedTime.TimeZoneFormat;
 
 
 /**

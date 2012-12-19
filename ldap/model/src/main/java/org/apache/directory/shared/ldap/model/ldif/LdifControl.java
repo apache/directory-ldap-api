@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.model.message.Control;
-import org.apache.directory.shared.util.Strings;
 
 
 /**

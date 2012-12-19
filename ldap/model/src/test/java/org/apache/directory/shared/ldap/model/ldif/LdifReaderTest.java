@@ -35,12 +35,12 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Modification;
 import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
 import org.apache.directory.shared.ldap.model.message.Control;
-import org.apache.directory.shared.util.Strings;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

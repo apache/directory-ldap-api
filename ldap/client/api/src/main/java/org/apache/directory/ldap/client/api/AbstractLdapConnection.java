@@ -24,6 +24,8 @@ import static org.apache.directory.shared.ldap.model.message.ResultCodeEnum.proc
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.directory.api.util.StringConstants;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
@@ -33,8 +35,6 @@ import org.apache.directory.shared.ldap.model.message.BindResponse;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.directory.shared.util.StringConstants;
-import org.apache.directory.shared.util.Strings;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

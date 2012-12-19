@@ -25,6 +25,8 @@ import java.io.UnsupportedEncodingException;
 import javax.naming.directory.Attributes;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Base64;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
@@ -35,8 +37,6 @@ import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.util.Base64;
-import org.apache.directory.shared.util.Strings;
 
 
 /**

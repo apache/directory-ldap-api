@@ -21,8 +21,8 @@
 package org.apache.directory.shared.ldap.model.exception;
 
 
+import org.apache.directory.api.util.exception.RuntimeMultiException;
 import org.apache.directory.shared.ldap.model.message.Message;
-import org.apache.directory.shared.util.exception.RuntimeMultiException;
 
 
 /**

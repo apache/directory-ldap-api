@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.extras.extended;
 
 
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.util.Strings;
 
 
 /**

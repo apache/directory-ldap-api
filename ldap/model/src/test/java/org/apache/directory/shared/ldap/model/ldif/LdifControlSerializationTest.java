@@ -28,9 +28,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.controls.OpaqueControl;
-import org.apache.directory.shared.util.StringConstants;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;

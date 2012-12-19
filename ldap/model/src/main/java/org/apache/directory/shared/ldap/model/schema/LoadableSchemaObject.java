@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.model.schema;
 
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.util.Strings;
 
 
 /**

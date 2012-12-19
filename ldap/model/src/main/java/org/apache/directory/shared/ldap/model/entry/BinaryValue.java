@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
@@ -33,7 +34,6 @@ import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.comparators.ByteArrayComparator;
-import org.apache.directory.shared.util.Strings;
 
 
 /**

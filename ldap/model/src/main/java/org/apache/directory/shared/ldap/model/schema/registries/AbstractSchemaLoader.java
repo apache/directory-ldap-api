@@ -29,14 +29,14 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.StringConstants;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.Entry;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.directory.shared.util.StringConstants;
-import org.apache.directory.shared.util.Strings;
 
 
 /**

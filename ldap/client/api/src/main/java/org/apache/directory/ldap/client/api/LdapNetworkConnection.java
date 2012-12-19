@@ -50,6 +50,8 @@ import javax.security.sasl.SaslClient;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.util.StringConstants;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.ldap.client.api.callback.SaslCallbackHandler;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.ldap.client.api.future.AddFuture;
@@ -145,8 +147,6 @@ import org.apache.directory.shared.ldap.model.schema.registries.AttributeTypeReg
 import org.apache.directory.shared.ldap.model.schema.registries.ObjectClassRegistry;
 import org.apache.directory.shared.ldap.model.schema.registries.SchemaLoader;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
-import org.apache.directory.shared.util.StringConstants;
-import org.apache.directory.shared.util.Strings;
 import org.apache.mina.core.filterchain.IoFilter;
 import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;

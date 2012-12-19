@@ -23,13 +23,13 @@ package org.apache.directory.shared.ldap.model.schema.normalizers;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Hex;
 import org.apache.directory.shared.ldap.model.entry.BinaryValue;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.MatchingRule;
 import org.apache.directory.shared.ldap.model.schema.Normalizer;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.directory.shared.util.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

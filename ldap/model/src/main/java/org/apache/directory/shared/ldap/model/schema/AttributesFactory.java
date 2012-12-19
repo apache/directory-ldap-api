@@ -23,6 +23,7 @@ package org.apache.directory.shared.ldap.model.schema;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.directory.api.util.DateUtils;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
@@ -44,7 +45,6 @@ import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 import org.apache.directory.shared.ldap.model.schema.SchemaObject;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.shared.ldap.model.schema.registries.Schema;
-import org.apache.directory.shared.util.DateUtils;
 
 
 /**

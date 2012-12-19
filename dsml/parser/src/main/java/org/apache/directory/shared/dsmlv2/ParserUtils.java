@@ -31,6 +31,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Base64;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml.Processing;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml.ResponseOrder;
@@ -40,8 +42,6 @@ import org.apache.directory.shared.ldap.model.entry.BinaryValue;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.ldif.LdifUtils;
 import org.apache.directory.shared.ldap.model.message.Control;
-import org.apache.directory.shared.util.Base64;
-import org.apache.directory.shared.util.Strings;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Namespace;

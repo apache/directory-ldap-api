@@ -20,12 +20,12 @@
 package org.apache.directory.shared.ldap.model.message;
 
 
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.model.entry.BinaryValue;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
 import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.MessageException;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.util.Strings;
 
 
 /**

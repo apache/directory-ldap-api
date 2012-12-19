@@ -23,10 +23,10 @@ package org.apache.directory.shared.ldap.model.schema.syntaxCheckers;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.directory.api.util.Chars;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
 import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
-import org.apache.directory.shared.util.Chars;
-import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -24,9 +24,9 @@ import java.io.IOException;
 import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.GeneralizedTime;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.ldap.model.schema.PrepareString;
-import org.apache.directory.shared.util.GeneralizedTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

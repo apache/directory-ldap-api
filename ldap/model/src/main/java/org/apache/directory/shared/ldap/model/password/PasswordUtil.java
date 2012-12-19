@@ -30,13 +30,13 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 
+import org.apache.directory.api.util.Base64;
+import org.apache.directory.api.util.DateUtils;
+import org.apache.directory.api.util.Strings;
+import org.apache.directory.api.util.UnixCrypt;
 import org.apache.directory.shared.ldap.model.constants.LdapSecurityConstants;
 import org.apache.directory.shared.ldap.model.entry.Attribute;
 import org.apache.directory.shared.ldap.model.entry.Value;
-import org.apache.directory.shared.util.Base64;
-import org.apache.directory.shared.util.DateUtils;
-import org.apache.directory.shared.util.Strings;
-import org.apache.directory.shared.util.UnixCrypt;
 
 
 /**

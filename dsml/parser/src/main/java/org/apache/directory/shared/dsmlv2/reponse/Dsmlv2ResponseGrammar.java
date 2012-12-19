@@ -29,6 +29,8 @@ import java.util.Set;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Base64;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.dsmlv2.AbstractDsmlMessageDecorator;
 import org.apache.directory.shared.dsmlv2.AbstractGrammar;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
@@ -67,8 +69,6 @@ import org.apache.directory.shared.ldap.model.message.SearchResultReferenceImpl;
 import org.apache.directory.shared.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.shared.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.model.url.LdapUrl;
-import org.apache.directory.shared.util.Base64;
-import org.apache.directory.shared.util.Strings;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 

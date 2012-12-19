@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapProtocolErrorException;
@@ -61,7 +62,6 @@ import org.apache.directory.shared.ldap.model.schema.registries.helper.MatchingR
 import org.apache.directory.shared.ldap.model.schema.registries.helper.MatchingRuleUseHelper;
 import org.apache.directory.shared.ldap.model.schema.registries.helper.NameFormHelper;
 import org.apache.directory.shared.ldap.model.schema.registries.helper.ObjectClassHelper;
-import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

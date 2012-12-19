@@ -23,8 +23,8 @@ package org.apache.directory.shared.ldap.model.message.controls;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.shared.ldap.model.message.controls.OpaqueControl;
-import org.apache.directory.shared.util.StringConstants;
 import org.junit.Test;
 
 

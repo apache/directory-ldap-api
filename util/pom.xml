@@ -25,8 +25,8 @@
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-util</artifactId>
-  <name>Apache Directory Shared Utilities</name>
+  <artifactId>api-util</artifactId>
+  <name>Apache Directory LDAP API Utilities</name>
   <packaging>bundle</packaging>
 
   <description>Utilities shared across this top level project</description>

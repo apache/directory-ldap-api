@@ -28,8 +28,8 @@ import java.util.List;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
+import org.apache.directory.api.util.exception.NotImplementedException;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.util.exception.NotImplementedException;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 
 

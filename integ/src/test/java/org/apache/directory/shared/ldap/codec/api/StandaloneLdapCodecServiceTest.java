@@ -23,12 +23,12 @@ package org.apache.directory.shared.ldap.codec.api;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapApiService;
 import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.shared.ldap.extras.extended.StoredProcedureRequest;
 import org.apache.directory.shared.ldap.extras.extended.StoredProcedureRequestImpl;
 import org.apache.directory.shared.ldap.model.message.Control;
-import org.apache.directory.shared.util.Strings;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

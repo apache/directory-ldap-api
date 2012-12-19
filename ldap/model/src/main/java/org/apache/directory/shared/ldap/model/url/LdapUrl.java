@@ -31,6 +31,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Chars;
+import org.apache.directory.api.util.StringConstants;
+import org.apache.directory.api.util.Strings;
+import org.apache.directory.api.util.Unicode;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.shared.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.shared.ldap.model.exception.LdapUriException;
@@ -38,10 +42,6 @@ import org.apache.directory.shared.ldap.model.exception.UrlDecoderException;
 import org.apache.directory.shared.ldap.model.filter.FilterParser;
 import org.apache.directory.shared.ldap.model.message.SearchScope;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.util.Chars;
-import org.apache.directory.shared.util.StringConstants;
-import org.apache.directory.shared.util.Strings;
-import org.apache.directory.shared.util.Unicode;
 
 
 /**

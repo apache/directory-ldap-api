@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.directory.api.util.Base64;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
@@ -65,8 +67,6 @@ import org.apache.directory.shared.ldap.model.schema.parsers.SyntaxCheckerDescri
 import org.apache.directory.shared.ldap.model.schema.registries.AbstractSchemaLoader;
 import org.apache.directory.shared.ldap.model.schema.registries.DefaultSchema;
 import org.apache.directory.shared.ldap.model.schema.registries.Schema;
-import org.apache.directory.shared.util.Base64;
-import org.apache.directory.shared.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

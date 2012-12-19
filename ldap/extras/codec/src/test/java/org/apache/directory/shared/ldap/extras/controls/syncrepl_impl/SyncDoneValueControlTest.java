@@ -29,9 +29,9 @@ import static org.junit.Assert.fail;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.extras.AbstractCodecServiceTest;
 import org.apache.directory.shared.ldap.extras.controls.SyncDoneValue;
-import org.apache.directory.shared.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

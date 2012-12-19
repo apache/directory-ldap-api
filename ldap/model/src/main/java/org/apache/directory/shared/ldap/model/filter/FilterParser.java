@@ -23,6 +23,11 @@ package org.apache.directory.shared.ldap.model.filter;
 import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Chars;
+import org.apache.directory.api.util.Hex;
+import org.apache.directory.api.util.Position;
+import org.apache.directory.api.util.Strings;
+import org.apache.directory.api.util.Unicode;
 import org.apache.directory.shared.ldap.model.entry.AttributeUtils;
 import org.apache.directory.shared.ldap.model.entry.BinaryValue;
 import org.apache.directory.shared.ldap.model.entry.StringValue;
@@ -30,11 +35,6 @@ import org.apache.directory.shared.ldap.model.entry.Value;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.schema.AttributeType;
 import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.directory.shared.util.Chars;
-import org.apache.directory.shared.util.Hex;
-import org.apache.directory.shared.util.Position;
-import org.apache.directory.shared.util.Strings;
-import org.apache.directory.shared.util.Unicode;
 
 
 /**

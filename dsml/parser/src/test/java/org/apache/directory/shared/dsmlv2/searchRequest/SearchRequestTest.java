@@ -33,6 +33,8 @@ import java.util.Map;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.dsmlv2.AbstractTest;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
@@ -53,7 +55,6 @@ import org.apache.directory.shared.ldap.model.message.AliasDerefMode;
 import org.apache.directory.shared.ldap.model.message.Control;
 import org.apache.directory.shared.ldap.model.message.SearchRequest;
 import org.apache.directory.shared.ldap.model.message.SearchScope;
-import org.apache.directory.shared.util.Strings;
 import org.dom4j.tree.DefaultElement;
 import org.junit.Test;
 import org.junit.runner.RunWith;

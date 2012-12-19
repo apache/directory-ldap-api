@@ -23,7 +23,7 @@ package org.apache.directory.shared.ldap.model.schema;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.util.Strings;
 
 
 /**

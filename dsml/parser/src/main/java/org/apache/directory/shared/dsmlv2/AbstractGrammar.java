@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.util.Strings;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 

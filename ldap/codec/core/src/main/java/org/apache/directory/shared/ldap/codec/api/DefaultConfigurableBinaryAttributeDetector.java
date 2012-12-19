@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.codec.api;
 
 import java.util.Set;
 
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.util.Strings;
 import org.apache.mina.util.ConcurrentHashSet;
 
 

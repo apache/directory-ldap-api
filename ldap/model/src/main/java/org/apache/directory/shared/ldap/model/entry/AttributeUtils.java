@@ -31,13 +31,13 @@ import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Chars;
+import org.apache.directory.api.util.Position;
+import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeTypeException;
 import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.util.Chars;
-import org.apache.directory.shared.util.Position;
-import org.apache.directory.shared.util.Strings;
 
 
 /**
