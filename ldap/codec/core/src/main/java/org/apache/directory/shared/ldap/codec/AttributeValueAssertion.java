@@ -20,9 +20,9 @@
 package org.apache.directory.shared.ldap.codec;
 
 
+import org.apache.directory.api.ldap.model.entry.*;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;
-import org.apache.directory.shared.ldap.model.entry.*;
 
 
 /**

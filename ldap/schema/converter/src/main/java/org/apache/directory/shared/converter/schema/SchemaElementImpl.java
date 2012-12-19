@@ -20,13 +20,13 @@
 package org.apache.directory.shared.converter.schema;
 
 
+import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.ldif.LdifUtils;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
-import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.ldif.LdifUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -160,7 +160,7 @@ public abstract class SchemaElementImpl implements SchemaElement
 
     /**
      * @return the Names as Ldif lines
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException If the conversion goes wrong
+     * @throws org.apache.directory.api.ldap.model.exception.LdapException If the conversion goes wrong
      */
     private String nameToLdif() throws LdapException
     {
@@ -187,7 +187,7 @@ public abstract class SchemaElementImpl implements SchemaElement
 
     /**
      * @return The description as a ldif line
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException If the conversion goes wrong
+     * @throws org.apache.directory.api.ldap.model.exception.LdapException If the conversion goes wrong
      */
     private String descToLdif() throws LdapException
     {
@@ -212,7 +212,7 @@ public abstract class SchemaElementImpl implements SchemaElement
      *
      * @param schemaName The schema element to transform
      * @return The Schema Element as a ldif String
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException If the conversion goes wrong
+     * @throws org.apache.directory.api.ldap.model.exception.LdapException If the conversion goes wrong
      */
     public abstract String dnToLdif( String schemaName ) throws LdapException;
 
@@ -223,7 +223,7 @@ public abstract class SchemaElementImpl implements SchemaElement
      * @param id The attributeId : can be m-objectClassExtension or
      * m-attributeTypeExtension
      * @return The extensions formated as ldif lines
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException If the conversion goes wrong
+     * @throws org.apache.directory.api.ldap.model.exception.LdapException If the conversion goes wrong
      */
     protected String extensionsToLdif( String id ) throws LdapException
     {
@@ -249,7 +249,7 @@ public abstract class SchemaElementImpl implements SchemaElement
      * @param schemaName The schema to transform
      * @param type The ObjectClass type
      * @return A LDIF String representing the schema
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException If the transformation can't be done
+     * @throws org.apache.directory.api.ldap.model.exception.LdapException If the transformation can't be done
      */
     protected String schemaToLdif( String schemaName, String type ) throws LdapException
     {

@@ -20,10 +20,10 @@
 package org.apache.directory.shared.dsmlv2.reponse;
 
 
+import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
+import org.apache.directory.api.ldap.model.message.SearchResultDone;
+import org.apache.directory.api.ldap.model.message.SearchResultDoneImpl;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
-import org.apache.directory.shared.ldap.model.message.SearchResultDone;
-import org.apache.directory.shared.ldap.model.message.SearchResultDoneImpl;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 

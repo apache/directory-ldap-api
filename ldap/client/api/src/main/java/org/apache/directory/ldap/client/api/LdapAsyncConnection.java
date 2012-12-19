@@ -22,6 +22,18 @@ package org.apache.directory.ldap.client.api;
 
 import java.io.IOException;
 
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.AddRequest;
+import org.apache.directory.api.ldap.model.message.BindRequest;
+import org.apache.directory.api.ldap.model.message.CompareRequest;
+import org.apache.directory.api.ldap.model.message.DeleteRequest;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
+import org.apache.directory.api.ldap.model.message.ModifyRequest;
+import org.apache.directory.api.ldap.model.message.SearchRequest;
+import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.ldap.client.api.future.AddFuture;
 import org.apache.directory.ldap.client.api.future.BindFuture;
 import org.apache.directory.ldap.client.api.future.CompareFuture;
@@ -30,18 +42,6 @@ import org.apache.directory.ldap.client.api.future.ExtendedFuture;
 import org.apache.directory.ldap.client.api.future.ModifyDnFuture;
 import org.apache.directory.ldap.client.api.future.ModifyFuture;
 import org.apache.directory.ldap.client.api.future.SearchFuture;
-import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.message.AddRequest;
-import org.apache.directory.shared.ldap.model.message.BindRequest;
-import org.apache.directory.shared.ldap.model.message.CompareRequest;
-import org.apache.directory.shared.ldap.model.message.DeleteRequest;
-import org.apache.directory.shared.ldap.model.message.ExtendedRequest;
-import org.apache.directory.shared.ldap.model.message.ModifyDnRequest;
-import org.apache.directory.shared.ldap.model.message.ModifyRequest;
-import org.apache.directory.shared.ldap.model.message.SearchRequest;
-import org.apache.directory.shared.ldap.model.message.SearchScope;
-import org.apache.directory.shared.ldap.model.name.Dn;
 
 
 /**
@@ -146,7 +146,7 @@ public interface LdapAsyncConnection extends LdapConnection
      * @param scope The search scope : OBJECT, ONELEVEL or SUBTREE
      * @param attributes The attributes for this search
      * @return the search operation's future
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException if some error occurred
+     * @throws org.apache.directory.api.ldap.model.exception.LdapException if some error occurred
      */
     SearchFuture searchAsync( String baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException;

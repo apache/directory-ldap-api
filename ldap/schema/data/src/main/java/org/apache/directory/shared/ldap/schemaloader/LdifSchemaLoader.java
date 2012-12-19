@@ -28,14 +28,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.ldif.LdifEntry;
+import org.apache.directory.api.ldap.model.ldif.LdifReader;
+import org.apache.directory.api.ldap.model.schema.registries.AbstractSchemaLoader;
+import org.apache.directory.api.ldap.model.schema.registries.Schema;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.ldif.LdifEntry;
-import org.apache.directory.shared.ldap.model.ldif.LdifReader;
-import org.apache.directory.shared.ldap.model.schema.registries.Schema;
-import org.apache.directory.shared.ldap.model.schema.registries.AbstractSchemaLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

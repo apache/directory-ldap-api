@@ -28,10 +28,11 @@ import java.util.Set;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.subtree.BaseSubtreeSpecification;
+import org.apache.directory.api.ldap.model.subtree.SubtreeSpecification;
 import org.apache.directory.shared.ldap.aci.UserClass.Subtree;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.subtree.BaseSubtreeSpecification;
-import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecification;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

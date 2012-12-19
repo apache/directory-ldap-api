@@ -26,12 +26,12 @@ package org.apache.directory.shared.ldap.trigger;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.schema.NormalizerMappingResolver;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.schema.NormalizerMappingResolver;
 import org.apache.directory.shared.ldap.trigger.StoredProcedureOption;
 import org.apache.directory.shared.ldap.trigger.StoredProcedureParameter;
 import org.apache.directory.shared.ldap.trigger.TriggerSpecification.SPSpec;
-import org.apache.directory.shared.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.message.SearchScope;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

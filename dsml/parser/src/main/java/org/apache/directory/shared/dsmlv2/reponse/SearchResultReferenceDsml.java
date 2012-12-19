@@ -22,12 +22,12 @@ package org.apache.directory.shared.dsmlv2.reponse;
 
 import java.util.Collection;
 
+import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
+import org.apache.directory.api.ldap.model.message.Referral;
+import org.apache.directory.api.ldap.model.message.SearchResultReference;
+import org.apache.directory.api.ldap.model.message.SearchResultReferenceImpl;
+import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
-import org.apache.directory.shared.ldap.model.message.Referral;
-import org.apache.directory.shared.ldap.model.message.SearchResultReference;
-import org.apache.directory.shared.ldap.model.message.SearchResultReferenceImpl;
-import org.apache.directory.shared.ldap.model.url.LdapUrl;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 

@@ -30,8 +30,8 @@ import java.util.List;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
-import org.apache.directory.shared.ldap.model.message.SearchScope;
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.shared.ldap.trigger.TriggerSpecification.SPSpec;
 import org.junit.Test;
 import org.junit.runner.RunWith;

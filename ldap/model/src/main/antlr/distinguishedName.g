@@ -18,7 +18,7 @@ header {
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.model.name;
+package org.apache.directory.api.ldap.model.name;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -26,11 +26,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import javax.naming.NameParser;
-import org.apache.directory.shared.ldap.model.entry.StringValue;
-import org.apache.directory.shared.ldap.model.entry.BinaryValue;
-import org.apache.directory.shared.ldap.model.schema.parsers.ParserMonitor;
+import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.entry.BinaryValue;
+import org.apache.directory.api.ldap.model.schema.parsers.ParserMonitor;
 import org.apache.directory.api.util.Strings;
 
 }

@@ -30,11 +30,11 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.message.controls.ChangeType;
+import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
+import org.apache.directory.api.ldap.model.message.controls.PersistentSearchImpl;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
-import org.apache.directory.shared.ldap.model.message.controls.ChangeType;
-import org.apache.directory.shared.ldap.model.message.controls.PersistentSearch;
-import org.apache.directory.shared.ldap.model.message.controls.PersistentSearchImpl;
 
 
 /**

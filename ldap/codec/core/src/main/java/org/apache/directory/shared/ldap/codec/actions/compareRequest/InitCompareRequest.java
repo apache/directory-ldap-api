@@ -21,10 +21,10 @@ package org.apache.directory.shared.ldap.codec.actions.compareRequest;
 
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.ldap.model.message.CompareRequest;
+import org.apache.directory.api.ldap.model.message.CompareRequestImpl;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.CompareRequestDecorator;
-import org.apache.directory.shared.ldap.model.message.CompareRequest;
-import org.apache.directory.shared.ldap.model.message.CompareRequestImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

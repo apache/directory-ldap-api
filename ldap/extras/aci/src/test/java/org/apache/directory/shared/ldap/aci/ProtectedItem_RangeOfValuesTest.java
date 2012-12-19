@@ -25,9 +25,10 @@ import static org.junit.Assert.assertFalse;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+
+import org.apache.directory.api.ldap.model.filter.ExprNode;
+import org.apache.directory.api.ldap.model.filter.FilterParser;
 import org.apache.directory.shared.ldap.aci.protectedItem.RangeOfValuesItem;
-import org.apache.directory.shared.ldap.model.filter.ExprNode;
-import org.apache.directory.shared.ldap.model.filter.FilterParser;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

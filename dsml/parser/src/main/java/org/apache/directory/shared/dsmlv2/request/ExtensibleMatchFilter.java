@@ -34,7 +34,7 @@ public class ExtensibleMatchFilter extends Filter
     private String type;
 
     /** Matching rule value */
-    private org.apache.directory.shared.ldap.model.entry.Value<?> matchValue;
+    private org.apache.directory.api.ldap.model.entry.Value<?> matchValue;
 
     /** The dnAttributes flag */
     private boolean dnAttributes = false;
@@ -89,7 +89,7 @@ public class ExtensibleMatchFilter extends Filter
      * 
      * @return Returns the matchValue.
      */
-    public org.apache.directory.shared.ldap.model.entry.Value<?> getMatchValue()
+    public org.apache.directory.api.ldap.model.entry.Value<?> getMatchValue()
     {
         return matchValue;
     }
@@ -100,7 +100,7 @@ public class ExtensibleMatchFilter extends Filter
      * 
      * @param matchValue The matchValue to set.
      */
-    public void setMatchValue( org.apache.directory.shared.ldap.model.entry.Value<?> matchValue )
+    public void setMatchValue( org.apache.directory.api.ldap.model.entry.Value<?> matchValue )
     {
         this.matchValue = matchValue;
     }

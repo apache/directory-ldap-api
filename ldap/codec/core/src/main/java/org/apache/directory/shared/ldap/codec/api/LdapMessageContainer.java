@@ -22,10 +22,10 @@ package org.apache.directory.shared.ldap.codec.api;
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
 import org.apache.directory.api.asn1.ber.Asn1Container;
+import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.shared.ldap.codec.LdapMessageGrammar;
 import org.apache.directory.shared.ldap.codec.LdapStatesEnum;
-import org.apache.directory.shared.ldap.model.message.Control;
-import org.apache.directory.shared.ldap.model.message.Message;
 
 
 /**

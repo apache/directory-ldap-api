@@ -20,12 +20,12 @@
 package org.apache.directory.shared.ldap.codec.decorators;
 
 
+import org.apache.directory.api.ldap.model.message.AbandonListener;
+import org.apache.directory.api.ldap.model.message.AbandonableRequest;
+import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
+import org.apache.directory.api.ldap.model.message.ResultResponse;
+import org.apache.directory.api.ldap.model.message.SingleReplyRequest;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.model.message.AbandonListener;
-import org.apache.directory.shared.ldap.model.message.AbandonableRequest;
-import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
-import org.apache.directory.shared.ldap.model.message.ResultResponse;
-import org.apache.directory.shared.ldap.model.message.SingleReplyRequest;
 
 
 /**

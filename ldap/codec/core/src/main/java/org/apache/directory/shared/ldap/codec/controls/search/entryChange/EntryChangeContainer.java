@@ -21,8 +21,8 @@ package org.apache.directory.shared.ldap.codec.controls.search.entryChange;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
+import org.apache.directory.api.ldap.model.message.controls.EntryChange;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.model.message.controls.EntryChange;
 
 
 /**

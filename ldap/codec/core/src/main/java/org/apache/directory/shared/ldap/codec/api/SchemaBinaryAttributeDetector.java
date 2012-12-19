@@ -19,10 +19,10 @@
  */
 package org.apache.directory.shared.ldap.codec.api;
 
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.SchemaManager;
 
 /**
  * An implementation of the BinaryAttributeDetector interface. It's not

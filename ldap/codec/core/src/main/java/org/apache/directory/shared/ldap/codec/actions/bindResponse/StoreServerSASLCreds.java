@@ -23,11 +23,11 @@ package org.apache.directory.shared.ldap.codec.actions.bindResponse;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.ldap.model.message.BindResponse;
 import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.BindResponseDecorator;
-import org.apache.directory.shared.ldap.model.message.BindResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -21,13 +21,13 @@ package org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDiscon
 
 
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.shared.ldap.codec.api.ExtendedRequestFactory;
 import org.apache.directory.shared.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.UnsolicitedResponseFactory;
 import org.apache.directory.shared.ldap.extras.extended.GracefulDisconnectResponse;
 import org.apache.directory.shared.ldap.extras.extended.GracefulDisconnectResponseImpl;
-import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
 
 
 /**

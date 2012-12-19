@@ -28,41 +28,41 @@ import java.util.Set;
 
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.BinaryValue;
+import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.api.ldap.model.exception.LdapUnwillingToPerformException;
+import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.LdapComparator;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
+import org.apache.directory.api.ldap.model.schema.LoadableSchemaObject;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
+import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
+import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.Normalizer;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.ldap.model.schema.SchemaObject;
+import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
+import org.apache.directory.api.ldap.model.schema.UsageEnum;
+import org.apache.directory.api.ldap.model.schema.parsers.LdapComparatorDescription;
+import org.apache.directory.api.ldap.model.schema.parsers.NormalizerDescription;
+import org.apache.directory.api.ldap.model.schema.parsers.SyntaxCheckerDescription;
+import org.apache.directory.api.ldap.model.schema.registries.DefaultSchema;
+import org.apache.directory.api.ldap.model.schema.registries.Registries;
+import org.apache.directory.api.ldap.model.schema.registries.Schema;
 import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants;
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.entry.Attribute;
-import org.apache.directory.shared.ldap.model.entry.BinaryValue;
-import org.apache.directory.shared.ldap.model.entry.DefaultAttribute;
-import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.Value;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException;
-import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
-import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.LdapComparator;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.shared.ldap.model.schema.Normalizer;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.directory.shared.ldap.model.schema.SchemaObject;
-import org.apache.directory.shared.ldap.model.schema.SyntaxChecker;
-import org.apache.directory.shared.ldap.model.schema.UsageEnum;
-import org.apache.directory.shared.ldap.model.schema.parsers.LdapComparatorDescription;
-import org.apache.directory.shared.ldap.model.schema.parsers.NormalizerDescription;
-import org.apache.directory.shared.ldap.model.schema.parsers.SyntaxCheckerDescription;
-import org.apache.directory.shared.ldap.model.schema.registries.DefaultSchema;
-import org.apache.directory.shared.ldap.model.schema.registries.Registries;
-import org.apache.directory.shared.ldap.model.schema.registries.Schema;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1073,7 +1073,7 @@ public class SchemaEntityFactory implements EntityFactory
      *  - extensions
      *  - isReadOnly
      *  - isEnabled
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapInvalidAttributeValueException
+     * @throws org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException
      */
     private void setSchemaObjectProperties( SchemaObject schemaObject, Entry entry, Schema schema )
         throws LdapInvalidAttributeValueException

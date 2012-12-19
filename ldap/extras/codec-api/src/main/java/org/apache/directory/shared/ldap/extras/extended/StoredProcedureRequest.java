@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.extras.extended;
 
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 
 
 /**

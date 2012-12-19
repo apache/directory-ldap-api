@@ -27,10 +27,10 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
 import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.util.exception.NotImplementedException;
-import org.apache.directory.shared.ldap.model.message.AbstractExtendedRequest;
 
 
 /**

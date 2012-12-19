@@ -21,9 +21,9 @@ package org.apache.directory.shared.ldap.codec.actions.modifyResponse;
 
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.ldap.model.message.ModifyResponseImpl;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.ModifyResponseDecorator;
-import org.apache.directory.shared.ldap.model.message.ModifyResponseImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

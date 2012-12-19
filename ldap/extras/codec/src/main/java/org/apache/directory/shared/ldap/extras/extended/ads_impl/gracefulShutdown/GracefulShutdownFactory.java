@@ -21,6 +21,8 @@ package org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulShutdo
 
 
 import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.shared.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.shared.ldap.codec.api.ExtendedRequestFactory;
 import org.apache.directory.shared.ldap.codec.api.ExtendedResponseDecorator;
@@ -29,8 +31,6 @@ import org.apache.directory.shared.ldap.extras.extended.GracefulShutdownRequestI
 import org.apache.directory.shared.ldap.extras.extended.GracefulShutdownResponseImpl;
 import org.apache.directory.shared.ldap.extras.extended.GracefulShutdownRequest;
 import org.apache.directory.shared.ldap.extras.extended.GracefulShutdownResponse;
-import org.apache.directory.shared.ldap.model.message.ExtendedRequest;
-import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
 
 
 /**

@@ -32,10 +32,11 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.exception.LdapUnwillingToPerformException;
-import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.directory.shared.ldap.model.schema.registries.Schema;
-import org.apache.directory.shared.ldap.model.schema.registries.DefaultSchema;
+
+import org.apache.directory.api.ldap.model.exception.LdapUnwillingToPerformException;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.ldap.model.schema.registries.DefaultSchema;
+import org.apache.directory.api.ldap.model.schema.registries.Schema;
 import org.apache.directory.shared.ldap.schemaextractor.SchemaLdifExtractor;
 import org.apache.directory.shared.ldap.schemaextractor.impl.DefaultSchemaLdifExtractor;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;

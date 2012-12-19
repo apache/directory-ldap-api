@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.directory.api.ldap.model.message.controls.AbstractControl;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.shared.ldap.model.message.controls.AbstractControl;
 
 
 /**

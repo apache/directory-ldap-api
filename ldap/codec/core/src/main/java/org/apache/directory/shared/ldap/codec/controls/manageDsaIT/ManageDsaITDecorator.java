@@ -25,9 +25,9 @@ import java.nio.ByteBuffer;
 import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.model.message.controls.ManageDsaIT;
 
 
 /**

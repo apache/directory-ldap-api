@@ -22,8 +22,8 @@ package org.apache.directory.shared.ldap.extras.controls;
 
 import java.util.Arrays;
 
+import org.apache.directory.api.ldap.model.message.controls.AbstractControl;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.shared.ldap.model.message.controls.AbstractControl;
 
 
 /**

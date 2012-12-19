@@ -21,10 +21,10 @@ package org.apache.directory.shared.ldap.codec.actions.modifyRequest;
 
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.ldap.model.message.ModifyRequest;
+import org.apache.directory.api.ldap.model.message.ModifyRequestImpl;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.ModifyRequestDecorator;
-import org.apache.directory.shared.ldap.model.message.ModifyRequest;
-import org.apache.directory.shared.ldap.model.message.ModifyRequestImpl;
 
 
 /**

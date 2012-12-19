@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.extras.controls.ppolicy;
 
 
-import org.apache.directory.shared.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**

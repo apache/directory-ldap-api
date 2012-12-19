@@ -23,12 +23,12 @@ package org.apache.directory.shared.dsmlv2.request;
 import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.ldap.model.message.AbandonListener;
+import org.apache.directory.api.ldap.model.message.AbandonableRequest;
+import org.apache.directory.api.ldap.model.message.ResultResponse;
+import org.apache.directory.api.ldap.model.message.ResultResponseRequest;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.model.message.AbandonListener;
-import org.apache.directory.shared.ldap.model.message.AbandonableRequest;
-import org.apache.directory.shared.ldap.model.message.ResultResponse;
-import org.apache.directory.shared.ldap.model.message.ResultResponseRequest;
 import org.dom4j.Element;
 
 

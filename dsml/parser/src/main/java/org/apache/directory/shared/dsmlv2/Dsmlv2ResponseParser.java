@@ -28,11 +28,11 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.dsmlv2.reponse.BatchResponseDsml;
 import org.apache.directory.shared.dsmlv2.reponse.Dsmlv2ResponseGrammar;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.model.message.Response;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;

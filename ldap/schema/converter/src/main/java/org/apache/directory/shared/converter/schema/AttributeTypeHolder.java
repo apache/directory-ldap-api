@@ -20,13 +20,13 @@
 package org.apache.directory.shared.converter.schema;
 
 
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.entry.DefaultEntry;
-import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.ldif.LdifUtils;
-import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.model.schema.UsageEnum;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.entry.DefaultEntry;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.ldif.LdifUtils;
+import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.schema.UsageEnum;
 
 
 /**
@@ -304,7 +304,7 @@ public class AttributeTypeHolder extends SchemaElementImpl
      * 
      * @param schemaName The name of the schema file containing this attributeType
      * @return A ldif formatted string
-     * @throws org.apache.directory.shared.ldap.model.exception.LdapException If something went wrong
+     * @throws org.apache.directory.api.ldap.model.exception.LdapException If something went wrong
      */
     public String toLdif( String schemaName ) throws LdapException
     {

@@ -28,10 +28,10 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.message.controls.Subentries;
+import org.apache.directory.api.ldap.model.message.controls.SubentriesImpl;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.model.message.controls.Subentries;
-import org.apache.directory.shared.ldap.model.message.controls.SubentriesImpl;
 
 
 /**

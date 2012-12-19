@@ -25,14 +25,14 @@
 
 <suppressions>
     <!-- hashcode() is final in super class -->
-    <suppress files="org.apache.directory.shared.ldap.model.schema.SyntaxChecker" checks="EqualsHashCode" />
-    <suppress files="org.apache.directory.shared.ldap.model.schema.Normalizer" checks="EqualsHashCode" />
-    <suppress files="org.apache.directory.shared.ldap.model.schema.LoadableSchemaObject" checks="EqualsHashCode" />
-    <suppress files="org.apache.directory.shared.ldap.model.schema.LdapComparator" checks="EqualsHashCode" />
-    <suppress files="org.apache.directory.shared.ldap.model.schema.DITStructureRule" checks="EqualsHashCode" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.SyntaxChecker" checks="EqualsHashCode" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.Normalizer" checks="EqualsHashCode" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.LoadableSchemaObject" checks="EqualsHashCode" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.LdapComparator" checks="EqualsHashCode" />
+    <suppress files="org.apache.directory.api.ldap.model.schema.DITStructureRule" checks="EqualsHashCode" />
     
     <!-- No Javadoc for schema constants required -->
-    <suppress files="org.apache.directory.shared.ldap.model.constants.SchemaConstants" checks="JavadocVariable" />
-    <suppress files="org.apache.directory.shared.ldap.model.constants.MetaSchemaConstants" checks="JavadocVariable" />
-    <suppress files="org.apache.directory.shared.ldap.model.constants.PasswordPolicySchemaConstants" checks="JavadocVariable" />
+    <suppress files="org.apache.directory.api.ldap.model.constants.SchemaConstants" checks="JavadocVariable" />
+    <suppress files="org.apache.directory.api.ldap.model.constants.MetaSchemaConstants" checks="JavadocVariable" />
+    <suppress files="org.apache.directory.api.ldap.model.constants.PasswordPolicySchemaConstants" checks="JavadocVariable" />
 </suppressions>

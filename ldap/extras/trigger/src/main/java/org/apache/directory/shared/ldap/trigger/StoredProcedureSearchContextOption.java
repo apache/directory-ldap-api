@@ -21,8 +21,8 @@
 package org.apache.directory.shared.ldap.trigger;
 
 
-import org.apache.directory.shared.ldap.model.message.SearchScope;
-import org.apache.directory.shared.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.name.Dn;
 
 
 /**

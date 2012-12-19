@@ -20,8 +20,8 @@
 package org.apache.directory.shared.ldap.aci.protectedItem;
 
 
+import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.shared.ldap.aci.ProtectedItem;
-import org.apache.directory.shared.ldap.model.filter.ExprNode;
 
 
 /**

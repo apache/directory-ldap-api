@@ -20,9 +20,9 @@
 package org.apache.directory.shared.ldap.codec.controls.search.subentries;
 
 
+import org.apache.directory.api.ldap.model.message.controls.Subentries;
 import org.apache.directory.shared.ldap.codec.api.ControlFactory;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.model.message.controls.Subentries;
 
 
 /**

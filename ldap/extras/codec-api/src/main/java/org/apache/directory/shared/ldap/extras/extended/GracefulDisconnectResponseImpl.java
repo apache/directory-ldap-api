@@ -21,16 +21,16 @@ package org.apache.directory.shared.ldap.extras.extended;
 
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.shared.ldap.model.message.ExtendedResponseImpl;
-import org.apache.directory.shared.ldap.model.message.Referral;
-import org.apache.directory.shared.ldap.model.message.ReferralImpl;
-import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
+import org.apache.directory.api.ldap.model.message.Referral;
+import org.apache.directory.api.ldap.model.message.ReferralImpl;
+import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 
 
 /**
  * An unsolicited notification, extended response, intended for notifying
  * clients of up coming disconnection due to intended service windows. Unlike the
- * {@link org.apache.directory.shared.ldap.model.message.extended.NoticeOfDisconnect} this response contains additional information about
+ * {@link org.apache.directory.api.ldap.model.message.extended.NoticeOfDisconnect} this response contains additional information about
  * the amount of time the server will be offline and exactly when it intends to
  * shutdown.
  * 

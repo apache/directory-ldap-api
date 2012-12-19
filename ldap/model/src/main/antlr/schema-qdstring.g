@@ -18,12 +18,12 @@ header {
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.model.schema.syntaxes;
+package org.apache.directory.api.ldap.model.schema.syntaxes;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.schema.parsers.ParserMonitor;
+import org.apache.directory.api.ldap.model.schema.parsers.ParserMonitor;
 
 }
 

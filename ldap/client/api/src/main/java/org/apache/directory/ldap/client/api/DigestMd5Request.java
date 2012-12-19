@@ -21,7 +21,7 @@
 package org.apache.directory.ldap.client.api;
 
 
-import org.apache.directory.shared.ldap.model.constants.SupportedSaslMechanisms;
+import org.apache.directory.api.ldap.model.constants.SupportedSaslMechanisms;
 
 
 /**

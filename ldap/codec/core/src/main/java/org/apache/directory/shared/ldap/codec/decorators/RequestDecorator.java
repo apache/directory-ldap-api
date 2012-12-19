@@ -20,9 +20,9 @@
 package org.apache.directory.shared.ldap.codec.decorators;
 
 
+import org.apache.directory.api.ldap.model.message.Request;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
-import org.apache.directory.shared.ldap.model.message.Request;
 
 
 /**

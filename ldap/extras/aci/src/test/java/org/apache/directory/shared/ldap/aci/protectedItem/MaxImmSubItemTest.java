@@ -25,7 +25,8 @@ import static org.junit.Assert.assertFalse;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-import org.apache.directory.shared.ldap.model.filter.UndefinedNode;
+
+import org.apache.directory.api.ldap.model.filter.UndefinedNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

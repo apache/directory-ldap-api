@@ -30,12 +30,12 @@ import static org.junit.Assert.fail;
 
 import java.util.Map;
 
+import org.apache.directory.api.ldap.model.message.CompareRequest;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.dsmlv2.AbstractTest;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.Dsmlv2Parser;
-import org.apache.directory.shared.ldap.model.message.CompareRequest;
-import org.apache.directory.shared.ldap.model.message.Control;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

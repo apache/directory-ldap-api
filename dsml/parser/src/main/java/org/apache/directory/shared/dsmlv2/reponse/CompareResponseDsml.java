@@ -21,10 +21,10 @@
 package org.apache.directory.shared.dsmlv2.reponse;
 
 
+import org.apache.directory.api.ldap.model.message.CompareResponse;
+import org.apache.directory.api.ldap.model.message.CompareResponseImpl;
+import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.model.message.CompareResponse;
-import org.apache.directory.shared.ldap.model.message.CompareResponseImpl;
-import org.apache.directory.shared.ldap.model.message.MessageTypeEnum;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 

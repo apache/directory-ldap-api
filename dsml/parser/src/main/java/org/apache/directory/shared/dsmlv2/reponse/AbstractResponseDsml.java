@@ -20,9 +20,9 @@
 package org.apache.directory.shared.dsmlv2.reponse;
 
 
+import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.shared.dsmlv2.AbstractDsmlMessageDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.model.message.Response;
 
 
 /**

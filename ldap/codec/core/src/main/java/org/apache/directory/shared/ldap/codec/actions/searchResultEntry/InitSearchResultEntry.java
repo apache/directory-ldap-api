@@ -21,9 +21,9 @@ package org.apache.directory.shared.ldap.codec.actions.searchResultEntry;
 
 
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.ldap.model.message.SearchResultEntryImpl;
 import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.shared.ldap.codec.decorators.SearchResultEntryDecorator;
-import org.apache.directory.shared.ldap.model.message.SearchResultEntryImpl;
 
 
 /**

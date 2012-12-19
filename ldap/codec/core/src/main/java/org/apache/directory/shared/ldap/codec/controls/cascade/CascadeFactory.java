@@ -20,10 +20,10 @@
 package org.apache.directory.shared.ldap.codec.controls.cascade;
 
 
+import org.apache.directory.api.ldap.model.message.controls.Cascade;
+import org.apache.directory.api.ldap.model.message.controls.CascadeImpl;
 import org.apache.directory.shared.ldap.codec.api.ControlFactory;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.model.message.controls.Cascade;
-import org.apache.directory.shared.ldap.model.message.controls.CascadeImpl;
 
 
 /**

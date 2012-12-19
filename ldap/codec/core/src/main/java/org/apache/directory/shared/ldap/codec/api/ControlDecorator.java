@@ -21,7 +21,7 @@ package org.apache.directory.shared.ldap.codec.api;
 
 
 import org.apache.directory.api.asn1.AbstractAsn1Object;
-import org.apache.directory.shared.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.Control;
 
 
 /**
