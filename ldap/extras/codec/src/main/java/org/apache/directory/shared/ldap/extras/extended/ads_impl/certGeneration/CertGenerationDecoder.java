@@ -22,9 +22,9 @@ package org.apache.directory.shared.ldap.extras.extended.ads_impl.certGeneration
 
 import java.nio.ByteBuffer;
 
+import org.apache.directory.api.asn1.Asn1Object;
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
-import org.apache.directory.shared.asn1.Asn1Object;
-import org.apache.directory.shared.asn1.DecoderException;
 
 
 /**

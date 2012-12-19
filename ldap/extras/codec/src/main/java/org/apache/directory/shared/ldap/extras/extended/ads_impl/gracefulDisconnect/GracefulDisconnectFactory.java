@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect;
 
 
-import org.apache.directory.shared.asn1.DecoderException;
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.shared.ldap.codec.api.ExtendedRequestFactory;
 import org.apache.directory.shared.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;

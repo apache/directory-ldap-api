@@ -27,10 +27,10 @@ import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
 
+import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
-import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.cancel.Cancel;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.cancel.CancelContainer;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.cancel.CancelDecoder;

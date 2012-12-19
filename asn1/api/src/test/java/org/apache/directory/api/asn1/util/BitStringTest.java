@@ -17,14 +17,16 @@
  *  under the License.
  * 
  */
-package org.apache.directory.shared.asn1.util;
+package org.apache.directory.api.asn1.util;
 
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.apache.directory.shared.asn1.DecoderException;
+import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.util.Asn1StringUtils;
+import org.apache.directory.api.asn1.util.BitString;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

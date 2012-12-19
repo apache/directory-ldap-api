@@ -22,10 +22,10 @@ package org.apache.directory.shared.ldap.extras.extended.ads_impl.certGeneration
 
 import java.nio.ByteBuffer;
 
+import org.apache.directory.api.asn1.AbstractAsn1Object;
+import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.shared.asn1.AbstractAsn1Object;
-import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.ldap.extras.extended.CertGenerationRequest;
 import org.apache.directory.shared.util.Strings;
 

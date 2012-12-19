@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.codec.api;
 
 
-import org.apache.directory.shared.asn1.DecoderException;
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
 
 

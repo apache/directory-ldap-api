@@ -23,7 +23,7 @@ package org.apache.directory.ldap.client.api;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.directory.shared.asn1.util.Oid;
+import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.cursor.EntryCursor;

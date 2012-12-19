@@ -23,7 +23,7 @@ package org.apache.directory.shared.dsmlv2.request;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.directory.shared.asn1.DecoderException;
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.codec.api.LdapConstants;

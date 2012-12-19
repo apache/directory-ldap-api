@@ -31,8 +31,8 @@ import static org.junit.Assert.fail;
 import java.util.Collection;
 import java.util.Map;
 
-import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.util.Oid;
+import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.shared.dsmlv2.AbstractResponseTest;
 import org.apache.directory.shared.dsmlv2.DsmlControl;
 import org.apache.directory.shared.dsmlv2.Dsmlv2ResponseParser;

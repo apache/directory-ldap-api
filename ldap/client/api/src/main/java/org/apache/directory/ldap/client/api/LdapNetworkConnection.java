@@ -48,6 +48,8 @@ import javax.security.auth.login.LoginContext;
 import javax.security.sasl.Sasl;
 import javax.security.sasl.SaslClient;
 
+import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.ldap.client.api.callback.SaslCallbackHandler;
 import org.apache.directory.ldap.client.api.exception.InvalidConnectionException;
 import org.apache.directory.ldap.client.api.future.AddFuture;
@@ -59,8 +61,6 @@ import org.apache.directory.ldap.client.api.future.ModifyDnFuture;
 import org.apache.directory.ldap.client.api.future.ModifyFuture;
 import org.apache.directory.ldap.client.api.future.ResponseFuture;
 import org.apache.directory.ldap.client.api.future.SearchFuture;
-import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.shared.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;

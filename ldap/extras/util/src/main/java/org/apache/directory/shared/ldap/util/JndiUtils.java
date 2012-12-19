@@ -46,8 +46,8 @@ import javax.naming.directory.NoSuchAttributeException;
 import javax.naming.directory.SchemaViolationException;
 import javax.naming.ldap.LdapName;
 
-import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.EncoderException;
+import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.exception.LdapAffectMultipleDsaException;
 import org.apache.directory.shared.ldap.model.exception.LdapAliasDereferencingException;

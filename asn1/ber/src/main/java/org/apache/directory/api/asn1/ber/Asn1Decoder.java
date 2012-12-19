@@ -22,13 +22,13 @@ package org.apache.directory.api.asn1.ber;
 
 import java.nio.ByteBuffer;
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.TLVBerDecoderMBean;
 import org.apache.directory.api.asn1.ber.tlv.TLVStateEnum;
+import org.apache.directory.api.asn1.util.Asn1StringUtils;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.util.Asn1StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

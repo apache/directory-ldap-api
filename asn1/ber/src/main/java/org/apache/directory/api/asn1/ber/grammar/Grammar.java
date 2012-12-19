@@ -20,8 +20,8 @@
 package org.apache.directory.api.asn1.ber.grammar;
 
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
-import org.apache.directory.shared.asn1.DecoderException;
 
 
 /**

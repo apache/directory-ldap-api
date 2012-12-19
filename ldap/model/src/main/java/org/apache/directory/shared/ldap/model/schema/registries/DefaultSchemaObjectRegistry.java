@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.ldap.model.exception.LdapException;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaException;
 import org.apache.directory.shared.ldap.model.exception.LdapSchemaExceptionCodes;

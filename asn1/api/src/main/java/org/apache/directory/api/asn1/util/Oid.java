@@ -17,13 +17,13 @@
  *  under the License.
  *
  */
-package org.apache.directory.shared.asn1.util;
+package org.apache.directory.api.asn1.util;
 
 
 import java.util.Arrays;
 
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.shared.asn1.DecoderException;
 
 
 /**
@@ -87,7 +87,7 @@ public class Oid
      * Create a new Oid object from a byte array
      *
      * @param oid the byte array containing the Oid
-     * @throws org.apache.directory.shared.asn1.DecoderException if the byte array does not contain a
+     * @throws org.apache.directory.api.asn1.DecoderException if the byte array does not contain a
      * valid Oid
      */
     public Oid( byte[] oid ) throws DecoderException
@@ -116,7 +116,7 @@ public class Oid
      * representation.
      *
      * @param oid The bytes containing the Oid
-     * @throws org.apache.directory.shared.asn1.DecoderException if the byte array does not contains a valid Oid
+     * @throws org.apache.directory.api.asn1.DecoderException if the byte array does not contains a valid Oid
      */
     public void setOid( byte[] oid ) throws DecoderException
     {
@@ -213,7 +213,7 @@ public class Oid
      * Oid = ( [ '0' | '1' ] '.' [ 0 .. 39 ] | '2' '.' int) ( '.' int )*
      *
      * @param oid The String containing the Oid
-     * @throws org.apache.directory.shared.asn1.DecoderException if the byte array does not contains a valid Oid
+     * @throws org.apache.directory.api.asn1.DecoderException if the byte array does not contains a valid Oid
      */
     public void setOid( String oid ) throws DecoderException
     {

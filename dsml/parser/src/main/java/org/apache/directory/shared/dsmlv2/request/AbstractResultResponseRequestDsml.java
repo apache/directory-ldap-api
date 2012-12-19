@@ -22,7 +22,7 @@ package org.apache.directory.shared.dsmlv2.request;
 
 import java.nio.ByteBuffer;
 
-import org.apache.directory.shared.asn1.EncoderException;
+import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.AbandonListener;

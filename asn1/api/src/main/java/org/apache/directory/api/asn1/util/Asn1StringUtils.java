@@ -17,7 +17,7 @@
  *  under the License.
  *
  */
-package org.apache.directory.shared.asn1.util;
+package org.apache.directory.api.asn1.util;
 
 
 import java.io.UnsupportedEncodingException;

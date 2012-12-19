@@ -18,7 +18,7 @@
  * 
  */
 
-package org.apache.directory.shared.asn1;
+package org.apache.directory.api.asn1;
 
 
 /**

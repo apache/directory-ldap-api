@@ -23,11 +23,11 @@ package org.apache.directory.api.asn1.ber.tlv;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 
+import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.asn1.util.Asn1StringUtils;
+import org.apache.directory.api.asn1.util.BitString;
+import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.shared.asn1.EncoderException;
-import org.apache.directory.shared.asn1.util.Asn1StringUtils;
-import org.apache.directory.shared.asn1.util.BitString;
-import org.apache.directory.shared.asn1.util.Oid;
 
 
 /**

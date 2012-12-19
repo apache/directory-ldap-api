@@ -22,7 +22,7 @@ package org.apache.directory.shared.ldap.codec.api;
 
 import java.nio.ByteBuffer;
 
-import org.apache.directory.shared.asn1.EncoderException;
+import org.apache.directory.api.asn1.EncoderException;
 
 
 /**

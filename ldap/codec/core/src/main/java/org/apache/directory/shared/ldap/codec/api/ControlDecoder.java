@@ -20,8 +20,8 @@
 package org.apache.directory.shared.ldap.codec.api;
 
 
-import org.apache.directory.shared.asn1.Asn1Object;
-import org.apache.directory.shared.asn1.DecoderException;
+import org.apache.directory.api.asn1.Asn1Object;
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.shared.ldap.model.message.Control;
 
 

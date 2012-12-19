@@ -22,14 +22,14 @@ package org.apache.directory.shared.ldap.extras.controls.ppolicy_impl;
 
 import java.nio.ByteBuffer;
 
+import org.apache.directory.api.asn1.Asn1Object;
+import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.shared.asn1.Asn1Object;
-import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicy;

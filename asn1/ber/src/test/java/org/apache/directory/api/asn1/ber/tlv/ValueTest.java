@@ -28,12 +28,12 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
+import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.LongDecoder;
-import org.apache.directory.shared.asn1.EncoderException;
-import org.apache.directory.shared.asn1.util.Asn1StringUtils;
-import org.apache.directory.shared.asn1.util.BitString;
+import org.apache.directory.api.asn1.util.Asn1StringUtils;
+import org.apache.directory.api.asn1.util.BitString;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

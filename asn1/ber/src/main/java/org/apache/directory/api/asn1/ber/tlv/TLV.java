@@ -20,7 +20,7 @@
 package org.apache.directory.api.asn1.ber.tlv;
 
 
-import org.apache.directory.shared.asn1.util.Asn1StringUtils;
+import org.apache.directory.api.asn1.util.Asn1StringUtils;
 
 
 /**

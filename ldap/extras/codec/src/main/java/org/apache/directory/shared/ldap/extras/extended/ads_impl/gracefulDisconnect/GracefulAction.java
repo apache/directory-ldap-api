@@ -21,7 +21,7 @@
 package org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulDisconnect;
 
 
-import org.apache.directory.shared.asn1.AbstractAsn1Object;
+import org.apache.directory.api.asn1.AbstractAsn1Object;
 
 
 /**

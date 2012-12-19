@@ -21,7 +21,7 @@
 package org.apache.directory.shared.ldap.codec.api;
 
 
-import org.apache.directory.shared.asn1.DecoderException;
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.shared.ldap.model.message.Message;
 import org.apache.directory.shared.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.shared.ldap.model.message.ResultResponse;

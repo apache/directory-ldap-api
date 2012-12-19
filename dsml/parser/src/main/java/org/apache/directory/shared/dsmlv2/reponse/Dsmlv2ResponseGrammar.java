@@ -26,9 +26,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.util.Oid;
 import org.apache.directory.shared.dsmlv2.AbstractDsmlMessageDecorator;
 import org.apache.directory.shared.dsmlv2.AbstractGrammar;
 import org.apache.directory.shared.dsmlv2.DsmlControl;

@@ -26,14 +26,14 @@
     <relativePath>../project</relativePath>
   </parent>
 
-  <groupId>org.apache.directory.shared</groupId>
-  <artifactId>shared-parent</artifactId>
-  <name>Apache Directory Shared</name>
+  <groupId>org.apache.directory.api</groupId>
+  <artifactId>api-parent</artifactId>
+  <name>Apache Directory LDAP API</name>
   <packaging>pom</packaging>
   <version>1.0.0-M14-SNAPSHOT</version>
 
   <properties>
-    <projectName>ApacheDS-Shared</projectName>
+    <projectName>ApacheDS-LDAP-API</projectName>
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/api/gen-docs/${project.version}/</distMgmtSiteUrl>
     
     <!-- Set versions for depending projects -->
@@ -73,7 +73,7 @@
 
   <issueManagement>
     <system>JIRA</system>
-    <url>http://issues.apache.org/jira/browse/DIRSHARED</url>
+    <url>http://issues.apache.org/jira/browse/DIRAPI</url>
   </issueManagement>
 
   <modules>
@@ -323,7 +323,7 @@
               <configuration>
                 <instrumentation>
                   <excludes>
-                    <exclude>org/apache/directory/shared/**/*Constants.class</exclude>
+                    <exclude>org/apache/directory/api/**/*Constants.class</exclude>
                   </excludes>
                 </instrumentation>
               </configuration>
@@ -386,8 +386,8 @@
                   <exclude>**/src/main/resources/schema/**/*.ldif</exclude>
                   <exclude>**/src/main/resources/schema-all.ldif</exclude>
                   <!-- Files having a Bouncy Castle license -->
-                  <exclude>ldap/src/main/java/org/apache/directory/shared/asn1/der/*.java</exclude>
-                  <exclude>src/main/java/org/apache/directory/shared/asn1/der/*.java</exclude>
+                  <exclude>ldap/src/main/java/org/apache/directory/api/asn1/der/*.java</exclude>
+                  <exclude>src/main/java/org/apache/directory/api/asn1/der/*.java</exclude>
                 </excludes>
               </configuration>
             </plugin>
@@ -438,13 +438,13 @@
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-asn1-api</artifactId>
+        <artifactId>api-asn1-api</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-asn1-ber</artifactId>
+        <artifactId>api-asn1-ber</artifactId>
         <version>${project.version}</version>
       </dependency>
       
@@ -462,7 +462,7 @@
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-i18n</artifactId>
+        <artifactId>api-i18n</artifactId>
         <version>${project.version}</version>
       </dependency>
       

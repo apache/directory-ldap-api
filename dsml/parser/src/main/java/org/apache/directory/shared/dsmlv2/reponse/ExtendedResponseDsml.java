@@ -20,7 +20,7 @@
 package org.apache.directory.shared.dsmlv2.reponse;
 
 
-import org.apache.directory.shared.asn1.util.Oid;
+import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.model.message.ExtendedResponse;

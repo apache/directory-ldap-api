@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.model.schema.comparators;
 
 
-import org.apache.directory.shared.asn1.util.Oid;
+import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.shared.ldap.model.schema.LdapComparator;
 import org.apache.directory.shared.util.Chars;
 import org.apache.directory.shared.util.Strings;

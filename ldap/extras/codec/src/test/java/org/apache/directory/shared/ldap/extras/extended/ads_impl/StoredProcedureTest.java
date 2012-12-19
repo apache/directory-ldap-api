@@ -26,12 +26,12 @@ import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
 
+import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
-import org.apache.directory.shared.asn1.EncoderException;
-import org.apache.directory.shared.asn1.DecoderException;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureContainer;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureDecoder;
 import org.apache.directory.shared.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureRequestDecorator;

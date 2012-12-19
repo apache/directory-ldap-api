@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.extras.extended.ads_impl.certGeneration;
 
 
-import org.apache.directory.shared.asn1.DecoderException;
+import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.shared.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.shared.ldap.codec.api.ExtendedRequestFactory;
 import org.apache.directory.shared.ldap.codec.api.ExtendedResponseDecorator;

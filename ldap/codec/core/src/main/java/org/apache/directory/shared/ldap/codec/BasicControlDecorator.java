@@ -22,10 +22,10 @@ package org.apache.directory.shared.ldap.codec;
 
 import java.nio.ByteBuffer;
 
+import org.apache.directory.api.asn1.Asn1Object;
+import org.apache.directory.api.asn1.DecoderException;
+import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.shared.asn1.Asn1Object;
-import org.apache.directory.shared.asn1.DecoderException;
-import org.apache.directory.shared.asn1.EncoderException;
 import org.apache.directory.shared.ldap.codec.api.ControlDecorator;
 import org.apache.directory.shared.ldap.codec.api.ControlFactory;
 import org.apache.directory.shared.ldap.codec.api.LdapApiService;
