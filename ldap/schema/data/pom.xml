@@ -146,8 +146,8 @@
             <Bundle-SymbolicName>${project.groupId}.ldap.schema</Bundle-SymbolicName>
             <Export-Package>
                 {local-packages};version=${project.version};-noimport:=true,
-                org.apache.directory.shared.ldap.schemaextractor.impl;version="${project.version}";-noimport:=true,
-                org.apache.directory.shared.ldap.schemamanager.impl;version="${project.version}";-noimport:=true
+                org.apache.directory.api.ldap.schemaextractor.impl;version="${project.version}";-noimport:=true,
+                org.apache.directory.api.ldap.schemamanager.impl;version="${project.version}";-noimport:=true
             </Export-Package>
             <Import-Package>
               *,

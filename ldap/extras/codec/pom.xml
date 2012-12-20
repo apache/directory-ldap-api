@@ -105,7 +105,7 @@
                 {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
             <Bundle-Activator>
-              org.apache.directory.shared.ldap.extras.ExtrasBundleActivator
+              org.apache.directory.api.ldap.extras.ExtrasBundleActivator
             </Bundle-Activator>
           </instructions>
         </configuration>
