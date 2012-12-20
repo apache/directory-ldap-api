@@ -17,7 +17,7 @@
  *  under the License.
  *
  */
-package org.apache.directory.shared.ldap.util.tree;
+package org.apache.directory.api.ldap.util.tree;
 
 
 import java.util.ArrayList;

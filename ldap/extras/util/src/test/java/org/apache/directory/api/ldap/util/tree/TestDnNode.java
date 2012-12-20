@@ -17,7 +17,7 @@
  *   under the License.
  *
  */
-package org.apache.directory.shared.ldap.util.tree;
+package org.apache.directory.api.ldap.util.tree;
 
 
 import static org.junit.Assert.assertEquals;
@@ -36,6 +36,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.util.tree.DnNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
