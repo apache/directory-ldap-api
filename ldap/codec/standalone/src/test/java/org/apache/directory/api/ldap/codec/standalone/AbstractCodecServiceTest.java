@@ -17,13 +17,13 @@
  *  under the License.
  *
  */
-package org.apache.directory.shared.ldap.codec.standalone;
+package org.apache.directory.api.ldap.codec.standalone;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
-import org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapApiService;
+import org.apache.directory.api.ldap.codec.standalone.StandaloneLdapApiService;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 

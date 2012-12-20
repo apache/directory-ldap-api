@@ -17,7 +17,7 @@
  *   under the License.
  *
  */
-package org.apache.directory.shared.ldap.codec.standalone;
+package org.apache.directory.api.ldap.codec.standalone;
 
 
 import java.lang.reflect.Constructor;
