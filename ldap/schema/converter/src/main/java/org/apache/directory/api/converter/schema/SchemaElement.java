@@ -17,13 +17,13 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.converter.schema;
+package org.apache.directory.api.converter.schema;
 
-
-import org.apache.directory.api.ldap.model.exception.LdapException;
 
 import java.util.List;
 import java.util.Map;
+
+import org.apache.directory.api.ldap.model.exception.LdapException;
 
 
 /**

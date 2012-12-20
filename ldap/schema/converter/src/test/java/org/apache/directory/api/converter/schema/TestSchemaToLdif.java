@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.converter.schema;
+package org.apache.directory.api.converter.schema;
 
 
 import static org.junit.Assert.assertEquals;
@@ -30,6 +30,10 @@ import java.util.List;
 
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+
+import org.apache.directory.api.converter.schema.ParserException;
+import org.apache.directory.api.converter.schema.Schema;
+import org.apache.directory.api.converter.schema.SchemaToLdif;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

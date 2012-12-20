@@ -17,17 +17,24 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.converter.schema;
+package org.apache.directory.api.converter.schema;
 
 
-import antlr.RecognitionException;
-import antlr.TokenStreamException;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.text.ParseException;
+import java.util.List;
+
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.directory.api.i18n.I18n;
 
-import java.io.*;
-import java.text.ParseException;
-import java.util.List;
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
 
 
 /**

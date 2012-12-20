@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.converter.schema;
+package org.apache.directory.api.converter.schema;
 
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
