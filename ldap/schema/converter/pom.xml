@@ -21,12 +21,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.api</groupId>
-    <artifactId>shared-ldap-schema-parent</artifactId>
+    <artifactId>api-ldap-schema-parent</artifactId>
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-ldap-schema-converter</artifactId>
-  <name>Apache Directory Shared LDAP Schema Converter</name>
+  <artifactId>api-ldap-schema-converter</artifactId>
+  <name>Apache Directory LDAP API Schema Converter</name>
   <packaging>bundle</packaging>
   <description>LDAP Schema Converter</description>
 
@@ -49,7 +49,7 @@
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <artifactId>api-ldap-model</artifactId>
     </dependency>
     
     <dependency>

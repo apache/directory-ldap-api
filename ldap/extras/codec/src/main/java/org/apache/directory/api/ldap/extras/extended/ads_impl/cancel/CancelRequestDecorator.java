@@ -25,8 +25,8 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.extras.extended.CancelRequest;
-import org.apache.directory.shared.ldap.extras.extended.CancelResponse;
+import org.apache.directory.api.ldap.extras.extended.CancelRequest;
+import org.apache.directory.api.ldap.extras.extended.CancelResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

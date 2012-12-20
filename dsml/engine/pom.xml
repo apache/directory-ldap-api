@@ -21,12 +21,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.api</groupId>
-    <artifactId>shared-dsml-parent</artifactId>
+    <artifactId>api-dsml-parent</artifactId>
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
 
-  <artifactId>shared-dsml-engine</artifactId>
-  <name>Apache Directory Shared DSML Engine</name>
+  <artifactId>api-dsml-engine</artifactId>
+  <name>Apache Directory LDAP API DSML Engine</name>
   <packaging>bundle</packaging>
 
   <dependencies>
@@ -37,12 +37,12 @@
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-dsml-parser</artifactId>
+      <artifactId>api-dsml-parser</artifactId>
     </dependency>
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-client-api</artifactId>
+      <artifactId>api-ldap-client-api</artifactId>
     </dependency>
     
     <dependency>

@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure;
 
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.extras.extended.StoredProcedureResponse;
+import org.apache.directory.api.ldap.extras.extended.StoredProcedureResponse;
 
 
 /**

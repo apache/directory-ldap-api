@@ -24,8 +24,8 @@
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-dsml-parent</artifactId>
-  <name>Apache Directory Shared DSML Parent</name>
+  <artifactId>api-dsml-parent</artifactId>
+  <name>Apache Directory LDAP API DSML Parent</name>
   <inceptionYear>2003</inceptionYear>
   <packaging>pom</packaging>
 

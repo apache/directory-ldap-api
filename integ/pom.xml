@@ -25,14 +25,14 @@
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-integ</artifactId>
-  <name>Apache Directory Shared Integration Tests</name>
+  <artifactId>api-integ</artifactId>
+  <name>Apache Directory API Integration Tests</name>
 
   <!-- 
      NOTE: This is a temporary module and area where we may
      decide to remove it after figuring out a better place 
      to put these tests. For now it keeps tests that would 
-     otherwise clutter shared-schema or cause cycles if put
+     otherwise clutter api-schema or cause cycles if put
      in the rightful position where they belong.
 
      The odd ldap api tests can be put here, it matters not
@@ -56,31 +56,31 @@
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-schema-data</artifactId>
+      <artifactId>api-ldap-schema-data</artifactId>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-extras-aci</artifactId>
+      <artifactId>api-ldap-extras-aci</artifactId>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-extras-codec</artifactId>
+      <artifactId>api-ldap-extras-codec</artifactId>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-net-mina</artifactId>
+      <artifactId>api-ldap-net-mina</artifactId>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-codec-standalone</artifactId>
+      <artifactId>api-ldap-codec-standalone</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -130,7 +130,7 @@
               <artifactItems>
                 <artifactItem>
                   <groupId>${project.groupId}</groupId>
-                  <artifactId>shared-ldap-extras-codec</artifactId>
+                  <artifactId>api-ldap-extras-codec</artifactId>
                   <version>${project.version}</version>
                   <outputDirectory>${codec.plugin.directory}</outputDirectory>
                 </artifactItem>

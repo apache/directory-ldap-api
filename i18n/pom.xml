@@ -26,7 +26,7 @@
   </parent>
   
   <artifactId>api-i18n</artifactId>
-  <name>Apache Directory Shared I18n</name>
+  <name>Apache Directory LDAP API I18n</name>
   <packaging>bundle</packaging> 
   <description>Internationalization of errors and other messages</description>
 

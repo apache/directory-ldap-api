@@ -21,7 +21,7 @@ package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.shared.ldap.extras.controls.SyncRequestValue;
+import org.apache.directory.api.ldap.extras.controls.SyncRequestValue;
 
 
 /**

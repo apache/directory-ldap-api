@@ -30,9 +30,9 @@ import org.apache.directory.api.asn1.ber.tlv.BooleanDecoder;
 import org.apache.directory.api.asn1.ber.tlv.BooleanDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.extras.controls.SyncInfoValue;
+import org.apache.directory.api.ldap.extras.controls.SynchronizationInfoEnum;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.shared.ldap.extras.controls.SyncInfoValue;
-import org.apache.directory.shared.ldap.extras.controls.SynchronizationInfoEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

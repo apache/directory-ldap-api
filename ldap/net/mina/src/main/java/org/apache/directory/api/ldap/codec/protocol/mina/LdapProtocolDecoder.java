@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * A LDAP message decoder. It is based on shared-ldap decoder.
+ * A LDAP message decoder. It is based on api-ldap decoder.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

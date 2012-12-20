@@ -25,9 +25,9 @@ import org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.UnsolicitedResponseFactory;
+import org.apache.directory.api.ldap.extras.extended.GracefulDisconnectResponse;
+import org.apache.directory.api.ldap.extras.extended.GracefulDisconnectResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.shared.ldap.extras.extended.GracefulDisconnectResponse;
-import org.apache.directory.shared.ldap.extras.extended.GracefulDisconnectResponseImpl;
 
 
 /**

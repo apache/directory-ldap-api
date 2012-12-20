@@ -51,7 +51,7 @@ public final class ResourceMap
      *
      *  usage: -Dschema.resource.location=/tmp/schema
      *                OR
-     *         -Dschema.resource.location=/tmp/shared-ldap-schema-0.9.18.jar
+     *         -Dschema.resource.location=/tmp/api-ldap-schema-1.0.0-M13.jar
      *  */
     private static final String SCHEMA_RESOURCE_LOCATION = "schema.resource.location";
 

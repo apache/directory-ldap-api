@@ -24,8 +24,8 @@
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-ldap-parent</artifactId>
-  <name>Apache Directory Shared LDAP Parent</name>
+  <artifactId>api-ldap-parent</artifactId>
+  <name>Apache Directory LDAP API Parent</name>
   <inceptionYear>2003</inceptionYear>
   <packaging>pom</packaging>
 

@@ -25,12 +25,12 @@ import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.extended.GracefulShutdownRequest;
+import org.apache.directory.api.ldap.extras.extended.GracefulShutdownRequestImpl;
+import org.apache.directory.api.ldap.extras.extended.GracefulShutdownResponse;
+import org.apache.directory.api.ldap.extras.extended.GracefulShutdownResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.shared.ldap.extras.extended.GracefulShutdownRequestImpl;
-import org.apache.directory.shared.ldap.extras.extended.GracefulShutdownResponseImpl;
-import org.apache.directory.shared.ldap.extras.extended.GracefulShutdownRequest;
-import org.apache.directory.shared.ldap.extras.extended.GracefulShutdownResponse;
 
 
 /**

@@ -21,12 +21,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.api</groupId>
-    <artifactId>shared-ldap-schema-parent</artifactId>
+    <artifactId>api-ldap-schema-parent</artifactId>
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-ldap-schema-data</artifactId>
-  <name>Apache Directory Shared LDAP Schema</name>
+  <artifactId>api-ldap-schema-data</artifactId>
+  <name>Apache Directory LDAP API Schema Data</name>
 
   <description>
     Jar bundled LDIF files containing schema data using the Apache Directory
@@ -48,12 +48,12 @@
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <artifactId>api-ldap-model</artifactId>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-extras-aci</artifactId>
+      <artifactId>api-ldap-extras-aci</artifactId>
       <scope>test</scope>
     </dependency>
 

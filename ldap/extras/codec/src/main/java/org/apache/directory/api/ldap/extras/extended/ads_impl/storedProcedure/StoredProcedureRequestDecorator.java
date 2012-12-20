@@ -32,11 +32,11 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.extended.StoredProcedureParameter;
+import org.apache.directory.api.ldap.extras.extended.StoredProcedureRequest;
+import org.apache.directory.api.ldap.extras.extended.StoredProcedureRequestImpl;
+import org.apache.directory.api.ldap.extras.extended.StoredProcedureResponse;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.shared.ldap.extras.extended.StoredProcedureParameter;
-import org.apache.directory.shared.ldap.extras.extended.StoredProcedureRequest;
-import org.apache.directory.shared.ldap.extras.extended.StoredProcedureRequestImpl;
-import org.apache.directory.shared.ldap.extras.extended.StoredProcedureResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

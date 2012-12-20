@@ -25,12 +25,12 @@ import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.extended.CancelRequest;
+import org.apache.directory.api.ldap.extras.extended.CancelRequestImpl;
+import org.apache.directory.api.ldap.extras.extended.CancelResponse;
+import org.apache.directory.api.ldap.extras.extended.CancelResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.shared.ldap.extras.extended.CancelRequestImpl;
-import org.apache.directory.shared.ldap.extras.extended.CancelResponseImpl;
-import org.apache.directory.shared.ldap.extras.extended.CancelRequest;
-import org.apache.directory.shared.ldap.extras.extended.CancelResponse;
 
 
 /**

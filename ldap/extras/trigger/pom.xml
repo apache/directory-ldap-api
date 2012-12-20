@@ -21,14 +21,14 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.api</groupId>
-    <artifactId>shared-ldap-extras-parent</artifactId>
+    <artifactId>api-ldap-extras-parent</artifactId>
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-ldap-extras-trigger</artifactId>
-  <name>Apache Directory Shared LDAP Extras Trigger</name>
+  <artifactId>api-ldap-extras-trigger</artifactId>
+  <name>Apache Directory LDAP API Extras Trigger</name>
   <packaging>bundle</packaging>
-  <description>Shared Extra LDAP Trigger API</description>
+  <description>Extra LDAP API Trigger API</description>
 
   <dependencies>
     <dependency>
@@ -49,7 +49,7 @@
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <artifactId>api-ldap-model</artifactId>
     </dependency> 
     
     <dependency>

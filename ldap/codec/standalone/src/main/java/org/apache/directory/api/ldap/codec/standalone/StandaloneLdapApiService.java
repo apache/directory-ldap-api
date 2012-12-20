@@ -146,7 +146,7 @@ public class StandaloneLdapApiService implements LdapApiService
      *               &lt;artifactItems&gt;
      *                 &lt;artifactItem&gt;
      *                   &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
-     *                   &lt;artifactId&gt;shared-ldap-extras-codec&lt;/artifactId&gt;
+     *                   &lt;artifactId&gt;api-ldap-extras-codec&lt;/artifactId&gt;
      *                   &lt;version&gt;${project.version}&lt;/version&gt;
      *                   &lt;outputDirectory&gt;${codec.plugin.directory}&lt;/outputDirectory&gt;
      *                 &lt;/artifactItem&gt;

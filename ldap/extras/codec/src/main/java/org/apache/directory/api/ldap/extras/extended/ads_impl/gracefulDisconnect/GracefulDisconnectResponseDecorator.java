@@ -29,13 +29,13 @@ import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.extended.GracefulDisconnectResponse;
+import org.apache.directory.api.ldap.extras.extended.GracefulDisconnectResponseImpl;
 import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.ReferralImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
-import org.apache.directory.shared.ldap.extras.extended.GracefulDisconnectResponse;
-import org.apache.directory.shared.ldap.extras.extended.GracefulDisconnectResponseImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -21,12 +21,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.api</groupId>
-    <artifactId>shared-ldap-codec-parent</artifactId>
+    <artifactId>api-ldap-codec-parent</artifactId>
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-ldap-codec-standalone</artifactId>
-  <name>Apache Directory Shared LDAP Codec Standalone</name>
+  <artifactId>api-ldap-codec-standalone</artifactId>
+  <name>Apache Directory LDAP API Codec Standalone</name>
   <packaging>jar</packaging>
   <description>
     This module was created to fix issue DIRSHARED-91 where the embedded Felix
@@ -50,12 +50,12 @@
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-net-mina</artifactId>
+      <artifactId>api-ldap-net-mina</artifactId>
     </dependency>
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-codec-core</artifactId>
+      <artifactId>api-ldap-codec-core</artifactId>
     </dependency>
 
     <dependency>

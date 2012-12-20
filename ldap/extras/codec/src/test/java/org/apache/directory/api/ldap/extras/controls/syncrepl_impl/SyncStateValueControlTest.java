@@ -29,10 +29,10 @@ import java.nio.ByteBuffer;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.extras.controls.SyncStateTypeEnum;
+import org.apache.directory.api.ldap.extras.controls.SyncStateValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueDecorator;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.shared.ldap.extras.controls.SyncStateTypeEnum;
-import org.apache.directory.shared.ldap.extras.controls.SyncStateValue;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
