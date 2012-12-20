@@ -21,12 +21,12 @@ package org.apache.directory.shared.dsmlv2.reponse;
 
 
 import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.dsmlv2.ParserUtils;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.QName;

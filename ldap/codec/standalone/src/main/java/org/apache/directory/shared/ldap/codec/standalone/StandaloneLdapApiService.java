@@ -33,6 +33,16 @@ import javax.naming.ldap.BasicControl;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
+import org.apache.directory.api.ldap.codec.BasicControlDecorator;
+import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.ControlFactory;
+import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory;
+import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.api.MessageDecorator;
+import org.apache.directory.api.ldap.codec.api.UnsolicitedResponseFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedRequestImpl;
@@ -42,23 +52,13 @@ import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.util.exception.NotImplementedException;
-import org.apache.directory.shared.ldap.codec.BasicControlDecorator;
-import org.apache.directory.shared.ldap.codec.api.CodecControl;
-import org.apache.directory.shared.ldap.codec.api.ControlFactory;
-import org.apache.directory.shared.ldap.codec.api.ExtendedRequestDecorator;
-import org.apache.directory.shared.ldap.codec.api.ExtendedRequestFactory;
-import org.apache.directory.shared.ldap.codec.api.ExtendedResponseDecorator;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.codec.api.LdapMessageContainer;
-import org.apache.directory.shared.ldap.codec.api.MessageDecorator;
-import org.apache.directory.shared.ldap.codec.api.UnsolicitedResponseFactory;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * The default {@link org.apache.directory.shared.ldap.codec.api.LdapApiService} implementation.
+ * The default {@link org.apache.directory.api.ldap.codec.api.LdapApiService} implementation.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
@@ -68,10 +68,10 @@ public class StandaloneLdapApiService implements LdapApiService
     /** A logger */
     private static final Logger LOG = LoggerFactory.getLogger( StandaloneLdapApiService.class );
 
-    /** The map of registered {@link org.apache.directory.shared.ldap.codec.api.ControlFactory}'s */
+    /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ControlFactory}'s */
     private Map<String, ControlFactory<?, ?>> controlFactories = new HashMap<String, ControlFactory<?, ?>>();
 
-    /** The map of registered {@link org.apache.directory.shared.ldap.codec.api.ExtendedRequestFactory}'s by request OID */
+    /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory}'s by request OID */
     private Map<String, ExtendedRequestFactory<?, ?>> extReqFactories = new HashMap<String, ExtendedRequestFactory<?, ?>>();
 
     /** The map of registered {@link UnsolicitedResponseFactory}'s by request OID */
@@ -452,7 +452,7 @@ public class StandaloneLdapApiService implements LdapApiService
         // protect agains being multiply decorated
         if ( control instanceof CodecControl )
         {
-            return ( org.apache.directory.shared.ldap.codec.api.CodecControl<?> ) control;
+            return ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) control;
         }
 
         @SuppressWarnings("rawtypes")

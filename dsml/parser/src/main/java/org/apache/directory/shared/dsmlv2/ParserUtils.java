@@ -31,6 +31,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.ldif.LdifUtils;
@@ -40,8 +42,6 @@ import org.apache.directory.api.util.Strings;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml.Processing;
 import org.apache.directory.shared.dsmlv2.request.BatchRequestDsml.ResponseOrder;
-import org.apache.directory.shared.ldap.codec.api.CodecControl;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
@@ -239,7 +239,7 @@ public final class ParserUtils
                 
                 if ( control instanceof CodecControl<?> )
                 {
-                    value = ( ( org.apache.directory.shared.ldap.codec.api.CodecControl<?> ) control ).getValue();
+                    value = ( ( org.apache.directory.api.ldap.codec.api.CodecControl<?> ) control ).getValue();
                 }
                 else
                 {

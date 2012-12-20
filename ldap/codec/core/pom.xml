@@ -124,7 +124,7 @@
                 {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
             <Bundle-Activator>
-              org.apache.directory.shared.ldap.codec.osgi.DefaultActivator
+              org.apache.directory.api.ldap.codec.osgi.DefaultActivator
             </Bundle-Activator>
           </instructions>
         </configuration>

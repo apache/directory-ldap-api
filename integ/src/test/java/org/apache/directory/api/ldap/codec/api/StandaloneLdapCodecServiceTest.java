@@ -23,11 +23,11 @@ package org.apache.directory.api.ldap.codec.api;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.apache.directory.api.ldap.codec.api.CodecControl;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Strings;
-import org.apache.directory.shared.ldap.codec.api.CodecControl;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapApiService;
 import org.apache.directory.shared.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.shared.ldap.extras.extended.StoredProcedureRequest;
@@ -48,12 +48,12 @@ public class StandaloneLdapCodecServiceTest
     {
         // Load the extension points
         System.setProperty( StandaloneLdapApiService.DEFAULT_CONTROLS_LIST,
-            "org.apache.directory.shared.ldap.codec.controls.cascade.CascadeFactory," +
-                "org.apache.directory.shared.ldap.codec.controls.manageDsaIT.ManageDsaITFactory," +
-                "org.apache.directory.shared.ldap.codec.controls.search.entryChange.EntryChangeFactory," +
-                "org.apache.directory.shared.ldap.codec.controls.search.pagedSearch.PagedResultsFactory," +
-                "org.apache.directory.shared.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory," +
-                "org.apache.directory.shared.ldap.codec.controls.search.subentries.SubentriesFactory" );
+            "org.apache.directory.api.ldap.codec.controls.cascade.CascadeFactory," +
+                "org.apache.directory.api.ldap.codec.controls.manageDsaIT.ManageDsaITFactory," +
+                "org.apache.directory.api.ldap.codec.controls.search.entryChange.EntryChangeFactory," +
+                "org.apache.directory.api.ldap.codec.controls.search.pagedSearch.PagedResultsFactory," +
+                "org.apache.directory.api.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory," +
+                "org.apache.directory.api.ldap.codec.controls.search.subentries.SubentriesFactory" );
 
         System.setProperty( StandaloneLdapApiService.EXTRA_CONTROLS_LIST,
             "org.apache.directory.shared.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory," +

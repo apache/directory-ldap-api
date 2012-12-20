@@ -20,8 +20,8 @@
 package org.apache.directory.shared.ldap.extras.extended.ads_impl.gracefulShutdown;
 
 
-import org.apache.directory.shared.ldap.codec.api.ExtendedResponseDecorator;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.shared.ldap.extras.extended.GracefulShutdownResponse;
 
 

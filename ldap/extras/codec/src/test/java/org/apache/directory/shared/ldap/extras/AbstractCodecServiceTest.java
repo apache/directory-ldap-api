@@ -21,8 +21,8 @@ package org.apache.directory.shared.ldap.extras;
  *
  */
 
-import org.apache.directory.shared.ldap.codec.api.LdapEncoder;
-import org.apache.directory.shared.ldap.codec.osgi.DefaultLdapCodecService;
+import org.apache.directory.api.ldap.codec.api.LdapEncoder;
+import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 

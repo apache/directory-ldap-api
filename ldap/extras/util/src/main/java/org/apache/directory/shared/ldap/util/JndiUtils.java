@@ -48,6 +48,7 @@ import javax.naming.ldap.LdapName;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.exception.LdapAffectMultipleDsaException;
 import org.apache.directory.api.ldap.model.exception.LdapAliasDereferencingException;
 import org.apache.directory.api.ldap.model.exception.LdapAliasException;
@@ -75,7 +76,6 @@ import org.apache.directory.api.ldap.model.exception.LdapTimeLimitExceededExcept
 import org.apache.directory.api.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 
 
 /**

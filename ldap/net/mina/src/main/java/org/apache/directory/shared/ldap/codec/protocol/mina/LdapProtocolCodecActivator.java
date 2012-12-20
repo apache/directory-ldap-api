@@ -20,7 +20,7 @@
 package org.apache.directory.shared.ldap.codec.protocol.mina;
 
 
-import org.apache.directory.shared.ldap.codec.api.LdapApiServiceFactory;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;

@@ -23,13 +23,13 @@ package org.apache.directory.shared.dsmlv2.reponse;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
 import org.apache.directory.api.ldap.model.message.SearchResultReference;
 import org.apache.directory.shared.dsmlv2.DsmlDecorator;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 

@@ -70,7 +70,7 @@
                 {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
             <Bundle-Activator>
-              org.apache.directory.shared.ldap.codec.protocol.mina.LdapProtocolCodecActivator
+              org.apache.directory.api.ldap.codec.protocol.mina.LdapProtocolCodecActivator
             </Bundle-Activator>
           </instructions>
         </configuration>

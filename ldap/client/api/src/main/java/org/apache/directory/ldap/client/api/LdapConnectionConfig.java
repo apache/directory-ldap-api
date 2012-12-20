@@ -31,7 +31,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
+import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
