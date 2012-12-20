@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.shared.ldap.trigger;
+package org.apache.directory.api.ldap.trigger;
 
 
 import static org.junit.Assert.assertEquals;
@@ -32,13 +32,20 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.trigger.TriggerSpecification.SPSpec;
+import org.apache.directory.api.ldap.trigger.ActionTime;
+import org.apache.directory.api.ldap.trigger.LdapOperation;
+import org.apache.directory.api.ldap.trigger.StoredProcedureLanguageSchemeOption;
+import org.apache.directory.api.ldap.trigger.StoredProcedureParameter;
+import org.apache.directory.api.ldap.trigger.StoredProcedureSearchContextOption;
+import org.apache.directory.api.ldap.trigger.TriggerSpecification;
+import org.apache.directory.api.ldap.trigger.TriggerSpecificationParser;
+import org.apache.directory.api.ldap.trigger.TriggerSpecification.SPSpec;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
 /**
- * Unit tests for {@link org.apache.directory.shared.ldap.trigger.TriggerSpecificationParser}.
+ * Unit tests for {@link org.apache.directory.api.ldap.trigger.TriggerSpecificationParser}.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

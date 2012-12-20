@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.shared.ldap.trigger;
+package org.apache.directory.api.ldap.trigger;
 
 
 import java.util.List;
