@@ -25,8 +25,8 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 
+import org.apache.directory.api.ldap.aci.ACIItemChecker;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.shared.ldap.aci.ACIItemChecker;
 import org.apache.directory.shared.ldap.schemaloader.JarLdifSchemaLoader;
 import org.apache.directory.shared.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.junit.BeforeClass;

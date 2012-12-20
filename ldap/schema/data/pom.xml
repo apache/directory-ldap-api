@@ -151,7 +151,7 @@
             </Export-Package>
             <Import-Package>
               *,
-              org.apache.directory.shared.ldap.aci,
+              org.apache.directory.api.ldap.aci,
               org.apache.directory.api.ldap.model.schema.comparators,
               org.apache.directory.api.ldap.model.schema.normalizers,
               org.apache.directory.api.ldap.model.schema.parsers,
