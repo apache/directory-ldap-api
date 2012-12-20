@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.codec.protocol.mina;
+package org.apache.directory.api.ldap.codec.protocol.mina;
 
 
 import org.apache.mina.core.session.IoSession;
