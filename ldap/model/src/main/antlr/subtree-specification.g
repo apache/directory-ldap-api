@@ -21,7 +21,7 @@ header
  */
 
 
-package org.apache.directory.shared.ldap.model.subtree;
+package org.apache.directory.api.ldap.model.subtree;
 
 import java.util.Set;
 import java.util.Map;
@@ -29,27 +29,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.filter.ExprNode;
-import org.apache.directory.shared.ldap.model.filter.LeafNode;
-import org.apache.directory.shared.ldap.model.filter.BranchNode;
-import org.apache.directory.shared.ldap.model.filter.AndNode;
-import org.apache.directory.shared.ldap.model.filter.OrNode;
-import org.apache.directory.shared.ldap.model.filter.NotNode;
-import org.apache.directory.shared.ldap.model.filter.EqualityNode;
-import org.apache.directory.shared.ldap.model.filter.FilterParser;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.SchemaManager;
-import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecification;
-import org.apache.directory.shared.ldap.model.subtree.SubtreeSpecificationModifier;
-import org.apache.directory.shared.ldap.model.schema.NormalizerMappingResolver;
-import org.apache.directory.shared.ldap.model.schema.normalizers.OidNormalizer;
-import org.apache.directory.shared.util.ComponentsMonitor;
-import org.apache.directory.shared.util.OptionalComponentsMonitor;
-import org.apache.directory.shared.ldap.model.constants.SchemaConstants;
-import org.apache.directory.shared.ldap.model.entry.StringValue;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.filter.ExprNode;
+import org.apache.directory.api.ldap.model.filter.LeafNode;
+import org.apache.directory.api.ldap.model.filter.BranchNode;
+import org.apache.directory.api.ldap.model.filter.AndNode;
+import org.apache.directory.api.ldap.model.filter.OrNode;
+import org.apache.directory.api.ldap.model.filter.NotNode;
+import org.apache.directory.api.ldap.model.filter.EqualityNode;
+import org.apache.directory.api.ldap.model.filter.FilterParser;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.ldap.model.subtree.SubtreeSpecification;
+import org.apache.directory.api.ldap.model.subtree.SubtreeSpecificationModifier;
+import org.apache.directory.api.ldap.model.schema.NormalizerMappingResolver;
+import org.apache.directory.api.ldap.model.schema.normalizers.OidNormalizer;
+import org.apache.directory.api.util.ComponentsMonitor;
+import org.apache.directory.api.util.OptionalComponentsMonitor;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -25,11 +25,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.directory.shared.ldap.model.constants.SaslQoP;
-import org.apache.directory.shared.ldap.model.constants.SaslSecurityStrength;
-import org.apache.directory.shared.ldap.model.message.Control;
-import org.apache.directory.shared.util.StringConstants;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.ldap.model.constants.SaslQoP;
+import org.apache.directory.api.ldap.model.constants.SaslSecurityStrength;
+import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.util.StringConstants;
+import org.apache.directory.api.util.Strings;
 
 
 /**

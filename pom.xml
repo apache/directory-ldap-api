@@ -26,14 +26,14 @@
     <relativePath>../project</relativePath>
   </parent>
 
-  <groupId>org.apache.directory.shared</groupId>
-  <artifactId>shared-parent</artifactId>
-  <name>Apache Directory Shared</name>
+  <groupId>org.apache.directory.api</groupId>
+  <artifactId>api-parent</artifactId>
+  <name>Apache Directory LDAP API</name>
   <packaging>pom</packaging>
   <version>1.0.0-M14-SNAPSHOT</version>
 
   <properties>
-    <projectName>ApacheDS-Shared</projectName>
+    <projectName>ApacheDS-LDAP-API</projectName>
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/api/gen-docs/${project.version}/</distMgmtSiteUrl>
     
     <!-- Set versions for depending projects -->
@@ -73,7 +73,7 @@
 
   <issueManagement>
     <system>JIRA</system>
-    <url>http://issues.apache.org/jira/browse/DIRSHARED</url>
+    <url>http://issues.apache.org/jira/browse/DIRAPI</url>
   </issueManagement>
 
   <modules>
@@ -323,7 +323,7 @@
               <configuration>
                 <instrumentation>
                   <excludes>
-                    <exclude>org/apache/directory/shared/**/*Constants.class</exclude>
+                    <exclude>org/apache/directory/api/**/*Constants.class</exclude>
                   </excludes>
                 </instrumentation>
               </configuration>
@@ -386,8 +386,8 @@
                   <exclude>**/src/main/resources/schema/**/*.ldif</exclude>
                   <exclude>**/src/main/resources/schema-all.ldif</exclude>
                   <!-- Files having a Bouncy Castle license -->
-                  <exclude>ldap/src/main/java/org/apache/directory/shared/asn1/der/*.java</exclude>
-                  <exclude>src/main/java/org/apache/directory/shared/asn1/der/*.java</exclude>
+                  <exclude>ldap/src/main/java/org/apache/directory/api/asn1/der/*.java</exclude>
+                  <exclude>src/main/java/org/apache/directory/api/asn1/der/*.java</exclude>
                 </excludes>
               </configuration>
             </plugin>
@@ -432,121 +432,121 @@
       <!-- Project sub-modules dependencies -->
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-all</artifactId>
+        <artifactId>api-all</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-asn1-api</artifactId>
+        <artifactId>api-asn1-api</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-asn1-ber</artifactId>
+        <artifactId>api-asn1-ber</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-dsml-engine</artifactId>
+        <artifactId>api-dsml-engine</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-dsml-parser</artifactId>
+        <artifactId>api-dsml-parser</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-i18n</artifactId>
+        <artifactId>api-i18n</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-ldap-client-api</artifactId>
+        <artifactId>api-ldap-client-api</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-ldap-codec-core</artifactId>
+        <artifactId>api-ldap-codec-core</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-ldap-codec-standalone</artifactId>
+        <artifactId>api-ldap-codec-standalone</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-ldap-extras-aci</artifactId>
+        <artifactId>api-ldap-extras-aci</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-ldap-extras-codec</artifactId>
+        <artifactId>api-ldap-extras-codec</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-ldap-extras-codec-api</artifactId>
+        <artifactId>api-ldap-extras-codec-api</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-ldap-extras-sp</artifactId>
+        <artifactId>api-ldap-extras-sp</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-ldap-extras-trigger</artifactId>
+        <artifactId>api-ldap-extras-trigger</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-ldap-extras-util</artifactId>
+        <artifactId>api-ldap-extras-util</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-ldap-model</artifactId>
+        <artifactId>api-ldap-model</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-ldap-net-mina</artifactId>
+        <artifactId>api-ldap-net-mina</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-ldap-schema-converter</artifactId>
+        <artifactId>api-ldap-schema-converter</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-ldap-schema-data</artifactId>
+        <artifactId>api-ldap-schema-data</artifactId>
         <version>${project.version}</version>
       </dependency>
       
       <dependency>
         <groupId>${project.groupId}</groupId>
-        <artifactId>shared-util</artifactId>
+        <artifactId>api-util</artifactId>
         <version>${project.version}</version>
       </dependency>
 

@@ -20,13 +20,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.apache.directory.shared</groupId>
-    <artifactId>shared-ldap-schema-parent</artifactId>
+    <groupId>org.apache.directory.api</groupId>
+    <artifactId>api-ldap-schema-parent</artifactId>
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-ldap-schema-data</artifactId>
-  <name>Apache Directory Shared LDAP Schema</name>
+  <artifactId>api-ldap-schema-data</artifactId>
+  <name>Apache Directory LDAP API Schema Data</name>
 
   <description>
     Jar bundled LDIF files containing schema data using the Apache Directory
@@ -43,17 +43,17 @@
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-i18n</artifactId>
+      <artifactId>api-i18n</artifactId>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <artifactId>api-ldap-model</artifactId>
     </dependency>
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-extras-aci</artifactId>
+      <artifactId>api-ldap-extras-aci</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -146,17 +146,17 @@
             <Bundle-SymbolicName>${project.groupId}.ldap.schema</Bundle-SymbolicName>
             <Export-Package>
                 {local-packages};version=${project.version};-noimport:=true,
-                org.apache.directory.shared.ldap.schemaextractor.impl;version="${project.version}";-noimport:=true,
-                org.apache.directory.shared.ldap.schemamanager.impl;version="${project.version}";-noimport:=true
+                org.apache.directory.api.ldap.schemaextractor.impl;version="${project.version}";-noimport:=true,
+                org.apache.directory.api.ldap.schemamanager.impl;version="${project.version}";-noimport:=true
             </Export-Package>
             <Import-Package>
               *,
-              org.apache.directory.shared.ldap.aci,
-              org.apache.directory.shared.ldap.model.schema.comparators,
-              org.apache.directory.shared.ldap.model.schema.normalizers,
-              org.apache.directory.shared.ldap.model.schema.parsers,
-              org.apache.directory.shared.ldap.model.schema.registries,
-              org.apache.directory.shared.ldap.model.schema.syntaxCheckers
+              org.apache.directory.api.ldap.aci,
+              org.apache.directory.api.ldap.model.schema.comparators,
+              org.apache.directory.api.ldap.model.schema.normalizers,
+              org.apache.directory.api.ldap.model.schema.parsers,
+              org.apache.directory.api.ldap.model.schema.registries,
+              org.apache.directory.api.ldap.model.schema.syntaxCheckers
             </Import-Package>
           </instructions>
         </configuration>

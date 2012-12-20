@@ -18,7 +18,7 @@ header {
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.model.name;
+package org.apache.directory.api.ldap.model.name;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -26,12 +26,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.model.exception.LdapInvalidDnException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import javax.naming.NameParser;
-import org.apache.directory.shared.ldap.model.entry.StringValue;
-import org.apache.directory.shared.ldap.model.entry.BinaryValue;
-import org.apache.directory.shared.ldap.model.schema.parsers.ParserMonitor;
-import org.apache.directory.shared.util.Strings;
+import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.entry.BinaryValue;
+import org.apache.directory.api.ldap.model.schema.parsers.ParserMonitor;
+import org.apache.directory.api.util.Strings;
 
 }
 
@@ -496,7 +496,7 @@ attributeValue [UpAndNormValue value]
 quotestring [UpAndNormValue value] 
     {
         matchedProduction( "quotestring()" );
-        org.apache.directory.shared.util.ByteBuffer bb = new org.apache.directory.shared.util.ByteBuffer();
+        org.apache.directory.api.util.ByteBuffer bb = new org.apache.directory.api.util.ByteBuffer();
         byte[] bytes;
     }
     :
@@ -559,7 +559,7 @@ hexstring [UpAndNormValue value]
 string [UpAndNormValue value]
     {
         matchedProduction( "string()" );
-        org.apache.directory.shared.util.ByteBuffer bb = new org.apache.directory.shared.util.ByteBuffer();
+        org.apache.directory.api.util.ByteBuffer bb = new org.apache.directory.api.util.ByteBuffer();
         String tmp;
         byte[] bytes;
     }

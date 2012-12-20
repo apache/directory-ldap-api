@@ -20,15 +20,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.apache.directory.shared</groupId>
-    <artifactId>shared-ldap-extras-parent</artifactId>
+    <groupId>org.apache.directory.api</groupId>
+    <artifactId>api-ldap-extras-parent</artifactId>
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-ldap-extras-trigger</artifactId>
-  <name>Apache Directory Shared LDAP Extras Trigger</name>
+  <artifactId>api-ldap-extras-trigger</artifactId>
+  <name>Apache Directory LDAP API Extras Trigger</name>
   <packaging>bundle</packaging>
-  <description>Shared Extra LDAP Trigger API</description>
+  <description>Extra LDAP API Trigger API</description>
 
   <dependencies>
     <dependency>
@@ -39,17 +39,17 @@
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-util</artifactId>
+      <artifactId>api-util</artifactId>
     </dependency> 
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-i18n</artifactId>
+      <artifactId>api-i18n</artifactId>
     </dependency> 
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <artifactId>api-ldap-model</artifactId>
     </dependency> 
     
     <dependency>

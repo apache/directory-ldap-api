@@ -20,13 +20,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.apache.directory.shared</groupId>
-    <artifactId>shared-ldap-extras-parent</artifactId>
+    <groupId>org.apache.directory.api</groupId>
+    <artifactId>api-ldap-extras-parent</artifactId>
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-ldap-extras-codec</artifactId>
-  <name>Apache Directory Shared LDAP Extras Codec</name>
+  <artifactId>api-ldap-extras-codec</artifactId>
+  <name>Apache Directory LDAP API Extras Codec</name>
   <packaging>bundle</packaging>
   <description>
     Extra LDAP controls and extended operation extentions for the Codec used
@@ -44,13 +44,13 @@
     </dependency>
 
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-codec-core</artifactId>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>api-ldap-codec-core</artifactId>
     </dependency>
     
     <dependency>
-      <groupId>org.apache.directory.shared</groupId>
-      <artifactId>shared-ldap-extras-codec-api</artifactId>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>api-ldap-extras-codec-api</artifactId>
     </dependency>
     
     <dependency>
@@ -105,7 +105,7 @@
                 {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
             <Bundle-Activator>
-              org.apache.directory.shared.ldap.extras.ExtrasBundleActivator
+              org.apache.directory.api.ldap.extras.ExtrasBundleActivator
             </Bundle-Activator>
           </instructions>
         </configuration>

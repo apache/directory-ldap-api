@@ -23,37 +23,37 @@ package org.apache.directory.ldap.client.api;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.directory.shared.asn1.util.Oid;
-import org.apache.directory.shared.ldap.codec.api.BinaryAttributeDetector;
-import org.apache.directory.shared.ldap.codec.api.LdapApiService;
-import org.apache.directory.shared.ldap.model.cursor.EntryCursor;
-import org.apache.directory.shared.ldap.model.cursor.SearchCursor;
-import org.apache.directory.shared.ldap.model.entry.Entry;
-import org.apache.directory.shared.ldap.model.entry.Modification;
-import org.apache.directory.shared.ldap.model.entry.ModificationOperation;
-import org.apache.directory.shared.ldap.model.entry.Value;
-import org.apache.directory.shared.ldap.model.exception.LdapException;
-import org.apache.directory.shared.ldap.model.message.AbandonRequest;
-import org.apache.directory.shared.ldap.model.message.AddRequest;
-import org.apache.directory.shared.ldap.model.message.AddResponse;
-import org.apache.directory.shared.ldap.model.message.BindRequest;
-import org.apache.directory.shared.ldap.model.message.BindResponse;
-import org.apache.directory.shared.ldap.model.message.CompareRequest;
-import org.apache.directory.shared.ldap.model.message.CompareResponse;
-import org.apache.directory.shared.ldap.model.message.Control;
-import org.apache.directory.shared.ldap.model.message.DeleteRequest;
-import org.apache.directory.shared.ldap.model.message.DeleteResponse;
-import org.apache.directory.shared.ldap.model.message.ExtendedRequest;
-import org.apache.directory.shared.ldap.model.message.ExtendedResponse;
-import org.apache.directory.shared.ldap.model.message.ModifyDnRequest;
-import org.apache.directory.shared.ldap.model.message.ModifyDnResponse;
-import org.apache.directory.shared.ldap.model.message.ModifyRequest;
-import org.apache.directory.shared.ldap.model.message.ModifyResponse;
-import org.apache.directory.shared.ldap.model.message.SearchRequest;
-import org.apache.directory.shared.ldap.model.message.SearchScope;
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.name.Rdn;
-import org.apache.directory.shared.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.asn1.util.Oid;
+import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.model.cursor.EntryCursor;
+import org.apache.directory.api.ldap.model.cursor.SearchCursor;
+import org.apache.directory.api.ldap.model.entry.Entry;
+import org.apache.directory.api.ldap.model.entry.Modification;
+import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.AbandonRequest;
+import org.apache.directory.api.ldap.model.message.AddRequest;
+import org.apache.directory.api.ldap.model.message.AddResponse;
+import org.apache.directory.api.ldap.model.message.BindRequest;
+import org.apache.directory.api.ldap.model.message.BindResponse;
+import org.apache.directory.api.ldap.model.message.CompareRequest;
+import org.apache.directory.api.ldap.model.message.CompareResponse;
+import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.message.DeleteRequest;
+import org.apache.directory.api.ldap.model.message.DeleteResponse;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
+import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
+import org.apache.directory.api.ldap.model.message.ModifyDnResponse;
+import org.apache.directory.api.ldap.model.message.ModifyRequest;
+import org.apache.directory.api.ldap.model.message.ModifyResponse;
+import org.apache.directory.api.ldap.model.message.SearchRequest;
+import org.apache.directory.api.ldap.model.message.SearchScope;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
 
 /**
@@ -363,7 +363,7 @@ public interface LdapConnection
      * @param newRdn new Rdn for the target Dn
      * @return modifyDn operation's response
      * @throws {@link LdapException} if some error occurred
-     * @see #rename(org.apache.directory.shared.ldap.model.name.Dn, org.apache.directory.shared.ldap.model.name.Rdn, boolean)
+     * @see #rename(org.apache.directory.api.ldap.model.name.Dn, org.apache.directory.api.ldap.model.name.Rdn, boolean)
      */
     void rename( Dn entryDn, Rdn newRdn ) throws LdapException;
 
@@ -377,7 +377,7 @@ public interface LdapConnection
      * @param deleteOldRdn flag to indicate whether to delete the old Rdn
      * @return modifyDn operation's response
      * @throws {@link LdapException} if some error occurred
-     * @see #rename(org.apache.directory.shared.ldap.model.name.Dn, org.apache.directory.shared.ldap.model.name.Rdn, boolean)
+     * @see #rename(org.apache.directory.api.ldap.model.name.Dn, org.apache.directory.api.ldap.model.name.Rdn, boolean)
      */
     void rename( String entryDn, String newRdn, boolean deleteOldRdn ) throws LdapException;
 
@@ -402,7 +402,7 @@ public interface LdapConnection
      * @param newSuperiorDn Dn of the new parent/superior
      * @return modifyDn operation's response
      * @throws {@link LdapException} if some error occurred
-     * @see #move(org.apache.directory.shared.ldap.model.name.Dn, org.apache.directory.shared.ldap.model.name.Dn)
+     * @see #move(org.apache.directory.api.ldap.model.name.Dn, org.apache.directory.api.ldap.model.name.Dn)
      */
     void move( String entryDn, String newSuperiorDn ) throws LdapException;
 
@@ -425,7 +425,7 @@ public interface LdapConnection
      * @param newDn The new Entry Dn
      * @return modifyDn operations response
      * @throws {@link LdapException} if some error occurred
-     * @see #moveAndRename(org.apache.directory.shared.ldap.model.name.Dn, org.apache.directory.shared.ldap.model.name.Dn, boolean)
+     * @see #moveAndRename(org.apache.directory.api.ldap.model.name.Dn, org.apache.directory.api.ldap.model.name.Dn, boolean)
      */
     void moveAndRename( Dn entryDn, Dn newDn ) throws LdapException;
 
@@ -437,7 +437,7 @@ public interface LdapConnection
      * @param newDn The new Entry Dn
      * @return modifyDn operations response
      * @throws {@link LdapException} if some error occurred
-     * @see #moveAndRename(org.apache.directory.shared.ldap.model.name.Dn, org.apache.directory.shared.ldap.model.name.Dn, boolean)
+     * @see #moveAndRename(org.apache.directory.api.ldap.model.name.Dn, org.apache.directory.api.ldap.model.name.Dn, boolean)
      */
     void moveAndRename( String entryDn, String newDn ) throws LdapException;
 
@@ -601,7 +601,7 @@ public interface LdapConnection
      * @param oid the object identifier of the extended operation
      * @return extended operation's response
      * @throws {@link LdapException} if some error occurred
-     * @see #extended(org.apache.directory.shared.asn1.util.Oid, byte[])
+     * @see #extended(org.apache.directory.api.asn1.util.Oid, byte[])
      */
     ExtendedResponse extended( String oid ) throws LdapException;
 
@@ -613,7 +613,7 @@ public interface LdapConnection
      * @param value value to be used by the extended operation, can be a null value
      * @return extended operation's response
      * @throws {@link LdapException} if some error occurred
-     * @see #extended(org.apache.directory.shared.asn1.util.Oid, byte[])
+     * @see #extended(org.apache.directory.api.asn1.util.Oid, byte[])
      */
     ExtendedResponse extended( String oid, byte[] value ) throws LdapException;
 
@@ -624,7 +624,7 @@ public interface LdapConnection
      * @param oid the object identifier of the extended operation
      * @return extended operation's response
      * @throws {@link LdapException} if some error occurred
-     * @see #extended(org.apache.directory.shared.asn1.util.Oid, byte[])
+     * @see #extended(org.apache.directory.api.asn1.util.Oid, byte[])
      */
     ExtendedResponse extended( Oid oid ) throws LdapException;
 
@@ -701,7 +701,7 @@ public interface LdapConnection
      * @param dn the Dn of the entry to be fetched
      * @return the Entry with the given Dn or null if no entry exists with that Dn
      * @throws {@link LdapException} in case of any problems while searching for the Dn or if the returned response contains a referral
-     * @see #lookup(org.apache.directory.shared.ldap.model.name.Dn, String...)
+     * @see #lookup(org.apache.directory.api.ldap.model.name.Dn, String...)
      */
     Entry lookup( Dn dn ) throws LdapException;
 
@@ -747,7 +747,7 @@ public interface LdapConnection
      * @param attributes the attributes to be returned along with entry
      * @return the Entry with the given Dn or null if no entry exists with that Dn
      * @throws {@link LdapException} in case of any problems while searching for the Dn or if the returned response contains a referral
-     * @see #lookup(org.apache.directory.shared.ldap.model.name.Dn, String...)
+     * @see #lookup(org.apache.directory.api.ldap.model.name.Dn, String...)
      */
     Entry lookup( String dn, String... attributes ) throws LdapException;
 
@@ -760,7 +760,7 @@ public interface LdapConnection
      * @param attributes the attributes to be returned along with entry
      * @return the Entry with the given Dn or null if no entry exists with that Dn
      * @throws {@link LdapException} in case of any problems while searching for the Dn or if the returned response contains a referral
-     * @see #lookup(org.apache.directory.shared.ldap.model.name.Dn, String...)
+     * @see #lookup(org.apache.directory.api.ldap.model.name.Dn, String...)
      */
     Entry lookup( String dn, Control[] controls, String... attributes ) throws LdapException;
 

@@ -20,90 +20,90 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.apache.directory.shared</groupId>
-    <artifactId>shared-parent</artifactId>
+    <groupId>org.apache.directory.api</groupId>
+    <artifactId>api-parent</artifactId>
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-all</artifactId>
-  <name>Apache Directory Shared All</name>
+  <artifactId>api-all</artifactId>
+  <name>Apache Directory API All</name>
 
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-asn1-api</artifactId>
+      <artifactId>api-asn1-api</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-asn1-ber</artifactId>
+      <artifactId>api-asn1-ber</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-dsml-engine</artifactId>
+      <artifactId>api-dsml-engine</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-dsml-parser</artifactId>
+      <artifactId>api-dsml-parser</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-i18n</artifactId>
+      <artifactId>api-i18n</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-client-api</artifactId>
+      <artifactId>api-ldap-client-api</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-codec-core</artifactId>
+      <artifactId>api-ldap-codec-core</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-codec-standalone</artifactId>
+      <artifactId>api-ldap-codec-standalone</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-extras-aci</artifactId>
+      <artifactId>api-ldap-extras-aci</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-extras-codec</artifactId>
+      <artifactId>api-ldap-extras-codec</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-extras-codec-api</artifactId>
+      <artifactId>api-ldap-extras-codec-api</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-extras-sp</artifactId>
+      <artifactId>api-ldap-extras-sp</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-extras-trigger</artifactId>
+      <artifactId>api-ldap-extras-trigger</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-extras-util</artifactId>
+      <artifactId>api-ldap-extras-util</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <artifactId>api-ldap-model</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-net-mina</artifactId>
+      <artifactId>api-ldap-net-mina</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-schema-converter</artifactId>
+      <artifactId>api-ldap-schema-converter</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-schema-data</artifactId>
+      <artifactId>api-ldap-schema-data</artifactId>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-util</artifactId>
+      <artifactId>api-util</artifactId>
     </dependency>
   </dependencies>
 

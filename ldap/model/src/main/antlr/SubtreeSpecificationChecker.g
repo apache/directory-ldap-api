@@ -21,20 +21,20 @@ header
  */
 
 
-package org.apache.directory.shared.ldap.model.subtree;
+package org.apache.directory.api.ldap.model.subtree;
 
-import org.apache.directory.shared.ldap.model.name.Dn;
-import org.apache.directory.shared.ldap.model.filter.ExprNode;
-import org.apache.directory.shared.ldap.model.filter.LeafNode;
-import org.apache.directory.shared.ldap.model.filter.BranchNode;
-import org.apache.directory.shared.ldap.model.filter.AndNode;
-import org.apache.directory.shared.ldap.model.filter.OrNode;
-import org.apache.directory.shared.ldap.model.filter.NotNode;
-import org.apache.directory.shared.ldap.model.filter.EqualityNode;
-import org.apache.directory.shared.ldap.model.filter.FilterParser;
-import org.apache.directory.shared.util.ComponentsMonitor;
-import org.apache.directory.shared.util.OptionalComponentsMonitor;
-import org.apache.directory.shared.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.filter.ExprNode;
+import org.apache.directory.api.ldap.model.filter.LeafNode;
+import org.apache.directory.api.ldap.model.filter.BranchNode;
+import org.apache.directory.api.ldap.model.filter.AndNode;
+import org.apache.directory.api.ldap.model.filter.OrNode;
+import org.apache.directory.api.ldap.model.filter.NotNode;
+import org.apache.directory.api.ldap.model.filter.EqualityNode;
+import org.apache.directory.api.ldap.model.filter.FilterParser;
+import org.apache.directory.api.util.ComponentsMonitor;
+import org.apache.directory.api.util.OptionalComponentsMonitor;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

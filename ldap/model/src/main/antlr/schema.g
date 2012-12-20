@@ -18,7 +18,7 @@ header {
  *  under the License. 
  *  
  */
-package org.apache.directory.shared.ldap.model.schema.syntaxes;
+package org.apache.directory.api.ldap.model.schema.syntaxes;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -26,24 +26,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.directory.shared.ldap.model.schema.parsers.LdapComparatorDescription;
-import org.apache.directory.shared.ldap.model.schema.DitContentRule;
-import org.apache.directory.shared.ldap.model.schema.DitStructureRule;
-import org.apache.directory.shared.ldap.model.schema.LdapSyntax;
-import org.apache.directory.shared.ldap.model.schema.MatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MutableMatchingRule;
-import org.apache.directory.shared.ldap.model.schema.MatchingRuleUse;
-import org.apache.directory.shared.ldap.model.schema.NameForm;
-import org.apache.directory.shared.ldap.model.schema.parsers.NormalizerDescription;
-import org.apache.directory.shared.ldap.model.schema.parsers.ParserMonitor;
-import org.apache.directory.shared.ldap.model.schema.AttributeType;
-import org.apache.directory.shared.ldap.model.schema.MutableAttributeType;
-import org.apache.directory.shared.ldap.model.schema.ObjectClass;
-import org.apache.directory.shared.ldap.model.schema.MutableObjectClass;
-import org.apache.directory.shared.ldap.model.schema.parsers.SyntaxCheckerDescription;
-import org.apache.directory.shared.ldap.model.schema.syntaxCheckers.OpenLdapObjectIdentifierMacro;
-import org.apache.directory.shared.ldap.model.schema.ObjectClassTypeEnum;
-import org.apache.directory.shared.ldap.model.schema.UsageEnum;
+import org.apache.directory.api.ldap.model.schema.parsers.LdapComparatorDescription;
+import org.apache.directory.api.ldap.model.schema.DitContentRule;
+import org.apache.directory.api.ldap.model.schema.DitStructureRule;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
+import org.apache.directory.api.ldap.model.schema.MatchingRule;
+import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
+import org.apache.directory.api.ldap.model.schema.MatchingRuleUse;
+import org.apache.directory.api.ldap.model.schema.NameForm;
+import org.apache.directory.api.ldap.model.schema.parsers.NormalizerDescription;
+import org.apache.directory.api.ldap.model.schema.parsers.ParserMonitor;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
+import org.apache.directory.api.ldap.model.schema.ObjectClass;
+import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
+import org.apache.directory.api.ldap.model.schema.parsers.SyntaxCheckerDescription;
+import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OpenLdapObjectIdentifierMacro;
+import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
+import org.apache.directory.api.ldap.model.schema.UsageEnum;
 
 }
 

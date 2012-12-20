@@ -24,8 +24,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.apache.directory.api.ldap.model.message.ModifyResponse;
 import org.apache.directory.ldap.client.api.LdapConnection;
-import org.apache.directory.shared.ldap.model.message.ModifyResponse;
 
 
 /**

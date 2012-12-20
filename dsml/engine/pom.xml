@@ -20,29 +20,29 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.apache.directory.shared</groupId>
-    <artifactId>shared-dsml-parent</artifactId>
+    <groupId>org.apache.directory.api</groupId>
+    <artifactId>api-dsml-parent</artifactId>
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
 
-  <artifactId>shared-dsml-engine</artifactId>
-  <name>Apache Directory Shared DSML Engine</name>
+  <artifactId>api-dsml-engine</artifactId>
+  <name>Apache Directory LDAP API DSML Engine</name>
   <packaging>bundle</packaging>
 
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-i18n</artifactId>
+      <artifactId>api-i18n</artifactId>
     </dependency>
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-dsml-parser</artifactId>
+      <artifactId>api-dsml-parser</artifactId>
     </dependency>
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-client-api</artifactId>
+      <artifactId>api-ldap-client-api</artifactId>
     </dependency>
     
     <dependency>

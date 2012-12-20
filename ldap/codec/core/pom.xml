@@ -20,13 +20,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.apache.directory.shared</groupId>
-    <artifactId>shared-ldap-codec-parent</artifactId>
+    <groupId>org.apache.directory.api</groupId>
+    <artifactId>api-ldap-codec-parent</artifactId>
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-ldap-codec-core</artifactId>
-  <name>Apache Directory Shared LDAP Codec</name>
+  <artifactId>api-ldap-codec-core</artifactId>
+  <name>Apache Directory LDAP API Codec Core</name>
   <packaging>bundle</packaging>
   <description>LDAP Codec used by clients and servers</description>
 
@@ -39,27 +39,27 @@
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-util</artifactId>
+      <artifactId>api-util</artifactId>
     </dependency> 
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-asn1-api</artifactId>
+      <artifactId>api-asn1-api</artifactId>
     </dependency> 
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-asn1-ber</artifactId>
+      <artifactId>api-asn1-ber</artifactId>
     </dependency> 
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-i18n</artifactId>
+      <artifactId>api-i18n</artifactId>
     </dependency> 
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-ldap-model</artifactId>
+      <artifactId>api-ldap-model</artifactId>
     </dependency> 
 
     <dependency>
@@ -124,7 +124,7 @@
                 {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
             <Bundle-Activator>
-              org.apache.directory.shared.ldap.codec.osgi.DefaultActivator
+              org.apache.directory.api.ldap.codec.osgi.DefaultActivator
             </Bundle-Activator>
           </instructions>
         </configuration>

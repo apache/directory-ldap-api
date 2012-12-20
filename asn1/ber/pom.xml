@@ -20,13 +20,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.apache.directory.shared</groupId>
-    <artifactId>shared-asn1-parent</artifactId>
+    <groupId>org.apache.directory.api</groupId>
+    <artifactId>api-asn1-parent</artifactId>
     <version>1.0.0-M14-SNAPSHOT</version>
   </parent>
   
-  <artifactId>shared-asn1-ber</artifactId>
-  <name>Apache Directory Shared ASN.1 BER</name>
+  <artifactId>api-asn1-ber</artifactId>
+  <name>Apache Directory API ASN.1 BER</name>
   <packaging>bundle</packaging>
 
   <description>A BER Codec Implementation for ASN.1</description>
@@ -40,17 +40,17 @@
 
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-i18n</artifactId>
+      <artifactId>api-i18n</artifactId>
     </dependency> 
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-asn1-api</artifactId>
+      <artifactId>api-asn1-api</artifactId>
     </dependency> 
     
     <dependency>
       <groupId>${project.groupId}</groupId>
-      <artifactId>shared-util</artifactId>
+      <artifactId>api-util</artifactId>
     </dependency> 
   </dependencies>
 

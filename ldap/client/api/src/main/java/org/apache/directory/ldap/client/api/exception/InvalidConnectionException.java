@@ -20,7 +20,7 @@
 package org.apache.directory.ldap.client.api.exception;
 
 
-import org.apache.directory.shared.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapException;
 
 
 /**
