@@ -123,7 +123,7 @@ public class LdapApiServiceFactory
             {
                 @SuppressWarnings("unchecked")
                 Class<? extends LdapApiService> serviceClass = ( Class<? extends LdapApiService> )
-                    Class.forName( "org.apache.directory.shared.ldap.codec.standalone.StandaloneLdapApiService" );
+                    Class.forName( "org.apache.directory.api.ldap.codec.standalone.StandaloneLdapApiService" );
                 LdapApiServiceFactory.ldapCodecService = serviceClass.newInstance();
                 usingStandaloneImplementation = true;
             }
