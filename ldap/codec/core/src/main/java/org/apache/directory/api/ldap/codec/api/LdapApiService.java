@@ -40,7 +40,7 @@ import org.apache.mina.filter.codec.ProtocolCodecFactory;
 public interface LdapApiService
 {
     String DEFAULT_PROTOCOL_CODEC_FACTORY =
-        "org.apache.directory.shared.ldap.codec.protocol.mina.LdapProtocolCodecFactory";
+        "org.apache.directory.api.ldap.codec.protocol.mina.LdapProtocolCodecFactory";
 
 
     // ------------------------------------------------------------------------
