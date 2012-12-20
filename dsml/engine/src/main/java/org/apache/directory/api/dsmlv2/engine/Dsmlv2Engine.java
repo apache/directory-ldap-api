@@ -18,7 +18,7 @@
  * 
  */
 
-package org.apache.directory.shared.dsmlv2.engine;
+package org.apache.directory.api.dsmlv2.engine;
 
 
 import java.io.BufferedWriter;
