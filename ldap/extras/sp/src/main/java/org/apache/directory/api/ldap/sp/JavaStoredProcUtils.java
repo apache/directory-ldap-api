@@ -18,7 +18,7 @@
  * 
  */
 
-package org.apache.directory.shared.ldap.sp;
+package org.apache.directory.api.ldap.sp;
 
 
 import java.io.File;
