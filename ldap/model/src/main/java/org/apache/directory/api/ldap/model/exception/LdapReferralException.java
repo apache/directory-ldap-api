@@ -95,6 +95,9 @@ public class LdapReferralException extends AbstractLdapReferralException
     }
 
 
+    /**
+     * @return The current Referral
+     */
     public String getReferralInfo()
     {
         return refs.get( index );
@@ -113,6 +116,10 @@ public class LdapReferralException extends AbstractLdapReferralException
     }
 
 
+    /**
+     * Move to the next referral
+     * @return true if there is some next referral
+     */
     public boolean skipReferral()
     {
         index++;

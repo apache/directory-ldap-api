@@ -26,11 +26,13 @@ import java.io.IOException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.cursor.AbstractCursor;
 import org.apache.directory.api.ldap.model.cursor.CursorException;
+import org.apache.directory.api.ldap.model.cursor.CursorLdapReferralException;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
 import org.apache.directory.api.ldap.model.cursor.InvalidCursorPositionException;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapReferralException;
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
 import org.apache.directory.api.ldap.model.message.SearchResultEntry;
@@ -75,7 +77,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
         {
             LOG_CURSOR.debug( "Creating EntryCursorImpl {}", this );
         }
-        
+
         this.searchCursor = searchCursor;
         messageId = -1;
     }
@@ -150,14 +152,22 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
                 {
                     return ( ( SearchResultEntry ) response ).getEntry();
                 }
+
+                if ( response instanceof SearchResultReference )
+                {
+                    throw new LdapReferralException( ( ( SearchResultReference ) response ).getReferral().getLdapUrls() );
+                }
             }
             while ( next() && !( response instanceof SearchResultDone ) );
         }
+        catch ( LdapReferralException lre )
+        {
+            throw new CursorLdapReferralException( lre );
+        }
         catch ( Exception e )
         {
-            throw new CursorException( e.getMessage(), e );
+            throw new CursorException( e );
         }
-
 
         return null;
     }
@@ -191,7 +201,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
         {
             LOG_CURSOR.debug( "Closing EntryCursorImpl {}", this );
         }
-        
+
         searchCursor.close();
     }
 
@@ -206,7 +216,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
         {
             LOG_CURSOR.debug( "Closing EntryCursorImpl {}", this );
         }
-        
+
         searchCursor.close( cause );
     }
 
