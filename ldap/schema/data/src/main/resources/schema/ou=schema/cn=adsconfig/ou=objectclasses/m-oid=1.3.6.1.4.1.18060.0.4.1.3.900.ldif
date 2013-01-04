@@ -1,11 +1,11 @@
 version: 1
 dn: m-oid=1.3.6.1.4.1.18060.0.4.1.3.900,ou=objectClasses,cn=adsconfig,ou=schema
 m-oid: 1.3.6.1.4.1.18060.0.4.1.3.900
+m-name: ads-passwordPolicy
+m-description: class to hold the PasswordPolicy configuration
 objectclass: top
 objectclass: metaTop
 objectclass: metaObjectClass
-m-name: ads-passwordPolicy
-m-description: class to hold the PasswordPolicy configuration
 m-supobjectclass: ads-base
 m-must: ads-pwdId
 m-must: ads-pwdAttribute

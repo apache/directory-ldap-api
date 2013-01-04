@@ -1,7 +1,7 @@
 version: 1
 dn: m-oid=1.3.6.1.4.1.18060.0.4.1.3.131, ou=objectClasses, cn=adsconfig, ou=schema
-m-name: ads-authenticationInterceptor
 m-oid: 1.3.6.1.4.1.18060.0.4.1.3.131
+m-name: ads-authenticationInterceptor
 m-description: The AuthenticationInterceptor ObjectClass
 objectclass: top
 objectclass: metaTop
