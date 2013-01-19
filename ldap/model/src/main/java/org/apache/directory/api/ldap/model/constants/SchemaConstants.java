@@ -639,6 +639,14 @@ public final class SchemaConstants
     public final static String ADS_REPL_ENABLED = "ads-replEnabled";
     public final static String ADS_REPL_ENABLED_OID = "1.3.6.1.4.1.18060.0.4.1.2.838";
 
+    // ads-replLogMaxIdle AT
+    public final static String ADS_REPL_LOG_MAX_IDLE = "ads-replLogMaxIdle";
+    public final static String ADS_REPL_LOG_MAX_IDLE_OID = "1.3.6.1.4.1.18060.0.4.1.2.920";
+
+    // ads-replLogPurgeThresholdCount AT
+    public final static String ADS_REPL_LOG_PURGE_THRESHOLD_COUNT = "ads-replLogPurgeThresholdCount";
+    public final static String ADS_REPL_LOG_PURGE_THRESHOLD_COUNT_OID = "1.3.6.1.4.1.18060.0.4.1.2.922";
+
     //-------------------------------------------------------------------------
     // ---- Syntaxes ----------------------------------------------------------
     //-------------------------------------------------------------------------
