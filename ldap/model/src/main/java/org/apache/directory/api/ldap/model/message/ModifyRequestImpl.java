@@ -48,7 +48,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /** Dn of the entry to modify or PDU's <b>object</b> field */
     private Dn name;
 
-    /** Sequence of modifications or PDU's <b>modification</b> seqence field */
+    /** Sequence of modifications or PDU's <b>modification</b> sequence field */
     private List<Modification> mods = new ArrayList<Modification>();
 
     /** The associated response */
@@ -406,7 +406,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
             }
             else
 
-            if ( !item.equals( ( DefaultModification ) mods.get( i ) ) )
+            if ( !item.equals( mods.get( i ) ) )
             {
                 return false;
             }

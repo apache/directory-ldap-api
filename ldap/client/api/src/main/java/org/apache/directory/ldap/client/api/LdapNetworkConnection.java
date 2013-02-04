@@ -1549,6 +1549,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             throw new IllegalArgumentException( msg );
         }
 
+        if ( searchRequest.getBase() == null )
+        {
+            String msg = "Cannot process a searchRequest which base DN is null";
+            LOG.debug( msg );
+            throw new IllegalArgumentException( msg );
+        }
+
         // If the session has not been establish, or is closed, we get out immediately
         checkSession();
 
@@ -2217,6 +2224,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             throw new IllegalArgumentException( msg );
         }
 
+        if ( modRequest.getName() == null )
+        {
+            String msg = "Cannot process a modifyRequest which DN is null";
+            LOG.debug( msg );
+            throw new IllegalArgumentException( msg );
+        }
+
         checkSession();
 
         int newId = messageId.incrementAndGet();
@@ -2326,7 +2340,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( newSuperiorDn == null )
         {
-            String msg = "Cannot process a move to a null Dn";
+            String msg = "Cannot process a move to a null newSuperior";
             LOG.debug( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -2357,7 +2371,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( newSuperiorDn == null )
         {
-            String msg = "Cannot process a move to a null Dn";
+            String msg = "Cannot process a move to a null newSuperior";
             LOG.debug( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -2518,6 +2532,20 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( modDnRequest == null )
         {
             String msg = "Cannot process a null modDnRequest";
+            LOG.debug( msg );
+            throw new IllegalArgumentException( msg );
+        }
+
+        if ( modDnRequest.getName() == null )
+        {
+            String msg = "Cannot process a modifyRequest which DN is null";
+            LOG.debug( msg );
+            throw new IllegalArgumentException( msg );
+        }
+
+        if ( ( modDnRequest.getNewSuperior() == null ) && ( modDnRequest.getNewRdn() == null ) )
+        {
+            String msg = "Cannot process a modifyRequest which new superior and new Rdn are null";
             LOG.debug( msg );
             throw new IllegalArgumentException( msg );
         }
@@ -2711,6 +2739,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             throw new IllegalArgumentException( msg );
         }
 
+        if ( deleteRequest.getName() == null )
+        {
+            String msg = "Cannot process a deleteRequest which DN is null";
+            LOG.debug( msg );
+            throw new IllegalArgumentException( msg );
+        }
+
         checkSession();
 
         int newId = messageId.incrementAndGet();
@@ -2888,6 +2923,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         if ( compareRequest == null )
         {
             String msg = "Cannot process a null compareRequest";
+            LOG.debug( msg );
+            throw new IllegalArgumentException( msg );
+        }
+
+        if ( compareRequest.getName() == null )
+        {
+            String msg = "Cannot process a compareRequest which DN is null";
             LOG.debug( msg );
             throw new IllegalArgumentException( msg );
         }
