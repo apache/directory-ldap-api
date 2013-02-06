@@ -6,13 +6,4 @@ m-description: The ChangePassword ObjectClass
 objectclass: top
 objectclass: metaTop
 objectclass: metaObjectClass
-m-supobjectclass: ads-dsBasedServer
-m-may: ads-krbAllowableClockSkew
-m-may: ads-krbEmptyAddressesAllowed
-m-may: ads-krbEncryptionTypes
-m-may: ads-krbPrimaryRealm
-m-may: ads-chgPwdPolicyCategoryCount
-m-may: ads-chgPwdPolicyPasswordLength
-m-may: ads-chgPwdPolicyTokenSize
-m-may: ads-chgPwdServicePrincipal
 creatorsname: uid=admin,ou=system
