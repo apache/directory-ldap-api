@@ -623,10 +623,6 @@ public final class SchemaConstants
     public final static String ADS_REPL_STRICT_CERT_VALIDATION = "ads-replStrictCertValidation";
     public final static String ADS_REPL_STRICT_CERT_VALIDATION_OID = "1.3.6.1.4.1.18060.0.4.1.2.834";
 
-    // ads-replPeerCertificate AT
-    public final static String ADS_REPL_PEER_CERTIFICATE = "ads-replPeerCertificate";
-    public final static String ADS_REPL_PEER_CERTIFICATE_OID = "1.3.6.1.4.1.18060.0.4.1.2.835";
-
     // ads-replProviderId AT
     public final static String ADS_REPL_PROVIDER_ID = "ads-replProviderId";
     public final static String ADS_REPL_PROVIDER_ID_OID = "1.3.6.1.4.1.18060.0.4.1.2.836";

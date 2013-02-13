@@ -23,7 +23,6 @@ m-must: ads-replUserDn
 m-must: ads-replUserPassword
 m-may: ads-replUseTls
 m-may: ads-replStrictCertValidation
-m-may: ads-replPeerCertificate
 m-may: ads-replConsumerImpl
 m-may: ads-replCookie
 creatorsname: uid=admin,ou=system
