@@ -6,4 +6,5 @@ m-description: The ChangePassword ObjectClass
 objectclass: top
 objectclass: metaTop
 objectclass: metaObjectClass
+m-supobjectclass: ads-dsBasedServer
 creatorsname: uid=admin,ou=system
