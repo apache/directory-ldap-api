@@ -31,7 +31,25 @@ package org.apache.directory.api.ldap.model.constants;
 public enum Loggers
 {
     /** The dedicated logger for ACIs */
-    ACI_LOG("aci-logger");
+    ACI_LOG("org.apache.directory.server.ACI_LOG"),
+
+    /** The dedicated logs for the replication consumer */
+    CONSUMER_LOG("org.apache.directory.server.CONSUMER_LOG"),
+
+    /** The dedicated logs for the cursors */
+    CURSOR_LOG("org.apache.directory.CURSOR_LOG"),
+
+    /** The dedicated logs for the replication provider */
+    PROVIDER_LOG("org.apache.directory.server.PROVIDER_LOG"),
+
+    /** The dedicated logs for operation statistics */
+    OPERATION_STAT("org.apache.directory.server.OPERATION_STAT"),
+
+    /** The dedicated logs for operation execution time */
+    OPERATION_TIME("org.apache.directory.server.OPERATION_TIME"),
+
+    /** The dedicated logger for KERBEROS */
+    KERBEROS_LOG("org.apache.directory.server.KERBEROS_LOG");
 
     /** The associated name */
     private String name;

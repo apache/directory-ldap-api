@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.constants.Loggers;
 import org.apache.directory.api.ldap.model.cursor.AbstractCursor;
 import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.InvalidCursorPositionException;
@@ -52,7 +53,7 @@ import org.slf4j.LoggerFactory;
 public class SearchCursorImpl extends AbstractCursor<Response> implements SearchCursor
 {
     /** A dedicated log for cursors */
-    private static final Logger LOG_CURSOR = LoggerFactory.getLogger( "CURSOR" );
+    private static final Logger LOG_CURSOR = LoggerFactory.getLogger( Loggers.CURSOR_LOG.getName() );
 
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG_CURSOR.isDebugEnabled();
@@ -89,7 +90,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
         {
             LOG_CURSOR.debug( "Creating SearchCursorImpl {}", this );
         }
-        
+
         this.future = future;
         this.timeout = timeout;
         this.timeUnit = timeUnit;
@@ -194,7 +195,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
         {
             LOG_CURSOR.debug( "Closing SearchCursorImpl {}", this );
         }
-        
+
         close( null );
     }
 
@@ -209,7 +210,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
         {
             LOG_CURSOR.debug( "Closing SearchCursorImpl {}", this );
         }
-        
+
         if ( done )
         {
             super.close();

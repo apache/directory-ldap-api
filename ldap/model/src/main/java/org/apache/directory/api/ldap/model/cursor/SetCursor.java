@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.Set;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.constants.Loggers;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,7 @@ import org.slf4j.LoggerFactory;
 public class SetCursor<E> extends AbstractCursor<E>
 {
     /** A dedicated log for cursors */
-    private static final Logger LOG_CURSOR = LoggerFactory.getLogger( "CURSOR" );
+    private static final Logger LOG_CURSOR = LoggerFactory.getLogger( Loggers.CURSOR_LOG.getName() );
 
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG_CURSOR.isDebugEnabled();
@@ -76,7 +77,7 @@ public class SetCursor<E> extends AbstractCursor<E>
         {
             LOG_CURSOR.debug( "Creating SetCursor {}", this );
         }
-        
+
         this.comparator = comparator;
         this.set = ( E[] ) set.toArray();
     }
@@ -394,7 +395,7 @@ public class SetCursor<E> extends AbstractCursor<E>
         {
             LOG_CURSOR.debug( "Closing ListCursor {}", this );
         }
-        
+
         super.close();
     }
 
@@ -409,10 +410,10 @@ public class SetCursor<E> extends AbstractCursor<E>
         {
             LOG_CURSOR.debug( "Closing ListCursor {}", this );
         }
-        
+
         super.close( cause );
     }
-    
+
 
     /**
      * @see Object#toString()
@@ -420,7 +421,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     public String toString( String tabs )
     {
         StringBuilder sb = new StringBuilder();
-        
+
         sb.append( tabs ).append( "SetCursor :\n" );
         sb.append( tabs ).append( "    Index : " ).append( index ).append( "\n" );
 
@@ -429,23 +430,23 @@ public class SetCursor<E> extends AbstractCursor<E>
             sb.append( tabs ).append( "    Size : " ).append( set.length ).append( "\n" );
 
             int counter = 0; // Don't print more than 100 elements...
-            
+
             for ( E e : set )
             {
                 sb.append( tabs ).append( "    " ).append( e ).append( "\n" );
                 counter++;
-                
-                if (counter == 100 )
+
+                if ( counter == 100 )
                 {
                     break;
                 }
             }
         }
-        
+
         return sb.toString();
     }
-    
-    
+
+
     /**
      * @see Object#toString()
      */

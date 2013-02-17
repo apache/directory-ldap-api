@@ -22,6 +22,7 @@ package org.apache.directory.api.ldap.model.cursor;
 import java.io.IOException;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.constants.Loggers;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,10 +37,11 @@ import org.slf4j.LoggerFactory;
 public class EmptyCursor<E> extends AbstractCursor<E>
 {
     /** A dedicated log for cursors */
-    private static final Logger LOG_CURSOR = LoggerFactory.getLogger( "CURSOR" );
+    private static final Logger LOG_CURSOR = LoggerFactory.getLogger( Loggers.CURSOR_LOG.getName() );
 
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG_CURSOR.isDebugEnabled();
+
 
     public EmptyCursor()
     {
@@ -48,7 +50,8 @@ public class EmptyCursor<E> extends AbstractCursor<E>
             LOG_CURSOR.debug( "Creating EmptyCursor : {}", this );
         }
     }
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -154,7 +157,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
         {
             LOG_CURSOR.debug( "Closing EmptyCursor {}", this );
         }
-        
+
         super.close();
     }
 
@@ -169,7 +172,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
         {
             LOG_CURSOR.debug( "Closing EmptyCursor {}", this );
         }
-        
+
         super.close( cause );
     }
 }

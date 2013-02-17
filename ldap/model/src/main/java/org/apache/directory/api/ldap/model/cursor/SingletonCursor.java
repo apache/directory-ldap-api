@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.Comparator;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.constants.Loggers;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ import org.slf4j.LoggerFactory;
 public class SingletonCursor<E> extends AbstractCursor<E>
 {
     /** A dedicated log for cursors */
-    private static final Logger LOG_CURSOR = LoggerFactory.getLogger( "CURSOR" );
+    private static final Logger LOG_CURSOR = LoggerFactory.getLogger( Loggers.CURSOR_LOG.getName() );
 
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG_CURSOR.isDebugEnabled();
@@ -82,7 +83,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
         {
             LOG_CURSOR.debug( "Creating SingletonCursor {}", this );
         }
-        
+
         this.singleton = singleton;
         this.comparator = comparator;
     }
@@ -332,7 +333,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
         {
             LOG_CURSOR.debug( "Closing SingletonCursor {}", this );
         }
-        
+
         super.close();
     }
 
@@ -347,7 +348,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
         {
             LOG_CURSOR.debug( "Closing SingletonCursor {}", this );
         }
-        
+
         super.close( cause );
     }
 }

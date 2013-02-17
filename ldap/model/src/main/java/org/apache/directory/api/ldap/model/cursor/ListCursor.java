@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.constants.Loggers;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,7 @@ import org.slf4j.LoggerFactory;
 public class ListCursor<E> extends AbstractCursor<E>
 {
     /** A dedicated log for cursors */
-    private static final Logger LOG_CURSOR = LoggerFactory.getLogger( "CURSOR" );
+    private static final Logger LOG_CURSOR = LoggerFactory.getLogger( Loggers.CURSOR_LOG.getName() );
 
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG_CURSOR.isDebugEnabled();
@@ -57,7 +58,7 @@ public class ListCursor<E> extends AbstractCursor<E>
     /** The ending position for the cursor in the list. It can be < List.size() */
     private final int end;
     /** The current position in the list */
-    
+
     private int index = -1;
 
 
@@ -102,7 +103,7 @@ public class ListCursor<E> extends AbstractCursor<E>
         {
             LOG_CURSOR.debug( "Creating ListCursor {}", this );
         }
-        
+
         this.comparator = comparator;
         this.list = list;
         this.start = start;
@@ -509,7 +510,7 @@ public class ListCursor<E> extends AbstractCursor<E>
         {
             LOG_CURSOR.debug( "Closing ListCursor {}", this );
         }
-        
+
         super.close();
     }
 
@@ -524,7 +525,7 @@ public class ListCursor<E> extends AbstractCursor<E>
         {
             LOG_CURSOR.debug( "Closing ListCursor {}", this );
         }
-        
+
         super.close( cause );
     }
 }
