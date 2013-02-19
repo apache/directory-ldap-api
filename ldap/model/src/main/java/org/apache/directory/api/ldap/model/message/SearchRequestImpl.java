@@ -171,7 +171,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
         }
         catch ( ParseException pe )
         {
-            String msg = "The filter" + filter + " is invalid.";
+            String msg = "The filter " + filter + " is invalid.";
             throw new LdapProtocolErrorException( msg, pe );
         }
 
