@@ -24,12 +24,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.TelephoneNumberSyntaxChecker;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -90,6 +90,7 @@ public class TelephoneNumberSyntaxCheckerTest
         assertTrue( checker.isValidSyntax( "1 (2) 3" ) );
         assertTrue( checker.isValidSyntax( "+ 123 ( 456 )7891   12345" ) );
         assertTrue( checker.isValidSyntax( " 12 34 56 78 90 " ) );
+        assertTrue( checker.isValidSyntax( " + 12 34 ; 56* 78 90, # " ) );
     }
 
 
