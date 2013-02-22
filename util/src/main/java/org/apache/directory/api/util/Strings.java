@@ -938,7 +938,6 @@ public final class Strings
      */
     public static int areEquals( byte[] bytes, int index, byte[] bytes2 )
     {
-
         if ( ( bytes == null ) || ( bytes.length == 0 ) || ( bytes.length <= index ) || ( index < 0 )
             || ( bytes2 == null ) || ( bytes2.length == 0 )
             || ( bytes2.length > ( bytes.length + index ) ) )
@@ -1540,6 +1539,33 @@ public final class Strings
         else
         {
             return bytes[index];
+        }
+    }
+
+
+    /**
+     * Get the char at a given position in a byte array, checking for limits
+     *
+     * @param chars The char[] which contains the data
+     * @param index Current position in the char[]
+     * @return The byte at the given position, or '\0' if something went wrong
+     */
+    public static char charAt( char[] chars, int index )
+    {
+        if ( chars == null )
+        {
+            return '\0';
+        }
+
+        int length = chars.length;
+
+        if ( ( length == 0 ) || ( index < 0 ) || ( index >= length ) )
+        {
+            return '\0';
+        }
+        else
+        {
+            return chars[index];
         }
     }
 
