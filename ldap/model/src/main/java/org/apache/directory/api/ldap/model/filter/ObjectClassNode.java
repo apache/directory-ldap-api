@@ -21,51 +21,54 @@ package org.apache.directory.api.ldap.model.filter;
 
 
 /**
- * All the different kind of assertions.
- * 
+ * An empty class used for the (ObjectClass=*) node.
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ * @version $Rev$, $Date$
  */
-public enum AssertionType
+public final class ObjectClassNode extends AbstractExprNode
 {
-    /** equality assertion node */
-    EQUALITY,
+    /** A static instance of this node */
+    public static final ExprNode OBJECT_CLASS_NODE = new ObjectClassNode();
 
-    /** presence assertion node */
-    PRESENCE,
 
-    /** substring match assertion node */
-    SUBSTRING,
+    /**
+     * Creates a new instance of ObjectClassNode.
+     */
+    private ObjectClassNode()
+    {
+        super( AssertionType.OBJECTCLASS );
+    }
 
-    /** greater than or equal to assertion node */
-    GREATEREQ,
 
-    /** less than or equal to assertion node */
-    LESSEQ,
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation always returns true.
+     */
+    public boolean isLeaf()
+    {
+        return true;
+    }
 
-    /** approximate assertion node */
-    APPROXIMATE,
 
-    /** extensible match assertion node */
-    EXTENSIBLE,
+    /**
+     * {@inheritDoc}
+     * 
+     * This implementation always returns null.
+     */
+    public Object accept( FilterVisitor visitor )
+    {
+        return null;
+    }
 
-    /** scope assertion node */
-    SCOPE,
 
-    /** Predicate assertion node */
-    ASSERTION,
-
-    /** OR operator constant */
-    OR,
-
-    /** AND operator constant */
-    AND,
-
-    /** NOT operator constant */
-    NOT,
-
-    /** Undefined operation */
-    UNDEFINED,
-
-    /** (ObjectClass=*) filter */
-    OBJECTCLASS;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString()
+    {
+        return "All";
+    }
 }
