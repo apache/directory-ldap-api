@@ -909,7 +909,7 @@ public final class Strings
     {
         if ( ( chars == null ) || ( chars.length == 0 ) || ( chars.length <= index ) || ( index < 0 )
             || ( chars2 == null ) || ( chars2.length == 0 )
-            || ( chars2.length > ( chars.length + index ) ) )
+            || ( chars2.length > ( chars.length - index ) ) )
         {
             return StringConstants.NOT_EQUAL;
         }
@@ -940,7 +940,7 @@ public final class Strings
     {
         if ( ( bytes == null ) || ( bytes.length == 0 ) || ( bytes.length <= index ) || ( index < 0 )
             || ( bytes2 == null ) || ( bytes2.length == 0 )
-            || ( bytes2.length > ( bytes.length + index ) ) )
+            || ( bytes2.length > ( bytes.length - index ) ) )
         {
             return StringConstants.NOT_EQUAL;
         }
