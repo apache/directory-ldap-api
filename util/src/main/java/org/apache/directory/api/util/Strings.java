@@ -883,6 +883,21 @@ public final class Strings
      */
     public static int areEquals( char[] chars, int index, String text )
     {
+        return areEquals( chars, index, text, true );
+    }
+
+
+    /**
+     * Check if a text is present at the current position in a buffer.
+     *
+     * @param chars The buffer which contains the data
+     * @param index Current position in the buffer
+     * @param text The text we want to check
+     * @param caseSensitive If the comparison is case-sensitive
+     * @return <code>true</code> if the buffer contains the text.
+     */
+    public static int areEquals( char[] chars, int index, String text, boolean caseSensitive )
+    {
         if ( ( chars == null ) || ( chars.length == 0 ) || ( chars.length <= index ) || ( index < 0 )
             || ( text == null ) )
         {
@@ -892,7 +907,7 @@ public final class Strings
         {
             char[] data = text.toCharArray();
 
-            return areEquals( chars, index, data );
+            return areEquals( chars, index, data, caseSensitive );
         }
     }
 
@@ -907,6 +922,21 @@ public final class Strings
      */
     public static int areEquals( char[] chars, int index, char[] chars2 )
     {
+        return areEquals( chars, index, chars2, true );
+    }
+
+
+    /**
+     * Check if a text is present at the current position in a buffer.
+     *
+     * @param chars The buffer which contains the data
+     * @param index Current position in the buffer
+     * @param chars2 The text we want to check
+     * @param caseSensitive If the comparison is case-sensitive
+     * @return <code>true</code> if the buffer contains the text.
+     */
+    public static int areEquals( char[] chars, int index, char[] chars2, boolean caseSensitive )
+    {
         if ( ( chars == null ) || ( chars.length == 0 ) || ( chars.length <= index ) || ( index < 0 )
             || ( chars2 == null ) || ( chars2.length == 0 )
             || ( chars2.length > ( chars.length - index ) ) )
@@ -917,7 +947,16 @@ public final class Strings
         {
             for ( int i = 0; i < chars2.length; i++ )
             {
-                if ( chars[index++] != chars2[i] )
+                char c1 = chars[index++];
+                char c2 = chars2[i];
+
+                if ( !caseSensitive )
+                {
+                    c1 = Character.toLowerCase( c1 );
+                    c2 = Character.toLowerCase( c2 );
+                }
+
+                if ( c1 != c2 )
                 {
                     return StringConstants.NOT_EQUAL;
                 }
