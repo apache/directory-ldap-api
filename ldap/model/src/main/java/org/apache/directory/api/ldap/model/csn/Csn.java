@@ -27,7 +27,6 @@ import java.util.TimeZone;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.util.Chars;
-import org.apache.directory.api.util.DateUtils;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +82,7 @@ public class Csn implements Comparable<Csn>
     private static final SimpleDateFormat SDF = new SimpleDateFormat( "yyyyMMddHHmmss" );
 
     private static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone( "UTC" );
-    
+
     // Initialize the dateFormat with the UTC TZ
     static
     {

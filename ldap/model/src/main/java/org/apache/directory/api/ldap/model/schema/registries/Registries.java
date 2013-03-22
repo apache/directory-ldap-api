@@ -50,7 +50,6 @@ import org.apache.directory.api.ldap.model.schema.MutableMatchingRule;
 import org.apache.directory.api.ldap.model.schema.NameForm;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
-import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.api.ldap.model.schema.SchemaObjectWrapper;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
@@ -562,8 +561,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
             delReference( attributeType, attributeType.getSuperior() );
         }
     }
-    
-    
+
+
     /**
      * Build the AttributeType references. This has to be done recursively, as
      * an AttributeType may inherit its parent's MatchingRules. The references
@@ -662,32 +661,32 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             switch ( schemaObject.getObjectType() )
             {
-                case ATTRIBUTE_TYPE :
-                    AttributeTypeHelper.addToRegistries( (MutableAttributeType)schemaObject, errors, this );
+                case ATTRIBUTE_TYPE:
+                    AttributeTypeHelper.addToRegistries( ( MutableAttributeType ) schemaObject, errors, this );
                     break;
-                    
-                case DIT_CONTENT_RULE :
-                    DitContentRuleHelper.addToRegistries( (DitContentRule)schemaObject, errors, this );
+
+                case DIT_CONTENT_RULE:
+                    DitContentRuleHelper.addToRegistries( ( DitContentRule ) schemaObject, errors, this );
                     break;
-                    
-                case LDAP_SYNTAX :
-                    LdapSyntaxHelper.addToRegistries( (LdapSyntax)schemaObject, errors, this );
+
+                case LDAP_SYNTAX:
+                    LdapSyntaxHelper.addToRegistries( ( LdapSyntax ) schemaObject, errors, this );
                     break;
-                    
-                case MATCHING_RULE :
-                    MatchingRuleHelper.addToRegistries( (MutableMatchingRule)schemaObject, errors, this );
+
+                case MATCHING_RULE:
+                    MatchingRuleHelper.addToRegistries( ( MutableMatchingRule ) schemaObject, errors, this );
                     break;
-                    
-                case MATCHING_RULE_USE :
-                    MatchingRuleUseHelper.addToRegistries( (MatchingRuleUse)schemaObject, errors, this );
+
+                case MATCHING_RULE_USE:
+                    MatchingRuleUseHelper.addToRegistries( ( MatchingRuleUse ) schemaObject, errors, this );
                     break;
-                    
-                case NAME_FORM :
-                    NameFormHelper.addToRegistries( (NameForm)schemaObject, errors, this );
+
+                case NAME_FORM:
+                    NameFormHelper.addToRegistries( ( NameForm ) schemaObject, errors, this );
                     break;
-                    
-                case OBJECT_CLASS :
-                    ObjectClassHelper.addToRegistries( (ObjectClass)schemaObject, errors, this );
+
+                case OBJECT_CLASS:
+                    ObjectClassHelper.addToRegistries( ( ObjectClass ) schemaObject, errors, this );
                     break;
             }
         }
@@ -712,20 +711,20 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             switch ( schemaObject.getObjectType() )
             {
-                case ATTRIBUTE_TYPE :
-                    AttributeTypeHelper.removeFromRegistries( (AttributeType)schemaObject, errors, this );
+                case ATTRIBUTE_TYPE:
+                    AttributeTypeHelper.removeFromRegistries( ( AttributeType ) schemaObject, errors, this );
                     break;
 
-                case LDAP_SYNTAX :
-                    LdapSyntaxHelper.removeFromRegistries( (LdapSyntax)schemaObject, errors, this );
+                case LDAP_SYNTAX:
+                    LdapSyntaxHelper.removeFromRegistries( ( LdapSyntax ) schemaObject, errors, this );
                     break;
 
-                case MATCHING_RULE :
-                    MatchingRuleHelper.removeFromRegistries( (MatchingRule)schemaObject, errors, this );
+                case MATCHING_RULE:
+                    MatchingRuleHelper.removeFromRegistries( ( MatchingRule ) schemaObject, errors, this );
                     break;
 
-                case OBJECT_CLASS :
-                    ObjectClassHelper.removeFromRegistries( (ObjectClass)schemaObject, errors, this );
+                case OBJECT_CLASS:
+                    ObjectClassHelper.removeFromRegistries( ( ObjectClass ) schemaObject, errors, this );
                     break;
             }
         }
@@ -930,7 +929,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
     {
         // This is currently doing nothing.
     }
-    
+
 
     /**
      * Attempts to resolve the SyntaxChecker
@@ -1893,10 +1892,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             for ( SchemaObjectWrapper wrapper : usedBy.keySet() )
             {
-                sb.append( wrapper.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() ).append( "] : {" );
-    
+                sb.append( wrapper.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() )
+                    .append( "] : {" );
+
                 boolean isFirst = true;
-    
+
                 for ( SchemaObjectWrapper uses : usedBy.get( wrapper ) )
                 {
                     if ( isFirst )
@@ -1907,10 +1907,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     {
                         sb.append( ", " );
                     }
-    
+
                     sb.append( uses.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() ).append( "]" );
                 }
-    
+
                 sb.append( "}\n" );
             }
         }
@@ -1936,10 +1936,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
         {
             for ( SchemaObjectWrapper wrapper : using.keySet() )
             {
-                sb.append( wrapper.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() ).append( "] : {" );
-    
+                sb.append( wrapper.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() )
+                    .append( "] : {" );
+
                 boolean isFirst = true;
-    
+
                 for ( SchemaObjectWrapper uses : using.get( wrapper ) )
                 {
                     if ( isFirst )
@@ -1950,10 +1951,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
                     {
                         sb.append( ", " );
                     }
-    
+
                     sb.append( uses.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() ).append( "]" );
                 }
-    
+
                 sb.append( "}\n" );
             }
         }
@@ -2809,8 +2810,6 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Clear the loadedSchema Map
         loadedSchemas.clear();
     }
-
-
 
 
     /**

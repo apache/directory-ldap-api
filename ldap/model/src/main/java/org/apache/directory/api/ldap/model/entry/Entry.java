@@ -23,7 +23,6 @@ import java.io.Externalizable;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
@@ -832,8 +831,8 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @return true if the Entry is schema aware
      */
     boolean isSchemaAware();
-    
-    
+
+
     /**
      * A pretty-pinter for Entries
      * 

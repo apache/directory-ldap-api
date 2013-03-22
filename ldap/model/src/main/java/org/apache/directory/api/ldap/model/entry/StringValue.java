@@ -22,14 +22,12 @@ package org.apache.directory.api.ldap.model.entry;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.util.Arrays;
 import java.util.Comparator;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.util.Strings;
@@ -48,7 +46,7 @@ public class StringValue extends AbstractValue<String>
 {
     /** Used for serialization */
     private static final long serialVersionUID = 2L;
-    
+
     /** The UTF-8 bytes for this value */
     private byte[] bytes;
 
@@ -122,8 +120,8 @@ public class StringValue extends AbstractValue<String>
         // object without copying it.
         return wrappedValue;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -270,7 +268,7 @@ public class StringValue extends AbstractValue<String>
         }
 
         StringValue other = ( StringValue ) obj;
-        
+
         // First check if we have an attrbuteType.
         if ( attributeType != null )
         {
@@ -294,11 +292,11 @@ public class StringValue extends AbstractValue<String>
                     {
                         return true;
                     }
-                    
+
                     // We have an AttributeType, we use the associated comparator
                     try
                     {
-                        Comparator<String> comparator = ( Comparator<String> ) getLdapComparator();
+                        Comparator<String> comparator = getLdapComparator();
 
                         // Compare normalized values
                         if ( comparator == null )
@@ -334,22 +332,22 @@ public class StringValue extends AbstractValue<String>
                 // We have an AttributeType on the base value, we need to use its comparator
                 try
                 {
-                    Comparator<String> comparator = ( Comparator<String> ) getLdapComparator();
+                    Comparator<String> comparator = getLdapComparator();
 
                     // Compare normalized values. We have to normalized the other value,
                     // as it has no AT
                     MatchingRule equality = getAttributeType().getEquality();
-                    
+
                     if ( equality == null )
                     {
                         // No matching rule : compare the raw values
                         return getNormReference().equals( other.getNormReference() );
                     }
-                    
+
                     Normalizer normalizer = equality.getNormalizer();
-                    
-                    StringValue otherValue = (StringValue)normalizer.normalize( other );
-                    
+
+                    StringValue otherValue = ( StringValue ) normalizer.normalize( other );
+
                     if ( comparator == null )
                     {
                         return getNormReference().equals( otherValue.getNormReference() );
@@ -377,25 +375,25 @@ public class StringValue extends AbstractValue<String>
                 {
                     return other.isNull();
                 }
-                
+
                 try
                 {
-                    Comparator<String> comparator = ( Comparator<String> ) other.getLdapComparator();
+                    Comparator<String> comparator = other.getLdapComparator();
 
                     // Compare normalized values. We have to normalized the other value,
                     // as it has no AT
                     MatchingRule equality = other.getAttributeType().getEquality();
-                    
+
                     if ( equality == null )
                     {
                         // No matching rule : compare the raw values
                         return getNormReference().equals( other.getNormReference() );
                     }
-                    
+
                     Normalizer normalizer = equality.getNormalizer();
-                    
-                    StringValue thisValue = (StringValue)normalizer.normalize( this );
-                    
+
+                    StringValue thisValue = ( StringValue ) normalizer.normalize( this );
+
                     if ( comparator == null )
                     {
                         return thisValue.getNormReference().equals( other.getNormReference() );
@@ -417,7 +415,7 @@ public class StringValue extends AbstractValue<String>
                 {
                     return other.isNull();
                 }
-                
+
                 // Now check the normalized values
                 return getNormReference().equals( other.getNormReference() );
             }
