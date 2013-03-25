@@ -2256,7 +2256,7 @@ public final class DefaultEntry implements Entry
     {
         this.dn = dn;
 
-        // Resash the object
+        // Rehash the object
         rehash();
     }
 
