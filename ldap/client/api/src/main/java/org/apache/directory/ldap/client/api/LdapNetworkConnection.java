@@ -1184,6 +1184,89 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
+     * SASL PLAIN Bind on a server.
+     *
+     * @param authcid The Authentication identity
+     * @param credentials The password. It can't be null
+     * @return The BindResponse LdapResponse
+     * @throws {@link LdapException} if some error occurred
+     * @throws IOException if an I/O exception occurred
+     */
+    public BindResponse bindSaslPlain( String authcid, String credentials ) throws LdapException, IOException
+    {
+        return bindSaslPlain( null, authcid, credentials );
+    }
+
+
+    /**
+     * SASL PLAIN Bind on a server.
+     *
+     * @param authzid The Authorization identity
+     * @param authcid The Authentication identity
+     * @param credentials The password. It can't be null
+     * @return The BindResponse LdapResponse
+     * @throws {@link LdapException} if some error occurred
+     * @throws IOException if an I/O exception occurred
+     */
+    public BindResponse bindSaslPlain( String authzid, String authcid, String credentials ) throws LdapException,
+        IOException
+    {
+        LOG.debug( "SASL PLAIN Bind request" );
+
+        // Create the BindRequest
+        SaslPlainRequest saslRequest = new SaslPlainRequest();
+        saslRequest.setAuthorizationId( authzid );
+        saslRequest.setUsername( authcid );
+        saslRequest.setCredentials( credentials );
+
+        BindFuture bindFuture = bindAsync( saslRequest );
+
+        // Get the result from the future
+        try
+        {
+            // Read the response, waiting for it if not available immediately
+            // Get the response, blocking
+            BindResponse bindResponse = bindFuture.get( timeout, TimeUnit.MILLISECONDS );
+
+            if ( bindResponse == null )
+            {
+                // We didn't received anything : this is an error
+                LOG.error( "Bind failed : timeout occurred" );
+                throw new LdapException( TIME_OUT_ERROR );
+            }
+
+            if ( bindResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
+            {
+                authenticated.set( true );
+
+                // Everything is fine, return the response
+                LOG.debug( "Bind successful : {}", bindResponse );
+            }
+            else
+            {
+                // We have had an error
+                LOG.debug( "Bind failed : {}", bindResponse );
+            }
+
+            return bindResponse;
+        }
+        catch ( TimeoutException te )
+        {
+            // We didn't received anything : this is an error
+            LOG.error( "Bind failed : timeout occurred" );
+            throw new LdapException( TIME_OUT_ERROR, te );
+        }
+        catch ( Exception ie )
+        {
+            // Catch all other exceptions
+            LOG.error( NO_RESPONSE_ERROR, ie );
+
+            throw new LdapException( NO_RESPONSE_ERROR, ie );
+        }
+    }
+
+
+    /**
      * Bind to the server using a CramMd5Request object.
      *
      * @param request The CramMd5Request POJO containing all the needed parameters
@@ -1256,6 +1339,21 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @throws IOException if an I/O exception occurred
      */
     public BindFuture bindAsync( CramMd5Request request )
+        throws LdapException, IOException
+    {
+        return bindSasl( request );
+    }
+
+
+    /**
+     * Do an asynchronous bind, based on a SaslPlainRequest.
+     *
+     * @param request The SaslPlainRequest POJO containing all the needed parameters
+     * @return The bind operation's future
+     * @throws LdapException if some error occurred
+     * @throws IOException if an I/O exception occurred
+     */
+    public BindFuture bindAsync( SaslPlainRequest request )
         throws LdapException, IOException
     {
         return bindSasl( request );
@@ -3666,8 +3764,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // If the session has not been establish, or is closed, we get out immediately
         checkSession();
 
-        BindRequest bindRequest = createBindRequest( ( String ) null, null, saslRequest.getSaslMechanism(), saslRequest
-            .getControls() );
+        BindRequest bindRequest = createBindRequest( ( String ) null, null,
+            saslRequest.getSaslMechanism(), saslRequest
+                .getControls() );
 
         // Update the messageId
         int newId = messageId.incrementAndGet();

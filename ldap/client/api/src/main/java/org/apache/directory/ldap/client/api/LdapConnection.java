@@ -189,6 +189,31 @@ public interface LdapConnection
 
 
     /**
+     * SASL PLAIN Bind on a server.
+     *
+     * @param authcid The Authentication identity
+     * @param credentials The password. It can't be null
+     * @return The BindResponse LdapResponse
+     * @throws {@link LdapException} if some error occurred
+     * @throws IOException if an I/O exception occurred
+     */
+    // Not yet available on the CoreConnection
+    //BindResponse bindSaslPlain( String authcid, String credentials ) throws LdapException, IOException;
+
+    /**
+     * SASL PLAIN Bind on a server.
+     *
+     * @param authzid The Authorization identity
+     * @param authcid The Authentication identity
+     * @param credentials The password. It can't be null
+     * @return The BindResponse LdapResponse
+     * @throws {@link LdapException} if some error occurred
+     * @throws IOException if an I/O exception occurred
+     */
+    // Not yet available on the CoreConnection
+    //BindResponse bindSaslPlain( String authzid, String authcid, String credentials ) throws LdapException, IOException;
+
+    /**
      * Unauthenticated authentication Bind on a server.
      *
      * @param name The name we use to authenticate the user. It must be a
@@ -814,17 +839,17 @@ public interface LdapConnection
      * @return true if there is a non-null future exists, false otherwise
      */
     boolean doesFutureExistFor( int messageId );
-    
-    
+
+
     /**
      * @return the object responsible for the detection of binary attributes
      */
     BinaryAttributeDetector getBinaryAttributeDetector();
-    
-    
+
+
     /**
      * Sets the object responsible for the detection of binary attributes
      * @return
      */
-    void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetecter);
+    void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetecter );
 }
