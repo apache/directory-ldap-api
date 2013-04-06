@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.constants.SupportedSaslMechanisms;
 public class SaslPlainRequest extends SaslRequest
 {
     /**
-     * Creates a new instance of CramMd5Request.
+     * Creates a new instance of SaslPlainRequest.
      */
     public SaslPlainRequest()
     {

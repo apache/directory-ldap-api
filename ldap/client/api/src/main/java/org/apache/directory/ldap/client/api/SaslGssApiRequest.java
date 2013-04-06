@@ -31,7 +31,7 @@ import org.apache.directory.api.ldap.model.constants.SupportedSaslMechanisms;
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GssApiRequest extends SaslRequest
+public class SaslGssApiRequest extends SaslRequest
 {
     /** The KDC host*/
     protected String kdcHost;
@@ -50,9 +50,9 @@ public class GssApiRequest extends SaslRequest
 
 
     /**
-     * Creates a new instance of GssApiRequest.
+     * Creates a new instance of SaslGssApiRequest.
      */
-    public GssApiRequest()
+    public SaslGssApiRequest()
     {
         super( SupportedSaslMechanisms.GSSAPI );
     }

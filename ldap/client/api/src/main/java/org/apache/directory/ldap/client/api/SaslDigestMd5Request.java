@@ -29,12 +29,12 @@ import org.apache.directory.api.ldap.model.constants.SupportedSaslMechanisms;
  *  
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DigestMd5Request extends SaslRequest
+public class SaslDigestMd5Request extends SaslRequest
 {
     /**
-     * Creates a new instance of DigestMd5Request.
+     * Creates a new instance of SaslDigestMd5Request.
      */
-    public DigestMd5Request()
+    public SaslDigestMd5Request()
     {
         super( SupportedSaslMechanisms.DIGEST_MD5 );
     }

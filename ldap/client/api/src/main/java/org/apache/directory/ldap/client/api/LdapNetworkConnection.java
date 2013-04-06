@@ -1274,7 +1274,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
-    public BindResponse bind( CramMd5Request request ) throws LdapException, IOException
+    public BindResponse bind( SaslCramMd5Request request ) throws LdapException, IOException
     {
         if ( request == null )
         {
@@ -1331,21 +1331,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
-     * Do an asynchronous bind, based on a CramMd5Request.
-     *
-     * @param request The CramMd5Request POJO containing all the needed parameters
-     * @return The bind operation's future
-     * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
-     */
-    public BindFuture bindAsync( CramMd5Request request )
-        throws LdapException, IOException
-    {
-        return bindSasl( request );
-    }
-
-
-    /**
      * Do an asynchronous bind, based on a SaslPlainRequest.
      *
      * @param request The SaslPlainRequest POJO containing all the needed parameters
@@ -1353,7 +1338,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
-    public BindFuture bindAsync( SaslPlainRequest request )
+    public BindFuture bindAsync( SaslRequest request )
         throws LdapException, IOException
     {
         return bindSasl( request );
@@ -1368,7 +1353,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
-    public BindResponse bind( DigestMd5Request request ) throws LdapException, IOException
+    public BindResponse bind( SaslDigestMd5Request request ) throws LdapException, IOException
     {
         if ( request == null )
         {
@@ -1425,21 +1410,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
-     * Do an asynchronous bind, based on a DigestMd5Request.
-     *
-     * @param request The DigestMd5Request POJO containing all the needed parameters
-     * @return The bind operation's future
-     * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
-     */
-    public BindFuture bindAsync( DigestMd5Request request )
-        throws LdapException, IOException
-    {
-        return bindSasl( request );
-    }
-
-
-    /**
      * Bind to the server using a GssApiRequest object.
      *
      * @param request The GssApiRequest POJO containing all the needed parameters
@@ -1447,7 +1417,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
-    public BindResponse bind( GssApiRequest request ) throws LdapException, IOException
+    public BindResponse bind( SaslGssApiRequest request ) throws LdapException, IOException
     {
         if ( request == null )
         {
@@ -1511,7 +1481,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
-    public BindFuture bindAsync( GssApiRequest request )
+    public BindFuture bindAsync( SaslGssApiRequest request )
         throws LdapException, IOException
     {
         // Krb5.conf file
@@ -1553,7 +1523,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 new SaslCallbackHandler( request ) );
             loginContext.login();
 
-            final GssApiRequest requetFinal = request;
+            final SaslGssApiRequest requetFinal = request;
             return ( BindFuture ) Subject.doAs( loginContext.getSubject(), new PrivilegedExceptionAction<Object>()
             {
                 public Object run() throws Exception
