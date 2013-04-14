@@ -45,14 +45,14 @@ public interface PasswordPolicyResponse
     /**
      * @return The number of possible attempts on the password before it's locked
      */
-    int getGraceAuthNsRemaining();
+    int getGraceAuthNRemaining();
 
 
     /**
      * Sets the number of remaining wrong authentication for this password
-     * @param graceAuthNsRemaining The number of remaining attempts
+     * @param graceAuthNRemaining The number of remaining attempts
      */
-    void setGraceAuthNsRemaining( int graceAuthNsRemaining );
+    void setGraceAuthNRemaining( int graceAuthNRemaining );
 
 
     /**

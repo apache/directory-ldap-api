@@ -30,13 +30,13 @@ import org.apache.directory.api.asn1.ber.Asn1Container;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @SuppressWarnings("rawtypes")
-public class StoreGraceAuthsRemaining extends AbstractReadInteger
+public class StoreGraceAuthNRemaining extends AbstractReadInteger
 {
 
     /**
      * Instantiates a new StoreCusec action.
      */
-    public StoreGraceAuthsRemaining()
+    public StoreGraceAuthNRemaining()
     {
         super( "PPolicy graceAuthnsRemains" );
     }
@@ -50,7 +50,7 @@ public class StoreGraceAuthsRemaining extends AbstractReadInteger
     {
         PasswordPolicyContainer ppolicyContainer = ( PasswordPolicyContainer ) container;
 
-        ppolicyContainer.getPasswordPolicyResponseControl().getResponse().setGraceAuthNsRemaining( value );
+        ppolicyContainer.getPasswordPolicyResponseControl().getResponse().setGraceAuthNRemaining( value );
 
         ppolicyContainer.setGrammarEndAllowed( true );
     }

@@ -103,7 +103,7 @@ public class PasswordPolicyGrammar extends AbstractGrammar<PasswordPolicyContain
             .getValue()] = new GrammarTransition(
             PasswordPolicyStates.PPOLICY_WARNING_TAG_STATE, PasswordPolicyStates.PPOLICY_GRACE_AUTHNS_REMAINING_STATE,
             PasswordPolicyTags.GRACE_AUTHNS_REMAINING_TAG.getValue(),
-            new StoreGraceAuthsRemaining() );
+            new StoreGraceAuthNRemaining() );
 
         // PasswordPolicyResponseValue ::= SEQUENCE {
         //              ...

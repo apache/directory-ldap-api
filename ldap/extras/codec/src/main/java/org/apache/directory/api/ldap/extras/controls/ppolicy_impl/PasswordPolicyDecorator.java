@@ -113,9 +113,9 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
             timeBeforeExpirationTagLength = TLV.getNbBytes( getResponse().getTimeBeforeExpiration() );
             warningLength = 1 + TLV.getNbBytes( timeBeforeExpirationTagLength ) + timeBeforeExpirationTagLength;
         }
-        else if ( getResponse().getGraceAuthNsRemaining() >= 0 )
+        else if ( getResponse().getGraceAuthNRemaining() >= 0 )
         {
-            graceAuthNsRemainingTagLength = TLV.getNbBytes( getResponse().getGraceAuthNsRemaining() );
+            graceAuthNsRemainingTagLength = TLV.getNbBytes( getResponse().getGraceAuthNRemaining() );
             warningLength = 1 + TLV.getNbBytes( graceAuthNsRemainingTagLength ) + graceAuthNsRemainingTagLength;
         }
 
@@ -151,7 +151,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
             throw new EncoderException( I18n.err( I18n.ERR_04023 ) );
         }
 
-        if ( ( getResponse().getTimeBeforeExpiration() < 0 ) && ( getResponse().getGraceAuthNsRemaining() < 0 ) && (
+        if ( ( getResponse().getTimeBeforeExpiration() < 0 ) && ( getResponse().getGraceAuthNRemaining() < 0 ) && (
             getResponse().getPasswordPolicyError() == null ) )
         {
             return buffer;
@@ -174,11 +174,11 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
                     buffer.put( TLV.getBytes( timeBeforeExpirationTagLength ) );
                     buffer.put( BerValue.getBytes( getResponse().getTimeBeforeExpiration() ) );
                 }
-                else if ( getResponse().getGraceAuthNsRemaining() >= 0 )
+                else if ( getResponse().getGraceAuthNRemaining() >= 0 )
                 {
                     buffer.put( ( byte ) PasswordPolicyTags.GRACE_AUTHNS_REMAINING_TAG.getValue() );
                     buffer.put( TLV.getBytes( graceAuthNsRemainingTagLength ) );
-                    buffer.put( BerValue.getBytes( getResponse().getGraceAuthNsRemaining() ) );
+                    buffer.put( BerValue.getBytes( getResponse().getGraceAuthNRemaining() ) );
                 }
             }
 
@@ -207,9 +207,9 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
             sb.append( "   timeBeforeExpiration          : '" ).append( getResponse().getTimeBeforeExpiration() )
                 .append( '\n' );
         }
-        else if ( hasResponse() && getResponse().getGraceAuthNsRemaining() >= 0 )
+        else if ( hasResponse() && getResponse().getGraceAuthNRemaining() >= 0 )
         {
-            sb.append( "   graceAuthNsRemaining          : '" ).append( getResponse().getGraceAuthNsRemaining() )
+            sb.append( "   graceAuthNsRemaining          : '" ).append( getResponse().getGraceAuthNRemaining() )
                 .append( '\n' );
         }
 
