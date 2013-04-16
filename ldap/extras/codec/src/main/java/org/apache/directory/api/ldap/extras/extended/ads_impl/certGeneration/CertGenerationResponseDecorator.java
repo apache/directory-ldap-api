@@ -26,7 +26,7 @@ import org.apache.directory.api.ldap.extras.extended.CertGenerationResponse;
 
 
 /**
- * A Decorator for CancelResponses.
+ * A Decorator for  certificate generation Responses.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

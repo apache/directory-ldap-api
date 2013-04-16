@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * A Decorator for CancelRequests.
+ * A Decorator for certificate generation extended request.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

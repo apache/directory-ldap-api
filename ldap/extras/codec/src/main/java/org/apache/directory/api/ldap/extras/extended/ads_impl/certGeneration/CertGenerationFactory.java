@@ -34,7 +34,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
- * An {@link ExtendedRequestFactory} for creating cancel extended request response 
+ * An {@link ExtendedRequestFactory} for creating certificate generation extended request response 
  * pairs.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
