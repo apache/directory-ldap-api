@@ -25,12 +25,12 @@ import org.apache.directory.api.asn1.ber.grammar.States;
 
 
 /**
- * This class store the PasswordModifyRequest's grammar constants. It is also used
+ * This class store the PasswordModifyResponse's grammar constants. It is also used
  * for debugging purposes.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public enum PasswordModifyRequestStatesEnum implements States
+public enum PasswordModifyResponseStatesEnum implements States
 {
 
     /** The END_STATE */
@@ -40,19 +40,13 @@ public enum PasswordModifyRequestStatesEnum implements States
     START_STATE,
 
     /** sequence*/
-    PASSWORD_MODIFY_REQUEST_SEQUENCE_STATE,
+    PASSWORD_MODIFY_RESPONSE_SEQUENCE_STATE,
 
-    /** the UserIdentity */
-    USER_IDENTITY_STATE,
-
-    /** the old password */
-    OLD_PASSWORD_STATE,
-
-    /** the new password*/
-    NEW_PASSWORD_STATE,
+    /** the generated password */
+    GEN_PASSWORD_STATE,
 
     /** Last state */
-    LAST_PASSWORD_MODIFY_REQUEST_STATE;
+    LAST_PASSWORD_MODIFY_RESPONSE_STATE;
 
     /**
      * Get the grammar name
@@ -60,9 +54,9 @@ public enum PasswordModifyRequestStatesEnum implements States
      * @param grammar The grammar class
      * @return The grammar name
      */
-    public String getGrammarName( Grammar<PasswordModifyRequestContainer> grammar )
+    public String getGrammarName( Grammar<PasswordModifyResponseContainer> grammar )
     {
-        return "PASSWORD_MODIFY_REQUEST_GRAMMER";
+        return "PASSWORD_MODIFY_RESPONSE_GRAMMER";
     }
 
 
@@ -74,7 +68,7 @@ public enum PasswordModifyRequestStatesEnum implements States
      */
     public String getGrammarName( int grammar )
     {
-        return "PASSWORD_MODIFY_REQUEST_GRAMMER";
+        return "PASSWORD_MODIFY_RESPONSE_GRAMMER";
     }
 
 
@@ -86,7 +80,7 @@ public enum PasswordModifyRequestStatesEnum implements States
      */
     public String getState( int state )
     {
-        return ( ( state == END_STATE.ordinal() ) ? "PASSWORD_MODIFY_REQUEST_GRAMMER" : this.name() );
+        return ( ( state == END_STATE.ordinal() ) ? "PASSWORD_MODIFY_RESPONSE_GRAMMER" : this.name() );
     }
 
 
@@ -102,7 +96,7 @@ public enum PasswordModifyRequestStatesEnum implements States
     /**
      * {@inheritDoc}
      */
-    public PasswordModifyRequestStatesEnum getStartState()
+    public PasswordModifyResponseStatesEnum getStartState()
     {
         return START_STATE;
     }

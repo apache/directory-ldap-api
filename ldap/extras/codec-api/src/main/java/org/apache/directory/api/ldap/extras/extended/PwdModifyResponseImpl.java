@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.extras.extended;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -111,5 +112,28 @@ public class PwdModifyResponseImpl extends ExtendedResponseImpl implements PwdMo
     public void setGenPassword( byte[] genPassword )
     {
         this.genPassword = genPassword;
+    }
+
+
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append( "PwdModifyResponse :" );
+        sb.append( "\n    genPassword : " );
+
+        if ( genPassword != null )
+        {
+            sb.append( Strings.utf8ToString( genPassword ) );
+        }
+        else
+        {
+            sb.append( "null" );
+        }
+
+        return sb.toString();
     }
 }
