@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.extras.extended;
 
 
 import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -131,5 +132,50 @@ public class PwdModifyRequestImpl extends AbstractExtendedRequest<PwdModifyRespo
         }
 
         return response;
+    }
+
+
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append( "PwdModifyRequest :" );
+        sb.append( "\n    UserIdentity : " );
+
+        if ( userIdentity != null )
+        {
+            sb.append( Strings.utf8ToString( userIdentity ) );
+        }
+        else
+        {
+            sb.append( "null" );
+        }
+
+        sb.append( "\n    oldPassword : " );
+
+        if ( oldPassword != null )
+        {
+            sb.append( Strings.utf8ToString( oldPassword ) );
+        }
+        else
+        {
+            sb.append( "null" );
+        }
+
+        sb.append( "\n    newPassword : " );
+
+        if ( newPassword != null )
+        {
+            sb.append( Strings.utf8ToString( newPassword ) );
+        }
+        else
+        {
+            sb.append( "null" );
+        }
+
+        return sb.toString();
     }
 }

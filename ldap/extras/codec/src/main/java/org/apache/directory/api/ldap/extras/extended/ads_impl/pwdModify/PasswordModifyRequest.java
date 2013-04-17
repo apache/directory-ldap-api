@@ -124,8 +124,20 @@ public class PasswordModifyRequest extends AbstractAsn1Object
     }
 
 
+    /**
+     * @return The internal PwdModifyRequest object
+     */
     public PwdModifyRequest getPwdModifyRequest()
     {
         return pwdModifyRequest;
+    }
+
+
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        return pwdModifyRequest.toString();
     }
 }

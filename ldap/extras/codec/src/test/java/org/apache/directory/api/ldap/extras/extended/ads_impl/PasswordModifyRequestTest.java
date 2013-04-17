@@ -30,6 +30,7 @@ import java.nio.ByteBuffer;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.ldap.extras.extended.PwdModifyRequest;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyRequestContainer;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyRequestDecorator;
 import org.apache.directory.api.util.Strings;
@@ -76,18 +77,20 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
-        assertNull( pwdModifyRequestDecorator.getUserIdentity() );
-        assertNull( pwdModifyRequestDecorator.getOldPassword() );
-        assertNull( pwdModifyRequestDecorator.getNewPassword() );
+        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        assertNull( pwdModifyRequest.getUserIdentity() );
+        assertNull( pwdModifyRequest.getOldPassword() );
+        assertNull( pwdModifyRequest.getNewPassword() );
 
         // Check the length
-        assertEquals( 0x02, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+        assertEquals( 0x02, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+            .computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+                .encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -130,19 +133,21 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
-        assertNotNull( pwdModifyRequestDecorator.getUserIdentity() );
-        assertEquals( 0, pwdModifyRequestDecorator.getUserIdentity().length );
-        assertNull( pwdModifyRequestDecorator.getOldPassword() );
-        assertNull( pwdModifyRequestDecorator.getNewPassword() );
+        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        assertNotNull( pwdModifyRequest.getUserIdentity() );
+        assertEquals( 0, pwdModifyRequest.getUserIdentity().length );
+        assertNull( pwdModifyRequest.getOldPassword() );
+        assertNull( pwdModifyRequest.getNewPassword() );
 
         // Check the length
-        assertEquals( 0x04, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+        assertEquals( 0x04, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+            .computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+                .encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -189,19 +194,21 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
-        assertNotNull( pwdModifyRequestDecorator.getUserIdentity() );
-        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getUserIdentity() ) );
-        assertNull( pwdModifyRequestDecorator.getOldPassword() );
-        assertNull( pwdModifyRequestDecorator.getNewPassword() );
+        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        assertNotNull( pwdModifyRequest.getUserIdentity() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getUserIdentity() ) );
+        assertNull( pwdModifyRequest.getOldPassword() );
+        assertNull( pwdModifyRequest.getNewPassword() );
 
         // Check the length
-        assertEquals( 0x08, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+        assertEquals( 0x08, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+            .computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+                .encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -251,20 +258,22 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
-        assertNotNull( pwdModifyRequestDecorator.getUserIdentity() );
-        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getUserIdentity() ) );
-        assertNull( pwdModifyRequestDecorator.getOldPassword() );
-        assertNotNull( pwdModifyRequestDecorator.getNewPassword() );
-        assertEquals( 0, pwdModifyRequestDecorator.getNewPassword().length );
+        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        assertNotNull( pwdModifyRequest.getUserIdentity() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getUserIdentity() ) );
+        assertNull( pwdModifyRequest.getOldPassword() );
+        assertNotNull( pwdModifyRequest.getNewPassword() );
+        assertEquals( 0, pwdModifyRequest.getNewPassword().length );
 
         // Check the length
-        assertEquals( 0x0A, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+        assertEquals( 0x0A, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+            .computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+                .encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -318,20 +327,22 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
-        assertNotNull( pwdModifyRequestDecorator.getUserIdentity() );
-        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getUserIdentity() ) );
-        assertNull( pwdModifyRequestDecorator.getOldPassword() );
-        assertNotNull( pwdModifyRequestDecorator.getNewPassword() );
-        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequestDecorator.getNewPassword() ) );
+        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        assertNotNull( pwdModifyRequest.getUserIdentity() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getUserIdentity() ) );
+        assertNull( pwdModifyRequest.getOldPassword() );
+        assertNotNull( pwdModifyRequest.getNewPassword() );
+        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequest.getNewPassword() ) );
 
         // Check the length
-        assertEquals( 0x0E, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+        assertEquals( 0x0E, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+            .computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+                .encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -380,20 +391,22 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
-        assertNotNull( pwdModifyRequestDecorator.getUserIdentity() );
-        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getUserIdentity() ) );
-        assertNotNull( pwdModifyRequestDecorator.getOldPassword() );
-        assertEquals( 0, pwdModifyRequestDecorator.getOldPassword().length );
-        assertNull( pwdModifyRequestDecorator.getNewPassword() );
+        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        assertNotNull( pwdModifyRequest.getUserIdentity() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getUserIdentity() ) );
+        assertNotNull( pwdModifyRequest.getOldPassword() );
+        assertEquals( 0, pwdModifyRequest.getOldPassword().length );
+        assertNull( pwdModifyRequest.getNewPassword() );
 
         // Check the length
-        assertEquals( 0x0A, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+        assertEquals( 0x0A, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+            .computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+                .encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -446,20 +459,22 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
-        assertNotNull( pwdModifyRequestDecorator.getUserIdentity() );
-        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getUserIdentity() ) );
-        assertNotNull( pwdModifyRequestDecorator.getOldPassword() );
-        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequestDecorator.getOldPassword() ) );
-        assertNull( pwdModifyRequestDecorator.getNewPassword() );
+        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        assertNotNull( pwdModifyRequest.getUserIdentity() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getUserIdentity() ) );
+        assertNotNull( pwdModifyRequest.getOldPassword() );
+        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequest.getOldPassword() ) );
+        assertNull( pwdModifyRequest.getNewPassword() );
 
         // Check the length
-        assertEquals( 0x0E, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+        assertEquals( 0x0E, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+            .computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+                .encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -515,21 +530,23 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
-        assertNotNull( pwdModifyRequestDecorator.getUserIdentity() );
-        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getUserIdentity() ) );
-        assertNotNull( pwdModifyRequestDecorator.getOldPassword() );
-        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequestDecorator.getOldPassword() ) );
-        assertNotNull( pwdModifyRequestDecorator.getNewPassword() );
-        assertEquals( 0, pwdModifyRequestDecorator.getNewPassword().length );
+        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        assertNotNull( pwdModifyRequest.getUserIdentity() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getUserIdentity() ) );
+        assertNotNull( pwdModifyRequest.getOldPassword() );
+        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequest.getOldPassword() ) );
+        assertNotNull( pwdModifyRequest.getNewPassword() );
+        assertEquals( 0, pwdModifyRequest.getNewPassword().length );
 
         // Check the length
-        assertEquals( 0x10, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+        assertEquals( 0x10, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+            .computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+                .encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -589,21 +606,23 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
-        assertNotNull( pwdModifyRequestDecorator.getUserIdentity() );
-        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getUserIdentity() ) );
-        assertNotNull( pwdModifyRequestDecorator.getOldPassword() );
-        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequestDecorator.getOldPassword() ) );
-        assertNotNull( pwdModifyRequestDecorator.getNewPassword() );
-        assertEquals( "ijkl", Strings.utf8ToString( pwdModifyRequestDecorator.getNewPassword() ) );
+        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        assertNotNull( pwdModifyRequest.getUserIdentity() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getUserIdentity() ) );
+        assertNotNull( pwdModifyRequest.getOldPassword() );
+        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequest.getOldPassword() ) );
+        assertNotNull( pwdModifyRequest.getNewPassword() );
+        assertEquals( "ijkl", Strings.utf8ToString( pwdModifyRequest.getNewPassword() ) );
 
         // Check the length
-        assertEquals( 0x14, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+        assertEquals( 0x14, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+            .computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+                .encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -646,19 +665,21 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
-        assertNull( pwdModifyRequestDecorator.getUserIdentity() );
-        assertNotNull( pwdModifyRequestDecorator.getOldPassword() );
-        assertEquals( 0, pwdModifyRequestDecorator.getOldPassword().length );
-        assertNull( pwdModifyRequestDecorator.getNewPassword() );
+        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        assertNull( pwdModifyRequest.getUserIdentity() );
+        assertNotNull( pwdModifyRequest.getOldPassword() );
+        assertEquals( 0, pwdModifyRequest.getOldPassword().length );
+        assertNull( pwdModifyRequest.getNewPassword() );
 
         // Check the length
-        assertEquals( 0x04, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+        assertEquals( 0x04, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+            .computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+                .encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -705,19 +726,21 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
-        assertNull( pwdModifyRequestDecorator.getUserIdentity() );
-        assertNotNull( pwdModifyRequestDecorator.getOldPassword() );
-        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getOldPassword() ) );
-        assertNull( pwdModifyRequestDecorator.getNewPassword() );
+        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        assertNull( pwdModifyRequest.getUserIdentity() );
+        assertNotNull( pwdModifyRequest.getOldPassword() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getOldPassword() ) );
+        assertNull( pwdModifyRequest.getNewPassword() );
 
         // Check the length
-        assertEquals( 0x08, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+        assertEquals( 0x08, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+            .computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+                .encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -767,20 +790,22 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
-        assertNull( pwdModifyRequestDecorator.getUserIdentity() );
-        assertNotNull( pwdModifyRequestDecorator.getOldPassword() );
-        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getOldPassword() ) );
-        assertNotNull( pwdModifyRequestDecorator.getNewPassword() );
-        assertEquals( 0, pwdModifyRequestDecorator.getNewPassword().length );
+        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        assertNull( pwdModifyRequest.getUserIdentity() );
+        assertNotNull( pwdModifyRequest.getOldPassword() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getOldPassword() ) );
+        assertNotNull( pwdModifyRequest.getNewPassword() );
+        assertEquals( 0, pwdModifyRequest.getNewPassword().length );
 
         // Check the length
-        assertEquals( 0x0A, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+        assertEquals( 0x0A, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+            .computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+                .encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -834,20 +859,22 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
-        assertNull( pwdModifyRequestDecorator.getUserIdentity() );
-        assertNotNull( pwdModifyRequestDecorator.getOldPassword() );
-        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getOldPassword() ) );
-        assertNotNull( pwdModifyRequestDecorator.getNewPassword() );
-        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequestDecorator.getNewPassword() ) );
+        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        assertNull( pwdModifyRequest.getUserIdentity() );
+        assertNotNull( pwdModifyRequest.getOldPassword() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getOldPassword() ) );
+        assertNotNull( pwdModifyRequest.getNewPassword() );
+        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequest.getNewPassword() ) );
 
         // Check the length
-        assertEquals( 0x0E, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+        assertEquals( 0x0E, ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+            .computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+            ByteBuffer bb1 = ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest()
+                .encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
