@@ -24,7 +24,7 @@ import org.apache.directory.api.asn1.ber.AbstractContainer;
 
 
 /**
- * A container for certificate generation request codec.
+ * A container for PasswordModifyRequest codec.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

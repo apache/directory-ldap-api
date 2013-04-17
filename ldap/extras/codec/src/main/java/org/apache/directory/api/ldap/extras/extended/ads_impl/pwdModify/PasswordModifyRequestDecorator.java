@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * A Decorator for PasswordModify extended request.
+ * A Decorator for PasswordModifyRequest extended request.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -42,9 +42,15 @@ public class PasswordModifyRequestDecorator
 {
     private static final Logger LOG = LoggerFactory.getLogger( PasswordModifyRequestDecorator.class );
 
+    /** The internal PasswordModifyRequest */
     private PasswordModifyRequest passwordModifyRequest;
 
 
+    /**
+     * Create a new decorator instance 
+     * @param codec The codec service
+     * @param decoratedMessage The decorated PwdModifyRequest
+     */
     public PasswordModifyRequestDecorator( LdapApiService codec, PwdModifyRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
@@ -52,6 +58,9 @@ public class PasswordModifyRequestDecorator
     }
 
 
+    /**
+     * @return The ASN1 object containing the PwdModifyRequest instance
+     */
     public PasswordModifyRequest getPasswordModifyRequest()
     {
         return passwordModifyRequest;

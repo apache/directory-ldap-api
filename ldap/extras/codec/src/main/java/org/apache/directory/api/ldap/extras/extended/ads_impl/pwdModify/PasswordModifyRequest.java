@@ -31,7 +31,7 @@ import org.apache.directory.api.ldap.extras.extended.PwdModifyRequest;
 
 
 /**
- * An extended operation to proceed a pwdModify operation, as described 
+ * An extended operation to proceed a pwdModifyRequest operation, as described 
  * in RFC 3062
  * 
  * <pre>
@@ -45,9 +45,14 @@ import org.apache.directory.api.ldap.extras.extended.PwdModifyRequest;
  */
 public class PasswordModifyRequest extends AbstractAsn1Object
 {
+    /** The encapsulated request */
     private PwdModifyRequest pwdModifyRequest;
 
 
+    /**
+     * Creates an instance of a PasswordModifyRequest
+     * @param pwdModifyRequest The encapsulated request
+     */
     public PasswordModifyRequest( PwdModifyRequest pwdModifyRequest )
     {
         this.pwdModifyRequest = pwdModifyRequest;
