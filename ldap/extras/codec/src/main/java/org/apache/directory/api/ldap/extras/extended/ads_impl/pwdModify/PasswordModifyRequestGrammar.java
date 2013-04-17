@@ -138,6 +138,89 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                 } );
 
         /**
+         * Transition from userIdentity to oldPassword
+         *
+         * PasswdModifyRequestValue ::= SEQUENCE {
+         *     userIdentity    [0]  OCTET STRING OPTIONAL
+         *     oldPassword     [1]  OCTET STRING OPTIONAL
+         *     ...
+         *     
+         * Set the oldPassword into the PasswdModifyRequest instance.
+         */
+        super.transitions[PasswordModifyRequestStatesEnum.USER_IDENTITY_STATE.ordinal()][PasswordModifyRequestConstants.OLD_PASSWORD_TAG] =
+            new GrammarTransition<PasswordModifyRequestContainer>(
+                PasswordModifyRequestStatesEnum.USER_IDENTITY_STATE,
+                PasswordModifyRequestStatesEnum.OLD_PASSWORD_STATE,
+                PasswordModifyRequestConstants.OLD_PASSWORD_TAG,
+                new GrammarAction<PasswordModifyRequestContainer>( "Set PasswordModifyRequest oldPassword" )
+                {
+                    public void action( PasswordModifyRequestContainer container ) throws DecoderException
+                    {
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        byte[] oldPassword = value.getData();
+
+                        if ( IS_DEBUG )
+                        {
+                            LOG.debug( "oldPassword = " + Strings.dumpBytes( oldPassword ) );
+                        }
+
+                        if ( oldPassword == null )
+                        {
+                            oldPassword = Strings.EMPTY_BYTES;
+                        }
+
+                        ( ( PwdModifyRequestImpl ) container.getPasswordModifyRequest().getDecorated() )
+                            .setOldPassword( oldPassword );
+
+                        // We may have nothing left
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
+
+        /**
+         * Transition from userIdentity to newPassword
+         *
+         * PasswdModifyRequestValue ::= SEQUENCE {
+         *     userIdentity    [0]  OCTET STRING OPTIONAL
+         *     ...
+         *     newPassword     [2]  OCTET STRING OPTIONAL
+         * 
+         *     
+         * Set the newPassword into the PasswdModifyRequest instance.
+         */
+        super.transitions[PasswordModifyRequestStatesEnum.USER_IDENTITY_STATE.ordinal()][PasswordModifyRequestConstants.NEW_PASSWORD_TAG] =
+            new GrammarTransition<PasswordModifyRequestContainer>(
+                PasswordModifyRequestStatesEnum.USER_IDENTITY_STATE,
+                PasswordModifyRequestStatesEnum.NEW_PASSWORD_STATE,
+                PasswordModifyRequestConstants.NEW_PASSWORD_TAG,
+                new GrammarAction<PasswordModifyRequestContainer>( "Set PasswordModifyRequest newPassword" )
+                {
+                    public void action( PasswordModifyRequestContainer container ) throws DecoderException
+                    {
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        byte[] newPassword = value.getData();
+
+                        if ( IS_DEBUG )
+                        {
+                            LOG.debug( "newPassword = " + Strings.dumpBytes( newPassword ) );
+                        }
+
+                        if ( newPassword == null )
+                        {
+                            newPassword = Strings.EMPTY_BYTES;
+                        }
+
+                        ( ( PwdModifyRequestImpl ) container.getPasswordModifyRequest().getDecorated() )
+                            .setNewPassword( newPassword );
+
+                        // We may have nothing left
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
+
+        /**
          * Transition from PasswordModify Request Value to oldPassword
          *
          * PasswdModifyRequestValue ::= SEQUENCE {
@@ -191,6 +274,47 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
         super.transitions[PasswordModifyRequestStatesEnum.PASSWORD_MODIFY_REQUEST_SEQUENCE_STATE.ordinal()][PasswordModifyRequestConstants.NEW_PASSWORD_TAG] =
             new GrammarTransition<PasswordModifyRequestContainer>(
                 PasswordModifyRequestStatesEnum.PASSWORD_MODIFY_REQUEST_SEQUENCE_STATE,
+                PasswordModifyRequestStatesEnum.NEW_PASSWORD_STATE,
+                PasswordModifyRequestConstants.NEW_PASSWORD_TAG,
+                new GrammarAction<PasswordModifyRequestContainer>( "Set PasswordModifyRequest newPassword" )
+                {
+                    public void action( PasswordModifyRequestContainer container ) throws DecoderException
+                    {
+                        BerValue value = container.getCurrentTLV().getValue();
+
+                        byte[] newPassword = value.getData();
+
+                        if ( IS_DEBUG )
+                        {
+                            LOG.debug( "NewPassword = " + Strings.dumpBytes( newPassword ) );
+                        }
+
+                        if ( newPassword == null )
+                        {
+                            newPassword = Strings.EMPTY_BYTES;
+                        }
+
+                        ( ( PwdModifyRequestImpl ) container.getPasswordModifyRequest().getDecorated() )
+                            .setNewPassword( newPassword );
+
+                        // We may have nothing left
+                        container.setGrammarEndAllowed( true );
+                    }
+                } );
+
+        /**
+         * Transition from oldPassword to newPassword
+         *
+         *     ...
+         *     oldPassword    [1]  OCTET STRING OPTIONAL
+         *     newPassword    [2]  OCTET STRING OPTIONAL
+         * }
+         *     
+         * Set the newPassword into the PasswdModifyRequest instance.
+         */
+        super.transitions[PasswordModifyRequestStatesEnum.OLD_PASSWORD_STATE.ordinal()][PasswordModifyRequestConstants.NEW_PASSWORD_TAG] =
+            new GrammarTransition<PasswordModifyRequestContainer>(
+                PasswordModifyRequestStatesEnum.OLD_PASSWORD_STATE,
                 PasswordModifyRequestStatesEnum.NEW_PASSWORD_STATE,
                 PasswordModifyRequestConstants.NEW_PASSWORD_TAG,
                 new GrammarAction<PasswordModifyRequestContainer>( "Set PasswordModifyRequest newPassword" )

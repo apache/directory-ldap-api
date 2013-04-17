@@ -30,8 +30,6 @@ import java.nio.ByteBuffer;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdown;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownContainer;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyRequestContainer;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyRequestDecorator;
 import org.apache.directory.api.util.Strings;
@@ -51,65 +49,6 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class PasswordModifyRequestTest
 {
-    /**
-     * Test the decoding of a PasswordModifyRequest
-     */
-    @Test
-    public void testDecodePasswordModifyRequestSuccess()
-    {
-        Asn1Decoder decoder = new Asn1Decoder();
-        ByteBuffer bb = ByteBuffer.allocate( 0x08 );
-        bb.put( new byte[]
-            { 0x30, 0x06, // GracefulShutdown ::= SEQUENCE {
-                0x02,
-                0x01,
-                0x01, // timeOffline INTEGER (0..720) DEFAULT 0,
-                ( byte ) 0x80,
-                0x01,
-                0x01 // delay INTEGER (0..86400) DEFAULT
-                     // 0
-            // }
-        } );
-
-        String decodedPdu = Strings.dumpBytes( bb.array() );
-        bb.flip();
-
-        GracefulShutdownContainer container = new GracefulShutdownContainer();
-
-        try
-        {
-            decoder.decode( bb, container );
-        }
-        catch ( DecoderException de )
-        {
-            de.printStackTrace();
-            fail( de.getMessage() );
-        }
-
-        GracefulShutdown gracefulShutdown = container.getGracefulShutdown();
-        assertEquals( 1, gracefulShutdown.getTimeOffline() );
-        assertEquals( 1, gracefulShutdown.getDelay() );
-
-        // Check the length
-        assertEquals( 0x08, gracefulShutdown.computeLength() );
-
-        // Check the encoding
-        try
-        {
-            ByteBuffer bb1 = gracefulShutdown.encode();
-
-            String encodedPdu = Strings.dumpBytes( bb1.array() );
-
-            assertEquals( encodedPdu, decodedPdu );
-        }
-        catch ( EncoderException ee )
-        {
-            ee.printStackTrace();
-            fail( ee.getMessage() );
-        }
-    }
-
-
     /**
      * Test the decoding of a PasswordModifyRequest with nothing in it
      */
@@ -277,6 +216,408 @@ public class PasswordModifyRequestTest
 
 
     /**
+     * Test the decoding of a PasswordModifyRequest with a user identity and
+     * an empty newPassword
+     */
+    @Test
+    public void testDecodePasswordModifyRequestUserIdentityValueNewPasswordEmpty()
+    {
+        Asn1Decoder decoder = new Asn1Decoder();
+        ByteBuffer bb = ByteBuffer.allocate( 0x0A );
+        bb.put( new byte[]
+            { 0x30, 0x08, // PasswordModifyRequest ::= SEQUENCE {
+                ( byte ) 0x80,
+                0x04, // userIdentity    [0]  OCTET STRING OPTIONAL
+                'a',
+                'b',
+                'c',
+                'd',
+                ( byte ) 0x82, // newPassword    [2]  OCTET STRING OPTIONAL
+                0x00
+        } );
+
+        String decodedPdu = Strings.dumpBytes( bb.array() );
+        bb.flip();
+
+        PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
+
+        try
+        {
+            decoder.decode( bb, container );
+        }
+        catch ( DecoderException de )
+        {
+            de.printStackTrace();
+            fail( de.getMessage() );
+        }
+
+        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
+        assertNotNull( pwdModifyRequestDecorator.getUserIdentity() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getUserIdentity() ) );
+        assertNull( pwdModifyRequestDecorator.getOldPassword() );
+        assertNotNull( pwdModifyRequestDecorator.getNewPassword() );
+        assertEquals( 0, pwdModifyRequestDecorator.getNewPassword().length );
+
+        // Check the length
+        assertEquals( 0x0A, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+
+        // Check the encoding
+        try
+        {
+            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
+
+            assertEquals( encodedPdu, decodedPdu );
+        }
+        catch ( EncoderException ee )
+        {
+            ee.printStackTrace();
+            fail( ee.getMessage() );
+        }
+    }
+
+
+    /**
+     * Test the decoding of a PasswordModifyRequest with a user identity and
+     * a newPassword
+     */
+    @Test
+    public void testDecodePasswordModifyRequestUserIdentityValueNewPassword()
+    {
+        Asn1Decoder decoder = new Asn1Decoder();
+        ByteBuffer bb = ByteBuffer.allocate( 0x0E );
+        bb.put( new byte[]
+            { 0x30, 0x0C, // PasswordModifyRequest ::= SEQUENCE {
+                ( byte ) 0x80,
+                0x04, // userIdentity    [0]  OCTET STRING OPTIONAL
+                'a',
+                'b',
+                'c',
+                'd',
+                ( byte ) 0x82, // newPassword    [2]  OCTET STRING OPTIONAL
+                0x04,
+                'e',
+                'f',
+                'g',
+                'h'
+        } );
+
+        String decodedPdu = Strings.dumpBytes( bb.array() );
+        bb.flip();
+
+        PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
+
+        try
+        {
+            decoder.decode( bb, container );
+        }
+        catch ( DecoderException de )
+        {
+            de.printStackTrace();
+            fail( de.getMessage() );
+        }
+
+        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
+        assertNotNull( pwdModifyRequestDecorator.getUserIdentity() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getUserIdentity() ) );
+        assertNull( pwdModifyRequestDecorator.getOldPassword() );
+        assertNotNull( pwdModifyRequestDecorator.getNewPassword() );
+        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequestDecorator.getNewPassword() ) );
+
+        // Check the length
+        assertEquals( 0x0E, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+
+        // Check the encoding
+        try
+        {
+            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
+
+            assertEquals( encodedPdu, decodedPdu );
+        }
+        catch ( EncoderException ee )
+        {
+            ee.printStackTrace();
+            fail( ee.getMessage() );
+        }
+    }
+
+
+    /**
+     * Test the decoding of a PasswordModifyRequest with a user identity
+     */
+    @Test
+    public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordEmpty()
+    {
+        Asn1Decoder decoder = new Asn1Decoder();
+        ByteBuffer bb = ByteBuffer.allocate( 0x0A );
+        bb.put( new byte[]
+            { 0x30, 0x08, // PasswordModifyRequest ::= SEQUENCE {
+                ( byte ) 0x80,
+                0x04, // userIdentity    [0]  OCTET STRING OPTIONAL
+                'a',
+                'b',
+                'c',
+                'd',
+                ( byte ) 0x81,
+                0x00 // oldPassword    [1]  OCTET STRING OPTIONAL
+        } );
+
+        String decodedPdu = Strings.dumpBytes( bb.array() );
+        bb.flip();
+
+        PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
+
+        try
+        {
+            decoder.decode( bb, container );
+        }
+        catch ( DecoderException de )
+        {
+            de.printStackTrace();
+            fail( de.getMessage() );
+        }
+
+        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
+        assertNotNull( pwdModifyRequestDecorator.getUserIdentity() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getUserIdentity() ) );
+        assertNotNull( pwdModifyRequestDecorator.getOldPassword() );
+        assertEquals( 0, pwdModifyRequestDecorator.getOldPassword().length );
+        assertNull( pwdModifyRequestDecorator.getNewPassword() );
+
+        // Check the length
+        assertEquals( 0x0A, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+
+        // Check the encoding
+        try
+        {
+            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
+
+            assertEquals( encodedPdu, decodedPdu );
+        }
+        catch ( EncoderException ee )
+        {
+            ee.printStackTrace();
+            fail( ee.getMessage() );
+        }
+    }
+
+
+    /**
+     * Test the decoding of a PasswordModifyRequest with a user identity
+     */
+    @Test
+    public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordValue()
+    {
+        Asn1Decoder decoder = new Asn1Decoder();
+        ByteBuffer bb = ByteBuffer.allocate( 0x0E );
+        bb.put( new byte[]
+            { 0x30, 0x0C, // PasswordModifyRequest ::= SEQUENCE {
+                ( byte ) 0x80,
+                0x04, // userIdentity    [0]  OCTET STRING OPTIONAL
+                'a',
+                'b',
+                'c',
+                'd',
+                ( byte ) 0x81,
+                0x04, // oldPassword    [1]  OCTET STRING OPTIONAL
+                'e',
+                'f',
+                'g',
+                'h'
+        } );
+
+        String decodedPdu = Strings.dumpBytes( bb.array() );
+        bb.flip();
+
+        PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
+
+        try
+        {
+            decoder.decode( bb, container );
+        }
+        catch ( DecoderException de )
+        {
+            de.printStackTrace();
+            fail( de.getMessage() );
+        }
+
+        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
+        assertNotNull( pwdModifyRequestDecorator.getUserIdentity() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getUserIdentity() ) );
+        assertNotNull( pwdModifyRequestDecorator.getOldPassword() );
+        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequestDecorator.getOldPassword() ) );
+        assertNull( pwdModifyRequestDecorator.getNewPassword() );
+
+        // Check the length
+        assertEquals( 0x0E, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+
+        // Check the encoding
+        try
+        {
+            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
+
+            assertEquals( encodedPdu, decodedPdu );
+        }
+        catch ( EncoderException ee )
+        {
+            ee.printStackTrace();
+            fail( ee.getMessage() );
+        }
+    }
+
+
+    /**
+     * Test the decoding of a PasswordModifyRequest with a user identity, and oldPassword and
+     * and empty newPassword
+     */
+    @Test
+    public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordValueNewPasswordNull()
+    {
+        Asn1Decoder decoder = new Asn1Decoder();
+        ByteBuffer bb = ByteBuffer.allocate( 0x10 );
+        bb.put( new byte[]
+            { 0x30, 0x0E, // PasswordModifyRequest ::= SEQUENCE {
+                ( byte ) 0x80,
+                0x04, // userIdentity    [0]  OCTET STRING OPTIONAL
+                'a',
+                'b',
+                'c',
+                'd',
+                ( byte ) 0x81,
+                0x04, // oldPassword    [1]  OCTET STRING OPTIONAL
+                'e',
+                'f',
+                'g',
+                'h',
+                ( byte ) 0x82, // newPassword    [2]  OCTET STRING OPTIONAL
+                0x00
+        } );
+
+        String decodedPdu = Strings.dumpBytes( bb.array() );
+        bb.flip();
+
+        PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
+
+        try
+        {
+            decoder.decode( bb, container );
+        }
+        catch ( DecoderException de )
+        {
+            de.printStackTrace();
+            fail( de.getMessage() );
+        }
+
+        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
+        assertNotNull( pwdModifyRequestDecorator.getUserIdentity() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getUserIdentity() ) );
+        assertNotNull( pwdModifyRequestDecorator.getOldPassword() );
+        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequestDecorator.getOldPassword() ) );
+        assertNotNull( pwdModifyRequestDecorator.getNewPassword() );
+        assertEquals( 0, pwdModifyRequestDecorator.getNewPassword().length );
+
+        // Check the length
+        assertEquals( 0x10, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+
+        // Check the encoding
+        try
+        {
+            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
+
+            assertEquals( encodedPdu, decodedPdu );
+        }
+        catch ( EncoderException ee )
+        {
+            ee.printStackTrace();
+            fail( ee.getMessage() );
+        }
+    }
+
+
+    /**
+     * Test the decoding of a PasswordModifyRequest with a user identity, and oldPassword and
+     * and a newPassword
+     */
+    @Test
+    public void testDecodePasswordModifyRequestUserIdentityValueOldPasswordValueNewPasswordValue()
+    {
+        Asn1Decoder decoder = new Asn1Decoder();
+        ByteBuffer bb = ByteBuffer.allocate( 0x14 );
+        bb.put( new byte[]
+            { 0x30, 0x12, // PasswordModifyRequest ::= SEQUENCE {
+                ( byte ) 0x80,
+                0x04, // userIdentity    [0]  OCTET STRING OPTIONAL
+                'a',
+                'b',
+                'c',
+                'd',
+                ( byte ) 0x81,
+                0x04, // oldPassword    [1]  OCTET STRING OPTIONAL
+                'e',
+                'f',
+                'g',
+                'h',
+                ( byte ) 0x82, // newPassword    [2]  OCTET STRING OPTIONAL
+                0x04,
+                'i',
+                'j',
+                'k',
+                'l'
+        } );
+
+        String decodedPdu = Strings.dumpBytes( bb.array() );
+        bb.flip();
+
+        PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
+
+        try
+        {
+            decoder.decode( bb, container );
+        }
+        catch ( DecoderException de )
+        {
+            de.printStackTrace();
+            fail( de.getMessage() );
+        }
+
+        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
+        assertNotNull( pwdModifyRequestDecorator.getUserIdentity() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getUserIdentity() ) );
+        assertNotNull( pwdModifyRequestDecorator.getOldPassword() );
+        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequestDecorator.getOldPassword() ) );
+        assertNotNull( pwdModifyRequestDecorator.getNewPassword() );
+        assertEquals( "ijkl", Strings.utf8ToString( pwdModifyRequestDecorator.getNewPassword() ) );
+
+        // Check the length
+        assertEquals( 0x14, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+
+        // Check the encoding
+        try
+        {
+            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
+
+            assertEquals( encodedPdu, decodedPdu );
+        }
+        catch ( EncoderException ee )
+        {
+            ee.printStackTrace();
+            fail( ee.getMessage() );
+        }
+    }
+
+
+    /**
      * Test the decoding of a PasswordModifyRequest with an empty user identity
      */
     @Test
@@ -342,7 +683,7 @@ public class PasswordModifyRequestTest
         bb.put( new byte[]
             { 0x30, 0x06, // PasswordModifyRequest ::= SEQUENCE {
                 ( byte ) 0x81,
-                0x04, // oldPassword    [0]  OCTET STRING OPTIONAL
+                0x04, // oldPassword    [1]  OCTET STRING OPTIONAL
                 'a',
                 'b',
                 'c',
@@ -372,6 +713,136 @@ public class PasswordModifyRequestTest
 
         // Check the length
         assertEquals( 0x08, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+
+        // Check the encoding
+        try
+        {
+            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
+
+            assertEquals( encodedPdu, decodedPdu );
+        }
+        catch ( EncoderException ee )
+        {
+            ee.printStackTrace();
+            fail( ee.getMessage() );
+        }
+    }
+
+
+    /**
+     * Test the decoding of a PasswordModifyRequest with an oldPassword and an
+     * empty  newPassword
+     */
+    @Test
+    public void testDecodePasswordModifyRequestOldPasswordValueNewPasswordEmpty()
+    {
+        Asn1Decoder decoder = new Asn1Decoder();
+        ByteBuffer bb = ByteBuffer.allocate( 0x0A );
+        bb.put( new byte[]
+            { 0x30, 0x08, // PasswordModifyRequest ::= SEQUENCE {
+                ( byte ) 0x81,
+                0x04, // oldPassword    [1]  OCTET STRING OPTIONAL
+                'a',
+                'b',
+                'c',
+                'd',
+                ( byte ) 0x82, // newPassword    [2]  OCTET STRING OPTIONAL
+                0x00
+        } );
+
+        String decodedPdu = Strings.dumpBytes( bb.array() );
+        bb.flip();
+
+        PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
+
+        try
+        {
+            decoder.decode( bb, container );
+        }
+        catch ( DecoderException de )
+        {
+            de.printStackTrace();
+            fail( de.getMessage() );
+        }
+
+        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
+        assertNull( pwdModifyRequestDecorator.getUserIdentity() );
+        assertNotNull( pwdModifyRequestDecorator.getOldPassword() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getOldPassword() ) );
+        assertNotNull( pwdModifyRequestDecorator.getNewPassword() );
+        assertEquals( 0, pwdModifyRequestDecorator.getNewPassword().length );
+
+        // Check the length
+        assertEquals( 0x0A, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
+
+        // Check the encoding
+        try
+        {
+            ByteBuffer bb1 = pwdModifyRequestDecorator.getPasswordModifyRequest().encode();
+
+            String encodedPdu = Strings.dumpBytes( bb1.array() );
+
+            assertEquals( encodedPdu, decodedPdu );
+        }
+        catch ( EncoderException ee )
+        {
+            ee.printStackTrace();
+            fail( ee.getMessage() );
+        }
+    }
+
+
+    /**
+     * Test the decoding of a PasswordModifyRequest with an oldPassword and an
+     * newPassword
+     */
+    @Test
+    public void testDecodePasswordModifyRequestOldPasswordValueNewPasswordValue()
+    {
+        Asn1Decoder decoder = new Asn1Decoder();
+        ByteBuffer bb = ByteBuffer.allocate( 0x0E );
+        bb.put( new byte[]
+            { 0x30, 0x0C, // PasswordModifyRequest ::= SEQUENCE {
+                ( byte ) 0x81,
+                0x04, // oldPassword    [1]  OCTET STRING OPTIONAL
+                'a',
+                'b',
+                'c',
+                'd',
+                ( byte ) 0x82, // newPassword    [2]  OCTET STRING OPTIONAL
+                0x04,
+                'e',
+                'f',
+                'g',
+                'h'
+        } );
+
+        String decodedPdu = Strings.dumpBytes( bb.array() );
+        bb.flip();
+
+        PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
+
+        try
+        {
+            decoder.decode( bb, container );
+        }
+        catch ( DecoderException de )
+        {
+            de.printStackTrace();
+            fail( de.getMessage() );
+        }
+
+        PasswordModifyRequestDecorator pwdModifyRequestDecorator = container.getPasswordModifyRequest();
+        assertNull( pwdModifyRequestDecorator.getUserIdentity() );
+        assertNotNull( pwdModifyRequestDecorator.getOldPassword() );
+        assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequestDecorator.getOldPassword() ) );
+        assertNotNull( pwdModifyRequestDecorator.getNewPassword() );
+        assertEquals( "efgh", Strings.utf8ToString( pwdModifyRequestDecorator.getNewPassword() ) );
+
+        // Check the length
+        assertEquals( 0x0E, pwdModifyRequestDecorator.getPasswordModifyRequest().computeLength() );
 
         // Check the encoding
         try

@@ -62,6 +62,8 @@ public class PasswordModifyRequest extends AbstractAsn1Object
      */
     public int computeLength()
     {
+        requestLength = 0;
+
         if ( pwdModifyRequest.getUserIdentity() != null )
         {
             int len = pwdModifyRequest.getUserIdentity().length;
@@ -71,13 +73,13 @@ public class PasswordModifyRequest extends AbstractAsn1Object
         if ( pwdModifyRequest.getOldPassword() != null )
         {
             int len = pwdModifyRequest.getOldPassword().length;
-            requestLength = 1 + BerValue.getNbBytes( len ) + len;
+            requestLength += 1 + BerValue.getNbBytes( len ) + len;
         }
 
         if ( pwdModifyRequest.getNewPassword() != null )
         {
             int len = pwdModifyRequest.getNewPassword().length;
-            requestLength = 1 + BerValue.getNbBytes( len ) + len;
+            requestLength += 1 + BerValue.getNbBytes( len ) + len;
         }
 
         return 1 + BerValue.getNbBytes( requestLength ) + requestLength;
