@@ -130,7 +130,7 @@ public class PasswordModifyRequest extends AbstractAsn1Object
 
 
     /**
-     * @return The internal PwdModifyRequest object
+     * @return the pwdModifyRequest
      */
     public PwdModifyRequest getPwdModifyRequest()
     {

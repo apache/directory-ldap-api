@@ -53,6 +53,7 @@ public class PwdModifyRequestImpl extends AbstractExtendedRequest<PwdModifyRespo
      */
     public PwdModifyRequestImpl()
     {
+        setRequestName( EXTENSION_OID );
     }
 
 
@@ -63,6 +64,8 @@ public class PwdModifyRequestImpl extends AbstractExtendedRequest<PwdModifyRespo
      */
     public PwdModifyRequestImpl( int messageId )
     {
+        super( messageId );
+        setRequestName( EXTENSION_OID );
     }
 
 

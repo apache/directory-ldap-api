@@ -51,7 +51,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
 {
     /** The logger */
     private static Logger LOG = LoggerFactory.getLogger( LdapDecoder.class );
-    
+
     /** A speedup for logger */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
 

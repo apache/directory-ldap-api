@@ -77,7 +77,7 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        PwdModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNull( pwdModifyRequest.getUserIdentity() );
         assertNull( pwdModifyRequest.getOldPassword() );
         assertNull( pwdModifyRequest.getNewPassword() );
@@ -133,7 +133,7 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        PwdModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
         assertEquals( 0, pwdModifyRequest.getUserIdentity().length );
         assertNull( pwdModifyRequest.getOldPassword() );
@@ -194,7 +194,7 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        PwdModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
         assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getUserIdentity() ) );
         assertNull( pwdModifyRequest.getOldPassword() );
@@ -258,7 +258,7 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        PwdModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
         assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getUserIdentity() ) );
         assertNull( pwdModifyRequest.getOldPassword() );
@@ -327,7 +327,7 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        PwdModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
         assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getUserIdentity() ) );
         assertNull( pwdModifyRequest.getOldPassword() );
@@ -391,7 +391,7 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        PwdModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
         assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getUserIdentity() ) );
         assertNotNull( pwdModifyRequest.getOldPassword() );
@@ -459,7 +459,7 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        PwdModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
         assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getUserIdentity() ) );
         assertNotNull( pwdModifyRequest.getOldPassword() );
@@ -530,7 +530,7 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        PwdModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
         assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getUserIdentity() ) );
         assertNotNull( pwdModifyRequest.getOldPassword() );
@@ -606,7 +606,7 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        PwdModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNotNull( pwdModifyRequest.getUserIdentity() );
         assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getUserIdentity() ) );
         assertNotNull( pwdModifyRequest.getOldPassword() );
@@ -665,7 +665,7 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        PwdModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNull( pwdModifyRequest.getUserIdentity() );
         assertNotNull( pwdModifyRequest.getOldPassword() );
         assertEquals( 0, pwdModifyRequest.getOldPassword().length );
@@ -726,7 +726,7 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        PwdModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNull( pwdModifyRequest.getUserIdentity() );
         assertNotNull( pwdModifyRequest.getOldPassword() );
         assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getOldPassword() ) );
@@ -790,7 +790,7 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        PwdModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNull( pwdModifyRequest.getUserIdentity() );
         assertNotNull( pwdModifyRequest.getOldPassword() );
         assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getOldPassword() ) );
@@ -859,7 +859,7 @@ public class PasswordModifyRequestTest
             fail( de.getMessage() );
         }
 
-        PwdModifyRequest pwdModifyRequest = container.getPasswordModifyRequest();
+        PwdModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
         assertNull( pwdModifyRequest.getUserIdentity() );
         assertNotNull( pwdModifyRequest.getOldPassword() );
         assertEquals( "abcd", Strings.utf8ToString( pwdModifyRequest.getOldPassword() ) );

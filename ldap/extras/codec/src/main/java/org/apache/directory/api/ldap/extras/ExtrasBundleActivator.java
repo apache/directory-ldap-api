@@ -43,6 +43,7 @@ import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelFacto
 import org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -117,6 +118,9 @@ public class ExtrasBundleActivator implements BundleActivator
         codec.registerExtendedRequest( extReqfactory );
 
         extReqfactory = new StoredProcedureFactory( codec );
+        codec.registerExtendedRequest( extReqfactory );
+
+        extReqfactory = new PasswordModifyFactory( codec );
         codec.registerExtendedRequest( extReqfactory );
 
         // --------------------------------------------------------------------

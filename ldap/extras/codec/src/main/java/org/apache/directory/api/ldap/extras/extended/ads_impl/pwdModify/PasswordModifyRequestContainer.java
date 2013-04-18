@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
+import org.apache.directory.api.ldap.extras.extended.PwdModifyRequest;
 
 
 /**
@@ -31,7 +32,7 @@ import org.apache.directory.api.asn1.ber.AbstractContainer;
 public class PasswordModifyRequestContainer extends AbstractContainer
 {
     /** PasswordModifyRequest decorator*/
-    private PasswordModifyRequestDecorator pwdModifyRequest;
+    private PasswordModifyRequestDecorator passwordModifyRequestDecorator;
 
 
     /**
@@ -50,9 +51,9 @@ public class PasswordModifyRequestContainer extends AbstractContainer
     /**
      * @return Returns the PwdModifyRequest instance.
      */
-    public PasswordModifyRequestDecorator getPasswordModifyRequest()
+    public PwdModifyRequest getPwdModifyRequest()
     {
-        return pwdModifyRequest;
+        return passwordModifyRequestDecorator;
     }
 
 
@@ -62,9 +63,9 @@ public class PasswordModifyRequestContainer extends AbstractContainer
      * 
      * @param pwdModifyRequest the PasswordModifyRequest to set.
      */
-    public void setPasswordModifyRequest( PasswordModifyRequestDecorator pwdModifyRequest )
+    public void setPasswordModifyRequest( PasswordModifyRequestDecorator passwordModifyRequestDecorator )
     {
-        this.pwdModifyRequest = pwdModifyRequest;
+        this.passwordModifyRequestDecorator = passwordModifyRequestDecorator;
     }
 
 
@@ -74,6 +75,6 @@ public class PasswordModifyRequestContainer extends AbstractContainer
     public void clean()
     {
         super.clean();
-        pwdModifyRequest = null;
+        passwordModifyRequestDecorator = null;
     }
 }

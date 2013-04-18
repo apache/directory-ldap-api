@@ -26,6 +26,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.PwdModifyRequest;
+import org.apache.directory.api.ldap.extras.extended.PwdModifyRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.PwdModifyResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +79,12 @@ public class PasswordModifyRequestDecorator
         try
         {
             passwordModifyRequest = ( PasswordModifyRequest ) decoder.decode( requestValue );
+            ( ( PwdModifyRequestImpl ) getDecorated() ).setUserIdentity( passwordModifyRequest.getPwdModifyRequest()
+                .getUserIdentity() );
+            ( ( PwdModifyRequestImpl ) getDecorated() ).setOldPassword( passwordModifyRequest.getPwdModifyRequest()
+                .getOldPassword() );
+            ( ( PwdModifyRequestImpl ) getDecorated() ).setNewPassword( passwordModifyRequest.getPwdModifyRequest()
+                .getNewPassword() );
 
             if ( requestValue != null )
             {
@@ -142,7 +149,16 @@ public class PasswordModifyRequestDecorator
      */
     public byte[] getUserIdentity()
     {
-        return getDecorated().getUserIdentity();
+        return ( ( PwdModifyRequestImpl ) getDecorated() ).getUserIdentity();
+    }
+
+
+    /**
+     * @param userIdentity the userIdentity to set
+     */
+    public void setUserIdentity( byte[] userIdentity )
+    {
+        ( ( PwdModifyRequestImpl ) getDecorated() ).setUserIdentity( userIdentity );
     }
 
 
@@ -151,7 +167,16 @@ public class PasswordModifyRequestDecorator
      */
     public byte[] getOldPassword()
     {
-        return getDecorated().getOldPassword();
+        return ( ( PwdModifyRequestImpl ) getDecorated() ).getOldPassword();
+    }
+
+
+    /**
+     * @param oldPassword the oldPassword to set
+     */
+    public void setOldPassword( byte[] oldPassword )
+    {
+        ( ( PwdModifyRequestImpl ) getDecorated() ).setOldPassword( oldPassword );
     }
 
 
@@ -160,6 +185,15 @@ public class PasswordModifyRequestDecorator
      */
     public byte[] getNewPassword()
     {
-        return getDecorated().getNewPassword();
+        return ( ( PwdModifyRequestImpl ) getDecorated() ).getNewPassword();
+    }
+
+
+    /**
+     * @param newPassword the newPassword to set
+     */
+    public void setNewPassword( byte[] newPassword )
+    {
+        ( ( PwdModifyRequestImpl ) getDecorated() ).setNewPassword( newPassword );
     }
 }

@@ -52,11 +52,10 @@ public class PasswordModifyResponseDecoder extends Asn1Decoder
         ByteBuffer bb = ByteBuffer.wrap( stream );
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
         decoder.decode( bb, container );
-        PasswordModifyRequestDecorator passwordModifyRequestDecorator = container.getPasswordModifyRequest();
 
         // Clean the container for the next decoding
         container.clean();
 
-        return passwordModifyRequestDecorator.getPasswordModifyRequest();
+        return ( ( PasswordModifyRequestDecorator ) container.getPwdModifyRequest() ).getPasswordModifyRequest();
     }
 }
