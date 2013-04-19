@@ -68,7 +68,7 @@ import org.apache.directory.api.ldap.codec.actions.extendedRequest.StoreExtended
 import org.apache.directory.api.ldap.codec.actions.extendedRequest.StoreExtendedRequestValue;
 import org.apache.directory.api.ldap.codec.actions.extendedResponse.InitExtendedResponse;
 import org.apache.directory.api.ldap.codec.actions.extendedResponse.StoreExtendedResponseValue;
-import org.apache.directory.api.ldap.codec.actions.extendedResponse.StoreResponseName;
+import org.apache.directory.api.ldap.codec.actions.extendedResponse.StoreExtendedResponseName;
 import org.apache.directory.api.ldap.codec.actions.intermediateResponse.InitIntermediateResponse;
 import org.apache.directory.api.ldap.codec.actions.intermediateResponse.StoreIntermediateResponseName;
 import org.apache.directory.api.ldap.codec.actions.intermediateResponse.StoreIntermediateResponseValue;
@@ -2019,7 +2019,7 @@ public final class LdapMessageGrammar<E> extends
                 LdapStatesEnum.REFERRAL_ER_STATE,
                 LdapStatesEnum.RESPONSE_NAME_STATE,
                 LdapConstants.EXTENDED_RESPONSE_RESPONSE_NAME_TAG,
-                new StoreResponseName() );
+                new StoreExtendedResponseName() );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Referral ER to Response
@@ -2081,7 +2081,7 @@ public final class LdapMessageGrammar<E> extends
                 LdapStatesEnum.ERROR_MESSAGE_ER_STATE,
                 LdapStatesEnum.RESPONSE_NAME_STATE,
                 LdapConstants.EXTENDED_RESPONSE_RESPONSE_NAME_TAG,
-                new StoreResponseName() );
+                new StoreExtendedResponseName() );
 
         // --------------------------------------------------------------------------------------------
         // Transition from Response Name to Response

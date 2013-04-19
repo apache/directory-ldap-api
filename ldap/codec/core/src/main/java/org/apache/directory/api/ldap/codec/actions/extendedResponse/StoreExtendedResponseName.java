@@ -44,10 +44,10 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreResponseName extends GrammarAction<LdapMessageContainer<ExtendedResponseDecorator<?>>>
+public class StoreExtendedResponseName extends GrammarAction<LdapMessageContainer<ExtendedResponseDecorator<?>>>
 {
     /** The logger */
-    private static final Logger LOG = LoggerFactory.getLogger( StoreResponseName.class );
+    private static final Logger LOG = LoggerFactory.getLogger( StoreExtendedResponseName.class );
 
     /** Speedup for logs */
     private static final boolean IS_DEBUG = LOG.isDebugEnabled();
@@ -56,7 +56,7 @@ public class StoreResponseName extends GrammarAction<LdapMessageContainer<Extend
     /**
      * Instantiates a new response name action.
      */
-    public StoreResponseName()
+    public StoreExtendedResponseName()
     {
         super( "Store response name" );
     }
