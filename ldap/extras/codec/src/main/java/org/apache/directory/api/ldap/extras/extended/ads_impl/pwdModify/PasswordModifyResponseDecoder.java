@@ -25,6 +25,7 @@ import java.nio.ByteBuffer;
 import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.ldap.extras.extended.PwdModifyResponse;
 
 
 /**
@@ -50,12 +51,13 @@ public class PasswordModifyResponseDecoder extends Asn1Decoder
     public Asn1Object decode( byte[] stream ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( stream );
-        PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
+        PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
         decoder.decode( bb, container );
+        PwdModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
 
         // Clean the container for the next decoding
         container.clean();
 
-        return ( ( PasswordModifyRequestDecorator ) container.getPwdModifyRequest() ).getPasswordModifyRequest();
+        return ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).getPasswordModifyResponse();
     }
 }

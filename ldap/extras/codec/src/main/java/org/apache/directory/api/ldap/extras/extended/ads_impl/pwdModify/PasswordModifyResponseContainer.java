@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
+import org.apache.directory.api.ldap.extras.extended.PwdModifyResponse;
 
 
 /**
@@ -31,7 +32,7 @@ import org.apache.directory.api.asn1.ber.AbstractContainer;
 public class PasswordModifyResponseContainer extends AbstractContainer
 {
     /** PasswordModifyResponse decorator*/
-    private PasswordModifyResponseDecorator pwdModifyResponse;
+    private PasswordModifyResponseDecorator passwordModifyResponseDecorator;
 
 
     /**
@@ -50,9 +51,9 @@ public class PasswordModifyResponseContainer extends AbstractContainer
     /**
      * @return Returns the PwdModifyResponset instance.
      */
-    public PasswordModifyResponseDecorator getPasswordModifyResponse()
+    public PwdModifyResponse getPwdModifyResponse()
     {
-        return pwdModifyResponse;
+        return passwordModifyResponseDecorator;
     }
 
 
@@ -60,11 +61,11 @@ public class PasswordModifyResponseContainer extends AbstractContainer
      * Set a PasswordModifyResponse Object into the container. It will be completed by
      * the ldapDecoder.
      * 
-     * @param pwdModifyResponse the PasswordModifyResponse to set.
+     * @param passwordModifyResponseDecorator the PasswordModifyResponse to set.
      */
-    public void setPasswordModifyResponse( PasswordModifyResponseDecorator pwdModifyResponse )
+    public void setPasswordModifyResponse( PasswordModifyResponseDecorator passwordModifyResponseDecorator )
     {
-        this.pwdModifyResponse = pwdModifyResponse;
+        this.passwordModifyResponseDecorator = passwordModifyResponseDecorator;
     }
 
 
@@ -74,6 +75,6 @@ public class PasswordModifyResponseContainer extends AbstractContainer
     public void clean()
     {
         super.clean();
-        pwdModifyResponse = null;
+        passwordModifyResponseDecorator = null;
     }
 }

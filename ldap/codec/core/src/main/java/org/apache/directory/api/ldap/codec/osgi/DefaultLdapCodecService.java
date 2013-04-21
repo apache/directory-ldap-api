@@ -20,6 +20,14 @@
 package org.apache.directory.api.ldap.codec.osgi;
 
 
+import java.nio.ByteBuffer;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.naming.NamingException;
+
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
@@ -51,14 +59,6 @@ import org.apache.directory.api.util.exception.NotImplementedException;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.nio.ByteBuffer;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import javax.naming.NamingException;
 
 
 /**
@@ -485,12 +485,13 @@ public class DefaultLdapCodecService implements LdapApiService
      * @throws DecoderException 
      */
     @SuppressWarnings("unchecked")
-    public <E extends ExtendedResponse> E newExtendedResponse( ExtendedRequest<E> req, byte[] serializedResponse )
+    public <E extends ExtendedResponse> E newExtendedResponse( String responseName, int messageId,
+        byte[] serializedResponse )
         throws DecoderException
     {
         ExtendedResponseDecorator<ExtendedResponse> resp;
 
-        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( req.getRequestName() );
+        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( responseName );
         if ( extendedRequestFactory != null )
         {
             resp = ( ExtendedResponseDecorator<ExtendedResponse> ) extendedRequestFactory
@@ -499,12 +500,12 @@ public class DefaultLdapCodecService implements LdapApiService
         else
         {
             resp = new ExtendedResponseDecorator<ExtendedResponse>( this,
-                new ExtendedResponseImpl( req.getRequestName() ) );
+                new ExtendedResponseImpl( responseName ) );
             resp.setResponseValue( serializedResponse );
-            resp.setResponseName( req.getRequestName() );
+            resp.setResponseName( responseName );
         }
 
-        resp.setMessageId( req.getMessageId() );
+        resp.setMessageId( messageId );
         return ( E ) resp;
     }
 

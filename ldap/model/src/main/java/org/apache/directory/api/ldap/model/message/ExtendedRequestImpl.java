@@ -137,7 +137,7 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
      * 
      * @return the result containing response for this request
      */
-    public ExtendedResponseImpl getResultResponse()
+    public ExtendedResponse getExtendedResponse()
     {
         if ( response == null )
         {
@@ -145,6 +145,15 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
         }
 
         return response;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedResponse getResultResponse()
+    {
+        return getExtendedResponse();
     }
 
 

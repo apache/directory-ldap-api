@@ -61,7 +61,7 @@ public class PasswordModifyRequestContainer extends AbstractContainer
      * Set a PasswordModifyRequest Object into the container. It will be completed by
      * the ldapDecoder.
      * 
-     * @param pwdModifyRequest the PasswordModifyRequest to set.
+     * @param passwordModifyRequestDecorator the PasswordModifyRequest to set.
      */
     public void setPasswordModifyRequest( PasswordModifyRequestDecorator passwordModifyRequestDecorator )
     {

@@ -52,6 +52,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
+import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapDecoder;
@@ -59,6 +60,7 @@ import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.codec.api.MessageEncoderException;
 import org.apache.directory.api.ldap.codec.api.SchemaBinaryAttributeDetector;
+import org.apache.directory.api.ldap.codec.standalone.StandaloneLdapApiService;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.cursor.Cursor;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
@@ -105,6 +107,7 @@ import org.apache.directory.api.ldap.model.message.ModifyResponse;
 import org.apache.directory.api.ldap.model.message.Request;
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.message.ResultResponse;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
@@ -195,6 +198,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * the Ldap server.
      */
     private IoSession ldapSession;
+
+    /** The LDAP Api Service instance */
+    LdapApiService ldapApiService;
 
     /** a map to hold the ResponseFutures for all operations */
     private Map<Integer, ResponseFuture<? extends Response>> futureMap = new ConcurrentHashMap<Integer, ResponseFuture<? extends Response>>();
@@ -336,12 +342,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public LdapNetworkConnection()
     {
-        super();
-        config = new LdapConnectionConfig();
-        config.setUseSsl( false );
-        config.setLdapPort( config.getDefaultLdapPort() );
-        config.setLdapHost( config.getDefaultLdapHost() );
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
+        this( null, -1, false );
     }
 
 
@@ -360,6 +361,16 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             config.setBinaryAttributeDetector( new DefaultConfigurableBinaryAttributeDetector() );
         }
+
+        // Load the LdapApiService now
+        try
+        {
+            ldapApiService = new StandaloneLdapApiService();
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
     }
 
 
@@ -371,12 +382,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public LdapNetworkConnection( boolean useSsl )
     {
-        super();
-        config = new LdapConnectionConfig();
-        config.setUseSsl( useSsl );
-        config.setLdapPort( useSsl ? config.getDefaultLdapsPort() : config.getDefaultLdapPort() );
-        config.setLdapHost( config.getDefaultLdapHost() );
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
+        this( null, -1, useSsl );
     }
 
 
@@ -389,22 +395,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public LdapNetworkConnection( String server )
     {
-        super();
-        config = new LdapConnectionConfig();
-        config.setUseSsl( false );
-        config.setLdapPort( config.getDefaultLdapPort() );
-
-        // Default to localhost if null
-        if ( Strings.isEmpty( server ) )
-        {
-            config.setLdapHost( "localhost" );
-        }
-        else
-        {
-            config.setLdapHost( server );
-        }
-
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
+        this( server, -1, false );
     }
 
 
@@ -419,22 +410,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public LdapNetworkConnection( String server, boolean useSsl )
     {
-        super();
-        config = new LdapConnectionConfig();
-        config.setUseSsl( useSsl );
-        config.setLdapPort( useSsl ? config.getDefaultLdapsPort() : config.getDefaultLdapPort() );
-
-        // Default to localhost if null
-        if ( Strings.isEmpty( server ) )
-        {
-            config.setLdapHost( "localhost" );
-        }
-        else
-        {
-            config.setLdapHost( server );
-        }
-
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
+        this( server, -1, useSsl );
     }
 
 
@@ -466,7 +442,22 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         super();
         config = new LdapConnectionConfig();
         config.setUseSsl( useSsl );
-        config.setLdapPort( port );
+
+        if ( port != -1 )
+        {
+            config.setLdapPort( port );
+        }
+        else
+        {
+            if ( useSsl )
+            {
+                config.setLdapPort( config.getDefaultLdapsPort() );
+            }
+            else
+            {
+                config.setLdapPort( config.getDefaultLdapPort() );
+            }
+        }
 
         // Default to localhost if null
         if ( Strings.isEmpty( server ) )
@@ -479,6 +470,16 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
 
         config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
+
+        // Load the LdapApiService now
+        try
+        {
+            ldapApiService = new StandaloneLdapApiService();
+        }
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
     }
 
 
@@ -3085,28 +3086,36 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // Read the response, waiting for it if not available immediately
             // Get the response, blocking
-            ExtendedResponse extendedResponse = ( ExtendedResponse ) extendedFuture
+            ExtendedResponse response = ( ExtendedResponse ) extendedFuture
                 .get( timeout, TimeUnit.MILLISECONDS );
 
-            if ( extendedResponse == null )
+            if ( response == null )
             {
                 // We didn't received anything : this is an error
                 LOG.error( "Extended failed : timeout occurred" );
                 throw new LdapException( TIME_OUT_ERROR );
             }
 
-            if ( extendedResponse.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
+            if ( response.getLdapResult().getResultCode() == ResultCodeEnum.SUCCESS )
             {
                 // Everything is fine, return the response
-                LOG.debug( "Extended successful : {}", extendedResponse );
+                LOG.debug( "Extended successful : {}", response );
             }
             else
             {
                 // We have had an error
-                LOG.debug( "Extended failed : {}", extendedResponse );
+                LOG.debug( "Extended failed : {}", response );
             }
 
-            return extendedResponse;
+            // Get back the response. It's still an opaque response
+            ResultResponse resultResponse = extendedRequest.getResultResponse();
+
+            // Decode the payload now
+            resultResponse.getMessageId();
+
+            ExtendedResponseDecorator decoratedResponse = ldapApiService.decorate( ( ExtendedResponse ) resultResponse );
+
+            return decoratedResponse;
         }
         catch ( TimeoutException te )
         {

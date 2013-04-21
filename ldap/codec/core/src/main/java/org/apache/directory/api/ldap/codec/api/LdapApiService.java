@@ -265,7 +265,18 @@ public interface LdapApiService
     Asn1Container newMessageContainer();
 
 
-    <E extends ExtendedResponse> E newExtendedResponse( ExtendedRequest<E> req, byte[] serializedResponse )
+    /**
+     * Create an instance of a ExtendedResponse, knowing its OID. Inject the payload
+     * into it.
+     * 
+     * @param responseName The extendedRespose OID
+     * @param messageId The original message ID
+     * @param serializedResponse The serialized response payload
+     * @return The extendedResponse instance
+     * 
+     * @throws DecoderException If the payload is incorrect
+     */
+    <E extends ExtendedResponse> E newExtendedResponse( String responseName, int messageId, byte[] serializedResponse )
         throws DecoderException;
 
 

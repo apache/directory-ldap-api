@@ -26,6 +26,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.PwdModifyResponse;
+import org.apache.directory.api.ldap.extras.extended.PwdModifyResponseImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +51,9 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
     }
 
 
+    /**
+     * @return The ASN1 object containing the PwdModifyResponse instance
+     */
     public PasswordModifyResponse getPasswordModifyResponse()
     {
         return passwordModifyResponse;
@@ -67,6 +71,8 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
         try
         {
             passwordModifyResponse = ( PasswordModifyResponse ) decoder.decode( responseValue );
+            ( ( PwdModifyResponseImpl ) getDecorated() ).setGenPassword( passwordModifyResponse.getPwdModifyResponse()
+                .getGenPassword() );
 
             if ( responseValue != null )
             {
@@ -123,5 +129,24 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
     public byte[] getGenPassword()
     {
         return getDecorated().getGenPassword();
+    }
+
+
+    /**
+     * @param genPassword the genPassword to set
+     */
+    public void setGenPassword( byte[] genPassword )
+    {
+        ( ( PwdModifyResponseImpl ) getDecorated() ).setGenPassword( genPassword );
+    }
+
+
+    /**
+     * Overload the parent's getResponseName method, as the pwdModify response should not
+     * contain the responseName.
+     */
+    public String getResponseName()
+    {
+        return null;
     }
 }

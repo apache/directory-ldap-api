@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.codec.extended;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -132,10 +133,10 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
-        assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
+        assertNull( extendedResponse.getLdapResult().getMatchedDn() );
+        assertNull( extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
-        assertEquals( "value", Strings.utf8ToString( ( byte[] ) extendedResponse.getResponseValue() ) );
+        assertEquals( "value", Strings.utf8ToString( extendedResponse.getResponseValue() ) );
 
         // Check the encoding
         try
@@ -267,10 +268,10 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
-        assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
+        assertNull( extendedResponse.getLdapResult().getMatchedDn() );
+        assertNull( extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
-        assertEquals( "value", Strings.utf8ToString( ( byte[] ) extendedResponse.getResponseValue() ) );
+        assertEquals( "value", Strings.utf8ToString( extendedResponse.getResponseValue() ) );
 
         // Check the Control
         Map<String, Control> controls = extendedResponse.getControls();
@@ -281,7 +282,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls
             .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
+        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
         try
@@ -478,7 +479,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls
             .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
+        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
         try
@@ -717,10 +718,10 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
-        assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
+        assertNull( extendedResponse.getLdapResult().getMatchedDn() );
+        assertNull( extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
-        assertEquals( "", Strings.utf8ToString( ( byte[] ) extendedResponse.getResponseValue() ) );
+        assertEquals( "", Strings.utf8ToString( extendedResponse.getResponseValue() ) );
 
         // Check the encoding
         try
@@ -843,10 +844,10 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
-        assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
+        assertNull( extendedResponse.getLdapResult().getMatchedDn() );
+        assertNull( extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
-        assertEquals( "", Strings.utf8ToString( ( byte[] ) extendedResponse.getResponseValue() ) );
+        assertEquals( "", Strings.utf8ToString( extendedResponse.getResponseValue() ) );
 
         // Check the Control
         Map<String, Control> controls = extendedResponse.getControls();
@@ -857,7 +858,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls
             .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
+        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
         try
@@ -952,10 +953,10 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
-        assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
+        assertNull( extendedResponse.getLdapResult().getMatchedDn() );
+        assertNull( extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
-        assertEquals( "", Strings.utf8ToString( ( byte[] ) extendedResponse.getResponseValue() ) );
+        assertEquals( "", Strings.utf8ToString( extendedResponse.getResponseValue() ) );
 
         // Check the encoding
         try
@@ -1081,10 +1082,10 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
-        assertEquals( "", extendedResponse.getLdapResult().getMatchedDn().getName() );
-        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
+        assertNull( extendedResponse.getLdapResult().getMatchedDn() );
+        assertNull( extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
-        assertEquals( "", Strings.utf8ToString( ( byte[] ) extendedResponse.getResponseValue() ) );
+        assertEquals( "", Strings.utf8ToString( extendedResponse.getResponseValue() ) );
 
         // Check the Control
         Map<String, Control> controls = extendedResponse.getControls();
@@ -1095,7 +1096,7 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
         CodecControl<Control> control = ( org.apache.directory.api.ldap.codec.api.CodecControl<Control> ) controls
             .get( "2.16.840.1.113730.3.4.2" );
         assertEquals( "2.16.840.1.113730.3.4.2", control.getOid() );
-        assertEquals( "", Strings.dumpBytes( ( byte[] ) control.getValue() ) );
+        assertEquals( "", Strings.dumpBytes( control.getValue() ) );
 
         // Check the encoding
         try

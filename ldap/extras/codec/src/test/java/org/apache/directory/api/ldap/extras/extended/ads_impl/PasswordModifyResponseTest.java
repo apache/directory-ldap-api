@@ -77,7 +77,7 @@ public class PasswordModifyResponseTest
             fail( de.getMessage() );
         }
 
-        PwdModifyResponse pwdModifyResponse = container.getPasswordModifyResponse();
+        PwdModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
         assertNull( pwdModifyResponse.getGenPassword() );
 
         // Check the length
@@ -131,7 +131,7 @@ public class PasswordModifyResponseTest
             fail( de.getMessage() );
         }
 
-        PwdModifyResponse pwdModifyResponse = container.getPasswordModifyResponse();
+        PwdModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
         assertNotNull( pwdModifyResponse.getGenPassword() );
         assertEquals( 0, pwdModifyResponse.getGenPassword().length );
 
@@ -190,7 +190,7 @@ public class PasswordModifyResponseTest
             fail( de.getMessage() );
         }
 
-        PwdModifyResponse pwdModifyResponse = container.getPasswordModifyResponse();
+        PwdModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
         assertNotNull( pwdModifyResponse.getGenPassword() );
         assertEquals( "abcd", Strings.utf8ToString( pwdModifyResponse.getGenPassword() ) );
 

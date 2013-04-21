@@ -669,12 +669,13 @@ public class StandaloneLdapApiService implements LdapApiService
      * @throws DecoderException 
      */
     @SuppressWarnings("unchecked")
-    public <E extends ExtendedResponse> E newExtendedResponse( ExtendedRequest<E> req, byte[] serializedResponse )
+    public <E extends ExtendedResponse> E newExtendedResponse( String responseName, int messageId,
+        byte[] serializedResponse )
         throws DecoderException
     {
         ExtendedResponseDecorator<ExtendedResponse> resp;
 
-        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( req.getRequestName() );
+        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( responseName );
 
         if ( extendedRequestFactory != null )
         {
@@ -684,12 +685,12 @@ public class StandaloneLdapApiService implements LdapApiService
         else
         {
             resp = new ExtendedResponseDecorator<ExtendedResponse>( this,
-                new ExtendedResponseImpl( req.getRequestName() ) );
+                new ExtendedResponseImpl( responseName ) );
             resp.setResponseValue( serializedResponse );
-            resp.setResponseName( req.getRequestName() );
+            resp.setResponseName( responseName );
         }
 
-        resp.setMessageId( req.getMessageId() );
+        resp.setMessageId( messageId );
 
         return ( E ) resp;
     }

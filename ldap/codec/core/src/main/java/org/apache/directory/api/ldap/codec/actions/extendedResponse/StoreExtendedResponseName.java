@@ -26,6 +26,7 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.util.Strings;
@@ -68,7 +69,7 @@ public class StoreExtendedResponseName extends GrammarAction<LdapMessageContaine
     public void action( LdapMessageContainer<ExtendedResponseDecorator<?>> container ) throws DecoderException
     {
         // We can allocate the ExtendedResponse Object
-        ExtendedResponse extendedResponse = container.getMessage();
+        ExtendedResponse extendedResponse = null;
 
         // Get the Value and store it in the ExtendedResponse
         TLV tlv = container.getCurrentTLV();
@@ -83,8 +84,12 @@ public class StoreExtendedResponseName extends GrammarAction<LdapMessageContaine
         }
         else
         {
-            extendedResponse.setResponseName( new Oid( Strings.asciiBytesToString( tlv.getValue().getData() ) )
-                .toString() );
+            String responseName = new Oid( Strings.asciiBytesToString( tlv.getValue().getData() ) )
+                .toString();
+
+            extendedResponse = LdapApiServiceFactory.getSingleton().newExtendedResponse( responseName,
+                container.getMessageId(), null );
+            container.setMessage( LdapApiServiceFactory.getSingleton().decorate( extendedResponse ) );
         }
 
         // We can have an END transition
