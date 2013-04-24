@@ -236,7 +236,7 @@ public class BinaryValue extends AbstractValue<byte[]>
         }
 
         BinaryValue other = ( BinaryValue ) obj;
-        
+
         // First check if we have an attrbuteType.
         if ( attributeType != null )
         {
@@ -260,11 +260,11 @@ public class BinaryValue extends AbstractValue<byte[]>
                     {
                         return true;
                     }
-                    
+
                     // We have an AttributeType, we use the associated comparator
                     try
                     {
-                        Comparator<byte[]> comparator = ( Comparator<byte[]> ) getLdapComparator();
+                        Comparator<byte[]> comparator = getLdapComparator();
 
                         // Compare normalized values
                         if ( comparator == null )
@@ -300,22 +300,22 @@ public class BinaryValue extends AbstractValue<byte[]>
                 // We have an AttributeType on the base value, we need to use its comparator
                 try
                 {
-                    Comparator<byte[]> comparator = ( Comparator<byte[]> ) getLdapComparator();
+                    Comparator<byte[]> comparator = getLdapComparator();
 
                     // Compare normalized values. We have to normalized the other value,
                     // as it has no AT
                     MatchingRule equality = getAttributeType().getEquality();
-                    
+
                     if ( equality == null )
                     {
                         // No matching rule : compare the raw values
                         return Arrays.equals( getNormReference(), other.getNormReference() );
                     }
-                    
+
                     Normalizer normalizer = equality.getNormalizer();
-                    
-                    BinaryValue otherValue = (BinaryValue)normalizer.normalize( other );
-                    
+
+                    BinaryValue otherValue = ( BinaryValue ) normalizer.normalize( other );
+
                     if ( comparator == null )
                     {
                         return Arrays.equals( getNormReference(), otherValue.getNormReference() );
@@ -343,25 +343,25 @@ public class BinaryValue extends AbstractValue<byte[]>
                 {
                     return other.isNull();
                 }
-                
+
                 try
                 {
-                    Comparator<byte[]> comparator = ( Comparator<byte[]> ) other.getLdapComparator();
+                    Comparator<byte[]> comparator = other.getLdapComparator();
 
                     // Compare normalized values. We have to normalized the other value,
                     // as it has no AT
                     MatchingRule equality = other.getAttributeType().getEquality();
-                    
+
                     if ( equality == null )
                     {
                         // No matching rule : compare the raw values
                         return Arrays.equals( getNormReference(), other.getNormReference() );
                     }
-                    
+
                     Normalizer normalizer = equality.getNormalizer();
-                    
-                    BinaryValue thisValue = (BinaryValue)normalizer.normalize( this );
-                    
+
+                    BinaryValue thisValue = ( BinaryValue ) normalizer.normalize( this );
+
                     if ( comparator == null )
                     {
                         return Arrays.equals( thisValue.getNormReference(), other.getNormReference() );
@@ -383,7 +383,7 @@ public class BinaryValue extends AbstractValue<byte[]>
                 {
                     return other.isNull();
                 }
-                
+
                 // Now check the normalized values
                 return Arrays.equals( getNormReference(), other.getNormReference() );
             }
@@ -558,6 +558,35 @@ public class BinaryValue extends AbstractValue<byte[]>
                 try
                 {
                     normalizedValue = attributeType.getEquality().getNormalizer().normalize( this ).getBytes();
+                    MatchingRule equality = attributeType.getEquality();
+
+                    if ( equality == null )
+                    {
+                        if ( wrappedLength >= 0 )
+                        {
+                            normalizedValue = new byte[wrappedLength];
+
+                            System.arraycopy( wrappedValue, 0, normalizedValue, 0, wrappedLength );
+                        }
+                    }
+                    else
+                    {
+                        Normalizer normalizer = equality.getNormalizer();
+
+                        if ( normalizer != null )
+                        {
+                            normalizedValue = normalizer.normalize( this ).getBytes();
+                        }
+                        else
+                        {
+                            if ( wrappedLength >= 0 )
+                            {
+                                normalizedValue = new byte[wrappedLength];
+
+                                System.arraycopy( wrappedValue, 0, normalizedValue, 0, wrappedLength );
+                            }
+                        }
+                    }
                 }
                 catch ( LdapException le )
                 {

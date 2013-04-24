@@ -535,7 +535,25 @@ public class StringValue extends AbstractValue<String>
             {
                 try
                 {
-                    normalizedValue = attributeType.getEquality().getNormalizer().normalize( wrappedValue );
+                    MatchingRule equality = attributeType.getEquality();
+
+                    if ( equality == null )
+                    {
+                        normalizedValue = wrappedValue;
+                    }
+                    else
+                    {
+                        Normalizer normalizer = equality.getNormalizer();
+
+                        if ( normalizer != null )
+                        {
+                            normalizedValue = normalizer.normalize( wrappedValue );
+                        }
+                        else
+                        {
+                            normalizedValue = wrappedValue;
+                        }
+                    }
                 }
                 catch ( LdapException le )
                 {
