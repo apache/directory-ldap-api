@@ -72,11 +72,30 @@ public final class IntegerDecoder
     {
         return parseInt( value );
     }
-    
-    
+
+
     /**
      * Helper method used to parse the integer. We don't check any minimal or maximal
      * bound.
+     * An BER encoded int can be either positive or negative. It uses the minimum
+     * number of byts necessary to encode the value. The high order bit gives the
+     * sign of the integer : if it's 1, then it's a negative value, otherwise it's
+     * a positive value. Integer with a high order bit set to 1 but prefixed by a 0x00
+     * are positive. If the integer is negative, then the 2 complement value is
+     * stored<br/>
+     * Here are a few samples :
+     * <ul>
+     * <li>0x02 0x01 0x00 : integer 0</li>
+     * <li>0x02 0x01 0x01 : integer 1</li>
+     * <li>0x02 0x01 0x7F : integer 127</li>
+     * <li>0x02 0x01 0x80 : integer -128</li>
+     * <li>0x02 0x01 0x81 : integer -127</li>
+     * <li>0x02 0x01 0xFF : integer -1</li>
+     * <li>0x02 0x02 0x00 0x80 : integer 128</li>
+     * <li>0x02 0x02 0x00 0x81 : integer 129</li>
+     * <li>0x02 0x02 0x00 0xFF : integer 255</li>
+     * </ul>
+     * and so on...
      */
     private static int parseInt( BerValue value ) throws IntegerDecoderException
     {
@@ -89,21 +108,111 @@ public final class IntegerDecoder
             throw new IntegerDecoderException( I18n.err( I18n.ERR_00036_0_BYTES_LONG_INTEGER ) );
         }
 
-        if ( bytes.length > 4 )
+        boolean positive = true;
+
+        switch ( bytes.length )
         {
-            throw new IntegerDecoderException( I18n.err( I18n.ERR_00037_ABOVE_4_BYTES_INTEGER ) );
+            case 5:
+                if ( bytes[0] == 0x00 )
+                {
+                    if ( ( bytes[1] & ( byte ) 0x80 ) != ( byte ) 0x80 )
+                    {
+                        throw new IntegerDecoderException( I18n.err( I18n.ERR_00036_0_BYTES_LONG_INTEGER ) );
+                    }
+
+                    result = bytes[1] & 0x00FF;
+                    result = ( result << 8 ) | ( bytes[2] & 0x00FF );
+                    result = ( result << 8 ) | ( bytes[3] & 0x00FF );
+                    result = ( result << 8 ) | ( bytes[4] & 0x00FF );
+                }
+                else
+                {
+                    throw new IntegerDecoderException( I18n.err( I18n.ERR_00036_0_BYTES_LONG_INTEGER ) );
+                }
+
+                break;
+
+            case 4:
+                if ( bytes[0] == 0x00 )
+                {
+                    result = bytes[1] & 0x00FF;
+                }
+                else
+                {
+                    result = bytes[0] & 0x00FF;
+
+                    if ( ( bytes[0] & ( byte ) 0x80 ) == ( byte ) 0x80 )
+                    {
+                        positive = false;
+                    }
+
+                    result = ( result << 8 ) | ( bytes[1] & 0x00FF );
+                }
+
+                result = ( result << 8 ) | ( bytes[2] & 0x00FF );
+                result = ( result << 8 ) | ( bytes[3] & 0x00FF );
+
+                break;
+
+            case 3:
+                if ( bytes[0] == 0x00 )
+                {
+                    result = bytes[1] & 0x00FF;
+                }
+                else
+                {
+                    result = bytes[0] & 0x00FF;
+
+                    if ( ( bytes[0] & ( byte ) 0x80 ) == ( byte ) 0x80 )
+                    {
+                        positive = false;
+                    }
+
+                    result = ( result << 8 ) | ( bytes[1] & 0x00FF );
+                }
+
+                result = ( result << 8 ) | ( bytes[2] & 0x00FF );
+
+                break;
+
+            case 2:
+                if ( bytes[0] == 0x00 )
+                {
+                    result = bytes[1] & 0x00FF;
+                }
+                else
+                {
+                    result = bytes[0] & 0x00FF;
+
+                    if ( ( bytes[0] & ( byte ) 0x80 ) == ( byte ) 0x80 )
+                    {
+                        positive = false;
+                    }
+
+                    result = ( result << 8 ) | ( bytes[1] & 0x00FF );
+                }
+
+                break;
+
+            case 1:
+                result = ( result << 8 ) | ( bytes[0] & 0x00FF );
+
+                if ( ( bytes[0] & ( byte ) 0x80 ) == ( byte ) 0x80 )
+                {
+                    positive = false;
+                }
+
+                break;
+
+            default:
+                throw new IntegerDecoderException( I18n.err( I18n.ERR_00037_ABOVE_4_BYTES_INTEGER ) );
         }
 
-        for ( int i = 0; ( i < bytes.length ); i++ )
-        {
-            result = ( result << 8 ) | ( bytes[i] & 0x00FF );
-        }
-
-        if ( ( bytes[0] & 0x80 ) == 0x80 )
+        if ( !positive )
         {
             result = -( ( ( ~result ) + 1 ) & MASK[bytes.length - 1] );
         }
-        
+
         return result;
     }
 }
