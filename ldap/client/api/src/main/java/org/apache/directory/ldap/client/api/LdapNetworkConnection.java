@@ -60,7 +60,6 @@ import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.codec.api.MessageEncoderException;
 import org.apache.directory.api.ldap.codec.api.SchemaBinaryAttributeDetector;
-import org.apache.directory.api.ldap.codec.standalone.StandaloneLdapApiService;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.cursor.Cursor;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
@@ -365,7 +364,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Load the LdapApiService now
         try
         {
-            ldapApiService = new StandaloneLdapApiService();
+            ldapApiService = LdapApiServiceFactory.getSingleton();
         }
         catch ( Exception e )
         {
@@ -474,7 +473,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Load the LdapApiService now
         try
         {
-            ldapApiService = new StandaloneLdapApiService();
+            ldapApiService = LdapApiServiceFactory.getSingleton();
         }
         catch ( Exception e )
         {
