@@ -98,6 +98,7 @@ public class LdapConnectionConfig
     /** The class used to detect if an attribute is HR or not */
     private BinaryAttributeDetector binaryAttributeDetector;
 
+
     /**
      * Creates a default LdapConnectionConfig instance
      */
@@ -118,7 +119,7 @@ public class LdapConnectionConfig
         {
             TrustManagerFactory tmFactory = TrustManagerFactory.getInstance( trustMgmtAlgo );
             tmFactory.init( ( KeyStore ) null );
-            
+
             TrustManager factoryTrustManagers[] = tmFactory.getTrustManagers();
 
             for ( int i = 0; i < factoryTrustManagers.length; i++ )
@@ -416,8 +417,8 @@ public class LdapConnectionConfig
     {
         this.enabledCipherSuites = enabledCipherSuites;
     }
-    
-    
+
+
     /**
      * @return the binaryAttributeDetector
      */

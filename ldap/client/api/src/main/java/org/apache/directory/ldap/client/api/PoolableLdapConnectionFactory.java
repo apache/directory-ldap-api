@@ -22,6 +22,9 @@ package org.apache.directory.ldap.client.api;
 
 
 import org.apache.commons.pool.PoolableObjectFactory;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,7 +84,7 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
         LOG.debug( "Creating a LDAP connection" );
 
         LdapNetworkConnection connection = new LdapNetworkConnection( config );
-        
+
         try
         {
             connection.bind( config.getName(), config.getCredentials() );
@@ -89,14 +92,14 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
         catch ( Exception e )
         {
             LOG.warn( "Cannot bind : {}", e.getMessage() );
-            
+
             // We weren't able to bind : close the connection
             connection.close();
-            
+
             // And re-throw the exception
             throw e;
         }
-        
+
         return connection;
     }
 
@@ -117,6 +120,20 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
     {
         LOG.debug( "Validating {}", connection );
 
-        return connection.isConnected();
+        if ( connection.isConnected() )
+        {
+            try
+            {
+                return connection.lookup( Dn.ROOT_DSE, SchemaConstants.NO_ATTRIBUTE ) != null;
+            }
+            catch ( LdapException le )
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 }

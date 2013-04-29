@@ -53,7 +53,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
      */
     public LdapConnection getConnection() throws Exception
     {
-        return ( LdapConnection ) super.borrowObject();
+        return super.borrowObject();
     }
 
 
