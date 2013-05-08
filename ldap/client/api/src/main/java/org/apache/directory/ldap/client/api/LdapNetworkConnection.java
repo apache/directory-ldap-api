@@ -892,7 +892,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     private void abandonInternal( AbandonRequest abandonRequest )
     {
-        LOG.debug( "-----------------------------------------------------------------" );
         LOG.debug( "Sending request \n{}", abandonRequest );
 
         int newId = messageId.incrementAndGet();
@@ -1168,7 +1167,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         int newId = messageId.incrementAndGet();
         bindRequest.setMessageId( newId );
 
-        LOG.debug( "-----------------------------------------------------------------" );
         LOG.debug( "Sending request \n{}", bindRequest );
 
         // Create a future for this Bind operation
@@ -1630,7 +1628,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         int newId = messageId.incrementAndGet();
         searchRequest.setMessageId( newId );
 
-        LOG.debug( "-----------------------------------------------------------------" );
         LOG.debug( "Sending request \n{}", searchRequest );
 
         SearchFuture searchFuture = new SearchFuture( this, searchRequest.getMessageId() );
@@ -1690,7 +1687,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         UnbindRequest unbindRequest = new UnbindRequestImpl();
         unbindRequest.setMessageId( newId );
 
-        LOG.debug( "-----------------------------------------------------------------" );
         LOG.debug( "Sending Unbind request \n{}", unbindRequest );
 
         // Send the request to the server
@@ -3750,7 +3746,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         int newId = messageId.incrementAndGet();
         bindRequest.setMessageId( newId );
 
-        LOG.debug( "-----------------------------------------------------------------" );
         LOG.debug( "Sending request \n{}", bindRequest );
 
         // Create a future for this Bind operation
