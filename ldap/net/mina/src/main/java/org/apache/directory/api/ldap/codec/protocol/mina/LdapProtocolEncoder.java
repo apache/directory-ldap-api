@@ -24,11 +24,15 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
+import org.apache.directory.api.ldap.model.constants.Loggers;
 import org.apache.directory.api.ldap.model.message.Message;
+import org.apache.directory.api.util.Strings;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoder;
 import org.apache.mina.filter.codec.ProtocolEncoderOutput;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -38,6 +42,12 @@ import org.apache.mina.filter.codec.ProtocolEncoderOutput;
  */
 public class LdapProtocolEncoder implements ProtocolEncoder
 {
+    /** logger for reporting errors that might not be handled properly upstream */
+    private static final Logger CODEC_LOG = LoggerFactory.getLogger( Loggers.CODEC_LOG.getName() );
+
+    /** A speedup for logger */
+    private static final boolean IS_DEBUG = CODEC_LOG.isDebugEnabled();
+
     /** The stateful encoder */
     private LdapEncoder encoder;
 
@@ -61,6 +71,14 @@ public class LdapProtocolEncoder implements ProtocolEncoder
         ByteBuffer buffer = encoder.encodeMessage( ( Message ) message );
 
         IoBuffer ioBuffer = IoBuffer.wrap( buffer );
+
+        if ( IS_DEBUG )
+        {
+            byte[] dumpBuffer = new byte[buffer.limit()];
+            buffer.get( dumpBuffer );
+            buffer.flip();
+            CODEC_LOG.debug( "Encoded message \n " + message + "\n : " + Strings.dumpBytes( dumpBuffer ) );
+        }
 
         out.write( ioBuffer );
     }

@@ -31,6 +31,7 @@ import org.apache.directory.api.ldap.codec.api.LdapDecoder;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.codec.api.ResponseCarryingException;
+import org.apache.directory.api.ldap.model.constants.Loggers;
 import org.apache.directory.api.ldap.model.exception.ResponseCarryingMessageException;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.util.Strings;
@@ -50,10 +51,10 @@ import org.slf4j.LoggerFactory;
 public class LdapProtocolDecoder implements ProtocolDecoder
 {
     /** The logger */
-    private static Logger LOG = LoggerFactory.getLogger( LdapDecoder.class );
+    private static final Logger CODEC_LOG = LoggerFactory.getLogger( Loggers.CODEC_LOG.getName() );
 
     /** A speedup for logger */
-    private static final boolean IS_DEBUG = LOG.isDebugEnabled();
+    private static final boolean IS_DEBUG = CODEC_LOG.isDebugEnabled();
 
     /** The ASN 1 decoder instance */
     private Asn1Decoder asn1Decoder;
@@ -121,7 +122,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
             {
                 if ( IS_DEBUG )
                 {
-                    LOG.debug( "Decoding the PDU : " );
+                    CODEC_LOG.debug( "Decoding the PDU : " );
 
                     int size = buffer.limit();
                     int position = buffer.position();
@@ -133,11 +134,11 @@ public class LdapProtocolDecoder implements ProtocolDecoder
 
                     if ( array.length == 0 )
                     {
-                        LOG.debug( "NULL buffer, what the HELL ???" );
+                        CODEC_LOG.debug( "NULL buffer, what the HELL ???" );
                     }
                     else
                     {
-                        LOG.debug( Strings.dumpBytes( array ) );
+                        CODEC_LOG.debug( Strings.dumpBytes( array ) );
                     }
                 }
 
@@ -147,7 +148,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
                 {
                     if ( IS_DEBUG )
                     {
-                        LOG.debug( "Decoded LdapMessage : " + messageContainer.getMessage() );
+                        CODEC_LOG.debug( "Decoded LdapMessage : " + messageContainer.getMessage() );
                     }
 
                     Message message = messageContainer.getMessage();
