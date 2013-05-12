@@ -2026,10 +2026,12 @@ public class Registries implements SchemaLoaderListener, Cloneable
         addUsing( base, referenced );
         addUsedBy( referenced, base );
 
-        if ( LOG.isDebugEnabled() )
+        // do not change to debug mode, this makes the server logs hard to read and useless
+        // and even prevents the server from starting up
+        if ( LOG.isTraceEnabled() )
         {
-            LOG.debug( dumpUsedBy() );
-            LOG.debug( dumpUsing() );
+            LOG.trace( dumpUsedBy() );
+            LOG.trace( dumpUsing() );
         }
     }
 
