@@ -20,34 +20,36 @@
 package org.apache.directory.api.ldap.schemaloader;
 
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.ldap.model.schema.comparators.*;
+import org.apache.directory.api.ldap.model.schema.comparators.GeneralizedTimeComparator;
+import org.apache.directory.api.ldap.model.schema.comparators.IntegerComparator;
+import org.apache.directory.api.ldap.model.schema.comparators.NumericStringComparator;
+import org.apache.directory.api.ldap.model.schema.comparators.TelephoneNumberComparator;
 import org.apache.directory.api.ldap.model.schema.normalizers.GeneralizedTimeNormalizer;
 import org.apache.directory.api.ldap.model.schema.normalizers.NumericNormalizer;
 import org.apache.directory.api.ldap.model.schema.normalizers.TelephoneNumberNormalizer;
 import org.apache.directory.api.ldap.model.schema.registries.Schema;
 import org.apache.directory.api.ldap.schemaextractor.SchemaLdifExtractor;
 import org.apache.directory.api.ldap.schemaextractor.impl.DefaultSchemaLdifExtractor;
-import org.apache.directory.api.ldap.schemaloader.LdifSchemaLoader;
 import org.apache.directory.api.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
