@@ -127,7 +127,7 @@ public class SchemaManagerEnableDisableLoadTest
     // Test the loadAllEnabled() method
     //-------------------------------------------------------------------------
     /**
-     * Tst the loadEnabled() method
+     * Test the loadEnabled() method
      */
     @Test
     public void testLoadAllEnabled() throws Exception
@@ -195,22 +195,26 @@ public class SchemaManagerEnableDisableLoadTest
         schemaManager.loadAllEnabled();
 
         assertTrue( schemaManager.enable( "nis" ) );
+        assertTrue( schemaManager.enable( "rfc2307bis" ) );
         assertTrue( schemaManager.isEnabled( "nis" ) );
+        assertTrue( schemaManager.isEnabled( "rfc2307bis" ) );
 
         assertNotNull( schemaManager.lookupAttributeTypeRegistry( "gecos" ) );
+        assertNotNull( schemaManager.lookupAttributeTypeRegistry( "automountMapName" ) );
 
         assertTrue( schemaManager.getErrors().isEmpty() );
-        assertEquals( 449, schemaManager.getAttributeTypeRegistry().size() );
+        assertEquals( 454, schemaManager.getAttributeTypeRegistry().size() );
         assertEquals( 49, schemaManager.getComparatorRegistry().size() );
         assertEquals( 49, schemaManager.getMatchingRuleRegistry().size() );
         assertEquals( 49, schemaManager.getNormalizerRegistry().size() );
-        assertEquals( 133, schemaManager.getObjectClassRegistry().size() );
+        assertEquals( 136, schemaManager.getObjectClassRegistry().size() );
         assertEquals( 70, schemaManager.getSyntaxCheckerRegistry().size() );
         assertEquals( 75, schemaManager.getLdapSyntaxRegistry().size() );
-        assertEquals( 706, schemaManager.getGlobalOidRegistry().size() );
+        assertEquals( 714, schemaManager.getGlobalOidRegistry().size() );
 
-        assertEquals( 13, schemaManager.getRegistries().getLoadedSchemas().size() );
+        assertEquals( 14, schemaManager.getRegistries().getLoadedSchemas().size() );
         assertNotNull( schemaManager.getRegistries().getLoadedSchema( "nis" ) );
+        assertNotNull( schemaManager.getRegistries().getLoadedSchema( "rfc2307bis" ) );
     }
 
 

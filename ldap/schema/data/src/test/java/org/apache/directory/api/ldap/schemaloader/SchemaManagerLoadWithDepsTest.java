@@ -30,21 +30,20 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.exception.LdapUnwillingToPerformException;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.registries.DefaultSchema;
 import org.apache.directory.api.ldap.model.schema.registries.Schema;
 import org.apache.directory.api.ldap.schemaextractor.SchemaLdifExtractor;
 import org.apache.directory.api.ldap.schemaextractor.impl.DefaultSchemaLdifExtractor;
-import org.apache.directory.api.ldap.schemaloader.LdifSchemaLoader;
 import org.apache.directory.api.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -414,6 +413,35 @@ public class SchemaManagerLoadWithDepsTest
         assertNull( schemaManager.getRegistries().getLoadedSchema( "system" ) );
         assertNull( schemaManager.getRegistries().getLoadedSchema( "core" ) );
         assertNull( schemaManager.getRegistries().getLoadedSchema( "cosine" ) );
+    }
+
+
+    /**
+     * test loading the "rfc2307bis" schema, which depends on "system", "nis" and "core",
+     * but is disabled
+     */
+    @Test
+    public void testLoadRfc2307Bis() throws Exception
+    {
+        LdifSchemaLoader loader = new LdifSchemaLoader( schemaRepository );
+        SchemaManager schemaManager = new DefaultSchemaManager( loader );
+
+        schemaManager.loadWithDeps( "rfc2307bis" );
+
+        assertTrue( schemaManager.getErrors().isEmpty() );
+        assertEquals( 0, schemaManager.getAttributeTypeRegistry().size() );
+        assertEquals( 0, schemaManager.getComparatorRegistry().size() );
+        assertEquals( 0, schemaManager.getMatchingRuleRegistry().size() );
+        assertEquals( 0, schemaManager.getNormalizerRegistry().size() );
+        assertEquals( 0, schemaManager.getObjectClassRegistry().size() );
+        assertEquals( 0, schemaManager.getSyntaxCheckerRegistry().size() );
+        assertEquals( 0, schemaManager.getLdapSyntaxRegistry().size() );
+        assertEquals( 0, schemaManager.getGlobalOidRegistry().size() );
+
+        assertEquals( 0, schemaManager.getRegistries().getLoadedSchemas().size() );
+        assertNull( schemaManager.getRegistries().getLoadedSchema( "system" ) );
+        assertNull( schemaManager.getRegistries().getLoadedSchema( "nis" ) );
+        assertNull( schemaManager.getRegistries().getLoadedSchema( "core" ) );
     }
 
 
