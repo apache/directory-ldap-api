@@ -60,7 +60,7 @@ public final class ResourceMap
 
 
     /**
-     * Private contstructor.
+     * Private constructor.
      */
     private ResourceMap()
     {
@@ -88,6 +88,7 @@ public final class ResourceMap
             LOG.debug( "loading from the user provider schema resource {}", schemaResourceLoc );
 
             File file = new File( schemaResourceLoc );
+
             if ( file.exists() )
             {
                 getResources( retval, schemaResourceLoc, pattern );
@@ -110,10 +111,12 @@ public final class ResourceMap
         String element, Pattern pattern )
     {
         File file = new File( element );
+
         if ( !file.exists() )
         {
             // this may happen if the class path contains an element that doesn't exist
             LOG.debug( "element {} does not exist", element );
+
             return;
         }
 
@@ -195,7 +198,9 @@ public final class ResourceMap
                 }
                 catch ( IOException e )
                 {
-                    throw new Error( e );
+                    LOG.error( "Cannot load file {} : {}", file.getAbsolutePath(), e.getMessage() );
+
+                    // Continue...
                 }
             }
         }
@@ -208,28 +213,43 @@ public final class ResourceMap
         {
             ClassLoader cl = ResourceMap.class.getClassLoader();
             Enumeration<URL> indexes = cl.getResources( "META-INF/apacheds-schema.index" );
+
             while ( indexes.hasMoreElements() )
             {
-                URL index = indexes.nextElement();
-                InputStream in = index.openStream();
-                BufferedReader reader = new BufferedReader( new InputStreamReader( in, "UTF-8" ) );
-                String line = reader.readLine();
-                while ( line != null )
+                URL index = null;
+
+                try
                 {
-                    boolean accept = pattern.matcher( line ).matches();
-                    if ( accept )
+                    index = indexes.nextElement();
+                    InputStream in = index.openStream();
+                    BufferedReader reader = new BufferedReader( new InputStreamReader( in, "UTF-8" ) );
+                    String line = reader.readLine();
+
+                    while ( line != null )
                     {
-                        map.put( line, Boolean.TRUE );
+                        boolean accept = pattern.matcher( line ).matches();
+
+                        if ( accept )
+                        {
+                            map.put( line, Boolean.TRUE );
+                        }
+
+                        line = reader.readLine();
                     }
-                    line = reader.readLine();
+
+                    reader.close();
                 }
-                reader.close();
+                catch ( IOException ioe )
+                {
+                    LOG.debug( "Cannot load resource {} : {}", index, ioe.getMessage() );
+                    // Continue...
+                }
             }
         }
         catch ( IOException e )
         {
+            LOG.debug( "Error while loading  resuce from class loaded : {}", e.getMessage() );
             throw new Error( e );
         }
     }
-
 }
