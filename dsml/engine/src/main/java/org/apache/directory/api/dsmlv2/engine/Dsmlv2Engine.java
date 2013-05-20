@@ -41,6 +41,7 @@ import org.apache.directory.api.dsmlv2.reponse.BindResponseDsml;
 import org.apache.directory.api.dsmlv2.reponse.CompareResponseDsml;
 import org.apache.directory.api.dsmlv2.reponse.DelResponseDsml;
 import org.apache.directory.api.dsmlv2.reponse.ErrorResponse;
+import org.apache.directory.api.dsmlv2.reponse.ErrorResponse.ErrorResponseType;
 import org.apache.directory.api.dsmlv2.reponse.ExtendedResponseDsml;
 import org.apache.directory.api.dsmlv2.reponse.ModDNResponseDsml;
 import org.apache.directory.api.dsmlv2.reponse.ModifyResponseDsml;
@@ -48,12 +49,11 @@ import org.apache.directory.api.dsmlv2.reponse.SearchResponseDsml;
 import org.apache.directory.api.dsmlv2.reponse.SearchResultDoneDsml;
 import org.apache.directory.api.dsmlv2.reponse.SearchResultEntryDsml;
 import org.apache.directory.api.dsmlv2.reponse.SearchResultReferenceDsml;
-import org.apache.directory.api.dsmlv2.reponse.ErrorResponse.ErrorResponseType;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
-import org.apache.directory.api.dsmlv2.request.Dsmlv2Grammar;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.OnError;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.Processing;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.ResponseOrder;
+import org.apache.directory.api.dsmlv2.request.Dsmlv2Grammar;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -318,7 +318,7 @@ public class Dsmlv2Engine
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.COULD_NOT_CONNECT, e
                 .getLocalizedMessage() );
-            
+
             if ( respWriter != null )
             {
                 writeResponse( respWriter, errorResponse );
@@ -381,7 +381,7 @@ public class Dsmlv2Engine
             // We create a new ErrorResponse and return the XML response.
             ErrorResponse errorResponse = new ErrorResponse( reqId, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
                 I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
-            
+
             if ( respWriter != null )
             {
                 writeResponse( respWriter, errorResponse );
@@ -431,7 +431,7 @@ public class Dsmlv2Engine
                 ErrorResponse errorResponse = new ErrorResponse( request.getDecorated().getMessageId(),
                     ErrorResponseType.GATEWAY_INTERNAL_ERROR, I18n.err(
                         I18n.ERR_03003, e.getMessage() ) );
-                
+
                 if ( respWriter != null )
                 {
                     writeResponse( respWriter, errorResponse );
@@ -460,7 +460,7 @@ public class Dsmlv2Engine
                 // We create a new ErrorResponse and return the XML response.
                 ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
                     I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
-                
+
                 if ( respWriter != null )
                 {
                     writeResponse( respWriter, errorResponse );

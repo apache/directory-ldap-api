@@ -19,6 +19,7 @@
  */
 package org.apache.directory.api.ldap.model.schema.registries.helper;
 
+
 import java.util.List;
 
 import org.apache.directory.api.i18n.I18n;
@@ -36,6 +37,7 @@ import org.apache.directory.api.ldap.model.schema.registries.Registries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * An helper class used to store all the methods associated with an MatchingRule
  * in relation with the Registries and SchemaManager.
@@ -47,6 +49,7 @@ public class MatchingRuleHelper
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( MatchingRuleHelper.class );
 
+
     /**
      * Inject the MatchingRule into the Registries, updating the references to
      * other SchemaObject
@@ -56,20 +59,22 @@ public class MatchingRuleHelper
      * @param registries The Registries
      * @exception If the addition failed
      */
-    public static void addToRegistries( MutableMatchingRule matchingRule, List<Throwable> errors,  Registries registries ) throws LdapException
+    @SuppressWarnings("rawtypes")
+    public static void addToRegistries( MutableMatchingRule matchingRule, List<Throwable> errors, Registries registries )
+        throws LdapException
     {
         if ( registries != null )
         {
             try
             {
                 matchingRule.unlock();
-                
+
                 if ( registries != null )
                 {
                     LdapComparator<?> ldapComparator = null;
                     Normalizer normalizer = null;
                     LdapSyntax ldapSyntax = null;
-                    
+
                     try
                     {
                         // Gets the associated Comparator
@@ -155,7 +160,8 @@ public class MatchingRuleHelper
      * @param registries The Registries
      * @exception If the MatchingRule is not valid
      */
-    public static void removeFromRegistries( MatchingRule matchingRule, List<Throwable> errors, Registries registries ) throws LdapException
+    public static void removeFromRegistries( MatchingRule matchingRule, List<Throwable> errors, Registries registries )
+        throws LdapException
     {
         if ( registries != null )
         {

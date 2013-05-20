@@ -24,13 +24,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.message.AbstractResultResponse;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.LdapResult;
-import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
-import org.apache.directory.api.ldap.model.message.Referral;
-import org.apache.directory.api.ldap.model.message.ReferralImpl;
-import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,7 +50,6 @@ public class AbstractResultResponseTest
         AbstractResultResponse msg;
         msg = new AbstractResultResponse( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         assertTrue( msg.equals( msg ) );
     }
@@ -71,11 +63,9 @@ public class AbstractResultResponseTest
     {
         AbstractResultResponse msg0 = new AbstractResultResponse( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         AbstractResultResponse msg1 = new AbstractResultResponse( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         LdapResult r0 = msg0.getLdapResult();
         LdapResult r1 = msg1.getLdapResult();
@@ -110,11 +100,9 @@ public class AbstractResultResponseTest
     {
         AbstractResultResponse msg0 = new AbstractResultResponse( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         AbstractResultResponse msg1 = new AbstractResultResponse( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         LdapResult r0 = msg0.getLdapResult();
         LdapResult r1 = msg1.getLdapResult();
@@ -151,11 +139,9 @@ public class AbstractResultResponseTest
         AbstractResultResponse msg1;
         msg0 = new AbstractResultResponse( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         msg1 = new AbstractResultResponse( 6, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         assertFalse( msg0.equals( msg1 ) );
         assertFalse( msg1.equals( msg0 ) );
@@ -172,11 +158,9 @@ public class AbstractResultResponseTest
         AbstractResultResponse msg1;
         msg0 = new AbstractResultResponse( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         msg1 = new AbstractResultResponse( 5, MessageTypeEnum.UNBIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         assertFalse( msg0.equals( msg1 ) );
         assertFalse( msg1.equals( msg0 ) );
@@ -194,14 +178,10 @@ public class AbstractResultResponseTest
 
         msg0 = new AbstractResultResponse( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
 
         msg0.addControl( new Control()
         {
-            private static final long serialVersionUID = 1L;
-
-
             public boolean isCritical()
             {
                 return false;
@@ -221,7 +201,6 @@ public class AbstractResultResponseTest
 
         msg1 = new AbstractResultResponse( 5, MessageTypeEnum.BIND_REQUEST )
         {
-            private static final long serialVersionUID = 1L;
         };
         assertFalse( msg0.equals( msg1 ) );
         assertFalse( msg1.equals( msg0 ) );

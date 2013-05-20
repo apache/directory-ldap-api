@@ -33,8 +33,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
@@ -92,6 +90,9 @@ public class BinaryValueTest
         mr.setLdapComparator( new ByteArrayComparator( "1.1.1" ) );
         mr.setNormalizer( new Normalizer( "1.1.1" )
         {
+            public static final long serialVersionUID = 1L;
+
+
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
                 if ( !value.isHumanReadable() )
@@ -126,30 +127,11 @@ public class BinaryValueTest
         at.setSyntax( s );
     }
 
-    /**
-     * A binary normalizer which set the normalized value to a empty byte array
-     */
-    private static final Normalizer BINARY_NORMALIZER_EMPTY = new Normalizer( "1.1.1" )
-    {
-        public Value<?> normalize( Value<?> value ) throws LdapException
-        {
-            if ( !value.isHumanReadable() )
-            {
-                return new BinaryValue( StringConstants.EMPTY_BYTES );
-            }
-
-            throw new IllegalStateException( "expected byte[] to normalize" );
-        }
-
-
-        public String normalize( String value ) throws LdapException
-        {
-            throw new IllegalStateException( "expected byte[] to normalize" );
-        }
-    };
-
     private static final SyntaxChecker BINARY_CHECKER = new SyntaxChecker( "1.1.1" )
     {
+        public static final long serialVersionUID = 1L;
+
+
         public boolean isValidSyntax( Object value )
         {
             if ( value == null )

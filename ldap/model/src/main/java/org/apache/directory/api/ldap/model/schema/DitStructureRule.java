@@ -80,10 +80,11 @@ import org.apache.directory.api.util.exception.NotImplementedException;
  * @see DescriptionUtils#getDescription(DitStructureRule)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class DitStructureRule extends AbstractSchemaObject
 {
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
+
     /** The rule ID. A DSR does not have an OID */
     private int ruleId;
 
@@ -257,8 +258,6 @@ public class DitStructureRule extends AbstractSchemaObject
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("PMD.UnusedLocalVariable")
-    // Remove me when the TODO is fixed 
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )

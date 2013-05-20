@@ -40,8 +40,6 @@ import org.apache.directory.api.util.Strings;
 public class ExtendedResponseDecorator<R extends ExtendedResponse> extends ResponseDecorator<R>
     implements ExtendedResponse
 {
-    private static final long serialVersionUID = -9029282485890195506L;
-
     /** The response name as a byte[] */
     private byte[] responseNameBytes;
 

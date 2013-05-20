@@ -41,9 +41,6 @@ import org.apache.directory.api.util.exception.NotImplementedException;
 public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredProcedureResponse> implements
     StoredProcedureRequest
 {
-    /** The serialVersionUID. */
-    private static final long serialVersionUID = -4682291068700593492L;
-
     private String language = "Java";
 
     private byte[] procedure = StringConstants.EMPTY_BYTES;

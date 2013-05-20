@@ -27,11 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.api.ldap.model.exception.MessageException;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.ExtendedRequest;
-import org.apache.directory.api.ldap.model.message.ExtendedRequestImpl;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
-import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -175,9 +170,6 @@ public class ExtendedRequestImplTest
     {
         ExtendedRequest<ExtendedResponse> req0 = new ExtendedRequest<ExtendedResponse>()
         {
-            private static final long serialVersionUID = 1L;
-
-
             public ExtendedRequest<ExtendedResponse> setRequestName( String oid )
             {
                 return this;

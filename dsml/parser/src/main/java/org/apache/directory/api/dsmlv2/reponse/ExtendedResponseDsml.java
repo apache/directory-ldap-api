@@ -42,7 +42,6 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
     implements ExtendedResponse
 {
     private static final String EXTENDED_RESPONSE_TAG = "extendedResponse";
-    private static final long serialVersionUID = -3989420095112650346L;
     private byte[] response;
 
 
@@ -92,7 +91,7 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
             element = new DefaultElement( EXTENDED_RESPONSE_TAG );
         }
 
-        ExtendedResponse extendedResponse = ( ExtendedResponse ) getDecorated();
+        ExtendedResponse extendedResponse = getDecorated();
 
         // LDAP Result
         LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),

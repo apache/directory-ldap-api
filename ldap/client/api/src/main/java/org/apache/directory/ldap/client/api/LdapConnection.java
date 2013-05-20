@@ -672,7 +672,7 @@ public interface LdapConnection
      * @return Extended operation's response
      * @throws {@link LdapException} If the Dn is not valid or if the extended operation failed
      */
-    ExtendedResponse extended( ExtendedRequest extendedRequest ) throws LdapException;
+    ExtendedResponse extended( ExtendedRequest<?> extendedRequest ) throws LdapException;
 
 
     /**

@@ -1624,8 +1624,6 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * @return A list of entries
      * @throws LdapLdifException If the parsing fails
      */
-    // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     public List<LdifEntry> parseLdifFile( String fileName, String encoding ) throws LdapLdifException
     {
         if ( Strings.isEmpty( fileName ) )
@@ -1686,8 +1684,6 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * @return A list of entries, or an empty List
      * @throws LdapLdifException If something went wrong
      */
-    // This will suppress PMD.EmptyCatchBlock warnings in this method
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     public List<LdifEntry> parseLdif( String ldif ) throws LdapLdifException
     {
         LOG.debug( "Starts parsing ldif buffer" );

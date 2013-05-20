@@ -72,7 +72,8 @@ public class StandaloneLdapApiService implements LdapApiService
     private Map<String, ControlFactory<?, ?>> controlFactories = new HashMap<String, ControlFactory<?, ?>>();
 
     /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory}'s by request OID */
-    private Map<String, ExtendedRequestFactory<?, ?>> extReqFactories = new HashMap<String, ExtendedRequestFactory<?, ?>>();
+    private Map<String, ExtendedRequestFactory<?, ?>> extReqFactories =
+        new HashMap<String, ExtendedRequestFactory<?, ?>>();
 
     /** The map of registered {@link UnsolicitedResponseFactory}'s by request OID */
     private Map<String, UnsolicitedResponseFactory<?>> unsolicitedFactories = new HashMap<String, UnsolicitedResponseFactory<?>>();
@@ -222,6 +223,7 @@ public class StandaloneLdapApiService implements LdapApiService
         {
             Class<?>[] types = new Class<?>[]
                 { LdapApiService.class };
+            @SuppressWarnings("unchecked")
             Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> ) Class
                 .forName( control );
             Constructor<?> constructor = clazz.getConstructor( types );
@@ -251,6 +253,7 @@ public class StandaloneLdapApiService implements LdapApiService
         {
             Class<?>[] types = new Class<?>[]
                 { LdapApiService.class };
+            @SuppressWarnings("unchecked")
             Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> ) Class
                 .forName( control );
             Constructor<?> constructor = clazz.getConstructor( types );
@@ -293,11 +296,13 @@ public class StandaloneLdapApiService implements LdapApiService
         {
             Class<?>[] types = new Class<?>[]
                 { LdapApiService.class };
+            @SuppressWarnings("unchecked")
             Class<? extends ExtendedRequestFactory<?, ?>> clazz = ( Class<? extends ExtendedRequestFactory<?, ?>> ) Class
                 .forName( extendedOperation );
             Constructor<?> constructor = clazz.getConstructor( types );
 
-            ExtendedRequestFactory<?, ?> factory = ( ExtendedRequestFactory<?, ?> ) constructor
+            @SuppressWarnings("unchecked")
+            ExtendedRequestFactory<ExtendedRequest<ExtendedResponse>, ExtendedResponse> factory = ( ExtendedRequestFactory<ExtendedRequest<ExtendedResponse>, ExtendedResponse> ) constructor
                 .newInstance( new Object[]
                     { this } );
             extReqFactories.put( factory.getOid(), factory );
@@ -323,6 +328,7 @@ public class StandaloneLdapApiService implements LdapApiService
         {
             Class<?>[] types = new Class<?>[]
                 { LdapApiService.class };
+            @SuppressWarnings("unchecked")
             Class<? extends UnsolicitedResponseFactory<?>> clazz = ( Class<? extends UnsolicitedResponseFactory<?>> ) Class
                 .forName( extendedOperation );
             Constructor<?> constructor = clazz.getConstructor( types );
@@ -396,7 +402,8 @@ public class StandaloneLdapApiService implements LdapApiService
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestFactory<?, ?> registerExtendedRequest( ExtendedRequestFactory<?, ?> factory )
+    public ExtendedRequestFactory<?, ?>
+        registerExtendedRequest( ExtendedRequestFactory<?, ?> factory )
     {
         return extReqFactories.put( factory.getOid(), factory );
     }
@@ -558,7 +565,8 @@ public class StandaloneLdapApiService implements LdapApiService
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestFactory<?, ?> unregisterExtendedRequest( String oid )
+    public ExtendedRequestFactory<?, ?> unregisterExtendedRequest(
+        String oid )
     {
         return extReqFactories.remove( oid );
     }
@@ -703,7 +711,8 @@ public class StandaloneLdapApiService implements LdapApiService
     {
         ExtendedRequest<?> req = null;
 
-        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( oid );
+        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories
+            .get( oid );
 
         if ( extendedRequestFactory != null )
         {

@@ -111,10 +111,11 @@ import org.apache.directory.api.i18n.I18n;
  * @see DescriptionUtils#getDescription(DitContentRule)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class DitContentRule extends AbstractSchemaObject
 {
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
+
     /** The list of Auxiliary ObjectClass OIDs entries may belong to */
     private List<String> auxObjectClassOids;
 
@@ -634,8 +635,6 @@ public class DitContentRule extends AbstractSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    @SuppressWarnings("PMD.UnusedLocalVariable")
-    // Remove me when the TODO is fixed
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )

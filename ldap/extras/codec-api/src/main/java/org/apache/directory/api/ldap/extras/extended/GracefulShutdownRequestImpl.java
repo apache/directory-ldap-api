@@ -35,9 +35,6 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
 public class GracefulShutdownRequestImpl extends AbstractExtendedRequest<GracefulShutdownResponse> implements
     GracefulShutdownRequest
 {
-    /** The serialVersionUID. */
-    private static final long serialVersionUID = -4682291068700593492L;
-
     private GracefulShutdownResponse response;
 
     /** Offline time after disconnection */

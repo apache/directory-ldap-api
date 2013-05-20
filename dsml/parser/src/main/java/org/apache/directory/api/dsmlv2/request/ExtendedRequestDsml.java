@@ -173,6 +173,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends Extende
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public ExtendedRequest<P> addControl( Control control ) throws MessageException
     {
         return ( ExtendedRequest<P> ) super.addControl( control );
@@ -182,6 +183,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends Extende
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public ExtendedRequest<P> addAllControls( Control[] controls ) throws MessageException
     {
         return ( ExtendedRequest<P> ) super.addAllControls( controls );
@@ -191,6 +193,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends Extende
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public ExtendedRequest<P> removeControl( Control control ) throws MessageException
     {
         return ( ExtendedRequest<P> ) super.removeControl( control );

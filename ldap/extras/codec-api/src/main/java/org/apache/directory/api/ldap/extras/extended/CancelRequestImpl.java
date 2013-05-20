@@ -37,9 +37,6 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
  */
 public class CancelRequestImpl extends AbstractExtendedRequest<CancelResponse> implements CancelRequest
 {
-    /** The serial version UUID */
-    private static final long serialVersionUID = 1L;
-
     /** The cancelId of the request to be canceled */
     private int cancelId;
 

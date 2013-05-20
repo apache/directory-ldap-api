@@ -172,28 +172,28 @@ public class Dsmlv2Parser
         XmlPullParser xpp = container.getParser();
 
         int eventType = xpp.getEventType();
-        
+
         do
         {
             switch ( eventType )
             {
-                case XmlPullParser.START_DOCUMENT :
+                case XmlPullParser.START_DOCUMENT:
                     container.setState( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE );
                     break;
 
-                case XmlPullParser.END_DOCUMENT :
+                case XmlPullParser.END_DOCUMENT:
                     container.setState( Dsmlv2StatesEnum.GRAMMAR_END );
                     break;
 
-                case XmlPullParser.START_TAG :
+                case XmlPullParser.START_TAG:
                     processTag( container, Tag.START );
                     break;
 
-                case XmlPullParser.END_TAG :
+                case XmlPullParser.END_TAG:
                     processTag( container, Tag.END );
                     break;
             }
-            
+
             try
             {
                 eventType = xpp.next();
@@ -288,23 +288,23 @@ public class Dsmlv2Parser
 
             switch ( eventType )
             {
-                case XmlPullParser.START_DOCUMENT :
+                case XmlPullParser.START_DOCUMENT:
                     container.setState( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE );
                     break;
 
-                case XmlPullParser.END_DOCUMENT :
+                case XmlPullParser.END_DOCUMENT:
                     container.setState( Dsmlv2StatesEnum.GRAMMAR_END );
                     return null;
 
-                case XmlPullParser.START_TAG :
+                case XmlPullParser.START_TAG:
                     processTag( container, Tag.START );
                     break;
 
-                case XmlPullParser.END_TAG :
+                case XmlPullParser.END_TAG:
                     processTag( container, Tag.END );
                     break;
             }
-            
+
             try
             {
                 eventType = xpp.next();

@@ -32,11 +32,12 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings(
-    { "PMD.OverrideBothEqualsAndHashcode", "serial" })
 public abstract class SyntaxChecker extends LoadableSchemaObject
 {
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
+
+
     /**
      * The SyntaxChecker base constructor
      * @param oid The associated OID

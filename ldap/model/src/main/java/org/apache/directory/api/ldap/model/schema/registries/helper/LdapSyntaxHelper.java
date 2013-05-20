@@ -19,6 +19,7 @@
  */
 package org.apache.directory.api.ldap.model.schema.registries.helper;
 
+
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -26,8 +27,7 @@ import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
 import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OctetStringSyntaxChecker;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * An helper class used to store all the methods associated with an LdapSyntax
@@ -37,9 +37,6 @@ import org.slf4j.LoggerFactory;
  */
 public class LdapSyntaxHelper
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( LdapSyntaxHelper.class );
-
     /**
      * Inject the LdapSyntax into the registries, updating the references to
      * other SchemaObject
@@ -49,18 +46,19 @@ public class LdapSyntaxHelper
      * @param registries The Registries
      * @exception If the addition failed
      */
-    public static void addToRegistries( LdapSyntax ldapSyntax, List<Throwable> errors,  Registries registries ) throws LdapException
+    public static void addToRegistries( LdapSyntax ldapSyntax, List<Throwable> errors, Registries registries )
+        throws LdapException
     {
         if ( registries != null )
         {
             try
             {
                 ldapSyntax.unlock();
-    
+
                 if ( registries != null )
                 {
                     SyntaxChecker syntaxChecker = null;
-                    
+
                     try
                     {
                         // Gets the associated SyntaxChecker
@@ -101,7 +99,8 @@ public class LdapSyntaxHelper
      * @param registries The Registries
      * @exception If the LdapSyntax is not valid
      */
-    public static void removeFromRegistries( LdapSyntax ldapSyntax, List<Throwable> errors, Registries registries ) throws LdapException
+    public static void removeFromRegistries( LdapSyntax ldapSyntax, List<Throwable> errors, Registries registries )
+        throws LdapException
     {
         if ( registries != null )
         {

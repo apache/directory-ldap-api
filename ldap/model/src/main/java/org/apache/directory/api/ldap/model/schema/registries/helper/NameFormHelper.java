@@ -19,6 +19,7 @@
  */
 package org.apache.directory.api.ldap.model.schema.registries.helper;
 
+
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -26,8 +27,7 @@ import org.apache.directory.api.ldap.model.schema.NameForm;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * An helper class used to store all the methods associated with an NameForm
@@ -37,9 +37,6 @@ import org.slf4j.LoggerFactory;
  */
 public class NameFormHelper
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( NameFormHelper.class );
-
     /**
      * Inject the NameForm into the registries, updating the references to
      * other SchemaObject
@@ -49,28 +46,30 @@ public class NameFormHelper
      * @param registries The Registries
      * @exception If the addition failed
      */
-    public static void addToRegistries( NameForm nameForm, List<Throwable> errors, Registries registries ) throws LdapException
+    public static void addToRegistries( NameForm nameForm, List<Throwable> errors, Registries registries )
+        throws LdapException
     {
         if ( registries != null )
         {
             try
             {
                 nameForm.unlock();
-    
+
                 AttributeTypeRegistry atRegistry = registries.getAttributeTypeRegistry();
 
-                ObjectClass structuralObjectClass = registries.getObjectClassRegistry().lookup( nameForm.getStructuralObjectClassOid() );
+                ObjectClass structuralObjectClass = registries.getObjectClassRegistry().lookup(
+                    nameForm.getStructuralObjectClassOid() );
                 nameForm.setStructuralObjectClass( structuralObjectClass );
-                
+
                 nameForm.getMayAttributeTypes().clear();
-                
+
                 for ( String oid : nameForm.getMayAttributeTypeOids() )
                 {
                     nameForm.getMayAttributeTypes().add( atRegistry.lookup( oid ) );
                 }
 
                 nameForm.getMustAttributeTypes().clear();
-                
+
                 for ( String oid : nameForm.getMustAttributeTypeOids() )
                 {
                     nameForm.getMustAttributeTypes().add( atRegistry.lookup( oid ) );

@@ -335,11 +335,8 @@ public class LdapUrl
      *         apply to the byte buffer TODO check that the topLabel is valid
      *         (it must start with an alpha)
      */
-    @SuppressWarnings("PMD.CollapsibleIfStatements")
-    // Used because of comments
     private int parseHost( char[] chars, int pos )
     {
-
         int start = pos;
         boolean hadDot = false;
         boolean hadMinus = false;
@@ -364,7 +361,6 @@ public class LdapUrl
 
             if ( Chars.isCharASCII( chars, pos, '.' ) )
             {
-
                 if ( ( hadMinus ) || ( hadDot ) )
                 {
 
@@ -391,10 +387,8 @@ public class LdapUrl
             }
             else
             {
-
                 if ( hadDot && Chars.isCharASCII( chars, pos, '-' ) )
                 {
-
                     // We can't have a '-' just after a '.'
                     return -1;
                 }
@@ -404,7 +398,6 @@ public class LdapUrl
 
             if ( Chars.isDigit( chars, pos ) )
             {
-
                 if ( isHostNumber && ( nbDots < 4 ) )
                 {
                     ipElem[nbDots] = ( ipElem[nbDots] * 10 ) + ( chars[pos] - '0' );
@@ -433,7 +426,6 @@ public class LdapUrl
 
         if ( start == pos )
         {
-
             // An empty host is valid
             return pos;
         }
@@ -441,7 +433,6 @@ public class LdapUrl
         // Checks the hostNumber
         if ( isHostNumber )
         {
-
             // As this is a host number, we must have 3 dots.
             if ( nbDots != 3 )
             {

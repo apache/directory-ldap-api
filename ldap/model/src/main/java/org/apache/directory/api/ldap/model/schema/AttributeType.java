@@ -20,8 +20,6 @@
 package org.apache.directory.api.ldap.model.schema;
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -131,8 +129,8 @@ import org.slf4j.LoggerFactory;
  */
 public class AttributeType extends AbstractSchemaObject implements Cloneable
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( AttributeType.class );
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
 
     /** The syntax OID associated with this AttributeType */
     protected String syntaxOid;
@@ -445,8 +443,8 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     {
         return substringOid;
     }
-    
-    
+
+
     /**
      * Tells if the attributeType is a USER attribute or not
      * @return true if this is a USER attributeType
@@ -455,8 +453,8 @@ public class AttributeType extends AbstractSchemaObject implements Cloneable
     {
         return usage == UsageEnum.USER_APPLICATIONS;
     }
-    
-    
+
+
     /**
      * Tells if the attributeType is an OPERATIONAL attribute or not
      * @return true if this is an OPERATIONAL attributeType

@@ -38,9 +38,6 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  */
 public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl implements GracefulDisconnectResponse
 {
-    /** The serialVersionUID. */
-    private static final long serialVersionUID = -4682291068700593492L;
-
     /** Offline time after disconnection */
     private int timeOffline;
 

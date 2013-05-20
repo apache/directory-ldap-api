@@ -92,6 +92,7 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public ExtendedRequest<ExtendedResponse> addControl( Control control ) throws MessageException
     {
         return ( ExtendedRequest<ExtendedResponse> ) super.addControl( control );
@@ -101,6 +102,7 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public ExtendedRequest<ExtendedResponse> addAllControls( Control[] controls ) throws MessageException
     {
         return ( ExtendedRequest<ExtendedResponse> ) super.addAllControls( controls );
@@ -110,6 +112,7 @@ public class ExtendedRequestImpl extends AbstractRequest implements ExtendedRequ
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     public ExtendedRequest<ExtendedResponse> removeControl( Control control ) throws MessageException
     {
         return ( ExtendedRequest<ExtendedResponse> ) super.removeControl( control );

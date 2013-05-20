@@ -66,6 +66,7 @@ public class SetCursor<E> extends AbstractCursor<E>
      * @param comparator an optional comparator to use for ordering
      * @param set the Set this StCursor operates on
      */
+    @SuppressWarnings("unchecked")
     public SetCursor( Comparator<E> comparator, Set<E> set )
     {
         if ( set == null )
@@ -101,6 +102,7 @@ public class SetCursor<E> extends AbstractCursor<E>
     /**
      * Creates a new SetCursor without any elements.
      */
+    @SuppressWarnings("unchecked")
     public SetCursor()
     {
         this( null, Collections.EMPTY_SET );

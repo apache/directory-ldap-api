@@ -122,6 +122,7 @@ public abstract class AbstractValue<T> implements Value<T>
      * @throws LdapInvalidAttributeValueException If the value is not valid accordingly
      * to the schema
      */
+    @SuppressWarnings("unchecked")
     protected void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
         if ( attributeType == null )

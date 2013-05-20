@@ -34,10 +34,6 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  */
 public class GracefulShutdownResponseImpl extends ExtendedResponseImpl implements GracefulShutdownResponse
 {
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = -3824715470944544189L;
-
-
     /**
      * Instantiates a new graceful shutdown response.
      *

@@ -71,6 +71,10 @@ public class TestEntryUtils
      */
     static class MR extends MatchingRule
     {
+        /** The mandatory serialVersionUID field */
+        public static final long serialVersionUID = 1L;
+
+
         protected MR( String oid )
         {
             super( oid );
@@ -103,8 +107,6 @@ public class TestEntryUtils
 
 
     /* no protection*/
-    //This will suppress PMD.AvoidUsingHardCodedIP warnings in this class
-    @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
     static AttributeType getCaseIgnoringAttributeNoNumbersType()
     {
         MutableAttributeType attributeType = new MutableAttributeType( "1.1.3.1" );
@@ -112,6 +114,10 @@ public class TestEntryUtils
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.1.2.1" )
         {
+            /** The mandatory serialVersionUID field */
+            public static final long serialVersionUID = 1L;
+
+
             public boolean isValidSyntax( Object value )
             {
                 if ( !( value instanceof String ) )
@@ -137,6 +143,10 @@ public class TestEntryUtils
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
         {
+            /** The mandatory serialVersionUID field */
+            public static final long serialVersionUID = 1L;
+
+
             public int compare( String o1, String o2 )
             {
                 return ( o1 == null ?
@@ -147,6 +157,10 @@ public class TestEntryUtils
 
         Normalizer normalizer = new Normalizer( "1.1.1" )
         {
+            /** The mandatory serialVersionUID field */
+            public static final long serialVersionUID = 1L;
+
+
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
                 if ( value.isHumanReadable() )
@@ -181,6 +195,10 @@ public class TestEntryUtils
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.1.2" )
         {
+            /** The mandatory serialVersionUID field */
+            public static final long serialVersionUID = 1L;
+
+
             public boolean isValidSyntax( Object value )
             {
                 return ( ( String ) value == null ) || ( ( ( String ) value ).length() < 7 );
@@ -192,6 +210,10 @@ public class TestEntryUtils
 
         matchingRule.setLdapComparator( new LdapComparator<String>( matchingRule.getOid() )
         {
+            /** The mandatory serialVersionUID field */
+            public static final long serialVersionUID = 1L;
+
+
             public int compare( String o1, String o2 )
             {
                 return ( ( o1 == null ) ?
@@ -216,6 +238,10 @@ public class TestEntryUtils
 
         syntax.setSyntaxChecker( new SyntaxChecker( "1.2.1" )
         {
+            /** The mandatory serialVersionUID field */
+            public static final long serialVersionUID = 1L;
+
+
             public boolean isValidSyntax( Object value )
             {
                 return ( value == null ) || ( ( ( byte[] ) value ).length < 5 );
@@ -229,6 +255,10 @@ public class TestEntryUtils
 
         matchingRule.setNormalizer( new Normalizer( "1.1.1" )
         {
+            /** The mandatory serialVersionUID field */
+            public static final long serialVersionUID = 1L;
+
+
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
                 if ( !value.isHumanReadable() )

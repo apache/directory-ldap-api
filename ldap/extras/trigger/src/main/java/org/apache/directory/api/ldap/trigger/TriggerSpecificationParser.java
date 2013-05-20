@@ -25,6 +25,7 @@ import java.io.StringReader;
 import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.schema.Normalizer;
 import org.apache.directory.api.ldap.model.schema.NormalizerMappingResolver;
 
 import antlr.RecognitionException;
@@ -68,7 +69,7 @@ public class TriggerSpecificationParser
      *
      * @param resolver the resolver
      */
-    public TriggerSpecificationParser( NormalizerMappingResolver resolver )
+    public TriggerSpecificationParser( NormalizerMappingResolver<Normalizer> resolver )
     {
         this.lexer = new ReusableAntlrTriggerSpecificationLexer( new StringReader( "" ) );
         this.parser = new ReusableAntlrTriggerSpecificationParser( lexer );

@@ -156,7 +156,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         if ( schemaManager != null )
         {
             this.schemaManager = schemaManager;
-            
+
             try
             {
                 attributeType = schemaManager.lookupAttributeTypeRegistry( upType );
@@ -606,203 +606,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         }
     }
 
-    private static final boolean[] DN_ESCAPED_CHARS = new boolean[]
-        {
-            true, true, true, true, true, true, true, true, // 0x00 -> 0x07
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true, // 0x08 -> 0x0F
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true, // 0x10 -> 0x17
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true,
-            true, // 0x18 -> 0x1F
-            true,
-            false,
-            true,
-            true,
-            false,
-            false,
-            false,
-            false, // 0x20 -> 0x27 ' ', '"', '#'
-            false,
-            false,
-            false,
-            true,
-            true,
-            false,
-            false,
-            false, // 0x28 -> 0x2F '+', ','
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false, // 0x30 -> 0x37
-            false,
-            false,
-            false,
-            true,
-            true,
-            false,
-            true,
-            false, // 0x38 -> 0x3F ';', '<', '>'
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false, // 0x40 -> 0x47
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false, // 0x48 -> 0x4F
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false, // 0x50 -> 0x57
-            false,
-            false,
-            false,
-            false,
-            true,
-            false,
-            false,
-            false, // 0x58 -> 0x5F
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false, // 0x60 -> 0x67
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false, // 0x68 -> 0x6F
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false, // 0x70 -> 0x77
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false, // 0x78 -> 0x7F
-        };
-
-
-    /**
-     * Normalize the value in order to be able to use it in a DN as a String. Some
-     * characters will be escaped (prefixed with '\'),
-     * 
-     * @return The normalized Ava
-     */
-    private String normalizeValue()
-    {
-        // The result will be gathered in a stringBuilder
-        StringBuilder sb = new StringBuilder();
-
-        String normalizedValue = normValue.getString();
-        int valueLength = normalizedValue.length();
-
-        if ( normalizedValue.length() > 0 )
-        {
-            char[] chars = normalizedValue.toCharArray();
-
-            // Here, we have a char to escape. Start again the loop...
-            for ( int i = 0; i < valueLength; i++ )
-            {
-                char c = chars[i];
-
-                if ( ( c >= 0 ) && ( c < DN_ESCAPED_CHARS.length ) && DN_ESCAPED_CHARS[c] )
-                {
-                    // Some chars need to be escaped even if they are US ASCII
-                    // Just prefix them with a '\'
-                    // Special cases are ' ' (space), '#') which need a special
-                    // treatment.
-                    switch ( c )
-                    {
-                        case ' ':
-                            if ( ( i == 0 ) || ( i == valueLength - 1 ) )
-                            {
-                                sb.append( "\\ " );
-                            }
-                            else
-                            {
-                                sb.append( ' ' );
-                            }
-
-                            break;
-
-                        case '#':
-                            if ( i == 0 )
-                            {
-                                sb.append( "\\#" );
-                                continue;
-                            }
-                            else
-                            {
-                                sb.append( '#' );
-                            }
-
-                            break;
-
-                        default:
-                            sb.append( '\\' ).append( c );
-                    }
-                }
-                else
-                {
-                    // Standard ASCII chars are just appended
-                    sb.append( c );
-                }
-            }
-        }
-
-        return sb.toString();
-    }
-
 
     /**
      * A Normalized String representation of a Ava :
@@ -1150,28 +953,28 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     {
         return attributeType;
     }
-    
-    
+
+
     private int compareValues( Ava that )
     {
         int comp = 0;
-        
+
         if ( normValue.getNormValue() instanceof String )
         {
-            comp = ((String)normValue.getNormValue()).compareTo( ((String)that.normValue.getNormValue()) );
-            
+            comp = ( ( String ) normValue.getNormValue() ).compareTo( ( ( String ) that.normValue.getNormValue() ) );
+
             return comp;
         }
         else
         {
-            byte[] bytes1 = (byte[])normValue.getNormValue();
-            byte[] bytes2 = (byte[])that.normValue.getNormValue();
-            
+            byte[] bytes1 = ( byte[] ) normValue.getNormValue();
+            byte[] bytes2 = ( byte[] ) that.normValue.getNormValue();
+
             for ( int pos = 0; pos < bytes1.length; pos++ )
             {
                 int v1 = ( bytes1[pos] & 0x00FF );
                 int v2 = ( bytes2[pos] & 0x00FF );
-                
+
                 if ( v1 > v2 )
                 {
                     return 1;
@@ -1181,35 +984,36 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                     return -1;
                 }
             }
-            
+
             return 0;
         }
-        
+
     }
 
 
     /**
      * @see Comparable#compareTo(Object)
      */
+    @SuppressWarnings("unchecked")
     public int compareTo( Ava that )
     {
         if ( that == null )
         {
             return 1;
         }
-        
+
         int comp = 0;
-        
+
         if ( schemaManager == null )
         {
             // Compare the ATs
             comp = normType.compareTo( that.normType );
-            
+
             if ( comp != 0 )
             {
                 return comp;
             }
-            
+
             // and compare the values
             if ( normValue == null )
             {
@@ -1232,14 +1036,14 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                 {
                     if ( normValue instanceof StringValue )
                     {
-                        comp = ((StringValue)normValue).compareTo( (StringValue)that.normValue );
-                        
+                        comp = ( ( StringValue ) normValue ).compareTo( ( StringValue ) that.normValue );
+
                         return comp;
                     }
                     else
                     {
-                        comp = ((BinaryValue)normValue).compareTo( (BinaryValue)that.normValue );
-                        
+                        comp = ( ( BinaryValue ) normValue ).compareTo( ( BinaryValue ) that.normValue );
+
                         return comp;
                     }
                 }
@@ -1259,39 +1063,39 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                     return 1;
                 }
             }
-            
+
             // First compare the AT OID
             comp = attributeType.getOid().compareTo( that.attributeType.getOid() );
-            
+
             if ( comp != 0 )
             {
                 return comp;
             }
-            
+
             // Now, compare the two values using the ordering matchingRule comparator, if any
             MatchingRule orderingMR = attributeType.getOrdering();
-            
+
             if ( orderingMR != null )
             {
-                LdapComparator<Object> comparator = (LdapComparator<Object>)orderingMR.getLdapComparator();
-                
+                LdapComparator<Object> comparator = ( LdapComparator<Object> ) orderingMR.getLdapComparator();
+
                 if ( comparator != null )
                 {
                     comp = comparator.compare( normValue.getNormValue(), that.normValue.getNormValue() );
-                    
+
                     return comp;
                 }
                 else
                 {
                     comp = compareValues( that );
-                    
+
                     return comp;
                 }
             }
             else
             {
                 comp = compareValues( that );
-                
+
                 return comp;
             }
         }

@@ -33,10 +33,6 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  */
 public class CancelResponseImpl extends ExtendedResponseImpl implements CancelResponse
 {
-    /** The serial version UUID */
-    private static final long serialVersionUID = 1L;
-
-
     /**
      * Create a new CancelResponse object
      * @param messageId The messageId

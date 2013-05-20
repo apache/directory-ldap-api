@@ -486,7 +486,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD.EmptyCatchBlock")
     public boolean connect() throws LdapException, IOException
     {
         if ( ( ldapSession != null ) && connected.get() )
@@ -641,6 +640,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         connected.set( true );
 
         // Store the container into the session if we don't have one
+        @SuppressWarnings("unchecked")
         LdapMessageContainer<MessageDecorator<? extends Message>> container =
             ( LdapMessageContainer<MessageDecorator<? extends Message>> ) ldapSession
                 .getAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR );
@@ -3065,7 +3065,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public ExtendedResponse extended( ExtendedRequest extendedRequest ) throws LdapException
+    public ExtendedResponse extended( ExtendedRequest<?> extendedRequest ) throws LdapException
     {
         if ( extendedRequest == null )
         {
@@ -3108,7 +3108,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             // Decode the payload now
             resultResponse.getMessageId();
 
-            ExtendedResponseDecorator decoratedResponse = ldapApiService.decorate( ( ExtendedResponse ) resultResponse );
+            ExtendedResponseDecorator<?> decoratedResponse = ldapApiService
+                .decorate( ( ExtendedResponse ) resultResponse );
 
             return decoratedResponse;
         }
@@ -3143,7 +3144,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public ExtendedFuture extendedAsync( ExtendedRequest extendedRequest ) throws LdapException
+    public ExtendedFuture extendedAsync( ExtendedRequest<?> extendedRequest ) throws LdapException
     {
         if ( extendedRequest == null )
         {

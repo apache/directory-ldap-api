@@ -31,10 +31,6 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
  */
 public class StoredProcedureResponseImpl extends ExtendedResponseImpl implements StoredProcedureResponse
 {
-    /** The Constant serialVersionUID. */
-    private static final long serialVersionUID = 7689434378578829994L;
-
-
     /**
      * Instantiates a new stored procedure response.
      *

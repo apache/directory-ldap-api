@@ -33,10 +33,6 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  */
 public class CertGenerationResponseImpl extends ExtendedResponseImpl implements CertGenerationResponse
 {
-    /** The serial version UUID */
-    private static final long serialVersionUID = 1L;
-
-
     public CertGenerationResponseImpl( int messageId, ResultCodeEnum rcode )
     {
         super( messageId, EXTENSION_OID );

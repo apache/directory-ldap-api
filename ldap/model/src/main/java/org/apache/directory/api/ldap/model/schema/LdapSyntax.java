@@ -68,13 +68,14 @@ import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
  * @see DescriptionUtils#getDescription(Syntax)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class LdapSyntax extends AbstractSchemaObject
 {
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
+
     /** the human readable flag */
     protected boolean isHumanReadable = false;
-    
+
     /** A flag set to true if the Syntax has a X-NOT-HUMAN-READABLE extension */
     private boolean hasHumanReadableFlag = false;
 
@@ -147,7 +148,7 @@ public class LdapSyntax extends AbstractSchemaObject
             {
                 String value = values.get( 0 );
                 hasHumanReadableFlag = true;
-                
+
                 if ( value.equalsIgnoreCase( "FALSE" ) )
                 {
                     isHumanReadable = true;

@@ -41,27 +41,9 @@ public class SearchFuture extends ResponseFuture<Response>
      * @param connection the LDAP connection
      * @param messageId The associated messageId
      */
-    // Implicit super constructor ResponseFuture<BindResponse>() is undefined for default constructor. 
-    @SuppressWarnings("PMD.UselessOverridingMethod")
     public SearchFuture( LdapConnection connection, int messageId )
     {
         super( connection, messageId );
-    }
-
-
-    /**
-     * Get the SearchResponse, blocking until one is received.
-     * It can be either a SearchResultEntry, a SearchResultReference
-     * or a SearchResultDone, the last of all the search responses.
-     * 
-     * @return the response, either a SearchResultEntry, a SearchResultReference, or a SearchResultDone
-     * @throws InterruptedException {@inheritDoc}
-     * @throws ExecutionException {@inheritDoc}
-     */
-    @SuppressWarnings("PMD.UselessOverridingMethod")
-    public Response get() throws InterruptedException, ExecutionException
-    {
-        return super.get();
     }
 
 

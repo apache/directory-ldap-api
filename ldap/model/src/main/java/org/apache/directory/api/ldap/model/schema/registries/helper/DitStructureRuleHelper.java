@@ -19,8 +19,6 @@
  */
 package org.apache.directory.api.ldap.model.schema.registries.helper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An helper class used to store all the methods associated with an DitStructureRule
@@ -30,6 +28,4 @@ import org.slf4j.LoggerFactory;
  */
 public class DitStructureRuleHelper
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( DitStructureRuleHelper.class );
 }

@@ -19,14 +19,14 @@
  */
 package org.apache.directory.api.ldap.model.schema.registries.helper;
 
+
 import java.util.List;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.MatchingRuleUse;
 import org.apache.directory.api.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.Registries;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * An helper class used to store all the methods associated with a MatchingRuleUse
@@ -36,9 +36,6 @@ import org.slf4j.LoggerFactory;
  */
 public class MatchingRuleUseHelper
 {
-    /** A logger for this class */
-    private static final Logger LOG = LoggerFactory.getLogger( MatchingRuleUseHelper.class );
-
     /**
      * Inject the MatchingRuleUse into the registries, updating the references to
      * other SchemaObject
@@ -48,16 +45,17 @@ public class MatchingRuleUseHelper
      * @param registries The Registries
      * @exception If the addition failed
      */
-    public static void addToRegistries( MatchingRuleUse matchingRuleUse, List<Throwable> errors,  Registries registries ) throws LdapException
+    public static void addToRegistries( MatchingRuleUse matchingRuleUse, List<Throwable> errors, Registries registries )
+        throws LdapException
     {
         if ( registries != null )
         {
             try
             {
                 matchingRuleUse.unlock();
-    
+
                 AttributeTypeRegistry atRegistry = registries.getAttributeTypeRegistry();
-                
+
                 matchingRuleUse.getApplicableAttributes().clear();
 
                 for ( String oid : matchingRuleUse.getApplicableAttributeOids() )

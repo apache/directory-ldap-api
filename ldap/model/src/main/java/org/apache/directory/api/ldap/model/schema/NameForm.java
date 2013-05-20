@@ -92,10 +92,11 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
  * @see DescriptionUtils#getDescription(NameForm)
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-// super.hashCode is final
-@SuppressWarnings("PMD.OverrideBothEqualsAndHashcode")
 public class NameForm extends AbstractSchemaObject
 {
+    /** The mandatory serialVersionUID */
+    public static final long serialVersionUID = 1L;
+
     /** The structural object class OID this rule applies to */
     private String structuralObjectClassOid;
 
@@ -475,8 +476,6 @@ public class NameForm extends AbstractSchemaObject
      * @see Object#equals(Object)
      */
     @Override
-    @SuppressWarnings("PMD.UnusedLocalVariable")
-    // Remove me when the TODO is fixed
     public boolean equals( Object o )
     {
         if ( !super.equals( o ) )

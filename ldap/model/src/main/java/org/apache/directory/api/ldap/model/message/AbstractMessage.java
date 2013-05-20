@@ -34,8 +34,6 @@ import org.apache.directory.api.ldap.model.exception.MessageException;
  */
 public abstract class AbstractMessage implements Message
 {
-    private static final long serialVersionUID = 7601738291101182094L;
-
     /** Map of message controls using OID Strings for keys and Control values */
     protected final Map<String, Control> controls;
 

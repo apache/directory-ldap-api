@@ -58,7 +58,7 @@ import org.osgi.framework.ServiceReference;
  */
 public class ExtrasBundleActivator implements BundleActivator
 {
-    private ServiceReference codecServiceRef;
+    private ServiceReference<?> codecServiceRef;
 
 
     /**

@@ -34,9 +34,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
@@ -97,6 +94,9 @@ public class BinaryValueAttributeTypeTest
         mr.setLdapComparator( new ByteArrayComparator( "1.1.1" ) );
         mr.setNormalizer( new Normalizer( "1.1.1" )
         {
+            public static final long serialVersionUID = 1L;
+
+
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
                 if ( !value.isHumanReadable() )

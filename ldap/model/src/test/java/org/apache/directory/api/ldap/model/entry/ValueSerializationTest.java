@@ -28,9 +28,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.StringValue;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
@@ -96,6 +93,9 @@ public class ValueSerializationTest
         mrb.setLdapComparator( new ByteArrayComparator( "1.1.1" ) );
         mrb.setNormalizer( new Normalizer( "1.1.1" )
         {
+            public static final long serialVersionUID = 1L;
+
+
             public Value<?> normalize( Value<?> value ) throws LdapException
             {
                 if ( !value.isHumanReadable() )

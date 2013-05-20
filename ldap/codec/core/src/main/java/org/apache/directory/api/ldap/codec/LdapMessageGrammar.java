@@ -67,8 +67,8 @@ import org.apache.directory.api.ldap.codec.actions.extendedRequest.InitExtendedR
 import org.apache.directory.api.ldap.codec.actions.extendedRequest.StoreExtendedRequestName;
 import org.apache.directory.api.ldap.codec.actions.extendedRequest.StoreExtendedRequestValue;
 import org.apache.directory.api.ldap.codec.actions.extendedResponse.InitExtendedResponse;
-import org.apache.directory.api.ldap.codec.actions.extendedResponse.StoreExtendedResponseValue;
 import org.apache.directory.api.ldap.codec.actions.extendedResponse.StoreExtendedResponseName;
+import org.apache.directory.api.ldap.codec.actions.extendedResponse.StoreExtendedResponseValue;
 import org.apache.directory.api.ldap.codec.actions.intermediateResponse.InitIntermediateResponse;
 import org.apache.directory.api.ldap.codec.actions.intermediateResponse.StoreIntermediateResponseName;
 import org.apache.directory.api.ldap.codec.actions.intermediateResponse.StoreIntermediateResponseValue;
@@ -156,16 +156,13 @@ public final class LdapMessageGrammar<E> extends
     static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
     /** The instance of grammar. LdapMessageGrammar is a singleton */
-    @SuppressWarnings(
-        { "unchecked", "rawtypes" })
-    private static Grammar<LdapMessageContainer<MessageDecorator<? extends Message>>> instance = new LdapMessageGrammar();
+    private static Grammar<LdapMessageContainer<MessageDecorator<? extends Message>>> instance =
+        new LdapMessageGrammar<LdapMessageContainer<MessageDecorator<? extends Message>>>();
 
 
     /**
      * Creates a new LdapMessageGrammar object.
      */
-    @SuppressWarnings(
-        { "unchecked", "rawtypes" })
     private LdapMessageGrammar()
     {
 

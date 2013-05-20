@@ -33,9 +33,6 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
 public class CertGenerationRequestImpl extends AbstractExtendedRequest<CertGenerationResponse> implements
     CertGenerationRequest
 {
-    /** The serial version UUID */
-    private static final long serialVersionUID = 1L;
-
     /** the Dn of the server entry which will be updated*/
     private String targetDN;
 

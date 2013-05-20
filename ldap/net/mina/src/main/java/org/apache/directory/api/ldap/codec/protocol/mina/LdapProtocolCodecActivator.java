@@ -31,16 +31,15 @@ import org.osgi.framework.ServiceRegistration;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@SuppressWarnings(
-    { "UnusedDeclaration" })
 public class LdapProtocolCodecActivator implements BundleActivator
 {
     private LdapProtocolCodecFactory factory;
     private ServiceRegistration registration;
 
 
-    @SuppressWarnings(
-        { "UnusedDeclaration" })
+    /**
+     * Create a new instance of a LdapProtocolCodecActivator 
+     */
     public LdapProtocolCodecActivator()
     {
         this.factory = new LdapProtocolCodecFactory();
