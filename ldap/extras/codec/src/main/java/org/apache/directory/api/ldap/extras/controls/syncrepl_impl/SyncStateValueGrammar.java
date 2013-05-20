@@ -55,7 +55,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class SyncStateValueGrammar extends AbstractGrammar
+public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueContainer>
 {
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( SyncStateValueGrammar.class );
@@ -64,12 +64,13 @@ public final class SyncStateValueGrammar extends AbstractGrammar
     static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
     /** The instance of grammar. SyncStateValueControlGrammar is a singleton */
-    private static Grammar instance = new SyncStateValueGrammar();
+    private static Grammar<SyncStateValueContainer> instance = new SyncStateValueGrammar();
 
 
     /**
      * Creates a new SyncStateValueControlGrammar object.
      */
+    @SuppressWarnings("unchecked")
     private SyncStateValueGrammar()
     {
         setName( SyncStateValueGrammar.class.getName() );
@@ -84,7 +85,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar
          *     
          * Initialize the syncStateValue object
          */
-        super.transitions[SyncStateValueStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = new GrammarTransition(
+        super.transitions[SyncStateValueStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = new GrammarTransition<SyncStateValueContainer>(
             SyncStateValueStatesEnum.START_STATE, SyncStateValueStatesEnum.SYNC_STATE_VALUE_SEQUENCE_STATE,
             UniversalTag.SEQUENCE.getValue(), null );
 
@@ -102,7 +103,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar
          * Stores the sync state type value
          */
         super.transitions[SyncStateValueStatesEnum.SYNC_STATE_VALUE_SEQUENCE_STATE.ordinal()][UniversalTag.ENUMERATED
-            .getValue()] = new GrammarTransition(
+            .getValue()] = new GrammarTransition<SyncStateValueContainer>(
             SyncStateValueStatesEnum.SYNC_STATE_VALUE_SEQUENCE_STATE,
             SyncStateValueStatesEnum.SYNC_TYPE_STATE, UniversalTag.ENUMERATED.getValue(),
             new GrammarAction<SyncStateValueContainer>( "Set SyncStateValueControl state type" )
@@ -147,7 +148,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar
          *     
          * Stores the entryUUID
          */
-        super.transitions[SyncStateValueStatesEnum.SYNC_TYPE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = new GrammarTransition(
+        super.transitions[SyncStateValueStatesEnum.SYNC_TYPE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = new GrammarTransition<SyncStateValueContainer>(
             SyncStateValueStatesEnum.SYNC_TYPE_STATE, SyncStateValueStatesEnum.SYNC_UUID_STATE,
             UniversalTag.OCTET_STRING.getValue(),
             new GrammarAction<SyncStateValueContainer>( "Set SyncStateValueControl entryUUID" )
@@ -179,7 +180,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar
          *     
          * Stores the reloadHint flag
          */
-        super.transitions[SyncStateValueStatesEnum.SYNC_UUID_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = new GrammarTransition(
+        super.transitions[SyncStateValueStatesEnum.SYNC_UUID_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] = new GrammarTransition<SyncStateValueContainer>(
             SyncStateValueStatesEnum.SYNC_UUID_STATE, SyncStateValueStatesEnum.COOKIE_STATE,
             UniversalTag.OCTET_STRING.getValue(),
             new GrammarAction<SyncStateValueContainer>( "Set SyncStateValueControl cookie value" )
@@ -209,7 +210,7 @@ public final class SyncStateValueGrammar extends AbstractGrammar
      * 
      * @return An instance on this grammar
      */
-    public static Grammar getInstance()
+    public static Grammar<SyncStateValueContainer> getInstance()
     {
         return instance;
     }

@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.grammar.AbstractGrammar;
 import org.apache.directory.api.asn1.ber.grammar.Grammar;
 import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
@@ -65,8 +64,7 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
     /**
      * Creates a new GracefulDisconnectGrammar object.
      */
-    @SuppressWarnings(
-        { "unchecked", "rawtypes" })
+    @SuppressWarnings("unchecked")
     private CancelGrammar()
     {
         setName( CancelGrammar.class.getName() );
@@ -85,11 +83,10 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
             new GrammarTransition<CancelContainer>( CancelStatesEnum.START_STATE,
                 CancelStatesEnum.CANCEL_SEQUENCE_STATE,
                 UniversalTag.SEQUENCE.getValue(),
-                new GrammarAction( "Init Cancel" )
+                new GrammarAction<CancelContainer>( "Init Cancel" )
                 {
-                    public void action( Asn1Container container )
+                    public void action( CancelContainer cancelContainer )
                     {
-                        CancelContainer cancelContainer = ( CancelContainer ) container;
                         Cancel cancel = new Cancel();
                         cancelContainer.setCancel( cancel );
                     }
@@ -108,11 +105,10 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
             new GrammarTransition<CancelContainer>( CancelStatesEnum.CANCEL_SEQUENCE_STATE,
                 CancelStatesEnum.CANCEL_ID_STATE,
                 UniversalTag.INTEGER.getValue(),
-                new GrammarAction( "Stores CancelId" )
+                new GrammarAction<CancelContainer>( "Stores CancelId" )
                 {
-                    public void action( Asn1Container container ) throws DecoderException
+                    public void action( CancelContainer cancelContainer ) throws DecoderException
                     {
-                        CancelContainer cancelContainer = ( CancelContainer ) container;
                         BerValue value = cancelContainer.getCurrentTLV().getValue();
 
                         try

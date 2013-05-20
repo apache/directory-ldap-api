@@ -756,8 +756,6 @@ public class DefaultSchemaManager implements SchemaManager
      * - isRelaxed
      * - disabledAccepted
      */
-    // False positive
-    @SuppressWarnings("PMD.UnusedPrivateMethod")
     private boolean unload( Registries registries, Schema schema ) throws LdapException
     {
         if ( schema == null )

@@ -32,9 +32,6 @@ import org.apache.directory.api.asn1.ber.grammar.States;
  */
 public enum SyncStateValueStatesEnum implements States
 {
-    // ~ Static fields/initializers
-    // -----------------------------------------------------------------
-
     /** The END_STATE */
     END_STATE,
 
@@ -77,7 +74,7 @@ public enum SyncStateValueStatesEnum implements States
      * @param grammar The grammar class
      * @return The grammar name
      */
-    public String getGrammarName( Grammar grammar )
+    public String getGrammarName( Grammar<SyncStateValueContainer> grammar )
     {
         if ( grammar instanceof SyncStateValueGrammar )
         {

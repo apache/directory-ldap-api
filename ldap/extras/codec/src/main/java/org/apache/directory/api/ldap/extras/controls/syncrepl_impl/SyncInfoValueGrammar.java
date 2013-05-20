@@ -62,7 +62,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class SyncInfoValueGrammar extends AbstractGrammar
+public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueContainer>
 {
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( SyncInfoValueGrammar.class );
@@ -71,18 +71,20 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
     static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
     /** The instance of grammar. SyncInfoValueControlGrammar is a singleton */
-    private static Grammar instance = new SyncInfoValueGrammar();
+    private static Grammar<SyncInfoValueContainer> instance = new SyncInfoValueGrammar();
 
 
     /**
      * Creates a new SyncInfoValueControlGrammar object.
      */
+    @SuppressWarnings("unchecked")
     private SyncInfoValueGrammar()
     {
         setName( SyncInfoValueGrammar.class.getName() );
 
         // Create the transitions table
-        super.transitions = new GrammarTransition[SyncInfoValueStatesEnum.LAST_SYNC_INFO_VALUE_STATE.ordinal()][256];
+        super.transitions = new GrammarTransition[SyncInfoValueStatesEnum.LAST_SYNC_INFO_VALUE_STATE
+            .ordinal()][256];
 
         /** 
          * Transition from initial state to SyncInfoValue newCookie choice
@@ -93,7 +95,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          * Initialize the syncInfoValue object
          */
         super.transitions[SyncInfoValueStatesEnum.START_STATE.ordinal()][SyncInfoValueTags.NEW_COOKIE_TAG.getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.START_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.START_STATE,
                 SyncInfoValueStatesEnum.NEW_COOKIE_STATE,
                 SyncInfoValueTags.NEW_COOKIE_TAG.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "NewCookie choice for SyncInfoValueControl" )
@@ -132,7 +134,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          */
         super.transitions[SyncInfoValueStatesEnum.START_STATE.ordinal()][SyncInfoValueTags.REFRESH_DELETE_TAG
             .getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.START_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.START_STATE,
                 SyncInfoValueStatesEnum.REFRESH_DELETE_STATE,
                 SyncInfoValueTags.REFRESH_DELETE_TAG.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshDelete choice for SyncInfoValueControl" )
@@ -158,7 +160,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          * Load the cookie object
          */
         super.transitions[SyncInfoValueStatesEnum.REFRESH_DELETE_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_DELETE_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.REFRESH_DELETE_STATE,
                 SyncInfoValueStatesEnum.REFRESH_DELETE_COOKIE_STATE,
                 UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshDelete cookie" )
@@ -195,7 +197,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          */
         super.transitions[SyncInfoValueStatesEnum.REFRESH_DELETE_COOKIE_STATE.ordinal()][UniversalTag.BOOLEAN
             .getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_DELETE_COOKIE_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.REFRESH_DELETE_COOKIE_STATE,
                 SyncInfoValueStatesEnum.LAST_SYNC_INFO_VALUE_STATE,
                 UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshDelete refreshDone flag" )
@@ -244,7 +246,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          * Load the refreshDone flag
          */
         super.transitions[SyncInfoValueStatesEnum.REFRESH_DELETE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_DELETE_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.REFRESH_DELETE_STATE,
                 SyncInfoValueStatesEnum.LAST_SYNC_INFO_VALUE_STATE,
                 UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshDelete refreshDone flag" )
@@ -294,7 +296,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          */
         super.transitions[SyncInfoValueStatesEnum.START_STATE.ordinal()][SyncInfoValueTags.REFRESH_PRESENT_TAG
             .getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.START_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.START_STATE,
                 SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE,
                 SyncInfoValueTags.REFRESH_PRESENT_TAG.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshDelete choice for SyncInfoValueControl" )
@@ -320,7 +322,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          * Load the cookie object
          */
         super.transitions[SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE,
                 SyncInfoValueStatesEnum.REFRESH_PRESENT_COOKIE_STATE,
                 UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshPresent cookie" )
@@ -357,7 +359,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          */
         super.transitions[SyncInfoValueStatesEnum.REFRESH_PRESENT_COOKIE_STATE.ordinal()][UniversalTag.BOOLEAN
             .getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_PRESENT_COOKIE_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.REFRESH_PRESENT_COOKIE_STATE,
                 SyncInfoValueStatesEnum.LAST_SYNC_INFO_VALUE_STATE,
                 UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshPresent refreshDone flag" )
@@ -406,7 +408,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          * Load the refreshDone flag
          */
         super.transitions[SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.REFRESH_PRESENT_STATE,
                 SyncInfoValueStatesEnum.LAST_SYNC_INFO_VALUE_STATE,
                 UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "RefreshPresent refreshDone flag" )
@@ -455,7 +457,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          * Initialize the syncInfoValue object
          */
         super.transitions[SyncInfoValueStatesEnum.START_STATE.ordinal()][SyncInfoValueTags.SYNC_ID_SET_TAG.getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.START_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.START_STATE,
                 SyncInfoValueStatesEnum.SYNC_ID_SET_STATE,
                 SyncInfoValueTags.SYNC_ID_SET_TAG.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet choice for SyncInfoValueControl" )
@@ -478,7 +480,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          * Load the cookie object
          */
         super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.SYNC_ID_SET_STATE,
                 SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE,
                 UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet cookie" )
@@ -511,7 +513,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          * Load the refreshDeletes flag
          */
         super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.SYNC_ID_SET_STATE,
                 SyncInfoValueStatesEnum.SYNC_ID_SET_REFRESH_DELETES_STATE,
                 UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet refreshDeletes" )
@@ -554,7 +556,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          * Load the refreshDeletes flag
          */
         super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE,
                 SyncInfoValueStatesEnum.SYNC_ID_SET_REFRESH_DELETES_STATE,
                 UniversalTag.BOOLEAN.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet refreshDeletes" )
@@ -597,7 +599,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          * Initialize the UUID set : no action associated, except allowing a grammar end
          */
         super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_STATE.ordinal()][UniversalTag.SET.getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.SYNC_ID_SET_STATE,
                 SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE,
                 UniversalTag.SET.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet syncUUIDs" )
@@ -619,7 +621,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          * Initialize the UUID set : no action associated
          */
         super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE.ordinal()][UniversalTag.SET.getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.SYNC_ID_SET_COOKIE_STATE,
                 SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE,
                 UniversalTag.SET.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet syncUUIDs" )
@@ -642,7 +644,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          */
         super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_REFRESH_DELETES_STATE.ordinal()][UniversalTag.SET
             .getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_REFRESH_DELETES_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.SYNC_ID_SET_REFRESH_DELETES_STATE,
                 SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE,
                 UniversalTag.SET.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet syncUUIDs" )
@@ -665,7 +667,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          */
         super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE.ordinal()][UniversalTag.OCTET_STRING
             .getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.SYNC_ID_SET_SET_OF_UUIDS_STATE,
                 SyncInfoValueStatesEnum.SYNC_ID_SET_UUID_STATE,
                 UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet first UUID" )
@@ -710,7 +712,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
          */
         super.transitions[SyncInfoValueStatesEnum.SYNC_ID_SET_UUID_STATE.ordinal()][UniversalTag.OCTET_STRING
             .getValue()] =
-            new GrammarTransition( SyncInfoValueStatesEnum.SYNC_ID_SET_UUID_STATE,
+            new GrammarTransition<SyncInfoValueContainer>( SyncInfoValueStatesEnum.SYNC_ID_SET_UUID_STATE,
                 SyncInfoValueStatesEnum.SYNC_ID_SET_UUID_STATE,
                 UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<SyncInfoValueContainer>( "SyncIdSet UUID" )
@@ -751,7 +753,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar
      * 
      * @return An instance on this grammar
      */
-    public static Grammar getInstance()
+    public static Grammar<SyncInfoValueContainer> getInstance()
     {
         return instance;
     }

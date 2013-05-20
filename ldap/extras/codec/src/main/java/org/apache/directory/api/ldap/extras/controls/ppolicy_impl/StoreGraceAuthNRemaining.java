@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.extras.controls.ppolicy_impl;
 
 
 import org.apache.directory.api.asn1.actions.AbstractReadInteger;
-import org.apache.directory.api.asn1.ber.Asn1Container;
 
 
 /**
@@ -29,8 +28,7 @@ import org.apache.directory.api.asn1.ber.Asn1Container;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@SuppressWarnings("rawtypes")
-public class StoreGraceAuthNRemaining extends AbstractReadInteger
+public class StoreGraceAuthNRemaining extends AbstractReadInteger<PasswordPolicyContainer>
 {
 
     /**
@@ -46,10 +44,8 @@ public class StoreGraceAuthNRemaining extends AbstractReadInteger
      * {@inheritDoc}
      */
     @Override
-    protected void setIntegerValue( int value, Asn1Container container )
+    protected void setIntegerValue( int value, PasswordPolicyContainer ppolicyContainer )
     {
-        PasswordPolicyContainer ppolicyContainer = ( PasswordPolicyContainer ) container;
-
         ppolicyContainer.getPasswordPolicyResponseControl().getResponse().setGraceAuthNRemaining( value );
 
         ppolicyContainer.setGrammarEndAllowed( true );
