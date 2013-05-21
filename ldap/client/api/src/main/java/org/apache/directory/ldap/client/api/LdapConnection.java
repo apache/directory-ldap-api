@@ -55,16 +55,24 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
+// TODO: all the SASL bind methods are not declared in this interface, but implemented in LdapNetworkConnection. Is that intended?
+// TODO: why do connect() and bind() methods throw an IOException, the other methods not?
+// TODO: why do connect() and close() return a boolean? What is the difference between false and an Exception?
+// TODO: think about usage of abbrevisions (Dn/Rdn) vs. spelled out (relative distinguished name) in javadoc
+// TODO: describe better which type of LdapException are thrown in which case?
+// TODO: remove the "we" language in javadoc
+// TODO: does method getCodecService() belong into the interface? It returns a LdapApiService, should it be renamed?
+// TODO: does method doesFutureExistFor() belong into the interface? Move to LdapAsyncConnection?
 
 /**
- * The root interface for all the LDAP connection implementations.
+ * The root interface for all the LDAP connection implementations. All operations defined in this interface are blocking (synchronous).
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface LdapConnection
 {
     /**
-     * Check if we are connected
+     * Check if we are connected.
      *
      * @return <code>true</code> if we are connected.
      */
@@ -72,7 +80,7 @@ public interface LdapConnection
 
 
     /**
-     * Check if we are authenticated
+     * Check if we are authenticated.
      *
      * @return <code>true</code> if we are connected.
      */
@@ -83,14 +91,14 @@ public interface LdapConnection
      * Connect to the remote LDAP server.
      *
      * @return <code>true</code> if the connection is established, false otherwise
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
     boolean connect() throws LdapException, IOException;
 
 
     /**
-     * Disconnect from the remote LDAP server
+     * Disconnect from the remote LDAP server.
      *
      * @return <code>true</code> if the connection is closed, false otherwise
      * @throws IOException if some I/O error occurs
@@ -102,28 +110,26 @@ public interface LdapConnection
     // Add operations                                                      //
     //---------------------------------------------------------------------//
     /**
-     * Add an entry to the server. This is a blocking add : the user has
-     * to wait for the response until the AddResponse is returned.
+     * Add an entry to the server.
      *
      * @param entry The entry to add
-     * @return the add operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     void add( Entry entry ) throws LdapException;
 
 
     /**
-     * Add an entry present in the AddRequest to the server.
+     * Add an entry present in the {@link AddRequest} to the server.
      *
-     * @param addRequest the request object containing an entry and controls(if any)
+     * @param addRequest the request object containing an entry and controls (if any)
      * @return the add operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     AddResponse add( AddRequest addRequest ) throws LdapException;
 
 
     /**
-     * Abandons a request submitted to the server for performing a particular operation
+     * Abandons a request submitted to the server for performing a particular operation.
      *
      * The abandonRequest is always non-blocking, because no response is expected
      *
@@ -136,7 +142,7 @@ public interface LdapConnection
      * An abandon request essentially with the request message ID of the operation to be canceled
      * and/or potentially some controls and timeout (the controls and timeout are not mandatory).
      *
-     * The abandonRequest is always non-blocking, because no response is expected
+     * The abandonRequest is always non-blocking, because no response is expected.
      *
      * @param abandonRequest the abandon operation's request
      */
@@ -144,45 +150,41 @@ public interface LdapConnection
 
 
     /**
-     * Bind on a server, using the LdapConnectionConfig informations
+     * Bind on a server, using the {@link LdapConnectionConfig} information of this connection.
      *
-     * @return The BindResponse LdapResponse
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
     void bind() throws LdapException, IOException;
 
 
     /**
-     * Anonymous Bind on a server.
+     * Anonymous bind on a server.
      *
-     * @return The BindResponse LdapResponse
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
     void anonymousBind() throws LdapException, IOException;
 
 
     /**
-     * Unauthenticated authentication bind
+     * Unauthenticated authentication bind on a server.
      *
      * @param name The name we use to authenticate the user. It must be a
-     * valid Dn
-     * @return The BindResponse LdapResponse
-     * @throws {@link LdapException} if some error occurred
+     * valid {@link Dn}
+     * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
     void bind( String name ) throws LdapException, IOException;
 
 
     /**
-     * Simple Bind on a server.
+     * Simple bind on a server.
      *
      * @param name The name we use to authenticate the user. It must be a
-     * valid Dn
-     * @param credentials The password. It can't be null
-     * @return The BindResponse LdapResponse
-     * @throws {@link LdapException} if some error occurred
+     * valid {@link Dn}
+     * @param credentials The password, it can't be <code>null</code>
+     * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
     void bind( String name, String credentials ) throws LdapException, IOException;
@@ -192,9 +194,9 @@ public interface LdapConnection
      * SASL PLAIN Bind on a server.
      *
      * @param authcid The Authentication identity
-     * @param credentials The password. It can't be null
+     * @param credentials The password, it can't be null
      * @return The BindResponse LdapResponse
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
     // Not yet available on the CoreConnection
@@ -207,101 +209,92 @@ public interface LdapConnection
      * @param authcid The Authentication identity
      * @param credentials The password. It can't be null
      * @return The BindResponse LdapResponse
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
     // Not yet available on the CoreConnection
     //BindResponse bindSaslPlain( String authzid, String authcid, String credentials ) throws LdapException, IOException;
 
     /**
-     * Unauthenticated authentication Bind on a server.
+     * Unauthenticated authentication bind on a server.
      *
-     * @param name The name we use to authenticate the user. It must be a
-     * valid Dn
-     * @return The BindResponse LdapResponse
-     * @throws {@link LdapException} if some error occurred
+     * @param name The name we use to authenticate the user.
+     * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
     void bind( Dn name ) throws LdapException, IOException;
 
 
     /**
-     * Simple Bind on a server.
+     * Simple bind on a server.
      *
-     * @param name The name we use to authenticate the user. It must be a
-     * valid Dn
-     * @param credentials The password. It can't be null
-     * @return The BindResponse LdapResponse
-     * @throws {@link LdapException} if some error occurred
+     * @param name The name we use to authenticate the user.
+     * @param credentials The password, it can't be null
+     * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
     void bind( Dn name, String credentials ) throws LdapException, IOException;
 
 
     /**
-     * Bind to the server using a BindRequest object.
+     * Bind to the server using a bind request object.
      *
-     * @param bindRequest The BindRequest POJO containing all the needed
-     * parameters
-     * @return A LdapResponse containing the result
-     * @throws {@link LdapException} if some error occurred
+     * @param bindRequest The bind request object containing all the needed parameters
+     * @return A {@link BindResponse} containing the result
+     * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
     BindResponse bind( BindRequest bindRequest ) throws LdapException, IOException;
 
 
     /**
-     * Do a search, on the base object, using the given filter. The
-     * SearchRequest parameters default to :
-     * Scope : ONE
-     * DerefAlias : ALWAYS
-     * SizeLimit : none
-     * TimeLimit : none
-     * TypesOnly : false
-     * Attributes : all the user's attributes.
-     * This method is blocking.
-     *
-     * @param baseDn The base for the search. It must be a valid
-     * Dn, and can't be emtpy
+     * Do a search, on the base object, using the given filter and scope. The
+     * SearchRequest parameters default to
+     * <ul>
+     * <li> DerefAlias : ALWAYS
+     * <li> SizeLimit : none
+     * <li> TimeLimit : none
+     * <li> TypesOnly : false
+     * </ul>
+     * 
+     * @param baseDn The base for the search. It must be a valid distinguished name and can't be emtpy
      * @param filter The filter to use for this search. It can't be empty
      * @param scope The search scope : OBJECT, ONELEVEL or SUBTREE
      * @param attributes The attributes to use for this search
      * @return An {@link EntryCursor} on the result.
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     EntryCursor search( Dn baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException;
 
 
     /**
-     * Do a search, on the base object, using the given filter. The
-     * SearchRequest parameters default to :
-     * Scope : ONE
-     * DerefAlias : ALWAYS
-     * SizeLimit : none
-     * TimeLimit : none
-     * TypesOnly : false
-     * Attributes : all the user's attributes.
-     * This method is blocking.
+     * Do a search, on the base object, using the given filter and scope. The
+     * SearchRequest parameters default to
+     * <ul>
+     * <li> DerefAlias : ALWAYS
+     * <li> SizeLimit : none
+     * <li> TimeLimit : none
+     * <li> TypesOnly : false
+     * </ul>
      *
-     * @param baseDn The base for the search. It must be a valid
-     * Dn, and can't be emtpy
+     * @param baseDn The base for the search. It must be a valid distinguished name, and can't be emtpy
      * @param filter The filter to use for this search. It can't be empty
      * @param scope The search scope : OBJECT, ONELEVEL or SUBTREE
      * @param attributes The attributes to use for this search
      * @return An {@link EntryCursor} on the result.
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     EntryCursor search( String baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException;
 
 
     /**
-     * Performs search in a synchronous mode.
+     * Performs search using a search request object.
      *
-     * @param searchRequest The search configuration
-     * @return a {@link SearchCursor} on the result.
-     * @throws {@link LdapException} if some error occurred
+     * @param searchRequest The search request object containing all the needed information
+     * @return a search cursor on the result.
+     * @throws LdapException if some error occurred
      */
     SearchCursor search( SearchRequest searchRequest ) throws LdapException;
 
@@ -310,14 +303,15 @@ public interface LdapConnection
     // Unbind operations                                                   //
     //---------------------------------------------------------------------//
     /**
-     * UnBind from a server. This is a request which expect no response.
-     * @throws {@link LdapException} if some error occurred
+     * UnBind from a server. This is a request which expects no response.
+     * 
+     * @throws LdapException if some error occurred
      */
     void unBind() throws LdapException;
 
 
     /**
-     * Set the timeOut for the responses. We wont wait longer than this
+     * Set the timeout for the responses. We won't wait longer than this
      * value.
      *
      * @param timeOut The timeout, in milliseconds
@@ -326,23 +320,22 @@ public interface LdapConnection
 
 
     /**
-     * Applies all the modifications to the entry specified by its Dn.
+     * Applies all the modifications to the entry specified by its distinguished name.
      *
-     * @param dn The entry's Dn
+     * @param dn The entry's distinguished name
      * @param modifications The list of modifications to be applied
-     * @return the modify operation's response
-     * @throws {@link LdapException} in case of modify operation failure or timeout happens
+     * @throws LdapException in case of modify operation failure or timeout happens
      */
     void modify( Dn dn, Modification... modifications ) throws LdapException;
 
 
     /**
-     * Applies all the modifications to the entry specified by its Dn.
+     * Applies all the modifications to the entry specified by its distinguished name.
      *
-     * @param dn The entry's Dn
+     * @param dn The entry's distinguished name, it must be a valid {@link Dn}
      * @param modifications The list of modifications to be applied
      * @return the modify operation's response
-     * @throws {@link LdapException} in case of modify operation failure or timeout happens
+     * @throws LdapException in case of modify operation failure or timeout happens
      */
     void modify( String dn, Modification... modifications ) throws LdapException;
 
@@ -353,18 +346,18 @@ public interface LdapConnection
      * @param entry the entry with the attributes to be modified
      * @param modOp the operation to be applied on all the attributes of the above entry
      * @return the modify operation's response
-     * @throws {@link LdapException} in case of modify operation failure or timeout happens
+     * @throws LdapException in case of modify operation failure or timeout happens
      */
     void modify( Entry entry, ModificationOperation modOp ) throws LdapException;
 
 
     /**
      * Performs an modify operation based on the modifications present in
-     * the ModifyRequest.
+     * the modify request.
      *
-     * @param modRequest the request for modify operation
+     * @param modRequest the modify request object
      * @return the modify operation's response
-     * @throws {@link LdapException} in case of modify operation failure or timeout happens
+     * @throws LdapException in case of modify operation failure or timeout happens
      */
     ModifyResponse modify( ModifyRequest modRequest ) throws LdapException;
 
@@ -374,8 +367,7 @@ public interface LdapConnection
      *
      * @param entryDn the target Dn
      * @param newRdn new Rdn for the target Dn
-     * @return modifyDn operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      * @see #rename(String, String, boolean)
      */
     void rename( String entryDn, String newRdn ) throws LdapException;
@@ -386,9 +378,8 @@ public interface LdapConnection
      *
      * @param entryDn the target Dn
      * @param newRdn new Rdn for the target Dn
-     * @return modifyDn operation's response
-     * @throws {@link LdapException} if some error occurred
-     * @see #rename(org.apache.directory.api.ldap.model.name.Dn, org.apache.directory.api.ldap.model.name.Rdn, boolean)
+     * @throws LdapException if some error occurred
+     * @see #rename(Dn, Rdn, boolean)
      */
     void rename( Dn entryDn, Rdn newRdn ) throws LdapException;
 
@@ -400,9 +391,8 @@ public interface LdapConnection
      * @param entryDn the target Dn
      * @param newRdn new Rdn for the target Dn
      * @param deleteOldRdn flag to indicate whether to delete the old Rdn
-     * @return modifyDn operation's response
-     * @throws {@link LdapException} if some error occurred
-     * @see #rename(org.apache.directory.api.ldap.model.name.Dn, org.apache.directory.api.ldap.model.name.Rdn, boolean)
+     * @throws LdapException if some error occurred
+     * @see #rename(Dn, Rdn, boolean)
      */
     void rename( String entryDn, String newRdn, boolean deleteOldRdn ) throws LdapException;
 
@@ -415,7 +405,7 @@ public interface LdapConnection
      * @param newRdn new Rdn for the target Dn
      * @param deleteOldRdn flag to indicate whether to delete the old Rdn
      * @return modifyDn operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     void rename( Dn entryDn, Rdn newRdn, boolean deleteOldRdn ) throws LdapException;
 
@@ -425,9 +415,8 @@ public interface LdapConnection
      *
      * @param entryDn the Dn of the target entry
      * @param newSuperiorDn Dn of the new parent/superior
-     * @return modifyDn operation's response
-     * @throws {@link LdapException} if some error occurred
-     * @see #move(org.apache.directory.api.ldap.model.name.Dn, org.apache.directory.api.ldap.model.name.Dn)
+     * @throws LdapException if some error occurred
+     * @see #move(Dn, Dn)
      */
     void move( String entryDn, String newSuperiorDn ) throws LdapException;
 
@@ -437,8 +426,7 @@ public interface LdapConnection
      *
      * @param entryDn the Dn of the target entry
      * @param newSuperiorDn Dn of the new parent/superior
-     * @return modifyDn operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     void move( Dn entryDn, Dn newSuperiorDn ) throws LdapException;
 
@@ -447,10 +435,9 @@ public interface LdapConnection
      * Moves and renames the given entryDn. The old Rdn will be deleted.
      *
      * @param entryDn The original entry Dn
-     * @param newDn The new Entry Dn
-     * @return modifyDn operations response
-     * @throws {@link LdapException} if some error occurred
-     * @see #moveAndRename(org.apache.directory.api.ldap.model.name.Dn, org.apache.directory.api.ldap.model.name.Dn, boolean)
+     * @param newDn The new entry Dn
+     * @throws LdapException if some error occurred
+     * @see #moveAndRename(Dn, Dn, boolean)
      */
     void moveAndRename( Dn entryDn, Dn newDn ) throws LdapException;
 
@@ -459,10 +446,9 @@ public interface LdapConnection
      * Moves and renames the given entryDn.The old Rdn will be deleted
      *
      * @param entryDn The original entry Dn
-     * @param newDn The new Entry Dn
-     * @return modifyDn operations response
-     * @throws {@link LdapException} if some error occurred
-     * @see #moveAndRename(org.apache.directory.api.ldap.model.name.Dn, org.apache.directory.api.ldap.model.name.Dn, boolean)
+     * @param newDn The new entry Dn
+     * @throws LdapException if some error occurred
+     * @see #moveAndRename(Dn, Dn, boolean)
      */
     void moveAndRename( String entryDn, String newDn ) throws LdapException;
 
@@ -471,10 +457,9 @@ public interface LdapConnection
      * Moves and renames the given entryDn. The old Rdn will be deleted if requested.
      *
      * @param entryDn The original entry Dn
-     * @param newDn The new Entry Dn
+     * @param newDn The new entry Dn
      * @param deleteOldRdn Tells if the old Rdn must be removed
-     * @return modifyDn operations response
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     void moveAndRename( Dn entryDn, Dn newDn, boolean deleteOldRdn ) throws LdapException;
 
@@ -483,41 +468,38 @@ public interface LdapConnection
      * Moves and renames the given entryDn. The old Rdn will be deleted if requested.
      *
      * @param entryDn The original entry Dn
-     * @param newDn The new Entry Dn
+     * @param newDn The new entry Dn
      * @param deleteOldRdn Tells if the old Rdn must be removed
-     * @return modifyDn operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     void moveAndRename( String entryDn, String newDn, boolean deleteOldRdn )
         throws LdapException;
 
 
     /**
-     * Performs the modifyDn operation based on the given ModifyDnRequest.
+     * Performs the modifyDn operation based on the given request object.
      *
-     * @param modDnRequest the request
+     * @param modDnRequest the request object
      * @return modifyDn operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     ModifyDnResponse modifyDn( ModifyDnRequest modDnRequest ) throws LdapException;
 
 
     /**
-     * Deletes the entry with the given Dn.
+     * Deletes the entry with the given distinguished name.
      *
-     * @param dn the target entry's Dn as a String
-     * @return the delete operation's response
-     * @throws {@link LdapException} If the Dn is not valid or if the deletion failed
+     * @param dn the target entry's distinguished name, it must be a valid {@link Dn}
+     * @throws LdapException If the Dn is not valid or if the deletion failed
      */
     void delete( String dn ) throws LdapException;
 
 
     /**
-     * Deletes the entry with the given Dn.
+     * Deletes the entry with the given distinguished name.
      *
-     * @param dn the target entry's Dn
-     * @return the delete operation's response
-     * @throws {@link LdapException} If the Dn is not valid or if the deletion failed
+     * @param dn the target entry's distinguished name
+     * @throws LdapException If the Dn is not valid or if the deletion failed
      */
     void delete( Dn dn ) throws LdapException;
 
@@ -526,86 +508,86 @@ public interface LdapConnection
      * Performs a delete operation based on the delete request object.
      *
      * @param deleteRequest the delete operation's request
-     * @return delete operation's response, null if a non-null listener value is provided
-     * @throws {@link LdapException} If the Dn is not valid or if the deletion failed
+     * @return delete operation's response
+     * @throws LdapException If the Dn is not valid or if the deletion failed
      */
     DeleteResponse delete( DeleteRequest deleteRequest ) throws LdapException;
 
 
     /**
      * Compares whether a given attribute's value matches that of the
-     * existing value of the attribute present in the entry with the given Dn.
+     * existing value of the attribute present in the entry with the given distinguished name.
      *
-     * @param dn the target entry's String Dn
+     * @param dn the target entry's distinguished name, it must be a valid {@link Dn}
      * @param attributeName the attribute's name
      * @param value a String value with which the target entry's attribute value to be compared with
-     * @return compare operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @return <code>true</code> if the value matches, <code>false</code> otherwise
+     * @throws LdapException if some error occurred
      */
     boolean compare( String dn, String attributeName, String value ) throws LdapException;
 
 
     /**
      * Compares whether a given attribute's value matches that of the
-     * existing value of the attribute present in the entry with the given Dn.
+     * existing value of the attribute present in the entry with the given distinguished name.
      *
-     * @param dn the target entry's String Dn
+     * @param dn the target entry's distinguished name, it must be a valid {@link Dn}
      * @param attributeName the attribute's name
      * @param value a byte[] value with which the target entry's attribute value to be compared with
-     * @return compare operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @return <code>true</code> if the value matches, <code>false</code> otherwise
+     * @throws LdapException if some error occurred
      */
     boolean compare( String dn, String attributeName, byte[] value ) throws LdapException;
 
 
     /**
      * Compares whether a given attribute's value matches that of the
-     * existing value of the attribute present in the entry with the given Dn.
+     * existing value of the attribute present in the entry with the given distinguished name.
      *
-     * @param dn the target entry's String Dn
+     * @param dn the target entry's distinguished name, it must be a valid {@link Dn}
      * @param attributeName the attribute's name
      * @param value a Value<?> value with which the target entry's attribute value to be compared with
-     * @return compare operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @return <code>true</code> if the value matches, <code>false</code> otherwise
+     * @throws LdapException if some error occurred
      */
     boolean compare( String dn, String attributeName, Value<?> value ) throws LdapException;
 
 
     /**
      * Compares whether a given attribute's value matches that of the
-     * existing value of the attribute present in the entry with the given Dn.
+     * existing value of the attribute present in the entry with the given distinguished name.
      *
-     * @param dn the target entry's Dn
+     * @param dn the target entry's distinguished name
      * @param attributeName the attribute's name
      * @param value a String value with which the target entry's attribute value to be compared with
-     * @return compare operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @return <code>true</code> if the value matches, <code>false</code> otherwise
+     * @throws LdapException if some error occurred
      */
     boolean compare( Dn dn, String attributeName, String value ) throws LdapException;
 
 
     /**
      * Compares whether a given attribute's value matches that of the
-     * existing value of the attribute present in the entry with the given Dn.
+     * existing value of the attribute present in the entry with the given distinguished name.
      *
-     * @param dn the target entry's Dn
+     * @param dn the target entry's distinguished name
      * @param attributeName the attribute's name
      * @param value a byte[] value with which the target entry's attribute value to be compared with
-     * @return compare operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @return <code>true</code> if the value matches, <code>false</code> otherwise
+     * @throws LdapException if some error occurred
      */
     boolean compare( Dn dn, String attributeName, byte[] value ) throws LdapException;
 
 
     /**
      * Compares whether a given attribute's value matches that of the
-     * existing value of the attribute present in the entry with the given Dn.
+     * existing value of the attribute present in the entry with the given distinguished name.
      *
-     * @param dn the target entry's Dn
+     * @param dn the target entry's distinguished name
      * @param attributeName the attribute's name
      * @param value a Value<?> value with which the target entry's attribute value to be compared with
-     * @return compare operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @return <code>true</code> if the value matches, <code>false</code> otherwise
+     * @throws LdapException if some error occurred
      */
     boolean compare( Dn dn, String attributeName, Value<?> value ) throws LdapException;
 
@@ -613,9 +595,9 @@ public interface LdapConnection
     /**
      * Compares an entry's attribute's value with that of the given value.
      *
-     * @param compareRequest the CompareRequest which contains the target Dn, attribute name and value
+     * @param compareRequest the compare request which contains the target Dn, attribute name and value
      * @return compare operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     CompareResponse compare( CompareRequest compareRequest ) throws LdapException;
 
@@ -625,7 +607,7 @@ public interface LdapConnection
      *
      * @param oid the object identifier of the extended operation
      * @return extended operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      * @see #extended(org.apache.directory.api.asn1.util.Oid, byte[])
      */
     ExtendedResponse extended( String oid ) throws LdapException;
@@ -637,7 +619,7 @@ public interface LdapConnection
      * @param oid the object identifier of the extended operation
      * @param value value to be used by the extended operation, can be a null value
      * @return extended operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      * @see #extended(org.apache.directory.api.asn1.util.Oid, byte[])
      */
     ExtendedResponse extended( String oid, byte[] value ) throws LdapException;
@@ -648,7 +630,7 @@ public interface LdapConnection
      *
      * @param oid the object identifier of the extended operation
      * @return extended operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      * @see #extended(org.apache.directory.api.asn1.util.Oid, byte[])
      */
     ExtendedResponse extended( Oid oid ) throws LdapException;
@@ -660,29 +642,29 @@ public interface LdapConnection
      * @param oid the object identifier of the extended operation
      * @param value value to be used by the extended operation, can be a null value
      * @return extended operation's response
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     ExtendedResponse extended( Oid oid, byte[] value ) throws LdapException;
 
 
     /**
-     * Performs an extended operation based on the Extended request object.
+     * Performs an extended operation based on the extended request object.
      *
      * @param extendedRequest the extended operation's request
      * @return Extended operation's response
-     * @throws {@link LdapException} If the Dn is not valid or if the extended operation failed
+     * @throws LdapException if the extended operation failed
      */
     ExtendedResponse extended( ExtendedRequest<?> extendedRequest ) throws LdapException;
 
 
     /**
-     * Tells if an Entry exists in the server.
+     * Tells if an entry exists in the server.
      * 
-     * @param dn The Dn for the entry we want to check the existence
+     * @param dn The distinguished name of the entry we want to check the existence, must be a valid {@link Dn}
      * @return <code>true</code> if the entry exists, <code>false</code> otherwise.
      * Note that if the entry exists but if the user does not have the permission to
      * read it, <code>false</code> will also be returned
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     boolean exists( String dn ) throws LdapException;
 
@@ -690,20 +672,20 @@ public interface LdapConnection
     /**
      * Tells if an Entry exists in the server.
      * 
-     * @param dn The Dn for the entry we want to check the existence
+     * @param dn The distinguished name of the entry we want to check the existence
      * @return <code>true</code> if the entry exists, <code>false</code> otherwise.
      * Note that if the entry exists but if the user does not have the permission to
      * read it, <code>false</code> will also be returned
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     boolean exists( Dn dn ) throws LdapException;
 
 
     /**
-     * Get back the RooDSE from the connected server. We only return the user attributes.
+     * Get back the RooDSE from the connected server. Only the user attributes are returned.
      * 
      * @return The Entry containing all the information about the rootDSE
-     * @throws {@link LdapException} If the rootDSE can't be read
+     * @throws LdapException If the rootDSE can't be read
      */
     Entry getRootDse() throws LdapException;
 
@@ -711,11 +693,11 @@ public interface LdapConnection
     /**
      * Get back the RooDSE from the connected server. The user can provide the
      * list of attributes he wants to get back. Sending "*" will return all the
-     * user attributes, sending "+" will return all the operational attributes;
+     * user attributes, sending "+" will return all the operational attributes.
      * 
      * @param attributes The list of attributes to return
      * @return The Entry containing all the information about the rootDSE
-     * @throws {@link LdapException} If the rootDSE can't be read
+     * @throws LdapException If the rootDSE can't be read
      */
     Entry getRootDse( String... attributes ) throws LdapException;
 
@@ -725,7 +707,7 @@ public interface LdapConnection
      *
      * @param dn the Dn of the entry to be fetched
      * @return the Entry with the given Dn or null if no entry exists with that Dn
-     * @throws {@link LdapException} in case of any problems while searching for the Dn or if the returned response contains a referral
+     * @throws LdapException in case of any problems while searching for the Dn or if the returned response contains a referral
      * @see #lookup(org.apache.directory.api.ldap.model.name.Dn, String...)
      */
     Entry lookup( Dn dn ) throws LdapException;
@@ -736,7 +718,7 @@ public interface LdapConnection
      *
      * @param dn the Dn of the entry to be fetched
      * @return the Entry with the given Dn or null if no entry exists with that Dn
-     * @throws {@link LdapException} in case of any problems while searching for the Dn or if the returned response contains a referral
+     * @throws LdapException in case of any problems while searching for the Dn or if the returned response contains a referral
      * @see #lookup(String, String...)
      */
     Entry lookup( String dn ) throws LdapException;
@@ -748,7 +730,7 @@ public interface LdapConnection
      * @param dn the Dn of the entry to be fetched
      * @param attributes the attributes to be returned along with entry
      * @return the Entry with the given Dn or null if no entry exists with that Dn
-     * @throws {@link LdapException} in case of any problems while searching for the Dn or if the returned response contains a referral
+     * @throws LdapException in case of any problems while searching for the Dn or if the returned response contains a referral
      */
     Entry lookup( Dn dn, String... attributes ) throws LdapException;
 
@@ -760,7 +742,7 @@ public interface LdapConnection
      * @param controls the controls to use
      * @param attributes the attributes to be returned along with entry
      * @return the Entry with the given Dn or null if no entry exists with that Dn
-     * @throws {@link LdapException} in case of any problems while searching for the Dn or if the returned response contains a referral
+     * @throws LdapException in case of any problems while searching for the Dn or if the returned response contains a referral
      */
     Entry lookup( Dn dn, Control[] controls, String... attributes ) throws LdapException;
 
@@ -771,7 +753,7 @@ public interface LdapConnection
      * @param dn the Dn of the entry to be fetched
      * @param attributes the attributes to be returned along with entry
      * @return the Entry with the given Dn or null if no entry exists with that Dn
-     * @throws {@link LdapException} in case of any problems while searching for the Dn or if the returned response contains a referral
+     * @throws LdapException in case of any problems while searching for the Dn or if the returned response contains a referral
      * @see #lookup(org.apache.directory.api.ldap.model.name.Dn, String...)
      */
     Entry lookup( String dn, String... attributes ) throws LdapException;
@@ -784,7 +766,7 @@ public interface LdapConnection
      * @param controls the controls to use
      * @param attributes the attributes to be returned along with entry
      * @return the Entry with the given Dn or null if no entry exists with that Dn
-     * @throws {@link LdapException} in case of any problems while searching for the Dn or if the returned response contains a referral
+     * @throws LdapException in case of any problems while searching for the Dn or if the returned response contains a referral
      * @see #lookup(org.apache.directory.api.ldap.model.name.Dn, String...)
      */
     Entry lookup( String dn, Control[] controls, String... attributes ) throws LdapException;
@@ -795,7 +777,7 @@ public interface LdapConnection
      *
      * @param controlOID the OID of the control
      * @return true if the control is supported, false otherwise
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     boolean isControlSupported( String controlOID ) throws LdapException;
 
@@ -804,15 +786,16 @@ public interface LdapConnection
      * Get the Controls supported by server.
      *
      * @return a list of control OIDs supported by server
-     * @throws {@link LdapException} if some error occurred
+     * @throws LdapException if some error occurred
      */
     List<String> getSupportedControls() throws LdapException;
 
 
     /**
      * Loads all the default schemas that are bundled with the API.<br><br>
-     * <b>Note:</b> This method enables <b>all</b> schemas prior to loading
-     * @throws {@link LdapException} in case of problems while loading the schema
+     * <b>Note:</b> This method enables <b>all</b> schemas prior to loading.
+     * 
+     * @throws LdapException in case of problems while loading the schema
      */
     void loadSchema() throws LdapException;
 
@@ -848,8 +831,7 @@ public interface LdapConnection
 
 
     /**
-     * Sets the object responsible for the detection of binary attributes
-     * @return
+     * Sets the object responsible for the detection of binary attributes.
      */
     void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetecter );
 }
