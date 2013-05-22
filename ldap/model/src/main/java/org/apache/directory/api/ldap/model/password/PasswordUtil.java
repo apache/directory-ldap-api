@@ -359,8 +359,6 @@ public class PasswordUtil
     {
         int algoLength = encryptionMethod.getAlgorithm().getName().length() + 2;
 
-        int hashLen = 0;
-
         switch ( encryptionMethod.getAlgorithm() )
         {
             case HASH_METHOD_MD5:
@@ -403,50 +401,19 @@ public class PasswordUtil
                 }
 
             case HASH_METHOD_SSHA:
-                hashLen = SHA1_LENGTH;
+                return getCredentials( credentials, algoLength, SHA1_LENGTH, encryptionMethod );
 
             case HASH_METHOD_SHA256:
             case HASH_METHOD_SSHA256:
-                if ( hashLen == 0 )
-                {
-                    hashLen = SHA256_LENGTH;
-                }
+                return getCredentials( credentials, algoLength, SHA256_LENGTH, encryptionMethod );
 
             case HASH_METHOD_SHA384:
             case HASH_METHOD_SSHA384:
-                if ( hashLen == 0 )
-                {
-                    hashLen = SHA384_LENGTH;
-                }
+                return getCredentials( credentials, algoLength, SHA512_LENGTH, encryptionMethod );
 
             case HASH_METHOD_SHA512:
             case HASH_METHOD_SSHA512:
-                if ( hashLen == 0 )
-                {
-                    hashLen = SHA512_LENGTH;
-                }
-
-                try
-                {
-                    // The password is associated with a salt. Decompose it
-                    // in two parts, after having decoded the password.
-                    // The salt will be stored into the EncryptionMethod structure
-                    // The salt is at the end of the credentials, and is 8 bytes long
-                    byte[] passwordAndSalt = Base64.decode( new String( credentials, algoLength, credentials.length
-                        - algoLength, "UTF-8" ).toCharArray() );
-
-                    int saltLength = passwordAndSalt.length - hashLen;
-                    encryptionMethod.setSalt( new byte[saltLength] );
-                    byte[] password = new byte[hashLen];
-                    split( passwordAndSalt, 0, password, encryptionMethod.getSalt() );
-
-                    return password;
-                }
-                catch ( UnsupportedEncodingException uee )
-                {
-                    // do nothing
-                    return credentials;
-                }
+                return getCredentials( credentials, algoLength, SHA512_LENGTH, encryptionMethod );
 
             case HASH_METHOD_CRYPT:
                 // The password is associated with a salt. Decompose it
@@ -462,6 +429,36 @@ public class PasswordUtil
                 // unknown method
                 return credentials;
 
+        }
+    }
+
+
+    /**
+     * Compute the credentials
+     */
+    private static byte[] getCredentials( byte[] credentials, int algoLength, int hashLen,
+        EncryptionMethod encryptionMethod )
+    {
+        try
+        {
+            // The password is associated with a salt. Decompose it
+            // in two parts, after having decoded the password.
+            // The salt will be stored into the EncryptionMethod structure
+            // The salt is at the end of the credentials, and is 8 bytes long
+            byte[] passwordAndSalt = Base64.decode( new String( credentials, algoLength, credentials.length
+                - algoLength, "UTF-8" ).toCharArray() );
+
+            int saltLength = passwordAndSalt.length - hashLen;
+            encryptionMethod.setSalt( new byte[saltLength] );
+            byte[] password = new byte[hashLen];
+            split( passwordAndSalt, 0, password, encryptionMethod.getSalt() );
+
+            return password;
+        }
+        catch ( UnsupportedEncodingException uee )
+        {
+            // do nothing
+            return credentials;
         }
     }
 

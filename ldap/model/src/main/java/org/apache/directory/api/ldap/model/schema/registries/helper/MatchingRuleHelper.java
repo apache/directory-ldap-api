@@ -69,75 +69,72 @@ public class MatchingRuleHelper
             {
                 matchingRule.unlock();
 
-                if ( registries != null )
+                LdapComparator<?> ldapComparator = null;
+                Normalizer normalizer = null;
+                LdapSyntax ldapSyntax = null;
+
+                try
                 {
-                    LdapComparator<?> ldapComparator = null;
-                    Normalizer normalizer = null;
-                    LdapSyntax ldapSyntax = null;
+                    // Gets the associated Comparator
+                    ldapComparator = registries.getComparatorRegistry().lookup( matchingRule.getOid() );
+                }
+                catch ( LdapException ne )
+                {
+                    // Default to a catch all comparator
+                    ldapComparator = new ComparableComparator( matchingRule.getOid() );
+                }
 
-                    try
-                    {
-                        // Gets the associated Comparator
-                        ldapComparator = registries.getComparatorRegistry().lookup( matchingRule.getOid() );
-                    }
-                    catch ( LdapException ne )
-                    {
-                        // Default to a catch all comparator
-                        ldapComparator = new ComparableComparator( matchingRule.getOid() );
-                    }
+                try
+                {
+                    // Gets the associated Normalizer
+                    normalizer = registries.getNormalizerRegistry().lookup( matchingRule.getOid() );
+                }
+                catch ( LdapException ne )
+                {
+                    // Default to the NoOp normalizer
+                    normalizer = new NoOpNormalizer( matchingRule.getOid() );
+                }
 
-                    try
-                    {
-                        // Gets the associated Normalizer
-                        normalizer = registries.getNormalizerRegistry().lookup( matchingRule.getOid() );
-                    }
-                    catch ( LdapException ne )
-                    {
-                        // Default to the NoOp normalizer
-                        normalizer = new NoOpNormalizer( matchingRule.getOid() );
-                    }
+                try
+                {
+                    // Get the associated LdapSyntax
+                    ldapSyntax = registries.getLdapSyntaxRegistry().lookup( matchingRule.getSyntaxOid() );
+                }
+                catch ( LdapException ne )
+                {
+                    // The Syntax is a mandatory element, it must exist.
+                    String msg = I18n.err( I18n.ERR_04317 );
 
-                    try
-                    {
-                        // Get the associated LdapSyntax
-                        ldapSyntax = registries.getLdapSyntaxRegistry().lookup( matchingRule.getSyntaxOid() );
-                    }
-                    catch ( LdapException ne )
-                    {
-                        // The Syntax is a mandatory element, it must exist.
-                        String msg = I18n.err( I18n.ERR_04317 );
+                    LdapSchemaException ldapSchemaException = new LdapSchemaException(
+                        LdapSchemaExceptionCodes.MR_NONEXISTENT_SYNTAX, msg, ne );
+                    ldapSchemaException.setSourceObject( matchingRule );
+                    ldapSchemaException.setRelatedId( matchingRule.getSyntaxOid() );
+                    errors.add( ldapSchemaException );
+                    LOG.info( msg );
+                }
 
-                        LdapSchemaException ldapSchemaException = new LdapSchemaException(
-                            LdapSchemaExceptionCodes.MR_NONEXISTENT_SYNTAX, msg, ne );
-                        ldapSchemaException.setSourceObject( matchingRule );
-                        ldapSchemaException.setRelatedId( matchingRule.getSyntaxOid() );
-                        errors.add( ldapSchemaException );
-                        LOG.info( msg );
-                    }
+                /**
+                 * Add the MR references (using and usedBy) :
+                 * MR -> C
+                 * MR -> N
+                 * MR -> S
+                 */
+                if ( ldapComparator != null )
+                {
+                    registries.addReference( matchingRule, ldapComparator );
+                    matchingRule.setLdapComparator( ldapComparator );
+                }
 
-                    /**
-                     * Add the MR references (using and usedBy) :
-                     * MR -> C
-                     * MR -> N
-                     * MR -> S
-                     */
-                    if ( ldapComparator != null )
-                    {
-                        registries.addReference( matchingRule, ldapComparator );
-                        matchingRule.setLdapComparator( ldapComparator );
-                    }
+                if ( normalizer != null )
+                {
+                    registries.addReference( matchingRule, normalizer );
+                    matchingRule.setNormalizer( normalizer );
+                }
 
-                    if ( normalizer != null )
-                    {
-                        registries.addReference( matchingRule, normalizer );
-                        matchingRule.setNormalizer( normalizer );
-                    }
-
-                    if ( ldapSyntax != null )
-                    {
-                        registries.addReference( matchingRule, ldapSyntax );
-                        matchingRule.setSyntax( ldapSyntax );
-                    }
+                if ( ldapSyntax != null )
+                {
+                    registries.addReference( matchingRule, ldapSyntax );
+                    matchingRule.setSyntax( ldapSyntax );
                 }
             }
             finally

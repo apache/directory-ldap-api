@@ -55,28 +55,25 @@ public class LdapSyntaxHelper
             {
                 ldapSyntax.unlock();
 
-                if ( registries != null )
+                SyntaxChecker syntaxChecker = null;
+
+                try
                 {
-                    SyntaxChecker syntaxChecker = null;
+                    // Gets the associated SyntaxChecker
+                    syntaxChecker = registries.getSyntaxCheckerRegistry().lookup( ldapSyntax.getOid() );
+                }
+                catch ( LdapException ne )
+                {
+                    // No SyntaxChecker ? Associate the Syntax to a catch all SyntaxChecker
+                    syntaxChecker = new OctetStringSyntaxChecker( ldapSyntax.getOid() );
+                }
 
-                    try
-                    {
-                        // Gets the associated SyntaxChecker
-                        syntaxChecker = registries.getSyntaxCheckerRegistry().lookup( ldapSyntax.getOid() );
-                    }
-                    catch ( LdapException ne )
-                    {
-                        // No SyntaxChecker ? Associate the Syntax to a catch all SyntaxChecker
-                        syntaxChecker = new OctetStringSyntaxChecker( ldapSyntax.getOid() );
-                    }
-
-                    // Add the references for S :
-                    // S -> SC
-                    if ( syntaxChecker != null )
-                    {
-                        registries.addReference( ldapSyntax, syntaxChecker );
-                        ldapSyntax.setSyntaxChecker( syntaxChecker );
-                    }
+                // Add the references for S :
+                // S -> SC
+                if ( syntaxChecker != null )
+                {
+                    registries.addReference( ldapSyntax, syntaxChecker );
+                    ldapSyntax.setSyntaxChecker( syntaxChecker );
                 }
             }
             finally

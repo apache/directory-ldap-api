@@ -1068,7 +1068,7 @@ public final class DefaultEntry implements Entry
 
                 AttributeType attributeType = entryAttribute.getAttributeType();
 
-                if ( ( entryAttribute == null ) || !this.attributes.containsKey( attributeType.getOid() ) )
+                if ( ( attributeType == null ) || !this.attributes.containsKey( attributeType.getOid() ) )
                 {
                     return false;
                 }

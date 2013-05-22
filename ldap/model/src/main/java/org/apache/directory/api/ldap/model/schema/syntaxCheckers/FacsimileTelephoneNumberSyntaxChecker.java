@@ -172,7 +172,7 @@ public class FacsimileTelephoneNumberSyntaxChecker extends TelephoneNumberSyntax
                     faxParam = strValue.substring( dollarPos + 1, newDollar );
                 }
 
-                if ( faxParam == null )
+                if ( faxParam.length() == 0 )
                 {
                     // Not allowed
                     LOG.debug( "Syntax invalid for '{}'", value );

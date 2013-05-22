@@ -1042,13 +1042,6 @@ public class DefaultAttribute implements Attribute, Cloneable
 
                     Value<byte[]> value = createBinaryValue( attributeType, valBytes );
 
-                    if ( value == null )
-                    {
-                        // The value can't be normalized or is invalid : we don't add it.
-                        LOG.error( I18n.err( I18n.ERR_04449, val ) );
-                        continue;
-                    }
-
                     // Now call the add(Value) method
                     if ( add( value ) == 1 )
                     {
@@ -1935,7 +1928,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 attribute.id = attributeType.getOid();
                 attribute.attributeType = attributeType;
             }
-            
+
             attribute.values = new LinkedHashSet<Value<?>>( values.size() );
 
             for ( Value<?> value : values )

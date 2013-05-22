@@ -30,19 +30,6 @@ import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.DitContentRule;
-import org.apache.directory.api.ldap.model.schema.DitStructureRule;
-import org.apache.directory.api.ldap.model.schema.LdapComparator;
-import org.apache.directory.api.ldap.model.schema.LdapSyntax;
-import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.apache.directory.api.ldap.model.schema.MatchingRuleUse;
-import org.apache.directory.api.ldap.model.schema.NameForm;
-import org.apache.directory.api.ldap.model.schema.Normalizer;
-import org.apache.directory.api.ldap.model.schema.ObjectClass;
-import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.ldap.model.schema.SchemaObject;
-import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.registries.Schema;
 import org.apache.directory.api.util.DateUtils;
 
@@ -431,9 +418,10 @@ public class AttributesFactory
 
         if ( extensions != null )
         {
-            for ( String key : extensions.keySet() )
+            for ( Map.Entry<String, List<String>> mapEntry : extensions.entrySet() )
             {
-                List<String> values = extensions.get( key );
+                String key = mapEntry.getKey();
+                List<String> values = mapEntry.getValue();
 
                 for ( String value : values )
                 {

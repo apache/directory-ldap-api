@@ -36,14 +36,6 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 public interface SchemaLoader
 {
     /**
-     * Sets listener used to notify of newly loaded schemas.
-     * 
-     * @param listener the listener to notify (only one is enough for us)
-     */
-    void setListener( SchemaLoaderListener listener );
-
-
-    /**
      * Gets a schema object based on it's name.
      * 
      * @param schemaName the name of the schema to load
