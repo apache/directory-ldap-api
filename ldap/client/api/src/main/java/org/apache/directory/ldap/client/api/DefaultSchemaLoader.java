@@ -132,7 +132,8 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
             }
 
             // Getting the subschemaSubentry DN from the rootDSE
-            Entry rootDse = connection.lookup( Dn.ROOT_DSE, SchemaConstants.SUBSCHEMA_SUBENTRY_AT, SchemaConstants.VENDOR_NAME_AT );
+            Entry rootDse = connection.lookup( Dn.ROOT_DSE, SchemaConstants.SUBSCHEMA_SUBENTRY_AT,
+                SchemaConstants.VENDOR_NAME_AT );
 
             if ( rootDse != null )
             {
@@ -146,7 +147,7 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
                     {
                         subschemaSubentryDn = new Dn( connection.getSchemaManager(),
                             subschemaSubentryAttribute.getString() );
-                        
+
                         loadSchemas();
                     }
                 }
@@ -155,10 +156,6 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
                     // TODO Handle schema loading on other LDAP servers
                 }
             }
-        }
-        catch ( IOException e )
-        {
-            throw new LdapException( e );
         }
         finally
         {

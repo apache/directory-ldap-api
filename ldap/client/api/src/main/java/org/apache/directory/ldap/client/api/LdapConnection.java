@@ -55,8 +55,8 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
+
 // TODO: all the SASL bind methods are not declared in this interface, but implemented in LdapNetworkConnection. Is that intended?
-// TODO: why do connect() and bind() methods throw an IOException, the other methods not?
 // TODO: why do connect() and close() return a boolean? What is the difference between false and an Exception?
 // TODO: think about usage of abbrevisions (Dn/Rdn) vs. spelled out (relative distinguished name) in javadoc
 // TODO: describe better which type of LdapException are thrown in which case?
@@ -92,9 +92,8 @@ public interface LdapConnection
      *
      * @return <code>true</code> if the connection is established, false otherwise
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    boolean connect() throws LdapException, IOException;
+    boolean connect() throws LdapException;
 
 
     /**
@@ -155,16 +154,15 @@ public interface LdapConnection
      * @throws LdapException if some error occurred
      * @throws IOException if an I/O exception occurred
      */
-    void bind() throws LdapException, IOException;
+    void bind() throws LdapException;
 
 
     /**
      * Anonymous bind on a server.
      *
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    void anonymousBind() throws LdapException, IOException;
+    void anonymousBind() throws LdapException;
 
 
     /**
@@ -173,9 +171,8 @@ public interface LdapConnection
      * @param name The name we use to authenticate the user. It must be a
      * valid {@link Dn}
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    void bind( String name ) throws LdapException, IOException;
+    void bind( String name ) throws LdapException;
 
 
     /**
@@ -185,9 +182,8 @@ public interface LdapConnection
      * valid {@link Dn}
      * @param credentials The password, it can't be <code>null</code>
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    void bind( String name, String credentials ) throws LdapException, IOException;
+    void bind( String name, String credentials ) throws LdapException;
 
 
     /**
@@ -197,10 +193,9 @@ public interface LdapConnection
      * @param credentials The password, it can't be null
      * @return The BindResponse LdapResponse
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
     // Not yet available on the CoreConnection
-    //BindResponse bindSaslPlain( String authcid, String credentials ) throws LdapException, IOException;
+    //BindResponse bindSaslPlain( String authcid, String credentials ) throws LdapException;
 
     /**
      * SASL PLAIN Bind on a server.
@@ -210,19 +205,17 @@ public interface LdapConnection
      * @param credentials The password. It can't be null
      * @return The BindResponse LdapResponse
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
     // Not yet available on the CoreConnection
-    //BindResponse bindSaslPlain( String authzid, String authcid, String credentials ) throws LdapException, IOException;
+    //BindResponse bindSaslPlain( String authzid, String authcid, String credentials ) throws LdapException;
 
     /**
      * Unauthenticated authentication bind on a server.
      *
      * @param name The name we use to authenticate the user.
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    void bind( Dn name ) throws LdapException, IOException;
+    void bind( Dn name ) throws LdapException;
 
 
     /**
@@ -231,9 +224,8 @@ public interface LdapConnection
      * @param name The name we use to authenticate the user.
      * @param credentials The password, it can't be null
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    void bind( Dn name, String credentials ) throws LdapException, IOException;
+    void bind( Dn name, String credentials ) throws LdapException;
 
 
     /**
@@ -242,9 +234,8 @@ public interface LdapConnection
      * @param bindRequest The bind request object containing all the needed parameters
      * @return A {@link BindResponse} containing the result
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    BindResponse bind( BindRequest bindRequest ) throws LdapException, IOException;
+    BindResponse bind( BindRequest bindRequest ) throws LdapException;
 
 
     /**

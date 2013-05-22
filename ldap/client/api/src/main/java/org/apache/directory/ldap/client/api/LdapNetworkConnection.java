@@ -486,7 +486,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public boolean connect() throws LdapException, IOException
+    public boolean connect() throws LdapException
     {
         if ( ( ldapSession != null ) && connected.get() )
         {
@@ -927,7 +927,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public void bind() throws LdapException, IOException
+    public void bind() throws LdapException
     {
         LOG.debug( "Bind request" );
 
@@ -943,7 +943,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public void anonymousBind() throws LdapException, IOException
+    public void anonymousBind() throws LdapException
     {
         LOG.debug( "Anonymous Bind request" );
 
@@ -959,7 +959,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public BindFuture bindAsync() throws LdapException, IOException
+    public BindFuture bindAsync() throws LdapException
     {
         LOG.debug( "Asynchronous Bind request" );
 
@@ -973,7 +973,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public BindFuture anonymousBindAsync() throws LdapException, IOException
+    public BindFuture anonymousBindAsync() throws LdapException
     {
         LOG.debug( "Anonymous asynchronous Bind request" );
 
@@ -991,9 +991,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * valid Dn
      * @return The BindResponse LdapResponse
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    public BindFuture bindAsync( String name ) throws LdapException, IOException
+    public BindFuture bindAsync( String name ) throws LdapException
     {
         LOG.debug( "Bind request : {}", name );
 
@@ -1007,7 +1006,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public BindFuture bindAsync( String name, String credentials ) throws LdapException, IOException
+    public BindFuture bindAsync( String name, String credentials ) throws LdapException
     {
         LOG.debug( "Bind request : {}", name );
 
@@ -1032,9 +1031,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * valid Dn
      * @return The BindResponse LdapResponse
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    public BindFuture bindAsync( Dn name ) throws LdapException, IOException
+    public BindFuture bindAsync( Dn name ) throws LdapException
     {
         LOG.debug( "Bind request : {}", name );
 
@@ -1048,7 +1046,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public BindFuture bindAsync( Dn name, String credentials ) throws LdapException, IOException
+    public BindFuture bindAsync( Dn name, String credentials ) throws LdapException
     {
         LOG.debug( "Bind request : {}", name );
 
@@ -1069,7 +1067,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public BindResponse bind( BindRequest bindRequest ) throws LdapException, IOException
+    public BindResponse bind( BindRequest bindRequest ) throws LdapException
     {
         if ( bindRequest == null )
         {
@@ -1145,7 +1143,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public BindFuture bindAsync( BindRequest bindRequest ) throws LdapException, IOException
+    public BindFuture bindAsync( BindRequest bindRequest ) throws LdapException
     {
         if ( bindRequest == null )
         {
@@ -1188,9 +1186,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param credentials The password. It can't be null
      * @return The BindResponse LdapResponse
      * @throws {@link LdapException} if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    public BindResponse bindSaslPlain( String authcid, String credentials ) throws LdapException, IOException
+    public BindResponse bindSaslPlain( String authcid, String credentials ) throws LdapException
     {
         return bindSaslPlain( null, authcid, credentials );
     }
@@ -1204,10 +1201,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param credentials The password. It can't be null
      * @return The BindResponse LdapResponse
      * @throws {@link LdapException} if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    public BindResponse bindSaslPlain( String authzid, String authcid, String credentials ) throws LdapException,
-        IOException
+    public BindResponse bindSaslPlain( String authzid, String authcid, String credentials ) throws LdapException
     {
         LOG.debug( "SASL PLAIN Bind request" );
 
@@ -1270,9 +1265,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param request The CramMd5Request POJO containing all the needed parameters
      * @return A LdapResponse containing the result
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    public BindResponse bind( SaslCramMd5Request request ) throws LdapException, IOException
+    public BindResponse bind( SaslCramMd5Request request ) throws LdapException
     {
         if ( request == null )
         {
@@ -1334,10 +1328,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param request The SaslPlainRequest POJO containing all the needed parameters
      * @return The bind operation's future
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
     public BindFuture bindAsync( SaslRequest request )
-        throws LdapException, IOException
+        throws LdapException
     {
         return bindSasl( request );
     }
@@ -1349,9 +1342,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param request The DigestMd5Request POJO containing all the needed parameters
      * @return A LdapResponse containing the result
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    public BindResponse bind( SaslDigestMd5Request request ) throws LdapException, IOException
+    public BindResponse bind( SaslDigestMd5Request request ) throws LdapException
     {
         if ( request == null )
         {
@@ -1413,9 +1405,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param request The GssApiRequest POJO containing all the needed parameters
      * @return A LdapResponse containing the result
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
-    public BindResponse bind( SaslGssApiRequest request ) throws LdapException, IOException
+    public BindResponse bind( SaslGssApiRequest request ) throws LdapException
     {
         if ( request == null )
         {
@@ -1477,10 +1468,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * @param request The GssApiRequest POJO containing all the needed parameters
      * @return The bind operation's future
      * @throws LdapException if some error occurred
-     * @throws IOException if an I/O exception occurred
      */
     public BindFuture bindAsync( SaslGssApiRequest request )
-        throws LdapException, IOException
+        throws LdapException
     {
         // Krb5.conf file
         if ( request.getKrb5ConfFilePath() != null )
@@ -1491,10 +1481,17 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         else if ( ( request.getRealmName() != null ) && ( request.getKdcHost() != null )
             && ( request.getKdcPort() != 0 ) )
         {
-            // Using a custom krb5.conf we create from the settings provided by the user
-            String krb5ConfPath = createKrb5ConfFile( request.getRealmName(), request.getKdcHost(),
-                request.getKdcPort() );
-            System.setProperty( "java.security.krb5.conf", krb5ConfPath );
+            try
+            {
+                // Using a custom krb5.conf we create from the settings provided by the user
+                String krb5ConfPath = createKrb5ConfFile( request.getRealmName(), request.getKdcHost(),
+                    request.getKdcPort() );
+                System.setProperty( "java.security.krb5.conf", krb5ConfPath );
+            }
+            catch ( IOException ioe )
+            {
+                throw new LdapException( ioe );
+            }
         }
         else
         {
@@ -3728,7 +3725,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * a response and the, if this response is a challenge, continue by sending a new BindRequest with
      * the requested informations.
      */
-    private BindFuture bindSasl( SaslRequest saslRequest ) throws LdapException, IOException
+    private BindFuture bindSasl( SaslRequest saslRequest ) throws LdapException
     {
         // First switch to anonymous state
         authenticated.set( false );
