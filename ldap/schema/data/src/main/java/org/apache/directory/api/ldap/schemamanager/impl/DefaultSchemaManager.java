@@ -266,9 +266,6 @@ public class DefaultSchemaManager implements SchemaManager
         {
             throw new LdapOtherException( ioe.getMessage() );
         }
-
-        // TODO Add some listener handling at this point
-        //notifyListenerOrRegistries( schema, registries );
     }
 
 

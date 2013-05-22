@@ -49,25 +49,6 @@ public class LdapUriException extends LdapException
     public static final int UNKNOWN = 0;
 
     /**
-     * The URI parsing error.
-     */
-    // public static final int PARSING = 1;
-
-    /**
-     * The unsupported character encoding.
-     */
-    // public static final int UNSUPPORTED_ENCODING = 2;
-
-    /**
-     * The URI escape encoding and decoding error.
-     */
-    // public static final int ESCAPING = 3;
-
-    /**
-     * The DNS punycode encoding or decoding error.
-     */
-    // public static final int PUNYCODE = 4;
-    /**
      * The reason code.
      */
     protected int reasonCode;

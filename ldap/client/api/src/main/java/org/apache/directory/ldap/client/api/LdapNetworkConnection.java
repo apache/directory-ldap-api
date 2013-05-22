@@ -509,12 +509,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 addSslFilter();
             }
 
-            // Add an executor so that this connection can be used
-            // for handling more than one request (mainly because
-            // we may have to handle some abandon request)
-            /*connector.getFilterChain().addLast( "executor",
-                new ExecutorFilter( new OrderedThreadPoolExecutor( 10 ), IoEventType.MESSAGE_RECEIVED ) );*/
-
             // Inject the protocolHandler
             connector.setHandler( this );
         }

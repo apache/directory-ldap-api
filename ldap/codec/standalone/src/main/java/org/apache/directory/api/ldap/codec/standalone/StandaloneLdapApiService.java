@@ -168,12 +168,6 @@ public class StandaloneLdapApiService implements LdapApiService
         // Load the extended operations
         loadExtendedOperations();
 
-        // Load the schema elements
-        //loadSchemaElements();
-
-        // Load the network layer
-        //loadNetworkLayer()
-
         if ( protocolCodecFactory == null )
         {
             try

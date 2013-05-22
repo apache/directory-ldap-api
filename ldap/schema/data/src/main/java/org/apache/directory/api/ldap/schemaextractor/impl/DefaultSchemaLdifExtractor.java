@@ -30,9 +30,9 @@ import java.io.InvalidObjectException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Stack;
 import java.util.UUID;
-import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import org.apache.directory.api.i18n.I18n;
@@ -323,23 +323,6 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
 
             parent = parent.getParentFile();
         }
-
-        /*
-
-           this seems retarded so I replaced it for now with what is below it
-           will not break from loop above unless parent == null so the if is
-           never executed - just the else is executed every time
-
-        if ( parent != null )
-        {
-            return assembleDestinationFile( fileComponentStack );
-        }
-        else
-        {
-            throw new IllegalStateException( "parent cannot be null" );
-        }
-        
-        */
 
         throw new IllegalStateException( I18n.err( I18n.ERR_08006 ) );
     }

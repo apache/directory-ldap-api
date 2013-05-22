@@ -172,18 +172,6 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
 
         // Add the current type as a descendant
         descendants.add( attributeType );
-
-        /*
-        try
-        {
-            // And recurse until we reach the top of the hierarchy
-            registerDescendants( attributeType, ancestor.getSuperior() );
-        }
-        catch ( LdapException ne )
-        {
-            throw new NoSuchAttributeException( ne.getMessage() );
-        }
-        */
     }
 
 
@@ -210,18 +198,6 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
                 oidToDescendantSet.remove( ancestor.getOid() );
             }
         }
-
-        /*
-        try
-        {
-            // And recurse until we reach the top of the hierarchy
-            unregisterDescendants( attributeType, ancestor.getSuperior() );
-        }
-        catch ( LdapException ne )
-        {
-            throw new NoSuchAttributeException( ne.getMessage() );
-        }
-        */
     }
 
 

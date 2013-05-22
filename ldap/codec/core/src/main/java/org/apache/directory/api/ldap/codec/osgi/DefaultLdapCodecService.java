@@ -338,23 +338,6 @@ public class DefaultLdapCodecService implements LdapApiService
     public javax.naming.ldap.ExtendedResponse toJndi( final ExtendedResponse modelResponse ) throws EncoderException
     {
         throw new NotImplementedException( "Figure out how to transform" );
-        //        final byte[] encodedValue = new byte[ modelResponse.getEncodedValue().length ];
-        //        System.arraycopy( modelResponse.getEncodedValue(), 0, encodedValue, 0, modelResponse.getEncodedValue().length );
-        //        
-        //        return new javax.naming.ldap.ExtendedResponse()
-        //        {
-        //            private static final long serialVersionUID = 2955142105375495493L;
-        //
-        //            public String getID()
-        //            {
-        //                return modelResponse.getID();
-        //            }
-        //
-        //            public byte[] getEncodedValue()
-        //            {
-        //                return encodedValue;
-        //            }
-        //        };
     }
 
 
@@ -364,25 +347,6 @@ public class DefaultLdapCodecService implements LdapApiService
     public ExtendedResponse fromJndi( javax.naming.ldap.ExtendedResponse jndiResponse ) throws DecoderException
     {
         throw new NotImplementedException( "Figure out how to transform" );
-        //        ExtendedResponse modelResponse;
-        //        ExtendedRequestFactory<?,?> extendedRequestFactory = extReqFactories.get( jndiResponse.getID() );
-        //        UnsolicitedResponseFactory<?> unsolicitedResponseFactory = unsolicitedFactories.get( jndiResponse.getID() );
-        //        
-        //        if ( unsolicitedResponseFactory != null )
-        //        {
-        //            modelResponse = unsolicitedResponseFactory.newResponse( jndiResponse.getEncodedValue() );
-        //        }
-        //        else if ( extendedRequestFactory != null )
-        //        {
-        //            modelResponse = extendedRequestFactory.newResponse( jndiResponse.getEncodedValue() );
-        //        }
-        //        else
-        //        {
-        //            modelResponse = new ExtendedResponseImpl( jndiResponse.getID() );
-        //            modelResponse.setResponseValue( jndiResponse.getEncodedValue() );
-        //        }
-        //        
-        //        return modelResponse;
     }
 
 

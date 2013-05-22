@@ -516,21 +516,6 @@ public final class DefaultEntry implements Entry
     {
         h = 37;
         h = h * 17 + dn.hashCode();
-
-        /*
-        // We have to sort the Attributes if we want to compare two entries
-        SortedMap<String, EntryAttribute> sortedMap = new TreeMap<String, EntryAttribute>();
-
-        for ( String id:attributes.keySet() )
-        {
-            sortedMap.put( id, attributes.get( id ) );
-        }
-
-        for ( String id:sortedMap.keySet() )
-        {
-            h = h*17 + sortedMap.get( id ).hashCode();
-        }
-        */
     }
 
 

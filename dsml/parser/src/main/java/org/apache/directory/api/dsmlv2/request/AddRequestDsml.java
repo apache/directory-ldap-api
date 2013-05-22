@@ -198,7 +198,6 @@ public class AddRequestDsml
      */
     public void initEntry()
     {
-        //( ( AddRequest ) getDecoratedMessage() ).initEntry();
     }
 
 
