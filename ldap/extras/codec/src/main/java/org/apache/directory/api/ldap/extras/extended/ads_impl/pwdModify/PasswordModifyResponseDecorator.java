@@ -103,17 +103,17 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
             try
             {
                 responseValue = passwordModifyResponse.encode().array();
+
+                if ( responseValue == null )
+                {
+                    return null;
+                }
             }
             catch ( EncoderException e )
             {
                 LOG.error( I18n.err( I18n.ERR_04167 ), e );
                 throw new RuntimeException( e );
             }
-        }
-
-        if ( responseValue == null )
-        {
-            return null;
         }
 
         final byte[] copy = new byte[responseValue.length];
