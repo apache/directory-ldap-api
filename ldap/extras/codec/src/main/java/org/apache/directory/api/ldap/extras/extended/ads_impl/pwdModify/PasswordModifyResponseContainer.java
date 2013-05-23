@@ -42,7 +42,6 @@ public class PasswordModifyResponseContainer extends AbstractContainer
     public PasswordModifyResponseContainer()
     {
         super();
-        stateStack = new int[1];
         grammar = PasswordModifyResponseGrammar.getInstance();
         setTransition( PasswordModifyResponseStatesEnum.START_STATE );
     }

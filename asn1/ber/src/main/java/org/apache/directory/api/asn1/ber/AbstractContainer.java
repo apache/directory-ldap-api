@@ -40,9 +40,6 @@ public abstract class AbstractContainer implements Asn1Container
     /** All the possible grammars */
     protected Grammar<?> grammar;
 
-    /** Store a stack of the current states used when switching grammars */
-    protected int[] stateStack;
-
     /** The current state of the decoding */
     private TLVStateEnum state;
 

@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.codec.api;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.ldap.codec.LdapMessageGrammar;
 import org.apache.directory.api.ldap.codec.LdapStatesEnum;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -73,7 +72,6 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
     {
         super();
         this.codec = codec;
-        this.stateStack = new int[10];
         this.grammar = LdapMessageGrammar.getInstance();
         this.binaryAttributeDetector = binaryAttributeDetector;
         setTransition( LdapStatesEnum.START_STATE );
@@ -81,7 +79,7 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
 
 
     /**
-     * Gets the {@link LdapApiService} associated with this {@link Asn1Container}.
+     * Gets the {@link LdapApiService} associated with this Container.
      *
      * @return
      */

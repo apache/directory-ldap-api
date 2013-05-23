@@ -42,7 +42,6 @@ public class SyncRequestValueContainer extends AbstractContainer
     public SyncRequestValueContainer()
     {
         super();
-        stateStack = new int[1];
         grammar = SyncRequestValueGrammar.getInstance();
         setTransition( SyncRequestValueStatesEnum.START_STATE );
     }
@@ -56,7 +55,6 @@ public class SyncRequestValueContainer extends AbstractContainer
     {
         super();
         this.control = control;
-        stateStack = new int[1];
         grammar = SyncRequestValueGrammar.getInstance();
         setTransition( SyncRequestValueStatesEnum.START_STATE );
     }

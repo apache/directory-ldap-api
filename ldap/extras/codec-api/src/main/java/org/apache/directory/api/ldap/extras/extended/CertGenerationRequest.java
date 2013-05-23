@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
  */
 public interface CertGenerationRequest extends ExtendedRequest<CertGenerationResponse>
 {
-    public static final String EXTENSION_OID = "1.3.6.1.4.1.18060.0.1.8";
+    static final String EXTENSION_OID = "1.3.6.1.4.1.18060.0.1.8";
 
 
     String getTargetDN();

@@ -20,12 +20,9 @@
 package org.apache.directory.api.ldap.model.exception;
 
 
-import org.apache.directory.api.ldap.model.schema.SchemaManager;
-
-
 /**
  * This enum contains all the various codes that can be used to report issues 
- * during the integrity check of the schema by the {@link SchemaManager}.
+ * during the integrity check of the schema by the SchemaManager.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */

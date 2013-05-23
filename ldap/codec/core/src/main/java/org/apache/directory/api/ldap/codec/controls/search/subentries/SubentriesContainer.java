@@ -38,7 +38,6 @@ public class SubentriesContainer extends AbstractContainer
     public SubentriesContainer()
     {
         super();
-        stateStack = new int[1];
         grammar = SubentriesGrammar.getInstance();
         setTransition( SubentriesStates.START_STATE );
     }

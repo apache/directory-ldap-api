@@ -53,25 +53,25 @@ import org.apache.directory.api.ldap.model.message.Control;
 public interface SyncStateValue extends Control
 {
     /** This control OID */
-    public static final String OID = "1.3.6.1.4.1.4203.1.9.1.2";
+    static final String OID = "1.3.6.1.4.1.4203.1.9.1.2";
 
 
     /**
      * @return the cookie
      */
-    public abstract byte[] getCookie();
+    byte[] getCookie();
 
 
     /**
      * @param cookie the cookie to set
      */
-    public abstract void setCookie( byte[] cookie );
+    void setCookie( byte[] cookie );
 
 
     /**
      * @return the syncState's type
      */
-    public abstract SyncStateTypeEnum getSyncStateType();
+    SyncStateTypeEnum getSyncStateType();
 
 
     /**
@@ -79,13 +79,13 @@ public interface SyncStateValue extends Control
      *
      * @param syncStateType the syncState's type
      */
-    public abstract void setSyncStateType( SyncStateTypeEnum syncStateType );
+    void setSyncStateType( SyncStateTypeEnum syncStateType );
 
 
     /**
      * @return the entryUUID
      */
-    public abstract byte[] getEntryUUID();
+    byte[] getEntryUUID();
 
 
     /**
@@ -93,5 +93,5 @@ public interface SyncStateValue extends Control
      *
      * @param entryUUID the entryUUID
      */
-    public abstract void setEntryUUID( byte[] entryUUID );
+    void setEntryUUID( byte[] entryUUID );
 }

@@ -98,17 +98,6 @@ public abstract class AbstractGrammar implements Grammar
 
 
     /**
-     * Set the states for this grammar
-     * 
-     * @param statesEnum The statesEnum to set.
-     */
-    public void setStatesEnum( Enum<Dsmlv2StatesEnum>[] statesEnum )
-    {
-        this.statesEnum = statesEnum;
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public void executeAction( Dsmlv2Container container ) throws XmlPullParserException, IOException
@@ -121,19 +110,19 @@ public abstract class AbstractGrammar implements Grammar
         {
             switch ( eventType )
             {
-                case XmlPullParser.START_DOCUMENT :
+                case XmlPullParser.START_DOCUMENT:
                     container.setState( Dsmlv2StatesEnum.INIT_GRAMMAR_STATE );
                     break;
-            
-                case XmlPullParser.END_DOCUMENT :
+
+                case XmlPullParser.END_DOCUMENT:
                     container.setState( Dsmlv2StatesEnum.GRAMMAR_END );
                     break;
 
-                case XmlPullParser.START_TAG :
+                case XmlPullParser.START_TAG:
                     processTag( container, Tag.START );
                     break;
 
-                case XmlPullParser.END_TAG :
+                case XmlPullParser.END_TAG:
                     processTag( container, Tag.END );
                     break;
             }

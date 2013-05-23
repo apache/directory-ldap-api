@@ -47,7 +47,6 @@ public class PagedResultsContainer extends AbstractContainer
     {
         super();
         this.codec = codec;
-        stateStack = new int[1];
         grammar = PagedResultsGrammar.getInstance();
         setTransition( PagedResultsStates.START_STATE );
     }

@@ -49,7 +49,6 @@ public class SyncDoneValueContainer extends AbstractContainer
         super();
         this.codec = codec;
         this.control = new SyncDoneValueDecorator( codec );
-        stateStack = new int[1];
         grammar = SyncDoneValueGrammar.getInstance();
         setTransition( SyncDoneValueStatesEnum.START_STATE );
     }
@@ -65,7 +64,6 @@ public class SyncDoneValueContainer extends AbstractContainer
         super();
         this.codec = codec;
         this.control = control;
-        stateStack = new int[1];
         grammar = SyncDoneValueGrammar.getInstance();
         setTransition( SyncDoneValueStatesEnum.START_STATE );
     }

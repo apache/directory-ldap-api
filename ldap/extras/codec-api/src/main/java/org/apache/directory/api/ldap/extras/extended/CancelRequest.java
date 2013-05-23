@@ -32,13 +32,13 @@ public interface CancelRequest extends ExtendedRequest<CancelResponse>
 {
 
     /** The requestName for this extended request */
-    public static final String EXTENSION_OID = "1.3.6.1.1.8";
+    static final String EXTENSION_OID = "1.3.6.1.1.8";
 
 
     /**
      *  @return The id of the Message to cancel.
      */
-    public abstract int getCancelId();
+    int getCancelId();
 
 
     /**
@@ -46,6 +46,5 @@ public interface CancelRequest extends ExtendedRequest<CancelResponse>
      *
      * @param cancelId The id of the message to cancel.
      */
-    public abstract void setCancelId( int cancelId );
-
+    void setCancelId( int cancelId );
 }

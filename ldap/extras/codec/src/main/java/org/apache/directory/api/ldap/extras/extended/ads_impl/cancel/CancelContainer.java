@@ -41,7 +41,6 @@ public class CancelContainer extends AbstractContainer
     public CancelContainer()
     {
         super();
-        stateStack = new int[1];
         grammar = CancelGrammar.getInstance();
         setTransition( CancelStatesEnum.START_STATE );
     }

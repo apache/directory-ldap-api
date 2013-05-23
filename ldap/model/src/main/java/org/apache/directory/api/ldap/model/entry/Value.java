@@ -36,8 +36,8 @@ import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 public interface Value<T> extends Cloneable, Externalizable, Comparable<Value<T>>
 {
     /** Two flags used to tell if the value is HR or not in serialization */
-    public static final boolean STRING = true;
-    public static final boolean BINARY = false;
+    static final boolean STRING = true;
+    static final boolean BINARY = false;
 
 
     /**

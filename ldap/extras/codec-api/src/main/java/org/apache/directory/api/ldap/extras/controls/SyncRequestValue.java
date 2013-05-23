@@ -30,44 +30,43 @@ import org.apache.directory.api.ldap.model.message.Control;
  */
 public interface SyncRequestValue extends Control
 {
-
     /** This control OID */
-    public static final String OID = "1.3.6.1.4.1.4203.1.9.1.1";
+    static final String OID = "1.3.6.1.4.1.4203.1.9.1.1";
 
 
     /**
      * @return the mode
      */
-    public abstract SynchronizationModeEnum getMode();
+    SynchronizationModeEnum getMode();
 
 
     /**
      * @param syncMode the syncMode to set
      */
-    public abstract void setMode( SynchronizationModeEnum mode );
+    void setMode( SynchronizationModeEnum mode );
 
 
     /**
      * @return the cookie
      */
-    public abstract byte[] getCookie();
+    byte[] getCookie();
 
 
     /**
      * @param cookie the cookie to set
      */
-    public abstract void setCookie( byte[] cookie );
+    void setCookie( byte[] cookie );
 
 
     /**
      * @return the reloadHint
      */
-    public abstract boolean isReloadHint();
+    boolean isReloadHint();
 
 
     /**
      * @param reloadHint the reloadHint to set
      */
-    public abstract void setReloadHint( boolean reloadHint );
+    void setReloadHint( boolean reloadHint );
 
 }

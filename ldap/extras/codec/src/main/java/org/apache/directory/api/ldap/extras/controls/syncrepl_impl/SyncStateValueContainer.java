@@ -42,7 +42,6 @@ public class SyncStateValueContainer extends AbstractContainer
     public SyncStateValueContainer()
     {
         super();
-        stateStack = new int[1];
         grammar = SyncStateValueGrammar.getInstance();
         setTransition( SyncStateValueStatesEnum.START_STATE );
     }
@@ -56,7 +55,6 @@ public class SyncStateValueContainer extends AbstractContainer
     {
         super();
         this.control = control;
-        stateStack = new int[1];
         grammar = SyncStateValueGrammar.getInstance();
         setTransition( SyncStateValueStatesEnum.START_STATE );
     }

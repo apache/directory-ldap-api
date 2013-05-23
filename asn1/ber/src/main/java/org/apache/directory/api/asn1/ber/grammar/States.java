@@ -30,11 +30,11 @@ public interface States
     /**
      * @return True if this is the END_STATE
      */
-    public boolean isEndState();
+    boolean isEndState();
 
 
     /**
      * @return The START_STATE of the enum
      */
-    public Enum<?> getStartState();
+    Enum<?> getStartState();
 }

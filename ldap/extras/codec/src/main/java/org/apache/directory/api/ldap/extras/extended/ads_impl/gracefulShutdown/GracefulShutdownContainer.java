@@ -41,7 +41,6 @@ public class GracefulShutdownContainer extends AbstractContainer
     public GracefulShutdownContainer()
     {
         super();
-        stateStack = new int[1];
         grammar = GracefulShutdownGrammar.getInstance();
         setTransition( GracefulShutdownStatesEnum.START_STATE );
     }

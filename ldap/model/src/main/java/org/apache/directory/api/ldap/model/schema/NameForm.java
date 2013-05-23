@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.exception.LdapException;
 
 
 /**
@@ -150,7 +149,6 @@ public class NameForm extends AbstractSchemaObject
      * attributes for.
      * 
      * @return the ObjectClass this NameForm is for
-     * @throws org.apache.directory.api.ldap.model.exception.LdapException If the structuralObjectClass is invalid
      */
     public ObjectClass getStructuralObjectClass()
     {
@@ -203,7 +201,6 @@ public class NameForm extends AbstractSchemaObject
      * Rdn.
      * 
      * @return the AttributeTypes OIDs of the must use attributes
-     * @throws LdapException if there is a failure resolving one AttributeTyoe
      */
     public List<String> getMustAttributeTypeOids()
     {
@@ -315,7 +312,6 @@ public class NameForm extends AbstractSchemaObject
      * part of the Rdn.
      * 
      * @return the AttributeTypes OIDs of the may use attributes
-     * @throws LdapException if there is a failure resolving one AttributeTyoe
      */
     public List<String> getMayAttributeTypeOids()
     {

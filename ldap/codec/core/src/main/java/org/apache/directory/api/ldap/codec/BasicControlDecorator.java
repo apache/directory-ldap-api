@@ -27,10 +27,8 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
-import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.controls.AbstractControl;
 
 
 /**
@@ -46,10 +44,10 @@ public class BasicControlDecorator<E> extends ControlDecorator<Control>
 {
     /**
      * Creates a new instance of BasicControlDecorator, decorating a 
-     * {@link AbstractControl}.
+     * {@link Control}.
      *
      * @param codec The LDAP codec service.
-     * @param control The {@link AbstractControl} to decorate.
+     * @param control The {@link Control} to decorate.
      */
     public BasicControlDecorator( LdapApiService codec, Control control )
     {
