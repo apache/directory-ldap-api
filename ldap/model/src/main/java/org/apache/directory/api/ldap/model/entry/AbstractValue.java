@@ -196,15 +196,12 @@ public abstract class AbstractValue<T> implements Value<T>
         {
             LdapSyntax syntax = attributeType.getSyntax();
 
-            if ( syntax != null )
+            // Check the syntax
+            if ( ( syntax != null ) && ( !isValid( syntax.getSyntaxChecker() ) ) )
             {
-                // Check the syntax
-                if ( !isValid( syntax.getSyntaxChecker() ) )
-                {
-                    String message = I18n.err( I18n.ERR_04473_NOT_VALID_VALUE, wrappedValue, attributeType );
-                    LOG.info( message );
-                    throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
-                }
+                String message = I18n.err( I18n.ERR_04473_NOT_VALID_VALUE, wrappedValue, attributeType );
+                LOG.info( message );
+                throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
             }
         }
         catch ( LdapException le )

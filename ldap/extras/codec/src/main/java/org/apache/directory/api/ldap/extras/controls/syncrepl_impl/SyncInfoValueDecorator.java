@@ -524,7 +524,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
 
                 value = buffer.array();
             }
-            catch ( Exception e )
+            catch ( EncoderException e )
             {
                 return null;
             }
@@ -544,8 +544,8 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
         decoder.decode( bb, container );
         return this;
     }
-    
-    
+
+
     /**
      * @see Object#toString()
      */

@@ -694,12 +694,9 @@ public class DefaultAttribute implements Attribute, Cloneable
         }
 
         // Check that we can't have more than one value if the AT is single-value
-        if ( attributeType.isSingleValued() )
+        if ( ( attributeType.isSingleValued() ) && ( values.size() > 1 ) )
         {
-            if ( values.size() > 1 )
-            {
-                return false;
-            }
+            return false;
         }
 
         // Now check the values

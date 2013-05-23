@@ -99,16 +99,13 @@ public class LdapSyntaxHelper
     public static void removeFromRegistries( LdapSyntax ldapSyntax, List<Throwable> errors, Registries registries )
         throws LdapException
     {
-        if ( registries != null )
+        if ( ( registries != null ) && ( ldapSyntax.getSyntaxChecker() != null ) )
         {
             /**
              * Remove the Syntax references (using and usedBy) :
              * S -> SC
              */
-            if ( ldapSyntax.getSyntaxChecker() != null )
-            {
-                registries.delReference( ldapSyntax, ldapSyntax.getSyntaxChecker() );
-            }
+            registries.delReference( ldapSyntax, ldapSyntax.getSyntaxChecker() );
         }
     }
 }

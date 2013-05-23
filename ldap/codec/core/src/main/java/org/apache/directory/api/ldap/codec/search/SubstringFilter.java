@@ -52,14 +52,8 @@ import org.apache.directory.api.util.Strings;
  */
 public class SubstringFilter extends Filter
 {
-    // ~ Instance fields
-    // ----------------------------------------------------------------------------
-
     /** The substring filter type (an attributeDescription) */
     private String type;
-
-    /** The type length */
-    private int typeLength;
 
     /**
      * This member is used to control the length of the three parts of the
@@ -233,7 +227,7 @@ public class SubstringFilter extends Filter
     public int computeLength()
     {
         // The type
-        typeLength = Strings.getBytesUtf8( type ).length;
+        int typeLength = Strings.getBytesUtf8( type ).length;
 
         substringsFilterLength = 1 + TLV.getNbBytes( typeLength ) + typeLength;
         substringsFilterSequenceLength = 0;

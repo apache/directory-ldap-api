@@ -372,7 +372,6 @@ public class LdapUrl
                 // Let's check the string we had before the dot.
                 if ( isHostNumber && ( nbDots < 4 ) )
                 {
-
                     // We had only digits. It may be an IP adress? Check it
                     if ( ipElem[nbDots] > 65535 )
                     {

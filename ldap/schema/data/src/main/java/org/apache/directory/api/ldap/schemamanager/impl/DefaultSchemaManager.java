@@ -30,10 +30,8 @@ import java.util.Set;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
-import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.exception.LdapOtherException;
 import org.apache.directory.api.ldap.model.exception.LdapProtocolErrorException;
 import org.apache.directory.api.ldap.model.exception.LdapSchemaException;
@@ -112,9 +110,6 @@ public class DefaultSchemaManager implements SchemaManager
 
     /** the factory that generates respective SchemaObjects from LDIF entries */
     private final EntityFactory factory;
-
-    /** the normalized name for the schema modification attributes */
-    private Dn schemaModificationAttributesDn;
 
     /** A Map containing all the schema being dependent from a schema */
     private Map<String, Set<String>> schemaDependences = new HashMap<String, Set<String>>();
@@ -1465,15 +1460,6 @@ public class DefaultSchemaManager implements SchemaManager
      */
     public void initialize() throws Exception
     {
-        try
-        {
-            schemaModificationAttributesDn = new Dn( SchemaConstants.SCHEMA_MODIFICATIONS_DN );
-            schemaModificationAttributesDn.apply( new DefaultSchemaManager() );
-        }
-        catch ( LdapInvalidDnException e )
-        {
-            throw new RuntimeException( e );
-        }
     }
 
 

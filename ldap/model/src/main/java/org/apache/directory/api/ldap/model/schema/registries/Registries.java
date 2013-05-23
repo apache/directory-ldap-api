@@ -1325,15 +1325,12 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Lock the SchemaObject
         schemaObject.lock();
 
-        if ( check )
+        if ( check && ( errors.isEmpty() ) )
         {
-            if ( errors.isEmpty() )
-            {
-                // Check the registries now
-                List<Throwable> checkErrors = checkRefInteg();
+            // Check the registries now
+            List<Throwable> checkErrors = checkRefInteg();
 
-                errors.addAll( checkErrors );
-            }
+            errors.addAll( checkErrors );
         }
 
         // Get back to Strict mode

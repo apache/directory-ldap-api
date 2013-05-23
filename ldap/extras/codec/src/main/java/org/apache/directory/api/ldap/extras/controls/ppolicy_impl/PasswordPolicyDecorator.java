@@ -48,7 +48,6 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
     private static final Asn1Decoder decoder = new Asn1Decoder();
 
     // Storage for computed lengths
-    private int valueLength = 0;
     private int ppolicySeqLength = 0;
     private int warningLength = 0;
     private int timeBeforeExpirationTagLength;

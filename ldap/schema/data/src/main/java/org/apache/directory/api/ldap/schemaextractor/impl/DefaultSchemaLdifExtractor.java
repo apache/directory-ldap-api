@@ -54,7 +54,6 @@ import org.slf4j.LoggerFactory;
  */
 public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
 {
-
     /** The base path. */
     private static final String BASE_PATH = "";
 
@@ -76,9 +75,6 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
     /** The output directory. */
     private File outputDirectory;
 
-    /** The schema directory. */
-    private File schemaDirectory;
-
 
     /**
      * Creates an extractor which deposits files into the specified output
@@ -90,7 +86,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
     {
         LOG.debug( "BASE_PATH set to {}, outputDirectory set to {}", BASE_PATH, outputDirectory );
         this.outputDirectory = outputDirectory;
-        this.schemaDirectory = new File( outputDirectory, SCHEMA_SUBDIR );
+        File schemaDirectory = new File( outputDirectory, SCHEMA_SUBDIR );
 
         if ( !outputDirectory.exists() )
         {
