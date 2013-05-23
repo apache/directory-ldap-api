@@ -31,13 +31,6 @@ import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
-import org.apache.directory.api.ldap.model.message.AbandonListener;
-import org.apache.directory.api.ldap.model.message.AddRequest;
-import org.apache.directory.api.ldap.model.message.AddRequestImpl;
-import org.apache.directory.api.ldap.model.message.AddResponse;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -227,13 +220,13 @@ public class AddRequestImplTest
             }
 
 
-            public AddRequest addControl( Control control ) throws MessageException
+            public AddRequest addControl( Control control )
             {
                 return this;
             }
 
 
-            public AddRequest removeControl( Control control ) throws MessageException
+            public AddRequest removeControl( Control control )
             {
                 return this;
             }
@@ -280,7 +273,7 @@ public class AddRequestImplTest
             }
 
 
-            public AddRequest addAllControls( Control[] controls ) throws MessageException
+            public AddRequest addAllControls( Control[] controls )
             {
                 return this;
             }

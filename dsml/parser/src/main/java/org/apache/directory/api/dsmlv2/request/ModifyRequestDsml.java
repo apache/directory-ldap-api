@@ -31,7 +31,6 @@ import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
@@ -144,7 +143,7 @@ public class ModifyRequestDsml
     {
         Element element = super.toDsml( root );
 
-        ModifyRequest request = ( ModifyRequest ) getDecorated();
+        ModifyRequest request = getDecorated();
 
         // Dn
         if ( request.getName() != null )
@@ -406,7 +405,7 @@ public class ModifyRequestDsml
     /**
      * {@inheritDoc}
      */
-    public ModifyRequest addControl( Control control ) throws MessageException
+    public ModifyRequest addControl( Control control )
     {
         return ( ModifyRequest ) super.addControl( control );
     }
@@ -415,7 +414,7 @@ public class ModifyRequestDsml
     /**
      * {@inheritDoc}
      */
-    public ModifyRequest addAllControls( Control[] controls ) throws MessageException
+    public ModifyRequest addAllControls( Control[] controls )
     {
         return ( ModifyRequest ) super.addAllControls( controls );
     }
@@ -424,7 +423,7 @@ public class ModifyRequestDsml
     /**
      * {@inheritDoc}
      */
-    public ModifyRequest removeControl( Control control ) throws MessageException
+    public ModifyRequest removeControl( Control control )
     {
         return ( ModifyRequest ) super.removeControl( control );
     }

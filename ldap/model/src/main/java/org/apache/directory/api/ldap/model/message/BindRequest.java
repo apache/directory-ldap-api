@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.name.Dn;
 
 
@@ -218,17 +217,17 @@ public interface BindRequest extends SingleReplyRequest<BindResponse>, Abandonab
     /**
      * {@inheritDoc}
      */
-    BindRequest addControl( Control control ) throws MessageException;
+    BindRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
-    BindRequest addAllControls( Control[] controls ) throws MessageException;
+    BindRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
-    BindRequest removeControl( Control control ) throws MessageException;
+    BindRequest removeControl( Control control );
 }

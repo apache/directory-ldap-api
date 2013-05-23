@@ -42,7 +42,6 @@ import org.apache.directory.api.ldap.codec.decorators.SearchResultDoneDecorator;
 import org.apache.directory.api.ldap.codec.decorators.SearchResultEntryDecorator;
 import org.apache.directory.api.ldap.codec.decorators.SearchResultReferenceDecorator;
 import org.apache.directory.api.ldap.codec.decorators.UnbindRequestDecorator;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.AddRequest;
 import org.apache.directory.api.ldap.model.message.AddResponse;
@@ -311,7 +310,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public Message addControl( Control control ) throws MessageException
+    public Message addControl( Control control )
     {
         Control decorated;
         CodecControl<? extends Control> controlDecorator;
@@ -338,7 +337,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
-    public Message addAllControls( Control[] controls ) throws MessageException
+    public Message addAllControls( Control[] controls )
     {
         for ( Control control : controls )
         {
@@ -352,7 +351,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     /**
      * {@inheritDoc}
      */
-    public Message removeControl( Control control ) throws MessageException
+    public Message removeControl( Control control )
     {
         decoratedMessage.removeControl( control );
         controls.remove( control.getOid() );

@@ -28,7 +28,6 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapConstants;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.DeleteRequest;
 import org.apache.directory.api.ldap.model.message.DeleteResponse;
@@ -44,9 +43,10 @@ import org.apache.directory.api.util.Strings;
 public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRequest, DeleteResponse>
     implements DeleteRequest
 {
-    
+
     /** The bytes containing the Dn */
     private byte[] dnBytes;
+
 
     /**
      * Makes a DeleteRequest a MessageDecorator.
@@ -97,7 +97,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     /**
      * {@inheritDoc}
      */
-    public DeleteRequest addControl( Control control ) throws MessageException
+    public DeleteRequest addControl( Control control )
     {
         return ( DeleteRequest ) super.addControl( control );
     }
@@ -106,7 +106,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     /**
      * {@inheritDoc}
      */
-    public DeleteRequest addAllControls( Control[] controls ) throws MessageException
+    public DeleteRequest addAllControls( Control[] controls )
     {
         return ( DeleteRequest ) super.addAllControls( controls );
     }
@@ -115,7 +115,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     /**
      * {@inheritDoc}
      */
-    public DeleteRequest removeControl( Control control ) throws MessageException
+    public DeleteRequest removeControl( Control control )
     {
         return ( DeleteRequest ) super.removeControl( control );
     }
@@ -137,7 +137,7 @@ public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRe
     {
         dnBytes = Strings.getBytesUtf8( getName().getName() );
         int dnLength = dnBytes.length;
-        
+
         // The entry
         return 1 + TLV.getNbBytes( dnLength ) + dnLength;
     }

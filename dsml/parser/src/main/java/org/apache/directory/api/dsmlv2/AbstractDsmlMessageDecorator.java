@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.Message;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
@@ -126,7 +125,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
-    public Message addControl( Control control ) throws MessageException
+    public Message addControl( Control control )
     {
         Control decorated;
         DsmlControl<? extends Control> decorator;
@@ -153,7 +152,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
-    public Message addAllControls( Control[] controls ) throws MessageException
+    public Message addAllControls( Control[] controls )
     {
         for ( Control control : controls )
         {
@@ -167,7 +166,7 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
-    public Message removeControl( Control control ) throws MessageException
+    public Message removeControl( Control control )
     {
         controls.remove( control.getOid() );
         message.removeControl( control );

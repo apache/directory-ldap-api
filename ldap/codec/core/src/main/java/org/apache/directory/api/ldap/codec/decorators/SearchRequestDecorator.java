@@ -48,7 +48,6 @@ import org.apache.directory.api.ldap.codec.search.PresentFilter;
 import org.apache.directory.api.ldap.codec.search.SubstringFilter;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.filter.AndNode;
 import org.apache.directory.api.ldap.model.filter.ApproximateNode;
 import org.apache.directory.api.ldap.model.filter.BranchNode;
@@ -1106,7 +1105,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public SearchRequest addControl( Control control ) throws MessageException
+    public SearchRequest addControl( Control control )
     {
         return ( SearchRequest ) super.addControl( control );
     }
@@ -1115,7 +1114,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public SearchRequest addAllControls( Control[] controls ) throws MessageException
+    public SearchRequest addAllControls( Control[] controls )
     {
         return ( SearchRequest ) super.addAllControls( controls );
     }
@@ -1124,7 +1123,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     /**
      * {@inheritDoc}
      */
-    public SearchRequest removeControl( Control control ) throws MessageException
+    public SearchRequest removeControl( Control control )
     {
         return ( SearchRequest ) super.removeControl( control );
     }

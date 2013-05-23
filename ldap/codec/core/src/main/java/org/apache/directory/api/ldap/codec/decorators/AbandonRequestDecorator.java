@@ -28,7 +28,6 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapConstants;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.Control;
 
@@ -90,7 +89,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * {@inheritDoc}
      */
-    public AbandonRequest addControl( Control control ) throws MessageException
+    public AbandonRequest addControl( Control control )
     {
         return ( AbandonRequest ) super.addControl( control );
     }
@@ -99,7 +98,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * {@inheritDoc}
      */
-    public AbandonRequest addAllControls( Control[] controls ) throws MessageException
+    public AbandonRequest addAllControls( Control[] controls )
     {
         return ( AbandonRequest ) super.addAllControls( controls );
     }
@@ -108,7 +107,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
     /**
      * {@inheritDoc}
      */
-    public AbandonRequest removeControl( Control control ) throws MessageException
+    public AbandonRequest removeControl( Control control )
     {
         return ( AbandonRequest ) super.removeControl( control );
     }

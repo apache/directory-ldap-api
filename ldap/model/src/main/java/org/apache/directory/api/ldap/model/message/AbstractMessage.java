@@ -24,8 +24,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
-
 
 /**
  * Abstract message base class.
@@ -117,7 +115,7 @@ public abstract class AbstractMessage implements Message
     /**
      * {@inheritDoc}
      */
-    public Message addControl( Control control ) throws MessageException
+    public Message addControl( Control control )
     {
         controls.put( control.getOid(), control );
 
@@ -129,10 +127,8 @@ public abstract class AbstractMessage implements Message
      * Deletes a control removing it from this Message.
      * 
      * @param control the control to remove.
-     * @throws MessageException if controls cannot be added to this Message or the control is
-     *             not known etc.
      */
-    public Message removeControl( Control control ) throws MessageException
+    public Message removeControl( Control control )
     {
         controls.remove( control.getOid() );
 
@@ -257,7 +253,7 @@ public abstract class AbstractMessage implements Message
     /**
      * {@inheritDoc}
      */
-    public Message addAllControls( Control[] controls ) throws MessageException
+    public Message addAllControls( Control[] controls )
     {
         for ( Control c : controls )
         {

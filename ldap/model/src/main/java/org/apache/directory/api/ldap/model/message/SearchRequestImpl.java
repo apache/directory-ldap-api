@@ -28,7 +28,6 @@ import java.util.List;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapProtocolErrorException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.filter.BranchNormalizedVisitor;
 import org.apache.directory.api.ldap.model.filter.ExprNode;
 import org.apache.directory.api.ldap.model.filter.FilterParser;
@@ -318,7 +317,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
-    public SearchRequest addControl( Control control ) throws MessageException
+    public SearchRequest addControl( Control control )
     {
         return ( SearchRequest ) super.addControl( control );
     }
@@ -327,7 +326,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
-    public SearchRequest addAllControls( Control[] controls ) throws MessageException
+    public SearchRequest addAllControls( Control[] controls )
     {
         return ( SearchRequest ) super.addAllControls( controls );
     }
@@ -336,7 +335,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     /**
      * {@inheritDoc}
      */
-    public SearchRequest removeControl( Control control ) throws MessageException
+    public SearchRequest removeControl( Control control )
     {
         return ( SearchRequest ) super.removeControl( control );
     }

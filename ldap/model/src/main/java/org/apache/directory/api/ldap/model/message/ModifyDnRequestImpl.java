@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 
@@ -170,7 +169,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
-    public ModifyDnRequest addControl( Control control ) throws MessageException
+    public ModifyDnRequest addControl( Control control )
     {
         return ( ModifyDnRequest ) super.addControl( control );
     }
@@ -179,7 +178,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
-    public ModifyDnRequest addAllControls( Control[] controls ) throws MessageException
+    public ModifyDnRequest addAllControls( Control[] controls )
     {
         return ( ModifyDnRequest ) super.addAllControls( controls );
     }
@@ -188,7 +187,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
     /**
      * {@inheritDoc}
      */
-    public ModifyDnRequest removeControl( Control control ) throws MessageException
+    public ModifyDnRequest removeControl( Control control )
     {
         return ( ModifyDnRequest ) super.removeControl( control );
     }

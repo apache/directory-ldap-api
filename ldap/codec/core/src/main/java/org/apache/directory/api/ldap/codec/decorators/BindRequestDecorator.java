@@ -29,7 +29,6 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapConstants;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.BindResponse;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -53,13 +52,13 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
 
     /** The SASL credentials length */
     private int saslCredentialsLength;
-    
+
     /** The bytes containing the Dn */
     private byte[] dnBytes;
-    
+
     /** The bytes containing the Name */
     private byte[] nameBytes;
-    
+
     /** The bytes containing the SaslMechanism */
     private byte[] mechanismBytes;
 
@@ -146,7 +145,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
-    public BindRequest addControl( Control control ) throws MessageException
+    public BindRequest addControl( Control control )
     {
         return ( BindRequest ) super.addControl( control );
     }
@@ -155,7 +154,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
-    public BindRequest addAllControls( Control[] controls ) throws MessageException
+    public BindRequest addAllControls( Control[] controls )
     {
         return ( BindRequest ) super.addAllControls( controls );
     }
@@ -164,7 +163,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
     /**
      * {@inheritDoc}
      */
-    public BindRequest removeControl( Control control ) throws MessageException
+    public BindRequest removeControl( Control control )
     {
         return ( BindRequest ) super.removeControl( control );
     }

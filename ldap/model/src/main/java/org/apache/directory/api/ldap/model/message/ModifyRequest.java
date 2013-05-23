@@ -25,7 +25,6 @@ import java.util.Collection;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.name.Dn;
 
 
@@ -258,17 +257,17 @@ public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, Aband
     /**
      * {@inheritDoc}
      */
-    ModifyRequest addControl( Control control ) throws MessageException;
+    ModifyRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
-    ModifyRequest addAllControls( Control[] controls ) throws MessageException;
+    ModifyRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
-    ModifyRequest removeControl( Control control ) throws MessageException;
+    ModifyRequest removeControl( Control control );
 }

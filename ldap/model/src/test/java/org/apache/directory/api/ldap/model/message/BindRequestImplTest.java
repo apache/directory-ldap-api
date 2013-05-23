@@ -27,13 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
-import org.apache.directory.api.ldap.model.message.AbandonListener;
-import org.apache.directory.api.ldap.model.message.BindRequest;
-import org.apache.directory.api.ldap.model.message.BindRequestImpl;
-import org.apache.directory.api.ldap.model.message.BindResponse;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -321,13 +314,13 @@ public class BindRequestImplTest
             }
 
 
-            public BindRequest addControl( Control control ) throws MessageException
+            public BindRequest addControl( Control control )
             {
                 return this;
             }
 
 
-            public BindRequest removeControl( Control control ) throws MessageException
+            public BindRequest removeControl( Control control )
             {
                 return this;
             }
@@ -369,7 +362,7 @@ public class BindRequestImplTest
             }
 
 
-            public BindRequest addAllControls( Control[] controls ) throws MessageException
+            public BindRequest addAllControls( Control[] controls )
             {
                 return this;
             }

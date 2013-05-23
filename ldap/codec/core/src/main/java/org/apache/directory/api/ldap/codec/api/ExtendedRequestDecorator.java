@@ -27,7 +27,6 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.decorators.SingleReplyRequestDecorator;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
@@ -161,7 +160,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public ExtendedRequest<P> addControl( Control control ) throws MessageException
+    public ExtendedRequest<P> addControl( Control control )
     {
         return ( ExtendedRequest<P> ) super.addControl( control );
     }
@@ -171,7 +170,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public ExtendedRequest<P> addAllControls( Control[] controls ) throws MessageException
+    public ExtendedRequest<P> addAllControls( Control[] controls )
     {
         return ( ExtendedRequest<P> ) super.addAllControls( controls );
     }
@@ -181,7 +180,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest<P>, P extends Ex
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public ExtendedRequest<P> removeControl( Control control ) throws MessageException
+    public ExtendedRequest<P> removeControl( Control control )
     {
         return ( ExtendedRequest<P> ) super.removeControl( control );
     }

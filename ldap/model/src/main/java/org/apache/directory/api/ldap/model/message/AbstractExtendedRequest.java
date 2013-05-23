@@ -20,9 +20,6 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
-
-
 /**
  * ExtendedRequest implementation.
  * 
@@ -106,7 +103,7 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public ExtendedRequest<R> addControl( Control control ) throws MessageException
+    public ExtendedRequest<R> addControl( Control control )
     {
         return ( ExtendedRequest<R> ) super.addControl( control );
     }
@@ -116,7 +113,7 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public ExtendedRequest<R> addAllControls( Control[] controls ) throws MessageException
+    public ExtendedRequest<R> addAllControls( Control[] controls )
     {
         return ( ExtendedRequest<R> ) super.addAllControls( controls );
     }
@@ -126,7 +123,7 @@ public abstract class AbstractExtendedRequest<R extends ExtendedResponse> extend
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public ExtendedRequest<R> removeControl( Control control ) throws MessageException
+    public ExtendedRequest<R> removeControl( Control control )
     {
         return ( ExtendedRequest<R> ) super.removeControl( control );
     }

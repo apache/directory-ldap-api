@@ -28,13 +28,6 @@ import java.util.Map;
 
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
-import org.apache.directory.api.ldap.model.message.AbandonListener;
-import org.apache.directory.api.ldap.model.message.CompareRequest;
-import org.apache.directory.api.ldap.model.message.CompareRequestImpl;
-import org.apache.directory.api.ldap.model.message.CompareResponse;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -264,13 +257,13 @@ public class CompareRequestImplTest
             }
 
 
-            public CompareRequest addControl( Control a_control ) throws MessageException
+            public CompareRequest addControl( Control a_control )
             {
                 return this;
             }
 
 
-            public CompareRequest removeControl( Control a_control ) throws MessageException
+            public CompareRequest removeControl( Control a_control )
             {
                 return this;
             }
@@ -317,7 +310,7 @@ public class CompareRequestImplTest
             }
 
 
-            public CompareRequest addAllControls( Control[] controls ) throws MessageException
+            public CompareRequest addAllControls( Control[] controls )
             {
                 return this;
             }

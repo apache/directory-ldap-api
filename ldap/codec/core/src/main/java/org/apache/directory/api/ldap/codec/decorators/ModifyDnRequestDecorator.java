@@ -29,7 +29,6 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapConstants;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
 import org.apache.directory.api.ldap.model.message.ModifyDnResponse;
@@ -187,7 +186,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
-    public ModifyDnRequest addControl( Control control ) throws MessageException
+    public ModifyDnRequest addControl( Control control )
     {
         return ( ModifyDnRequest ) super.addControl( control );
     }
@@ -196,7 +195,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
-    public ModifyDnRequest addAllControls( Control[] controls ) throws MessageException
+    public ModifyDnRequest addAllControls( Control[] controls )
     {
         return ( ModifyDnRequest ) super.addAllControls( controls );
     }
@@ -205,7 +204,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     /**
      * {@inheritDoc}
      */
-    public ModifyDnRequest removeControl( Control control ) throws MessageException
+    public ModifyDnRequest removeControl( Control control )
     {
         return ( ModifyDnRequest ) super.removeControl( control );
     }

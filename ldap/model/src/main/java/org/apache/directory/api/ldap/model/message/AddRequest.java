@@ -22,7 +22,6 @@ package org.apache.directory.api.ldap.model.message;
 
 
 import org.apache.directory.api.ldap.model.entry.Entry;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.name.Dn;
 
 
@@ -83,17 +82,17 @@ public interface AddRequest extends SingleReplyRequest<AddResponse>, Abandonable
     /**
      * {@inheritDoc}
      */
-    AddRequest addControl( Control control ) throws MessageException;
+    AddRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
-    AddRequest addAllControls( Control[] controls ) throws MessageException;
+    AddRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
-    AddRequest removeControl( Control control ) throws MessageException;
+    AddRequest removeControl( Control control );
 }

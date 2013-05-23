@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -159,13 +158,13 @@ public class ExtendedResponseImplTest
             }
 
 
-            public ExtendedResponse addControl( Control control ) throws MessageException
+            public ExtendedResponse addControl( Control control )
             {
                 return this;
             }
 
 
-            public ExtendedResponse removeControl( Control control ) throws MessageException
+            public ExtendedResponse removeControl( Control control )
             {
                 return this;
             }
@@ -189,7 +188,7 @@ public class ExtendedResponseImplTest
             }
 
 
-            public ExtendedResponse addAllControls( Control[] controls ) throws MessageException
+            public ExtendedResponse addAllControls( Control[] controls )
             {
                 return this;
             }

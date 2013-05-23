@@ -20,9 +20,6 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
-
-
 /**
  * Unbind protocol request message used to end a client session.
  * 
@@ -43,17 +40,17 @@ public interface UnbindRequest extends Request
     /**
      * {@inheritDoc}
      */
-    UnbindRequest addControl( Control control ) throws MessageException;
+    UnbindRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
-    UnbindRequest addAllControls( Control[] controls ) throws MessageException;
+    UnbindRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
-    UnbindRequest removeControl( Control control ) throws MessageException;
+    UnbindRequest removeControl( Control control );
 }

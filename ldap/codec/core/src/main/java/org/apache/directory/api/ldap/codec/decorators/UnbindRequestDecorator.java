@@ -27,7 +27,6 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapConstants;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.UnbindRequest;
 
@@ -64,7 +63,7 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
     /**
      * {@inheritDoc}
      */
-    public UnbindRequest addControl( Control control ) throws MessageException
+    public UnbindRequest addControl( Control control )
     {
         return ( UnbindRequest ) super.addControl( control );
     }
@@ -73,7 +72,7 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
     /**
      * {@inheritDoc}
      */
-    public UnbindRequest addAllControls( Control[] controls ) throws MessageException
+    public UnbindRequest addAllControls( Control[] controls )
     {
         return ( UnbindRequest ) super.addAllControls( controls );
     }
@@ -82,7 +81,7 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
     /**
      * {@inheritDoc}
      */
-    public UnbindRequest removeControl( Control control ) throws MessageException
+    public UnbindRequest removeControl( Control control )
     {
         return ( UnbindRequest ) super.removeControl( control );
     }

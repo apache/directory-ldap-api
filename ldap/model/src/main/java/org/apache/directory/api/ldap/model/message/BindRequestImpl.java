@@ -24,7 +24,6 @@ import java.util.Arrays;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -287,7 +286,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
-    public BindRequest addControl( Control control ) throws MessageException
+    public BindRequest addControl( Control control )
     {
         return ( BindRequest ) super.addControl( control );
     }
@@ -296,7 +295,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
-    public BindRequest addAllControls( Control[] controls ) throws MessageException
+    public BindRequest addAllControls( Control[] controls )
     {
         return ( BindRequest ) super.addAllControls( controls );
     }
@@ -305,7 +304,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     /**
      * {@inheritDoc}
      */
-    public BindRequest removeControl( Control control ) throws MessageException
+    public BindRequest removeControl( Control control )
     {
         return ( BindRequest ) super.removeControl( control );
     }

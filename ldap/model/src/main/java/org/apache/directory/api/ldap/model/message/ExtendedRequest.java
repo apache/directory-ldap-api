@@ -20,9 +20,6 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
-
-
 /**
  * Extended protocol request message used to add to more operations to the
  * protocol. Here's what <a href="http://www.faqs.org/rfcs/rfc2251.html"> RFC
@@ -91,17 +88,17 @@ public interface ExtendedRequest<R extends ExtendedResponse> extends SingleReply
     /**
      * {@inheritDoc}
      */
-    ExtendedRequest<R> addControl( Control control ) throws MessageException;
+    ExtendedRequest<R> addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
-    ExtendedRequest<R> addAllControls( Control[] controls ) throws MessageException;
+    ExtendedRequest<R> addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
-    ExtendedRequest<R> removeControl( Control control ) throws MessageException;
+    ExtendedRequest<R> removeControl( Control control );
 }

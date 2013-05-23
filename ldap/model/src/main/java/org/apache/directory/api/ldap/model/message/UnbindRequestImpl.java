@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.model.message;
 
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 
 
 /**
@@ -71,7 +70,7 @@ public class UnbindRequestImpl extends AbstractRequest implements UnbindRequest
     /**
      * {@inheritDoc}
      */
-    public UnbindRequest addControl( Control control ) throws MessageException
+    public UnbindRequest addControl( Control control )
     {
         return ( UnbindRequest ) super.addControl( control );
     }
@@ -80,7 +79,7 @@ public class UnbindRequestImpl extends AbstractRequest implements UnbindRequest
     /**
      * {@inheritDoc}
      */
-    public UnbindRequest addAllControls( Control[] controls ) throws MessageException
+    public UnbindRequest addAllControls( Control[] controls )
     {
         return ( UnbindRequest ) super.addAllControls( controls );
     }
@@ -89,7 +88,7 @@ public class UnbindRequestImpl extends AbstractRequest implements UnbindRequest
     /**
      * {@inheritDoc}
      */
-    public UnbindRequest removeControl( Control control ) throws MessageException
+    public UnbindRequest removeControl( Control control )
     {
         return ( UnbindRequest ) super.removeControl( control );
     }

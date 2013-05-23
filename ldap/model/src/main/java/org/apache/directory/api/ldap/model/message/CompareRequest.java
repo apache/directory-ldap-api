@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.model.message;
 
 
 import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.name.Dn;
 
 
@@ -111,17 +110,17 @@ public interface CompareRequest extends SingleReplyRequest<CompareResponse>, Aba
     /**
      * {@inheritDoc}
      */
-    CompareRequest addControl( Control control ) throws MessageException;
+    CompareRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
-    CompareRequest addAllControls( Control[] controls ) throws MessageException;
+    CompareRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
-    CompareRequest removeControl( Control control ) throws MessageException;
+    CompareRequest removeControl( Control control );
 }

@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.model.message;
 
 
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 
@@ -179,17 +178,17 @@ public interface ModifyDnRequest extends SingleReplyRequest<ModifyDnResponse>, A
     /**
      * {@inheritDoc}
      */
-    ModifyDnRequest addControl( Control control ) throws MessageException;
+    ModifyDnRequest addControl( Control control );
 
 
     /**
      * {@inheritDoc}
      */
-    ModifyDnRequest addAllControls( Control[] controls ) throws MessageException;
+    ModifyDnRequest addAllControls( Control[] controls );
 
 
     /**
      * {@inheritDoc}
      */
-    ModifyDnRequest removeControl( Control control ) throws MessageException;
+    ModifyDnRequest removeControl( Control control );
 }

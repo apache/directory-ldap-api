@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.model.message;
 import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 
@@ -166,7 +165,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     /**
      * {@inheritDoc}
      */
-    public CompareRequest addControl( Control control ) throws MessageException
+    public CompareRequest addControl( Control control )
     {
         return ( CompareRequest ) super.addControl( control );
     }
@@ -175,7 +174,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     /**
      * {@inheritDoc}
      */
-    public CompareRequest addAllControls( Control[] controls ) throws MessageException
+    public CompareRequest addAllControls( Control[] controls )
     {
         return ( CompareRequest ) super.addAllControls( controls );
     }
@@ -184,7 +183,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
     /**
      * {@inheritDoc}
      */
-    public CompareRequest removeControl( Control control ) throws MessageException
+    public CompareRequest removeControl( Control control )
     {
         return ( CompareRequest ) super.removeControl( control );
     }

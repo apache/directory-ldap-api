@@ -31,7 +31,6 @@ import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.StringConstants;
 
@@ -271,7 +270,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
-    public ModifyRequest addControl( Control control ) throws MessageException
+    public ModifyRequest addControl( Control control )
     {
         return ( ModifyRequest ) super.addControl( control );
     }
@@ -280,7 +279,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
-    public ModifyRequest addAllControls( Control[] controls ) throws MessageException
+    public ModifyRequest addAllControls( Control[] controls )
     {
         return ( ModifyRequest ) super.addAllControls( controls );
     }
@@ -289,7 +288,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
-    public ModifyRequest removeControl( Control control ) throws MessageException
+    public ModifyRequest removeControl( Control control )
     {
         return ( ModifyRequest ) super.removeControl( control );
     }

@@ -32,7 +32,6 @@ import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapConstants;
 import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.exception.MessageException;
 import org.apache.directory.api.ldap.model.message.CompareRequest;
 import org.apache.directory.api.ldap.model.message.CompareResponse;
 import org.apache.directory.api.ldap.model.message.Control;
@@ -243,7 +242,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
-    public CompareRequest addControl( Control control ) throws MessageException
+    public CompareRequest addControl( Control control )
     {
         return ( CompareRequest ) super.addControl( control );
     }
@@ -252,7 +251,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
-    public CompareRequest addAllControls( Control[] controls ) throws MessageException
+    public CompareRequest addAllControls( Control[] controls )
     {
         return ( CompareRequest ) super.addAllControls( controls );
     }
@@ -261,7 +260,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
     /**
      * {@inheritDoc}
      */
-    public CompareRequest removeControl( Control control ) throws MessageException
+    public CompareRequest removeControl( Control control )
     {
         return ( CompareRequest ) super.removeControl( control );
     }
