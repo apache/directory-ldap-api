@@ -69,7 +69,7 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
     private Set<String> binaryAttributes = new ConcurrentHashSet<String>();
 
     /** A list of all the known binary attributes */
-    public final static String[] DEFAULT_BINARY_ATTRIBUTES = new String[]
+    public static final String[] DEFAULT_BINARY_ATTRIBUTES = new String[]
         {
             "entryACI", // Syntax : ACI Item
             "prescriptiveACI", // Syntax : ACI Item
