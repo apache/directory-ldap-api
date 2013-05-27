@@ -478,7 +478,7 @@ syntax [AttributeTypeHolder type]
         String length = comps[1].substring( index + 1, comps[1].length() - 1 );
 
         type.setSyntax( oid );
-        type.setOidLen( Integer.parseInt( length ) );
+        type.setOidLen( Long.parseLong( length ) );
     }
     ;
 

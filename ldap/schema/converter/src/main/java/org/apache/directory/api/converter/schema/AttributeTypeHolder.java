@@ -62,7 +62,7 @@ public class AttributeTypeHolder extends SchemaElementImpl
     private String syntax;
 
     /** The optional length for this attribute */
-    private int oidLen = -1;
+    private long oidLen = -1;
 
     /** The attribute uase. Default to userApplication */
     private UsageEnum usage = UsageEnum.USER_APPLICATIONS;
@@ -282,7 +282,7 @@ public class AttributeTypeHolder extends SchemaElementImpl
      * 
      * @return The attributeType's syntax length
      */
-    public int getOidLen()
+    public long getOidLen()
     {
         return oidLen;
     }
@@ -293,7 +293,7 @@ public class AttributeTypeHolder extends SchemaElementImpl
      * 
      * @param oidLen The attributeType's syntax length
      */
-    public void setOidLen( int oidLen )
+    public void setOidLen( long oidLen )
     {
         this.oidLen = oidLen;
     }
