@@ -46,22 +46,22 @@ public enum LdapSecurityConstants
     HASH_METHOD_CRYPT("crypt"),
 
     /** The SHA-256 encryption method */
-    HASH_METHOD_SHA256("sha-256"),
+    HASH_METHOD_SHA256("sha256"),
 
     /** The salted SHA-256 encryption method */
-    HASH_METHOD_SSHA256("ssha-256"),
+    HASH_METHOD_SSHA256("ssha256"),
 
     /** The SHA-384 encryption method */
-    HASH_METHOD_SHA384("sha-384"),
+    HASH_METHOD_SHA384("sha384"),
 
     /** The salted SHA-384 encryption method */
-    HASH_METHOD_SSHA384("ssha-384"),
+    HASH_METHOD_SSHA384("ssha384"),
 
     /** The SHA-512 encryption method */
-    HASH_METHOD_SHA512("sha-512"),
+    HASH_METHOD_SHA512("sha512"),
 
     /** The salted SHA-512 encryption method */
-    HASH_METHOD_SSHA512("ssha-512");
+    HASH_METHOD_SSHA512("ssha512");
 
     /* These encryption types are not yet supported 
     ** The AES encryption method *
@@ -141,32 +141,38 @@ public enum LdapSecurityConstants
             return HASH_METHOD_CRYPT;
         }
 
-        if ( HASH_METHOD_SHA256.getName().equalsIgnoreCase( algorithm ) )
+        if ( ( HASH_METHOD_SHA256.getName().equalsIgnoreCase( algorithm ) )
+            || ( "sha-256".equalsIgnoreCase( algorithm ) ) ) // "sha-256" used for backwards compatibility
         {
             return HASH_METHOD_SHA256;
         }
 
-        if ( HASH_METHOD_SSHA256.getName().equalsIgnoreCase( algorithm ) )
+        if ( ( HASH_METHOD_SSHA256.getName().equalsIgnoreCase( algorithm ) )
+            || ( "ssha-256".equalsIgnoreCase( algorithm ) ) ) // "ssha-256" used for backwards compatibility
         {
             return HASH_METHOD_SSHA256;
         }
 
-        if ( HASH_METHOD_SHA384.getName().equalsIgnoreCase( algorithm ) )
+        if ( ( HASH_METHOD_SHA384.getName().equalsIgnoreCase( algorithm ) )
+            || ( "sha-384".equalsIgnoreCase( algorithm ) ) ) // "sha-384" used for backwards compatibility
         {
             return HASH_METHOD_SHA384;
         }
 
-        if ( HASH_METHOD_SSHA384.getName().equalsIgnoreCase( algorithm ) )
+        if ( ( HASH_METHOD_SSHA384.getName().equalsIgnoreCase( algorithm ) )
+            || ( "ssha-384".equalsIgnoreCase( algorithm ) ) ) // "ssha-384" used for backwards compatibility
         {
             return HASH_METHOD_SSHA384;
         }
 
-        if ( HASH_METHOD_SHA512.getName().equalsIgnoreCase( algorithm ) )
+        if ( ( HASH_METHOD_SHA512.getName().equalsIgnoreCase( algorithm ) )
+            || ( "sha-512".equalsIgnoreCase( algorithm ) ) ) // "sha-512" used for backwards compatibility
         {
             return HASH_METHOD_SHA512;
         }
 
-        if ( HASH_METHOD_SSHA512.getName().equalsIgnoreCase( algorithm ) )
+        if ( ( HASH_METHOD_SSHA512.getName().equalsIgnoreCase( algorithm ) )
+            || ( "ssha-512".equalsIgnoreCase( algorithm ) ) ) // "ssha-512" used for backwards compatibility
         {
             return HASH_METHOD_SSHA512;
         }
