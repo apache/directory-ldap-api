@@ -31,37 +31,37 @@ import org.apache.directory.api.util.Strings;
 public enum LdapSecurityConstants
 {
     /** The SHA encryption method */
-    HASH_METHOD_SHA("sha"),
+    HASH_METHOD_SHA("SHA", "SHA", "sha"),
 
     /** The Salted SHA encryption method */
-    HASH_METHOD_SSHA("ssha"),
-
-    /** The MD5 encryption method */
-    HASH_METHOD_MD5("md5"),
-
-    /** The Salter MD5 encryption method */
-    HASH_METHOD_SMD5("smd5"),
-
-    /** The crypt encryption method */
-    HASH_METHOD_CRYPT("crypt"),
+    HASH_METHOD_SSHA("SSHA", "SHA", "ssha"),
 
     /** The SHA-256 encryption method */
-    HASH_METHOD_SHA256("sha256"),
+    HASH_METHOD_SHA256("SHA-256", "SHA-256", "sha256"),
 
     /** The salted SHA-256 encryption method */
-    HASH_METHOD_SSHA256("ssha256"),
+    HASH_METHOD_SSHA256("SSHA-256", "SHA-256", "ssha256"),
 
     /** The SHA-384 encryption method */
-    HASH_METHOD_SHA384("sha384"),
+    HASH_METHOD_SHA384("SHA-384", "SHA-384", "sha384"),
 
     /** The salted SHA-384 encryption method */
-    HASH_METHOD_SSHA384("ssha384"),
+    HASH_METHOD_SSHA384("SSHA-384", "SHA-384", "ssha384"),
 
     /** The SHA-512 encryption method */
-    HASH_METHOD_SHA512("sha512"),
+    HASH_METHOD_SHA512("SHA-512", "SHA-512", "sha512"),
 
     /** The salted SHA-512 encryption method */
-    HASH_METHOD_SSHA512("ssha512");
+    HASH_METHOD_SSHA512("SSHA-512", "SHA-512", "ssha512"),
+
+    /** The MD5 encryption method */
+    HASH_METHOD_MD5("MD5", "MD5", "md5"),
+
+    /** The Salter MD5 encryption method */
+    HASH_METHOD_SMD5("SMD5", "MD5", "smd5"),
+
+    /** The crypt encryption method */
+    HASH_METHOD_CRYPT("CRYPT", "CRYPT", "crypt");
 
     /* These encryption types are not yet supported 
     ** The AES encryption method *
@@ -80,15 +80,25 @@ public enum LdapSecurityConstants
     /** The associated name */
     private String name;
 
+    /** The associated algorithm */
+    private String algorithm;
+
+    /** The associated prefix */
+    private String prefix;
+
 
     /**
      * Creates a new instance of LdapSecurityConstants.
      * 
      * @param name the associated name
+     * @param algorithm the associated algorithm
+     * @param prefix the associated prefix
      */
-    private LdapSecurityConstants( String name )
+    private LdapSecurityConstants( String name, String algorithm, String prefix )
     {
         this.name = name;
+        this.algorithm = algorithm;
+        this.prefix = prefix;
     }
 
 
@@ -98,6 +108,24 @@ public enum LdapSecurityConstants
     public String getName()
     {
         return name;
+    }
+
+
+    /**
+     * @return the prefix associated with the constant.
+     */
+    public String getAlgorithm()
+    {
+        return algorithm;
+    }
+
+
+    /**
+     * @return the prefix associated with the constant.
+     */
+    public String getPrefix()
+    {
+        return prefix;
     }
 
 
@@ -116,62 +144,73 @@ public enum LdapSecurityConstants
             algorithm = Strings.toLowerCase( name );
         }
 
-        if ( HASH_METHOD_SHA.getName().equalsIgnoreCase( algorithm ) )
+        if ( HASH_METHOD_SHA.getName().equalsIgnoreCase( algorithm )
+            || HASH_METHOD_SHA.getPrefix().equalsIgnoreCase( algorithm ) )
         {
             return HASH_METHOD_SHA;
         }
 
-        if ( HASH_METHOD_SSHA.getName().equalsIgnoreCase( algorithm ) )
+        if ( HASH_METHOD_SSHA.getName().equalsIgnoreCase( algorithm )
+            || HASH_METHOD_SSHA.getPrefix().equalsIgnoreCase( algorithm ) )
         {
             return HASH_METHOD_SSHA;
         }
 
-        if ( HASH_METHOD_MD5.getName().equalsIgnoreCase( algorithm ) )
+        if ( HASH_METHOD_MD5.getName().equalsIgnoreCase( algorithm )
+            || HASH_METHOD_MD5.getPrefix().equalsIgnoreCase( algorithm ))
         {
             return HASH_METHOD_MD5;
         }
 
-        if ( HASH_METHOD_SMD5.getName().equalsIgnoreCase( algorithm ) )
+        if ( HASH_METHOD_SMD5.getName().equalsIgnoreCase( algorithm )
+            || HASH_METHOD_SMD5.getPrefix().equalsIgnoreCase( algorithm ))
         {
             return HASH_METHOD_SMD5;
         }
 
-        if ( HASH_METHOD_CRYPT.getName().equalsIgnoreCase( algorithm ) )
+        if ( HASH_METHOD_CRYPT.getName().equalsIgnoreCase( algorithm )
+            || HASH_METHOD_CRYPT.getPrefix().equalsIgnoreCase( algorithm ))
         {
             return HASH_METHOD_CRYPT;
         }
 
         if ( ( HASH_METHOD_SHA256.getName().equalsIgnoreCase( algorithm ) )
+            || ( HASH_METHOD_SHA256.getPrefix().equalsIgnoreCase( algorithm ) )
             || ( "sha-256".equalsIgnoreCase( algorithm ) ) ) // "sha-256" used for backwards compatibility
         {
             return HASH_METHOD_SHA256;
         }
 
         if ( ( HASH_METHOD_SSHA256.getName().equalsIgnoreCase( algorithm ) )
+            || ( HASH_METHOD_SSHA256.getPrefix().equalsIgnoreCase( algorithm ) )
             || ( "ssha-256".equalsIgnoreCase( algorithm ) ) ) // "ssha-256" used for backwards compatibility
         {
             return HASH_METHOD_SSHA256;
         }
 
         if ( ( HASH_METHOD_SHA384.getName().equalsIgnoreCase( algorithm ) )
+            || ( HASH_METHOD_SHA384.getPrefix().equalsIgnoreCase( algorithm ) )
             || ( "sha-384".equalsIgnoreCase( algorithm ) ) ) // "sha-384" used for backwards compatibility
         {
             return HASH_METHOD_SHA384;
         }
 
         if ( ( HASH_METHOD_SSHA384.getName().equalsIgnoreCase( algorithm ) )
+            ||  ( HASH_METHOD_SSHA384.getPrefix().equalsIgnoreCase( algorithm ) )
             || ( "ssha-384".equalsIgnoreCase( algorithm ) ) ) // "ssha-384" used for backwards compatibility
         {
             return HASH_METHOD_SSHA384;
         }
 
         if ( ( HASH_METHOD_SHA512.getName().equalsIgnoreCase( algorithm ) )
+            ||  ( HASH_METHOD_SHA512.getPrefix().equalsIgnoreCase( algorithm ) )
             || ( "sha-512".equalsIgnoreCase( algorithm ) ) ) // "sha-512" used for backwards compatibility
         {
             return HASH_METHOD_SHA512;
         }
 
         if ( ( HASH_METHOD_SSHA512.getName().equalsIgnoreCase( algorithm ) )
+            ||  ( HASH_METHOD_SSHA512.getPrefix().equalsIgnoreCase( algorithm ) )
             || ( "ssha-512".equalsIgnoreCase( algorithm ) ) ) // "ssha-512" used for backwards compatibility
         {
             return HASH_METHOD_SSHA512;
