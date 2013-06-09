@@ -68,6 +68,9 @@ public class LdapConnectionConfig
     /** A flag indicating if we are using SSL or not, default value is false */
     private boolean useSsl = false;
 
+    /** A flag indicating if we are using TLS or not, default value is false */
+    private boolean useTls = false;
+
     /** The selected LDAP port */
     private int ldapPort;
 
@@ -434,5 +437,27 @@ public class LdapConnectionConfig
     public void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetector )
     {
         this.binaryAttributeDetector = binaryAttributeDetector;
+    }
+
+
+    /**
+     * Checks if TLS is used.
+     *
+     * @return true, if TLS is used
+     */
+    public boolean isUseTls()
+    {
+        return useTls;
+    }
+
+
+    /**
+     * Sets whether TLS should be used.
+     *
+     * @param useSsl true to use TLS
+     */
+    public void setUseTls( boolean useTls )
+    {
+        this.useTls = useTls;
     }
 }
