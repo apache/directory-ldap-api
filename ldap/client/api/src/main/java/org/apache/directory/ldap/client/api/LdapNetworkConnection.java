@@ -323,13 +323,16 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             return ( timeout <= 0 ) ? Long.MAX_VALUE : timeout;
         }
-        else if ( timeout <= 0 )
+
+        long timeoutMs = clientTimeout * 1000L;
+
+        if ( timeout <= 0 )
         {
-            return clientTimeout;
+            return timeoutMs;
         }
         else
         {
-            return timeout < clientTimeout ? timeout : clientTimeout;
+            return timeout < timeoutMs ? timeout : timeoutMs;
         }
     }
 
@@ -1157,7 +1160,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             startTls();
         }
-        
+
         // If the session has not been establish, or is closed, we get out immediately
         checkSession();
 
