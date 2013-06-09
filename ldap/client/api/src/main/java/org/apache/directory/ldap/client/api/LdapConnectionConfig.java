@@ -454,7 +454,7 @@ public class LdapConnectionConfig
     /**
      * Sets whether TLS should be used.
      *
-     * @param useSsl true to use TLS
+     * @param useTls true to use TLS
      */
     public void setUseTls( boolean useTls )
     {
