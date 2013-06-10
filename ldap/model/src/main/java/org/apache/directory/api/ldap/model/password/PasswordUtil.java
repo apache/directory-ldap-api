@@ -165,7 +165,7 @@ public class PasswordUtil
 
         if ( algorithm != null )
         {
-            sb.append( '{' ).append( algorithm.getName().toUpperCase() ).append( '}' );
+            sb.append( '{' ).append( algorithm.getAlgorithm().toUpperCase() ).append( '}' );
 
             if ( algorithm == LdapSecurityConstants.HASH_METHOD_CRYPT )
             {
@@ -324,7 +324,7 @@ public class PasswordUtil
 
         try
         {
-            digest = MessageDigest.getInstance( algorithm.getName() );
+            digest = MessageDigest.getInstance( algorithm.getAlgorithm() );
         }
         catch ( NoSuchAlgorithmException e1 )
         {
@@ -357,7 +357,7 @@ public class PasswordUtil
      */
     public static byte[] splitCredentials( byte[] credentials, EncryptionMethod encryptionMethod )
     {
-        int algoLength = encryptionMethod.getAlgorithm().getName().length() + 2;
+        int algoLength = encryptionMethod.getAlgorithm().getAlgorithm().length() + 2;
 
         switch ( encryptionMethod.getAlgorithm() )
         {
