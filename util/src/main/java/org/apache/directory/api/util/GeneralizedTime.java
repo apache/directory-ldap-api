@@ -191,8 +191,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         calendar.setTime( date );
         setUp( calendar );
     }
-    
-    
+
+
     /**
      * Creates a new instance of GeneralizedTime, based on the given Calendar object.
      * Uses <pre>Format.YEAR_MONTH_DAY_HOUR_MIN_SEC</pre> as default format and
@@ -205,7 +205,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         setUp( calendar );
     }
 
-    
+
     private void setUp( Calendar calendar )
     {
         if ( calendar == null )
@@ -802,13 +802,14 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     {
         return calendar.getTimeInMillis();
     }
-    
+
+
     public Date getDate()
     {
         return calendar.getTime();
     }
 
-    
+
     public int getYear()
     {
         return calendar.get( Calendar.YEAR );
@@ -820,13 +821,13 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         return calendar.get( Calendar.MONTH );
     }
 
-    
+
     public int getDay()
     {
         return calendar.get( Calendar.DATE );
     }
 
-    
+
     public int getHour()
     {
         return calendar.get( Calendar.HOUR_OF_DAY );
@@ -838,11 +839,18 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         return calendar.get( Calendar.MINUTE );
     }
 
-    
+
     public int getSeconds()
     {
         return calendar.get( Calendar.SECOND );
     }
+
+
+    public int getFraction()
+    {
+        return calendar.get( Calendar.MILLISECOND );
+    }
+
 
     /**
      * 
