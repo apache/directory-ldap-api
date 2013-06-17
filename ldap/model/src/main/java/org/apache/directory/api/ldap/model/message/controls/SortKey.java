@@ -1,0 +1,269 @@
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ *
+ */
+package org.apache.directory.api.ldap.model.message.controls;
+
+
+import org.apache.directory.api.ldap.model.schema.AttributeType;
+
+
+/**
+ * Store the Attribute 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
+public class SortKey
+{
+    /**
+     * The name of AttributeType we want to use as a key for the sort
+     */
+    private String attributeTypeOid;
+
+    /**
+     * The AttributeType we want to use as a key for the sort
+     */
+    private AttributeType attributeType;
+
+    /**
+     * The matching rule to use to order the result
+     */
+    private String matchingRuleId;
+
+    /**
+     * A flag to set to true to get the result in reverse order
+     */
+    private boolean reverseOrder;
+
+
+    /**
+     * Create a new instance of a SortKey for a give AttributeType
+     * 
+     * @param attributeType The AttributeType to use
+     */
+    public SortKey( AttributeType attributeType )
+    {
+        this.attributeType = attributeType;
+        matchingRuleId = attributeType.getOrderingOid();
+        reverseOrder = false;
+    }
+
+
+    /**
+     * Create a new instance of a SortKey for a give AttributeType
+     * 
+     * @param attributeTypeOid The AttributeType OID to use
+     */
+    public SortKey( String attributeTypeOid )
+    {
+        this.attributeTypeOid = attributeTypeOid;
+        matchingRuleId = null;
+        reverseOrder = false;
+    }
+
+
+    /**
+     * Create a new instance of a SortKey for a give AttributeType
+     * 
+     * @param attributeType The AttributeType to use
+     * @param matchingRuleId The MatchingRule to use
+     */
+    public SortKey( AttributeType attributeType, String matchingRuleId )
+    {
+        this.attributeType = attributeType;
+        this.matchingRuleId = matchingRuleId;
+        reverseOrder = false;
+    }
+
+
+    /**
+     * Create a new instance of a SortKey for a give AttributeType
+     * 
+     * @param attributeTypeOid The AttributeType OID to use
+     * @param matchingRuleId The MatchingRule to use
+     */
+    public SortKey( String attributeTypeOid, String matchingRuleId )
+    {
+        this.attributeTypeOid = attributeTypeOid;
+        this.matchingRuleId = matchingRuleId;
+        reverseOrder = false;
+    }
+
+
+    /**
+     * Create a new instance of a SortKey for a give AttributeType
+     * 
+     * @param attributeType The AttributeType to use
+     * @param matchingRuleId The MatchingRule to use
+     * @param reverseOrder The reverseOrder flag
+     */
+    public SortKey( AttributeType attributeType, String matchingRuleId, boolean reverseOrder )
+    {
+        this.attributeType = attributeType;
+        this.matchingRuleId = matchingRuleId;
+        this.reverseOrder = reverseOrder;
+    }
+
+
+    /**
+     * Create a new instance of a SortKey for a give AttributeType
+     * 
+     * @param attributeTypeOid The AttributeType OID to use
+     * @param matchingRuleId The MatchingRule to use
+     * @param reverseOrder The reverseOrder flag
+     */
+    public SortKey( String attributeTypeOid, String matchingRuleId, boolean reverseOrder )
+    {
+        this.attributeTypeOid = attributeTypeOid;
+        this.matchingRuleId = matchingRuleId;
+        this.reverseOrder = reverseOrder;
+    }
+
+
+    /**
+     * Create a new instance of a SortKey for a give AttributeType
+     * 
+     * @param attributeType The AttributeType to use
+     * @param reverseOrder The reverseOrder flag
+     */
+    public SortKey( AttributeType attributeType, boolean reverseOrder )
+    {
+        this.attributeType = attributeType;
+        this.matchingRuleId = attributeType.getOrderingOid();
+        this.reverseOrder = reverseOrder;
+    }
+
+
+    /**
+     * Create a new instance of a SortKey for a give AttributeType
+     * 
+     * @param attributeTypeOid The AttributeType OID to use
+     * @param reverseOrder The reverseOrder flag
+     */
+    public SortKey( String attributeTypeOid, boolean reverseOrder )
+    {
+        this.attributeTypeOid = attributeTypeOid;
+        this.reverseOrder = reverseOrder;
+    }
+
+
+    /**
+     * @return the attributeType
+     */
+    public AttributeType getAttributeType()
+    {
+        return attributeType;
+    }
+
+
+    /**
+     * @param attributeType the attributeType to set
+     */
+    public void setAttributeType( AttributeType attributeType )
+    {
+        this.attributeType = attributeType;
+        this.attributeTypeOid = attributeType.getOid();
+    }
+
+
+    /**
+     * @return the attributeType OID
+     */
+    public String getAttributeTypeOid()
+    {
+        return attributeTypeOid;
+    }
+
+
+    /**
+     * @param attributeType the attributeType to set
+     */
+    public void setAttributeType( String attributeTypeOid )
+    {
+        this.attributeTypeOid = attributeTypeOid;
+    }
+
+
+    /**
+     * @return the matchingRuleId
+     */
+    public String getMatchingRuleId()
+    {
+        return matchingRuleId;
+    }
+
+
+    /**
+     * @param matchingRuleId the matchingRuleId to set
+     */
+    public void setMatchingRuleId( String matchingRuleId )
+    {
+        this.matchingRuleId = matchingRuleId;
+    }
+
+
+    /**
+     * @return the reverseOrder
+     */
+    public boolean isReverseOrder()
+    {
+        return reverseOrder;
+    }
+
+
+    /**
+     * @param reverseOrder the reverseOrder to set
+     */
+    public void setReverseOrder( boolean reverseOrder )
+    {
+        this.reverseOrder = reverseOrder;
+    }
+
+
+    /**
+     * @see String#toString()
+     */
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append( "SortKey : [" );
+
+        if ( attributeType != null )
+        {
+            sb.append( attributeType.getName() ).append( ',' );
+            sb.append( matchingRuleId );
+        }
+        else
+        {
+            sb.append( attributeTypeOid );
+
+            if ( matchingRuleId != null )
+            {
+                sb.append( ", " ).append( matchingRuleId );
+            }
+        }
+
+        if ( reverseOrder )
+        {
+            sb.append( ", reverse" );
+        }
+
+        sb.append( ']' );
+        return sb.toString();
+    }
+}
