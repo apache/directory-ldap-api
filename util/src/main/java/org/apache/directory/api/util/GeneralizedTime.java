@@ -627,6 +627,43 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
 
     /**
+     * Returns the string representation of this generalized time. 
+     * This method uses the same format as the user provided format.
+     *
+     * @return the string representation of this generalized time
+     */
+    public String toGeneralizedTimeWithoutFraction()
+    {
+        return toGeneralizedTime( getFormatWithoutFraction( upFormat ), upFractionDelimiter, upFractionLength,
+            upTimeZoneFormat );
+    }
+
+
+    /**
+     * Gets the corresponding format with fraction.
+     *
+     * @param f the format
+     * @return the corresponding format without fraction
+     */
+    private Format getFormatWithoutFraction( Format f )
+    {
+        switch ( f )
+        {
+            case YEAR_MONTH_DAY_HOUR_FRACTION:
+                return Format.YEAR_MONTH_DAY_HOUR;
+            case YEAR_MONTH_DAY_HOUR_MIN_FRACTION:
+                return Format.YEAR_MONTH_DAY_HOUR_MIN;
+            case YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION:
+                return Format.YEAR_MONTH_DAY_HOUR_MIN_SEC;
+            default:
+                break;
+        }
+
+        return f;
+    }
+
+
+    /**
      * Returns the string representation of this generalized time.
      * 
      * @param format the target format
