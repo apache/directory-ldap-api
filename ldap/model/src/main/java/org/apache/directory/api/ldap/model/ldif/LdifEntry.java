@@ -866,6 +866,8 @@ public class LdifEntry implements Cloneable, Externalizable
             // Check each different cases
             switch ( changeType )
             {
+                case None:
+                    // Fall through
                 case Add:
                     // Checks the attributes
                     if ( entry != null )
@@ -975,6 +977,8 @@ public class LdifEntry implements Cloneable, Externalizable
         // Check each different cases
         switch ( changeType )
         {
+            case None:
+                // Fall through
             case Add:
                 // Checks the attributes
                 if ( entry.size() != otherEntry.entry.size() )
