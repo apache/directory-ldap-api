@@ -392,11 +392,24 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
 
                     for ( Value<?> value : attribute )
                     {
-                        int valueLength = value.getBytes().length;
-                        localValuesLength += 1 + TLV.getNbBytes( valueLength ) + valueLength;
+                        if ( value.getBytes() == null )
+                        {
+                            localValuesLength += 1 + 1;
+                        }
+                        else
+                        {
+                            int valueLength = value.getBytes().length;
+                            localValuesLength += 1 + TLV.getNbBytes( valueLength ) + valueLength;
+                        }
                     }
 
                     localAttributeLength += 1 + TLV.getNbBytes( localValuesLength ) + localValuesLength;
+                }
+                else
+                {
+                    // No value : we still have to store the encapsulating Sequence
+                    localValuesLength = 1 + 1;
+                    localAttributeLength += 1 + 1 + localValuesLength;
                 }
 
                 // add the attribute length to the attributes length
@@ -487,6 +500,10 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
                         {
                             BerValue.encode( buffer, value.getBytes() );
                         }
+                    }
+                    else
+                    {
+                        BerValue.encode( buffer, Strings.EMPTY_BYTES );
                     }
 
                     // Go to the next attribute number;

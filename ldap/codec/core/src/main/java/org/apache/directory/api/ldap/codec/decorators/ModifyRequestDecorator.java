@@ -38,6 +38,7 @@ import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.DefaultModification;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
@@ -520,7 +521,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
                 // Get all the values
                 if ( modification.getAttribute().size() != 0 )
                 {
-                    for ( org.apache.directory.api.ldap.model.entry.Value<?> value : modification.getAttribute() )
+                    for ( Value<?> value : modification.getAttribute() )
                     {
                         localValuesLength += 1 + TLV.getNbBytes( value.getBytes().length ) + value.getBytes().length;
                     }
