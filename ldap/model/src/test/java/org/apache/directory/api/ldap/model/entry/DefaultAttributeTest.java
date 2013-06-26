@@ -36,11 +36,6 @@ import java.util.Iterator;
 
 import javax.naming.directory.InvalidAttributeValueException;
 
-import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.BinaryValue;
-import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
-import org.apache.directory.api.ldap.model.entry.StringValue;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.util.StringConstants;
@@ -545,11 +540,13 @@ public class DefaultAttributeTest
     public void testAddStringArray() throws InvalidAttributeValueException, LdapException
     {
         Attribute attr1 = new DefaultAttribute( "test" );
+        assertEquals( 0, attr1.size() );
 
         int nbAdded = attr1.add( ( String ) null );
         assertEquals( 1, nbAdded );
         assertTrue( attr1.isHumanReadable() );
         assertEquals( NULL_STRING_VALUE, attr1.get() );
+        assertEquals( 1, attr1.size() );
 
         Attribute attr2 = new DefaultAttribute( "test" );
 
@@ -557,6 +554,7 @@ public class DefaultAttributeTest
         assertEquals( 1, nbAdded );
         assertTrue( attr2.isHumanReadable() );
         assertEquals( "", attr2.getString() );
+        assertEquals( 1, attr2.size() );
 
         Attribute attr3 = new DefaultAttribute( "test" );
 
@@ -633,11 +631,13 @@ public class DefaultAttributeTest
     public void testAddByteArray() throws InvalidAttributeValueException, LdapException
     {
         Attribute attr1 = new DefaultAttribute( "test" );
+        assertEquals( 0, attr1.size() );
 
         int nbAdded = attr1.add( ( byte[] ) null );
         assertEquals( 1, nbAdded );
         assertFalse( attr1.isHumanReadable() );
         assertTrue( Arrays.equals( NULL_BINARY_VALUE.getBytes(), attr1.getBytes() ) );
+        assertEquals( 1, attr1.size() );
 
         Attribute attr2 = new DefaultAttribute( "test" );
 
@@ -645,6 +645,7 @@ public class DefaultAttributeTest
         assertEquals( 1, nbAdded );
         assertFalse( attr2.isHumanReadable() );
         assertTrue( Arrays.equals( StringConstants.EMPTY_BYTES, attr2.getBytes() ) );
+        assertEquals( 1, attr2.size() );
 
         Attribute attr3 = new DefaultAttribute( "test" );
 
