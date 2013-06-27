@@ -23,7 +23,7 @@
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
     <version>31</version>
-    <relativePath>../project</relativePath>
+    <relativePath />
   </parent>
 
   <groupId>org.apache.directory.api</groupId>
