@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.apache.directory.api</groupId>
     <artifactId>api-parent</artifactId>
-    <version>1.0.0-M19</version>
+    <version>1.0.0-M20-SNAPSHOT</version>
   </parent>
   
   <artifactId>api-asn1-parent</artifactId>
