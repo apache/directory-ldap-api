@@ -21,8 +21,6 @@
 package org.apache.directory.ldap.client.api;
 
 
-import java.io.IOException;
-
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.Loggers;
 import org.apache.directory.api.ldap.model.cursor.AbstractCursor;
@@ -138,7 +136,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     /**
      * {@inheritDoc}
      */
-    public Entry get() throws CursorException, IOException
+    public Entry get() throws CursorException
     {
         if ( !searchCursor.available() )
         {
@@ -228,7 +226,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void after( Entry element ) throws LdapException, CursorException, IOException
+    public void after( Entry element ) throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "after( Response element )" ) ) );
@@ -239,7 +237,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void afterLast() throws LdapException, CursorException, IOException
+    public void afterLast() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "afterLast()" ) ) );
@@ -250,7 +248,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void before( Entry element ) throws LdapException, CursorException, IOException
+    public void before( Entry element ) throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "before( Response element )" ) ) );
@@ -261,7 +259,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public void beforeFirst() throws LdapException, CursorException, IOException
+    public void beforeFirst() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "beforeFirst()" ) ) );
@@ -272,7 +270,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public boolean first() throws LdapException, CursorException, IOException
+    public boolean first() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "first()" ) ) );
@@ -283,7 +281,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public boolean last() throws LdapException, CursorException, IOException
+    public boolean last() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "last()" ) ) );
@@ -294,7 +292,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
      * This operation is not supported in SearchCursor.
      * {@inheritDoc}
      */
-    public boolean previous() throws LdapException, CursorException, IOException
+    public boolean previous() throws LdapException, CursorException
     {
         throw new UnsupportedOperationException( I18n.err( I18n.ERR_02014_UNSUPPORTED_OPERATION, getClass().getName()
             .concat( "." ).concat( "previous()" ) ) );

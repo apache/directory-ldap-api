@@ -19,8 +19,6 @@
 package org.apache.directory.api.ldap.model.cursor;
 
 
-import java.io.IOException;
-
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.Loggers;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -64,7 +62,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public void before( E element ) throws LdapException, CursorException, IOException
+    public void before( E element ) throws LdapException, CursorException
     {
         checkNotClosed( "before()" );
     }
@@ -73,7 +71,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public void after( E element ) throws LdapException, CursorException, IOException
+    public void after( E element ) throws LdapException, CursorException
     {
         checkNotClosed( "after()" );
     }
@@ -82,7 +80,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public void beforeFirst() throws LdapException, CursorException, IOException
+    public void beforeFirst() throws LdapException, CursorException
     {
         checkNotClosed( "beforeFirst()" );
     }
@@ -91,7 +89,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public void afterLast() throws LdapException, CursorException, IOException
+    public void afterLast() throws LdapException, CursorException
     {
         checkNotClosed( "afterLast()" );
     }
@@ -100,7 +98,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean first() throws LdapException, CursorException, IOException
+    public boolean first() throws LdapException, CursorException
     {
         checkNotClosed( "first()" );
         return false;
@@ -110,7 +108,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean last() throws LdapException, CursorException, IOException
+    public boolean last() throws LdapException, CursorException
     {
         checkNotClosed( "last()" );
         return false;
@@ -120,7 +118,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean previous() throws LdapException, CursorException, IOException
+    public boolean previous() throws LdapException, CursorException
     {
         checkNotClosed( "previous()" );
         return false;
@@ -140,7 +138,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public E get() throws CursorException, IOException
+    public E get() throws CursorException
     {
         checkNotClosed( "get()" );
         throw new InvalidCursorPositionException( I18n.err( I18n.ERR_02004_EMPTY_CURSOR ) );

@@ -67,7 +67,7 @@ public interface Cursor<E> extends Iterable<E>
      * @param element the element to be positioned before
      * @throws Exception with problems accessing the underlying btree
      */
-    void before( E element ) throws LdapException, CursorException, IOException;
+    void before( E element ) throws LdapException, CursorException;
 
 
     /**
@@ -85,7 +85,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this cursor or if
      * this Cursor is closed
      */
-    void after( E element ) throws LdapException, CursorException, IOException;
+    void after( E element ) throws LdapException, CursorException;
 
 
     /**
@@ -94,7 +94,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this cursor or if
      * this Cursor is closed
      */
-    void beforeFirst() throws LdapException, CursorException, IOException;
+    void beforeFirst() throws LdapException, CursorException;
 
 
     /**
@@ -103,7 +103,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this Cursor or if
      * this Cursor is closed
      */
-    void afterLast() throws LdapException, CursorException, IOException;
+    void afterLast() throws LdapException, CursorException;
 
 
     /**
@@ -114,7 +114,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this Cursor or if
      * this Cursor is closed
      */
-    boolean first() throws LdapException, CursorException, IOException;
+    boolean first() throws LdapException, CursorException;
 
 
     /**
@@ -147,7 +147,7 @@ public interface Cursor<E> extends Iterable<E>
      * @throws Exception if there are problems positioning this Cursor or if
      * this Cursor is closed
      */
-    boolean last() throws LdapException, CursorException, IOException;
+    boolean last() throws LdapException, CursorException;
 
 
     /**
@@ -190,7 +190,7 @@ public interface Cursor<E> extends Iterable<E>
      * @return true if the advance succeeded, false otherwise
      * @throws Exception if there are problems advancing to the next position
      */
-    boolean previous() throws LdapException, CursorException, IOException;
+    boolean previous() throws LdapException, CursorException;
 
 
     /**
@@ -219,7 +219,7 @@ public interface Cursor<E> extends Iterable<E>
      * cannot be retrieved, or if this Cursor is closed
      * @throws IOException If we have had any IO Exception
      */
-    E get() throws CursorException, IOException;
+    E get() throws CursorException;
 
 
     /**
