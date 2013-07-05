@@ -130,7 +130,7 @@ public class EmptyCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean next() throws LdapException, CursorException, IOException
+    public boolean next() throws LdapException, CursorException
     {
         checkNotClosed( "next()" );
         return false;

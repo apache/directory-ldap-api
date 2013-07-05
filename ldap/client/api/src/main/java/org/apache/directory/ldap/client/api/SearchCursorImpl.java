@@ -100,7 +100,7 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
     /**
      * {@inheritDoc}
      */
-    public boolean next() throws LdapException, CursorException, IOException
+    public boolean next() throws LdapException, CursorException
     {
         if ( done )
         {

@@ -87,7 +87,7 @@ public class EntryCursorImpl extends AbstractCursor<Entry> implements EntryCurso
     /**
      * {@inheritDoc}
      */
-    public boolean next() throws LdapException, CursorException, IOException
+    public boolean next() throws LdapException, CursorException
     {
         if ( !searchCursor.next() )
         {

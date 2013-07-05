@@ -18,6 +18,7 @@
  */
 package org.apache.directory.api.ldap.model.cursor;
 
+
 import java.io.IOException;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -205,7 +206,7 @@ public interface Cursor<E> extends Iterable<E>
      * the next position, or if this Cursor is closed 
      * @throws IOException If we have had any IO Exception
      */
-    boolean next() throws LdapException, CursorException, IOException;
+    boolean next() throws LdapException, CursorException;
 
 
     /**

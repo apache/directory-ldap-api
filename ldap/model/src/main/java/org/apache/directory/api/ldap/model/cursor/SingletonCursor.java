@@ -273,7 +273,7 @@ public class SingletonCursor<E> extends AbstractCursor<E>
     /**
      * {@inheritDoc}
      */
-    public boolean next() throws LdapException, CursorException, IOException
+    public boolean next() throws LdapException, CursorException
     {
         checkNotClosed( "next" );
 
