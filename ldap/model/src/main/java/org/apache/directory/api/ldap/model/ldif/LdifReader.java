@@ -1092,6 +1092,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 modified = Strings.trim( line.substring( "delete:".length() ) );
                 modificationType = ModificationOperation.REMOVE_ATTRIBUTE;
                 attribute = new DefaultAttribute( modified );
+                isEmptyValue = false;
 
                 state = ATTRVAL_SPEC_OR_SEP;
             }

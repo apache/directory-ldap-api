@@ -39,10 +39,6 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Modification;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
-import org.apache.directory.api.ldap.model.ldif.LdapLdifException;
-import org.apache.directory.api.ldap.model.ldif.LdifControl;
-import org.apache.directory.api.ldap.model.ldif.LdifEntry;
-import org.apache.directory.api.ldap.model.ldif.LdifReader;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Strings;
 import org.junit.BeforeClass;
@@ -2045,5 +2041,44 @@ public class LdifReaderTest
         LdifReader reader = new LdifReader();
 
         reader.parseLdif( ldif );
+    }
+
+
+    /**
+     * Test that we can parse a LDIF with a modify changeType and see if the
+     * empty attribute and the attribute deletion aren't producing the same Modify entry 
+     * @throws Exception
+     */
+    @Test
+    public void testLdifParserChangeTypeModifyDeleteEmptyValue() throws Exception
+    {
+        // test that mixed case attr ids work at all
+        String ldif =
+            "version:   1\n" +
+                "dn: dc=example,dc=com\n" +
+                "changetype: modify\n" +
+                "delete: userPassword\n" +
+                "-\n" +
+                "\n" +
+                "dn: dc=example,dc=com\n" +
+                "changetype: modify\n" +
+                "delete: userPassword\n" +
+                "userPassword:\n" +
+                "-";
+
+        LdifReader reader = new LdifReader();
+
+        List<LdifEntry> entries = reader.parseLdif( ldif );
+
+        LdifEntry entry1 = entries.get( 0 );
+        Modification modification = entry1.getModifications().get( 0 );
+        assertEquals( 0, modification.getAttribute().size() );
+        assertNull( modification.getAttribute().get() );
+
+        LdifEntry entry2 = entries.get( 1 );
+        modification = entry2.getModifications().get( 0 );
+        assertEquals( 1, modification.getAttribute().size() );
+        assertNotNull( modification.getAttribute().get() );
+        assertNull( modification.getAttribute().getBytes() );
     }
 }

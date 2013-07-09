@@ -137,7 +137,12 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifComments() throws LdapLdifException
     {
-        String ldif = "#Comment 1\r" + "#\r" + " th\n" + " is is still a comment\n" + "\n";
+        String ldif = 
+              "#Comment 1\r" 
+            + "#\r" 
+            + " th\n" 
+            + " is is still a comment\n" 
+            + "\n";
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Entry entry = reader.parseEntry( ldif );
@@ -149,8 +154,13 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifVersionStart() throws LdapLdifException
     {
-        String ldif = "cn: app1\n" + "objectClass: top\n" + "objectClass: apApplication\n" + "displayName:   app1   \n"
-            + "dependencies:\n" + "envVars:";
+        String ldif = 
+              "cn: app1\n" 
+            + "objectClass: top\n" 
+            + "objectClass: apApplication\n" 
+            + "displayName:   app1   \n"
+            + "dependencies:\n" 
+            + "envVars:";
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Entry entry = reader.parseEntry( ldif );
@@ -171,8 +181,13 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifParserEndSpaces() throws LdapLdifException
     {
-        String ldif = "cn: app1\n" + "objectClass: top\n" + "objectClass: apApplication\n" + "displayName:   app1   \n"
-            + "dependencies:\n" + "envVars:";
+        String ldif = 
+              "cn: app1\n" 
+            + "objectClass: top\n" 
+            + "objectClass: apApplication\n" 
+            + "displayName:   app1   \n"
+            + "dependencies:\n" 
+            + "envVars:";
 
         LdifAttributesReader reader = new LdifAttributesReader();
 
@@ -188,8 +203,13 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifParser() throws LdapLdifException, LdapInvalidAttributeValueException
     {
-        String ldif = "cn: app1\n" + "objectClass: top\n" + "objectClass: apApplication\n" + "displayName: app1   \n"
-            + "dependencies:\n" + "envVars:";
+        String ldif = 
+              "cn: app1\n" 
+            + "objectClass: top\n" 
+            + "objectClass: apApplication\n" 
+            + "displayName: app1   \n"
+            + "dependencies:\n" 
+            + "envVars:";
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Entry entry = reader.parseEntry( ldif );
@@ -217,9 +237,18 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifParserMuiltiLineComments() throws LdapLdifException
     {
-        String ldif = "#comment\n" + " still a comment\n" + "cn: app1#another comment\n" + "objectClass: top\n"
-            + "objectClass: apApplication\n" + "displayName: app1\n" + "serviceType: http\n" + "dependencies:\n"
-            + "httpHeaders:\n" + "startupOptions:\n" + "envVars:";
+        String ldif = 
+              "#comment\n" 
+            + " still a comment\n" 
+            + "cn: app1#another comment\n" 
+            + "objectClass: top\n"
+            + "objectClass: apApplication\n" 
+            + "displayName: app1\n" 
+            + "serviceType: http\n" 
+            + "dependencies:\n"
+            + "httpHeaders:\n" 
+            + "startupOptions:\n" 
+            + "envVars:";
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Entry entry = reader.parseEntry( ldif );
@@ -247,9 +276,18 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifParserMultiLineEntries() throws LdapLdifException
     {
-        String ldif = "#comment\n" + "cn: app1#another comment\n" + "objectClass: top\n" + "objectClass: apAppli\n"
-            + " cation\n" + "displayName: app1\n" + "serviceType: http\n" + "dependencies:\n" + "httpHeaders:\n"
-            + "startupOptions:\n" + "envVars:";
+        String ldif = 
+              "#comment\n" 
+            + "cn: app1#another comment\n" 
+            + "objectClass: top\n" 
+            + "objectClass: apAppli\n"
+            + " cation\n" 
+            + "displayName: app1\n" 
+            + "serviceType: http\n" 
+            + "dependencies:\n" 
+            + "httpHeaders:\n"
+            + "startupOptions:\n" 
+            + "envVars:";
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Entry entry = reader.parseEntry( ldif );
@@ -277,9 +315,17 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifParserBase64() throws LdapLdifException, UnsupportedEncodingException
     {
-        String ldif = "#comment\n" + "cn:: RW1tYW51ZWwgTMOpY2hhcm55\n" + "objectClass: top\n"
-            + "objectClass: apApplication\n" + "displayName: app1\n" + "serviceType: http\n" + "dependencies:\n"
-            + "httpHeaders:\n" + "startupOptions:\n" + "envVars:";
+        String ldif = 
+              "#comment\n" 
+            + "cn:: RW1tYW51ZWwgTMOpY2hhcm55\n" 
+            + "objectClass: top\n"
+            + "objectClass: apApplication\n" 
+            + "displayName: app1\n" 
+            + "serviceType: http\n" 
+            + "dependencies:\n"
+            + "httpHeaders:\n" 
+            + "startupOptions:\n" 
+            + "envVars:";
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Entry entry = reader.parseEntry( ldif );
@@ -307,9 +353,18 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifParserBase64MultiLine() throws LdapLdifException, UnsupportedEncodingException
     {
-        String ldif = "#comment\n" + "cn:: RW1tYW51ZWwg\n" + " TMOpY2hhcm55ICA=\n" + "objectClass: top\n"
-            + "objectClass: apApplication\n" + "displayName: app1\n" + "serviceType: http\n" + "dependencies:\n"
-            + "httpHeaders:\n" + "startupOptions:\n" + "envVars:";
+        String ldif = 
+              "#comment\n" 
+            + "cn:: RW1tYW51ZWwg\n" 
+            + " TMOpY2hhcm55ICA=\n" 
+            + "objectClass: top\n"
+            + "objectClass: apApplication\n" 
+            + "displayName: app1\n" 
+            + "serviceType: http\n" 
+            + "dependencies:\n"
+            + "httpHeaders:\n" 
+            + "startupOptions:\n" 
+            + "envVars:";
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Entry entry = reader.parseEntry( ldif );
@@ -337,9 +392,17 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifParserRFC2849Sample1() throws LdapLdifException
     {
-        String ldif = "objectclass: top\n" + "objectclass: person\n" + "objectclass: organizationalPerson\n"
-            + "cn: Barbara Jensen\n" + "cn: Barbara J Jensen\n" + "cn: Babs Jensen\n" + "sn: Jensen\n"
-            + "uid: bjensen\n" + "telephonenumber: +1 408 555 1212\n" + "description: A big sailing fan.\n";
+        String ldif = 
+              "objectclass: top\n" 
+            + "objectclass: person\n" 
+            + "objectclass: organizationalPerson\n"
+            + "cn: Barbara Jensen\n" 
+            + "cn: Barbara J Jensen\n" 
+            + "cn: Babs Jensen\n" 
+            + "sn: Jensen\n"
+            + "uid: bjensen\n" 
+            + "telephonenumber: +1 408 555 1212\n" 
+            + "description: A big sailing fan.\n";
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Entry entry = reader.parseEntry( ldif );
@@ -372,11 +435,19 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifParserRFC2849Sample2() throws LdapLdifException
     {
-        String ldif = "objectclass: top\n" + "objectclass: person\n" + "objectclass: organizationalPerson\n"
-            + "cn: Barbara Jensen\n" + "cn: Barbara J Jensen\n" + "cn: Babs Jensen\n" + "sn: Jensen\n"
-            + "uid: bjensen\n" + "telephonenumber: +1 408 555 1212\n"
+        String ldif = 
+              "objectclass: top\n" 
+            + "objectclass: person\n" 
+            + "objectclass: organizationalPerson\n"
+            + "cn: Barbara Jensen\n" 
+            + "cn: Barbara J Jensen\n" 
+            + "cn: Babs Jensen\n" 
+            + "sn: Jensen\n"
+            + "uid: bjensen\n" 
+            + "telephonenumber: +1 408 555 1212\n"
             + "description:Babs is a big sailing fan, and travels extensively in sea\n"
-            + " rch of perfect sailing conditions.\n" + "title:Product Manager, Rod and Reel Division";
+            + " rch of perfect sailing conditions.\n" 
+            + "title:Product Manager, Rod and Reel Division";
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Entry entry = reader.parseEntry( ldif );
@@ -413,12 +484,19 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifParserRFC2849Sample3() throws LdapLdifException, Exception
     {
-        String ldif = "objectclass: top\n" + "objectclass: person\n" + "objectclass: organizationalPerson\n"
-            + "cn: Gern Jensen\n" + "cn: Gern O Jensen\n" + "sn: Jensen\n" + "uid: gernj\n"
+        String ldif = 
+              "objectclass: top\n" 
+            + "objectclass: person\n" 
+            + "objectclass: organizationalPerson\n"
+            + "cn: Gern Jensen\n" 
+            + "cn: Gern O Jensen\n" 
+            + "sn: Jensen\n" 
+            + "uid: gernj\n"
             + "telephonenumber: +1 408 555 1212\n"
             + "description:: V2hhdCBhIGNhcmVmdWwgcmVhZGVyIHlvdSBhcmUhICBUaGlzIHZhbHVl\n"
             + " IGlzIGJhc2UtNjQtZW5jb2RlZCBiZWNhdXNlIGl0IGhhcyBhIGNvbnRyb2wgY2hhcmFjdG\n"
-            + " VyIGluIGl0IChhIENSKS4NICBCeSB0aGUgd2F5LCB5b3Ugc2hvdWxkIHJlYWxseSBnZXQg\n" + " b3V0IG1vcmUu";
+            + " VyIGluIGl0IChhIENSKS4NICBCeSB0aGUgd2F5LCB5b3Ugc2hvdWxkIHJlYWxseSBnZXQg\n" 
+            + " b3V0IG1vcmUu";
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Attributes attributes = reader.parseAttributes( ldif );
@@ -451,12 +529,19 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifParserRFC2849Sample3VariousSpacing() throws LdapLdifException, Exception
     {
-        String ldif = "objectclass:top\n" + "objectclass:   person   \n" + "objectclass:organizationalPerson\n"
-            + "cn:Gern Jensen\n" + "cn:Gern O Jensen\n" + "sn:Jensen\n" + "uid:gernj\n"
+        String ldif = 
+              "objectclass:top\n" 
+            + "objectclass:   person   \n" 
+            + "objectclass:organizationalPerson\n"
+            + "cn:Gern Jensen\n" 
+            + "cn:Gern O Jensen\n" 
+            + "sn:Jensen\n" 
+            + "uid:gernj\n"
             + "telephonenumber:+1 408 555 1212  \n"
             + "description::  V2hhdCBhIGNhcmVmdWwgcmVhZGVyIHlvdSBhcmUhICBUaGlzIHZhbHVl\n"
             + " IGlzIGJhc2UtNjQtZW5jb2RlZCBiZWNhdXNlIGl0IGhhcyBhIGNvbnRyb2wgY2hhcmFjdG\n"
-            + " VyIGluIGl0IChhIENSKS4NICBCeSB0aGUgd2F5LCB5b3Ugc2hvdWxkIHJlYWxseSBnZXQg\n" + " b3V0IG1vcmUu  ";
+            + " VyIGluIGl0IChhIENSKS4NICBCeSB0aGUgd2F5LCB5b3Ugc2hvdWxkIHJlYWxseSBnZXQg\n" 
+            + " b3V0IG1vcmUu  ";
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Attributes attributes = reader.parseAttributes( ldif );
@@ -489,11 +574,17 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifParserRFC2849Sample4() throws NamingException, Exception
     {
-        String ldif = "# dn:: ou=���������,o=Airius\n" + "objectclass: top\n"
-            + "objectclass: organizationalUnit\n" + "ou:: 5Za25qWt6YOo\n" + "# ou:: ���������\n"
-            + "ou;lang-ja:: 5Za25qWt6YOo\n" + "# ou;lang-ja:: ���������\n"
+        String ldif = 
+              "# dn:: ou=���������,o=Airius\n" 
+            + "objectclass: top\n"
+            + "objectclass: organizationalUnit\n" 
+            + "ou:: 5Za25qWt6YOo\n" 
+            + "# ou:: ���������\n"
+            + "ou;lang-ja:: 5Za25qWt6YOo\n" 
+            + "# ou;lang-ja:: ���������\n"
             + "ou;lang-ja;phonetic:: 44GI44GE44GO44KH44GG44G2\n"
-            + "# ou;lang-ja:: ������������������\n" + "ou;lang-en: Sales\n"
+            + "# ou;lang-ja:: ������������������\n" 
+            + "ou;lang-en: Sales\n"
             + "description: Japanese office\n";
 
         LdifAttributesReader reader = new LdifAttributesReader();
@@ -529,9 +620,18 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifParserRFC2849Sample5() throws NamingException, Exception
     {
-        String ldif = "objectclass: top\n" + "objectclass: person\n" + "objectclass: organizationalPerson\n"
-            + "cn: Horatio Jensen\n" + "cn: Horatio N Jensen\n" + "sn: Jensen\n" + "uid: hjensen\n"
-            + "telephonenumber: +1 408 555 1212\n" + "jpegphoto:< file:" + HJENSEN_JPEG_FILE.getAbsolutePath() + "\n";
+        String ldif = 
+              "objectclass: top\n" 
+            + "objectclass: person\n" 
+            + "objectclass: organizationalPerson\n"
+            + "cn: Horatio Jensen\n" 
+            + "cn: Horatio N Jensen\n" 
+            + "sn: Jensen\n" 
+            + "uid: hjensen\n"
+            + "telephonenumber: +1 408 555 1212\n" 
+            + "jpegphoto:< file:" 
+            + HJENSEN_JPEG_FILE.getAbsolutePath() 
+            + "\n";
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Attributes attributes = reader.parseAttributes( ldif );
@@ -575,9 +675,18 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifParserRFC2849Sample5WithSizeLimit() throws Exception
     {
-        String ldif = "objectclass: top\n" + "objectclass: person\n" + "objectclass: organizationalPerson\n"
-            + "cn: Horatio Jensen\n" + "cn: Horatio N Jensen\n" + "sn: Jensen\n" + "uid: hjensen\n"
-            + "telephonenumber: +1 408 555 1212\n" + "jpegphoto:< file:" + HJENSEN_JPEG_FILE.getAbsolutePath() + "\n";
+        String ldif = 
+              "objectclass: top\n" 
+            + "objectclass: person\n" 
+            + "objectclass: organizationalPerson\n"
+            + "cn: Horatio Jensen\n"
+            + "cn: Horatio N Jensen\n" 
+            + "sn: Jensen\n" 
+            + "uid: hjensen\n"
+            + "telephonenumber: +1 408 555 1212\n" 
+            + "jpegphoto:< file:" 
+            + HJENSEN_JPEG_FILE.getAbsolutePath() 
+            + "\n";
 
         LdifAttributesReader reader = new LdifAttributesReader();
         reader.setSizeLimit( 128 );
@@ -598,24 +707,36 @@ public class LdifAttributesReaderTest
     @Test
     public void testLdifAttributesReaderDirServer() throws NamingException, Exception
     {
-        String ldif = "# -------------------------------------------------------------------\n" + "#\n"
+        String ldif = 
+              "# -------------------------------------------------------------------\n" 
+            + "#\n"
             + "#  Licensed to the Apache Software Foundation (ASF) under one\n"
             + "#  or more contributor license agreements.  See the NOTICE file\n"
             + "#  distributed with this work for additional information\n"
             + "#  regarding copyright ownership.  The ASF licenses this file\n"
             + "#  to you under the Apache License, Version 2.0 (the\n"
             + "#  \"License\"); you may not use this file except in compliance\n"
-            + "#  with the License.  You may obtain a copy of the License at\n" + "#  \n"
-            + "#    http://www.apache.org/licenses/LICENSE-2.0\n" + "#  \n"
+            + "#  with the License.  You may obtain a copy of the License at\n" 
+            + "#  \n"
+            + "#    http://www.apache.org/licenses/LICENSE-2.0\n" 
+            + "#  \n"
             + "#  Unless required by applicable law or agreed to in writing,\n"
             + "#  software distributed under the License is distributed on an\n"
             + "#  \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY\n"
             + "#  KIND, either express or implied.  See the License for the\n"
-            + "#  specific language governing permissions and limitations\n" + "#  under the License. \n" + "#  \n"
-            + "#\n" + "# EXAMPLE.COM is freely and reserved for testing according to this RFC:\n" + "#\n"
-            + "# http://www.rfc-editor.org/rfc/rfc2606.txt\n" + "#\n"
-            + "# -------------------------------------------------------------------\n" + "\n" + "objectclass: top\n"
-            + "objectclass: organizationalunit\n" + "ou: Users";
+            + "#  specific language governing permissions and limitations\n" 
+            + "#  under the License. \n" 
+            + "#  \n"
+            + "#\n" 
+            + "# EXAMPLE.COM is freely and reserved for testing according to this RFC:\n" 
+            + "#\n"
+            + "# http://www.rfc-editor.org/rfc/rfc2606.txt\n" 
+            + "#\n"
+            + "# -------------------------------------------------------------------\n" 
+            + "\n" 
+            + "objectclass: top\n"
+            + "objectclass: organizationalunit\n" 
+            + "ou: Users";
 
         LdifAttributesReader reader = new LdifAttributesReader();
 
