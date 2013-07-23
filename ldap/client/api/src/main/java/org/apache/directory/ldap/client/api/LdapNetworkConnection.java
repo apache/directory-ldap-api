@@ -62,6 +62,7 @@ import org.apache.directory.api.ldap.codec.api.MessageEncoderException;
 import org.apache.directory.api.ldap.codec.api.SchemaBinaryAttributeDetector;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.cursor.Cursor;
+import org.apache.directory.api.ldap.model.cursor.CursorException;
 import org.apache.directory.api.ldap.model.cursor.EntryCursor;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.entry.Attribute;
@@ -3284,7 +3285,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             // And close the cursor
             cursor.close();
         }
-        catch ( Exception e )
+        catch ( CursorException e )
         {
             throw new LdapException( e );
         }

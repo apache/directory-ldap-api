@@ -145,6 +145,10 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
         if ( done )
         {
             searchDoneResp = ( SearchResultDone ) response;
+
+            // Process the response and throw an exception if needed
+            //ResultCodeEnum.processResponse( searchDoneResp );
+
             response = null;
         }
 
