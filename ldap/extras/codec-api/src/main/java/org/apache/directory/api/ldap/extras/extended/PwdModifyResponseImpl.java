@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.extras.extended;
 
 
-import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.util.Strings;
@@ -41,6 +40,22 @@ public class PwdModifyResponseImpl extends ExtendedResponseImpl implements PwdMo
     /** The generated password */
     private byte[] genPassword;
 
+    
+    /**
+     * Create a new instance for the PwdModify response
+     * @param messageId The Message ID
+     * @param rcode The result code
+     * @param diagnosticMessage The diagnostic message
+     */
+    public PwdModifyResponseImpl( int messageId, ResultCodeEnum rcode, String diagnosticMessage )
+    {
+        super( messageId, EXTENSION_OID );
+
+        super.getLdapResult().setMatchedDn( null );
+        super.getLdapResult().setResultCode( rcode );
+        super.getLdapResult().setDiagnosticMessage( diagnosticMessage );
+    }
+
 
     /**
      * Create a new instance for the PwdModify response
@@ -50,22 +65,6 @@ public class PwdModifyResponseImpl extends ExtendedResponseImpl implements PwdMo
     public PwdModifyResponseImpl( int messageId, ResultCodeEnum rcode )
     {
         super( messageId, EXTENSION_OID );
-
-        switch ( rcode )
-        {
-            case SUCCESS:
-                break;
-
-            case OPERATIONS_ERROR:
-                break;
-
-            case INSUFFICIENT_ACCESS_RIGHTS:
-                break;
-
-            default:
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04166, ResultCodeEnum.SUCCESS,
-                    ResultCodeEnum.OPERATIONS_ERROR, ResultCodeEnum.INSUFFICIENT_ACCESS_RIGHTS ) );
-        }
 
         super.getLdapResult().setMatchedDn( null );
         super.getLdapResult().setResultCode( rcode );
