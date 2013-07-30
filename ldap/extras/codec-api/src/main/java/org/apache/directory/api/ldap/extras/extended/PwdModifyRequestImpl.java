@@ -131,7 +131,7 @@ public class PwdModifyRequestImpl extends AbstractExtendedRequest<PwdModifyRespo
     {
         if ( response == null )
         {
-            response = new PwdModifyResponseImpl();
+            response = new PwdModifyResponseImpl( getMessageId() );
         }
 
         return response;
