@@ -35,12 +35,11 @@ import org.apache.directory.api.ldap.codec.BasicControlDecorator;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory;
+import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
-import org.apache.directory.api.ldap.codec.api.UnsolicitedResponseFactory;
 import org.apache.directory.api.ldap.codec.controls.cascade.CascadeFactory;
 import org.apache.directory.api.ldap.codec.controls.manageDsaIT.ManageDsaITFactory;
 import org.apache.directory.api.ldap.codec.controls.search.entryChange.EntryChangeFactory;
@@ -75,11 +74,8 @@ public class DefaultLdapCodecService implements LdapApiService
     /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ControlFactory}'s */
     private Map<String, ControlFactory<?, ?>> controlFactories = new HashMap<String, ControlFactory<?, ?>>();
 
-    /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory}'s by request OID */
-    private Map<String, ExtendedRequestFactory<?, ?>> extReqFactories = new HashMap<String, ExtendedRequestFactory<?, ?>>();
-
-    /** The map of registered {@link UnsolicitedResponseFactory}'s by request OID */
-    private Map<String, UnsolicitedResponseFactory<?>> unsolicitedFactories = new HashMap<String, UnsolicitedResponseFactory<?>>();
+    /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory}'s by request OID */
+    private Map<String, ExtendedOperationFactory<?, ?>> extendedOperationsFactories = new HashMap<String, ExtendedOperationFactory<?, ?>>();
 
     /** The registered ProtocolCodecFactory */
     private ProtocolCodecFactory protocolCodecFactory;
@@ -170,16 +166,16 @@ public class DefaultLdapCodecService implements LdapApiService
      */
     public Iterator<String> registeredExtendedRequests()
     {
-        return Collections.unmodifiableSet( extReqFactories.keySet() ).iterator();
+        return Collections.unmodifiableSet( extendedOperationsFactories.keySet() ).iterator();
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestFactory<?, ?> registerExtendedRequest( ExtendedRequestFactory<?, ?> factory )
+    public ExtendedOperationFactory<?, ?> registerExtendedRequest( ExtendedOperationFactory<?, ?> factory )
     {
-        return extReqFactories.put( factory.getOid(), factory );
+        return extendedOperationsFactories.put( factory.getOid(), factory );
     }
 
 
@@ -299,36 +295,9 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestFactory<?, ?> unregisterExtendedRequest( String oid )
+    public ExtendedOperationFactory<?, ?> unregisterExtendedRequest( String oid )
     {
-        return extReqFactories.remove( oid );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public Iterator<String> registeredUnsolicitedResponses()
-    {
-        return Collections.unmodifiableSet( unsolicitedFactories.keySet() ).iterator();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public UnsolicitedResponseFactory<?> registerUnsolicitedResponse( UnsolicitedResponseFactory<?> factory )
-    {
-        return unsolicitedFactories.put( factory.getOid(), factory );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public UnsolicitedResponseFactory<?> unregisterUnsolicitedResponse( String oid )
-    {
-        return unsolicitedFactories.remove( oid );
+        return extendedOperationsFactories.remove( oid );
     }
 
 
@@ -377,7 +346,8 @@ public class DefaultLdapCodecService implements LdapApiService
         else
         {
             // have to ask the factory to decorate for us - can't do it ourselves
-            ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( modelRequest.getRequestName() );
+            ExtendedOperationFactory<?, ?> extendedRequestFactory = extendedOperationsFactories.get( modelRequest
+                .getRequestName() );
             ExtendedRequestDecorator<?, ?> decorator = extendedRequestFactory.decorate( modelRequest );
             value = decorator.getRequestValue();
         }
@@ -402,7 +372,7 @@ public class DefaultLdapCodecService implements LdapApiService
             public javax.naming.ldap.ExtendedResponse createExtendedResponse( String id, byte[] berValue, int offset,
                 int length ) throws NamingException
             {
-                ExtendedRequestFactory<?, ?> factory = extReqFactories.get( modelRequest.getRequestName() );
+                ExtendedOperationFactory<?, ?> factory = extendedOperationsFactories.get( modelRequest.getRequestName() );
 
                 try
                 {
@@ -455,7 +425,7 @@ public class DefaultLdapCodecService implements LdapApiService
     {
         ExtendedResponseDecorator<ExtendedResponse> resp;
 
-        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( responseName );
+        ExtendedOperationFactory<?, ?> extendedRequestFactory = extendedOperationsFactories.get( responseName );
         if ( extendedRequestFactory != null )
         {
             resp = ( ExtendedResponseDecorator<ExtendedResponse> ) extendedRequestFactory
@@ -481,7 +451,7 @@ public class DefaultLdapCodecService implements LdapApiService
     {
         ExtendedRequest<?> req = null;
 
-        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( oid );
+        ExtendedOperationFactory<?, ?> extendedRequestFactory = extendedOperationsFactories.get( oid );
         if ( extendedRequestFactory != null )
         {
             req = extendedRequestFactory.newRequest( value );
@@ -508,7 +478,8 @@ public class DefaultLdapCodecService implements LdapApiService
     {
         ExtendedRequestDecorator<?, ?> req = null;
 
-        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( decoratedMessage.getRequestName() );
+        ExtendedOperationFactory<?, ?> extendedRequestFactory = extendedOperationsFactories.get( decoratedMessage
+            .getRequestName() );
         if ( extendedRequestFactory != null )
         {
             req = extendedRequestFactory.decorate( decoratedMessage );
@@ -530,16 +501,11 @@ public class DefaultLdapCodecService implements LdapApiService
     {
         ExtendedResponseDecorator<?> resp = null;
 
-        UnsolicitedResponseFactory<?> unsolicitedResponseFactory = unsolicitedFactories.get( decoratedMessage
+        ExtendedOperationFactory<?, ?> extendedRequestFactory = extendedOperationsFactories.get( decoratedMessage
             .getResponseName() );
-        ExtendedRequestFactory<?, ?> extendedRequestFactory = extReqFactories.get( decoratedMessage.getResponseName() );
         if ( extendedRequestFactory != null )
         {
             resp = extendedRequestFactory.decorate( decoratedMessage );
-        }
-        else if ( unsolicitedResponseFactory != null )
-        {
-            resp = unsolicitedResponseFactory.decorate( decoratedMessage );
         }
         else
         {
@@ -555,6 +521,6 @@ public class DefaultLdapCodecService implements LdapApiService
      */
     public boolean isExtendedOperationRegistered( String oid )
     {
-        return extReqFactories.containsKey( oid ) || unsolicitedFactories.containsKey( oid );
+        return extendedOperationsFactories.containsKey( oid );
     }
 }

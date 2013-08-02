@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory;
+import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.CertGenerationRequest;
@@ -34,13 +34,13 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
- * An {@link ExtendedRequestFactory} for creating certificate generation extended request response 
+ * An {@link ExtendedOperationFactory} for creating certificate generation extended request response 
  * pairs.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class CertGenerationFactory
-    implements ExtendedRequestFactory<CertGenerationRequest, CertGenerationResponse>
+    implements ExtendedOperationFactory<CertGenerationRequest, CertGenerationResponse>
 {
     private LdapApiService codec;
 

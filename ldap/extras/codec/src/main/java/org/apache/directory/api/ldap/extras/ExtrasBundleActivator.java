@@ -21,9 +21,8 @@ package org.apache.directory.api.ldap.extras;
 
 
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory;
+import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.UnsolicitedResponseFactory;
 import org.apache.directory.api.ldap.extras.controls.SyncDoneValue;
 import org.apache.directory.api.ldap.extras.controls.SyncInfoValue;
 import org.apache.directory.api.ldap.extras.controls.SyncRequestValue;
@@ -108,7 +107,7 @@ public class ExtrasBundleActivator implements BundleActivator
         // Register Extended Request Factories
         // --------------------------------------------------------------------
 
-        ExtendedRequestFactory<?, ?> extReqfactory = new CancelFactory( codec );
+        ExtendedOperationFactory<?, ?> extReqfactory = new CancelFactory( codec );
         codec.registerExtendedRequest( extReqfactory );
 
         extReqfactory = new CertGenerationFactory( codec );
@@ -123,12 +122,8 @@ public class ExtrasBundleActivator implements BundleActivator
         extReqfactory = new PasswordModifyFactory( codec );
         codec.registerExtendedRequest( extReqfactory );
 
-        // --------------------------------------------------------------------
-        // Register Unsolicited Response Factories
-        // --------------------------------------------------------------------
-
-        UnsolicitedResponseFactory<?> unsolicitedResponseFactory = new GracefulDisconnectFactory( codec );
-        codec.registerUnsolicitedResponse( unsolicitedResponseFactory );
+        extReqfactory = new GracefulDisconnectFactory( codec );
+        codec.registerExtendedRequest( extReqfactory );
     }
 
 
@@ -149,7 +144,6 @@ public class ExtrasBundleActivator implements BundleActivator
         codec.unregisterExtendedRequest( CertGenerationRequest.EXTENSION_OID );
         codec.unregisterExtendedRequest( GracefulShutdownRequest.EXTENSION_OID );
         codec.unregisterExtendedRequest( StoredProcedureRequest.EXTENSION_OID );
-
-        codec.unregisterUnsolicitedResponse( GracefulDisconnectResponse.EXTENSION_OID );
+        codec.unregisterExtendedRequest( GracefulDisconnectResponse.EXTENSION_OID );
     }
 }

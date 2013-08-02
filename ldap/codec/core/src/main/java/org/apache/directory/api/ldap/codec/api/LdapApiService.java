@@ -131,23 +131,23 @@ public interface LdapApiService
 
 
     /**
-     * Registers an {@link ExtendedRequestFactory} for generating extended request 
+     * Registers an {@link ExtendedOperationFactory} for generating extended request 
      * response pairs.
      * 
      * @param factory The extended request factory
      * @return The displaced factory if one existed for the oid
      */
-    ExtendedRequestFactory<?, ?> registerExtendedRequest( ExtendedRequestFactory<?, ?> factory );
+    ExtendedOperationFactory<?, ?> registerExtendedRequest( ExtendedOperationFactory<?, ?> factory );
 
 
     /**
-     * Unregisters an {@link ExtendedRequestFactory} for generating extended 
+     * Unregisters an {@link ExtendedOperationFactory} for generating extended 
      * request response pairs.
      * 
      * @param oid The extended request oid
      * @return The displaced factory if one existed for the oid
      */
-    ExtendedRequestFactory<?, ?> unregisterExtendedRequest( String oid );
+    ExtendedOperationFactory<?, ?> unregisterExtendedRequest( String oid );
 
 
     /**
@@ -163,34 +163,6 @@ public interface LdapApiService
     // ------------------------------------------------------------------------
     // Extended Response Methods
     // ------------------------------------------------------------------------
-
-    /**
-     * Returns an Iterator over the OID Strings of registered unsolicited 
-     * extended responses.
-     *
-     * @return The registered unsolicited extended response OID Strings
-     */
-    Iterator<String> registeredUnsolicitedResponses();
-
-
-    /**
-     * Registers an {@link UnsolicitedResponseFactory} for generating extended
-     * responses sent by servers without an extended request.
-     * 
-     * @param factory The unsolicited response creating factory
-     * @return The displaced factory if one existed for the oid
-     */
-    UnsolicitedResponseFactory<?> registerUnsolicitedResponse( UnsolicitedResponseFactory<?> factory );
-
-
-    /**
-     * Unregisters an {@link UnsolicitedResponseFactory} for generating 
-     * extended responses sent by servers without an extended request.
-     * 
-     * @param oid The unsolicited response oid
-     */
-    UnsolicitedResponseFactory<?> unregisterUnsolicitedResponse( String oid );
-
 
     /**
      * Creates a model ExtendedResponse from the JNDI ExtendedResponse.

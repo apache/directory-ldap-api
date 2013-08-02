@@ -26,13 +26,13 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
- * The factor interface, defined by the codec API for creating new 
- * ExtendedRequests.
+ * The factory interface, defined by the codec API, for creating new 
+ * requests/responses for extended operations.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface ExtendedRequestFactory<Q extends ExtendedRequest<P>, P extends ExtendedResponse>
+public interface ExtendedOperationFactory<Q extends ExtendedRequest<P>, P extends ExtendedResponse>
 {
     /**
      * Gets the OID of the extended requests this factory generates.

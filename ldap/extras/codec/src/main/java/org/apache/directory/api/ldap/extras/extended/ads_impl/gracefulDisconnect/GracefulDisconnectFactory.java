@@ -21,22 +21,23 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnec
 
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestFactory;
+import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
+import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.UnsolicitedResponseFactory;
 import org.apache.directory.api.ldap.extras.extended.GracefulDisconnectResponse;
-import org.apache.directory.api.ldap.extras.extended.GracefulDisconnectResponseImpl;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
 
 /**
- * An {@link ExtendedRequestFactory} for creating cancel extended request response 
+ * An {@link ExtendedOperationFactory} for creating cancel extended request response 
  * pairs.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulDisconnectFactory implements UnsolicitedResponseFactory<GracefulDisconnectResponse>
+public class GracefulDisconnectFactory implements
+    ExtendedOperationFactory<ExtendedRequest<GracefulDisconnectResponse>, GracefulDisconnectResponse>
 {
     private LdapApiService codec;
 
@@ -44,6 +45,31 @@ public class GracefulDisconnectFactory implements UnsolicitedResponseFactory<Gra
     public GracefulDisconnectFactory( LdapApiService codec )
     {
         this.codec = codec;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedRequestDecorator<ExtendedRequest<GracefulDisconnectResponse>, GracefulDisconnectResponse> decorate(
+        ExtendedRequest<?> modelRequest )
+    {
+        // Nothing to do (there's no request associated to GracefulDisconnectResponse)
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedResponseDecorator<GracefulDisconnectResponse> decorate( ExtendedResponse decoratedMessage )
+    {
+        if ( decoratedMessage instanceof GracefulDisconnectResponseDecorator )
+        {
+            return ( GracefulDisconnectResponseDecorator ) decoratedMessage;
+        }
+
+        return new GracefulDisconnectResponseDecorator( codec, ( GracefulDisconnectResponse ) decoratedMessage );
     }
 
 
@@ -59,9 +85,20 @@ public class GracefulDisconnectFactory implements UnsolicitedResponseFactory<Gra
     /**
      * {@inheritDoc}
      */
-    public GracefulDisconnectResponse newRequest()
+    public ExtendedRequest<GracefulDisconnectResponse> newRequest()
     {
-        return new GracefulDisconnectResponseDecorator( codec, new GracefulDisconnectResponseImpl() );
+        // Nothing to do (there's no request associated to GracefulDisconnectResponse)
+        return null;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public ExtendedRequest<GracefulDisconnectResponse> newRequest( byte[] value )
+    {
+        // Nothing to do (there's no request associated to GracefulDisconnectResponse)
+        return null;
     }
 
 
@@ -71,19 +108,5 @@ public class GracefulDisconnectFactory implements UnsolicitedResponseFactory<Gra
     public GracefulDisconnectResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         return new GracefulDisconnectResponseDecorator( codec, encodedValue );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public ExtendedResponseDecorator<GracefulDisconnectResponse> decorate( ExtendedResponse decoratedMessage )
-    {
-        if ( decoratedMessage instanceof GracefulDisconnectResponseDecorator )
-        {
-            return ( GracefulDisconnectResponseDecorator ) decoratedMessage;
-        }
-
-        return new GracefulDisconnectResponseDecorator( codec, ( GracefulDisconnectResponse ) decoratedMessage );
     }
 }
