@@ -2590,7 +2590,11 @@ public final class DefaultEntry implements Entry
                 {
                     AttributeType attributeType = schemaManager.getAttributeType( id );
 
-                    if ( !attributeType.equals( objectClassAttributeType ) )
+                    if ( attributeType == null )
+                    {
+                        sb.append( tabs + "id: " + id );
+                    }
+                    else if ( !attributeType.equals( objectClassAttributeType ) )
                     {
                         sb.append( attribute.toString( tabs + "    " ) );
                         continue;
