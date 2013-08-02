@@ -3109,6 +3109,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             // Decode the payload now
             resultResponse.getMessageId();
 
+            if ( Strings.isEmpty( response.getResponseName() ) )
+            {
+                response.setResponseName( extendedRequest.getRequestName() );
+            }
+
             ExtendedResponseDecorator<?> decoratedResponse = ldapApiService
                 .decorate( ( ExtendedResponse ) resultResponse );
 
