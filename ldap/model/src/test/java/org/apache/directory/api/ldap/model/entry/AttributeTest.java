@@ -55,7 +55,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class DefaultAttributeTest
+public class AttributeTest
 {
     private static final Value<String> NULL_STRING_VALUE = new StringValue( ( String ) null );
     private static final Value<byte[]> NULL_BINARY_VALUE = new BinaryValue( ( byte[] ) null );
