@@ -22,9 +22,11 @@ package org.apache.directory.api.ldap.codec.standalone;
 
 import java.lang.reflect.Constructor;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.naming.NamingException;
@@ -81,6 +83,21 @@ public class StandaloneLdapApiService implements LdapApiService
 
     /** The list of extended operations to load at startup */
     public static final String EXTENDED_OPERATIONS_LIST = "apacheds.extendedOperations";
+
+    /** The (old) list of default controls to load at startup */
+    private static final String OLD_DEFAULT_CONTROLS_LIST = "default.controls";
+
+    /** The (old) list of extra controls to load at startup */
+    private static final String OLD_EXTRA_CONTROLS_LIST = "extra.controls";
+
+    /** The (old) list of default extended operation requests to load at startup */
+    private static final String OLD_DEFAULT_EXTENDED_OPERATION_REQUESTS_LIST = "default.extendedOperation.requests";
+
+    /** The (old) list of default extended operation responses to load at startup */
+    private static final String OLD_DEFAULT_EXTENDED_OPERATION_RESPONSES_LIST = "default.extendedOperation.responses";
+
+    /** The (old) list of extra extended operations to load at startup */
+    private static final String OLD_EXTRA_EXTENDED_OPERATION_LIST = "extra.extendedOperations";
 
 
     /**
@@ -178,28 +195,73 @@ public class StandaloneLdapApiService implements LdapApiService
      */
     private void loadControls() throws Exception
     {
-        // Load from command line properties if it exists
-        String defaultControlsList = System.getProperty( CONTROLS_LIST );
+        List<String> controlsList = new ArrayList<String>();
 
-        if ( Strings.isEmpty( defaultControlsList ) )
+        // Loading controls list from command line properties if it exists
+        String controlsString = System.getProperty( CONTROLS_LIST );
+
+        if ( !Strings.isEmpty( controlsString ) )
         {
-            return;
+            for ( String control : controlsString.split( "," ) )
+            {
+                controlsList.add( control );
+            }
+        }
+        else
+        {
+            // Loading old default controls list from command line properties if it exists
+            String oldDefaultControlsString = System.getProperty( OLD_DEFAULT_CONTROLS_LIST );
+
+            if ( !Strings.isEmpty( oldDefaultControlsString ) )
+            {
+                for ( String control : oldDefaultControlsString.split( "," ) )
+                {
+                    controlsList.add( control );
+                }
+            }
+
+            // Loading old extra controls list from command line properties if it exists
+            String oldExtraControlsString = System.getProperty( OLD_EXTRA_CONTROLS_LIST );
+
+            if ( !Strings.isEmpty( oldExtraControlsString ) )
+            {
+                for ( String control : oldExtraControlsString.split( "," ) )
+                {
+                    controlsList.add( control );
+                }
+            }
         }
 
-        for ( String control : defaultControlsList.split( "," ) )
+        // Adding all controls
+        if ( controlsList.size() > 0 )
         {
-            Class<?>[] types = new Class<?>[]
-                { LdapApiService.class };
-            @SuppressWarnings("unchecked")
-            Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> ) Class
-                .forName( control );
-            Constructor<?> constructor = clazz.getConstructor( types );
-
-            ControlFactory<?, ?> factory = ( ControlFactory<?, ?> ) constructor.newInstance( new Object[]
-                { this } );
-            controlFactories.put( factory.getOid(), factory );
-            LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+            for ( String control : controlsList )
+            {
+                loadControl( control );
+            }
         }
+    }
+
+
+    /**
+     * Loads a control from its FQCN.
+     *
+     * @param control the control FQCN
+     * @throws Exception
+     */
+    private void loadControl( String control ) throws Exception
+    {
+        Class<?>[] types = new Class<?>[]
+            { LdapApiService.class };
+        @SuppressWarnings("unchecked")
+        Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> ) Class
+            .forName( control );
+        Constructor<?> constructor = clazz.getConstructor( types );
+
+        ControlFactory<?, ?> factory = ( ControlFactory<?, ?> ) constructor.newInstance( new Object[]
+            { this } );
+        controlFactories.put( factory.getOid(), factory );
+        LOG.info( "Registered control factory: {}", factory.getOid() );
     }
 
 
@@ -210,30 +272,82 @@ public class StandaloneLdapApiService implements LdapApiService
      */
     private void loadExtendedOperations() throws Exception
     {
-        // Load from command line properties if it exists
+        List<String> extendedOperationsList = new ArrayList<String>();
+
+        // Loading extended operations from command line properties if it exists
         String defaultExtendedOperationsList = System.getProperty( EXTENDED_OPERATIONS_LIST );
 
-        if ( Strings.isEmpty( defaultExtendedOperationsList ) )
+        if ( !Strings.isEmpty( defaultExtendedOperationsList ) )
         {
-            return;
+            for ( String extendedOperation : defaultExtendedOperationsList.split( "," ) )
+            {
+                extendedOperationsList.add( extendedOperation );
+            }
+        }
+        else
+        {
+            // Loading old default extended operations requests list from command line properties if it exists
+            String oldExtendedOperationsRequestsString = System
+                .getProperty( OLD_DEFAULT_EXTENDED_OPERATION_REQUESTS_LIST );
+
+            if ( !Strings.isEmpty( oldExtendedOperationsRequestsString ) )
+            {
+                for ( String extendedOperation : oldExtendedOperationsRequestsString.split( "," ) )
+                {
+                    extendedOperationsList.add( extendedOperation );
+                }
+            }
+
+            // Loading old default extended operations requests list from command line properties if it exists
+            String oldExtendedOperationsResponseString = System
+                .getProperty( OLD_DEFAULT_EXTENDED_OPERATION_RESPONSES_LIST );
+
+            if ( !Strings.isEmpty( oldExtendedOperationsResponseString ) )
+            {
+                for ( String extendedOperation : oldExtendedOperationsResponseString.split( "," ) )
+                {
+                    extendedOperationsList.add( extendedOperation );
+                }
+            }
+
+            // Loading old extra extended operations list from command line properties if it exists
+            String oldDefaultControlsString = System.getProperty( OLD_EXTRA_EXTENDED_OPERATION_LIST );
+
+            if ( !Strings.isEmpty( oldDefaultControlsString ) )
+            {
+                for ( String extendedOperation : oldDefaultControlsString.split( "," ) )
+                {
+                    extendedOperationsList.add( extendedOperation );
+                }
+            }
         }
 
-        for ( String extendedOperation : defaultExtendedOperationsList.split( "," ) )
+        // Adding all extended operations
+        if ( extendedOperationsList.size() > 0 )
         {
-            Class<?>[] types = new Class<?>[]
-                { LdapApiService.class };
-            @SuppressWarnings("unchecked")
-            Class<? extends ExtendedOperationFactory<?, ?>> clazz = ( Class<? extends ExtendedOperationFactory<?, ?>> ) Class
-                .forName( extendedOperation );
-            Constructor<?> constructor = clazz.getConstructor( types );
-
-            @SuppressWarnings("unchecked")
-            ExtendedOperationFactory<ExtendedRequest<ExtendedResponse>, ExtendedResponse> factory = ( ExtendedOperationFactory<ExtendedRequest<ExtendedResponse>, ExtendedResponse> ) constructor
-                .newInstance( new Object[]
-                    { this } );
-            extendendOperationsFactories.put( factory.getOid(), factory );
-            LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
+            for ( String extendedOperation : extendedOperationsList )
+            {
+                loadExtendedOperation( extendedOperation );
+            }
         }
+    }
+
+
+    private void loadExtendedOperation( String extendedOperation ) throws Exception
+    {
+        Class<?>[] types = new Class<?>[]
+            { LdapApiService.class };
+        @SuppressWarnings("unchecked")
+        Class<? extends ExtendedOperationFactory<?, ?>> clazz = ( Class<? extends ExtendedOperationFactory<?, ?>> ) Class
+            .forName( extendedOperation );
+        Constructor<?> constructor = clazz.getConstructor( types );
+
+        @SuppressWarnings("unchecked")
+        ExtendedOperationFactory<ExtendedRequest<ExtendedResponse>, ExtendedResponse> factory = ( ExtendedOperationFactory<ExtendedRequest<ExtendedResponse>, ExtendedResponse> ) constructor
+            .newInstance( new Object[]
+                { this } );
+        extendendOperationsFactories.put( factory.getOid(), factory );
+        LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
     }
 
 
@@ -493,7 +607,8 @@ public class StandaloneLdapApiService implements LdapApiService
             public javax.naming.ldap.ExtendedResponse createExtendedResponse( String id, byte[] berValue, int offset,
                 int length ) throws NamingException
             {
-                ExtendedOperationFactory<?, ?> factory = extendendOperationsFactories.get( modelRequest.getRequestName() );
+                ExtendedOperationFactory<?, ?> factory = extendendOperationsFactories.get( modelRequest
+                    .getRequestName() );
 
                 try
                 {
