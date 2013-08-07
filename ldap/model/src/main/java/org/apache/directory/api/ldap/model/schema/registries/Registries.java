@@ -55,6 +55,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaObjectWrapper;
 import org.apache.directory.api.ldap.model.schema.SyntaxChecker;
 import org.apache.directory.api.ldap.model.schema.registries.helper.AttributeTypeHelper;
 import org.apache.directory.api.ldap.model.schema.registries.helper.DitContentRuleHelper;
+import org.apache.directory.api.ldap.model.schema.registries.helper.DitStructureRuleHelper;
 import org.apache.directory.api.ldap.model.schema.registries.helper.LdapSyntaxHelper;
 import org.apache.directory.api.ldap.model.schema.registries.helper.MatchingRuleHelper;
 import org.apache.directory.api.ldap.model.schema.registries.helper.MatchingRuleUseHelper;
@@ -661,6 +662,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
                 case DIT_CONTENT_RULE:
                     DitContentRuleHelper.addToRegistries( ( DitContentRule ) schemaObject, errors, this );
+                    break;
+
+                case DIT_STRUCTURE_RULE:
+                    DitStructureRuleHelper.addToRegistries( ( DitStructureRule ) schemaObject, errors, this );
                     break;
 
                 case LDAP_SYNTAX:
