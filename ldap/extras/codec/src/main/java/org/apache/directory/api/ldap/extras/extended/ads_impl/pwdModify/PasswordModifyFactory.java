@@ -20,9 +20,14 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.nio.ByteBuffer;
+
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
+import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
+import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.PwdModifyRequest;
@@ -31,6 +36,7 @@ import org.apache.directory.api.ldap.extras.extended.PwdModifyResponse;
 import org.apache.directory.api.ldap.extras.extended.PwdModifyResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
+import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 
 
 /**
@@ -108,13 +114,57 @@ public class PasswordModifyFactory implements ExtendedOperationFactory<PwdModify
     /**
      * {@inheritDoc}
      */
-    public ExtendedResponseDecorator<PwdModifyResponse> decorate( ExtendedResponse decoratedMessage )
+    public ExtendedResponseDecorator<PwdModifyResponse> decorate( ExtendedResponse decoratedResponse )
     {
-        if ( decoratedMessage instanceof PasswordModifyResponseDecorator )
+        if ( decoratedResponse instanceof PasswordModifyResponseDecorator )
         {
-            return ( PasswordModifyResponseDecorator ) decoratedMessage;
+            return ( PasswordModifyResponseDecorator ) decoratedResponse;
         }
 
-        return new PasswordModifyResponseDecorator( codec, ( PwdModifyResponse ) decoratedMessage );
+        if ( decoratedResponse instanceof PwdModifyResponse )
+        {
+            return new PasswordModifyResponseDecorator( codec, ( PwdModifyResponse ) decoratedResponse );
+        }
+
+        // It's an opaque extended operation
+        ExtendedResponseDecorator<ExtendedResponse> response = ( ExtendedResponseDecorator<ExtendedResponse> ) decoratedResponse;
+
+        // Decode the response, as it's an opaque operation
+        Asn1Decoder decoder = new Asn1Decoder();
+
+        byte[] value = response.getResponseValue();
+        ByteBuffer buffer = ByteBuffer.wrap( value );
+
+        PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
+
+        try
+        {
+            decoder.decode( buffer, container );
+
+            PwdModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
+
+            // Now, update the created response with what we got from the extendedResponse
+            pwdModifyResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
+            pwdModifyResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
+            pwdModifyResponse.getLdapResult().setMatchedDn( response.getLdapResult().getMatchedDn() );
+            pwdModifyResponse.getLdapResult().setReferral( response.getLdapResult().getReferral() );
+
+            return new PasswordModifyResponseDecorator( codec, pwdModifyResponse );
+        }
+        catch ( DecoderException de )
+        {
+            StringWriter sw = new StringWriter();
+            de.printStackTrace( new PrintWriter( sw ) );
+            String stackTrace = sw.toString();
+
+            // Error while decoding the value. 
+            PwdModifyResponse pwdModifyResponse = new PwdModifyResponseImpl(
+                decoratedResponse.getMessageId(),
+                ResultCodeEnum.OPERATIONS_ERROR,
+                stackTrace );
+
+            return new PasswordModifyResponseDecorator( codec, pwdModifyResponse );
+        }
+
     }
 }

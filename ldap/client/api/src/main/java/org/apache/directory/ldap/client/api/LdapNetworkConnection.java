@@ -107,7 +107,6 @@ import org.apache.directory.api.ldap.model.message.ModifyResponse;
 import org.apache.directory.api.ldap.model.message.Request;
 import org.apache.directory.api.ldap.model.message.Response;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.api.ldap.model.message.ResultResponse;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.api.ldap.model.message.SearchResultDone;
@@ -3104,18 +3103,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
 
             // Get back the response. It's still an opaque response
-            ResultResponse resultResponse = extendedRequest.getResultResponse();
-
-            // Decode the payload now
-            resultResponse.getMessageId();
-
             if ( Strings.isEmpty( response.getResponseName() ) )
             {
                 response.setResponseName( extendedRequest.getRequestName() );
             }
 
-            ExtendedResponseDecorator<?> decoratedResponse = ldapApiService
-                .decorate( ( ExtendedResponse ) resultResponse );
+            // Decode the payload now
+            ExtendedResponseDecorator<?> decoratedResponse = ldapApiService.decorate( response );
 
             return decoratedResponse;
         }
