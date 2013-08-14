@@ -30,7 +30,7 @@
   <artifactId>api-parent</artifactId>
   <name>Apache Directory LDAP API</name>
   <packaging>pom</packaging>
-  <version>1.0.0-M21-SNAPSHOT</version>
+  <version>1.0.0-M20-SNAPSHOT</version>
 
   <properties>
     <projectName>ApacheDS-LDAP-API</projectName>
