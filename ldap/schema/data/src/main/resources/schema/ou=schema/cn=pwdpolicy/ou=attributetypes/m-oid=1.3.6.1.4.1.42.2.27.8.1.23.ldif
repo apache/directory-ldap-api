@@ -12,4 +12,5 @@ m-usage: directoryOperation
 m-name: pwdPolicySubentry
 creatorsname: uid=admin,ou=system
 m-equality: distinguishedNameMatch
+m-usage: directoryOperation
 m-length: 0

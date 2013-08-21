@@ -13,4 +13,5 @@ m-usage: directoryOperation
 m-name: pwdEndTime
 creatorsname: uid=admin,ou=system
 m-equality: generalizedTimeMatch
+m-usage: directoryOperation
 m-length: 0
