@@ -739,7 +739,10 @@ public class Asn1Decoder implements TLVBerDecoderMBean
                 case PDU_DECODED:
                     // We have to deal with the case where there are
                     // more bytes in the buffer, but the PDU has been decoded.
-                    LOG.debug( I18n.err( I18n.ERR_00043_REMAINING_BYTES_FOR_DECODED_PDU ) );
+                    if ( LOG.isDebugEnabled() )
+                    {
+                        LOG.debug( I18n.err( I18n.ERR_00043_REMAINING_BYTES_FOR_DECODED_PDU ) );
+                    }
 
                     hasRemaining = false;
 
