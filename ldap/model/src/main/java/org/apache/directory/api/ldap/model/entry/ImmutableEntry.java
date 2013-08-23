@@ -181,6 +181,15 @@ public class ImmutableEntry implements Entry
     /**
      * {@inheritDoc}
      */
+    public Entry shallowClone()
+    {
+        return entry.shallowClone();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public boolean contains( Attribute... attributes )
     {
         return entry.contains( attributes );

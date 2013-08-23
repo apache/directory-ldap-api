@@ -200,6 +200,19 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
 
 
     /**
+     * Create a new attribute
+     * 
+     * @param type The attribute's type
+     */
+    public void addAttribute( byte[] type ) throws LdapException
+    {
+        currentAttribute = new DefaultAttribute( type );
+
+        getDecorated().getEntry().put( currentAttribute );
+    }
+
+
+    /**
      * Add a new value to the current attribute
      * 
      * @param value The added value

@@ -72,8 +72,6 @@ public class AddAttributeType extends GrammarAction<LdapMessageContainer<SearchR
 
         TLV tlv = container.getCurrentTLV();
 
-        String type = "";
-
         // Store the type
         if ( tlv.getLength() == 0 )
         {
@@ -84,14 +82,13 @@ public class AddAttributeType extends GrammarAction<LdapMessageContainer<SearchR
         }
         else
         {
-            type = Strings.utf8ToString( tlv.getValue().getData() );
-
             try
             {
-                searchResultEntry.addAttribute( type );
+                searchResultEntry.addAttribute( tlv.getValue().getData() );
             }
             catch ( LdapException ine )
             {
+                String type = Strings.utf8ToString( tlv.getValue().getData() );
                 // This is for the client side. We will never decode LdapResult on the server
                 String msg = "The Attribute type " + type + "is invalid : " + ine.getMessage();
                 LOG.error( "{} : {}", msg, ine.getMessage() );
@@ -101,6 +98,7 @@ public class AddAttributeType extends GrammarAction<LdapMessageContainer<SearchR
 
         if ( IS_DEBUG )
         {
+            String type = Strings.utf8ToString( tlv.getValue().getData() );
             LOG.debug( "Attribute type : {}", type );
         }
     }

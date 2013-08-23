@@ -3424,6 +3424,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             for ( AttributeType atType : atList )
             {
                 atRegistry.addMappingFor( atType );
+                atRegistry.register( atType );
             }
 
             List<ObjectClass> ocList = olsp.getObjectClassTypes();

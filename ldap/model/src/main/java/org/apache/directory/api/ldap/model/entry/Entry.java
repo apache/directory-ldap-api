@@ -59,6 +59,12 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
 
 
     /**
+     * Shallow Clone the current entry. We don't deep clone the attributes
+     */
+    Entry shallowClone();
+
+
+    /**
      * Get this entry's Dn.
      *
      * @return The entry's Dn

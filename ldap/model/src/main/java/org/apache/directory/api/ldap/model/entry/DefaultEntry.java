@@ -974,6 +974,40 @@ public final class DefaultEntry implements Entry
     @SuppressWarnings("unchecked")
     public Entry clone()
     {
+        // First, clone the structure
+        DefaultEntry clone = ( DefaultEntry ) shallowClone();
+
+        // now clone all the attributes
+        clone.attributes.clear();
+
+        if ( schemaManager != null )
+        {
+            for ( Attribute attribute : attributes.values() )
+            {
+                String oid = attribute.getAttributeType().getOid();
+                clone.attributes.put( oid, attribute.clone() );
+            }
+        }
+        else
+        {
+            for ( Attribute attribute : attributes.values() )
+            {
+                clone.attributes.put( attribute.getId(), attribute.clone() );
+            }
+
+        }
+
+        // We are done !
+        return clone;
+    }
+
+
+    /**
+     * Shallow clone an entry. We don't clone the Attributes
+     */
+    @SuppressWarnings("unchecked")
+    public Entry shallowClone()
+    {
         try
         {
             // First, clone the structure
@@ -991,26 +1025,6 @@ public final class DefaultEntry implements Entry
             // then clone the ClientAttribute Map.
             clone.attributes = ( Map<String, Attribute> ) ( ( ( HashMap<String, Attribute> ) attributes )
                 .clone() );
-
-            // now clone all the attributes
-            //            clone.attributes.clear();
-            //
-            //            if ( schemaManager != null )
-            //            {
-            //                for ( Attribute attribute : attributes.values() )
-            //                {
-            //                    String oid = attribute.getAttributeType().getOid();
-            //                    clone.attributes.put( oid, attribute.clone() );
-            //                }
-            //            }
-            //            else
-            //            {
-            //                for ( Attribute attribute : attributes.values() )
-            //                {
-            //                    clone.attributes.put( attribute.getId(), attribute.clone() );
-            //                }
-            //
-            //            }
 
             // We are done !
             return clone;
