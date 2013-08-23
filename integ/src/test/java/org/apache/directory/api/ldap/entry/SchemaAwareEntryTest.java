@@ -1142,7 +1142,7 @@ public class SchemaAwareEntryTest
     {
         Entry entry = new DefaultEntry( EXAMPLE_DN );
 
-        assertEquals( "Entry\n    dn: dc=example,dc=com\n", entry.toString() );
+        assertEquals( "Entry\n    dn: dc=example,dc=com\n\n", entry.toString() );
 
         Value<String> strValueTop = new StringValue( "top" );
         Value<String> strValuePerson = new StringValue( "person" );

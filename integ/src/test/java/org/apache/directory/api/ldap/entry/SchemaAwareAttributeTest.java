@@ -181,14 +181,14 @@ public class SchemaAwareAttributeTest
         }
     }
 
-    
+
     @BeforeClass
     public static void startup() throws Exception
     {
         schemaManager = new DefaultSchemaManager();
     }
-    
-    
+
+
     /**
      * Initialize the schemaManager
      */
@@ -1020,20 +1020,20 @@ public class SchemaAwareAttributeTest
         attr9.add( BYTES2 );
         attr10.add( "a", "b" );
         assertFalse( attr9.equals( attr10 ) );
-        
+
         Attribute attr11 = new DefaultAttribute( atPwd, BYTES1 );
         Attribute attr12 = new DefaultAttribute( atPwd, BYTES1 );
-        
+
         assertTrue( attr11.get().equals( attr12.get() ) );
         assertTrue( attr12.get().equals( attr11.get() ) );
 
         Attribute attr13 = new DefaultAttribute( "userPassword", BYTES1 );
-        
+
         assertTrue( attr11.get().equals( attr13.get() ) );
         assertTrue( attr13.get().equals( attr11.get() ) );
-        
+
         Attribute attr14 = new DefaultAttribute( "userPassword", BYTES1 );
-        
+
         assertTrue( attr14.get().equals( attr13.get() ) );
         assertTrue( attr13.get().equals( attr14.get() ) );
     }
@@ -1506,17 +1506,17 @@ public class SchemaAwareAttributeTest
     {
         Attribute attr = new DefaultAttribute( atEMail );
 
-        assertEquals( "email: (null)\n", attr.toString() );
+        assertEquals( "email: (null)", attr.toString() );
 
         attr.setUpId( "EMail" );
-        assertEquals( "EMail: (null)\n", attr.toString() );
+        assertEquals( "EMail: (null)", attr.toString() );
 
         attr.add( ( String ) null );
-        assertEquals( "EMail: ''\n", attr.toString() );
+        assertEquals( "EMail: ''", attr.toString() );
 
         attr.clear();
         attr.add( "a", "b" );
-        assertEquals( "EMail: a\nEMail: b\n", attr.toString() );
+        assertEquals( "EMail: a\nEMail: b", attr.toString() );
     }
 
 
