@@ -184,6 +184,16 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
+     * Create a new instance of an Attribute, without value.
+     * @param upId The user provided ID
+     */
+    public DefaultAttribute( byte[] upId )
+    {
+        setUpId( upId );
+    }
+
+
+    /**
      * Create a new instance of a schema aware Attribute, without value.
      * 
      * @param upId the ID for the added attributeType
@@ -558,6 +568,15 @@ public class DefaultAttribute implements Attribute, Cloneable
 
 
     /**
+     * {@inheritDoc}
+     */
+    public void setUpId( byte[] upId )
+    {
+        setUpId( upId, attributeType );
+    }
+
+
+    /**
      * Check that the upId is either a name or the OID of a given AT
      */
     private boolean areCompatible( String id, AttributeType attributeType )
@@ -599,6 +618,33 @@ public class DefaultAttribute implements Attribute, Cloneable
 
         String newId = Strings.toLowerCase( trimmed );
 
+        setUpIdInternal( upId, newId, attributeType );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setUpId( byte[] upId, AttributeType attributeType )
+    {
+        byte[] trimmed = Strings.trim( upId );
+
+        if ( Strings.isEmpty( trimmed ) && ( attributeType == null ) )
+        {
+            throw new IllegalArgumentException( "Cannot set a null ID with a null AttributeType" );
+        }
+
+        String newId = Strings.toLowerCase( trimmed );
+
+        setUpIdInternal( Strings.utf8ToString( upId ), newId, attributeType );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    private void setUpIdInternal( String upId, String newId, AttributeType attributeType )
+    {
         if ( attributeType == null )
         {
             if ( this.attributeType == null )
@@ -2043,8 +2089,19 @@ public class DefaultAttribute implements Attribute, Cloneable
 
         if ( ( values != null ) && ( values.size() != 0 ) )
         {
+            boolean isFirst = true;
+
             for ( Value<?> value : values )
             {
+                if ( isFirst )
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    sb.append( '\n' );
+                }
+
                 sb.append( tabs ).append( upId ).append( ": " );
 
                 if ( value.isNull() )
@@ -2055,13 +2112,11 @@ public class DefaultAttribute implements Attribute, Cloneable
                 {
                     sb.append( value );
                 }
-
-                sb.append( '\n' );
             }
         }
         else
         {
-            sb.append( tabs ).append( upId ).append( ": (null)\n" );
+            sb.append( tabs ).append( upId ).append( ": (null)" );
         }
 
         return sb.toString();

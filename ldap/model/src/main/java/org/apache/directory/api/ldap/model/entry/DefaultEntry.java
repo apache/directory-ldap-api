@@ -993,24 +993,24 @@ public final class DefaultEntry implements Entry
                 .clone() );
 
             // now clone all the attributes
-            clone.attributes.clear();
-
-            if ( schemaManager != null )
-            {
-                for ( Attribute attribute : attributes.values() )
-                {
-                    String oid = attribute.getAttributeType().getOid();
-                    clone.attributes.put( oid, attribute.clone() );
-                }
-            }
-            else
-            {
-                for ( Attribute attribute : attributes.values() )
-                {
-                    clone.attributes.put( attribute.getId(), attribute.clone() );
-                }
-
-            }
+            //            clone.attributes.clear();
+            //
+            //            if ( schemaManager != null )
+            //            {
+            //                for ( Attribute attribute : attributes.values() )
+            //                {
+            //                    String oid = attribute.getAttributeType().getOid();
+            //                    clone.attributes.put( oid, attribute.clone() );
+            //                }
+            //            }
+            //            else
+            //            {
+            //                for ( Attribute attribute : attributes.values() )
+            //                {
+            //                    clone.attributes.put( attribute.getId(), attribute.clone() );
+            //                }
+            //
+            //            }
 
             // We are done !
             return clone;
@@ -2580,10 +2580,23 @@ public final class DefaultEntry implements Entry
             }
         }
 
+        sb.append( '\n' );
+
         if ( attributes.size() != 0 )
         {
+            boolean isFirst = true;
+
             for ( Attribute attribute : attributes.values() )
             {
+                if ( isFirst )
+                {
+                    isFirst = false;
+                }
+                else
+                {
+                    sb.append( '\n' );
+                }
+
                 String id = attribute.getId();
 
                 if ( schemaManager != null )
