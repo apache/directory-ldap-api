@@ -323,7 +323,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         for ( Rdn rdn : rdns )
         {
-            this.rdns.add( rdn.clone() );
+            this.rdns.add( rdn );
         }
 
         apply( null );
@@ -373,7 +373,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         for ( Rdn rdn : rdns )
         {
-            this.rdns.add( rdn.clone() );
+            this.rdns.add( rdn );
         }
 
         apply( schemaManager );
@@ -674,7 +674,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         Rdn rdn = rdns.get( posn );
 
-        return rdn.clone();
+        return rdn;
     }
 
 
@@ -690,7 +690,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             return Rdn.EMPTY_RDN;
         }
 
-        return rdns.get( 0 ).clone();
+        return rdns.get( 0 );
     }
 
 
@@ -777,8 +777,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         for ( int i = 0; i < rdns.size() - length; i++ )
         {
-            // Don't forget to clone the rdns !
-            newDn.rdns.add( rdns.get( i ).clone() );
+            newDn.rdns.add( rdns.get( i ) );
         }
 
         newDn.toUpName();
@@ -859,8 +858,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         for ( int i = length; i < rdns.size(); i++ )
         {
-            // Don't forget to clone the rdns !
-            newDn.rdns.add( rdns.get( i ).clone() );
+            newDn.rdns.add( rdns.get( i ) );
         }
 
         newDn.toUpName();
@@ -944,7 +942,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         Dn clonedDn = copy();
 
-        clonedDn.rdns.add( 0, newRdn.clone() );
+        clonedDn.rdns.add( 0, newRdn );
         clonedDn.apply( schemaManager, true );
         clonedDn.toUpName();
 
@@ -972,8 +970,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         for ( int i = rdns.size() - posn; i < rdns.size(); i++ )
         {
-            // Don't forget to clone the rdns !
-            newDn.rdns.add( rdns.get( i ).clone() );
+            newDn.rdns.add( rdns.get( i ) );
         }
 
         try
@@ -1001,7 +998,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
 
         for ( Rdn rdn : rdns )
         {
-            dn.rdns.add( rdn.clone() );
+            dn.rdns.add( rdn );
         }
 
         return dn;
@@ -1135,13 +1132,13 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         // We have more than one ATAV for this Rdn. We will loop on all
         // ATAVs
-        Rdn rdnCopy = rdn.clone();
-        rdn.clear();
+        //Rdn rdnCopy = rdn.clone();
+        //rdn.clear();
 
-        if ( rdnCopy.size() < 2 )
+        if ( rdn.size() < 2 )
         {
-            Ava newAtav = atavOidToName( rdnCopy.getAva(), schemaManager );
-            rdn.addAVA( schemaManager, newAtav );
+            Ava newAtav = atavOidToName( rdn.getAva(), schemaManager );
+            rdn.replaceAva( newAtav, 0 );
         }
         else
         {
@@ -1149,7 +1146,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
             Map<String, Ava> avas = new HashMap<String, Ava>();
 
             // Sort the OIDs
-            for ( Ava val : rdnCopy )
+            for ( Ava val : rdn )
             {
                 Ava newAtav = atavOidToName( val, schemaManager );
                 String oid = newAtav.getAttributeType().getOid();
@@ -1158,9 +1155,11 @@ public class Dn implements Iterable<Rdn>, Externalizable
             }
 
             // And create the Rdn
+            int pos = 0;
+
             for ( String oid : sortedOids )
             {
-                rdn.addAVA( schemaManager, avas.get( oid ) );
+                rdn.replaceAva( avas.get( oid ), pos++ );
             }
         }
     }

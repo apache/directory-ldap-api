@@ -253,7 +253,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             {
                 throw new LdapInvalidDnException( "Invalid RDN" );
             }
-            
+
             upName = rdn;
         }
         else
@@ -437,7 +437,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
     /**
      * Transform a Rdn by changing the value to its OID counterpart and
-     * normalizing the value accordingly to its type.
+     * normalizing the value accordingly to its type. The modified Rdn is
+     * a new instance, as the Rdn class is immutable.
      *
      * @param schemaManager the SchemaManager
      * @return this Rdn, normalized
@@ -537,6 +538,48 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
 
     /**
+     * Replace an Ava into a Rdn at a given position
+     *
+     * @param value The modified Ava
+     * @param pos The position of the Ava in the Rdn
+     * @exception LdapInvalidDnException If the position is not valid
+     */
+    // WARNING : The protection level is left unspecified intentionally.
+    // We need this method to be visible from the DnParser class, but not
+    // from outside this package.
+    /* Unspecified protection */void replaceAva( Ava value, int pos ) throws LdapInvalidDnException
+    {
+        if ( ( pos < 0 ) || ( pos > nbAvas ) )
+        {
+            throw new LdapInvalidDnException( "Cannot set the AVA at position " + pos );
+        }
+
+        String normalizedType = value.getNormType();
+
+        switch ( nbAvas )
+        {
+            case 1:
+                // This is the first Ava. Just stores it.
+                ava = value;
+                avaType = normalizedType;
+
+                break;
+
+            default:
+                Ava oldAva = avas.get( pos );
+                avas.set( pos, value );
+                avaTypes.remove( oldAva.getType() );
+                avaTypes.put( normalizedType, value );
+
+                break;
+        }
+
+        h = 0;
+        hashCode();
+    }
+
+
+    /**
      * Add an Ava to the current schema aware Rdn
      *
      * @param value The added Ava
@@ -566,9 +609,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 // Check that the first AVA is not for the same attribute
                 if ( avaType.equals( normalizedType ) )
                 {
-                    throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType + " is already present in the RDN" );
+                    throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType
+                        + " is already present in the RDN" );
                 }
-                
+
                 // First, create the HashMap,
                 avas = new ArrayList<Ava>();
 
@@ -586,9 +630,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 // Check that the AT is not already present
                 if ( avaTypes.containsKey( normalizedType ) )
                 {
-                    throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType + " is already present in the RDN" );
+                    throw new LdapInvalidDnException( "Invalid RDN: the " + normalizedType
+                        + " is already present in the RDN" );
                 }
-                
+
                 // add a new Ava
                 avas.add( value );
                 avaTypes.put( normalizedType, value );
@@ -864,7 +909,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 return ava;
 
             default:
-                return avas.get( 0 ).clone();
+                return avas.get( 0 );
         }
     }
 
@@ -976,7 +1021,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         }
 
         Rdn rdn = ( Rdn ) that;
-        
+
         // Short cut : compare the normalized Rdn
         if ( normName.equals( rdn.normName ) )
         {
@@ -1077,7 +1122,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         }
 
         char[] chars = value.toCharArray();
-        
+
         // If the value is contained into double quotes, return it as is.
         if ( ( chars[0] == '\"' ) && ( chars[chars.length - 1] == '\"' ) )
         {
@@ -1249,8 +1294,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             if ( ( bytes[i] & 0x0080 ) != 0 )
             {
                 newBytes[pos++] = '\\';
-                newBytes[pos++] = (byte)Strings.dumpHex( (byte)( (bytes[i] & 0x00F0 )  >> 4 ) );
-                newBytes[pos++] = (byte)Strings.dumpHex( (byte)(bytes[i] & 0x000F) );
+                newBytes[pos++] = ( byte ) Strings.dumpHex( ( byte ) ( ( bytes[i] & 0x00F0 ) >> 4 ) );
+                newBytes[pos++] = ( byte ) Strings.dumpHex( ( byte ) ( bytes[i] & 0x000F ) );
             }
             else
             {
@@ -1266,9 +1311,9 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                             newBytes[pos++] = '\\';
                             newBytes[pos++] = bytes[i];
                         }
-    
+
                         break;
-    
+
                     case '#':
                         if ( i != 0 )
                         {
@@ -1279,9 +1324,9 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                             newBytes[pos++] = '\\';
                             newBytes[pos++] = bytes[i];
                         }
-    
+
                         break;
-    
+
                     case '"':
                     case '+':
                     case ',':
@@ -1293,13 +1338,13 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                         newBytes[pos++] = '\\';
                         newBytes[pos++] = bytes[i];
                         break;
-    
+
                     case 0x7F:
                         newBytes[pos++] = '\\';
                         newBytes[pos++] = '7';
                         newBytes[pos++] = 'F';
                         break;
-    
+
                     case 0x00:
                     case 0x01:
                     case 0x02:
@@ -1318,9 +1363,9 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                     case 0x0F:
                         newBytes[pos++] = '\\';
                         newBytes[pos++] = '0';
-                        newBytes[pos++] = (byte)Strings.dumpHex( ( byte ) ( bytes[i] & 0x0F ) );
+                        newBytes[pos++] = ( byte ) Strings.dumpHex( ( byte ) ( bytes[i] & 0x0F ) );
                         break;
-    
+
                     case 0x10:
                     case 0x11:
                     case 0x12:
@@ -1339,9 +1384,9 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                     case 0x1F:
                         newBytes[pos++] = '\\';
                         newBytes[pos++] = '1';
-                        newBytes[pos++] = (byte)Strings.dumpHex( ( byte ) ( bytes[i] & 0x0F ) );
+                        newBytes[pos++] = ( byte ) Strings.dumpHex( ( byte ) ( bytes[i] & 0x0F ) );
                         break;
-    
+
                     default:
                         newBytes[pos++] = bytes[i];
                         break;
