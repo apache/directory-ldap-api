@@ -11,5 +11,4 @@ m-usage: directoryOperation
 m-name: pwdHistory
 creatorsname: uid=admin,ou=system
 m-equality: octetStringMatch
-m-usage: directoryOperation
 m-length: 0

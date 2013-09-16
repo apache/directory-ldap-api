@@ -13,5 +13,4 @@ m-usage: directoryOperation
 m-name: pwdLastSuccess
 creatorsname: uid=admin,ou=system
 m-equality: generalizedTimeMatch
-m-usage: directoryOperation
 m-length: 0
