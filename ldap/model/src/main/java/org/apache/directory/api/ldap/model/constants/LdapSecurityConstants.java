@@ -61,7 +61,10 @@ public enum LdapSecurityConstants
     HASH_METHOD_SMD5("SMD5", "MD5", "smd5"),
 
     /** The crypt encryption method */
-    HASH_METHOD_CRYPT("CRYPT", "CRYPT", "crypt");
+    HASH_METHOD_CRYPT("CRYPT", "CRYPT", "crypt"),
+
+    /** The PBKDF2-based encryption method */
+    HASH_METHOD_PKCS5S2("PKCS5S2", "PBKDF2WithHmacSHA1", "PKCS5S2");
 
     /* These encryption types are not yet supported 
     ** The AES encryption method *
@@ -214,6 +217,12 @@ public enum LdapSecurityConstants
             || ( "ssha-512".equalsIgnoreCase( algorithm ) ) ) // "ssha-512" used for backwards compatibility
         {
             return HASH_METHOD_SSHA512;
+        }
+
+        if ( HASH_METHOD_PKCS5S2.getName().equalsIgnoreCase( algorithm )
+            || HASH_METHOD_PKCS5S2.getPrefix().equalsIgnoreCase( algorithm ) )
+        {
+            return HASH_METHOD_PKCS5S2;
         }
 
         /*

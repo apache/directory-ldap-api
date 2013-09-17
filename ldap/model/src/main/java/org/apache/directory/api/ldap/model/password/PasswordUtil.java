@@ -1,6 +1,6 @@
 /*
- *   Licensed to the Apache Software Foundation (ASF) under one
  *   or more contributor license agreements.  See the NOTICE file
+ *   Licensed to the Apache Software Foundation (ASF) under one
  *   distributed with this work for additional information
  *   regarding copyright ownership.  The ASF licenses this file
  *   to you under the Apache License, Version 2.0 (the
@@ -22,11 +22,16 @@ package org.apache.directory.api.ldap.model.password;
 
 
 import java.io.UnsupportedEncodingException;
+import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 import java.util.Arrays;
 import java.util.Date;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 import org.apache.directory.api.ldap.model.constants.LdapSecurityConstants;
 import org.apache.directory.api.util.Base64;
@@ -58,6 +63,8 @@ public class PasswordUtil
     /** The MD5 hash length */
     public static final int MD5_LENGTH = 16;
 
+    /** The PKCS5S2 hash length */
+    public static final int PKCS5S2_LENGTH = 20;
 
     /**
      * Get the algorithm from the stored password. 
@@ -142,6 +149,7 @@ public class PasswordUtil
             case HASH_METHOD_SSHA384:
             case HASH_METHOD_SSHA512:
             case HASH_METHOD_SMD5:
+            case HASH_METHOD_PKCS5S2:
                 salt = new byte[8]; // we use 8 byte salt always except for "crypt" which needs 2 byte salt
                 new SecureRandom().nextBytes( salt );
                 break;
@@ -202,6 +210,7 @@ public class PasswordUtil
      * <li>- SHA-2(256, 384 and 512 and their salted versions)</li>
      * <li>- MD5</li>
      * <li>- SMD5 (slated MD5)</li>
+     * <li>- PKCS5S2 (PBKDF2)</li>
      * <li>- crypt (unix crypt)</li>
      * <li>- plain text, ie no encryption.</li>
      * </ul>
@@ -211,8 +220,9 @@ public class PasswordUtil
      *  </p>
      *  If the password is using SSHA, SMD5 or crypt, some 'salt' is added to the password :
      *  <ul>
-     *  <li>- length(password) - 20, starting at 21th position for SSHA</li>
+     *  <li>- length(password) - 20, starting at 21st position for SSHA</li>
      *  <li>- length(password) - 16, starting at 16th position for SMD5</li>
+     *  <li>- length(password) - 20, starting at 21st position for PKCS5S2</li>
      *  <li>- length(password) - 2, starting at 3rd position for crypt</li>
      *  </ul>
      *  <p>
@@ -303,6 +313,9 @@ public class PasswordUtil
 
                 return Strings.getBytesUtf8( crypted );
 
+            case HASH_METHOD_PKCS5S2:
+                return generatePbkdf2Hash( credentials, algorithm, salt );
+                
             default:
                 return credentials;
         }
@@ -415,6 +428,9 @@ public class PasswordUtil
             case HASH_METHOD_SSHA512:
                 return getCredentials( credentials, algoLength, SHA512_LENGTH, encryptionMethod );
 
+            case HASH_METHOD_PKCS5S2:
+                return getCredentials( credentials, algoLength, PKCS5S2_LENGTH, encryptionMethod );
+                
             case HASH_METHOD_CRYPT:
                 // The password is associated with a salt. Decompose it
                 // in two parts, storing the salt into the EncryptionMethod structure.
@@ -503,4 +519,30 @@ public class PasswordUtil
 
         return expired;
     }
+    
+    
+    /**
+     * generates a hash based on the <a href="http://en.wikipedia.org/wiki/PBKDF2">PKCS5S2 spec</a>
+     * 
+     * @param algorithm the algorithm to use
+     * @param password the credentials
+     * @param salt the optional salt
+     * @return the digested credentials
+     */
+    private static byte[] generatePbkdf2Hash( byte[] credentials, LdapSecurityConstants algorithm, byte[] salt )
+    {
+        try
+        {
+            SecretKeyFactory sk = SecretKeyFactory.getInstance( algorithm.getAlgorithm() );
+            char[] password = Strings.utf8ToString( credentials ).toCharArray();
+            KeySpec keySpec = new PBEKeySpec( password, salt, 1000, 160 );
+            Key key = sk.generateSecret( keySpec );
+            return key.getEncoded();
+        }
+        catch( Exception e )
+        {
+            throw new RuntimeException( e );
+        }
+    }
+    
 }

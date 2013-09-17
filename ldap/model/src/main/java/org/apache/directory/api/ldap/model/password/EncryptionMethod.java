@@ -39,10 +39,10 @@ import org.apache.directory.api.util.Strings;
  * {<algorithm>}<encrypted password>
  * where the encrypted password format can be :
  * - MD5/SHA : base64(<password>)
- * - SMD5/SSH : base64(<salted-password-digest><salt (4 or 8 bytes)>)
+ * - SMD5/SSH/PKCS5S2 : base64(<salted-password-digest><salt (4 or 8 bytes)>)
  * - crypt : <salt (2 btytes)><password>
  *
- * Algorithm are currently MD5, SMD5, SHA, SSHA, SHA2, SSHA-2 (except SHA-224), CRYPT and empty
+ * Algorithm are currently MD5, SMD5, SHA, SSHA, SHA2, SSHA-2 (except SHA-224), PKCS5S2, CRYPT and empty
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class EncryptionMethod
