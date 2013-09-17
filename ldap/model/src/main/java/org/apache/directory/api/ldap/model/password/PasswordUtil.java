@@ -422,7 +422,7 @@ public class PasswordUtil
 
             case HASH_METHOD_SHA384:
             case HASH_METHOD_SSHA384:
-                return getCredentials( credentials, algoLength, SHA512_LENGTH, encryptionMethod );
+                return getCredentials( credentials, algoLength, SHA384_LENGTH, encryptionMethod );
 
             case HASH_METHOD_SHA512:
             case HASH_METHOD_SSHA512:
