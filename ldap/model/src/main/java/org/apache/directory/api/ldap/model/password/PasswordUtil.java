@@ -64,7 +64,7 @@ public class PasswordUtil
     public static final int MD5_LENGTH = 16;
 
     /** The PKCS5S2 hash length */
-    public static final int PKCS5S2_LENGTH = 20;
+    public static final int PKCS5S2_LENGTH = 32;
 
     /**
      * Get the algorithm from the stored password. 
@@ -149,11 +149,15 @@ public class PasswordUtil
             case HASH_METHOD_SSHA384:
             case HASH_METHOD_SSHA512:
             case HASH_METHOD_SMD5:
-            case HASH_METHOD_PKCS5S2:
                 salt = new byte[8]; // we use 8 byte salt always except for "crypt" which needs 2 byte salt
                 new SecureRandom().nextBytes( salt );
                 break;
 
+            case HASH_METHOD_PKCS5S2:
+                salt = new byte[16]; // we use 16 byte salt for PKCS5S2
+                new SecureRandom().nextBytes( salt );
+                break;
+                
             case HASH_METHOD_CRYPT:
                 salt = new byte[2];
                 SecureRandom sr = new SecureRandom();
@@ -183,7 +187,16 @@ public class PasswordUtil
             else if ( salt != null )
             {
                 byte[] hashedPasswordWithSaltBytes = new byte[hashedPassword.length + salt.length];
-                merge( hashedPasswordWithSaltBytes, hashedPassword, salt );
+
+                if ( algorithm == LdapSecurityConstants.HASH_METHOD_PKCS5S2 )
+                {
+                    merge( hashedPasswordWithSaltBytes, salt, hashedPassword );
+                }
+                else
+                {
+                    merge( hashedPasswordWithSaltBytes, hashedPassword, salt );
+                }
+                
                 sb.append( String.valueOf( Base64.encode( hashedPasswordWithSaltBytes ) ) );
             }
             else
@@ -222,12 +235,14 @@ public class PasswordUtil
      *  <ul>
      *  <li>- length(password) - 20, starting at 21st position for SSHA</li>
      *  <li>- length(password) - 16, starting at 16th position for SMD5</li>
-     *  <li>- length(password) - 20, starting at 21st position for PKCS5S2</li>
      *  <li>- length(password) - 2, starting at 3rd position for crypt</li>
      *  </ul>
      *  <p>
      *  For (S)SHA, SHA-256 and (S)MD5, we have to transform the password from Base64 encoded text
      *  to a byte[] before comparing the password with the stored one.
+     *  </p>
+     *  <p>
+     *  For PKCS5S2 the salt is stored in the beginning of the password
      *  </p>
      *  <p>
      *  For crypt, we only have to remove the salt.
@@ -429,7 +444,7 @@ public class PasswordUtil
                 return getCredentials( credentials, algoLength, SHA512_LENGTH, encryptionMethod );
 
             case HASH_METHOD_PKCS5S2:
-                return getCredentials( credentials, algoLength, PKCS5S2_LENGTH, encryptionMethod );
+                return getPbkdf2Credentials( credentials, algoLength, encryptionMethod );
                 
             case HASH_METHOD_CRYPT:
                 // The password is associated with a salt. Decompose it
@@ -524,6 +539,8 @@ public class PasswordUtil
     /**
      * generates a hash based on the <a href="http://en.wikipedia.org/wiki/PBKDF2">PKCS5S2 spec</a>
      * 
+     * Note: this has been implemented to generate hashes compatible with what JIRA generates.
+     *       See the <a href="http://pythonhosted.org/passlib/lib/passlib.hash.atlassian_pbkdf2_sha1.html">JIRA's passlib</a>
      * @param algorithm the algorithm to use
      * @param password the credentials
      * @param salt the optional salt
@@ -535,13 +552,44 @@ public class PasswordUtil
         {
             SecretKeyFactory sk = SecretKeyFactory.getInstance( algorithm.getAlgorithm() );
             char[] password = Strings.utf8ToString( credentials ).toCharArray();
-            KeySpec keySpec = new PBEKeySpec( password, salt, 1000, 160 );
+            KeySpec keySpec = new PBEKeySpec( password, salt, 10000, PKCS5S2_LENGTH * 8 );
             Key key = sk.generateSecret( keySpec );
             return key.getEncoded();
         }
         catch( Exception e )
         {
             throw new RuntimeException( e );
+        }
+    }
+
+    
+    /**
+     * Gets the credentials from a PKCS5S2 hash.
+     * The salt for PKCS5S2 hash is prepended to the password
+     */
+    private static byte[] getPbkdf2Credentials( byte[] credentials, int algoLength, EncryptionMethod encryptionMethod )
+    {
+        try
+        {
+            // The password is associated with a salt. Decompose it
+            // in two parts, after having decoded the password.
+            // The salt will be stored into the EncryptionMethod structure
+            // The salt is at the *beginning* of the credentials, and is 16 bytes long
+            byte[] passwordAndSalt = Base64.decode( new String( credentials, algoLength, credentials.length
+                - algoLength, "UTF-8" ).toCharArray() );
+
+            int saltLength = passwordAndSalt.length - PKCS5S2_LENGTH;
+            encryptionMethod.setSalt( new byte[saltLength] );
+            byte[] password = new byte[PKCS5S2_LENGTH];
+            
+            split( passwordAndSalt, 0, encryptionMethod.getSalt(), password );
+
+            return password;
+        }
+        catch ( UnsupportedEncodingException uee )
+        {
+            // do nothing
+            return credentials;
         }
     }
     
