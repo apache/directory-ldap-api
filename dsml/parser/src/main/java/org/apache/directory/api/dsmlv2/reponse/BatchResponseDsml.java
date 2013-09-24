@@ -131,10 +131,25 @@ public class BatchResponseDsml
 
     /**
      * Converts this Batch Response to its XML representation in the DSMLv2 format.
+     * The XML document will be formatted for pretty printing by default. 
+     * 
+     * @see {@link #toDsml(boolean)}
      * 
      * @return the XML representation in DSMLv2 format
      */
     public String toDsml()
+    {
+       return toDsml( true ); 
+    }
+    
+    
+    /**
+     * Converts this Batch Response to its XML representation in the DSMLv2 format.
+     * 
+     * @param prettyPrint if true, formats the document for pretty printing
+     * @return the XML representation in DSMLv2 format
+     */
+    public String toDsml( boolean prettyPrint )
     {
         Document document = DocumentHelper.createDocument();
         Element element = document.addElement( "batchResponse" );
@@ -154,6 +169,11 @@ public class BatchResponseDsml
             response.toDsml( element );
         }
 
-        return ParserUtils.styleDocument( document ).asXML();
+        if( prettyPrint )
+        {
+            document = ParserUtils.styleDocument( document );
+        }
+        
+        return document.asXML();
     }
 }
