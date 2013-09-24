@@ -48,6 +48,8 @@ import org.dom4j.Namespace;
 import org.dom4j.QName;
 import org.dom4j.io.DocumentResult;
 import org.dom4j.io.DocumentSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -82,7 +84,9 @@ public final class ParserUtils
 
     /** The XSI namespace */
     public static final Namespace XSI_NAMESPACE = new Namespace( XSI, XML_SCHEMA_INSTANCE_URI );
-
+    
+    /** A logger for this class */
+    private static final Logger LOG = LoggerFactory.getLogger( ParserUtils.class );
 
     /**
      * Returns the value of the attribute 'type' of the "XMLSchema-instance' namespace if it exists
@@ -307,7 +311,7 @@ public final class ParserUtils
         }
         catch ( TransformerConfigurationException e1 )
         {
-            e1.printStackTrace();
+            LOG.warn( "Failed to create the XSLT transformer", e1 );
             // return original document
             return document;
         }
