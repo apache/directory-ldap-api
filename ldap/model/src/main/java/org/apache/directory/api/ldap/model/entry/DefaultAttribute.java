@@ -776,10 +776,16 @@ public class DefaultAttribute implements Attribute, Cloneable
         BinaryValue nullBinaryValue = null;
         StringValue nullStringValue = null;
         boolean nullValueAdded = false;
+        Value<?>[] valArray = vals;
+
+        if ( vals == null )
+        {
+            valArray = new Value[0];
+        }
 
         if ( attributeType != null )
         {
-            for ( Value<?> val : vals )
+            for ( Value<?> val : valArray )
             {
                 if ( attributeType.getSyntax().isHumanReadable() )
                 {
@@ -892,7 +898,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         }
         else
         {
-            for ( Value<?> val : vals )
+            for ( Value<?> val : valArray )
             {
                 if ( val == null )
                 {
@@ -1036,6 +1042,12 @@ public class DefaultAttribute implements Attribute, Cloneable
     public int add( String... vals ) throws LdapInvalidAttributeValueException
     {
         int nbAdded = 0;
+        String[] valArray = vals;
+
+        if ( vals == null )
+        {
+            valArray = new String[0];
+        }
 
         // First, if the isHR flag is not set, we assume that the
         // attribute is HR, because we are asked to add some strings.
@@ -1049,7 +1061,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         {
             if ( isHR )
             {
-                for ( String val : vals )
+                for ( String val : valArray )
                 {
                     Value<String> value = createStringValue( attributeType, val );
 
@@ -1074,7 +1086,7 @@ public class DefaultAttribute implements Attribute, Cloneable
             else
             {
                 // The attribute is binary. Transform the String to byte[]
-                for ( String val : vals )
+                for ( String val : valArray )
                 {
                     byte[] valBytes = null;
 
@@ -1095,7 +1107,7 @@ public class DefaultAttribute implements Attribute, Cloneable
         }
         else
         {
-            if ( attributeType.isSingleValued() && ( values.size() + vals.length > 1 ) )
+            if ( attributeType.isSingleValued() && ( values.size() + valArray.length > 1 ) )
             {
                 LOG.error( I18n.err( I18n.ERR_04487_ATTRIBUTE_IS_SINGLE_VALUED, attributeType.getName() ) );
                 return 0;
@@ -1103,7 +1115,7 @@ public class DefaultAttribute implements Attribute, Cloneable
 
             if ( isHR )
             {
-                for ( String val : vals )
+                for ( String val : valArray )
                 {
                     Value<String> value = createStringValue( attributeType, val );
 
@@ -1128,7 +1140,7 @@ public class DefaultAttribute implements Attribute, Cloneable
             else
             {
                 // The attribute is binary. Transform the String to byte[]
-                for ( String val : vals )
+                for ( String val : valArray )
                 {
                     byte[] valBytes = null;
 
@@ -1165,6 +1177,12 @@ public class DefaultAttribute implements Attribute, Cloneable
     public int add( byte[]... vals ) throws LdapInvalidAttributeValueException
     {
         int nbAdded = 0;
+        byte[][] valArray = vals;
+
+        if ( vals == null )
+        {
+            valArray = new byte[0][];
+        }
 
         // First, if the isHR flag is not set, we assume that the
         // attribute is not HR, because we are asked to add some byte[].
@@ -1175,7 +1193,7 @@ public class DefaultAttribute implements Attribute, Cloneable
 
         if ( !isHR )
         {
-            for ( byte[] val : vals )
+            for ( byte[] val : valArray )
             {
                 Value<byte[]> value = null;
 
