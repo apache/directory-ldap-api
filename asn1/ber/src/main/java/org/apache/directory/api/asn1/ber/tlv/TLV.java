@@ -83,12 +83,12 @@ public class TLV
     public static final int LENGTH_SHORT_MASK = 0x007F;
 
     /** A speedup for single bytes length */
-    private static final byte[][] ONE_BYTE = new byte[256][];
+    private static final byte[][] ONE_BYTE = new byte[128][];
 
     // Initialize an array of byte[] used for encoding lengths below 128
     static
     {
-        for ( int i = 0; i < 256; i++ )
+        for ( int i = 0; i < 128; i++ )
         {
             ONE_BYTE[i] = new byte[1];
             ONE_BYTE[i][0] = ( byte ) i;
