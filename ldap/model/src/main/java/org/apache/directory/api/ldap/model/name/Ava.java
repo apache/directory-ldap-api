@@ -38,6 +38,7 @@ import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.LdapComparator;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.util.Serialize;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -731,6 +732,249 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                 return normValue.equals( instance.normValue );
             }
         }
+    }
+
+
+    /**
+     * Serialize the AVA into a buffer at the given position.
+     * 
+     * @param buffer The buffer which will contain the serialized Ava
+     * @param pos The position in the buffer for the serialized value
+     * @return The new position in the buffer
+     */
+    public int serialize( byte[] buffer, int pos ) throws IOException
+    {
+        if ( Strings.isEmpty( upName )
+            || Strings.isEmpty( upType )
+            || Strings.isEmpty( normType )
+            || ( upValue.isNull() )
+            || ( normValue.isNull() ) )
+        {
+            String message = "Cannot serialize an wrong ATAV, ";
+
+            if ( Strings.isEmpty( upName ) )
+            {
+                message += "the upName should not be null or empty";
+            }
+            else if ( Strings.isEmpty( upType ) )
+            {
+                message += "the upType should not be null or empty";
+            }
+            else if ( Strings.isEmpty( normType ) )
+            {
+                message += "the normType should not be null or empty";
+            }
+            else if ( upValue.isNull() )
+            {
+                message += "the upValue should not be null";
+            }
+            else if ( normValue.isNull() )
+            {
+                message += "the value should not be null";
+            }
+
+            LOG.error( message );
+            throw new IOException( message );
+        }
+
+        int length = 0;
+
+        // The upName
+        byte[] upNameBytes = null;
+
+        if ( upName != null )
+        {
+            upNameBytes = Strings.getBytesUtf8( upName );
+            length += 1 + 4 + upNameBytes.length;
+        }
+
+        // The upType
+        byte[] upTypeBytes = null;
+
+        if ( upType != null )
+        {
+            upTypeBytes = Strings.getBytesUtf8( upType );
+            length += 1 + 4 + upTypeBytes.length;
+        }
+
+        // The normType
+        byte[] normTypeBytes = null;
+
+        if ( normType != null )
+        {
+            normTypeBytes = Strings.getBytesUtf8( normType );
+            length += 1 + 4 + normTypeBytes.length;
+        }
+
+        // Is HR
+        length++;
+
+        // The hash code
+        length += 4;
+
+        // Check that we will be able to store the data in the buffer
+        if ( buffer.length - pos < length )
+        {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+
+        // Write the upName
+        if ( upName != null )
+        {
+            buffer[pos++] = Serialize.TRUE;
+            pos = Serialize.serialize( upNameBytes, buffer, pos );
+        }
+        else
+        {
+            buffer[pos++] = Serialize.FALSE;
+        }
+
+        // Write the upType
+        if ( upType != null )
+        {
+            buffer[pos++] = Serialize.TRUE;
+            pos = Serialize.serialize( upTypeBytes, buffer, pos );
+        }
+        else
+        {
+            buffer[pos++] = Serialize.FALSE;
+        }
+
+        // Write the normType
+        if ( normType != null )
+        {
+            buffer[pos++] = Serialize.TRUE;
+            pos = Serialize.serialize( normTypeBytes, buffer, pos );
+        }
+        else
+        {
+            buffer[pos++] = Serialize.FALSE;
+        }
+
+        // Write the isHR flag
+        if ( normValue.isHumanReadable() )
+        {
+            buffer[pos++] = Serialize.TRUE;
+        }
+        else
+        {
+            buffer[pos++] = Serialize.FALSE;
+        }
+
+        // Write the upValue
+        if ( upValue.isHumanReadable() )
+        {
+            pos = ( ( StringValue ) upValue ).serialize( buffer, pos );
+        }
+        else
+        {
+            //pos = ( ( BinaryValue ) upValue ).serialize( buffer, pos );
+
+        }
+
+        // Write the normValue
+        if ( normValue.isHumanReadable() )
+        {
+            pos = ( ( StringValue ) normValue ).serialize( buffer, pos );
+        }
+        else
+        {
+            //pos = ( ( BinaryValue ) normValue ).serialize( buffer, pos );
+        }
+
+        // Write the hash code
+        pos = Serialize.serialize( h, buffer, pos );
+
+        return pos;
+    }
+
+
+    /**
+     * Deserialize an AVA from a byte[], starting at a given position
+     * 
+     * @param buffer The buffer containing the AVA
+     * @param pos The position in the buffer
+     * @return The new position
+     * @throws IOException If the serialized value is not an AVA
+     * @throws LdapInvalidAttributeValueException If the serialized AVA is invalid
+     */
+    public int deserialize( byte[] buffer, int pos ) throws IOException, LdapInvalidAttributeValueException
+    {
+        if ( ( pos < 0 ) || ( pos >= buffer.length ) )
+        {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+
+        // Read the upName value, if it's not null
+        boolean hasUpName = Serialize.deserializeBoolean( buffer, pos );
+        pos++;
+
+        if ( hasUpName )
+        {
+            byte[] wrappedValueBytes = Serialize.deserializeBytes( buffer, pos );
+            pos += 4 + wrappedValueBytes.length;
+            upName = Strings.utf8ToString( wrappedValueBytes );
+        }
+
+        // Read the upType value, if it's not null
+        boolean hasUpType = Serialize.deserializeBoolean( buffer, pos );
+        pos++;
+
+        if ( hasUpType )
+        {
+            byte[] upTypeBytes = Serialize.deserializeBytes( buffer, pos );
+            pos += 4 + upTypeBytes.length;
+            upType = Strings.utf8ToString( upTypeBytes );
+        }
+
+        // Read the normType value, if it's not null
+        boolean hasNormType = Serialize.deserializeBoolean( buffer, pos );
+        pos++;
+
+        if ( hasNormType )
+        {
+            byte[] normTypeBytes = Serialize.deserializeBytes( buffer, pos );
+            pos += 4 + normTypeBytes.length;
+            normType = Strings.utf8ToString( normTypeBytes );
+        }
+
+        // Update the AtributeType
+        if ( schemaManager != null )
+        {
+            if ( !Strings.isEmpty( upType ) )
+            {
+                attributeType = schemaManager.getAttributeType( upType );
+            }
+            else
+            {
+                attributeType = schemaManager.getAttributeType( normType );
+            }
+        }
+
+        // Read the isHR flag
+        boolean isHR = Serialize.deserializeBoolean( buffer, pos );
+        pos++;
+
+        if ( isHR )
+        {
+            // Read the upValue
+            upValue = new StringValue( attributeType );
+            pos = ( ( StringValue ) upValue ).deserialize( buffer, pos );
+
+            // Read the normValue
+            normValue = new StringValue( attributeType );
+            pos = ( ( StringValue ) normValue ).deserialize( buffer, pos );
+        }
+        else
+        {
+            // TODO
+        }
+
+        // Read the hashCode
+        h = Serialize.deserializeInt( buffer, pos );
+        pos += 4;
+
+        return pos;
     }
 
 

@@ -319,7 +319,7 @@ public class FilterParser
 
                 if ( attributeType.getEquality().getSyntax().isHumanReadable() )
                 {
-                    return new StringValue( null );
+                    return new StringValue( ( String ) null );
                 }
                 else
                 {

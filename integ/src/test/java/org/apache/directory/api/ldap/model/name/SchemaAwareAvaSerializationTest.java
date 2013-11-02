@@ -31,16 +31,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.apache.directory.api.util.Strings;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -48,11 +44,8 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-@RunWith(ConcurrentJunitRunner.class)
-@Concurrency()
 public class SchemaAwareAvaSerializationTest
 {
-
     private static SchemaManager schemaManager;
 
 
@@ -88,6 +81,25 @@ public class SchemaAwareAvaSerializationTest
     }
 
 
+    /**
+     * Test serialization of a simple ATAV
+     */
+    @Test
+    public void testStringAtavSerializationBytes() throws LdapException, IOException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+        Ava atav = new Ava( schemaManager, "CN", "Test" );
+
+        int pos1 = atav.serialize( buffer, 0 );
+
+        Ava atav2 = new Ava( schemaManager );
+        int pos2 = atav2.deserialize( buffer, 0 );
+
+        assertEquals( pos1, pos2 );
+        assertEquals( atav, atav2 );
+    }
+
+
     @Test
     public void testBinaryAtavSerialization() throws LdapException, IOException, ClassNotFoundException
     {
@@ -108,6 +120,25 @@ public class SchemaAwareAvaSerializationTest
         Ava atav2 = new Ava( schemaManager );
         atav2.readExternal( in );
 
+        assertEquals( atav, atav2 );
+    }
+
+
+    @Ignore
+    @Test
+    public void testBinaryAtavSerializationBytes() throws LdapException, IOException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+        byte[] normValue = Strings.getBytesUtf8( "Test" );
+
+        Ava atav = new Ava( schemaManager, "userPKCS12", normValue );
+
+        int pos1 = atav.serialize( buffer, 0 );
+
+        Ava atav2 = new Ava( schemaManager );
+        int pos2 = atav2.deserialize( buffer, 0 );
+
+        assertEquals( pos1, pos2 );
         assertEquals( atav, atav2 );
     }
 
@@ -135,6 +166,27 @@ public class SchemaAwareAvaSerializationTest
     }
 
 
+    /**
+     * Test serialization of a simple ATAV
+     */
+    @Test
+    public void testNullAtavSerializationBytes() throws LdapException, IOException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+        Ava atav = new Ava( schemaManager );
+
+        try
+        {
+            atav.serialize( buffer, 0 );
+            fail();
+        }
+        catch ( IOException ioe )
+        {
+            assertTrue( true );
+        }
+    }
+
+
     @Test
     public void testNullUpValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
@@ -146,6 +198,25 @@ public class SchemaAwareAvaSerializationTest
         try
         {
             atav.writeExternal( out );
+            fail();
+        }
+        catch ( IOException ioe )
+        {
+            String message = ioe.getMessage();
+            assertEquals( "Cannot serialize an wrong ATAV, the upValue should not be null", message );
+        }
+    }
+
+
+    @Test
+    public void testNullUpValueSerializationBytes() throws LdapException, IOException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+        Ava atav = new Ava( schemaManager, "dc", ( String ) null );
+
+        try
+        {
+            atav.serialize( buffer, 0 );
             fail();
         }
         catch ( IOException ioe )
@@ -178,6 +249,22 @@ public class SchemaAwareAvaSerializationTest
     }
 
 
+    @Test
+    public void testEmptyNormValueSerializationBytes() throws LdapException, IOException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+        Ava atav = new Ava( schemaManager, "DC", "" );
+
+        int pos1 = atav.serialize( buffer, 0 );
+
+        Ava atav2 = new Ava( schemaManager );
+        int pos2 = atav2.deserialize( buffer, 0 );
+
+        assertEquals( pos1, pos2 );
+        assertEquals( atav, atav2 );
+    }
+
+
     /**
      * Test serialization of a simple ATAV
      */
@@ -199,6 +286,25 @@ public class SchemaAwareAvaSerializationTest
         Ava atav2 = new Ava( schemaManager );
         atav2.readExternal( in );
 
+        assertEquals( atav, atav2 );
+    }
+
+
+    /**
+     * Test serialization of a simple ATAV
+     */
+    @Test
+    public void testStringAtavStaticSerializationBytes() throws LdapException, IOException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+        Ava atav = new Ava( schemaManager, "CN", "Test" );
+
+        int pos1 = atav.serialize( buffer, 0 );
+
+        Ava atav2 = new Ava( schemaManager );
+        int pos2 = atav2.deserialize( buffer, 0 );
+
+        assertEquals( pos1, pos2 );
         assertEquals( atav, atav2 );
     }
 
@@ -227,6 +333,25 @@ public class SchemaAwareAvaSerializationTest
     }
 
 
+    @Ignore
+    @Test
+    public void testBinaryAtavStaticSerializationBytes() throws LdapException, IOException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+        byte[] upValue = Strings.getBytesUtf8( "  Test  " );
+
+        Ava atav = new Ava( schemaManager, "userPKCS12", upValue );
+
+        int pos1 = atav.serialize( buffer, 0 );
+
+        Ava atav2 = new Ava( schemaManager );
+        int pos2 = atav2.deserialize( buffer, 0 );
+
+        assertEquals( pos1, pos2 );
+        assertEquals( atav, atav2 );
+    }
+
+
     /**
      * Test static serialization of a simple ATAV
      */
@@ -250,8 +375,40 @@ public class SchemaAwareAvaSerializationTest
     }
 
 
+    /**
+     * Test static serialization of a simple ATAV
+     */
+    @Test
+    public void testNullAtavStaticSerializationBytes() throws LdapException, IOException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+        Ava atav = new Ava( schemaManager );
+
+        try
+        {
+            atav.serialize( buffer, 0 );
+            fail();
+        }
+        catch ( IOException ioe )
+        {
+            assertTrue( true );
+        }
+    }
+
+
     @Test(expected = IOException.class)
     public void testNullNormValueStaticSerialization() throws LdapException, IOException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+        Ava atav = new Ava( schemaManager, "DC", ( String ) null );
+
+        atav.serialize( buffer, 0 );
+        fail();
+    }
+
+
+    @Test(expected = IOException.class)
+    public void testNullNormValueStaticSerializationBytes() throws LdapException, IOException, ClassNotFoundException
     {
         Ava atav = new Ava( schemaManager, "DC", ( String ) null );
 
@@ -266,7 +423,7 @@ public class SchemaAwareAvaSerializationTest
     @Test
     public void testEmptyNormValueStaticSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Ava atav = new Ava( schemaManager, "DC", ( String ) "" );
+        Ava atav = new Ava( schemaManager, "DC", "" );
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream( baos );
@@ -282,5 +439,75 @@ public class SchemaAwareAvaSerializationTest
         atav2.readExternal( in );
 
         assertEquals( atav, atav2 );
+    }
+
+
+    @Test
+    public void testEmptyNormValueStaticSerializationBytes() throws LdapException, IOException, ClassNotFoundException
+    {
+        byte[] buffer = new byte[128];
+        Ava atav = new Ava( schemaManager, "DC", "" );
+
+        int pos1 = atav.serialize( buffer, 0 );
+
+        Ava atav2 = new Ava( schemaManager );
+        int pos2 = atav2.deserialize( buffer, 0 );
+
+        assertEquals( pos1, pos2 );
+        assertEquals( atav, atav2 );
+    }
+
+
+    @Ignore
+    @Test
+    public void testStringAtavSerializationPerf() throws IOException, LdapException,
+        ClassNotFoundException
+    {
+        Ava atav = new Ava( schemaManager, "CN", "Test" );
+        Ava atav2 = new Ava( schemaManager );
+
+        long t0 = System.currentTimeMillis();
+
+        for ( int i = 0; i < 10000000; i++ )
+        {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream out = new ObjectOutputStream( baos );
+
+            atav.writeExternal( out );
+
+            ObjectInputStream in = null;
+
+            byte[] data = baos.toByteArray();
+            in = new ObjectInputStream( new ByteArrayInputStream( data ) );
+
+            atav2.readExternal( in );
+        }
+
+        long t1 = System.currentTimeMillis();
+
+        System.out.println( "Delta ser slow = " + ( t1 - t0 ) );
+    }
+
+
+    @Ignore
+    @Test
+    public void testStringAtavSerializationBytesPerf() throws IOException, LdapException,
+        ClassNotFoundException
+    {
+        Ava atav = new Ava( schemaManager, "CN", "Test" );
+        Ava atav2 = new Ava( schemaManager );
+
+        long t0 = System.currentTimeMillis();
+
+        for ( int i = 0; i < 10000000; i++ )
+        {
+            byte[] buffer = new byte[128];
+            atav.serialize( buffer, 0 );
+            atav2.deserialize( buffer, 0 );
+        }
+
+        long t1 = System.currentTimeMillis();
+
+        System.out.println( "Delta ser fast = " + ( t1 - t0 ) );
     }
 }

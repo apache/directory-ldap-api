@@ -30,6 +30,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.Normalizer;
+import org.apache.directory.api.util.Serialize;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.util.exception.NotImplementedException;
 
@@ -59,7 +60,7 @@ public class StringValue extends AbstractValue<String>
      *
      * @param attributeType the schema attribute type associated with this StringValue
      */
-    /* No protection*/StringValue( AttributeType attributeType )
+    public StringValue( AttributeType attributeType )
     {
         if ( attributeType != null )
         {
@@ -568,6 +569,191 @@ public class StringValue extends AbstractValue<String>
 
         // The hashCoe
         h = in.readInt();
+    }
+
+
+    /**
+     * Serialize the StringValue into a buffer at the given position.
+     * 
+     * @param buffer The buffer which will contain the serialized StringValue
+     * @param pos The position in the buffer for the serialized value
+     * @return The new position in the buffer
+     */
+    public int serialize( byte[] buffer, int pos )
+    {
+        // Compute the length
+        int length = 1 + 1 + 1 + 4; // The value type, the wrappedValue presence flag,
+                                    // the normalizedValue presence flag and the hash length.
+
+        byte[] wrappedValueBytes = null;
+        byte[] normalizedValueBytes = null;
+
+        if ( wrappedValue != null )
+        {
+            wrappedValueBytes = Strings.getBytesUtf8( wrappedValue );
+            length += 4 + wrappedValueBytes.length;
+        }
+
+        if ( attributeType != null )
+        {
+            if ( normalizedValue != null )
+            {
+                normalizedValueBytes = Strings.getBytesUtf8( normalizedValue );
+                length += 1 + 4 + normalizedValueBytes.length;
+            }
+            else
+            {
+                length += 1;
+            }
+        }
+
+        // Check that we will be able to store the data in the buffer
+        if ( buffer.length - pos < length )
+        {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+
+        // The STRING flag
+        buffer[pos] = Serialize.TRUE;
+        pos++;
+
+        // Write the wrapped value, if it's not null
+        if ( wrappedValue != null )
+        {
+            buffer[pos++] = Serialize.TRUE;
+            pos = Serialize.serialize( wrappedValueBytes, buffer, pos );
+        }
+        else
+        {
+            buffer[pos++] = Serialize.FALSE;
+        }
+
+        // Write the isNormalized flag
+        if ( attributeType != null )
+        {
+            // This flag is present to tell that we have a normalized value different
+            // from the upValue
+
+            buffer[pos++] = Serialize.TRUE;
+
+            // Write the normalized value, if not null
+            if ( normalizedValue != null )
+            {
+                buffer[pos++] = Serialize.TRUE;
+                pos = Serialize.serialize( normalizedValueBytes, buffer, pos );
+            }
+            else
+            {
+                buffer[pos++] = Serialize.FALSE;
+            }
+        }
+        else
+        {
+            // No normalized value
+            buffer[pos++] = Serialize.FALSE;
+        }
+
+        // Write the hashCode
+        pos = Serialize.serialize( h, buffer, pos );
+
+        return pos;
+    }
+
+
+    /**
+     * Deserialize a StringValue from a byte[], starting at a given position
+     * 
+     * @param buffer The buffer containing the StringValue
+     * @param pos The position in the buffer
+     * @return The new position
+     * @throws IOException If the serialized value is not a StringValue
+     */
+    public int deserialize( byte[] buffer, int pos ) throws IOException
+    {
+        if ( ( pos < 0 ) || ( pos >= buffer.length ) )
+        {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+
+        // Read the STRING flag
+        boolean isHR = Serialize.deserializeBoolean( buffer, pos );
+        pos++;
+
+        if ( !isHR )
+        {
+            throw new IOException( "The serialized value is not a String value" );
+        }
+
+        // Read the wrapped value, if it's not null
+        boolean hasWrappedValue = Serialize.deserializeBoolean( buffer, pos );
+        pos++;
+
+        if ( hasWrappedValue )
+        {
+            byte[] wrappedValueBytes = Serialize.deserializeBytes( buffer, pos );
+            pos += 4 + wrappedValueBytes.length;
+            wrappedValue = Strings.utf8ToString( wrappedValueBytes );
+        }
+
+        // Read the isNormalized flag
+        boolean hasAttributeType = Serialize.deserializeBoolean( buffer, pos );
+        pos++;
+
+        if ( hasAttributeType )
+        {
+            // Read the normalized value, if not null
+            boolean hasNormalizedValue = Serialize.deserializeBoolean( buffer, pos );
+            pos++;
+
+            if ( hasNormalizedValue )
+            {
+                byte[] normalizedValueBytes = Serialize.deserializeBytes( buffer, pos );
+                pos += 4 + normalizedValueBytes.length;
+                normalizedValue = Strings.utf8ToString( normalizedValueBytes );
+            }
+        }
+        else
+        {
+            if ( attributeType != null )
+            {
+                try
+                {
+                    MatchingRule equality = attributeType.getEquality();
+
+                    if ( equality == null )
+                    {
+                        normalizedValue = wrappedValue;
+                    }
+                    else
+                    {
+                        Normalizer normalizer = equality.getNormalizer();
+
+                        if ( normalizer != null )
+                        {
+                            normalizedValue = normalizer.normalize( wrappedValue );
+                        }
+                        else
+                        {
+                            normalizedValue = wrappedValue;
+                        }
+                    }
+                }
+                catch ( LdapException le )
+                {
+                    normalizedValue = wrappedValue;
+                }
+            }
+            else
+            {
+                normalizedValue = wrappedValue;
+            }
+        }
+
+        // The hashCode
+        h = Serialize.deserializeInt( buffer, pos );
+        pos += 4;
+
+        return pos;
     }
 
 

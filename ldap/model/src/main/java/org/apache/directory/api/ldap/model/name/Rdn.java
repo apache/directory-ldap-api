@@ -35,12 +35,14 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.normalizers.OidNormalizer;
 import org.apache.directory.api.util.Chars;
 import org.apache.directory.api.util.Hex;
+import org.apache.directory.api.util.Serialize;
 import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.util.Unicode;
@@ -1516,6 +1518,148 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         }
 
         return h;
+    }
+
+
+    /**
+     * Serialize a RDN into a byte[]
+     * 
+     * @return a byte[] containing a RDN
+     */
+    public int serialize( byte[] buffer, int pos ) throws IOException
+    {
+        int length = 4 + 4; // The nbAvas and the HashCode length
+
+        // The NnbAvas
+        pos = Serialize.serialize( nbAvas, buffer, pos );
+
+        // The upName
+        byte[] upNameBytes = Strings.getBytesUtf8( upName );
+        length += 4 + upNameBytes.length;
+
+        byte[] normNameBytes = Strings.EMPTY_BYTES;
+        length += 4;
+
+        if ( !upName.equals( normName ) )
+        {
+            normNameBytes = Strings.getBytesUtf8( normName );
+            length += 4 + normNameBytes.length;
+        }
+
+        // Check that we will be able to store the data in the buffer
+        if ( buffer.length - pos < length )
+        {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+
+        // Write the upName
+        pos = Serialize.serialize( upNameBytes, buffer, pos );
+
+        // Write the normName
+        pos = Serialize.serialize( normNameBytes, buffer, pos );
+
+        // Write the AVAs
+        switch ( nbAvas )
+        {
+            case 0:
+                break;
+
+            case 1:
+                pos = ava.serialize( buffer, pos );
+
+                break;
+
+            default:
+                for ( Ava localAva : avas )
+                {
+                    pos = localAva.serialize( buffer, pos );
+                }
+
+                break;
+        }
+
+        // The hash code
+        pos = Serialize.serialize( h, buffer, pos );
+
+        return pos;
+    }
+
+
+    /**
+     * Deserialize a RDN from a byte[], starting at a given position
+     * 
+     * @param buffer The buffer containing the RDN
+     * @param pos The position in the buffer
+     * @return The new position
+     * @throws IOException If the serialized value is not a RDN
+     * @throws LdapInvalidAttributeValueException If the serialized RDN is invalid
+     */
+    public int deserialize( byte[] buffer, int pos ) throws IOException, LdapInvalidAttributeValueException
+    {
+        if ( ( pos < 0 ) || ( pos >= buffer.length ) )
+        {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+
+        // Read the nbAvas
+        nbAvas = Serialize.deserializeInt( buffer, pos );
+        pos += 4;
+
+        // Read the upName
+        byte[] upNameBytes = Serialize.deserializeBytes( buffer, pos );
+        pos += 4 + upNameBytes.length;
+        upName = Strings.utf8ToString( upNameBytes );
+
+        // Read the normName
+        byte[] normNameBytes = Serialize.deserializeBytes( buffer, pos );
+        pos += 4 + normNameBytes.length;
+
+        if ( normNameBytes.length == 0 )
+        {
+            normName = upName;
+        }
+        else
+        {
+            normName = Strings.utf8ToString( normNameBytes );
+        }
+
+        // Read the AVAs
+        switch ( nbAvas )
+        {
+            case 0:
+                break;
+
+            case 1:
+                ava = new Ava( schemaManager );
+                pos = ava.deserialize( buffer, pos );
+                avaType = ava.getNormType();
+
+                break;
+
+            default:
+                avas = new ArrayList<Ava>();
+
+                avaTypes = new MultiValueMap();
+
+                for ( int i = 0; i < nbAvas; i++ )
+                {
+                    Ava ava = new Ava( schemaManager );
+                    pos = ava.deserialize( buffer, pos );
+                    avas.add( ava );
+                    avaTypes.put( ava.getNormType(), ava );
+                }
+
+                ava = null;
+                avaType = null;
+
+                break;
+        }
+
+        // Read the hashCode
+        h = Serialize.deserializeInt( buffer, pos );
+        pos += 4;
+
+        return pos;
     }
 
 
