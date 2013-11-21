@@ -97,7 +97,16 @@ public class LdifEntry implements Cloneable, Externalizable
     /** The controls */
     private Map<String, LdifControl> controls;
 
+    /** The lengthBeforeParsing of the entry at the time of parsing. This includes
+     *  the lengthBeforeParsing of the comments present in entry at the time of parsing
+     *  so this lengthBeforeParsing may not always match with the lengthBeforeParsing of the entry
+     *  data present in memory.
+     */
+    private int lengthBeforeParsing = 0;
 
+    /** the position of the entry in the file or given input string*/
+    private long offset = 0;
+    
     /**
      * Creates a new LdifEntry object.
      */
@@ -826,6 +835,45 @@ public class LdifEntry implements Cloneable, Externalizable
         }
 
         return clone;
+    }
+
+
+    /** 
+     *  Returns the lengthBeforeParsing of the entry at the time of parsing. This includes
+     *  the lengthBeforeParsing of the comments present in entry at the time of parsing
+     *  so this lengthBeforeParsing may not always match with the lengthBeforeParsing of the entry
+     *  data present in memory.
+     */
+    public int getLengthBeforeParsing()
+    {
+        return lengthBeforeParsing;
+    }
+
+
+    /**
+     * @param lengthBeforeParsing the lengthBeforeParsing to set
+     */
+    /**No qualifier*/ void setLengthBeforeParsing( int length )
+    {
+        this.lengthBeforeParsing = length;
+    }
+
+
+    /**
+     * @return the offset
+     */
+    public long getOffset()
+    {
+        return offset;
+    }
+
+
+    /**
+     * @param offset the offset to set
+     */
+    /**No qualifier*/ void setOffset( long offset )
+    {
+        this.offset = offset;
     }
 
 

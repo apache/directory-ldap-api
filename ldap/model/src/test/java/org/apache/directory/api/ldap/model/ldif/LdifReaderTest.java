@@ -30,7 +30,9 @@ import static org.junit.Assert.fail;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -205,6 +207,8 @@ public class LdifReaderTest
 
         assertTrue( entry.isLdifContent() );
 
+        assertEquals( ldif.length(), entry.getLengthBeforeParsing() );
+        
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
 
         Attribute attr = entry.get( "displayname" );
@@ -2080,5 +2084,102 @@ public class LdifReaderTest
         assertEquals( 1, modification.getAttribute().size() );
         assertNotNull( modification.getAttribute().get() );
         assertNull( modification.getAttribute().getBytes() );
+    }
+    
+    /**
+     * Test lengths when multiple entries are present
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testLdifParserLengthAndOffset() throws Exception
+    {
+        String ldif1 =  "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
+                        "cn: app1\n" +
+                        "objectClass: top\n" +
+                        "objectClass: apApplication\n" +
+                        "displayName:   app1   \n" +
+                        "dependencies:\n" +
+                        "envVars:\n";
+
+        String comment = "# This comment was copied. Delete an entry. The operation will attach the LDAPv3\n" +
+                         "# Tree Delete Control defined in [9]. The criticality\n" +
+                         "# field is \"true\" and the controlValue field is\n" +
+                         "# absent, as required by [9].\n";
+        
+        String version = "version:   1\n";
+        
+        String ldif =
+                version +
+                ldif1 + 
+                "\n" +
+                comment +
+                ldif1 + "\n";
+
+        LdifReader reader = new LdifReader();
+
+        List<LdifEntry> lstEntries = null;
+        
+        try
+        {
+            lstEntries = reader.parseLdif( ldif );
+        }
+        catch ( Exception ne )
+        {
+            fail();
+        }
+        finally
+        {
+            reader.close();
+        }
+        
+        LdifEntry entry1 = lstEntries.get( 0 );
+        
+        assertEquals( version.length() + ldif1.length(), entry1.getLengthBeforeParsing() );
+        
+        LdifEntry entry2 = lstEntries.get( 1 );
+        
+        assertEquals( ldif1.length() + comment.length(), entry2.getLengthBeforeParsing() );
+        
+        byte[] data = ldif.getBytes();
+        
+        String ldif1Bytes = new String( data, ( int ) entry1.getOffset(), entry1.getLengthBeforeParsing() );
+        assertNotNull( reader.parseLdif( ldif1Bytes ).get( 0 ) );
+        
+        String ldif2Bytes = new String( data, ( int ) entry2.getOffset(), entry2.getLengthBeforeParsing() );
+        assertNotNull( reader.parseLdif( ldif2Bytes ).get( 0 ) );
+        
+        File file = File.createTempFile( "offsetTest", "ldif" );
+        file.deleteOnExit();
+        FileWriter fw = new FileWriter( file );
+        fw.write( ldif );
+        fw.close();
+
+        RandomAccessFile raf = new RandomAccessFile( file, "r" );
+        
+        LdifReader fileReader = new LdifReader( file );
+        
+        LdifEntry rafEntry1 = fileReader.next();
+        
+        data = new byte[rafEntry1.getLengthBeforeParsing()];
+        raf.read( data, ( int ) rafEntry1.getOffset(), data.length );
+
+        reader = new LdifReader();
+        LdifEntry reReadeRafEntry1 = reader.parseLdif( new String( data ) ).get( 0 );
+        assertNotNull( reReadeRafEntry1 );
+        assertEquals( rafEntry1.getOffset(), reReadeRafEntry1.getOffset() );
+        assertEquals( rafEntry1.getLengthBeforeParsing(), reReadeRafEntry1.getLengthBeforeParsing() );
+        reader.close();
+        
+        LdifEntry rafEntry2 = fileReader.next();
+        
+        data = new byte[rafEntry2.getLengthBeforeParsing()];
+        raf.readFully( data, ( int ) 0, data.length );
+
+        reader = new LdifReader();
+        LdifEntry reReadeRafEntry2 = reader.parseLdif( new String( data ) ).get( 0 );
+        assertNotNull( reReadeRafEntry2 );
+        assertEquals( rafEntry2.getLengthBeforeParsing(), reReadeRafEntry2.getLengthBeforeParsing() );
+        reader.close();
     }
 }

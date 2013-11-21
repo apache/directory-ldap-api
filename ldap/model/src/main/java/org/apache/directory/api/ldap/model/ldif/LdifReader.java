@@ -224,7 +224,15 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      */
     protected Exception error;
 
+    /** total length of an LDIF entry including the comments */
+    protected int entryLen = 0;
 
+    /** the parsed entry's starting position */
+    protected long entryOffset = 0;
+    
+    /** the current offset of the reader */
+    private long offset = 0;
+    
     /**
      * Constructors
      */
@@ -1304,6 +1312,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         // Ok, we have found a Dn
         LdifEntry entry = new LdifEntry();
+        entry.setLengthBeforeParsing( entryLen );
+        entry.setOffset( entryOffset );
+        
         entry.setDn( dn );
 
         // We remove this dn from the lines
@@ -1489,7 +1500,12 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             // and read the next lines if the current buffer is empty
             if ( lines.size() == 0 )
             {
+                // include the version line as part of the first entry
+                int tmpEntryLen = entryLen;
+                
                 readLines();
+                
+                entryLen += tmpEntryLen;
             }
         }
         else
@@ -1528,6 +1544,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         boolean isFirstLine = true;
 
         lines.clear();
+        entryLen = 0;
+        entryOffset = offset;
+        
         StringBuffer sb = new StringBuffer();
 
         try
@@ -1589,6 +1608,11 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                         insideComment = false;
                         break;
                 }
+                
+                byte[] data = line.getBytes();
+                // FIXME might fail on windows in the new line issue, yet to check
+                offset += ( data.length + 1 );
+                entryLen += ( data.length + 1 );
             }
         }
         catch ( IOException ioe )
@@ -1945,6 +1969,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             reader.close();
             containsEntries = false;
             containsChanges = false;
+            offset = entryOffset = 0;
         }
     }
 }
