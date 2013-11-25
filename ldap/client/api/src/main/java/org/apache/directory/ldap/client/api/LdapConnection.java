@@ -825,4 +825,10 @@ public interface LdapConnection
      * Sets the object responsible for the detection of binary attributes.
      */
     void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetecter );
+    
+ 
+    /**
+     * sets a SchemaManager to be used by this connection
+     */
+    void setSchemaManager( SchemaManager schemaManager );
 }

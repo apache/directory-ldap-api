@@ -4035,4 +4035,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             config.setBinaryAttributeDetector( binaryAttributeDetector );
         }
     }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSchemaManager( SchemaManager schemaManager )
+    {
+        this.schemaManager = schemaManager;
+    }
 }
