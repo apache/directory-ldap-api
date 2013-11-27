@@ -216,11 +216,11 @@ public class ObjectClass extends AbstractSchemaObject
 
 
     /**
-     * @see Object#toString()
+     * {@inheritDoc}
      */
     public String toString()
     {
-        return objectType + " " + DescriptionUtils.getDescription( this );
+        return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
     }
 
 

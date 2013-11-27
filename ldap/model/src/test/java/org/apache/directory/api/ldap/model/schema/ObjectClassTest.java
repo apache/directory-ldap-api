@@ -22,14 +22,18 @@ package org.apache.directory.api.ldap.model.schema;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
+import java.util.Arrays;
+import java.util.Collections;
 
-import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -41,23 +45,33 @@ import org.junit.runner.RunWith;
 @Concurrency()
 public class ObjectClassTest
 {
-    ObjectClass objectClassA;
-    ObjectClass objectClassACopy;
-    ObjectClass objectClassB;
-    ObjectClass objectClassC;
+    private ObjectClass objectClassA;
+    private ObjectClass objectClassACopy;
+    private ObjectClass objectClassB;
+    private ObjectClass objectClassC;
+    private MutableObjectClass objectClass;
 
 
     /**
-     * Initialize name instances
+     * Initialize object class instances
      */
     @Before
-    public void initNames() throws Exception
+    public void initObjectClasses() throws Exception
     {
         // TODO Create ObjectClasses with more meaningful constructor arguments
         objectClassA = new ObjectClass( "aa" );
         objectClassACopy = new ObjectClass( "aa" );
         objectClassB = new ObjectClass( "aa" );
         objectClassC = new ObjectClass( "cc" );
+
+        objectClass = new MutableObjectClass( "1.2.3.4" );
+        objectClass.setNames( "name1", "name2" );
+        objectClass.setDescription( "description" );
+        objectClass.setObsolete( false );
+        objectClass.setSuperiorOids( Collections.singletonList( "1.3.5.7" ) );
+        objectClass.setType( ObjectClassTypeEnum.STRUCTURAL );
+        objectClass.setMustAttributeTypeOids( Arrays.asList( "att1", "att2" ) );
+        objectClass.setMayAttributeTypeOids( Arrays.asList( "att3", "att4" ) );
     }
 
 
@@ -121,5 +135,22 @@ public class ObjectClassTest
     {
         assertFalse( objectClassA.equals( objectClassC ) );
         assertFalse( objectClassC.equals( objectClassA ) );
+    }
+
+
+    @Test
+    public void testToString() throws Exception
+    {
+        String string1 = objectClass.toString();
+
+        assertNotNull( string1 );
+        assertTrue( string1.startsWith( "objectclass (" ) );
+        assertTrue( string1.contains( " NAME " ) );
+        assertTrue( string1.contains( "\n\tDESC " ) );
+        assertTrue( string1.contains( "\n\tSUP " ) );
+        assertTrue( string1.contains( "\n\tSTRUCTURAL" ) );
+        assertTrue( string1.contains( "\n\tMUST" ) );
+        assertTrue( string1.contains( "\n\tMAY" ) );
+        assertTrue( string1.endsWith( "\n)" ) );
     }
 }
