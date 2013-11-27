@@ -32,42 +32,37 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
- * Unit tests class AttributeType.
+ * Unit tests class LdapSyntax.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class AttributeTypeTest
+public class LdapSyntaxTest
 {
-    private MutableAttributeType attributeType;
+    private LdapSyntax ldapSyntax;
 
 
     /**
-     * Initialize attribute type instances
+     * Initialize ldap syntax use instances
      */
     @Before
-    public void initAttributeTypes() throws Exception
+    public void initMatchingRuleUses() throws Exception
     {
-        attributeType = new MutableAttributeType( "1.2.3.4" );
-        attributeType.setNames( "name1", "name2" );
-        attributeType.setDescription( "description" );
-        attributeType.setObsolete( false );
-        attributeType.setEqualityOid( "caseIgnoreMatch" );
-        attributeType.setSuperiorOid( "2.3.4.5" );
+        ldapSyntax = new LdapSyntax( "1.2.3.4" );
+        ldapSyntax.setDescription( "description" );
+        ldapSyntax.setHumanReadable( true );
     }
 
 
     @Test
     public void testToString() throws Exception
     {
-        String string = attributeType.toString();
+        String string = ldapSyntax.toString();
 
         assertNotNull( string );
-        assertTrue( string.startsWith( "attributetype (" ) );
-        assertTrue( string.contains( " NAME " ) );
+        assertTrue( string.startsWith( "ldapsyntax (" ) );
         assertTrue( string.contains( "\n\tDESC " ) );
-        assertTrue( string.contains( "\n\tSUP " ) );
-        assertTrue( string.contains( "\n\tUSAGE" ) );
+        assertTrue( string.contains( "\n\tX-NOT-HUMAN-READABLE " ) );
     }
 }

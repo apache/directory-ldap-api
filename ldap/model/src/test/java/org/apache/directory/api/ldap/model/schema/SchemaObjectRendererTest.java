@@ -27,10 +27,14 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.apache.directory.api.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
+import org.apache.directory.api.ldap.model.schema.parsers.LdapSyntaxDescriptionSchemaParser;
+import org.apache.directory.api.ldap.model.schema.parsers.MatchingRuleDescriptionSchemaParser;
+import org.apache.directory.api.ldap.model.schema.parsers.MatchingRuleUseDescriptionSchemaParser;
 import org.apache.directory.api.ldap.model.schema.parsers.ObjectClassDescriptionSchemaParser;
 import org.apache.directory.api.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.junit.Before;
 import org.junit.Test;
+
 
 /**
  * 
@@ -44,6 +48,10 @@ public class SchemaObjectRendererTest
 
     private MutableAttributeType attributeTypeSimple;
     private MutableAttributeType attributeTypeComplex;
+
+    private MutableMatchingRule matchingRule;
+    private MatchingRuleUse matchingRuleUse;
+    private LdapSyntax ldapSyntax;
 
 
     @Before
@@ -84,6 +92,26 @@ public class SchemaObjectRendererTest
         attributeTypeComplex.setUserModifiable( false );
         attributeTypeComplex.setUsage( UsageEnum.DIRECTORY_OPERATION );
         attributeTypeComplex.setSchemaName( "dummy" );
+
+        matchingRule = new MutableMatchingRule( "1.2.3.4" );
+        matchingRule.setNames( "name0" );
+        matchingRule.setDescription( "description with 'quotes'" );
+        matchingRule.setObsolete( true );
+        matchingRule.setSyntaxOid( "2.3.4.5" );
+        matchingRule.setSchemaName( "dummy" );
+
+        matchingRuleUse = new MatchingRuleUse( "1.2.3.4" );
+        matchingRuleUse.setNames( "name0" );
+        matchingRuleUse.setDescription( "description with 'quotes'" );
+        matchingRuleUse.setObsolete( true );
+        matchingRuleUse.setApplicableAttributeOids( Arrays.asList( "2.3.4.5", "3.4.5.6" ) );
+        matchingRuleUse.setSchemaName( "dummy" );
+
+        ldapSyntax = new LdapSyntax( "1.2.3.4" );
+        ldapSyntax.setDescription( "description with 'quotes'" );
+        ldapSyntax.setHumanReadable( false );
+        ldapSyntax.setSchemaName( "dummy" );
+
     }
 
 
@@ -276,6 +304,114 @@ public class SchemaObjectRendererTest
     {
         String renderedOriginal = SchemaObjectRenderer.SUBSCHEMA_SUBENTRY_RENDERER.render( original );
         AttributeType parsed = new AttributeTypeDescriptionSchemaParser().parse( renderedOriginal );
+        String renderedParsed = SchemaObjectRenderer.SUBSCHEMA_SUBENTRY_RENDERER.render( parsed );
+
+        assertTrue( original.equals( parsed ) );
+        assertTrue( renderedOriginal.equals( renderedParsed ) );
+    }
+
+
+    @Test
+    public void testOpenLdapSchemaRendererMatchingRule()
+    {
+        String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( matchingRule );
+        String expected = "matchingrule ( 1.2.3.4 NAME 'name0'\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tSYNTAX 2.3.4.5\n)";
+        assertEquals( expected, actual );
+    }
+
+
+    @Test
+    public void testSubschemSubentryRendererMatchingRule()
+    {
+        String actual = SchemaObjectRenderer.SUBSCHEMA_SUBENTRY_RENDERER.render( matchingRule );
+        String expected = "( 1.2.3.4 NAME 'name0' DESC 'description with \\27quotes\\27' OBSOLETE SYNTAX 2.3.4.5 X-SCHEMA 'dummy' )";
+        assertEquals( expected, actual );
+    }
+
+
+    @Test
+    public void testSubschemSubentryRendererAndParserRoundtripMatchingRule() throws ParseException
+    {
+        testSubschemSubentryRendererAndParserRoundtrip( matchingRule );
+    }
+
+
+    private void testSubschemSubentryRendererAndParserRoundtrip( MatchingRule original ) throws ParseException
+    {
+        String renderedOriginal = SchemaObjectRenderer.SUBSCHEMA_SUBENTRY_RENDERER.render( original );
+        MatchingRule parsed = new MatchingRuleDescriptionSchemaParser().parse( renderedOriginal );
+        String renderedParsed = SchemaObjectRenderer.SUBSCHEMA_SUBENTRY_RENDERER.render( parsed );
+
+        assertTrue( original.equals( parsed ) );
+        assertTrue( renderedOriginal.equals( renderedParsed ) );
+    }
+
+
+    @Test
+    public void testOpenLdapSchemaRendererLdapSyntax()
+    {
+        String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( ldapSyntax );
+        String expected = "ldapsyntax ( 1.2.3.4\n\tDESC 'description with \\27quotes\\27'\n\tX-NOT-HUMAN-READABLE 'true'\n)";
+        assertEquals( expected, actual );
+    }
+
+
+    @Test
+    public void testSubschemSubentryRendererLdapSyntax()
+    {
+        String actual = SchemaObjectRenderer.SUBSCHEMA_SUBENTRY_RENDERER.render( ldapSyntax );
+        String expected = "( 1.2.3.4 DESC 'description with \\27quotes\\27' X-SCHEMA 'dummy' X-NOT-HUMAN-READABLE 'true' )";
+        assertEquals( expected, actual );
+    }
+
+
+    @Test
+    public void testSubschemSubentryRendererAndParserRoundtripLdapSyntax() throws ParseException
+    {
+        testSubschemSubentryRendererAndParserRoundtrip( ldapSyntax );
+    }
+
+
+    private void testSubschemSubentryRendererAndParserRoundtrip( LdapSyntax original ) throws ParseException
+    {
+        String renderedOriginal = SchemaObjectRenderer.SUBSCHEMA_SUBENTRY_RENDERER.render( original );
+        LdapSyntax parsed = new LdapSyntaxDescriptionSchemaParser().parse( renderedOriginal );
+        String renderedParsed = SchemaObjectRenderer.SUBSCHEMA_SUBENTRY_RENDERER.render( parsed );
+
+        assertTrue( original.equals( parsed ) );
+        assertTrue( renderedOriginal.equals( renderedParsed ) );
+    }
+
+
+    @Test
+    public void testOpenLdapSchemaRendererMatchingRuleUse()
+    {
+        String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( matchingRuleUse );
+        String expected = "matchingruleuse ( 1.2.3.4 NAME 'name0'\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tAPPLIES ( 2.3.4.5 $ 3.4.5.6 )\n)";
+        assertEquals( expected, actual );
+    }
+
+
+    @Test
+    public void testSubschemSubentryRendererMatchingRuleUse()
+    {
+        String actual = SchemaObjectRenderer.SUBSCHEMA_SUBENTRY_RENDERER.render( matchingRuleUse );
+        String expected = "( 1.2.3.4 NAME 'name0' DESC 'description with \\27quotes\\27' OBSOLETE APPLIES ( 2.3.4.5 $ 3.4.5.6 ) X-SCHEMA 'dummy' )";
+        assertEquals( expected, actual );
+    }
+
+
+    @Test
+    public void testSubschemSubentryRendererAndParserRoundtripMatchingRuleUse() throws ParseException
+    {
+        testSubschemSubentryRendererAndParserRoundtrip( matchingRuleUse );
+    }
+
+
+    private void testSubschemSubentryRendererAndParserRoundtrip( MatchingRuleUse original ) throws ParseException
+    {
+        String renderedOriginal = SchemaObjectRenderer.SUBSCHEMA_SUBENTRY_RENDERER.render( original );
+        MatchingRuleUse parsed = new MatchingRuleUseDescriptionSchemaParser().parse( renderedOriginal );
         String renderedParsed = SchemaObjectRenderer.SUBSCHEMA_SUBENTRY_RENDERER.render( parsed );
 
         assertTrue( original.equals( parsed ) );

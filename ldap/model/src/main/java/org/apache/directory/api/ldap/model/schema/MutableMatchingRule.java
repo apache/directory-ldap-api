@@ -219,15 +219,6 @@ public class MutableMatchingRule extends MatchingRule
 
 
     /**
-     * @see Object#toString()
-     */
-    public String toString()
-    {
-        return objectType + " " + DescriptionUtils.getDescription( this );
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public void clear()

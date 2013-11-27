@@ -32,42 +32,40 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
- * Unit tests class AttributeType.
+ * Unit tests class MatchingRule.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class AttributeTypeTest
+public class MatchingRuleTest
 {
-    private MutableAttributeType attributeType;
+    private MutableMatchingRule matchingRule;
 
 
     /**
-     * Initialize attribute type instances
+     * Initialize matching rule instances
      */
     @Before
-    public void initAttributeTypes() throws Exception
+    public void initMatchingRules() throws Exception
     {
-        attributeType = new MutableAttributeType( "1.2.3.4" );
-        attributeType.setNames( "name1", "name2" );
-        attributeType.setDescription( "description" );
-        attributeType.setObsolete( false );
-        attributeType.setEqualityOid( "caseIgnoreMatch" );
-        attributeType.setSuperiorOid( "2.3.4.5" );
+        matchingRule = new MutableMatchingRule( "1.2.3.4" );
+        matchingRule.setNames( "name1", "name2" );
+        matchingRule.setDescription( "description" );
+        matchingRule.setObsolete( false );
+        matchingRule.setSyntaxOid( "2.3.4.5" );
     }
 
 
     @Test
     public void testToString() throws Exception
     {
-        String string = attributeType.toString();
+        String string = matchingRule.toString();
 
         assertNotNull( string );
-        assertTrue( string.startsWith( "attributetype (" ) );
+        assertTrue( string.startsWith( "matchingrule (" ) );
         assertTrue( string.contains( " NAME " ) );
         assertTrue( string.contains( "\n\tDESC " ) );
-        assertTrue( string.contains( "\n\tSUP " ) );
-        assertTrue( string.contains( "\n\tUSAGE" ) );
+        assertTrue( string.contains( "\n\tSYNTAX " ) );
     }
 }

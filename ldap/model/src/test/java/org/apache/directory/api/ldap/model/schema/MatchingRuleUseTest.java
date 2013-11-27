@@ -23,6 +23,8 @@ package org.apache.directory.api.ldap.model.schema;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,42 +34,40 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
- * Unit tests class AttributeType.
+ * Unit tests class MatchingRuleUse.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class AttributeTypeTest
+public class MatchingRuleUseTest
 {
-    private MutableAttributeType attributeType;
+    private MatchingRuleUse matchingRuleUse;
 
 
     /**
-     * Initialize attribute type instances
+     * Initialize matching rule use instances
      */
     @Before
-    public void initAttributeTypes() throws Exception
+    public void initMatchingRuleUses() throws Exception
     {
-        attributeType = new MutableAttributeType( "1.2.3.4" );
-        attributeType.setNames( "name1", "name2" );
-        attributeType.setDescription( "description" );
-        attributeType.setObsolete( false );
-        attributeType.setEqualityOid( "caseIgnoreMatch" );
-        attributeType.setSuperiorOid( "2.3.4.5" );
+        matchingRuleUse = new MatchingRuleUse( "1.2.3.4" );
+        matchingRuleUse.setNames( "name1", "name2" );
+        matchingRuleUse.setDescription( "description" );
+        matchingRuleUse.setObsolete( false );
+        matchingRuleUse.setApplicableAttributeOids( Arrays.asList( "2.3.4.5" ) );
     }
 
 
     @Test
     public void testToString() throws Exception
     {
-        String string = attributeType.toString();
+        String string = matchingRuleUse.toString();
 
         assertNotNull( string );
-        assertTrue( string.startsWith( "attributetype (" ) );
+        assertTrue( string.startsWith( "matchingruleuse (" ) );
         assertTrue( string.contains( " NAME " ) );
         assertTrue( string.contains( "\n\tDESC " ) );
-        assertTrue( string.contains( "\n\tSUP " ) );
-        assertTrue( string.contains( "\n\tUSAGE" ) );
+        assertTrue( string.contains( "\n\tAPPLIES " ) );
     }
 }

@@ -347,6 +347,162 @@ public class SchemaObjectRenderer
     }
 
 
+    /**
+     * Renders an matchingRule according to the
+     * MatchingRule Description Syntax 1.3.6.1.4.1.1466.115.121.1.30. The syntax
+     * is described in detail within section 4.1.3. 
+     * <a href="https://tools.ietf.org/rfc/rfc4512.txt">RFC 4512</a>
+     * which is replicated here for convenience:
+     * 
+     * <pre>
+     *  4.1.3. Matching Rules
+     * 
+     *   Matching rules are used in performance of attribute value assertions,
+     *   such as in performance of a Compare operation.  They are also used in
+     *   evaluation of a Search filters, in determining which individual values
+     *   are be added or deleted during performance of a Modify operation, and
+     *   used in comparison of distinguished names.
+     * 
+     *   Each matching rule is identified by an object identifier (OID) and,
+     *   optionally, one or more short names (descriptors).
+     * 
+     *   Matching rule definitions are written according to the ABNF:
+     * 
+     *   MatchingRuleDescription = LPAREN WSP
+     *        numericoid                 ; object identifier
+     *         [ SP &quot;NAME&quot; SP qdescrs ]   ; short names (descriptors)
+     *         [ SP &quot;DESC&quot; SP qdstring ]  ; description
+     *         [ SP &quot;OBSOLETE&quot; ]          ; not active
+     *         SP &quot;SYNTAX&quot; SP numericoid  ; assertion syntax
+     *         extensions WSP RPAREN      ; extensions
+     * 
+     *   where:
+     *     &lt;numericoid&gt; is object identifier assigned to this matching rule;
+     *     NAME &lt;qdescrs&gt; are short names (descriptors) identifying this
+     *         matching rule;
+     *     DESC &lt;qdstring&gt; is a short descriptive string;
+     *     OBSOLETE indicates this matching rule is not active;
+     *     SYNTAX identifies the assertion syntax (the syntax of the assertion
+     *         value) by object identifier; and
+     *     &lt;extensions&gt; describe extensions.
+     * </pre>
+     * @param mr the MatchingRule to render the description for
+     * @return the StringBuffer containing the rendered matchingRule description
+     * @throws LdapException if there are problems accessing the objects
+     * associated with the MatchingRule.
+     */
+    public String render( MatchingRule mr )
+    {
+        StringBuilder buf = renderStartOidNamesDescObsolete( mr, "matchingrule" );
+
+        prettyPrintIndent( buf );
+        buf.append( "SYNTAX " ).append( mr.getSyntaxOid() );
+        prettyPrintNewLine( buf );
+
+        renderXSchemaName( mr, buf );
+
+        // @todo extensions are not presently supported and skipped
+        // the extensions would go here before closing off the description
+
+        buf.append( ")" );
+
+        return buf.toString();
+    }
+
+
+    /**
+     * Renders a Syntax according to the LDAP Syntax
+     * Description Syntax 1.3.6.1.4.1.1466.115.121.1.54. The syntax is described
+     * in detail within section 4.1.5. of 
+     * <a href="https://tools.ietf.org/rfc/rfc4512.txt">RFC 4512</a>
+     * which is replicated here for convenience:
+     * 
+     * <pre>
+     *  LDAP syntax definitions are written according to the ABNF:
+     * 
+     *   SyntaxDescription = LPAREN WSP
+     *       numericoid                 ; object identifier
+     *       [ SP &quot;DESC&quot; SP qdstring ]  ; description
+     *       extensions WSP RPAREN      ; extensions
+     * 
+     *  where:
+     *   &lt;numericoid&gt; is the object identifier assigned to this LDAP syntax;
+     *   DESC &lt;qdstring&gt; is a short descriptive string; and
+     *   &lt;extensions&gt; describe extensions.
+     * </pre>
+     * @param syntax the Syntax to render the description for
+     * @return the StringBuffer containing the rendered syntax description
+     */
+    public String render( LdapSyntax syntax )
+    {
+        StringBuilder buf = new StringBuilder();
+
+        if ( style.startWithSchemaType )
+        {
+            buf.append( "ldapsyntax " );
+        }
+
+        buf.append( "( " ).append( syntax.getOid() );
+        prettyPrintNewLine( buf );
+
+        if ( syntax.getDescription() != null )
+        {
+            prettyPrintIndent( buf );
+            buf.append( "DESC " );
+            renderQDString( buf, syntax.getDescription() );
+            prettyPrintNewLine( buf );
+        }
+
+        renderXSchemaName( syntax, buf );
+
+        prettyPrintIndent( buf );
+        if ( syntax.isHumanReadable() )
+        {
+            buf.append( "X-NOT-HUMAN-READABLE 'false'" );
+        }
+        else
+        {
+            buf.append( "X-NOT-HUMAN-READABLE 'true'" );
+        }
+        prettyPrintNewLine( buf );
+
+        // @todo extensions are not presently supported and skipped
+        // the extensions would go here before closing off the description
+
+        buf.append( ")" );
+
+        return buf.toString();
+    }
+
+
+    /**
+     * NOT FULLY IMPLEMENTED!
+     */
+    public String render( MatchingRuleUse mru )
+    {
+        StringBuilder buf = renderStartOidNamesDescObsolete( mru, "matchingruleuse" );
+
+        List<String> applies = mru.getApplicableAttributeOids();
+
+        if ( ( applies != null ) && ( applies.size() > 0 ) )
+        {
+            prettyPrintIndent( buf );
+            buf.append( "APPLIES " );
+            renderOids( buf, applies );
+            prettyPrintNewLine( buf );
+        }
+
+        renderXSchemaName( mru, buf );
+
+        // @todo extensions are not presently supported and skipped
+        // the extensions would go here before closing off the description
+
+        buf.append( ")" );
+
+        return buf.toString();
+    }
+
+
     private StringBuilder renderStartOidNamesDescObsolete( SchemaObject so, String schemaObjectType )
     {
         StringBuilder buf = new StringBuilder();

@@ -141,16 +141,16 @@ public class ObjectClassTest
     @Test
     public void testToString() throws Exception
     {
-        String string1 = objectClass.toString();
+        String string = objectClass.toString();
 
-        assertNotNull( string1 );
-        assertTrue( string1.startsWith( "objectclass (" ) );
-        assertTrue( string1.contains( " NAME " ) );
-        assertTrue( string1.contains( "\n\tDESC " ) );
-        assertTrue( string1.contains( "\n\tSUP " ) );
-        assertTrue( string1.contains( "\n\tSTRUCTURAL" ) );
-        assertTrue( string1.contains( "\n\tMUST" ) );
-        assertTrue( string1.contains( "\n\tMAY" ) );
-        assertTrue( string1.endsWith( "\n)" ) );
+        assertNotNull( string );
+        assertTrue( string.startsWith( "objectclass (" ) );
+        assertTrue( string.contains( " NAME " ) );
+        assertTrue( string.contains( "\n\tDESC " ) );
+        assertTrue( string.contains( "\n\tSUP " ) );
+        assertTrue( string.contains( "\n\tSTRUCTURAL" ) );
+        assertTrue( string.contains( "\n\tMUST" ) );
+        assertTrue( string.contains( "\n\tMAY" ) );
+        assertTrue( string.endsWith( "\n)" ) );
     }
 }
