@@ -214,7 +214,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
         }
         catch ( LdapInvalidDnException e )
         {
-            LOG.warn( "Enable to convert the name to a DN.", e );
+            LOG.warn( "Unable to convert the name to a DN.", e );
             this.dn = null;
         }
 
