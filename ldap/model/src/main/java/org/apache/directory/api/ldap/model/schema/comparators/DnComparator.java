@@ -67,14 +67,7 @@ public class DnComparator extends LdapComparator<Object>
             return -1;
         }
 
-        if ( dn0.equals( dn1 ) )
-        {
-            return 0;
-        }
-        else
-        {
-            return -1;
-        }
+        return dn0.getNormName().compareTo( dn1.getNormName() );
     }
 
 
