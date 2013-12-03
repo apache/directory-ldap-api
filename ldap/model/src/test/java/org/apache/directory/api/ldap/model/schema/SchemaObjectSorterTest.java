@@ -78,10 +78,10 @@ public class SchemaObjectSorterTest
 
             List<AttributeType> attributeTypes = new ArrayList<AttributeType>();
             addAttributeType( attributeTypes, oidIterator.next(), "att1", null );
-            addAttributeType( attributeTypes, oidIterator.next(), "att2", "att1" );
+            addAttributeType( attributeTypes, oidIterator.next(), "aTT2", "att1" );
             addAttributeType( attributeTypes, oidIterator.next(), "att3", "att2" );
-            addAttributeType( attributeTypes, oidIterator.next(), "att4", "att3" );
-            addAttributeType( attributeTypes, oidIterator.next(), "att5", "att1" );
+            addAttributeType( attributeTypes, oidIterator.next(), "att4", "atT3" );
+            addAttributeType( attributeTypes, oidIterator.next(), "att5", "aTt1" );
             addAttributeType( attributeTypes, oidIterator.next(), "att6", null );
             addAttributeType( attributeTypes, oidIterator.next(), "att7", "other" );
 
@@ -113,13 +113,16 @@ public class SchemaObjectSorterTest
 
         AttributeType next = iterator.next();
         String superiorOid = next.getSuperiorOid();
+        if(superiorOid != null) {
+            superiorOid = superiorOid.toLowerCase();
+        }
 
         if ( !Arrays.asList( expected ).contains( superiorOid ) )
         {
             fail( "Expected that " + Arrays.asList( expected ) + " contains " + superiorOid );
         }
 
-        return next.getName();
+        return next.getName().toLowerCase();
     }
 
 
@@ -154,10 +157,10 @@ public class SchemaObjectSorterTest
     {
         List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
         addObjectClass( objectClasses, "1.2.1", "oc1" );
-        addObjectClass( objectClasses, "1.2.2", "oc2", "oc1" );
-        addObjectClass( objectClasses, "1.2.3", "oc3", "oc2" );
+        addObjectClass( objectClasses, "1.2.2", "OC2", "oc1" );
+        addObjectClass( objectClasses, "1.2.3", "oc3", "oC2" );
         addObjectClass( objectClasses, "1.2.4", "oc4" );
-        addObjectClass( objectClasses, "1.2.5", "oc5", "oc2", "oc4" );
+        addObjectClass( objectClasses, "1.2.5", "oc5", "Oc2", "oC4" );
         addObjectClass( objectClasses, "1.2.6", "oc6", "other" );
 
         Iterable<ObjectClass> sorted = SchemaObjectSorter.sortObjectClasses( objectClasses );
@@ -176,10 +179,10 @@ public class SchemaObjectSorterTest
 
             List<ObjectClass> objectClasses = new ArrayList<ObjectClass>();
             addObjectClass( objectClasses, oidIterator.next(), "oc1" );
-            addObjectClass( objectClasses, oidIterator.next(), "oc2", "oc1" );
-            addObjectClass( objectClasses, oidIterator.next(), "oc3", "oc2" );
+            addObjectClass( objectClasses, oidIterator.next(), "OC2", "oc1" );
+            addObjectClass( objectClasses, oidIterator.next(), "oc3", "Oc2" );
             addObjectClass( objectClasses, oidIterator.next(), "oc4" );
-            addObjectClass( objectClasses, oidIterator.next(), "oc5", "oc2", "oc4" );
+            addObjectClass( objectClasses, oidIterator.next(), "oc5", "oC2", "OC4" );
             addObjectClass( objectClasses, oidIterator.next(), "oc6", "other" );
 
             Iterable<ObjectClass> sorted = SchemaObjectSorter.sortObjectClasses( objectClasses );
@@ -209,13 +212,17 @@ public class SchemaObjectSorterTest
 
         ObjectClass next = iterator.next();
         List<String> superiorOids = next.getSuperiorOids();
+        for ( int i = 0; i < superiorOids.size(); i++ )
+        {
+            superiorOids.set( i, superiorOids.get( i ).toLowerCase() );
+        }
 
         if ( !Arrays.asList( expected ).containsAll( superiorOids ) )
         {
             fail( "Expected that " + Arrays.asList( expected ) + " contains all " + superiorOids );
         }
 
-        return next.getName();
+        return next.getName().toLowerCase();
     }
 
 

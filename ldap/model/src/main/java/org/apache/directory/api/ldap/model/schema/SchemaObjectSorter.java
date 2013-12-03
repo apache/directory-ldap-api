@@ -131,8 +131,8 @@ public class SchemaObjectSorter
 
             for ( T schemaObject : schemaObjects )
             {
-                String oid = schemaObject.getOid();
-                oid2numericOid.put( oid.toLowerCase(), oid );
+                String oid = schemaObject.getOid().toLowerCase();
+                oid2numericOid.put( oid, oid );
                 for ( String name : schemaObject.getNames() )
                 {
                     oid2numericOid.put( name.toLowerCase(), oid );
@@ -174,7 +174,12 @@ public class SchemaObjectSorter
 
                     for ( String superiorOid : superiorOids )
                     {
-                        String superiorNumeridOid = oid2numericOid.get( superiorOid );
+                        if ( superiorOid == null )
+                        {
+                            continue;
+                        }
+
+                        String superiorNumeridOid = oid2numericOid.get( superiorOid.toLowerCase() );
 
                         // AT's superior is not within the processed AT list
                         if ( superiorNumeridOid == null )
@@ -182,7 +187,7 @@ public class SchemaObjectSorter
                             continue;
                         }
 
-                        T superiorSchemaObject = numericOid2schemaObject.get( superiorNumeridOid );
+                        T superiorSchemaObject = numericOid2schemaObject.get( superiorNumeridOid.toLowerCase() );
 
                         // AT's superior was already removed
                         if ( superiorSchemaObject == null )
