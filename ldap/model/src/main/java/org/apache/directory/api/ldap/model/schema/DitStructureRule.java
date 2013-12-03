@@ -225,7 +225,7 @@ public class DitStructureRule extends AbstractSchemaObject
     @Override
     public String toString()
     {
-        return objectType + " " + DescriptionUtils.getDescription( this );
+        return SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( this );
     }
 
 

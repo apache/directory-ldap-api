@@ -129,15 +129,7 @@ public class SchemaObjectRenderer
     {
         StringBuilder buf = renderStartOidNamesDescObsolete( oc, "objectclass" );
 
-        List<String> superiorOids = oc.getSuperiorOids();
-
-        if ( ( superiorOids != null ) && ( superiorOids.size() > 0 ) )
-        {
-            prettyPrintIndent( buf );
-            buf.append( "SUP " );
-            renderOids( buf, superiorOids );
-            prettyPrintNewLine( buf );
-        }
+        renderOids( buf, "SUP", oc.getSuperiorOids() );
 
         if ( oc.getType() != null )
         {
@@ -146,25 +138,9 @@ public class SchemaObjectRenderer
             prettyPrintNewLine( buf );
         }
 
-        List<String> must = oc.getMustAttributeTypeOids();
+        renderOids( buf, "MUST", oc.getMustAttributeTypeOids() );
 
-        if ( ( must != null ) && ( must.size() > 0 ) )
-        {
-            prettyPrintIndent( buf );
-            buf.append( "MUST " );
-            renderOids( buf, must );
-            prettyPrintNewLine( buf );
-        }
-
-        List<String> may = oc.getMayAttributeTypeOids();
-
-        if ( ( may != null ) && ( may.size() > 0 ) )
-        {
-            prettyPrintIndent( buf );
-            buf.append( "MAY " );
-            renderOids( buf, may );
-            prettyPrintNewLine( buf );
-        }
+        renderOids( buf, "MAY", oc.getMayAttributeTypeOids() );
 
         renderXSchemaName( oc, buf );
 
@@ -445,13 +421,7 @@ public class SchemaObjectRenderer
         buf.append( "( " ).append( syntax.getOid() );
         prettyPrintNewLine( buf );
 
-        if ( syntax.getDescription() != null )
-        {
-            prettyPrintIndent( buf );
-            buf.append( "DESC " );
-            renderQDString( buf, syntax.getDescription() );
-            prettyPrintNewLine( buf );
-        }
+        renderDescription( syntax, buf );
 
         renderXSchemaName( syntax, buf );
 
@@ -503,6 +473,92 @@ public class SchemaObjectRenderer
     }
 
 
+    /**
+     * NOT FULLY IMPLEMENTED!
+     */
+    public String render( DitContentRule dcr )
+    {
+        StringBuilder buf = renderStartOidNamesDescObsolete( dcr, "ditcontentrule" );
+
+        renderOids( buf, "AUX", dcr.getAuxObjectClassOids() );
+
+        renderOids( buf, "MUST", dcr.getMustAttributeTypeOids() );
+
+        renderOids( buf, "MAY", dcr.getMayAttributeTypeOids() );
+
+        renderOids( buf, "NOT", dcr.getNotAttributeTypeOids() );
+
+        renderXSchemaName( dcr, buf );
+
+        // @todo extensions are not presently supported and skipped
+        // the extensions would go here before closing off the description
+
+        buf.append( ")" );
+
+        return buf.toString();
+    }
+
+
+    /**
+     * NOT FULLY IMPLEMENTED!
+     */
+    public String render( DitStructureRule dsr )
+    {
+        StringBuilder buf = new StringBuilder();
+
+        if ( style.startWithSchemaType )
+        {
+            buf.append( "ditstructurerule " );
+        }
+
+        buf.append( "( " ).append( dsr.getRuleId() );
+
+        renderNames( dsr, buf );
+
+        renderDescription( dsr, buf );
+
+        renderObsolete( dsr, buf );
+
+        prettyPrintIndent( buf );
+        buf.append( "FORM " ).append( dsr.getForm() );
+        prettyPrintNewLine( buf );
+
+        renderRuleIds( buf, dsr.getSuperRules() );
+
+        renderXSchemaName( dsr, buf );
+
+        // @todo extensions are not presently supported and skipped
+        // the extensions would go here before closing off the description
+
+        buf.append( ")" );
+
+        return buf.toString();
+    }
+
+
+    /**
+     * NOT FULLY IMPLEMENTED!
+     */
+    public String render( NameForm nf )
+    {
+        StringBuilder buf = renderStartOidNamesDescObsolete( nf, "nameform" );
+
+        prettyPrintIndent( buf );
+        buf.append( "OC " ).append( nf.getStructuralObjectClassOid() );
+        prettyPrintNewLine( buf );
+
+        renderOids( buf, "MUST", nf.getMustAttributeTypeOids() );
+
+        renderOids( buf, "MAY", nf.getMayAttributeTypeOids() );
+
+        renderXSchemaName( nf, buf );
+
+        buf.append( ")" );
+
+        return buf.toString();
+    }
+
+
     private StringBuilder renderStartOidNamesDescObsolete( SchemaObject so, String schemaObjectType )
     {
         StringBuilder buf = new StringBuilder();
@@ -514,6 +570,17 @@ public class SchemaObjectRenderer
 
         buf.append( "( " ).append( so.getOid() );
 
+        renderNames( so, buf );
+
+        renderDescription( so, buf );
+
+        renderObsolete( so, buf );
+        return buf;
+    }
+
+
+    private void renderNames( SchemaObject so, StringBuilder buf )
+    {
         List<String> names = so.getNames();
 
         if ( ( names != null ) && ( names.size() > 0 ) )
@@ -526,7 +593,11 @@ public class SchemaObjectRenderer
         {
             prettyPrintNewLine( buf );
         }
+    }
 
+
+    private void renderDescription( SchemaObject so, StringBuilder buf )
+    {
         if ( so.getDescription() != null )
         {
             prettyPrintIndent( buf );
@@ -534,14 +605,17 @@ public class SchemaObjectRenderer
             renderQDString( buf, so.getDescription() );
             prettyPrintNewLine( buf );
         }
+    }
 
+
+    private void renderObsolete( SchemaObject so, StringBuilder buf )
+    {
         if ( so.isObsolete() )
         {
             prettyPrintIndent( buf );
             buf.append( "OBSOLETE" );
             prettyPrintNewLine( buf );
         }
-        return buf;
     }
 
 
@@ -601,6 +675,18 @@ public class SchemaObjectRenderer
         }
 
         return buf;
+    }
+
+
+    private void renderOids( StringBuilder buf, String prefix, List<String> oids )
+    {
+        if ( ( oids != null ) && ( oids.size() > 0 ) )
+        {
+            prettyPrintIndent( buf );
+            buf.append( prefix ).append( ' ' );
+            renderOids( buf, oids );
+            prettyPrintNewLine( buf );
+        }
     }
 
 
@@ -676,6 +762,47 @@ public class SchemaObjectRenderer
         }
 
         buf.append( '\'' );
+
+        return buf;
+    }
+
+
+    private StringBuilder renderRuleIds( StringBuilder buf, List<Integer> ruleIds )
+    {
+        if ( ( ruleIds != null ) && ( ruleIds.size() > 0 ) )
+        {
+            prettyPrintIndent( buf );
+            buf.append( "SUP " );
+
+            if ( ruleIds.size() == 1 )
+            {
+                buf.append( ruleIds.get( 0 ) );
+            }
+            else
+            {
+                buf.append( "( " );
+
+                boolean isFirst = true;
+
+                for ( Integer ruleId : ruleIds )
+                {
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        buf.append( " " );
+                    }
+
+                    buf.append( ruleId );
+                }
+
+                buf.append( " )" );
+            }
+
+            prettyPrintNewLine( buf );
+        }
 
         return buf;
     }
