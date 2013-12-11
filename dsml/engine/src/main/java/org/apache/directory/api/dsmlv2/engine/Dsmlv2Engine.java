@@ -289,20 +289,6 @@ public class Dsmlv2Engine
 
                 respWriter.write( "><Body>" );
             }
-
-            respWriter.write( "<batchResponse " );
-
-            ParserUtils.DSML_NAMESPACE.write( respWriter );
-
-            respWriter.write( " " ); // a space to separate the namespace declarations
-
-            ParserUtils.XSD_NAMESPACE.write( respWriter );
-
-            respWriter.write( " " ); // a space to separate the namespace declarations
-
-            ParserUtils.XSI_NAMESPACE.write( respWriter );
-
-            respWriter.write( '>' ); // the end tag
         }
 
         // Binding to LDAP Server
@@ -319,15 +305,17 @@ public class Dsmlv2Engine
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.COULD_NOT_CONNECT, e
                 .getLocalizedMessage() );
 
+            batchResponse.addResponse( errorResponse );
+
             if ( respWriter != null )
             {
-                writeResponse( respWriter, errorResponse );
-                respWriter.write( "</batchResponse>" );
+                respWriter.write( batchResponse.toDsml() );
+                if( generateSoapResp )
+                {
+                    respWriter.write( "</Body></Envelope>" );
+                }
+                
                 respWriter.flush();
-            }
-            else
-            {
-                batchResponse.addResponse( errorResponse );
             }
 
             return;
@@ -346,20 +334,45 @@ public class Dsmlv2Engine
             ErrorResponse errorResponse = new ErrorResponse( 0, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
                 I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
 
+            batchResponse.addResponse( errorResponse );
+
             if ( respWriter != null )
             {
-                writeResponse( respWriter, errorResponse );
-                respWriter.write( "</batchResponse>" );
+                respWriter.write( batchResponse.toDsml() );
+                if( generateSoapResp )
+                {
+                    respWriter.write( "</Body></Envelope>" );
+                }
+                
                 respWriter.flush();
-            }
-            else
-            {
-                batchResponse.addResponse( errorResponse );
             }
 
             return;
         }
 
+        if( respWriter != null )
+        {
+            StringBuilder sb = new StringBuilder();
+            
+            sb.append( "<batchResponse " );
+
+            sb.append( ParserUtils.DSML_NAMESPACE.asXML() );
+
+            sb.append( " " ); // a space to separate the namespace declarations
+
+            sb.append( ParserUtils.XSD_NAMESPACE.asXML() );
+
+            sb.append( " " ); // a space to separate the namespace declarations
+
+            sb.append( ParserUtils.XSI_NAMESPACE.asXML() );
+
+            sb.append( " requestID=\"" );
+            sb.append( batchRequest.getRequestID() );
+            sb.append( "\">" );
+            
+            respWriter.write( sb.toString() );
+        }
+        
         // Processing each request:
         //    - Getting a new request
         //    - Checking if the request is well formed
@@ -382,15 +395,18 @@ public class Dsmlv2Engine
             ErrorResponse errorResponse = new ErrorResponse( reqId, ErrorResponseType.MALFORMED_REQUEST, I18n.err(
                 I18n.ERR_03001, e.getLocalizedMessage(), e.getLineNumber(), e.getColumnNumber() ) );
 
+            batchResponse.addResponse( errorResponse );
+
             if ( respWriter != null )
             {
-                writeResponse( respWriter, errorResponse );
-                respWriter.write( "</batchResponse>" );
+                respWriter.write( batchResponse.toDsml() );
+
+                if( generateSoapResp )
+                {
+                    respWriter.write( "</Body></Envelope>" );
+                }
+                
                 respWriter.flush();
-            }
-            else
-            {
-                batchResponse.addResponse( errorResponse );
             }
 
             return;
@@ -480,8 +496,7 @@ public class Dsmlv2Engine
 
             if ( generateSoapResp )
             {
-                respWriter.write( "</Body>" );
-                respWriter.write( "</Envelope>" );
+                respWriter.write( "</Body></Envelope>" );
             }
 
             respWriter.flush();
