@@ -1563,6 +1563,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                     {
                         // The line is empty, we have read an entry
                         insideComment = false;
+                        offset++;
                         break;
                     }
                 }
