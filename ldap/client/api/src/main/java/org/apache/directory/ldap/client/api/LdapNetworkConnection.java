@@ -76,6 +76,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.exception.LdapNoPermissionException;
 import org.apache.directory.api.ldap.model.exception.LdapOperationException;
+import org.apache.directory.api.ldap.model.exception.LdapOtherException;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.AbandonRequestImpl;
 import org.apache.directory.api.ldap.model.message.AddRequest;
@@ -523,7 +524,16 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         ConnectFuture connectionFuture = connector.connect( address );
 
         // Wait until it's established
-        connectionFuture.awaitUninterruptibly();
+        try
+        {
+            connectionFuture.await( timeout );
+        }
+        catch( InterruptedException e )
+        {
+            connector = null;
+            LOG.debug( "Interrupted while waiting for connection to establish with server {}:{}", config.getLdapHost(), config.getLdapPort(), e );
+            throw new LdapOtherException( e.getMessage(), e );
+        }
 
         boolean isConnected = connectionFuture.isConnected();
 
