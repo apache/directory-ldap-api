@@ -30,10 +30,12 @@ import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.extended.PwdModifyRequest;
 import org.apache.directory.api.ldap.extras.extended.PwdModifyRequestImpl;
 import org.apache.directory.api.ldap.extras.extended.PwdModifyResponse;
 import org.apache.directory.api.ldap.extras.extended.PwdModifyResponseImpl;
+import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
@@ -136,20 +138,19 @@ public class PasswordModifyFactory implements ExtendedOperationFactory<PwdModify
         ByteBuffer buffer = ByteBuffer.wrap( value );
 
         PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
-
+        PwdModifyResponse pwdModifyResponse = null;
+        
         try
         {
             decoder.decode( buffer, container );
 
-            PwdModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
+            pwdModifyResponse = container.getPwdModifyResponse();
 
             // Now, update the created response with what we got from the extendedResponse
             pwdModifyResponse.getLdapResult().setResultCode( response.getLdapResult().getResultCode() );
             pwdModifyResponse.getLdapResult().setDiagnosticMessage( response.getLdapResult().getDiagnosticMessage() );
             pwdModifyResponse.getLdapResult().setMatchedDn( response.getLdapResult().getMatchedDn() );
             pwdModifyResponse.getLdapResult().setReferral( response.getLdapResult().getReferral() );
-
-            return new PasswordModifyResponseDecorator( codec, pwdModifyResponse );
         }
         catch ( DecoderException de )
         {
@@ -158,13 +159,21 @@ public class PasswordModifyFactory implements ExtendedOperationFactory<PwdModify
             String stackTrace = sw.toString();
 
             // Error while decoding the value. 
-            PwdModifyResponse pwdModifyResponse = new PwdModifyResponseImpl(
+            pwdModifyResponse = new PwdModifyResponseImpl(
                 decoratedResponse.getMessageId(),
                 ResultCodeEnum.OPERATIONS_ERROR,
                 stackTrace );
-
-            return new PasswordModifyResponseDecorator( codec, pwdModifyResponse );
         }
 
+        PasswordModifyResponseDecorator decorated = new PasswordModifyResponseDecorator( codec, pwdModifyResponse );
+        
+        Control ppolicyControl = response.getControl( PasswordPolicy.OID );
+        
+        if( ppolicyControl != null )
+        {
+            decorated.addControl( ppolicyControl );
+        }
+        
+        return decorated;
     }
 }
