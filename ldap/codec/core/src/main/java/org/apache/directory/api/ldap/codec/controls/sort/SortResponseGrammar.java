@@ -83,7 +83,7 @@ public class SortResponseGrammar extends AbstractGrammar<SortResponseContainer>
                             LOG.debug( "AttributeType = " + atType );
                         }
                         
-                        container.getControl().setAttibuteName( atType );
+                        container.getControl().setAttributeName( atType );
                         container.setGrammarEndAllowed( true );
                     }
                 } );

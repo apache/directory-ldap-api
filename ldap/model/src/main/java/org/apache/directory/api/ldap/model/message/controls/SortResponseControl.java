@@ -67,11 +67,11 @@ public interface SortResponseControl extends Control
      */
     // didn't name the method setAttribute*Type*
     // cause in our internal terminology AttributeType is a java type
-    void setAttibuteName( String attributeName );
+    void setAttributeName( String attributeName );
     
     
     /**
      * @return the name of the first offending attribute
      */
-    String getAttibuteName();
+    String getAttributeName();
 }

@@ -56,7 +56,7 @@ public class SortResponseControlTest extends AbstractCodecServiceTest
         SortResponseControl control = ( SortResponseControl ) decorator.decode( buffer.array() );
         
         assertEquals( SortResultCode.SUCCESS, control.getSortResult() );
-        assertEquals( "cn", control.getAttibuteName() );
+        assertEquals( "cn", control.getAttributeName() );
         
         ByteBuffer encoded = ByteBuffer.allocate( buffer.capacity() );
         decorator.computeLength();
@@ -80,7 +80,7 @@ public class SortResponseControlTest extends AbstractCodecServiceTest
         SortResponseControl control = ( SortResponseControl ) decorator.decode( buffer.array() );
         
         assertEquals( SortResultCode.NOSUCHATTRIBUTE, control.getSortResult() );
-        assertNull( control.getAttibuteName() );
+        assertNull( control.getAttributeName() );
         
         ByteBuffer encoded = ByteBuffer.allocate( buffer.capacity() );
         decorator.computeLength();

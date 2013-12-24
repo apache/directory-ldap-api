@@ -85,9 +85,9 @@ public class SortResponseDecorator extends ControlDecorator<SortResponseControl>
         // result code value
         sortRespLen += 1 + 1 + 1;
         
-        if( getAttibuteName() != null )
+        if( getAttributeName() != null )
         {
-            byte[] data = Strings.getBytesUtf8( getAttibuteName() );
+            byte[] data = Strings.getBytesUtf8( getAttributeName() );
             sortRespLen += 1 + TLV.getNbBytes( data.length ) + data.length;
         }
         
@@ -110,9 +110,9 @@ public class SortResponseDecorator extends ControlDecorator<SortResponseControl>
         
         BerValue.encodeEnumerated( buffer, getSortResult().getVal() );
         
-        if( getAttibuteName() != null )
+        if( getAttributeName() != null )
         {
-            BerValue.encode( buffer, getAttibuteName() );
+            BerValue.encode( buffer, getAttributeName() );
         }
         
         return buffer;
@@ -171,16 +171,16 @@ public class SortResponseDecorator extends ControlDecorator<SortResponseControl>
 
 
     @Override
-    public void setAttibuteName( String attributeName )
+    public void setAttributeName( String attributeName )
     {
-        getDecorated().setAttibuteName( attributeName );
+        getDecorated().setAttributeName( attributeName );
     }
 
 
     @Override
-    public String getAttibuteName()
+    public String getAttributeName()
     {
-        return getDecorated().getAttibuteName();
+        return getDecorated().getAttributeName();
     }
 
 }

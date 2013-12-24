@@ -50,13 +50,13 @@ public class SortResponseControlImpl extends AbstractControl  implements SortRes
     }
 
     @Override
-    public void setAttibuteName( String attributeName )
+    public void setAttributeName( String attributeName )
     {
         this.attributeName = attributeName;
     }
 
     @Override
-    public String getAttibuteName()
+    public String getAttributeName()
     {
         return attributeName;
     }
@@ -88,9 +88,9 @@ public class SortResponseControlImpl extends AbstractControl  implements SortRes
         
         if( attributeName != null )
         {
-            return ( attributeName.equalsIgnoreCase( that.getAttibuteName() ) );
+            return ( attributeName.equalsIgnoreCase( that.getAttributeName() ) );
         }
-        else if( that.getAttibuteName() == null )
+        else if( that.getAttributeName() == null )
         {
             return true;
         }
