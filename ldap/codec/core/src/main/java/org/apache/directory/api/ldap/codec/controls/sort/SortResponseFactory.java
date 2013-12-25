@@ -54,7 +54,7 @@ public class SortResponseFactory implements ControlFactory<SortResponseControl, 
      */
     public String getOid()
     {
-        return PagedResults.OID;
+        return SortResponseControl.OID;
     }
 
 
