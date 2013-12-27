@@ -67,6 +67,21 @@ public class DnComparator extends LdapComparator<Object>
             return -1;
         }
 
+        // check the equality first, cause
+        // when both DNs are equal checking isAncestorOf() returns true
+        if ( dn0.equals( dn1 ) )
+        {
+            return 0;
+        }
+        else if( dn0.isAncestorOf( dn1 ) )
+        {
+            return 1;
+        }
+        else if( dn1.isAncestorOf( dn0 ) )
+        {
+            return -1;
+        }
+
         return dn0.getNormName().compareTo( dn1.getNormName() );
     }
 
