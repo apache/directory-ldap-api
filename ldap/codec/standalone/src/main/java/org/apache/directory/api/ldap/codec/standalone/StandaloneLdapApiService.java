@@ -29,8 +29,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+
 import javax.naming.NamingException;
 import javax.naming.ldap.BasicControl;
+
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
@@ -102,8 +104,10 @@ public class StandaloneLdapApiService implements LdapApiService
 
     /**
      * Creates a new instance of StandaloneLdapCodecService. Optionally checks for
-     * system property {@link #PLUGIN_DIRECTORY_PROPERTY}. Intended for use by 
-     * unit test running tools like Maven's surefire:
+     * system property {@link #PLUGIN_DIRECTORY_PROPERTY}. 
+     * <br /><br />
+     * The following pom configuration is intended for use by unit test running 
+     * tools like Maven's surefire:
      * <pre>
      *   &lt;properties&gt;
      *     &lt;codec.plugin.directory&gt;${project.build.directory}/pluginDirectory&lt;/codec.plugin.directory&gt;
@@ -165,11 +169,16 @@ public class StandaloneLdapApiService implements LdapApiService
      */
     public StandaloneLdapApiService() throws Exception
     {
-        // Load the controls
-        loadControls();
+        this( getControlsFromSystemProperties(), getExtendedOperationsFromSystemProperties() );
+    }
 
+    public StandaloneLdapApiService( List<String> controls, List<String> extendedOperations ) throws Exception
+    {
+        // Load the controls
+        loadControls( controls );
+            
         // Load the extended operations
-        loadExtendedOperations();
+        loadExtendedOperations( extendedOperations );
 
         if ( protocolCodecFactory == null )
         {
@@ -178,7 +187,16 @@ public class StandaloneLdapApiService implements LdapApiService
                 @SuppressWarnings("unchecked")
                 Class<? extends ProtocolCodecFactory> clazz = ( Class<? extends ProtocolCodecFactory> )
                     Class.forName( DEFAULT_PROTOCOL_CODEC_FACTORY );
-                protocolCodecFactory = clazz.newInstance();
+                Constructor<? extends ProtocolCodecFactory> constructor =
+                        clazz.getConstructor( LdapApiService.class );
+                if ( constructor != null ) 
+                {
+                    protocolCodecFactory = constructor.newInstance( this );
+                }
+                else 
+                {
+                    protocolCodecFactory = clazz.newInstance();
+                }
             }
             catch ( Exception cause )
             {
@@ -189,11 +207,11 @@ public class StandaloneLdapApiService implements LdapApiService
 
 
     /**
-     * Load the controls
+     * Parses the system properties to obtain the controls list.
      * 
      * @throws Exception
      */
-    private void loadControls() throws Exception
+    private static List<String> getControlsFromSystemProperties() throws Exception
     {
         List<String> controlsList = new ArrayList<String>();
 
@@ -231,46 +249,16 @@ public class StandaloneLdapApiService implements LdapApiService
                 }
             }
         }
-
-        // Adding all controls
-        if ( controlsList.size() > 0 )
-        {
-            for ( String control : controlsList )
-            {
-                loadControl( control );
-            }
-        }
+        
+        return controlsList;
     }
 
-
     /**
-     * Loads a control from its FQCN.
-     *
-     * @param control the control FQCN
-     * @throws Exception
-     */
-    private void loadControl( String control ) throws Exception
-    {
-        Class<?>[] types = new Class<?>[]
-            { LdapApiService.class };
-        @SuppressWarnings("unchecked")
-        Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> ) Class
-            .forName( control );
-        Constructor<?> constructor = clazz.getConstructor( types );
-
-        ControlFactory<?, ?> factory = ( ControlFactory<?, ?> ) constructor.newInstance( new Object[]
-            { this } );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered control factory: {}", factory.getOid() );
-    }
-
-
-    /**
-     * Load the extended operations
+     * Parses the system properties to obtain the extended operations
      * 
      * @throws Exception
      */
-    private void loadExtendedOperations() throws Exception
+    private static List<String> getExtendedOperationsFromSystemProperties() throws Exception
     {
         List<String> extendedOperationsList = new ArrayList<String>();
 
@@ -321,7 +309,49 @@ public class StandaloneLdapApiService implements LdapApiService
                 }
             }
         }
+        
+        return extendedOperationsList;
+    }
 
+    private void loadControls( List<String> controlsList ) throws Exception 
+    {
+        // Adding all controls
+        if ( controlsList.size() > 0 )
+        {
+            for ( String control : controlsList )
+            {
+                loadControl( control );
+            }
+        }
+    }
+
+
+    /**
+     * Loads a control from its FQCN.
+     *
+     * @param control the control FQCN
+     * @throws Exception
+     */
+    private void loadControl( String control ) throws Exception
+    {
+        Class<?>[] types = new Class<?>[]
+            { LdapApiService.class };
+        // note, trimming whitespace doesnt hurt as it is a class name and
+        // helps DI containers that use xml config as xml ignores whitespace
+        @SuppressWarnings("unchecked")
+        Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> ) Class
+            .forName( control.trim() );
+        Constructor<?> constructor = clazz.getConstructor( types );
+
+        ControlFactory<?, ?> factory = ( ControlFactory<?, ?> ) constructor.newInstance( new Object[]
+            { this } );
+        controlFactories.put( factory.getOid(), factory );
+        LOG.info( "Registered control factory: {}", factory.getOid() );
+    }
+
+    
+    private void loadExtendedOperations( List<String> extendedOperationsList ) throws Exception
+    {
         // Adding all extended operations
         if ( extendedOperationsList.size() > 0 )
         {
@@ -337,9 +367,11 @@ public class StandaloneLdapApiService implements LdapApiService
     {
         Class<?>[] types = new Class<?>[]
             { LdapApiService.class };
+        // note, trimming whitespace doesnt hurt as it is a class name and
+        // helps DI containers that use xml config as xml ignores whitespace
         @SuppressWarnings("unchecked")
         Class<? extends ExtendedOperationFactory<?, ?>> clazz = ( Class<? extends ExtendedOperationFactory<?, ?>> ) Class
-            .forName( extendedOperation );
+            .forName( extendedOperation.trim() );
         Constructor<?> constructor = clazz.getConstructor( types );
 
         @SuppressWarnings("unchecked")

@@ -199,9 +199,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     private IoSession ldapSession;
 
-    /** The LDAP Api Service instance */
-    LdapApiService ldapApiService;
-
     /** a map to hold the ResponseFutures for all operations */
     private Map<Integer, ResponseFuture<? extends Response>> futureMap = new ConcurrentHashMap<Integer, ResponseFuture<? extends Response>>();
 
@@ -357,25 +354,19 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public LdapNetworkConnection( LdapConnectionConfig config )
     {
-        super();
+        this( config, LdapApiServiceFactory.getSingleton() );
+    }
+
+    public LdapNetworkConnection( LdapConnectionConfig config, LdapApiService ldapApiService )
+    {
+        super( ldapApiService );
         this.config = config;
 
         if ( config.getBinaryAttributeDetector() == null )
         {
             config.setBinaryAttributeDetector( new DefaultConfigurableBinaryAttributeDetector() );
         }
-
-        // Load the LdapApiService now
-        try
-        {
-            ldapApiService = LdapApiServiceFactory.getSingleton();
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-        }
     }
-
 
     /**
      * Create a new instance of a LdapConnection on localhost,
@@ -389,6 +380,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     }
 
 
+    public LdapNetworkConnection( boolean useSsl, LdapApiService ldapApiService )
+    {
+        this( null, -1, useSsl, ldapApiService );
+    }
+
+
     /**
      * Create a new instance of a LdapConnection on a given
      * server, using the default port (389).
@@ -399,6 +396,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     public LdapNetworkConnection( String server )
     {
         this( server, -1, false );
+    }
+
+
+    public LdapNetworkConnection( String server, LdapApiService ldapApiService )
+    {
+        this( server, -1, false, ldapApiService );
     }
 
 
@@ -417,6 +420,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     }
 
 
+    public LdapNetworkConnection( String server, boolean useSsl, LdapApiService ldapApiService )
+    {
+        this( server, -1, useSsl, ldapApiService );
+    }
+
+
     /**
      * Create a new instance of a LdapConnection on a
      * given server and a given port. We don't use ssl.
@@ -427,6 +436,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     public LdapNetworkConnection( String server, int port )
     {
         this( server, port, false );
+    }
+
+
+    public LdapNetworkConnection( String server, int port, LdapApiService ldapApiService )
+    {
+        this( server, port, false, ldapApiService );
     }
 
 
@@ -442,8 +457,19 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public LdapNetworkConnection( String server, int port, boolean useSsl )
     {
-        super();
-        config = new LdapConnectionConfig();
+        this( buildConfig( server, port, useSsl ) );
+    }
+    
+    
+    public LdapNetworkConnection( String server, int port, boolean useSsl, LdapApiService ldapApiService )
+    {
+        this( buildConfig( server, port, useSsl ), ldapApiService );
+    }
+
+    
+    private static LdapConnectionConfig buildConfig( String server, int port, boolean useSsl )
+    {
+        LdapConnectionConfig config = new LdapConnectionConfig();
         config.setUseSsl( useSsl );
 
         if ( port != -1 )
@@ -473,16 +499,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
 
         config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
-
-        // Load the LdapApiService now
-        try
-        {
-            ldapApiService = LdapApiServiceFactory.getSingleton();
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-        }
+        
+        return config;
     }
 
 
@@ -3119,7 +3137,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
 
             // Decode the payload now
-            ExtendedResponseDecorator<?> decoratedResponse = ldapApiService.decorate( response );
+            ExtendedResponseDecorator<?> decoratedResponse = codec.decorate( response );
 
             return decoratedResponse;
         }

@@ -58,7 +58,7 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
     protected AtomicInteger messageId;
 
     /** the ldap codec service */
-    protected LdapApiService codec = LdapApiServiceFactory.getSingleton();
+    protected LdapApiService codec;
 
 
     /**
@@ -66,7 +66,13 @@ public abstract class AbstractLdapConnection extends IoHandlerAdapter implements
      */
     protected AbstractLdapConnection()
     {
+        this( LdapApiServiceFactory.getSingleton() );
+    }
+
+    protected AbstractLdapConnection( LdapApiService codec )
+    {
         messageId = new AtomicInteger( 0 );
+        this.codec = codec;
     }
 
 

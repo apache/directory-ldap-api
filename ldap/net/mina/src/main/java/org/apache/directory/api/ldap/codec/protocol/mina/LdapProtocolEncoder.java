@@ -22,6 +22,8 @@ package org.apache.directory.api.ldap.codec.protocol.mina;
 
 import java.nio.ByteBuffer;
 
+
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.model.constants.Loggers;
@@ -59,7 +61,12 @@ public class LdapProtocolEncoder implements ProtocolEncoder
      */
     public LdapProtocolEncoder()
     {
-        this.encoder = new LdapEncoder( LdapApiServiceFactory.getSingleton() );
+        this( LdapApiServiceFactory.getSingleton() );
+    }
+
+    public LdapProtocolEncoder( LdapApiService ldapApiService )
+    {
+        this.encoder = new LdapEncoder( ldapApiService );
     }
 
 
