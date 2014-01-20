@@ -3695,6 +3695,13 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             checkSession();
 
+            IoFilter sslFilter = ldapSession.getFilterChain().get( SSL_FILTER_KEY );
+            if ( sslFilter != null )
+            {
+               LOG.debug( "LDAP session already using startTLS" );
+               return;
+            }
+            
             ExtendedResponse resp = extended( START_TLS_REQ_OID );
             LdapResult result = resp.getLdapResult();
 
