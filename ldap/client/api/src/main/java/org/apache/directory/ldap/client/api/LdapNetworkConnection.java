@@ -22,6 +22,7 @@ package org.apache.directory.ldap.client.api;
 
 import static org.apache.directory.api.ldap.model.message.ResultCodeEnum.processResponse;
 
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -41,12 +42,14 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
+
 import javax.net.ssl.SSLContext;
 import javax.security.auth.Subject;
 import javax.security.auth.login.Configuration;
 import javax.security.auth.login.LoginContext;
 import javax.security.sasl.Sasl;
 import javax.security.sasl.SaslClient;
+
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Oid;
@@ -688,7 +691,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public boolean close() throws IOException
+    public void close() throws IOException
     {
         // Close the session
         if ( ( ldapSession != null ) && connected.get() )
@@ -716,8 +719,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         // Reset the messageId
         messageId.set( 0 );
-
-        return true;
     }
 
 

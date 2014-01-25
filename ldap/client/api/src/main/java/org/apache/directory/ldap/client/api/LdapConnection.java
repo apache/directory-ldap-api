@@ -20,8 +20,10 @@
 package org.apache.directory.ldap.client.api;
 
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
+
 
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
@@ -69,7 +71,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface LdapConnection
+public interface LdapConnection extends Closeable
 {
     /**
      * Check if we are connected.
@@ -99,10 +101,9 @@ public interface LdapConnection
     /**
      * Disconnect from the remote LDAP server.
      *
-     * @return <code>true</code> if the connection is closed, false otherwise
      * @throws IOException if some I/O error occurs
      */
-    boolean close() throws IOException;
+    void close() throws IOException;
 
 
     //------------------------ The LDAP operations ------------------------//
