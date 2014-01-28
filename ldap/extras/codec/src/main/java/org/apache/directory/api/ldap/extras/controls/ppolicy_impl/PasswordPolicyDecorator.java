@@ -109,12 +109,12 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
 
         if ( getResponse().getTimeBeforeExpiration() >= 0 )
         {
-            timeBeforeExpirationTagLength = TLV.getNbBytes( getResponse().getTimeBeforeExpiration() );
+            timeBeforeExpirationTagLength = BerValue.getNbBytes( getResponse().getTimeBeforeExpiration() );
             warningLength = 1 + TLV.getNbBytes( timeBeforeExpirationTagLength ) + timeBeforeExpirationTagLength;
         }
         else if ( getResponse().getGraceAuthNRemaining() >= 0 )
         {
-            graceAuthNsRemainingTagLength = TLV.getNbBytes( getResponse().getGraceAuthNRemaining() );
+            graceAuthNsRemainingTagLength = BerValue.getNbBytes( getResponse().getGraceAuthNRemaining() );
             warningLength = 1 + TLV.getNbBytes( graceAuthNsRemainingTagLength ) + graceAuthNsRemainingTagLength;
         }
 
