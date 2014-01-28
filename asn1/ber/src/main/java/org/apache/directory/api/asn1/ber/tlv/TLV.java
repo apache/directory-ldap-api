@@ -222,6 +222,7 @@ public class TLV
      * 
      * @param length The length to store in a byte array
      * @return The number of bytes necessary to store the length.
+     * @see <a href="http://en.wikipedia.org/wiki/X.690#Length_Octets">X.690</a>
      */
     public static int getNbBytes( int length )
     {
