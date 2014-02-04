@@ -201,6 +201,6 @@ public class PasswordPolicyTest extends AbstractCodecServiceTest
 
         ByteBuffer encoded = ( ( PasswordPolicyDecorator ) passwordPolicy ).encode(
             ByteBuffer.allocate( ( ( PasswordPolicyDecorator ) passwordPolicy ).computeLength() ) );
-        assertEquals( "", Strings.dumpBytes( encoded.array() ) );
+        assertEquals( Strings.dumpBytes( bb.array() ), Strings.dumpBytes( encoded.array() ) );
     }
 }

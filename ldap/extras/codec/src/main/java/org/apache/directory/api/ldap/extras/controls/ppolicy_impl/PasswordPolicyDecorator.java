@@ -78,12 +78,11 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
     @Override
     public void setValue( byte[] value )
     {
-        if ( value == null || value.length == 0 )
+        if ( value == null || value.length <= 2 )
         {
             setResponse( null );
         }
-
-        if ( value != null && !hasResponse() )
+        else if ( value != null && !hasResponse() )
         {
             setResponse( true );
         }
@@ -128,10 +127,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
             ppolicySeqLength += 1 + 1 + 1;
         }
 
-        if ( ppolicySeqLength > 0 )
-        {
-            valueLength = 1 + TLV.getNbBytes( ppolicySeqLength ) + ppolicySeqLength;
-        }
+        valueLength = 1 + TLV.getNbBytes( ppolicySeqLength ) + ppolicySeqLength;
 
         return valueLength;
     }
@@ -150,6 +146,10 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
             throw new EncoderException( I18n.err( I18n.ERR_04023 ) );
         }
 
+        // Encode the Sequence tag
+        buffer.put( UniversalTag.SEQUENCE.getValue() );
+        buffer.put( TLV.getBytes( ppolicySeqLength ) );
+
         if ( ( getResponse().getTimeBeforeExpiration() < 0 ) && ( getResponse().getGraceAuthNRemaining() < 0 ) && (
             getResponse().getPasswordPolicyError() == null ) )
         {
@@ -157,10 +157,6 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
         }
         else
         {
-            // Encode the Sequence tag
-            buffer.put( UniversalTag.SEQUENCE.getValue() );
-            buffer.put( TLV.getBytes( ppolicySeqLength ) );
-
             if ( warningLength > 0 )
             {
                 // Encode the Warning tag
