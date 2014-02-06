@@ -29,10 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
 import javax.naming.NamingException;
 import javax.naming.ldap.BasicControl;
-
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
@@ -40,8 +38,8 @@ import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.ldap.codec.BasicControlDecorator;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
+import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
@@ -174,6 +172,10 @@ public class StandaloneLdapApiService implements LdapApiService
 
     public StandaloneLdapApiService( List<String> controls, List<String> extendedOperations ) throws Exception
     {
+        CodecFactoryUtil.loadStockControls( controlFactories, this );
+        
+        CodecFactoryUtil.loadStockExtendedOperations( extendendOperationsFactories, this );
+        
         // Load the controls
         loadControls( controls );
             
@@ -334,6 +336,12 @@ public class StandaloneLdapApiService implements LdapApiService
      */
     private void loadControl( String control ) throws Exception
     {
+        if ( controlFactories.containsKey( control ) )
+        {
+            LOG.debug( "Factory for control {} was already loaded", control );
+            return;
+        }
+        
         Class<?>[] types = new Class<?>[]
             { LdapApiService.class };
         // note, trimming whitespace doesnt hurt as it is a class name and
@@ -365,6 +373,12 @@ public class StandaloneLdapApiService implements LdapApiService
 
     private void loadExtendedOperation( String extendedOperation ) throws Exception
     {
+        if ( extendendOperationsFactories.containsKey( extendedOperation ) )
+        {
+            LOG.debug( "Factory for extended operation {} was already loaded", extendedOperation );
+            return;
+        }
+        
         Class<?>[] types = new Class<?>[]
             { LdapApiService.class };
         // note, trimming whitespace doesnt hurt as it is a class name and
