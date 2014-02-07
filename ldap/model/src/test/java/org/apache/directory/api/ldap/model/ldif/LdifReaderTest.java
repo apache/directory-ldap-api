@@ -2182,4 +2182,94 @@ public class LdifReaderTest
         assertEquals( rafEntry2.getLengthBeforeParsing(), reReadeRafEntry2.getLengthBeforeParsing() );
         reader.close();
     }
+
+    
+    @Test // for DIRAPI-174
+    public void testLineNumber() throws Exception
+    {
+        String ldif =
+            "versionN:   1\n" + // wrong tag name 'versionN'
+                "dn: dc=example,dc=com\n" +
+                "changetype: delete\n" +
+                "attr1: test";
+
+        LdifReader reader = new LdifReader();
+
+        try
+        {
+            reader.parseLdif( ldif );
+            fail();
+        }
+        catch( Exception e )
+        {
+        }
+        
+        assertEquals( 1, reader.getLineNumber() );
+
+        ldif =
+            "version:   1\n" +
+                "d n: dc=example,dc=com\n" + // wrong name "d n"
+                "changetype: delete\n" +
+                "attr1: test";
+        reader = new LdifReader();
+
+        try
+        {
+            reader.parseLdif( ldif );
+            fail();
+        }
+        catch( Exception e )
+        {
+        }
+
+        assertEquals( 2, reader.getLineNumber() );
+
+        // wrong changetype
+        ldif =
+            "version:   1\n" +
+                "dn: dc=example,dc=com\n" +
+                "changetype: delete\n" +
+                "attr1: test";
+        reader = new LdifReader();
+
+        try
+        {
+            reader.parseLdif( ldif );
+            fail();
+        }
+        catch( Exception e )
+        {
+        }
+
+        assertEquals( 4, reader.getLineNumber() );
+        
+        ldif =
+            "version:   1\n" +
+                "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
+                "cn: app1\n" +
+                "objectClass: top\n" +
+                "objectClass: apApplication\n" +
+                "displayName:   app1   \n" +
+                "dependencies:\n" +
+                "envVars:\n\n" + // watch out the extra newline while counting
+                "d n: cn=app2,ou=applications,ou=conf,dc=apache,dc=org\n" + // wrong start
+                "cn: app2\n" +
+                "objectClass: top\n" +
+                "objectClass: apApplication\n" +
+                "displayName:   app2   \n" +
+                "dependencies:\n" +
+                "envVars:";
+        reader = new LdifReader();
+
+        try
+        {
+            reader.parseLdif( ldif );
+            fail("shouldn't be parsed");
+        }
+        catch( Exception e )
+        {
+        }
+
+        assertEquals( 10, reader.getLineNumber() );
+    }
 }

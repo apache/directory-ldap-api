@@ -233,6 +233,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     /** the current offset of the reader */
     private long offset = 0;
     
+    /** the current line number being parsed by the reader */
+    private int lineNumber;
+    
     /**
      * Constructors
      */
@@ -1306,6 +1309,8 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         // The entry must start with a dn: or a dn::
         String line = lines.get( 0 );
 
+        lineNumber -= ( lines.size() - 1 );
+        
         String name = parseDn( line );
 
         Dn dn = new Dn( name );
@@ -1340,6 +1345,8 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         while ( iter.hasNext() )
         {
+            lineNumber++;
+            
             // Each line could start either with an OID, an attribute type, with
             // "control:" or with "changetype:"
             line = iter.next();
@@ -1553,6 +1560,8 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         {
             while ( ( line = getLine() ) != null )
             {
+                lineNumber++;
+                
                 if ( line.length() == 0 )
                 {
                     if ( isFirstLine )
@@ -1960,6 +1969,15 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
 
     /**
+     * @return the current line that is being processed by the reader
+     */
+    public int getLineNumber()
+    {
+        return lineNumber;
+    }
+
+
+    /**
      * {@inheritDoc}
      */
     public void close() throws IOException
@@ -1970,7 +1988,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             reader.close();
             containsEntries = false;
             containsChanges = false;
-            offset = entryOffset = 0;
+            offset = entryOffset = lineNumber = 0;
         }
     }
 }
