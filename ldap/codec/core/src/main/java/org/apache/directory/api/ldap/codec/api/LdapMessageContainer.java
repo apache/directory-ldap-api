@@ -40,7 +40,7 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
     private E messageDecorator;
 
     /** checks if attribute is binary */
-    private final BinaryAttributeDetector binaryAttributeDetector;
+    private BinaryAttributeDetector binaryAttributeDetector;
 
     /** The message ID */
     private int messageId;
@@ -170,5 +170,25 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
     public void setCurrentControl( ControlDecorator<? extends Control> currentControl )
     {
         this.currentControl = currentControl;
+    }
+
+
+    /**
+     * Sets the binary attribute detector
+     * 
+     * @param binaryAttributeDetector the binary attribute detector
+     */
+    public void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetector )
+    {
+        this.binaryAttributeDetector = binaryAttributeDetector;
+    }
+
+
+    /**
+     * @return the binary attribute detector
+     */
+    public BinaryAttributeDetector getBinaryAttributeDetector()
+    {
+        return binaryAttributeDetector;
     }
 }

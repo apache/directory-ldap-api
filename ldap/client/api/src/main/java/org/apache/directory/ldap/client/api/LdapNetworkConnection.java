@@ -54,6 +54,7 @@ import javax.security.sasl.SaslClient;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
+import org.apache.directory.api.ldap.codec.api.ConfigurableBinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -501,7 +502,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             config.setLdapHost( server );
         }
 
-        config.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( null ) );
+        config.setBinaryAttributeDetector( new DefaultConfigurableBinaryAttributeDetector() );
         
         return config;
     }
@@ -673,11 +674,27 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             ( LdapMessageContainer<MessageDecorator<? extends Message>> ) ldapSession
                 .getAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR );
 
-        if ( container == null )
+        if ( container != null )
         {
+            if( schemaManager != null )
+            {
+                if ( !( container.getBinaryAttributeDetector() instanceof SchemaBinaryAttributeDetector ) )
+                {
+                    container.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( schemaManager ) );
+                }
+            }
+        }
+        else
+        {
+            BinaryAttributeDetector atDetector = new DefaultConfigurableBinaryAttributeDetector();
+            
+            if ( schemaManager != null )
+            {
+               atDetector = new SchemaBinaryAttributeDetector( schemaManager ); 
+            }
+            
             ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
-                new LdapMessageContainer<MessageDecorator<? extends Message>>( codec,
-                    new DefaultConfigurableBinaryAttributeDetector() ) );
+                new LdapMessageContainer<MessageDecorator<? extends Message>>( codec, atDetector ) );
         }
 
         // Initialize the MessageId
