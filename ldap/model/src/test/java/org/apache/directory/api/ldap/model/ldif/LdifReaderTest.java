@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- *  
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
- *  under the License. 
- *  
+ *  under the License.
+ *
  */
 package org.apache.directory.api.ldap.model.ldif;
 
@@ -53,7 +53,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 /**
  * Test the LdifReader class
- * 
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 @RunWith(ConcurrentJunitRunner.class)
@@ -208,7 +208,7 @@ public class LdifReaderTest
         assertTrue( entry.isLdifContent() );
 
         assertEquals( ldif.length(), entry.getLengthBeforeParsing() );
-        
+
         assertEquals( "cn=app1,ou=applications,ou=conf,dc=apache,dc=org", entry.getDn().getName() );
 
         Attribute attr = entry.get( "displayname" );
@@ -242,7 +242,7 @@ public class LdifReaderTest
 
     /**
      * Spaces at the end of values should not be included into values.
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -329,7 +329,7 @@ public class LdifReaderTest
 
     /**
      * Changes and entries should not be mixed
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -373,7 +373,7 @@ public class LdifReaderTest
 
     /**
      * Changes and entries should not be mixed
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -416,7 +416,7 @@ public class LdifReaderTest
 
     /**
      * Changes and entries should not be mixed
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -460,7 +460,7 @@ public class LdifReaderTest
 
     /**
      * Changes and entries should not be mixed
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -1044,7 +1044,7 @@ public class LdifReaderTest
         String[][][] values =
             {
                 {
-                    { "dn", "ou=\u55b6\u696d\u90e8,o=Airius" }, // 55b6 = ���, 696d = ���, 90e8 = ��� 
+                    { "dn", "ou=\u55b6\u696d\u90e8,o=Airius" }, // 55b6 = ���, 696d = ���, 90e8 = ���
                         { "objectclass", "top" },
                         { "objectclass", "organizationalUnit" },
                         { "ou", "\u55b6\u696d\u90e8" },
@@ -1062,8 +1062,8 @@ public class LdifReaderTest
                     { "objectclass", "inetOrgPerson" },
                     { "uid", "rogasawara" },
                     { "mail", "rogasawara@airius.co.jp" },
-                    { "givenname;lang-ja", "\u30ed\u30c9\u30cb\u30fc" }, // 30ed = ���, 30c9 = ���, 30cb = ���, 30fc = ���   
-                        { "sn;lang-ja", "\u5c0f\u7b20\u539f" }, // 5c0f = ���, 7b20 = ���, 539f = ���  
+                    { "givenname;lang-ja", "\u30ed\u30c9\u30cb\u30fc" }, // 30ed = ���, 30c9 = ���, 30cb = ���, 30fc = ���
+                        { "sn;lang-ja", "\u5c0f\u7b20\u539f" }, // 5c0f = ���, 7b20 = ���, 539f = ���
                         { "cn;lang-ja", "\u5c0f\u7b20\u539f \u30ed\u30c9\u30cb\u30fc" },
                         { "title;lang-ja", "\u55b6\u696d\u90e8 \u90e8\u9577" }, // 9577 = ���
                         { "preferredlanguage", "ja" },
@@ -1072,7 +1072,7 @@ public class LdifReaderTest
                         { "cn", "\u5c0f\u7b20\u539f \u30ed\u30c9\u30cb\u30fc" },
                         { "title", "\u55b6\u696d\u90e8 \u90e8\u9577" },
                         { "givenname;lang-ja;phonetic", "\u308d\u3069\u306b\u30fc" }, // 308d = ���,3069 = ���, 306b = ���
-                        { "sn;lang-ja;phonetic", "\u304a\u304c\u3055\u308f\u3089" }, // 304a = ���, 304c = ���,3055 = ���,308f = ���, 3089 = ���    
+                        { "sn;lang-ja;phonetic", "\u304a\u304c\u3055\u308f\u3089" }, // 304a = ���, 304c = ���,3055 = ���,308f = ���, 3089 = ���
                         { "cn;lang-ja;phonetic", "\u304a\u304c\u3055\u308f\u3089 \u308d\u3069\u306b\u30fc" },
                         { "title;lang-ja;phonetic", "\u3048\u3044\u304e\u3087\u3046\u3076 \u3076\u3061\u3087\u3046" }, // 304E = ���, 3061 = ���
                         { "givenname;lang-en", "Rodney" },
@@ -1300,7 +1300,7 @@ public class LdifReaderTest
 
         String[][][] values =
             {
-                // First entry modification : ADD                
+                // First entry modification : ADD
                 {
                     { "dn", "cn=Fiona Jensen, ou=Marketing, dc=airius, dc=com" },
                     { "objectclass", "top" },
@@ -2050,7 +2050,7 @@ public class LdifReaderTest
 
     /**
      * Test that we can parse a LDIF with a modify changeType and see if the
-     * empty attribute and the attribute deletion aren't producing the same Modify entry 
+     * empty attribute and the attribute deletion aren't producing the same Modify entry
      * @throws Exception
      */
     @Test
@@ -2085,10 +2085,10 @@ public class LdifReaderTest
         assertNotNull( modification.getAttribute().get() );
         assertNull( modification.getAttribute().getBytes() );
     }
-    
+
     /**
      * Test lengths when multiple entries are present
-     * 
+     *
      * @throws Exception
      */
     @Test
@@ -2106,12 +2106,12 @@ public class LdifReaderTest
                          "# Tree Delete Control defined in [9]. The criticality\n" +
                          "# field is \"true\" and the controlValue field is\n" +
                          "# absent, as required by [9].\n";
-        
+
         String version = "version:   1\n";
-        
+
         String ldif =
                 version +
-                ldif1 + 
+                ldif1 +
                 "\n" +
                 comment +
                 ldif1 + "\n";
@@ -2119,7 +2119,7 @@ public class LdifReaderTest
         LdifReader reader = new LdifReader();
 
         List<LdifEntry> lstEntries = null;
-        
+
         try
         {
             lstEntries = reader.parseLdif( ldif );
@@ -2132,23 +2132,23 @@ public class LdifReaderTest
         {
             reader.close();
         }
-        
+
         LdifEntry entry1 = lstEntries.get( 0 );
-        
+
         assertEquals( version.length() + ldif1.length(), entry1.getLengthBeforeParsing() );
-        
+
         LdifEntry entry2 = lstEntries.get( 1 );
-        
+
         assertEquals( ldif1.length() + comment.length(), entry2.getLengthBeforeParsing() );
-        
+
         byte[] data = ldif.getBytes();
-        
+
         String ldif1Bytes = new String( data, ( int ) entry1.getOffset(), entry1.getLengthBeforeParsing() );
         assertNotNull( reader.parseLdif( ldif1Bytes ).get( 0 ) );
-        
+
         String ldif2Bytes = new String( data, ( int ) entry2.getOffset(), entry2.getLengthBeforeParsing() );
         assertNotNull( reader.parseLdif( ldif2Bytes ).get( 0 ) );
-        
+
         File file = File.createTempFile( "offsetTest", "ldif" );
         file.deleteOnExit();
         FileWriter fw = new FileWriter( file );
@@ -2156,11 +2156,11 @@ public class LdifReaderTest
         fw.close();
 
         RandomAccessFile raf = new RandomAccessFile( file, "r" );
-        
+
         LdifReader fileReader = new LdifReader( file );
-        
+
         LdifEntry rafEntry1 = fileReader.next();
-        
+
         data = new byte[rafEntry1.getLengthBeforeParsing()];
         raf.read( data, ( int ) rafEntry1.getOffset(), data.length );
 
@@ -2170,11 +2170,11 @@ public class LdifReaderTest
         assertEquals( rafEntry1.getOffset(), reReadeRafEntry1.getOffset() );
         assertEquals( rafEntry1.getLengthBeforeParsing(), reReadeRafEntry1.getLengthBeforeParsing() );
         reader.close();
-        
+
         LdifEntry rafEntry2 = fileReader.next();
-        
+
         data = new byte[rafEntry2.getLengthBeforeParsing()];
-        raf.readFully( data, ( int ) 0, data.length );
+        raf.readFully( data, 0, data.length );
 
         reader = new LdifReader();
         LdifEntry reReadeRafEntry2 = reader.parseLdif( new String( data ) ).get( 0 );
@@ -2183,7 +2183,7 @@ public class LdifReaderTest
         reader.close();
     }
 
-    
+
     @Test // for DIRAPI-174
     public void testLineNumber() throws Exception
     {
@@ -2203,7 +2203,7 @@ public class LdifReaderTest
         catch( Exception e )
         {
         }
-        
+
         assertEquals( 1, reader.getLineNumber() );
 
         ldif =
@@ -2242,7 +2242,7 @@ public class LdifReaderTest
         }
 
         assertEquals( 4, reader.getLineNumber() );
-        
+
         ldif =
             "version:   1\n" +
                 "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
@@ -2271,5 +2271,47 @@ public class LdifReaderTest
         }
 
         assertEquals( 10, reader.getLineNumber() );
+    }
+
+
+    @Test
+    public void testLdifParserRootDSE() throws Exception
+    {
+        String ldif =
+            "version:   1\n" +
+                "dn:\n" +
+                "cn: app1\n" +
+                "objectClass: top\n" +
+                "objectClass: apApplication\n" +
+                "displayName: app1   \n" +
+                "dependencies:\n" +
+                "envVars:";
+
+        LdifReader reader = new LdifReader();
+        List<LdifEntry> entries = reader.parseLdif( ldif );
+        reader.close();
+
+        assertNotNull( entries );
+
+        LdifEntry entry = entries.get( 0 );
+        assertTrue( entry.isLdifContent() );
+
+        assertEquals( "", entry.getDn().getName() );
+
+        Attribute attr = entry.get( "cn" );
+        assertTrue( attr.contains( "app1" ) );
+
+        attr = entry.get( "objectclass" );
+        assertTrue( attr.contains( "top" ) );
+        assertTrue( attr.contains( "apApplication" ) );
+
+        attr = entry.get( "displayname" );
+        assertTrue( attr.contains( "app1" ) );
+
+        attr = entry.get( "dependencies" );
+        assertNull( attr.get().getValue() );
+
+        attr = entry.get( "envvars" );
+        assertNull( attr.get().getValue() );
     }
 }
