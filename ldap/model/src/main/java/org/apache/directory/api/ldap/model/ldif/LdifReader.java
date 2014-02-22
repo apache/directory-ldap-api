@@ -1328,7 +1328,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         Iterator<String> iter = lines.iterator();
 
         // This flag is used to distinguish between an entry and a change
-        int type = UNKNOWN;
+        int type = LDIF_ENTRY;
 
         // The following boolean is used to check that a control is *not*
         // found elswhere than just after the dn
