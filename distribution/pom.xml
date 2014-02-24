@@ -80,7 +80,6 @@
               <execution>
                 <phase>package</phase>
                 <configuration>
-                  <attach>false</attach>
                   <tarLongFileMode>gnu</tarLongFileMode>
                   <descriptors>
                     <descriptor>src/main/assembly/bin.xml</descriptor>
