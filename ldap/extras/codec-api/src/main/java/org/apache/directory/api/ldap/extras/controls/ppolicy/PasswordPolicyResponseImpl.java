@@ -90,4 +90,12 @@ public class PasswordPolicyResponseImpl implements PasswordPolicyResponse
     {
         this.ppolicyError = ppolicyError;
     }
+
+
+    @Override
+    public String toString()
+    {
+        return "PasswordPolicyResponseImpl [timeBeforeExpiration=" + timeBeforeExpiration + ", graceAuthNRemaining="
+            + graceAuthNRemaining + ", ppolicyError=" + ppolicyError + "]";
+    }
 }
