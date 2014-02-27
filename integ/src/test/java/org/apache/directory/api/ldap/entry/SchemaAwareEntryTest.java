@@ -1161,8 +1161,8 @@ public class SchemaAwareEntryTest
                 "    ObjectClass: top\n" +
                 "    ObjectClass: person\n" +
                 "    ObjectClass: ''\n" +
-                "    UserPassword: '0x61 0x62 '\n" +
-                "    UserPassword: '0x62 '\n" +
+                "    UserPassword: 0x61 0x62 \n" +
+                "    UserPassword: 0x62 \n" +
                 "    UserPassword: ''\n";
 
         assertEquals( expected, entry.toString() );

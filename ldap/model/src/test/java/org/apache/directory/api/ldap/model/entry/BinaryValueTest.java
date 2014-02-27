@@ -477,10 +477,10 @@ public class BinaryValueTest
         assertEquals( "null", bv.toString() );
 
         bv = new BinaryValue( StringConstants.EMPTY_BYTES );
-        assertEquals( "''", bv.toString() );
+        assertEquals( "", bv.toString() );
 
         bv = new BinaryValue( BYTES1 );
-        assertEquals( "'0x01 0x02 0x03 0x04 '", bv.toString() );
+        assertEquals( "0x01 0x02 0x03 0x04 ", bv.toString() );
     }
 
 

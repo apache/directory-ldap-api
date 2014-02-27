@@ -689,11 +689,11 @@ public class BinaryValue extends AbstractValue<byte[]>
 
             System.arraycopy( wrappedValue, 0, copy, 0, 16 );
 
-            return "'" + Strings.dumpBytes( copy ) + "...'";
+            return Strings.dumpBytes( copy ) + "...";
         }
         else
         {
-            return "'" + Strings.dumpBytes( wrappedValue ) + "'";
+            return Strings.dumpBytes( wrappedValue );
         }
     }
 }

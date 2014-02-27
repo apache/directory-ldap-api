@@ -1302,10 +1302,10 @@ public class AttributeTest
         Attribute attr2 = new DefaultAttribute( "test" );
 
         attr2.add( BYTES1 );
-        assertEquals( "test: '0x61 0x62 '", attr2.toString() );
+        assertEquals( "test: 0x61 0x62 ", attr2.toString() );
 
         attr2.add( BYTES3 );
-        assertEquals( "test: '0x61 0x62 '\ntest: '0x63 '", attr2.toString() );
+        assertEquals( "test: 0x61 0x62 \ntest: 0x63 ", attr2.toString() );
     }
 
 
