@@ -233,7 +233,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     /** the current offset of the reader */
     private long offset = 0;
 
-    /** the current line number being parsed by the reader */
+    /** the numer of the current line being parsed by the reader */
     private int lineNumber;
 
     /**
