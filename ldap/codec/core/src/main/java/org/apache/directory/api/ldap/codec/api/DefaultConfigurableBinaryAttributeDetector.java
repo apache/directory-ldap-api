@@ -94,7 +94,14 @@ public class DefaultConfigurableBinaryAttributeDetector extends SchemaBinaryAttr
             "jpegPhoto", // Syntax : JPEG
             "supportedAlgorithms", // Syntax : Supported Algorithm
             "javaSerializedData", // Syntax : Octet String
-            "userPassword" // Syntax : Octet String
+            "userPassword", // Syntax : Octet String
+            
+            // Active Directory specific attributes see DIRAPI-177
+            "objectSid",
+            "objectGUID",
+            "thumbnailLogo",
+            "thumbnailPhoto",
+            "x500uniqueIdentifier"
         };
 
 
