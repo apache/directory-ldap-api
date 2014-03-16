@@ -54,7 +54,7 @@ import org.slf4j.LoggerFactory;
 public class CodecFactoryUtil
 {
     private static final Logger LOG = LoggerFactory.getLogger( CodecFactoryUtil.class );
-    
+
     /**
      * Loads the Controls implement out of the box in the codec.
      */
@@ -83,11 +83,11 @@ public class CodecFactoryUtil
         factory = new SubentriesFactory( apiService );
         controlFactories.put( factory.getOid(), factory );
         LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
-        
+
         factory = new PasswordPolicyFactory( apiService );
         controlFactories.put( factory.getOid(), factory );
         LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
-        
+
         factory = new SyncDoneValueFactory( apiService );
         controlFactories.put( factory.getOid(), factory );
         LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
@@ -112,30 +112,30 @@ public class CodecFactoryUtil
         controlFactories.put( factory.getOid(), factory );
         LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
     }
-    
-    
+
+
     public static void loadStockExtendedOperations( Map<String, ExtendedOperationFactory<?, ?>> extendendOperationsFactories, LdapApiService apiService )
     {
         ExtendedOperationFactory<?, ?> factory = new CancelFactory( apiService );
         extendendOperationsFactories.put( factory.getOid(), factory );
         LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
-        
+
         factory = new CertGenerationFactory( apiService );
         extendendOperationsFactories.put( factory.getOid(), factory );
         LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
-        
+
         factory = new GracefulShutdownFactory( apiService );
         extendendOperationsFactories.put( factory.getOid(), factory );
         LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
-        
+
         factory = new StoredProcedureFactory( apiService );
         extendendOperationsFactories.put( factory.getOid(), factory );
         LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
-        
+
         factory = new GracefulDisconnectFactory( apiService );
         extendendOperationsFactories.put( factory.getOid(), factory );
         LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
-        
+
         factory = new PasswordModifyFactory( apiService );
         extendendOperationsFactories.put( factory.getOid(), factory );
         LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
