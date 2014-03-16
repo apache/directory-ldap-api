@@ -48,13 +48,37 @@ public interface PwdModifyRequest extends ExtendedRequest<PwdModifyResponse>
 
 
     /**
+     * Set the user identity
+     * 
+     * @param the userIdentity to set
+     */
+    void setUserIdentity( byte[] userIdentity );
+
+
+    /**
      * @return the oldPassword
      */
     byte[] getOldPassword();
 
 
     /**
+     * Set the old password
+     * 
+     * @param the oldPassword to set
+     */
+    void setOldPassword( byte[] oldPassword );
+
+
+    /**
      * @return the newPassword
      */
     byte[] getNewPassword();
+
+
+    /**
+     * Set a new password
+     * 
+     * @param the new password to set
+     */
+    void setNewPassword( byte[] newPassword );
 }
