@@ -165,23 +165,26 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
 
                 if ( getResponse().getTimeBeforeExpiration() >= 0 )
                 {
-                    buffer.put( ( byte ) PasswordPolicyTags.TIME_BEFORE_EXPIRATION_TAG.getValue() );
-                    buffer.put( TLV.getBytes( timeBeforeExpirationValueLength ) );
-                    buffer.put( BerValue.getBytes( getResponse().getTimeBeforeExpiration() ) );
+                    BerValue.encode(
+                        buffer,
+                        ( byte ) PasswordPolicyTags.TIME_BEFORE_EXPIRATION_TAG.getValue(),
+                        getResponse().getTimeBeforeExpiration() );
                 }
                 else if ( getResponse().getGraceAuthNRemaining() >= 0 )
                 {
-                    buffer.put( ( byte ) PasswordPolicyTags.GRACE_AUTHNS_REMAINING_TAG.getValue() );
-                    buffer.put( TLV.getBytes( graceAuthNsRemainingValueLength ) );
-                    buffer.put( BerValue.getBytes( getResponse().getGraceAuthNRemaining() ) );
+                    BerValue.encode(
+                        buffer,
+                        ( byte ) PasswordPolicyTags.GRACE_AUTHNS_REMAINING_TAG.getValue(),
+                        getResponse().getGraceAuthNRemaining() );
                 }
             }
 
             if ( getResponse().getPasswordPolicyError() != null )
             {
-                buffer.put( ( byte ) PasswordPolicyTags.PPOLICY_ERROR_TAG.getValue() );
-                buffer.put( ( byte ) 0x01 );
-                buffer.put( BerValue.getBytes( getResponse().getPasswordPolicyError().getValue() ) );
+                BerValue.encode(
+                    buffer,
+                    ( byte ) PasswordPolicyTags.PPOLICY_ERROR_TAG.getValue(),
+                    getResponse().getPasswordPolicyError().getValue() );
             }
         }
 
@@ -236,7 +239,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
 
 
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     public boolean hasResponse()
@@ -246,7 +249,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
 
 
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     public void setResponse( PasswordPolicyResponse response )
@@ -256,7 +259,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
 
 
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     public PasswordPolicyResponse setResponse( boolean hasResponse )
@@ -266,7 +269,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
 
 
     /**
-     * 
+     *
      * {@inheritDoc}
      */
     public PasswordPolicyResponse getResponse()
