@@ -94,7 +94,12 @@ public class PasswordModifyFactory implements ExtendedOperationFactory<PwdModify
     public PwdModifyRequest newRequest( byte[] value )
     {
         PasswordModifyRequestDecorator req = new PasswordModifyRequestDecorator( codec, new PwdModifyRequestImpl() );
-        req.setRequestValue( value );
+
+        if ( value != null )
+        {
+            req.setRequestValue( value );
+        }
+
         return req;
     }
 
@@ -139,7 +144,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory<PwdModify
 
         PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
         PwdModifyResponse pwdModifyResponse = null;
-        
+
         try
         {
             decoder.decode( buffer, container );
@@ -166,14 +171,14 @@ public class PasswordModifyFactory implements ExtendedOperationFactory<PwdModify
         }
 
         PasswordModifyResponseDecorator decorated = new PasswordModifyResponseDecorator( codec, pwdModifyResponse );
-        
+
         Control ppolicyControl = response.getControl( PasswordPolicy.OID );
-        
-        if( ppolicyControl != null )
+
+        if ( ppolicyControl != null )
         {
             decorated.addControl( ppolicyControl );
         }
-        
+
         return decorated;
     }
 }

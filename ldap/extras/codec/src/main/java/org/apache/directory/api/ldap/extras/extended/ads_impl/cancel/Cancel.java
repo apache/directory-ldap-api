@@ -27,6 +27,8 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
+import org.apache.directory.api.ldap.extras.extended.CancelRequest;
+import org.apache.directory.api.ldap.extras.extended.CancelRequestImpl;
 
 
 /**
@@ -45,7 +47,7 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 public class Cancel extends AbstractAsn1Object
 {
     /** The Id of the the message to cancel */
-    private int cancelId;
+    private CancelRequest cancelRequest;
 
     /** Length of the sequence */
     private int cancelSequenceLength;
@@ -58,7 +60,8 @@ public class Cancel extends AbstractAsn1Object
      */
     public Cancel( int cancelId )
     {
-        this.cancelId = cancelId;
+        cancelRequest = new CancelRequestImpl();
+        cancelRequest.setCancelId( cancelId );
     }
 
 
@@ -68,6 +71,7 @@ public class Cancel extends AbstractAsn1Object
     public Cancel()
     {
         super();
+        cancelRequest = new CancelRequestImpl();
     }
 
 
@@ -78,7 +82,7 @@ public class Cancel extends AbstractAsn1Object
      */
     public int getCancelId()
     {
-        return cancelId;
+        return cancelRequest.getCancelId();
     }
 
 
@@ -89,7 +93,7 @@ public class Cancel extends AbstractAsn1Object
      */
     public void setCancelId( int cancelId )
     {
-        this.cancelId = cancelId;
+        cancelRequest.setCancelId( cancelId );
     }
 
 
@@ -103,7 +107,7 @@ public class Cancel extends AbstractAsn1Object
     public int computeLength()
     {
         // The messageId length
-        cancelSequenceLength = 1 + 1 + BerValue.getNbBytes( cancelId );
+        cancelSequenceLength = 1 + 1 + BerValue.getNbBytes( cancelRequest.getCancelId() );
 
         // Add the sequence and the length
         return 1 + 1 + cancelSequenceLength;
@@ -126,7 +130,7 @@ public class Cancel extends AbstractAsn1Object
         bb.put( TLV.getBytes( cancelSequenceLength ) );
 
         // The messageId
-        BerValue.encode( bb, cancelId );
+        BerValue.encode( bb, cancelRequest.getCancelId() );
 
         return bb;
     }
@@ -140,7 +144,7 @@ public class Cancel extends AbstractAsn1Object
         StringBuffer sb = new StringBuffer();
 
         sb.append( "Cancel extended operation" );
-        sb.append( "    cancelId : " ).append( cancelId ).append( '\n' );
+        sb.append( "    cancelId : " ).append( cancelRequest.getCancelId() ).append( '\n' );
 
         return sb.toString();
     }
