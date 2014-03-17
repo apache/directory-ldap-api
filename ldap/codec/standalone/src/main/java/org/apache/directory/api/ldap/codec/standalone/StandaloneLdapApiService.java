@@ -289,11 +289,11 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         // note, trimming whitespace doesnt hurt as it is a class name and
         // helps DI containers that use xml config as xml ignores whitespace
         @SuppressWarnings("unchecked")
-        Class<? extends ControlFactory<?, ?>> clazz = ( Class<? extends ControlFactory<?, ?>> ) Class
+        Class<? extends ControlFactory<?>> clazz = ( Class<? extends ControlFactory<?>> ) Class
             .forName( controlFQCN.trim() );
         Constructor<?> constructor = clazz.getConstructor( types );
 
-        ControlFactory<?, ?> factory = ( ControlFactory<?, ?> ) constructor.newInstance( new Object[]
+        ControlFactory<?> factory = ( ControlFactory<?> ) constructor.newInstance( new Object[]
             { this } );
         controlFactories.put( factory.getOid(), factory );
 

@@ -27,8 +27,8 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
-import org.apache.directory.api.ldap.extras.extended.CancelRequest;
-import org.apache.directory.api.ldap.extras.extended.CancelRequestImpl;
+import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
+import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequestImpl;
 
 
 /**

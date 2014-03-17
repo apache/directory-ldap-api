@@ -32,7 +32,7 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.model.message.controls.SortResponseControl;
+import org.apache.directory.api.ldap.model.message.controls.SortResponse;
 import org.apache.directory.api.ldap.model.message.controls.SortResponseControlImpl;
 import org.apache.directory.api.ldap.model.message.controls.SortResultCode;
 import org.apache.directory.api.util.Strings;
@@ -43,7 +43,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SortResponseDecorator extends ControlDecorator<SortResponseControl> implements SortResponseControl
+public class SortResponseDecorator extends ControlDecorator<SortResponse> implements SortResponse
 {
     private Asn1Decoder decoder = new Asn1Decoder();
 
@@ -67,7 +67,7 @@ public class SortResponseDecorator extends ControlDecorator<SortResponseControl>
      * @param codec the LDAP codec
      * @param control the sort response control
      */
-    public SortResponseDecorator( LdapApiService codec, SortResponseControl control )
+    public SortResponseDecorator( LdapApiService codec, SortResponse control )
     {
         super( codec, control );
     }

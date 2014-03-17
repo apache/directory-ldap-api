@@ -20,10 +20,10 @@
 package org.apache.directory.api.ldap.codec.controls.sort;
 
 
+import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.model.message.controls.PagedResults;
-import org.apache.directory.api.ldap.model.message.controls.SortRequestControl;
+import org.apache.directory.api.ldap.model.message.controls.SortRequest;
 
 
 /**
@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.message.controls.SortRequestControl;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SortRequestFactory implements ControlFactory<SortRequestControl, SortRequestDecorator>
+public class SortRequestFactory implements ControlFactory<SortRequest>
 {
     /** The LDAP codec service */
     private LdapApiService codec;
@@ -54,14 +54,14 @@ public class SortRequestFactory implements ControlFactory<SortRequestControl, So
      */
     public String getOid()
     {
-        return SortRequestControl.OID;
+        return SortRequest.OID;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public SortRequestDecorator newCodecControl()
+    public CodecControl<SortRequest> newCodecControl()
     {
         return new SortRequestDecorator( codec );
     }
@@ -70,7 +70,7 @@ public class SortRequestFactory implements ControlFactory<SortRequestControl, So
     /**
      * {@inheritDoc}
      */
-    public SortRequestDecorator newCodecControl( SortRequestControl control )
+    public CodecControl<SortRequest> newCodecControl( SortRequest control )
     {
         return new SortRequestDecorator( codec, control );
     }

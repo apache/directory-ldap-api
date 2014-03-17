@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.extras.controls.syncrepl_impl;
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.SyncInfoValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValue;
 
 
 /**

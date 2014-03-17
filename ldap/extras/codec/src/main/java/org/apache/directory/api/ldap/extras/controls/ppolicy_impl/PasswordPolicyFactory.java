@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.extras.controls.ppolicy_impl;
 
 
+import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
@@ -31,7 +32,7 @@ import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class PasswordPolicyFactory implements ControlFactory<PasswordPolicy, PasswordPolicyDecorator>
+public class PasswordPolicyFactory implements ControlFactory<PasswordPolicy>
 {
 
     private LdapApiService codec;
@@ -61,7 +62,7 @@ public class PasswordPolicyFactory implements ControlFactory<PasswordPolicy, Pas
      * 
      * {@inheritDoc}
      */
-    public PasswordPolicyDecorator newCodecControl()
+    public CodecControl<PasswordPolicy> newCodecControl()
     {
         return new PasswordPolicyDecorator( codec );
     }
@@ -71,7 +72,7 @@ public class PasswordPolicyFactory implements ControlFactory<PasswordPolicy, Pas
      * 
      * {@inheritDoc}
      */
-    public PasswordPolicyDecorator newCodecControl( PasswordPolicy control )
+    public CodecControl<PasswordPolicy> newCodecControl( PasswordPolicy control )
     {
         return new PasswordPolicyDecorator( codec, control );
     }

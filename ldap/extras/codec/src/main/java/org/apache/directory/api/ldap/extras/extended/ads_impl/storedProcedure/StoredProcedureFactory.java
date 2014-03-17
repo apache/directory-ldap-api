@@ -25,9 +25,9 @@ import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.extended.StoredProcedureRequest;
-import org.apache.directory.api.ldap.extras.extended.StoredProcedureResponse;
-import org.apache.directory.api.ldap.extras.extended.StoredProcedureResponseImpl;
+import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;
+import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureResponse;
+import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 

@@ -24,7 +24,7 @@ package org.apache.directory.api.ldap.model.message.controls;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SortResponseControlImpl extends AbstractControl  implements SortResponseControl
+public class SortResponseControlImpl extends AbstractControl  implements SortResponse
 {
     /** the sort operations result code */
     private SortResultCode result;
@@ -79,7 +79,7 @@ public class SortResponseControlImpl extends AbstractControl  implements SortRes
             return false;
         }
         
-        SortResponseControl that = ( SortResponseControl ) o;
+        SortResponse that = ( SortResponse ) o;
         
         if( result != that.getSortResult() )
         {

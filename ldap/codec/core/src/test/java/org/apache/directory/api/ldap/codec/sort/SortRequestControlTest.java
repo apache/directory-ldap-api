@@ -32,7 +32,7 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.ldap.codec.controls.sort.SortRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.SortKey;
-import org.apache.directory.api.ldap.model.message.controls.SortRequestControl;
+import org.apache.directory.api.ldap.model.message.controls.SortRequest;
 import org.junit.Test;
 
 /**
@@ -57,7 +57,7 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
         buffer.flip();
         
         SortRequestDecorator decorator = new SortRequestDecorator( codec );
-        SortRequestControl control = ( SortRequestControl ) decorator.decode( buffer.array() );
+        SortRequest control = ( SortRequest ) decorator.decode( buffer.array() );
         
         assertEquals( 1, control.getSortKeys().size() );
         
@@ -94,7 +94,7 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
         buffer.flip();
         
         SortRequestDecorator decorator = new SortRequestDecorator( codec );
-        SortRequestControl control = ( SortRequestControl ) decorator.decode( buffer.array() );
+        SortRequest control = ( SortRequest ) decorator.decode( buffer.array() );
         
         assertEquals( 2, control.getSortKeys().size() );
         
@@ -146,7 +146,7 @@ public class SortRequestControlTest extends AbstractCodecServiceTest
         buffer.flip();
         
         SortRequestDecorator decorator = new SortRequestDecorator( codec );
-        SortRequestControl control = ( SortRequestControl ) decorator.decode( buffer.array() );
+        SortRequest control = ( SortRequest ) decorator.decode( buffer.array() );
         
         assertEquals( 1, control.getSortKeys().size() );
         

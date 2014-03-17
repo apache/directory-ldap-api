@@ -21,7 +21,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.ldap.extras.extended.PwdModifyRequest;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyRequest;
 
 
 /**

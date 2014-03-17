@@ -25,8 +25,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.apache.directory.api.ldap.codec.standalone.StandaloneLdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
-import org.apache.directory.api.ldap.extras.extended.StoredProcedureRequest;
-import org.apache.directory.api.ldap.extras.extended.StoredProcedureRequestImpl;
+import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;
+import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequestImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.util.Strings;
 import org.junit.BeforeClass;

@@ -19,6 +19,7 @@
  */
 package org.apache.directory.api.ldap.codec.standalone;
 
+
 import java.util.Map;
 
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
@@ -32,7 +33,12 @@ import org.apache.directory.api.ldap.codec.controls.search.persistentSearch.Pers
 import org.apache.directory.api.ldap.codec.controls.search.subentries.SubentriesFactory;
 import org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory;
 import org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory;
+import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncRequestValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory;
@@ -43,8 +49,17 @@ import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory;
+import org.apache.directory.api.ldap.model.message.controls.Cascade;
+import org.apache.directory.api.ldap.model.message.controls.EntryChange;
+import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
+import org.apache.directory.api.ldap.model.message.controls.PagedResults;
+import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
+import org.apache.directory.api.ldap.model.message.controls.SortRequest;
+import org.apache.directory.api.ldap.model.message.controls.SortResponse;
+import org.apache.directory.api.ldap.model.message.controls.Subentries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * A utility class for adding Codec and extended operation factories.
@@ -55,66 +70,68 @@ public class CodecFactoryUtil
 {
     private static final Logger LOG = LoggerFactory.getLogger( CodecFactoryUtil.class );
 
+
     /**
      * Loads the Controls implement out of the box in the codec.
      */
-    public static void loadStockControls( Map<String, ControlFactory<?, ?>> controlFactories, LdapApiService apiService )
+    public static void loadStockControls( Map<String, ControlFactory<?>> controlFactories, LdapApiService apiService )
     {
-        ControlFactory<?, ?> factory = new CascadeFactory( apiService );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<Cascade> cascadeFactory = new CascadeFactory( apiService );
+        controlFactories.put( cascadeFactory.getOid(), cascadeFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", cascadeFactory.getOid() );
 
-        factory = new EntryChangeFactory( apiService );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<EntryChange> entryChangeFactory = new EntryChangeFactory( apiService );
+        controlFactories.put( entryChangeFactory.getOid(), entryChangeFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", entryChangeFactory.getOid() );
 
-        factory = new ManageDsaITFactory( apiService );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<ManageDsaIT> manageDsaITFactory = new ManageDsaITFactory( apiService );
+        controlFactories.put( manageDsaITFactory.getOid(), manageDsaITFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", manageDsaITFactory.getOid() );
 
-        factory = new PagedResultsFactory( apiService );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<PagedResults> pagedResultsFactory = new PagedResultsFactory( apiService );
+        controlFactories.put( pagedResultsFactory.getOid(), pagedResultsFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", pagedResultsFactory.getOid() );
 
-        factory = new PersistentSearchFactory( apiService );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<PersistentSearch> persistentSearchFactory = new PersistentSearchFactory( apiService );
+        controlFactories.put( persistentSearchFactory.getOid(), persistentSearchFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", persistentSearchFactory.getOid() );
 
-        factory = new SubentriesFactory( apiService );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<Subentries> SubentriesFactory = new SubentriesFactory( apiService );
+        controlFactories.put( SubentriesFactory.getOid(), SubentriesFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", SubentriesFactory.getOid() );
 
-        factory = new PasswordPolicyFactory( apiService );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( apiService );
+        controlFactories.put( passwordPolicyFactory.getOid(), passwordPolicyFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", passwordPolicyFactory.getOid() );
 
-        factory = new SyncDoneValueFactory( apiService );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<SyncDoneValue> SyncDoneValueFactory = new SyncDoneValueFactory( apiService );
+        controlFactories.put( SyncDoneValueFactory.getOid(), SyncDoneValueFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", SyncDoneValueFactory.getOid() );
 
-        factory = new SyncInfoValueFactory( apiService );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<SyncInfoValue> syncInfoValueFactory = new SyncInfoValueFactory( apiService );
+        controlFactories.put( syncInfoValueFactory.getOid(), syncInfoValueFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", syncInfoValueFactory.getOid() );
 
-        factory = new SyncRequestValueFactory( apiService );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<SyncRequestValue> syncRequestValueFactory = new SyncRequestValueFactory( apiService );
+        controlFactories.put( syncRequestValueFactory.getOid(), syncRequestValueFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", syncRequestValueFactory.getOid() );
 
-        factory = new SyncStateValueFactory( apiService );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<SyncStateValue> syncStateValueFactory = new SyncStateValueFactory( apiService );
+        controlFactories.put( syncStateValueFactory.getOid(), syncStateValueFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", syncStateValueFactory.getOid() );
 
-        factory = new SortRequestFactory( apiService );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<SortRequest> sortRequestFactory = new SortRequestFactory( apiService );
+        controlFactories.put( sortRequestFactory.getOid(), sortRequestFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", sortRequestFactory.getOid() );
 
-        factory = new SortResponseFactory( apiService );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<SortResponse> sortResponseFactory = new SortResponseFactory( apiService );
+        controlFactories.put( sortResponseFactory.getOid(), sortResponseFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", sortResponseFactory.getOid() );
     }
 
 
-    public static void loadStockExtendedOperations( Map<String, ExtendedOperationFactory<?, ?>> extendendOperationsFactories, LdapApiService apiService )
+    public static void loadStockExtendedOperations(
+        Map<String, ExtendedOperationFactory<?, ?>> extendendOperationsFactories, LdapApiService apiService )
     {
         ExtendedOperationFactory<?, ?> factory = new CancelFactory( apiService );
         extendendOperationsFactories.put( factory.getOid(), factory );

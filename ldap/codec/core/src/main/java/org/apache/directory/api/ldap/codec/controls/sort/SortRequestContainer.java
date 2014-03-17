@@ -23,7 +23,7 @@ package org.apache.directory.api.ldap.codec.controls.sort;
 import org.apache.directory.api.asn1.ber.AbstractContainer;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.controls.SortKey;
-import org.apache.directory.api.ldap.model.message.controls.SortRequestControl;
+import org.apache.directory.api.ldap.model.message.controls.SortRequest;
 
 
 /**
@@ -62,7 +62,7 @@ public class SortRequestContainer extends AbstractContainer
      * @param codec the LDAP codec
      * @param control the sort request control
      */
-    public SortRequestContainer( LdapApiService codec, SortRequestControl control )
+    public SortRequestContainer( LdapApiService codec, SortRequest control )
     {
         this( codec );
         decorate( control );
@@ -72,7 +72,7 @@ public class SortRequestContainer extends AbstractContainer
     /**
      * {@inheritDoc}
      */
-    public void decorate( SortRequestControl control )
+    public void decorate( SortRequest control )
     {
         if ( control instanceof SortRequestDecorator )
         {

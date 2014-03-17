@@ -25,9 +25,9 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.extended.PwdModifyRequest;
-import org.apache.directory.api.ldap.extras.extended.PwdModifyRequestImpl;
-import org.apache.directory.api.ldap.extras.extended.PwdModifyResponse;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyRequest;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyRequestImpl;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

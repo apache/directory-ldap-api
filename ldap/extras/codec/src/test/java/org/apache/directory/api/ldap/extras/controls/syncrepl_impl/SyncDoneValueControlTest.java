@@ -30,7 +30,7 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
-import org.apache.directory.api.ldap.extras.controls.SyncDoneValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueDecorator;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;

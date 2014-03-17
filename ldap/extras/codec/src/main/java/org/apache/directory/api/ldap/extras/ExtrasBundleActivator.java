@@ -23,27 +23,27 @@ package org.apache.directory.api.ldap.extras;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.SyncDoneValue;
-import org.apache.directory.api.ldap.extras.controls.SyncInfoValue;
-import org.apache.directory.api.ldap.extras.controls.SyncRequestValue;
-import org.apache.directory.api.ldap.extras.controls.SyncStateValue;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncInfoValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue.SyncRequestValue;
+import org.apache.directory.api.ldap.extras.controls.syncrepl.syncState.SyncStateValue;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory;
-import org.apache.directory.api.ldap.extras.extended.CancelRequest;
-import org.apache.directory.api.ldap.extras.extended.CertGenerationRequest;
-import org.apache.directory.api.ldap.extras.extended.GracefulDisconnectResponse;
-import org.apache.directory.api.ldap.extras.extended.GracefulShutdownRequest;
-import org.apache.directory.api.ldap.extras.extended.StoredProcedureRequest;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory;
+import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
+import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequest;
+import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
+import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
+import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -79,20 +79,20 @@ public class ExtrasBundleActivator implements BundleActivator
      */
     private void registerExtrasControls( LdapApiService codec )
     {
-        ControlFactory<?, ?> factory = new SyncDoneValueFactory( codec );
-        codec.registerControl( factory );
+        ControlFactory<SyncDoneValue> syncDoneValuefactory = new SyncDoneValueFactory( codec );
+        codec.registerControl( syncDoneValuefactory );
 
-        factory = new SyncInfoValueFactory( codec );
-        codec.registerControl( factory );
+        ControlFactory<SyncInfoValue> syncInfoValueFactory = new SyncInfoValueFactory( codec );
+        codec.registerControl( syncInfoValueFactory );
 
-        factory = new SyncRequestValueFactory( codec );
-        codec.registerControl( factory );
+        ControlFactory<SyncRequestValue> syncRequestValueFactory = new SyncRequestValueFactory( codec );
+        codec.registerControl( syncRequestValueFactory );
 
-        factory = new SyncStateValueFactory( codec );
-        codec.registerControl( factory );
+        ControlFactory<SyncStateValue> syncStateValuefactory = new SyncStateValueFactory( codec );
+        codec.registerControl( syncStateValuefactory );
 
-        factory = new PasswordPolicyFactory( codec );
-        codec.registerControl( factory );
+        ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( codec );
+        codec.registerControl( passwordPolicyFactory );
     }
 
 

@@ -53,7 +53,13 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequestImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ExtendedResponseImpl;
 import org.apache.directory.api.ldap.model.message.Message;
+import org.apache.directory.api.ldap.model.message.controls.Cascade;
+import org.apache.directory.api.ldap.model.message.controls.EntryChange;
+import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
+import org.apache.directory.api.ldap.model.message.controls.PagedResults;
+import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
+import org.apache.directory.api.ldap.model.message.controls.Subentries;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.util.exception.NotImplementedException;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
@@ -73,7 +79,7 @@ public class DefaultLdapCodecService implements LdapApiService
     private static final Logger LOG = LoggerFactory.getLogger( DefaultLdapCodecService.class );
 
     /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ControlFactory}'s */
-    protected Map<String, ControlFactory<?, ?>> controlFactories = new HashMap<String, ControlFactory<?, ?>>();
+    protected Map<String, ControlFactory<? extends Control>> controlFactories = new HashMap<String, ControlFactory<? extends Control>>();
 
     /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory}'s by request OID */
     protected Map<String, ExtendedOperationFactory<?, ?>> extendedOperationsFactories = new HashMap<String, ExtendedOperationFactory<?, ?>>();
@@ -96,29 +102,29 @@ public class DefaultLdapCodecService implements LdapApiService
      */
     private void loadStockControls()
     {
-        ControlFactory<?, ?> factory = new CascadeFactory( this );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<Cascade> cascadeFactory = new CascadeFactory( this );
+        controlFactories.put( cascadeFactory.getOid(), cascadeFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", cascadeFactory.getOid() );
 
-        factory = new EntryChangeFactory( this );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<EntryChange> entryChangeFactory = new EntryChangeFactory( this );
+        controlFactories.put( entryChangeFactory.getOid(), entryChangeFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", entryChangeFactory.getOid() );
 
-        factory = new ManageDsaITFactory( this );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<ManageDsaIT> manageDsaItFactory = new ManageDsaITFactory( this );
+        controlFactories.put( manageDsaItFactory.getOid(), manageDsaItFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", manageDsaItFactory.getOid() );
 
-        factory = new PagedResultsFactory( this );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<PagedResults> pageResultsFactory = new PagedResultsFactory( this );
+        controlFactories.put( pageResultsFactory.getOid(), pageResultsFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", pageResultsFactory.getOid() );
 
-        factory = new PersistentSearchFactory( this );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<PersistentSearch> persistentSearchFactory = new PersistentSearchFactory( this );
+        controlFactories.put( persistentSearchFactory.getOid(), persistentSearchFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", persistentSearchFactory.getOid() );
 
-        factory = new SubentriesFactory( this );
-        controlFactories.put( factory.getOid(), factory );
-        LOG.info( "Registered pre-bundled control factory: {}", factory.getOid() );
+        ControlFactory<Subentries> subentriesFactory = new SubentriesFactory( this );
+        controlFactories.put( subentriesFactory.getOid(), subentriesFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", subentriesFactory.getOid() );
     }
 
 
@@ -129,7 +135,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
-    public ControlFactory<?, ?> registerControl( ControlFactory<?, ?> factory )
+    public ControlFactory<?> registerControl( ControlFactory<?> factory )
     {
         return controlFactories.put( factory.getOid(), factory );
     }
@@ -138,7 +144,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
-    public ControlFactory<?, ?> unregisterControl( String oid )
+    public ControlFactory<?> unregisterControl( String oid )
     {
         return controlFactories.remove( oid );
     }
@@ -202,7 +208,7 @@ public class DefaultLdapCodecService implements LdapApiService
      */
     public CodecControl<? extends Control> newControl( String oid )
     {
-        ControlFactory<?, ?> factory = controlFactories.get( oid );
+        ControlFactory<?> factory = controlFactories.get( oid );
 
         if ( factory == null )
         {

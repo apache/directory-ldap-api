@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.codec.controls.search.subentries;
 
 
+import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.controls.Subentries;
@@ -32,7 +33,7 @@ import org.apache.directory.api.ldap.model.message.controls.Subentries;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public class SubentriesFactory implements ControlFactory<Subentries, SubentriesDecorator>
+public class SubentriesFactory implements ControlFactory<Subentries>
 {
     /** The LDAP codec service */
     private LdapApiService codec;
@@ -63,7 +64,7 @@ public class SubentriesFactory implements ControlFactory<Subentries, SubentriesD
      * 
      * {@inheritDoc}
      */
-    public SubentriesDecorator newCodecControl()
+    public CodecControl<Subentries> newCodecControl()
     {
         return new SubentriesDecorator( codec );
     }
@@ -73,7 +74,7 @@ public class SubentriesFactory implements ControlFactory<Subentries, SubentriesD
      * 
      * {@inheritDoc}
      */
-    public SubentriesDecorator newCodecControl( Subentries control )
+    public CodecControl<Subentries> newCodecControl( Subentries control )
     {
         return new SubentriesDecorator( codec, control );
     }

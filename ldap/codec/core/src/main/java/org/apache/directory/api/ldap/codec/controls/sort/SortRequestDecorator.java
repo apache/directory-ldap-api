@@ -35,7 +35,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.controls.SortKey;
-import org.apache.directory.api.ldap.model.message.controls.SortRequestControl;
+import org.apache.directory.api.ldap.model.message.controls.SortRequest;
 import org.apache.directory.api.ldap.model.message.controls.SortRequestControlImpl;
 import org.apache.directory.api.util.Strings;
 
@@ -45,7 +45,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SortRequestDecorator extends ControlDecorator<SortRequestControl> implements SortRequestControl
+public class SortRequestDecorator extends ControlDecorator<SortRequest> implements SortRequest
 {
     private Asn1Decoder decoder = new Asn1Decoder();
 
@@ -71,7 +71,7 @@ public class SortRequestDecorator extends ControlDecorator<SortRequestControl> i
      * @param codec the LDAP codec
      * @param control the control instance
      */
-    public SortRequestDecorator( LdapApiService codec, SortRequestControl control )
+    public SortRequestDecorator( LdapApiService codec, SortRequest control )
     {
         super( codec, control );
     }

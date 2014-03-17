@@ -68,7 +68,7 @@ public interface LdapApiService
      * 
      * @param factory The control factory
      */
-    ControlFactory<?, ?> registerControl( ControlFactory<?, ?> factory );
+    ControlFactory<?> registerControl( ControlFactory<?> factory );
 
 
     /**
@@ -76,7 +76,7 @@ public interface LdapApiService
      * 
      * @param oid The oid of the control the factory is associated with.
      */
-    ControlFactory<?, ?> unregisterControl( String oid );
+    ControlFactory<?> unregisterControl( String oid );
 
 
     /**

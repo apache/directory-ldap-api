@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration;
 
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.extended.CertGenerationResponse;
+import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationResponse;
 
 
 /**

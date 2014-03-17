@@ -29,7 +29,7 @@ import java.util.Arrays;
 
 import org.apache.directory.api.ldap.codec.controls.sort.SortResponseDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
-import org.apache.directory.api.ldap.model.message.controls.SortResponseControl;
+import org.apache.directory.api.ldap.model.message.controls.SortResponse;
 import org.apache.directory.api.ldap.model.message.controls.SortResultCode;
 import org.junit.Test;
 
@@ -53,7 +53,7 @@ public class SortResponseControlTest extends AbstractCodecServiceTest
         buffer.flip();
         
         SortResponseDecorator decorator = new SortResponseDecorator( codec );
-        SortResponseControl control = ( SortResponseControl ) decorator.decode( buffer.array() );
+        SortResponse control = ( SortResponse ) decorator.decode( buffer.array() );
         
         assertEquals( SortResultCode.SUCCESS, control.getSortResult() );
         assertEquals( "cn", control.getAttributeName() );
@@ -77,7 +77,7 @@ public class SortResponseControlTest extends AbstractCodecServiceTest
         buffer.flip();
         
         SortResponseDecorator decorator = new SortResponseDecorator( codec );
-        SortResponseControl control = ( SortResponseControl ) decorator.decode( buffer.array() );
+        SortResponse control = ( SortResponse ) decorator.decode( buffer.array() );
         
         assertEquals( SortResultCode.NOSUCHATTRIBUTE, control.getSortResult() );
         assertNull( control.getAttributeName() );

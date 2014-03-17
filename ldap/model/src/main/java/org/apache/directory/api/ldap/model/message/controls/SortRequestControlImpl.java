@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SortRequestControlImpl extends AbstractControl implements SortRequestControl
+public class SortRequestControlImpl extends AbstractControl implements SortRequest
 {
     /**
      * the list of sort keys
