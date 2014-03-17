@@ -39,7 +39,7 @@ public class SearchResultReferenceImpl extends AbstractResponse implements Searc
      */
     public SearchResultReferenceImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.SEARCH_RESULT_REFERENCE );
     }
 
 
@@ -51,7 +51,7 @@ public class SearchResultReferenceImpl extends AbstractResponse implements Searc
      */
     public SearchResultReferenceImpl( final int id )
     {
-        super( id, TYPE );
+        super( id, MessageTypeEnum.SEARCH_RESULT_REFERENCE );
     }
 
 

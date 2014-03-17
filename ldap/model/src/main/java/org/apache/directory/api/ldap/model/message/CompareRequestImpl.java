@@ -58,7 +58,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
      */
     public CompareRequestImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.COMPARE_REQUEST );
     }
 
 
@@ -201,7 +201,7 @@ public class CompareRequestImpl extends AbstractAbandonableRequest implements Co
      */
     public MessageTypeEnum getResponseType()
     {
-        return RESP_TYPE;
+        return MessageTypeEnum.COMPARE_RESPONSE;
     }
 
 

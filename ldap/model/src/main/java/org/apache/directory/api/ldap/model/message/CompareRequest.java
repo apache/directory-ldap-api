@@ -30,15 +30,8 @@ import org.apache.directory.api.ldap.model.name.Dn;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface CompareRequest extends SingleReplyRequest<CompareResponse>, AbandonableRequest
+public interface CompareRequest extends SingleReplyRequest, AbandonableRequest
 {
-    /** Compare request message type enum code */
-    MessageTypeEnum TYPE = MessageTypeEnum.COMPARE_REQUEST;
-
-    /** Compare response message type enum code */
-    MessageTypeEnum RESP_TYPE = CompareResponse.TYPE;
-
-
     /**
      * Gets the distinguished name of the entry to be compared using the
      * attribute value assertion.

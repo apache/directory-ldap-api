@@ -58,7 +58,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
      */
     public ModifyDnRequestImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.MODIFYDN_REQUEST );
     }
 
 
@@ -205,7 +205,7 @@ public class ModifyDnRequestImpl extends AbstractAbandonableRequest implements M
      */
     public MessageTypeEnum getResponseType()
     {
-        return RESP_TYPE;
+        return MessageTypeEnum.MODIFYDN_RESPONSE;
     }
 
 

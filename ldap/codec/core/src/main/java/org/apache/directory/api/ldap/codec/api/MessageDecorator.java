@@ -143,7 +143,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
                 break;
 
             case EXTENDED_REQUEST:
-                decorator = codec.decorate( ( ExtendedRequest<?> ) decoratedMessage );
+                decorator = codec.decorate( ( ExtendedRequest ) decoratedMessage );
                 break;
 
             case EXTENDED_RESPONSE:

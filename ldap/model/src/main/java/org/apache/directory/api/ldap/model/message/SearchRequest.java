@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.name.Dn;
  * 
  * @author <a href="mailto:dev@directory.apache.org"> Apache Directory Project</a>
  */
-public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, AbandonableRequest
+public interface SearchRequest extends ManyReplyRequest, AbandonableRequest
 {
     /**
      * Different response types that a search request may return. A search
@@ -44,7 +44,12 @@ public interface SearchRequest extends ManyReplyRequest<SearchResultDone>, Aband
      * @see #getResponseTypes()
      */
     MessageTypeEnum[] RESPONSE_TYPES =
-        { SearchResultDone.TYPE, SearchResultEntry.TYPE, SearchResultReference.TYPE, ExtendedResponse.TYPE };
+        {
+            MessageTypeEnum.SEARCH_RESULT_DONE,
+            MessageTypeEnum.SEARCH_RESULT_ENTRY,
+            MessageTypeEnum.SEARCH_RESULT_REFERENCE,
+            MessageTypeEnum.EXTENDED_RESPONSE
+    };
 
 
     /**

@@ -28,7 +28,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface CertGenerationRequest extends ExtendedRequest<CertGenerationResponse>
+public interface CertGenerationRequest extends ExtendedRequest
 {
     static final String EXTENSION_OID = "1.3.6.1.4.1.18060.0.1.8";
 

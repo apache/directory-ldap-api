@@ -21,8 +21,8 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown;
 
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
+import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
@@ -97,7 +97,7 @@ public class GracefulShutdownFactory
      * {@inheritDoc}
      */
     public ExtendedRequestDecorator<GracefulShutdownRequest, GracefulShutdownResponse> decorate(
-        ExtendedRequest<?> modelRequest )
+        ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof GracefulShutdownRequestDecorator )
         {

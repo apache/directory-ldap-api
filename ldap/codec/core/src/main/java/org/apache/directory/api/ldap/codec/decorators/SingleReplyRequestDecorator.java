@@ -33,8 +33,8 @@ import org.apache.directory.api.ldap.model.message.SingleReplyRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest<R>, R extends ResultResponse>
-    extends ResultResponseRequestDecorator<M, R> implements SingleReplyRequest<R>, AbandonableRequest
+public abstract class SingleReplyRequestDecorator<M extends SingleReplyRequest, R extends ResultResponse>
+    extends ResultResponseRequestDecorator<M, R> implements SingleReplyRequest, AbandonableRequest
 {
     /**
      * Makes Request a MessageDecorator.

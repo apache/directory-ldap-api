@@ -32,8 +32,7 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulShutdownRequestImpl extends AbstractExtendedRequest<GracefulShutdownResponse> implements
-    GracefulShutdownRequest
+public class GracefulShutdownRequestImpl extends AbstractExtendedRequest implements GracefulShutdownRequest
 {
     private GracefulShutdownResponse response;
 

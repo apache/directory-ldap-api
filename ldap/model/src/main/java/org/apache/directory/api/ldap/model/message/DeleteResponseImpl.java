@@ -35,7 +35,7 @@ public class DeleteResponseImpl extends AbstractResultResponse implements Delete
      */
     public DeleteResponseImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.DEL_RESPONSE );
     }
 
 
@@ -46,7 +46,7 @@ public class DeleteResponseImpl extends AbstractResultResponse implements Delete
      */
     public DeleteResponseImpl( final int id )
     {
-        super( id, TYPE );
+        super( id, MessageTypeEnum.DEL_RESPONSE );
     }
 
 

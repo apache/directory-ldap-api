@@ -310,11 +310,11 @@ public class Dsmlv2Engine
             if ( respWriter != null )
             {
                 respWriter.write( batchResponse.toDsml() );
-                if( generateSoapResp )
+                if ( generateSoapResp )
                 {
                     respWriter.write( "</Body></Envelope>" );
                 }
-                
+
                 respWriter.flush();
             }
 
@@ -339,21 +339,21 @@ public class Dsmlv2Engine
             if ( respWriter != null )
             {
                 respWriter.write( batchResponse.toDsml() );
-                if( generateSoapResp )
+                if ( generateSoapResp )
                 {
                     respWriter.write( "</Body></Envelope>" );
                 }
-                
+
                 respWriter.flush();
             }
 
             return;
         }
 
-        if( respWriter != null )
+        if ( respWriter != null )
         {
             StringBuilder sb = new StringBuilder();
-            
+
             sb.append( "<batchResponse " );
 
             sb.append( ParserUtils.DSML_NAMESPACE.asXML() );
@@ -369,10 +369,10 @@ public class Dsmlv2Engine
             sb.append( " requestID=\"" );
             sb.append( batchRequest.getRequestID() );
             sb.append( "\">" );
-            
+
             respWriter.write( sb.toString() );
         }
-        
+
         // Processing each request:
         //    - Getting a new request
         //    - Checking if the request is well formed
@@ -401,11 +401,11 @@ public class Dsmlv2Engine
             {
                 respWriter.write( batchResponse.toDsml() );
 
-                if( generateSoapResp )
+                if ( generateSoapResp )
                 {
                     respWriter.write( "</Body></Envelope>" );
                 }
-                
+
                 respWriter.flush();
             }
 
@@ -609,7 +609,7 @@ public class Dsmlv2Engine
                 break;
 
             case EXTENDED_REQUEST:
-                ExtendedResponse extendedResponse = connection.extended( ( ExtendedRequest<?> ) request );
+                ExtendedResponse extendedResponse = connection.extended( ( ExtendedRequest ) request );
                 resultCode = extendedResponse.getLdapResult().getResultCode();
                 ExtendedResponseDsml extendedResponseDsml = new ExtendedResponseDsml( connection.getCodecService(),
                     extendedResponse );

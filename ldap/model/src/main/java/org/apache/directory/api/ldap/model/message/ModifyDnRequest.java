@@ -65,15 +65,8 @@ import org.apache.directory.api.ldap.model.name.Rdn;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface ModifyDnRequest extends SingleReplyRequest<ModifyDnResponse>, AbandonableRequest
+public interface ModifyDnRequest extends SingleReplyRequest, AbandonableRequest
 {
-    /** Modify Dn request message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.MODIFYDN_REQUEST;
-
-    /** Modify Dn response message type enumeration value */
-    MessageTypeEnum RESP_TYPE = ModifyDnResponse.TYPE;
-
-
     /**
      * Gets the entry's distinguished name representing the <b>entry</b> PDU
      * field.

@@ -339,7 +339,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         Constructor<?> constructor = clazz.getConstructor( types );
 
         @SuppressWarnings("unchecked")
-        ExtendedOperationFactory<ExtendedRequest<ExtendedResponse>, ExtendedResponse> factory = ( ExtendedOperationFactory<ExtendedRequest<ExtendedResponse>, ExtendedResponse> ) constructor
+        ExtendedOperationFactory<ExtendedRequest, ExtendedResponse> factory = ( ExtendedOperationFactory<ExtendedRequest, ExtendedResponse> ) constructor
             .newInstance( new Object[]
                 { this } );
         extendedOperationsFactories.put( factory.getOid(), factory );

@@ -48,7 +48,7 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
      */
     public DeleteRequestImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.DEL_REQUEST );
     }
 
 
@@ -129,7 +129,7 @@ public class DeleteRequestImpl extends AbstractAbandonableRequest implements Del
      */
     public MessageTypeEnum getResponseType()
     {
-        return RESP_TYPE;
+        return MessageTypeEnum.DEL_RESPONSE;
     }
 
 

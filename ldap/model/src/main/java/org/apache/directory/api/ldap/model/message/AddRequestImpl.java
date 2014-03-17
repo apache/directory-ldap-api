@@ -56,7 +56,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
      */
     public AddRequestImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.ADD_REQUEST );
         entry = new DefaultEntry();
     }
 
@@ -219,7 +219,7 @@ public class AddRequestImpl extends AbstractAbandonableRequest implements AddReq
      */
     public MessageTypeEnum getResponseType()
     {
-        return RESP_TYPE;
+        return MessageTypeEnum.ADD_RESPONSE;
     }
 
 

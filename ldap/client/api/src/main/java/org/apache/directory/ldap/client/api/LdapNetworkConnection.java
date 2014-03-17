@@ -22,7 +22,6 @@ package org.apache.directory.ldap.client.api;
 
 import static org.apache.directory.api.ldap.model.message.ResultCodeEnum.processResponse;
 
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -42,7 +41,6 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-
 import javax.net.ssl.SSLContext;
 import javax.security.auth.Subject;
 import javax.security.auth.login.Configuration;
@@ -50,11 +48,9 @@ import javax.security.auth.login.LoginContext;
 import javax.security.sasl.Sasl;
 import javax.security.sasl.SaslClient;
 
-
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
-import org.apache.directory.api.ldap.codec.api.ConfigurableBinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.DefaultConfigurableBinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -361,6 +357,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         this( config, LdapApiServiceFactory.getSingleton() );
     }
 
+
     public LdapNetworkConnection( LdapConnectionConfig config, LdapApiService ldapApiService )
     {
         super( ldapApiService );
@@ -371,6 +368,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             config.setBinaryAttributeDetector( new DefaultConfigurableBinaryAttributeDetector() );
         }
     }
+
 
     /**
      * Create a new instance of a LdapConnection on localhost,
@@ -463,14 +461,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         this( buildConfig( server, port, useSsl ) );
     }
-    
-    
+
+
     public LdapNetworkConnection( String server, int port, boolean useSsl, LdapApiService ldapApiService )
     {
         this( buildConfig( server, port, useSsl ), ldapApiService );
     }
 
-    
+
     private static LdapConnectionConfig buildConfig( String server, int port, boolean useSsl )
     {
         LdapConnectionConfig config = new LdapConnectionConfig();
@@ -503,7 +501,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
 
         config.setBinaryAttributeDetector( new DefaultConfigurableBinaryAttributeDetector() );
-        
+
         return config;
     }
 
@@ -550,10 +548,11 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             connectionFuture.await( timeout );
         }
-        catch( InterruptedException e )
+        catch ( InterruptedException e )
         {
             connector = null;
-            LOG.debug( "Interrupted while waiting for connection to establish with server {}:{}", config.getLdapHost(), config.getLdapPort(), e );
+            LOG.debug( "Interrupted while waiting for connection to establish with server {}:{}", config.getLdapHost(),
+                config.getLdapPort(), e );
             throw new LdapOtherException( e.getMessage(), e );
         }
 
@@ -676,7 +675,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( container != null )
         {
-            if( schemaManager != null )
+            if ( schemaManager != null )
             {
                 if ( !( container.getBinaryAttributeDetector() instanceof SchemaBinaryAttributeDetector ) )
                 {
@@ -687,12 +686,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         else
         {
             BinaryAttributeDetector atDetector = new DefaultConfigurableBinaryAttributeDetector();
-            
+
             if ( schemaManager != null )
             {
-               atDetector = new SchemaBinaryAttributeDetector( schemaManager ); 
+                atDetector = new SchemaBinaryAttributeDetector( schemaManager );
             }
-            
+
             ldapSession.setAttribute( LdapDecoder.MESSAGE_CONTAINER_ATTR,
                 new LdapMessageContainer<MessageDecorator<? extends Message>>( codec, atDetector ) );
         }
@@ -3102,7 +3101,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public ExtendedResponse extended( Oid oid, byte[] value ) throws LdapException
     {
-        ExtendedRequest<?> extendedRequest =
+        ExtendedRequest extendedRequest =
             LdapApiServiceFactory.getSingleton().newExtendedRequest( oid.toString(), value );
         return extended( extendedRequest );
     }
@@ -3111,7 +3110,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public ExtendedResponse extended( ExtendedRequest<?> extendedRequest ) throws LdapException
+    public ExtendedResponse extended( ExtendedRequest extendedRequest ) throws LdapException
     {
         if ( extendedRequest == null )
         {
@@ -3190,7 +3189,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     /**
      * {@inheritDoc}
      */
-    public ExtendedFuture extendedAsync( ExtendedRequest<?> extendedRequest ) throws LdapException
+    public ExtendedFuture extendedAsync( ExtendedRequest extendedRequest ) throws LdapException
     {
         if ( extendedRequest == null )
         {
@@ -3716,10 +3715,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             IoFilter sslFilter = ldapSession.getFilterChain().get( SSL_FILTER_KEY );
             if ( sslFilter != null )
             {
-               LOG.debug( "LDAP session already using startTLS" );
-               return;
+                LOG.debug( "LDAP session already using startTLS" );
+                return;
             }
-            
+
             ExtendedResponse resp = extended( START_TLS_REQ_OID );
             LdapResult result = resp.getLdapResult();
 
@@ -4089,7 +4088,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         }
     }
 
-    
+
     /**
      * {@inheritDoc}
      */

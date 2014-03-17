@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface GracefulShutdownRequest extends ExtendedRequest<GracefulShutdownResponse>
+public interface GracefulShutdownRequest extends ExtendedRequest
 {
 
     /** The OID for the graceful shutdown extended operation request. */

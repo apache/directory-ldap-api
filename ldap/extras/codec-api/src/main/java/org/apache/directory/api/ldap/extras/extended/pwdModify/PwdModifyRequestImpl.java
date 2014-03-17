@@ -36,7 +36,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PwdModifyRequestImpl extends AbstractExtendedRequest<PwdModifyResponse> implements PwdModifyRequest
+public class PwdModifyRequestImpl extends AbstractExtendedRequest implements PwdModifyRequest
 {
     /** The user identity */
     private byte[] userIdentity;
@@ -134,7 +134,7 @@ public class PwdModifyRequestImpl extends AbstractExtendedRequest<PwdModifyRespo
             response = new PwdModifyResponseImpl( getMessageId() );
         }
 
-        return response;
+        return ( PwdModifyResponse ) response;
     }
 
 

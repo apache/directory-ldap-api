@@ -66,7 +66,7 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
      */
     public void action( LdapMessageContainer<ExtendedRequestDecorator<?, ?>> container ) throws DecoderException
     {
-        ExtendedRequest<?> req;
+        ExtendedRequest req;
 
         // Get the Value and store it in the ExtendedRequest
         TLV tlv = container.getCurrentTLV();

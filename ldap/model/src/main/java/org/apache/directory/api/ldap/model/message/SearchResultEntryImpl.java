@@ -44,7 +44,7 @@ public class SearchResultEntryImpl extends AbstractResponse implements SearchRes
      */
     public SearchResultEntryImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.SEARCH_RESULT_ENTRY );
     }
 
 
@@ -56,7 +56,7 @@ public class SearchResultEntryImpl extends AbstractResponse implements SearchRes
      */
     public SearchResultEntryImpl( final int id )
     {
-        super( id, TYPE );
+        super( id, MessageTypeEnum.SEARCH_RESULT_ENTRY );
     }
 
 

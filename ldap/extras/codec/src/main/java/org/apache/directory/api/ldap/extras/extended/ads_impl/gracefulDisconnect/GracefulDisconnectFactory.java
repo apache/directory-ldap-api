@@ -21,8 +21,8 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnec
 
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
+import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
@@ -36,8 +36,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulDisconnectFactory implements
-    ExtendedOperationFactory<ExtendedRequest<GracefulDisconnectResponse>, GracefulDisconnectResponse>
+public class GracefulDisconnectFactory implements ExtendedOperationFactory<ExtendedRequest, GracefulDisconnectResponse>
 {
     private LdapApiService codec;
 
@@ -51,8 +50,8 @@ public class GracefulDisconnectFactory implements
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestDecorator<ExtendedRequest<GracefulDisconnectResponse>, GracefulDisconnectResponse> decorate(
-        ExtendedRequest<?> modelRequest )
+    public ExtendedRequestDecorator<ExtendedRequest, GracefulDisconnectResponse> decorate(
+        ExtendedRequest modelRequest )
     {
         // Nothing to do (there's no request associated to GracefulDisconnectResponse)
         return null;
@@ -85,7 +84,7 @@ public class GracefulDisconnectFactory implements
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<GracefulDisconnectResponse> newRequest()
+    public ExtendedRequest newRequest()
     {
         // Nothing to do (there's no request associated to GracefulDisconnectResponse)
         return null;
@@ -95,7 +94,7 @@ public class GracefulDisconnectFactory implements
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<GracefulDisconnectResponse> newRequest( byte[] value )
+    public ExtendedRequest newRequest( byte[] value )
     {
         // Nothing to do (there's no request associated to GracefulDisconnectResponse)
         return null;

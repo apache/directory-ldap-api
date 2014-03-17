@@ -192,7 +192,7 @@ public interface LdapApiService
      * @return The model ExtendedResponse
      * @throws DecoderException if the response value cannot be decoded.
      */
-    ExtendedRequest<?> fromJndi( javax.naming.ldap.ExtendedRequest jndiRequest ) throws DecoderException;
+    ExtendedRequest fromJndi( javax.naming.ldap.ExtendedRequest jndiRequest ) throws DecoderException;
 
 
     /**
@@ -203,7 +203,7 @@ public interface LdapApiService
      * @return
      * @throws EncoderException
      */
-    javax.naming.ldap.ExtendedRequest toJndi( ExtendedRequest<?> modelRequest ) throws EncoderException;
+    javax.naming.ldap.ExtendedRequest toJndi( ExtendedRequest modelRequest ) throws EncoderException;
 
 
     // ------------------------------------------------------------------------
@@ -259,10 +259,10 @@ public interface LdapApiService
      * @param value the encoded value of the extended request
      * @return The new extended request
      */
-    ExtendedRequest<?> newExtendedRequest( String oid, byte[] value );
+    ExtendedRequest newExtendedRequest( String oid, byte[] value );
 
 
-    ExtendedRequestDecorator<?, ?> decorate( ExtendedRequest<?> decoratedMessage );
+    ExtendedRequestDecorator<?, ?> decorate( ExtendedRequest decoratedMessage );
 
 
     ExtendedResponseDecorator<?> decorate( ExtendedResponse decoratedMessage );

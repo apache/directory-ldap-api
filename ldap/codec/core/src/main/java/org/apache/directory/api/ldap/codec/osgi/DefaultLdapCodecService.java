@@ -330,7 +330,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<?> fromJndi( javax.naming.ldap.ExtendedRequest jndiRequest ) throws DecoderException
+    public ExtendedRequest fromJndi( javax.naming.ldap.ExtendedRequest jndiRequest ) throws DecoderException
     {
         ExtendedRequestDecorator<?, ?> decorator =
             ( ExtendedRequestDecorator<?, ?> ) newExtendedRequest( jndiRequest.getID(), jndiRequest.getEncodedValue() );
@@ -341,7 +341,7 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
-    public javax.naming.ldap.ExtendedRequest toJndi( final ExtendedRequest<?> modelRequest ) throws EncoderException
+    public javax.naming.ldap.ExtendedRequest toJndi( final ExtendedRequest modelRequest ) throws EncoderException
     {
         final String oid = modelRequest.getRequestName();
         final byte[] value;
@@ -455,9 +455,9 @@ public class DefaultLdapCodecService implements LdapApiService
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<?> newExtendedRequest( String oid, byte[] value )
+    public ExtendedRequest newExtendedRequest( String oid, byte[] value )
     {
-        ExtendedRequest<?> req = null;
+        ExtendedRequest req = null;
 
         ExtendedOperationFactory<?, ?> extendedRequestFactory = extendedOperationsFactories.get( oid );
 
@@ -467,8 +467,8 @@ public class DefaultLdapCodecService implements LdapApiService
         }
         else
         {
-            ExtendedRequestDecorator<ExtendedRequest<ExtendedResponse>, ExtendedResponse> decorator =
-                new ExtendedRequestDecorator<ExtendedRequest<ExtendedResponse>, ExtendedResponse>( this,
+            ExtendedRequestDecorator<ExtendedRequest, ExtendedResponse> decorator =
+                new ExtendedRequestDecorator<ExtendedRequest, ExtendedResponse>( this,
                     new ExtendedRequestImpl() );
             decorator.setRequestName( oid );
             decorator.setRequestValue( value );
@@ -483,7 +483,7 @@ public class DefaultLdapCodecService implements LdapApiService
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    public ExtendedRequestDecorator<?, ?> decorate( ExtendedRequest<?> decoratedMessage )
+    public ExtendedRequestDecorator<?, ?> decorate( ExtendedRequest decoratedMessage )
     {
         ExtendedRequestDecorator<?, ?> req = null;
 
@@ -496,8 +496,8 @@ public class DefaultLdapCodecService implements LdapApiService
         }
         else
         {
-            req = new ExtendedRequestDecorator<ExtendedRequest<ExtendedResponse>, ExtendedResponse>( this,
-                ( ExtendedRequest<ExtendedResponse> ) decoratedMessage );
+            req = new ExtendedRequestDecorator<ExtendedRequest, ExtendedResponse>( this,
+                decoratedMessage );
         }
 
         return req;

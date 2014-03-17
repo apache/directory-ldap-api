@@ -124,7 +124,7 @@ public class CertGenerationRequestDecorator
     @Override
     public CertGenerationResponse getResultResponse()
     {
-        return getDecorated().getResultResponse();
+        return ( CertGenerationResponse ) getDecorated().getResultResponse();
     }
 
 

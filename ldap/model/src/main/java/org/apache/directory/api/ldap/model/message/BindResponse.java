@@ -30,8 +30,7 @@ package org.apache.directory.api.ldap.model.message;
 public interface BindResponse extends ResultResponse
 {
     /** Bind response message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.BIND_RESPONSE;
-
+    //MessageTypeEnum TYPE = MessageTypeEnum.BIND_RESPONSE;
 
     /**
      * Gets the optional property holding SASL authentication response parameters

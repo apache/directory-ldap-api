@@ -81,7 +81,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
      */
     public BindRequestImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.BIND_REQUEST );
         hCredentials = 0;
     }
 
@@ -322,7 +322,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
      */
     public MessageTypeEnum getResponseType()
     {
-        return RESP_TYPE;
+        return MessageTypeEnum.BIND_RESPONSE;
     }
 
 

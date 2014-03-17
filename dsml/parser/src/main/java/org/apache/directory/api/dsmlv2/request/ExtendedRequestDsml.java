@@ -37,9 +37,9 @@ import org.dom4j.QName;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends ExtendedResponse>
+public class ExtendedRequestDsml<Q extends ExtendedRequest, P extends ExtendedResponse>
     extends AbstractResultResponseRequestDsml<Q, P>
-    implements ExtendedRequest<P>
+    implements ExtendedRequest
 {
     private byte[] requestValue;
 
@@ -150,7 +150,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends Extende
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<P> setRequestName( String oid )
+    public ExtendedRequest setRequestName( String oid )
     {
         getDecorated().setRequestName( oid );
 
@@ -161,7 +161,7 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends Extende
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest<P> setMessageId( int messageId )
+    public ExtendedRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );
 
@@ -172,29 +172,26 @@ public class ExtendedRequestDsml<Q extends ExtendedRequest<P>, P extends Extende
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public ExtendedRequest<P> addControl( Control control )
+    public ExtendedRequest addControl( Control control )
     {
-        return ( ExtendedRequest<P> ) super.addControl( control );
+        return ( ExtendedRequest ) super.addControl( control );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public ExtendedRequest<P> addAllControls( Control[] controls )
+    public ExtendedRequest addAllControls( Control[] controls )
     {
-        return ( ExtendedRequest<P> ) super.addAllControls( controls );
+        return ( ExtendedRequest ) super.addAllControls( controls );
     }
 
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
-    public ExtendedRequest<P> removeControl( Control control )
+    public ExtendedRequest removeControl( Control control )
     {
-        return ( ExtendedRequest<P> ) super.removeControl( control );
+        return ( ExtendedRequest ) super.removeControl( control );
     }
 }

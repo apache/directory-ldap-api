@@ -24,7 +24,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
 
-
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -646,7 +645,7 @@ public interface LdapConnection extends Closeable
      * @return Extended operation's response
      * @throws LdapException if the extended operation failed
      */
-    ExtendedResponse extended( ExtendedRequest<?> extendedRequest ) throws LdapException;
+    ExtendedResponse extended( ExtendedRequest extendedRequest ) throws LdapException;
 
 
     /**
@@ -826,8 +825,8 @@ public interface LdapConnection extends Closeable
      * Sets the object responsible for the detection of binary attributes.
      */
     void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetecter );
-    
- 
+
+
     /**
      * sets a SchemaManager to be used by this connection
      */

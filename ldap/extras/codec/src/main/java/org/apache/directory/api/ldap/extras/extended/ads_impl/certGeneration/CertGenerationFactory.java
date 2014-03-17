@@ -21,8 +21,8 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration;
 
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
+import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequest;
@@ -96,7 +96,7 @@ public class CertGenerationFactory
      * {@inheritDoc}
      */
     public ExtendedRequestDecorator<CertGenerationRequest, CertGenerationResponse> decorate(
-        ExtendedRequest<?> modelRequest )
+        ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof CertGenerationRequestDecorator )
         {

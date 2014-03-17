@@ -1063,7 +1063,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
     public SearchResultDone getResultResponse()
     {
-        return getDecorated().getResultResponse();
+        return ( SearchResultDone ) getDecorated().getResultResponse();
     }
 
 

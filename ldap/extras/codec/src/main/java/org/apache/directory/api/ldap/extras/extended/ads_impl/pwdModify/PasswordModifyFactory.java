@@ -107,7 +107,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory<PwdModify
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestDecorator<PwdModifyRequest, PwdModifyResponse> decorate( ExtendedRequest<?> modelRequest )
+    public ExtendedRequestDecorator<PwdModifyRequest, PwdModifyResponse> decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof PasswordModifyRequestDecorator )
         {

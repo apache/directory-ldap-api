@@ -140,7 +140,7 @@ public class PasswordModifyRequestDecorator
     @Override
     public PwdModifyResponse getResultResponse()
     {
-        return getDecorated().getResultResponse();
+        return ( PwdModifyResponse ) getDecorated().getResultResponse();
     }
 
 
@@ -149,7 +149,7 @@ public class PasswordModifyRequestDecorator
      */
     public byte[] getUserIdentity()
     {
-        return ( ( PwdModifyRequestImpl ) getDecorated() ).getUserIdentity();
+        return getDecorated().getUserIdentity();
     }
 
 
@@ -158,7 +158,7 @@ public class PasswordModifyRequestDecorator
      */
     public void setUserIdentity( byte[] userIdentity )
     {
-        ( ( PwdModifyRequestImpl ) getDecorated() ).setUserIdentity( userIdentity );
+        getDecorated().setUserIdentity( userIdentity );
     }
 
 
@@ -167,7 +167,7 @@ public class PasswordModifyRequestDecorator
      */
     public byte[] getOldPassword()
     {
-        return ( ( PwdModifyRequestImpl ) getDecorated() ).getOldPassword();
+        return getDecorated().getOldPassword();
     }
 
 
@@ -176,7 +176,7 @@ public class PasswordModifyRequestDecorator
      */
     public void setOldPassword( byte[] oldPassword )
     {
-        ( ( PwdModifyRequestImpl ) getDecorated() ).setOldPassword( oldPassword );
+        getDecorated().setOldPassword( oldPassword );
     }
 
 

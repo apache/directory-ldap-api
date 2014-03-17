@@ -27,10 +27,6 @@ package org.apache.directory.api.ldap.model.message;
  */
 public interface UnbindRequest extends Request
 {
-    /** Unbind request protocol message type */
-    MessageTypeEnum TYPE = MessageTypeEnum.UNBIND_REQUEST;
-
-
     /**
      * {@inheritDoc}
      */

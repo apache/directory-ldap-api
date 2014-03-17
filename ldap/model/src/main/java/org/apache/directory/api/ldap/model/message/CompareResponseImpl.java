@@ -35,7 +35,7 @@ public class CompareResponseImpl extends AbstractResultResponse implements Compa
      */
     public CompareResponseImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.COMPARE_RESPONSE );
     }
 
 
@@ -46,7 +46,7 @@ public class CompareResponseImpl extends AbstractResultResponse implements Compa
      */
     public CompareResponseImpl( final int id )
     {
-        super( id, TYPE );
+        super( id, MessageTypeEnum.COMPARE_RESPONSE );
     }
 
 

@@ -28,7 +28,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface CancelRequest extends ExtendedRequest<CancelResponse>
+public interface CancelRequest extends ExtendedRequest
 {
 
     /** The requestName for this extended request */

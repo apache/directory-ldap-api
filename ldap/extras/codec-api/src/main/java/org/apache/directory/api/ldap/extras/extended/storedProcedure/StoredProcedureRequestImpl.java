@@ -38,8 +38,7 @@ import org.apache.directory.api.util.exception.NotImplementedException;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoredProcedureRequestImpl extends AbstractExtendedRequest<StoredProcedureResponse> implements
-    StoredProcedureRequest
+public class StoredProcedureRequestImpl extends AbstractExtendedRequest implements StoredProcedureRequest
 {
     private String language = "Java";
 

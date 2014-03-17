@@ -21,8 +21,8 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
+import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
@@ -93,7 +93,7 @@ public class CancelFactory implements ExtendedOperationFactory<CancelRequest, Ca
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestDecorator<CancelRequest, CancelResponse> decorate( ExtendedRequest<?> modelRequest )
+    public ExtendedRequestDecorator<CancelRequest, CancelResponse> decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof CancelRequestDecorator )
         {

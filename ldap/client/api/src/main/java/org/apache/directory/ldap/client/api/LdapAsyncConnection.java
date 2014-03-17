@@ -244,7 +244,7 @@ public interface LdapAsyncConnection extends LdapConnection
      * @return extended operation's Future
      * @throws LdapException if some error occurred
      */
-    ExtendedFuture extendedAsync( ExtendedRequest<?> extendedRequest ) throws LdapException;
+    ExtendedFuture extendedAsync( ExtendedRequest extendedRequest ) throws LdapException;
 
 
     /**

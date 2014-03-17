@@ -292,7 +292,7 @@ public class BindRequestImplTest
 
             public MessageTypeEnum getResponseType()
             {
-                return MessageTypeEnum.BIND_REQUEST;
+                return MessageTypeEnum.BIND_RESPONSE;
             }
 
 
@@ -403,7 +403,7 @@ public class BindRequestImplTest
             }
         };
 
-        BindRequestImpl req1 = new BindRequestImpl();
+        BindRequest req1 = new BindRequestImpl();
         req1.setMessageId( 5 );
         assertTrue( req1.equals( req0 ) );
     }

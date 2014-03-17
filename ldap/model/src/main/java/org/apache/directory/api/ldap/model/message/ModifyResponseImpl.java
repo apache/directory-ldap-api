@@ -34,7 +34,7 @@ public class ModifyResponseImpl extends AbstractResultResponse implements Modify
      */
     public ModifyResponseImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.MODIFY_RESPONSE );
     }
 
 
@@ -45,7 +45,7 @@ public class ModifyResponseImpl extends AbstractResultResponse implements Modify
      */
     public ModifyResponseImpl( final int id )
     {
-        super( id, TYPE );
+        super( id, MessageTypeEnum.MODIFY_RESPONSE );
     }
 
 

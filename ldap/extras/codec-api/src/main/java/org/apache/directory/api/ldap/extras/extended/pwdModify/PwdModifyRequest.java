@@ -35,7 +35,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface PwdModifyRequest extends ExtendedRequest<PwdModifyResponse>
+public interface PwdModifyRequest extends ExtendedRequest
 {
     /** The OID for the pwdModify extended operation request. */
     String EXTENSION_OID = "1.3.6.1.4.1.4203.1.11.1";

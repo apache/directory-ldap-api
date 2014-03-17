@@ -63,7 +63,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
      */
     public ModifyRequestImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.MODIFY_REQUEST );
     }
 
 
@@ -306,7 +306,7 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
      */
     public MessageTypeEnum getResponseType()
     {
-        return RESP_TYPE;
+        return MessageTypeEnum.MODIFY_RESPONSE;
     }
 
 

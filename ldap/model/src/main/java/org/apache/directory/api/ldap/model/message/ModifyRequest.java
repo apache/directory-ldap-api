@@ -96,15 +96,8 @@ import org.apache.directory.api.ldap.model.name.Dn;
  *  @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * 
  */
-public interface ModifyRequest extends SingleReplyRequest<ModifyResponse>, AbandonableRequest
+public interface ModifyRequest extends SingleReplyRequest, AbandonableRequest
 {
-    /** Modify request message type enumeration value */
-    MessageTypeEnum TYPE = MessageTypeEnum.MODIFY_REQUEST;
-
-    /** Modify response message type enumeration value */
-    MessageTypeEnum RESP_TYPE = ModifyResponse.TYPE;
-
-
     /**
      * Gets the distinguished name of the entry to be modified by this request.
      * This property represents the PDU's <b>object</b> field.

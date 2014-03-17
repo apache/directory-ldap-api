@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface ExtendedOperationFactory<Q extends ExtendedRequest<P>, P extends ExtendedResponse>
+public interface ExtendedOperationFactory<Q extends ExtendedRequest, P extends ExtendedResponse>
 {
     /**
      * Gets the OID of the extended requests this factory generates.
@@ -63,7 +63,7 @@ public interface ExtendedOperationFactory<Q extends ExtendedRequest<P>, P extend
      * @param modelRequest the non decorated model request
      * @return the decorated model request
      */
-    ExtendedRequestDecorator<Q, P> decorate( ExtendedRequest<?> modelRequest );
+    ExtendedRequestDecorator<Q, P> decorate( ExtendedRequest modelRequest );
 
 
     /**

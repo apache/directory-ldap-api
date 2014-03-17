@@ -167,9 +167,9 @@ public class ExtendedRequestImplTest
     @Test
     public void testEqualsDiffImpl()
     {
-        ExtendedRequest<ExtendedResponse> req0 = new ExtendedRequest<ExtendedResponse>()
+        ExtendedRequest req0 = new ExtendedRequest()
         {
-            public ExtendedRequest<ExtendedResponse> setRequestName( String oid )
+            public ExtendedRequest setRequestName( String oid )
             {
                 return this;
             }
@@ -199,13 +199,13 @@ public class ExtendedRequestImplTest
             }
 
 
-            public ExtendedRequest<ExtendedResponse> addControl( Control control )
+            public ExtendedRequest addControl( Control control )
             {
                 return this;
             }
 
 
-            public ExtendedRequest<ExtendedResponse> removeControl( Control control )
+            public ExtendedRequest removeControl( Control control )
             {
                 return this;
             }
@@ -241,7 +241,7 @@ public class ExtendedRequestImplTest
             }
 
 
-            public ExtendedRequest<ExtendedResponse> addAllControls( Control[] controls )
+            public ExtendedRequest addAllControls( Control[] controls )
             {
                 return this;
             }
@@ -259,7 +259,7 @@ public class ExtendedRequestImplTest
             }
 
 
-            public ExtendedRequest<ExtendedResponse> setMessageId( int messageId )
+            public ExtendedRequest setMessageId( int messageId )
             {
                 return this;
             }

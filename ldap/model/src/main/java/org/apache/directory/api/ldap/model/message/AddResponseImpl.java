@@ -35,7 +35,7 @@ public class AddResponseImpl extends AbstractResultResponse implements AddRespon
      */
     public AddResponseImpl()
     {
-        super( -1, TYPE );
+        super( -1, MessageTypeEnum.ADD_RESPONSE );
     }
 
 
@@ -46,7 +46,7 @@ public class AddResponseImpl extends AbstractResultResponse implements AddRespon
      */
     public AddResponseImpl( final int id )
     {
-        super( id, TYPE );
+        super( id, MessageTypeEnum.ADD_RESPONSE );
     }
 
 

@@ -30,15 +30,8 @@ import org.apache.directory.api.ldap.model.name.Dn;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface AddRequest extends SingleReplyRequest<AddResponse>, AbandonableRequest
+public interface AddRequest extends SingleReplyRequest, AbandonableRequest
 {
-    /** LDAPv3 add request type enum code */
-    MessageTypeEnum TYPE = MessageTypeEnum.ADD_REQUEST;
-
-    /** LDAPv3 add response type enum code */
-    MessageTypeEnum RESP_TYPE = AddResponse.TYPE;
-
-
     /**
      * Gets the distinguished name of the entry to add.
      * 

@@ -42,7 +42,7 @@ public class UnbindRequestImpl extends AbstractRequest implements UnbindRequest
      */
     public UnbindRequestImpl()
     {
-        super( -1, TYPE, false );
+        super( -1, MessageTypeEnum.UNBIND_REQUEST, false );
     }
 
 

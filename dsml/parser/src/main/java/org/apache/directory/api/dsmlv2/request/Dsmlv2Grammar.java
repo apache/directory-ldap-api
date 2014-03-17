@@ -73,7 +73,6 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 
-
 /**
  * This Class represents the DSMLv2 Request Grammar
  *
@@ -1676,7 +1675,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {
             ExtendedRequestDsml<?, ?> extendedRequest =
-                new ExtendedRequestDsml<ExtendedRequest<ExtendedResponse>, ExtendedResponse>( codec,
+                new ExtendedRequestDsml<ExtendedRequest, ExtendedResponse>( codec,
                     new ExtendedRequestImpl() );
             container.getBatchRequest().addRequest( extendedRequest );
 

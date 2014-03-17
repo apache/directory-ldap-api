@@ -35,7 +35,7 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CancelRequestImpl extends AbstractExtendedRequest<CancelResponse> implements CancelRequest
+public class CancelRequestImpl extends AbstractExtendedRequest implements CancelRequest
 {
     /** The cancelId of the request to be canceled */
     private int cancelId;
@@ -84,6 +84,6 @@ public class CancelRequestImpl extends AbstractExtendedRequest<CancelResponse> i
             response = new CancelResponseImpl( cancelId );
         }
 
-        return response;
+        return ( CancelResponse ) response;
     }
 }
