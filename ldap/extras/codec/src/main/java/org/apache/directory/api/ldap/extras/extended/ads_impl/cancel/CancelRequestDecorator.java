@@ -20,8 +20,14 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 
 
+import java.nio.ByteBuffer;
+
+import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -36,32 +42,39 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelRequest> implements
-    CancelRequest
+    CancelRequest, Asn1Object
 {
     private static final Logger LOG = LoggerFactory.getLogger( CancelRequestDecorator.class );
+
+    /** The Id of the the message to cancel */
+    private CancelRequest cancelRequest;
+
+    /** Length of the sequence */
+    private int cancelSequenceLength;
 
 
     public CancelRequestDecorator( LdapApiService codec, CancelRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
+        this.cancelRequest = decoratedMessage;
     }
 
 
     public int getCancelId()
     {
-        return getDecorated().getCancelId();
+        return cancelRequest.getCancelId();
     }
 
 
     public void setCancelId( int cancelId )
     {
-        if ( cancelId == getCancelId() )
+        if ( cancelId == cancelRequest.getCancelId() )
         {
             return;
         }
 
         this.requestValue = null;
-        getDecorated().setCancelId( cancelId );
+        cancelRequest.setCancelId( cancelId );
     }
 
 
@@ -75,10 +88,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
         {
             try
             {
-                Cancel cancel = new Cancel();
-                cancel.setCancelId( getDecorated().getCancelId() );
-
-                requestValue = cancel.encode().array();
+                requestValue = encode().array();
             }
             catch ( EncoderException e )
             {
@@ -115,12 +125,51 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
                 this.requestValue = null;
             }
 
-            getDecorated().setCancelId( cancel.getCancelId() );
+            cancelRequest.setCancelId( cancel.getCancelId() );
         }
         catch ( DecoderException e )
         {
             LOG.error( I18n.err( I18n.ERR_04165 ), e );
             throw new RuntimeException( e );
         }
+    }
+
+
+    /**
+     * Compute the Cancel length 
+     * 
+     * 0x30 L1 
+     *   | 
+     *   +--> 0x02 0x0(1-4) [0..2^31-1] 
+     */
+    public int computeLength()
+    {
+        // The messageId length
+        cancelSequenceLength = 1 + 1 + BerValue.getNbBytes( cancelRequest.getCancelId() );
+
+        // Add the sequence and the length
+        return 1 + 1 + cancelSequenceLength;
+    }
+
+
+    /**
+     * Encodes the cancel extended operation.
+     * 
+     * @return A ByteBuffer that contains the encoded PDU
+     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
+     */
+    public ByteBuffer encode() throws EncoderException
+    {
+        // Allocate the bytes buffer.
+        ByteBuffer bb = ByteBuffer.allocate( computeLength() );
+
+        // The sequence
+        bb.put( UniversalTag.SEQUENCE.getValue() );
+        bb.put( TLV.getBytes( cancelSequenceLength ) );
+
+        // The messageId
+        BerValue.encode( bb, cancelRequest.getCancelId() );
+
+        return bb;
     }
 }

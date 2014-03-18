@@ -21,7 +21,7 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect;
 
 
-import org.apache.directory.api.asn1.AbstractAsn1Object;
+import org.apache.directory.api.asn1.Asn1Object;
 
 
 /**
@@ -29,7 +29,7 @@ import org.apache.directory.api.asn1.AbstractAsn1Object;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class GracefulAction extends AbstractAsn1Object
+public abstract class GracefulAction implements Asn1Object
 {
     /** Undetermined value used for timeOffline */
     public static final int UNDETERMINED = 0;

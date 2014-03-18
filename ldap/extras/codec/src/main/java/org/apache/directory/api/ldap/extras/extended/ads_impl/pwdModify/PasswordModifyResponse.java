@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 
 import java.nio.ByteBuffer;
 
-import org.apache.directory.api.asn1.AbstractAsn1Object;
+import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
@@ -40,7 +40,7 @@ import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyResponse
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordModifyResponse extends AbstractAsn1Object
+public class PasswordModifyResponse implements Asn1Object
 {
     /** The encapsulated response */
     private PwdModifyResponse pwdModifyResponse;
@@ -81,7 +81,22 @@ public class PasswordModifyResponse extends AbstractAsn1Object
      */
     public ByteBuffer encode() throws EncoderException
     {
+        // Allocate the bytes buffer.
         ByteBuffer bb = ByteBuffer.allocate( computeLength() );
+
+        return encode( bb );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public ByteBuffer encode( ByteBuffer bb ) throws EncoderException
+    {
+        if ( bb == null )
+        {
+            throw new EncoderException( "Null ByteBuffer, cannot encode " + this );
+        }
 
         bb.put( UniversalTag.SEQUENCE.getValue() );
         bb.put( BerValue.getBytes( requestLength ) );

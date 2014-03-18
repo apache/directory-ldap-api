@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration;
 
 import java.nio.ByteBuffer;
 
-import org.apache.directory.api.asn1.AbstractAsn1Object;
+import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
@@ -45,12 +45,12 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CertGenerationObject extends AbstractAsn1Object
+public class CertGeneration implements Asn1Object
 {
     private CertGenerationRequest request;
 
 
-    public CertGenerationObject( CertGenerationRequest request )
+    public CertGeneration( CertGenerationRequest request )
     {
         this.request = request;
     }
@@ -80,9 +80,24 @@ public class CertGenerationObject extends AbstractAsn1Object
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public ByteBuffer encode() throws EncoderException
     {
+        // Allocate the bytes buffer.
         ByteBuffer bb = ByteBuffer.allocate( computeLength() );
+
+        return encode( bb );
+    }
+
+
+    public ByteBuffer encode( ByteBuffer bb ) throws EncoderException
+    {
+        if ( bb == null )
+        {
+            throw new EncoderException( "Null ByteBuffer, cannot encode " + this );
+        }
 
         bb.put( UniversalTag.SEQUENCE.getValue() );
         bb.put( BerValue.getBytes( requestLength ) );

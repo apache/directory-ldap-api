@@ -42,17 +42,17 @@ public class CertGenerationRequestDecorator
 {
     private static final Logger LOG = LoggerFactory.getLogger( CertGenerationRequestDecorator.class );
 
-    private CertGenerationObject certGenObj;
+    private CertGeneration certGenObj;
 
 
     public CertGenerationRequestDecorator( LdapApiService codec, CertGenerationRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
-        certGenObj = new CertGenerationObject( decoratedMessage );
+        certGenObj = new CertGeneration( decoratedMessage );
     }
 
 
-    public CertGenerationObject getCertGenerationObject()
+    public CertGeneration getCertGenerationObject()
     {
         return certGenObj;
     }
@@ -68,7 +68,7 @@ public class CertGenerationRequestDecorator
 
         try
         {
-            certGenObj = ( CertGenerationObject ) decoder.decode( requestValue );
+            certGenObj = ( CertGeneration ) decoder.decode( requestValue );
 
             if ( requestValue != null )
             {

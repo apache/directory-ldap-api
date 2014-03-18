@@ -35,8 +35,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulShutdownRequestDecorator extends
-    ExtendedRequestDecorator<GracefulShutdownRequest>
+public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<GracefulShutdownRequest>
     implements GracefulShutdownRequest
 {
     private static final Logger LOG = LoggerFactory.getLogger( GracefulShutdownRequestDecorator.class );

@@ -28,7 +28,6 @@ import org.apache.directory.api.asn1.ber.Asn1Decoder;
 
 
 /**
- * 
  * A decoder for CertGenerationObject.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>

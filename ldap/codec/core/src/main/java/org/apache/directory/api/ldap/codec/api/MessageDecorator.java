@@ -23,6 +23,7 @@ package org.apache.directory.api.ldap.codec.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.ldap.codec.decorators.AbandonRequestDecorator;
 import org.apache.directory.api.ldap.codec.decorators.AddRequestDecorator;
 import org.apache.directory.api.ldap.codec.decorators.AddResponseDecorator;
@@ -74,7 +75,7 @@ import org.apache.directory.api.ldap.model.message.UnbindRequest;
  * @TODO make this class abstract, after finishing switch and all types and make default blow an EncoderException
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class MessageDecorator<E extends Message> implements Message, Decorator<E>
+public abstract class MessageDecorator<E extends Message> implements Message, Decorator<E>, Asn1Object
 {
     /** The decorated Control */
     private final E decoratedMessage;

@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.codec.api;
 
 
-import org.apache.directory.api.asn1.AbstractAsn1Object;
+import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.ldap.model.message.Control;
 
 
@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.message.Control;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @param <E>
  */
-public abstract class ControlDecorator<E extends Control> extends AbstractAsn1Object implements CodecControl<E>
+public abstract class ControlDecorator<E extends Control> implements CodecControl<E>, Asn1Object
 {
     /** The decorated Control */
     private E decorated;

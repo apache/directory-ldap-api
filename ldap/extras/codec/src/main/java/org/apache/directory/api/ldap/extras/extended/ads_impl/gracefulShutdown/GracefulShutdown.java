@@ -89,15 +89,29 @@ public class GracefulShutdown extends GracefulAction
 
 
     /**
-     * Encodes the gracefulShutdown extended operation.
-     * 
-     * @return A ByteBuffer that contains the encoded PDU
-     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
+     * {@inheritDoc}
      */
     public ByteBuffer encode() throws EncoderException
     {
         // Allocate the bytes buffer.
         ByteBuffer bb = ByteBuffer.allocate( computeLength() );
+
+        return encode( bb );
+    }
+
+
+    /**
+     * Encodes the gracefulShutdown extended operation.
+     * 
+     * @return A ByteBuffer that contains the encoded PDU
+     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
+     */
+    public ByteBuffer encode( ByteBuffer bb ) throws EncoderException
+    {
+        if ( bb == null )
+        {
+            throw new EncoderException( "Null ByteBuffer, cannot encode " + this );
+        }
 
         bb.put( UniversalTag.SEQUENCE.getValue() );
         bb.put( TLV.getBytes( gracefulSequenceLength ) );

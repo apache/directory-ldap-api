@@ -22,7 +22,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 
 import java.nio.ByteBuffer;
 
-import org.apache.directory.api.asn1.AbstractAsn1Object;
+import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
@@ -44,7 +44,7 @@ import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequestImpl;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class Cancel extends AbstractAsn1Object
+public class Cancel implements Asn1Object
 {
     /** The Id of the the message to cancel */
     private CancelRequest cancelRequest;
@@ -115,15 +115,29 @@ public class Cancel extends AbstractAsn1Object
 
 
     /**
-     * Encodes the cancel extended operation.
-     * 
-     * @return A ByteBuffer that contains the encoded PDU
-     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
+     * {@inheritDoc}
      */
     public ByteBuffer encode() throws EncoderException
     {
         // Allocate the bytes buffer.
         ByteBuffer bb = ByteBuffer.allocate( computeLength() );
+
+        return encode( bb );
+    }
+
+
+    /**
+     * Encodes the cancel extended operation.
+     * 
+     * @return A ByteBuffer that contains the encoded PDU
+     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
+     */
+    public ByteBuffer encode( ByteBuffer bb ) throws EncoderException
+    {
+        if ( bb == null )
+        {
+            throw new EncoderException( "Null ByteBuffer, cannot encode " + this );
+        }
 
         // The sequence
         bb.put( UniversalTag.SEQUENCE.getValue() );

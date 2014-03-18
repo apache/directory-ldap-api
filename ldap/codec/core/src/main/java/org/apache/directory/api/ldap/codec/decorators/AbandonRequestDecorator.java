@@ -37,8 +37,7 @@ import org.apache.directory.api.ldap.model.message.Control;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class AbandonRequestDecorator extends RequestDecorator<AbandonRequest>
-    implements AbandonRequest
+public final class AbandonRequestDecorator extends RequestDecorator<AbandonRequest> implements AbandonRequest
 {
     /**
      * Makes a AddRequest a MessageDecorator.
