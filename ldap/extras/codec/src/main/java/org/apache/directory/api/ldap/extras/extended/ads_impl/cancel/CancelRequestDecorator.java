@@ -60,12 +60,18 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public int getCancelId()
     {
         return cancelRequest.getCancelId();
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     public void setCancelId( int cancelId )
     {
         if ( cancelId == cancelRequest.getCancelId() )
@@ -81,7 +87,6 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
     /**
      * {@inheritDoc}
      */
-    @Override
     public byte[] getRequestValue()
     {
         if ( requestValue == null )
@@ -113,7 +118,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
 
         try
         {
-            Cancel cancel = ( Cancel ) decoder.decode( requestValue );
+            CancelRequest cancel = decoder.decode( requestValue );
 
             if ( requestValue != null )
             {

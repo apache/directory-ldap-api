@@ -22,9 +22,9 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 
 import java.nio.ByteBuffer;
 
-import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
 
 
 /**
@@ -46,12 +46,12 @@ public class CancelDecoder extends Asn1Decoder
      * @return An Cancel object
      * @throws DecoderException If the decoding failed
      */
-    public Asn1Object decode( byte[] stream ) throws DecoderException
+    public CancelRequest decode( byte[] stream ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( stream );
         CancelContainer container = new CancelContainer();
         decoder.decode( bb, container );
-        Cancel cancel = container.getCancel();
+        CancelRequest cancel = container.getCancel();
 
         // Clean the container for the next decoding
         container.clean();

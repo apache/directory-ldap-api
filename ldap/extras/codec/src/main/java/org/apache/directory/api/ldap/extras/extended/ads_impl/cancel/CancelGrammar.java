@@ -30,6 +30,8 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
+import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequestImpl;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,7 +89,10 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
                 {
                     public void action( CancelContainer cancelContainer )
                     {
-                        Cancel cancel = new Cancel();
+                        CancelRequestDecorator cancel = new CancelRequestDecorator(
+                            LdapApiServiceFactory.getSingleton(),
+                            new CancelRequestImpl() );
+
                         cancelContainer.setCancel( cancel );
                     }
                 } );
