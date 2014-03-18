@@ -99,7 +99,7 @@ public abstract class MessageDecorator<E extends Message> implements Message, De
     {
         if ( decoratedMessage instanceof MessageDecorator )
         {
-            return ( org.apache.directory.api.ldap.codec.api.MessageDecorator<?> ) decoratedMessage;
+            return ( MessageDecorator<?> ) decoratedMessage;
         }
 
         MessageDecorator<?> decorator = null;
