@@ -60,15 +60,6 @@ public class GracefulShutdownFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
-    public GracefulShutdownRequest newRequest()
-    {
-        return new GracefulShutdownRequestDecorator( codec, new GracefulShutdownRequestImpl() );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public GracefulShutdownResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         GracefulShutdownResponseDecorator response = new GracefulShutdownResponseDecorator(

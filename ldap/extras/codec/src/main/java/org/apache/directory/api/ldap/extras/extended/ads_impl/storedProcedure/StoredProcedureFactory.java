@@ -64,15 +64,6 @@ public class StoredProcedureFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
-    public StoredProcedureRequest newRequest()
-    {
-        return new StoredProcedureRequestDecorator( codec );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public StoredProcedureResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         StoredProcedureResponseDecorator response = new StoredProcedureResponseDecorator( codec,

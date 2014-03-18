@@ -60,20 +60,12 @@ public class CertGenerationFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
-    public CertGenerationRequest newRequest()
-    {
-        return new CertGenerationRequestDecorator( codec, new CertGenerationRequestImpl() );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public CertGenerationResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         CertGenerationResponseDecorator response = new CertGenerationResponseDecorator( codec,
             new CertGenerationResponseImpl() );
         response.setResponseValue( encodedValue );
+
         return response;
     }
 

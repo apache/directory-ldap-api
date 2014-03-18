@@ -60,19 +60,11 @@ public class CancelFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
-    public CancelRequest newRequest()
-    {
-        return new CancelRequestDecorator( codec, new CancelRequestImpl() );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public CancelResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         CancelResponseDecorator response = new CancelResponseDecorator( codec, new CancelResponseImpl() );
         response.setResponseValue( encodedValue );
+
         return response;
     }
 

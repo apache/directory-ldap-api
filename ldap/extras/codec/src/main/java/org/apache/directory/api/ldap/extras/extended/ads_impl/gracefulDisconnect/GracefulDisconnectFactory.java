@@ -83,16 +83,6 @@ public class GracefulDisconnectFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequest newRequest()
-    {
-        // Nothing to do (there's no request associated to GracefulDisconnectResponse)
-        return null;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public ExtendedRequest newRequest( byte[] value )
     {
         // Nothing to do (there's no request associated to GracefulDisconnectResponse)

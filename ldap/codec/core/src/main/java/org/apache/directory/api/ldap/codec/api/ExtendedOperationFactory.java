@@ -43,12 +43,6 @@ public interface ExtendedOperationFactory
 
 
     /**
-     *  @return A new instance of the {@link ExtendedRequestDecorator}.
-     */
-    ExtendedRequest newRequest();
-
-
-    /**
      * Returns a new {@link ExtendedRequestDecorator} with the following encoded value.
      * 
      * @param value the encoded value

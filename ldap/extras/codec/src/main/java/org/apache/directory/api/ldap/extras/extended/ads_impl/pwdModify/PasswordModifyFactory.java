@@ -69,15 +69,6 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
-    public PwdModifyRequest newRequest()
-    {
-        return new PasswordModifyRequestDecorator( codec, new PwdModifyRequestImpl() );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     public PwdModifyResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         PasswordModifyResponseDecorator response = new PasswordModifyResponseDecorator( codec,
