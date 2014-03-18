@@ -25,6 +25,7 @@ import java.nio.ByteBuffer;
 import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequest;
 
 
 /**
@@ -46,16 +47,16 @@ public class CertGenerationDecoder extends Asn1Decoder
      * @return a CertGenerationObject object
      * @throws org.apache.directory.api.asn1.DecoderException If the decoding failed
      */
-    public Asn1Object decode( byte[] stream ) throws DecoderException
+    public CertGenerationRequest decode( byte[] stream ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( stream );
         CertGenerationContainer container = new CertGenerationContainer();
         decoder.decode( bb, container );
-        CertGenerationRequestDecorator certGenObj = container.getCertGenerationObject();
+        CertGenerationRequestDecorator certGenerationRequestDecorator = container.getCertGenerationObject();
 
         // Clean the container for the next decoding
         container.clean();
 
-        return certGenObj.getCertGenerationObject();
+        return certGenerationRequestDecorator.getCertGenerationRequest();
     }
 }

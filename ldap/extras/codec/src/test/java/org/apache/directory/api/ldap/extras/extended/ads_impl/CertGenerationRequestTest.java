@@ -115,11 +115,11 @@ public class CertGenerationRequestTest
         assertEquals( dn, req.getSubjectDN() );
         assertEquals( keyAlgo, req.getKeyAlgorithm() );
 
-        assertEquals( bufLen, req.getCertGenerationObject().computeLength() );
+        assertEquals( bufLen, req.computeLength() );
 
         try
         {
-            ByteBuffer encodedBuf = req.getCertGenerationObject().encode();
+            ByteBuffer encodedBuf = req.encode();
             String encodedPdu = Strings.dumpBytes( encodedBuf.array() );
 
             assertEquals( decodedPdu, encodedPdu );

@@ -56,7 +56,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
     public CancelRequestDecorator( LdapApiService codec, CancelRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
-        this.cancelRequest = decoratedMessage;
+        cancelRequest = decoratedMessage;
     }
 
 

@@ -20,13 +20,18 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration;
 
 
+import java.nio.ByteBuffer;
+
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequest;
 import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationResponse;
+import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,25 +41,26 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CertGenerationRequestDecorator
-    extends ExtendedRequestDecorator<CertGenerationRequest>
+public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<CertGenerationRequest>
     implements CertGenerationRequest
 {
     private static final Logger LOG = LoggerFactory.getLogger( CertGenerationRequestDecorator.class );
 
-    private CertGeneration certGenObj;
+    private CertGenerationRequest certGenerationRequest;
 
+    /** stores the length of the request*/
+    private int requestLength = 0;
 
     public CertGenerationRequestDecorator( LdapApiService codec, CertGenerationRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
-        certGenObj = new CertGeneration( decoratedMessage );
+        certGenerationRequest = decoratedMessage;
     }
 
 
-    public CertGeneration getCertGenerationObject()
+    public CertGenerationRequest getCertGenerationRequest()
     {
-        return certGenObj;
+        return certGenerationRequest;
     }
 
 
@@ -68,7 +74,7 @@ public class CertGenerationRequestDecorator
 
         try
         {
-            certGenObj = ( CertGeneration ) decoder.decode( requestValue );
+            certGenerationRequest = decoder.decode( requestValue );
 
             if ( requestValue != null )
             {
@@ -98,7 +104,7 @@ public class CertGenerationRequestDecorator
         {
             try
             {
-                requestValue = certGenObj.encode().array();
+                requestValue = encode().array();
             }
             catch ( EncoderException e )
             {
@@ -197,5 +203,57 @@ public class CertGenerationRequestDecorator
     public void setKeyAlgorithm( String keyAlgorithm )
     {
         getDecorated().setKeyAlgorithm( keyAlgorithm );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public int computeLength()
+    {
+        int len = Strings.getBytesUtf8( certGenerationRequest.getTargetDN() ).length;
+        requestLength = 1 + BerValue.getNbBytes( len ) + len;
+
+        len = Strings.getBytesUtf8( certGenerationRequest.getIssuerDN() ).length;
+        requestLength += 1 + BerValue.getNbBytes( len ) + len;
+
+        len = Strings.getBytesUtf8( certGenerationRequest.getSubjectDN() ).length;
+        requestLength += 1 + BerValue.getNbBytes( len ) + len;
+
+        len = Strings.getBytesUtf8( certGenerationRequest.getKeyAlgorithm() ).length;
+        requestLength += 1 + BerValue.getNbBytes( len ) + len;
+
+        return 1 + BerValue.getNbBytes( requestLength ) + requestLength;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public ByteBuffer encode() throws EncoderException
+    {
+        // Allocate the bytes buffer.
+        ByteBuffer bb = ByteBuffer.allocate( computeLength() );
+
+        return encode( bb );
+    }
+
+
+    public ByteBuffer encode( ByteBuffer bb ) throws EncoderException
+    {
+        if ( bb == null )
+        {
+            throw new EncoderException( "Null ByteBuffer, cannot encode " + this );
+        }
+
+        bb.put( UniversalTag.SEQUENCE.getValue() );
+        bb.put( BerValue.getBytes( requestLength ) );
+
+        BerValue.encode( bb, certGenerationRequest.getTargetDN() );
+        BerValue.encode( bb, certGenerationRequest.getIssuerDN() );
+        BerValue.encode( bb, certGenerationRequest.getSubjectDN() );
+        BerValue.encode( bb, certGenerationRequest.getKeyAlgorithm() );
+
+        return bb;
     }
 }
