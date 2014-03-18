@@ -22,8 +22,6 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
-import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequest;
 import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequestImpl;
@@ -39,8 +37,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CertGenerationFactory
-    implements ExtendedOperationFactory<CertGenerationRequest, CertGenerationResponse>
+public class CertGenerationFactory implements ExtendedOperationFactory
 {
     private LdapApiService codec;
 
@@ -95,8 +92,7 @@ public class CertGenerationFactory
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestDecorator<CertGenerationRequest, CertGenerationResponse> decorate(
-        ExtendedRequest modelRequest )
+    public CertGenerationRequestDecorator decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof CertGenerationRequestDecorator )
         {
@@ -110,7 +106,7 @@ public class CertGenerationFactory
     /**
      * {@inheritDoc}
      */
-    public ExtendedResponseDecorator<CertGenerationResponse> decorate( ExtendedResponse decoratedMessage )
+    public CertGenerationResponseDecorator decorate( ExtendedResponse decoratedMessage )
     {
         if ( decoratedMessage instanceof CertGenerationResponseDecorator )
         {

@@ -22,8 +22,6 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
-import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequestImpl;
@@ -39,7 +37,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CancelFactory implements ExtendedOperationFactory<CancelRequest, CancelResponse>
+public class CancelFactory implements ExtendedOperationFactory
 {
     private LdapApiService codec;
 
@@ -86,6 +84,7 @@ public class CancelFactory implements ExtendedOperationFactory<CancelRequest, Ca
     {
         CancelRequestDecorator req = new CancelRequestDecorator( codec, new CancelRequestImpl() );
         req.setRequestValue( value );
+
         return req;
     }
 
@@ -93,7 +92,7 @@ public class CancelFactory implements ExtendedOperationFactory<CancelRequest, Ca
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestDecorator<CancelRequest, CancelResponse> decorate( ExtendedRequest modelRequest )
+    public CancelRequestDecorator decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof CancelRequestDecorator )
         {
@@ -107,7 +106,7 @@ public class CancelFactory implements ExtendedOperationFactory<CancelRequest, Ca
     /**
      * {@inheritDoc}
      */
-    public ExtendedResponseDecorator<CancelResponse> decorate( ExtendedResponse decoratedMessage )
+    public CancelResponseDecorator decorate( ExtendedResponse decoratedMessage )
     {
         if ( decoratedMessage instanceof CancelResponseDecorator )
         {

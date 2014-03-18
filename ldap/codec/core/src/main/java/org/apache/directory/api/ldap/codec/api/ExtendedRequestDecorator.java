@@ -29,7 +29,6 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.decorators.SingleReplyRequestDecorator;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.util.Strings;
 
 
@@ -38,8 +37,8 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExtendedRequestDecorator<Q extends ExtendedRequest, P extends ExtendedResponse>
-    extends SingleReplyRequestDecorator<Q, P> implements ExtendedRequest
+public class ExtendedRequestDecorator<Q extends ExtendedRequest>
+    extends SingleReplyRequestDecorator<Q> implements ExtendedRequest
 {
     /** The extended request length */
     private int extendedRequestLength;

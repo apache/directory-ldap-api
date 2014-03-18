@@ -26,7 +26,6 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
-import org.apache.directory.api.ldap.extras.extended.cancel.CancelResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +35,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelRequest, CancelResponse> implements
+public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelRequest> implements
     CancelRequest
 {
     private static final Logger LOG = LoggerFactory.getLogger( CancelRequestDecorator.class );

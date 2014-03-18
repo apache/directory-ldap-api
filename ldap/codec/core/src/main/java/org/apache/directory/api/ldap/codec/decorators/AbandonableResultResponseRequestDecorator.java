@@ -30,8 +30,8 @@ import org.apache.directory.api.ldap.model.message.ResultResponseRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbandonableResultResponseRequestDecorator<M extends AbandonableResultResponseRequest<R>, R extends ResultResponse>
-    extends AbandonableRequestDecorator<M, R> implements ResultResponseRequest
+public abstract class AbandonableResultResponseRequestDecorator<M extends AbandonableResultResponseRequest>
+    extends AbandonableRequestDecorator<M> implements ResultResponseRequest
 {
     /**
      * Makes Request a MessageDecorator.

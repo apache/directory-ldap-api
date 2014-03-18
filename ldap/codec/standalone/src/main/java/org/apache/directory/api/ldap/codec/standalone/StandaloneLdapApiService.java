@@ -28,8 +28,6 @@ import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
-import org.apache.directory.api.ldap.model.message.ExtendedRequest;
-import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.util.Strings;
 import org.apache.mina.filter.codec.ProtocolCodecFactory;
 import org.slf4j.Logger;
@@ -334,12 +332,11 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         // note, trimming whitespace doesn't hurt as it is a class name and
         // helps DI containers that use xml config as xml ignores whitespace
         @SuppressWarnings("unchecked")
-        Class<? extends ExtendedOperationFactory<?, ?>> clazz = ( Class<? extends ExtendedOperationFactory<?, ?>> ) Class
+        Class<? extends ExtendedOperationFactory> clazz = ( Class<? extends ExtendedOperationFactory> ) Class
             .forName( extendedOperationFQCN.trim() );
         Constructor<?> constructor = clazz.getConstructor( types );
 
-        @SuppressWarnings("unchecked")
-        ExtendedOperationFactory<ExtendedRequest, ExtendedResponse> factory = ( ExtendedOperationFactory<ExtendedRequest, ExtendedResponse> ) constructor
+        ExtendedOperationFactory factory = ( ExtendedOperationFactory ) constructor
             .newInstance( new Object[]
                 { this } );
         extendedOperationsFactories.put( factory.getOid(), factory );

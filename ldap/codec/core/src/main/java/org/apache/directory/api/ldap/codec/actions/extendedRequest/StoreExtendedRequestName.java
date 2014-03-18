@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  * </pre>
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer<ExtendedRequestDecorator<?, ?>>>
+public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer<ExtendedRequestDecorator<?>>>
 {
     /** The logger */
     private static final Logger LOG = LoggerFactory.getLogger( StoreExtendedRequestName.class );
@@ -64,7 +64,7 @@ public class StoreExtendedRequestName extends GrammarAction<LdapMessageContainer
     /**
      * {@inheritDoc}
      */
-    public void action( LdapMessageContainer<ExtendedRequestDecorator<?, ?>> container ) throws DecoderException
+    public void action( LdapMessageContainer<ExtendedRequestDecorator<?>> container ) throws DecoderException
     {
         ExtendedRequest req;
 

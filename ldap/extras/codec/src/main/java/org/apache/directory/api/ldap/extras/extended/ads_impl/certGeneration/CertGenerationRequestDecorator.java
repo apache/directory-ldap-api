@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class CertGenerationRequestDecorator
-    extends ExtendedRequestDecorator<CertGenerationRequest, CertGenerationResponse>
+    extends ExtendedRequestDecorator<CertGenerationRequest>
     implements CertGenerationRequest
 {
     private static final Logger LOG = LoggerFactory.getLogger( CertGenerationRequestDecorator.class );

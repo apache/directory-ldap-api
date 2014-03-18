@@ -27,7 +27,6 @@ import java.nio.ByteBuffer;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
@@ -47,7 +46,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordModifyFactory implements ExtendedOperationFactory<PwdModifyRequest, PwdModifyResponse>
+public class PasswordModifyFactory implements ExtendedOperationFactory
 {
     private LdapApiService codec;
 
@@ -107,7 +106,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory<PwdModify
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestDecorator<PwdModifyRequest, PwdModifyResponse> decorate( ExtendedRequest modelRequest )
+    public PasswordModifyRequestDecorator decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof PasswordModifyRequestDecorator )
         {
@@ -121,7 +120,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory<PwdModify
     /**
      * {@inheritDoc}
      */
-    public ExtendedResponseDecorator<PwdModifyResponse> decorate( ExtendedResponse decoratedResponse )
+    public PasswordModifyResponseDecorator decorate( ExtendedResponse decoratedResponse )
     {
         if ( decoratedResponse instanceof PasswordModifyResponseDecorator )
         {

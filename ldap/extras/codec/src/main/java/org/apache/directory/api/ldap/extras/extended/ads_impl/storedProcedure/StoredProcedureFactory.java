@@ -22,8 +22,6 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
-import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureResponse;
@@ -38,8 +36,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoredProcedureFactory implements
-    ExtendedOperationFactory<StoredProcedureRequest, StoredProcedureResponse>
+public class StoredProcedureFactory implements ExtendedOperationFactory
 {
     private LdapApiService codec;
 
@@ -103,8 +100,7 @@ public class StoredProcedureFactory implements
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestDecorator<StoredProcedureRequest, StoredProcedureResponse> decorate(
-        ExtendedRequest modelRequest )
+    public StoredProcedureRequestDecorator decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof StoredProcedureRequestDecorator )
         {
@@ -118,7 +114,7 @@ public class StoredProcedureFactory implements
     /**
      * {@inheritDoc}
      */
-    public ExtendedResponseDecorator<StoredProcedureResponse> decorate( ExtendedResponse decoratedMessage )
+    public StoredProcedureResponseDecorator decorate( ExtendedResponse decoratedMessage )
     {
         if ( decoratedMessage instanceof StoredProcedureResponseDecorator )
         {

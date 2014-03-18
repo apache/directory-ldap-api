@@ -26,7 +26,6 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
-import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +36,7 @@ import org.slf4j.LoggerFactory;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class GracefulShutdownRequestDecorator extends
-    ExtendedRequestDecorator<GracefulShutdownRequest, GracefulShutdownResponse>
+    ExtendedRequestDecorator<GracefulShutdownRequest>
     implements GracefulShutdownRequest
 {
     private static final Logger LOG = LoggerFactory.getLogger( GracefulShutdownRequestDecorator.class );

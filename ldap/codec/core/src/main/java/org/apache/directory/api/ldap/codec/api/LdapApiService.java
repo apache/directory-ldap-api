@@ -137,7 +137,7 @@ public interface LdapApiService
      * @param factory The extended request factory
      * @return The displaced factory if one existed for the oid
      */
-    ExtendedOperationFactory<?, ?> registerExtendedRequest( ExtendedOperationFactory<?, ?> factory );
+    ExtendedOperationFactory registerExtendedRequest( ExtendedOperationFactory factory );
 
 
     /**
@@ -147,7 +147,7 @@ public interface LdapApiService
      * @param oid The extended request oid
      * @return The displaced factory if one existed for the oid
      */
-    ExtendedOperationFactory<?, ?> unregisterExtendedRequest( String oid );
+    ExtendedOperationFactory unregisterExtendedRequest( String oid );
 
 
     /**
@@ -262,7 +262,7 @@ public interface LdapApiService
     ExtendedRequest newExtendedRequest( String oid, byte[] value );
 
 
-    ExtendedRequestDecorator<?, ?> decorate( ExtendedRequest decoratedMessage );
+    ExtendedRequestDecorator<?> decorate( ExtendedRequest decoratedMessage );
 
 
     ExtendedResponseDecorator<?> decorate( ExtendedResponse decoratedMessage );

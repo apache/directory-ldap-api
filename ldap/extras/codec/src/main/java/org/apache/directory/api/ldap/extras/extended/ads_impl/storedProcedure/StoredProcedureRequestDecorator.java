@@ -35,7 +35,6 @@ import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureParameter;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequestImpl;
-import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureResponse;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,8 +45,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoredProcedureRequestDecorator
-    extends ExtendedRequestDecorator<StoredProcedureRequest, StoredProcedureResponse>
+public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<StoredProcedureRequest>
     implements StoredProcedureRequest
 {
     private static final Logger LOG = LoggerFactory.getLogger( StoredProcedureRequestDecorator.class );

@@ -22,8 +22,6 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
-import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
-import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequestImpl;
@@ -39,8 +37,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulShutdownFactory
-    implements ExtendedOperationFactory<GracefulShutdownRequest, GracefulShutdownResponse>
+public class GracefulShutdownFactory implements ExtendedOperationFactory
 {
     private LdapApiService codec;
 
@@ -96,12 +93,11 @@ public class GracefulShutdownFactory
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestDecorator<GracefulShutdownRequest, GracefulShutdownResponse> decorate(
-        ExtendedRequest modelRequest )
+    public ExtendedRequest decorate( ExtendedRequest modelRequest )
     {
         if ( modelRequest instanceof GracefulShutdownRequestDecorator )
         {
-            return ( GracefulShutdownRequestDecorator ) modelRequest;
+            return modelRequest;
         }
 
         return new GracefulShutdownRequestDecorator( codec, ( GracefulShutdownRequest ) modelRequest );
@@ -111,11 +107,11 @@ public class GracefulShutdownFactory
     /**
      * {@inheritDoc}
      */
-    public ExtendedResponseDecorator<GracefulShutdownResponse> decorate( ExtendedResponse decoratedMessage )
+    public ExtendedResponse decorate( ExtendedResponse decoratedMessage )
     {
         if ( decoratedMessage instanceof GracefulShutdownResponseDecorator )
         {
-            return ( GracefulShutdownResponseDecorator ) decoratedMessage;
+            return decoratedMessage;
         }
 
         return new GracefulShutdownResponseDecorator( codec, ( GracefulShutdownResponse ) decoratedMessage );

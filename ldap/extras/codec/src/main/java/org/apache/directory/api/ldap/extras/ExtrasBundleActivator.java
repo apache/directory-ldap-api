@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.extras;
 
 
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
-import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
@@ -107,23 +106,23 @@ public class ExtrasBundleActivator implements BundleActivator
         // Register Extended Request Factories
         // --------------------------------------------------------------------
 
-        ExtendedOperationFactory<?, ?> extReqfactory = new CancelFactory( codec );
-        codec.registerExtendedRequest( extReqfactory );
+        CancelFactory cancelFactory = new CancelFactory( codec );
+        codec.registerExtendedRequest( cancelFactory );
 
-        extReqfactory = new CertGenerationFactory( codec );
-        codec.registerExtendedRequest( extReqfactory );
+        CertGenerationFactory certGenerationFactory = new CertGenerationFactory( codec );
+        codec.registerExtendedRequest( certGenerationFactory );
 
-        extReqfactory = new GracefulShutdownFactory( codec );
-        codec.registerExtendedRequest( extReqfactory );
+        GracefulShutdownFactory gracefulShutdownFactory = new GracefulShutdownFactory( codec );
+        codec.registerExtendedRequest( gracefulShutdownFactory );
 
-        extReqfactory = new StoredProcedureFactory( codec );
-        codec.registerExtendedRequest( extReqfactory );
+        StoredProcedureFactory storedProcedureFactory = new StoredProcedureFactory( codec );
+        codec.registerExtendedRequest( storedProcedureFactory );
 
-        extReqfactory = new PasswordModifyFactory( codec );
-        codec.registerExtendedRequest( extReqfactory );
+        PasswordModifyFactory passwordModifyFactory = new PasswordModifyFactory( codec );
+        codec.registerExtendedRequest( passwordModifyFactory );
 
-        extReqfactory = new GracefulDisconnectFactory( codec );
-        codec.registerExtendedRequest( extReqfactory );
+        GracefulDisconnectFactory gracefulDisconnectFactory = new GracefulDisconnectFactory( codec );
+        codec.registerExtendedRequest( gracefulDisconnectFactory );
     }
 
 

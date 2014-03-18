@@ -20,7 +20,6 @@ package org.apache.directory.api.ldap.codec.decorators;
 
 
 import org.apache.directory.api.ldap.model.message.AbandonableRequest;
-import org.apache.directory.api.ldap.model.message.ResultResponse;
 import org.apache.directory.api.ldap.model.message.ResultResponseRequest;
 
 
@@ -29,7 +28,6 @@ import org.apache.directory.api.ldap.model.message.ResultResponseRequest;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface AbandonableResultResponseRequest<R extends ResultResponse> extends ResultResponseRequest,
-    AbandonableRequest
+public interface AbandonableResultResponseRequest extends ResultResponseRequest, AbandonableRequest
 {
 }

@@ -37,9 +37,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordModifyRequestDecorator
-    extends ExtendedRequestDecorator<PwdModifyRequest, PwdModifyResponse>
-    implements PwdModifyRequest
+public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<PwdModifyRequest> implements
+    PwdModifyRequest
 {
     private static final Logger LOG = LoggerFactory.getLogger( PasswordModifyRequestDecorator.class );
 

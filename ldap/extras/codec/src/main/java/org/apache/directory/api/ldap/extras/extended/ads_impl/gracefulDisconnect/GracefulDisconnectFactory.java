@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnec
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
-import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
@@ -36,7 +35,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class GracefulDisconnectFactory implements ExtendedOperationFactory<ExtendedRequest, GracefulDisconnectResponse>
+public class GracefulDisconnectFactory implements ExtendedOperationFactory
 {
     private LdapApiService codec;
 
@@ -50,7 +49,7 @@ public class GracefulDisconnectFactory implements ExtendedOperationFactory<Exten
     /**
      * {@inheritDoc}
      */
-    public ExtendedRequestDecorator<ExtendedRequest, GracefulDisconnectResponse> decorate(
+    public ExtendedRequestDecorator<ExtendedRequest> decorate(
         ExtendedRequest modelRequest )
     {
         // Nothing to do (there's no request associated to GracefulDisconnectResponse)
@@ -61,11 +60,11 @@ public class GracefulDisconnectFactory implements ExtendedOperationFactory<Exten
     /**
      * {@inheritDoc}
      */
-    public ExtendedResponseDecorator<GracefulDisconnectResponse> decorate( ExtendedResponse decoratedMessage )
+    public ExtendedResponse decorate( ExtendedResponse decoratedMessage )
     {
         if ( decoratedMessage instanceof GracefulDisconnectResponseDecorator )
         {
-            return ( GracefulDisconnectResponseDecorator ) decoratedMessage;
+            return decoratedMessage;
         }
 
         return new GracefulDisconnectResponseDecorator( codec, ( GracefulDisconnectResponse ) decoratedMessage );

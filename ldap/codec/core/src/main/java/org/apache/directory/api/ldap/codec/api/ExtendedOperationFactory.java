@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  * @version $Rev$, $Date$
  */
-public interface ExtendedOperationFactory<Q extends ExtendedRequest, P extends ExtendedResponse>
+public interface ExtendedOperationFactory
 {
     /**
      * Gets the OID of the extended requests this factory generates.
@@ -45,7 +45,7 @@ public interface ExtendedOperationFactory<Q extends ExtendedRequest, P extends E
     /**
      *  @return A new instance of the {@link ExtendedRequestDecorator}.
      */
-    Q newRequest();
+    ExtendedRequest newRequest();
 
 
     /**
@@ -54,7 +54,7 @@ public interface ExtendedOperationFactory<Q extends ExtendedRequest, P extends E
      * @param value the encoded value
      * @return the decorator for the extended request type
      */
-    Q newRequest( byte[] value );
+    ExtendedRequest newRequest( byte[] value );
 
 
     /**
@@ -63,7 +63,7 @@ public interface ExtendedOperationFactory<Q extends ExtendedRequest, P extends E
      * @param modelRequest the non decorated model request
      * @return the decorated model request
      */
-    ExtendedRequestDecorator<Q, P> decorate( ExtendedRequest modelRequest );
+    ExtendedRequest decorate( ExtendedRequest modelRequest );
 
 
     /**
@@ -73,7 +73,7 @@ public interface ExtendedOperationFactory<Q extends ExtendedRequest, P extends E
      * @param encodedValue The encoded value for the ExtendedResponse instance.
      * @return The new ExtendedResponse.
      */
-    P newResponse( byte[] encodedValue ) throws DecoderException;
+    ExtendedResponse newResponse( byte[] encodedValue ) throws DecoderException;
 
 
     /**
@@ -83,5 +83,5 @@ public interface ExtendedOperationFactory<Q extends ExtendedRequest, P extends E
      * @param decoratedMessage the message to be decorated.
      * @return The decorated message 
      */
-    ExtendedResponseDecorator<P> decorate( ExtendedResponse decoratedMessage );
+    ExtendedResponse decorate( ExtendedResponse decoratedMessage );
 }
