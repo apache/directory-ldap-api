@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
+import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
 
 
 /**
@@ -31,7 +32,7 @@ import org.apache.directory.api.asn1.ber.AbstractContainer;
 public class GracefulShutdownContainer extends AbstractContainer
 {
     /** GracefulShutdown */
-    private GracefulShutdown gracefulShutdown;
+    private GracefulShutdownRequestDecorator gracefulShutdownRequest;
 
 
     /**
@@ -49,9 +50,9 @@ public class GracefulShutdownContainer extends AbstractContainer
     /**
      * @return Returns the Graceful Shutdown object.
      */
-    public GracefulShutdown getGracefulShutdown()
+    public GracefulShutdownRequestDecorator getGracefulShutdownRequest()
     {
-        return gracefulShutdown;
+        return gracefulShutdownRequest;
     }
 
 
@@ -61,9 +62,9 @@ public class GracefulShutdownContainer extends AbstractContainer
      * 
      * @param gracefulShutdown the GracefulShutdown to set.
      */
-    public void setGracefulShutdown( GracefulShutdown gracefulShutdown )
+    public void setGracefulShutdownRequest( GracefulShutdownRequestDecorator gracefulShutdown )
     {
-        this.gracefulShutdown = gracefulShutdown;
+        this.gracefulShutdownRequest = gracefulShutdown;
     }
 
 
@@ -73,6 +74,6 @@ public class GracefulShutdownContainer extends AbstractContainer
     public void clean()
     {
         super.clean();
-        gracefulShutdown = null;
+        gracefulShutdownRequest = null;
     }
 }

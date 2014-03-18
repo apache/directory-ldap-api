@@ -29,7 +29,9 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulActionConstants;
+import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequestImpl;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,8 +90,10 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
                 {
                     public void action( GracefulShutdownContainer container )
                     {
-                        GracefulShutdown gracefulShutdown = new GracefulShutdown();
-                        container.setGracefulShutdown( gracefulShutdown );
+                        GracefulShutdownRequestDecorator gracefulShutdownRequest = new GracefulShutdownRequestDecorator(
+                            LdapApiServiceFactory.getSingleton(),
+                            new GracefulShutdownRequestImpl() );
+                        container.setGracefulShutdownRequest( gracefulShutdownRequest );
                         container.setGrammarEndAllowed( true );
                     }
                 } );
@@ -125,7 +129,7 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
                                 LOG.debug( "Time Offline = " + timeOffline );
                             }
 
-                            container.getGracefulShutdown().setTimeOffline( timeOffline );
+                            container.getGracefulShutdownRequest().setTimeOffline( timeOffline );
                             container.setGrammarEndAllowed( true );
                         }
                         catch ( IntegerDecoderException e )
@@ -167,7 +171,7 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
                                 LOG.debug( "Delay = " + delay );
                             }
 
-                            container.getGracefulShutdown().setDelay( delay );
+                            container.getGracefulShutdownRequest().setDelay( delay );
                             container.setGrammarEndAllowed( true );
                         }
                         catch ( IntegerDecoderException e )
@@ -211,7 +215,7 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
                                 LOG.debug( "Delay = " + delay );
                             }
 
-                            gracefulShutdownContainer.getGracefulShutdown().setDelay( delay );
+                            gracefulShutdownContainer.getGracefulShutdownRequest().setDelay( delay );
                             gracefulShutdownContainer.setGrammarEndAllowed( true );
                         }
                         catch ( IntegerDecoderException e )

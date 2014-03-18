@@ -25,6 +25,7 @@ import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
+import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponseImpl;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 
@@ -95,6 +96,10 @@ public class GracefulDisconnectFactory implements ExtendedOperationFactory
      */
     public GracefulDisconnectResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
-        return new GracefulDisconnectResponseDecorator( codec, encodedValue );
+        GracefulDisconnectResponseDecorator req = new GracefulDisconnectResponseDecorator( codec,
+            new GracefulDisconnectResponseImpl() );
+        req.setResponseValue( encodedValue );
+        
+        return req;
     }
 }

@@ -20,11 +20,18 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown;
 
 
+import java.nio.ByteBuffer;
+
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulActionConstants;
+import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequest;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +47,10 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
 {
     private static final Logger LOG = LoggerFactory.getLogger( GracefulShutdownRequestDecorator.class );
 
+    /** Length of the sequence */
+    private int gracefulSequenceLength;
+
+    private GracefulShutdownRequest gracefulShutdownRequest;
 
     /**
      * Creates a new instance of GracefulShutdownRequestDecorator.
@@ -50,6 +61,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
     public GracefulShutdownRequestDecorator( LdapApiService codec, GracefulShutdownRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
+        gracefulShutdownRequest = decoratedMessage;
     }
 
 
@@ -62,7 +74,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
 
         try
         {
-            GracefulShutdown gs = ( GracefulShutdown ) decoder.decode( requestValue );
+            gracefulShutdownRequest = decoder.decode( requestValue );
 
             if ( requestValue != null )
             {
@@ -73,9 +85,6 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
             {
                 this.requestValue = null;
             }
-
-            setTimeOffline( gs.getTimeOffline() );
-            setDelay( gs.getDelay() );
         }
         catch ( DecoderException e )
         {
@@ -94,10 +103,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
         {
             try
             {
-                GracefulShutdown gs = new GracefulShutdown();
-                gs.setDelay( getDecorated().getDelay() );
-                gs.setTimeOffline( getDecorated().getTimeOffline() );
-                requestValue = gs.encode().array();
+                requestValue = encode().array();
             }
             catch ( EncoderException e )
             {
@@ -143,5 +149,91 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
     public void setTimeOffline( int timeOffline )
     {
         getDecorated().setTimeOffline( timeOffline );
+    }
+
+
+    /**
+     * Compute the GracefulShutdown length 
+     * 0x30 L1 
+     *   | 
+     *   +--> [0x02 0x0(1-4) [0..720] ] 
+     *   +--> [0x80 0x0(1-3) [0..86400] ] 
+     *   
+     * L1 will always be &lt 11.
+     */
+    public int computeLength()
+    {
+        int gracefulLength = 1 + 1;
+        gracefulSequenceLength = 0;
+
+        if ( gracefulShutdownRequest.getTimeOffline() != 0 )
+        {
+            gracefulSequenceLength += 1 + 1 + BerValue.getNbBytes( gracefulShutdownRequest.getTimeOffline() );
+        }
+
+        if ( gracefulShutdownRequest.getDelay() != 0 )
+        {
+            gracefulSequenceLength += 1 + 1 + BerValue.getNbBytes( gracefulShutdownRequest.getDelay() );
+        }
+
+        return gracefulLength + gracefulSequenceLength;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public ByteBuffer encode() throws EncoderException
+    {
+        // Allocate the bytes buffer.
+        ByteBuffer bb = ByteBuffer.allocate( computeLength() );
+
+        return encode( bb );
+    }
+
+
+    /**
+     * Encodes the gracefulShutdown extended operation.
+     * 
+     * @return A ByteBuffer that contains the encoded PDU
+     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
+     */
+    public ByteBuffer encode( ByteBuffer bb ) throws EncoderException
+    {
+        if ( bb == null )
+        {
+            throw new EncoderException( "Null ByteBuffer, cannot encode " + this );
+        }
+
+        bb.put( UniversalTag.SEQUENCE.getValue() );
+        bb.put( TLV.getBytes( gracefulSequenceLength ) );
+
+        if ( gracefulShutdownRequest.getTimeOffline() != 0 )
+        {
+            BerValue.encode( bb, gracefulShutdownRequest.getTimeOffline() );
+        }
+
+        if ( gracefulShutdownRequest.getDelay() != 0 )
+        {
+            bb.put( ( byte ) GracefulActionConstants.GRACEFUL_ACTION_DELAY_TAG );
+            bb.put( ( byte ) BerValue.getNbBytes( gracefulShutdownRequest.getDelay() ) );
+            bb.put( BerValue.getBytes( gracefulShutdownRequest.getDelay() ) );
+        }
+        return bb;
+    }
+
+
+    /**
+     * Return a string representation of the graceful shutdown
+     */
+    public String toString()
+    {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append( "Graceful Shutdown extended operation" );
+        sb.append( "    TimeOffline : " ).append( gracefulShutdownRequest.getTimeOffline() ).append( '\n' );
+        sb.append( "    Delay : " ).append( gracefulShutdownRequest.getDelay() ).append( '\n' );
+
+        return sb.toString();
     }
 }

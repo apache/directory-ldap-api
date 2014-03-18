@@ -77,4 +77,12 @@ public interface GracefulDisconnectResponse extends ExtendedResponse
      * @return the replicated contexts
      */
     Referral getReplicatedContexts();
+
+
+    /**
+     * Add a new URL of a replicated server
+     * 
+     * @param replicatedContext The replicated server to add.
+     */
+    void addReplicatedContexts( String replicatedContext );
 }

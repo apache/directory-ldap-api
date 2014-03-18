@@ -29,8 +29,8 @@ import java.nio.ByteBuffer;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdown;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownContainer;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownRequestDecorator;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -83,17 +83,17 @@ public class GracefulShutdownTest
             fail( de.getMessage() );
         }
 
-        GracefulShutdown gracefulShutdown = container.getGracefulShutdown();
-        assertEquals( 1, gracefulShutdown.getTimeOffline() );
-        assertEquals( 1, gracefulShutdown.getDelay() );
+        GracefulShutdownRequestDecorator gracefulShutdownRequest = container.getGracefulShutdownRequest();
+        assertEquals( 1, gracefulShutdownRequest.getTimeOffline() );
+        assertEquals( 1, gracefulShutdownRequest.getDelay() );
 
         // Check the length
-        assertEquals( 0x08, gracefulShutdown.computeLength() );
+        assertEquals( 0x08, gracefulShutdownRequest.computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulShutdown.encode();
+            ByteBuffer bb1 = gracefulShutdownRequest.encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -137,17 +137,17 @@ public class GracefulShutdownTest
             fail( de.getMessage() );
         }
 
-        GracefulShutdown gracefulShutdown = container.getGracefulShutdown();
-        assertEquals( 1, gracefulShutdown.getTimeOffline() );
-        assertEquals( 0, gracefulShutdown.getDelay() );
+        GracefulShutdownRequestDecorator gracefulShutdownRequest = container.getGracefulShutdownRequest();
+        assertEquals( 1, gracefulShutdownRequest.getTimeOffline() );
+        assertEquals( 0, gracefulShutdownRequest.getDelay() );
 
         // Check the length
-        assertEquals( 0x05, gracefulShutdown.computeLength() );
+        assertEquals( 0x05, gracefulShutdownRequest.computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulShutdown.encode();
+            ByteBuffer bb1 = gracefulShutdownRequest.encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -192,17 +192,17 @@ public class GracefulShutdownTest
             fail( de.getMessage() );
         }
 
-        GracefulShutdown gracefulShutdown = container.getGracefulShutdown();
-        assertEquals( 0, gracefulShutdown.getTimeOffline() );
-        assertEquals( 1, gracefulShutdown.getDelay() );
+        GracefulShutdownRequestDecorator gracefulShutdownRequest = container.getGracefulShutdownRequest();
+        assertEquals( 0, gracefulShutdownRequest.getTimeOffline() );
+        assertEquals( 1, gracefulShutdownRequest.getDelay() );
 
         // Check the length
-        assertEquals( 0x05, gracefulShutdown.computeLength() );
+        assertEquals( 0x05, gracefulShutdownRequest.computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulShutdown.encode();
+            ByteBuffer bb1 = gracefulShutdownRequest.encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -243,17 +243,17 @@ public class GracefulShutdownTest
             fail( de.getMessage() );
         }
 
-        GracefulShutdown gracefulShutdown = container.getGracefulShutdown();
-        assertEquals( 0, gracefulShutdown.getTimeOffline() );
-        assertEquals( 0, gracefulShutdown.getDelay() );
+        GracefulShutdownRequestDecorator gracefulShutdownRequest = container.getGracefulShutdownRequest();
+        assertEquals( 0, gracefulShutdownRequest.getTimeOffline() );
+        assertEquals( 0, gracefulShutdownRequest.getDelay() );
 
         // Check the length
-        assertEquals( 0x02, gracefulShutdown.computeLength() );
+        assertEquals( 0x02, gracefulShutdownRequest.computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulShutdown.encode();
+            ByteBuffer bb1 = gracefulShutdownRequest.encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -300,17 +300,17 @@ public class GracefulShutdownTest
             fail( de.getMessage() );
         }
 
-        GracefulShutdown gracefulShutdown = container.getGracefulShutdown();
-        assertEquals( 0, gracefulShutdown.getTimeOffline() );
-        assertEquals( 500, gracefulShutdown.getDelay() );
+        GracefulShutdownRequestDecorator gracefulShutdownRequest = container.getGracefulShutdownRequest();
+        assertEquals( 0, gracefulShutdownRequest.getTimeOffline() );
+        assertEquals( 500, gracefulShutdownRequest.getDelay() );
 
         // Check the length
-        assertEquals( 0x06, gracefulShutdown.computeLength() );
+        assertEquals( 0x06, gracefulShutdownRequest.computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulShutdown.encode();
+            ByteBuffer bb1 = gracefulShutdownRequest.encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -357,17 +357,17 @@ public class GracefulShutdownTest
             fail( de.getMessage() );
         }
 
-        GracefulShutdown gracefulShutdown = container.getGracefulShutdown();
-        assertEquals( 0, gracefulShutdown.getTimeOffline() );
-        assertEquals( 32767, gracefulShutdown.getDelay() );
+        GracefulShutdownRequestDecorator gracefulShutdownRequest = container.getGracefulShutdownRequest();
+        assertEquals( 0, gracefulShutdownRequest.getTimeOffline() );
+        assertEquals( 32767, gracefulShutdownRequest.getDelay() );
 
         // Check the length
-        assertEquals( 0x06, gracefulShutdown.computeLength() );
+        assertEquals( 0x06, gracefulShutdownRequest.computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulShutdown.encode();
+            ByteBuffer bb1 = gracefulShutdownRequest.encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -417,17 +417,17 @@ public class GracefulShutdownTest
             fail( de.getMessage() );
         }
 
-        GracefulShutdown gracefulShutdown = container.getGracefulShutdown();
-        assertEquals( 0, gracefulShutdown.getTimeOffline() );
-        assertEquals( 32768, gracefulShutdown.getDelay() );
+        GracefulShutdownRequestDecorator gracefulShutdownRequest = container.getGracefulShutdownRequest();
+        assertEquals( 0, gracefulShutdownRequest.getTimeOffline() );
+        assertEquals( 32768, gracefulShutdownRequest.getDelay() );
 
         // Check the length
-        assertEquals( 0x07, gracefulShutdown.computeLength() );
+        assertEquals( 0x07, gracefulShutdownRequest.computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulShutdown.encode();
+            ByteBuffer bb1 = gracefulShutdownRequest.encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 

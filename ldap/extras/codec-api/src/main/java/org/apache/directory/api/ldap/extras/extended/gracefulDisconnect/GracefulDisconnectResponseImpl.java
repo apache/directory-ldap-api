@@ -107,9 +107,8 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
     // -----------------------------------------------------------------------
     // Parameters of the Extended Response Value
     // -----------------------------------------------------------------------
-
-    /* (non-Javadoc)
-     * @see org.apache.directory.api.ldap.extras.extended.GracefulDisconnectResponse#getDelay()
+    /**
+     * {@inheritDoc}
      */
     public int getDelay()
     {
@@ -117,8 +116,8 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.api.ldap.extras.extended.GracefulDisconnectResponse#setDelay(int)
+    /**
+     * {@inheritDoc}
      */
     public void setDelay( int delay )
     {
@@ -126,8 +125,8 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.api.ldap.extras.extended.GracefulDisconnectResponse#getTimeOffline()
+    /**
+     * {@inheritDoc}
      */
     public int getTimeOffline()
     {
@@ -135,8 +134,8 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.api.ldap.extras.extended.GracefulDisconnectResponse#setTimeOffline(int)
+    /**
+     * {@inheritDoc}
      */
     public void setTimeOffline( int timeOffline )
     {
@@ -144,11 +143,18 @@ public class GracefulDisconnectResponseImpl extends ExtendedResponseImpl impleme
     }
 
 
-    /* (non-Javadoc)
-     * @see org.apache.directory.api.ldap.extras.extended.GracefulDisconnectResponse#getReplicatedContexts()
-     */
     public Referral getReplicatedContexts()
     {
         return replicatedContexts;
+    }
+    
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void addReplicatedContexts( String replicatedContext )
+    {
+        replicatedContexts.addLdapUrl( replicatedContext );
     }
 }

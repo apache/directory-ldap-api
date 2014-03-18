@@ -22,9 +22,9 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnec
 
 import java.nio.ByteBuffer;
 
-import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
+import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
 
 
 /**
@@ -46,12 +46,12 @@ public class GracefulDisconnectDecoder extends Asn1Decoder
      * @return An GracefulDisconnect object
      * @throws DecoderException If the decoding failed
      */
-    public Asn1Object decode( byte[] stream ) throws DecoderException
+    public GracefulDisconnectResponse decode( byte[] stream ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( stream );
         GracefulDisconnectContainer container = new GracefulDisconnectContainer();
         decoder.decode( bb, container );
-        GracefulDisconnect gracefulDisconnect = container.getGracefulDisconnect();
+        GracefulDisconnectResponseDecorator gracefulDisconnect = container.getGracefulDisconnectResponse();
 
         // Clean the container for the next decoding
         container.clean();

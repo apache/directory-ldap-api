@@ -29,6 +29,8 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
+import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponseImpl;
 import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.api.ldap.model.url.LdapUrl;
 import org.apache.directory.api.util.Strings;
@@ -87,7 +89,7 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
                         LOG.debug( "Delay = " + delay );
                     }
 
-                    container.getGracefulDisconnect().setDelay( delay );
+                    container.getGracefulDisconnectResponse().setDelay( delay );
                     container.setGrammarEndAllowed( true );
                 }
                 catch ( IntegerDecoderException e )
@@ -121,7 +123,7 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
                     String url = Strings.utf8ToString( value.getData() );
 
                     LdapUrl ldapUrl = new LdapUrl( url );
-                    container.getGracefulDisconnect().addReplicatedContexts( ldapUrl );
+                    container.getGracefulDisconnectResponse().addReplicatedContexts( url );
                     container.setGrammarEndAllowed( true );
 
                     if ( IS_DEBUG )
@@ -157,7 +159,7 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
                         LOG.debug( "Time Offline = " + timeOffline );
                     }
 
-                    container.getGracefulDisconnect().setTimeOffline( timeOffline );
+                    container.getGracefulDisconnectResponse().setTimeOffline( timeOffline );
                     container.setGrammarEndAllowed( true );
                 }
                 catch ( IntegerDecoderException e )
@@ -196,8 +198,12 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
                 {
                     public void action( GracefulDisconnectContainer container )
                     {
-                        GracefulDisconnect gracefulDisconnect = new GracefulDisconnect();
-                        container.setGracefulDisconnect( gracefulDisconnect );
+                        GracefulDisconnectResponseDecorator gracefulDisconnectResponse = 
+                            new GracefulDisconnectResponseDecorator(
+                                LdapApiServiceFactory.getSingleton(),
+                                new GracefulDisconnectResponseImpl()
+                                );
+                        container.setGracefulDisconnectResponse( gracefulDisconnectResponse );
                         container.setGrammarEndAllowed( true );
                     }
                 } );

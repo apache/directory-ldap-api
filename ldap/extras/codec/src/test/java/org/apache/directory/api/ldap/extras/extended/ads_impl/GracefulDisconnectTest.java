@@ -25,13 +25,15 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
+import java.util.Iterator;
+import java.util.List;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnect;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectContainer;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectDecoder;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectResponseDecorator;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -188,13 +190,14 @@ public class GracefulDisconnectTest
             fail( de.getMessage() );
         }
 
-        GracefulDisconnect gracefulDisconnect = container.getGracefulDisconnect();
+        GracefulDisconnectResponseDecorator gracefulDisconnect = container.getGracefulDisconnectResponse();
         assertEquals( 1, gracefulDisconnect.getTimeOffline() );
         assertEquals( 1, gracefulDisconnect.getDelay() );
-        assertEquals( 2, gracefulDisconnect.getReplicatedContexts().size() );
-        assertEquals( "ldap://directory.apache.org:80/", gracefulDisconnect.getReplicatedContexts().get( 0 ).toString() );
-        assertEquals( "ldap://ldap.netscape.com/o=Babsco,c=US???(int=%5C00%5C00%5C00%5C04)", gracefulDisconnect
-            .getReplicatedContexts().get( 1 ).toString() );
+        assertEquals( 2, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
+        
+        Iterator<String> ldapUrls = gracefulDisconnect.getReplicatedContexts().getLdapUrls().iterator();
+        assertEquals( "ldap://directory.apache.org:80/", ldapUrls.next() );
+        assertEquals( "ldap://ldap.netscape.com/o=Babsco,c=US???(int=%5c00%5c00%5c00%5c04)", ldapUrls.next() );
 
         // Check the length
         assertEquals( 0x70, gracefulDisconnect.computeLength() );
@@ -246,10 +249,10 @@ public class GracefulDisconnectTest
             fail( de.getMessage() );
         }
 
-        GracefulDisconnect gracefulDisconnect = container.getGracefulDisconnect();
+        GracefulDisconnectResponseDecorator gracefulDisconnect = container.getGracefulDisconnectResponse();
         assertEquals( 1, gracefulDisconnect.getTimeOffline() );
         assertEquals( 0, gracefulDisconnect.getDelay() );
-        assertEquals( 0, gracefulDisconnect.getReplicatedContexts().size() );
+        assertEquals( 0, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
 
         // Check the length
         assertEquals( 0x05, gracefulDisconnect.computeLength() );
@@ -302,10 +305,10 @@ public class GracefulDisconnectTest
             fail( de.getMessage() );
         }
 
-        GracefulDisconnect gracefulDisconnect = container.getGracefulDisconnect();
+        GracefulDisconnectResponseDecorator gracefulDisconnect = container.getGracefulDisconnectResponse();
         assertEquals( 0, gracefulDisconnect.getTimeOffline() );
         assertEquals( 1, gracefulDisconnect.getDelay() );
-        assertEquals( 0, gracefulDisconnect.getReplicatedContexts().size() );
+        assertEquals( 0, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
 
         // Check the length
         assertEquals( 0x05, gracefulDisconnect.computeLength() );
@@ -361,10 +364,10 @@ public class GracefulDisconnectTest
             fail( de.getMessage() );
         }
 
-        GracefulDisconnect gracefulDisconnect = container.getGracefulDisconnect();
+        GracefulDisconnectResponseDecorator gracefulDisconnect = container.getGracefulDisconnectResponse();
         assertEquals( 1, gracefulDisconnect.getTimeOffline() );
         assertEquals( 1, gracefulDisconnect.getDelay() );
-        assertEquals( 0, gracefulDisconnect.getReplicatedContexts().size() );
+        assertEquals( 0, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
 
         // Check the length
         assertEquals( 0x08, gracefulDisconnect.computeLength() );
@@ -518,13 +521,14 @@ public class GracefulDisconnectTest
             fail( de.getMessage() );
         }
 
-        GracefulDisconnect gracefulDisconnect = container.getGracefulDisconnect();
+        GracefulDisconnectResponseDecorator gracefulDisconnect = container.getGracefulDisconnectResponse();
         assertEquals( 0, gracefulDisconnect.getTimeOffline() );
         assertEquals( 0, gracefulDisconnect.getDelay() );
-        assertEquals( 2, gracefulDisconnect.getReplicatedContexts().size() );
-        assertEquals( "ldap://directory.apache.org:80/", gracefulDisconnect.getReplicatedContexts().get( 0 ).toString() );
-        assertEquals( "ldap://ldap.netscape.com/o=Babsco,c=US???(int=%5C00%5C00%5C00%5C04)", gracefulDisconnect
-            .getReplicatedContexts().get( 1 ).toString() );
+        assertEquals( 2, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
+        
+        Iterator<String> ldapUrls = gracefulDisconnect.getReplicatedContexts().getLdapUrls().iterator();
+        assertEquals( "ldap://directory.apache.org:80/", ldapUrls.next() );
+        assertEquals( "ldap://ldap.netscape.com/o=Babsco,c=US???(int=%5c00%5c00%5c00%5c04)", ldapUrls.next() );
 
         // Check the length
         assertEquals( 0x6A, gracefulDisconnect.computeLength() );
@@ -573,10 +577,10 @@ public class GracefulDisconnectTest
             fail( de.getMessage() );
         }
 
-        GracefulDisconnect gracefulDisconnect = container.getGracefulDisconnect();
+        GracefulDisconnectResponseDecorator gracefulDisconnect = container.getGracefulDisconnectResponse();
         assertEquals( 0, gracefulDisconnect.getTimeOffline() );
         assertEquals( 0, gracefulDisconnect.getDelay() );
-        assertEquals( 0, gracefulDisconnect.getReplicatedContexts().size() );
+        assertEquals( 0, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
 
         // Check the length
         assertEquals( 0x02, gracefulDisconnect.computeLength() );

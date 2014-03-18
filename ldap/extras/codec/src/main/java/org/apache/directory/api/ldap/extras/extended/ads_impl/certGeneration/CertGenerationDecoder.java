@@ -52,7 +52,7 @@ public class CertGenerationDecoder extends Asn1Decoder
         ByteBuffer bb = ByteBuffer.wrap( stream );
         CertGenerationContainer container = new CertGenerationContainer();
         decoder.decode( bb, container );
-        CertGenerationRequestDecorator certGenerationRequestDecorator = container.getCertGenerationObject();
+        CertGenerationRequestDecorator certGenerationRequestDecorator = container.getCertGenerationRequest();
 
         // Clean the container for the next decoding
         container.clean();
