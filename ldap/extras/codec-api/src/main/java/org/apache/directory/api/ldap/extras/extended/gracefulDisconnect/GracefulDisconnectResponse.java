@@ -48,7 +48,7 @@ public interface GracefulDisconnectResponse extends ExtendedResponse
 
 
     /**
-     * Sets the delay befor disconnection, in seconds.
+     * Sets the delay before disconnection, in seconds.
      *
      * @param delay the new delay before disconnection
      */

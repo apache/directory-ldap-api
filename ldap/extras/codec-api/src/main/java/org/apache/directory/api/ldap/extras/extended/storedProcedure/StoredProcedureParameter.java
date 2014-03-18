@@ -32,6 +32,7 @@ public class StoredProcedureParameter
 {
     /** the type of the parameter */
     private byte[] type;
+
     /** the value of the parameter */
     private byte[] value;
 

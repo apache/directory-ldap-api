@@ -34,7 +34,6 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
  */
 public interface GracefulShutdownRequest extends ExtendedRequest
 {
-
     /** The OID for the graceful shutdown extended operation request. */
     String EXTENSION_OID = "1.3.6.1.4.1.18060.0.1.3";
 
@@ -54,7 +53,7 @@ public interface GracefulShutdownRequest extends ExtendedRequest
 
 
     /**
-     * Sets the delay befor disconnection, in seconds.
+     * Sets the delay before disconnection, in seconds.
      *
      * @param delay the new delay before disconnection
      */

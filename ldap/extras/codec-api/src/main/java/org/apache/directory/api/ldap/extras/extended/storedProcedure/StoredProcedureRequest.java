@@ -52,9 +52,15 @@ public interface StoredProcedureRequest extends ExtendedRequest
     void setLanguage( String language );
 
 
+    /**
+     * @return The byte[] containing the procedure's bytecode
+     */
     byte[] getProcedure();
 
 
+    /**
+     * @param procedure The procedure's bytecode
+     */
     void setProcedure( byte[] procedure );
 
 
@@ -69,7 +75,7 @@ public interface StoredProcedureRequest extends ExtendedRequest
     /**
      * Size.
      *
-     * @return the int
+     * @return the procedure's bytcode size
      */
     int size();
 

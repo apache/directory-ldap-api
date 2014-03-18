@@ -30,5 +30,6 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  */
 public interface CancelResponse extends ExtendedResponse
 {
-
+    /** The OID for the Cancel extended operation request. */
+    static final String EXTENSION_OID = CancelRequest.EXTENSION_OID;
 }
