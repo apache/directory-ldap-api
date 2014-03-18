@@ -31,9 +31,9 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Container;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
-import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.Cancel;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelContainer;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelDecoder;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelRequestDecorator;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -83,7 +83,7 @@ public class CancelRequestTest
             fail( de.getMessage() );
         }
 
-        Cancel cancel = ( ( CancelContainer ) cancelContainer ).getCancel();
+        CancelRequestDecorator cancel = ( ( CancelContainer ) cancelContainer ).getCancel();
 
         assertEquals( 1, cancel.getCancelId() );
 
