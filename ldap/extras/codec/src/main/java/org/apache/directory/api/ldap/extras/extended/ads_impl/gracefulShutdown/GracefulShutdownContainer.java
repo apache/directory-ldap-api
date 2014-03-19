@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown;
 
 
 import org.apache.directory.api.asn1.ber.AbstractContainer;
-import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
 
 
 /**

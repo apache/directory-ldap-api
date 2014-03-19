@@ -26,7 +26,6 @@ import static org.junit.Assert.fail;
 
 import java.nio.ByteBuffer;
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;

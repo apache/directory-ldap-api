@@ -31,7 +31,6 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulActionConstants;
-import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerationRequest;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
