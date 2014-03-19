@@ -36,7 +36,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PwdModifyRequestImpl extends AbstractExtendedRequest implements PwdModifyRequest
+public class PasswordModifyRequestImpl extends AbstractExtendedRequest implements PasswordModifyRequest
 {
     /** The user identity */
     private byte[] userIdentity;
@@ -51,7 +51,7 @@ public class PwdModifyRequestImpl extends AbstractExtendedRequest implements Pwd
     /**
      * Create a new instance of the PwdModifyRequest extended operation
      */
-    public PwdModifyRequestImpl()
+    public PasswordModifyRequestImpl()
     {
         setRequestName( EXTENSION_OID );
     }
@@ -62,7 +62,7 @@ public class PwdModifyRequestImpl extends AbstractExtendedRequest implements Pwd
      * 
      * @param messageId The message ID
      */
-    public PwdModifyRequestImpl( int messageId )
+    public PasswordModifyRequestImpl( int messageId )
     {
         super( messageId );
         setRequestName( EXTENSION_OID );
@@ -127,14 +127,14 @@ public class PwdModifyRequestImpl extends AbstractExtendedRequest implements Pwd
      * {@inheritDoc}
      */
     @Override
-    public PwdModifyResponse getResultResponse()
+    public PasswordModifyResponse getResultResponse()
     {
         if ( response == null )
         {
-            response = new PwdModifyResponseImpl( getMessageId() );
+            response = new PasswordModifyResponseImpl( getMessageId() );
         }
 
-        return ( PwdModifyResponse ) response;
+        return ( PasswordModifyResponse ) response;
     }
 
 

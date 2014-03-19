@@ -35,7 +35,7 @@ import org.apache.directory.api.util.Strings;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PwdModifyResponseImpl extends ExtendedResponseImpl implements PwdModifyResponse
+public class PasswordModifyResponseImpl extends ExtendedResponseImpl implements PasswordModifyResponse
 {
     /** The generated password */
     private byte[] genPassword;
@@ -47,7 +47,7 @@ public class PwdModifyResponseImpl extends ExtendedResponseImpl implements PwdMo
      * @param rcode The result code
      * @param diagnosticMessage The diagnostic message
      */
-    public PwdModifyResponseImpl( int messageId, ResultCodeEnum rcode, String diagnosticMessage )
+    public PasswordModifyResponseImpl( int messageId, ResultCodeEnum rcode, String diagnosticMessage )
     {
         super( messageId, EXTENSION_OID );
 
@@ -62,7 +62,7 @@ public class PwdModifyResponseImpl extends ExtendedResponseImpl implements PwdMo
      * @param messageId The Message ID
      * @param rcode The result code
      */
-    public PwdModifyResponseImpl( int messageId, ResultCodeEnum rcode )
+    public PasswordModifyResponseImpl( int messageId, ResultCodeEnum rcode )
     {
         super( messageId, EXTENSION_OID );
 
@@ -76,7 +76,7 @@ public class PwdModifyResponseImpl extends ExtendedResponseImpl implements PwdMo
      *
      * @param messageId the message id
      */
-    public PwdModifyResponseImpl( int messageId )
+    public PasswordModifyResponseImpl( int messageId )
     {
         super( messageId, EXTENSION_OID );
         super.getLdapResult().setMatchedDn( null );
@@ -87,7 +87,7 @@ public class PwdModifyResponseImpl extends ExtendedResponseImpl implements PwdMo
     /**
      * Instantiates a new password Modify response.
      */
-    public PwdModifyResponseImpl()
+    public PasswordModifyResponseImpl()
     {
         super( EXTENSION_OID );
         super.getLdapResult().setMatchedDn( null );

@@ -20,14 +20,18 @@
 package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 
 
+import java.nio.ByteBuffer;
+
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
+import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedRequestDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyRequest;
-import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyRequestImpl;
-import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyResponse;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequest;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,13 +41,16 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<PwdModifyRequest> implements
-    PwdModifyRequest
+public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<PasswordModifyRequest> 
+    implements PasswordModifyRequest
 {
     private static final Logger LOG = LoggerFactory.getLogger( PasswordModifyRequestDecorator.class );
 
     /** The internal PasswordModifyRequest */
     private PasswordModifyRequest passwordModifyRequest;
+
+    /** stores the length of the request*/
+    private int requestLength = 0;
 
 
     /**
@@ -51,19 +58,10 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pwd
      * @param codec The codec service
      * @param decoratedMessage The decorated PwdModifyRequest
      */
-    public PasswordModifyRequestDecorator( LdapApiService codec, PwdModifyRequest decoratedMessage )
+    public PasswordModifyRequestDecorator( LdapApiService codec, PasswordModifyRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
-        passwordModifyRequest = new PasswordModifyRequest( decoratedMessage );
-    }
-
-
-    /**
-     * @return The ASN1 object containing the PwdModifyRequest instance
-     */
-    public PasswordModifyRequest getPasswordModifyRequest()
-    {
-        return passwordModifyRequest;
+        passwordModifyRequest = decoratedMessage;
     }
 
 
@@ -77,14 +75,8 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pwd
 
         try
         {
-            passwordModifyRequest = ( PasswordModifyRequest ) decoder.decode( requestValue );
-            ( ( PwdModifyRequestImpl ) getDecorated() ).setUserIdentity( passwordModifyRequest.getPwdModifyRequest()
-                .getUserIdentity() );
-            ( ( PwdModifyRequestImpl ) getDecorated() ).setOldPassword( passwordModifyRequest.getPwdModifyRequest()
-                .getOldPassword() );
-            ( ( PwdModifyRequestImpl ) getDecorated() ).setNewPassword( passwordModifyRequest.getPwdModifyRequest()
-                .getNewPassword() );
-
+            passwordModifyRequest = decoder.decode( requestValue );
+            
             if ( requestValue != null )
             {
                 this.requestValue = new byte[requestValue.length];
@@ -113,7 +105,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pwd
         {
             try
             {
-                requestValue = passwordModifyRequest.encode().array();
+                requestValue = encode().array();
             }
             catch ( EncoderException e )
             {
@@ -122,14 +114,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pwd
             }
         }
 
-        if ( requestValue == null )
-        {
-            return null;
-        }
-
-        final byte[] copy = new byte[requestValue.length];
-        System.arraycopy( requestValue, 0, copy, 0, requestValue.length );
-        return copy;
+        return requestValue;
     }
 
 
@@ -137,9 +122,9 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pwd
      * {@inheritDoc}
      */
     @Override
-    public PwdModifyResponse getResultResponse()
+    public PasswordModifyResponse getResultResponse()
     {
-        return ( PwdModifyResponse ) getDecorated().getResultResponse();
+        return ( PasswordModifyResponse ) passwordModifyRequest.getResultResponse();
     }
 
 
@@ -148,7 +133,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pwd
      */
     public byte[] getUserIdentity()
     {
-        return getDecorated().getUserIdentity();
+        return passwordModifyRequest.getUserIdentity();
     }
 
 
@@ -157,7 +142,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pwd
      */
     public void setUserIdentity( byte[] userIdentity )
     {
-        getDecorated().setUserIdentity( userIdentity );
+        passwordModifyRequest.setUserIdentity( userIdentity );
     }
 
 
@@ -166,7 +151,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pwd
      */
     public byte[] getOldPassword()
     {
-        return getDecorated().getOldPassword();
+        return passwordModifyRequest.getOldPassword();
     }
 
 
@@ -175,7 +160,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pwd
      */
     public void setOldPassword( byte[] oldPassword )
     {
-        getDecorated().setOldPassword( oldPassword );
+        passwordModifyRequest.setOldPassword( oldPassword );
     }
 
 
@@ -184,7 +169,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pwd
      */
     public byte[] getNewPassword()
     {
-        return ( ( PwdModifyRequestImpl ) getDecorated() ).getNewPassword();
+        return passwordModifyRequest.getNewPassword();
     }
 
 
@@ -193,6 +178,87 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pwd
      */
     public void setNewPassword( byte[] newPassword )
     {
-        ( ( PwdModifyRequestImpl ) getDecorated() ).setNewPassword( newPassword );
+        passwordModifyRequest.setNewPassword( newPassword );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public int computeLength()
+    {
+        requestLength = 0;
+
+        if ( passwordModifyRequest.getUserIdentity() != null )
+        {
+            int len = passwordModifyRequest.getUserIdentity().length;
+            requestLength = 1 + BerValue.getNbBytes( len ) + len;
+        }
+
+        if ( passwordModifyRequest.getOldPassword() != null )
+        {
+            int len = passwordModifyRequest.getOldPassword().length;
+            requestLength += 1 + BerValue.getNbBytes( len ) + len;
+        }
+
+        if ( passwordModifyRequest.getNewPassword() != null )
+        {
+            int len = passwordModifyRequest.getNewPassword().length;
+            requestLength += 1 + BerValue.getNbBytes( len ) + len;
+        }
+
+        return 1 + BerValue.getNbBytes( requestLength ) + requestLength;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public ByteBuffer encode() throws EncoderException
+    {
+        ByteBuffer bb = ByteBuffer.allocate( computeLength() );
+
+        return encode( bb );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public ByteBuffer encode( ByteBuffer bb ) throws EncoderException
+    {
+        if ( bb == null )
+        {
+            throw new EncoderException( "Null ByteBuffer, cannot encode " + this );
+        }
+
+        bb.put( UniversalTag.SEQUENCE.getValue() );
+        bb.put( BerValue.getBytes( requestLength ) );
+
+        if ( passwordModifyRequest.getUserIdentity() != null )
+        {
+            byte[] userIdentity = passwordModifyRequest.getUserIdentity();
+            bb.put( ( byte ) PasswordModifyRequestConstants.USER_IDENTITY_TAG );
+            bb.put( TLV.getBytes( userIdentity.length ) );
+            bb.put( userIdentity );
+        }
+
+        if ( passwordModifyRequest.getOldPassword() != null )
+        {
+            byte[] oldPassword = passwordModifyRequest.getOldPassword();
+            bb.put( ( byte ) PasswordModifyRequestConstants.OLD_PASSWORD_TAG );
+            bb.put( TLV.getBytes( oldPassword.length ) );
+            bb.put( oldPassword );
+        }
+
+        if ( passwordModifyRequest.getNewPassword() != null )
+        {
+            byte[] newPassword = passwordModifyRequest.getNewPassword();
+            bb.put( ( byte ) PasswordModifyRequestConstants.NEW_PASSWORD_TAG );
+            bb.put( TLV.getBytes( newPassword.length ) );
+            bb.put( newPassword );
+        }
+
+        return bb;
     }
 }

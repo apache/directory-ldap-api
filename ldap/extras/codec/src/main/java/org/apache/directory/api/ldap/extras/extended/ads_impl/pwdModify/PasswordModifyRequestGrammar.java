@@ -28,7 +28,7 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
-import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyRequestImpl;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequestImpl;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +89,7 @@ public class PasswordModifyRequestGrammar extends AbstractGrammar<PasswordModify
                     public void action( PasswordModifyRequestContainer container )
                     {
                         PasswordModifyRequestDecorator passwordModifyRequestDecorator = new PasswordModifyRequestDecorator(
-                            LdapApiServiceFactory.getSingleton(), new PwdModifyRequestImpl() );
+                            LdapApiServiceFactory.getSingleton(), new PasswordModifyRequestImpl() );
                         container.setPasswordModifyRequest( passwordModifyRequestDecorator );
 
                         // We may have nothing left

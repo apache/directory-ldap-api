@@ -30,10 +30,10 @@ import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
-import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyRequest;
-import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyRequestImpl;
-import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyResponse;
-import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyResponseImpl;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequest;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequestImpl;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyResponse;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyResponseImpl;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
@@ -62,17 +62,17 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
      */
     public String getOid()
     {
-        return PwdModifyRequest.EXTENSION_OID;
+        return PasswordModifyRequest.EXTENSION_OID;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public PwdModifyResponse newResponse( byte[] encodedValue ) throws DecoderException
+    public PasswordModifyResponse newResponse( byte[] encodedValue ) throws DecoderException
     {
         PasswordModifyResponseDecorator response = new PasswordModifyResponseDecorator( codec,
-            new PwdModifyResponseImpl() );
+            new PasswordModifyResponseImpl() );
         response.setResponseValue( encodedValue );
         return response;
     }
@@ -81,9 +81,9 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
     /**
      * {@inheritDoc}
      */
-    public PwdModifyRequest newRequest( byte[] value )
+    public PasswordModifyRequest newRequest( byte[] value )
     {
-        PasswordModifyRequestDecorator req = new PasswordModifyRequestDecorator( codec, new PwdModifyRequestImpl() );
+        PasswordModifyRequestDecorator req = new PasswordModifyRequestDecorator( codec, new PasswordModifyRequestImpl() );
 
         if ( value != null )
         {
@@ -104,7 +104,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
             return ( PasswordModifyRequestDecorator ) modelRequest;
         }
 
-        return new PasswordModifyRequestDecorator( codec, ( PwdModifyRequest ) modelRequest );
+        return new PasswordModifyRequestDecorator( codec, ( PasswordModifyRequest ) modelRequest );
     }
 
 
@@ -118,9 +118,9 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
             return ( PasswordModifyResponseDecorator ) decoratedResponse;
         }
 
-        if ( decoratedResponse instanceof PwdModifyResponse )
+        if ( decoratedResponse instanceof PasswordModifyResponse )
         {
-            return new PasswordModifyResponseDecorator( codec, ( PwdModifyResponse ) decoratedResponse );
+            return new PasswordModifyResponseDecorator( codec, ( PasswordModifyResponse ) decoratedResponse );
         }
 
         // It's an opaque extended operation
@@ -133,7 +133,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
         ByteBuffer buffer = ByteBuffer.wrap( value );
 
         PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
-        PwdModifyResponse pwdModifyResponse = null;
+        PasswordModifyResponse pwdModifyResponse = null;
 
         try
         {
@@ -154,7 +154,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
             String stackTrace = sw.toString();
 
             // Error while decoding the value. 
-            pwdModifyResponse = new PwdModifyResponseImpl(
+            pwdModifyResponse = new PasswordModifyResponseImpl(
                 decoratedResponse.getMessageId(),
                 ResultCodeEnum.OPERATIONS_ERROR,
                 stackTrace );

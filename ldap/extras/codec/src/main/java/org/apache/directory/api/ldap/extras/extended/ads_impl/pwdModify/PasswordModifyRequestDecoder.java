@@ -22,10 +22,9 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 
 import java.nio.ByteBuffer;
 
-import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
-import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyRequest;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequest;
 
 
 /**
@@ -48,16 +47,16 @@ public class PasswordModifyRequestDecoder extends Asn1Decoder
      * @return a PwdModifyRequest object
      * @throws org.apache.directory.api.asn1.DecoderException If the decoding failed
      */
-    public Asn1Object decode( byte[] stream ) throws DecoderException
+    public PasswordModifyRequest decode( byte[] stream ) throws DecoderException
     {
         ByteBuffer bb = ByteBuffer.wrap( stream );
         PasswordModifyRequestContainer container = new PasswordModifyRequestContainer();
         decoder.decode( bb, container );
-        PwdModifyRequest pwdModifyRequest = container.getPwdModifyRequest();
+        PasswordModifyRequestDecorator passwordModifyRequest = container.getPwdModifyRequest();
 
         // Clean the container for the next decoding
         container.clean();
 
-        return ( ( PasswordModifyRequestDecorator ) pwdModifyRequest ).getPasswordModifyRequest();
+        return passwordModifyRequest;
     }
 }

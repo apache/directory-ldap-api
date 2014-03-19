@@ -33,10 +33,10 @@ import org.apache.directory.api.ldap.model.message.ExtendedResponse;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface PwdModifyResponse extends ExtendedResponse
+public interface PasswordModifyResponse extends ExtendedResponse
 {
     /** The OID for the PwdModify extended operation response. */
-    String EXTENSION_OID = PwdModifyRequest.EXTENSION_OID;
+    String EXTENSION_OID = PasswordModifyRequest.EXTENSION_OID;
 
 
     /**

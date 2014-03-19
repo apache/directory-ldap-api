@@ -32,7 +32,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyResponseContainer;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyResponseDecorator;
-import org.apache.directory.api.ldap.extras.extended.pwdModify.PwdModifyResponse;
+import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyResponse;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -77,18 +77,16 @@ public class PasswordModifyResponseTest
             fail( de.getMessage() );
         }
 
-        PwdModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
+        PasswordModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
         assertNull( pwdModifyResponse.getGenPassword() );
 
         // Check the length
-        assertEquals( 0x02, ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).getPasswordModifyResponse()
-            .computeLength() );
+        assertEquals( 0x02, ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).getPasswordModifyResponse()
-                .encode();
+            ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -131,19 +129,17 @@ public class PasswordModifyResponseTest
             fail( de.getMessage() );
         }
 
-        PwdModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
+        PasswordModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
         assertNotNull( pwdModifyResponse.getGenPassword() );
         assertEquals( 0, pwdModifyResponse.getGenPassword().length );
 
         // Check the length
-        assertEquals( 0x04, ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).getPasswordModifyResponse()
-            .computeLength() );
+        assertEquals( 0x04, ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).getPasswordModifyResponse()
-                .encode();
+            ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -190,19 +186,17 @@ public class PasswordModifyResponseTest
             fail( de.getMessage() );
         }
 
-        PwdModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
+        PasswordModifyResponse pwdModifyResponse = container.getPwdModifyResponse();
         assertNotNull( pwdModifyResponse.getGenPassword() );
         assertEquals( "abcd", Strings.utf8ToString( pwdModifyResponse.getGenPassword() ) );
 
         // Check the length
-        assertEquals( 0x08, ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).getPasswordModifyResponse()
-            .computeLength() );
+        assertEquals( 0x08, ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).computeLength() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).getPasswordModifyResponse()
-                .encode();
+            ByteBuffer bb1 = ( ( PasswordModifyResponseDecorator ) pwdModifyResponse ).encode();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
