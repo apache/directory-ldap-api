@@ -99,7 +99,7 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
         {
             try
             {
-                responseValue = encode().array();
+                responseValue = encodeInternal().array();
 
                 if ( responseValue == null )
                 {
@@ -148,7 +148,7 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
     /**
      * {@inheritDoc}
      */
-    public int computeLength()
+    /* no qualifier */ int computeLengthInternal()
     {
         requestLength = 0;
 
@@ -165,25 +165,11 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
     /**
      * {@inheritDoc}
      */
-    public ByteBuffer encode() throws EncoderException
+    /* no qualifier */ ByteBuffer encodeInternal() throws EncoderException
     {
         // Allocate the bytes buffer.
-        ByteBuffer bb = ByteBuffer.allocate( computeLength() );
-
-        return encode( bb );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public ByteBuffer encode( ByteBuffer bb ) throws EncoderException
-    {
-        if ( bb == null )
-        {
-            throw new EncoderException( "Null ByteBuffer, cannot encode " + this );
-        }
-
+        ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
+        
         bb.put( UniversalTag.SEQUENCE.getValue() );
         bb.put( BerValue.getBytes( requestLength ) );
 

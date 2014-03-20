@@ -105,7 +105,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
         {
             try
             {
-                requestValue = encode().array();
+                requestValue = encodeInternal().array();
             }
             catch ( EncoderException e )
             {
@@ -185,7 +185,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
     /**
      * {@inheritDoc}
      */
-    public int computeLength()
+    /* No qualifier */ int computeLengthInternal()
     {
         requestLength = 0;
 
@@ -214,23 +214,9 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
     /**
      * {@inheritDoc}
      */
-    public ByteBuffer encode() throws EncoderException
+    /* No qualifier */ ByteBuffer encodeInternal() throws EncoderException
     {
-        ByteBuffer bb = ByteBuffer.allocate( computeLength() );
-
-        return encode( bb );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public ByteBuffer encode( ByteBuffer bb ) throws EncoderException
-    {
-        if ( bb == null )
-        {
-            throw new EncoderException( "Null ByteBuffer, cannot encode " + this );
-        }
+        ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
 
         bb.put( UniversalTag.SEQUENCE.getValue() );
         bb.put( BerValue.getBytes( requestLength ) );

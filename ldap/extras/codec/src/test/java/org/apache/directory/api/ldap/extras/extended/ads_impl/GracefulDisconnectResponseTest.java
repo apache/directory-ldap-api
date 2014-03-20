@@ -48,7 +48,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class GracefulDisconnectTest
+public class GracefulDisconnectResponseTest
 {
     /**
      * Test the decoding of a GracefulDisconnect
