@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.ldap.extras.extended.ads_impl;
+package org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration;
 
 
 import static org.junit.Assert.assertEquals;
@@ -111,11 +111,11 @@ public class CertGenerationRequestTest
         assertEquals( dn, req.getSubjectDN() );
         assertEquals( keyAlgo, req.getKeyAlgorithm() );
 
-        assertEquals( bufLen, req.computeLength() );
+        assertEquals( bufLen, req.computeLengthInternal() );
 
         try
         {
-            ByteBuffer encodedBuf = req.encode();
+            ByteBuffer encodedBuf = req.encodeInternal();
             String encodedPdu = Strings.dumpBytes( encodedBuf.array() );
 
             assertEquals( decodedPdu, encodedPdu );

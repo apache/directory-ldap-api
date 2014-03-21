@@ -28,7 +28,7 @@ package org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify;
 public final class PasswordModifyResponseConstants
 {
     /** This is the TAG used for the genPassword. It's a contextual primitive Tag */
-    public static final int GEN_PASSORWD_TAG = 0x80;
+    public static final int GEN_PASSWORD_TAG = 0x80;
 
 
     /**

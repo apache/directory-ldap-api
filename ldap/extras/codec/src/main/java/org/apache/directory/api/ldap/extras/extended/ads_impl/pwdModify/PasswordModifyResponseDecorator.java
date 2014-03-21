@@ -146,7 +146,12 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
 
 
     /**
-     * {@inheritDoc}
+     * Compute the PasswordModifyResponse extended operation length
+     * <pre>
+     * 0x30 L1 
+     *   | 
+     *  [+-- 0x80 L2 genPassword] 
+     * </pre>
      */
     /* no qualifier */ int computeLengthInternal()
     {
@@ -163,7 +168,10 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
 
 
     /**
-     * {@inheritDoc}
+     * Encodes the PasswordModifyResponse extended operation.
+     * 
+     * @return A ByteBuffer that contains the encoded PDU
+     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
     /* no qualifier */ ByteBuffer encodeInternal() throws EncoderException
     {
@@ -176,7 +184,7 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
         if ( passwordModifyResponse.getGenPassword() != null )
         {
             byte[] userIdentity = passwordModifyResponse.getGenPassword();
-            bb.put( ( byte ) PasswordModifyRequestConstants.USER_IDENTITY_TAG );
+            bb.put( ( byte ) PasswordModifyResponseConstants.GEN_PASSWORD_TAG );
             bb.put( TLV.getBytes( userIdentity.length ) );
             bb.put( userIdentity );
         }

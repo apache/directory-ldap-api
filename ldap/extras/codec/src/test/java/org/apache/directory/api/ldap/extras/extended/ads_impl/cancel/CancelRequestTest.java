@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.api.ldap.extras.extended.ads_impl;
+package org.apache.directory.api.ldap.extras.extended.ads_impl.cancel;
 
 
 import static org.junit.Assert.assertEquals;
@@ -90,7 +90,7 @@ public class CancelRequestTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = cancel.encode();
+            ByteBuffer bb = cancel.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb.array() );
 

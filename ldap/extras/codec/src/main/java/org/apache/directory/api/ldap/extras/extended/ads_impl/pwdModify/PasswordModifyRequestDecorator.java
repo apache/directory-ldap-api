@@ -183,7 +183,14 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
 
 
     /**
-     * {@inheritDoc}
+     * Compute the PasswordModifyRequest extended operation length
+     * <pre>
+     * 0x30 L1 
+     *   | 
+     *  [+-- 0x80 L2 userIdentity] 
+     *  [+-- 0x81 L3 oldPassword] 
+     *  [+-- 0x82 L4 newPassword] 
+     * </pre>
      */
     /* No qualifier */ int computeLengthInternal()
     {
@@ -212,7 +219,10 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
 
 
     /**
-     * {@inheritDoc}
+     * Encodes the PasswordModifyRequest extended operation.
+     * 
+     * @return A ByteBuffer that contains the encoded PDU
+     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
     /* No qualifier */ ByteBuffer encodeInternal() throws EncoderException
     {

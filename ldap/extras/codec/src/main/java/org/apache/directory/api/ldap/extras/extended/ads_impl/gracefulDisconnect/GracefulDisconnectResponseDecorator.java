@@ -88,7 +88,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
         {
             try
             {
-                responseValue = encode().array();
+                responseValue = encodeInternal().array();
             }
             catch ( EncoderException e )
             {
@@ -186,7 +186,7 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
 
     /**
      * Compute the GracefulDisconnect length 
-     * 
+     * <pre>
      * 0x30 L1 
      *   | 
      *   +--> [ 0x02 0x0(1-4) [0..720] ] 
@@ -194,8 +194,9 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
      *   +--> [ 0x30 L2 
      *           | 
      *           +--> (0x04 L3 value) + ]
+     * </pre>
      */
-    public int computeLength()
+    /* no qualifier */ int computeLengthInternal()
     {
         gracefulDisconnectSequenceLength = 0;
 
@@ -234,29 +235,16 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
 
 
     /**
-     * {@inheritDoc}
-     */
-    public ByteBuffer encode() throws EncoderException
-    {
-        // Allocate the bytes buffer.
-        ByteBuffer bb = ByteBuffer.allocate( computeLength() );
-
-        return encode( bb );
-    }
-
-
-    /**
      * Encodes the gracefulDisconnect extended operation.
      * 
      * @return A ByteBuffer that contains the encoded PDU
      * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
-    public ByteBuffer encode( ByteBuffer bb ) throws EncoderException
+    /* no qualifier */ ByteBuffer encodeInternal() throws EncoderException
     {
-        if ( bb == null )
-        {
-            throw new EncoderException( "Null ByteBuffer, cannot encode " + this );
-        }
+        // Allocate the bytes buffer.
+        ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
+
 
         bb.put( UniversalTag.SEQUENCE.getValue() );
         bb.put( TLV.getBytes( gracefulDisconnectSequenceLength ) );

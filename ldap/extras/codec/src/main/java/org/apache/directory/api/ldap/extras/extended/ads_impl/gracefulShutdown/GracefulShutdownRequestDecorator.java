@@ -102,7 +102,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
         {
             try
             {
-                requestValue = encode().array();
+                requestValue = encodeInternal().array();
             }
             catch ( EncoderException e )
             {
@@ -153,14 +153,16 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
 
     /**
      * Compute the GracefulShutdown length 
+     * 
+     * <pre>
      * 0x30 L1 
      *   | 
      *   +--> [0x02 0x0(1-4) [0..720] ] 
      *   +--> [0x80 0x0(1-3) [0..86400] ] 
-     *   
+     * </pre>  
      * L1 will always be &lt 11.
      */
-    public int computeLength()
+    /* no qualifier */ int computeLengthInternal()
     {
         int gracefulLength = 1 + 1;
         gracefulSequenceLength = 0;
@@ -180,29 +182,15 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
 
 
     /**
-     * {@inheritDoc}
-     */
-    public ByteBuffer encode() throws EncoderException
-    {
-        // Allocate the bytes buffer.
-        ByteBuffer bb = ByteBuffer.allocate( computeLength() );
-
-        return encode( bb );
-    }
-
-
-    /**
      * Encodes the gracefulShutdown extended operation.
      * 
      * @return A ByteBuffer that contains the encoded PDU
      * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
-    public ByteBuffer encode( ByteBuffer bb ) throws EncoderException
+    /* no qualifier */ ByteBuffer encodeInternal() throws EncoderException
     {
-        if ( bb == null )
-        {
-            throw new EncoderException( "Null ByteBuffer, cannot encode " + this );
-        }
+        // Allocate the bytes buffer.
+        ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
 
         bb.put( UniversalTag.SEQUENCE.getValue() );
         bb.put( TLV.getBytes( gracefulSequenceLength ) );

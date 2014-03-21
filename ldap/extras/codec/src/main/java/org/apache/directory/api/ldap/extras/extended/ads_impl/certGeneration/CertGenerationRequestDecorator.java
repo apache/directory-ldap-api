@@ -104,7 +104,7 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
         {
             try
             {
-                requestValue = encode().array();
+                requestValue = encodeInternal().array();
             }
             catch ( EncoderException e )
             {
@@ -207,9 +207,18 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
 
 
     /**
-     * {@inheritDoc}
+     * Compute the CertGenerationRequest length 
+     * 
+     * <pre>
+     * 0x30 L1 
+     *   | 
+     *   +--> 0x04 LL target DN
+     *   +--> 0x04 LL issuer DN
+     *   +--> 0x04 LL subject DN
+     *   +--> 0x04 LL key algorithm
+     * </pre>
      */
-    public int computeLength()
+    /* no qualifier */ int computeLengthInternal()
     {
         int len = Strings.getBytesUtf8( certGenerationRequest.getTargetDN() ).length;
         requestLength = 1 + BerValue.getNbBytes( len ) + len;
@@ -228,23 +237,15 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
 
 
     /**
-     * {@inheritDoc}
+     * Encodes the CertGenerationRequest extended operation.
+     * 
+     * @return A ByteBuffer that contains the encoded PDU
+     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
-    public ByteBuffer encode() throws EncoderException
+    /* no qualifier */ ByteBuffer encodeInternal() throws EncoderException
     {
         // Allocate the bytes buffer.
-        ByteBuffer bb = ByteBuffer.allocate( computeLength() );
-
-        return encode( bb );
-    }
-
-
-    public ByteBuffer encode( ByteBuffer bb ) throws EncoderException
-    {
-        if ( bb == null )
-        {
-            throw new EncoderException( "Null ByteBuffer, cannot encode " + this );
-        }
+        ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
 
         bb.put( UniversalTag.SEQUENCE.getValue() );
         bb.put( BerValue.getBytes( requestLength ) );

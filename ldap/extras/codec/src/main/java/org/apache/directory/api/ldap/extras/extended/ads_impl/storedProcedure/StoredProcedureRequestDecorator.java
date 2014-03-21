@@ -98,7 +98,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
 
     /**
      * Compute the StoredProcedure length 
-     * 
+     * <pre>
      * 0x30 L1 
      *   | 
      *   +--> 0x04 L2 language
@@ -121,8 +121,9 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
      *                 |
      *                 +--> 0x04 L6-m type
      *                 +--> 0x04 L7-m value
+     * </pre>
      */
-    public int computeLength()
+    /* no qualifier */ int computeLengthInternal()
     {
         // The language
         byte[] languageBytes = Strings.getBytesUtf8( getDecorated().getLanguage() );
@@ -170,14 +171,15 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
 
 
     /**
-     * Encode the StoredProcedure message to a PDU. 
+     * Encodes the StoredProcedure extended operation.
      * 
-     * @return The PDU.
+     * @return A ByteBuffer that contains the encoded PDU
+     * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
-    public ByteBuffer encode() throws EncoderException
+    /* no qualifier */ ByteBuffer encodeInternal() throws EncoderException
     {
         // Allocate the bytes buffer.
-        ByteBuffer bb = ByteBuffer.allocate( computeLength() );
+        ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
 
         try
         {
@@ -301,7 +303,7 @@ public class StoredProcedureRequestDecorator extends ExtendedRequestDecorator<St
         {
             try
             {
-                requestValue = encode().array();
+                requestValue = encodeInternal().array();
             }
             catch ( EncoderException e )
             {

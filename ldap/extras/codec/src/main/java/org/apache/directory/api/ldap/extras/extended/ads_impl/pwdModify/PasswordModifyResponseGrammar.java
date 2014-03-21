@@ -104,11 +104,11 @@ public class PasswordModifyResponseGrammar extends AbstractGrammar<PasswordModif
          *     
          * Set the userIdentity into the PasswdModifyResponset instance.
          */
-        super.transitions[PasswordModifyResponseStatesEnum.PASSWORD_MODIFY_RESPONSE_SEQUENCE_STATE.ordinal()][PasswordModifyResponseConstants.GEN_PASSORWD_TAG] =
+        super.transitions[PasswordModifyResponseStatesEnum.PASSWORD_MODIFY_RESPONSE_SEQUENCE_STATE.ordinal()][PasswordModifyResponseConstants.GEN_PASSWORD_TAG] =
             new GrammarTransition<PasswordModifyResponseContainer>(
                 PasswordModifyResponseStatesEnum.PASSWORD_MODIFY_RESPONSE_SEQUENCE_STATE,
                 PasswordModifyResponseStatesEnum.GEN_PASSWORD_STATE,
-                PasswordModifyResponseConstants.GEN_PASSORWD_TAG,
+                PasswordModifyResponseConstants.GEN_PASSWORD_TAG,
                 new GrammarAction<PasswordModifyResponseContainer>( "Set PasswordModifyResponse user identity" )
                 {
                     public void action( PasswordModifyResponseContainer container ) throws DecoderException

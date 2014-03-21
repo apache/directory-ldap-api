@@ -17,7 +17,7 @@
  *  under the License.
  *
  */
-package org.apache.directory.api.ldap.extras.extended.ads_impl;
+package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect;
 
 
 import static org.junit.Assert.assertEquals;
@@ -199,12 +199,12 @@ public class GracefulDisconnectResponseTest
         assertEquals( "ldap://ldap.netscape.com/o=Babsco,c=US???(int=%5c00%5c00%5c00%5c04)", ldapUrls.next() );
 
         // Check the length
-        assertEquals( 0x70, gracefulDisconnect.computeLength() );
+        assertEquals( 0x70, gracefulDisconnect.computeLengthInternal() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb = gracefulDisconnect.encode();
+            ByteBuffer bb = gracefulDisconnect.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb.array() );
 
@@ -254,12 +254,12 @@ public class GracefulDisconnectResponseTest
         assertEquals( 0, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
 
         // Check the length
-        assertEquals( 0x05, gracefulDisconnect.computeLength() );
+        assertEquals( 0x05, gracefulDisconnect.computeLengthInternal() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulDisconnect.encode();
+            ByteBuffer bb1 = gracefulDisconnect.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -310,12 +310,12 @@ public class GracefulDisconnectResponseTest
         assertEquals( 0, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
 
         // Check the length
-        assertEquals( 0x05, gracefulDisconnect.computeLength() );
+        assertEquals( 0x05, gracefulDisconnect.computeLengthInternal() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulDisconnect.encode();
+            ByteBuffer bb1 = gracefulDisconnect.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -369,12 +369,12 @@ public class GracefulDisconnectResponseTest
         assertEquals( 0, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
 
         // Check the length
-        assertEquals( 0x08, gracefulDisconnect.computeLength() );
+        assertEquals( 0x08, gracefulDisconnect.computeLengthInternal() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb2 = gracefulDisconnect.encode();
+            ByteBuffer bb2 = gracefulDisconnect.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb2.array() );
 
@@ -530,12 +530,12 @@ public class GracefulDisconnectResponseTest
         assertEquals( "ldap://ldap.netscape.com/o=Babsco,c=US???(int=%5c00%5c00%5c00%5c04)", ldapUrls.next() );
 
         // Check the length
-        assertEquals( 0x6A, gracefulDisconnect.computeLength() );
+        assertEquals( 0x6A, gracefulDisconnect.computeLengthInternal() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb = gracefulDisconnect.encode();
+            ByteBuffer bb = gracefulDisconnect.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb.array() );
 
@@ -582,12 +582,12 @@ public class GracefulDisconnectResponseTest
         assertEquals( 0, gracefulDisconnect.getReplicatedContexts().getLdapUrls().size() );
 
         // Check the length
-        assertEquals( 0x02, gracefulDisconnect.computeLength() );
+        assertEquals( 0x02, gracefulDisconnect.computeLengthInternal() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulDisconnect.encode();
+            ByteBuffer bb1 = gracefulDisconnect.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 

@@ -18,7 +18,7 @@
  *  
  */
 
-package org.apache.directory.api.ldap.extras.extended.ads_impl;
+package org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure;
 
 
 import static org.junit.Assert.assertEquals;
@@ -113,7 +113,7 @@ public class StoredProcedureTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = storedProcedure.encode();
+            ByteBuffer bb = storedProcedure.encodeInternal();
             String encodedPdu = Strings.dumpBytes( bb.array() );
             assertEquals( encodedPdu, decodedPdu );
         }
@@ -168,7 +168,7 @@ public class StoredProcedureTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = storedProcedure.encode();
+            ByteBuffer bb = storedProcedure.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb.array() );
 
@@ -231,7 +231,7 @@ public class StoredProcedureTest
         // Check the encoding
         try
         {
-            ByteBuffer bb = storedProcedure.encode();
+            ByteBuffer bb = storedProcedure.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb.array() );
 

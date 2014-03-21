@@ -93,7 +93,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
         {
             try
             {
-                requestValue = encode().array();
+                requestValue = encodeInternal().array();
             }
             catch ( EncoderException e )
             {
@@ -147,7 +147,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
      *   | 
      *   +--> 0x02 0x0(1-4) [0..2^31-1] 
      */
-    public int computeLength()
+    /* no qualifier */ int computeLengthInternal()
     {
         // The messageId length
         cancelSequenceLength = 1 + 1 + BerValue.getNbBytes( cancelRequest.getCancelId() );
@@ -163,10 +163,10 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
      * @return A ByteBuffer that contains the encoded PDU
      * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
-    public ByteBuffer encode() throws EncoderException
+    /* no qualifier */ ByteBuffer encodeInternal() throws EncoderException
     {
         // Allocate the bytes buffer.
-        ByteBuffer bb = ByteBuffer.allocate( computeLength() );
+        ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
 
         // The sequence
         bb.put( UniversalTag.SEQUENCE.getValue() );

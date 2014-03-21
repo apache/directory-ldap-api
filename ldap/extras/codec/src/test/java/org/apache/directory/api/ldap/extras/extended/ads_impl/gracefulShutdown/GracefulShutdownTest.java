@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.ldap.extras.extended.ads_impl;
+package org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown;
 
 
 import static org.junit.Assert.assertEquals;
@@ -88,12 +88,12 @@ public class GracefulShutdownTest
         assertEquals( 1, gracefulShutdownRequest.getDelay() );
 
         // Check the length
-        assertEquals( 0x08, gracefulShutdownRequest.computeLength() );
+        assertEquals( 0x08, gracefulShutdownRequest.computeLengthInternal() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulShutdownRequest.encode();
+            ByteBuffer bb1 = gracefulShutdownRequest.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -142,12 +142,12 @@ public class GracefulShutdownTest
         assertEquals( 0, gracefulShutdownRequest.getDelay() );
 
         // Check the length
-        assertEquals( 0x05, gracefulShutdownRequest.computeLength() );
+        assertEquals( 0x05, gracefulShutdownRequest.computeLengthInternal() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulShutdownRequest.encode();
+            ByteBuffer bb1 = gracefulShutdownRequest.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -197,12 +197,12 @@ public class GracefulShutdownTest
         assertEquals( 1, gracefulShutdownRequest.getDelay() );
 
         // Check the length
-        assertEquals( 0x05, gracefulShutdownRequest.computeLength() );
+        assertEquals( 0x05, gracefulShutdownRequest.computeLengthInternal() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulShutdownRequest.encode();
+            ByteBuffer bb1 = gracefulShutdownRequest.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -248,12 +248,12 @@ public class GracefulShutdownTest
         assertEquals( 0, gracefulShutdownRequest.getDelay() );
 
         // Check the length
-        assertEquals( 0x02, gracefulShutdownRequest.computeLength() );
+        assertEquals( 0x02, gracefulShutdownRequest.computeLengthInternal() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulShutdownRequest.encode();
+            ByteBuffer bb1 = gracefulShutdownRequest.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -305,12 +305,12 @@ public class GracefulShutdownTest
         assertEquals( 500, gracefulShutdownRequest.getDelay() );
 
         // Check the length
-        assertEquals( 0x06, gracefulShutdownRequest.computeLength() );
+        assertEquals( 0x06, gracefulShutdownRequest.computeLengthInternal() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulShutdownRequest.encode();
+            ByteBuffer bb1 = gracefulShutdownRequest.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -362,12 +362,12 @@ public class GracefulShutdownTest
         assertEquals( 32767, gracefulShutdownRequest.getDelay() );
 
         // Check the length
-        assertEquals( 0x06, gracefulShutdownRequest.computeLength() );
+        assertEquals( 0x06, gracefulShutdownRequest.computeLengthInternal() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulShutdownRequest.encode();
+            ByteBuffer bb1 = gracefulShutdownRequest.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
@@ -422,12 +422,12 @@ public class GracefulShutdownTest
         assertEquals( 32768, gracefulShutdownRequest.getDelay() );
 
         // Check the length
-        assertEquals( 0x07, gracefulShutdownRequest.computeLength() );
+        assertEquals( 0x07, gracefulShutdownRequest.computeLengthInternal() );
 
         // Check the encoding
         try
         {
-            ByteBuffer bb1 = gracefulShutdownRequest.encode();
+            ByteBuffer bb1 = gracefulShutdownRequest.encodeInternal();
 
             String encodedPdu = Strings.dumpBytes( bb1.array() );
 
