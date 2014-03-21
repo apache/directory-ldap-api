@@ -135,6 +135,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.parsers.OpenLdapSchemaParser;
 import org.apache.directory.api.ldap.model.schema.registries.AttributeTypeRegistry;
 import org.apache.directory.api.ldap.model.schema.registries.ObjectClassRegistry;
+import org.apache.directory.api.ldap.model.schema.registries.Registries;
 import org.apache.directory.api.ldap.model.schema.registries.SchemaLoader;
 import org.apache.directory.api.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.apache.directory.api.util.StringConstants;
@@ -3463,21 +3464,19 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             olsp.setQuirksMode( true );
             olsp.parse( schemaFile );
 
-            List<MutableAttributeType> atList = olsp.getAttributeTypes();
-            AttributeTypeRegistry atRegistry = schemaManager.getRegistries().getAttributeTypeRegistry();
-
-            for ( AttributeType atType : atList )
+            Registries registries = schemaManager.getRegistries();
+            List<Throwable> errors = new ArrayList<Throwable>();
+            
+            for ( AttributeType atType : olsp.getAttributeTypes() )
             {
-                atRegistry.addMappingFor( atType );
-                atRegistry.register( atType );
+                registries.buildReference( errors, atType );
+                registries.getAttributeTypeRegistry().register(atType);
             }
 
-            List<ObjectClass> ocList = olsp.getObjectClassTypes();
-            ObjectClassRegistry ocRegistry = schemaManager.getRegistries().getObjectClassRegistry();
-
-            for ( ObjectClass oc : ocList )
+            for ( ObjectClass oc : olsp.getObjectClassTypes() )
             {
-                ocRegistry.register( oc );
+                registries.buildReference(errors, oc);
+                registries.getObjectClassRegistry().register( oc );
             }
 
             LOG.info( "successfully loaded the schema from file {}", schemaFile.getAbsolutePath() );
