@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.codec.extended;
 
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -38,6 +37,7 @@ import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -133,8 +133,8 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
-        assertNull( extendedResponse.getLdapResult().getMatchedDn() );
-        assertNull( extendedResponse.getLdapResult().getDiagnosticMessage() );
+        assertEquals( Dn.EMPTY_DN, extendedResponse.getLdapResult().getMatchedDn() );
+        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
         assertEquals( "value", Strings.utf8ToString( extendedResponse.getResponseValue() ) );
 
@@ -268,8 +268,8 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
-        assertNull( extendedResponse.getLdapResult().getMatchedDn() );
-        assertNull( extendedResponse.getLdapResult().getDiagnosticMessage() );
+        assertEquals( Dn.EMPTY_DN, extendedResponse.getLdapResult().getMatchedDn() );
+        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
         assertEquals( "value", Strings.utf8ToString( extendedResponse.getResponseValue() ) );
 
@@ -718,8 +718,8 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
-        assertNull( extendedResponse.getLdapResult().getMatchedDn() );
-        assertNull( extendedResponse.getLdapResult().getDiagnosticMessage() );
+        assertEquals( Dn.EMPTY_DN, extendedResponse.getLdapResult().getMatchedDn() );
+        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
         assertEquals( "", Strings.utf8ToString( extendedResponse.getResponseValue() ) );
 
@@ -844,8 +844,8 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
-        assertNull( extendedResponse.getLdapResult().getMatchedDn() );
-        assertNull( extendedResponse.getLdapResult().getDiagnosticMessage() );
+        assertEquals( Dn.EMPTY_DN, extendedResponse.getLdapResult().getMatchedDn() );
+        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
         assertEquals( "", Strings.utf8ToString( extendedResponse.getResponseValue() ) );
 
@@ -953,8 +953,8 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
-        assertNull( extendedResponse.getLdapResult().getMatchedDn() );
-        assertNull( extendedResponse.getLdapResult().getDiagnosticMessage() );
+        assertEquals( Dn.EMPTY_DN, extendedResponse.getLdapResult().getMatchedDn() );
+        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
         assertEquals( "", Strings.utf8ToString( extendedResponse.getResponseValue() ) );
 
@@ -1082,8 +1082,8 @@ public class ExtendedResponseTest extends AbstractCodecServiceTest
 
         assertEquals( 1, extendedResponse.getMessageId() );
         assertEquals( ResultCodeEnum.SUCCESS, extendedResponse.getLdapResult().getResultCode() );
-        assertNull( extendedResponse.getLdapResult().getMatchedDn() );
-        assertNull( extendedResponse.getLdapResult().getDiagnosticMessage() );
+        assertEquals( Dn.EMPTY_DN, extendedResponse.getLdapResult().getMatchedDn() );
+        assertEquals( "", extendedResponse.getLdapResult().getDiagnosticMessage() );
         assertEquals( "1.3.6.1.5.5.2", extendedResponse.getResponseName() );
         assertEquals( "", Strings.utf8ToString( extendedResponse.getResponseValue() ) );
 

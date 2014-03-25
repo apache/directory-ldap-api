@@ -28,6 +28,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
+import org.apache.directory.api.ldap.codec.decorators.LdapResultDecorator;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -89,6 +90,8 @@ public class StoreExtendedResponseName extends GrammarAction<LdapMessageContaine
 
             extendedResponse = LdapApiServiceFactory.getSingleton().newExtendedResponse( responseName,
                 container.getMessageId(), null );
+            
+            ((ExtendedResponseDecorator<?>)extendedResponse).setLdapResult( ((LdapResultDecorator)(container.getMessage().getLdapResult() ) ) );
             container.setMessage( LdapApiServiceFactory.getSingleton().decorate( extendedResponse ) );
         }
 
