@@ -124,9 +124,9 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
      */
     public boolean isDnAuthzId()
     {
-        if ( authzId != null )
+        if ( dn != null )
         {
-            return false;
+            return true;
         }
         else
         {
