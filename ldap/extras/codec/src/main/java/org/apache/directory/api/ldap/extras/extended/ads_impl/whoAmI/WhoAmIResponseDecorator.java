@@ -140,6 +140,60 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
 
 
     /**
+     * Set the DnId
+     */
+    /* no qualifier*/ void setDn( Dn dn )
+    {
+        ((WhoAmIResponseImpl)whoAmIResponse).setDn( dn );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isDnAuthzId()
+    {
+        return whoAmIResponse.isDnAuthzId();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isUserAuthzId()
+    {
+        return whoAmIResponse.isUserAuthzId();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getAuthzIdString()
+    {
+        return whoAmIResponse.getAuthzIdString();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getUserId()
+    {
+        return whoAmIResponse.getUserId();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public Dn getDn()
+    {
+        return whoAmIResponse.getDn();
+    }
+
+
+    /**
      * Overload the parent's getResponseName method, as the WhoAmI response should not
      * contain the responseName.
      */
@@ -182,45 +236,5 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
         BerValue.encode( bb, whoAmIResponse.getAuthzId() );
     
         return bb;
-    }
-
-
-    @Override
-    public boolean isDnAuthzId()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-
-    @Override
-    public boolean isUserAuthzId()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-
-    @Override
-    public String getAuthzIdString()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-
-    @Override
-    public String getUserId()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-
-    @Override
-    public Dn getDn()
-    {
-        // TODO Auto-generated method stub
-        return null;
     }
 }

@@ -28,6 +28,7 @@ import org.apache.directory.api.asn1.ber.grammar.GrammarTransition;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponseImpl;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
@@ -141,6 +142,15 @@ public class WhoAmIResponseGrammar extends AbstractGrammar<WhoAmIResponseContain
                                                 if ( Dn.isValid( Strings.utf8ToString( data, 3, data.length - 3 ) ) )
                                                 {
                                                     whoAmIResponse.setAuthzId( data );
+                                                    
+                                                    try
+                                                    {
+                                                        whoAmIResponse.setDn( new Dn( Strings.utf8ToString( data, 3, data.length - 3 ) ) );
+                                                    }
+                                                    catch ( LdapInvalidDnException e )
+                                                    {
+                                                        // Should never happen
+                                                    }
                                                 }
                                                 else
                                                 {
