@@ -32,6 +32,7 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import org.apache.directory.api.ldap.codec.api.BinaryAttributeDetector;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,6 +101,9 @@ public class LdapConnectionConfig
 
     /** The class used to detect if an attribute is HR or not */
     private BinaryAttributeDetector binaryAttributeDetector;
+    
+    /** The Service to use internally when creating connections */
+    private LdapApiService ldapApiService;
 
 
     /**
@@ -459,5 +463,23 @@ public class LdapConnectionConfig
     public void setUseTls( boolean useTls )
     {
         this.useTls = useTls;
+    }
+
+
+    /**
+     * @return the ldapApiService
+     */
+    public LdapApiService getLdapApiService()
+    {
+        return ldapApiService;
+    }
+
+
+    /**
+     * @param ldapApiService the ldapApiService to set
+     */
+    public void setLdapApiService( LdapApiService ldapApiService )
+    {
+        this.ldapApiService = ldapApiService;
     }
 }
