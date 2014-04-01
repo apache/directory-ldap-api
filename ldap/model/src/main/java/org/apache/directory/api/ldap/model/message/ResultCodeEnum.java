@@ -1374,7 +1374,7 @@ public enum ResultCodeEnum
                 return OTHER;
             case 118:
                 return CANCELED;
-            case 129:
+            case 119:
                 return NO_SUCH_OPERATION;
             case 120:
                 return TOO_LATE;
