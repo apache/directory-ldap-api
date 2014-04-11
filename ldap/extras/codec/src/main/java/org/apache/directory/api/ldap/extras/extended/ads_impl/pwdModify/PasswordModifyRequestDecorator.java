@@ -24,7 +24,6 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
@@ -199,22 +198,22 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
         if ( passwordModifyRequest.getUserIdentity() != null )
         {
             int len = passwordModifyRequest.getUserIdentity().length;
-            requestLength = 1 + BerValue.getNbBytes( len ) + len;
+            requestLength = 1 + TLV.getNbBytes( len ) + len;
         }
 
         if ( passwordModifyRequest.getOldPassword() != null )
         {
             int len = passwordModifyRequest.getOldPassword().length;
-            requestLength += 1 + BerValue.getNbBytes( len ) + len;
+            requestLength += 1 + TLV.getNbBytes( len ) + len;
         }
 
         if ( passwordModifyRequest.getNewPassword() != null )
         {
             int len = passwordModifyRequest.getNewPassword().length;
-            requestLength += 1 + BerValue.getNbBytes( len ) + len;
+            requestLength += 1 + TLV.getNbBytes( len ) + len;
         }
 
-        return 1 + BerValue.getNbBytes( requestLength ) + requestLength;
+        return 1 + TLV.getNbBytes( requestLength ) + requestLength;
     }
 
 
@@ -229,7 +228,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
         ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
 
         bb.put( UniversalTag.SEQUENCE.getValue() );
-        bb.put( BerValue.getBytes( requestLength ) );
+        bb.put( TLV.getBytes( requestLength ) );
 
         if ( passwordModifyRequest.getUserIdentity() != null )
         {

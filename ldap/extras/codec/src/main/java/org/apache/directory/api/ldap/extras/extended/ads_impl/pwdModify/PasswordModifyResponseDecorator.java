@@ -24,7 +24,6 @@ import java.nio.ByteBuffer;
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
@@ -160,10 +159,10 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
         if ( passwordModifyResponse.getGenPassword() != null )
         {
             int len = passwordModifyResponse.getGenPassword().length;
-            requestLength = 1 + BerValue.getNbBytes( len ) + len;
+            requestLength = 1 + TLV.getNbBytes( len ) + len;
         }
 
-        return 1 + BerValue.getNbBytes( requestLength ) + requestLength;
+        return 1 + TLV.getNbBytes( requestLength ) + requestLength;
     }
 
 
@@ -179,7 +178,7 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
         ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
         
         bb.put( UniversalTag.SEQUENCE.getValue() );
-        bb.put( BerValue.getBytes( requestLength ) );
+        bb.put( TLV.getBytes( requestLength ) );
 
         if ( passwordModifyResponse.getGenPassword() != null )
         {

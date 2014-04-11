@@ -25,6 +25,7 @@ import java.nio.ByteBuffer;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
+import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ExtendedResponseDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -213,7 +214,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     {
         if ( whoAmIResponse.getAuthzId() != null )
         {
-            return 1 + BerValue.getNbBytes( whoAmIResponse.getAuthzId().length ) + 
+            return 1 + TLV.getNbBytes( whoAmIResponse.getAuthzId().length ) + 
                 whoAmIResponse.getAuthzId().length;
         }
         else
