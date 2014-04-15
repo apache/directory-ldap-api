@@ -196,7 +196,7 @@ public class WhoAmIResponseImpl extends ExtendedResponseImpl implements WhoAmIRe
     {
         StringBuilder sb = new StringBuilder();
 
-        sb.append( "PwdModifyResponse :" );
+        sb.append( "WhoAmI Extended Response :" );
         sb.append( "\n    authzid : " );
 
         if ( authzId != null )
