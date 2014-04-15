@@ -31,7 +31,7 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
 public class WhoAmIRequestImpl extends AbstractExtendedRequest implements WhoAmIRequest
 {
     /**
-     * Create a new instance of the PwdModifyRequest extended operation
+     * Create a new instance of the WhoAmIRequest extended operation
      */
     public WhoAmIRequestImpl()
     {
@@ -40,7 +40,7 @@ public class WhoAmIRequestImpl extends AbstractExtendedRequest implements WhoAmI
 
 
     /**
-     * Create a new instance of the PwdModifyRequest extended operation
+     * Create a new instance of the WhoAmIRequest extended operation
      * 
      * @param messageId The message ID
      */
