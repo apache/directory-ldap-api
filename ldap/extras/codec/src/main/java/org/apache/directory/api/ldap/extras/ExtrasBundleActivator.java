@@ -37,6 +37,7 @@ import org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.Cer
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory;
 import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
@@ -44,6 +45,7 @@ import org.apache.directory.api.ldap.extras.extended.certGeneration.CertGenerati
 import org.apache.directory.api.ldap.extras.extended.gracefulDisconnect.GracefulDisconnectResponse;
 import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownRequest;
 import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRequest;
+import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequest;
 import org.apache.directory.api.ldap.extras.extended.storedProcedure.StoredProcedureRequest;
 import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIRequest;
 import org.osgi.framework.BundleActivator;
@@ -129,6 +131,9 @@ public class ExtrasBundleActivator implements BundleActivator
 
         WhoAmIFactory whoAmIFactory = new WhoAmIFactory( codec );
         codec.registerExtendedRequest( whoAmIFactory );
+
+        StartTlsFactory startTlsFactory = new StartTlsFactory( codec );
+        codec.registerExtendedRequest( startTlsFactory );
     }
 
 
@@ -152,5 +157,6 @@ public class ExtrasBundleActivator implements BundleActivator
         codec.unregisterExtendedRequest( GracefulDisconnectResponse.EXTENSION_OID );
         codec.unregisterExtendedRequest( PasswordModifyRequest.EXTENSION_OID );
         codec.unregisterExtendedRequest( WhoAmIRequest.EXTENSION_OID );
+        codec.unregisterExtendedRequest( StartTlsRequest.EXTENSION_OID );
     }
 }

@@ -48,6 +48,7 @@ import org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.Cer
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory;
+import org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory;
 import org.apache.directory.api.ldap.model.message.controls.Cascade;
@@ -161,5 +162,9 @@ public class CodecFactoryUtil
         WhoAmIFactory whoAmIFactory = new WhoAmIFactory( apiService );
         extendendOperationsFactories.put( whoAmIFactory.getOid(), whoAmIFactory );
         LOG.info( "Registered pre-bundled extended operation factory: {}", whoAmIFactory.getOid() );
+
+        StartTlsFactory startTlsFactory = new StartTlsFactory( apiService );
+        extendendOperationsFactories.put( startTlsFactory.getOid(), startTlsFactory );
+        LOG.info( "Registered pre-bundled extended operation factory: {}", startTlsFactory.getOid() );
     }
 }
