@@ -60,6 +60,7 @@ import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.codec.api.MessageEncoderException;
 import org.apache.directory.api.ldap.codec.api.SchemaBinaryAttributeDetector;
+import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequestImpl;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.cursor.Cursor;
 import org.apache.directory.api.ldap.model.cursor.CursorException;
@@ -163,7 +164,6 @@ import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * This class is the base for every operations sent or received to and
  * from a LDAP server.
@@ -225,9 +225,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
     /** The exception stored in the session if we've got one */
     private static final String EXCEPTION_KEY = "sessionException";
-
-    /** the StartTLS extended operation's OID */
-    private static final String START_TLS_REQ_OID = "1.3.6.1.4.1.1466.20037";
 
     // ~~~~~~~~~~~~~~~~~ common error messages ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -3715,7 +3712,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
                 return;
             }
 
-            ExtendedResponse resp = extended( START_TLS_REQ_OID );
+            ExtendedResponse resp = extended( new StartTlsRequestImpl() );
             LdapResult result = resp.getLdapResult();
 
             if ( result.getResultCode() == ResultCodeEnum.SUCCESS )
