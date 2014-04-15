@@ -154,9 +154,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * Add some Attributes to the current Entry.
      *
      * @param attributes The attributes to add
+     * @return the modified entry
      * @throws LdapException If we can't add any of the attributes
      */
-    void add( Attribute... attributes ) throws LdapException;
+    Entry add( Attribute... attributes ) throws LdapException;
 
 
     /**
@@ -175,9 +176,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      *
      * @param attributeType The attribute Type.
      * @param values The list of binary values to inject. It can be empty.
+     * @return the modified entry
      * @throws LdapException If the attribute does not exist
      */
-    void add( AttributeType attributeType, byte[]... values ) throws LdapException;
+    Entry add( AttributeType attributeType, byte[]... values ) throws LdapException;
 
 
     /**
@@ -196,9 +198,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * 
      * @param attributeType The attribute Type
      * @param values The list of binary values to inject. It can be empty
+     * @return the modified entry
      * @throws org.apache.directory.api.ldap.model.exception.LdapException If the attribute does not exist
      */
-    void add( AttributeType attributeType, String... values ) throws LdapException;
+    Entry add( AttributeType attributeType, String... values ) throws LdapException;
 
 
     /**
@@ -217,9 +220,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      *
      * @param attributeType The attribute Type
      * @param values The list of binary values to inject. It can be empty
+     * @return the modified entry
      * @throws LdapException If the attribute does not exist
      */
-    void add( AttributeType attributeType, Value<?>... values ) throws LdapException;
+    Entry add( AttributeType attributeType, Value<?>... values ) throws LdapException;
 
 
     /**
@@ -239,9 +243,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param upId The user provided ID for the added AttributeType
      * @param attributeType The attribute Type.
      * @param values The list of binary values to add. It can be empty.
+     * @return the modified entry
      * @throws LdapException If the attribute does not exist
      */
-    void add( String upId, AttributeType attributeType, byte[]... values ) throws LdapException;
+    Entry add( String upId, AttributeType attributeType, byte[]... values ) throws LdapException;
 
 
     /**
@@ -261,9 +266,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param upId The user provided ID for the added AttributeType
      * @param attributeType The attribute Type.
      * @param values The list of String values to add. It can be empty.
+     * @return the modified entry
      * @throws LdapException If the attribute does not exist
      */
-    void add( String upId, AttributeType attributeType, String... values ) throws LdapException;
+    Entry add( String upId, AttributeType attributeType, String... values ) throws LdapException;
 
 
     /**
@@ -283,9 +289,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param upId The user provided ID for the added AttributeType
      * @param attributeType The attribute Type.
      * @param values The list of values to add. It can be empty.
+     * @return the modified entry
      * @throws LdapException If the attribute does not exist
      */
-    void add( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException;
+    Entry add( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException;
 
 
     /**
@@ -294,9 +301,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param upId The user provided ID of the attribute we want to add 
      * some values to
      * @param values The list of String values to add
+     * @return the modified entry
      * @throws LdapException If we can't add any of the values
      */
-    void add( String upId, String... values ) throws LdapException;
+    Entry add( String upId, String... values ) throws LdapException;
 
 
     /**
@@ -305,9 +313,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param upId The user provided ID of the attribute we want to add 
      * some values to
      * @param values The list of binary values to add
+     * @return the modified entry
      * @throws LdapException If we can't add any of the values
      */
-    void add( String upId, byte[]... values ) throws LdapException;
+    Entry add( String upId, byte[]... values ) throws LdapException;
 
 
     /**
@@ -316,9 +325,10 @@ public interface Entry extends Cloneable, Iterable<Attribute>, Externalizable
      * @param upId The user provided ID of the attribute we want to add 
      * some values to
      * @param values The list of Values to add
+     * @return the modified entry
      * @throws LdapException If we can't add any of the values
      */
-    void add( String upId, Value<?>... values ) throws LdapException;
+    Entry add( String upId, Value<?>... values ) throws LdapException;
 
 
     /**

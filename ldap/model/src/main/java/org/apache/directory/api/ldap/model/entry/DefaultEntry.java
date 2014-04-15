@@ -586,7 +586,7 @@ public final class DefaultEntry implements Entry
     /**
      * {@inheritDoc}
      */
-    public void add( AttributeType attributeType, byte[]... values ) throws LdapException
+    public Entry add( AttributeType attributeType, byte[]... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -625,13 +625,15 @@ public final class DefaultEntry implements Entry
             // createAttribute method
             createAttribute( null, attributeType, values );
         }
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( AttributeType attributeType, String... values ) throws LdapException
+    public Entry add( AttributeType attributeType, String... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -655,13 +657,15 @@ public final class DefaultEntry implements Entry
             // createAttribute method
             createAttribute( null, attributeType, values );
         }
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( AttributeType attributeType, Value<?>... values ) throws LdapException
+    public Entry add( AttributeType attributeType, Value<?>... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -685,13 +689,15 @@ public final class DefaultEntry implements Entry
             // createAttribute method
             createAttribute( null, attributeType, values );
         }
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
+    public Entry add( String upId, AttributeType attributeType, byte[]... values ) throws LdapException
     {
         // ObjectClass with binary values are not allowed
         if ( attributeType.equals( objectClassAttributeType ) )
@@ -718,13 +724,15 @@ public final class DefaultEntry implements Entry
             // and the upId
             createAttribute( id, attributeType, values );
         }
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
+    public Entry add( String upId, AttributeType attributeType, Value<?>... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -748,13 +756,15 @@ public final class DefaultEntry implements Entry
         {
             createAttribute( id, attributeType, values );
         }
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, AttributeType attributeType, String... values ) throws LdapException
+    public Entry add( String upId, AttributeType attributeType, String... values ) throws LdapException
     {
         if ( attributeType == null )
         {
@@ -780,13 +790,15 @@ public final class DefaultEntry implements Entry
             // and the upId
             createAttribute( id, attributeType, values );
         }
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( Attribute... attributes ) throws LdapException
+    public Entry add( Attribute... attributes ) throws LdapException
     {
         // Loop on all the added attributes
         for ( Attribute attribute : attributes )
@@ -837,13 +849,15 @@ public final class DefaultEntry implements Entry
                 }
             }
         }
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, byte[]... values ) throws LdapException
+    public Entry add( String upId, byte[]... values ) throws LdapException
     {
         if ( Strings.isEmpty( upId ) )
         {
@@ -879,13 +893,15 @@ public final class DefaultEntry implements Entry
                 attributes.put( id, new DefaultAttribute( upId, values ) );
             }
         }
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, String... values ) throws LdapException
+    public Entry add( String upId, String... values ) throws LdapException
     {
         if ( Strings.isEmpty( upId ) )
         {
@@ -921,13 +937,15 @@ public final class DefaultEntry implements Entry
                 attributes.put( id, new DefaultAttribute( upId, values ) );
             }
         }
+        
+        return this;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void add( String upId, Value<?>... values ) throws LdapException
+    public Entry add( String upId, Value<?>... values ) throws LdapException
     {
         if ( Strings.isEmpty( upId ) )
         {
@@ -963,6 +981,8 @@ public final class DefaultEntry implements Entry
                 attributes.put( id, new DefaultAttribute( upId, values ) );
             }
         }
+        
+        return this;
     }
 
 
