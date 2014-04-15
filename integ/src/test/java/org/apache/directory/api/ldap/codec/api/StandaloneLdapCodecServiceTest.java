@@ -64,7 +64,8 @@ public class StandaloneLdapCodecServiceTest
                 "org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory," +
                 "org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory," +
                 "org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory," +
-                "org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory"
+                "org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory," +
+                "org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsFactory"
             );
     }
 
