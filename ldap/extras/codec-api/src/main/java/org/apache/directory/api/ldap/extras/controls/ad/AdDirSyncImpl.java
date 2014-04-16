@@ -35,7 +35,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
     int parentFirst = 1;
     
     /** The maximum number of attributes to return */
-    int maxAttributeCount = 0;
+    int maxReturnLength = 0;
     
     /** The DirSync cookie */
     private byte[] cookie;
@@ -70,18 +70,18 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
     /**
      * {@inheritDoc}
      */
-    public int getMaxAttributeCount()
+    public int getMaxReturnLength()
     {
-        return maxAttributeCount;
+        return maxReturnLength;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setMaxAttributeCount( int maxAttributeCount )
+    public void setMaxReturnLength( int maxReturnLength )
     {
-        this.maxAttributeCount = maxAttributeCount;
+        this.maxReturnLength = maxReturnLength;
     }
 
 
@@ -113,7 +113,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
 
         h = h * 17 + super.hashCode();
         h = h * 17 + parentFirst;
-        h = h * 17 + maxAttributeCount;
+        h = h * 17 + maxReturnLength;
 
         if ( cookie != null )
         {
@@ -145,7 +145,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
 
         AdDirSync otherControl = ( AdDirSync ) o;
 
-        return ( maxAttributeCount == otherControl.getMaxAttributeCount() ) &&
+        return ( maxReturnLength == otherControl.getMaxReturnLength() ) &&
             ( parentFirst == otherControl.getParentFirst() ) &&
             ( Arrays.equals( cookie, otherControl.getCookie() ) &&
             ( isCritical() == otherControl.isCritical() ) );
@@ -164,7 +164,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
         sb.append( "        oid : " ).append( getOid() ).append( '\n' );
         sb.append( "        critical : " ).append( isCritical() ).append( '\n' );
         sb.append( "        parentFirst : '" ).append( getParentFirst() ).append( "'\n" );
-        sb.append( "        maxAttributeCount : '" ).append( getMaxAttributeCount() ).append( "'\n" );
+        sb.append( "        maxReturnLength : '" ).append( getMaxReturnLength() ).append( "'\n" );
         sb.append( "        cookie            : '" ).append( Strings.dumpBytes( getCookie() ) ).append( "'\n" );
 
         return sb.toString();

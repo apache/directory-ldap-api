@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  *  <pre>
  * realReplControlValue ::= SEQUENCE {
  *     parentsFirst            integer
- *     maxAttributeCount       integer
+ *     maxReturnLength       integer
  *     cookie                  OCTET STRING
  * }
  * </pre> 
@@ -133,18 +133,18 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
 
         
         /**
-         * transition from parentFirst to maxAttributeCount
+         * transition from parentFirst to maxReturnLength
          * realReplControlValue ::= SEQUENCE {
          *     parentsFirst            integer
-         *     maxAttributeCount       integer
+         *     maxReturnLength         integer
          *    ....
          * }
          */
         super.transitions[AdDirSyncStatesEnum.PARENT_FIRST_STATE.ordinal()][UniversalTag.INTEGER
             .getValue()] =
             new GrammarTransition<AdDirSyncContainer>( AdDirSyncStatesEnum.PARENT_FIRST_STATE,
-                AdDirSyncStatesEnum.MAX_ATTRIBUTE_COUNT_STATE, UniversalTag.INTEGER.getValue(),
-                new GrammarAction<AdDirSyncContainer>( "Set AdDirSyncControl maxAttributeCount" )
+                AdDirSyncStatesEnum.MAX_RETURN_LENGTH_STATE, UniversalTag.INTEGER.getValue(),
+                new GrammarAction<AdDirSyncContainer>( "Set AdDirSyncControl maxReturnLength" )
                 {
                     public void action( AdDirSyncContainer container ) throws DecoderException
                     {
@@ -152,18 +152,18 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
 
                         try
                         {
-                            int maxAttributeCount = IntegerDecoder.parse( value );
+                            int maxReturnLength = IntegerDecoder.parse( value );
                             
                             if ( IS_DEBUG )
                             {
-                                LOG.debug( "maxAttributeCount = {}", maxAttributeCount );
+                                LOG.debug( "maxReturnLength = {}", maxReturnLength );
                             }
                             
-                            container.getAdDirSyncControl().setMaxAttributeCount( maxAttributeCount );
+                            container.getAdDirSyncControl().setMaxReturnLength( maxReturnLength );
                         }
                         catch ( IntegerDecoderException ide )
                         {
-                            String msg = "Error while decoding the AdDirSync maxAttributeCount : " + ide.getMessage();
+                            String msg = "Error while decoding the AdDirSync maxReturnLength : " + ide.getMessage();
                             LOG.error( msg, ide );
                             throw new DecoderException( msg );
                         }
@@ -172,13 +172,13 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
         
         
         /**
-         * transition from maxAttributeCount to cookie
+         * transition from maxReturnLength to cookie
          *     ...
-         *     maxAttributeCount       integer
+         *     maxReturnLength         integer
          *     cookie                  OCTET STRING
          * }
          */
-        super.transitions[AdDirSyncStatesEnum.MAX_ATTRIBUTE_COUNT_STATE.ordinal()][UniversalTag.OCTET_STRING
+        super.transitions[AdDirSyncStatesEnum.MAX_RETURN_LENGTH_STATE.ordinal()][UniversalTag.OCTET_STRING
             .getValue()] =
             new GrammarTransition<AdDirSyncContainer>( AdDirSyncStatesEnum.AD_DIR_SYNC_SEQUENCE_STATE,
                 AdDirSyncStatesEnum.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(),

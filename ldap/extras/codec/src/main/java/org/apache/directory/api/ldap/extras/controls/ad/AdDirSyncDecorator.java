@@ -68,7 +68,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
      * 0x30 L1
      * |
      * +--> 0x02 0x0(1-4) nnn  (parentFirst)
-     * +--> 0x02 0x0(1-4) nnn  (maxAttributeCount)
+     * +--> 0x02 0x0(1-4) nnn  (maxReturnLength)
      * +--> 0x04 L2 xkcd!!!...     (cookie)
      */
     @Override
@@ -77,8 +77,8 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
         // the parentFirst flag length
         adDirSyncLength = 1 + TLV.getNbBytes( getParentFirst() ) + BerValue.getNbBytes( getParentFirst() );
 
-        // the maxAttributeCount length
-        adDirSyncLength += 1 + TLV.getNbBytes( getMaxAttributeCount() ) + BerValue.getNbBytes( getMaxAttributeCount() );
+        // the maxReturnLength length
+        adDirSyncLength += 1 + TLV.getNbBytes( getMaxReturnLength() ) + BerValue.getNbBytes( getMaxReturnLength() );
 
         // cookie's length
         byte[] cookie = getCookie();
@@ -121,8 +121,8 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
         // Encode the ParentFirst flag
         BerValue.encode( buffer, getParentFirst() );
 
-        // Encode the MaxAttributeCount
-        BerValue.encode( buffer, getMaxAttributeCount() );
+        // Encode the MaxReturnLength
+        BerValue.encode( buffer, getMaxReturnLength() );
         
         // Encode the cookie
         BerValue.encode( buffer, getCookie() );
@@ -151,8 +151,8 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
                 // Encode the ParentFirst flag
                 BerValue.encode( buffer, getParentFirst() );
 
-                // Encode the MaxAttributeCount
-                BerValue.encode( buffer, getMaxAttributeCount() );
+                // Encode the MaxReturnLength
+                BerValue.encode( buffer, getMaxReturnLength() );
                 
                 // Encode the cookie
                 BerValue.encode( buffer, getCookie() );
@@ -190,18 +190,18 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     /**
      * {@inheritDoc}
      */
-    public int getMaxAttributeCount()
+    public int getMaxReturnLength()
     {
-        return getDecorated().getMaxAttributeCount();
+        return getDecorated().getMaxReturnLength();
     }
 
     
     /**
      * {@inheritDoc}
      */
-    public void setMaxAttributeCount( int maxAttributeCount )
+    public void setMaxReturnLength( int maxReturnLength )
     {
-        getDecorated().setMaxAttributeCount( maxAttributeCount );
+        getDecorated().setMaxReturnLength( maxReturnLength );
     }
     
 

@@ -44,8 +44,8 @@ public enum AdDirSyncStatesEnum implements States
     /** parentFirst value state */
     PARENT_FIRST_STATE,
 
-    /** maxAttributeCount value state */
-    MAX_ATTRIBUTE_COUNT_STATE,
+    /** maxReturnLength value state */
+    MAX_RETURN_LENGTH_STATE,
 
     /** cookie value state */
     COOKIE_STATE,

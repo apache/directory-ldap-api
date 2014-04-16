@@ -55,7 +55,7 @@ public class AdDirSyncControlTest extends AbstractCodecServiceTest
             {
                 0x30, 0x0C,
                   0x02, 0x01, 0x00,  // parentFirst (false)
-                  0x02, 0x01, 0x00,  // maxAttributeCount (no limit)
+                  0x02, 0x01, 0x00,  // maxReturnLength (no limit)
                   0x04, 0x04, 'x', 'k', 'c', 'd' // the cookie 
         } );
 
@@ -66,7 +66,7 @@ public class AdDirSyncControlTest extends AbstractCodecServiceTest
         AdDirSync adDirSync = ( AdDirSync ) ( ( AdDirSyncDecorator ) decorator ).decode( bb.array() );
 
         assertEquals( 0, adDirSync.getParentFirst() );
-        assertEquals( 0, adDirSync.getMaxAttributeCount() );
+        assertEquals( 0, adDirSync.getMaxReturnLength() );
         assertEquals( "xkcd", Strings.utf8ToString( adDirSync.getCookie() ) );
 
         // test encoding
@@ -94,7 +94,7 @@ public class AdDirSyncControlTest extends AbstractCodecServiceTest
             {
                 0x30, 0x08,
                   0x02, 0x01, 0x00,  // parentFirst (false)
-                  0x02, 0x01, 0x00,  // maxAttributeCount (no limit)
+                  0x02, 0x01, 0x00,  // maxReturnLength (no limit)
                   0x04, 0x00         // the cookie 
         } );
 
@@ -105,7 +105,7 @@ public class AdDirSyncControlTest extends AbstractCodecServiceTest
         AdDirSync adDirSync = ( AdDirSync ) ( ( AdDirSyncDecorator ) decorator ).decode( bb.array() );
 
         assertEquals( 0, adDirSync.getParentFirst() );
-        assertEquals( 0, adDirSync.getMaxAttributeCount() );
+        assertEquals( 0, adDirSync.getMaxReturnLength() );
         assertEquals( "", Strings.utf8ToString( adDirSync.getCookie() ) );
 
         // test encoding
@@ -133,7 +133,7 @@ public class AdDirSyncControlTest extends AbstractCodecServiceTest
             {
                 0x30, 0x06,
                   0x02, 0x01, 0x00,  // parentFirst (false)
-                  0x02, 0x01, 0x00   // maxAttributeCount (no limit)
+                  0x02, 0x01, 0x00   // maxReturnLength (no limit)
         } );
 
         bb.flip();
@@ -160,7 +160,7 @@ public class AdDirSyncControlTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x05,
-                  0x02, 0x01, 0x00,  // maxAttributeCount (no limit)
+                  0x02, 0x01, 0x00,  // maxReturnLength (no limit)
                   0x04, 0x00         // cookie
         } );
 

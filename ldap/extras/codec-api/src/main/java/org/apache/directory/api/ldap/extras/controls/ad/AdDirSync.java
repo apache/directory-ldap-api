@@ -35,7 +35,7 @@ import org.apache.directory.api.ldap.model.message.Control;
  * 
  * realReplControlValue ::= SEQUENCE {
  *     parentsFirst            integer
- *     maxAttributeCount       integer
+ *     maxReturnLength         integer
  *     cookie                  OCTET STRING
  * }
  * </pre> 
@@ -45,7 +45,6 @@ import org.apache.directory.api.ldap.model.message.Control;
  */
 public interface AdDirSync extends Control
 {
-
     /** This control OID */
     static final String OID = "1.3.6.1.4.1.4203.1.9.1.3";
     
@@ -62,15 +61,15 @@ public interface AdDirSync extends Control
     
     
     /**
-     * @return The maximum number of attributes to be returned
+     * @return The maximum length of attributes to be returned
      */
-    int getMaxAttributeCount();
+    int getMaxReturnLength();
     
     
     /**
-     * @param maxAttributeCount The maximum number of attributes to be returned
+     * @param maxReturnLength The maximum length of attributes to be returned
      */
-    void setMaxAttributeCount( int maxAttributeCount );
+    void setMaxReturnLength( int maxReturnLength );
     
     
     /**
