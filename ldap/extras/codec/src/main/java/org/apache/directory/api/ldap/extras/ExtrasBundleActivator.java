@@ -22,6 +22,10 @@ package org.apache.directory.api.ldap.extras;
 
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncFactory;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponse;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponseFactory;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
@@ -97,6 +101,12 @@ public class ExtrasBundleActivator implements BundleActivator
 
         ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( codec );
         codec.registerControl( passwordPolicyFactory );
+        
+        ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( codec );
+        codec.registerControl( adDirSyncFactory );
+        
+        ControlFactory<AdDirSyncResponse> adDirSyncResponseFactory = new AdDirSyncResponseFactory( codec );
+        codec.registerControl( adDirSyncResponseFactory );
     }
 
 
