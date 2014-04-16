@@ -26,6 +26,7 @@ import org.apache.directory.api.ldap.model.message.controls.AbstractControl;
 import org.apache.directory.api.util.Strings;
 
 /**
+ * The class implemnting the AdDirsSync interface
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -99,7 +100,15 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
      */
     public void setCookie( byte[] cookie )
     {
-        this.cookie = cookie;
+        if ( cookie != null )
+        {
+            this.cookie = new byte[cookie.length];
+            System.arraycopy( cookie, 0, this.cookie, 0,cookie.length );
+        }
+        else
+        {
+            this.cookie = Strings.EMPTY_BYTES;
+        }
     }
     
     
