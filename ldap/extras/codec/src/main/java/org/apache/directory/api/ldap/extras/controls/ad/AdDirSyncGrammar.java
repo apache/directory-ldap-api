@@ -180,7 +180,7 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
          */
         super.transitions[AdDirSyncStatesEnum.MAX_RETURN_LENGTH_STATE.ordinal()][UniversalTag.OCTET_STRING
             .getValue()] =
-            new GrammarTransition<AdDirSyncContainer>( AdDirSyncStatesEnum.AD_DIR_SYNC_SEQUENCE_STATE,
+            new GrammarTransition<AdDirSyncContainer>( AdDirSyncStatesEnum.MAX_RETURN_LENGTH_STATE,
                 AdDirSyncStatesEnum.COOKIE_STATE, UniversalTag.OCTET_STRING.getValue(),
                 new GrammarAction<AdDirSyncContainer>( "Set AdDirSyncControl cookie" )
                 {
