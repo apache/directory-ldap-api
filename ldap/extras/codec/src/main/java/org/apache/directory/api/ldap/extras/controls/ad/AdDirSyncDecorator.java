@@ -33,6 +33,11 @@ import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.util.Strings;
 
+/**
+ * A decorator around AdDirSync control. It will encode and decode this control.
+ * 
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements AdDirSync
 {
     /** The global length for this control */
