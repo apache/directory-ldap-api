@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.api</groupId>
     <artifactId>api-ldap-schema-parent</artifactId>
-    <version>1.0.0-M24-SNAPSHOT</version>
+    <version>1.0.0-M23-SNAPSHOT</version>
   </parent>
   
   <artifactId>api-ldap-schema-converter</artifactId>
