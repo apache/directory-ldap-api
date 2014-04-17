@@ -270,4 +270,34 @@ public interface SearchRequest extends ManyReplyRequest, AbandonableRequest
      * {@inheritDoc}
      */
     SearchRequest removeControl( Control control );
+    
+    
+    /**
+     * Tells the client if it should follow referrals instead of throwing exceptions
+     * @return true if we should follow the referrals
+     */
+    boolean isFollowReferrals();
+    
+    
+    /**
+     * Tells the client to follow referrals instead of throwing exceptions
+     * @return The SearchRequest instance
+     */
+    SearchRequest followReferrals();
+    
+    
+    /**
+     * Tells the client if it should ignore referrals instead of throwing exceptions
+     * @return true if we should ignore the referrals
+     */
+    boolean isIgnoreReferrals();
+    
+    
+    /**
+     * Tells the client to ignore referrals instead of throwing exceptions. The entry
+     * will contain the referral attributeType with the link.
+     * 
+     * @return The SearchRequest instance
+     */
+    SearchRequest ignoreReferrals();
 }

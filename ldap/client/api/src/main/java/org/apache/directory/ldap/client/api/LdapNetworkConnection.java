@@ -117,6 +117,7 @@ import org.apache.directory.api.ldap.model.message.SearchResultReference;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.message.UnbindRequest;
 import org.apache.directory.api.ldap.model.message.UnbindRequestImpl;
+import org.apache.directory.api.ldap.model.message.controls.ManageDsaITImpl;
 import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.ldap.model.message.extended.AddNoDResponse;
 import org.apache.directory.api.ldap.model.message.extended.BindNoDResponse;
@@ -1667,6 +1668,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         int newId = messageId.incrementAndGet();
         searchRequest.setMessageId( newId );
+        
+        if ( searchRequest.isIgnoreReferrals() )
+        {
+            // We want to ignore the referral, inject the ManageDSAIT control in the request
+            searchRequest.addControl( new ManageDsaITImpl() );
+        }
 
         LOG.debug( "Sending request \n{}", searchRequest );
 
