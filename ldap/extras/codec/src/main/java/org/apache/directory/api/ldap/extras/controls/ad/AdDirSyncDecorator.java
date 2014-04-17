@@ -66,10 +66,92 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     {
         super( codec, control );
     }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public int getParentFirst()
+    {
+        return getDecorated().getParentFirst();
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setParentFirst( int parentFirst )
+    {
+        getDecorated().setParentFirst( parentFirst );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public AdDirSyncFlag getFlag()
+    {
+        return getDecorated().getFlag();
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setFlag( AdDirSyncFlag flag )
+    {
+        getDecorated().setFlag( flag );
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public int getMaxReturnLength()
+    {
+        return getDecorated().getMaxReturnLength();
+    }
+
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setMaxReturnLength( int maxReturnLength )
+    {
+        getDecorated().setMaxReturnLength( maxReturnLength );
+    }
+    
+
+    /**
+     * {@inheritDoc}
+     */
+    public byte[] getCookie()
+    {
+        return getDecorated().getCookie();
+    }
 
 
     /**
-     * Compute the AdDirSync length.
+     * {@inheritDoc}
+     */
+    public void setCookie( byte[] cookie )
+    {
+        // Copy the bytes
+        if ( !Strings.isEmpty( cookie ) )
+        {
+            byte[] copy = new byte[cookie.length];
+            System.arraycopy( cookie, 0, copy, 0, cookie.length );
+            getDecorated().setCookie( copy );
+        }
+        else
+        {
+            getDecorated().setCookie( null );
+        }
+    }
+
+
+    /**
+     * Compute the AdDirSync length. We use the client side control.
      * 0x30 L1
      * |
      * +--> 0x02 0x0(1-4) nnn  (parentFirst)
@@ -105,7 +187,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
 
 
     /**
-     * Encode the AdDirSync control
+     * Encode the AdDirSync control. We use the client side control.
      *
      * @param buffer The encoded sink
      * @return A ByteBuffer that contains the encoded PDU
@@ -174,70 +256,6 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     }
     
     
-    /**
-     * {@inheritDoc}
-     */
-    public int getParentFirst()
-    {
-        return getDecorated().getParentFirst();
-    }
-
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void setParentFirst( int parentFirst )
-    {
-        getDecorated().setParentFirst( parentFirst );
-    }
-    
-    
-    /**
-     * {@inheritDoc}
-     */
-    public int getMaxReturnLength()
-    {
-        return getDecorated().getMaxReturnLength();
-    }
-
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void setMaxReturnLength( int maxReturnLength )
-    {
-        getDecorated().setMaxReturnLength( maxReturnLength );
-    }
-    
-
-    /**
-     * {@inheritDoc}
-     */
-    public byte[] getCookie()
-    {
-        return getDecorated().getCookie();
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setCookie( byte[] cookie )
-    {
-        // Copy the bytes
-        if ( !Strings.isEmpty( cookie ) )
-        {
-            byte[] copy = new byte[cookie.length];
-            System.arraycopy( cookie, 0, copy, 0, cookie.length );
-            getDecorated().setCookie( copy );
-        }
-        else
-        {
-            getDecorated().setCookie( null );
-        }
-    }
-
-
     /**
      * {@inheritDoc}
      */

@@ -41,8 +41,8 @@ public enum AdDirSyncStatesEnum implements States
     /** sequence start state */
     AD_DIR_SYNC_SEQUENCE_STATE,
 
-    /** parentFirst value state */
-    PARENT_FIRST_STATE,
+    /** flag state */
+    FLAG_STATE,
 
     /** maxReturnLength value state */
     MAX_RETURN_LENGTH_STATE,
