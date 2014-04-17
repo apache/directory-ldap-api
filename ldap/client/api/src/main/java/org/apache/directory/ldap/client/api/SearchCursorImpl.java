@@ -31,6 +31,7 @@ import org.apache.directory.api.ldap.model.cursor.InvalidCursorPositionException
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapReferralException;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 import org.apache.directory.api.ldap.model.message.Referral;
 import org.apache.directory.api.ldap.model.message.Response;
@@ -364,6 +365,12 @@ public class SearchCursorImpl extends AbstractCursor<Response> implements Search
         if ( isEntry() )
         {
             return ( ( SearchResultEntry ) response ).getEntry();
+        }
+        
+        if ( isReferral() )
+        {
+            Referral referral = ( ( SearchResultReference ) response ).getReferral();
+            throw new LdapReferralException( referral.getLdapUrls() );
         }
 
         throw new LdapException();
