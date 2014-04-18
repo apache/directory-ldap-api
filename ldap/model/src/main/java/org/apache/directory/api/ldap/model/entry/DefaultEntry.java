@@ -991,7 +991,6 @@ public final class DefaultEntry implements Entry
      * the original object won't affect the cloned object, as a modification
      * on the cloned object has no impact on the original object
      */
-    @SuppressWarnings("unchecked")
     public Entry clone()
     {
         // First, clone the structure

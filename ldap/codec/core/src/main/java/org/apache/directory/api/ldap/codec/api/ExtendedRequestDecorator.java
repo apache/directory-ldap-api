@@ -158,7 +158,6 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public ExtendedRequest addControl( Control control )
     {
         return ( ExtendedRequest ) super.addControl( control );
@@ -168,7 +167,6 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public ExtendedRequest addAllControls( Control[] controls )
     {
         return ( ExtendedRequest ) super.addAllControls( controls );
@@ -178,7 +176,6 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
     public ExtendedRequest removeControl( Control control )
     {
         return ( ExtendedRequest ) super.removeControl( control );

@@ -1693,6 +1693,10 @@ public enum ResultCodeEnum
 
             case UNBIND_REQUEST:
                 return set.iterator().next();
+                
+            case INTERMEDIATE_RESPONSE :
+                candidates = intersection( set, SEARCH_CODES );
+                break;
         }
 
         // we don't want any codes that do not have anything to do w/ errors
