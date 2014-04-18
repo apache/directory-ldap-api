@@ -588,6 +588,7 @@ public class Asn1Decoder implements TLVBerDecoderMBean
      * </code> otherwise
      * @throws DecoderException Thrown if anything went wrong
      */
+    @SuppressWarnings("unchecked")
     private boolean treatTLVDoneState( ByteBuffer stream, Asn1Container container ) throws DecoderException
     {
         if ( IS_DEBUG )

@@ -54,7 +54,7 @@ public class AdDirSyncControlTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x0C,
-                  0x02, 0x01, 0x00,  // parentFirst (false)
+                  0x02, 0x01, 0x01,  // flag (LDAP_DIRSYNC_OBJECT_SECURITY)
                   0x02, 0x01, 0x00,  // maxReturnLength (no limit)
                   0x04, 0x04, 'x', 'k', 'c', 'd' // the cookie 
         } );
@@ -65,16 +65,18 @@ public class AdDirSyncControlTest extends AbstractCodecServiceTest
 
         AdDirSync adDirSync = ( AdDirSync ) ( ( AdDirSyncDecorator ) decorator ).decode( bb.array() );
 
-        assertEquals( 0, adDirSync.getParentFirst() );
+        assertEquals( AdDirSyncFlag.LDAP_DIRSYNC_OBJECT_SECURITY, adDirSync.getFlag() );
         assertEquals( 0, adDirSync.getMaxReturnLength() );
         assertEquals( "xkcd", Strings.utf8ToString( adDirSync.getCookie() ) );
 
         // test encoding
+        adDirSync.setParentFirst( 1 );
+        
         try
         {
             ByteBuffer buffer = ( ( AdDirSyncDecorator ) adDirSync ).encode( ByteBuffer
                 .allocate( ( ( AdDirSyncDecorator ) adDirSync ).computeLength() ) );
-            String expected = Strings.dumpBytes( bb.array() );
+            String expected = "0x30 0x0C 0x02 0x01 0x01 0x02 0x01 0x00 0x04 0x04 0x78 0x6B 0x63 0x64 ";
             String decoded = Strings.dumpBytes( buffer.array() );
             assertEquals( expected, decoded );
         }
@@ -93,7 +95,7 @@ public class AdDirSyncControlTest extends AbstractCodecServiceTest
         bb.put( new byte[]
             {
                 0x30, 0x08,
-                  0x02, 0x01, 0x00,  // parentFirst (false)
+                  0x02, 0x01, 0x01,  // flag (LDAP_DIRSYNC_OBJECT_SECURITY)
                   0x02, 0x01, 0x00,  // maxReturnLength (no limit)
                   0x04, 0x00         // the cookie 
         } );
@@ -104,16 +106,18 @@ public class AdDirSyncControlTest extends AbstractCodecServiceTest
 
         AdDirSync adDirSync = ( AdDirSync ) ( ( AdDirSyncDecorator ) decorator ).decode( bb.array() );
 
-        assertEquals( 0, adDirSync.getParentFirst() );
+        assertEquals( AdDirSyncFlag.LDAP_DIRSYNC_OBJECT_SECURITY, adDirSync.getFlag() );
         assertEquals( 0, adDirSync.getMaxReturnLength() );
         assertEquals( "", Strings.utf8ToString( adDirSync.getCookie() ) );
 
         // test encoding
+        adDirSync.setParentFirst( 1 );
+
         try
         {
             ByteBuffer buffer = ( ( AdDirSyncDecorator ) adDirSync ).encode( ByteBuffer
                 .allocate( ( ( AdDirSyncDecorator ) adDirSync ).computeLength() ) );
-            String expected = Strings.dumpBytes( bb.array() );
+            String expected = "0x30 0x08 0x02 0x01 0x01 0x02 0x01 0x00 0x04 0x00 ";
             String decoded = Strings.dumpBytes( buffer.array() );
             assertEquals( expected, decoded );
         }

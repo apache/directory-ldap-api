@@ -36,16 +36,16 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 
- * Implementation of AdDirSync Control. All the actions are declared in
+ * Implementation of AdDirSync Response Control. All the actions are declared in
  * this class. As it is a singleton, these declaration are only done once.
  *
  *  The decoded grammar is as follows :
  *  
  *  <pre>
  * realReplControlValue ::= SEQUENCE {
- *     parentsFirst            integer
+ *     flag                  integer
  *     maxReturnLength       integer
- *     cookie                  OCTET STRING
+ *     cookie                OCTET STRING
  * }
  * </pre> 
  *  
@@ -81,9 +81,10 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
          * AdDirSync ::= SEQUENCE {
          *     ...
          *     
-         * Initialize the adSyncDir object
+         * Initialize the adDirSync object
          */
-        super.transitions[AdDirSyncStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = new GrammarTransition<AdDirSyncContainer>(
+        super.transitions[AdDirSyncStatesEnum.START_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] = 
+            new GrammarTransition<AdDirSyncContainer>(
             AdDirSyncStatesEnum.START_STATE, AdDirSyncStatesEnum.AD_DIR_SYNC_SEQUENCE_STATE,
             UniversalTag.SEQUENCE.getValue(),
             new GrammarAction<AdDirSyncContainer>( "Initialization" )
@@ -95,16 +96,16 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
 
         
         /**
-         * transition from start to parentFirst
+         * transition from start to flag
          * realReplControlValue ::= SEQUENCE {
-         *     parentsFirst            integer
+         *     flag            integer
          *    ....
          * }
          */
         super.transitions[AdDirSyncStatesEnum.AD_DIR_SYNC_SEQUENCE_STATE.ordinal()][UniversalTag.INTEGER
             .getValue()] =
             new GrammarTransition<AdDirSyncContainer>( AdDirSyncStatesEnum.AD_DIR_SYNC_SEQUENCE_STATE,
-                AdDirSyncStatesEnum.PARENT_FIRST_STATE, UniversalTag.INTEGER.getValue(),
+                AdDirSyncStatesEnum.FLAG_STATE, UniversalTag.INTEGER.getValue(),
                 new GrammarAction<AdDirSyncContainer>( "Set AdDirSyncControl parentFirst" )
                 {
                     public void action( AdDirSyncContainer container ) throws DecoderException
@@ -113,18 +114,27 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
 
                         try
                         {
-                            int parentFirst = IntegerDecoder.parse( value );
+                            int flagValue = IntegerDecoder.parse( value );
+                            
+                            AdDirSyncFlag flag = AdDirSyncFlag.getFlag( flagValue );
+                            
+                            if ( flag == null )
+                            {
+                                String msg = "Error while decoding the AdDirSync flag, unknown value : " + flagValue;
+                                LOG.error( msg );
+                                throw new DecoderException( msg );
+                            }
                             
                             if ( IS_DEBUG )
                             {
-                                LOG.debug( "parentFirst = {}", parentFirst );
+                                LOG.debug( "flag = {}", flagValue );
                             }
                             
-                            container.getAdDirSyncControl().setParentFirst( parentFirst );
+                            container.getAdDirSyncControl().setFlag( flag );
                         }
                         catch ( IntegerDecoderException ide )
                         {
-                            String msg = "Error while decoding the AdDirSync parentFirst : " + ide.getMessage();
+                            String msg = "Error while decoding the AdDirSync flag : " + ide.getMessage();
                             LOG.error( msg, ide );
                             throw new DecoderException( msg );
                         }
@@ -133,16 +143,16 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
 
         
         /**
-         * transition from parentFirst to maxReturnLength
+         * transition from flag to maxReturnLength
          * realReplControlValue ::= SEQUENCE {
-         *     parentsFirst            integer
+         *     flag                    integer
          *     maxReturnLength         integer
          *    ....
          * }
          */
-        super.transitions[AdDirSyncStatesEnum.PARENT_FIRST_STATE.ordinal()][UniversalTag.INTEGER
+        super.transitions[AdDirSyncStatesEnum.FLAG_STATE.ordinal()][UniversalTag.INTEGER
             .getValue()] =
-            new GrammarTransition<AdDirSyncContainer>( AdDirSyncStatesEnum.PARENT_FIRST_STATE,
+            new GrammarTransition<AdDirSyncContainer>( AdDirSyncStatesEnum.FLAG_STATE,
                 AdDirSyncStatesEnum.MAX_RETURN_LENGTH_STATE, UniversalTag.INTEGER.getValue(),
                 new GrammarAction<AdDirSyncContainer>( "Set AdDirSyncControl maxReturnLength" )
                 {

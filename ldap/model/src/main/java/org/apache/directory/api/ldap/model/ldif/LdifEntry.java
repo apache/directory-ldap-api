@@ -223,6 +223,15 @@ public class LdifEntry implements Cloneable, Externalizable
         // Now, parse the Ldif and convert it to a LdifEntry
         LdifReader reader = new LdifReader();
         List<LdifEntry> ldifEntries = reader.parseLdif( sb.toString() );
+        
+        try
+        {
+            reader.close();
+        }
+        catch ( IOException e )
+        {
+            e.printStackTrace();
+        }
 
         if ( ( ldifEntries != null ) && ( ldifEntries.size() == 1 ) )
         {
@@ -258,6 +267,7 @@ public class LdifEntry implements Cloneable, Externalizable
                     {
                         modifications.put( modification.getAttribute().getId(), modification );
                     }
+                    
                     break;
             }
         }

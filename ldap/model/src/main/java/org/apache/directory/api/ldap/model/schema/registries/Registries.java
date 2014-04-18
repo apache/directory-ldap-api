@@ -725,6 +725,22 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 case OBJECT_CLASS:
                     ObjectClassHelper.removeFromRegistries( ( ObjectClass ) schemaObject, errors, this );
                     break;
+                    
+                case DIT_CONTENT_RULE :
+                    // TODO
+                    break;
+                    
+                case DIT_STRUCTURE_RULE :
+                    // TODO
+                    break;
+                    
+                case NAME_FORM :
+                    // TODO
+                    break;
+                    
+                case MATCHING_RULE_USE :
+                    // TODO
+                    break;
             }
         }
         catch ( LdapException ne )

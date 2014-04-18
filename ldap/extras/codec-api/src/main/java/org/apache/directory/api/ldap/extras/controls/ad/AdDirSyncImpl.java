@@ -35,6 +35,9 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
     /** A flag used to tell the server to return the parent before the children */
     int parentFirst = 1;
     
+    /** A flag used to indicate that there are more data to return */
+    AdDirSyncFlag flag = AdDirSyncFlag.DEFAULT;
+
     /** The maximum number of attributes to return */
     int maxReturnLength = 0;
     
@@ -65,6 +68,24 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
     public void setParentFirst( int parentFirst )
     {
         this.parentFirst = parentFirst;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public AdDirSyncFlag getFlag()
+    {
+        return flag;
+    }
+    
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setFlag( AdDirSyncFlag flag )
+    {
+        this.flag = flag;
     }
 
 

@@ -181,7 +181,7 @@ public class OsgiUtils
      */
     public static String getBundleExports( File bundle )
     {
-        JarFile jar;
+        JarFile jar = null;
         try
         {
             jar = new JarFile( bundle );
@@ -206,6 +206,20 @@ public class OsgiUtils
         {
             LOG.error( "Failed to open jar file or manifest.", e );
             throw new RuntimeException( "Failed to open jar file or manifest.", e );
+        }
+        finally
+        {
+            if ( jar != null )
+            {
+                try
+                {
+                    jar.close();
+                }
+                catch ( IOException e )
+                {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

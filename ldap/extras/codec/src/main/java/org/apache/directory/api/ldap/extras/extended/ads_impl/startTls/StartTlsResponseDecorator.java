@@ -33,12 +33,9 @@ import org.apache.directory.api.util.Strings;
  */
 public class StartTlsResponseDecorator extends ExtendedResponseDecorator<StartTlsResponse> implements StartTlsResponse
 {
-    private StartTlsResponse startTlsResponse;
-
     public StartTlsResponseDecorator( LdapApiService codec, StartTlsResponse decoratedMessage )
     {
         super( codec, decoratedMessage );
-        startTlsResponse = decoratedMessage;
     }
 
 

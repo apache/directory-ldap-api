@@ -124,6 +124,7 @@ public class PasswordModifyFactory implements ExtendedOperationFactory
         }
 
         // It's an opaque extended operation
+        @SuppressWarnings("unchecked")
         ExtendedResponseDecorator<ExtendedResponse> response = ( ExtendedResponseDecorator<ExtendedResponse> ) decoratedResponse;
 
         // Decode the response, as it's an opaque operation

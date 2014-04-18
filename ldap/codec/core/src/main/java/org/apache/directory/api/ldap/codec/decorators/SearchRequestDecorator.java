@@ -1127,4 +1127,40 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     {
         return ( SearchRequest ) super.removeControl( control );
     }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFollowReferrals()
+    {
+        return getDecorated().isFollowReferrals();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest followReferrals()
+    {
+        return getDecorated().followReferrals();
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isIgnoreReferrals()
+    {
+        return getDecorated().isIgnoreReferrals();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest ignoreReferrals()
+    {
+        return getDecorated().ignoreReferrals();
+    }
 }
