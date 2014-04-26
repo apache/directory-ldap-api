@@ -308,25 +308,23 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
-     * Get the smallest timeout from the client timeout and the connection
+     * Get the largest timeout from the search time limit and the connection
      * timeout.
      */
-    private long getTimeout( long clientTimeout )
+    static long getTimeout( long connectionTimoutInMS, int searchTimeLimitInSeconds )
     {
-        if ( clientTimeout <= 0 )
+        if ( searchTimeLimitInSeconds < 0 )
         {
-            return ( timeout <= 0 ) ? Long.MAX_VALUE : timeout;
+            return connectionTimoutInMS;
         }
-
-        long timeoutMs = clientTimeout * 1000L;
-
-        if ( timeout <= 0 )
+        else if ( searchTimeLimitInSeconds == 0 )
         {
-            return timeoutMs;
+            return Long.MAX_VALUE;
         }
         else
         {
-            return timeout < timeoutMs ? timeout : timeoutMs;
+            long searchTimeLimitInMS = searchTimeLimitInSeconds * 1000L;
+            return Math.max( searchTimeLimitInMS, connectionTimoutInMS );
         }
     }
 
@@ -1709,7 +1707,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         SearchFuture searchFuture = searchAsync( searchRequest );
 
-        long timeout = getTimeout( searchRequest.getTimeLimit() );
+        long timeout = getTimeout( this.timeout, searchRequest.getTimeLimit() );
 
         return new SearchCursorImpl( searchFuture, timeout, TimeUnit.MILLISECONDS );
     }
