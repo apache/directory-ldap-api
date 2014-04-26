@@ -22,6 +22,7 @@ package org.apache.directory.ldap.client.api;
 
 
 import org.apache.commons.pool.impl.GenericObjectPool;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 
 
 /**
@@ -34,6 +35,21 @@ import org.apache.commons.pool.impl.GenericObjectPool;
  */
 public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
 {
+
+    /**
+     * Instantiates a new LDAP connection pool.
+     *
+     * @param connectionConfig The connection configuration
+     * @param apiService The api service (codec)
+     * @param timeout The connection timeout in millis
+     */
+    public LdapConnectionPool( LdapConnectionConfig connectionConfig,
+        LdapApiService apiService, long timeout )
+    {
+        super( newPoolableConnectionFactory( connectionConfig, apiService, timeout ) );
+    }
+
+
     /**
      * Instantiates a new LDAP connection pool.
      *
@@ -54,6 +70,35 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
     public LdapConnection getConnection() throws Exception
     {
         return super.borrowObject();
+    }
+
+
+    /**
+     * Returns an LdapConnection from the pool that is not bound to an
+     * identity.  This type of connection is useful when you want to bind
+     * yourself for authentication/authorization purposes.
+     *
+     * @return An unbound LdapConnection from the pool
+     * @throws Exception If an error occurs while obtaining a connection 
+     * from the factory
+     */
+    public LdapConnection getUnboundConnection() throws Exception
+    {
+        LdapConnection connection = super.borrowObject();
+        connection.unBind();
+        return connection;
+    }
+
+
+    private static PoolableLdapConnectionFactory newPoolableConnectionFactory( 
+        LdapConnectionConfig connectionConfig, LdapApiService apiService, 
+        long timeout )
+    {
+        DefaultLdapConnectionFactory connectionFactory = 
+            new DefaultLdapConnectionFactory( connectionConfig );
+        connectionFactory.setLdapApiService( apiService );
+        connectionFactory.setTimeOut( timeout );
+        return new PoolableLdapConnectionFactory( connectionFactory );
     }
 
 
