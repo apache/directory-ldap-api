@@ -2633,15 +2633,8 @@ public final class DefaultEntry implements Entry
         
         if ( attributes.size() != 0 )
         {
-            boolean isFirst = true;
-
             for ( Attribute attribute : attributes.values() )
             {
-                if ( isFirst )
-                {
-                    isFirst = false;
-                }
-
                 String id = attribute.getId();
 
                 if ( schemaManager != null )
@@ -2655,6 +2648,7 @@ public final class DefaultEntry implements Entry
                     else if ( !attributeType.equals( objectClassAttributeType ) )
                     {
                         sb.append( attribute.toString( tabs + "    " ) );
+                        sb.append( '\n' );
                         continue;
                     }
                 }
