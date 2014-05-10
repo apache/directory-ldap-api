@@ -23,6 +23,9 @@ package org.apache.directory.ldap.client.api;
 
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -35,6 +38,10 @@ import org.apache.directory.api.ldap.codec.api.LdapApiService;
  */
 public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
 {
+    private static Logger LOG = LoggerFactory.getLogger( LdapConnectionPool.class );
+
+    private PoolableLdapConnectionFactory factory;
+
 
     /**
      * Instantiates a new LDAP connection pool.
@@ -58,6 +65,18 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
     public LdapConnectionPool( PoolableLdapConnectionFactory factory )
     {
         super( factory );
+        this.factory = factory;
+    }
+
+
+    /**
+     * Returns the LdapApiService instance used by this connection pool.
+     *
+     * @return The LdapApiService instance used by this connection pool.
+     */
+    public LdapApiService getLdapApiService()
+    {
+        return factory.getLdapApiService();
     }
 
 
@@ -67,9 +86,30 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
      * @return an LdapConnection object from pool
      * @throws Exception if an error occurs while obtaining a connection from the factory
      */
-    public LdapConnection getConnection() throws Exception
+    public LdapConnection getConnection() throws LdapException
     {
-        return super.borrowObject();
+        LdapConnection connection;
+        try
+        {
+            connection = super.borrowObject();
+        }
+        catch ( LdapException e )
+        {
+            throw ( e );
+        }
+        catch ( RuntimeException e )
+        {
+            throw ( e );
+        }
+        catch ( Exception e )
+        {
+            // wrap in runtime, but this should NEVER happen per published 
+            // contract as it only throws what the makeObject throws and our 
+            // PoolableLdapConnectionFactory only throws LdapException
+            LOG.error( "An unexpected exception was thrown: ", e );
+            throw new RuntimeException( e );
+        }
+        return connection;
     }
 
 
@@ -82,19 +122,19 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
      * @throws Exception If an error occurs while obtaining a connection 
      * from the factory
      */
-    public LdapConnection getUnboundConnection() throws Exception
+    public LdapConnection getUnboundConnection() throws LdapException
     {
-        LdapConnection connection = super.borrowObject();
+        LdapConnection connection = getConnection();
         connection.unBind();
         return connection;
     }
 
 
-    private static PoolableLdapConnectionFactory newPoolableConnectionFactory( 
-        LdapConnectionConfig connectionConfig, LdapApiService apiService, 
+    private static PoolableLdapConnectionFactory newPoolableConnectionFactory(
+        LdapConnectionConfig connectionConfig, LdapApiService apiService,
         long timeout )
     {
-        DefaultLdapConnectionFactory connectionFactory = 
+        DefaultLdapConnectionFactory connectionFactory =
             new DefaultLdapConnectionFactory( connectionConfig );
         connectionFactory.setLdapApiService( apiService );
         connectionFactory.setTimeOut( timeout );
@@ -108,8 +148,27 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
      * @param connection the LdapConnection to be released
      * @throws Exception if an error occurs while releasing the connection
      */
-    public void releaseConnection( LdapConnection connection ) throws Exception
+    public void releaseConnection( LdapConnection connection ) throws LdapException
     {
-        super.returnObject( connection );
+        try
+        {
+            super.returnObject( connection );
+        }
+        catch ( LdapException e )
+        {
+            throw ( e );
+        }
+        catch ( RuntimeException e )
+        {
+            throw ( e );
+        }
+        catch ( Exception e )
+        {
+            // wrap in runtime, but this should NEVER happen as it only throws 
+            // what the passivateObject throws and our 
+            // PoolableLdapConnectionFactory only throws LdapException
+            LOG.error( "An unexpected exception was thrown: ", e );
+            throw new RuntimeException( e );
+        }
     }
 }

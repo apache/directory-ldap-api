@@ -92,6 +92,13 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
 
 
     @Override
+    public LdapApiService getLdapApiService()
+    {
+        return apiService;
+    }
+
+
+    @Override
     public LdapConnection newLdapConnection() throws LdapException
     {
         return bindConnection( newUnboundLdapConnection() );

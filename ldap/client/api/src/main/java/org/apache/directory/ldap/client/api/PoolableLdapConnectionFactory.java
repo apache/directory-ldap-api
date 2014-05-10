@@ -24,6 +24,7 @@ package org.apache.directory.ldap.client.api;
 import java.io.IOException;
 
 import org.apache.commons.pool.PoolableObjectFactory;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -68,7 +69,7 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
     /**
      * {@inheritDoc}
      */
-    public void activateObject( LdapConnection connection ) throws Exception
+    public void activateObject( LdapConnection connection )
     {
         LOG.debug( "Activating {}", connection );
     }
@@ -77,7 +78,7 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
     /**
      * {@inheritDoc}
      */
-    public void destroyObject( LdapConnection connection ) throws Exception
+    public void destroyObject( LdapConnection connection ) 
     {
         LOG.debug( "Destroying {}", connection );
         try {
@@ -99,9 +100,21 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
 
 
     /**
-     * {@inheritDoc}
+     * Returns the LdapApiService instance used by this factory.
+     *
+     * @return The LdapApiService instance used by this factory
      */
-    public LdapConnection makeObject() throws Exception
+    public LdapApiService getLdapApiService()
+    {
+        return connectionFactory.getLdapApiService();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     * @throws LdapException If unable to connect.
+     */
+    public LdapConnection makeObject() throws LdapException
     {
         LOG.debug( "Creating a LDAP connection" );
         return connectionFactory.newLdapConnection();
@@ -110,8 +123,9 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
 
     /**
      * {@inheritDoc}
+     * @throws LdapException If unable to reconfigure and rebind.
      */
-    public void passivateObject( LdapConnection connection ) throws Exception
+    public void passivateObject( LdapConnection connection ) throws LdapException
     {
         LOG.debug( "Passivating {}", connection );
         

@@ -20,6 +20,7 @@
 package org.apache.directory.ldap.client.api;
 
 
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 
 
@@ -63,6 +64,14 @@ public interface LdapConnectionFactory
      * @return The supplied connection.
      */
     public abstract LdapConnection configureConnection( LdapConnection connection );
+
+
+    /**
+     * Returns the LdapApiService instance used by this factory.
+     *
+     * @return The LdapApiService instance used by this factory
+     */
+    public LdapApiService getLdapApiService();
 
 
     /**
