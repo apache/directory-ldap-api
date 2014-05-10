@@ -53,18 +53,44 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
     public LdapConnectionPool( LdapConnectionConfig connectionConfig,
         LdapApiService apiService, long timeout )
     {
-        super( newPoolableConnectionFactory( connectionConfig, apiService, timeout ) );
+        this( connectionConfig, apiService, timeout, null );    
+    }
+    
+    
+    /**
+     * Instantiates a new LDAP connection pool.
+     *
+     * @param connectionConfig The connection configuration
+     * @param apiService The api service (codec)
+     * @param timeout The connection timeout in millis
+     * @param poolConfig The pool configuration
+     */
+    public LdapConnectionPool( LdapConnectionConfig connectionConfig,
+        LdapApiService apiService, long timeout, Config poolConfig )
+    {
+        this( newPoolableConnectionFactory( connectionConfig, apiService, timeout ), poolConfig );
     }
 
 
     /**
      * Instantiates a new LDAP connection pool.
      *
-     * @param factory the LDAP connection factory
+     * @param factory The LDAP connection factory
      */
     public LdapConnectionPool( PoolableLdapConnectionFactory factory )
     {
-        super( factory );
+        this( factory, null );
+    }
+
+    /**
+     * Instantiates a new LDAP connection pool.
+     *
+     * @param factory The LDAP connection factory
+     * @param poolConfig The pool configuration
+     */
+    public LdapConnectionPool( PoolableLdapConnectionFactory factory, Config poolConfig )
+    {
+        super( factory, poolConfig == null ? new Config() : poolConfig );
         this.factory = factory;
     }
 
