@@ -64,6 +64,13 @@ import org.slf4j.LoggerFactory;
 public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFactory
 {
     private static Logger logger = LoggerFactory.getLogger( LdapConnectionTemplate.class );
+    private static final EntryMapper<Dn> dnEntryMapper = new EntryMapper<Dn>() {
+        @Override
+        public Dn map( Entry entry ) throws LdapException
+        {
+            return entry.getDn();
+        }
+    };
 
     private LdapConnectionPool connectionPool;
     private final PasswordPolicyDecorator passwordPolicyRequestControl;
@@ -138,6 +145,32 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     }
 
 
+    @Override
+    public PasswordWarning authenticate( String baseDn, String filter, SearchScope scope, char[] password ) throws PasswordException
+    {
+        return authenticate( newSearchRequest( baseDn, filter, scope ), password );
+    }
+
+
+    @Override
+    public PasswordWarning authenticate( Dn baseDn, String filter, SearchScope scope, char[] password ) throws PasswordException
+    {
+        return authenticate( newSearchRequest( baseDn, filter, scope ), password );
+    }
+    
+    
+    @Override
+    public PasswordWarning authenticate( SearchRequest searchRequest, char[] password ) throws PasswordException
+    {
+        Dn userDn = searchFirst( searchRequest, dnEntryMapper );
+        if ( userDn == null ) {
+            throw new PasswordException().setResultCode( ResultCodeEnum.INVALID_CREDENTIALS );
+        }
+        
+        return authenticate( userDn, password );
+    }
+    
+    
     @Override
     public PasswordWarning authenticate( Dn userDn, char[] password ) throws PasswordException
     {
@@ -313,6 +346,19 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
 
     }
 
+    @Override
+    public void modifyPassword( Dn userDn, char[] newPassword ) 
+        throws PasswordException
+    {
+        modifyPassword( userDn, null, newPassword, true );
+    }
+
+    @Override
+    public void modifyPassword( Dn userDn, char[] oldPassword,
+        char[] newPassword ) throws PasswordException
+    {
+        modifyPassword( userDn, oldPassword, newPassword, false );
+    }
 
     @Override
     public void modifyPassword( Dn userDn, char[] oldPassword,
@@ -530,6 +576,46 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
 
 
     @Override
+    public <T> T searchFirst( String baseDn, String filter, SearchScope scope,
+        EntryMapper<T> entryMapper )
+    {
+        return searchFirst( 
+            modelFactory.newSearchRequest( baseDn, filter, scope ), 
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
+        EntryMapper<T> entryMapper )
+    {
+        return searchFirst( 
+            modelFactory.newSearchRequest( baseDn, filter, scope ), 
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> T searchFirst( String baseDn, String filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper )
+    {
+        return searchFirst(
+            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ), 
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper )
+    {
+        return searchFirst(
+            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ), 
+            entryMapper );
+    }
+    
+    
+    @Override
     public <T> T searchFirst( SearchRequest searchRequest,
         EntryMapper<T> entryMapper )
     {
@@ -546,6 +632,46 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
         {
             searchRequest.setSizeLimit( originalSizeLimit );
         }
+    }
+
+
+    @Override
+    public <T> List<T> search( String baseDn, String filter, SearchScope scope,
+        EntryMapper<T> entryMapper )
+    {
+        return search( 
+            modelFactory.newSearchRequest( baseDn, filter, scope ), 
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> List<T> search( Dn baseDn, String filter, SearchScope scope,
+        EntryMapper<T> entryMapper )
+    {
+        return search( 
+            modelFactory.newSearchRequest( baseDn, filter, scope ), 
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> List<T> search( String baseDn, String filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper )
+    {
+        return search(
+            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ), 
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> List<T> search( Dn baseDn, String filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper )
+    {
+        return search(
+            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ), 
+            entryMapper );
     }
 
 

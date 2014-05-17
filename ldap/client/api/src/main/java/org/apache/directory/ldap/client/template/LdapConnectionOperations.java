@@ -32,6 +32,7 @@ import org.apache.directory.api.ldap.model.message.ModifyResponse;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.ResultResponse;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
+import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.ldap.client.template.exception.LdapRequestUnsuccessfulException;
 import org.apache.directory.ldap.client.template.exception.PasswordException;
@@ -77,6 +78,63 @@ public interface LdapConnectionOperations
      * @return An AddResponse
      */
     public abstract AddResponse add( Dn dn, RequestBuilder<AddRequest> requestBuilder );
+
+
+    /**
+     * Attempts to authenticate the supplied credentials against the first 
+     * entry found matching the search criteria.  If authentication fails, 
+     * a PasswordException is thrown.  If successful, the response is 
+     * checked for warnings, and if present, a PasswordWarning is returned.
+     * Otherwise, null is returned.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param password
+     * @return
+     * @throws PasswordException
+     * @see {@link #authenticate(Dn, char[])}
+     * @see {@link #searchFirst(String, String, SearchScope, EntryMapper)}
+     */
+    public PasswordWarning authenticate( String baseDn, String filter, SearchScope scope, char[] password ) throws PasswordException;
+
+
+    /**
+     * Attempts to authenticate the supplied credentials against the first 
+     * entry found matching the search criteria.  If authentication fails, 
+     * a PasswordException is thrown.  If successful, the response is 
+     * checked for warnings, and if present, a PasswordWarning is returned.
+     * Otherwise, null is returned.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param password
+     * @return
+     * @throws PasswordException
+     * @see {@link #authenticate(Dn, char[])}
+     * @see {@link #searchFirst(Dn, String, SearchScope, EntryMapper)}
+     */
+    public PasswordWarning authenticate( Dn baseDn, String filter, SearchScope scope, char[] password ) throws PasswordException;
+    
+    
+    /**
+     * Attempts to authenticate the supplied credentials against the first 
+     * entry found matching the search criteria.  If authentication fails, 
+     * a PasswordException is thrown.  If successful, the response is 
+     * checked for warnings, and if present, a PasswordWarning is returned.
+     * Otherwise, null is returned.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param password
+     * @return
+     * @throws PasswordException
+     * @see {@link #authenticate(Dn, char[])}
+     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     */
+    public PasswordWarning authenticate( SearchRequest searchRequest, char[] password ) throws PasswordException;
 
 
     /**
@@ -156,6 +214,33 @@ public interface LdapConnectionOperations
 
 
     /**
+     * Modifies the password for <code>userDn</code> to
+     * <code>newPassword</code> using the admin account.
+     *
+     * @param userDn
+     * @param newPassword
+     * @throws PasswordException
+     * @see {@link #modifyPassword(Dn, char[], char[], boolean)}
+     */
+    public void modifyPassword( Dn userDn, char[] newPassword ) 
+        throws PasswordException;
+
+
+    /**
+     * Modifies the password for <code>userDn</code> from 
+     * <code>oldPassword</code> to <code>newPassword</code>.
+     *
+     * @param userDn
+     * @param oldPassword
+     * @param newPassword
+     * @throws PasswordException
+     * @see {@link #modifyPassword(Dn, char[], char[], boolean)}
+     */
+    public void modifyPassword( Dn userDn, char[] oldPassword,
+        char[] newPassword ) throws PasswordException;
+
+
+    /**
      * Modifies the password for <code>userDn</code> from 
      * <code>oldPassword</code> to <code>newPassword</code>, optionally using
      * an admin account.  If <code>asAdmin</code> is true, then the operation
@@ -206,8 +291,149 @@ public interface LdapConnectionOperations
      * @throws LdapRequestUnsuccessfulException If the response is not
      * {@link ResultCodeEnum#SUCCESS}
      */
-    public <T extends ResultResponse> T responseOrException( T response );
+    public abstract <T extends ResultResponse> T responseOrException( T response );
 
+
+    /**
+     * Searches for the entries matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #search(SearchRequest, EntryMapper)}
+     */
+    public abstract <T> List<T> search( String baseDn, String filter, SearchScope scope,
+        EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the entries matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #search(SearchRequest, EntryMapper)}
+     */
+    public abstract <T> List<T> search( Dn baseDn, String filter, SearchScope scope,
+        EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the entries matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>, querying only the requested 
+     * attributes.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param attributes
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #search(SearchRequest, EntryMapper)}
+     */
+    public abstract <T> List<T> search( String baseDn, String filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the entries matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>, querying only the requested 
+     * attributes.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param attributes
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #search(SearchRequest, EntryMapper)}
+     */
+    public abstract <T> List<T> search( Dn baseDn, String filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the entries matching the supplied 
+     * <code>searchRequest</code>, feeding the result into the 
+     * <code>entryMapper</code>.
+     *
+     * @param searchRequest The search request
+     * @param entryMapper The mapper
+     * @return The mapped entries
+     */
+    public abstract <T> List<T> search( SearchRequest searchRequest,
+        EntryMapper<T> entryMapper );
+    
+    
+    /**
+     * Searches for the first entry matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     */
+    public abstract <T> T searchFirst( String baseDn, String filter, SearchScope scope,
+        EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the first entry matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     */
+    public abstract <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
+        EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the first entry matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>, querying only the requested 
+     * attributes.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param attributes
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     */
+    public abstract <T> T searchFirst( String baseDn, String filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the first entry matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>, querying only the requested 
+     * attributes.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param attributes
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     */
+    public abstract <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper );
+    
 
     /**
      * Searches for the first entry matching the supplied 
@@ -223,19 +449,6 @@ public interface LdapConnectionOperations
      * @return The mapped entry
      */
     public abstract <T> T searchFirst( SearchRequest searchRequest,
-        EntryMapper<T> entryMapper );
-
-
-    /**
-     * Searches for the entries matching the supplied 
-     * <code>searchRequest</code>, feeding the result into the 
-     * <code>entryMapper</code>.
-     *
-     * @param searchRequest The search request
-     * @param entryMapper The mapper
-     * @return The mapped entries
-     */
-    public abstract <T> List<T> search( SearchRequest searchRequest,
         EntryMapper<T> entryMapper );
 
 }
