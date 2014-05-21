@@ -191,11 +191,11 @@ public class DnParserTest
     public void testLdapDNPairCharAttributeValue() throws LdapException
     {
         Dn dn = new Dn( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C3\\A9" );
-        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\\C3\\A9", dn.getNormName() );
+        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\u00e9", dn.getNormName() );
         assertEquals( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C3\\A9", dn.getName() );
 
         dn = new Dn( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\u00e9" );
-        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\\C3\\A9", dn.getNormName() );
+        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\u00e9", dn.getNormName() );
         assertEquals( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\u00e9", dn.getName() );
     }
 
@@ -282,8 +282,8 @@ public class DnParserTest
 
         Dn name = new Dn( dn );
 
-        assertEquals( dn, name.getName() );
-        assertEquals( "cn=Emmanuel  L\\C3\\A9charny", name.getNormName() );
+        assertEquals( "CN = Emmanuel  L\u00e9charny", name.getName() );
+        assertEquals( "cn=Emmanuel  L\u00e9charny", name.getNormName() );
     }
 
 
@@ -295,8 +295,8 @@ public class DnParserTest
 
         Dn name = new Dn( dn );
 
-        assertEquals( dn, name.getName() );
-        assertEquals( "c=E\\C3\\A9c", name.getNormName() );
+        assertEquals( "C= E\u00e9c", name.getName() );
+        assertEquals( "c=E\u00e9c", name.getNormName() );
     }
 
 
@@ -547,7 +547,7 @@ public class DnParserTest
 
         String result = new Dn( cn ).toString();
 
-        assertEquals( "cn=\u0130\u0131\u015E\u015F\u00D6\u00F6\u00DC\u00FC\u011E\u011F", result.toString() );
+        assertEquals( "cn=\u0130\u0131\u015E\u015F\u00D6\u00F6\u00DC\u00FC\u011E\u011F", result );
     }
 
 
@@ -557,9 +557,10 @@ public class DnParserTest
         String cn = new String( new byte[]
             { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0x84, 0x5C, 0x32, 0x42 }, "UTF-8" );
 
-        String result = new Dn( cn ).getNormName();
+        Dn dn = new Dn( cn );
 
-        assertEquals( "cn=\\C3\\84\\+", result );
+        assertEquals( "cn=\u00c4\\2B", dn.getName() );
+        assertEquals( "cn=\u00c4\\+", dn.getNormName() );
     }
 
 
@@ -569,9 +570,10 @@ public class DnParserTest
         String cn = new String( new byte[]
             { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0xA4, '\\', '+' }, "UTF-8" );
 
-        String result = new Dn( cn ).toString();
+        Dn dn = new Dn( cn );
 
-        assertEquals( "cn=\u00E4\\+", result );
+        assertEquals( "cn=\u00E4\\+", dn.getName() );
+        assertEquals( "cn=\u00E4\\+", dn.getNormName() );
     }
 
 

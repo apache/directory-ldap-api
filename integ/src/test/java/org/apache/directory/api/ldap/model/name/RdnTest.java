@@ -61,7 +61,7 @@ public class RdnTest
             errors += "\nRdn.getName fails '" + rdn.getName() + "'";
         }
         
-        if ( !"ou=Exemple \\+ Rdn\\C3\\A4\\ +cn=TEST" .equals( rdn.getNormName() ) )
+        if ( !"ou=Exemple \\+ Rdn\u00E4\\ +cn=TEST" .equals( rdn.getNormName() ) )
         {
             errors = "\nRdn.getNormName fails '" + rdn.getNormName() + "'";
         }
@@ -117,7 +117,7 @@ public class RdnTest
             errors += "\nRdn.getName fails '" + rdn.getName() + "'";
         }
         
-        if ( !"2.5.4.11=exemple \\+ rdn\\C3\\A4+2.5.4.3=test" .equals( rdn.getNormName() ) )
+        if ( !"2.5.4.11=exemple \\+ rdn\u00E4+2.5.4.3=test" .equals( rdn.getNormName() ) )
         {
             errors = "\nRdn.getNormName fails '" + rdn.getNormName() + "'";
         }

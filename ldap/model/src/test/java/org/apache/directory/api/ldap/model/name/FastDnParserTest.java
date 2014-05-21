@@ -412,8 +412,8 @@ public class FastDnParserTest
 
         Dn name = FastDnParser.parse( dn );
 
-        assertEquals( dn, name.getName() );
-        assertEquals( "cn=Emmanuel  L\\C3\\A9charny", name.getNormName() );
+        assertEquals( "CN = Emmanuel  L\u00e9charny", name.getName() );
+        assertEquals( "cn=Emmanuel  L\u00e9charny", name.getNormName() );
     }
 
 
@@ -425,8 +425,8 @@ public class FastDnParserTest
 
         Dn name = FastDnParser.parse( dn );
 
-        assertEquals( dn, name.getName() );
-        assertEquals( "c=E\\C3\\A9c", name.getNormName() );
+        assertEquals( "C= E\u00e9c", name.getName() );
+        assertEquals( "c=E\u00e9c", name.getNormName() );
     }
 
 

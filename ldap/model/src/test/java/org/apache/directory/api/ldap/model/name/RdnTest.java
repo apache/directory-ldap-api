@@ -228,7 +228,7 @@ public class RdnTest
         String rdn = Strings.utf8ToString( new byte[]
             { 'a', '=', '\\', ',', '\\', '=', '\\', '+', '\\', '<', '\\', '>', '#', '\\', ';', '\\', '\\', '\\', '"', '\\',
                 'C', '3', '\\', 'A', '9' } );
-        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\\C3\\A9", new Rdn( rdn ).getNormName() );
+        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\u00e9", new Rdn( rdn ).getNormName() );
     }
 
 
@@ -910,6 +910,16 @@ public class RdnTest
         // hash must be escaped at the beginning of a string
         assertEquals( "\\#a#b", Rdn.escapeValue( "#a#b" ) );
         assertEquals( "\\##a#b", Rdn.escapeValue( "##a#b" ) );
+
+        // other characters that need to be escaped
+        // '"', '+', ',', ';', '<', '>', '\', the null (U+0000) character
+        assertEquals( "\\\"\\+\\,\\;\\<\\>\\\\\\00", Rdn.escapeValue( "\"+,;<>\\\u0000" ) );
+
+        // unicode characters don't need to be escaped
+        // \u00e9 - e with acute - 2 bytes in UTF-8
+        // \u20ac - Euro character - 3 bytes in UTF-8
+        // \uD83D\uDE08 - Smiley - 4 bytes in UTF-8
+        assertEquals( "\u00e9\u20AC\uD83D\uDE08", Rdn.escapeValue( "\u00e9\u20AC\uD83D\uDE08" ) );
     }
 
 
@@ -1233,5 +1243,29 @@ public class RdnTest
     public void testWrongRdnAtUsedTwice() throws LdapException
     {
         new Rdn( " A = b + A = d " );
+    }
+
+
+    @Test
+    public void testAvaConstructor() throws LdapInvalidDnException
+    {
+        Rdn rdn = new Rdn( new Ava( "CN", "\u00E4" ), new Ava( "A", "d" ) );
+        assertEquals( "CN=\u00E4+A=d", rdn.getName() );
+        assertEquals( "cn=\u00E4+a=d", rdn.getNormName() );
+        assertEquals( "\u00E4", rdn.getValue( "CN" ) );
+        assertEquals( "\u00E4", rdn.getValue().getValue() );
+        assertEquals( "\u00E4", rdn.getNormValue().getValue() );
+        assertEquals( "CN", rdn.getType() );
+        assertEquals( "cn", rdn.getNormType() );
+    }
+
+
+    /**
+     * test that a RDN with an attributeType used twice throws an exception
+     */
+    @Test(expected = LdapInvalidDnException.class)
+    public void testAvaConstructorWrongRdnAtUsedTwice() throws LdapException
+    {
+        new Rdn( new Ava( "A", "b" ), new Ava( "A", "d" ) );
     }
 }
