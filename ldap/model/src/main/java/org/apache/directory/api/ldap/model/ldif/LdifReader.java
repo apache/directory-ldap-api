@@ -231,10 +231,10 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     protected long entryOffset = 0;
 
     /** the current offset of the reader */
-    private long offset = 0;
+    protected long offset = 0;
 
     /** the numer of the current line being parsed by the reader */
-    private int lineNumber;
+    protected int lineNumber;
 
     /**
      * Constructors
@@ -463,7 +463,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * @param line The line which contains the changeType
      * @return The operation.
      */
-    private ChangeType parseChangeType( String line )
+    protected ChangeType parseChangeType( String line )
     {
         ChangeType operation = ChangeType.Add;
 
@@ -501,7 +501,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * @return A Dn
      * @throws LdapLdifException If the Dn is invalid
      */
-    private String parseDn( String line ) throws LdapLdifException
+    protected String parseDn( String line ) throws LdapLdifException
     {
         String dn;
 
@@ -1453,7 +1453,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * @return A number representing the version (default to 1)
      * @throws LdapLdifException If the version is incorrect or if the input is incorrect
      */
-    private int parseVersion() throws LdapLdifException
+    protected int parseVersion() throws LdapLdifException
     {
         int ver = DEFAULT_VERSION;
 
