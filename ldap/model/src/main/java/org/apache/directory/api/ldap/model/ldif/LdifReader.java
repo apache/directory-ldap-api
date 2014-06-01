@@ -1315,7 +1315,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         Dn dn = new Dn( name );
 
         // Ok, we have found a Dn
-        LdifEntry entry = new LdifEntry();
+        LdifEntry entry = createLdifEntry();
         entry.setLengthBeforeParsing( entryLen );
         entry.setOffset( entryOffset );
 
@@ -1976,6 +1976,16 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     }
 
 
+    /**
+     * creates a non-schemaaware LdifEntry
+     * @return an LdifEntry that is not schemaaware
+     */
+    protected LdifEntry createLdifEntry()
+    {
+        return new LdifEntry();
+    }
+    
+    
     /**
      * {@inheritDoc}
      */
