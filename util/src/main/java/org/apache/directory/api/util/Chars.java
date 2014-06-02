@@ -168,7 +168,7 @@ public final class Chars
             false, false, false, false, false, false, false, false };
 
 
-    /* *
+    /**
     * Test if the current character is equal to a specific character.
     *
     * @param chars The buffer which contains the data
