@@ -38,118 +38,13 @@ public class Hex
     public static final byte[] HEX_VALUE =
         {
             -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 00 -> 0F
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1, // 10 -> 1F
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1, // 20 -> 2F
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1, // 30 -> 3F ( 0, 1,2, 3, 4,5, 6, 7, 8, 9 )
-            -1,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1, // 40 -> 4F ( A, B, C, D, E, F )
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1, // 50 -> 5F
-            -1,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1, // 60 -> 6F ( a, b, c, d, e, f )
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1, // 70 -> 7F
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 10 -> 1F
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 20 -> 2F
+             0,  1,  2,  3,  4,  5,  6,  7,  8,  9, -1, -1, -1, -1, -1, -1, // 30 -> 3F ( 0, 1,2, 3, 4,5, 6, 7, 8, 9 )
+            -1, 10, 11, 12, 13, 14, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 40 -> 4F ( A, B, C, D, E, F )
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 50 -> 5F
+            -1, 10, 11, 12, 13, 14, 15, -1, -1, -1, -1, -1, -1, -1, -1, -1, // 60 -> 6F ( a, b, c, d, e, f )
+            -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1  // 70 -> 7F
         };
 
     /** Used to build output as Hex */
@@ -196,7 +91,7 @@ public class Hex
 
 
     /**
-     * Return an hex value from a sinle char
+     * Return an hex value from a single char
      * The char must be in [0-9a-fA-F]
      *
      * @param c The char we want to convert
@@ -305,12 +200,12 @@ public class Hex
 
     /**
      * Converts an array of bytes into an array of characters representing the
-     * hexidecimal values of each byte in order. The returned array will be
+     * hexadecimal values of each byte in order. The returned array will be
      * double the length of the passed array, as it takes two characters to
      * represent any given byte.
      *
      * @param data a byte[] to convert to Hex characters
-     * @return A char[] containing hexidecimal characters
+     * @return A char[] containing hexadecimal characters
      */
     public static char[] encodeHex( byte[] data )
     {
