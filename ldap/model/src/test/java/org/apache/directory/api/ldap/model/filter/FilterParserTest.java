@@ -1146,4 +1146,45 @@ public class FilterParserTest
         assertEquals( "jagplayUserGroup", ( ( EqualityNode<?> ) notNodeChild1 ).getAttribute() );
         assertEquals( "Banned", ( ( EqualityNode<?> ) notNodeChild1 ).getValue().getString() );
     }
+
+
+    @Test
+    public void testEqualsFilterWithUnderscoreRelaxed() throws ParseException
+    {
+        String str = "(a_b_=people)";
+        SimpleNode<?> node = ( SimpleNode<?> ) FilterParser.parse( str, true );
+        assertEquals( "a_b_", node.getAttribute() );
+        assertEquals( "people", node.getValue().getString() );
+        assertTrue( node instanceof EqualityNode );
+        String str2 = node.toString();
+        assertEquals( str, str2 );
+    }
+
+
+    @Test(expected = ParseException.class)
+    public void testEqualsFilterWithUnderscoreNotRelaxed() throws ParseException
+    {
+        String str = "(a_b_=people)";
+        FilterParser.parse( str, false );
+    }
+
+
+    @Test
+    public void testAndFilterWithUnderscoreRelaxed() throws ParseException
+    {
+        String str = "(&(o_u~=people)(a_g_e>=30))";
+        BranchNode node = ( BranchNode ) FilterParser.parse( str, true );
+        assertEquals( 2, node.getChildren().size() );
+        assertTrue( node instanceof AndNode );
+        String str2 = node.toString();
+        assertEquals( str, str2 );
+    }
+
+
+    @Test(expected = ParseException.class)
+    public void testAndFilterWithUnderscoreNotRelaxed() throws ParseException
+    {
+        String str = "(&(o_u~=people)(a_g_e>=30))";
+        FilterParser.parse( str, false );
+    }
 }

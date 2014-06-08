@@ -898,4 +898,26 @@ public final class Chars
             }
         }
     }
+    
+    /**
+     * Check if the current character is the ASCII character underscore 0x5F.
+     *
+     * @param bytes The buffer which contains the data
+     * @param index Current position in the buffer
+     * @return <code>true</code> if the current character is a the underscore
+     */
+    public static boolean isUnderscore( byte[] bytes, int index )
+    {
+        if ( ( bytes == null ) || ( bytes.length == 0 ) || ( index < 0 ) || ( index >= bytes.length ) )
+        {
+            return false;
+        }
+        else
+        {
+            byte c = bytes[index];
+
+            return c == 0x5F;
+        }
+    }
+
 }
