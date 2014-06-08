@@ -1488,7 +1488,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         {
             FastDnParser.parseRdn( dn, rdn );
         }
-        catch ( TooComplexException e )
+        catch ( TooComplexDnException e )
         {
             rdn.clear();
             new ComplexDnParser().parseRdn( dn, rdn );

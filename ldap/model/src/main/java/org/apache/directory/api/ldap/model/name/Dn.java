@@ -1367,7 +1367,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
         {
             FastDnParser.parseDn( name, rdns );
         }
-        catch ( TooComplexException e )
+        catch ( TooComplexDnException e )
         {
             rdns.clear();
             new ComplexDnParser().parseDn( name, rdns );

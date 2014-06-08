@@ -24,24 +24,34 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 
 
 /**
- * This exception is used to signal, that the complex parser should be used.
+ * This exception is used to signal that the complex parser should be used.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class TooComplexException extends LdapInvalidDnException
+public class TooComplexDnException extends LdapInvalidDnException
 {
+    // The defualt serila version ID
     private static final long serialVersionUID = 4854240181901296414L;
+    
+    /** An instance of this exception to avoid creation a new one every time we need it */
+    public static final TooComplexDnException INSTANCE = new TooComplexDnException();
 
-
-    public TooComplexException()
+    /**
+     * Creates a new instance of TooComplexException.
+     */
+    public TooComplexDnException()
     {
         super( ( String ) null );
     }
 
 
-    public TooComplexException( String message )
+    /**
+     * Creates a new instance of TooComplexException.
+     * 
+     * @param message The associated message 
+     */
+    public TooComplexDnException( String message )
     {
         super( message );
     }
-
 }
