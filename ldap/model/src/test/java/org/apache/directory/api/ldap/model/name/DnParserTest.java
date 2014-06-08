@@ -110,6 +110,30 @@ public class DnParserTest
 
 
     /**
+     * Test an attributeType with '_' (some vendors allow that)
+     */
+    @Test
+    public void testAttributeTypeWithUnderscore() throws LdapException
+    {
+        Dn dn = new Dn( "a_a = b + c_c = d" );
+        assertEquals( "a_a=b+c_c=d", dn.getNormName() );
+        assertEquals( "a_a = b + c_c = d", dn.getName() );
+    }
+
+
+    /**
+     * Test DN with '_' in value, because of special handling in Antlr grammar.
+     */
+    @Test
+    public void testAttributeValueWithUnderscore() throws LdapException
+    {
+        Dn dn = new Dn( "cn=\\#ACL_AD-Projects_Author,ou=Notes_Group,o=Contacts,c=DE" );
+        assertEquals( "cn=\\#ACL_AD-Projects_Author,ou=Notes_Group,o=Contacts,c=DE", dn.getNormName() );
+        assertEquals( "cn=\\#ACL_AD-Projects_Author,ou=Notes_Group,o=Contacts,c=DE", dn.getName() );
+    }
+
+
+    /**
      * test a simple Dn with multiple NameComponents : a = b + c = d
      */
     @Test
