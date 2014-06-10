@@ -1297,7 +1297,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * @return the parsed ldifEntry
      * @exception LdapException If the ldif file does not contain a valid entry
      */
-    private LdifEntry parseEntry() throws LdapException
+    protected LdifEntry parseEntry() throws LdapException
     {
         if ( ( lines == null ) || ( lines.size() == 0 ) )
         {
