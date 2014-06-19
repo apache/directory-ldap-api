@@ -236,6 +236,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     /** the numer of the current line being parsed by the reader */
     protected int lineNumber;
 
+    /** flag to turn on/off of the DN validation. By default DNs are validated after parsing */
+    protected boolean validateDn = true;
+    
     /**
      * Constructors
      */
@@ -554,7 +557,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         }
 
         // Check that the Dn is valid. If not, an exception will be thrown
-        if ( !Dn.isValid( dn ) )
+        if ( validateDn && !Dn.isValid( dn ) )
         {
             String message = I18n.err( I18n.ERR_12017_INVALID_DN, dn );
             LOG.error( message );
@@ -1985,7 +1988,26 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         return new LdifEntry();
     }
     
-    
+    /**
+     * @return true if the DN validation is turned on
+     */
+    public boolean isValidateDn()
+    {
+        return validateDn;
+    }
+
+
+    /**
+     * Turns on/off the DN validation
+     * 
+     * @param validateDn the boolean flag
+     */
+    public void setValidateDn( boolean validateDn )
+    {
+        this.validateDn = validateDn;
+    }
+
+
     /**
      * {@inheritDoc}
      */
