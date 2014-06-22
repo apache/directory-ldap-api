@@ -623,7 +623,7 @@ public class LdapUrl
     {
         int start = pos;
         
-        while ( !Chars.isCharASCII( chars, pos, ':' ) && !Chars.isCharASCII( chars, pos, '/' ) )
+        while ( !Chars.isCharASCII( chars, pos, ':' ) && !Chars.isCharASCII( chars, pos, '/' ) && ( pos < chars.length ) )
         {
             switch ( chars[pos] )
             {
