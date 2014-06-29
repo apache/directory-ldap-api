@@ -33,10 +33,22 @@ import org.apache.directory.api.ldap.model.message.Control;
  *     criticality             TRUE
  * }
  * 
+ * the control value can be one of the two structures :
+ * 
+ * Client side :
  * realReplControlValue ::= SEQUENCE {
  *     parentsFirst            integer
  *     maxReturnLength         integer
  *     cookie                  OCTET STRING
+ * }
+ * 
+ * or
+ * 
+ * server side :
+ * realReplControlValue ::= SEQUENCE {
+ *     flag                  integer
+ *     maxReturnLength       integer
+ *     cookie                OCTET STRING
  * }
  * </pre> 
  *
@@ -83,4 +95,22 @@ public interface AdDirSync extends Control
      * for the first control.
      */
     void setCookie( byte[] cookie );
+    
+    
+    /**
+     * @return The flag returned by the server. One of :
+     * <ul>
+     * <li>LDAP_DIRSYNC_OBJECT_SECURITY (0x0001)</li>
+     * <li>LDAP_DIRSYNC_ANCESTORS_FIRST_ORDER (0x0800)</li>
+     * <li>LDAP_DIRSYNC_PUBLIC_DATA_ONLY (0x2000)(</li>
+     * <li>LDAP_DIRSYNC_INCREMENTAL_VALUES (0x7FFFFFFF)</li>
+     * </ul>
+     */
+    AdDirSyncFlag getFlag();
+    
+    
+    /**
+     * @param flag The flag. 
+     */
+    void setFlag( AdDirSyncFlag flag );
 }

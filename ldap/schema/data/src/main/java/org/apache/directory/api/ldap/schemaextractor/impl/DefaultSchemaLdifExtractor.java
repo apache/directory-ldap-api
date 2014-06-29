@@ -209,9 +209,11 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
 
         FileWriter out = new FileWriter( destination );
 
+        LdifReader ldifReader = null;
+        
         try
         {
-            LdifReader ldifReader = new LdifReader( source );
+            ldifReader = new LdifReader( source );
             boolean first = true;
             LdifEntry ldifEntry = null;
 
@@ -239,8 +241,6 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
                 }
             }
 
-            ldifReader.close();
-
             // Add the version at the first line, to avoid a warning
             String ldifString = "version: 1\n" + ldifEntry.toString();
 
@@ -261,6 +261,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
         }
         finally
         {
+            ldifReader.close();
             out.close();
         }
     }

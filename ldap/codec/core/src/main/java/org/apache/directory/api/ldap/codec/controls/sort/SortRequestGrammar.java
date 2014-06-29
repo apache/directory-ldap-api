@@ -49,9 +49,10 @@ public class SortRequestGrammar extends AbstractGrammar<SortRequestContainer>
     static final boolean IS_DEBUG = LOG.isDebugEnabled();
 
     /** The instance of grammar. SortRequestGrammar is a singleton */
-    private static Grammar<?> instance = new SortRequestGrammar();
+    private static Grammar<SortRequestContainer> instance = new SortRequestGrammar();
 
 
+    @SuppressWarnings("unchecked")
     private SortRequestGrammar()
     {
         setName( SortRequestGrammar.class.getName() );

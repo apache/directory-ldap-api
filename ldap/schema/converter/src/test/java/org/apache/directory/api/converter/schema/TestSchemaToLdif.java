@@ -543,6 +543,23 @@ public class TestSchemaToLdif
 
 
     @Test
+    public void testConvertATDesWithEscapedChars() throws ParserException, IOException
+    {
+        String expected =
+            HEADER +
+                "dn: m-oid=1.3.6.1.4.1.18060.0.4.2.3.14, ou=attributetypes, cn=testATDescWithEsca\n" +
+                " ped, ou=schema\n" +
+                "objectclass: metaAttributeType\n" +
+                "objectclass: metaTop\n" +
+                "objectclass: top\n" +
+                "m-oid: 1.3.6.1.4.1.18060.0.4.2.3.14\n" +
+                "m-description: Some 'escaped' chars\n\n";
+
+        assertEquals( expected, transform( "testATDescWithEscaped" ) );
+    }
+
+
+    @Test
     public void testConvertATObsolete() throws ParserException, IOException
     {
         String expected =

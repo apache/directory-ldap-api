@@ -6,16 +6,16 @@
  *  to you under the Apache License, Version 2.0 (the
  *  "License"); you may not use this file except in compliance
  *  with the License.  You may obtain a copy of the License at
- * 
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing,
  *  software distributed under the License is distributed on an
  *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- * 
+ *
  */
 package org.apache.directory.api.ldap.model.filter;
 
@@ -54,13 +54,13 @@ public class FilterParser
 
     /**
      * Parse an extensible
-     * 
+     *
      * extensible     = ( attr [":dn"] [':' oid] ":=" assertionvalue )
      *                  / ( [":dn"] ':' oid ":=" assertionvalue )
      * matchingrule   = ":" oid
      */
-    private static ExprNode parseExtensible( SchemaManager schemaManager, String attribute, byte[] filter, Position pos )
-        throws LdapException, ParseException
+    private static ExprNode parseExtensible( SchemaManager schemaManager, String attribute, byte[] filter,
+        Position pos, boolean relaxed ) throws LdapException, ParseException
     {
         ExtensibleNode node = null;
 
@@ -113,7 +113,7 @@ public class FilterParser
                 }
                 else
                 {
-                    String matchingRuleId = AttributeUtils.parseAttribute( filter, pos, false );
+                    String matchingRuleId = AttributeUtils.parseAttribute( filter, pos, false, relaxed );
 
                     node.setMatchingRuleId( matchingRuleId );
 
@@ -174,7 +174,7 @@ public class FilterParser
                 }
                 else
                 {
-                    String matchingRuleId = AttributeUtils.parseAttribute( filter, pos, false );
+                    String matchingRuleId = AttributeUtils.parseAttribute( filter, pos, false, relaxed );
 
                     node.setMatchingRuleId( matchingRuleId );
 
@@ -214,7 +214,7 @@ public class FilterParser
      * UTF2           = %xC2-DF UTF0
      * UTF3           = %xE0 %xA0-BF UTF0 / %xE1-EC UTF0 UTF0 / %xED %x80-9F UTF0 / %xEE-EF UTF0 UTF0
      * UTF4           = %xF0 %x90-BF UTF0 UTF0 / %xF1-F3 UTF0 UTF0 UTF0 / %xF4 %x80-8F UTF0 UTF0
-     * 
+     *
      * With the specific constraints (RFC 4515):
      *    "The <valueencoding> rule ensures that the entire filter string is a"
      *    "valid UTF-8 string and provides that the octets that represent the"
@@ -222,10 +222,10 @@ public class FilterParser
      *    "0x29), "\" (ASCII 0x5c), and NUL (ASCII 0x00) are represented as a"
      *    "backslash "\" (ASCII 0x5c) followed by the two hexadecimal digits"
      *    "representing the value of the encoded octet."
-     * 
+     *
      * The incoming String is already transformed from UTF-8 to unicode, so we must assume that the
      * grammar we have to check is the following :
-     * 
+     *
      * assertionvalue = valueencoding
      * valueencoding  = 0*(normal / escaped)
      * normal         = unicodeSubset
@@ -422,20 +422,20 @@ public class FilterParser
 
     /**
      * Here is the grammar to parse :
-     * 
+     *
      * simple    ::= '=' assertionValue
      * present   ::= '=' '*'
      * substring ::= '=' [initial] any [final]
      * initial   ::= assertionValue
      * any       ::= '*' ( assertionValue '*')*
-     * 
+     *
      * As we can see, there is an ambiguity in the grammar : attr=* can be
      * seen as a present or as a substring. As stated in the RFC :
-     * 
+     *
      * "Note that although both the <substring> and <present> productions in"
      * "the grammar above can produce the "attr=*" construct, this construct"
      * "is used only to denote a presence filter." (RFC 4515, 3)
-     * 
+     *
      * We have also to consider the difference between a substring and the
      * equality node : this last node does not contain a '*'
      *
@@ -549,13 +549,13 @@ public class FilterParser
      * extensible     = ( attr [":dn"] [':' oid] ":=" assertionvalue )
      *                  / ( [":dn"] ':' oid ":=" assertionvalue )
      * matchingrule   = ":" oid
-     * 
+     *
      * An item starts with an attribute or a colon.
      */
     @SuppressWarnings(
         { "rawtypes", "unchecked" })
-    private static ExprNode parseItem( SchemaManager schemaManager, byte[] filter, Position pos, byte b )
-        throws ParseException, LdapException
+    private static ExprNode parseItem( SchemaManager schemaManager, byte[] filter, Position pos, byte b,
+        boolean relaxed ) throws ParseException, LdapException
     {
         String attribute = null;
 
@@ -567,12 +567,12 @@ public class FilterParser
         if ( b == ':' )
         {
             // If we have a colon, then the item is an extensible one
-            return parseExtensible( schemaManager, null, filter, pos );
+            return parseExtensible( schemaManager, null, filter, pos, relaxed );
         }
         else
         {
             // We must have an attribute
-            attribute = AttributeUtils.parseAttribute( filter, pos, true );
+            attribute = AttributeUtils.parseAttribute( filter, pos, true, relaxed );
 
             // Now, we may have a present, substring, simple or an extensible
             b = Strings.byteAt( filter, pos.start );
@@ -685,7 +685,7 @@ public class FilterParser
                 case ':':
                     // An extensible node
                     pos.start++;
-                    return parseExtensible( schemaManager, attribute, filter, pos );
+                    return parseExtensible( schemaManager, attribute, filter, pos, relaxed );
 
                 default:
                     // This is an error
@@ -697,22 +697,22 @@ public class FilterParser
 
     /**
      * Parse AND, OR and NOT nodes :
-     * 
+     *
      * and            = '&' filterlist
      * or             = '|' filterlist
      * not            = '!' filter
      * filterlist     = 1*filter
-     * 
+     *
      * @return
      */
-    private static ExprNode parseBranchNode( SchemaManager schemaManager, ExprNode node, byte[] filter, Position pos )
-        throws ParseException, LdapException
+    private static ExprNode parseBranchNode( SchemaManager schemaManager, ExprNode node, byte[] filter, Position pos,
+        boolean relaxed ) throws ParseException, LdapException
     {
         BranchNode branchNode = ( BranchNode ) node;
         int nbChildren = 0;
 
         // We must have at least one filter
-        ExprNode child = parseFilterInternal( schemaManager, filter, pos );
+        ExprNode child = parseFilterInternal( schemaManager, filter, pos, relaxed );
 
         if ( child != UndefinedNode.UNDEFINED_NODE )
         {
@@ -732,7 +732,7 @@ public class FilterParser
         }
 
         // Now, iterate recusively though all the remaining filters, if any
-        while ( ( child = parseFilterInternal( schemaManager, filter, pos ) ) != UndefinedNode.UNDEFINED_NODE )
+        while ( ( child = parseFilterInternal( schemaManager, filter, pos, relaxed ) ) != UndefinedNode.UNDEFINED_NODE )
         {
             // Add the child to the node children if not null
             if ( child != null )
@@ -771,8 +771,8 @@ public class FilterParser
      *                    / ( [dnattrs]
      *                         matchingrule COLON EQUALS assertionvalue )
      */
-    private static ExprNode parseFilterComp( SchemaManager schemaManager, byte[] filter, Position pos )
-        throws ParseException, LdapException
+    private static ExprNode parseFilterComp( SchemaManager schemaManager, byte[] filter, Position pos,
+        boolean relaxed ) throws ParseException, LdapException
     {
         ExprNode node = null;
 
@@ -789,26 +789,26 @@ public class FilterParser
                 // This is a AND node
                 pos.start++;
                 node = new AndNode();
-                node = parseBranchNode( schemaManager, node, filter, pos );
+                node = parseBranchNode( schemaManager, node, filter, pos, relaxed );
                 break;
 
             case '|':
                 // This is an OR node
                 pos.start++;
                 node = new OrNode();
-                node = parseBranchNode( schemaManager, node, filter, pos );
+                node = parseBranchNode( schemaManager, node, filter, pos, relaxed );
                 break;
 
             case '!':
                 // This is a NOT node
                 pos.start++;
                 node = new NotNode();
-                node = parseBranchNode( schemaManager, node, filter, pos );
+                node = parseBranchNode( schemaManager, node, filter, pos, relaxed );
                 break;
 
             default:
                 // This is an item
-                node = parseItem( schemaManager, filter, pos, c );
+                node = parseItem( schemaManager, filter, pos, c, relaxed );
                 break;
 
         }
@@ -821,8 +821,8 @@ public class FilterParser
      * Pasre the grammar rule :
      * filter ::= '(' filterComp ')'
      */
-    private static ExprNode parseFilterInternal( SchemaManager schemaManager, byte[] filter, Position pos )
-        throws ParseException, LdapException
+    private static ExprNode parseFilterInternal( SchemaManager schemaManager, byte[] filter, Position pos,
+        boolean relaxed ) throws ParseException, LdapException
     {
         // Check for the left '('
         if ( !Strings.isCharASCII( filter, pos.start, '(' ) )
@@ -841,7 +841,7 @@ public class FilterParser
         pos.start++;
 
         // parse the filter component
-        ExprNode node = parseFilterComp( schemaManager, filter, pos );
+        ExprNode node = parseFilterComp( schemaManager, filter, pos, relaxed );
 
         if ( node == UndefinedNode.UNDEFINED_NODE )
         {
@@ -861,11 +861,14 @@ public class FilterParser
 
 
     /**
-     * @see FilterParser#parse(String)
+     * Parses a search filter from it's string representation to an expression node object.
+     * 
+     * @param filter the search filter in it's string representation
+     * @return the expression node object
      */
     public static ExprNode parse( String filter ) throws ParseException
     {
-        return parse( null, Strings.getBytesUtf8( filter ) );
+        return parse( null, Strings.getBytesUtf8( filter ), false );
     }
 
 
@@ -874,7 +877,7 @@ public class FilterParser
      */
     public static ExprNode parse( byte[] filter ) throws ParseException
     {
-        return parse( null, filter );
+        return parse( null, filter, false );
     }
 
 
@@ -883,7 +886,7 @@ public class FilterParser
      */
     public static ExprNode parse( SchemaManager schemaManager, String filter ) throws ParseException
     {
-        return parse( schemaManager, Strings.getBytesUtf8( filter ) );
+        return parse( schemaManager, Strings.getBytesUtf8( filter ), false );
     }
 
 
@@ -891,6 +894,13 @@ public class FilterParser
      * @see FilterParser#parse(String)
      */
     public static ExprNode parse( SchemaManager schemaManager, byte[] filter ) throws ParseException
+    {
+        return parse( schemaManager, filter, false );
+    }
+
+
+    private static ExprNode parse( SchemaManager schemaManager, byte[] filter, boolean relaxed )
+        throws ParseException
     {
         // The filter must not be null. This is a defensive test
         if ( Strings.isEmpty( filter ) )
@@ -905,7 +915,7 @@ public class FilterParser
 
         try
         {
-            return parseFilterInternal( schemaManager, filter, pos );
+            return parseFilterInternal( schemaManager, filter, pos, relaxed );
         }
         catch ( LdapException le )
         {
@@ -931,11 +941,26 @@ public class FilterParser
 
         try
         {
-            return parseFilterInternal( schemaManager, Strings.getBytesUtf8( filter ), pos );
+            return parseFilterInternal( schemaManager, Strings.getBytesUtf8( filter ), pos, false );
         }
         catch ( LdapException le )
         {
             throw new ParseException( le.getMessage(), pos.start );
         }
+    }
+
+
+    /**
+     * Parses a search filter from it's string representation to an expression node object.
+     * 
+     * In <code>relaxed</code> mode the filter may violate RFC 4515, e.g. the underscore in attribute names is allowed.
+     * 
+     * @param filter the search filter in it's string representation
+     * @param relaxed <code>true</code> to parse the filter in relaxed mode
+     * @return the expression node object
+     */
+    public static ExprNode parse( String filter, boolean relaxed ) throws ParseException
+    {
+        return parse( null, Strings.getBytesUtf8( filter ), relaxed );
     }
 }

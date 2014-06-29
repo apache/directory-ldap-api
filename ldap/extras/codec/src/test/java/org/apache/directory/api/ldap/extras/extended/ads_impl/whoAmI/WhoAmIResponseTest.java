@@ -62,7 +62,7 @@ public class WhoAmIResponseTest
         stream.put( new byte[]
             {} ).flip();
 
-        String decodedPdu = Strings.dumpBytes( stream.array() );
+        Strings.dumpBytes( stream.array() );
 
         // Allocate a WhoAmI Container
         Asn1Container whoAmIResponseContainer = new WhoAmIResponseContainer();

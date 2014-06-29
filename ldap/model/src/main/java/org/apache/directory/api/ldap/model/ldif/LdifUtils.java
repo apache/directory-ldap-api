@@ -20,6 +20,7 @@
 package org.apache.directory.api.ldap.model.ldif;
 
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import javax.naming.directory.Attributes;
@@ -269,7 +270,18 @@ public final class LdifUtils
     {
         LdifAttributesReader reader = new LdifAttributesReader();
 
-        return AttributeUtils.toAttributes( reader.parseEntry( ldif ) );
+        try
+        {
+            Attributes attributes = AttributeUtils.toAttributes( reader.parseEntry( ldif ) );
+            
+            reader.close();
+            
+            return attributes;
+        }
+        catch ( IOException ioe )
+        {
+            throw new LdapLdifException( ioe.getMessage() );
+        }
     }
 
 
@@ -727,6 +739,15 @@ public final class LdifUtils
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Attributes attributes = AttributeUtils.toAttributes( reader.parseEntry( sb.toString() ) );
+        
+        try
+        {
+            reader.close();
+        }
+        catch ( IOException e )
+        {
+            e.printStackTrace();
+        }
 
         return attributes;
     }

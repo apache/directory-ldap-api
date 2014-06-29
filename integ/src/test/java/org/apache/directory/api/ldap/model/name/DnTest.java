@@ -294,7 +294,7 @@ public class DnTest
         Dn dn = new Dn( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C4\\8D" );
 
         assertTrue( Dn.isValid( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C4\\8D" ) );
-        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\\C4\\8D", dn.getNormName() );
+        assertEquals( "a=\\,\\=\\+\\<\\>#\\;\\\\\\\"\u010d", dn.getNormName() );
         assertEquals( "a = \\,\\=\\+\\<\\>\\#\\;\\\\\\\"\\C4\\8D", dn.getName() );
     }
 
@@ -308,7 +308,7 @@ public class DnTest
         Dn dn = new Dn( "SN=Lu\\C4\\8Di\\C4\\87" );
 
         assertTrue( Dn.isValid( "SN=Lu\\C4\\8Di\\C4\\87" ) );
-        assertEquals( "sn=Lu\\C4\\8Di\\C4\\87", dn.getNormName() );
+        assertEquals( "sn=Lu\u010di\u0107", dn.getNormName() );
         assertEquals( "SN=Lu\\C4\\8Di\\C4\\87", dn.getName() );
     }
 
@@ -1235,7 +1235,7 @@ public class DnTest
         Dn name = new Dn( dn );
 
         assertEquals( dn, ( name ).getName() );
-        assertEquals( "cn=Emmanuel  L\\C3\\A9charny", ( name ).getNormName() );
+        assertEquals( "cn=Emmanuel  L\u00e9charny", ( name ).getNormName() );
     }
 
 

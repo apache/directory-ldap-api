@@ -117,6 +117,7 @@ import org.apache.directory.api.ldap.model.message.SearchResultReference;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.message.UnbindRequest;
 import org.apache.directory.api.ldap.model.message.UnbindRequestImpl;
+import org.apache.directory.api.ldap.model.message.controls.ManageDsaITImpl;
 import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.ldap.model.message.extended.AddNoDResponse;
 import org.apache.directory.api.ldap.model.message.extended.BindNoDResponse;
@@ -307,25 +308,23 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
-     * Get the smallest timeout from the client timeout and the connection
+     * Get the largest timeout from the search time limit and the connection
      * timeout.
      */
-    private long getTimeout( long clientTimeout )
+    static long getTimeout( long connectionTimoutInMS, int searchTimeLimitInSeconds )
     {
-        if ( clientTimeout <= 0 )
+        if ( searchTimeLimitInSeconds < 0 )
         {
-            return ( timeout <= 0 ) ? Long.MAX_VALUE : timeout;
+            return connectionTimoutInMS;
         }
-
-        long timeoutMs = clientTimeout * 1000L;
-
-        if ( timeout <= 0 )
+        else if ( searchTimeLimitInSeconds == 0 )
         {
-            return timeoutMs;
+            return Long.MAX_VALUE;
         }
         else
         {
-            return timeout < timeoutMs ? timeout : timeoutMs;
+            long searchTimeLimitInMS = searchTimeLimitInSeconds * 1000L;
+            return Math.max( searchTimeLimitInMS, connectionTimoutInMS );
         }
     }
 
@@ -1667,6 +1666,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         int newId = messageId.incrementAndGet();
         searchRequest.setMessageId( newId );
+        
+        if ( searchRequest.isIgnoreReferrals() )
+        {
+            // We want to ignore the referral, inject the ManageDSAIT control in the request
+            searchRequest.addControl( new ManageDsaITImpl() );
+        }
 
         LOG.debug( "Sending request \n{}", searchRequest );
 
@@ -1702,7 +1707,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         SearchFuture searchFuture = searchAsync( searchRequest );
 
-        long timeout = getTimeout( searchRequest.getTimeLimit() );
+        long timeout = getTimeout( this.timeout, searchRequest.getTimeLimit() );
 
         return new SearchCursorImpl( searchFuture, timeout, TimeUnit.MILLISECONDS );
     }

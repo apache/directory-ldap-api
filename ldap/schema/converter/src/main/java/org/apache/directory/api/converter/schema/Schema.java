@@ -25,7 +25,7 @@ import java.io.Writer;
 
 
 /**
- * A bean used to hold a schema. We keep its name and we associate whith this
+ * A bean used to hold a schema. We keep its name and we associate with this
  * object an inputStream mapped on the OpenLdap schema to read, and a writer
  * in which the ldif file will be dumped.
  *
@@ -101,5 +101,14 @@ public class Schema
     public void setOutput( Writer out )
     {
         this.out = out;
+    }
+    
+    
+    /**
+     * @see Object#toString()
+     */
+    public String toString()
+    {
+        return "Schema " + name + ".schema";
     }
 }

@@ -370,6 +370,7 @@ import org.apache.directory.api.util.Strings;
                 case '8':
                 case '9':
                 case '-':
+                case '_': // Violation of the RFC, just because those idiots at Microsoft decided to support it...
                     descr.append( c );
                     break;
 
@@ -380,7 +381,7 @@ import org.apache.directory.api.util.Strings;
 
                 case '.':
                     // occurs for RDNs of form "oid.1.2.3=test"
-                    throw new TooComplexException();
+                    throw TooComplexDnException.INSTANCE;
 
                 default:
                     // error
@@ -527,6 +528,7 @@ import org.apache.directory.api.util.Strings;
     {
         StringBuilder value = new StringBuilder();
         int numTrailingSpaces = 0;
+        
         while ( true )
         {
             if ( !hasMoreChars( pos ) )
@@ -534,19 +536,23 @@ import org.apache.directory.api.util.Strings;
                 pos.start -= numTrailingSpaces;
                 return value.substring( 0, value.length() - numTrailingSpaces );
             }
+            
             char c = nextChar( name, pos, true );
+            
             switch ( c )
             {
                 case '\\':
                 case '+':
                 case '#':
                 case '"':
-                    throw new TooComplexException();
+                    throw TooComplexDnException.INSTANCE;
+                    
                 case ',':
                 case ';':
                     pos.start--;
                     pos.start -= numTrailingSpaces;
                     return value.substring( 0, value.length() - numTrailingSpaces );
+                    
                 case ' ':
                     numTrailingSpaces++;
                     value.append( c );

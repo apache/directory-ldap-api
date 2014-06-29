@@ -236,12 +236,26 @@ public final class PrepareString
             case CASE_EXACT:
             case CASE_EXACT_IA5:
             case DIRECTORY_STRING:
-                return insignifiantSpacesString( str, CASE_SENSITIVE );
+                try
+                {
+                    return insignifiantSpacesStringAscii( str, CASE_SENSITIVE );
+                }
+                catch ( Exception e )
+                {
+                    return insignifiantSpacesString( str, CASE_SENSITIVE );
+                }
 
             case CASE_IGNORE_IA5:
             case CASE_IGNORE_LIST:
             case CASE_IGNORE:
-                return insignifiantSpacesString( str, IGNORE_CASE );
+                try
+                {
+                    return insignifiantSpacesStringAscii( str, IGNORE_CASE );
+                }
+                catch ( Exception e )
+                {
+                    return insignifiantSpacesString( str, IGNORE_CASE );
+                }
 
             case WORD:
                 return str;
@@ -4940,5 +4954,139 @@ public final class PrepareString
         }
 
         return new String( target, 0, pos );
+    }
+
+
+    /**
+     * Remove all insignificant spaces in a Ascii string.
+     * 
+     * This method use a finite state machine to parse
+     * the text.
+     * 
+     * @param str The String to modify
+     * @param caseSensitive A flag telling if the chars must be lower cased
+     * @return The modified StringBuilder
+     * @throws InvalidCharacterException If an invalid character is found in the String
+     */
+    private static String insignifiantSpacesStringAscii( String str, boolean caseSensitive )
+        throws InvalidCharacterException
+    {
+        if ( Strings.isEmpty( str ) )
+        {
+            // Special case : an empty strings is replaced by 2 spaces
+            return "";
+        }
+    
+        char[] array = str.toCharArray();
+    
+        int pos = 0;
+        char lowerCase = ( char ) ( caseSensitive ? 0x00 : 0x20 );
+    
+        // First pass to map the chars
+        for ( char c : array )
+        {
+            pos += map( c, array, pos, lowerCase );
+        }
+    
+        int limit = pos;
+        pos = 0;
+    
+        // Second pass to remove spaces. We work on the target
+        int i = 0;
+        char c = '\0';
+    
+        // First remove starting spaces
+        for ( i = 0; i < limit; i++ )
+        {
+            c = array[i];
+    
+            if ( c != ' ' )
+            {
+                checkProhibited( c );
+                break;
+            }
+        }
+    
+        // Now, 'i' will be the starting point. We will just handle the special
+        // case of a combining character
+        int start = i;
+    
+        if ( start == limit )
+        {
+            // we only have spaces, we keep only one
+            return " ";
+        }
+        else if ( isCombiningMark( c ) )
+        {
+            if ( start == 0 )
+            {
+                // The first char can't be a combining char
+                throw new InvalidCharacterException( c );
+            }
+            else
+            {
+                throw new InvalidCharacterException( c );
+            }
+        }
+        else
+        {
+            array[pos++] = c;
+            start++;
+        }
+    
+        // Now remove the spaces at the end
+        for ( i = limit - 1; i > start; i-- )
+        {
+            if ( array[i] != ' ' )
+            {
+                break;
+            }
+        }
+    
+        limit = i + 1;
+    
+        // Let's deal with the following chars. It will be
+        // a list of chars and spaces. We will consider that
+        // we have couples of chars and spaces :
+        // (char * space*)*. We have a special case :
+        // a space followed by a combining char.
+        boolean spaceSeen = false;
+        boolean space2Seen = false;
+    
+        for ( i = start; i < limit; i++ )
+        {
+            c = array[i];
+    
+            checkProhibited( c );
+    
+            if ( isCombiningMark( c ) )
+            {
+                throw new InvalidCharacterException( c );
+            }
+            else if ( c == ' ' )
+            {
+                if ( spaceSeen )
+                {
+                    space2Seen = true;
+                }
+                else
+                {
+                    spaceSeen = true;
+                }
+            }
+            else
+            {
+                if ( spaceSeen )
+                {
+                    array[pos++] = ' ';
+                    spaceSeen = false;
+                    space2Seen = false;
+                }
+    
+                array[pos++] = c;
+            }
+        }
+    
+        return new String( array, 0, pos );
     }
 }

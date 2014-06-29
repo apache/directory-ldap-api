@@ -35,8 +35,6 @@ import org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory;
 import org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncFactory;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponse;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncResponseFactory;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
@@ -137,10 +135,6 @@ public class CodecFactoryUtil
         ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( apiService );
         controlFactories.put( adDirSyncFactory.getOid(), adDirSyncFactory );
         LOG.info( "Registered pre-bundled control factory: {}", adDirSyncFactory.getOid() );
-        
-        ControlFactory<AdDirSyncResponse> adDirSyncResponseFactory = new AdDirSyncResponseFactory( apiService );
-        controlFactories.put( adDirSyncResponseFactory.getOid(), adDirSyncResponseFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", adDirSyncResponseFactory.getOid() );
     }
 
 

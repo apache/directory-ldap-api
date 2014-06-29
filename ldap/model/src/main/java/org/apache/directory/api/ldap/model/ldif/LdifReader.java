@@ -231,11 +231,14 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     protected long entryOffset = 0;
 
     /** the current offset of the reader */
-    private long offset = 0;
+    protected long offset = 0;
 
     /** the numer of the current line being parsed by the reader */
-    private int lineNumber;
+    protected int lineNumber;
 
+    /** flag to turn on/off of the DN validation. By default DNs are validated after parsing */
+    protected boolean validateDn = true;
+    
     /**
      * Constructors
      */
@@ -463,7 +466,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * @param line The line which contains the changeType
      * @return The operation.
      */
-    private ChangeType parseChangeType( String line )
+    protected ChangeType parseChangeType( String line )
     {
         ChangeType operation = ChangeType.Add;
 
@@ -501,7 +504,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * @return A Dn
      * @throws LdapLdifException If the Dn is invalid
      */
-    private String parseDn( String line ) throws LdapLdifException
+    protected String parseDn( String line ) throws LdapLdifException
     {
         String dn;
 
@@ -554,7 +557,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         }
 
         // Check that the Dn is valid. If not, an exception will be thrown
-        if ( !Dn.isValid( dn ) )
+        if ( validateDn && !Dn.isValid( dn ) )
         {
             String message = I18n.err( I18n.ERR_12017_INVALID_DN, dn );
             LOG.error( message );
@@ -1297,7 +1300,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * @return the parsed ldifEntry
      * @exception LdapException If the ldif file does not contain a valid entry
      */
-    private LdifEntry parseEntry() throws LdapException
+    protected LdifEntry parseEntry() throws LdapException
     {
         if ( ( lines == null ) || ( lines.size() == 0 ) )
         {
@@ -1315,7 +1318,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         Dn dn = new Dn( name );
 
         // Ok, we have found a Dn
-        LdifEntry entry = new LdifEntry();
+        LdifEntry entry = createLdifEntry();
         entry.setLengthBeforeParsing( entryLen );
         entry.setOffset( entryOffset );
 
@@ -1453,7 +1456,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * @return A number representing the version (default to 1)
      * @throws LdapLdifException If the version is incorrect or if the input is incorrect
      */
-    private int parseVersion() throws LdapLdifException
+    protected int parseVersion() throws LdapLdifException
     {
         int ver = DEFAULT_VERSION;
 
@@ -1973,6 +1976,35 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     public int getLineNumber()
     {
         return lineNumber;
+    }
+
+
+    /**
+     * creates a non-schemaaware LdifEntry
+     * @return an LdifEntry that is not schemaaware
+     */
+    protected LdifEntry createLdifEntry()
+    {
+        return new LdifEntry();
+    }
+    
+    /**
+     * @return true if the DN validation is turned on
+     */
+    public boolean isValidateDn()
+    {
+        return validateDn;
+    }
+
+
+    /**
+     * Turns on/off the DN validation
+     * 
+     * @param validateDn the boolean flag
+     */
+    public void setValidateDn( boolean validateDn )
+    {
+        this.validateDn = validateDn;
     }
 
 

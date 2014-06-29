@@ -70,6 +70,9 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
 
     /** The final result containing SearchResponseDone response */
     private SearchResultDone response;
+    
+    /** A flag set to tell the search what to do wth referrals */
+    private ReferralsPolicyEnum referralHandling = ReferralsPolicyEnum.THROW;
 
 
     // -----------------------------------------------------------------------
@@ -587,5 +590,45 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
         sb.append( super.toString() );
 
         return super.toString( sb.toString() );
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isFollowReferrals()
+    {
+        return referralHandling == ReferralsPolicyEnum.FOLLOW;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest followReferrals()
+    {
+        referralHandling = ReferralsPolicyEnum.FOLLOW;
+        
+        return this;
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isIgnoreReferrals()
+    {
+        return referralHandling == ReferralsPolicyEnum.IGNORE;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public SearchRequest ignoreReferrals()
+    {
+        referralHandling = ReferralsPolicyEnum.IGNORE;
+        
+        return this;
     }
 }

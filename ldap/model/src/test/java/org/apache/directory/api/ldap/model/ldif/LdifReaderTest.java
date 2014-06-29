@@ -2354,4 +2354,30 @@ public class LdifReaderTest
         assertEquals( "cn=test3", entry.getDn().getName() );
         assertEquals( 0, entry.size() );
     }
+
+
+    @Test
+    public void testLdifParserWithUnderscoresAT() throws Exception, Exception
+    {
+        String ldif =
+            "version: 1\n" +
+            "# Add a new entry\n" +
+            "dn: cn=Fiona Jensen, ou=Marketing, dc=airius, dc=com\n" +
+            "changetype: add\n" +
+            "objectclass: top\n" +
+            "objectclass: person\n" +
+            "objectclass: organizationalPerson\n" +
+            "cn: Fiona Jensen\n" +
+            "sn: Jensen\n" +
+            "uid: fiona\n" +
+            "telephonenumber: +1 408 555 1212\n" +
+            "An_idiot_Attribute: thanks M$ for that";
+
+        LdifReader reader = new LdifReader();
+        List<LdifEntry> entries = reader.parseLdif( ldif );
+        LdifEntry entry = entries.get( 0 );
+        assertEquals( entry.get( "An_idiot_Attribute" ).getString(), "thanks M$ for that" );
+        reader.close();
+
+    }
 }

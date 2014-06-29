@@ -387,10 +387,26 @@ public final class DefaultEntry implements Entry
                 .err( I18n.ERR_12087 ) );
         }
 
-        LdifAttributesReader reader = new LdifAttributesReader();
-        Entry entry = reader.parseEntry( schemaManager, sb.toString() );
-
-        return entry;
+        LdifAttributesReader reader = null;
+        
+        try
+        { 
+            reader = new LdifAttributesReader();
+            Entry entry = reader.parseEntry( schemaManager, sb.toString() );
+    
+            return entry;
+        }
+        finally
+        {
+            try
+            {
+                reader.close();
+            }
+            catch ( IOException e )
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -991,7 +1007,6 @@ public final class DefaultEntry implements Entry
      * the original object won't affect the cloned object, as a modification
      * on the cloned object has no impact on the original object
      */
-    @SuppressWarnings("unchecked")
     public Entry clone()
     {
         // First, clone the structure
@@ -2615,22 +2630,11 @@ public final class DefaultEntry implements Entry
         }
 
         sb.append( '\n' );
-
+        
         if ( attributes.size() != 0 )
         {
-            boolean isFirst = true;
-
             for ( Attribute attribute : attributes.values() )
             {
-                if ( isFirst )
-                {
-                    isFirst = false;
-                }
-                else
-                {
-                    sb.append( '\n' );
-                }
-
                 String id = attribute.getId();
 
                 if ( schemaManager != null )
@@ -2644,6 +2648,7 @@ public final class DefaultEntry implements Entry
                     else if ( !attributeType.equals( objectClassAttributeType ) )
                     {
                         sb.append( attribute.toString( tabs + "    " ) );
+                        sb.append( '\n' );
                         continue;
                     }
                 }
@@ -2653,6 +2658,7 @@ public final class DefaultEntry implements Entry
                         && !id.equals( SchemaConstants.OBJECT_CLASS_AT_OID ) )
                     {
                         sb.append( attribute.toString( tabs + "    " ) );
+                        sb.append( '\n' );
                         continue;
                     }
                 }

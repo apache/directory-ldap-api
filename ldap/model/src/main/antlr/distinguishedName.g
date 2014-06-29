@@ -54,6 +54,7 @@ COMMA : ',' ;
 EQUALS : '=' ;
 PLUS : '+' ;
 HYPHEN : '-' ;
+UNDERSCORE : '_' ;
 DQUOTE : '"' ;
 SEMI : ';' ;
 LANGLE : '<' ;
@@ -101,8 +102,9 @@ UTFMB : '\u0080'..'\uFFFE' ;
  * To avoid nondeterminism the following 
  * rules are excluded. These rules are 
  * explicitly added in the productions.
- *   EQUALS (0x3D) 
- *   HYPHEN (0x2D)  
+ *   EQUALS (0x3D)
+ *   HYPHEN (0x2D)
+ *   UNDERSCORE (0x5F)
  *   DIGIT (0x30-0x39)
  *   ALPHA (0x41-0x5A and 0x61-0x7A)
  */
@@ -114,7 +116,8 @@ LUTF1_REST :
     '\u003A' |
     '\u003F'..'\u0040' |
     '\u005B' |
-    '\u005D'..'\u0060' | 
+    '\u005D'..'\u005E' | 
+    '\u0060' | 
     '\u007B'..'\u007F' 
     ;
 
@@ -420,6 +423,8 @@ attributeType returns [String attributeType]
      * leadkeychar = ALPHA
      * keychar = ALPHA / DIGIT / HYPHEN
      *
+     * We additionally add UNDERSCORE because some servers allow them.
+     *
      */    
 descr returns [String descr]
     {
@@ -433,6 +438,8 @@ descr returns [String descr]
         digit:DIGIT { descr += digit.getText(); }
         |
         hyphen:HYPHEN { descr += hyphen.getText(); }
+        |
+        underscore:UNDERSCORE { descr += underscore.getText(); }
     )*
     ;
 
@@ -622,8 +629,9 @@ string [UpAndNormValue value]
  *
  * The rule LUTF1_REST doesn't contain the following charcters,
  * so we must check them additionally
- *   EQUALS (0x3D) 
- *   HYPHEN (0x2D)  
+ *   EQUALS (0x3D)
+ *   HYPHEN (0x2D)
+ *   UNDERSCORE (0x5F)
  *   DIGIT (0x30-0x39)
  *   ALPHA (0x41-0x5A and 0x61-0x7A)
  */
@@ -637,6 +645,8 @@ lutf1 returns [String lutf1=""]
     equals:EQUALS { lutf1 = equals.getText(); }
     |
     hyphen:HYPHEN { lutf1 = hyphen.getText(); }
+    |
+    underscore:UNDERSCORE { lutf1 = underscore.getText(); }
     |
     digit:DIGIT { lutf1 = digit.getText(); }
     |
@@ -652,8 +662,9 @@ lutf1 returns [String lutf1=""]
  *
  * The rule LUTF1_REST doesn't contain the following charcters,
  * so we must check them additionally
- *   EQUALS (0x3D) 
- *   HYPHEN (0x2D)  
+ *   EQUALS (0x3D)
+ *   HYPHEN (0x2D)
+ *   UNDERSCORE (0x5F)
  *   DIGIT (0x30-0x39)
  *   ALPHA (0x41-0x5A and 0x61-0x7A)
  *   SHARP
@@ -669,6 +680,8 @@ sutf1 returns [String sutf1=""]
     equals:EQUALS { sutf1 = equals.getText(); }
     |
     hyphen:HYPHEN { sutf1 = hyphen.getText(); }
+    |
+    underscore:UNDERSCORE { sutf1 = underscore.getText(); }
     |
     digit:DIGIT { sutf1 = digit.getText(); }
     |

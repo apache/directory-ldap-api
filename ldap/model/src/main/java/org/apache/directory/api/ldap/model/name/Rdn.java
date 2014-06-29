@@ -332,6 +332,29 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     }
 
 
+    public Rdn( SchemaManager schemaManager, Ava... avas ) throws LdapInvalidDnException
+    {
+        StringBuilder upName = new StringBuilder();
+        for ( int i = 0; i < avas.length; i++ )
+        {
+            if ( i > 0 )
+            {
+                upName.append( '+' );
+            }
+            addAVA( schemaManager, avas[i] );
+            upName.append( avas[i].getName() );
+        }
+        setUpName( upName.toString() );
+        normalize();
+    }
+
+
+    public Rdn( Ava... avas ) throws LdapInvalidDnException
+    {
+        this( null, avas );
+    }
+
+
     /**
      * Constructs an Rdn from the given rdn. The content of the rdn is simply
      * copied into the newly created Rdn.
@@ -1287,116 +1310,107 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             return "";
         }
 
-        byte[] bytes = Strings.getBytesUtf8( value );
-        byte[] newBytes = new byte[bytes.length * 3];
+        char[] chars = value.toCharArray();
+        char[] newChars = new char[chars.length * 3];
         int pos = 0;
 
-        for ( int i = 0; i < bytes.length; i++ )
+        for ( int i = 0; i < chars.length; i++ )
         {
-            if ( ( bytes[i] & 0x0080 ) != 0 )
+            switch ( chars[i] )
             {
-                newBytes[pos++] = '\\';
-                newBytes[pos++] = ( byte ) Strings.dumpHex( ( byte ) ( ( bytes[i] & 0x00F0 ) >> 4 ) );
-                newBytes[pos++] = ( byte ) Strings.dumpHex( ( byte ) ( bytes[i] & 0x000F ) );
-            }
-            else
-            {
-                switch ( bytes[i] )
-                {
-                    case ' ':
-                        if ( ( i > 0 ) && ( i < bytes.length - 1 ) )
-                        {
-                            newBytes[pos++] = bytes[i];
-                        }
-                        else
-                        {
-                            newBytes[pos++] = '\\';
-                            newBytes[pos++] = bytes[i];
-                        }
+                case ' ':
+                    if ( ( i > 0 ) && ( i < chars.length - 1 ) )
+                    {
+                        newChars[pos++] = chars[i];
+                    }
+                    else
+                    {
+                        newChars[pos++] = '\\';
+                        newChars[pos++] = chars[i];
+                    }
 
-                        break;
+                    break;
 
-                    case '#':
-                        if ( i != 0 )
-                        {
-                            newBytes[pos++] = bytes[i];
-                        }
-                        else
-                        {
-                            newBytes[pos++] = '\\';
-                            newBytes[pos++] = bytes[i];
-                        }
+                case '#':
+                    if ( i != 0 )
+                    {
+                        newChars[pos++] = chars[i];
+                    }
+                    else
+                    {
+                        newChars[pos++] = '\\';
+                        newChars[pos++] = chars[i];
+                    }
 
-                        break;
+                    break;
 
-                    case '"':
-                    case '+':
-                    case ',':
-                    case ';':
-                    case '=':
-                    case '<':
-                    case '>':
-                    case '\\':
-                        newBytes[pos++] = '\\';
-                        newBytes[pos++] = bytes[i];
-                        break;
+                case '"':
+                case '+':
+                case ',':
+                case ';':
+                case '=':
+                case '<':
+                case '>':
+                case '\\':
+                    newChars[pos++] = '\\';
+                    newChars[pos++] = chars[i];
+                    break;
 
-                    case 0x7F:
-                        newBytes[pos++] = '\\';
-                        newBytes[pos++] = '7';
-                        newBytes[pos++] = 'F';
-                        break;
+                case 0x7F:
+                    newChars[pos++] = '\\';
+                    newChars[pos++] = '7';
+                    newChars[pos++] = 'F';
+                    break;
 
-                    case 0x00:
-                    case 0x01:
-                    case 0x02:
-                    case 0x03:
-                    case 0x04:
-                    case 0x05:
-                    case 0x06:
-                    case 0x07:
-                    case 0x08:
-                    case 0x09:
-                    case 0x0A:
-                    case 0x0B:
-                    case 0x0C:
-                    case 0x0D:
-                    case 0x0E:
-                    case 0x0F:
-                        newBytes[pos++] = '\\';
-                        newBytes[pos++] = '0';
-                        newBytes[pos++] = ( byte ) Strings.dumpHex( ( byte ) ( bytes[i] & 0x0F ) );
-                        break;
+                case 0x00:
+                case 0x01:
+                case 0x02:
+                case 0x03:
+                case 0x04:
+                case 0x05:
+                case 0x06:
+                case 0x07:
+                case 0x08:
+                case 0x09:
+                case 0x0A:
+                case 0x0B:
+                case 0x0C:
+                case 0x0D:
+                case 0x0E:
+                case 0x0F:
+                    newChars[pos++] = '\\';
+                    newChars[pos++] = '0';
+                    newChars[pos++] = Strings.dumpHex( ( byte ) ( chars[i] & 0x0F ) );
+                    break;
 
-                    case 0x10:
-                    case 0x11:
-                    case 0x12:
-                    case 0x13:
-                    case 0x14:
-                    case 0x15:
-                    case 0x16:
-                    case 0x17:
-                    case 0x18:
-                    case 0x19:
-                    case 0x1A:
-                    case 0x1B:
-                    case 0x1C:
-                    case 0x1D:
-                    case 0x1E:
-                    case 0x1F:
-                        newBytes[pos++] = '\\';
-                        newBytes[pos++] = '1';
-                        newBytes[pos++] = ( byte ) Strings.dumpHex( ( byte ) ( bytes[i] & 0x0F ) );
-                        break;
+                case 0x10:
+                case 0x11:
+                case 0x12:
+                case 0x13:
+                case 0x14:
+                case 0x15:
+                case 0x16:
+                case 0x17:
+                case 0x18:
+                case 0x19:
+                case 0x1A:
+                case 0x1B:
+                case 0x1C:
+                case 0x1D:
+                case 0x1E:
+                case 0x1F:
+                    newChars[pos++] = '\\';
+                    newChars[pos++] = '1';
+                    newChars[pos++] = Strings.dumpHex( ( byte ) ( chars[i] & 0x0F ) );
+                    break;
 
-                    default:
-                        newBytes[pos++] = bytes[i];
-                        break;
-                }
+                default:
+                    newChars[pos++] = chars[i];
+                    break;
             }
         }
 
-        return new String( newBytes, 0, pos );
+        return new String( newChars, 0, pos );
     }
 
 
@@ -1474,7 +1488,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         {
             FastDnParser.parseRdn( dn, rdn );
         }
-        catch ( TooComplexException e )
+        catch ( TooComplexDnException e )
         {
             rdn.clear();
             new ComplexDnParser().parseRdn( dn, rdn );

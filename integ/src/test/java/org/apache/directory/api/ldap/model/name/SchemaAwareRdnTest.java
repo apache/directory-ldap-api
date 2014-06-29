@@ -236,7 +236,7 @@ public class SchemaAwareRdnTest
         String rdn = Strings.utf8ToString( new byte[]
             { 'l', '=', '\\', ',', '\\', '=', '\\', '+', '\\', '<', '\\', '>', '#', '\\', ';', '\\', '\\', '\\', '"', '\\',
                 'C', '3', '\\', 'A', '9' } );
-        assertEquals( "2.5.4.7=\\,\\=\\+\\<\\>#\\;\\\\\\\"\\C3\\A9", new Rdn( schemaManager, rdn ).getNormName() );
+        assertEquals( "2.5.4.7=\\,\\=\\+\\<\\>#\\;\\\\\\\"\u00e9", new Rdn( schemaManager, rdn ).getNormName() );
     }
 
 
@@ -899,7 +899,7 @@ public class SchemaAwareRdnTest
     {
         // space doesn't need to be escaped in the middle of a string
         assertEquals( "a b", Rdn.escapeValue( "a b" ) );
-        assertEquals( "a b c", Rdn.escapeValue( "a b c" ) );
+        assertEquals( "ä b c", Rdn.escapeValue( "ä b c" ) );
         assertEquals( "a b c d", Rdn.escapeValue( "a b c d" ) );
 
         // space must be escaped at the beginning and the end of a string
@@ -919,6 +919,16 @@ public class SchemaAwareRdnTest
         // hash must be escaped at the beginning of a string
         assertEquals( "\\#a#b", Rdn.escapeValue( "#a#b" ) );
         assertEquals( "\\##a#b", Rdn.escapeValue( "##a#b" ) );
+
+        // other characters that need to be escaped
+        // '"', '+', ',', ';', '<', '>', '\', the null (U+0000) character
+        assertEquals( "\\\"\\+\\,\\;\\<\\>\\\\\\00", Rdn.escapeValue( "\"+,;<>\\\u0000" ) );
+
+        // unicode characters don't need to be escaped
+        // \u00e9 - e with acute - 2 bytes in UTF-8
+        // \u20ac - Euro character - 3 bytes in UTF-8
+        // \uD83D\uDE08 - Smiley - 4 bytes in UTF-8
+        assertEquals( "\u00e9\u20AC\uD83D\uDE08", Rdn.escapeValue( "\u00e9\u20AC\uD83D\uDE08" ) );
     }
 
 
