@@ -43,8 +43,6 @@ import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.util.Unicode;
 
-import sun.net.util.IPAddressUtil;
-
 
 /**
  * Decodes a LdapUrl, and checks that it complies with

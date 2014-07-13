@@ -141,6 +141,9 @@
             <Export-Package>
                 {local-packages};version=${project.version};-noimport:=true
             </Export-Package>
+            <Import-Package>
+                !sun.net.util,*
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>
