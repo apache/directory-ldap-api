@@ -475,8 +475,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
 
             if ( isSimple )
             {
-                sb.append( "        Simple authentication : '" ).append( Strings.utf8ToString( credentials ) )
-                    .append( '/' ).append( Strings.dumpBytes( credentials ) ).append( "'\n" );
+                sb.append( "        Simple authentication : '" ).append( "(omitted-for-safety)" ).append( "'\n" );
             }
             else
             {
