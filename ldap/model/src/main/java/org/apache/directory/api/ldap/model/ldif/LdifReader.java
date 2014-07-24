@@ -250,6 +250,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     }
 
 
+    /**
+     * Store the reader and intialize the LdifReader
+     */
     private void initReader( BufferedReader reader ) throws LdapException
     {
         this.reader = reader;
@@ -257,7 +260,12 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     }
 
 
-    protected void init() throws LdapException
+    /**
+     * Initialize the LdifReader
+     * 
+     * @throws LdapException If the initialization failed
+     */
+    public void init() throws LdapException
     {
         lines = new ArrayList<String>();
         position = 0;
@@ -361,7 +369,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             LOG.error( msg );
             throw new LdapLdifException( msg );
         }
-
+        
         try
         {
             initReader( new BufferedReader( new FileReader( file ) ) );
