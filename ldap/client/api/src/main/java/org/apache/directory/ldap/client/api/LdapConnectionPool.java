@@ -118,6 +118,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
         try
         {
             connection = super.borrowObject();
+            LOG.trace( "borrowed connection {}", connection );
         }
         catch ( LdapException e )
         {
@@ -135,23 +136,6 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
             LOG.error( "An unexpected exception was thrown: ", e );
             throw new RuntimeException( e );
         }
-        return connection;
-    }
-
-
-    /**
-     * Returns an LdapConnection from the pool that is not bound to an
-     * identity.  This type of connection is useful when you want to bind
-     * yourself for authentication/authorization purposes.
-     *
-     * @return An unbound LdapConnection from the pool
-     * @throws Exception If an error occurs while obtaining a connection 
-     * from the factory
-     */
-    public LdapConnection getUnboundConnection() throws LdapException
-    {
-        LdapConnection connection = getConnection();
-        connection.unBind();
         return connection;
     }
 
@@ -179,6 +163,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
         try
         {
             super.returnObject( connection );
+            LOG.trace( "returned connection {}", connection );
         }
         catch ( LdapException e )
         {

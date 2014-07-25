@@ -85,6 +85,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
      */
     public LdapConnectionTemplate( LdapConnectionPool connectionPool )
     {
+        logger.debug( "creating new connection template from connectionPool" );
         this.connectionPool = connectionPool;
         this.passwordPolicyRequestControl = new PasswordPolicyDecorator(
             connectionPool.getLdapApiService() );
@@ -177,7 +178,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
         LdapConnection connection = null;
         try
         {
-            connection = connectionPool.getUnboundConnection();
+            connection = connectionPool.getConnection();
             return authenticateConnection( connection, userDn, password );
         }
         catch ( LdapException e )
@@ -186,7 +187,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
         }
         finally
         {
-            safeCloseLdapConnection( connection );
+            returnLdapConnection( connection );
         }
     }
 
@@ -367,13 +368,9 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
         LdapConnection connection = null;
         try
         {
-            if ( asAdmin )
+            connection = connectionPool.getConnection();
+            if ( !asAdmin )
             {
-                connection = connectionPool.getConnection();
-            }
-            else
-            {
-                connection = connectionPool.getUnboundConnection();
                 authenticateConnection( connection, userDn, oldPassword );
             }
 
@@ -385,14 +382,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
         }
         finally
         {
-            if ( asAdmin )
-            {
-                returnLdapConnection( connection );
-            }
-            else
-            {
-                safeCloseLdapConnection( connection );
-            }
+            returnLdapConnection( connection );
         }
     }
 
@@ -553,23 +543,6 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
             catch ( LdapException e )
             {
                 throw new LdapRuntimeException( e );
-            }
-        }
-    }
-
-
-    private void safeCloseLdapConnection( LdapConnection connection )
-    {
-        if ( connection != null )
-        {
-            try
-            {
-                connection.close();
-            }
-            catch ( IOException e )
-            {
-                logger.error( "Unable to close ldap connection, might be leaking connections:", e.getMessage() );
-                logger.debug( "Unable to close ldap connection, might be leaking connections:", e );
             }
         }
     }
