@@ -21,14 +21,6 @@ package org.apache.directory.ldap.client.template;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
-import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyDecorator;
-import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.message.Control;
-import org.apache.directory.api.ldap.model.message.Response;
-import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.api.ldap.model.message.ResultResponse;
-import org.apache.directory.ldap.client.template.exception.PasswordException;
 
 
 /**
@@ -36,61 +28,11 @@ import org.apache.directory.ldap.client.template.exception.PasswordException;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordPolicyResponderImpl implements PasswordPolicyResponder
+final class PasswordPolicyResponderImpl extends AbstractPasswordPolicyResponder 
+    implements PasswordPolicyResponder
 {
-    private final PasswordPolicyDecorator passwordPolicyRequestControl;
-
-
-    public PasswordPolicyResponderImpl( LdapApiService ldapApiService )
+    PasswordPolicyResponderImpl( LdapApiService ldapApiService )
     {
-        this.passwordPolicyRequestControl = new PasswordPolicyDecorator(
-            ldapApiService );
-    }
-
-
-    private PasswordPolicy getPasswordPolicy( Response response )
-    {
-        Control control = response.getControls().get( passwordPolicyRequestControl.getOid() );
-        return control == null
-            ? null
-            : ( ( PasswordPolicyDecorator ) control ).getDecorated();
-    }
-
-
-    @Override
-    public PasswordWarning process( PasswordPolicyOperation operation )
-        throws PasswordException
-    {
-        try
-        {
-            ResultResponse response = operation.process();
-            PasswordPolicy passwordPolicy = getPasswordPolicy( response );
-
-            ResultCodeEnum resultCode = response.getLdapResult().getResultCode();
-            if ( resultCode == ResultCodeEnum.SUCCESS )
-            {
-                if ( passwordPolicy != null )
-                {
-                    return PasswordWarningImpl.newWarning( passwordPolicy );
-                }
-                return null;
-            }
-            else
-            {
-                PasswordException exception = new PasswordException();
-                exception.setResultCode( resultCode );
-                if ( passwordPolicy != null
-                    && passwordPolicy.getResponse() != null
-                    && passwordPolicy.getResponse().getPasswordPolicyError() != null )
-                {
-                    exception.setPasswordPolicyError( passwordPolicy.getResponse().getPasswordPolicyError() );
-                }
-                throw exception;
-            }
-        }
-        catch ( LdapException e )
-        {
-            throw new PasswordException().setLdapException( e );
-        }
+        super( ldapApiService );
     }
 }

@@ -45,7 +45,7 @@ class PasswordWarningImpl implements PasswordWarning
     }
 
 
-    public static PasswordWarning newWarning( PasswordPolicy policy )
+    static PasswordWarning newWarning( PasswordPolicy policy )
     {
         PasswordPolicyResponse response = policy.getResponse();
         if ( response != null )
