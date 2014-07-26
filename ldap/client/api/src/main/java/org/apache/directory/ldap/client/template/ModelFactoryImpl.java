@@ -44,7 +44,7 @@ import org.apache.directory.ldap.client.template.exception.LdapRuntimeException;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModelFactoryImpl implements ModelFactory
+class ModelFactoryImpl implements ModelFactory
 {
     @Override
     public AddRequest newAddRequest( Entry entry )
