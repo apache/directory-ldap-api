@@ -1,5 +1,5 @@
 version: 1
-dn: m-oid=2.5.13.37,ou=matchingRules,cn=x509,ou=schema
+dn: m-oid=2.5.13.37,ou=matchingRules,cn=core,ou=schema
 objectclass: top
 objectclass: metaTop
 objectclass: metaMatchingRule

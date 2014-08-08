@@ -1,5 +1,5 @@
 version: 1
-dn: m-oid=1.3.6.1.1.15.2,ou=syntaxes,cn=x509,ou=schema
+dn: m-oid=1.3.6.1.1.15.2,ou=syntaxes,cn=core,ou=schema
 objectclass: top
 objectclass: metaTop
 objectclass: metaSyntax
