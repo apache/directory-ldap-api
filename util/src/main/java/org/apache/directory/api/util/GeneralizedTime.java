@@ -20,8 +20,6 @@
 package org.apache.directory.api.util;
 
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -352,6 +350,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
 
         // this calculates and verifies the calendar
+        /* Not sure we should do that...
         try
         {
             calendar.getTimeInMillis();
@@ -360,6 +359,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         {
             throw new ParseException( I18n.err( I18n.ERR_04366 ), 0 );
         }
+        */
 
         calendar.setLenient( true );
     }
@@ -677,101 +677,233 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         TimeZoneFormat timeZoneFormat )
     {
         Calendar clonedCalendar = ( Calendar ) this.calendar.clone();
+        
         if ( timeZoneFormat == TimeZoneFormat.Z )
         {
             clonedCalendar.setTimeZone( GMT );
         }
+        
+        // Create the result. It can contain a maximum of 23 chars
+        char[] result = new char[23];
+        
+        // The starting point
+        int pos = 0;
+        
+        // Inject the year
+        int year = clonedCalendar.get( Calendar.YEAR );
+        
+        result[pos++] = (char)( (year/1000) + '0' );
+        year %= 1000;
+        
+        result[pos++] = (char)( (year/100) + '0' );
+        year %= 100;
 
-        NumberFormat twoDigits = new DecimalFormat( "00" );
-        NumberFormat fourDigits = new DecimalFormat( "00" );
-        StringBuffer fractionFormat = new StringBuffer( "" );
-        for ( int i = 0; i < fractionLength && i < 3; i++ )
-        {
-            fractionFormat.append( "0" );
-        }
+        result[pos++] = (char)( (year/10) + '0' );
 
-        StringBuilder sb = new StringBuilder();
-        sb.append( fourDigits.format( clonedCalendar.get( Calendar.YEAR ) ) );
-        sb.append( twoDigits.format( clonedCalendar.get( Calendar.MONTH ) + 1 ) );
-        sb.append( twoDigits.format( clonedCalendar.get( Calendar.DAY_OF_MONTH ) ) );
-        sb.append( twoDigits.format( clonedCalendar.get( Calendar.HOUR_OF_DAY ) ) );
+        result[pos++] = (char)( (year%10) + '0' );
+
+        // Inject the month
+        int month = clonedCalendar.get( Calendar.MONTH ) + 1;
+        
+        result[pos++] = (char)( (month/10) + '0' );
+
+        result[pos++] = (char)( (month%10) + '0' );
+
+        // Inject the day
+        int day = clonedCalendar.get( Calendar.DAY_OF_MONTH );
+        
+        result[pos++] = (char)( (day/10) + '0' );
+
+        result[pos++] = (char)( (day%10) + '0' );
+        
+        // Inject the hour
+        int hour = clonedCalendar.get( Calendar.HOUR_OF_DAY );
+        
+        result[pos++] = (char)( (hour/10) + '0' );
+
+        result[pos++] = (char)( (hour%10) + '0' );
 
         switch ( format )
         {
             case YEAR_MONTH_DAY_HOUR_MIN_SEC:
-                sb.append( twoDigits.format( clonedCalendar.get( Calendar.MINUTE ) ) );
-                sb.append( twoDigits.format( clonedCalendar.get( Calendar.SECOND ) ) );
+                // Inject the minutes
+                int minute = clonedCalendar.get( Calendar.MINUTE );
+                
+                result[pos++] = (char)( (minute/10) + '0' );
+
+                result[pos++] = (char)( (minute%10) + '0' );
+                
+                // Inject the seconds
+                int second = clonedCalendar.get( Calendar.SECOND );
+                
+                result[pos++] = (char)( (second/10) + '0' );
+
+                result[pos++] = (char)( (second%10) + '0' );
+                
                 break;
 
             case YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION:
-                sb.append( twoDigits.format( clonedCalendar.get( Calendar.MINUTE ) ) );
-                sb.append( twoDigits.format( clonedCalendar.get( Calendar.SECOND ) ) );
+                // Inject the minutes
+                minute = clonedCalendar.get( Calendar.MINUTE );
+                
+                result[pos++] = (char)( (minute/10) + '0' );
 
-                NumberFormat fractionDigits = new DecimalFormat( fractionFormat.toString() );
-                sb.append( fractionDelimiter == FractionDelimiter.COMMA ? ',' : '.' );
-                sb.append( fractionDigits.format( clonedCalendar.get( Calendar.MILLISECOND ) ) );
+                result[pos++] = (char)( (minute%10) + '0' );
+                
+                // Inject the seconds
+                second = clonedCalendar.get( Calendar.SECOND );
+                
+                result[pos++] = (char)( (second/10) + '0' );
+
+                result[pos++] = (char)( (second%10) + '0' );
+
+                // Inject the fraction
+                if ( fractionDelimiter == FractionDelimiter.COMMA )
+                {
+                    result[pos++] = ',';
+                }
+                else
+                {
+                    result[pos++] = '.';
+                }
+                
+                // Inject the fraction
+                int millisecond = clonedCalendar.get( Calendar.MILLISECOND );
+                
+                result[pos++] = (char)( (millisecond/100) + '0' );
+                millisecond %= 100;
+    
+                result[pos++] = (char)( (millisecond/10) + '0' );
+
+                //if ( millisecond > 0 )
+                result[pos++] = (char)( (millisecond%10) + '0' );
+
                 break;
 
             case YEAR_MONTH_DAY_HOUR_MIN:
-                sb.append( twoDigits.format( clonedCalendar.get( Calendar.MINUTE ) ) );
+                // Inject the minutes
+                minute = clonedCalendar.get( Calendar.MINUTE );
+                
+                result[pos++] = (char)( (minute/10) + '0' );
+
+                result[pos++] = (char)( (minute%10) + '0' );
                 break;
 
             case YEAR_MONTH_DAY_HOUR_MIN_FRACTION:
-                sb.append( twoDigits.format( clonedCalendar.get( Calendar.MINUTE ) ) );
+                // Inject the minutes
+                minute = clonedCalendar.get( Calendar.MINUTE );
+                
+                result[pos++] = (char)( (minute/10) + '0' );
 
-                // sec + millis => fraction of minute
-                double millisec = 1000 * clonedCalendar.get( Calendar.SECOND )
+                result[pos++] = (char)( (minute%10) + '0' );
+
+                // sec + millis => fraction of a minute
+                int fraction = 1000 * clonedCalendar.get( Calendar.SECOND )
                     + clonedCalendar.get( Calendar.MILLISECOND );
-                double fraction = millisec / ( 1000 * 60 );
-                fractionDigits = new DecimalFormat( "0." + fractionFormat );
-                sb.append( fractionDelimiter == FractionDelimiter.COMMA ? ',' : '.' );
-                sb.append( fractionDigits.format( fraction ).substring( 2 ) );
+                fraction /= 60;
+
+                if ( fraction > 0 )
+                {
+                    if ( fractionDelimiter == FractionDelimiter.COMMA )
+                    {
+                        result[pos++] = ',';
+                    }
+                    else
+                    {
+                        result[pos++] = '.';
+                    }
+                    
+                    // At this point, the fraction should be in [999, 1]
+                    result[pos++] = (char)( (fraction/100) + '0' );
+                    fraction %= 100;
+    
+                    if ( fraction > 0 )
+                    {
+                        result[pos++] = (char)( (fraction/10) + '0' );
+        
+                        if ( fraction > 0 )
+                        {
+                            result[pos++] = (char)( (fraction%10) + '0' );
+                        }
+                    }
+                } 
+
                 break;
 
             case YEAR_MONTH_DAY_HOUR_FRACTION:
-                // min + sec + millis => fraction of minute
-                millisec = 1000 * 60 * clonedCalendar.get( Calendar.MINUTE ) + 1000
+                // min + sec + millis => fraction of an hour
+                fraction = 1000 * 60 * clonedCalendar.get( Calendar.MINUTE ) + 1000
                     * clonedCalendar.get( Calendar.SECOND )
                     + clonedCalendar.get( Calendar.MILLISECOND );
-                fraction = millisec / ( 1000 * 60 * 60 );
-                fractionDigits = new DecimalFormat( "0." + fractionFormat );
-                sb.append( fractionDelimiter == FractionDelimiter.COMMA ? ',' : '.' );
-                sb.append( fractionDigits.format( fraction ).substring( 2 ) );
+                fraction /= 60 * 60;
 
+                // At this point, the fraction should be in [999, 1]
+                if ( fraction > 0 )
+                {
+                    if ( fractionDelimiter == FractionDelimiter.COMMA )
+                    {
+                        result[pos++] = ',';
+                    }
+                    else
+                    {
+                        result[pos++] = '.';
+                    }
+    
+                    result[pos++] = (char)( (fraction/100) + '0' );
+                    fraction %= 100;
+    
+                    if ( fraction > 0 )
+                    {
+                        result[pos++] = (char)( (fraction/10) + '0' );
+        
+                        if ( fraction > 0 )
+                        {
+                            result[pos++] = (char)( (fraction%10) + '0' );
+                        }
+                    } 
+                }
+                
                 break;
         }
 
-        if ( timeZoneFormat == TimeZoneFormat.Z && clonedCalendar.getTimeZone().hasSameRules( GMT ) )
+        if ( ( timeZoneFormat == TimeZoneFormat.Z ) && clonedCalendar.getTimeZone().hasSameRules( GMT ) )
         {
-            sb.append( 'Z' );
+            result[pos++] = 'Z';
         }
         else
         {
+            // g-differential
             TimeZone timeZone = clonedCalendar.getTimeZone();
             int rawOffset = timeZone.getRawOffset();
-            sb.append( rawOffset < 0 ? '-' : '+' );
+            
+            if ( rawOffset < 0 )
+            {
+                result[pos++] = '-';
+            }
+            else
+            {
+                result[pos++] = '+';
+            }
 
             rawOffset = Math.abs( rawOffset );
-            int hour = rawOffset / ( 60 * 60 * 1000 );
+            hour = rawOffset / ( 60 * 60 * 1000 );
             int minute = ( rawOffset - ( hour * 60 * 60 * 1000 ) ) / ( 1000 * 60 );
 
-            if ( hour < 10 )
-            {
-                sb.append( '0' );
-            }
-            sb.append( hour );
+            // The offset hour
+            result[pos++] = (char)( (hour/10) + '0' );
 
-            if ( timeZoneFormat == TimeZoneFormat.DIFF_HOUR_MINUTE || timeZoneFormat == TimeZoneFormat.Z )
+            result[pos++] = (char)( (hour%10) + '0' );
+
+            if ( ( timeZoneFormat == TimeZoneFormat.DIFF_HOUR_MINUTE ) || ( timeZoneFormat == TimeZoneFormat.Z ) )
             {
-                if ( minute < 10 )
-                {
-                    sb.append( '0' );
-                }
-                sb.append( minute );
+                // The offset minute
+                result[pos++] = (char)( (minute/10) + '0' );
+
+                result[pos++] = (char)( (minute%10) + '0' );
             }
         }
 
-        return sb.toString();
+        return new String( result, 0, pos );
     }
 
 
