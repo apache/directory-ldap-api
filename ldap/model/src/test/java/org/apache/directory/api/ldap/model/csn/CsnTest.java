@@ -362,4 +362,11 @@ public class CsnTest
         Csn deserializedCSN = new Csn( bytes );
         assertEquals( csn, deserializedCSN );
     }
+    
+    
+    @Test 
+    public void testIsValidCsn()
+    {
+        assertTrue( Csn.isValid( "20100111202217.914000Z#000000#000#000000" ) );
+    }
 }

@@ -396,6 +396,9 @@ public class Csn implements Comparable<Csn>
                 {
                     return false;
                 }
+                
+                break;
+                
             default :
                 return false;
         }
