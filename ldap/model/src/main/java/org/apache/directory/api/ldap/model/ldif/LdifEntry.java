@@ -47,6 +47,7 @@ import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Strings;
 
@@ -116,6 +117,20 @@ public class LdifEntry implements Cloneable, Externalizable
         modificationList = new LinkedList<Modification>();
         modifications = new HashMap<String, Modification>();
         entry = new DefaultEntry( ( Dn ) null );
+        entryDn = null;
+        controls = null;
+    }
+    
+    
+    /**
+     * Creates a new schema aware LdifEntry object.
+     */
+    public LdifEntry( SchemaManager schemaManager )
+    {
+        changeType = ChangeType.None; // Default LDIF content
+        modificationList = new LinkedList<Modification>();
+        modifications = new HashMap<String, Modification>();
+        entry = new DefaultEntry( schemaManager, ( Dn ) null );
         entryDn = null;
         controls = null;
     }
