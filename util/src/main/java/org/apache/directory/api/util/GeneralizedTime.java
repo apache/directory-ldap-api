@@ -350,7 +350,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
 
         // this calculates and verifies the calendar
-        /* Not sure we should do that...
+        /* Not sure we should do that... */
         try
         {
             calendar.getTimeInMillis();
@@ -359,7 +359,6 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         {
             throw new ParseException( I18n.err( I18n.ERR_04366 ), 0 );
         }
-        */
 
         calendar.setLenient( true );
     }
