@@ -512,7 +512,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         try
         {
-            int second = Integer.parseInt( upGeneralizedTime.substring( 12, 14 ) );
+            int second = Strings.parseInt( upGeneralizedTime.substring( 12, 14 ) );
             calendar.set( Calendar.SECOND, second );
         }
         catch ( NumberFormatException e )
@@ -531,7 +531,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         try
         {
-            int minute = Integer.parseInt( upGeneralizedTime.substring( 10, 12 ) );
+            int minute = Strings.parseInt( upGeneralizedTime.substring( 10, 12 ) );
             calendar.set( Calendar.MINUTE, minute );
         }
         catch ( NumberFormatException e )
@@ -549,7 +549,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         try
         {
-            int hour = Integer.parseInt( upGeneralizedTime.substring( 8, 10 ) );
+            int hour = Strings.parseInt( upGeneralizedTime.substring( 8, 10 ) );
             calendar.set( Calendar.HOUR_OF_DAY, hour );
         }
         catch ( NumberFormatException e )
@@ -567,7 +567,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         try
         {
-            int day = Integer.parseInt( upGeneralizedTime.substring( 6, 8 ) );
+            int day = Strings.parseInt( upGeneralizedTime.substring( 6, 8 ) );
             calendar.set( Calendar.DAY_OF_MONTH, day );
         }
         catch ( NumberFormatException e )
@@ -585,7 +585,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         try
         {
-            int month = Integer.parseInt( upGeneralizedTime.substring( 4, 6 ) );
+            int month = Strings.parseInt( upGeneralizedTime.substring( 4, 6 ) );
             calendar.set( Calendar.MONTH, month - 1 );
         }
         catch ( NumberFormatException e )
@@ -603,7 +603,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
         try
         {
-            int year = Integer.parseInt( upGeneralizedTime.substring( 0, 4 ) );
+            int year = Strings.parseInt( upGeneralizedTime.substring( 0, 4 ) );
             calendar.set( Calendar.YEAR, year );
         }
         catch ( NumberFormatException e )

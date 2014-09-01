@@ -2302,4 +2302,36 @@ public final class Strings
     {
         return new UUID( 0, value ).toString();
     }
+    
+    
+    /**
+     * Past an ASCII String to a number
+     *
+     * @param value The string to parse
+     * @return the parsed value.
+     * @throws NumberFormatException If we don't have a number
+     */
+    public static int parseInt( String value ) throws NumberFormatException
+    {
+        long res = 0;
+        
+        for ( char c : value.toCharArray() )
+        {
+            if ( ( c >= '0' ) && ( c <= '9' ) )
+            {
+                res = res * 10 + ( c - '0' );
+                
+                if ( res > Integer.MAX_VALUE )
+                {
+                    throw new NumberFormatException( "Integer " + value + " is too big" );
+                }
+            }
+            else
+            {
+                throw new NumberFormatException( "Integer " + value + " is not valid" );
+            }
+        }
+        
+        return (int)res;
+    }
 }
