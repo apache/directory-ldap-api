@@ -97,7 +97,7 @@ public class LdapSchemaViolationException extends LdapOperationException
                 return;
 
             default:
-                throw new IllegalArgumentException( I18n.err( I18n.ERR_04140_UNACCEPTABLE_RESUT_CODE, resultCode ) );
+                throw new IllegalArgumentException( I18n.err( I18n.ERR_04140_UNACCEPTABLE_RESULT_CODE, resultCode ) );
         }
     }
 }
