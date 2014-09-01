@@ -1178,7 +1178,6 @@ public class Dn implements Iterable<Rdn>, Externalizable
     {
         if ( ( this.schemaManager == null ) || force )
         {
-
             this.schemaManager = schemaManager;
 
             if ( this.schemaManager != null )

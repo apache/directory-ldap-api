@@ -1458,9 +1458,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     public static boolean isValid( String dn )
     {
         Rdn rdn = new Rdn();
+        
         try
         {
             parse( dn, rdn );
+            
             return true;
         }
         catch ( LdapInvalidDnException e )
