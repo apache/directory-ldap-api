@@ -51,6 +51,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Chars;
 import org.apache.directory.api.util.Strings;
@@ -217,6 +218,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
     /** A flag set if the ldif contains changes */
     protected boolean containsChanges;
+    
+    /** The SchemaManager instance, if any */
+    protected SchemaManager schemaManager;
 
     /**
      * An Exception to handle error message, has Iterator.next() can't throw
@@ -247,6 +251,18 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         lines = new ArrayList<String>();
         position = 0;
         version = DEFAULT_VERSION;
+    }
+
+    
+    /**
+     * Constructors
+     */
+    public LdifReader( SchemaManager schemaManager )
+    {
+        lines = new ArrayList<String>();
+        position = 0;
+        version = DEFAULT_VERSION;
+        this.schemaManager = schemaManager;
     }
 
 
@@ -1323,10 +1339,10 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         String name = parseDn( line );
 
-        Dn dn = new Dn( name );
+        Dn dn = new Dn( schemaManager, name );
 
         // Ok, we have found a Dn
-        LdifEntry entry = createLdifEntry();
+        LdifEntry entry = createLdifEntry( schemaManager );
         entry.setLengthBeforeParsing( entryLen );
         entry.setOffset( entryOffset );
 
@@ -1833,6 +1849,17 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
 
     /**
+     * Gets the current entry, but don't move forward.
+     *
+     * @return the pre-fetched entry 
+     */
+    public LdifEntry fetch()
+    {
+        return prefetched;
+    }
+
+
+    /**
      * Tests to see if another LDIF is on the input channel.
      *
      * @return true if another LDIF is available false otherwise.
@@ -1991,9 +2018,16 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      * creates a non-schemaaware LdifEntry
      * @return an LdifEntry that is not schemaaware
      */
-    protected LdifEntry createLdifEntry()
+    protected LdifEntry createLdifEntry( SchemaManager schemaManager )
     {
-        return new LdifEntry();
+        if ( schemaManager != null )
+        {
+            return new LdifEntry( schemaManager );
+        }
+        else
+        {
+            return new LdifEntry();
+        }
     }
     
     /**
@@ -2013,6 +2047,15 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     public void setValidateDn( boolean validateDn )
     {
         this.validateDn = validateDn;
+    }
+
+
+    /**
+     * @param schemaManager the schemaManager to set
+     */
+    public void setSchemaManager( SchemaManager schemaManager )
+    {
+        this.schemaManager = schemaManager;
     }
 
 
