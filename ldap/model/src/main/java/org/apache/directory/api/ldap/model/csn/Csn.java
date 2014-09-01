@@ -274,7 +274,7 @@ public class Csn implements Comparable<Csn>
         bytes = Strings.getBytesUtf8( csnStr );
     }
 
-
+    
     /**
      * Check if the given String is a valid CSN.
      * 
@@ -288,166 +288,218 @@ public class Csn implements Comparable<Csn>
             return false;
         }
 
-        if ( value.length() != 40 )
+        char[] chars = value.toCharArray();
+        
+        if ( chars.length != 40 )
         {
             return false;
         }
 
         // Get the Timestamp
-        int sepTS = value.indexOf( '#' );
-
-        if ( sepTS < 0 )
+        // Check the timestamp's year
+        for ( int pos = 0; pos < 4; pos++ )
         {
-            return false;
-        }
-
-        String timestampStr = value.substring( 0, sepTS ).trim();
-
-        if ( timestampStr.length() != 22 )
-        {
-            return false;
-        }
-
-        // Let's transform the Timestamp by removing the mulliseconds and microseconds
-        String realTimestamp = timestampStr.substring( 0, 14 );
-
-        synchronized ( SDF )
-        {
-            try
-            {
-                SDF.parse( realTimestamp ).getTime();
-            }
-            catch ( ParseException pe )
+            if ( !Chars.isDigit( chars[pos] ) )
             {
                 return false;
             }
         }
-
-        // And add the milliseconds and microseconds now
-        String millisStr = timestampStr.substring( 15, 21 );
-
-        if ( Strings.isEmpty( millisStr ) )
+        
+        // Check the timestamp month
+        switch ( chars[4] )
         {
-            return false;
-        }
-
-        for ( int i = 0; i < 6; i++ )
-        {
-            if ( !Chars.isDigit( millisStr, i ) )
-            {
-                return false;
-            }
-        }
-
-        try
-        {
-            Integer.valueOf( millisStr );
-        }
-        catch ( NumberFormatException nfe )
-        {
-            return false;
-        }
-
-        // Get the changeCount. It should be an hex number prefixed with '0x'
-        int sepCC = value.indexOf( '#', sepTS + 1 );
-
-        if ( sepCC < 0 )
-        {
-            return false;
-        }
-
-        String changeCountStr = value.substring( sepTS + 1, sepCC ).trim();
-
-        if ( Strings.isEmpty( changeCountStr ) )
-        {
-            return false;
-        }
-
-        if ( changeCountStr.length() != 6 )
-        {
-            return false;
-        }
-
-        try
-        {
-            for ( int i = 0; i < 6; i++ )
-            {
-                if ( !Chars.isHex( changeCountStr, i ) )
+            case '0' :
+                if ( !Chars.isDigit( chars[5] ) )
                 {
                     return false;
                 }
-            }
-
-            Integer.parseInt( changeCountStr, 16 );
-        }
-        catch ( NumberFormatException nfe )
-        {
-            return false;
-        }
-
-        // Get the replicaIDfalse
-        int sepRI = value.indexOf( '#', sepCC + 1 );
-
-        if ( sepRI < 0 )
-        {
-            return false;
-        }
-
-        String replicaIdStr = value.substring( sepCC + 1, sepRI ).trim();
-
-        if ( Strings.isEmpty( replicaIdStr ) )
-        {
-            return false;
-        }
-
-        if ( replicaIdStr.length() != 3 )
-        {
-            return false;
-        }
-
-        for ( int i = 0; i < 3; i++ )
-        {
-            if ( !Chars.isHex( replicaIdStr, i ) )
-            {
+                
+                if ( chars[5] == '0' )
+                {
+                    return false;
+                }
+                
+                break;
+                
+            case '1' :
+                if ( ( chars[5] != '0' ) && ( chars[5] != '1' ) && ( chars[5] != '2' ) )
+                {
+                    return false;
+                }
+                
+                break;
+                
+            default :
                 return false;
-            }
         }
 
-        try
+        // Check the timestamp day
+        switch ( chars[6] )
         {
-            Integer.parseInt( replicaIdStr, 16 );
+            case '0' :
+                if ( !Chars.isDigit( chars[7] ) )
+                {
+                    return false;
+                }
+                
+                if ( chars[7] == '0' )
+                {
+                    return false;
+                }
+                
+                break;
+                
+            case '1' :
+                if ( !Chars.isDigit( chars[7] ) )
+                {
+                    return false;
+                }
+                
+                break;
+                
+            case '2' :
+                if ( !Chars.isDigit( chars[7] ) )
+                {
+                    return false;
+                }
+                
+                // Special case for february...
+                break;
+                
+            case '3' :
+                // Deal with 30 days months
+                if ( ( chars[7] != '0' ) && ( chars[7] != '1' ) )
+                {
+                    return false;
+                }
+                
+                break;
+                
+            default :
+                return false;
         }
-        catch ( NumberFormatException nfe )
+
+        // Check the timestamp hour
+        switch ( chars[8] )
+        {
+            case '0' :
+            case '1' :
+                if ( !Chars.isDigit( chars[9] ) )
+                {
+                    return false;
+                }
+
+                break;
+                
+            case '2' :
+                if ( ( chars[9] != '0' ) && ( chars[9] != '1' ) && ( chars[9] != '2' ) && ( chars[9] != '3' ) )
+                {
+                    return false;
+                }
+            default :
+                return false;
+        }
+
+        // Check the timestamp minute
+        switch ( chars[10] )
+        {
+            case '0' :
+            case '1' :
+            case '2' :
+            case '3' :
+            case '4' :
+            case '5' :
+                break;
+                
+            default :
+                return false;
+        }
+        
+        if ( !Chars.isDigit( chars[11] ) )
+        {
+            return false;
+        }
+        
+        // Check the timestamp seconds
+        switch ( chars[12] )
+        {
+            case '0' :
+            case '1' :
+            case '2' :
+            case '3' :
+            case '4' :
+            case '5' :
+                break;
+                
+            default :
+                return false;
+        }
+        
+        if ( !Chars.isDigit( chars[13] ) )
         {
             return false;
         }
 
-        // Get the modification number
-        if ( sepCC == value.length() )
-        {
-            return false;
-        }
-
-        String operationNumberStr = value.substring( sepRI + 1 ).trim();
-
-        if ( operationNumberStr.length() != 6 )
+        // Check the milliseconds
+        if ( chars[14] != '.' )
         {
             return false;
         }
 
         for ( int i = 0; i < 6; i++ )
         {
-            if ( !Chars.isHex( operationNumberStr, i ) )
+            if ( !Chars.isDigit( chars[15 + i] ) )
             {
                 return false;
             }
         }
 
-        try
+        if ( chars[21] != 'Z' )
         {
-            Integer.parseInt( operationNumberStr, 16 );
+            return false;
         }
-        catch ( NumberFormatException nfe )
+
+        if ( chars[22] != '#' )
+        {
+            return false;
+        }
+
+        // Get the changeCount. It should be an 6 digit hex number
+        if ( !Chars.isHex( (byte)chars[23] ) ||
+             !Chars.isHex( (byte)chars[24] ) ||
+             !Chars.isHex( (byte)chars[25] ) ||
+             !Chars.isHex( (byte)chars[26] ) ||
+             !Chars.isHex( (byte)chars[27] ) ||
+             !Chars.isHex( (byte)chars[28] ) )
+        {
+            return false;
+        }
+
+        if ( chars[29] != '#' )
+        {
+            return false;
+        }
+        
+        // Get the replicaID, which should be a 3 digits hex number
+        if ( !Chars.isHex( (byte)chars[30] ) || 
+             !Chars.isHex( (byte)chars[31] ) || 
+             !Chars.isHex( (byte)chars[32] ) )
+        {
+            return false;
+        }
+
+        if ( chars[33] != '#' )
+        {
+            return false;
+        }
+
+        // Check the modification number, which should be a 6 digits hex number
+        if ( !Chars.isHex( (byte)chars[34] ) ||
+             !Chars.isHex( (byte)chars[35] ) ||
+             !Chars.isHex( (byte)chars[36] ) ||
+             !Chars.isHex( (byte)chars[37] ) ||
+             !Chars.isHex( (byte)chars[38] ) ||
+             !Chars.isHex( (byte)chars[39] ) )
         {
             return false;
         }
