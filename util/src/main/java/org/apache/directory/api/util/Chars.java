@@ -791,6 +791,19 @@ public final class Chars
 
 
     /**
+     * Check if the current char is an Hex Char
+     * &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66]
+     *
+     * @param c The char we want to check
+     * @return <code>true</code> if the current char is a Hex char
+     */
+    public static boolean isHex( char c )
+    {
+        return ( ( c | 0x007F ) == 0x007F ) && HEX[c];
+    }
+
+
+    /**
      * Check if the current byte is an Hex Char
      * &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66]
      *
@@ -799,7 +812,7 @@ public final class Chars
      */
     public static boolean isHex( byte b )
     {
-        return ( ( b | 0x7F ) == 0x7F ) || HEX[b];
+        return ( ( b | 0x7F ) == 0x7F ) && HEX[b];
     }
 
 
@@ -821,14 +834,7 @@ public final class Chars
         {
             byte c = bytes[index];
 
-            if ( ( ( c | 0x7F ) != 0x7F ) || !HEX[c] )
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return ( ( ( c | 0x7F ) == 0x7F ) && HEX[c] );
         }
     }
 
@@ -851,14 +857,7 @@ public final class Chars
         {
             char c = chars[index];
 
-            if ( ( c > 127 ) || !HEX[c] )
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return ( ( ( c | 0x007F ) == 0x007F ) && HEX[c] );
         }
     }
 
@@ -888,16 +887,10 @@ public final class Chars
         {
             char c = string.charAt( index );
 
-            if ( ( c > 127 ) || !HEX[c] )
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return ( ( ( c | 0x007F ) == 0x007F ) && HEX[c] );
         }
     }
+    
     
     /**
      * Check if the current character is the ASCII character underscore 0x5F.
