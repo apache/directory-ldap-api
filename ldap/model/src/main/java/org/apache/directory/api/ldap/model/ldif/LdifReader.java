@@ -408,6 +408,52 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
 
     /**
+     * A constructor which takes a File and a SchemaManager
+     *
+     * @param file A File containing ldif formated input
+     * @param schemaManager The SchemaManager instance to use
+     * @throws LdapLdifException If the file cannot be processed or if the format is incorrect
+     */
+    public LdifReader( File file, SchemaManager schemaManager ) throws LdapLdifException
+    {
+        if ( !file.exists() )
+        {
+            String msg = I18n.err( I18n.ERR_12010_CANNOT_FIND_FILE, file.getAbsoluteFile() );
+            LOG.error( msg );
+            throw new LdapLdifException( msg );
+        }
+
+        if ( !file.canRead() )
+        {
+            String msg = I18n.err( I18n.ERR_12011_CANNOT_READ_FILE, file.getName() );
+            LOG.error( msg );
+            throw new LdapLdifException( msg );
+        }
+        
+        this.schemaManager = schemaManager;
+        
+        try
+        {
+            initReader( new BufferedReader( new FileReader( file ) ) );
+        }
+        catch ( FileNotFoundException fnfe )
+        {
+            String msg = I18n.err( I18n.ERR_12010_CANNOT_FIND_FILE, file.getAbsoluteFile() );
+            LOG.error( msg );
+            throw new LdapLdifException( msg, fnfe );
+        }
+        catch ( LdapInvalidDnException lide )
+        {
+            throw new LdapLdifException( lide.getMessage(), lide );
+        }
+        catch ( LdapException le )
+        {
+            throw new LdapLdifException( le.getMessage(), le );
+        }
+    }
+
+
+    /**
      * @return The ldif file version
      */
     public int getVersion()
