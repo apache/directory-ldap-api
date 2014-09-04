@@ -115,17 +115,17 @@ public final class Chars
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
-            false, false, false, false, false, true, false, false,
-            true, true, true, true, true, true, true, true,
-            true, true, false, false, false, false, false, false,
-            false, true, true, true, true, true, true, true,
-            true, true, true, true, true, true, true, true,
-            true, true, true, true, true, true, true, true,
-            true, true, true, false, false, false, false, false,
-            false, true, true, true, true, true, true, true,
-            true, true, true, true, true, true, true, true,
-            true, true, true, true, true, true, true, true,
-            true, true, true, false, false, false, false, false
+            false, false, false, false, false, true,  false, false,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  false, false, false, false, false, false,
+            false, true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  false, false, false, false, false,
+            false, true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  false, false, false, false, false
     };
     /** '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' */
     public static final boolean[] DIGIT =
@@ -618,6 +618,19 @@ public final class Chars
                 return true;
             }
         }
+    }
+
+
+    /**
+     * Check if the current character is an 7 bits ASCII CHAR (between 0 and
+     * 127). &lt;char> ::= &lt;alpha> | &lt;digit> | '-'
+     *
+     * @param c The char we want to check
+     * @return The position of the next character, if the current one is a CHAR.
+     */
+    public static boolean isAlphaDigitMinus( char c )
+    {
+        return ( ( c & 0x007F ) == c ) && CHAR[c];
     }
 
 
