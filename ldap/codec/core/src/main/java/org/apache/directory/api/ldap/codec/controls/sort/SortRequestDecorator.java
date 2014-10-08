@@ -31,6 +31,7 @@ import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
+import org.apache.directory.api.asn1.util.Asn1StringUtils;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -53,6 +54,9 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
 
     private List<Integer> sortKeyLenList = new ArrayList<Integer>();
 
+    public static int ORDERING_RULE_TAG = 0x80;
+    
+    public static int REVERSE_ORDER_TAG = 0x81;
 
     /**
      * Creates a new instance of SortRequestDecorator.
@@ -100,8 +104,11 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
                 skLen += 1 + TLV.getNbBytes( mrBytes.length ) + mrBytes.length;
             }
 
-            // reverse order flag
-            skLen += 1 + 1 + 1;
+            if ( sk.isReverseOrder() )
+            {
+                // reverse order flag
+                skLen += 1 + 1 + 1;
+            }
 
             sortKeyLenList.add( skLen );
 
@@ -138,12 +145,22 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
 
             BerValue.encode( buffer, sk.getAttributeTypeDesc() );
 
-            if ( sk.getMatchingRuleId() != null )
+            String mrId = sk.getMatchingRuleId();
+            if ( mrId != null )
             {
-                BerValue.encode( buffer, sk.getMatchingRuleId() );
+                buffer.put( (byte)ORDERING_RULE_TAG );
+                byte[] value = Asn1StringUtils.getBytesUtf8( mrId );
+
+                buffer.put( TLV.getBytes( value.length ) );
+                buffer.put( value );
             }
 
-            BerValue.encode( buffer, sk.isReverseOrder() );
+            if ( sk.isReverseOrder() )
+            {
+                buffer.put( (byte)REVERSE_ORDER_TAG );
+                buffer.put( (byte)0x01 );
+                buffer.put( BerValue.TRUE_VALUE );
+            }
         }
 
         return buffer;

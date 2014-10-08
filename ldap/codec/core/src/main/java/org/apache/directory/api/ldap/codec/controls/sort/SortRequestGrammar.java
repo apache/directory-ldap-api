@@ -34,6 +34,8 @@ import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.apache.directory.api.ldap.codec.controls.sort.SortRequestDecorator.*;
+
 
 /**
  * Grammar used for decoding a SortRequestControl.
@@ -70,10 +72,11 @@ public class SortRequestGrammar extends AbstractGrammar<SortRequestContainer>
                 {
                     LOG.debug( "AttributeTypeDesc = " + atDesc );
                 }
-                
+
                 SortKey sk = new SortKey( atDesc );
                 container.setCurrentKey( sk );
                 container.getControl().addSortKey( sk );
+                container.setGrammarEndAllowed( true );
             }
 
         };
@@ -93,9 +96,9 @@ public class SortRequestGrammar extends AbstractGrammar<SortRequestContainer>
                     {
                         LOG.debug( "ReverseOrder = " + reverseOrder );
                     }
-                    
+
                     container.getCurrentKey().setReverseOrder( reverseOrder );
-                    
+
                     container.setGrammarEndAllowed( true );
                 }
                 catch ( BooleanDecoderException e )
@@ -107,7 +110,7 @@ public class SortRequestGrammar extends AbstractGrammar<SortRequestContainer>
             }
 
         };
-        
+
         // Create the transitions table
         super.transitions = new GrammarTransition[SortRequestStates.END_STATE.ordinal()][256];
 
@@ -125,11 +128,11 @@ public class SortRequestGrammar extends AbstractGrammar<SortRequestContainer>
             new GrammarTransition<SortRequestContainer>( SortRequestStates.SORT_KEY_SEQUENCE_STATE,
                 SortRequestStates.AT_DESC_STATE,
                 UniversalTag.OCTET_STRING.getValue(), addSortKey );
-        
-        super.transitions[SortRequestStates.AT_DESC_STATE.ordinal()][UniversalTag.OCTET_STRING.getValue()] =
+
+        super.transitions[SortRequestStates.AT_DESC_STATE.ordinal()][ORDERING_RULE_TAG] =
             new GrammarTransition<SortRequestContainer>( SortRequestStates.AT_DESC_STATE,
                 SortRequestStates.ORDER_RULE_STATE,
-                UniversalTag.OCTET_STRING.getValue(), new GrammarAction<SortRequestContainer>()
+                ORDERING_RULE_TAG, new GrammarAction<SortRequestContainer>()
                 {
 
                     @Override
@@ -142,24 +145,29 @@ public class SortRequestGrammar extends AbstractGrammar<SortRequestContainer>
                         {
                             LOG.debug( "MatchingRuleOid = " + matchingRuleOid );
                         }
-                        
+
                         container.getCurrentKey().setMatchingRuleId( matchingRuleOid );
                     }
 
                 } );
-        
-        super.transitions[SortRequestStates.ORDER_RULE_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
+
+        super.transitions[SortRequestStates.ORDER_RULE_STATE.ordinal()][REVERSE_ORDER_TAG] =
             new GrammarTransition<SortRequestContainer>( SortRequestStates.ORDER_RULE_STATE,
                 SortRequestStates.REVERSE_ORDER_STATE,
-                UniversalTag.BOOLEAN.getValue(), storeReverseOrder );
-        
-        super.transitions[SortRequestStates.AT_DESC_STATE.ordinal()][UniversalTag.BOOLEAN.getValue()] =
+                REVERSE_ORDER_TAG, storeReverseOrder );
+
+        super.transitions[SortRequestStates.AT_DESC_STATE.ordinal()][REVERSE_ORDER_TAG] =
             new GrammarTransition<SortRequestContainer>( SortRequestStates.AT_DESC_STATE,
                 SortRequestStates.REVERSE_ORDER_STATE,
-                UniversalTag.BOOLEAN.getValue(), storeReverseOrder );
+                REVERSE_ORDER_TAG, storeReverseOrder );
 
         super.transitions[SortRequestStates.REVERSE_ORDER_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
             new GrammarTransition<SortRequestContainer>( SortRequestStates.REVERSE_ORDER_STATE,
+                SortRequestStates.SORT_KEY_SEQUENCE_STATE,
+                UniversalTag.SEQUENCE.getValue(), null );
+
+        super.transitions[SortRequestStates.AT_DESC_STATE.ordinal()][UniversalTag.SEQUENCE.getValue()] =
+            new GrammarTransition<SortRequestContainer>( SortRequestStates.AT_DESC_STATE,
                 SortRequestStates.SORT_KEY_SEQUENCE_STATE,
                 UniversalTag.SEQUENCE.getValue(), null );
 
