@@ -28,6 +28,7 @@ import java.nio.ByteBuffer;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.ldap.extras.AbstractCodecServiceTest;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncDecorator;
 import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
