@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.ldap.extras.controls.ad;
+package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
 import java.nio.ByteBuffer;
 
@@ -31,6 +31,9 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncFlag;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncImpl;
 import org.apache.directory.api.util.Strings;
 
 /**

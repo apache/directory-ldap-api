@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.ldap.extras.controls.ad;
+package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
 
 import org.apache.directory.api.asn1.ber.grammar.Grammar;

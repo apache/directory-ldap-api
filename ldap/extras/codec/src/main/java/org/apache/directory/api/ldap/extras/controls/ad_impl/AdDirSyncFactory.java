@@ -17,12 +17,13 @@
  *   under the License.
  *
  */
-package org.apache.directory.api.ldap.extras.controls.ad;
+package org.apache.directory.api.ldap.extras.controls.ad_impl;
 
 
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
 
 
 /**
