@@ -140,5 +140,4 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
     {
         this.timeout = timeout;
     }
-
 }
