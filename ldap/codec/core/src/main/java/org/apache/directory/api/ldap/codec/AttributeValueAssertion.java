@@ -21,7 +21,9 @@ package org.apache.directory.api.ldap.codec;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapConstants;
-import org.apache.directory.api.ldap.model.entry.*;
+import org.apache.directory.api.ldap.model.entry.BinaryValue;
+import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.util.Strings;
 
 
