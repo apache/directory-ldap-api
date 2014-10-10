@@ -20,7 +20,6 @@
 package org.apache.directory.ldap.client.template;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +63,8 @@ import org.slf4j.LoggerFactory;
 public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFactory
 {
     private static Logger logger = LoggerFactory.getLogger( LdapConnectionTemplate.class );
-    private static final EntryMapper<Dn> dnEntryMapper = new EntryMapper<Dn>() {
+    private static final EntryMapper<Dn> dnEntryMapper = new EntryMapper<Dn>()
+    {
         @Override
         public Dn map( Entry entry ) throws LdapException
         {
@@ -147,31 +147,34 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
 
 
     @Override
-    public PasswordWarning authenticate( String baseDn, String filter, SearchScope scope, char[] password ) throws PasswordException
+    public PasswordWarning authenticate( String baseDn, String filter, SearchScope scope, char[] password )
+        throws PasswordException
     {
         return authenticate( newSearchRequest( baseDn, filter, scope ), password );
     }
 
 
     @Override
-    public PasswordWarning authenticate( Dn baseDn, String filter, SearchScope scope, char[] password ) throws PasswordException
+    public PasswordWarning authenticate( Dn baseDn, String filter, SearchScope scope, char[] password )
+        throws PasswordException
     {
         return authenticate( newSearchRequest( baseDn, filter, scope ), password );
     }
-    
-    
+
+
     @Override
     public PasswordWarning authenticate( SearchRequest searchRequest, char[] password ) throws PasswordException
     {
         Dn userDn = searchFirst( searchRequest, dnEntryMapper );
-        if ( userDn == null ) {
+        if ( userDn == null )
+        {
             throw new PasswordException().setResultCode( ResultCodeEnum.INVALID_CREDENTIALS );
         }
-        
+
         return authenticate( userDn, password );
     }
-    
-    
+
+
     @Override
     public PasswordWarning authenticate( Dn userDn, char[] password ) throws PasswordException
     {
@@ -347,12 +350,14 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
 
     }
 
+
     @Override
-    public void modifyPassword( Dn userDn, char[] newPassword ) 
+    public void modifyPassword( Dn userDn, char[] newPassword )
         throws PasswordException
     {
         modifyPassword( userDn, null, newPassword, true );
     }
+
 
     @Override
     public void modifyPassword( Dn userDn, char[] oldPassword,
@@ -360,6 +365,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     {
         modifyPassword( userDn, oldPassword, newPassword, false );
     }
+
 
     @Override
     public void modifyPassword( Dn userDn, char[] oldPassword,
@@ -552,8 +558,8 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     public <T> T searchFirst( String baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper )
     {
-        return searchFirst( 
-            modelFactory.newSearchRequest( baseDn, filter, scope ), 
+        return searchFirst(
+            modelFactory.newSearchRequest( baseDn, filter, scope ),
             entryMapper );
     }
 
@@ -562,8 +568,8 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     public <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper )
     {
-        return searchFirst( 
-            modelFactory.newSearchRequest( baseDn, filter, scope ), 
+        return searchFirst(
+            modelFactory.newSearchRequest( baseDn, filter, scope ),
             entryMapper );
     }
 
@@ -573,7 +579,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
         String[] attributes, EntryMapper<T> entryMapper )
     {
         return searchFirst(
-            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ), 
+            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ),
             entryMapper );
     }
 
@@ -583,11 +589,11 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
         String[] attributes, EntryMapper<T> entryMapper )
     {
         return searchFirst(
-            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ), 
+            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ),
             entryMapper );
     }
-    
-    
+
+
     @Override
     public <T> T searchFirst( SearchRequest searchRequest,
         EntryMapper<T> entryMapper )
@@ -612,8 +618,8 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     public <T> List<T> search( String baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper )
     {
-        return search( 
-            modelFactory.newSearchRequest( baseDn, filter, scope ), 
+        return search(
+            modelFactory.newSearchRequest( baseDn, filter, scope ),
             entryMapper );
     }
 
@@ -622,8 +628,8 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     public <T> List<T> search( Dn baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper )
     {
-        return search( 
-            modelFactory.newSearchRequest( baseDn, filter, scope ), 
+        return search(
+            modelFactory.newSearchRequest( baseDn, filter, scope ),
             entryMapper );
     }
 
@@ -633,7 +639,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
         String[] attributes, EntryMapper<T> entryMapper )
     {
         return search(
-            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ), 
+            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ),
             entryMapper );
     }
 
@@ -643,7 +649,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
         String[] attributes, EntryMapper<T> entryMapper )
     {
         return search(
-            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ), 
+            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ),
             entryMapper );
     }
 
