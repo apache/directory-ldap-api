@@ -34,7 +34,7 @@ import org.apache.directory.api.ldap.codec.controls.search.subentries.Subentries
 import org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory;
 import org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
-import org.apache.directory.api.ldap.extras.controls.ad.AdDirSyncFactory;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncFactory;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone.SyncDoneValue;
