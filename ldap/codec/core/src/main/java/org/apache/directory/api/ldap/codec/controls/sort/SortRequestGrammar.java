@@ -20,6 +20,9 @@
 package org.apache.directory.api.ldap.codec.controls.sort;
 
 
+import static org.apache.directory.api.ldap.codec.controls.sort.SortRequestDecorator.ORDERING_RULE_TAG;
+import static org.apache.directory.api.ldap.codec.controls.sort.SortRequestDecorator.REVERSE_ORDER_TAG;
+
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.ber.grammar.AbstractGrammar;
 import org.apache.directory.api.asn1.ber.grammar.Grammar;
@@ -33,8 +36,6 @@ import org.apache.directory.api.ldap.model.message.controls.SortKey;
 import org.apache.directory.api.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.apache.directory.api.ldap.codec.controls.sort.SortRequestDecorator.*;
 
 
 /**
