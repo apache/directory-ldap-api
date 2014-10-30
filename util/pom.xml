@@ -56,8 +56,13 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.util</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
+              org.apache.directory.api.util;version=${project.version};-noimport:=true,
+              org.apache.directory.api.util.exception;version=${project.version};-noimport:=true
             </Export-Package>
+            <Import-Package>
+              org.apache.directory.api.i18n;version=${project.version},
+              org.slf4;version=${slf4j.api.version}
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>

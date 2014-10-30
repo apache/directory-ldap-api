@@ -67,8 +67,22 @@
             <Bundle-ActivationPolicy>lazy</Bundle-ActivationPolicy>
             <Bundle-SymbolicName>${project.groupId}.ldap.net.mina</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
+              org.apache.directory.api.ldap.codec.protocol.mina;version=${project.version};-noimport:=true
             </Export-Package>
+            <Import-Package>
+              org.apache.directory.api.asn1;version=${project.version},
+              org.apache.directory.api.asn1.ber;version=${project.version},
+              org.apache.directory.api.asn1.ber.tlv;version=${project.version},
+              org.apache.directory.api.ldap.codec.api;version=${project.version},
+              org.apache.directory.api.ldap.model.constants;version=${project.version},
+              org.apache.directory.api.ldap.model.exception;version=${project.version},
+              org.apache.directory.api.ldap.model.message;version=${project.version},
+              org.apache.directory.api.util;version=${project.version},
+              org.apache.mina.core.buffer;version=${mina.core.version},
+              org.apache.mina.core.session;version=${mina.core.version},
+              org.apache.mina.filter.codec;version=${mina.core.version},
+              org.slf4;version=${slf4j.api.version}
+            </Import-Package>
             <Bundle-Activator>
               org.apache.directory.api.ldap.codec.protocol.mina.LdapProtocolCodecActivator
             </Bundle-Activator>

@@ -145,15 +145,26 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.schema</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true,
-                org.apache.directory.api.ldap.schemaextractor.impl;version="${project.version}";-noimport:=true,
-                org.apache.directory.api.ldap.schemamanager.impl;version="${project.version}";-noimport:=true
+              org.apache.directory.api.ldap.schemaextractor;version="${project.version}";-noimport:=true,
+              org.apache.directory.api.ldap.schemaextractor.impl;version="${project.version}";-noimport:=true,
+              org.apache.directory.api.ldap.schemaloader;version="${project.version}";-noimport:=true,
+              org.apache.directory.api.ldap.schemamanager.impl;version="${project.version}";-noimport:=true
             </Export-Package>
             <Import-Package>
-              *,
-              org.apache.directory.api.ldap.aci,
-              org.apache.directory.api.ldap.model.schema.comparators,
-              org.apache.directory.api.ldap.model.schema.syntaxCheckers
+              org.apache.directory.api.asn1.util;version=${project.version},
+              org.apache.directory.api.i18n;version=${project.version},
+              org.apache.directory.api.ldap.model.constants;version=${project.version},
+              org.apache.directory.api.ldap.model.entry;version=${project.version},
+              org.apache.directory.api.ldap.model.exception;version=${project.version},
+              org.apache.directory.api.ldap.model.ldif;version=${project.version},
+              org.apache.directory.api.ldap.model.message;version=${project.version},
+              org.apache.directory.api.ldap.model.name;version=${project.version},
+              org.apache.directory.api.ldap.model.schema;version=${project.version},
+              org.apache.directory.api.ldap.model.schema.normalizers;version=${project.version},
+              org.apache.directory.api.ldap.model.schema.parsers;version=${project.version},
+              org.apache.directory.api.ldap.model.schema.registries;version=${project.version},
+              org.apache.directory.api.util;version=${project.version},
+              org.slf4j;version=${slf4j.api.version}
             </Import-Package>
           </instructions>
         </configuration>

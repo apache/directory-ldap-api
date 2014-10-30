@@ -58,8 +58,27 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.extras.codec.api</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
+              org.apache.directory.api.ldap.extras.controls;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.extras.controls.ad;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.extras.controls.ppolicy;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.extras.extended.cancel;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.extras.extended.certGeneration;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.extras.extended.gracefulDisconnect;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.extras.extended.gracefulShutdown;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.extras.extended.pwdModify;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.extras.extended.startTls;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.extras.extended.storedProcedure;version=${project.version};-noimport:=true,
+              org.apache.directory.api.ldap.extras.extended.whoAmI;version=${project.version};-noimport:=true
             </Export-Package>
+            <Import-Package>
+              org.apache.directory.api.asn1.ber.tlv;version=${project.version},
+              org.apache.directory.api.i18n;version=${project.version},
+              org.apache.directory.api.ldap.model.message;version=${project.version},
+              org.apache.directory.api.ldap.model.message.controls;version=${project.version},
+              org.apache.directory.api.ldap.model.name;version=${project.version},
+              org.apache.directory.api.util;version=${project.version},
+              org.apache.directory.api.util.exception;version=${project.version}
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>

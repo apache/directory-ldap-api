@@ -85,8 +85,15 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.extras.sp</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
+              org.apache.directory.api.ldap.trigger;version=${project.version};-noimport:=true
             </Export-Package>
+            <Import-Package>
+              org.apache.commons.io;version=${commons.io.version},
+              org.apache.commons.lang;version=${commons.lang.version},
+              org.apache.directory.api.ldap.codec.api;version=${project.version},
+              org.apache.directory.api.ldap.extras.extended.storedProcedure;version=${project.version},
+              org.apache.directory.api.ldap.model.constants;version=${project.version}
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>

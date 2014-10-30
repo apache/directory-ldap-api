@@ -16,14 +16,13 @@
   KIND, either express or implied.  See the License for the
   specific language governing permissions and limitations
   under the License.
--->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+--><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
     <version>32</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <groupId>org.apache.directory.api</groupId>
@@ -50,15 +49,15 @@
     <dom4j.version>1.6.1</dom4j.version>
     <junit.version>4.11</junit.version>
     <log4j.version>1.2.17</log4j.version>
-    <mina.core.version>2.0.7</mina.core.version>
+    <mina.core.version>2.0.8</mina.core.version>
     <org.osgi.version>3.0.0</org.osgi.version>
-    <org.osgi.core.version>5.0.0</org.osgi.core.version>
-    <org.apache.felix.version>4.4.0</org.apache.felix.version>
+    <org.osgi.core.version>6.0.0</org.osgi.core.version>
+    <org.apache.felix.version>4.4.1</org.apache.felix.version>
     <slf4j.api.version>1.7.7</slf4j.api.version>
     <slf4j.log4j12.version>1.7.7</slf4j.log4j12.version>
     <xml.apis.version>2.0.2</xml.apis.version>
     <xpp3.version>1.1.4c</xpp3.version>
-    <pax-exam.version>3.4.0</pax-exam.version>
+    <pax-exam.version>4.2.0</pax-exam.version>
     <pax-exam-container-default.version>1.2.4</pax-exam-container-default.version>
     <pax-exam-junit.version>1.2.4</pax-exam-junit.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
@@ -153,7 +152,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore />
+                    <ignore/>
                   </action>
                 </pluginExecution>
                 <pluginExecution>
@@ -166,7 +165,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore />
+                    <ignore/>
                   </action>
                 </pluginExecution>
               </pluginExecutions>

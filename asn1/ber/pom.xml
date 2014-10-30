@@ -77,8 +77,18 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.asn1.ber</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
+              org.apache.directory.api.asn1.actions;version=${project.version};-noimport:=true,
+              org.apache.directory.api.asn1.ber;version=${project.version};-noimport:=true,
+              org.apache.directory.api.asn1.ber.grammar;version=${project.version};-noimport:=true,
+              org.apache.directory.api.asn1.ber.tlv;version=${project.version};-noimport:=true
             </Export-Package>
+            <Import-Package>
+              org.apache.directory.api.asn1;version=${project.version},
+              org.apache.directory.api.asn1.util;version=${project.version},
+              org.apache.directory.api.i18n;version=${project.version},
+              org.apache.directory.api.util;version=${project.version},
+              org.slf4j;version=${slf4j.api.version}
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>

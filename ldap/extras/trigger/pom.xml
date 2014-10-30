@@ -90,8 +90,20 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.extras.trigger</Bundle-SymbolicName>
             <Export-Package>
-                {local-packages};version=${project.version};-noimport:=true
+              org.apache.directory.api.ldap.trigger;version=${project.version};-noimport:=true
             </Export-Package>
+            <Import-Package>
+              antlr;version=${antlr.version},
+              antlr.collections.impl;version=${antlr.version},
+              org.apache.commons.lang;version=${commons.lang.version},
+              org.apache.directory.api.i18n;version=${project.version},
+              org.apache.directory.api.ldap.model.constants;version=${project.version},
+              org.apache.directory.api.ldap.model.entry;version=${project.version},
+              org.apache.directory.api.ldap.model.message;version=${project.version},
+              org.apache.directory.api.ldap.model.name;version=${project.version},
+              org.apache.directory.api.ldap.model.schema;version=${project.version},
+              org.slf4j;version=${slf4j.api.version}
+            </Import-Package>
           </instructions>
         </configuration>
       </plugin>
