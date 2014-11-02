@@ -91,6 +91,10 @@ public final class SchemaConstants
     public static final String DOMAIN_OC = "domain";
     public static final String DOMAIN_OC_OID = "0.9.2342.19200300.100.4.13";
 
+    // SimpleSecurityObject
+    public static final String SIMPLE_SECURITY_OBJECT_OC = "simpleSecurityObject";
+    public static final String SIMPLE_SECURITY_OBJECT_OC_OID = "0.9.2342.19200300.100.4.19";
+
     // PosixAccount
     public static final String POSIX_ACCOUNT_OC = "posicAccount";
     public static final String POSIX_ACCOUNT_OC_OID = "1.3.6.1.1.1.2.0";
@@ -99,6 +103,18 @@ public final class SchemaConstants
     public static final String POSIX_GROUP_OC = "posixGroup";
     public static final String POSIX_GROUP_OC_OID = "1.3.6.1.1.1.2.2";
 
+    // UidObject
+    public static final String UID_OBJECT_OC = "uidObject";
+    public static final String UID_OBJECT_OC_OID = "1.3.6.1.1.3.1";
+
+    // LabeledURIObject
+    public static final String LABELED_URI_OBJECT_OC = "labeledURIObject";
+    public static final String LABELED_URI_OBJECT_OC_OID = "1.3.6.1.4.1.250.3.15";
+
+    // DynamicObject
+    public static final String DYNAMIC_OBJECT_OC = "dynamicObject";
+    public static final String DYNAMIC_OBJECT_OC_OID = "1.3.6.1.4.1.1466.101.119.2";
+
     // ExtensibleObject
     public static final String EXTENSIBLE_OBJECT_OC = "extensibleObject";
     public static final String EXTENSIBLE_OBJECT_OC_OID = "1.3.6.1.4.1.1466.101.120.111";
@@ -106,6 +122,11 @@ public final class SchemaConstants
     // DcObject
     public static final String DC_OBJECT_OC = "dcObject";
     public static final String DC_OBJECT_OC_OID = "1.3.6.1.4.1.1466.344";
+
+    // LDAProotDSE, OpenLDAProotDSE
+    public static final String LDAP_ROOT_DSE_OC = "LDAProotDSE";
+    public static final String OPEN_LDAP_ROOT_DSE_OC = "OpenLDAProotDSE";
+    public static final String LDAP_ROOT_DSE_OC_OID = "1.3.6.1.4.1.4203.1.4.1";
 
     // Apache Meta Schema
     // MetaTop
@@ -207,9 +228,61 @@ public final class SchemaConstants
     public static final String RESIDENTIAL_PERSON_OC = "residentialPerson";
     public static final String RESIDENTIAL_PERSON_OC_OID = "2.5.6.10";
 
+    // ApplicationProcess
+    public static final String APPLICATION_PROCESS_OC = "applicationProcess";
+    public static final String APPLICATION_PROCESS_OC_OID = "2.5.6.11";
+
+    // ApplicationEntity
+    public static final String APPLICATION_ENTITY_OC = "applicationEntity";
+    public static final String APPLICATION_ENTITY_OC_OID = "2.5.6.12";
+
+    // DSA
+    public static final String DSA_OC = "dSA";
+    public static final String DSA_OC_OID = "2.5.6.13";
+
+    // Device
+    public static final String DEVICE_OC = "device";
+    public static final String DEVICE_OC_OID = "2.5.6.14";
+
+    // StrongAuthenticationUser
+    public static final String STRONG_AUTHENTICATION_USER_OC = "strongAuthenticationUser";
+    public static final String STRONG_AUTHENTICATION_USER_OC_OID = "2.5.6.15";
+
+    // CertificationAuthority
+    public static final String CERTIFICATION_AUTHORITY_OC = "certificationAuthority";
+    public static final String CERTIFICATION_AUTHORITY_OC_OID = "2.5.6.16";
+
+    // CertificationAuthority-V2
+    public static final String CERTIFICATION_AUTHORITY_V2_OC = "certificationAuthority-V2";
+    public static final String CERTIFICATION_AUTHORITY_V2_OC_OID = "2.5.6.16.2";
+
     // GroupOfUniqueNames
     public static final String GROUP_OF_UNIQUE_NAMES_OC = "groupOfUniqueNames";
     public static final String GROUP_OF_UNIQUE_NAMES_OC_OID = "2.5.6.17";
+
+    // UserSecurityInformation
+    public static final String USER_SECURITY_INFORMATION_OC = "userSecurityInformation";
+    public static final String USER_SECURITY_INFORMATION_OC_OID = "2.5.6.18";
+
+    // CRLDistributionPoint
+    public static final String CRL_DISTRIBUTION_POINT_OC = "cRLDistributionPoint";
+    public static final String CRL_DISTRIBUTION_POINT_OC_OID = "2.5.6.19";
+
+    // Dmd
+    public static final String DMD_OC = "dmd";
+    public static final String DMD_OC_OID = "2.5.6.20";
+
+    // PkiUser
+    public static final String PKI_USER_OC = "pkiUser";
+    public static final String PKI_USER_OC_OID = "2.5.6.21";
+
+    // PkiCA
+    public static final String PKI_CA_OC = "pkiCA";
+    public static final String PKI_CA_OC_OID = "2.5.6.22";
+
+    // DeltaCRL
+    public static final String DELTA_CRL_OC = "deltaCRL";
+    public static final String DELTA_CRL_OC_OID = "2.5.6.23";
 
     // Subentry
     public static final String SUBENTRY_OC = "subentry";
@@ -236,15 +309,32 @@ public final class SchemaConstants
     public static final String REFERRAL_OC_OID = "2.16.840.1.113730.3.2.6";
 
     // ---- AttributeTypes ----------------------------------------------------
+    // ---- System schema -----------------------------------------------------
+
     // Uid
     public static final String UID_AT = "uid";
     public static final String USER_ID_AT = "userid";
     public static final String UID_AT_OID = "0.9.2342.19200300.100.1.1";
 
+    // Mail 
+    public static final String MAIL_AT = "mail";
+    public static final String RFC822_MAILBOX_AT = "rfc822Mailbox";
+    public static final String MAIL_AT_OID = "0.9.2342.19200300.100.1.3";
+
     // DomainComponent
     public static final String DC_AT = "dc";
     public static final String DOMAIN_COMPONENT_AT = "domainComponent";
     public static final String DOMAIN_COMPONENT_AT_OID = "0.9.2342.19200300.100.1.25";
+
+    // AssociatedDomain
+    public static final String ASSOCIATED_DOMAIN_AT = "associatedDomain";
+    public static final String ASSOCIATED_DOMAIN_AT_OID = "0.9.2342.19200300.100.1.37";
+
+    // UidObject
+    public static final String EMAIL_AT = "email";
+    public static final String emailAddress_AT = "emailAddress";
+    public static final String PKCS9EMAIL_AT = "pkcs9email";
+    public static final String EMAIL_AT_OID = "1.2.840.113549.1.9.1";
 
     // UidObject
     public static final String UID_OBJECT_AT = "uidObject";
@@ -258,31 +348,43 @@ public final class SchemaConstants
     public static final String VENDOR_VERSION_AT = "vendorVersion";
     public static final String VENDOR_VERSION_AT_OID = "1.3.6.1.1.5";
 
-    // entryUUID
+    // EntryUUID
     public static final String ENTRY_UUID_AT = "entryUUID";
     public static final String ENTRY_UUID_AT_OID = "1.3.6.1.1.16.4";
 
-    // entryParentId
-    public static final String ENTRY_PARENT_ID_AT = "entryParentId";
-    public static final String ENTRY_PARENT_ID_OID = "1.3.6.1.4.1.18060.0.4.1.2.51";
-
-    // entryDN
+    // EntryDN
     public static final String ENTRY_DN_AT = "entryDN";
     public static final String ENTRY_DN_AT_OID = "1.3.6.1.1.20";
+
+    // LabeledURI
+    public static final String LABELED_URI_AT = "labeledURI";
+    public static final String LABELED_URI_AT_OID = "1.3.6.1.4.1.250.1.57";
+
+    // EntryTtl
+    public static final String ENTRY_TTL_AT = "entryTtl";
+    public static final String ENTRY_TTL_AT_OID = "1.3.6.1.4.1.1466.101.119.3";
+
+    // DynamicSubtrees
+    public static final String DYNAMIC_SUBTREES_AT = "dynamicSubtrees";
+    public static final String DYNAMIC_SUBTREES_AT_OID = "1.3.6.1.4.1.1466.101.119.4";
 
     // NamingContexts
     public static final String NAMING_CONTEXTS_AT = "namingContexts";
     public static final String NAMING_CONTEXTS_AT_OID = "1.3.6.1.4.1.1466.101.120.5";
 
+    // AltServer
+    public static final String ALT_SERVER_AT = "altServer";
+    public static final String ALT_SERVER_AT_OID = "1.3.6.1.4.1.1466.101.120.6";
+
     // SupportedExtension
     public static final String SUPPORTED_EXTENSION_AT = "supportedExtension";
     public static final String SUPPORTED_EXTENSION_AT_OID = "1.3.6.1.4.1.1466.101.120.7";
 
-    // supportedControl
+    // SupportedControl
     public static final String SUPPORTED_CONTROL_AT = "supportedControl";
     public static final String SUPPORTED_CONTROL_AT_OID = "1.3.6.1.4.1.1466.101.120.13";
 
-    // supportedSASLMechanisms
+    // SupportedSASLMechanisms
     public static final String SUPPORTED_SASL_MECHANISMS_AT = "supportedSASLMechanisms";
     public static final String SUPPORTED_SASL_MECHANISMS_AT_OID = "1.3.6.1.4.1.1466.101.120.14";
 
@@ -330,6 +432,10 @@ public final class SchemaConstants
     public static final String CHANGELOG_CONTEXT_AT = "changeLogContext";
     public static final String CHANGELOG_CONTEXT_AT_OID = "1.3.6.1.4.1.18060.0.4.1.2.49";
 
+    // entryParentId
+    public static final String ENTRY_PARENT_ID_AT = "entryParentId";
+    public static final String ENTRY_PARENT_ID_OID = "1.3.6.1.4.1.18060.0.4.1.2.51";
+
     // ObjectClass
     public static final String OBJECT_CLASS_AT = "objectClass";
     public static final String OBJECT_CLASS_AT_OID = "2.5.4.0";
@@ -337,6 +443,10 @@ public final class SchemaConstants
     // AliasedObjectName
     public static final String ALIASED_OBJECT_NAME_AT = "aliasedObjectName";
     public static final String ALIASED_OBJECT_NAME_AT_OID = "2.5.4.1";
+
+    // knowledgeInformation
+    public static final String KNOWLEDGE_INFORMATION_AT = "knowledgeInformation";
+    public static final String KNOWLEDGE_INFORMATION_AT_OID = "2.5.4.2";
 
     // Cn
     public static final String CN_AT = "cn";
@@ -348,29 +458,83 @@ public final class SchemaConstants
     public static final String SURNAME_AT = "surname";
     public static final String SN_AT_OID = "2.5.4.4";
 
+    // SerialNumber
+    public static final String SERIAL_NUMBER_AT = "serialNumber";
+    public static final String SERIAL_NUMBER_AT_OID = "2.5.4.5";
+
+    // C, CountryName
+    public static final String C_AT = "c";
+    public static final String COUNTRY_NAME_AT = "countryName";
+    public static final String C_AT_OID = "2.5.4.6";
+
+    // L, LocalityName
+    public static final String L_AT = "l";
+    public static final String LOCALITY_NAME_AT = "localityName";
+    public static final String L_AT_OID = "2.5.4.7";
+
+    // C-l
+    public static final String C_L_AT = "c-l";
+    public static final String C_L_AT_OID = "2.5.4.7.1";
+
     // St
     public static final String ST_AT = "st";
     public static final String STATEORPROVINCE_NAME_AT = "stateOrProvinceName";
     public static final String ST_AT_OID = "2.5.4.8";
+
+    // C-st
+    public static final String C_ST_AT = "c-st";
+    public static final String C_ST_AT_OID = "2.5.4.8.1";
 
     // Street
     public static final String STREET_AT = "street";
     public static final String STREET_ADDRESS_AT = "streetAddress";
     public static final String STREET_AT_OID = "2.5.4.9";
 
+    // C-street
+    public static final String C_STREET_AT = "c-street";
+    public static final String C_STREET_AT_OID = "2.5.4.9.1";
+
     // O
     public static final String O_AT = "o";
     public static final String ORGANIZATION_NAME_AT = "organizationName";
     public static final String O_AT_OID = "2.5.4.10";
+
+    // C-o
+    public static final String C_O_AT = "c-o";
+    public static final String C_O_AT_OID = "2.5.4.10.1";
 
     // Ou
     public static final String OU_AT = "ou";
     public static final String ORGANIZATIONAL_UNIT_NAME_AT = "organizationalUnitName";
     public static final String OU_AT_OID = "2.5.4.11";
 
+    // C-ou
+    public static final String C_OU_AT = "c-ou";
+    public static final String C_OU_AT_OID = "2.5.4.11.1";
+
+    // Title
+    public static final String TITLE_AT = "title";
+    public static final String TITLE_AT_OID = "2.5.4.12";
+
+    // Description
+    public static final String DESCRIPTION_AT = "description";
+    public static final String DESCRIPTION_AT_OID = "2.5.4.13";
+
     // SearchGuide
     public static final String SEARCHGUIDE_AT = "searchguide";
     public static final String SEARCHGUIDE_AT_OID = "2.5.4.14";
+
+    // BusinessCategory
+    public static final String BUSINESS_CATEGORY_AT = "businessCategory";
+    public static final String BUSINESS_CATEGORY_AT_OID = "2.5.4.15";
+
+    // PostalAddress
+    public static final String POSTAL_ADDRESS_AT = "postalAddress";
+    public static final String POSTAL_ADDRESS_AT_OID = "2.5.4.16";
+
+    // C-postalAddress
+    public static final String C_POSTAL_ADDRESS_AT = "c-postalAddress";
+    public static final String C_POSTAL_ADDRESS_AT_OID = "2.5.4.16.1";
 
     // PostalCode
     public static final String POSTALCODE_AT = "postalCode";
@@ -384,21 +548,175 @@ public final class SchemaConstants
     public static final String POSTOFFICEBOX_AT = "postOfficeBox";
     public static final String POSTOFFICEBOX_AT_OID = "2.5.4.18";
 
+    // C-postOfficeBox
+    public static final String C_POSTOFFICEBOX_AT = "c-postOfficeBox";
+    public static final String C_POSTOFFICEBOX_AT_OID = "2.5.4.18.1";
+
+    // PhysicalDeliveryOfficeName
+    public static final String PHYSICAL_DELIVERY_OFFICE_NAME_AT = "physicalDeliveryOfficeName";
+    public static final String PHYSICAL_DELIVERY_OFFICE_NAME_AT_OID = "2.5.4.19";
+
+    // C-physicalDeliveryOfficeName
+    public static final String C_PHYSICAL_DELIVERY_OFFICE_NAME_AT = "c-physicalDeliveryOfficeName";
+    public static final String C_PHYSICAL_DELIVERY_OFFICE_NAME_AT_OID = "2.5.4.19.1";
+
+    // TelephoneNumber
+    public static final String TELEPHONE_NUMBER_AT = "telephoneNumber";
+    public static final String TELEPHONE_NUMBER_AT_OID = "2.5.4.20";
+
+    // C-telephoneNumber
+    public static final String C_TELEPHONE_NUMBER_AT = "telephoneNumber";
+    public static final String C_TELEPHONE_NUMBER_AT_OID = "2.5.4.20.1";
+
+    // TelexNumber
+    public static final String TELEX_NUMBER_AT = "telexNumber";
+    public static final String TELEX_NUMBER_AT_OID = "2.5.4.21";
+
+    // C-telexNumber
+    public static final String C_TELEX_NUMBER_AT = "c-telexNumber";
+    public static final String C_TELEX_NUMBER_AT_OID = "2.5.4.21.1";
+
+    // TeletexTerminalIdentifier
+    public static final String TELETEX_TERMINAL_IDENTIFIER_AT = "teletexTerminalIdentifier";
+    public static final String TELETEX_TERMINAL_IDENTIFIER_AT_OID = "2.5.4.22";
+
+    // Fax
+    public static final String FAX_AT = "fax";
+    public static final String FACSIMILE_TELEPHONE_NUMBER_AT = "facsimileTelephoneNumber";
+    public static final String FACSIMILE_TELEPHONE_NUMBER_AT_OID = "2.5.4.23";
+
+    // C-fax
+    public static final String C_FACSIMILE_TELEPHONE_NUMBER_AT = "c-facsimileTelephoneNumber";
+    public static final String C_FACSIMILE_TELEPHONE_NUMBER_AT_OID = "2.5.4.23.1";
+
+    // X121Address
+    public static final String X12_1ADDRESS_AT = "x121Address";
+    public static final String X121_ADDRESS_AT_OID = "2.5.4.24";
+
+    // InternationaliSDNNumber
+    public static final String INTERNATIONAL_ISDN_NUMBER_AT = "internationaliSDNNumber";
+    public static final String INTERNATIONAL_ISDN_NUMBER_AT_OID = "2.5.4.25";
+
+    // C-internationaliSDNNumber
+    public static final String C_INTERNATIONAL_ISDN_NUMBER_AT = "internationaliSDNNumber";
+    public static final String C_INTERNATIONAL_ISDN_NUMBER_AT_OID = "2.5.4.25.1";
+
+    // RegisteredAddress
+    public static final String REGISTERED_ADDRESS_AT = "registeredAddress";
+    public static final String REGISTERED_ADDRESS_AT_OID = "2.5.4.26";
+
+    // DestinationIndicator
+    public static final String DESTINATION_INDICATOR_AT = "destinationIndicator";
+    public static final String DESTINATION_INDICATOR_AT_OID = "2.5.4.27";
+
+    // PreferredDeliveryMethod
+    public static final String PREFERRED_DELIVERY_METHOD_AT = "preferredDeliveryMethod";
+    public static final String PREFERRED_DELIVERY_METHOD_AT_OID = "2.5.4.28";
+
+    // PresentationAddress
+    public static final String PRESENTATION_ADDRESS_AT = "presentationAddress";
+    public static final String PRESENTATION_ADDRESS_AT_OID = "2.5.4.29";
+
+    // SupportedApplicationContext
+    public static final String SUPPORTED_APPLICATION_CONTEXT_AT = "supportedApplicationContext";
+    public static final String SUPPORTED_APPLICATION_CONTEXT_AT_OID = "2.5.4.30";
+
     // Member
     public static final String MEMBER_AT = "member";
     public static final String MEMBER_AT_OID = "2.5.4.31";
+
+    // Owner
+    public static final String OWNER_AT = "owner";
+    public static final String OWNER_AT_OID = "2.5.4.32";
+
+    // RoleOccupant
+    public static final String ROLE_OCCUPANT_AT = "roleOccupant";
+    public static final String ROLE_OCCUPANT_AT_OID = "2.5.4.33";
+
+    // SeeAlso
+    public static final String SEE_ALSO_AT = "seeAlso";
+    public static final String SEE_ALSO_AT_OID = "2.5.4.34";
 
     // UserPassword
     public static final String USER_PASSWORD_AT = "userPassword";
     public static final String USER_PASSWORD_AT_OID = "2.5.4.35";
 
+    // UserCertificate
+    public static final String USER_CERTIFICATE_AT = "userCertificate";
+    public static final String USER_CERTIFICATE_AT_OID = "2.5.4.36";
+
+    // CACertificate
+    public static final String CA_CERTIFICATE_AT = "cACertificate";
+    public static final String CA_CERTIFICATE_AT_OID = "2.5.4.37";
+
+    // AuthorityRevocationList
+    public static final String AUTHORITY_REVOCATION_LIST_AT = "authorityRevocationList";
+    public static final String AUTHORITY_REVOCATION_LIST_AT_OID = "2.5.4.38";
+
+    // CertificateRevocationList
+    public static final String CERTIFICATE_REVOCATION_LIST_AT = "certificateRevocationList";
+    public static final String CERTIFICATE_REVOCATION_LIST_AT_OID = "2.5.4.39";
+
+    // CrossCertificatePair
+    public static final String CROSS_CERTIFICATE_PAIR_AT = "crossCertificatePair";
+    public static final String CROSS_CERTIFICATE_PAIR_AT_OID = "2.5.4.40";
+
     // Name
     public static final String NAME_AT = "name";
     public static final String NAME_AT_OID = "2.5.4.41";
 
+    // Gn
+    public static final String GN_AT = "gn";
+    public static final String GIVENNAME_AT = "givenName";
+    public static final String GN_AT_OID = "2.5.4.42";
+
+    // Initials
+    public static final String INITIALS_AT = "initials";
+    public static final String INITIALS_AT_OID = "2.5.4.43";
+
+    // GenerationQualifier
+    public static final String GENERATION_QUALIFIER_AT = "generationQualifier";
+    public static final String GENERATION_QUALIFIER_AT_OID = "2.5.4.44";
+
+    // X500UniqueIdentifier
+    public static final String X500_UNIQUE_IDENTIFIER_AT = "x500UniqueIdentifier";
+    public static final String X500_UNIQUE_IDENTIFIER_AT_OID = "2.5.4.45";
+
+    // DnQualifier
+    public static final String DN_QUALIFIER_AT = "dnQualifier";
+    public static final String DN_QUALIFIER_AT_OID = "2.5.4.46";
+
+    // EnhancedSearchGuide
+    public static final String ENHANCED_SEARCH_GUIDE_AT = "enhancedSearchGuide";
+    public static final String ENHANCED_SEARCH_GUIDE_AT_OID = "2.5.4.47";
+
+    // ProtocolInformation
+    public static final String PROTOCOL_INFORMATION_AT = "protocolInformation";
+    public static final String PROTOCOL_INFORMATION_AT_OID = "2.5.4.48";
+
+    // DistinguishedName
+    public static final String DISTINGUISHED_NAME_AT = "distinguishedName";
+    public static final String DISTINGUISHED_NAME_AT_OID = "2.5.4.49";
+
     // UniqueMember
     public static final String UNIQUE_MEMBER_AT = "uniqueMember";
     public static final String UNIQUE_MEMBER_AT_OID = "2.5.4.50";
+
+    // HouseIdentifier
+    public static final String HOUSE_IDENTIFIER_AT = "houseIdentifier";
+    public static final String HOUSE_IDENTIFIER_AT_OID = "2.5.4.51";
+
+    // SupportedAlgorithms
+    public static final String SUPPORTED_ALGORITHMS_AT = "supportedAlgorithms";
+    public static final String SUPPORTED_ALGORITHMS_AT_OID = "2.5.4.52";
+
+    // DeltaRevocationList
+    public static final String DELTA_REVOCATION_LIST_AT = "deltaRevocationList";
+    public static final String DELTA_REVOCATION_LIST_AT_OID = "2.5.4.53";
+
+    // DmdName
+    public static final String DMD_NAME_AT = "dmdName";
+    public static final String DMD_NAME_AT_OID = "2.5.4.54";
 
     // ExcludeAllColectiveAttributes
     public static final String EXCLUDE_ALL_COLLECTIVE_ATTRIBUTES_AT = "excludeAllCollectiveAttributes";
