@@ -165,6 +165,7 @@ import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * This class is the base for every operations sent or received to and
  * from a LDAP server.
@@ -1666,7 +1667,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         int newId = messageId.incrementAndGet();
         searchRequest.setMessageId( newId );
-        
+
         if ( searchRequest.isIgnoreReferrals() )
         {
             // We want to ignore the referral, inject the ManageDSAIT control in the request
@@ -1736,10 +1737,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         // Send the request to the server
         // Use this for logging instead: WriteFuture unbindFuture = ldapSession.write( unbindRequest );
-        ldapSession.write( unbindRequest );
+        WriteFuture unbindFuture = ldapSession.write( unbindRequest );
 
         //LOG.debug( "waiting for unbindFuture" );
-        //unbindFuture.awaitUninterruptibly();
+        unbindFuture.awaitUninterruptibly( timeout );
         //LOG.debug( "unbindFuture done" );
 
         authenticated.set( false );
@@ -1748,6 +1749,19 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         clearMaps();
 
         //  We now have to close the session
+        try
+        {
+            close();
+        }
+        catch ( IOException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        connected.set( false );
+
+        /*
         if ( ldapSession != null )
         {
             CloseFuture closeFuture = ldapSession.close( true );
@@ -1757,6 +1771,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             LOG.debug( "closeFuture done" );
             connected.set( false );
         }
+        */
 
         // Last, not least, reset the MessageId value
         messageId.set( 0 );
@@ -3465,16 +3480,16 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             Registries registries = schemaManager.getRegistries();
             List<Throwable> errors = new ArrayList<Throwable>();
-            
+
             for ( AttributeType atType : olsp.getAttributeTypes() )
             {
                 registries.buildReference( errors, atType );
-                registries.getAttributeTypeRegistry().register(atType);
+                registries.getAttributeTypeRegistry().register( atType );
             }
 
             for ( ObjectClass oc : olsp.getObjectClassTypes() )
             {
-                registries.buildReference(errors, oc);
+                registries.buildReference( errors, oc );
                 registries.getObjectClassRegistry().register( oc );
             }
 

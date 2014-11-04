@@ -53,10 +53,10 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
     public LdapConnectionPool( LdapConnectionConfig connectionConfig,
         LdapApiService apiService, long timeout )
     {
-        this( connectionConfig, apiService, timeout, null );    
+        this( connectionConfig, apiService, timeout, null );
     }
-    
-    
+
+
     /**
      * Instantiates a new LDAP connection pool.
      *
@@ -81,6 +81,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
     {
         this( factory, null );
     }
+
 
     /**
      * Instantiates a new LDAP connection pool.
@@ -115,6 +116,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
     public LdapConnection getConnection() throws LdapException
     {
         LdapConnection connection;
+
         try
         {
             connection = super.borrowObject();
@@ -136,6 +138,7 @@ public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
             LOG.error( "An unexpected exception was thrown: ", e );
             throw new RuntimeException( e );
         }
+
         return connection;
     }
 
