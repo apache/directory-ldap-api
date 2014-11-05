@@ -23,8 +23,6 @@ package org.apache.directory.ldap.client.api;
 
 import java.io.IOException;
 
-import org.apache.commons.pool.PoolableObjectFactory;
-import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -33,15 +31,20 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * A factory for creating LdapConnection objects managed by LdapConnectionPool.
+ * A factory for creating LdapConnection objects managed by LdapConnectionPool. The connections are validated
+ * before being returned, which leads to a round-trip to the server. It also re-bind the connection when
+ * it's being put back to the pool, to reset the LDAPSession.
+ * 
+ * This is quite a costly - but secure - way to handle connections in a pool. If one would like to use a 
+ * less expensive pool factory, the {@link DefaultPoolableLdapConnectionFactory} is most certainly a better
+ * choice.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PoolableLdapConnectionFactory implements PoolableObjectFactory<LdapConnection>
+public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLdapConnectionFactory
 {
-    private static final Logger LOG = LoggerFactory.getLogger( PoolableLdapConnectionFactory.class );
-
-    private LdapConnectionFactory connectionFactory;
+    /** This class logger */
+    private static final Logger LOG = LoggerFactory.getLogger( ValidatingPoolableLdapConnectionFactory.class );
 
 
     /**
@@ -49,7 +52,7 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
      *
      * @param config the configuration for creating LdapConnections
      */
-    public PoolableLdapConnectionFactory( LdapConnectionConfig config )
+    public ValidatingPoolableLdapConnectionFactory( LdapConnectionConfig config )
     {
         this( new DefaultLdapConnectionFactory( config ) );
     }
@@ -60,7 +63,7 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
      *
      * @param connectionFactory the connection factory for creating LdapConnections
      */
-    public PoolableLdapConnectionFactory( LdapConnectionFactory connectionFactory )
+    public ValidatingPoolableLdapConnectionFactory( LdapConnectionFactory connectionFactory )
     {
         this.connectionFactory = connectionFactory;
     }
@@ -68,6 +71,8 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
 
     /**
      * {@inheritDoc}
+     * 
+     * There is nothing to do to activate a connection.
      */
     public void activateObject( LdapConnection connection )
     {
@@ -77,10 +82,14 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
 
     /**
      * {@inheritDoc}
+     * 
+     * Destroying a connection will unbind it which will result on a shutdown
+     * of teh underlying protocol.
      */
     public void destroyObject( LdapConnection connection )
     {
         LOG.debug( "Destroying {}", connection );
+
         if ( connection.isConnected() )
         {
             try
@@ -107,29 +116,26 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
 
 
     /**
-     * Returns the LdapApiService instance used by this factory.
-     *
-     * @return The LdapApiService instance used by this factory
-     */
-    public LdapApiService getLdapApiService()
-    {
-        return connectionFactory.getLdapApiService();
-    }
-
-
-    /**
      * {@inheritDoc}
+     * Specifically, we are creating a new connection based on the LdapConnection Factory
+     * we used to create this pool of connections. The default is to create bound connections.
+     * 
      * @throws LdapException If unable to connect.
      */
     public LdapConnection makeObject() throws LdapException
     {
         LOG.debug( "Creating a LDAP connection" );
+
         return connectionFactory.newLdapConnection();
     }
 
 
     /**
      * {@inheritDoc}
+     * 
+     * Here, passivating a connection means we re-bind it, so that the existing LDAPSession
+     * is reset.
+     * 
      * @throws LdapException If unable to reconfigure and rebind.
      */
     public void passivateObject( LdapConnection connection ) throws LdapException
@@ -145,6 +151,10 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
 
     /**
      * {@inheritDoc}
+     * 
+     * Validating a connection is done in depth : first we check that the connection is still
+     * up, that the LdapSession is authenticated, and that we can retrieve some information 
+     * from the server. If the connection is not authenticated, we re-bind.
      */
     public boolean validateObject( LdapConnection connection )
     {
