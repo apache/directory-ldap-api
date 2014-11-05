@@ -67,6 +67,7 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
         {
             LOG.error( "unable to bind connection: {}", e.getMessage() );
             LOG.debug( "unable to bind connection:", e );
+
             try
             {
                 connection.close();
@@ -76,8 +77,10 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
                 LOG.error( "unable to close failed bind connection: {}", e.getMessage() );
                 LOG.debug( "unable to close failed bind connection:", e );
             }
+
             throw e;
         }
+
         return connection;
     }
 
@@ -106,12 +109,16 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
 
 
     @Override
-    @SuppressWarnings("resource")
     public LdapConnection newUnboundLdapConnection()
     {
-        return configureConnection( apiService == null
-            ? new LdapNetworkConnection( connectionConfig )
-            : new LdapNetworkConnection( connectionConfig, apiService ) );
+        if ( apiService == null )
+        {
+            return configureConnection( new LdapNetworkConnection( connectionConfig ) );
+        }
+        else
+        {
+            return configureConnection( new LdapNetworkConnection( connectionConfig, apiService ) );
+        }
     }
 
 
