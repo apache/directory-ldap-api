@@ -78,21 +78,28 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
     /**
      * {@inheritDoc}
      */
-    public void destroyObject( LdapConnection connection ) 
+    public void destroyObject( LdapConnection connection )
     {
         LOG.debug( "Destroying {}", connection );
-        try {
-            connection.unBind();
-        }
-        catch ( LdapException e ) {
-            LOG.error( "unable to unbind connection: {}", e.getMessage() );
-            LOG.debug( "unable to unbind connection:", e );
+        if ( connection.isConnected() )
+        {
+            try
+            {
+                connection.unBind();
+            }
+            catch ( LdapException e )
+            {
+                LOG.error( "unable to unbind connection: {}", e.getMessage() );
+                LOG.debug( "unable to unbind connection:", e );
+            }
         }
 
-        try {
+        try
+        {
             connection.close();
         }
-        catch ( IOException e ) {
+        catch ( IOException e )
+        {
             LOG.error( "unable to close connection: {}", e.getMessage() );
             LOG.debug( "unable to close connection:", e );
         }
@@ -128,10 +135,10 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
     public void passivateObject( LdapConnection connection ) throws LdapException
     {
         LOG.debug( "Passivating {}", connection );
-        
+
         // in case connection configuration was modified, or rebound to a
         // different identity, we reinitialize before returning to the pool.
-        connectionFactory.bindConnection( 
+        connectionFactory.bindConnection(
             connectionFactory.configureConnection( connection ) );
     }
 
@@ -145,13 +152,30 @@ public class PoolableLdapConnectionFactory implements PoolableObjectFactory<Ldap
 
         if ( connection.isConnected() )
         {
-            try
+            if ( connection.isAuthenticated() )
             {
-                return connection.lookup( Dn.ROOT_DSE, SchemaConstants.NO_ATTRIBUTE ) != null;
+                try
+                {
+                    return connection.lookup( Dn.ROOT_DSE, SchemaConstants.NO_ATTRIBUTE ) != null;
+                }
+                catch ( LdapException le )
+                {
+                    return false;
+                }
             }
-            catch ( LdapException le )
+            else
             {
-                return false;
+                // We have to bind the connection
+                try
+                {
+                    connectionFactory.bindConnection( connection );
+
+                    return true;
+                }
+                catch ( LdapException le )
+                {
+                    return false;
+                }
             }
         }
         else
