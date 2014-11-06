@@ -49,7 +49,7 @@
     <dom4j.version>1.6.1</dom4j.version>
     <junit.version>4.11</junit.version>
     <log4j.version>1.2.17</log4j.version>
-    <mina.core.version>2.0.10-SNAPSHOT</mina.core.version>
+    <mina.core.version>2.0.9</mina.core.version>
     <org.osgi.version>3.0.0</org.osgi.version>
     <org.osgi.core.version>6.0.0</org.osgi.core.version>
     <org.apache.felix.version>4.4.1</org.apache.felix.version>
