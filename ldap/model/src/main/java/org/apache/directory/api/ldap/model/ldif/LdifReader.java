@@ -218,7 +218,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
     /** A flag set if the ldif contains changes */
     protected boolean containsChanges;
-    
+
     /** The SchemaManager instance, if any */
     protected SchemaManager schemaManager;
 
@@ -242,7 +242,8 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
     /** flag to turn on/off of the DN validation. By default DNs are validated after parsing */
     protected boolean validateDn = true;
-    
+
+
     /**
      * Constructors
      */
@@ -253,7 +254,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         version = DEFAULT_VERSION;
     }
 
-    
+
     /**
      * Constructors
      */
@@ -385,7 +386,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             LOG.error( msg );
             throw new LdapLdifException( msg );
         }
-        
+
         try
         {
             initReader( new BufferedReader( new FileReader( file ) ) );
@@ -429,9 +430,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             LOG.error( msg );
             throw new LdapLdifException( msg );
         }
-        
+
         this.schemaManager = schemaManager;
-        
+
         try
         {
             initReader( new BufferedReader( new FileReader( file ) ) );
@@ -604,14 +605,14 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                     catch ( UnsupportedEncodingException uee )
                     {
                         // The Dn is not base 64 encoded
-                        LOG.error( I18n.err( I18n.ERR_12014_BASE64_DN_EXPECTED ) );
+                        LOG.error( I18n.err( I18n.ERR_12014_BASE64_DN_EXPECTED, lineNumber ) );
                         throw new LdapLdifException( I18n.err( I18n.ERR_12015_INVALID_BASE64_DN ), uee );
                     }
                 }
                 else
                 {
                     // The Dn is empty : error
-                    LOG.error( I18n.err( I18n.ERR_12012_EMPTY_DN_NOT_ALLOWED ) );
+                    LOG.error( I18n.err( I18n.ERR_12012_EMPTY_DN_NOT_ALLOWED, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12013_NO_DN ) );
                 }
             }
@@ -622,14 +623,14 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         }
         else
         {
-            LOG.error( I18n.err( I18n.ERR_12016_DN_EXPECTED ) );
+            LOG.error( I18n.err( I18n.ERR_12016_DN_EXPECTED, lineNumber ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12013_NO_DN ) );
         }
 
         // Check that the Dn is valid. If not, an exception will be thrown
         if ( validateDn && !Dn.isValid( dn ) )
         {
-            String message = I18n.err( I18n.ERR_12017_INVALID_DN, dn );
+            String message = I18n.err( I18n.ERR_12017_INVALID_DN, dn, lineNumber );
             LOG.error( message );
             throw new LdapLdifException( message );
         }
@@ -705,7 +706,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
                         if ( !file.exists() )
                         {
-                            LOG.error( I18n.err( I18n.ERR_12018_FILE_NOT_FOUND, fileName ) );
+                            LOG.error( I18n.err( I18n.ERR_12018_FILE_NOT_FOUND, fileName, lineNumber ) );
                             throw new LdapLdifException( I18n.err( I18n.ERR_12019_BAD_URL_FILE_NOT_FOUND ) );
                         }
                         else
@@ -714,7 +715,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
                             if ( length > sizeLimit )
                             {
-                                String message = I18n.err( I18n.ERR_12020_FILE_TOO_BIG, fileName );
+                                String message = I18n.err( I18n.ERR_12020_FILE_TOO_BIG, fileName, lineNumber );
                                 LOG.error( message );
                                 throw new LdapLdifException( message );
                             }
@@ -735,13 +736,13 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                                     // We can't reach this point, the file
                                     // existence has already been
                                     // checked
-                                    LOG.error( I18n.err( I18n.ERR_12018_FILE_NOT_FOUND, fileName ) );
+                                    LOG.error( I18n.err( I18n.ERR_12018_FILE_NOT_FOUND, fileName, lineNumber ) );
                                     throw new LdapLdifException( I18n.err( I18n.ERR_12019_BAD_URL_FILE_NOT_FOUND ),
                                         fnfe );
                                 }
                                 catch ( IOException ioe )
                                 {
-                                    LOG.error( I18n.err( I18n.ERR_12022_ERROR_READING_FILE, fileName ) );
+                                    LOG.error( I18n.err( I18n.ERR_12022_ERROR_READING_FILE, fileName, lineNumber ) );
                                     throw new LdapLdifException( I18n.err( I18n.ERR_12023_ERROR_READING_BAD_URL ), ioe );
                                 }
                                 finally
@@ -755,7 +756,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                                     }
                                     catch ( IOException ioe )
                                     {
-                                        LOG.error( I18n.err( I18n.ERR_12024_CANNOT_CLOSE_FILE, ioe.getMessage() ), ioe );
+                                        LOG.error(
+                                            I18n.err( I18n.ERR_12024_CANNOT_CLOSE_FILE, ioe.getMessage(), lineNumber ),
+                                            ioe );
                                         // Just do nothing ...
                                     }
                                 }
@@ -765,12 +768,12 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                     else
                     {
                         LOG.error( I18n.err( I18n.ERR_12025_BAD_PROTOCOL ) );
-                        throw new LdapLdifException( I18n.err( I18n.ERR_12026_UNSUPPORTED_PROTOCOL ) );
+                        throw new LdapLdifException( I18n.err( I18n.ERR_12026_UNSUPPORTED_PROTOCOL, lineNumber ) );
                     }
                 }
                 catch ( MalformedURLException mue )
                 {
-                    String message = I18n.err( I18n.ERR_12027_BAD_URL, urlName );
+                    String message = I18n.err( I18n.ERR_12027_BAD_URL, urlName, lineNumber );
                     LOG.error( message );
                     throw new LdapLdifException( message, mue );
                 }
@@ -849,7 +852,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         if ( pos > length )
         {
             // No OID : error !
-            LOG.error( I18n.err( I18n.ERR_12029_CONTROL_WITHOUT_OID ) );
+            LOG.error( I18n.err( I18n.ERR_12029_CONTROL_WITHOUT_OID, lineNumber ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12029_CONTROL_WITHOUT_OID ) );
         }
 
@@ -863,7 +866,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         if ( pos == initPos )
         {
             // Not a valid OID !
-            LOG.error( I18n.err( I18n.ERR_12029_CONTROL_WITHOUT_OID ) );
+            LOG.error( I18n.err( I18n.ERR_12029_CONTROL_WITHOUT_OID, lineNumber ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12029_CONTROL_WITHOUT_OID ) );
         }
 
@@ -872,7 +875,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         if ( !Oid.isOid( oidString ) )
         {
-            String message = I18n.err( I18n.ERR_12031_INVALID_OID, oidString );
+            String message = I18n.err( I18n.ERR_12031_INVALID_OID, oidString, lineNumber );
             LOG.error( message );
             throw new LdapLdifException( message );
         }
@@ -912,7 +915,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         {
             // If we have a criticality, it should be either "true" or "false",
             // nothing else
-            LOG.error( I18n.err( I18n.ERR_12033_INVALID_CRITICALITY ) );
+            LOG.error( I18n.err( I18n.ERR_12033_INVALID_CRITICALITY, lineNumber ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12033_INVALID_CRITICALITY ) );
         }
 
@@ -1015,7 +1018,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         // We should *not* have a Dn twice
         if ( attributeType.equals( "dn" ) )
         {
-            LOG.error( I18n.err( I18n.ERR_12002_ENTRY_WITH_TWO_DNS ) );
+            LOG.error( I18n.err( I18n.ERR_12002_ENTRY_WITH_TWO_DNS, lineNumber ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12003_LDIF_ENTRY_WITH_TWO_DNS ) );
         }
 
@@ -1058,13 +1061,13 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             }
             else
             {
-                LOG.error( I18n.err( I18n.ERR_12035_BAD_MODRDN_OPERATION ) );
+                LOG.error( I18n.err( I18n.ERR_12035_BAD_MODRDN_OPERATION, lineNumber ) );
                 throw new LdapLdifException( I18n.err( I18n.ERR_12035_BAD_MODRDN_OPERATION ) );
             }
         }
         else
         {
-            LOG.error( I18n.err( I18n.ERR_12035_BAD_MODRDN_OPERATION ) );
+            LOG.error( I18n.err( I18n.ERR_12035_BAD_MODRDN_OPERATION, lineNumber ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12035_BAD_MODRDN_OPERATION ) );
         }
 
@@ -1081,13 +1084,13 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             }
             else
             {
-                LOG.error( I18n.err( I18n.ERR_12038_NO_DELETEOLDRDN ) );
+                LOG.error( I18n.err( I18n.ERR_12038_NO_DELETEOLDRDN, lineNumber ) );
                 throw new LdapLdifException( I18n.err( I18n.ERR_12038_NO_DELETEOLDRDN ) );
             }
         }
         else
         {
-            LOG.error( I18n.err( I18n.ERR_12038_NO_DELETEOLDRDN ) );
+            LOG.error( I18n.err( I18n.ERR_12038_NO_DELETEOLDRDN, lineNumber ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12038_NO_DELETEOLDRDN ) );
         }
     }
@@ -1130,7 +1133,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             {
                 if ( ( state != ATTRVAL_SPEC_OR_SEP ) && ( state != ATTRVAL_SPEC ) )
                 {
-                    LOG.error( I18n.err( I18n.ERR_12040_BAD_MODIFY_SEPARATOR ) );
+                    LOG.error( I18n.err( I18n.ERR_12040_BAD_MODIFY_SEPARATOR, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12040_BAD_MODIFY_SEPARATOR ) );
                 }
                 else
@@ -1154,7 +1157,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             {
                 if ( ( state != MOD_SPEC ) && ( state != ATTRVAL_SPEC ) )
                 {
-                    LOG.error( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2 ) );
+                    LOG.error( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2 ) );
                 }
 
@@ -1168,7 +1171,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             {
                 if ( ( state != MOD_SPEC ) && ( state != ATTRVAL_SPEC ) )
                 {
-                    LOG.error( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2 ) );
+                    LOG.error( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2 ) );
                 }
 
@@ -1183,7 +1186,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             {
                 if ( ( state != MOD_SPEC ) && ( state != ATTRVAL_SPEC ) )
                 {
-                    LOG.error( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2 ) );
+                    LOG.error( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2 ) );
                 }
 
@@ -1197,7 +1200,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             {
                 if ( ( state != ATTRVAL_SPEC ) && ( state != ATTRVAL_SPEC_OR_SEP ) )
                 {
-                    LOG.error( I18n.err( I18n.ERR_12040_BAD_MODIFY_SEPARATOR ) );
+                    LOG.error( I18n.err( I18n.ERR_12040_BAD_MODIFY_SEPARATOR, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12040_BAD_MODIFY_SEPARATOR ) );
                 }
 
@@ -1208,14 +1211,14 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
                 if ( !attributeType.equalsIgnoreCase( modified ) )
                 {
-                    LOG.error( I18n.err( I18n.ERR_12044 ) );
+                    LOG.error( I18n.err( I18n.ERR_12044, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12045 ) );
                 }
 
                 // We should *not* have a Dn twice
                 if ( attributeType.equalsIgnoreCase( "dn" ) )
                 {
-                    LOG.error( I18n.err( I18n.ERR_12002_ENTRY_WITH_TWO_DNS ) );
+                    LOG.error( I18n.err( I18n.ERR_12002_ENTRY_WITH_TWO_DNS, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12003_LDIF_ENTRY_WITH_TWO_DNS ) );
                 }
 
@@ -1245,7 +1248,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         if ( state != MOD_SPEC )
         {
-            LOG.error( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2 ) );
+            LOG.error( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2, lineNumber ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2 ) );
         }
     }
@@ -1340,7 +1343,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                     {
                         if ( operation == ChangeType.ModDn )
                         {
-                            LOG.error( I18n.err( I18n.ERR_12046 ) );
+                            LOG.error( I18n.err( I18n.ERR_12046, lineNumber ) );
                             throw new LdapLdifException( I18n.err( I18n.ERR_12047 ) );
                         }
                     }
@@ -1350,7 +1353,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
             default:
                 // This is an error
-                LOG.error( I18n.err( I18n.ERR_12048 ) );
+                LOG.error( I18n.err( I18n.ERR_12048, lineNumber ) );
                 throw new LdapLdifException( I18n.err( I18n.ERR_12049 ) );
         }
     }
@@ -1432,7 +1435,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             {
                 if ( containsEntries )
                 {
-                    LOG.error( I18n.err( I18n.ERR_12004_CHANGE_NOT_ALLOWED ) );
+                    LOG.error( I18n.err( I18n.ERR_12004_CHANGE_NOT_ALLOWED, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12005_NO_CHANGE ) );
                 }
 
@@ -1440,7 +1443,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
                 if ( controlSeen )
                 {
-                    LOG.error( I18n.err( I18n.ERR_12050 ) );
+                    LOG.error( I18n.err( I18n.ERR_12050, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12051 ) );
                 }
 
@@ -1452,7 +1455,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             {
                 if ( containsEntries )
                 {
-                    LOG.error( I18n.err( I18n.ERR_12004_CHANGE_NOT_ALLOWED ) );
+                    LOG.error( I18n.err( I18n.ERR_12004_CHANGE_NOT_ALLOWED, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12005_NO_CHANGE ) );
                 }
 
@@ -1460,7 +1463,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
                 if ( changeTypeSeen )
                 {
-                    LOG.error( I18n.err( I18n.ERR_12052 ) );
+                    LOG.error( I18n.err( I18n.ERR_12052, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12053 ) );
                 }
 
@@ -1478,7 +1481,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             {
                 if ( containsChanges )
                 {
-                    LOG.error( I18n.err( I18n.ERR_12004_CHANGE_NOT_ALLOWED ) );
+                    LOG.error( I18n.err( I18n.ERR_12004_CHANGE_NOT_ALLOWED, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12005_NO_CHANGE ) );
                 }
 
@@ -1486,7 +1489,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
                 if ( controlSeen || changeTypeSeen )
                 {
-                    LOG.error( I18n.err( I18n.ERR_12054 ) );
+                    LOG.error( I18n.err( I18n.ERR_12054, lineNumber ) );
                     throw new LdapLdifException( I18n.err( I18n.ERR_12055 ) );
                 }
 
@@ -1496,7 +1499,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             else
             {
                 // Invalid attribute Value
-                LOG.error( I18n.err( I18n.ERR_12056 ) );
+                LOG.error( I18n.err( I18n.ERR_12056, lineNumber ) );
                 throw new LdapLdifException( I18n.err( I18n.ERR_12057_BAD_ATTRIBUTE ) );
             }
         }
@@ -1512,7 +1515,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         }
         else
         {
-            LOG.error( I18n.err( I18n.ERR_12058_UNKNOWN_ENTRY_TYPE ) );
+            LOG.error( I18n.err( I18n.ERR_12058_UNKNOWN_ENTRY_TYPE, lineNumber ) );
             throw new LdapLdifException( I18n.err( I18n.ERR_12059_UNKNOWN_ENTRY ) );
         }
 
@@ -1557,7 +1560,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             // We should not have any other chars after the number
             if ( position != document.length )
             {
-                LOG.error( I18n.err( I18n.ERR_12060_VERSION_NOT_A_NUMBER ) );
+                LOG.error( I18n.err( I18n.ERR_12060_VERSION_NOT_A_NUMBER, lineNumber ) );
                 throw new LdapLdifException( I18n.err( I18n.ERR_12061_LDIF_PARSING_ERROR ) );
             }
 
@@ -1567,7 +1570,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             }
             catch ( NumberFormatException nfe )
             {
-                LOG.error( I18n.err( I18n.ERR_12060_VERSION_NOT_A_NUMBER ) );
+                LOG.error( I18n.err( I18n.ERR_12060_VERSION_NOT_A_NUMBER, lineNumber ) );
                 throw new LdapLdifException( I18n.err( I18n.ERR_12061_LDIF_PARSING_ERROR ), nfe );
             }
 
@@ -1665,7 +1668,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                         }
                         else if ( sb.length() == 0 )
                         {
-                            LOG.error( I18n.err( I18n.ERR_12062_EMPTY_CONTINUATION_LINE ) );
+                            LOG.error( I18n.err( I18n.ERR_12062_EMPTY_CONTINUATION_LINE, lineNumber ) );
                             throw new LdapLdifException( I18n.err( I18n.ERR_12061_LDIF_PARSING_ERROR ) );
                         }
                         else
@@ -2075,7 +2078,8 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             return new LdifEntry();
         }
     }
-    
+
+
     /**
      * @return true if the DN validation is turned on
      */
