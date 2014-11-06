@@ -22,14 +22,14 @@
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
     <version>33</version>
-    <relativePath/>
+    <relativePath />
   </parent>
 
   <groupId>org.apache.directory.api</groupId>
   <artifactId>api-parent</artifactId>
   <name>Apache Directory LDAP API</name>
   <packaging>pom</packaging>
-  <version>1.0.0-M25-SNAPSHOT</version>
+  <version>1.0.0-M25</version>
 
   <properties>
     <projectName>ApacheDS-LDAP-API</projectName>
@@ -152,7 +152,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore/>
+                    <ignore />
                   </action>
                 </pluginExecution>
                 
@@ -166,7 +166,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore/>
+                    <ignore />
                   </action>
                 </pluginExecution>
                 
@@ -180,7 +180,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore/>
+                    <ignore />
                   </action>
                 </pluginExecution>
               </pluginExecutions>
@@ -736,9 +736,9 @@
   </dependencies>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/trunk</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/trunk</developerConnection>
-    <url>http://svn.apache.org/viewvc/directory/shared/trunk</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/tags/1.0.0-M25</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/directory/shared/tags/1.0.0-M25</developerConnection>
+    <url>http://svn.apache.org/viewvc/directory/shared/tags/1.0.0-M25</url>
   </scm>
 
   <profiles>
