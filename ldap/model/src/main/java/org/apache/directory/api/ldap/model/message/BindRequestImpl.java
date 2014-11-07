@@ -215,7 +215,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
         catch ( LdapInvalidDnException e )
         {
             // This might still be a valid DN (Windows AD binding for instance)
-            LOG.debug( "Unable to convert the name to a DN.", e );
+            LOG.debug( "Unable to convert the name to a DN." );
             this.dn = null;
         }
 
