@@ -93,6 +93,7 @@ public class SortRequestGrammar extends AbstractGrammar<SortRequestContainer>
                 try
                 {
                     boolean reverseOrder = BooleanDecoder.parse( value );
+
                     if ( IS_DEBUG )
                     {
                         LOG.debug( "ReverseOrder = " + reverseOrder );
@@ -142,12 +143,14 @@ public class SortRequestGrammar extends AbstractGrammar<SortRequestContainer>
                         BerValue value = container.getCurrentTLV().getValue();
 
                         String matchingRuleOid = Strings.utf8ToString( value.getData() );
+
                         if ( IS_DEBUG )
                         {
                             LOG.debug( "MatchingRuleOid = " + matchingRuleOid );
                         }
 
                         container.getCurrentKey().setMatchingRuleId( matchingRuleOid );
+                        container.setGrammarEndAllowed( true );
                     }
 
                 } );

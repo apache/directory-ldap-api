@@ -20,8 +20,6 @@
 package org.apache.directory.api.ldap.model.message.controls;
 
 
-
-
 /**
  * Datastructure to store the Attribute name, matching rule ID of the attribute<br>
  * and the sort order.
@@ -41,9 +39,9 @@ public class SortKey
     private String matchingRuleId;
 
     /**
-     * A flag to set to true to get the result in reverse order
+     * A flag to set to true to get the result in reverse order. Default to false
      */
-    private boolean reverseOrder;
+    private boolean reverseOrder = false;
 
 
     /**
@@ -68,7 +66,7 @@ public class SortKey
         this( attributeTypeDesc, matchingRuleId, false );
     }
 
-    
+
     /**
      * Create a new instance of a SortKey for a give AttributeType
      * 
@@ -148,7 +146,7 @@ public class SortKey
         sb.append( "SortKey : [" );
 
         sb.append( attributeTypeDesc );
-        
+
         if ( matchingRuleId != null )
         {
             sb.append( ", " ).append( matchingRuleId );

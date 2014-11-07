@@ -34,8 +34,6 @@ import java.io.ObjectOutputStream;
 import java.util.Iterator;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.name.Ava;
-import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schemamanager.impl.DefaultSchemaManager;
 import org.apache.directory.api.util.Strings;
@@ -234,8 +232,32 @@ public class SchemaAwareRdnTest
     public void testRdnPairCharAttributeValue() throws LdapException
     {
         String rdn = Strings.utf8ToString( new byte[]
-            { 'l', '=', '\\', ',', '\\', '=', '\\', '+', '\\', '<', '\\', '>', '#', '\\', ';', '\\', '\\', '\\', '"', '\\',
-                'C', '3', '\\', 'A', '9' } );
+            {
+                'l',
+                '=',
+                '\\',
+                ',',
+                '\\',
+                '=',
+                '\\',
+                '+',
+                '\\',
+                '<',
+                '\\',
+                '>',
+                '#',
+                '\\',
+                ';',
+                '\\',
+                '\\',
+                '\\',
+                '"',
+                '\\',
+                'C',
+                '3',
+                '\\',
+                'A',
+                '9' } );
         assertEquals( "2.5.4.7=\\,\\=\\+\\<\\>#\\;\\\\\\\"\u00e9", new Rdn( schemaManager, rdn ).getNormName() );
     }
 
@@ -899,7 +921,7 @@ public class SchemaAwareRdnTest
     {
         // space doesn't need to be escaped in the middle of a string
         assertEquals( "a b", Rdn.escapeValue( "a b" ) );
-        assertEquals( "ä b c", Rdn.escapeValue( "ä b c" ) );
+        assertEquals( "\u00e4 b c", Rdn.escapeValue( "\u00e4 b c" ) );
         assertEquals( "a b c d", Rdn.escapeValue( "a b c d" ) );
 
         // space must be escaped at the beginning and the end of a string
