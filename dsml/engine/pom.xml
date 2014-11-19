@@ -93,7 +93,7 @@
               org.apache.directory.api.util;version=${project.version},
               org.apache.directory.ldap.client.api;version=${project.version},
               org.dom4j;version=${prg.dom4j.version},
-              org.slf4;version=${slf4j.api.version},
+              org.slf4j;version=${slf4j.api.version},
               org.xmlpull.v1;version=${xpp3.version}
             </Import-Package>
           </instructions>

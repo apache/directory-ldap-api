@@ -81,7 +81,7 @@
               org.apache.mina.core.buffer;version=${mina.core.version},
               org.apache.mina.core.session;version=${mina.core.version},
               org.apache.mina.filter.codec;version=${mina.core.version},
-              org.slf4;version=${slf4j.api.version}
+              org.slf4j;version=${slf4j.api.version}
             </Import-Package>
             <Bundle-Activator>
               org.apache.directory.api.ldap.codec.protocol.mina.LdapProtocolCodecActivator
