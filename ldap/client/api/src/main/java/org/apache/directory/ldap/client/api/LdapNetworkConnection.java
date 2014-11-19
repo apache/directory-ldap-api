@@ -3769,6 +3769,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             sslFilter.setUseClientMode( true );
             sslFilter.setEnabledCipherSuites( config.getEnabledCipherSuites() );
 
+            // Be sure we disable SSLV3
+            sslFilter.setEnabledProtocols( new String[]
+                { "TLSv1", "TLSv1.1", "TLSv1.2" } );
+
             // for LDAPS
             if ( ldapSession == null )
             {
