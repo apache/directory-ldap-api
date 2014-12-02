@@ -118,12 +118,12 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.client.api</Bundle-SymbolicName>
             <Export-Package>
-              org.apache.directory.api.ldap.client.api;version=${project.version};-noimport:=true,
-              org.apache.directory.api.ldap.client.api.callback;version=${project.version};-noimport:=true,
-              org.apache.directory.api.ldap.client.api.exception;version=${project.version};-noimport:=true,
-              org.apache.directory.api.ldap.client.api.future;version=${project.version};-noimport:=true,
-              org.apache.directory.api.ldap.client.template;version=${project.version};-noimport:=true,
-              org.apache.directory.api.ldap.client.template.exception;version=${project.version};-noimport:=true
+              org.apache.directory.ldap.client.api;version=${project.version};-noimport:=true,
+              org.apache.directory.ldap.client.api.callback;version=${project.version};-noimport:=true,
+              org.apache.directory.ldap.client.api.exception;version=${project.version};-noimport:=true,
+              org.apache.directory.ldap.client.api.future;version=${project.version};-noimport:=true,
+              org.apache.directory.ldap.client.template;version=${project.version};-noimport:=true,
+              org.apache.directory.ldap.client.template.exception;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
               org.apache.commons.pool;version=${commons.pool.version},
