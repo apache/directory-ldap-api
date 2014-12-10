@@ -707,33 +707,7 @@
     </dependencies>
   </dependencyManagement>
 
-  <dependencies>
-    <!-- for Java5 findbugs annotations are required in each module at compile time -->
-    <dependency>
-      <groupId>findbugs</groupId>
-      <artifactId>annotations</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- common logging interface -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-
-    <!-- logging implementation used for unit tests -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+  <dependencies/>
 
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/directory/shared/trunk</connection>
