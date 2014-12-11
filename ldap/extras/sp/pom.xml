@@ -85,7 +85,7 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.extras.sp</Bundle-SymbolicName>
             <Export-Package>
-              org.apache.directory.api.ldap.trigger;version=${project.version};-noimport:=true
+              org.apache.directory.api.ldap.sp;version=${project.version};-noimport:=true
             </Export-Package>
             <Import-Package>
               org.apache.commons.io;version=${commons.io.version},
