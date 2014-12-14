@@ -176,6 +176,7 @@
               org.apache.commons.lang;version=${commons.lang.version},
               org.apache.commons.lang.exception;version=${commons.lang.version},
               org.apache.directory.api.asn1;version=${project.version},
+              org.apache.directory.api.asn1.util;version=${project.version},
               org.apache.directory.api.i18n;version=${project.version},
               org.apache.directory.api.util;version=${project.version},
               org.apache.directory.api.util.exception;version=${project.version},
