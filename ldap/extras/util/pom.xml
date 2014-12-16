@@ -77,7 +77,7 @@
               org.slf4j;version=${slf4j.api.version},
               javax.naming,
               javax.naming.directory,
-              javax.naming.ldap,
+              javax.naming.ldap
             </Import-Package>
           </instructions>
         </configuration>

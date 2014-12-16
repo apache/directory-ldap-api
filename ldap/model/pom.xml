@@ -180,7 +180,10 @@
               org.apache.directory.api.i18n;version=${project.version},
               org.apache.directory.api.util;version=${project.version},
               org.apache.directory.api.util.exception;version=${project.version},
-              org.slf4j;version=${slf4j.api.version}
+              org.slf4j;version=${slf4j.api.version},
+              javax.naming,
+              javax.naming.directory,
+              javax.naming.ldap
             </Import-Package>
           </instructions>
         </configuration>
