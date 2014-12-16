@@ -92,7 +92,11 @@
               org.apache.commons.lang;version=${commons.lang.version},
               org.apache.directory.api.ldap.codec.api;version=${project.version},
               org.apache.directory.api.ldap.extras.extended.storedProcedure;version=${project.version},
-              org.apache.directory.api.ldap.model.constants;version=${project.version}
+              org.apache.directory.api.ldap.model.constants;version=${project.version},
+              org.apache.directory.api.ldap.model.message;version=${project.version},
+              javax.naming,
+              javax.naming.directory,
+              javax.naming.ldap
             </Import-Package>
           </instructions>
         </configuration>
