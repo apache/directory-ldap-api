@@ -53,6 +53,8 @@ import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIRequest;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 
 /**
@@ -63,7 +65,45 @@ import org.osgi.framework.ServiceReference;
  */
 public class ExtrasBundleActivator implements BundleActivator
 {
-    private ServiceReference<?> codecServiceRef;
+
+    private ServiceTracker<LdapApiService, LdapApiService> serviceTracker;
+
+    class LdapApiServiceTracker implements ServiceTrackerCustomizer<LdapApiService, LdapApiService>
+    {
+
+        private BundleContext context;
+
+
+        public LdapApiServiceTracker( BundleContext context )
+        {
+            this.context = context;
+        }
+
+
+        @Override
+        public LdapApiService addingService( ServiceReference<LdapApiService> reference )
+        {
+            LdapApiService ldapApiService = context.getService( reference );
+            registerExtrasControls( ldapApiService );
+            registerExtrasExtendedOps( ldapApiService );
+            return ldapApiService;
+        }
+
+
+        @Override
+        public void modifiedService( ServiceReference<LdapApiService> reference, LdapApiService ldapApiService )
+        {
+        }
+
+
+        @Override
+        public void removedService( ServiceReference<LdapApiService> reference, LdapApiService ldapApiService )
+        {
+            unregisterExtrasControls( ldapApiService );
+            unregisterExtrasExtendedOps( ldapApiService );
+        }
+
+    }
 
 
     /**
@@ -71,13 +111,12 @@ public class ExtrasBundleActivator implements BundleActivator
      */
     public void start( BundleContext context ) throws Exception
     {
-        codecServiceRef = context.getServiceReference( LdapApiService.class.getName() );
-        LdapApiService codec = ( LdapApiService ) context.getService( codecServiceRef );
-        registerExtrasControls( codec );
-        registerExtrasExtendedOps( codec );
+        LdapApiServiceTracker ldapApiServiceTracker = new LdapApiServiceTracker(context);
+        serviceTracker = new ServiceTracker<LdapApiService, LdapApiService>(
+            context, LdapApiService.class, ldapApiServiceTracker );
+        serviceTracker.open();
     }
-
-
+    
     /**
      * Registers all the extras controls present in this control pack.
      *
@@ -99,7 +138,7 @@ public class ExtrasBundleActivator implements BundleActivator
 
         ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( codec );
         codec.registerControl( passwordPolicyFactory );
-        
+
         ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( codec );
         codec.registerControl( adDirSyncFactory );
     }
@@ -147,14 +186,23 @@ public class ExtrasBundleActivator implements BundleActivator
      */
     public void stop( BundleContext context ) throws Exception
     {
-        LdapApiService codec = ( LdapApiService ) context.getService( codecServiceRef );
+        serviceTracker.close();
+    }
 
+
+    private void unregisterExtrasControls( LdapApiService codec )
+    {
         codec.unregisterControl( SyncDoneValue.OID );
         codec.unregisterControl( SyncInfoValue.OID );
         codec.unregisterControl( SyncRequestValue.OID );
         codec.unregisterControl( SyncStateValue.OID );
         codec.unregisterControl( PasswordPolicy.OID );
+        codec.unregisterControl( AdDirSync.OID );
+    }
 
+
+    private void unregisterExtrasExtendedOps( LdapApiService codec )
+    {
         codec.unregisterExtendedRequest( CancelRequest.EXTENSION_OID );
         codec.unregisterExtendedRequest( CertGenerationRequest.EXTENSION_OID );
         codec.unregisterExtendedRequest( GracefulShutdownRequest.EXTENSION_OID );
