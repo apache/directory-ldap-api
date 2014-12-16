@@ -155,7 +155,11 @@
               org.apache.mina.filter.codec;version=${mina.core.version},
               org.apache.mina.filter.ssl;version=${mina.core.version},
               org.apache.mina.transport.socket.nio;version=${mina.core.version},
-              org.slf4j;version=${slf4j.api.version}
+              org.slf4j;version=${slf4j.api.version},
+              javax.security.auth.login,
+              javax.security.auth.callback,
+              javax.security.sasl,
+              javax.net.ssl
             </Import-Package>
           </instructions>
         </configuration>
