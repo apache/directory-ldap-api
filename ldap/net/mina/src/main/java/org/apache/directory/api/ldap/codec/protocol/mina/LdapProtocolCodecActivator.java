@@ -20,10 +20,13 @@
 package org.apache.directory.api.ldap.codec.protocol.mina;
 
 
-import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
+import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.util.tracker.ServiceTracker;
+import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 
 /**
@@ -33,8 +36,46 @@ import org.osgi.framework.ServiceRegistration;
  */
 public class LdapProtocolCodecActivator implements BundleActivator
 {
-    private LdapProtocolCodecFactory factory;
-    private ServiceRegistration registration;
+
+    private ServiceTracker<LdapApiService, LdapApiService> serviceTracker;
+
+    class LdapApiServiceTracker implements ServiceTrackerCustomizer<LdapApiService, LdapApiService>
+    {
+        private BundleContext bundleContext;
+        private ServiceRegistration<?> registration;
+
+
+        public LdapApiServiceTracker( BundleContext context )
+        {
+            this.bundleContext = context;
+        }
+
+
+        @Override
+        public LdapApiService addingService( ServiceReference<LdapApiService> reference )
+        {
+            LdapApiService ldapApiService = bundleContext.getService( reference );
+            LdapProtocolCodecFactory factory = new LdapProtocolCodecFactory( ldapApiService );
+            registration = bundleContext.registerService( LdapProtocolCodecFactory.class.getName(), factory, null );
+            ldapApiService.registerProtocolCodecFactory( factory );
+            return ldapApiService;
+        }
+
+
+        @Override
+        public void modifiedService( ServiceReference<LdapApiService> reference, LdapApiService service )
+        {
+        }
+
+
+        @Override
+        public void removedService( ServiceReference<LdapApiService> reference, LdapApiService service )
+        {
+            // TODO should we unregister the LdapProtocolCodecFactory at LdapApiService?
+            // ldapApiService.unregisterProtocolCodecFactory( factory );
+            registration.unregister();
+        }
+    }
 
 
     /**
@@ -42,7 +83,6 @@ public class LdapProtocolCodecActivator implements BundleActivator
      */
     public LdapProtocolCodecActivator()
     {
-        this.factory = new LdapProtocolCodecFactory();
     }
 
 
@@ -61,8 +101,10 @@ public class LdapProtocolCodecActivator implements BundleActivator
      */
     public void start( BundleContext bundleContext ) throws Exception
     {
-        registration = bundleContext.registerService( LdapProtocolCodecFactory.class.getName(), factory, null );
-        LdapApiServiceFactory.getSingleton().registerProtocolCodecFactory( factory );
+        LdapApiServiceTracker ldapApiServiceTracker = new LdapApiServiceTracker( bundleContext );
+        serviceTracker = new ServiceTracker<LdapApiService, LdapApiService>( bundleContext, LdapApiService.class,
+            ldapApiServiceTracker );
+        serviceTracker.open();
     }
 
 
@@ -71,6 +113,6 @@ public class LdapProtocolCodecActivator implements BundleActivator
      */
     public void stop( BundleContext bundleContext ) throws Exception
     {
-        registration.unregister();
+        serviceTracker.close();
     }
 }
