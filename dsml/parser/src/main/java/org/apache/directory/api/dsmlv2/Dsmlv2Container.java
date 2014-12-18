@@ -20,8 +20,8 @@
 package org.apache.directory.api.dsmlv2;
 
 
-import org.apache.directory.api.dsmlv2.reponse.BatchResponseDsml;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
+import org.apache.directory.api.dsmlv2.response.BatchResponseDsml;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.xmlpull.v1.XmlPullParser;
 

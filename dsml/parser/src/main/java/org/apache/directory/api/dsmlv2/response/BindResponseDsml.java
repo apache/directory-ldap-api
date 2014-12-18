@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.dsmlv2.reponse;
+package org.apache.directory.api.dsmlv2.response;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;

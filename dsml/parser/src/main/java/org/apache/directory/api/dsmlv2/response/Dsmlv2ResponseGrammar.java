@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.dsmlv2.reponse;
+package org.apache.directory.api.dsmlv2.response;
 
 
 import java.io.IOException;
@@ -39,7 +39,7 @@ import org.apache.directory.api.dsmlv2.GrammarAction;
 import org.apache.directory.api.dsmlv2.GrammarTransition;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.dsmlv2.Tag;
-import org.apache.directory.api.dsmlv2.reponse.ErrorResponse.ErrorResponseType;
+import org.apache.directory.api.dsmlv2.response.ErrorResponse.ErrorResponseType;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.model.exception.LdapException;

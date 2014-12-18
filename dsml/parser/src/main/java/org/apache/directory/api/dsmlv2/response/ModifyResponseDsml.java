@@ -17,44 +17,44 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.dsmlv2.reponse;
+package org.apache.directory.api.dsmlv2.response;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.model.message.AddResponse;
-import org.apache.directory.api.ldap.model.message.AddResponseImpl;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
+import org.apache.directory.api.ldap.model.message.ModifyResponse;
+import org.apache.directory.api.ldap.model.message.ModifyResponseImpl;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
 
 /**
- * DSML Decorator for AddResponse
+ * DSML Decorator for ModifyResponse
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AddResponseDsml extends AbstractResultResponseDsml<AddResponse>
-    implements AddResponse
+public class ModifyResponseDsml extends AbstractResultResponseDsml<ModifyResponse>
+    implements ModifyResponse
 {
-    private static final String ADD_RESPONSE_TAG = "addResponse";
+    private static final String MODIFY_RESPONSE_TAG = "modifyResponse";
 
 
     /**
-     * Creates a new getDecoratedMessage() of AddResponseDsml.
+     * Creates a new getDecoratedMessage() of ModifyResponseDsml.
      */
-    public AddResponseDsml( LdapApiService codec )
+    public ModifyResponseDsml( LdapApiService codec )
     {
-        super( codec, new AddResponseImpl() );
+        super( codec, new ModifyResponseImpl() );
     }
 
 
     /**
-     * Creates a new getDecoratedMessage() of AddResponseDsml.
+     * Creates a new getDecoratedMessage() of ModifyResponseDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public AddResponseDsml( LdapApiService codec, AddResponse ldapMessage )
+    public ModifyResponseDsml( LdapApiService codec, ModifyResponse ldapMessage )
     {
         super( codec, ldapMessage );
     }
@@ -78,11 +78,11 @@ public class AddResponseDsml extends AbstractResultResponseDsml<AddResponse>
 
         if ( root != null )
         {
-            element = root.addElement( ADD_RESPONSE_TAG );
+            element = root.addElement( MODIFY_RESPONSE_TAG );
         }
         else
         {
-            element = new DefaultElement( ADD_RESPONSE_TAG );
+            element = new DefaultElement( MODIFY_RESPONSE_TAG );
         }
 
         LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),

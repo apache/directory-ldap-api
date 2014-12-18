@@ -17,44 +17,45 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.dsmlv2.reponse;
+
+package org.apache.directory.api.dsmlv2.response;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.model.message.DeleteResponse;
+import org.apache.directory.api.ldap.model.message.DeleteResponseImpl;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
-import org.apache.directory.api.ldap.model.message.ModifyResponse;
-import org.apache.directory.api.ldap.model.message.ModifyResponseImpl;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
 
 /**
- * DSML Decorator for ModifyResponse
+ * DSML Decorator for DelResponse
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModifyResponseDsml extends AbstractResultResponseDsml<ModifyResponse>
-    implements ModifyResponse
+public class DelResponseDsml extends AbstractResultResponseDsml<DeleteResponse>
+    implements DeleteResponse
 {
-    private static final String MODIFY_RESPONSE_TAG = "modifyResponse";
+    private static final String DEL_RESPONSE_TAG = "delResponse";
 
 
     /**
-     * Creates a new getDecoratedMessage() of ModifyResponseDsml.
+     * Creates a new getDecoratedMessage() of DelResponseDsml.
      */
-    public ModifyResponseDsml( LdapApiService codec )
+    public DelResponseDsml( LdapApiService codec )
     {
-        super( codec, new ModifyResponseImpl() );
+        super( codec, new DeleteResponseImpl() );
     }
 
 
     /**
-     * Creates a new getDecoratedMessage() of ModifyResponseDsml.
+     * Creates a new getDecoratedMessage() of DelResponseDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public ModifyResponseDsml( LdapApiService codec, ModifyResponse ldapMessage )
+    public DelResponseDsml( LdapApiService codec, DeleteResponse ldapMessage )
     {
         super( codec, ldapMessage );
     }
@@ -78,11 +79,11 @@ public class ModifyResponseDsml extends AbstractResultResponseDsml<ModifyRespons
 
         if ( root != null )
         {
-            element = root.addElement( MODIFY_RESPONSE_TAG );
+            element = root.addElement( DEL_RESPONSE_TAG );
         }
         else
         {
-            element = new DefaultElement( MODIFY_RESPONSE_TAG );
+            element = new DefaultElement( DEL_RESPONSE_TAG );
         }
 
         LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),

@@ -17,44 +17,44 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.dsmlv2.reponse;
+package org.apache.directory.api.dsmlv2.response;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.model.message.AddResponse;
+import org.apache.directory.api.ldap.model.message.AddResponseImpl;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
-import org.apache.directory.api.ldap.model.message.SearchResultDone;
-import org.apache.directory.api.ldap.model.message.SearchResultDoneImpl;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
 
 /**
- * DSML Decorator for SearchResultDone
+ * DSML Decorator for AddResponse
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SearchResultDoneDsml extends AbstractResultResponseDsml<SearchResultDone>
-    implements SearchResultDone
+public class AddResponseDsml extends AbstractResultResponseDsml<AddResponse>
+    implements AddResponse
 {
-    private static final String SEARCH_RESULT_DONE_TAG = "searchResultDone";
+    private static final String ADD_RESPONSE_TAG = "addResponse";
 
 
     /**
-     * Creates a new getDecoratedMessage() of SearchResultDoneDsml.
+     * Creates a new getDecoratedMessage() of AddResponseDsml.
      */
-    public SearchResultDoneDsml( LdapApiService codec )
+    public AddResponseDsml( LdapApiService codec )
     {
-        super( codec, new SearchResultDoneImpl() );
+        super( codec, new AddResponseImpl() );
     }
 
 
     /**
-     * Creates a new getDecoratedMessage() of SearchResultDoneDsml.
+     * Creates a new getDecoratedMessage() of AddResponseDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public SearchResultDoneDsml( LdapApiService codec, SearchResultDone ldapMessage )
+    public AddResponseDsml( LdapApiService codec, AddResponse ldapMessage )
     {
         super( codec, ldapMessage );
     }
@@ -78,20 +78,16 @@ public class SearchResultDoneDsml extends AbstractResultResponseDsml<SearchResul
 
         if ( root != null )
         {
-            element = root.addElement( SEARCH_RESULT_DONE_TAG );
+            element = root.addElement( ADD_RESPONSE_TAG );
         }
         else
         {
-            element = new DefaultElement( SEARCH_RESULT_DONE_TAG );
+            element = new DefaultElement( ADD_RESPONSE_TAG );
         }
 
-        LdapResultDsml ldapResultDsml =
-            new LdapResultDsml( getCodecService(), getDecorated().getLdapResult(), getDecorated() );
-        if ( ldapResultDsml != null )
-        {
-            ldapResultDsml.toDsml( element );
-        }
-
+        LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),
+            getDecorated().getLdapResult(), getDecorated() );
+        ldapResultDsml.toDsml( element );
         return element;
     }
 }

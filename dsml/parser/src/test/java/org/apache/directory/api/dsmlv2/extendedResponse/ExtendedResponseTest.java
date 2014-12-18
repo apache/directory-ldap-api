@@ -36,7 +36,7 @@ import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.dsmlv2.AbstractResponseTest;
 import org.apache.directory.api.dsmlv2.DsmlControl;
 import org.apache.directory.api.dsmlv2.Dsmlv2ResponseParser;
-import org.apache.directory.api.dsmlv2.reponse.ExtendedResponseDsml;
+import org.apache.directory.api.dsmlv2.response.ExtendedResponseDsml;
 import org.apache.directory.api.ldap.model.exception.LdapURLEncodingException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ExtendedResponse;

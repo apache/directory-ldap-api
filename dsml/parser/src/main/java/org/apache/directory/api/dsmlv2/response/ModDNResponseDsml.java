@@ -17,44 +17,44 @@
  *  under the License. 
  *  
  */
-
-package org.apache.directory.api.dsmlv2.reponse;
+package org.apache.directory.api.dsmlv2.response;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.model.message.CompareResponse;
-import org.apache.directory.api.ldap.model.message.CompareResponseImpl;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
+import org.apache.directory.api.ldap.model.message.ModifyDnResponse;
+import org.apache.directory.api.ldap.model.message.ModifyDnResponseImpl;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
 
 /**
- * DSML Decorator for CompareResponse
- *
+ * DSML Decorator for ModDNResponse
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CompareResponseDsml extends AbstractResultResponseDsml<CompareResponse> implements CompareResponse
+public class ModDNResponseDsml extends AbstractResultResponseDsml<ModifyDnResponse>
+    implements ModifyDnResponse
 {
-    private static final String COMPARE_RESPONSE_TAG = "compareResponse";
+    private static final String MOD_DN_RESPONSE_TAG = "modDNResponse";
 
 
     /**
-     * Creates a new getDecoratedMessage() of CompareResponseDsml.
+     * Creates a new getDecoratedMessage() of ModDNResponseDsml.
      */
-    public CompareResponseDsml( LdapApiService codec )
+    public ModDNResponseDsml( LdapApiService codec )
     {
-        super( codec, new CompareResponseImpl() );
+        super( codec, new ModifyDnResponseImpl() );
     }
 
 
     /**
-     * Creates a new getDecoratedMessage() of CompareResponseDsml.
+     * Creates a new getDecoratedMessage() of ModDNResponseDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public CompareResponseDsml( LdapApiService codec, CompareResponse ldapMessage )
+    public ModDNResponseDsml( LdapApiService codec, ModifyDnResponse ldapMessage )
     {
         super( codec, ldapMessage );
     }
@@ -78,25 +78,16 @@ public class CompareResponseDsml extends AbstractResultResponseDsml<CompareRespo
 
         if ( root != null )
         {
-            element = root.addElement( COMPARE_RESPONSE_TAG );
+            element = root.addElement( MOD_DN_RESPONSE_TAG );
         }
         else
         {
-            element = new DefaultElement( COMPARE_RESPONSE_TAG );
+            element = new DefaultElement( MOD_DN_RESPONSE_TAG );
         }
 
         LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),
             getDecorated().getLdapResult(), getDecorated() );
         ldapResultDsml.toDsml( element );
         return element;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isTrue()
-    {
-        return getDecorated().isTrue();
     }
 }

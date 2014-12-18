@@ -18,44 +18,43 @@
  *  
  */
 
-package org.apache.directory.api.dsmlv2.reponse;
+package org.apache.directory.api.dsmlv2.response;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.model.message.DeleteResponse;
-import org.apache.directory.api.ldap.model.message.DeleteResponseImpl;
+import org.apache.directory.api.ldap.model.message.CompareResponse;
+import org.apache.directory.api.ldap.model.message.CompareResponseImpl;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
 
 /**
- * DSML Decorator for DelResponse
+ * DSML Decorator for CompareResponse
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DelResponseDsml extends AbstractResultResponseDsml<DeleteResponse>
-    implements DeleteResponse
+public class CompareResponseDsml extends AbstractResultResponseDsml<CompareResponse> implements CompareResponse
 {
-    private static final String DEL_RESPONSE_TAG = "delResponse";
+    private static final String COMPARE_RESPONSE_TAG = "compareResponse";
 
 
     /**
-     * Creates a new getDecoratedMessage() of DelResponseDsml.
+     * Creates a new getDecoratedMessage() of CompareResponseDsml.
      */
-    public DelResponseDsml( LdapApiService codec )
+    public CompareResponseDsml( LdapApiService codec )
     {
-        super( codec, new DeleteResponseImpl() );
+        super( codec, new CompareResponseImpl() );
     }
 
 
     /**
-     * Creates a new getDecoratedMessage() of DelResponseDsml.
+     * Creates a new getDecoratedMessage() of CompareResponseDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public DelResponseDsml( LdapApiService codec, DeleteResponse ldapMessage )
+    public CompareResponseDsml( LdapApiService codec, CompareResponse ldapMessage )
     {
         super( codec, ldapMessage );
     }
@@ -79,16 +78,25 @@ public class DelResponseDsml extends AbstractResultResponseDsml<DeleteResponse>
 
         if ( root != null )
         {
-            element = root.addElement( DEL_RESPONSE_TAG );
+            element = root.addElement( COMPARE_RESPONSE_TAG );
         }
         else
         {
-            element = new DefaultElement( DEL_RESPONSE_TAG );
+            element = new DefaultElement( COMPARE_RESPONSE_TAG );
         }
 
         LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),
             getDecorated().getLdapResult(), getDecorated() );
         ldapResultDsml.toDsml( element );
         return element;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isTrue()
+    {
+        return getDecorated().isTrue();
     }
 }

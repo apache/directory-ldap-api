@@ -17,44 +17,44 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.dsmlv2.reponse;
+package org.apache.directory.api.dsmlv2.response;
 
 
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.model.message.MessageTypeEnum;
-import org.apache.directory.api.ldap.model.message.ModifyDnResponse;
-import org.apache.directory.api.ldap.model.message.ModifyDnResponseImpl;
+import org.apache.directory.api.ldap.model.message.SearchResultDone;
+import org.apache.directory.api.ldap.model.message.SearchResultDoneImpl;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
 
 /**
- * DSML Decorator for ModDNResponse
- * 
+ * DSML Decorator for SearchResultDone
+ *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ModDNResponseDsml extends AbstractResultResponseDsml<ModifyDnResponse>
-    implements ModifyDnResponse
+public class SearchResultDoneDsml extends AbstractResultResponseDsml<SearchResultDone>
+    implements SearchResultDone
 {
-    private static final String MOD_DN_RESPONSE_TAG = "modDNResponse";
+    private static final String SEARCH_RESULT_DONE_TAG = "searchResultDone";
 
 
     /**
-     * Creates a new getDecoratedMessage() of ModDNResponseDsml.
+     * Creates a new getDecoratedMessage() of SearchResultDoneDsml.
      */
-    public ModDNResponseDsml( LdapApiService codec )
+    public SearchResultDoneDsml( LdapApiService codec )
     {
-        super( codec, new ModifyDnResponseImpl() );
+        super( codec, new SearchResultDoneImpl() );
     }
 
 
     /**
-     * Creates a new getDecoratedMessage() of ModDNResponseDsml.
+     * Creates a new getDecoratedMessage() of SearchResultDoneDsml.
      *
      * @param ldapMessage
      *      the message to decorate
      */
-    public ModDNResponseDsml( LdapApiService codec, ModifyDnResponse ldapMessage )
+    public SearchResultDoneDsml( LdapApiService codec, SearchResultDone ldapMessage )
     {
         super( codec, ldapMessage );
     }
@@ -78,16 +78,20 @@ public class ModDNResponseDsml extends AbstractResultResponseDsml<ModifyDnRespon
 
         if ( root != null )
         {
-            element = root.addElement( MOD_DN_RESPONSE_TAG );
+            element = root.addElement( SEARCH_RESULT_DONE_TAG );
         }
         else
         {
-            element = new DefaultElement( MOD_DN_RESPONSE_TAG );
+            element = new DefaultElement( SEARCH_RESULT_DONE_TAG );
         }
 
-        LdapResultDsml ldapResultDsml = new LdapResultDsml( getCodecService(),
-            getDecorated().getLdapResult(), getDecorated() );
-        ldapResultDsml.toDsml( element );
+        LdapResultDsml ldapResultDsml =
+            new LdapResultDsml( getCodecService(), getDecorated().getLdapResult(), getDecorated() );
+        if ( ldapResultDsml != null )
+        {
+            ldapResultDsml.toDsml( element );
+        }
+
         return element;
     }
 }

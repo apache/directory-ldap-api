@@ -17,13 +17,12 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.dsmlv2.reponse;
+package org.apache.directory.api.dsmlv2.response;
 
 
+import org.apache.directory.api.dsmlv2.AbstractDsmlMessageDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.model.message.LdapResult;
-import org.apache.directory.api.ldap.model.message.ResultResponse;
-import org.dom4j.Element;
+import org.apache.directory.api.ldap.model.message.Response;
 
 
 /**
@@ -31,31 +30,16 @@ import org.dom4j.Element;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractResultResponseDsml<E extends ResultResponse>
-    extends AbstractResponseDsml<E> implements ResultResponse
+public abstract class AbstractResponseDsml<E extends Response>
+    extends AbstractDsmlMessageDecorator<E> implements Response
 {
     /**
      * Instantiates a new abstract DSML response.
      *
-     * @param ldapMessage the LDAP message to decorate
+     * @param response the LDAP response message to decorate
      */
-    public AbstractResultResponseDsml( LdapApiService codec, E resultResponse )
+    public AbstractResponseDsml( LdapApiService codec, E response )
     {
-        super( codec, resultResponse );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public abstract Element toDsml( Element root );
-
-
-    /**
-     * {@inheritDoc}
-     */
-    public LdapResult getLdapResult()
-    {
-        return getDecorated().getLdapResult();
+        super( codec, response );
     }
 }
