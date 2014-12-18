@@ -33,13 +33,13 @@ header {
  * Keep the semicolon right next to the package name or else there will be a
  * bug that comes into the foreground in the new antlr release.
  */
-package org.apache.directory.api.converter.schema;
+package org.apache.directory.api.ldap.schema.converter;
 import java.util.List ;
 import java.util.ArrayList ;
 import java.util.Collections;
 import java.io.IOException;
 
-import org.apache.directory.api.converter.schema.SchemaElement;
+import org.apache.directory.api.ldap.schema.converter.SchemaElement;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 }

@@ -113,7 +113,7 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.schema.converter</Bundle-SymbolicName>
             <Export-Package>
-              org.apache.directory.api.converter.schema;version="${project.version}";-noimport:=true
+              org.apache.directory.api.ldap.schema.converter;version="${project.version}";-noimport:=true
             </Export-Package>
             <Import-Package>
               <![CDATA[
