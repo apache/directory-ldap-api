@@ -146,7 +146,7 @@
               org.apache.directory.api.ldap.model.schema;version=${project.version},
               org.apache.directory.api.ldap.model.schema.parsers;version=${project.version},
               org.apache.directory.api.ldap.model.schema.registries;version=${project.version},
-              org.apache.directory.api.ldap.schemamanager.impl;version=${project.version},
+              org.apache.directory.api.ldap.schema.manager.impl;version=${project.version},
               org.apache.directory.api.util;version=${project.version},
               org.apache.mina.core.filterchain;version=${mina.core.version},
               org.apache.mina.core.future;version=${mina.core.version},

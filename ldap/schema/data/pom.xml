@@ -144,10 +144,10 @@
           <instructions>
             <Bundle-SymbolicName>${project.groupId}.ldap.schema</Bundle-SymbolicName>
             <Export-Package>
-              org.apache.directory.api.ldap.schemaextractor;version="${project.version}";-noimport:=true,
-              org.apache.directory.api.ldap.schemaextractor.impl;version="${project.version}";-noimport:=true,
-              org.apache.directory.api.ldap.schemaloader;version="${project.version}";-noimport:=true,
-              org.apache.directory.api.ldap.schemamanager.impl;version="${project.version}";-noimport:=true
+              org.apache.directory.api.ldap.schema.extractor;version="${project.version}";-noimport:=true,
+              org.apache.directory.api.ldap.schema.extractor.impl;version="${project.version}";-noimport:=true,
+              org.apache.directory.api.ldap.schema.loader;version="${project.version}";-noimport:=true,
+              org.apache.directory.api.ldap.schema.manager.impl;version="${project.version}";-noimport:=true
             </Export-Package>
             <Import-Package>
               org.apache.directory.api.asn1.util;version=${project.version},
