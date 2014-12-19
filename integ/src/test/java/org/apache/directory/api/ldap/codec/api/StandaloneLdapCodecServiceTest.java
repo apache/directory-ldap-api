@@ -47,6 +47,7 @@ public class StandaloneLdapCodecServiceTest
         System.setProperty( StandaloneLdapApiService.CONTROLS_LIST,
             "org.apache.directory.api.ldap.codec.controls.cascade.CascadeFactory," +
                 "org.apache.directory.api.ldap.codec.controls.manageDsaIT.ManageDsaITFactory," +
+                "org.apache.directory.api.ldap.codec.controls.proxiedauthz.ProxiedAuthzFactory," +
                 "org.apache.directory.api.ldap.codec.controls.search.entryChange.EntryChangeFactory," +
                 "org.apache.directory.api.ldap.codec.controls.search.pagedSearch.PagedResultsFactory," +
                 "org.apache.directory.api.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory," +

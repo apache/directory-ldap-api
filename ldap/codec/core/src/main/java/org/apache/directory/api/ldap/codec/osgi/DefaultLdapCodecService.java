@@ -43,6 +43,7 @@ import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.codec.controls.cascade.CascadeFactory;
 import org.apache.directory.api.ldap.codec.controls.manageDsaIT.ManageDsaITFactory;
+import org.apache.directory.api.ldap.codec.controls.proxiedauthz.ProxiedAuthzFactory;
 import org.apache.directory.api.ldap.codec.controls.search.entryChange.EntryChangeFactory;
 import org.apache.directory.api.ldap.codec.controls.search.pagedSearch.PagedResultsFactory;
 import org.apache.directory.api.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory;
@@ -59,6 +60,7 @@ import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.ldap.model.message.controls.OpaqueControl;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
+import org.apache.directory.api.ldap.model.message.controls.ProxiedAuthz;
 import org.apache.directory.api.ldap.model.message.controls.Subentries;
 import org.apache.directory.api.util.Strings;
 import org.apache.directory.api.util.exception.NotImplementedException;
@@ -113,6 +115,10 @@ public class DefaultLdapCodecService implements LdapApiService
         ControlFactory<ManageDsaIT> manageDsaItFactory = new ManageDsaITFactory( this );
         controlFactories.put( manageDsaItFactory.getOid(), manageDsaItFactory );
         LOG.info( "Registered pre-bundled control factory: {}", manageDsaItFactory.getOid() );
+
+        ControlFactory<ProxiedAuthz> proxiedAuthzFactory = new ProxiedAuthzFactory( this );
+        controlFactories.put( proxiedAuthzFactory.getOid(), proxiedAuthzFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", proxiedAuthzFactory.getOid() );
 
         ControlFactory<PagedResults> pageResultsFactory = new PagedResultsFactory( this );
         controlFactories.put( pageResultsFactory.getOid(), pageResultsFactory );

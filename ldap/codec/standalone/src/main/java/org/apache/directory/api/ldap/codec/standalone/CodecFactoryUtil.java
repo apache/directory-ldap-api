@@ -27,6 +27,7 @@ import org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.controls.cascade.CascadeFactory;
 import org.apache.directory.api.ldap.codec.controls.manageDsaIT.ManageDsaITFactory;
+import org.apache.directory.api.ldap.codec.controls.proxiedauthz.ProxiedAuthzFactory;
 import org.apache.directory.api.ldap.codec.controls.search.entryChange.EntryChangeFactory;
 import org.apache.directory.api.ldap.codec.controls.search.pagedSearch.PagedResultsFactory;
 import org.apache.directory.api.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory;
@@ -58,6 +59,7 @@ import org.apache.directory.api.ldap.model.message.controls.EntryChange;
 import org.apache.directory.api.ldap.model.message.controls.ManageDsaIT;
 import org.apache.directory.api.ldap.model.message.controls.PagedResults;
 import org.apache.directory.api.ldap.model.message.controls.PersistentSearch;
+import org.apache.directory.api.ldap.model.message.controls.ProxiedAuthz;
 import org.apache.directory.api.ldap.model.message.controls.SortRequest;
 import org.apache.directory.api.ldap.model.message.controls.SortResponse;
 import org.apache.directory.api.ldap.model.message.controls.Subentries;
@@ -91,6 +93,10 @@ public class CodecFactoryUtil
         ControlFactory<ManageDsaIT> manageDsaITFactory = new ManageDsaITFactory( apiService );
         controlFactories.put( manageDsaITFactory.getOid(), manageDsaITFactory );
         LOG.info( "Registered pre-bundled control factory: {}", manageDsaITFactory.getOid() );
+
+        ControlFactory<ProxiedAuthz> proxiedAuthzFactory = new ProxiedAuthzFactory( apiService );
+        controlFactories.put( proxiedAuthzFactory.getOid(), proxiedAuthzFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", proxiedAuthzFactory.getOid() );
 
         ControlFactory<PagedResults> pagedResultsFactory = new PagedResultsFactory( apiService );
         controlFactories.put( pagedResultsFactory.getOid(), pagedResultsFactory );
@@ -131,7 +137,7 @@ public class CodecFactoryUtil
         ControlFactory<SortResponse> sortResponseFactory = new SortResponseFactory( apiService );
         controlFactories.put( sortResponseFactory.getOid(), sortResponseFactory );
         LOG.info( "Registered pre-bundled control factory: {}", sortResponseFactory.getOid() );
-        
+
         ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( apiService );
         controlFactories.put( adDirSyncFactory.getOid(), adDirSyncFactory );
         LOG.info( "Registered pre-bundled control factory: {}", adDirSyncFactory.getOid() );
