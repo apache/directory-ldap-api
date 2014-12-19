@@ -27,7 +27,6 @@ import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
-import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
@@ -97,12 +96,7 @@ public class ProxiedAuthzDecorator extends ControlDecorator<ProxiedAuthz> implem
         if ( getAuthzId() != null )
         {
             authzIdBytes = Strings.getBytesUtf8( getAuthzId() );
-            valueLength = 1 + TLV.getNbBytes( authzIdBytes.length ) + authzIdBytes.length;
-        }
-        else
-        {
-            // Empty string
-            valueLength = 1 + 1;
+            valueLength = authzIdBytes.length;
         }
 
         return valueLength;
@@ -125,7 +119,7 @@ public class ProxiedAuthzDecorator extends ControlDecorator<ProxiedAuthz> implem
 
         if ( getAuthzId() != null )
         {
-            BerValue.encode( buffer, authzIdBytes );
+            buffer.put( authzIdBytes );
         }
 
         return buffer;
@@ -188,9 +182,8 @@ public class ProxiedAuthzDecorator extends ControlDecorator<ProxiedAuthz> implem
      */
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
-        ByteBuffer bb = ByteBuffer.wrap( controlBytes );
-        ProxiedAuthzContainer container = new ProxiedAuthzContainer( getCodecService(), this );
-        decoder.decode( bb, container );
+        getProxiedAuthz().setAuthzId( Strings.utf8ToString( controlBytes ) );
+
         return this;
     }
 }

@@ -21,6 +21,7 @@ package org.apache.directory.api.ldap.codec.controls.proxiedauthz;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.nio.ByteBuffer;
 
@@ -50,11 +51,11 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeProxiedAuthzControlDnSuccess() throws Exception
     {
-        ByteBuffer bb = ByteBuffer.allocate( 0x16 );
+        ByteBuffer bb = ByteBuffer.allocate( 0x14 );
         bb.put( new byte[]
             {
-                0x04, 0x14, // ProxiedAuthzNotification ::= dn:dc=example,dc=com
-                  'd', 'n', ':', 'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm'
+                // ProxiedAuthzNotification ::= dn:dc=example,dc=com
+                'd', 'n', ':', 'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm'
         } );
         bb.flip();
 
@@ -72,11 +73,11 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeProxiedAuthzControlUSuccess() throws Exception
     {
-        ByteBuffer bb = ByteBuffer.allocate( 0x0E );
+        ByteBuffer bb = ByteBuffer.allocate( 0x0C );
         bb.put( new byte[]
             {
-                0x04, 0x0C, // ProxiedAuthzNotification ::= u:elécharny
-                  'u', ':', 'e', 'l', (byte)0xc3, (byte)0xa9, 'c', 'h', 'a', 'r', 'n', 'y'
+                // ProxiedAuthzNotification ::= u:elécharny
+                'u', ':', 'e', 'l', (byte)0xc3, (byte)0xa9, 'c', 'h', 'a', 'r', 'n', 'y'
         } );
         bb.flip();
 
@@ -94,10 +95,10 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
     @Test
     public void testDecodeProxiedAuthzControlAnonymousSuccess() throws Exception
     {
-        ByteBuffer bb = ByteBuffer.allocate( 0x06 );
+        ByteBuffer bb = ByteBuffer.allocate( 0x00 );
         bb.put( new byte[]
             {
-                0x04, 0x00, // ProxiedAuthzNotification ::= anonymous
+                // ProxiedAuthzNotification ::= anonymous
         } );
         bb.flip();
 
@@ -112,14 +113,14 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a ProxiedAuthzControl with a wrong DN user
      */
-    @Test( expected = DecoderException.class)
+    @Test( expected = RuntimeException.class)
     public void testDecodeProxiedAuthzControlWrongDn() throws Exception
     {
-        ByteBuffer bb = ByteBuffer.allocate( 0x12 );
+        ByteBuffer bb = ByteBuffer.allocate( 0x10 );
         bb.put( new byte[]
             {
-                0x04, 0x10, // ProxiedAuthzNotification ::= dn:dc=example,dc=com
-                  'd', 'n', ':', 'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c'
+                // ProxiedAuthzNotification ::= dn:dc=example,dc=com
+                'd', 'n', ':', 'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c'
         } );
         bb.flip();
 
@@ -132,14 +133,14 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
     /**
      * Test the decoding of a ProxiedAuthzControl with a wrong user
      */
-    @Test( expected = DecoderException.class)
+    @Test( expected = RuntimeException.class)
     public void testDecodeProxiedAuthzControlWrongAuthzId() throws Exception
     {
-        ByteBuffer bb = ByteBuffer.allocate( 0x0A );
+        ByteBuffer bb = ByteBuffer.allocate( 0x08 );
         bb.put( new byte[]
             {
-                0x04, 0x08, // ProxiedAuthzNotification ::= dn:dc=example,dc=com
-                  'v', 'n', ':', 'w', 'r', 'o', 'n', 'g'
+                // ProxiedAuthzNotification ::= dn:dc=example,dc=com
+                'v', 'n', ':', 'w', 'r', 'o', 'n', 'g'
         } );
         bb.flip();
 
@@ -155,11 +156,11 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
     @Test
     public void testEncodeProxiedDnAuthzControl() throws Exception
     {
-        ByteBuffer bb = ByteBuffer.allocate( 0x16 );
+        ByteBuffer bb = ByteBuffer.allocate( 0x14 );
         bb.put( new byte[]
             {
-            0x04, 0x14, // ProxiedAuthzNotification ::= dn:dc=example,dc=com
-              'd', 'n', ':', 'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm'
+                // ProxiedAuthzNotification ::= dn:dc=example,dc=com
+                  'd', 'n', ':', 'd', 'c', '=', 'e', 'x', 'a', 'm', 'p', 'l', 'e', ',', 'd', 'c', '=', 'c', 'o', 'm'
             } );
 
         String expected = Strings.dumpBytes( bb.array() );
@@ -181,11 +182,11 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
     @Test
     public void testEncodeProxiedUserAuthzControl() throws Exception
     {
-        ByteBuffer bb = ByteBuffer.allocate( 0x0E );
+        ByteBuffer bb = ByteBuffer.allocate( 0x0C );
         bb.put( new byte[]
             {
-                0x04, 0x0C, // ProxiedAuthzNotification ::= u:elécharny
-                  'u', ':', 'e', 'l', (byte)0xc3, (byte)0xa9, 'c', 'h', 'a', 'r', 'n', 'y'
+                // ProxiedAuthzNotification ::= u:elécharny
+                'u', ':', 'e', 'l', (byte)0xc3, (byte)0xa9, 'c', 'h', 'a', 'r', 'n', 'y'
         } );
 
         String expected = Strings.dumpBytes( bb.array() );
@@ -207,10 +208,10 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
     @Test
     public void testEncodeProxiedAnonymousAuthzControl() throws Exception
     {
-        ByteBuffer bb = ByteBuffer.allocate( 0x02 );
+        ByteBuffer bb = ByteBuffer.allocate( 0x00 );
         bb.put( new byte[]
             {
-                0x04, 0x00, // ProxiedAuthzNotification ::= anonymous
+                // ProxiedAuthzNotification ::= anonymous
         } );
 
         String expected = Strings.dumpBytes( bb.array() );
