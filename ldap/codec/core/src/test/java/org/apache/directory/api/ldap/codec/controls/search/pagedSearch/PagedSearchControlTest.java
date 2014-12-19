@@ -17,7 +17,7 @@
  *  under the License. 
  *  
  */
-package org.apache.directory.api.ldap.codec.search.controls;
+package org.apache.directory.api.ldap.codec.controls.search.pagedSearch;
 
 
 import static org.junit.Assert.assertEquals;
