@@ -21,60 +21,47 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.apache.directory.osgitesting</groupId>
-        <artifactId>osgitesting-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <groupId>org.apache.directory.api</groupId>
+        <artifactId>api-parent</artifactId>
+        <version>1.0.0-M27-SNAPSHOT</version>
     </parent>
-    <artifactId>api-paxexam-osgi-test</artifactId>
 
-    <properties>
-        <logback.version>1.1.2</logback.version>
-        <slf4j.api.version>1.7.7</slf4j.api.version>
-        <exam.version>4.4.0</exam.version>
-        <url.version>2.2.0</url.version>
-        <felix.version>4.4.1</felix.version>
-    </properties>
+    <artifactId>api-integ-osgi</artifactId>
+    <name>Apache Directory API OSGi Integration Tests</name>
 
     <dependencies>
+        <!-- Bundles under test -->
         <dependency>
             <groupId>org.apache.directory.api</groupId>
             <artifactId>api-ldap-client-api</artifactId>
-            <version>${api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.directory.api</groupId>
             <artifactId>api-ldap-net-mina</artifactId>
-            <version>${api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.directory.api</groupId>
             <artifactId>api-ldap-schema-converter</artifactId>
-            <version>${api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.directory.api</groupId>
             <artifactId>api-ldap-extras-aci</artifactId>
-            <version>${api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.directory.api</groupId>
             <artifactId>api-ldap-extras-util</artifactId>
-            <version>${api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.directory.api</groupId>
             <artifactId>api-ldap-extras-sp</artifactId>
-            <version>${api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.directory.api</groupId>
             <artifactId>api-ldap-extras-trigger</artifactId>
-            <version>${api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.directory.api</groupId>
             <artifactId>api-dsml-engine</artifactId>
-            <version>${api.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>xml-apis</groupId>
@@ -98,37 +85,31 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.exam</groupId>
             <artifactId>pax-exam-container-forked</artifactId>
-            <version>${exam.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.exam</groupId>
             <artifactId>pax-exam-junit4</artifactId>
-            <version>${exam.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.exam</groupId>
             <artifactId>pax-exam-link-mvn</artifactId>
-            <version>${exam.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.ops4j.pax.url</groupId>
             <artifactId>pax-url-aether</artifactId>
-            <version>${url.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.felix</groupId>
             <artifactId>org.apache.felix.framework</artifactId>
-            <version>${felix.version}</version>
             <scope>test</scope>
         </dependency>
 <!--         <dependency> -->
@@ -138,16 +119,6 @@
 <!--             <scope>test</scope> -->
 <!--         </dependency> -->
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.api.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <plugins>

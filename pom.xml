@@ -56,9 +56,9 @@
     <slf4j.log4j12.version>1.7.7</slf4j.log4j12.version>
     <xml.apis.version>2.0.2</xml.apis.version>
     <xpp3.version>1.1.4c</xpp3.version>
-    <pax-exam.version>4.3.0</pax-exam.version>
-    <pax-exam-container-default.version>1.2.4</pax-exam-container-default.version>
-    <pax-exam-junit.version>1.2.4</pax-exam-junit.version>
+    <pax-exam.version>3.5.0</pax-exam.version>
+    <pax-url.version>2.2.0</pax-url.version>
+    <logback.version>1.1.2</logback.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
   </properties>
   
@@ -82,6 +82,7 @@
     <module>ldap</module>
     <module>dsml</module>
     <module>integ</module>
+    <module>integ-osgi</module>
     <module>distribution</module>
   </modules>
 
@@ -620,24 +621,33 @@
       </dependency>
 
       <dependency>
-        <groupId>org.ops4j.pax.exam</groupId>
-        <artifactId>pax-exam</artifactId>
-        <version>${pax-exam.version}</version>
-        <scope>test</scope>
-      </dependency>
-      
-      <dependency>
-        <groupId>org.ops4j.pax.exam</groupId>
-        <artifactId>pax-exam-junit</artifactId>
-        <version>${pax-exam-junit.version}</version>
-        <scope>test</scope>
+          <groupId>org.ops4j.pax.exam</groupId>
+          <artifactId>pax-exam-container-forked</artifactId>
+          <version>${pax-exam.version}</version>
       </dependency>
 
       <dependency>
-        <groupId>org.ops4j.pax.exam</groupId>
-        <artifactId>pax-exam-container-default</artifactId>
-        <version>${pax-exam-container-default.version}</version>
-        <scope>test</scope>
+          <groupId>org.ops4j.pax.exam</groupId>
+          <artifactId>pax-exam-junit4</artifactId>
+          <version>${pax-exam.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.ops4j.pax.exam</groupId>
+          <artifactId>pax-exam-link-mvn</artifactId>
+          <version>${pax-exam.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.ops4j.pax.url</groupId>
+          <artifactId>pax-url-aether</artifactId>
+          <version>${pax-url.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+          <version>${logback.version}</version>
       </dependency>
 
       <!-- Logging dependencies -->
