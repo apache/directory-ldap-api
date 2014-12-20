@@ -132,7 +132,9 @@
               org.dom4j.io;version=${dom4j.version},
               org.dom4j.tree;version=${dom4j.version},
               org.slf4j;version=${slf4j.api.version},
-              org.xmlpull.v1;version=${xpp3.version}
+              org.xmlpull.v1;version=${xpp3.version},
+              javax.xml.transform,
+              javax.xml.transform.stream
             </Import-Package>
           </instructions>
         </configuration>
