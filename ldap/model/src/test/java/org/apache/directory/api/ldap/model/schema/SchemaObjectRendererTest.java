@@ -533,7 +533,6 @@ public class SchemaObjectRendererTest
     public void testOpenLdapSchemaRendererNameForm()
     {
         String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( nameForm );
-        System.out.println( actual );
         String expected = "nameform ( 1.2.3.4 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tOC oc1\n\tMUST ( must1 $ must2 )\n\tMAY may0\n)";
         assertEquals( expected, actual );
     }
