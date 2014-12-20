@@ -34,9 +34,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -60,12 +60,12 @@ public abstract class ApiOsgiTestBase
     @Inject
     protected BundleContext context;
 
-    private static Map<String, Option> REPLACEMENTS = new HashMap<String, Option>();
+    private static Set<String> SKIPS = new HashSet<String>();
     static
     {
-        REPLACEMENTS.put( "antlr-2.7.7.jar", mavenBundle( "org.apache.directory.studio", "org.antlr.antlr", "2.7.7" ) );
-        REPLACEMENTS.put( "xpp3-1.1.4c.jar", mavenBundle( "org.apache.directory.studio", "org.xpp3.xpp3", "1.1.4.c" ) );
-        REPLACEMENTS.put( "dom4j-1.6.1.jar", mavenBundle( "org.apache.directory.studio", "org.dom4j.dom4j", "1.6.1" ) );
+        SKIPS.add( "antlr-2.7.7.jar" );
+        SKIPS.add( "xpp3-1.1.4c.jar" );
+        SKIPS.add( "dom4j-1.6.1.jar" );
     }
 
 
@@ -80,11 +80,7 @@ public abstract class ApiOsgiTestBase
         File[] files = targetDependenciesDir.listFiles();
         for ( File file : files )
         {
-            if ( REPLACEMENTS.containsKey( file.getName() ) )
-            {
-                dependencies.add( REPLACEMENTS.get( file.getName() ) );
-            }
-            else
+            if ( !SKIPS.contains( file.getName() ) )
             {
                 dependencies.add( url( file.toURI().toString() ) );
             }
