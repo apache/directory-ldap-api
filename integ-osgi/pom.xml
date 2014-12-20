@@ -128,7 +128,7 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>list</goal>
+                            <goal>copy-dependencies</goal>
                         </goals>
                         <phase>generate-resources</phase>
                         <configuration>
@@ -161,7 +161,7 @@
                                             [2.8,)
                                         </versionRange>
                                         <goals>
-                                            <goal>list</goal>
+                                            <goal>copy-dependencies</goal>
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
