@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,9 +64,9 @@ public abstract class ApiOsgiTestBase
     private static Set<String> SKIPS = new HashSet<String>();
     static
     {
-        SKIPS.add( "antlr-2.7.7.jar" );
-        SKIPS.add( "xpp3-1.1.4c.jar" );
-        SKIPS.add( "dom4j-1.6.1.jar" );
+        // SKIPS.add( "antlr-2.7.7.jar" );
+        // SKIPS.add( "xpp3-1.1.4c.jar" );
+        // SKIPS.add( "dom4j-1.6.1.jar" );
     }
 
 
@@ -85,6 +86,9 @@ public abstract class ApiOsgiTestBase
                 dependencies.add( url( file.toURI().toString() ) );
             }
         }
+
+        // shuffle dependencies, there mustn't be any dependency on order
+        Collections.shuffle( dependencies );
 
         return options(
             systemProperty( "org.ops4j.pax.logging.DefaultServiceLog.level" ).value( "WARN" ),

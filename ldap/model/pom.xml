@@ -61,12 +61,21 @@
       <groupId>org.apache.mina</groupId>
       <artifactId>mina-core</artifactId>
     </dependency>
-    
+
+  <!-- The original antlr artifact is needed by the antlr-maven-plugin which 
+    checks for its existence within the classpath. Use scope provided to avoid 
+    propagation to dependent projects. Choosen artifact is a valid OSGi bundle 
+    repackaged by ServiceMix team, kudos to them. -->
     <dependency>
       <groupId>antlr</groupId>
       <artifactId>antlr</artifactId>
+      <scope>provided</scope>
     </dependency>
-    
+    <dependency>
+      <groupId>org.apache.servicemix.bundles</groupId>
+      <artifactId>org.apache.servicemix.bundles.antlr</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>commons-lang</groupId>
       <artifactId>commons-lang</artifactId>
