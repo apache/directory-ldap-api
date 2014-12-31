@@ -58,7 +58,7 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
 
 // TODO: all the SASL bind methods are not declared in this interface, but implemented in LdapNetworkConnection. Is that intended?
-// TODO: why do connect() and close() return a boolean? What is the difference between false and an Exception?
+// TODO: why does connect() return a boolean? What is the difference between false and an Exception?
 // TODO: think about usage of abbrevisions (Dn/Rdn) vs. spelled out (relative distinguished name) in javadoc
 // TODO: describe better which type of LdapException are thrown in which case?
 // TODO: remove the "we" language in javadoc
