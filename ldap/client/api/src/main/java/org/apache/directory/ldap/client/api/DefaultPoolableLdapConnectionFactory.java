@@ -145,7 +145,7 @@ public class DefaultPoolableLdapConnectionFactory extends AbstractPoolableLdapCo
      * {@inheritDoc}
      * 
      * Validating a connection is done by checking the connection status. We though
-     * re-bind if teh connection is connected but not authenticated.
+     * re-bind if the connection is connected but not authenticated.
      */
     public boolean validateObject( LdapConnection connection )
     {
