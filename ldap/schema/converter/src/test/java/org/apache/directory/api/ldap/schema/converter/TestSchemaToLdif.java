@@ -28,14 +28,11 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
-import org.apache.directory.api.ldap.schema.converter.ParserException;
-import org.apache.directory.api.ldap.schema.converter.Schema;
-import org.apache.directory.api.ldap.schema.converter.SchemaToLdif;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 @RunWith(ConcurrentJunitRunner.class)
@@ -886,4 +883,10 @@ public class TestSchemaToLdif
         assertEquals( expected, transform( "testMozillaATWithOidLen" ) );
     }
 
+
+    @Test(expected = ParserException.class)
+    public void testConvertWrongLdif() throws ParserException, IOException
+    {
+        transform( "testWrongLdif" );
+    }
 }
