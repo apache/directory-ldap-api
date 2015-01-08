@@ -1013,8 +1013,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         {
             // this shouldn't happen
             LOG
-                .error(
-                    "There is no future associated with operation message ID {}, perhaps the operation would have been completed",
+                .warn(
+                    "There is no future associated with operation message ID {}, the operation has been completed.",
                     abandonId );
         }
     }
