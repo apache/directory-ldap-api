@@ -161,6 +161,7 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.ProtocolEncoderException;
 import org.apache.mina.filter.ssl.SslFilter;
+import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -241,7 +242,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      */
     public boolean isConnected()
     {
-        return ( ldapSession != null ) && connected.get();
+        return ( ldapSession != null ) && connected.get() && !ldapSession.isClosing();
     }
 
 
@@ -501,6 +502,30 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     }
 
 
+    /**
+     * Create the connector
+     */
+    private void createConnector() throws LdapException
+    {
+        // Use only one thread inside the connector
+        connector = new NioSocketConnector( 1 );
+
+        ( ( SocketSessionConfig ) connector.getSessionConfig() ).setReuseAddress( true );
+
+        // Add the codec to the chain
+        connector.getFilterChain().addLast( "ldapCodec", ldapProtocolFilter );
+
+        // If we use SSL, we have to add the SslFilter to the chain
+        if ( config.isUseSsl() )
+        {
+            addSslFilter();
+        }
+
+        // Inject the protocolHandler
+        connector.setHandler( this );
+    }
+
+
     //-------------------------- The methods ---------------------------//
     /**
      * {@inheritDoc}
@@ -516,39 +541,73 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Create the connector if needed
         if ( connector == null )
         {
-            // Use only one thead inside the connector
-            connector = new NioSocketConnector( 1 );
-
-            // Add the codec to the chain
-            connector.getFilterChain().addLast( "ldapCodec", ldapProtocolFilter );
-
-            // If we use SSL, we have to add the SslFilter to the chain
-            if ( config.isUseSsl() )
-            {
-                addSslFilter();
-            }
-
-            // Inject the protocolHandler
-            connector.setHandler( this );
+            createConnector();
         }
 
         // Build the connection address
         SocketAddress address = new InetSocketAddress( config.getLdapHost(), config.getLdapPort() );
 
         // And create the connection future
-        ConnectFuture connectionFuture = connector.connect( address );
+        long maxRetry = System.currentTimeMillis() + timeout;
+        ConnectFuture connectionFuture = null;
 
-        // Wait until it's established
-        try
+        while ( maxRetry > System.currentTimeMillis() )
         {
-            connectionFuture.await( timeout );
+            connectionFuture = connector.connect( address );
+
+            boolean result = false;
+            timeout = config.getTimeout();
+
+            // Wait until it's established
+            try
+            {
+                result = connectionFuture.await( timeout );
+            }
+            catch ( InterruptedException e )
+            {
+                connector.dispose();
+                connector = null;
+                LOG.debug( "Interrupted while waiting for connection to establish with server {}:{}",
+                    config.getLdapHost(),
+                    config.getLdapPort(), e );
+                throw new LdapOtherException( e.getMessage(), e );
+            }
+            finally
+            {
+                if ( result )
+                {
+                    boolean isConnected = connectionFuture.isConnected();
+
+                    if ( !isConnected )
+                    {
+                        LOG.debug( "------>>   Cannot get the connection... Retrying" );
+
+                        // Wait 500 ms and retry
+                        try
+                        {
+                            Thread.sleep( 500 );
+                        }
+                        catch ( InterruptedException e )
+                        {
+                            connector = null;
+                            LOG.debug( "Interrupted while waiting for connection to establish with server {}:{}",
+                                config.getLdapHost(),
+                                config.getLdapPort(), e );
+                            throw new LdapOtherException( e.getMessage(), e );
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
         }
-        catch ( InterruptedException e )
+
+        if ( connectionFuture == null )
         {
-            connector = null;
-            LOG.debug( "Interrupted while waiting for connection to establish with server {}:{}", config.getLdapHost(),
-                config.getLdapPort(), e );
-            throw new LdapOtherException( e.getMessage(), e );
+            connector.dispose();
+            throw new InvalidConnectionException( "Cannot connect" );
         }
 
         boolean isConnected = connectionFuture.isConnected();
@@ -1761,18 +1820,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         connected.set( false );
 
-        /*
-        if ( ldapSession != null )
-        {
-            CloseFuture closeFuture = ldapSession.close( true );
-
-            LOG.debug( "waiting for closeFuture" );
-            closeFuture.awaitUninterruptibly();
-            LOG.debug( "closeFuture done" );
-            connected.set( false );
-        }
-        */
-
         // Last, not least, reset the MessageId value
         messageId.set( 0 );
 
@@ -1799,7 +1846,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         if ( timeout <= 0 )
         {
-            this.timeout = Long.MAX_VALUE;
+            // Set a date in the far future : 100 years
+            this.timeout = 1000L * 60L * 60L * 24L * 365L * 100L;
         }
         else
         {

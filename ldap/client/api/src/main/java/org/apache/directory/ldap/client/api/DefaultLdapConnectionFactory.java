@@ -52,7 +52,7 @@ public class DefaultLdapConnectionFactory implements LdapConnectionFactory
     public DefaultLdapConnectionFactory( LdapConnectionConfig config )
     {
         this.connectionConfig = config;
-        this.timeout = config.getDefaultTimeout();
+        this.timeout = config.getTimeout();
     }
 
 

@@ -69,6 +69,9 @@ public class LdapConnectionConfig
     /** A flag indicating if we are using SSL or not, default value is false */
     private boolean useSsl = false;
 
+    /** The session timeout */
+    private long timeout = DEFAULT_TIMEOUT;
+
     /** A flag indicating if we are using TLS or not, default value is false */
     private boolean useTls = false;
 
@@ -101,7 +104,7 @@ public class LdapConnectionConfig
 
     /** The class used to detect if an attribute is HR or not */
     private BinaryAttributeDetector binaryAttributeDetector;
-    
+
     /** The Service to use internally when creating connections */
     private LdapApiService ldapApiService;
 
@@ -302,6 +305,28 @@ public class LdapConnectionConfig
     public long getDefaultTimeout()
     {
         return DEFAULT_TIMEOUT;
+    }
+
+
+    /**
+     * Gets the timeout.
+     *
+     * @return the timeout
+     */
+    public long getTimeout()
+    {
+        return timeout;
+    }
+
+
+    /**
+     * Sets the timeout.
+     *
+     * @return the timeout
+     */
+    public void setTimeout( long timeout )
+    {
+        this.timeout = timeout;
     }
 
 
