@@ -16,12 +16,13 @@
   KIND, either express or implied.  See the License for the
   specific language governing permissions and limitations
   under the License.
---><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.directory.project</groupId>
     <artifactId>project</artifactId>
-    <version>33</version>
+    <version>34</version>
     <relativePath />
   </parent>
 
@@ -47,17 +48,17 @@
     <commons.lang.version>2.6</commons.lang.version>
     <commons.pool.version>1.6</commons.pool.version>
     <dom4j.version>1.6.1</dom4j.version>
-    <junit.version>4.11</junit.version>
+    <junit.version>4.12</junit.version>
     <log4j.version>1.2.17</log4j.version>
     <mina.core.version>2.0.9</mina.core.version>
     <org.osgi.core.version>6.0.0</org.osgi.core.version>
     <org.apache.felix.version>4.4.1</org.apache.felix.version>
-    <slf4j.api.version>1.7.7</slf4j.api.version>
-    <slf4j.log4j12.version>1.7.7</slf4j.log4j12.version>
+    <slf4j.api.version>1.7.10</slf4j.api.version>
+    <slf4j.log4j12.version>1.7.10</slf4j.log4j12.version>
     <xml.apis.version>2.0.2</xml.apis.version>
     <xpp3.version>1.1.4c</xpp3.version>
-    <pax-exam.version>3.5.0</pax-exam.version>
-    <pax-url.version>2.2.0</pax-url.version>
+    <pax-exam.version>4.4.0</pax-exam.version>
+    <pax-url.version>2.3.0</pax-url.version>
     <logback.version>1.1.2</logback.version>
     <findbugs.annotations.version>1.0.0</findbugs.annotations.version>
   </properties>
@@ -264,7 +265,7 @@
                 <linkXref>true</linkXref>
                 <sourceEncoding>utf-8</sourceEncoding>
                 <minimumTokens>100</minimumTokens>
-                <targetJdk>1.6</targetJdk>
+                <targetJdk>1.7</targetJdk>
                 <aggregate>true</aggregate>
               </configuration>
             </plugin -->
@@ -302,7 +303,7 @@
                     <head>To do:</head>
                   </tag>
                 </tags>
-                <source>1.6</source>
+                <source>1.7</source>
               </configuration>
               <reportSets>
                 <reportSet>
