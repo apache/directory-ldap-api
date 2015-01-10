@@ -43,7 +43,7 @@ import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.CodecControl;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
 import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
@@ -1958,15 +1958,15 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 if ( "add".equals( attributeValue ) )
                 {
-                    modifyRequest.setCurrentOperation( LdapConstants.OPERATION_ADD );
+                    modifyRequest.setCurrentOperation( LdapCodecConstants.OPERATION_ADD );
                 }
                 else if ( "delete".equals( attributeValue ) )
                 {
-                    modifyRequest.setCurrentOperation( LdapConstants.OPERATION_DELETE );
+                    modifyRequest.setCurrentOperation( LdapCodecConstants.OPERATION_DELETE );
                 }
                 else if ( "replace".equals( attributeValue ) )
                 {
-                    modifyRequest.setCurrentOperation( LdapConstants.OPERATION_REPLACE );
+                    modifyRequest.setCurrentOperation( LdapCodecConstants.OPERATION_REPLACE );
                 }
                 else
                 {
@@ -2534,7 +2534,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             }
 
             AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
-                LdapConstants.EQUALITY_MATCH_FILTER );
+                LdapCodecConstants.EQUALITY_MATCH_FILTER );
 
             filter.setAssertion( assertion );
 
@@ -2579,7 +2579,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             }
 
             AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
-                LdapConstants.GREATER_OR_EQUAL_FILTER );
+                LdapCodecConstants.GREATER_OR_EQUAL_FILTER );
 
             filter.setAssertion( assertion );
 
@@ -2626,7 +2626,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             }
 
             AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
-                LdapConstants.LESS_OR_EQUAL_FILTER );
+                LdapCodecConstants.LESS_OR_EQUAL_FILTER );
 
             filter.setAssertion( assertion );
 
@@ -2670,7 +2670,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
             }
 
-            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter( LdapConstants.APPROX_MATCH_FILTER );
+            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter( LdapCodecConstants.APPROX_MATCH_FILTER );
 
             filter.setAssertion( assertion );
 

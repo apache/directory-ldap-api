@@ -27,7 +27,7 @@ import java.util.List;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 
 
 /**
@@ -108,7 +108,7 @@ public class AndFilter extends ConnectorFilter
         try
         {
             // The AndFilter Tag
-            buffer.put( ( byte ) LdapConstants.AND_FILTER_TAG );
+            buffer.put( ( byte ) LdapCodecConstants.AND_FILTER_TAG );
             buffer.put( TLV.getBytes( filtersLength ) );
         }
         catch ( BufferOverflowException boe )

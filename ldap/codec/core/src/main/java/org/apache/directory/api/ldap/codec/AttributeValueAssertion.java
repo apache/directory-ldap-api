@@ -20,7 +20,7 @@
 package org.apache.directory.api.ldap.codec;
 
 
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
@@ -173,19 +173,19 @@ public class AttributeValueAssertion
 
         switch ( filterType )
         {
-            case LdapConstants.EQUALITY_MATCH_FILTER:
+            case LdapCodecConstants.EQUALITY_MATCH_FILTER:
                 sb.append( '=' );
                 break;
 
-            case LdapConstants.LESS_OR_EQUAL_FILTER:
+            case LdapCodecConstants.LESS_OR_EQUAL_FILTER:
                 sb.append( "<=" );
                 break;
 
-            case LdapConstants.GREATER_OR_EQUAL_FILTER:
+            case LdapCodecConstants.GREATER_OR_EQUAL_FILTER:
                 sb.append( ">=" );
                 break;
 
-            case LdapConstants.APPROX_MATCH_FILTER:
+            case LdapCodecConstants.APPROX_MATCH_FILTER:
                 sb.append( "~=" );
                 break;
         }

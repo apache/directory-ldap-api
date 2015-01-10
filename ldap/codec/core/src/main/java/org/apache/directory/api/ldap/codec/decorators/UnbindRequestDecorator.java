@@ -26,7 +26,7 @@ import java.nio.ByteBuffer;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.UnbindRequest;
 
@@ -111,7 +111,7 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
         try
         {
             // The tag
-            buffer.put( LdapConstants.UNBIND_REQUEST_TAG );
+            buffer.put( LdapCodecConstants.UNBIND_REQUEST_TAG );
 
             // The length is always null.
             buffer.put( ( byte ) 0 );

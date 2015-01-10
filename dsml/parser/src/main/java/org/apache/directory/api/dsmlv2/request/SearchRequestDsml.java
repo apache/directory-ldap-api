@@ -26,7 +26,7 @@ import java.util.List;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.dsmlv2.ParserUtils;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.filter.AndNode;
@@ -244,22 +244,22 @@ public class SearchRequestDsml
                     // Transform =, >=, <=, ~= filters
                     switch ( ( ( AttributeValueAssertionFilter ) filter ).getFilterType() )
                     {
-                        case LdapConstants.EQUALITY_MATCH_FILTER:
+                        case LdapCodecConstants.EQUALITY_MATCH_FILTER:
                             branch = new EqualityNode( ava.getAttributeDesc(), ava.getAssertionValue() );
 
                             break;
 
-                        case LdapConstants.GREATER_OR_EQUAL_FILTER:
+                        case LdapCodecConstants.GREATER_OR_EQUAL_FILTER:
                             branch = new GreaterEqNode( ava.getAttributeDesc(), ava.getAssertionValue() );
 
                             break;
 
-                        case LdapConstants.LESS_OR_EQUAL_FILTER:
+                        case LdapCodecConstants.LESS_OR_EQUAL_FILTER:
                             branch = new LessEqNode( ava.getAttributeDesc(), ava.getAssertionValue() );
 
                             break;
 
-                        case LdapConstants.APPROX_MATCH_FILTER:
+                        case LdapCodecConstants.APPROX_MATCH_FILTER:
                             branch = new ApproximateNode( ava.getAttributeDesc(), ava.getAssertionValue() );
 
                             break;

@@ -28,7 +28,7 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.BindRequest;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -428,7 +428,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
         try
         {
             // The BindRequest Tag
-            buffer.put( LdapConstants.BIND_REQUEST_TAG );
+            buffer.put( LdapCodecConstants.BIND_REQUEST_TAG );
             buffer.put( TLV.getBytes( getBindRequestLength() ) );
 
         }
@@ -462,7 +462,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
             try
             {
                 // The simpleAuthentication Tag
-                buffer.put( ( byte ) LdapConstants.BIND_REQUEST_SIMPLE_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.BIND_REQUEST_SIMPLE_TAG );
 
                 if ( credentials != null )
                 {
@@ -490,7 +490,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
             try
             {
                 // The saslAuthentication Tag
-                buffer.put( ( byte ) LdapConstants.BIND_REQUEST_SASL_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.BIND_REQUEST_SASL_TAG );
 
                 buffer.put( TLV
                     .getBytes( saslMechanismLength + saslCredentialsLength ) );

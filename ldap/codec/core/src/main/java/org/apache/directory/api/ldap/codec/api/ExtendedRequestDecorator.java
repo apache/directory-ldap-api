@@ -237,7 +237,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
         try
         {
             // The BindResponse Tag
-            buffer.put( LdapConstants.EXTENDED_REQUEST_TAG );
+            buffer.put( LdapCodecConstants.EXTENDED_REQUEST_TAG );
             buffer.put( TLV.getBytes( getExtendedRequestLength() ) );
 
             // The requestName, if any
@@ -246,7 +246,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
                 throw new EncoderException( I18n.err( I18n.ERR_04043 ) );
             }
 
-            buffer.put( ( byte ) LdapConstants.EXTENDED_REQUEST_NAME_TAG );
+            buffer.put( ( byte ) LdapCodecConstants.EXTENDED_REQUEST_NAME_TAG );
             buffer.put( TLV.getBytes( getRequestNameBytes().length ) );
 
             if ( getRequestNameBytes().length != 0 )
@@ -257,7 +257,7 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
             // The requestValue, if any
             if ( getRequestValue() != null )
             {
-                buffer.put( ( byte ) LdapConstants.EXTENDED_REQUEST_VALUE_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.EXTENDED_REQUEST_VALUE_TAG );
 
                 buffer.put( TLV.getBytes( getRequestValue().length ) );
 

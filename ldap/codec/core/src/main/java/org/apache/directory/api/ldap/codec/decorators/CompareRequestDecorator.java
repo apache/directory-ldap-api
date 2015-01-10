@@ -29,7 +29,7 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.BinaryValue;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.message.CompareRequest;
@@ -338,7 +338,7 @@ public class CompareRequestDecorator extends SingleReplyRequestDecorator<Compare
         try
         {
             // The CompareRequest Tag
-            buffer.put( LdapConstants.COMPARE_REQUEST_TAG );
+            buffer.put( LdapCodecConstants.COMPARE_REQUEST_TAG );
             buffer.put( TLV.getBytes( getCompareRequestLength() ) );
 
             // The entry

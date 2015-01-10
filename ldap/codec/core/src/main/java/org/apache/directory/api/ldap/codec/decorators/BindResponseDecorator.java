@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.BindResponse;
 
 
@@ -151,7 +151,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
         try
         {
             // The BindResponse Tag
-            buffer.put( LdapConstants.BIND_RESPONSE_TAG );
+            buffer.put( LdapCodecConstants.BIND_RESPONSE_TAG );
             buffer.put( TLV.getBytes( getBindResponseLength() ) );
 
             // The LdapResult
@@ -162,7 +162,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
 
             if ( serverSaslCreds != null )
             {
-                buffer.put( ( byte ) LdapConstants.SERVER_SASL_CREDENTIAL_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.SERVER_SASL_CREDENTIAL_TAG );
 
                 buffer.put( TLV.getBytes( serverSaslCreds.length ) );
 

@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
 import org.apache.directory.api.asn1.ber.tlv.IntegerDecoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.LdapMessageContainer;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
@@ -82,8 +82,8 @@ public class StoreSearchRequestScope extends GrammarAction<LdapMessageContainer<
 
         try
         {
-            scope = IntegerDecoder.parse( value, LdapConstants.SCOPE_BASE_OBJECT,
-                LdapConstants.SCOPE_WHOLE_SUBTREE );
+            scope = IntegerDecoder.parse( value, LdapCodecConstants.SCOPE_BASE_OBJECT,
+                LdapCodecConstants.SCOPE_WHOLE_SUBTREE );
         }
         catch ( IntegerDecoderException ide )
         {
@@ -98,15 +98,15 @@ public class StoreSearchRequestScope extends GrammarAction<LdapMessageContainer<
         {
             switch ( scope )
             {
-                case LdapConstants.SCOPE_BASE_OBJECT:
+                case LdapCodecConstants.SCOPE_BASE_OBJECT:
                     LOG.debug( "Searching within BASE_OBJECT scope " );
                     break;
 
-                case LdapConstants.SCOPE_SINGLE_LEVEL:
+                case LdapCodecConstants.SCOPE_SINGLE_LEVEL:
                     LOG.debug( "Searching within SINGLE_LEVEL scope " );
                     break;
 
-                case LdapConstants.SCOPE_WHOLE_SUBTREE:
+                case LdapCodecConstants.SCOPE_WHOLE_SUBTREE:
                     LOG.debug( "Searching within WHOLE_SUBTREE scope " );
                     break;
             }

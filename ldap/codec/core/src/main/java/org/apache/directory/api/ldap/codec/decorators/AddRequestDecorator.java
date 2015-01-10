@@ -31,7 +31,7 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
@@ -460,7 +460,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
         try
         {
             // The AddRequest Tag
-            buffer.put( LdapConstants.ADD_REQUEST_TAG );
+            buffer.put( LdapCodecConstants.ADD_REQUEST_TAG );
             buffer.put( TLV.getBytes( getAddRequestLength() ) );
 
             // The entry

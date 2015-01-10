@@ -31,7 +31,7 @@ import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
@@ -435,7 +435,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
         try
         {
             // The SearchResultEntry Tag
-            buffer.put( LdapConstants.SEARCH_RESULT_ENTRY_TAG );
+            buffer.put( LdapCodecConstants.SEARCH_RESULT_ENTRY_TAG );
             buffer.put( TLV.getBytes( getSearchResultEntryLength() ) );
 
             // The objectName

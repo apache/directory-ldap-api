@@ -28,7 +28,7 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.ModifyDnRequest;
 import org.apache.directory.api.ldap.model.name.Dn;
@@ -274,7 +274,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
         try
         {
             // The ModifyDNRequest Tag
-            buffer.put( LdapConstants.MODIFY_DN_REQUEST_TAG );
+            buffer.put( LdapCodecConstants.MODIFY_DN_REQUEST_TAG );
             buffer.put( TLV.getBytes( getModifyDnResponseLength() ) );
 
             // The entry
@@ -291,7 +291,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
             if ( getNewSuperior() != null )
             {
                 // Encode the reference
-                buffer.put( ( byte ) LdapConstants.MODIFY_DN_REQUEST_NEW_SUPERIOR_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.MODIFY_DN_REQUEST_NEW_SUPERIOR_TAG );
 
                 int newSuperiorLength = Dn.getNbBytes( getNewSuperior() );
 

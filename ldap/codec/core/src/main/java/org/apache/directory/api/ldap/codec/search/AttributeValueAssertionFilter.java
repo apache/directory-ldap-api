@@ -28,7 +28,7 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.AttributeValueAssertion;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 
 
 /**
@@ -193,20 +193,20 @@ public class AttributeValueAssertionFilter extends Filter
             // The AttributeValueAssertion Tag
             switch ( filterType )
             {
-                case LdapConstants.EQUALITY_MATCH_FILTER:
-                    buffer.put( ( byte ) LdapConstants.EQUALITY_MATCH_FILTER_TAG );
+                case LdapCodecConstants.EQUALITY_MATCH_FILTER:
+                    buffer.put( ( byte ) LdapCodecConstants.EQUALITY_MATCH_FILTER_TAG );
                     break;
 
-                case LdapConstants.LESS_OR_EQUAL_FILTER:
-                    buffer.put( ( byte ) LdapConstants.LESS_OR_EQUAL_FILTER_TAG );
+                case LdapCodecConstants.LESS_OR_EQUAL_FILTER:
+                    buffer.put( ( byte ) LdapCodecConstants.LESS_OR_EQUAL_FILTER_TAG );
                     break;
 
-                case LdapConstants.GREATER_OR_EQUAL_FILTER:
-                    buffer.put( ( byte ) LdapConstants.GREATER_OR_EQUAL_FILTER_TAG );
+                case LdapCodecConstants.GREATER_OR_EQUAL_FILTER:
+                    buffer.put( ( byte ) LdapCodecConstants.GREATER_OR_EQUAL_FILTER_TAG );
                     break;
 
-                case LdapConstants.APPROX_MATCH_FILTER:
-                    buffer.put( ( byte ) LdapConstants.APPROX_MATCH_FILTER_TAG );
+                case LdapCodecConstants.APPROX_MATCH_FILTER:
+                    buffer.put( ( byte ) LdapCodecConstants.APPROX_MATCH_FILTER_TAG );
                     break;
             }
 

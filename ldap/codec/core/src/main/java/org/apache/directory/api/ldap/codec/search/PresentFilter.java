@@ -26,7 +26,7 @@ import java.nio.ByteBuffer;
 import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.util.Strings;
 
 
@@ -125,7 +125,7 @@ public class PresentFilter extends Filter
         try
         {
             // The PresentFilter Tag
-            buffer.put( ( byte ) LdapConstants.PRESENT_FILTER_TAG );
+            buffer.put( ( byte ) LdapCodecConstants.PRESENT_FILTER_TAG );
             buffer.put( TLV.getBytes( attributeDescriptionBytes.length ) );
             buffer.put( attributeDescriptionBytes );
         }

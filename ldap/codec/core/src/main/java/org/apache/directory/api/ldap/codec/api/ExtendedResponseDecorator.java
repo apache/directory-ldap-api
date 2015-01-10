@@ -208,7 +208,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
         try
         {
             // The ExtendedResponse Tag
-            buffer.put( LdapConstants.EXTENDED_RESPONSE_TAG );
+            buffer.put( LdapCodecConstants.EXTENDED_RESPONSE_TAG );
             buffer.put( TLV.getBytes( getExtendedResponseLength() ) );
 
             // The LdapResult
@@ -219,7 +219,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
 
             if ( idBytes != null )
             {
-                buffer.put( ( byte ) LdapConstants.EXTENDED_RESPONSE_RESPONSE_NAME_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_NAME_TAG );
                 buffer.put( TLV.getBytes( idBytes.length ) );
 
                 if ( idBytes.length != 0 )
@@ -233,7 +233,7 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
 
             if ( encodedValue != null )
             {
-                buffer.put( ( byte ) LdapConstants.EXTENDED_RESPONSE_RESPONSE_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_TAG );
 
                 buffer.put( TLV.getBytes( encodedValue.length ) );
 

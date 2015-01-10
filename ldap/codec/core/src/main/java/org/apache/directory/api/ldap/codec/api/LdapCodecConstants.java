@@ -21,14 +21,16 @@ package org.apache.directory.api.ldap.codec.api;
 
 
 /**
+ * This class contains a list of constants used in the LDAP coder/decoder.
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public final class LdapConstants
+public final class LdapCodecConstants
 {
     /**
      * Private constructor.
      */
-    private LdapConstants()
+    private LdapCodecConstants()
     {
     }
 

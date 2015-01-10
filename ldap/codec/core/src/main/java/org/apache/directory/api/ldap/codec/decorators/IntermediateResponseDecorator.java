@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.model.message.IntermediateResponse;
 import org.apache.directory.api.util.Strings;
@@ -201,7 +201,7 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
         try
         {
             // The ExtendedResponse Tag
-            buffer.put( LdapConstants.INTERMEDIATE_RESPONSE_TAG );
+            buffer.put( LdapCodecConstants.INTERMEDIATE_RESPONSE_TAG );
             buffer.put( TLV.getBytes( getIntermediateResponseLength() ) );
 
             // The responseName, if any
@@ -209,7 +209,7 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
 
             if ( ( responseNameBytes != null ) && ( responseNameBytes.length != 0 ) )
             {
-                buffer.put( ( byte ) LdapConstants.INTERMEDIATE_RESPONSE_NAME_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.INTERMEDIATE_RESPONSE_NAME_TAG );
                 buffer.put( TLV.getBytes( responseNameBytes.length ) );
                 buffer.put( responseNameBytes );
             }
@@ -219,7 +219,7 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
 
             if ( encodedValue != null )
             {
-                buffer.put( ( byte ) LdapConstants.INTERMEDIATE_RESPONSE_VALUE_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.INTERMEDIATE_RESPONSE_VALUE_TAG );
 
                 buffer.put( TLV.getBytes( encodedValue.length ) );
 

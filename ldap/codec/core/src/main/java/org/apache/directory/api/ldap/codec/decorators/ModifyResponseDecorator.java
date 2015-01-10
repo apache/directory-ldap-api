@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.ModifyResponse;
 
 
@@ -110,7 +110,7 @@ public class ModifyResponseDecorator extends ResponseDecorator<ModifyResponse>
         try
         {
             // The ModifyResponse Tag
-            buffer.put( LdapConstants.MODIFY_RESPONSE_TAG );
+            buffer.put( LdapCodecConstants.MODIFY_RESPONSE_TAG );
             buffer.put( TLV.getBytes( getModifyResponseLength() ) );
 
             // The LdapResult

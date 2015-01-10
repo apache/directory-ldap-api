@@ -27,7 +27,7 @@ import org.apache.directory.api.asn1.EncoderException;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.model.message.AbandonRequest;
 import org.apache.directory.api.ldap.model.message.Control;
 
@@ -124,7 +124,7 @@ public final class AbandonRequestDecorator extends RequestDecorator<AbandonReque
         try
         {
             // The tag
-            buffer.put( LdapConstants.ABANDON_REQUEST_TAG );
+            buffer.put( LdapCodecConstants.ABANDON_REQUEST_TAG );
 
             // The length. It has to be evaluated depending on
             // the abandoned messageId value.

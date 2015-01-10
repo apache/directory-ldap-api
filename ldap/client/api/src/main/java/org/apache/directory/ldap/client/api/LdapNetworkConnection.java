@@ -61,6 +61,7 @@ import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.codec.api.MessageEncoderException;
 import org.apache.directory.api.ldap.codec.api.SchemaBinaryAttributeDetector;
 import org.apache.directory.api.ldap.extras.extended.startTls.StartTlsRequestImpl;
+import org.apache.directory.api.ldap.model.constants.LdapConstants;
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.cursor.Cursor;
 import org.apache.directory.api.ldap.model.cursor.CursorException;
@@ -3366,7 +3367,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             SearchRequest searchRequest = new SearchRequestImpl();
 
             searchRequest.setBase( dn );
-            searchRequest.setFilter( "(objectClass=*)" );
+            searchRequest.setFilter( LdapConstants.OBJECT_CLASS_STAR );
             searchRequest.setScope( SearchScope.OBJECT );
             searchRequest.addAttributes( attributes );
             searchRequest.setDerefAliases( AliasDerefMode.DEREF_ALWAYS );
@@ -3588,7 +3589,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         try
         {
-            cursor = search( "", "(objectClass=*)", SearchScope.OBJECT, "*", "+" );
+            cursor = search( "", LdapConstants.OBJECT_CLASS_STAR, SearchScope.OBJECT,
+                SchemaConstants.ALL_USER_ATTRIBUTES,
+                SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES );
             cursor.next();
             rootDse = cursor.get();
         }

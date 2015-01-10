@@ -28,7 +28,7 @@ import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
-import org.apache.directory.api.ldap.codec.api.LdapConstants;
+import org.apache.directory.api.ldap.codec.api.LdapCodecConstants;
 import org.apache.directory.api.ldap.codec.api.LdapEncoder;
 import org.apache.directory.api.ldap.codec.api.MessageDecorator;
 import org.apache.directory.api.ldap.model.message.Referral;
@@ -186,7 +186,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
         try
         {
             // The SearchResultReference Tag
-            buffer.put( LdapConstants.SEARCH_RESULT_REFERENCE_TAG );
+            buffer.put( LdapCodecConstants.SEARCH_RESULT_REFERENCE_TAG );
             buffer.put( TLV.getBytes( getSearchResultReferenceLength() ) );
 
             // The referrals, if any

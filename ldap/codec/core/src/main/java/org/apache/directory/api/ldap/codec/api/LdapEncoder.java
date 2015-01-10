@@ -186,7 +186,7 @@ public class LdapEncoder
             if ( ( controls != null ) && ( controls.size() > 0 ) )
             {
                 // Encode the controls
-                buffer.put( ( byte ) LdapConstants.CONTROLS_TAG );
+                buffer.put( ( byte ) LdapCodecConstants.CONTROLS_TAG );
                 buffer.put( TLV.getBytes( decorator.getControlsLength() ) );
 
                 // Encode each control
@@ -314,7 +314,7 @@ public class LdapEncoder
         {
             // Encode the referrals sequence
             // The referrals length MUST have been computed before !
-            buffer.put( ( byte ) LdapConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG );
+            buffer.put( ( byte ) LdapCodecConstants.LDAP_RESULT_REFERRAL_SEQUENCE_TAG );
             buffer.put( TLV.getBytes( referral.getReferralLength() ) );
 
             // Each referral
