@@ -76,7 +76,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         ByteBuffer bb = ByteBuffer.allocate( 0x0C );
         bb.put( new byte[]
             {
-                // ProxiedAuthzNotification ::= u:elécharny
+                // ProxiedAuthzNotification ::= u:elecharny
                 'u', ':', 'e', 'l', (byte)0xc3, (byte)0xa9, 'c', 'h', 'a', 'r', 'n', 'y'
         } );
         bb.flip();
@@ -185,7 +185,7 @@ public class ProxiedAuthzControlTest extends AbstractCodecServiceTest
         ByteBuffer bb = ByteBuffer.allocate( 0x0C );
         bb.put( new byte[]
             {
-                // ProxiedAuthzNotification ::= u:elécharny
+                // ProxiedAuthzNotification ::= u:elecharny
                 'u', ':', 'e', 'l', (byte)0xc3, (byte)0xa9, 'c', 'h', 'a', 'r', 'n', 'y'
         } );
 
