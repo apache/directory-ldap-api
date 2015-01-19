@@ -3140,7 +3140,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
     {
         try
         {
-            return extended( new Oid( oid ), value );
+            return extended( Oid.fromString( oid ), value );
         }
         catch ( DecoderException e )
         {

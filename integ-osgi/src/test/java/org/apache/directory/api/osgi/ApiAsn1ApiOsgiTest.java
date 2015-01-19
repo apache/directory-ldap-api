@@ -39,7 +39,7 @@ public class ApiAsn1ApiOsgiTest extends ApiOsgiTestBase
     protected void useBundleClasses() throws Exception
     {
         new EncoderException( "foo" );
-        new Oid( "1.2.3" );
+        Oid.fromString( "1.2.3" );
         new BitString( 8 );
     }
 

@@ -751,11 +751,11 @@ public class BerValue
         try
         {
             buffer.put( UniversalTag.OCTET_STRING.getValue() );
-            buffer.put( TLV.getBytes( oid.getOidLength() ) );
+            buffer.put( TLV.getBytes( oid.getEncodedLength() ) );
 
-            if ( oid.getOidLength() != 0 )
+            if ( oid.getEncodedLength() != 0 )
             {
-                buffer.put( oid.getOid() );
+                oid.writeBytesTo( buffer );
             }
         }
         catch ( BufferOverflowException boe )

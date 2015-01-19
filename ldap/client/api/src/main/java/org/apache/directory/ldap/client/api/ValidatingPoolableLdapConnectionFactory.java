@@ -21,23 +21,38 @@
 package org.apache.directory.ldap.client.api;
 
 
-import java.io.IOException;
-
-import org.apache.directory.api.ldap.model.constants.SchemaConstants;
+import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.message.BindRequest;
+import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 /**
- * A factory for creating LdapConnection objects managed by LdapConnectionPool. The connections are validated
- * before being returned, which leads to a round-trip to the server. It also re-bind the connection when
- * it's being put back to the pool, to reset the LDAPSession.
+ * A factory for creating LdapConnection objects managed by LdapConnectionPool. 
+ * A bind operation is executed upon return if any of the following operations 
+ * were performed on the connection while it was checked out:
  * 
- * This is quite a costly - but secure - way to handle connections in a pool. If one would like to use a 
- * less expensive pool factory, the {@link DefaultPoolableLdapConnectionFactory} is most certainly a better
- * choice.
+ * <ul>
+ * <li>{@link LdapConnection#bind() bind()}</li>
+ * <li>{@link LdapConnection#anonymousBind() anonymousBind()}</li>
+ * <li>{@link LdapConnection#bind(String) bind(String)}</li>
+ * <li>{@link LdapConnection#bind(String, String) bind(String, String)}</li>
+ * <li>{@link LdapConnection#bind(Dn) bind(Dn)}</li>
+ * <li>{@link LdapConnection#bind(Dn, String) bind(Dn, String)}</li>
+ * <li>{@link LdapConnection#bind(BindRequest) bind(BindRequest)}</li>
+ * <li>{@link LdapConnection#extended(String) extended(String)} <i>where oid is StartTLS</i></li>
+ * <li>{@link LdapConnection#extended(String, byte[]) extended(String, byte[])} <i>where oid is StartTLS</i></li>
+ * <li>{@link LdapConnection#extended(Oid) extended(String)} <i>where oid is StartTLS</i></li>
+ * <li>{@link LdapConnection#extended(Oid, byte[]) extended(String, byte[])} <i>where oid is StartTLS</i></li>
+ * <li>{@link LdapConnection#extended(ExtendedRequest) extended(ExtendedRequest)} <i>where ExtendedRequest is StartTLS</i></li>
+ * </ul>
+ * 
+ * This is a <i>MOSTLY</i> safe way to handle connections in a pool. If one 
+ * would like to use a slightly less expensive pool factory, the 
+ * {@link DefaultPoolableLdapConnectionFactory} may be the right choice.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -48,7 +63,7 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
 
 
     /**
-     * Creates a new instance of PoolableLdapConnectionFactory.
+     * Creates a new instance of ValidatingPoolableLdapConnectionFactory.
      *
      * @param config the configuration for creating LdapConnections
      */
@@ -59,7 +74,26 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
 
 
     /**
-     * Creates a new instance of PoolableLdapConnectionFactory.
+     * Creates a new instance of ValidatingPoolableLdapConnectionFactory.  The
+     * <code>connectionFactoryClass</code> must have a public constructor accepting
+     * an <code>LdapConnectionConfig</code> object or an 
+     * <code>IllegalArgumentException</code> will be thrown.
+     *
+     * @param config the configuration for creating LdapConnections
+     * @param connectionFactoryClass An implementation class of for the 
+     * LDAP connection factory.
+     * @throws IllegalArgumentException If the instantiation of an instance of 
+     * the <code>connectionFactoryClass</code> fails.
+     */
+    public ValidatingPoolableLdapConnectionFactory( LdapConnectionConfig config,
+        Class<? extends LdapConnectionFactory> connectionFactoryClass )
+    {
+        this( newLdapConnectionFactory( config, connectionFactoryClass ) );
+    }
+
+
+    /**
+     * Creates a new instance of ValidatingPoolableLdapConnectionFactory.
      *
      * @param connectionFactory the connection factory for creating LdapConnections
      */
@@ -74,59 +108,29 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
      * 
      * There is nothing to do to activate a connection.
      */
-    public void activateObject( LdapConnection connection )
+    @Override
+    public void activateObject( LdapConnection connection ) throws LdapException
     {
         LOG.debug( "Activating {}", connection );
+        super.activateObject( connection );
+
+        // clear the monitors
+        ( ( MonitoringLdapConnection ) connection ).resetMonitors();
     }
 
 
     /**
      * {@inheritDoc}
      * 
-     * Destroying a connection will unbind it which will result on a shutdown
-     * of teh underlying protocol.
-     */
-    public void destroyObject( LdapConnection connection )
-    {
-        LOG.debug( "Destroying {}", connection );
-
-        if ( connection.isConnected() )
-        {
-            try
-            {
-                connection.unBind();
-            }
-            catch ( LdapException e )
-            {
-                LOG.error( "unable to unbind connection: {}", e.getMessage() );
-                LOG.debug( "unable to unbind connection:", e );
-            }
-        }
-
-        try
-        {
-            connection.close();
-        }
-        catch ( IOException e )
-        {
-            LOG.error( "unable to close connection: {}", e.getMessage() );
-            LOG.debug( "unable to close connection:", e );
-        }
-    }
-
-
-    /**
-     * {@inheritDoc}
      * Specifically, we are creating a new connection based on the LdapConnection Factory
      * we used to create this pool of connections. The default is to create bound connections.
      * 
      * @throws LdapException If unable to connect.
      */
-    public LdapConnection makeObject() throws LdapException
+    public MonitoringLdapConnection makeObject() throws LdapException
     {
         LOG.debug( "Creating a LDAP connection" );
-
-        return connectionFactory.newLdapConnection();
+        return new MonitoringLdapConnection( connectionFactory.newLdapConnection() );
     }
 
 
@@ -142,55 +146,21 @@ public class ValidatingPoolableLdapConnectionFactory extends AbstractPoolableLda
     {
         LOG.debug( "Passivating {}", connection );
 
-        // in case connection configuration was modified, or rebound to a
-        // different identity, we reinitialize before returning to the pool.
-        connectionFactory.bindConnection(
-            connectionFactory.configureConnection( connection ) );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * Validating a connection is done in depth : first we check that the connection is still
-     * up, that the LdapSession is authenticated, and that we can retrieve some information 
-     * from the server. If the connection is not authenticated, we re-bind.
-     */
-    public boolean validateObject( LdapConnection connection )
-    {
-        LOG.debug( "Validating {}", connection );
-
-        if ( connection.isConnected() )
+        if ( !connection.isConnected() || !connection.isAuthenticated()
+            || ( ( MonitoringLdapConnection ) connection ).bindCalled() )
         {
-            if ( connection.isAuthenticated() )
-            {
-                try
-                {
-                    return connection.lookup( Dn.ROOT_DSE, SchemaConstants.NO_ATTRIBUTE ) != null;
-                }
-                catch ( LdapException le )
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                // We have to bind the connection
-                try
-                {
-                    connectionFactory.bindConnection( connection );
-
-                    return true;
-                }
-                catch ( LdapException le )
-                {
-                    return false;
-                }
-            }
+            LOG.debug( "rebind due to bind on connection {}", connection );
+            connectionFactory.bindConnection( connection );
         }
-        else
+        if ( ( ( MonitoringLdapConnection ) connection ).startTlsCalled() )
         {
-            return false;
+            LOG.debug( "unbind/rebind due to startTls on {}", connection );
+            // unbind to clear the tls
+            connection.unBind();
+            connectionFactory.bindConnection( connection );
         }
+
+        // in case connection had configuration changed
+        connectionFactory.configureConnection( connection );
     }
 }

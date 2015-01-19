@@ -1,696 +1,314 @@
-/*
- *  Licensed to the Apache Software Foundation (ASF) under one
- *  or more contributor license agreements.  See the NOTICE file
- *  distributed with this work for additional information
- *  regarding copyright ownership.  The ASF licenses this file
- *  to you under the Apache License, Version 2.0 (the
- *  "License"); you may not use this file except in compliance
- *  with the License.  You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing,
- *  software distributed under the License is distributed on an
- *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *  KIND, either express or implied.  See the License for the
- *  specific language governing permissions and limitations
- *  under the License.
- *
- */
 package org.apache.directory.api.asn1.util;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
+
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.i18n.I18n;
 
 
 /**
- * This class implement an Oid (Object Identifier).<br/>
- * <br/>
- * An Oid is encoded as a list of bytes representing integers.<br/>
- * <br/>
- * An Oid has a numeric representation where number are separated with dots :<br/>
- * SPNEGO Oid = 1.3.6.1.5.5.2<br/>
- * <br/>
- * Translating from a byte list to a dot separated list of number follows the rules :<br/>
- * <ul>
- * <li>the first number is in [0..2]</li>
- * <li>the second number is in [0..39] if the first number is 0 or 1</li>
- * <li>the first byte has a value equal to : number 1 * 40 + number two</li>
- * <li>the upper bit of a byte is set if the next byte is a part of the number</li>
- * </ul>
- * <br/>
- * For instance, the SPNEGO Oid (1.3.6.1.5.5.2) will be encoded :<br/>
- * <pre>
- * 1.3 -> 0x2B (1*40 + 3 = 43 = 0x2B)
- * .6  -> 0x06
- * .1  -> 0x01
- * .5  -> 0x05
- * .5  -> 0x05
- * .2  -> 0x02
- * </pre>
- * <br/>
- * The Kerberos V5 Oid (1.2.840.48018.1.2.2)  will be encoded :<br/>
- * <pre>
- * 1.2   -> 0x2A (1*40 + 2 = 42 = 0x2A)
- * 840   -> 0x86 0x48 (840 = 6 * 128 + 72 = (0x06 | 0x80) 0x48 = 0x86 0x48
- * 48018 -> 0x82 0xF7 0x12 (2 * 128 * 128 + 119 * 128 + 18 = (0x02 | 0x80) (0x77 | 0x80) 0x12
- * .1    -> 0x01
- * .2    -> 0x02
- * .2    -> 0x02
- * </pre>
+ * An immutable representation of an object identifier that provides conversion 
+ * between their <code>String</code>, and encoded <code>byte[]</code> 
+ * representations.
+ * 
+ * <p> The encoding of OID values is performed according to 
+ * <a href='http://www.itu.int/rec/T-REC-X.690/en'>itu X.690</a> section 8.19.
+ * Specifically:</p>
+ * 
+ * <p><b>8.19.2</b> The contents octets shall be an (ordered) list of encodings
+ * of subidentifiers (see 8.19.3 and 8.19.4) concatenated together. Each 
+ * subidentifier is represented as a series of (one or more) octets. Bit 8 of 
+ * each octet indicates whether it is the last in the series: bit 8 of the last 
+ * octet is zero; bit 8 of each preceding octet is one. Bits 7 to 1 of the 
+ * octets in the series collectively encode the subidentifier. Conceptually, 
+ * these groups of bits are concatenated to form an unsigned binary number whose 
+ * most significant bit is bit 7 of the first octet and whose least significant 
+ * bit is bit 1 of the last octet. The subidentifier shall be encoded in the 
+ * fewest possible octets, that is, the leading octet of the subidentifier shall 
+ * not have the value 0x80. </p>
+ * 
+ * <p><b>8.19.3</b> The number of subidentifiers (N) shall be one less than the 
+ * number of object identifier components in the object identifier value being 
+ * encoded.</p>
+ * 
+ * <p><b>8.19.4</b> The numerical value of the first subidentifier is derived 
+ * from the values of the first two object identifier components in the object 
+ * identifier value being encoded, using the formula:
+ * <br /><code>(X*40) + Y</code><br /> 
+ * where X is the value of the first object identifier component and Y is the 
+ * value of the second object identifier component. <i>NOTE – This packing of 
+ * the first two object identifier components recognizes that only three values 
+ * are allocated from the root node, and at most 39 subsequent values from nodes 
+ * reached by X = 0 and X = 1.</i></p>
+ * 
+ * <p>For example, the OID "2.123456.7" would be turned into a list of 2 values:
+ * <code>[((2*80)+123456), 7]</code>.  The first of which, 
+ * <code>123536</code>, would be encoded as the bytes 
+ * <code>[0x87, 0xC5, 0x10]</code>, the second would be <code>[0x07]</code>,
+ * giving the final encoding <code>[0x87, 0xC5, 0x10, 0x07]</code>.</p>
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class Oid
-{
-    /** The Oid as a array of int */
-    private long[] oidValues;
-
-    /** The hashcode, computed only once */
-    private int hash;
-
-
-    /**
-     * Creates a new Oid object.
-     */
-    public Oid()
-    {
-        // We should not create this kind of object directly, it must
-        // be created through the factory.
-        hash = 0;
+final public class Oid {
+    private byte[] oidBytes;
+    private String oidString;
+    
+    
+    private Oid( String oidString, byte[] oidBytes ) {
+        this.oidString = oidString;
+        this.oidBytes = oidBytes;
     }
-
-
-    /**
-     * Create a new Oid object from a byte array
-     *
-     * @param oid the byte array containing the Oid
-     * @throws org.apache.directory.api.asn1.DecoderException if the byte array does not contain a
-     * valid Oid
-     */
-    public Oid( byte[] oid ) throws DecoderException
-    {
-        setOid( oid );
-        hash = computeHashCode();
+    
+    
+    @Override
+    public boolean equals( Object other ) {
+        return (other instanceof Oid) 
+                && oidString.equals( ((Oid)other).oidString );
     }
-
-
+    
+    
     /**
-     * Create a new Oid object from a String
-     *
-     * @param oid The String which is supposed to be an Oid
-     * @throws DecoderException if the byte array does not contain a
-     * valid Oid
+     * Decodes an OID from a <code>byte[]</code>.
+     * 
+     * @param oidBytes The encoded<code>byte[]</code>
+     * @return A new Oid
+     * @throws DecoderException
      */
-    public Oid( String oid ) throws DecoderException
+    public static Oid fromBytes( byte[] oidBytes ) throws DecoderException 
     {
-        setOid( oid );
-        hash = computeHashCode();
-    }
-
-
-    /**
-     * Set the Oid. It will be translated from a byte array to an internal
-     * representation.
-     *
-     * @param oid The bytes containing the Oid
-     * @throws org.apache.directory.api.asn1.DecoderException if the byte array does not contains a valid Oid
-     */
-    public void setOid( byte[] oid ) throws DecoderException
-    {
-        if ( oid == null )
+        if ( oidBytes == null || oidBytes.length < 1 ) 
         {
-            throw new DecoderException( I18n.err( I18n.ERR_00032_NULL_OID ) );
+            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, Arrays.toString( oidBytes ) ) );
         }
 
-        if ( oid.length < 1 )
-        {
-            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, Asn1StringUtils.dumpBytes( oid ) ) );
-        }
-
-        // First, we have to calculate the number of int to allocate
-        int nbValues = 1;
-        int pos = 0;
-
-        while ( pos < oid.length )
-        {
-
-            if ( oid[pos] >= 0 )
-            {
-                nbValues++;
-            }
-
-            pos++;
-        }
-
-        oidValues = new long[nbValues];
-
-        nbValues = 0;
-        pos = 0;
-
-        int accumulator = 0;
-
-        if ( ( oid[0] < 0 ) || ( oid[0] >= 80 ) )
-        {
-            oidValues[nbValues++] = 2;
-
-            while ( pos < oid.length )
-            {
-
-                if ( oid[pos] >= 0 )
-                {
-                    oidValues[nbValues++] = ( ( accumulator << 7 ) + oid[pos] ) - 80;
-                    accumulator = 0;
-                    pos++;
-                    break;
-                }
-                else
-                {
-                    accumulator = ( accumulator << 7 ) + ( oid[pos] & 0x007F );
-                }
-
-                pos++;
-            }
-        }
-        else if ( oid[0] < 40 )
-        {
-            oidValues[nbValues++] = 0;
-            oidValues[nbValues++] = oid[pos++]; // itu-t
-        }
-        else
-        // oid[0] is < 80
-        {
-            oidValues[nbValues++] = 1;
-            oidValues[nbValues++] = oid[pos++] - 40; // iso
-        }
-
-        while ( pos < oid.length )
-        {
-            if ( oid[pos] >= 0 )
-            {
-                oidValues[nbValues++] = ( accumulator << 7 ) + oid[pos];
-                accumulator = 0;
-            }
-            else
-            {
-                accumulator = ( accumulator << 7 ) + ( oid[pos] & 0x007F );
-            }
-
-            pos++;
-        }
-
-        hash = computeHashCode();
-    }
-
-
-    /**
-     * Set the Oid. It will be translated from a String to an internal
-     * representation.
-     *
-     * The syntax will be controled in respect with this rule :
-     * Oid = ( [ '0' | '1' ] '.' [ 0 .. 39 ] | '2' '.' int) ( '.' int )*
-     *
-     * @param oid The String containing the Oid
-     * @throws org.apache.directory.api.asn1.DecoderException if the byte array does not contains a valid Oid
-     */
-    public void setOid( String oid ) throws DecoderException
-    {
-        if ( ( oid == null ) || ( oid.length() == 0 ) )
-        {
-            throw new DecoderException( I18n.err( I18n.ERR_00032_NULL_OID ) );
-        }
-
-        int nbValues = 1;
-        char[] chars = oid.toCharArray();
-        boolean dotSeen = false;
-
-        // Count the number of int to allocate.
-        for ( char c : chars )
-        {
-            if ( c == '.' )
-            {
-                if ( dotSeen )
-                {
-                    // Two dots, that's an error !
-                    throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oid ) );
-                }
-
-                nbValues++;
-                dotSeen = true;
-            }
-            else
-            {
-                dotSeen = false;
-            }
-        }
-
-        // We must have at least 2 ints
-        if ( nbValues < 2 )
-        {
-            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oid ) );
-        }
-
-        oidValues = new long[nbValues];
-
-        int pos = 0;
-        int intPos = 0;
-
-        // This flag is used to forbid a second value above 39 if the
-        // first value is 0 or 1 (itu_t or iso arcs)
-        boolean ituOrIso = false;
-
-        // The first value
-        switch ( chars[pos] )
-        {
-            case '0': // itu-t
-            case '1': // iso
-            case '2': // joint-iso-itu-t
-                ituOrIso = true;
-                oidValues[intPos++] = chars[pos++] - '0';
-                break;
-
-            default: // error, this value is not allowed
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oid ) );
-        }
-
-        // We must have a dot
-        if ( chars[pos++] != '.' )
-        {
-            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oid ) );
-        }
-
-        dotSeen = true;
-
-        int value = 0;
-
-        for ( int i = pos; i < chars.length; i++ )
-        {
-            if ( chars[i] == '.' )
-            {
-                if ( dotSeen )
-                {
-                    // Two dots, that's an error !
-                    throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oid ) );
-                }
-
-                if ( ituOrIso && ( value > 39 ) )
-                {
-                    throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oid ) );
-                }
-                else
-                {
-                    ituOrIso = false;
-                }
-
-                nbValues++;
-                dotSeen = true;
-                oidValues[intPos++] = value;
-                value = 0;
-            }
-            else if ( ( chars[i] >= 0x30 ) && ( chars[i] <= 0x39 ) )
-            {
-                dotSeen = false;
-                value = ( ( value * 10 ) + chars[i] ) - '0';
-            }
-            else
-            {
-                // We don't have a number, this is an error
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oid ) );
-            }
-        }
-
-        oidValues[intPos] = value;
-        hash = computeHashCode();
-    }
-
-
-    /**
-     * Get an array of long from the Oid
-     *
-     * @return An array of long representing the Oid
-     */
-    public long[] getOidValues()
-    {
-        long[] copy = new long[oidValues.length];
-
-        System.arraycopy( oidValues, 0, copy, 0, oidValues.length );
-
-        return copy;
-    }
-
-
-    /**
-     * Get the number of bytes necessary to store the Oid
-     *
-     * @return An int representing the length of the Oid
-     */
-    public int getOidLength()
-    {
-        long value = oidValues[0] * 40 + oidValues[1];
-        int nbBytes = 0;
-
-        if ( value < 128 )
-        {
-            nbBytes = 1;
-        }
-        else if ( value < 16384 )
-        {
-            nbBytes = 2;
-        }
-        else if ( value < 2097152 )
-        {
-            nbBytes = 3;
-        }
-        else if ( value < 268435456 )
-        {
-            nbBytes = 4;
-        }
-        else
-        {
-            nbBytes = 5;
-        }
-
-        for ( int i = 2; i < oidValues.length; i++ )
-        {
-            value = oidValues[i];
-
-            if ( value < 128 )
-            {
-                nbBytes += 1;
-            }
-            else if ( value < 16384 )
-            {
-                nbBytes += 2;
-            }
-            else if ( value < 2097152 )
-            {
-                nbBytes += 3;
-            }
-            else if ( value < 268435456 )
-            {
-                nbBytes += 4;
-            }
-            else
-            {
-                nbBytes += 5;
-            }
-        }
-
-        return nbBytes;
-    }
-
-
-    /**
-     * Get an array of bytes from the Oid
-     *
-     * @return An array of int representing the Oid
-     */
-    public byte[] getOid()
-    {
-        long value = oidValues[0] * 40 + oidValues[1];
-        long firstValues = value;
-
-        byte[] bytes = new byte[getOidLength()];
-        int pos = 0;
-
-        if ( oidValues[0] < 2 )
-        {
-            bytes[pos++] = ( byte ) ( oidValues[0] * 40 + oidValues[1] );
-        }
-        else
-        {
-            if ( firstValues < 128 )
-            {
-                bytes[pos++] = ( byte ) ( firstValues );
-            }
-            else if ( firstValues < 16384 )
-            {
-                bytes[pos++] = ( byte ) ( ( firstValues >> 7 ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( firstValues & 0x007F );
-            }
-            else if ( value < 2097152 )
-            {
-                bytes[pos++] = ( byte ) ( ( firstValues >> 14 ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( ( ( firstValues >> 7 ) & 0x007F ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( firstValues & 0x007F );
-            }
-            else if ( value < 268435456 )
-            {
-                bytes[pos++] = ( byte ) ( ( firstValues >> 21 ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( ( ( firstValues >> 14 ) & 0x007F ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( ( ( firstValues >> 7 ) & 0x007F ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( firstValues & 0x007F );
-            }
-            else
-            {
-                bytes[pos++] = ( byte ) ( ( firstValues >> 28 ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( ( ( firstValues >> 21 ) & 0x007F ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( ( ( firstValues >> 14 ) & 0x007F ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( ( ( firstValues >> 7 ) & 0x007F ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( firstValues & 0x007F );
-            }
-        }
-
-        for ( int i = 2; i < oidValues.length; i++ )
-        {
-            value = oidValues[i];
-
-            if ( value < 128 )
-            {
-                bytes[pos++] = ( byte ) ( value );
-            }
-            else if ( value < 16384 )
-            {
-                bytes[pos++] = ( byte ) ( ( value >> 7 ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( value & 0x007F );
-            }
-            else if ( value < 2097152 )
-            {
-                bytes[pos++] = ( byte ) ( ( value >> 14 ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( ( ( value >> 7 ) & 0x007F ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( value & 0x007F );
-            }
-            else if ( value < 268435456 )
-            {
-                bytes[pos++] = ( byte ) ( ( value >> 21 ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( ( ( value >> 14 ) & 0x007F ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( ( ( value >> 7 ) & 0x007F ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( value & 0x007F );
-            }
-            else
-            {
-                bytes[pos++] = ( byte ) ( ( value >> 28 ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( ( ( value >> 21 ) & 0x007F ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( ( ( value >> 14 ) & 0x007F ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( ( ( value >> 7 ) & 0x007F ) | 0x0080 );
-                bytes[pos++] = ( byte ) ( value & 0x007F );
-            }
-        }
-
-        return bytes;
-    }
-
-
-    /**
-     * Compute the hash code for this object. No need to compute
-     * it live when calling the hashCode() method, as an Oid
-     * never change.
-     *
-     * @return the Oid's hash code
-     */
-    private int computeHashCode()
-    {
-        int h = 37;
-
-        for ( long val : oidValues )
-        {
-            int low = ( int ) ( val & 0x0000FFFFL );
-            int high = ( int ) ( val >> 32 );
-            h = h * 17 + high;
-            h = h * 17 + low;
-        }
-
-        return h;
-    }
-
-
-    /**
-     * Check that an Oid is valid
-     * @param oid The oid to be checked
-     * @return <code>true</code> if the Oid is valid
-     */
-    public static boolean isOid( String oid )
-    {
-        if ( ( oid == null ) || ( oid.length() == 0 ) )
-        {
-            return false;
-        }
-
-        int nbValues = 1;
-        byte[] bytes = oid.getBytes();
-        boolean dotSeen = false;
-
-        // Count the number of int to allocate.
-        for ( byte b : bytes )
-        {
-            if ( b == '.' )
-            {
-                if ( dotSeen )
-                {
-                    // Two dots, that's an error !
-                    return false;
-                }
-
-                nbValues++;
-                dotSeen = true;
-            }
-            else
-            {
-                dotSeen = false;
-            }
-        }
-
-        // We must have at least 2 ints
-        if ( nbValues < 2 )
-        {
-            return false;
-        }
-
-        int pos = 0;
-
-        // This flag is used to forbid a second value above 39 if the
-        // first value is 0 or 1 (itu_t or iso arcs)
-        boolean ituOrIso = false;
-
-        // The first value
-        switch ( bytes[pos++] )
-        {
-            case '0': // itu-t
-            case '1': // iso
-            case '2': // joint-iso-itu-t
-                ituOrIso = true;
-                break;
-
-            default: // error, this value is not allowed
-                return false;
-        }
-
-        // We must have a dot
-        if ( bytes[pos++] != '.' )
-        {
-            return false;
-        }
-
-        dotSeen = true;
-
+        StringBuilder builder = null;
         long value = 0;
-
-        for ( int i = pos; i < bytes.length; i++ )
+        for ( int i = 0; i < oidBytes.length; i++ ) 
         {
-            if ( bytes[i] == '.' )
+            value |= oidBytes[i] & 0x7F;
+            if ( oidBytes[i] < 0 ) 
             {
-                if ( dotSeen )
-                {
-                    // Two dots, that's an error !
-                    return false;
+                // leading 1, so value continues
+                value = value << 7;
+            }
+            else 
+            {
+                // value completed
+                if ( builder == null ) {
+                    builder = new StringBuilder();
+                    // first value special processing
+                    if ( value >= 80 ) {
+                        // starts with 2
+                        builder.append( 2 );
+                        value = value - 80;
+                    }
+                    else {
+                        // starts with 0 or 1
+                        long one = value/40;
+                        long two = value%40;
+                        if ( one < 0 || one > 2 || two < 0 || (one < 2 && two > 39) ) 
+                        {
+                            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, Arrays.toString( oidBytes ) ) );
+                        }
+                        if ( one < 2 ) 
+                        {
+                            builder.append( one );
+                            value = two;
+                        }
+                    }
                 }
-
-                if ( ituOrIso && ( value > 39 ) )
-                {
-                    return false;
-                }
-                else
-                {
-                    ituOrIso = false;
-                }
-
-                nbValues++;
-                dotSeen = true;
+                
+                // normal processing
+                builder.append( '.' ).append( value );
                 value = 0;
             }
-            else if ( ( bytes[i] >= 0x30 ) && ( bytes[i] <= 0x39 ) )
-            {
-                dotSeen = false;
-
-                value = ( ( value * 10 ) + bytes[i] ) - '0';
-            }
-            else
-            {
-                // We don't have a number, this is an error
-                return false;
-            }
         }
-
-        return !dotSeen;
+        if ( builder == null ) {
+            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, Arrays.toString( oidBytes ) ) );
+        }
+        
+        return new Oid( builder.toString(), oidBytes );
     }
 
 
     /**
-     * Get the Oid as a String
-     *
-     * @return A String representing the Oid
+     * Returns an OID object representing <code>oidString</code>.  
+     *  
+     * @param oidString The string representation of the OID
+     * @return A new Oid
+     * @throws DecoderException 
      */
-    @Override
-    public String toString()
+    public static Oid fromString( String oidString ) throws DecoderException 
     {
-        StringBuffer sb = new StringBuffer();
-
-        if ( oidValues != null )
+        if ( oidString == null || oidString.isEmpty() ) 
         {
-            sb.append( oidValues[0] );
+            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "" ) );
+        }
 
-            for ( int i = 1; i < oidValues.length; i++ )
+        Queue<Long> segments = new LinkedList<Long>();
+        for ( String segment : oidString.split( "\\.", -1 ) ) {
+            try
             {
-                sb.append( '.' ).append( oidValues[i] );
+                segments.add( Long.parseLong( segment ) );
+            }
+            catch ( NumberFormatException e )
+            {
+                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oidString ) );
             }
         }
 
-        return sb.toString();
+        // first segment special case
+        ByteBuffer buffer = new ByteBuffer();
+        Long segmentOne = segments.poll();
+        if ( segmentOne == null || segmentOne < 0 || segmentOne > 2 ) 
+        {
+            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oidString ) );
+        }
+
+        // second segment special case
+        Long segment = segments.poll();
+        if ( segment == null || segment < 0 || (segmentOne < 2 && segment > 39) ) 
+        {
+            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oidString ) );
+        }
+
+        buffer.append( (segmentOne * 40) + segment );
+        
+        // the rest
+        while ( (segment = segments.poll()) != null ) 
+        {
+            buffer.append( segment );
+        }
+
+        return new Oid( oidString, buffer.toByteArray() );
     }
-
-
+    
+    
     /**
-     * {@inheritDoc}
+     * Returns the length of the encoded <code>byte[]</code> representation.
+     * 
+     * @return The length of the byte[]
+     */
+    public int getEncodedLength() {
+        return oidBytes.length;
+    }
+    
+    
+    @Override
+    public int hashCode() {
+        return oidString.hashCode();
+    }
+    
+    
+    /**
+     * Returns true if <code>oidString</code> is a valid string representation
+     * of an OID.  This method simply calls {@link #fromString(String)} and 
+     * returns true if no exception was thrown.  As such, it should not be used 
+     * in an attempt to check if a string is a valid OID before calling 
+     * {@link #fromString(String)}.
+     * 
+     * @param oidString The string to test
+     * @return True, if <code>oidString</code> is valid
+     */
+    public static boolean isOid( String oidString )
+    {
+        try {
+            return Oid.fromString( oidString ) != null;
+        }
+        catch ( DecoderException e ) {
+            return false;
+        }
+    }
+    
+    
+    /**
+     * Returns the <code>byte[]</code> representation of the OID. The 
+     * <code>byte[]</code> that is returned is <i>copied</i> from the internal
+     * value so as to preserve the immutability of an OID object.  If the 
+     * output of a call to this method is intended to be written to a stream,
+     * the {@link #writeBytesTo(OutputStream)} should be used instead as it will
+     * avoid creating this copy. 
+     * 
+     * @return The encoded <code>byte[]</code> representation of the OID.
+     */
+    public byte[] toBytes() 
+    {
+        return Arrays.copyOf( oidBytes, oidBytes.length );
+    }
+    
+    /**
+     * Returns the string representation of the OID.
+     * 
+     * @return The string representation of the OID
      */
     @Override
-    public int hashCode()
+    public String toString() 
     {
-        return hash;
+        return oidString;
+    }
+    
+    
+    /**
+     * Writes the bytes respresenting this OID to the provided buffer.  This 
+     * should be used in preference to the {@link #toBytes()} method in order
+     * to prevent the creation of copies of the actual <code>byte[]</code>.
+     * 
+     * @param buffer The buffer to write the bytes to
+     * @throws IOException
+     */
+    public void writeBytesTo( java.nio.ByteBuffer buffer )
+    {
+        buffer.put( oidBytes );
     }
 
-
+    
     /**
-     * {@inheritDoc}
+     * Writes the bytes respresenting this OID to the provided stream.  This 
+     * should be used in preference to the {@link #toBytes()} method in order
+     * to prevent the creation of copies of the actual <code>byte[]</code>.
+     * 
+     * @param outputStream The stream to write the bytes to
+     * @throws IOException
      */
-    @Override
-    public boolean equals( Object oid )
+    public void writeBytesTo( OutputStream outputStream ) throws IOException 
     {
-        if ( this == oid )
-        {
-            return true;
-        }
+        outputStream.write( oidBytes );
+    }
 
-        if ( oid == null )
+    
+    // Internal helper class for converting a long value to a properly encoded
+    // byte[]
+    final private static class ByteBuffer 
+    {
+        private ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        
+        public ByteBuffer append( long value ) 
         {
-            return false;
+            write( value, false );
+            return this;
         }
-
-        if ( oid.getClass() != this.getClass() )
+        
+        private void write( long value, boolean hasMore )
         {
-            return false;
+            long remaining = value >> 7;
+            if ( remaining > 0 )
+            {
+                write( remaining, true );
+            }
+            buffer.write( hasMore 
+                    ? (byte)((0x7F & value) | 0x80)
+                    : (byte)(0x7F & value) );
         }
-
-        Oid instance = ( Oid ) oid;
-
-        if ( instance.hash != hash )
-        {
-            return false;
-        }
-        else
-        {
-            return Arrays.equals( instance.oidValues, oidValues );
+        
+        public byte[] toByteArray() {
+            return buffer.toByteArray();
         }
     }
 }

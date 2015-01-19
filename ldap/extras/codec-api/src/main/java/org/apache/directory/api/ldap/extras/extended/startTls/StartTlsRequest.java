@@ -24,12 +24,12 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 
 
 /**
- * The RFC 4511 StartTLS request
+ * The <a href="http://tools.ietf.org/html/rfc4511">RFC 4511</a> StartTLS request
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public interface StartTlsRequest extends ExtendedRequest
 {
-    /** The OID for the StartTLS extended operation request. */
-    String EXTENSION_OID = "1.3.6.1.4.1.1466.20037";
+    /** The OID string for the StartTLS extended operation request. */
+    static final String EXTENSION_OID = "1.3.6.1.4.1.1466.20037";
 }

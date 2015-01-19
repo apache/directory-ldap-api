@@ -570,7 +570,7 @@ public class ExtendedResponseTest extends AbstractResponseTest
 
         try
         {
-            assertEquals( new Oid( "1.2.3.4.5.6.7.8.9.0" ).toString(), extendedResponse.getResponseName().toString() );
+            assertEquals( Oid.fromString( "1.2.3.4.5.6.7.8.9.0" ).toString(), extendedResponse.getResponseName().toString() );
         }
         catch ( DecoderException e )
         {
@@ -724,7 +724,7 @@ public class ExtendedResponseTest extends AbstractResponseTest
 
         try
         {
-            assertEquals( new Oid( "1.2.3.4.5.6.7.8.9.0" ).toString(), extendedResponse.getResponseName().toString() );
+            assertEquals( Oid.fromString( "1.2.3.4.5.6.7.8.9.0" ).toString(), extendedResponse.getResponseName().toString() );
         }
         catch ( DecoderException e )
         {

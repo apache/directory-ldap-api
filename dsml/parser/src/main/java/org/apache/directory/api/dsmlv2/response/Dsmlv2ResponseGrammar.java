@@ -1963,7 +1963,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
 
                 if ( !nextText.equals( "" ) )
                 {
-                    extendedResponse.setResponseName( new Oid( nextText.trim() ).toString() );
+                    extendedResponse.setResponseName( Oid.fromString( nextText.trim() ).toString() );
                 }
 
             }

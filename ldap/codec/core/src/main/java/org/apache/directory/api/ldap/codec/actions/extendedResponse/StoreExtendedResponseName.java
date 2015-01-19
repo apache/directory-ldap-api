@@ -85,7 +85,7 @@ public class StoreExtendedResponseName extends GrammarAction<LdapMessageContaine
         }
         else
         {
-            String responseName = new Oid( Strings.asciiBytesToString( tlv.getValue().getData() ) )
+            String responseName = Oid.fromString( Strings.asciiBytesToString( tlv.getValue().getData() ) )
                 .toString();
 
             extendedResponse = LdapApiServiceFactory.getSingleton().newExtendedResponse( responseName,
