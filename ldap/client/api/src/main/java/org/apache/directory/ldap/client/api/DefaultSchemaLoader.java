@@ -153,7 +153,26 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
                 }
                 else
                 {
-                    // TODO Handle schema loading on other LDAP servers
+                    try
+                    {
+                        // No matter what, first try to search the schema from the rootDSE
+                        // Getting the subSchemaSubEntry attribute
+                        Attribute subschemaSubentryAttribute = rootDse.get( SchemaConstants.SUBSCHEMA_SUBENTRY_AT );
+
+                        if ( ( subschemaSubentryAttribute != null ) && ( subschemaSubentryAttribute.size() > 0 ) )
+                        {
+                            subschemaSubentryDn = new Dn( connection.getSchemaManager(),
+                                subschemaSubentryAttribute.getString() );
+
+                            loadSchemas();
+                        }
+                    }
+                    catch ( LdapException le )
+                    {
+                        // TODO : if we can't read the schema from the rootDSE, just try to read the 
+                        // schema from cn=schema
+                        throw le;
+                    }
                 }
             }
         }
