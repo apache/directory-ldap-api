@@ -24,6 +24,7 @@ import static org.apache.directory.ldap.client.api.search.FilterBuilder.and;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.equal;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.not;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.or;
+import static org.apache.directory.ldap.client.api.search.FilterBuilder.substring;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
@@ -47,5 +48,6 @@ public class FilterBuilderTest
                 or( equal( "sn", "Jensen" ),
                     equal( "cn", "Babs J*" ) ) ).toString() );
         assertEquals( "(o=univ*of*mich*)", equal( "o", "univ*of*mich*" ).toString() );
+        assertEquals( "(o=univ*of*mich*n)", substring( "o", "univ", "n", "of", "mich" ).toString() );
     }
 }

@@ -46,9 +46,14 @@ package org.apache.directory.ldap.client.api.search;
  */
 public class FilterBuilder
 {
+    /** The built filter */
     private Filter filter;
 
 
+    /**
+     * A private constructor that creates a new instance of a FilterBuilder
+     * containing a given filter.
+     */
     private FilterBuilder( Filter filter )
     {
         this.filter = filter;
@@ -79,7 +84,7 @@ public class FilterBuilder
 
         for ( FilterBuilder builder : filters )
         {
-            filter.add( builder.filter() );
+            filter.add( builder.filter );
         }
 
         return new FilterBuilder( filter );
@@ -134,12 +139,6 @@ public class FilterBuilder
     public static FilterBuilder equal( String attribute, String value )
     {
         return new FilterBuilder( AttributeValueAssertionFilter.equal( attribute, value ) );
-    }
-
-
-    private Filter filter()
-    {
-        return filter;
     }
 
 
@@ -206,12 +205,12 @@ public class FilterBuilder
      * (!(givenName=*))
      * </pre>
      *
-     * @param filter The filter to negate
+     * @param builder The filter to negate
      * @return A new FilterBuilder
      */
-    public static FilterBuilder not( FilterBuilder filter )
+    public static FilterBuilder not( FilterBuilder builder )
     {
-        return new FilterBuilder( UnaryFilter.not( filter.filter() ) );
+        return new FilterBuilder( UnaryFilter.not( builder.filter ) );
     }
 
 
@@ -230,16 +229,16 @@ public class FilterBuilder
      * Which would match any entry with the <code>givenName</code> of either
      * <code>kermit</code> or <code>walter</code>.
      *
-     * @param filters The filters to or together
+     * @param builders The filters to or together
      * @return A new FilterBuilder
      */
-    public static FilterBuilder or( FilterBuilder... filters )
+    public static FilterBuilder or( FilterBuilder... builders )
     {
         SetOfFiltersFilter filter = SetOfFiltersFilter.or();
 
-        for ( FilterBuilder builder : filters )
+        for ( FilterBuilder builder : builders )
         {
-            filter.add( builder.filter() );
+            filter.add( builder.filter );
         }
 
         return new FilterBuilder( filter );
@@ -266,6 +265,32 @@ public class FilterBuilder
     public static FilterBuilder present( String attribute )
     {
         return new FilterBuilder( AttributeFilter.present( attribute ) );
+    }
+
+
+    /**
+     * Returns a new FilterBuilder that will construct a SubString filter.  
+     * 
+     * For example:
+     * 
+     * <pre>
+     * substring( "sn", "Th", "tion", "Software" )).toString()
+     * </pre>
+     * would result in the string:
+     * <pre>
+     * (sn=Th*Software*tion)
+     * </pre>
+     * 
+     * Which would match any entry with the <code>sn</code> starting with <code>'Th'</code>, ending
+     * with <code>tion</code> and having a <code>Software</code> in the middle, like 
+     * 'The Apache Software Foundation'.
+     *
+     * @param builders The filters to or together
+     * @return A new FilterBuilder
+     */
+    public static FilterBuilder substring( String attribute, String initial, String end, String... any )
+    {
+        return new FilterBuilder( SubstringFilter.substring( attribute, initial, any, end ) );
     }
 
 

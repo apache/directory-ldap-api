@@ -39,10 +39,12 @@ public class SetOfFiltersFilterTest
     {
         StringBuilder builder = new StringBuilder( "(" )
             .append( operator.operator() );
+
         for ( Filter filter : filters )
         {
             filter.build( builder );
         }
+
         return builder.append( ")" ).toString();
     }
 

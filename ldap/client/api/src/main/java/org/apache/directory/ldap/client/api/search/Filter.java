@@ -28,8 +28,19 @@ package org.apache.directory.ldap.client.api.search;
  */
 interface Filter
 {
+    /**
+     * Constructs a String representation of a Filter
+     *
+     * @return The constructed String
+     */
     public StringBuilder build();
 
 
+    /**
+     * Constructs a String representation of a Filter
+     *
+     * @param builder The current buffer containing the on going representation of the filter
+     * @return The constructed String
+     */
     public StringBuilder build( StringBuilder builder );
 }
