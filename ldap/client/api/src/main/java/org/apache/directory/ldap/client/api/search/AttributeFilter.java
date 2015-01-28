@@ -21,53 +21,43 @@ package org.apache.directory.ldap.client.api.search;
 
 
 /**
- * 
- * TODO AttributeFilter.
+ * This class is used to handle the Present filter (ie, attr =* )
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-class AttributeFilter extends AbstractFilter
+/* No qualifier*/class AttributeFilter extends AbstractFilter
 {
+    /** The attribute that must be prersent */
     private String attribute;
-    private Operator operator;
 
 
-    private AttributeFilter( String attribute, Operator operator )
+    /**
+     * Creates a new instance of PresentFilter.
+     */
+    private AttributeFilter( String attribute )
     {
         this.attribute = attribute;
-        this.operator = operator;
     }
 
 
+    /**
+     * Creates a new PresentFilter 
+     *
+     * @param attribute The attribute that must be present
+     * @return The created PresenceFilter instance
+     */
     public static AttributeFilter present( String attribute )
     {
-        return new AttributeFilter( attribute, Operator.PRESENT );
+        return new AttributeFilter( attribute );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StringBuilder build( StringBuilder builder )
     {
-        return builder.append( "(" ).append( attribute )
-            .append( operator.operator() ).append( ")" );
-    }
-
-    public static enum Operator
-    {
-        PRESENT("=*");
-
-        private String operator;
-
-
-        private Operator( String operator )
-        {
-            this.operator = operator;
-        }
-
-
-        public String operator()
-        {
-            return operator;
-        }
+        return builder.append( "(" ).append( attribute ).append( "=*)" );
     }
 }
