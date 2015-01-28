@@ -21,13 +21,15 @@ package org.apache.directory.ldap.client.api.search;
 
 
 /**
- * 
- * TODO AbstractFilter.
+ * An abstract class used as a base for all the Filter implementations
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-abstract class AbstractFilter implements Filter
+/* No qualifier*/abstract class AbstractFilter implements Filter
 {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StringBuilder build()
     {
