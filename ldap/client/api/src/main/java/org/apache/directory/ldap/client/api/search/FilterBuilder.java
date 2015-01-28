@@ -140,6 +140,49 @@ public class FilterBuilder
     {
         return new FilterBuilder( AttributeValueAssertionFilter.equal( attribute, value ) );
     }
+    
+    
+    /**
+     * An extension point for building filters.  To use this feature, create a
+     * new class that extends {@link Filter} and supply it to this method.
+     * 
+     * For example, create your class:
+     * <pre>
+     * package your.package.here;
+     * ...
+     * public class EverythingFilter implements Filter {
+     *     private EverythingFilter() {}
+     *     
+     *     public static Filter everything() 
+     *     {
+     *         return new EverythingFilter();
+     *     }
+     *     
+     *     public StringBuilder build() 
+     *     {
+     *         return build( new StringBuilder() );
+     *     }
+     *    
+     *     public StringBuilder build( StringBuilder builder )
+     *     {
+     *         return "(objectClass=*)"
+     *     }
+     * }
+     * </pre>
+     * Then use it:
+     * <pre>
+     * import static org.apache.directory.ldap.client.api.search.FilterBuilder.extended;
+     * import static your.package.here.EverythingFilter.everything;
+     * ...
+     * extended( everything() );
+     * </pre>
+     *  
+     * @param filter The filter for an extension
+     * @return A new FilterBuilder
+     */
+    public static FilterBuilder extended( Filter filter ) {
+        return new FilterBuilder( filter );
+    }
 
 
     /**

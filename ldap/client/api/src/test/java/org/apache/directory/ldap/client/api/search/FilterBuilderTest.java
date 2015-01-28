@@ -22,17 +22,19 @@ package org.apache.directory.ldap.client.api.search;
 
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.and;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.equal;
+import static org.apache.directory.ldap.client.api.search.FilterBuilder.extended;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.not;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.or;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.substring;
+import static org.apache.directory.ldap.client.api.search.FilterBuilderTest.EverythingFilter.everything;
 import static org.junit.Assert.assertEquals;
+
 
 import org.junit.Test;
 
 
 /**
- * 
- * TODO FilterBuilderTest.
+ * Unit tests for {@link FilterBuilder}.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -49,5 +51,30 @@ public class FilterBuilderTest
                     equal( "cn", "Babs J*" ) ) ).toString() );
         assertEquals( "(o=univ*of*mich*)", equal( "o", "univ*of*mich*" ).toString() );
         assertEquals( "(o=univ*of*mich*n)", substring( "o", "univ", "n", "of", "mich" ).toString() );
+    }
+    
+    @Test
+    public void testExtended() 
+    {
+        assertEquals( "(objectClass=*)", extended(everything()).toString() );
+    }
+    
+    public static class EverythingFilter implements Filter {
+        private EverythingFilter() {}
+        
+        public static Filter everything() 
+        {
+            return new EverythingFilter();
+        }
+        
+        public StringBuilder build() 
+        {
+            return build( new StringBuilder() );
+        }
+       
+        public StringBuilder build( StringBuilder builder )
+        {
+            return new StringBuilder( "(objectClass=*)" );
+        }
     }
 }
