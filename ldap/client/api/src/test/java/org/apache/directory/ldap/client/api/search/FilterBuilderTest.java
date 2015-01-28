@@ -21,14 +21,16 @@ package org.apache.directory.ldap.client.api.search;
 
 
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.and;
+import static org.apache.directory.ldap.client.api.search.FilterBuilder.contains;
+import static org.apache.directory.ldap.client.api.search.FilterBuilder.endsWith;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.equal;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.extended;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.not;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.or;
+import static org.apache.directory.ldap.client.api.search.FilterBuilder.startsWith;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.substring;
 import static org.apache.directory.ldap.client.api.search.FilterBuilderTest.EverythingFilter.everything;
 import static org.junit.Assert.assertEquals;
-
 
 import org.junit.Test;
 
@@ -50,28 +52,83 @@ public class FilterBuilderTest
                 or( equal( "sn", "Jensen" ),
                     equal( "cn", "Babs J*" ) ) ).toString() );
         assertEquals( "(o=univ*of*mich*)", equal( "o", "univ*of*mich*" ).toString() );
-        assertEquals( "(o=univ*of*mich*n)", substring( "o", "univ", "n", "of", "mich" ).toString() );
     }
-    
+
+
+    /**
+     * Test the substring builder startsWith method
+     */
     @Test
-    public void testExtended() 
+    public void testSubstringFilterBuilderStartsWith()
     {
-        assertEquals( "(objectClass=*)", extended(everything()).toString() );
+        assertEquals( "(o=*)", startsWith( "o" ).toString() );
+        assertEquals( "(o=univ*)", startsWith( "o", "univ" ).toString() );
+        assertEquals( "(o=univ*of*mich*)", startsWith( "o", "univ", "of", "mich" ).toString() );
     }
-    
-    public static class EverythingFilter implements Filter {
-        private EverythingFilter() {}
-        
-        public static Filter everything() 
+
+
+    /**
+     * Test the substring builder endsWith method
+     */
+    @Test
+    public void testSubstringFilterBuilderEndsWith()
+    {
+        assertEquals( "(o=*)", endsWith( "o" ).toString() );
+        assertEquals( "(o=*igan)", endsWith( "o", "igan" ).toString() );
+        assertEquals( "(o=*sit*of*igan)", endsWith( "o", "sit", "of", "igan" ).toString() );
+    }
+
+
+    /**
+     * Test the substring builder contains method
+     */
+    @Test
+    public void testSubstringFilterBuilderContains()
+    {
+        assertEquals( "(o=*)", contains( "o" ).toString() );
+        assertEquals( "(o=*of*)", contains( "o", "of" ).toString() );
+        assertEquals( "(o=*sit*of*chi*)", contains( "o", "sit", "of", "chi" ).toString() );
+    }
+
+
+    /**
+     * Test the substring builder substring method
+     */
+    @Test
+    public void testSubstringFilterBuilderSubstring()
+    {
+        assertEquals( "(o=*)", substring( "o" ).toString() );
+        assertEquals( "(o=of*)", substring( "o", "of" ).toString() );
+        assertEquals( "(o=the*igan)", substring( "o", "the", "igan" ).toString() );
+        assertEquals( "(o=the*sit*of*igan)", substring( "o", "the", "sit", "of", "igan" ).toString() );
+    }
+
+
+    @Test
+    public void testExtended()
+    {
+        assertEquals( "(objectClass=*)", extended( everything() ).toString() );
+    }
+
+    public static class EverythingFilter implements Filter
+    {
+        private EverythingFilter()
+        {
+        }
+
+
+        public static Filter everything()
         {
             return new EverythingFilter();
         }
-        
-        public StringBuilder build() 
+
+
+        public StringBuilder build()
         {
             return build( new StringBuilder() );
         }
-       
+
+
         public StringBuilder build( StringBuilder builder )
         {
             return new StringBuilder( "(objectClass=*)" );
