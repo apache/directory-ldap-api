@@ -20,6 +20,9 @@
 package org.apache.directory.ldap.client.api.search;
 
 
+import org.apache.directory.api.ldap.model.filter.FilterEncoder;
+
+
 /**
  * 
  * TODO AttributeValueAssertionFilter.
@@ -70,7 +73,7 @@ package org.apache.directory.ldap.client.api.search;
     {
         return builder.append( "(" ).append( attribute )
             .append( operator.operator() )
-            .append( value ).append( ")" );
+            .append( FilterEncoder.encodeFilterValue( value ) ).append( ")" );
     }
 
     public static enum Operator
