@@ -26,7 +26,7 @@ package org.apache.directory.ldap.client.api.search;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-interface Filter
+/* No qualifier*/interface Filter
 {
     /**
      * Constructs a String representation of a Filter

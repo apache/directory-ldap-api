@@ -140,8 +140,8 @@ public class FilterBuilder
     {
         return new FilterBuilder( AttributeValueAssertionFilter.equal( attribute, value ) );
     }
-    
-    
+
+
     /**
      * An extension point for building filters.  To use this feature, create a
      * new class that extends {@link Filter} and supply it to this method.
@@ -180,7 +180,8 @@ public class FilterBuilder
      * @param filter The filter for an extension
      * @return A new FilterBuilder
      */
-    public static FilterBuilder extended( Filter filter ) {
+    public static FilterBuilder extended( Filter filter )
+    {
         return new FilterBuilder( filter );
     }
 
@@ -312,28 +313,124 @@ public class FilterBuilder
 
 
     /**
-     * Returns a new FilterBuilder that will construct a SubString filter.  
+     * Returns a new FilterBuilder that will construct a SubString filter, with an <em>initial</em part, 
+     * and zero to N <em>any</em> part, but no <em>final</em> part.  
      * 
-     * For example:
+     * For instance:
      * 
      * <pre>
-     * substring( "sn", "Th", "tion", "Software" )).toString()
+     * startswith( "sn", "Th", "Soft", "Foun" )).toString()
      * </pre>
      * would result in the string:
      * <pre>
-     * (sn=Th*Software*tion)
+     * (sn=Th*Soft*Foun*)
      * </pre>
      * 
-     * Which would match any entry with the <code>sn</code> starting with <code>'Th'</code>, ending
-     * with <code>tion</code> and having a <code>Software</code> in the middle, like 
+     * Which would match any entry with the <code>sn</code> starting with <code>'Th'</code>, and 
+     * having a <code>Soft</code> and <code>Foun</code> strings in the middle, like 
      * 'The Apache Software Foundation'.
      *
      * @param builders The filters to or together
+     * @param parts The sub elements to use in the filter
      * @return A new FilterBuilder
      */
-    public static FilterBuilder substring( String attribute, String initial, String end, String... any )
+    public static FilterBuilder startsWith( String attribute, String... parts )
     {
-        return new FilterBuilder( SubstringFilter.substring( attribute, initial, any, end ) );
+        return new FilterBuilder( SubstringFilter.startsWith( attribute, parts ) );
+    }
+
+
+    /**
+     * Returns a new FilterBuilder that will construct a SubString filter, with an <em>initial</em part, 
+     * and zero to N <em>any</em> parts, but no <em>final</em> part.  
+     * 
+     * For instance:
+     * 
+     * <pre>
+     * startswith( "sn", "Th", "Soft", "Foun" )).toString()
+     * </pre>
+     * would result in the string:
+     * <pre>
+     * (sn=Th*Soft*Foun*)
+     * </pre>
+     * 
+     * Which would match any entry with the <code>sn</code> starting with <code>'Th'</code>, and 
+     * having a <code>Soft</code> and <code>Foun</code> strings in the middle, like 
+     * 'The Apache Software Foundation'.
+     *
+     * @param builders The filters to or together
+     * @param parts The sub elements to use in the filter
+     * @return A new FilterBuilder
+     */
+    public static FilterBuilder endsWith( String attribute, String... parts )
+    {
+        return new FilterBuilder( SubstringFilter.endsWith( attribute, parts ) );
+    }
+
+
+    /**
+     * Returns a new FilterBuilder that will construct a SubString filter, with zero to N <em>any</em> parts, 
+     * but no <em>initial</em> or <em>final</em> parts.  
+     * 
+     * For instance:
+     * 
+     * <pre>
+     * contains( "sn", "Soft", "Foun" )).toString()
+     * </pre>
+     * would result in the string:
+     * <pre>
+     * (sn=*Soft*Foun*)
+     * </pre>
+     * 
+     * Which would match any entry with the <code>sn</code> having a <code>Soft</code> 
+     * and <code>Foun</code> strings in the middle, like 
+     * 'The Apache Software Foundation'.
+     *
+     * @param builders The filters to or together
+     * @param parts The sub elements to use in the filter
+     * @return A new FilterBuilder
+     */
+    public static FilterBuilder contains( String attribute, String... parts )
+    {
+        return new FilterBuilder( SubstringFilter.contains( attribute, parts ) );
+    }
+
+
+    /**
+     * Returns a new FilterBuilder that will construct a SubString filter, with a <em>initial</em> part, 
+     * zero to N <em>any</em> parts, and a <em>final</em> part.
+     * 
+     * For instance:
+     * 
+     * <pre>
+     * substring( "sn", "The", "Soft", "Foun", "ion" )).toString()
+     * </pre>
+     * would result in the string:
+     * <pre>
+     * (sn=The*Soft*Foun*ion)
+     * </pre>
+     * 
+     * Which would match any entry with the <code>sn</code> having a <code>Soft</code> 
+     * and <code>Foun</code> strings in the middle, starts with <code>The</code> and ends with <code>ion</code> like 
+     * 'The Apache Software Foundation'.
+     * <p>
+     * Note that if we have only two strings in the parts, they will be the <em>initial</em> and <em>final</em> ones :
+     * 
+     * <pre>
+     * substring( "sn", "The", "ion" )).toString()
+     * </pre>
+     * would result in the string:
+     * <pre>
+     * (sn=The*ion)
+     * </pre>
+     * 
+     * @param builders The filters to or together
+     * @param parts The sub elements to use in the filter
+     * @return A new FilterBuilder
+     */
+    public static FilterBuilder substring( String attribute, String... parts )
+    {
+        return new FilterBuilder( SubstringFilter.substring( attribute, parts ) );
     }
 
 
