@@ -24,7 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-class SetOfFiltersFilter extends AbstractFilter
+/**
+ * An implementation of the Filter interface for the AND and OR Filters
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
+/* No qualifier*/class SetOfFiltersFilter extends AbstractFilter
 {
     private Operator operator;
     private List<Filter> filters;

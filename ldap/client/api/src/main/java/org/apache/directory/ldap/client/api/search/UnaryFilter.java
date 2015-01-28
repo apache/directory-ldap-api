@@ -20,7 +20,7 @@
 package org.apache.directory.ldap.client.api.search;
 
 
-class UnaryFilter extends AbstractFilter
+/* No qualifier*/class UnaryFilter extends AbstractFilter
 {
     private Operator operator;
     private Filter filter;

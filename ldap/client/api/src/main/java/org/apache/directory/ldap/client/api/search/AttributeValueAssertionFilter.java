@@ -26,7 +26,7 @@ package org.apache.directory.ldap.client.api.search;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-class AttributeValueAssertionFilter extends AbstractFilter
+/* No qualifier*/class AttributeValueAssertionFilter extends AbstractFilter
 {
     private String attribute;
     private String value;
