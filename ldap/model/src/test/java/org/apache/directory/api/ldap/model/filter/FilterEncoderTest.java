@@ -24,7 +24,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.apache.directory.api.ldap.model.filter.FilterEncoder;
 import org.junit.Test;
 
 
@@ -117,6 +116,7 @@ public class FilterEncoderTest
         assertEquals( "\\5C", FilterEncoder.encodeFilterValue( "\\" ) );
         assertEquals( "\\00", FilterEncoder.encodeFilterValue( "\0" ) );
         assertEquals( "\\28\\2A\\29", FilterEncoder.encodeFilterValue( "(*)" ) );
+        assertEquals( "a test \\2A \\5Cend", FilterEncoder.encodeFilterValue( "a test \\2A \\end" ) );
     }
 
 }

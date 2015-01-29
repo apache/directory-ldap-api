@@ -47,11 +47,11 @@ public class FilterBuilderTest
     {
         assertEquals( "(cn=Babs Jensen)", equal( "cn", "Babs Jensen" ).toString() );
         assertEquals( "(!(cn=Tim Howes))", not( equal( "cn", "Tim Howes" ) ).toString() );
-        assertEquals( "(&(objectClass=Person)(|(sn=Jensen)(cn=Babs J*)))",
+        assertEquals( "(&(objectClass=Person)(|(sn=Jensen)(cn=Babs J\\2A)))",
             and( equal( "objectClass", "Person" ),
                 or( equal( "sn", "Jensen" ),
                     equal( "cn", "Babs J*" ) ) ).toString() );
-        assertEquals( "(o=univ*of*mich*)", equal( "o", "univ*of*mich*" ).toString() );
+        assertEquals( "(o=univ\\2Aof\\2Amich\\2A)", equal( "o", "univ*of*mich*" ).toString() );
     }
 
 
@@ -88,6 +88,8 @@ public class FilterBuilderTest
         assertEquals( "(o=*)", contains( "o" ).toString() );
         assertEquals( "(o=*of*)", contains( "o", "of" ).toString() );
         assertEquals( "(o=*sit*of*chi*)", contains( "o", "sit", "of", "chi" ).toString() );
+        assertEquals( "(cn=*\u00e9*)", contains( "cn", "\u00e9" ).toString() );
+        assertEquals( "(cn=*\\C3\\E9*)", contains( "cn", "\\C3\\E9" ).toString() );
     }
 
 

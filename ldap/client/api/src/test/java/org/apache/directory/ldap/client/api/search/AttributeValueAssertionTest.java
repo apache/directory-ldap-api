@@ -54,7 +54,7 @@ public class AttributeValueAssertionTest
         assertEquals( "(uid=admin)",
             AttributeValueAssertionFilter.equal( "uid", "admin" )
                 .build().toString() );
-        assertEquals( "(cn=lu*)",
+        assertEquals( "(cn=lu\\2A)",
             AttributeValueAssertionFilter.equal( "cn", "lu*" )
                 .build().toString() );
     }
