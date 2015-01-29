@@ -19,5 +19,4 @@ m-may: ads-certificatePassword
 m-may: ads-replReqHandler
 m-must: ads-replEnabled
 m-must: ads-replPingerSleep
-m-may: ads-enabledCipherSuites
 creatorsname: uid=admin,ou=system
