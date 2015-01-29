@@ -31,6 +31,7 @@ import static org.apache.directory.ldap.client.api.search.FilterBuilder.or;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.startsWith;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.substring;
 import static org.apache.directory.ldap.client.api.search.FilterBuilderTest.EverythingFilter.everything;
+import static org.apache.directory.ldap.client.api.search.FilterBuilderTest.MuppetFilter.muppet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -144,6 +145,8 @@ public class FilterBuilderTest
     public void testCustom()
     {
         assertEquals( "(objectClass=*)", custom( everything() ).toString() );
+        assertEquals( "(&(objectClass=inetOrgPerson)(departmentNumber=muppets))", 
+                custom( muppet() ).toString() );
     }
     
     
@@ -178,6 +181,36 @@ public class FilterBuilderTest
         public StringBuilder build( StringBuilder builder )
         {
             return new StringBuilder( "(objectClass=*)" );
+        }
+    }
+    
+    
+    public static class MuppetFilter implements Filter
+    {
+        private static final String filter = and(
+                equal( "objectClass", "inetOrgPerson" ),
+                equal( "departmentNumber", "muppets" ) ).toString();
+
+        private MuppetFilter()
+        {
+        }
+
+
+        public static Filter muppet()
+        {
+            return new MuppetFilter();
+        }
+
+
+        public StringBuilder build()
+        {
+            return build( new StringBuilder() );
+        }
+
+
+        public StringBuilder build( StringBuilder builder )
+        {
+            return builder.append( filter );
         }
     }
 }
