@@ -39,14 +39,10 @@ public class UnaryFilterTest
         AttributeFilter attributeFilter = AttributeFilter.present( "objectClass" );
         assertEquals( "(!" + attributeFilter.build().toString() + ")",
             UnaryFilter.not( attributeFilter ).build().toString() );
-        assertEquals( "(!" + attributeFilter.build().toString() + ")",
-            UnaryFilter.not().setFilter( attributeFilter ).build().toString() );
 
         AttributeValueAssertionFilter attributeValueAssertionFilter =
             AttributeValueAssertionFilter.equal( "objectClass", "person" );
         assertEquals( "(!" + attributeValueAssertionFilter.build().toString() + ")",
             UnaryFilter.not( attributeValueAssertionFilter ).build().toString() );
-        assertEquals( "(!" + attributeValueAssertionFilter.build().toString() + ")",
-            UnaryFilter.not().setFilter( attributeValueAssertionFilter ).build().toString() );
     }
 }

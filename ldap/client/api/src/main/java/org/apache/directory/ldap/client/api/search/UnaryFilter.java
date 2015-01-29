@@ -20,37 +20,54 @@
 package org.apache.directory.ldap.client.api.search;
 
 
+/**
+ * Creates a NOT filter
+ *
+ * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+ */
 /* No qualifier*/class UnaryFilter extends AbstractFilter
 {
-    private Operator operator;
+    /** The NOT filter */
     private Filter filter;
 
 
-    private UnaryFilter( Operator operator )
+    /**
+     * Creates a new instance of UnaryFilter.
+     */
+    private UnaryFilter()
     {
-        this.operator = operator;
     }
 
 
-    public UnaryFilter setFilter( Filter filter )
-    {
-        this.filter = filter;
-        return this;
-    }
-
-
+    /**
+     * Constructs a NOT filter 
+     *
+     * @return The constructed NOT Filter
+     */
     public static UnaryFilter not()
     {
-        return new UnaryFilter( Operator.NOT );
+        return new UnaryFilter();
     }
 
 
+    /**
+     * Constructs a NOT filter with the associated inner Filter
+     *
+     * @param Filter The inner Filter
+     * @return The constructed NOT Filter
+     */
     public static UnaryFilter not( Filter filter )
     {
-        return not().setFilter( filter );
+        UnaryFilter notFilter = not();
+        notFilter.filter = filter;
+
+        return notFilter;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StringBuilder build( StringBuilder builder )
     {
@@ -59,28 +76,9 @@ package org.apache.directory.ldap.client.api.search;
             throw new IllegalStateException( "filter not set" );
         }
 
-        builder.append( "(" ).append( operator.operator() );
+        builder.append( "(" ).append( FilterOperator.NOT.operator() );
         filter.build( builder );
 
         return builder.append( ")" );
-    }
-
-    public static enum Operator
-    {
-        NOT("!");
-
-        private String operator;
-
-
-        private Operator( String operator )
-        {
-            this.operator = operator;
-        }
-
-
-        public String operator()
-        {
-            return operator;
-        }
     }
 }

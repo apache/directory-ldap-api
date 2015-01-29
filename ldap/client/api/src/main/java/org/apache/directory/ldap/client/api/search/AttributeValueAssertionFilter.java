@@ -24,19 +24,26 @@ import org.apache.directory.api.ldap.model.filter.FilterEncoder;
 
 
 /**
- * 
- * TODO AttributeValueAssertionFilter.
+ * A class to represent the various filters that take a value, like =, <=, >= or ~=.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 /* No qualifier*/class AttributeValueAssertionFilter extends AbstractFilter
 {
+    /** The associated attribute */
     private String attribute;
+
+    /** The filter value */
     private String value;
-    private Operator operator;
+
+    /** The Filter operator */
+    private FilterOperator operator;
 
 
-    private AttributeValueAssertionFilter( String attribute, String value, Operator operator )
+    /**
+     * Creates a new instance of AttributeValueAssertionFilter.
+     */
+    private AttributeValueAssertionFilter( String attribute, String value, FilterOperator operator )
     {
         this.attribute = attribute;
         this.value = value;
@@ -44,57 +51,66 @@ import org.apache.directory.api.ldap.model.filter.FilterEncoder;
     }
 
 
+    /**
+     * Creates an Approximate Filter : ( <attribute> ~= <value> )
+     *
+     * @param attribute The AttributeType
+     * @param value The Value
+     * @return An instance of the Approximate Filter
+     */
     public static AttributeValueAssertionFilter approximatelyEqual( String attribute, String value )
     {
-        return new AttributeValueAssertionFilter( attribute, value, Operator.APPROXIMATELY_EQUAL );
+        return new AttributeValueAssertionFilter( attribute, value, FilterOperator.APPROXIMATELY_EQUAL );
     }
 
 
+    /**
+     * Creates an equam Filter : ( <attribute> = <value> )
+     *
+     * @param attribute The AttributeType
+     * @param value The Value
+     * @return An instance of the Equal Filter
+     */
     public static AttributeValueAssertionFilter equal( String attribute, String value )
     {
-        return new AttributeValueAssertionFilter( attribute, value, Operator.EQUAL );
+        return new AttributeValueAssertionFilter( attribute, value, FilterOperator.EQUAL );
     }
 
 
+    /**
+     * Creates a Greater Than Or Equal Filter : ( <attribute> >= <value> )
+     *
+     * @param attribute The AttributeType
+     * @param value The Value
+     * @return An instance of the Greater Than Or Equal Filter
+     */
     public static AttributeValueAssertionFilter greaterThanOrEqual( String attribute, String value )
     {
-        return new AttributeValueAssertionFilter( attribute, value, Operator.GREATER_THAN_OR_EQUAL );
+        return new AttributeValueAssertionFilter( attribute, value, FilterOperator.GREATER_THAN_OR_EQUAL );
     }
 
 
+    /**
+     * Creates a Less Than Or Equal Filter : ( <attribute> <= <value> )
+     *
+     * @param attribute The AttributeType
+     * @param value The Value
+     * @return An instance of the Less Than Or Equal Filter
+     */
     public static AttributeValueAssertionFilter lessThanOrEqual( String attribute, String value )
     {
-        return new AttributeValueAssertionFilter( attribute, value, Operator.LESS_THAN_OR_EQUAL );
+        return new AttributeValueAssertionFilter( attribute, value, FilterOperator.LESS_THAN_OR_EQUAL );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StringBuilder build( StringBuilder builder )
     {
         return builder.append( "(" ).append( attribute )
             .append( operator.operator() )
             .append( FilterEncoder.encodeFilterValue( value ) ).append( ")" );
-    }
-
-    public static enum Operator
-    {
-        APPROXIMATELY_EQUAL("~="),
-        EQUAL("="),
-        GREATER_THAN_OR_EQUAL(">="),
-        LESS_THAN_OR_EQUAL("<=");
-
-        private String operator;
-
-
-        private Operator( String operator )
-        {
-            this.operator = operator;
-        }
-
-
-        public String operator()
-        {
-            return operator;
-        }
     }
 }

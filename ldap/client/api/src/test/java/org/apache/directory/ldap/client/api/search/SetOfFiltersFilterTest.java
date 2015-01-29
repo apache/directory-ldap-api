@@ -35,7 +35,7 @@ import org.junit.Test;
  */
 public class SetOfFiltersFilterTest
 {
-    private String expected( SetOfFiltersFilter.Operator operator, Filter... filters )
+    private String expected( FilterOperator operator, Filter... filters )
     {
         StringBuilder builder = new StringBuilder( "(" )
             .append( operator.operator() );
@@ -55,7 +55,7 @@ public class SetOfFiltersFilterTest
         AttributeFilter attributeFilter = AttributeFilter.present( "objectClass" );
         AttributeValueAssertionFilter attributeValueAssertionFilter =
             AttributeValueAssertionFilter.equal( "objectClass", "person" );
-        String expected = expected( SetOfFiltersFilter.Operator.AND, attributeFilter, attributeValueAssertionFilter );
+        String expected = expected( FilterOperator.AND, attributeFilter, attributeValueAssertionFilter );
 
         assertEquals( expected,
             SetOfFiltersFilter.and( attributeFilter, attributeValueAssertionFilter )
@@ -85,7 +85,7 @@ public class SetOfFiltersFilterTest
         AttributeFilter attributeFilter = AttributeFilter.present( "objectClass" );
         AttributeValueAssertionFilter attributeValueAssertionFilter =
             AttributeValueAssertionFilter.equal( "objectClass", "person" );
-        String expected = expected( SetOfFiltersFilter.Operator.OR, attributeFilter, attributeValueAssertionFilter );
+        String expected = expected( FilterOperator.OR, attributeFilter, attributeValueAssertionFilter );
 
         assertEquals( expected,
             SetOfFiltersFilter.or( attributeFilter, attributeValueAssertionFilter )

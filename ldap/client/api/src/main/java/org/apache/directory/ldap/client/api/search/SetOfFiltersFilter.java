@@ -31,17 +31,29 @@ import java.util.List;
  */
 /* No qualifier*/class SetOfFiltersFilter extends AbstractFilter
 {
-    private Operator operator;
+    /** The operator to use with this set (AND or OR) */
+    private FilterOperator operator;
+
+    /** The list of inner filters */
     private List<Filter> filters;
 
 
-    private SetOfFiltersFilter( Operator operator )
+    /**
+     * Creates a new instance of SetOfFiltersFilter.
+     */
+    private SetOfFiltersFilter( FilterOperator operator )
     {
         this.operator = operator;
         this.filters = new ArrayList<Filter>();
     }
 
 
+    /**
+     * Adds a Filter into the set of Filters 
+     *
+     * @param filter The filter to add
+     * @return The Set of Filters with the added filter
+     */
     public SetOfFiltersFilter add( Filter filter )
     {
         filters.add( filter );
@@ -49,6 +61,12 @@ import java.util.List;
     }
 
 
+    /**
+     * Injects a list of Filters into the set of Filters 
+     *
+     * @param filters The filters to inject
+     * @return The Set of Filters with the injected filters
+     */
     public SetOfFiltersFilter addAll( Filter... filters )
     {
         for ( Filter filter : filters )
@@ -60,25 +78,47 @@ import java.util.List;
     }
 
 
+    /**
+     * Injects a list of Filters into the set of Filters 
+     *
+     * @param filters The filters to inject
+     * @return The Set of Filters with the injected filters
+     */
     public SetOfFiltersFilter addAll( List<Filter> filters )
     {
         this.filters.addAll( filters );
+
         return this;
     }
 
 
+    /**
+     * Creates an AND set of filters
+     *
+     * @param filters The inner filters
+     * @return An AND filter
+     */
     public static SetOfFiltersFilter and( Filter... filters )
     {
-        return new SetOfFiltersFilter( Operator.AND ).addAll( filters );
+        return new SetOfFiltersFilter( FilterOperator.AND ).addAll( filters );
     }
 
 
+    /**
+     * Creates an OR set of filters
+     *
+     * @param filters The inner filters
+     * @return An OR filter
+     */
     public static SetOfFiltersFilter or( Filter... filters )
     {
-        return new SetOfFiltersFilter( Operator.OR ).addAll( filters );
+        return new SetOfFiltersFilter( FilterOperator.OR ).addAll( filters );
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StringBuilder build( StringBuilder builder )
     {
@@ -95,25 +135,5 @@ import java.util.List;
         }
 
         return builder.append( ")" );
-    }
-
-    public static enum Operator
-    {
-        AND("&"),
-        OR("|");
-
-        private String operator;
-
-
-        private Operator( String operator )
-        {
-            this.operator = operator;
-        }
-
-
-        public String operator()
-        {
-            return operator;
-        }
     }
 }

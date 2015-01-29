@@ -17,47 +17,54 @@
  *   under the License.
  *
  */
+
 package org.apache.directory.ldap.client.api.search;
 
 
 /**
- * This class is used to handle the Present filter (ie, attr =* )
+ * The operators that can be used in a Filter :
+ * <ul>
+ * <li>AND: the '&' operator</li>
+ * <li>OR: the '|' operator</li>
+ * <li>NOT: the '!' operator</li>
+ * <li>EQUAL: the '=' operator</li>
+ * <li>LESS_THAN_OR_EQUAL: the '<=' operator</li>
+ * <li>GREATER_THAN_OR_EQUAL: the '>=' operator</li>
+ * <li>PRESENT: the '=*' operator</li>
+ * <li>APPROXIMATELY_EQUAL: the '~=' operator</li>
+ * </ul>
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-/* No qualifier*/class AttributeFilter extends AbstractFilter
+/* No Qualifier */enum FilterOperator
 {
-    /** The attribute that must be prersent */
-    private String attribute;
+    AND("&"),
+    OR("|"),
+    NOT("!"),
+    APPROXIMATELY_EQUAL("~="),
+    EQUAL("="),
+    PRESENT("=*"),
+    GREATER_THAN_OR_EQUAL(">="),
+    LESS_THAN_OR_EQUAL("<=");
+
+    /** The String representing the operator in a FIlter */
+    private String operator;
 
 
     /**
-     * Creates a new instance of PresentFilter.
+     * Creates a new instance of FilterOperator.
      */
-    private AttributeFilter( String attribute )
+    private FilterOperator( String operator )
     {
-        this.attribute = attribute;
+        this.operator = operator;
     }
 
 
     /**
-     * Creates a new PresentFilter 
-     *
-     * @param attribute The attribute that must be present
-     * @return The created PresenceFilter instance
+     * @return The String representation of the operator
      */
-    public static AttributeFilter present( String attribute )
+    public String operator()
     {
-        return new AttributeFilter( attribute );
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public StringBuilder build( StringBuilder builder )
-    {
-        return builder.append( "(" ).append( attribute ).append( FilterOperator.PRESENT.operator() ).append( ")" );
+        return operator;
     }
 }
