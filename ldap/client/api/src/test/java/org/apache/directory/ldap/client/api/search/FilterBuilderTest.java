@@ -24,7 +24,7 @@ import static org.apache.directory.ldap.client.api.search.FilterBuilder.and;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.contains;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.endsWith;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.equal;
-import static org.apache.directory.ldap.client.api.search.FilterBuilder.extended;
+import static org.apache.directory.ldap.client.api.search.FilterBuilder.custom;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.extensible;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.not;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.or;
@@ -141,9 +141,9 @@ public class FilterBuilderTest
 
 
     @Test
-    public void testExtended()
+    public void testCustom()
     {
-        assertEquals( "(objectClass=*)", extended( everything() ).toString() );
+        assertEquals( "(objectClass=*)", custom( everything() ).toString() );
     }
     
     

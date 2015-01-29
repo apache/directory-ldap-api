@@ -174,13 +174,13 @@ public class FilterBuilder
      * import static org.apache.directory.ldap.client.api.search.FilterBuilder.extended;
      * import static your.package.here.EverythingFilter.everything;
      * ...
-     * extended( everything() );
+     * custom( everything() );
      * </pre>
      *  
      * @param filter The filter for an extension
      * @return A new FilterBuilder
      */
-    public static FilterBuilder extended( Filter filter )
+    public static FilterBuilder custom( Filter filter )
     {
         return new FilterBuilder( filter );
     }
