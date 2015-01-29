@@ -45,7 +45,8 @@ package org.apache.directory.ldap.client.api.search;
     EQUAL("="),
     PRESENT("=*"),
     GREATER_THAN_OR_EQUAL(">="),
-    LESS_THAN_OR_EQUAL("<=");
+    LESS_THAN_OR_EQUAL("<="),
+    EXTENSIBLE_EQUAL(":=");
 
     /** The String representing the operator in a FIlter */
     private String operator;

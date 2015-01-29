@@ -22,7 +22,7 @@ package org.apache.directory.ldap.client.api.search;
 
 /**
  * A builder for constructing well formed search filters according to
- * <a href="https://tools.ietf.org/html/rfc1960.html">RFC 1960</a>.  This 
+ * <a href="https://tools.ietf.org/html/rfc4515.html">RFC 4515</a>.  This 
  * builder is most convenient when you use static imports.  For example:
  * <pre>
  * import static org.apache.directory.ldap.client.api.search.FilterBuilder.and;
@@ -47,14 +47,14 @@ package org.apache.directory.ldap.client.api.search;
 public class FilterBuilder
 {
     /** The built filter */
-    private Filter filter;
+    /* No qualifier */ Filter filter;
 
 
     /**
      * A private constructor that creates a new instance of a FilterBuilder
      * containing a given filter.
      */
-    private FilterBuilder( Filter filter )
+    /* No qualifier*/ FilterBuilder( Filter filter )
     {
         this.filter = filter;
     }
@@ -186,6 +186,58 @@ public class FilterBuilder
     }
 
 
+    /**
+     * Creates an extensible match filter by calling 
+     * {@link #extensible(String, String) extensible(null, value)}.
+     *
+     * @param value The value to test for
+     * @return A new MatchingRuleAssertionFilterBuilder
+     */
+    public static MatchingRuleAssertionFilterBuilder extensible( String value )
+    {
+        return new MatchingRuleAssertionFilterBuilder( null, value );
+    }
+
+
+    /**
+     * Creates an extensible match filter.  This filter can be used to specify
+     * that dn attributes should be included in the match, which matcher to 
+     * use, or that all attributes that support a specific matcher will be
+     * checked.  For example:
+     * 
+     * <pre>
+     * extensible( "sn", "Barney Rubble" )
+     *     .useDnAttributes()
+     *     .setMatchingRule( "2.4.6.8.10" )
+     *     .toString();
+     * </pre>
+     * would result in the string:
+     * <pre>
+     * (sn:dn:2.4.6.8.10:=Barney Rubble)
+     * </pre>
+     * 
+     * Not that the specialized filter builder that is returned <b>IS</b> a 
+     * FilterBuilder so it can be chained with other filters.  For example:
+     * 
+     * <pre>
+     * and(
+     *     extensible( "sn", "Rubble" )
+     *         .useDnAttributes()
+     *         .setMatchingRule( "2.4.6.8.10" ),
+     *     equal( "givenName", "Barney" ) )
+     *     .toString();
+     * </pre>
+     *
+     * @param attribute The attribute to test
+     * @param value The value to test for
+     * @return A new MatchingRuleAssertionFilterBuilder
+     */
+    public static MatchingRuleAssertionFilterBuilder extensible( String attribute, String value )
+    {
+        return new MatchingRuleAssertionFilterBuilder( attribute, value );
+    }
+    
+    
     /**
      * Returns a new FilterBuilder for testing lexicographical greater than.  
      * For example:

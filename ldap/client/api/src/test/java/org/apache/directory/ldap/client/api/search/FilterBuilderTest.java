@@ -25,6 +25,7 @@ import static org.apache.directory.ldap.client.api.search.FilterBuilder.contains
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.endsWith;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.equal;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.extended;
+import static org.apache.directory.ldap.client.api.search.FilterBuilder.extensible;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.not;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.or;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.startsWith;
@@ -144,6 +145,16 @@ public class FilterBuilderTest
     {
         assertEquals( "(objectClass=*)", extended( everything() ).toString() );
     }
+    
+    
+    @Test
+    public void testExtensible()
+    {
+        assertEquals( "(cn:caseExactMatch:=Fred Flintstone)", 
+            extensible( "cn", "Fred Flintstone" )
+                .setMatchingRule( "caseExactMatch" ).toString() );
+    }
+
 
     public static class EverythingFilter implements Filter
     {

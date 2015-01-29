@@ -65,7 +65,7 @@ import org.apache.directory.api.ldap.model.filter.FilterEncoder;
 
 
     /**
-     * Creates an equam Filter : ( <attribute> = <value> )
+     * Creates an equal Filter : ( <attribute> = <value> )
      *
      * @param attribute The AttributeType
      * @param value The Value
