@@ -336,6 +336,11 @@ public class FilterBuilder
      */
     public static FilterBuilder startsWith( String attribute, String... parts )
     {
+        if ( ( parts == null ) || ( parts.length == 0 ) )
+        {
+            throw new IllegalArgumentException( "An 'initial' part is needed" );
+        }
+
         return new FilterBuilder( SubstringFilter.startsWith( attribute, parts ) );
     }
 
@@ -364,6 +369,11 @@ public class FilterBuilder
      */
     public static FilterBuilder endsWith( String attribute, String... parts )
     {
+        if ( ( parts == null ) || ( parts.length == 0 ) )
+        {
+            throw new IllegalArgumentException( "At a 'final' part is needed" );
+        }
+
         return new FilterBuilder( SubstringFilter.endsWith( attribute, parts ) );
     }
 
@@ -392,6 +402,11 @@ public class FilterBuilder
      */
     public static FilterBuilder contains( String attribute, String... parts )
     {
+        if ( ( parts == null ) || ( parts.length == 0 ) )
+        {
+            throw new IllegalArgumentException( "At least one 'any' part is needed" );
+        }
+
         return new FilterBuilder( SubstringFilter.contains( attribute, parts ) );
     }
 
@@ -430,6 +445,11 @@ public class FilterBuilder
      */
     public static FilterBuilder substring( String attribute, String... parts )
     {
+        if ( ( parts == null ) || ( parts.length == 0 ) )
+        {
+            throw new IllegalArgumentException( "At least one if 'initial', 'any' or 'final' part is needed" );
+        }
+
         return new FilterBuilder( SubstringFilter.substring( attribute, parts ) );
     }
 

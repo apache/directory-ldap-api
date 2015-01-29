@@ -31,6 +31,7 @@ import static org.apache.directory.ldap.client.api.search.FilterBuilder.startsWi
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.substring;
 import static org.apache.directory.ldap.client.api.search.FilterBuilderTest.EverythingFilter.everything;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -61,7 +62,15 @@ public class FilterBuilderTest
     @Test
     public void testSubstringFilterBuilderStartsWith()
     {
-        assertEquals( "(o=*)", startsWith( "o" ).toString() );
+        try
+        {
+            assertEquals( "(o=*)", startsWith( "o" ).toString() );
+            fail();
+        }
+        catch ( IllegalArgumentException iae )
+        {
+            // Expected
+        }
         assertEquals( "(o=univ*)", startsWith( "o", "univ" ).toString() );
         assertEquals( "(o=univ*of*mich*)", startsWith( "o", "univ", "of", "mich" ).toString() );
     }
@@ -73,7 +82,15 @@ public class FilterBuilderTest
     @Test
     public void testSubstringFilterBuilderEndsWith()
     {
-        assertEquals( "(o=*)", endsWith( "o" ).toString() );
+        try
+        {
+            assertEquals( "(o=*)", endsWith( "o" ).toString() );
+            fail();
+        }
+        catch ( IllegalArgumentException iae )
+        {
+            // Expected
+        }
         assertEquals( "(o=*igan)", endsWith( "o", "igan" ).toString() );
         assertEquals( "(o=*sit*of*igan)", endsWith( "o", "sit", "of", "igan" ).toString() );
     }
@@ -85,7 +102,15 @@ public class FilterBuilderTest
     @Test
     public void testSubstringFilterBuilderContains()
     {
-        assertEquals( "(o=*)", contains( "o" ).toString() );
+        try
+        {
+            assertEquals( "(o=*)", contains( "o" ).toString() );
+            fail();
+        }
+        catch ( IllegalArgumentException iae )
+        {
+            // Expected
+        }
         assertEquals( "(o=*of*)", contains( "o", "of" ).toString() );
         assertEquals( "(o=*sit*of*chi*)", contains( "o", "sit", "of", "chi" ).toString() );
         assertEquals( "(cn=*\u00e9*)", contains( "cn", "\u00e9" ).toString() );
@@ -99,7 +124,15 @@ public class FilterBuilderTest
     @Test
     public void testSubstringFilterBuilderSubstring()
     {
-        assertEquals( "(o=*)", substring( "o" ).toString() );
+        try
+        {
+            assertEquals( "(o=*)", substring( "o" ).toString() );
+            fail();
+        }
+        catch ( IllegalArgumentException iae )
+        {
+            // Expected
+        }
         assertEquals( "(o=of*)", substring( "o", "of" ).toString() );
         assertEquals( "(o=the*igan)", substring( "o", "the", "igan" ).toString() );
         assertEquals( "(o=the*sit*of*igan)", substring( "o", "the", "sit", "of", "igan" ).toString() );
