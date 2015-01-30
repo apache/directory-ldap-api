@@ -20,29 +20,44 @@
 package org.apache.directory.ldap.client.api.search;
 
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
-
 /**
- * 
- * TODO UnaryFilterTest.
+ * This class is used to handle the Present filter (ie, attr =* )
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class UnaryFilterTest
+/* No qualifier*/class AttributeDescriptionFilter extends AbstractFilter
 {
-    @Test
-    public void testNot()
-    {
-        AttributeDescriptionFilter attributeFilter = AttributeDescriptionFilter.present( "objectClass" );
-        assertEquals( "(!" + attributeFilter.build().toString() + ")",
-            UnaryFilter.not( attributeFilter ).build().toString() );
+    /** The attribute that must be prersent */
+    private String attribute;
 
-        AttributeValueAssertionFilter attributeValueAssertionFilter =
-            AttributeValueAssertionFilter.equal( "objectClass", "person" );
-        assertEquals( "(!" + attributeValueAssertionFilter.build().toString() + ")",
-            UnaryFilter.not( attributeValueAssertionFilter ).build().toString() );
+
+    /**
+     * Creates a new instance of AttributeDescription filter.
+     */
+    private AttributeDescriptionFilter( String attribute )
+    {
+        this.attribute = attribute;
+    }
+
+
+    /**
+     * Creates a new AttributeDescription 
+     *
+     * @param attribute The attribute that must be present
+     * @return The created PresenceFilter instance
+     */
+    public static AttributeDescriptionFilter present( String attribute )
+    {
+        return new AttributeDescriptionFilter( attribute );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StringBuilder build( StringBuilder builder )
+    {
+        return builder.append( "(" ).append( attribute ).append( FilterOperator.PRESENT.operator() ).append( ")" );
     }
 }

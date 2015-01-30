@@ -52,7 +52,7 @@ public class SetOfFiltersFilterTest
     @Test
     public void testAnd()
     {
-        AttributeFilter attributeFilter = AttributeFilter.present( "objectClass" );
+        AttributeDescriptionFilter attributeFilter = AttributeDescriptionFilter.present( "objectClass" );
         AttributeValueAssertionFilter attributeValueAssertionFilter =
             AttributeValueAssertionFilter.equal( "objectClass", "person" );
         String expected = expected( FilterOperator.AND, attributeFilter, attributeValueAssertionFilter );
@@ -82,7 +82,7 @@ public class SetOfFiltersFilterTest
     @Test
     public void testOr()
     {
-        AttributeFilter attributeFilter = AttributeFilter.present( "objectClass" );
+        AttributeDescriptionFilter attributeFilter = AttributeDescriptionFilter.present( "objectClass" );
         AttributeValueAssertionFilter attributeValueAssertionFilter =
             AttributeValueAssertionFilter.equal( "objectClass", "person" );
         String expected = expected( FilterOperator.OR, attributeFilter, attributeValueAssertionFilter );

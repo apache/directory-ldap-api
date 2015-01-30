@@ -17,6 +17,7 @@
  *   under the License.
  *
  */
+
 package org.apache.directory.ldap.client.api.search;
 
 
@@ -27,22 +28,18 @@ import org.junit.Test;
 
 /**
  * 
- * TODO UnaryFilterTest.
+ * TODO AttributeFilterTest.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class UnaryFilterTest
+public class AttributeDescriptionFilterTest
 {
     @Test
-    public void testNot()
+    public void testPresent()
     {
-        AttributeDescriptionFilter attributeFilter = AttributeDescriptionFilter.present( "objectClass" );
-        assertEquals( "(!" + attributeFilter.build().toString() + ")",
-            UnaryFilter.not( attributeFilter ).build().toString() );
-
-        AttributeValueAssertionFilter attributeValueAssertionFilter =
-            AttributeValueAssertionFilter.equal( "objectClass", "person" );
-        assertEquals( "(!" + attributeValueAssertionFilter.build().toString() + ")",
-            UnaryFilter.not( attributeValueAssertionFilter ).build().toString() );
+        assertEquals( "(objectClass=*)", AttributeDescriptionFilter.present( "objectClass" ).build().toString() );
+        assertEquals( "(uid=*)", AttributeDescriptionFilter.present( "uid" ).build().toString() );
+        assertEquals( "(userPassword=*)", AttributeDescriptionFilter.present( "userPassword" ).build().toString() );
+        assertEquals( "(cn=*)", AttributeDescriptionFilter.present( "cn" ).build().toString() );
     }
 }

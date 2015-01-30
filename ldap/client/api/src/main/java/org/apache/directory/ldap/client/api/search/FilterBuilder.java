@@ -316,7 +316,7 @@ public class FilterBuilder
      */
     public static FilterBuilder present( String attribute )
     {
-        return new FilterBuilder( AttributeFilter.present( attribute ) );
+        return new FilterBuilder( AttributeDescriptionFilter.present( attribute ) );
     }
 
 
