@@ -24,14 +24,11 @@ import static org.apache.directory.ldap.client.api.search.FilterBuilder.and;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.contains;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.endsWith;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.equal;
-import static org.apache.directory.ldap.client.api.search.FilterBuilder.custom;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.extensible;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.not;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.or;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.startsWith;
 import static org.apache.directory.ldap.client.api.search.FilterBuilder.substring;
-import static org.apache.directory.ldap.client.api.search.FilterBuilderTest.EverythingFilter.everything;
-import static org.apache.directory.ldap.client.api.search.FilterBuilderTest.MuppetFilter.muppet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -45,6 +42,14 @@ import org.junit.Test;
  */
 public class FilterBuilderTest
 {
+    @Test
+    public void testExtensible()
+    {
+        assertEquals( "(cn:caseExactMatch:=Fred Flintstone)", 
+            extensible( "cn", "Fred Flintstone" )
+                .setMatchingRule( "caseExactMatch" ).toString() );
+    }
+
     @Test
     public void testFilterBuilder()
     {
@@ -138,79 +143,5 @@ public class FilterBuilderTest
         assertEquals( "(o=of*)", substring( "o", "of" ).toString() );
         assertEquals( "(o=the*igan)", substring( "o", "the", "igan" ).toString() );
         assertEquals( "(o=the*sit*of*igan)", substring( "o", "the", "sit", "of", "igan" ).toString() );
-    }
-
-
-    @Test
-    public void testCustom()
-    {
-        assertEquals( "(objectClass=*)", custom( everything() ).toString() );
-        assertEquals( "(&(objectClass=inetOrgPerson)(departmentNumber=muppets))", 
-                custom( muppet() ).toString() );
-    }
-    
-    
-    @Test
-    public void testExtensible()
-    {
-        assertEquals( "(cn:caseExactMatch:=Fred Flintstone)", 
-            extensible( "cn", "Fred Flintstone" )
-                .setMatchingRule( "caseExactMatch" ).toString() );
-    }
-
-
-    public static class EverythingFilter implements Filter
-    {
-        private EverythingFilter()
-        {
-        }
-
-
-        public static Filter everything()
-        {
-            return new EverythingFilter();
-        }
-
-
-        public StringBuilder build()
-        {
-            return build( new StringBuilder() );
-        }
-
-
-        public StringBuilder build( StringBuilder builder )
-        {
-            return new StringBuilder( "(objectClass=*)" );
-        }
-    }
-    
-    
-    public static class MuppetFilter implements Filter
-    {
-        private static final String filter = and(
-                equal( "objectClass", "inetOrgPerson" ),
-                equal( "departmentNumber", "muppets" ) ).toString();
-
-        private MuppetFilter()
-        {
-        }
-
-
-        public static Filter muppet()
-        {
-            return new MuppetFilter();
-        }
-
-
-        public StringBuilder build()
-        {
-            return build( new StringBuilder() );
-        }
-
-
-        public StringBuilder build( StringBuilder builder )
-        {
-            return builder.append( filter );
-        }
     }
 }
