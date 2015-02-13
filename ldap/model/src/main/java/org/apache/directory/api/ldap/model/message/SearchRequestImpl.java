@@ -70,7 +70,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
 
     /** The final result containing SearchResponseDone response */
     private SearchResultDone response;
-    
+
     /** A flag set to tell the search what to do wth referrals */
     private ReferralsPolicyEnum referralHandling = ReferralsPolicyEnum.THROW;
 
@@ -370,7 +370,10 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
             // Order doesn't matter, thus just add hashCode
             for ( String attr : attributes )
             {
-                hash = hash + attr.hashCode();
+                if ( attr != null )
+                {
+                    hash = hash + attr.hashCode();
+                }
             }
         }
 
@@ -591,8 +594,8 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
 
         return super.toString( sb.toString() );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -608,11 +611,11 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     public SearchRequest followReferrals()
     {
         referralHandling = ReferralsPolicyEnum.FOLLOW;
-        
+
         return this;
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -628,7 +631,7 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
     public SearchRequest ignoreReferrals()
     {
         referralHandling = ReferralsPolicyEnum.IGNORE;
-        
+
         return this;
     }
 }
