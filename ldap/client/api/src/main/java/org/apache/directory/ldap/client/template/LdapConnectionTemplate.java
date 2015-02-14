@@ -45,6 +45,7 @@ import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.ldap.client.api.EntryCursorImpl;
 import org.apache.directory.ldap.client.api.LdapConnection;
 import org.apache.directory.ldap.client.api.LdapConnectionPool;
+import org.apache.directory.ldap.client.api.search.FilterBuilder;
 import org.apache.directory.ldap.client.template.exception.LdapRequestUnsuccessfulException;
 import org.apache.directory.ldap.client.template.exception.LdapRuntimeException;
 import org.apache.directory.ldap.client.template.exception.PasswordException;
@@ -500,7 +501,21 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
 
 
     @Override
+    public SearchRequest newSearchRequest( String baseDn, FilterBuilder filter, SearchScope scope )
+    {
+        return modelFactory.newSearchRequest( baseDn, filter, scope );
+    }
+
+
+    @Override
     public SearchRequest newSearchRequest( String baseDn, String filter, SearchScope scope )
+    {
+        return modelFactory.newSearchRequest( baseDn, filter, scope );
+    }
+
+
+    @Override
+    public SearchRequest newSearchRequest( Dn baseDn, FilterBuilder filter, SearchScope scope )
     {
         return modelFactory.newSearchRequest( baseDn, filter, scope );
     }
@@ -514,7 +529,21 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
 
 
     @Override
+    public SearchRequest newSearchRequest( String baseDn, FilterBuilder filter, SearchScope scope, String... attributes )
+    {
+        return modelFactory.newSearchRequest( baseDn, filter, scope, attributes );
+    }
+
+
+    @Override
     public SearchRequest newSearchRequest( String baseDn, String filter, SearchScope scope, String... attributes )
+    {
+        return modelFactory.newSearchRequest( baseDn, filter, scope, attributes );
+    }
+
+
+    @Override
+    public SearchRequest newSearchRequest( Dn baseDn, FilterBuilder filter, SearchScope scope, String... attributes )
     {
         return modelFactory.newSearchRequest( baseDn, filter, scope, attributes );
     }
@@ -555,67 +584,27 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
 
 
     @Override
-    public <T> T searchFirst( String baseDn, String filter, SearchScope scope,
+    public <T> List<T> search( String baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper )
     {
-        return searchFirst(
+        return search(
             modelFactory.newSearchRequest( baseDn, filter, scope ),
             entryMapper );
-    }
-
-
-    @Override
-    public <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
-        EntryMapper<T> entryMapper )
-    {
-        return searchFirst(
-            modelFactory.newSearchRequest( baseDn, filter, scope ),
-            entryMapper );
-    }
-
-
-    @Override
-    public <T> T searchFirst( String baseDn, String filter, SearchScope scope,
-        String[] attributes, EntryMapper<T> entryMapper )
-    {
-        return searchFirst(
-            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ),
-            entryMapper );
-    }
-
-
-    @Override
-    public <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
-        String[] attributes, EntryMapper<T> entryMapper )
-    {
-        return searchFirst(
-            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ),
-            entryMapper );
-    }
-
-
-    @Override
-    public <T> T searchFirst( SearchRequest searchRequest,
-        EntryMapper<T> entryMapper )
-    {
-        // in case the caller did not set size limit, we cache original value,
-        // set to 1, then set back to original value before returning...
-        long originalSizeLimit = searchRequest.getSizeLimit();
-        try
-        {
-            searchRequest.setSizeLimit( 1 );
-            List<T> entries = search( searchRequest, entryMapper );
-            return entries.isEmpty() ? null : entries.get( 0 );
-        }
-        finally
-        {
-            searchRequest.setSizeLimit( originalSizeLimit );
-        }
     }
 
 
     @Override
     public <T> List<T> search( String baseDn, String filter, SearchScope scope,
+        EntryMapper<T> entryMapper )
+    {
+        return search(
+            modelFactory.newSearchRequest( baseDn, filter, scope ),
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> List<T> search( Dn baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper )
     {
         return search(
@@ -635,7 +624,27 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
 
 
     @Override
+    public <T> List<T> search( String baseDn, FilterBuilder filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper )
+    {
+        return search(
+            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ),
+            entryMapper );
+    }
+
+
+    @Override
     public <T> List<T> search( String baseDn, String filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper )
+    {
+        return search(
+            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ),
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> List<T> search( Dn baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper )
     {
         return search(
@@ -680,6 +689,106 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
         }
 
         return entries;
+    }
+
+
+    @Override
+    public <T> T searchFirst( String baseDn, FilterBuilder filter, SearchScope scope,
+        EntryMapper<T> entryMapper )
+    {
+        return searchFirst(
+            modelFactory.newSearchRequest( baseDn, filter, scope ),
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> T searchFirst( String baseDn, String filter, SearchScope scope,
+        EntryMapper<T> entryMapper )
+    {
+        return searchFirst(
+            modelFactory.newSearchRequest( baseDn, filter, scope ),
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> T searchFirst( Dn baseDn, FilterBuilder filter, SearchScope scope,
+        EntryMapper<T> entryMapper )
+    {
+        return searchFirst(
+            modelFactory.newSearchRequest( baseDn, filter, scope ),
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
+        EntryMapper<T> entryMapper )
+    {
+        return searchFirst(
+            modelFactory.newSearchRequest( baseDn, filter, scope ),
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> T searchFirst( String baseDn, FilterBuilder filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper )
+    {
+        return searchFirst(
+            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ),
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> T searchFirst( String baseDn, String filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper )
+    {
+        return searchFirst(
+            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ),
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> T searchFirst( Dn baseDn, FilterBuilder filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper )
+    {
+        return searchFirst(
+            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ),
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper )
+    {
+        return searchFirst(
+            modelFactory.newSearchRequest( baseDn, filter, scope, attributes ),
+            entryMapper );
+    }
+
+
+    @Override
+    public <T> T searchFirst( SearchRequest searchRequest,
+        EntryMapper<T> entryMapper )
+    {
+        // in case the caller did not set size limit, we cache original value,
+        // set to 1, then set back to original value before returning...
+        long originalSizeLimit = searchRequest.getSizeLimit();
+        try
+        {
+            searchRequest.setSizeLimit( 1 );
+            List<T> entries = search( searchRequest, entryMapper );
+            return entries.isEmpty() ? null : entries.get( 0 );
+        }
+        finally
+        {
+            searchRequest.setSizeLimit( originalSizeLimit );
+        }
     }
 
 

@@ -34,6 +34,7 @@ import org.apache.directory.api.ldap.model.message.ResultResponse;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.ldap.client.api.search.FilterBuilder;
 import org.apache.directory.ldap.client.template.exception.LdapRequestUnsuccessfulException;
 import org.apache.directory.ldap.client.template.exception.PasswordException;
 
@@ -305,7 +306,37 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #search(SearchRequest, EntryMapper)}
      */
+    public abstract <T> List<T> search( String baseDn, FilterBuilder filter, SearchScope scope,
+        EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the entries matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #search(SearchRequest, EntryMapper)}
+     */
     public abstract <T> List<T> search( String baseDn, String filter, SearchScope scope,
+        EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the entries matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #search(SearchRequest, EntryMapper)}
+     */
+    public abstract <T> List<T> search( Dn baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper );
 
 
@@ -337,7 +368,41 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #search(SearchRequest, EntryMapper)}
      */
+    public abstract <T> List<T> search( String baseDn, FilterBuilder filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the entries matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>, querying only the requested 
+     * attributes.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param attributes
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #search(SearchRequest, EntryMapper)}
+     */
     public abstract <T> List<T> search( String baseDn, String filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the entries matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>, querying only the requested 
+     * attributes.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param attributes
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #search(SearchRequest, EntryMapper)}
+     */
+    public abstract <T> List<T> search( Dn baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
 
 
@@ -382,7 +447,37 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #searchFirst(SearchRequest, EntryMapper)}
      */
+    public abstract <T> T searchFirst( String baseDn, FilterBuilder filter, SearchScope scope,
+        EntryMapper<T> entryMapper );
+    
+    
+    /**
+     * Searches for the first entry matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     */
     public abstract <T> T searchFirst( String baseDn, String filter, SearchScope scope,
+        EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the first entry matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     */
+    public abstract <T> T searchFirst( Dn baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper );
 
 
@@ -414,7 +509,41 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #searchFirst(SearchRequest, EntryMapper)}
      */
+    public abstract <T> T searchFirst( String baseDn, FilterBuilder filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the first entry matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>, querying only the requested 
+     * attributes.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param attributes
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     */
     public abstract <T> T searchFirst( String baseDn, String filter, SearchScope scope,
+        String[] attributes, EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the first entry matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>, querying only the requested 
+     * attributes.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param attributes
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     */
+    public abstract <T> T searchFirst( Dn baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
 
 

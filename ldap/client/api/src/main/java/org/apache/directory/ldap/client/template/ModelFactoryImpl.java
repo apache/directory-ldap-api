@@ -36,6 +36,7 @@ import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchRequestImpl;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.ldap.client.api.search.FilterBuilder;
 import org.apache.directory.ldap.client.template.exception.LdapRuntimeException;
 
 
@@ -125,10 +126,26 @@ class ModelFactoryImpl implements ModelFactory
 
 
     @Override
+    public SearchRequest newSearchRequest( String baseDn, FilterBuilder filter,
+        SearchScope scope )
+    {
+        return newSearchRequest( newDn( baseDn ), filter.toString(), scope );
+    }
+
+
+    @Override
     public SearchRequest newSearchRequest( String baseDn, String filter,
         SearchScope scope )
     {
         return newSearchRequest( newDn( baseDn ), filter, scope );
+    }
+
+
+    @Override
+    public SearchRequest newSearchRequest( Dn baseDn, FilterBuilder filter,
+        SearchScope scope )
+    {
+        return newSearchRequest( baseDn, filter.toString(), scope, ( String[] ) null );
     }
 
 
@@ -141,10 +158,26 @@ class ModelFactoryImpl implements ModelFactory
 
 
     @Override
+    public SearchRequest newSearchRequest( String baseDn, FilterBuilder filter,
+        SearchScope scope, String... attributes )
+    {
+        return newSearchRequest( newDn( baseDn ), filter.toString(), scope, attributes );
+    }
+
+
+    @Override
     public SearchRequest newSearchRequest( String baseDn, String filter,
         SearchScope scope, String... attributes )
     {
         return newSearchRequest( newDn( baseDn ), filter, scope, attributes );
+    }
+
+
+    @Override
+    public SearchRequest newSearchRequest( Dn baseDn, FilterBuilder filter,
+        SearchScope scope, String... attributes )
+    {
+        return newSearchRequest( baseDn, filter.toString(), scope, attributes );
     }
 
 
