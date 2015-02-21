@@ -24,29 +24,25 @@ import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.DitContentRule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
 
 /**
- * A parser for RFC 4512 DIT content rule descriptons
+ * A parser for RFC 4512 DIT content rule descriptions.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DitContentRuleDescriptionSchemaParser extends AbstractSchemaParser
+public class DitContentRuleDescriptionSchemaParser extends AbstractSchemaParser<DitContentRule>
 {
-    /** The LoggerFactory used by this class */
-    protected static final Logger LOG = LoggerFactory.getLogger( DitContentRuleDescriptionSchemaParser.class );
-
 
     /**
      * Creates a schema parser instance.
      */
     public DitContentRuleDescriptionSchemaParser()
     {
+        super( DitContentRule.class, I18n.ERR_04230, I18n.ERR_04231, I18n.ERR_04232 );
     }
 
 
@@ -70,53 +66,19 @@ public class DitContentRuleDescriptionSchemaParser extends AbstractSchemaParser
      * @return the parsed DITContentRuleDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized DitContentRule parseDITContentRuleDescription( String ditContentRuleDescription )
-        throws ParseException
+    public DitContentRule parseDITContentRuleDescription( String ditContentRuleDescription ) throws ParseException
     {
-        LOG.debug( "Parsing a DitContentRule : {}", ditContentRuleDescription );
-
-        if ( ditContentRuleDescription == null )
-        {
-            LOG.error( I18n.err( I18n.ERR_04230 ) );
-            throw new ParseException( "Null", 0 );
-        }
-
-        reset( ditContentRuleDescription ); // reset and initialize the parser / lexer pair
-
-        try
-        {
-            DitContentRule ditContentRule = parser.ditContentRuleDescription();
-
-            // Update the schemaName
-            updateSchemaName( ditContentRule );
-
-            return ditContentRule;
-        }
-        catch ( RecognitionException re )
-        {
-            String msg = I18n.err( I18n.ERR_04231, ditContentRuleDescription, re.getMessage(), re.getColumn() );
-            LOG.error( msg );
-            throw new ParseException( msg, re.getColumn() );
-        }
-        catch ( TokenStreamException tse )
-        {
-            String msg = I18n.err( I18n.ERR_04232, ditContentRuleDescription, tse.getMessage() );
-            LOG.error( msg );
-            throw new ParseException( msg, 0 );
-        }
-
+        return super.parse( ditContentRuleDescription );
     }
 
 
     /**
-     * Parses a DitContentRule description.
-     * 
-     * @param schemaDescription The DitContentRule description to parse
-     * @return An instance of DitContentRule
-     * @throws ParseException {@inheritDoc}
+     * {@inheritDoc}
      */
-    public DitContentRule parse( String schemaDescription ) throws ParseException
+    @Override
+    protected DitContentRule doParse() throws RecognitionException, TokenStreamException
     {
-        return parseDITContentRuleDescription( schemaDescription );
+        return parser.ditContentRuleDescription();
     }
+
 }

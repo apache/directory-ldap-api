@@ -24,19 +24,27 @@ import java.io.StringReader;
 import java.text.ParseException;
 import java.util.List;
 
+import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.constants.MetaSchemaConstants;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 import org.apache.directory.api.util.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
+import antlr.TokenStreamRecognitionException;
 
 
 /**
- * 
- * TODO AbstractSchemaParser.
+ * Base class of all schema parsers.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public abstract class AbstractSchemaParser
+public abstract class AbstractSchemaParser<T extends SchemaObject>
 {
+    /** The LoggerFactory used by this class */
+    protected static final Logger LOG = LoggerFactory.getLogger( AbstractSchemaParser.class );
 
     /** the monitor to use for this parser */
     protected ParserMonitor monitor = new ParserMonitorAdapter();
@@ -47,12 +55,32 @@ public abstract class AbstractSchemaParser
     /** the antlr generated lexer being wrapped */
     protected ReusableAntlrSchemaLexer lexer;
 
+    /** the schema object sub-type */
+    private Class<T> schemaObjectType;
+
+    /** error code used when schema descritpion is null */
+    private I18n errorCodeOnNull;
+
+    /** error code used on parse error when position is known */
+    private I18n errorCodeOnParseExceptionWithPosition;
+
+    /** error code used on parse error when position is unknown */
+    private I18n errorCodeOnParseException;
+
 
     /**
      * Instantiates a new abstract schema parser.
+     * @param errorCodeOnNull error code used when schema element is null
+     * @param errorCodeOnParseExceptionWithPosition error code used on parse error when position is known
+     * @param errorCodeOnParseException error code used on parse error when position is unknown
      */
-    protected AbstractSchemaParser()
+    protected AbstractSchemaParser( Class<T> schemaObjectType, I18n errorCodeOnNull, I18n errorCodeOnParseExceptionWithPosition,
+        I18n errorCodeOnParseException )
     {
+        this.schemaObjectType = schemaObjectType;
+        this.errorCodeOnNull = errorCodeOnNull;
+        this.errorCodeOnParseExceptionWithPosition = errorCodeOnParseExceptionWithPosition;
+        this.errorCodeOnParseException = errorCodeOnParseException;
         lexer = new ReusableAntlrSchemaLexer( new StringReader( "" ) );
         parser = new ReusableAntlrSchemaParser( lexer );
     }
@@ -116,7 +144,83 @@ public abstract class AbstractSchemaParser
      * @return A SchemaObject instance
      * @throws ParseException If the parsing failed
      */
-    public abstract SchemaObject parse( String schemaDescription ) throws ParseException;
+    public synchronized T parse( String schemaDescription ) throws ParseException
+    {
+        LOG.debug( "Parsing a {} : {}", schemaObjectType.getClass().getSimpleName(), schemaDescription );
+
+        if ( schemaDescription == null )
+        {
+            LOG.error( I18n.err( errorCodeOnNull ) );
+            throw new ParseException( "Null", 0 );
+        }
+
+        reset( schemaDescription ); // reset and initialize the parser / lexer pair
+
+        try
+        {
+            T schemaObject = doParse();
+            schemaObject.setSpecification( schemaDescription );
+
+            // Update the schemaName
+            updateSchemaName( schemaObject );
+
+            return schemaObject;
+        }
+        catch ( RecognitionException re )
+        {
+            ParseException parseException = wrapRecognitionException( schemaDescription, re );
+            throw parseException;
+        }
+        catch ( TokenStreamRecognitionException tsre )
+        {
+            if ( tsre.recog != null )
+            {
+                ParseException parseException = wrapRecognitionException( schemaDescription, tsre.recog );
+                throw parseException;
+            }
+            else
+            {
+                ParseException parseException = wrapTokenStreamException( schemaDescription, tsre );
+                throw parseException;
+            }
+        }
+        catch ( TokenStreamException tse )
+        {
+            ParseException parseException = wrapTokenStreamException( schemaDescription, tse );
+            throw parseException;
+        }
+    }
+
+
+    private ParseException wrapRecognitionException( String schemaDescription, RecognitionException re )
+    {
+        String msg = I18n.err( errorCodeOnParseExceptionWithPosition, schemaDescription, re.getMessage(),
+            re.getColumn() );
+        LOG.error( msg );
+        ParseException parseException = new ParseException( msg, re.getColumn() );
+        parseException.initCause( re );
+        return parseException;
+    }
+
+
+    private ParseException wrapTokenStreamException( String schemaDescription, TokenStreamException tse )
+    {
+        String msg = I18n.err( errorCodeOnParseException, schemaDescription, tse.getMessage() );
+        LOG.error( msg );
+        ParseException parseException = new ParseException( msg, 0 );
+        parseException.initCause( tse );
+        return parseException;
+    }
+
+
+    /**
+     * Parse a SchemaObject description and returns back an instance of SchemaObject.
+     * 
+     * @return A SchemaObject instance
+     * @throws RecognitionException the native antlr exception
+     * @throws TokenStreamException the native antlr exception
+     */
+    protected abstract T doParse() throws RecognitionException, TokenStreamException;
 
 
     /**
@@ -125,7 +229,7 @@ public abstract class AbstractSchemaParser
      *
      * @param schemaObject the schema object where the name should be updated
      */
-    protected static void updateSchemaName( SchemaObject schemaObject )
+    private void updateSchemaName( SchemaObject schemaObject )
     {
         // Update the Schema if we have the X-SCHEMA extension
         List<String> schemaExtension = schemaObject.getExtensions().get( MetaSchemaConstants.X_SCHEMA_AT );

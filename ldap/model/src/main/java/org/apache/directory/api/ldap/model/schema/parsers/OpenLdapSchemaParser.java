@@ -48,7 +48,7 @@ import antlr.TokenStreamException;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OpenLdapSchemaParser extends AbstractSchemaParser
+public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
 {
 
     /** The list of parsed schema descriptions */
@@ -74,8 +74,16 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser
      */
     public OpenLdapSchemaParser() throws IOException
     {
+        super( null, null, null, null );
         isResolveObjectIdentifierMacros = true;
         super.setQuirksMode( true );
+    }
+
+
+    @Override
+    protected SchemaObject doParse() throws RecognitionException, TokenStreamException
+    {
+        throw new UnsupportedOperationException( "OpenLdapSchemaParser is not a normal schema parser" );
     }
 
 

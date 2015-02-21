@@ -24,8 +24,6 @@ import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.LdapSyntax;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -36,17 +34,15 @@ import antlr.TokenStreamException;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapSyntaxDescriptionSchemaParser extends AbstractSchemaParser
+public class LdapSyntaxDescriptionSchemaParser extends AbstractSchemaParser<LdapSyntax>
 {
-    /** The LoggerFactory used by this class */
-    protected static final Logger LOG = LoggerFactory.getLogger( LdapSyntaxDescriptionSchemaParser.class );
-
 
     /**
      * Creates a schema parser instance.
      */
     public LdapSyntaxDescriptionSchemaParser()
     {
+        super( LdapSyntax.class, I18n.ERR_04239, I18n.ERR_04240, I18n.ERR_04241 );
     }
 
 
@@ -64,53 +60,19 @@ public class LdapSyntaxDescriptionSchemaParser extends AbstractSchemaParser
      * @return the parsed LdapSyntax bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized LdapSyntax parseLdapSyntaxDescription( String ldapSyntaxDescription )
-        throws ParseException
+    public LdapSyntax parseLdapSyntaxDescription( String ldapSyntaxDescription ) throws ParseException
     {
-        LOG.debug( "Parsing a LdapSyntax : {}", ldapSyntaxDescription );
-
-        if ( ldapSyntaxDescription == null )
-        {
-            LOG.error( I18n.err( I18n.ERR_04239 ) );
-            throw new ParseException( "Null", 0 );
-        }
-
-        reset( ldapSyntaxDescription ); // reset and initialize the parser / lexer pair
-
-        try
-        {
-            LdapSyntax ldapSyntax = parser.ldapSyntaxDescription();
-            ldapSyntax.setSpecification( ldapSyntaxDescription );
-            
-            // Update the schemaName
-            updateSchemaName( ldapSyntax );
-
-            return ldapSyntax;
-        }
-        catch ( RecognitionException re )
-        {
-            String msg = I18n.err( I18n.ERR_04240, ldapSyntaxDescription, re.getMessage(), re.getColumn() );
-            LOG.error( msg );
-            throw new ParseException( msg, re.getColumn() );
-        }
-        catch ( TokenStreamException tse )
-        {
-            String msg = I18n.err( I18n.ERR_04241, ldapSyntaxDescription, tse.getMessage() );
-            LOG.error( msg );
-            throw new ParseException( msg, 0 );
-        }
+        return super.parse( ldapSyntaxDescription );
     }
 
 
     /**
-     * Parses a LdapSyntax description.
-     * 
-     * @param schemaDescription The LdapSyntax description to parse
-     * @return An instance of LdapSyntax
-     * @throws ParseException {@inheritDoc}
+     * {@inheritDoc}
      */
-    public LdapSyntax parse( String schemaDescription ) throws ParseException
+    @Override
+    protected LdapSyntax doParse() throws RecognitionException, TokenStreamException
     {
-        return parseLdapSyntaxDescription( schemaDescription );
+        return parser.ldapSyntaxDescription();
     }
+
 }

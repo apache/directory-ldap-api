@@ -25,8 +25,6 @@ import java.text.ParseException;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -37,18 +35,15 @@ import antlr.TokenStreamException;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ObjectClassDescriptionSchemaParser extends AbstractSchemaParser
+public class ObjectClassDescriptionSchemaParser extends AbstractSchemaParser<ObjectClass>
 {
-    /** The LoggerFactory used by this class */
-    protected static final Logger LOG = LoggerFactory.getLogger( ObjectClassDescriptionSchemaParser.class );
-
 
     /**
      * Creates a schema parser instance.
      */
     public ObjectClassDescriptionSchemaParser()
     {
-        // Nothing to do
+        super( ObjectClass.class, I18n.ERR_04254, I18n.ERR_04255, I18n.ERR_04256 );
     }
 
 
@@ -77,54 +72,19 @@ public class ObjectClassDescriptionSchemaParser extends AbstractSchemaParser
      * @return the parsed ObjectClassDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized MutableObjectClass parseObjectClassDescription( String objectClassDescription )
-        throws ParseException
+    public ObjectClass parseObjectClassDescription( String objectClassDescription ) throws ParseException
     {
-        LOG.debug( "Parsing an ObjectClass : {}", objectClassDescription );
-
-        if ( objectClassDescription == null )
-        {
-            LOG.error( I18n.err( I18n.ERR_04254 ) );
-            throw new ParseException( "Null", 0 );
-        }
-
-        reset( objectClassDescription ); // reset and initialize the parser / lexer pair
-
-        try
-        {
-            MutableObjectClass objectClass = parser.objectClassDescription();
-
-            // Update the schemaName
-            updateSchemaName( objectClass );
-
-            return objectClass;
-        }
-        catch ( RecognitionException re )
-        {
-            String msg = I18n.err( I18n.ERR_04255, objectClassDescription, re.getMessage(), re.getColumn() );
-            LOG.error( msg );
-            throw new ParseException( msg, re.getColumn() );
-        }
-        catch ( TokenStreamException tse )
-        {
-            String msg = I18n.err( I18n.ERR_04256, objectClassDescription, tse.getMessage() );
-            LOG.error( msg );
-            throw new ParseException( msg, 0 );
-        }
-
+        return super.parse( objectClassDescription );
     }
 
 
     /**
-     * Parses a ObjectClass description.
-     * 
-     * @param schemaDescription The ObjectClass description to parse
-     * @return An instance of ObjectClass
-     * @throws ParseException {@inheritDoc}
+     * {@inheritDoc}
      */
-    public ObjectClass parse( String schemaDescription ) throws ParseException
+    @Override
+    protected ObjectClass doParse() throws RecognitionException, TokenStreamException
     {
-        return parseObjectClassDescription( schemaDescription );
+        return parser.objectClassDescription();
     }
 
 }

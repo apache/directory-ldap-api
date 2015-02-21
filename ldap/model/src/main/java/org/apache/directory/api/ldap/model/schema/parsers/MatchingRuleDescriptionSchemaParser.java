@@ -24,8 +24,6 @@ import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -36,17 +34,14 @@ import antlr.TokenStreamException;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class MatchingRuleDescriptionSchemaParser extends AbstractSchemaParser
+public class MatchingRuleDescriptionSchemaParser extends AbstractSchemaParser<MatchingRule>
 {
-    /** The LoggerFactory used by this class */
-    protected static final Logger LOG = LoggerFactory.getLogger( MatchingRuleDescriptionSchemaParser.class );
-
-
     /**
      * Creates a schema parser instance.
      */
     public MatchingRuleDescriptionSchemaParser()
     {
+        super( MatchingRule.class, I18n.ERR_04242, I18n.ERR_04243, I18n.ERR_04244 );
     }
 
 
@@ -70,52 +65,19 @@ public class MatchingRuleDescriptionSchemaParser extends AbstractSchemaParser
      * @return the parsed MatchingRuleDescription bean
      * @throws ParseException if there are any recognition errors (bad syntax)
      */
-    public synchronized MatchingRule parseMatchingRuleDescription( String matchingRuleDescription )
-        throws ParseException
+    public MatchingRule parseMatchingRuleDescription( String matchingRuleDescription ) throws ParseException
     {
-        LOG.debug( "Parsing a MatchingRule : {}", matchingRuleDescription );
-
-        if ( matchingRuleDescription == null )
-        {
-            LOG.error( I18n.err( I18n.ERR_04242 ) );
-            throw new ParseException( "Null", 0 );
-        }
-
-        reset( matchingRuleDescription ); // reset and initialize the parser / lexer pair
-
-        try
-        {
-            MatchingRule matchingRule = parser.matchingRuleDescription();
-
-            // Update the schemaName
-            updateSchemaName( matchingRule );
-
-            return matchingRule;
-        }
-        catch ( RecognitionException re )
-        {
-            String msg = I18n.err( I18n.ERR_04243, matchingRuleDescription, re.getMessage(), re.getColumn() );
-            LOG.error( msg );
-            throw new ParseException( msg, re.getColumn() );
-        }
-        catch ( TokenStreamException tse )
-        {
-            String msg = I18n.err( I18n.ERR_04244, matchingRuleDescription, tse.getMessage() );
-            LOG.error( msg );
-            throw new ParseException( msg, 0 );
-        }
+        return super.parse( matchingRuleDescription );
     }
 
 
     /**
-     * Parses a MatchingRule description.
-     * 
-     * @param schemaDescription The MatchingRule description to parse
-     * @return An instance of MatchingRule
-     * @throws ParseException {@inheritDoc}
+     * {@inheritDoc}
      */
-    public MatchingRule parse( String schemaDescription ) throws ParseException
+    @Override
+    protected MatchingRule doParse() throws RecognitionException, TokenStreamException
     {
-        return parseMatchingRuleDescription( schemaDescription );
+        return parser.matchingRuleDescription();
     }
+
 }
