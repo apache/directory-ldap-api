@@ -27,15 +27,15 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.schema.DitContentRule;
 import org.apache.directory.api.ldap.model.schema.parsers.DitContentRuleDescriptionSchemaParser;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -464,14 +464,14 @@ public class DitContentRuleDescriptionSchemaParserTest
             .getNotAttributeTypeOids()
             .get( 1 ) );
         assertEquals( 2, ditContentRule.getExtensions().size() );
-        assertNotNull( ditContentRule.getExtensions().get( "X-TEST-a" ) );
-        assertEquals( 2, ditContentRule.getExtensions().get( "X-TEST-a" ).size() );
-        assertEquals( "test1-1", ditContentRule.getExtensions().get( "X-TEST-a" ).get( 0 ) );
-        assertEquals( "test1-2", ditContentRule.getExtensions().get( "X-TEST-a" ).get( 1 ) );
-        assertNotNull( ditContentRule.getExtensions().get( "X-TEST-b" ) );
-        assertEquals( 2, ditContentRule.getExtensions().get( "X-TEST-b" ).size() );
-        assertEquals( "test2-1", ditContentRule.getExtensions().get( "X-TEST-b" ).get( 0 ) );
-        assertEquals( "test2-2", ditContentRule.getExtensions().get( "X-TEST-b" ).get( 1 ) );
+        assertNotNull( ditContentRule.getExtension( "X-TEST-a" ) );
+        assertEquals( 2, ditContentRule.getExtension( "X-TEST-a" ).size() );
+        assertEquals( "test1-1", ditContentRule.getExtension( "X-TEST-a" ).get( 0 ) );
+        assertEquals( "test1-2", ditContentRule.getExtension( "X-TEST-a" ).get( 1 ) );
+        assertNotNull( ditContentRule.getExtension( "X-TEST-b" ) );
+        assertEquals( 2, ditContentRule.getExtension( "X-TEST-b" ).size() );
+        assertEquals( "test2-1", ditContentRule.getExtension( "X-TEST-b" ).get( 0 ) );
+        assertEquals( "test2-2", ditContentRule.getExtension( "X-TEST-b" ).get( 1 ) );
     }
 
 

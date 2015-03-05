@@ -31,15 +31,15 @@ import java.text.ParseException;
 
 import javax.naming.NamingException;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.schema.MatchingRule;
 import org.apache.directory.api.ldap.model.schema.parsers.MatchingRuleDescriptionSchemaParser;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -189,14 +189,14 @@ public class MatchingRuleDescriptionSchemaParserTest
         assertTrue( matchingRule.isObsolete() );
         assertEquals( "0.1.2.3.4.5.6.7.8.9", matchingRule.getSyntaxOid() );
         assertEquals( 2, matchingRule.getExtensions().size() );
-        assertNotNull( matchingRule.getExtensions().get( "X-TEST-a" ) );
-        assertEquals( 2, matchingRule.getExtensions().get( "X-TEST-a" ).size() );
-        assertEquals( "test1-1", matchingRule.getExtensions().get( "X-TEST-a" ).get( 0 ) );
-        assertEquals( "test1-2", matchingRule.getExtensions().get( "X-TEST-a" ).get( 1 ) );
-        assertNotNull( matchingRule.getExtensions().get( "X-TEST-b" ) );
-        assertEquals( 2, matchingRule.getExtensions().get( "X-TEST-b" ).size() );
-        assertEquals( "test2-1", matchingRule.getExtensions().get( "X-TEST-b" ).get( 0 ) );
-        assertEquals( "test2-2", matchingRule.getExtensions().get( "X-TEST-b" ).get( 1 ) );
+        assertNotNull( matchingRule.getExtension( "X-TEST-a" ) );
+        assertEquals( 2, matchingRule.getExtension( "X-TEST-a" ).size() );
+        assertEquals( "test1-1", matchingRule.getExtension( "X-TEST-a" ).get( 0 ) );
+        assertEquals( "test1-2", matchingRule.getExtension( "X-TEST-a" ).get( 1 ) );
+        assertNotNull( matchingRule.getExtension( "X-TEST-b" ) );
+        assertEquals( 2, matchingRule.getExtension( "X-TEST-b" ).size() );
+        assertEquals( "test2-1", matchingRule.getExtension( "X-TEST-b" ).get( 0 ) );
+        assertEquals( "test2-2", matchingRule.getExtension( "X-TEST-b" ).get( 1 ) );
     }
 
 

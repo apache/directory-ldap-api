@@ -29,9 +29,6 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.UsageEnum;
 import org.apache.directory.api.ldap.model.schema.parsers.AttributeTypeDescriptionSchemaParser;
@@ -40,6 +37,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -691,14 +691,14 @@ public class AttributeTypeDescriptionSchemaParserTest
         assertEquals( UsageEnum.DSA_OPERATION, attributeType.getUsage() );
 
         assertEquals( 2, attributeType.getExtensions().size() );
-        assertNotNull( attributeType.getExtensions().get( "X-TEST-a" ) );
-        assertEquals( 2, attributeType.getExtensions().get( "X-TEST-a" ).size() );
-        assertEquals( "test1-1", attributeType.getExtensions().get( "X-TEST-a" ).get( 0 ) );
-        assertEquals( "test1-2", attributeType.getExtensions().get( "X-TEST-a" ).get( 1 ) );
-        assertNotNull( attributeType.getExtensions().get( "X-TEST-b" ) );
-        assertEquals( 2, attributeType.getExtensions().get( "X-TEST-b" ).size() );
-        assertEquals( "test2-1", attributeType.getExtensions().get( "X-TEST-b" ).get( 0 ) );
-        assertEquals( "test2-2", attributeType.getExtensions().get( "X-TEST-b" ).get( 1 ) );
+        assertNotNull( attributeType.getExtension( "X-TEST-a" ) );
+        assertEquals( 2, attributeType.getExtension( "X-TEST-a" ).size() );
+        assertEquals( "test1-1", attributeType.getExtension( "X-TEST-a" ).get( 0 ) );
+        assertEquals( "test1-2", attributeType.getExtension( "X-TEST-a" ).get( 1 ) );
+        assertNotNull( attributeType.getExtension( "X-TEST-b" ) );
+        assertEquals( 2, attributeType.getExtension( "X-TEST-b" ).size() );
+        assertEquals( "test2-1", attributeType.getExtension( "X-TEST-b" ).get( 0 ) );
+        assertEquals( "test2-2", attributeType.getExtension( "X-TEST-b" ).get( 1 ) );
     }
 
 
@@ -970,7 +970,7 @@ public class AttributeTypeDescriptionSchemaParserTest
         assertEquals( "bogus description", desc.getDescription() );
         assertEquals( "name", desc.getSuperiorOid() );
         assertEquals( true, desc.isSingleValued() );
-        assertEquals( "blah", desc.getExtensions().get( "X-SCHEMA" ).get( 0 ) );
+        assertEquals( "blah", desc.getExtension( "X-SCHEMA" ).get( 0 ) );
     }
 
 

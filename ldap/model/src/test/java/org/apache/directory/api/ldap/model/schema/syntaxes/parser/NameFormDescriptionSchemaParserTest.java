@@ -27,9 +27,6 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.schema.NameForm;
 import org.apache.directory.api.ldap.model.schema.parsers.NameFormDescriptionSchemaParser;
@@ -37,6 +34,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -399,14 +399,14 @@ public class NameFormDescriptionSchemaParserTest
         assertEquals( "defghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789abc", nf.getMayAttributeTypeOids()
             .get( 1 ) );
         assertEquals( 2, nf.getExtensions().size() );
-        assertNotNull( nf.getExtensions().get( "X-TEST-a" ) );
-        assertEquals( 2, nf.getExtensions().get( "X-TEST-a" ).size() );
-        assertEquals( "test1-1", nf.getExtensions().get( "X-TEST-a" ).get( 0 ) );
-        assertEquals( "test1-2", nf.getExtensions().get( "X-TEST-a" ).get( 1 ) );
-        assertNotNull( nf.getExtensions().get( "X-TEST-b" ) );
-        assertEquals( 2, nf.getExtensions().get( "X-TEST-b" ).size() );
-        assertEquals( "test2-1", nf.getExtensions().get( "X-TEST-b" ).get( 0 ) );
-        assertEquals( "test2-2", nf.getExtensions().get( "X-TEST-b" ).get( 1 ) );
+        assertNotNull( nf.getExtension( "X-TEST-a" ) );
+        assertEquals( 2, nf.getExtension( "X-TEST-a" ).size() );
+        assertEquals( "test1-1", nf.getExtension( "X-TEST-a" ).get( 0 ) );
+        assertEquals( "test1-2", nf.getExtension( "X-TEST-a" ).get( 1 ) );
+        assertNotNull( nf.getExtension( "X-TEST-b" ) );
+        assertEquals( 2, nf.getExtension( "X-TEST-b" ).size() );
+        assertEquals( "test2-1", nf.getExtension( "X-TEST-b" ).get( 0 ) );
+        assertEquals( "test2-2", nf.getExtension( "X-TEST-b" ).get( 1 ) );
     }
 
 

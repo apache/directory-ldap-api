@@ -446,70 +446,70 @@ public class SchemaParserTestUtils
         value = "( " + oid + " " + required + " X-TEST 'test' )";
         asd = parser.parse( value );
         assertEquals( 1, asd.getExtensions().size() );
-        assertNotNull( asd.getExtensions().get( "X-TEST" ) );
-        assertEquals( 1, asd.getExtensions().get( "X-TEST" ).size() );
-        assertEquals( "test", asd.getExtensions().get( "X-TEST" ).get( 0 ) );
+        assertNotNull( asd.getExtension( "X-TEST" ) );
+        assertEquals( 1, asd.getExtension( "X-TEST" ).size() );
+        assertEquals( "test", asd.getExtension( "X-TEST" ).get( 0 ) );
 
         // single extension with multiple values
         value = "( " + oid + " " + required
             + " X-TEST-ABC ('test1' 'test \u00E4\u00F6\u00FC\u00DF'       'test \u90E8\u9577' ) )";
         asd = parser.parse( value );
         assertEquals( 1, asd.getExtensions().size() );
-        assertNotNull( asd.getExtensions().get( "X-TEST-ABC" ) );
-        assertEquals( 3, asd.getExtensions().get( "X-TEST-ABC" ).size() );
-        assertEquals( "test1", asd.getExtensions().get( "X-TEST-ABC" ).get( 0 ) );
-        assertEquals( "test \u00E4\u00F6\u00FC\u00DF", asd.getExtensions().get( "X-TEST-ABC" ).get( 1 ) );
-        assertEquals( "test \u90E8\u9577", asd.getExtensions().get( "X-TEST-ABC" ).get( 2 ) );
+        assertNotNull( asd.getExtension( "X-TEST-ABC" ) );
+        assertEquals( 3, asd.getExtension( "X-TEST-ABC" ).size() );
+        assertEquals( "test1", asd.getExtension( "X-TEST-ABC" ).get( 0 ) );
+        assertEquals( "test \u00E4\u00F6\u00FC\u00DF", asd.getExtension( "X-TEST-ABC" ).get( 1 ) );
+        assertEquals( "test \u90E8\u9577", asd.getExtension( "X-TEST-ABC" ).get( 2 ) );
 
         // multiple extensions
         value = "(" + oid + " " + required + " X-TEST-a ('test1-1' 'test1-2') X-TEST-b ('test2-1' 'test2-2'))";
         asd = parser.parse( value );
         assertEquals( 2, asd.getExtensions().size() );
-        assertNotNull( asd.getExtensions().get( "X-TEST-a" ) );
-        assertEquals( 2, asd.getExtensions().get( "X-TEST-a" ).size() );
-        assertEquals( "test1-1", asd.getExtensions().get( "X-TEST-a" ).get( 0 ) );
-        assertEquals( "test1-2", asd.getExtensions().get( "X-TEST-a" ).get( 1 ) );
-        assertNotNull( asd.getExtensions().get( "X-TEST-b" ) );
-        assertEquals( 2, asd.getExtensions().get( "X-TEST-b" ).size() );
-        assertEquals( "test2-1", asd.getExtensions().get( "X-TEST-b" ).get( 0 ) );
-        assertEquals( "test2-2", asd.getExtensions().get( "X-TEST-b" ).get( 1 ) );
+        assertNotNull( asd.getExtension( "X-TEST-a" ) );
+        assertEquals( 2, asd.getExtension( "X-TEST-a" ).size() );
+        assertEquals( "test1-1", asd.getExtension( "X-TEST-a" ).get( 0 ) );
+        assertEquals( "test1-2", asd.getExtension( "X-TEST-a" ).get( 1 ) );
+        assertNotNull( asd.getExtension( "X-TEST-b" ) );
+        assertEquals( 2, asd.getExtension( "X-TEST-b" ).size() );
+        assertEquals( "test2-1", asd.getExtension( "X-TEST-b" ).get( 0 ) );
+        assertEquals( "test2-2", asd.getExtension( "X-TEST-b" ).get( 1 ) );
 
         // multiple extensions, no spaces
         value = "(" + oid + " " + required + " X-TEST-a('test1-1''test1-2')X-TEST-b('test2-1''test2-2'))";
         asd = parser.parse( value );
         assertEquals( 2, asd.getExtensions().size() );
-        assertNotNull( asd.getExtensions().get( "X-TEST-a" ) );
-        assertEquals( 2, asd.getExtensions().get( "X-TEST-a" ).size() );
-        assertEquals( "test1-1", asd.getExtensions().get( "X-TEST-a" ).get( 0 ) );
-        assertEquals( "test1-2", asd.getExtensions().get( "X-TEST-a" ).get( 1 ) );
-        assertNotNull( asd.getExtensions().get( "X-TEST-b" ) );
-        assertEquals( 2, asd.getExtensions().get( "X-TEST-b" ).size() );
-        assertEquals( "test2-1", asd.getExtensions().get( "X-TEST-b" ).get( 0 ) );
-        assertEquals( "test2-2", asd.getExtensions().get( "X-TEST-b" ).get( 1 ) );
+        assertNotNull( asd.getExtension( "X-TEST-a" ) );
+        assertEquals( 2, asd.getExtension( "X-TEST-a" ).size() );
+        assertEquals( "test1-1", asd.getExtension( "X-TEST-a" ).get( 0 ) );
+        assertEquals( "test1-2", asd.getExtension( "X-TEST-a" ).get( 1 ) );
+        assertNotNull( asd.getExtension( "X-TEST-b" ) );
+        assertEquals( 2, asd.getExtension( "X-TEST-b" ).size() );
+        assertEquals( "test2-1", asd.getExtension( "X-TEST-b" ).get( 0 ) );
+        assertEquals( "test2-2", asd.getExtension( "X-TEST-b" ).get( 1 ) );
 
         // multiple extensions, tabs, newline, comments
         value = "(" + oid + "\n#comment\n" + required
             + "\nX-TEST-a\n(\t'test1-1'\t\n'test1-2'\n\r)\tX-TEST-b\n(\n'test2-1'\t'test2-2'\t)\r)";
         asd = parser.parse( value );
         assertEquals( 2, asd.getExtensions().size() );
-        assertNotNull( asd.getExtensions().get( "X-TEST-a" ) );
-        assertEquals( 2, asd.getExtensions().get( "X-TEST-a" ).size() );
-        assertEquals( "test1-1", asd.getExtensions().get( "X-TEST-a" ).get( 0 ) );
-        assertEquals( "test1-2", asd.getExtensions().get( "X-TEST-a" ).get( 1 ) );
-        assertNotNull( asd.getExtensions().get( "X-TEST-b" ) );
-        assertEquals( 2, asd.getExtensions().get( "X-TEST-b" ).size() );
-        assertEquals( "test2-1", asd.getExtensions().get( "X-TEST-b" ).get( 0 ) );
-        assertEquals( "test2-2", asd.getExtensions().get( "X-TEST-b" ).get( 1 ) );
+        assertNotNull( asd.getExtension( "X-TEST-a" ) );
+        assertEquals( 2, asd.getExtension( "X-TEST-a" ).size() );
+        assertEquals( "test1-1", asd.getExtension( "X-TEST-a" ).get( 0 ) );
+        assertEquals( "test1-2", asd.getExtension( "X-TEST-a" ).get( 1 ) );
+        assertNotNull( asd.getExtension( "X-TEST-b" ) );
+        assertEquals( 2, asd.getExtension( "X-TEST-b" ).size() );
+        assertEquals( "test2-1", asd.getExtension( "X-TEST-b" ).get( 0 ) );
+        assertEquals( "test2-2", asd.getExtension( "X-TEST-b" ).get( 1 ) );
 
         // some more complicated
         value = "(" + oid + " " + required
             + " X-_-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ('\\5C\\27\\5c'))";
         asd = parser.parse( value );
         assertEquals( 1, asd.getExtensions().size() );
-        assertNotNull( asd.getExtensions().get( "X-_-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ) );
-        assertEquals( 1, asd.getExtensions().get( "X-_-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" )
+        assertNotNull( asd.getExtension( "X-_-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ) );
+        assertEquals( 1, asd.getExtension( "X-_-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" )
             .size() );
-        assertEquals( "\\'\\", asd.getExtensions().get(
+        assertEquals( "\\'\\", asd.getExtension(
             "X-_-abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" ).get( 0 ) );
 
         // invalid extension, no number allowed

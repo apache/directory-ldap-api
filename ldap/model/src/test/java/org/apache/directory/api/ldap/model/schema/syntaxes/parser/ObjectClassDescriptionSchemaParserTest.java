@@ -30,9 +30,6 @@ import java.text.ParseException;
 
 import javax.naming.NamingException;
 
-import com.mycila.junit.concurrent.Concurrency;
-import com.mycila.junit.concurrent.ConcurrentJunitRunner;
-
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClassTypeEnum;
 import org.apache.directory.api.ldap.model.schema.parsers.ObjectClassDescriptionSchemaParser;
@@ -40,6 +37,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.mycila.junit.concurrent.Concurrency;
+import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
 
 /**
@@ -483,14 +483,14 @@ public class ObjectClassDescriptionSchemaParserTest
             .getMayAttributeTypeOids()
             .get( 1 ) );
         assertEquals( 2, objectClass.getExtensions().size() );
-        assertNotNull( objectClass.getExtensions().get( "X-TEST-a" ) );
-        assertEquals( 2, objectClass.getExtensions().get( "X-TEST-a" ).size() );
-        assertEquals( "test1-1", objectClass.getExtensions().get( "X-TEST-a" ).get( 0 ) );
-        assertEquals( "test1-2", objectClass.getExtensions().get( "X-TEST-a" ).get( 1 ) );
-        assertNotNull( objectClass.getExtensions().get( "X-TEST-b" ) );
-        assertEquals( 2, objectClass.getExtensions().get( "X-TEST-b" ).size() );
-        assertEquals( "test2-1", objectClass.getExtensions().get( "X-TEST-b" ).get( 0 ) );
-        assertEquals( "test2-2", objectClass.getExtensions().get( "X-TEST-b" ).get( 1 ) );
+        assertNotNull( objectClass.getExtension( "X-TEST-a" ) );
+        assertEquals( 2, objectClass.getExtension( "X-TEST-a" ).size() );
+        assertEquals( "test1-1", objectClass.getExtension( "X-TEST-a" ).get( 0 ) );
+        assertEquals( "test1-2", objectClass.getExtension( "X-TEST-a" ).get( 1 ) );
+        assertNotNull( objectClass.getExtension( "X-TEST-b" ) );
+        assertEquals( 2, objectClass.getExtension( "X-TEST-b" ).size() );
+        assertEquals( "test2-1", objectClass.getExtension( "X-TEST-b" ).get( 0 ) );
+        assertEquals( "test2-2", objectClass.getExtension( "X-TEST-b" ).get( 1 ) );
     }
 
 
@@ -628,9 +628,9 @@ public class ObjectClassDescriptionSchemaParserTest
         assertEquals( 0, objectClass.getMayAttributeTypeOids().size() );
 
         assertEquals( 1, objectClass.getExtensions().size() );
-        assertNotNull( objectClass.getExtensions().get( "X-ORIGIN" ) );
-        assertEquals( 1, objectClass.getExtensions().get( "X-ORIGIN" ).size() );
-        assertEquals( "RFC 2256", objectClass.getExtensions().get( "X-ORIGIN" ).get( 0 ) );
+        assertNotNull( objectClass.getExtension( "X-ORIGIN" ) );
+        assertEquals( 1, objectClass.getExtension( "X-ORIGIN" ).size() );
+        assertEquals( "RFC 2256", objectClass.getExtension( "X-ORIGIN" ).get( 0 ) );
     }
 
 
@@ -651,15 +651,15 @@ public class ObjectClassDescriptionSchemaParserTest
         assertEquals( 0, objectClass.getMayAttributeTypeOids().size() );
 
         assertEquals( 3, objectClass.getExtensions().size() );
-        assertNotNull( objectClass.getExtensions().get( "X-NDS_NAMING" ) );
-        assertEquals( 1, objectClass.getExtensions().get( "X-NDS_NAMING" ).size() );
-        assertEquals( "dc", objectClass.getExtensions().get( "X-NDS_NAMING" ).get( 0 ) );
-        assertNotNull( objectClass.getExtensions().get( "X-NDS_NOT_CONTAINER" ) );
-        assertEquals( 1, objectClass.getExtensions().get( "X-NDS_NOT_CONTAINER" ).size() );
-        assertEquals( "1", objectClass.getExtensions().get( "X-NDS_NOT_CONTAINER" ).get( 0 ) );
-        assertNotNull( objectClass.getExtensions().get( "X-NDS_NONREMOVABLE" ) );
-        assertEquals( 1, objectClass.getExtensions().get( "X-NDS_NONREMOVABLE" ).size() );
-        assertEquals( "1", objectClass.getExtensions().get( "X-NDS_NONREMOVABLE" ).get( 0 ) );
+        assertNotNull( objectClass.getExtension( "X-NDS_NAMING" ) );
+        assertEquals( 1, objectClass.getExtension( "X-NDS_NAMING" ).size() );
+        assertEquals( "dc", objectClass.getExtension( "X-NDS_NAMING" ).get( 0 ) );
+        assertNotNull( objectClass.getExtension( "X-NDS_NOT_CONTAINER" ) );
+        assertEquals( 1, objectClass.getExtension( "X-NDS_NOT_CONTAINER" ).size() );
+        assertEquals( "1", objectClass.getExtension( "X-NDS_NOT_CONTAINER" ).get( 0 ) );
+        assertNotNull( objectClass.getExtension( "X-NDS_NONREMOVABLE" ) );
+        assertEquals( 1, objectClass.getExtension( "X-NDS_NONREMOVABLE" ).size() );
+        assertEquals( "1", objectClass.getExtension( "X-NDS_NONREMOVABLE" ).get( 0 ) );
     }
 
 
@@ -683,29 +683,29 @@ public class ObjectClassDescriptionSchemaParserTest
         assertEquals( "fullName", objectClass.getMayAttributeTypeOids().get( 10 ) );
 
         assertEquals( 5, objectClass.getExtensions().size() );
-        assertNotNull( objectClass.getExtensions().get( "X-NDS_NAMING" ) );
-        assertEquals( 1, objectClass.getExtensions().get( "X-NDS_NAMING" ).size() );
-        assertEquals( "cn", objectClass.getExtensions().get( "X-NDS_NAMING" ).get( 0 ) );
+        assertNotNull( objectClass.getExtension( "X-NDS_NAMING" ) );
+        assertEquals( 1, objectClass.getExtension( "X-NDS_NAMING" ).size() );
+        assertEquals( "cn", objectClass.getExtension( "X-NDS_NAMING" ).get( 0 ) );
 
-        assertNotNull( objectClass.getExtensions().get( "X-NDS_NOT_CONTAINER" ) );
-        assertEquals( 1, objectClass.getExtensions().get( "X-NDS_NOT_CONTAINER" ).size() );
-        assertEquals( "1", objectClass.getExtensions().get( "X-NDS_NOT_CONTAINER" ).get( 0 ) );
+        assertNotNull( objectClass.getExtension( "X-NDS_NOT_CONTAINER" ) );
+        assertEquals( 1, objectClass.getExtension( "X-NDS_NOT_CONTAINER" ).size() );
+        assertEquals( "1", objectClass.getExtension( "X-NDS_NOT_CONTAINER" ).get( 0 ) );
 
-        assertNotNull( objectClass.getExtensions().get( "X-NDS_NONREMOVABLE" ) );
-        assertEquals( 1, objectClass.getExtensions().get( "X-NDS_NONREMOVABLE" ).size() );
-        assertEquals( "1", objectClass.getExtensions().get( "X-NDS_NONREMOVABLE" ).get( 0 ) );
+        assertNotNull( objectClass.getExtension( "X-NDS_NONREMOVABLE" ) );
+        assertEquals( 1, objectClass.getExtension( "X-NDS_NONREMOVABLE" ).size() );
+        assertEquals( "1", objectClass.getExtension( "X-NDS_NONREMOVABLE" ).get( 0 ) );
 
         // X-NDS_CONTAINMENT ( 'Organization' 'organizationalUnit' 'domain' )
-        assertNotNull( objectClass.getExtensions().get( "X-NDS_CONTAINMENT" ) );
-        assertEquals( 3, objectClass.getExtensions().get( "X-NDS_CONTAINMENT" ).size() );
-        assertEquals( "Organization", objectClass.getExtensions().get( "X-NDS_CONTAINMENT" ).get( 0 ) );
-        assertEquals( "organizationalUnit", objectClass.getExtensions().get( "X-NDS_CONTAINMENT" ).get( 1 ) );
-        assertEquals( "domain", objectClass.getExtensions().get( "X-NDS_CONTAINMENT" ).get( 2 ) );
+        assertNotNull( objectClass.getExtension( "X-NDS_CONTAINMENT" ) );
+        assertEquals( 3, objectClass.getExtension( "X-NDS_CONTAINMENT" ).size() );
+        assertEquals( "Organization", objectClass.getExtension( "X-NDS_CONTAINMENT" ).get( 0 ) );
+        assertEquals( "organizationalUnit", objectClass.getExtension( "X-NDS_CONTAINMENT" ).get( 1 ) );
+        assertEquals( "domain", objectClass.getExtension( "X-NDS_CONTAINMENT" ).get( 2 ) );
 
         // X-NDS_ACL_TEMPLATES '2#entry#[Root Template]#member'
-        assertNotNull( objectClass.getExtensions().get( "X-NDS_ACL_TEMPLATES" ) );
-        assertEquals( 1, objectClass.getExtensions().get( "X-NDS_ACL_TEMPLATES" ).size() );
-        assertEquals( "2#entry#[Root Template]#member", objectClass.getExtensions().get( "X-NDS_ACL_TEMPLATES" )
+        assertNotNull( objectClass.getExtension( "X-NDS_ACL_TEMPLATES" ) );
+        assertEquals( 1, objectClass.getExtension( "X-NDS_ACL_TEMPLATES" ).size() );
+        assertEquals( "2#entry#[Root Template]#member", objectClass.getExtension( "X-NDS_ACL_TEMPLATES" )
             .get( 0 ) );
     }
 
