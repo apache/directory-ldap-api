@@ -176,7 +176,7 @@ public final class MetaSchemaConstants
     public static final String X_SCHEMA_AT = "X-SCHEMA";
     public static final String X_SCHEMA_AT_OID = "1.3.6.1.4.1.18060.0.4.0.2.35";
 
-    public static final String X_NOT_HUMAN_READABLE_AT = "x-not-human-readable";
+    public static final String X_NOT_HUMAN_READABLE_AT = "X-NOT-HUMAN-READABLE";
     public static final String X_NOT_HUMAN_READABLE_AT_OID = "1.3.6.1.4.1.18060.0.4.0.2.34";
 
     // The x-read-only extension
