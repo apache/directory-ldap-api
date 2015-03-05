@@ -364,7 +364,6 @@ public final class SchemaUtils
     // schema object rendering operations
     // ------------------------------------------------------------------------
 
-
     /**
      * Renders the schema extensions into a new StringBuffer.
      *
@@ -418,8 +417,6 @@ public final class SchemaUtils
     }
 
 
-    
-
     /**
      * Returns a String description of a schema. The resulting String format is :
      * <br>
@@ -456,7 +453,7 @@ public final class SchemaUtils
 
     private static String getSchemaName( SchemaObject desc )
     {
-        List<String> values = desc.getExtensions().get( MetaSchemaConstants.X_SCHEMA_AT );
+        List<String> values = desc.getExtension( MetaSchemaConstants.X_SCHEMA_AT );
 
         if ( values == null || values.size() == 0 )
         {

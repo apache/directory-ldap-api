@@ -232,7 +232,7 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
     private void updateSchemaName( SchemaObject schemaObject )
     {
         // Update the Schema if we have the X-SCHEMA extension
-        List<String> schemaExtension = schemaObject.getExtensions().get( MetaSchemaConstants.X_SCHEMA_AT );
+        List<String> schemaExtension = schemaObject.getExtension( MetaSchemaConstants.X_SCHEMA_AT );
 
         if ( schemaExtension != null )
         {
