@@ -34,6 +34,8 @@ import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValue
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory;
+import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequest;
+import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory;
@@ -111,12 +113,13 @@ public class ExtrasBundleActivator implements BundleActivator
      */
     public void start( BundleContext context ) throws Exception
     {
-        LdapApiServiceTracker ldapApiServiceTracker = new LdapApiServiceTracker(context);
+        LdapApiServiceTracker ldapApiServiceTracker = new LdapApiServiceTracker( context );
         serviceTracker = new ServiceTracker<LdapApiService, LdapApiService>(
             context, LdapApiService.class, ldapApiServiceTracker );
         serviceTracker.open();
     }
-    
+
+
     /**
      * Registers all the extras controls present in this control pack.
      *
@@ -138,6 +141,9 @@ public class ExtrasBundleActivator implements BundleActivator
 
         ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( codec );
         codec.registerControl( passwordPolicyFactory );
+
+        ControlFactory<VirtualListViewRequest> virtualListViewRequestFactory = new VirtualListViewRequestFactory( codec );
+        codec.registerControl( virtualListViewRequestFactory );
 
         ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( codec );
         codec.registerControl( adDirSyncFactory );
