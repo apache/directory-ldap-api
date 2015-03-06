@@ -53,7 +53,7 @@ public class StandaloneLdapCodecServiceTest
                 "org.apache.directory.api.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory," +
                 "org.apache.directory.api.ldap.codec.controls.search.subentries.SubentriesFactory," +
                 "org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory," +
-                "org.apache.directory.api.ldap.extras.controls.ppolicy_impl.VirtualListViewRequestFactory," +
+                "org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory," +
                 "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory," +
                 "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory," +
                 "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory," +
