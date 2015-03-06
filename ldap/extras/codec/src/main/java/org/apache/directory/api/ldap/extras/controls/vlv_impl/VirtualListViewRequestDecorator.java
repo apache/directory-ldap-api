@@ -309,7 +309,7 @@ public class VirtualListViewRequestDecorator extends ControlDecorator<VirtualLis
     @Override
     public boolean hasOffset()
     {
-        return false;
+        return getDecorated().hasOffset();
     }
 
 
@@ -319,7 +319,7 @@ public class VirtualListViewRequestDecorator extends ControlDecorator<VirtualLis
     @Override
     public boolean hasAssertionValue()
     {
-        return false;
+        return getDecorated().hasAssertionValue();
     }
 
 }
