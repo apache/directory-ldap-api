@@ -84,12 +84,14 @@ public class VirtualListViewRequestDecorator extends ControlDecorator<VirtualLis
 
             if ( assertionValue != null )
             {
-                vlvSeqLength += 1 + TLV.getNbBytes( assertionValue.length ) + assertionValue.length;
+                targetSeqLength = 1 + TLV.getNbBytes( assertionValue.length ) + assertionValue.length;
             }
             else
             {
-                vlvSeqLength += 1 + 1;
+                targetSeqLength = 1 + 1;
             }
+
+            vlvSeqLength += targetSeqLength;
         }
 
         if ( getContextId() != null )
@@ -132,10 +134,19 @@ public class VirtualListViewRequestDecorator extends ControlDecorator<VirtualLis
         else
         {
             buffer.put( ( byte ) VirtualListViewerTags.ASSERTION_VALUE_TAG.getValue() );
-            buffer.put( TLV.getBytes( targetSeqLength ) );
+            byte[] value = getAssertionValue();
 
-            // The by assertionValue values
-            BerValue.encode( buffer, getAssertionValue() );
+            if ( value != null )
+            {
+                buffer.put( TLV.getBytes( value.length ) );
+            }
+            else
+            {
+                buffer.put( TLV.getBytes( 0 ) );
+            }
+
+            // The by assertionValue value
+            buffer.put( value );
         }
 
         if ( getContextId() != null )
@@ -290,7 +301,7 @@ public class VirtualListViewRequestDecorator extends ControlDecorator<VirtualLis
     @Override
     public byte[] getAssertionValue()
     {
-        return null;
+        return getDecorated().getAssertionValue();
     }
 
 
@@ -300,6 +311,7 @@ public class VirtualListViewRequestDecorator extends ControlDecorator<VirtualLis
     @Override
     public void setAssertionValue( byte[] assertionValue )
     {
+        getDecorated().setAssertionValue( assertionValue );
     }
 
 

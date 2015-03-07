@@ -20,7 +20,9 @@
 package org.apache.directory.api.ldap.extras.controls.vlv_impl;
 
 
-import org.apache.directory.api.asn1.actions.AbstractReadOctetString;
+import org.apache.directory.api.asn1.ber.grammar.GrammarAction;
+import org.apache.directory.api.asn1.ber.tlv.TLV;
+import org.apache.directory.api.util.Strings;
 
 
 /**
@@ -28,7 +30,7 @@ import org.apache.directory.api.asn1.actions.AbstractReadOctetString;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StoreAssertionValue extends AbstractReadOctetString<VirtualListViewRequestContainer>
+public class StoreAssertionValue extends GrammarAction<VirtualListViewRequestContainer>
 {
 
     /**
@@ -36,7 +38,7 @@ public class StoreAssertionValue extends AbstractReadOctetString<VirtualListView
      */
     public StoreAssertionValue()
     {
-        super( "VirtualListViewRequest offset" );
+        super( "VirtualListViewRequest assertionValue" );
     }
 
 
@@ -44,9 +46,20 @@ public class StoreAssertionValue extends AbstractReadOctetString<VirtualListView
      * {@inheritDoc}
      */
     @Override
-    protected void setOctetString( byte[] value, VirtualListViewRequestContainer vlvContainer )
+    public void action( VirtualListViewRequestContainer vlvContainer )
     {
-        vlvContainer.getDecorator().setAssertionValue( value );
+        TLV tlv = vlvContainer.getCurrentTLV();
+
+        if ( tlv.getLength() != 0 )
+        {
+            byte[] assertionValue = tlv.getValue().getData();
+
+            vlvContainer.getDecorator().setAssertionValue( assertionValue );
+        }
+        else
+        {
+            vlvContainer.getDecorator().setAssertionValue( Strings.EMPTY_BYTES );
+        }
 
         // The last element is optional, we can quit here
         vlvContainer.setGrammarEndAllowed( true );
