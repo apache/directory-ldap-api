@@ -94,7 +94,7 @@ public class VirtualListViewRequestDecorator extends ControlDecorator<VirtualLis
 
         if ( getContextId() != null )
         {
-            vlvSeqLength = 1 + TLV.getNbBytes( getContextId().length ) + getContextId().length;
+            vlvSeqLength += 1 + TLV.getNbBytes( getContextId().length ) + getContextId().length;
         }
 
         valueLength = 1 + TLV.getNbBytes( vlvSeqLength ) + vlvSeqLength;
