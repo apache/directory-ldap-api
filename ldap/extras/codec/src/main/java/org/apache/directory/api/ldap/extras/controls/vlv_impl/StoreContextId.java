@@ -36,7 +36,7 @@ public class StoreContextId extends AbstractReadOctetString<VirtualListViewReque
      */
     public StoreContextId()
     {
-        super( "VirtualListViewRequest ContextId" );
+        super( "VirtualListViewRequest ContextId", true );
     }
 
 

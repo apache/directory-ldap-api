@@ -36,7 +36,7 @@ public class StoreOffset extends AbstractReadInteger<VirtualListViewRequestConta
      */
     public StoreOffset()
     {
-        super( "VirtualListViewRequest offset" );
+        super( "VirtualListViewRequest offset", 1, Integer.MAX_VALUE );
     }
 
 
