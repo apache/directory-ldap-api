@@ -130,6 +130,7 @@
               org.apache.directory.api.ldap.extras.controls;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.ad;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.ppolicy;version=${project.version},
+              org.apache.directory.api.ldap.extras.controls.vlv;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.syncrepl.syncDone;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.syncrepl.syncInfoValue;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.syncrepl.syncState;version=${project.version},
