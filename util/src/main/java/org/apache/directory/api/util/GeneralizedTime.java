@@ -676,85 +676,85 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         TimeZoneFormat timeZoneFormat )
     {
         Calendar clonedCalendar = ( Calendar ) this.calendar.clone();
-        
+
         if ( timeZoneFormat == TimeZoneFormat.Z )
         {
             clonedCalendar.setTimeZone( GMT );
         }
-        
+
         // Create the result. It can contain a maximum of 23 chars
-        char[] result = new char[23];
-        
+        byte[] result = new byte[23];
+
         // The starting point
         int pos = 0;
-        
+
         // Inject the year
         int year = clonedCalendar.get( Calendar.YEAR );
-        
-        result[pos++] = (char)( (year/1000) + '0' );
+
+        result[pos++] = ( byte ) ( ( year / 1000 ) + '0' );
         year %= 1000;
-        
-        result[pos++] = (char)( (year/100) + '0' );
+
+        result[pos++] = ( byte ) ( ( year / 100 ) + '0' );
         year %= 100;
 
-        result[pos++] = (char)( (year/10) + '0' );
+        result[pos++] = ( byte ) ( ( year / 10 ) + '0' );
 
-        result[pos++] = (char)( (year%10) + '0' );
+        result[pos++] = ( byte ) ( ( year % 10 ) + '0' );
 
         // Inject the month
         int month = clonedCalendar.get( Calendar.MONTH ) + 1;
-        
-        result[pos++] = (char)( (month/10) + '0' );
 
-        result[pos++] = (char)( (month%10) + '0' );
+        result[pos++] = ( byte ) ( ( month / 10 ) + '0' );
+
+        result[pos++] = ( byte ) ( ( month % 10 ) + '0' );
 
         // Inject the day
         int day = clonedCalendar.get( Calendar.DAY_OF_MONTH );
-        
-        result[pos++] = (char)( (day/10) + '0' );
 
-        result[pos++] = (char)( (day%10) + '0' );
-        
+        result[pos++] = ( byte ) ( ( day / 10 ) + '0' );
+
+        result[pos++] = ( byte ) ( ( day % 10 ) + '0' );
+
         // Inject the hour
         int hour = clonedCalendar.get( Calendar.HOUR_OF_DAY );
-        
-        result[pos++] = (char)( (hour/10) + '0' );
 
-        result[pos++] = (char)( (hour%10) + '0' );
+        result[pos++] = ( byte ) ( ( hour / 10 ) + '0' );
+
+        result[pos++] = ( byte ) ( ( hour % 10 ) + '0' );
 
         switch ( format )
         {
             case YEAR_MONTH_DAY_HOUR_MIN_SEC:
                 // Inject the minutes
                 int minute = clonedCalendar.get( Calendar.MINUTE );
-                
-                result[pos++] = (char)( (minute/10) + '0' );
 
-                result[pos++] = (char)( (minute%10) + '0' );
-                
+                result[pos++] = ( byte ) ( ( minute / 10 ) + '0' );
+
+                result[pos++] = ( byte ) ( ( minute % 10 ) + '0' );
+
                 // Inject the seconds
                 int second = clonedCalendar.get( Calendar.SECOND );
-                
-                result[pos++] = (char)( (second/10) + '0' );
 
-                result[pos++] = (char)( (second%10) + '0' );
-                
+                result[pos++] = ( byte ) ( ( second / 10 ) + '0' );
+
+                result[pos++] = ( byte ) ( ( second % 10 ) + '0' );
+
                 break;
 
             case YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION:
                 // Inject the minutes
                 minute = clonedCalendar.get( Calendar.MINUTE );
-                
-                result[pos++] = (char)( (minute/10) + '0' );
 
-                result[pos++] = (char)( (minute%10) + '0' );
-                
+                result[pos++] = ( byte ) ( ( minute / 10 ) + '0' );
+
+                result[pos++] = ( byte ) ( ( minute % 10 ) + '0' );
+
                 // Inject the seconds
                 second = clonedCalendar.get( Calendar.SECOND );
-                
-                result[pos++] = (char)( (second/10) + '0' );
 
-                result[pos++] = (char)( (second%10) + '0' );
+                result[pos++] = ( byte ) ( ( second / 10 ) + '0' );
+
+                result[pos++] = ( byte ) ( ( second % 10 ) + '0' );
 
                 // Inject the fraction
                 if ( fractionDelimiter == FractionDelimiter.COMMA )
@@ -765,36 +765,36 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 {
                     result[pos++] = '.';
                 }
-                
+
                 // Inject the fraction
                 int millisecond = clonedCalendar.get( Calendar.MILLISECOND );
-                
-                result[pos++] = (char)( (millisecond/100) + '0' );
+
+                result[pos++] = ( byte ) ( ( millisecond / 100 ) + '0' );
                 millisecond %= 100;
-    
-                result[pos++] = (char)( (millisecond/10) + '0' );
+
+                result[pos++] = ( byte ) ( ( millisecond / 10 ) + '0' );
 
                 //if ( millisecond > 0 )
-                result[pos++] = (char)( (millisecond%10) + '0' );
+                result[pos++] = ( byte ) ( ( millisecond % 10 ) + '0' );
 
                 break;
 
             case YEAR_MONTH_DAY_HOUR_MIN:
                 // Inject the minutes
                 minute = clonedCalendar.get( Calendar.MINUTE );
-                
-                result[pos++] = (char)( (minute/10) + '0' );
 
-                result[pos++] = (char)( (minute%10) + '0' );
+                result[pos++] = ( byte ) ( ( minute / 10 ) + '0' );
+
+                result[pos++] = ( byte ) ( ( minute % 10 ) + '0' );
                 break;
 
             case YEAR_MONTH_DAY_HOUR_MIN_FRACTION:
                 // Inject the minutes
                 minute = clonedCalendar.get( Calendar.MINUTE );
-                
-                result[pos++] = (char)( (minute/10) + '0' );
 
-                result[pos++] = (char)( (minute%10) + '0' );
+                result[pos++] = ( byte ) ( ( minute / 10 ) + '0' );
+
+                result[pos++] = ( byte ) ( ( minute % 10 ) + '0' );
 
                 // sec + millis => fraction of a minute
                 int fraction = 1000 * clonedCalendar.get( Calendar.SECOND )
@@ -811,21 +811,21 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                     {
                         result[pos++] = '.';
                     }
-                    
+
                     // At this point, the fraction should be in [999, 1]
-                    result[pos++] = (char)( (fraction/100) + '0' );
+                    result[pos++] = ( byte ) ( ( fraction / 100 ) + '0' );
                     fraction %= 100;
-    
+
                     if ( fraction > 0 )
                     {
-                        result[pos++] = (char)( (fraction/10) + '0' );
-        
+                        result[pos++] = ( byte ) ( ( fraction / 10 ) + '0' );
+
                         if ( fraction > 0 )
                         {
-                            result[pos++] = (char)( (fraction%10) + '0' );
+                            result[pos++] = ( byte ) ( ( fraction % 10 ) + '0' );
                         }
                     }
-                } 
+                }
 
                 break;
 
@@ -847,21 +847,21 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                     {
                         result[pos++] = '.';
                     }
-    
-                    result[pos++] = (char)( (fraction/100) + '0' );
+
+                    result[pos++] = ( byte ) ( ( fraction / 100 ) + '0' );
                     fraction %= 100;
-    
+
                     if ( fraction > 0 )
                     {
-                        result[pos++] = (char)( (fraction/10) + '0' );
-        
+                        result[pos++] = ( byte ) ( ( fraction / 10 ) + '0' );
+
                         if ( fraction > 0 )
                         {
-                            result[pos++] = (char)( (fraction%10) + '0' );
+                            result[pos++] = ( byte ) ( ( fraction % 10 ) + '0' );
                         }
-                    } 
+                    }
                 }
-                
+
                 break;
         }
 
@@ -874,7 +874,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
             // g-differential
             TimeZone timeZone = clonedCalendar.getTimeZone();
             int rawOffset = timeZone.getRawOffset();
-            
+
             if ( rawOffset < 0 )
             {
                 result[pos++] = '-';
@@ -889,20 +889,20 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
             int minute = ( rawOffset - ( hour * 60 * 60 * 1000 ) ) / ( 1000 * 60 );
 
             // The offset hour
-            result[pos++] = (char)( (hour/10) + '0' );
+            result[pos++] = ( byte ) ( ( hour / 10 ) + '0' );
 
-            result[pos++] = (char)( (hour%10) + '0' );
+            result[pos++] = ( byte ) ( ( hour % 10 ) + '0' );
 
             if ( ( timeZoneFormat == TimeZoneFormat.DIFF_HOUR_MINUTE ) || ( timeZoneFormat == TimeZoneFormat.Z ) )
             {
                 // The offset minute
-                result[pos++] = (char)( (minute/10) + '0' );
+                result[pos++] = ( byte ) ( ( minute / 10 ) + '0' );
 
-                result[pos++] = (char)( (minute%10) + '0' );
+                result[pos++] = ( byte ) ( ( minute % 10 ) + '0' );
             }
         }
 
-        return new String( result, 0, pos );
+        return Strings.utf8ToString( result, 0, pos );
     }
 
 
