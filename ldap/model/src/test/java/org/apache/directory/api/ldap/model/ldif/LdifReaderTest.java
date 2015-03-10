@@ -983,52 +983,98 @@ public class LdifReaderTest
     public void testLdifParserRFC2849Sample4() throws Exception, Exception
     {
         String ldif =
-            "version: 1\n" +
-                "dn:: b3U95Za25qWt6YOoLG89QWlyaXVz\n" +
-                "# dn:: ou=���������,o=Airius\n" +
-                "objectclass: top\n" +
-                "objectclass: organizationalUnit\n" +
-                "ou:: 5Za25qWt6YOo\n" +
-                "# ou:: ���������\n" +
-                "ou;lang-ja:: 5Za25qWt6YOo\n" +
-                "# ou;lang-ja:: ���������\n" +
-                "ou;lang-ja;phonetic:: 44GI44GE44GO44KH44GG44G2\n" +
-                "# ou;lang-ja:: ������������������\n" +
-                "ou;lang-en: Sales\n" +
-                "description: Japanese office\n" +
-                "\n" +
-                "dn:: dWlkPXJvZ2FzYXdhcmEsb3U95Za25qWt6YOoLG89QWlyaXVz\n" +
-                "# dn:: uid=rogasawara,ou=���������,o=Airius\n" +
-                "userpassword: {SHA}O3HSv1MusyL4kTjP+HKI5uxuNoM=\n" +
-                "objectclass: top\n" +
-                "objectclass: person\n" +
-                "objectclass: organizationalPerson\n" +
-                "objectclass: inetOrgPerson\n" +
-                "uid: rogasawara\n" +
-                "mail: rogasawara@airius.co.jp\n" +
-                "givenname;lang-ja:: 44Ot44OJ44OL44O8\n" +
-                "# givenname;lang-ja:: ������������\n" +
-                "sn;lang-ja:: 5bCP56yg5Y6f\n" +
-                "# sn;lang-ja:: ���������\n" +
-                "cn;lang-ja:: 5bCP56yg5Y6fIOODreODieODi+ODvA==\n" +
-                "# cn;lang-ja:: ��������� ������������\n" +
-                "title;lang-ja:: 5Za25qWt6YOoIOmDqOmVtw==\n" +
-                "# title;lang-ja:: ��������� ������\n" +
-                "preferredlanguage: ja\n" +
-                "givenname:: 44Ot44OJ44OL44O8\n" +
-                "# givenname:: ������������\n" +
-                "sn:: 5bCP56yg5Y6f\n" +
-                "# sn:: ���������\n" +
-                "cn:: 5bCP56yg5Y6fIOODreODieODi+ODvA==\n" +
-                "# cn:: ��������� ������������\n" +
-                "title:: 5Za25qWt6YOoIOmDqOmVtw==\n" +
-                "# title:: ��������� ������\n" +
-                "givenname;lang-ja;phonetic:: 44KN44Gp44Gr44O8\n" +
-                "# givenname;lang-ja;phonetic:: ������������\n" +
-                "sn;lang-ja;phonetic:: 44GK44GM44GV44KP44KJ\n" +
-                "# sn;lang-ja;phonetic:: ���������������\n" +
-                "cn;lang-ja;phonetic:: 44GK44GM44GV44KP44KJIOOCjeOBqeOBq+ODvA==\n" +
-                "# cn;lang-ja;phonetic:: ��������������� ������������\n" +
+            "version: 1\n"
+                +
+                "dn:: b3U95Za25qWt6YOoLG89QWlyaXVz\n"
+                +
+                "# dn:: ou=���������,o=Airius\n"
+                +
+                "objectclass: top\n"
+                +
+                "objectclass: organizationalUnit\n"
+                +
+                "ou:: 5Za25qWt6YOo\n"
+                +
+                "# ou:: ���������\n"
+                +
+                "ou;lang-ja:: 5Za25qWt6YOo\n"
+                +
+                "# ou;lang-ja:: ���������\n"
+                +
+                "ou;lang-ja;phonetic:: 44GI44GE44GO44KH44GG44G2\n"
+                +
+                "# ou;lang-ja:: ������������������\n"
+                +
+                "ou;lang-en: Sales\n"
+                +
+                "description: Japanese office\n"
+                +
+                "\n"
+                +
+                "dn:: dWlkPXJvZ2FzYXdhcmEsb3U95Za25qWt6YOoLG89QWlyaXVz\n"
+                +
+                "# dn:: uid=rogasawara,ou=���������,o=Airius\n"
+                +
+                "userpassword: {SHA}O3HSv1MusyL4kTjP+HKI5uxuNoM=\n"
+                +
+                "objectclass: top\n"
+                +
+                "objectclass: person\n"
+                +
+                "objectclass: organizationalPerson\n"
+                +
+                "objectclass: inetOrgPerson\n"
+                +
+                "uid: rogasawara\n"
+                +
+                "mail: rogasawara@airius.co.jp\n"
+                +
+                "givenname;lang-ja:: 44Ot44OJ44OL44O8\n"
+                +
+                "# givenname;lang-ja:: ������������\n"
+                +
+                "sn;lang-ja:: 5bCP56yg5Y6f\n"
+                +
+                "# sn;lang-ja:: ���������\n"
+                +
+                "cn;lang-ja:: 5bCP56yg5Y6fIOODreODieODi+ODvA==\n"
+                +
+                "# cn;lang-ja:: ��������� ������������\n"
+                +
+                "title;lang-ja:: 5Za25qWt6YOoIOmDqOmVtw==\n"
+                +
+                "# title;lang-ja:: ��������� ������\n"
+                +
+                "preferredlanguage: ja\n"
+                +
+                "givenname:: 44Ot44OJ44OL44O8\n"
+                +
+                "# givenname:: ������������\n"
+                +
+                "sn:: 5bCP56yg5Y6f\n"
+                +
+                "# sn:: ���������\n"
+                +
+                "cn:: 5bCP56yg5Y6fIOODreODieODi+ODvA==\n"
+                +
+                "# cn:: ��������� ������������\n"
+                +
+                "title:: 5Za25qWt6YOoIOmDqOmVtw==\n"
+                +
+                "# title:: ��������� ������\n"
+                +
+                "givenname;lang-ja;phonetic:: 44KN44Gp44Gr44O8\n"
+                +
+                "# givenname;lang-ja;phonetic:: ������������\n"
+                +
+                "sn;lang-ja;phonetic:: 44GK44GM44GV44KP44KJ\n"
+                +
+                "# sn;lang-ja;phonetic:: ���������������\n"
+                +
+                "cn;lang-ja;phonetic:: 44GK44GM44GV44KP44KJIOOCjeOBqeOBq+ODvA==\n"
+                +
+                "# cn;lang-ja;phonetic:: ��������������� ������������\n"
+                +
                 "title;lang-ja;phonetic:: 44GI44GE44GO44KH44GG44G2IOOBtuOBoeOCh+OBhg==\n" +
                 "# title;lang-ja;phonetic::\n" +
                 "# ������������������ ������������\n" +
@@ -2086,6 +2132,7 @@ public class LdifReaderTest
         assertNull( modification.getAttribute().getBytes() );
     }
 
+
     /**
      * Test lengths when multiple entries are present
      *
@@ -2094,23 +2141,23 @@ public class LdifReaderTest
     @Test
     public void testLdifParserLengthAndOffset() throws Exception
     {
-        String ldif1 =  "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
-                        "cn: app1\n" +
-                        "objectClass: top\n" +
-                        "objectClass: apApplication\n" +
-                        "displayName:   app1   \n" +
-                        "dependencies:\n" +
-                        "envVars:\n";
+        String ldif1 = "dn: cn=app1,ou=applications,ou=conf,dc=apache,dc=org\n" +
+            "cn: app1\n" +
+            "objectClass: top\n" +
+            "objectClass: apApplication\n" +
+            "displayName:   app1   \n" +
+            "dependencies:\n" +
+            "envVars:\n";
 
         String comment = "# This comment was copied. Delete an entry. The operation will attach the LDAPv3\n" +
-                         "# Tree Delete Control defined in [9]. The criticality\n" +
-                         "# field is \"true\" and the controlValue field is\n" +
-                         "# absent, as required by [9].\n";
+            "# Tree Delete Control defined in [9]. The criticality\n" +
+            "# field is \"true\" and the controlValue field is\n" +
+            "# absent, as required by [9].\n";
 
         String version = "version:   1\n";
 
         String ldif =
-                version +
+            version +
                 ldif1 +
                 "\n" +
                 comment +
@@ -2184,7 +2231,8 @@ public class LdifReaderTest
     }
 
 
-    @Test // for DIRAPI-174
+    @Test
+    // for DIRAPI-174
     public void testLineNumber() throws Exception
     {
         String ldif =
@@ -2200,7 +2248,7 @@ public class LdifReaderTest
             reader.parseLdif( ldif );
             fail();
         }
-        catch( Exception e )
+        catch ( Exception e )
         {
         }
 
@@ -2218,7 +2266,7 @@ public class LdifReaderTest
             reader.parseLdif( ldif );
             fail();
         }
-        catch( Exception e )
+        catch ( Exception e )
         {
         }
 
@@ -2237,7 +2285,7 @@ public class LdifReaderTest
             reader.parseLdif( ldif );
             fail();
         }
-        catch( Exception e )
+        catch ( Exception e )
         {
         }
 
@@ -2264,9 +2312,9 @@ public class LdifReaderTest
         try
         {
             reader.parseLdif( ldif );
-            fail("shouldn't be parsed");
+            fail( "shouldn't be parsed" );
         }
-        catch( Exception e )
+        catch ( Exception e )
         {
         }
 
@@ -2324,11 +2372,11 @@ public class LdifReaderTest
     {
         String ldif =
             "version:   1\n" +
-            "dn: cn=test1\n" +
-            "\n" +
-            "dn: cn=test2\n" +
-            "\n" +
-            "dn: cn=test3";
+                "dn: cn=test1\n" +
+                "\n" +
+                "dn: cn=test2\n" +
+                "\n" +
+                "dn: cn=test3";
 
         LdifReader reader = new LdifReader();
         List<LdifEntry> entries = reader.parseLdif( ldif );
@@ -2361,23 +2409,80 @@ public class LdifReaderTest
     {
         String ldif =
             "version: 1\n" +
-            "# Add a new entry\n" +
-            "dn: cn=Fiona Jensen, ou=Marketing, dc=airius, dc=com\n" +
-            "changetype: add\n" +
-            "objectclass: top\n" +
-            "objectclass: person\n" +
-            "objectclass: organizationalPerson\n" +
-            "cn: Fiona Jensen\n" +
-            "sn: Jensen\n" +
-            "uid: fiona\n" +
-            "telephonenumber: +1 408 555 1212\n" +
-            "An_idiot_Attribute: thanks M$ for that";
+                "# Add a new entry\n" +
+                "dn: cn=Fiona Jensen, ou=Marketing, dc=airius, dc=com\n" +
+                "changetype: add\n" +
+                "objectclass: top\n" +
+                "objectclass: person\n" +
+                "objectclass: organizationalPerson\n" +
+                "cn: Fiona Jensen\n" +
+                "sn: Jensen\n" +
+                "uid: fiona\n" +
+                "telephonenumber: +1 408 555 1212\n" +
+                "An_idiot_Attribute: thanks M$ for that";
 
         LdifReader reader = new LdifReader();
         List<LdifEntry> entries = reader.parseLdif( ldif );
         LdifEntry entry = entries.get( 0 );
         assertEquals( entry.get( "An_idiot_Attribute" ).getString(), "thanks M$ for that" );
         reader.close();
+    }
+
+
+    @Test
+    public void testLdifParserWithMixedATHR() throws Exception, Exception
+    {
+        String ldif =
+            "version: 1\n" +
+                "# Add a new entry\n" +
+                "dn: cn=DeviceTypes,cn=SDT,cn=prod_81,o=myconfiguration\n" +
+                "cn: DeviceTypes\n" +
+                "javaClassName: java.lang.String\n" +
+                "myconfigstringvalue: P:Phone (except BlackBerry)\n" +
+                "myconfigstringvalue:: WjpCbGFja0JlcnJ5w4LCrg==\n" +
+                "myconfigstringvalue: 3:Internet only device\n" +
+                "objectClass: top\n" +
+                "objectClass: javaobject\n" +
+                "objectClass: myconfigstringvaluedobject\n";
+
+        LdifReader reader = new LdifReader();
+        List<LdifEntry> entries = reader.parseLdif( ldif );
+        LdifEntry entry = entries.get( 0 );
+
+        // Check that the myconfigstringvalue contains 3 values
+        assertEquals( 3, entry.get( "myconfigstringvalue" ).size() );
+        assertTrue( entry.get( "myconfigstringvalue" ).isHumanReadable() );
+
+        reader.close();
+    }
+
+
+    @Test
+    public void testLdifParserWithMixedATBinary() throws Exception, Exception
+    {
+        String ldif =
+            "version: 1\n" +
+                "# Add a new entry\n" +
+                "dn: cn=DeviceTypes,cn=SDT,cn=prod_81,o=myconfiguration\n" +
+                "cn: DeviceTypes\n" +
+                "javaClassName: java.lang.String\n" +
+                "myconfigstringvalue:: WjpCbGFja0JlcnJ5w4LCrg==\n" +
+                "myconfigstringvalue: P:Phone (except BlackBerry)\n" +
+                "myconfigstringvalue: 3:Internet only device\n" +
+                "objectClass: top\n" +
+                "objectClass: javaobject\n" +
+                "objectClass: myconfigstringvaluedobject\n";
+
+        LdifReader reader = new LdifReader();
+        List<LdifEntry> entries = reader.parseLdif( ldif );
+        LdifEntry entry = entries.get( 0 );
+
+        // Check that the myconfigstringvalue contains 3 values
+        assertEquals( 3, entry.get( "myconfigstringvalue" ).size() );
+        assertFalse( entry.get( "myconfigstringvalue" ).isHumanReadable() );
+
+        reader.close();
 
     }
+
 }

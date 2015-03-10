@@ -107,7 +107,8 @@ public class LdifEntry implements Cloneable, Externalizable
 
     /** the position of the entry in the file or given input string*/
     private long offset = 0;
-    
+
+
     /**
      * Creates a new LdifEntry object.
      */
@@ -120,8 +121,8 @@ public class LdifEntry implements Cloneable, Externalizable
         entryDn = null;
         controls = null;
     }
-    
-    
+
+
     /**
      * Creates a new schema aware LdifEntry object.
      */
@@ -238,7 +239,7 @@ public class LdifEntry implements Cloneable, Externalizable
         // Now, parse the Ldif and convert it to a LdifEntry
         LdifReader reader = new LdifReader();
         List<LdifEntry> ldifEntries = reader.parseLdif( sb.toString() );
-        
+
         try
         {
             reader.close();
@@ -282,7 +283,7 @@ public class LdifEntry implements Cloneable, Externalizable
                     {
                         modifications.put( modification.getAttribute().getId(), modification );
                     }
-                    
+
                     break;
             }
         }
@@ -469,17 +470,53 @@ public class LdifEntry implements Cloneable, Externalizable
      */
     public void addAttribute( String id, Object... values ) throws LdapException
     {
+        Attribute attribute = entry.get( id );
+        Boolean isHR = null;
+
+        if ( attribute != null )
+        {
+            isHR = attribute.isHumanReadable();
+        }
+
         if ( values != null )
         {
             for ( Object value : values )
             {
                 if ( value instanceof String )
                 {
-                    entry.add( id, ( String ) value );
+                    if ( isHR != null )
+                    {
+                        if ( isHR )
+                        {
+                            entry.add( id, ( String ) value );
+                        }
+                        else
+                        {
+                            entry.add( id, Strings.getBytesUtf8( ( String ) value ) );
+                        }
+                    }
+                    else
+                    {
+                        entry.add( id, ( String ) value );
+                    }
                 }
                 else
                 {
-                    entry.add( id, ( byte[] ) value );
+                    if ( isHR != null )
+                    {
+                        if ( isHR )
+                        {
+                            entry.add( id, Strings.utf8ToString( ( byte[] ) value ) );
+                        }
+                        else
+                        {
+                            entry.add( id, ( byte[] ) value );
+                        }
+                    }
+                    else
+                    {
+                        entry.add( id, ( byte[] ) value );
+                    }
                 }
             }
         }
@@ -878,7 +915,8 @@ public class LdifEntry implements Cloneable, Externalizable
     /**
      * @param lengthBeforeParsing the lengthBeforeParsing to set
      */
-    /**No qualifier*/ void setLengthBeforeParsing( int length )
+    /**No qualifier*/
+    void setLengthBeforeParsing( int length )
     {
         this.lengthBeforeParsing = length;
     }
@@ -896,7 +934,8 @@ public class LdifEntry implements Cloneable, Externalizable
     /**
      * @param offset the offset to set
      */
-    /**No qualifier*/ void setOffset( long offset )
+    /**No qualifier*/
+    void setOffset( long offset )
     {
         this.offset = offset;
     }
