@@ -176,13 +176,16 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
 
         name = entry.get( SchemaConstants.CN_AT ).getString();
 
-        if ( entry.get( SchemaConstants.CREATORS_NAME_AT ) == null )
-        {
-            throw new IllegalArgumentException( "entry must have a valid " + SchemaConstants.CREATORS_NAME_AT
-                + " attribute" );
-        }
+        Attribute creatorsName = entry.get( SchemaConstants.CREATORS_NAME_AT );
 
-        owner = entry.get( SchemaConstants.CREATORS_NAME_AT ).getString();
+        if ( creatorsName == null )
+        {
+            owner = null;
+        }
+        else
+        {
+            owner = creatorsName.getString();
+        }
 
         if ( entry.get( MetaSchemaConstants.M_DISABLED_AT ) != null )
         {
