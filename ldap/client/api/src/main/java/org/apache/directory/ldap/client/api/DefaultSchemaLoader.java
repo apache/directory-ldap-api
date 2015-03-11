@@ -113,12 +113,27 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      */
     public DefaultSchemaLoader( LdapConnection connection ) throws LdapException
     {
+        this( connection, false );
+    }
+
+
+    /**
+     * Creates a new instance of DefaultSchemaLoader.
+     *
+     * @param connection the LDAP connection
+     * @param initial setting for the quirks mode
+     * @throws Exception if the connection is not authenticated or if there are any problems
+     *                   while loading the schema entries
+     */
+    public DefaultSchemaLoader( LdapConnection connection, boolean quirksMode ) throws LdapException
+    {
         if ( connection == null )
         {
             throw new InvalidConnectionException( "Cannot connect on the server, the connection is null" );
         }
 
         this.connection = connection;
+        setQuirksMode( quirksMode );
 
         // Flagging if the connection was already connected
         boolean wasConnected = connection.isConnected();
@@ -1121,5 +1136,29 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         }
 
         return entry;
+    }
+
+
+    /**
+     * Sets the quirks mode for all the internal parsers.
+     *
+     * If enabled the parser accepts non-numeric OIDs and some
+     * special characters in descriptions.
+     *
+     * @param enabled the new quirks mode
+     */
+    public void setQuirksMode( boolean enabled )
+    {
+        AT_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        C_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        DCR_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        DSR_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        LS_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        MR_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        MRU_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        N_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        NF_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        OC_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
+        SC_DESCR_SCHEMA_PARSER.setQuirksMode( enabled );
     }
 }

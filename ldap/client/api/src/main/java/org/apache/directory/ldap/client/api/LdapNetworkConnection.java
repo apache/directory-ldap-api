@@ -25,6 +25,7 @@ import static org.apache.directory.api.ldap.model.message.ResultCodeEnum.process
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.channels.UnresolvedAddressException;
@@ -549,6 +550,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         SocketAddress address = new InetSocketAddress( config.getLdapHost(), config.getLdapPort() );
 
         // And create the connection future
+        timeout = config.getTimeout();
         long maxRetry = System.currentTimeMillis() + timeout;
         ConnectFuture connectionFuture = null;
 
@@ -557,7 +559,6 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             connectionFuture = connector.connect( address );
 
             boolean result = false;
-            timeout = config.getTimeout();
 
             // Wait until it's established
             try
@@ -581,6 +582,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
                     if ( !isConnected )
                     {
+                        if ( connectionFuture.getException() instanceof ConnectException )
+                        {
+                            // No need to wait
+                            // We know that there was a permanent error such as "connection refused".
+                            LOG.debug( "------>> Connection error: {}", connectionFuture.getException().getMessage() );
+                            break;
+                        }
+
                         LOG.debug( "------>>   Cannot get the connection... Retrying" );
 
                         // Wait 500 ms and retry
@@ -629,7 +638,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             if ( e != null )
             {
-                StringBuilder message = new StringBuilder( "Cannot connect on the server: " );
+                StringBuilder message = new StringBuilder( "Cannot connect to the server: " );
 
                 // Special case for UnresolvedAddressException
                 // (most of the time no message is associated with this exception)
