@@ -60,6 +60,11 @@
 
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>api-ldap-extras-aci</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>api-ldap-extras-codec</artifactId>
     </dependency>
 
@@ -137,6 +142,8 @@
               org.apache.directory.api.asn1;version=${project.version},
               org.apache.directory.api.asn1.util;version=${project.version},
               org.apache.directory.api.i18n;version=${project.version},
+              org.apache.directory.api.ldap.aci;version=${project.version},
+              org.apache.directory.api.ldap.aci.protectedItem;version=${project.version},
               org.apache.directory.api.ldap.codec.api;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.ppolicy_impl;version=${project.version},
               org.apache.directory.api.ldap.extras.controls.ppolicy;version=${project.version},
