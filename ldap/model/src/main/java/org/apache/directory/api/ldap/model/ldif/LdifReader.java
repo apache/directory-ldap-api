@@ -51,6 +51,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Chars;
@@ -1023,6 +1024,29 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         }
 
         Object attributeValue = parseValue( line, colonIndex );
+
+        if ( schemaManager != null )
+        {
+            AttributeType at = schemaManager.getAttributeType( attributeType );
+
+            if ( at != null )
+            {
+                if ( at.getSyntax().isHumanReadable() )
+                {
+                    if ( attributeValue instanceof byte[] )
+                    {
+                        attributeValue = Strings.utf8ToString( ( byte[] ) attributeValue );
+                    }
+                }
+                else
+                {
+                    if ( attributeValue instanceof String )
+                    {
+                        attributeValue = Strings.getBytesUtf8( ( String ) attributeValue );
+                    }
+                }
+            }
+        }
 
         // Update the entry
         entry.addAttribute( attributeType, attributeValue );
