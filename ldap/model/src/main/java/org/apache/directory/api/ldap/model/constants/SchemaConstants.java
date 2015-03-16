@@ -958,8 +958,8 @@ public final class SchemaConstants
     public static final String TEXT_ENCODED_OR_ADDRESS_AT_OID = "0.9.2342.19200300.100.1.2";
 
     // Info AT
-    public static final String info_AT = "info";
-    public static final String info_AT_OID = "0.9.2342.19200300.100.1.4";
+    public static final String INFO_AT = "info";
+    public static final String INFO_AT_OID = "0.9.2342.19200300.100.1.4";
 
     // Drink AT
     public static final String DRINK_AT = "drink";
@@ -1012,7 +1012,7 @@ public final class SchemaConstants
     public static final String HOME_PHONE_AT_OID = "0.9.2342.19200300.100.1.20";
 
     // Secretary AT
-    public static final String secretary_AT = "secretary";
+    public static final String SECRETARY_AT = "secretary";
     public static final String SECRETARY_AT_OID = "0.9.2342.19200300.100.1.21";
 
     // OtherMailbox AT
@@ -1150,7 +1150,7 @@ public final class SchemaConstants
     public static final String PREFERRED_LANGUAGE_AT_OID = "2.16.840.1.113730.3.1.39";
 
     // UserSMIMECertificate
-    public static final String user_SMIME_Certificate_AT = "userSMIMECertificate";
+    public static final String USER_SMIME_CERTIFICATE_AT = "userSMIMECertificate";
     public static final String USER_SMIME_CERTIFICATE_AT_OID = "2.16.840.1.113730.3.1.40";
 
     // UserPKCS12
