@@ -130,6 +130,8 @@ public class LdifAnonymizer
         catch ( Exception e )
         {
             // Todo : we need a schemaManager
+            System.out.println( "Missing a SchemaManager !" );
+            System.exit( -1 );
         }
 
         // Load the anonymizers
