@@ -32,9 +32,70 @@
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
+      <artifactId>api-asn1-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>api-i18n</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>api-ldap-client-api</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>api-ldap-extras-aci</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>api-ldap-model</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>api-ldap-schema-converter</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>api-ldap-schema-data</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>api-util</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>${project.groupId}</groupId>
       <artifactId>api-all</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>antlr</groupId>
+      <artifactId>antlr</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
   </dependencies>
+
 
   <profiles>
     <profile>
@@ -48,6 +109,7 @@
               <createChecksum>true</createChecksum>
             </configuration>
           </plugin> 
+
           <plugin>
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
@@ -65,6 +127,22 @@
                       <groupId>org.slf4j</groupId>
                       <artifactId>slf4j-log4j12</artifactId>
                     </artifactItem>
+                    
+                    <artifactItem>
+                      <groupId>org.slf4j</groupId>
+                      <artifactId>slf4j-api</artifactId>
+                    </artifactItem>
+                    
+                    <artifactItem>
+                      <groupId>antlr</groupId>
+                      <artifactId>antlr</artifactId>
+                    </artifactItem>
+                    
+                    <artifactItem>
+                      <groupId>commons-collections</groupId>
+                      <artifactId>commons-collections</artifactId>
+                    </artifactItem>
+                    
                     <artifactItem>
                       <groupId>log4j</groupId>
                       <artifactId>log4j</artifactId>
@@ -74,10 +152,12 @@
               </execution>
             </executions>
           </plugin>
+
           <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
             <executions>
               <execution>
+                <id>package</id>
                 <phase>package</phase>
                 <configuration>
                   <tarLongFileMode>gnu</tarLongFileMode>
@@ -90,8 +170,29 @@
                   <goal>single</goal>
                 </goals>
               </execution>
+
+              <execution>
+                <id>anon</id>
+                <phase>package</phase>
+                <configuration>
+                  <tarLongFileMode>gnu</tarLongFileMode>
+                  <descriptors>
+                    <descriptor>src/main/assembly/anon.xml</descriptor>
+                  </descriptors>
+                  <archive>
+                    <manifest>
+                      <mainClass>org.apache.directory.ldap.client.api.LdifAnonymizer</mainClass>
+                    </manifest>
+                  </archive>
+                  <finalName>anon-${project.version}.jar</finalName>
+                </configuration>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+              </execution>
             </executions>
           </plugin>
+
           <plugin>
             <groupId>org.apache.geronimo.genesis.plugins</groupId>
             <artifactId>tools-maven-plugin</artifactId>
@@ -109,6 +210,7 @@
               </execution>
             </executions>
           </plugin>
+
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>

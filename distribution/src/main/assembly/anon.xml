@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<!-- $Rev:  $ $Date:  $ -->
+<assembly xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+  <id>anon</id>
+
+  <formats>
+    <format>jar</format>
+  </formats>
+
+  <baseDirectory>anon-${project-version}.jar</baseDirectory>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>/</outputDirectory>
+      <includes>
+        <!-- The LDAP API dependencies -->
+        <include>org.apache.directory.api:api-asn1-api:jar:${project.version}</include>
+        <include>org.apache.directory.api:api-i18n:jar:${project.version}</include>
+        <include>org.apache.directory.api:api-ldap-client-api:jar:${project.version}</include>
+        <include>org.apache.directory.api:api-ldap-extras-aci:jar:${project.version}</include>
+        <include>org.apache.directory.api:api-ldap-model:jar:${project.version}</include>
+        <include>org.apache.directory.api:api-ldap-schema-converter:jar:${project.version}</include>
+        <include>org.apache.directory.api:api-ldap-schema-data:jar:${project.version}</include>
+        <include>org.apache.directory.api:api-util:jar:${project.version}</include>
+
+        <!-- The external dependencies -->
+        <include>antlr:antlr:jar:${antlr.version}</include>
+        <include>commons-collections:commons-collections:jar:${commons.collections.version}</include>
+        <include>log4j:log4j:jar:${log4j.version}</include>
+        <include>org.slf4j:slf4j-api:jar:${slf4j.api.version}</include>
+        <include>org.slf4j:slf4j-log4j12:jar:${slf4j.log4j12.version}</include>
+      </includes>
+      <unpack>true</unpack>
+    </dependencySet>
+  </dependencySets>
+</assembly>
