@@ -47,7 +47,9 @@ import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValue
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequest;
+import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewResponse;
 import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory;
+import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewResponseFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory;
@@ -120,6 +122,11 @@ public class CodecFactoryUtil
             apiService );
         controlFactories.put( virtualListViewRequestFactory.getOid(), virtualListViewRequestFactory );
         LOG.info( "Registered pre-bundled control factory: {}", virtualListViewRequestFactory.getOid() );
+
+        ControlFactory<VirtualListViewResponse> virtualListViewResponseFactory = new VirtualListViewResponseFactory(
+            apiService );
+        controlFactories.put( virtualListViewResponseFactory.getOid(), virtualListViewResponseFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", virtualListViewResponseFactory.getOid() );
 
         ControlFactory<SyncDoneValue> SyncDoneValueFactory = new SyncDoneValueFactory( apiService );
         controlFactories.put( SyncDoneValueFactory.getOid(), SyncDoneValueFactory );

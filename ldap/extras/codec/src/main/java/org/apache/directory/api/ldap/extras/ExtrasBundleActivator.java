@@ -35,7 +35,9 @@ import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValue
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory;
 import org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory;
 import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewRequest;
+import org.apache.directory.api.ldap.extras.controls.vlv.VirtualListViewResponse;
 import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory;
+import org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewResponseFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory;
 import org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory;
@@ -144,6 +146,10 @@ public class ExtrasBundleActivator implements BundleActivator
 
         ControlFactory<VirtualListViewRequest> virtualListViewRequestFactory = new VirtualListViewRequestFactory( codec );
         codec.registerControl( virtualListViewRequestFactory );
+
+        ControlFactory<VirtualListViewResponse> virtualListViewResponseFactory = new VirtualListViewResponseFactory(
+            codec );
+        codec.registerControl( virtualListViewResponseFactory );
 
         ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( codec );
         codec.registerControl( adDirSyncFactory );
