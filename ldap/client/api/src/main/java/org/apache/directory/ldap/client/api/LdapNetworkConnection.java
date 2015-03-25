@@ -3827,11 +3827,28 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             SslFilter sslFilter = new SslFilter( sslContext, true );
             sslFilter.setUseClientMode( true );
-            sslFilter.setEnabledCipherSuites( config.getEnabledCipherSuites() );
+
+            // Configure the enabled cipher lists
+            String[] enabledCipherSuite = config.getEnabledCipherSuites();
+
+            if ( ( enabledCipherSuite != null ) && ( enabledCipherSuite.length != 0 ) )
+            {
+                sslFilter.setEnabledCipherSuites( enabledCipherSuite );
+            }
 
             // Be sure we disable SSLV3
-            sslFilter.setEnabledProtocols( new String[]
-                { "TLSv1", "TLSv1.1", "TLSv1.2" } );
+            String[] enabledProtocols = config.getEnabledProtocols();
+
+            if ( ( enabledProtocols != null ) && ( enabledProtocols.length != 0 ) )
+            {
+                sslFilter.setEnabledProtocols( enabledProtocols );
+            }
+            else
+            {
+                // Default to TLS
+                sslFilter.setEnabledProtocols( new String[]
+                    { "TLSv1", "TLSv1.1", "TLSv1.2" } );
+            }
 
             // for LDAPS
             if ( ldapSession == null )

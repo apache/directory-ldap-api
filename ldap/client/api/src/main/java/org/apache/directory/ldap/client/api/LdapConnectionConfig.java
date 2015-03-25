@@ -99,6 +99,9 @@ public class LdapConnectionConfig
     /** an array of cipher suites which are enabled, if set, will be used while initializing the SSL context */
     private String[] enabledCipherSuites;
 
+    /** an array of protocols which are enabled, if set, will be used while initializing the SSL context */
+    private String[] enabledProtocols;
+
     /** name of the protocol used for creating SSL context, default value is "TLS" */
     private String sslProtocol = DEFAULT_SSL_PROTOCOL;
 
@@ -448,6 +451,28 @@ public class LdapConnectionConfig
     public void setEnabledCipherSuites( String[] enabledCipherSuites )
     {
         this.enabledCipherSuites = enabledCipherSuites;
+    }
+
+
+    /**
+     * Gets the protocols which are enabled.
+     * 
+     * @return the protocol which are enabled
+     */
+    public String[] getEnabledProtocols()
+    {
+        return enabledProtocols;
+    }
+
+
+    /**
+     * Sets the protocols which are enabled
+     * 
+     * @param enabledProtocols the protocols which are enabled
+     */
+    public void setEnabledProtocols( String... enabledProtocols )
+    {
+        this.enabledProtocols = enabledProtocols;
     }
 
 
