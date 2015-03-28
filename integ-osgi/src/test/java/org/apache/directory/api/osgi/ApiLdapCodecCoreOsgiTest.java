@@ -20,6 +20,7 @@
 package org.apache.directory.api.osgi;
 
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -33,6 +34,7 @@ import org.apache.directory.api.ldap.codec.actions.bindResponse.InitBindResponse
 import org.apache.directory.api.ldap.codec.actions.searchRequest.InitSearchRequest;
 import org.apache.directory.api.ldap.codec.actions.searchResultDone.InitSearchResultDone;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.codec.api.LdapApiServiceFactory;
 import org.apache.directory.api.ldap.codec.decorators.SearchRequestDecorator;
 import org.apache.directory.api.ldap.codec.search.AndFilter;
 import org.apache.directory.api.ldap.codec.search.SubstringFilter;
@@ -90,6 +92,16 @@ public class ApiLdapCodecCoreOsgiTest extends ApiOsgiTestBase
         Object service = context.getService( serviceReference );
         assertNotNull( service );
         assertTrue( service instanceof LdapApiService );
+    }
+
+
+    @Test
+    public void testLdapApiServiceFactoryIsInitializedByOsgi()
+    {
+        assertTrue( LdapApiServiceFactory.isInitialized() );;
+        assertFalse( LdapApiServiceFactory.isUsingStandaloneImplementation() );
+        assertNotNull( LdapApiServiceFactory.getSingleton() );
+        assertNotNull( LdapApiServiceFactory.getSingleton().getProtocolCodecFactory() );
     }
 
 }
