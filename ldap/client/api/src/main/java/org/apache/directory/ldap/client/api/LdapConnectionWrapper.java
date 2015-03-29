@@ -1,5 +1,24 @@
-
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ * 
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ * 
+ */
 package org.apache.directory.ldap.client.api;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -47,18 +66,22 @@ import org.apache.directory.api.ldap.model.schema.SchemaManager;
 public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnection>
 {
     protected LdapConnection connection;
-    
-    protected LdapConnectionWrapper( LdapConnection connection ) 
+
+
+    protected LdapConnectionWrapper( LdapConnection connection )
     {
         this.connection = connection;
     }
-    
+
+
     /**
      * {@inheritDoc}
      */
-    public LdapConnection wrapped() {
+    public LdapConnection wrapped()
+    {
         return connection;
     }
+
 
     @Override
     public boolean isConnected()
@@ -66,11 +89,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.isConnected();
     }
 
+
     @Override
     public boolean isAuthenticated()
     {
         return connection.isAuthenticated();
     }
+
 
     @Override
     public boolean connect() throws LdapException
@@ -78,11 +103,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.connect();
     }
 
+
     @Override
     public void close() throws IOException
     {
         connection.close();
     }
+
 
     @Override
     public void add( Entry entry ) throws LdapException
@@ -90,11 +117,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.add( entry );
     }
 
+
     @Override
     public AddResponse add( AddRequest addRequest ) throws LdapException
     {
         return connection.add( addRequest );
     }
+
 
     @Override
     public void abandon( int messageId )
@@ -102,11 +131,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.abandon( messageId );
     }
 
+
     @Override
     public void abandon( AbandonRequest abandonRequest )
     {
         connection.abandon( abandonRequest );
     }
+
 
     @Override
     public void bind() throws LdapException
@@ -114,11 +145,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.bind();
     }
 
+
     @Override
     public void anonymousBind() throws LdapException
     {
         connection.anonymousBind();
     }
+
 
     @Override
     public void bind( String name ) throws LdapException
@@ -126,11 +159,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.bind( name );
     }
 
+
     @Override
     public void bind( String name, String credentials ) throws LdapException
     {
         connection.bind( name, credentials );
     }
+
 
     @Override
     public void bind( Dn name ) throws LdapException
@@ -138,17 +173,20 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.bind( name );
     }
 
+
     @Override
     public void bind( Dn name, String credentials ) throws LdapException
     {
         connection.bind( name, credentials );
     }
 
+
     @Override
     public BindResponse bind( BindRequest bindRequest ) throws LdapException
     {
         return connection.bind( bindRequest );
     }
+
 
     @Override
     public EntryCursor search( Dn baseDn, String filter, SearchScope scope, String... attributes )
@@ -157,6 +195,7 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.search( baseDn, filter, scope, attributes );
     }
 
+
     @Override
     public EntryCursor search( String baseDn, String filter, SearchScope scope, String... attributes )
         throws LdapException
@@ -164,11 +203,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.search( baseDn, filter, scope, attributes );
     }
 
+
     @Override
     public SearchCursor search( SearchRequest searchRequest ) throws LdapException
     {
         return connection.search( searchRequest );
     }
+
 
     @Override
     public void unBind() throws LdapException
@@ -176,11 +217,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.unBind();
     }
 
+
     @Override
     public void setTimeOut( long timeOut )
     {
         connection.setTimeOut( timeOut );
     }
+
 
     @Override
     public void modify( Dn dn, Modification... modifications ) throws LdapException
@@ -188,11 +231,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.modify( dn, modifications );
     }
 
+
     @Override
     public void modify( String dn, Modification... modifications ) throws LdapException
     {
         connection.modify( dn, modifications );
     }
+
 
     @Override
     public void modify( Entry entry, ModificationOperation modOp ) throws LdapException
@@ -200,11 +245,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.modify( entry, modOp );
     }
 
+
     @Override
     public ModifyResponse modify( ModifyRequest modRequest ) throws LdapException
     {
         return connection.modify( modRequest );
     }
+
 
     @Override
     public void rename( String entryDn, String newRdn ) throws LdapException
@@ -212,11 +259,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.rename( entryDn, newRdn );
     }
 
+
     @Override
     public void rename( Dn entryDn, Rdn newRdn ) throws LdapException
     {
         connection.rename( entryDn, newRdn );
     }
+
 
     @Override
     public void rename( String entryDn, String newRdn, boolean deleteOldRdn ) throws LdapException
@@ -224,11 +273,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.rename( entryDn, newRdn, deleteOldRdn );
     }
 
+
     @Override
     public void rename( Dn entryDn, Rdn newRdn, boolean deleteOldRdn ) throws LdapException
     {
         connection.rename( entryDn, newRdn, deleteOldRdn );
     }
+
 
     @Override
     public void move( String entryDn, String newSuperiorDn ) throws LdapException
@@ -236,11 +287,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.move( entryDn, newSuperiorDn );
     }
 
+
     @Override
     public void move( Dn entryDn, Dn newSuperiorDn ) throws LdapException
     {
         connection.move( entryDn, newSuperiorDn );
     }
+
 
     @Override
     public void moveAndRename( Dn entryDn, Dn newDn ) throws LdapException
@@ -248,11 +301,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.moveAndRename( entryDn, newDn );
     }
 
+
     @Override
     public void moveAndRename( String entryDn, String newDn ) throws LdapException
     {
         connection.moveAndRename( entryDn, newDn );
     }
+
 
     @Override
     public void moveAndRename( Dn entryDn, Dn newDn, boolean deleteOldRdn ) throws LdapException
@@ -260,11 +315,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.moveAndRename( entryDn, newDn, deleteOldRdn );
     }
 
+
     @Override
     public void moveAndRename( String entryDn, String newDn, boolean deleteOldRdn ) throws LdapException
     {
         connection.moveAndRename( entryDn, newDn, deleteOldRdn );
     }
+
 
     @Override
     public ModifyDnResponse modifyDn( ModifyDnRequest modDnRequest ) throws LdapException
@@ -272,11 +329,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.modifyDn( modDnRequest );
     }
 
+
     @Override
     public void delete( String dn ) throws LdapException
     {
         connection.delete( dn );
     }
+
 
     @Override
     public void delete( Dn dn ) throws LdapException
@@ -284,11 +343,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.delete( dn );
     }
 
+
     @Override
     public DeleteResponse delete( DeleteRequest deleteRequest ) throws LdapException
     {
         return connection.delete( deleteRequest );
     }
+
 
     @Override
     public boolean compare( String dn, String attributeName, String value ) throws LdapException
@@ -296,11 +357,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.compare( dn, attributeName, value );
     }
 
+
     @Override
     public boolean compare( String dn, String attributeName, byte[] value ) throws LdapException
     {
         return connection.compare( dn, attributeName, value );
     }
+
 
     @Override
     public boolean compare( String dn, String attributeName, Value<?> value ) throws LdapException
@@ -308,11 +371,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.compare( dn, attributeName, value );
     }
 
+
     @Override
     public boolean compare( Dn dn, String attributeName, String value ) throws LdapException
     {
         return connection.compare( dn, attributeName, value );
     }
+
 
     @Override
     public boolean compare( Dn dn, String attributeName, byte[] value ) throws LdapException
@@ -320,11 +385,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.compare( dn, attributeName, value );
     }
 
+
     @Override
     public boolean compare( Dn dn, String attributeName, Value<?> value ) throws LdapException
     {
         return connection.compare( dn, attributeName, value );
     }
+
 
     @Override
     public CompareResponse compare( CompareRequest compareRequest ) throws LdapException
@@ -332,11 +399,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.compare( compareRequest );
     }
 
+
     @Override
     public ExtendedResponse extended( String oid ) throws LdapException
     {
         return connection.extended( oid );
     }
+
 
     @Override
     public ExtendedResponse extended( String oid, byte[] value ) throws LdapException
@@ -344,11 +413,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.extended( oid, value );
     }
 
+
     @Override
     public ExtendedResponse extended( Oid oid ) throws LdapException
     {
         return connection.extended( oid );
     }
+
 
     @Override
     public ExtendedResponse extended( Oid oid, byte[] value ) throws LdapException
@@ -356,11 +427,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.extended( oid, value );
     }
 
+
     @Override
     public ExtendedResponse extended( ExtendedRequest extendedRequest ) throws LdapException
     {
         return connection.extended( extendedRequest );
     }
+
 
     @Override
     public boolean exists( String dn ) throws LdapException
@@ -368,11 +441,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.exists( dn );
     }
 
+
     @Override
     public boolean exists( Dn dn ) throws LdapException
     {
         return connection.exists( dn );
     }
+
 
     @Override
     public Entry getRootDse() throws LdapException
@@ -380,11 +455,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.getRootDse();
     }
 
+
     @Override
     public Entry getRootDse( String... attributes ) throws LdapException
     {
         return connection.getRootDse( attributes );
     }
+
 
     @Override
     public Entry lookup( Dn dn ) throws LdapException
@@ -392,11 +469,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.lookup( dn );
     }
 
+
     @Override
     public Entry lookup( String dn ) throws LdapException
     {
         return connection.lookup( dn );
     }
+
 
     @Override
     public Entry lookup( Dn dn, String... attributes ) throws LdapException
@@ -404,11 +483,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.lookup( dn, attributes );
     }
 
+
     @Override
     public Entry lookup( Dn dn, Control[] controls, String... attributes ) throws LdapException
     {
         return connection.lookup( dn, controls, attributes );
     }
+
 
     @Override
     public Entry lookup( String dn, String... attributes ) throws LdapException
@@ -416,11 +497,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.lookup( dn, attributes );
     }
 
+
     @Override
     public Entry lookup( String dn, Control[] controls, String... attributes ) throws LdapException
     {
         return connection.lookup( dn, controls, attributes );
     }
+
 
     @Override
     public boolean isControlSupported( String controlOID ) throws LdapException
@@ -428,11 +511,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.isControlSupported( controlOID );
     }
 
+
     @Override
     public List<String> getSupportedControls() throws LdapException
     {
         return connection.getSupportedControls();
     }
+
 
     @Override
     public void loadSchema() throws LdapException
@@ -440,11 +525,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         connection.loadSchema();
     }
 
+
     @Override
     public SchemaManager getSchemaManager()
     {
         return connection.getSchemaManager();
     }
+
 
     @Override
     public LdapApiService getCodecService()
@@ -452,11 +539,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.getCodecService();
     }
 
+
     @Override
     public boolean doesFutureExistFor( int messageId )
     {
         return connection.doesFutureExistFor( messageId );
     }
+
 
     @Override
     public BinaryAttributeDetector getBinaryAttributeDetector()
@@ -464,11 +553,13 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
         return connection.getBinaryAttributeDetector();
     }
 
+
     @Override
     public void setBinaryAttributeDetector( BinaryAttributeDetector binaryAttributeDetecter )
     {
         connection.setBinaryAttributeDetector( binaryAttributeDetecter );
     }
+
 
     @Override
     public void setSchemaManager( SchemaManager schemaManager )
