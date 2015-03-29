@@ -1,3 +1,22 @@
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ * 
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ * 
+ */
 package org.apache.directory.ldap.client.api;
 
 
@@ -36,7 +55,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
     public void testPoolWithBind()
     {
         PoolTester tester = new PoolTester();
-        
+
         // no bind
         tester.execute(
             new WithConnection()
@@ -160,7 +179,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
     public void testPoolWithStartTls()
     {
         PoolTester tester = new PoolTester();
-        
+
         // extended( String )
         tester.execute(
             new WithConnection()
@@ -172,7 +191,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                     verifyAdminBind( connection, times( counts.adminBindCount ) );
                 }
             } );
-        
+
         // extended( String, byte[] )
         tester.execute(
             new WithConnection()
@@ -180,11 +199,12 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                 @Override
                 public void execute( LdapConnection connection, Counts counts ) throws LdapException
                 {
-                    connection.extended( StartTlsRequest.EXTENSION_OID, new byte[] {} );
+                    connection.extended( StartTlsRequest.EXTENSION_OID, new byte[]
+                        {} );
                     verifyAdminBind( connection, times( counts.adminBindCount ) );
                 }
             } );
-        
+
         // extended( Oid )
         tester.execute(
             new WithConnection()
@@ -203,7 +223,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                     verifyAdminBind( connection, times( counts.adminBindCount ) );
                 }
             } );
-        
+
         // extended( Oid, byte[] )
         tester.execute(
             new WithConnection()
@@ -213,7 +233,8 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                 {
                     try
                     {
-                        connection.extended( Oid.fromString( StartTlsRequest.EXTENSION_OID ), new byte[] {} );
+                        connection.extended( Oid.fromString( StartTlsRequest.EXTENSION_OID ), new byte[]
+                            {} );
                     }
                     catch ( DecoderException e )
                     {
@@ -222,7 +243,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
                     verifyAdminBind( connection, times( counts.adminBindCount ) );
                 }
             } );
-        
+
         // extended( ExtendedRequest )
         tester.execute(
             new WithConnection()
@@ -241,8 +262,8 @@ public class ValidatingPoolableLdapConnectionFactoryTest
     {
         verify( connection, mode ).bind( ADMIN_DN, ADMIN_CREDENTIALS );
     }
-    
-    
+
+
     private static final LdapConnection verify( LdapConnection connection, VerificationMode mode )
     {
         if ( MOCK_UTIL.isMock( connection ) )
@@ -261,7 +282,8 @@ public class ValidatingPoolableLdapConnectionFactoryTest
         throw new NotAMockException( "connection is not a mock, nor a wrapper for a connection that is one" );
     }
 
-    private static final class Counts {
+    private static final class Counts
+    {
         private int adminBindCount = 0;
         private int unBindCount = 0;
     }
@@ -269,7 +291,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
     public static final class InternalMonitoringLdapConnection extends LdapConnectionWrapper
     {
         private static final Oid START_TLS_OID;
-        
+
         static
         {
             try
@@ -287,33 +309,45 @@ public class ValidatingPoolableLdapConnectionFactoryTest
         private Counts counts = new Counts();
         private boolean startTlsCalled = false;
         private boolean unBindCalled = false;
-        
-        InternalMonitoringLdapConnection( LdapConnection connection ) 
+
+
+        InternalMonitoringLdapConnection( LdapConnection connection )
         {
             super( connection );
         }
-        
-        private int incrementBorrowedCount() {
+
+
+        private int incrementBorrowedCount()
+        {
             return ++borrowedCount;
         }
-        
-        public boolean bindCalled() {
+
+
+        public boolean bindCalled()
+        {
             return bindCalled;
         }
-        
-        public void resetMonitors() {
+
+
+        public void resetMonitors()
+        {
             bindCalled = false;
             startTlsCalled = false;
             unBindCalled = false;
         }
-        
-        public boolean startTlsCalled() {
+
+
+        public boolean startTlsCalled()
+        {
             return startTlsCalled;
         }
-        
-        public boolean unBindCalled() {
+
+
+        public boolean unBindCalled()
+        {
             return unBindCalled;
         }
+
 
         @Override
         public void bind() throws LdapException
@@ -322,12 +356,14 @@ public class ValidatingPoolableLdapConnectionFactoryTest
             bindCalled = true;
         }
 
+
         @Override
         public void anonymousBind() throws LdapException
         {
             connection.anonymousBind();
             bindCalled = true;
         }
+
 
         @Override
         public void bind( String name ) throws LdapException
@@ -336,16 +372,19 @@ public class ValidatingPoolableLdapConnectionFactoryTest
             bindCalled = true;
         }
 
+
         @Override
         public void bind( String name, String credentials ) throws LdapException
         {
             connection.bind( name, credentials );
             if ( ADMIN_DN.equals( name )
-                && ADMIN_CREDENTIALS.equals( credentials ) ) {
+                && ADMIN_CREDENTIALS.equals( credentials ) )
+            {
                 counts.adminBindCount++;
             }
             bindCalled = true;
         }
+
 
         @Override
         public void bind( Dn name ) throws LdapException
@@ -354,12 +393,14 @@ public class ValidatingPoolableLdapConnectionFactoryTest
             bindCalled = true;
         }
 
+
         @Override
         public void bind( Dn name, String credentials ) throws LdapException
         {
             connection.bind( name, credentials );
             bindCalled = true;
         }
+
 
         @Override
         public BindResponse bind( BindRequest bindRequest ) throws LdapException
@@ -369,60 +410,71 @@ public class ValidatingPoolableLdapConnectionFactoryTest
             return response;
         }
 
+
         @Override
         public ExtendedResponse extended( String oid ) throws LdapException
         {
-            if ( StartTlsRequest.EXTENSION_OID.equals( oid ) ) {
+            if ( StartTlsRequest.EXTENSION_OID.equals( oid ) )
+            {
                 startTlsCalled = true;
             }
             return connection.extended( oid );
         }
+
 
         @Override
         public ExtendedResponse extended( String oid, byte[] value ) throws LdapException
         {
-            if ( StartTlsRequest.EXTENSION_OID.equals( oid ) ) {
+            if ( StartTlsRequest.EXTENSION_OID.equals( oid ) )
+            {
                 startTlsCalled = true;
             }
             return connection.extended( oid, value );
         }
 
+
         @Override
         public ExtendedResponse extended( Oid oid ) throws LdapException
         {
-            if ( START_TLS_OID.equals( oid ) ) {
+            if ( START_TLS_OID.equals( oid ) )
+            {
                 startTlsCalled = true;
             }
             return connection.extended( oid );
         }
 
+
         @Override
         public ExtendedResponse extended( Oid oid, byte[] value ) throws LdapException
         {
-            if ( START_TLS_OID.equals( oid ) ) {
+            if ( START_TLS_OID.equals( oid ) )
+            {
                 startTlsCalled = true;
             }
             return connection.extended( oid, value );
         }
 
+
         @Override
         public ExtendedResponse extended( ExtendedRequest extendedRequest ) throws LdapException
         {
-            if ( extendedRequest.hasControl( StartTlsRequest.EXTENSION_OID ) ) {
+            if ( extendedRequest.hasControl( StartTlsRequest.EXTENSION_OID ) )
+            {
                 startTlsCalled = true;
             }
             return connection.extended( extendedRequest );
         }
-        
+
+
         @Override
-        public void unBind() throws LdapException {
+        public void unBind() throws LdapException
+        {
             counts.unBindCount++;
             unBindCalled = true;
             connection.unBind();
         }
     }
-    
-    
+
     private static class PoolTester
     {
         private LdapConnectionConfig config;
@@ -441,12 +493,12 @@ public class ValidatingPoolableLdapConnectionFactoryTest
             config.setCredentials( ADMIN_CREDENTIALS );
 
             MockLdapConnectionFactory mockConnectionFactory = new MockLdapConnectionFactory( config );
-            mockConnectionFactory.addConnection( 
+            mockConnectionFactory.addConnection(
                 new InternalMonitoringLdapConnection( mockConnection ) );
 
             validator = mock( LdapConnectionValidator.class );
             when( validator.validate( any( LdapConnection.class ) ) ).thenReturn( true );
-            ValidatingPoolableLdapConnectionFactory poolableFactory = 
+            ValidatingPoolableLdapConnectionFactory poolableFactory =
                 new ValidatingPoolableLdapConnectionFactory( mockConnectionFactory );
             poolableFactory.setValidator( validator );
 
@@ -466,7 +518,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
             {
                 connection = pool.getConnection();
                 assertNotNull( connection );
-                internal = (InternalMonitoringLdapConnection)((LdapConnectionWrapper)connection).wrapped();
+                internal = ( InternalMonitoringLdapConnection ) ( ( LdapConnectionWrapper ) connection ).wrapped();
                 borrowedCount = internal.incrementBorrowedCount();
                 org.mockito.Mockito.verify( validator, times( 2 * borrowedCount - 1 ) ).validate( connection );
                 internal.resetMonitors();
@@ -502,8 +554,7 @@ public class ValidatingPoolableLdapConnectionFactoryTest
             }
         }
     }
-    
-    
+
     private static interface WithConnection
     {
         /** 
