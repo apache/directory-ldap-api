@@ -1,3 +1,22 @@
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ * 
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ * 
+ */
 package org.apache.directory.api.asn1.util;
 
 
@@ -7,7 +26,6 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
-
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.i18n.I18n;
@@ -56,24 +74,27 @@ import org.apache.directory.api.i18n.I18n;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-final public class Oid {
+final public class Oid
+{
     private byte[] oidBytes;
     private String oidString;
-    
-    
-    private Oid( String oidString, byte[] oidBytes ) {
+
+
+    private Oid( String oidString, byte[] oidBytes )
+    {
         this.oidString = oidString;
         this.oidBytes = oidBytes;
     }
-    
-    
+
+
     @Override
-    public boolean equals( Object other ) {
-        return (other instanceof Oid) 
-                && oidString.equals( ((Oid)other).oidString );
+    public boolean equals( Object other )
+    {
+        return ( other instanceof Oid )
+            && oidString.equals( ( ( Oid ) other ).oidString );
     }
-    
-    
+
+
     /**
      * Decodes an OID from a <code>byte[]</code>.
      * 
@@ -81,59 +102,64 @@ final public class Oid {
      * @return A new Oid
      * @throws DecoderException
      */
-    public static Oid fromBytes( byte[] oidBytes ) throws DecoderException 
+    public static Oid fromBytes( byte[] oidBytes ) throws DecoderException
     {
-        if ( oidBytes == null || oidBytes.length < 1 ) 
+        if ( oidBytes == null || oidBytes.length < 1 )
         {
             throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, Arrays.toString( oidBytes ) ) );
         }
 
         StringBuilder builder = null;
         long value = 0;
-        for ( int i = 0; i < oidBytes.length; i++ ) 
+        for ( int i = 0; i < oidBytes.length; i++ )
         {
             value |= oidBytes[i] & 0x7F;
-            if ( oidBytes[i] < 0 ) 
+            if ( oidBytes[i] < 0 )
             {
                 // leading 1, so value continues
                 value = value << 7;
             }
-            else 
+            else
             {
                 // value completed
-                if ( builder == null ) {
+                if ( builder == null )
+                {
                     builder = new StringBuilder();
                     // first value special processing
-                    if ( value >= 80 ) {
+                    if ( value >= 80 )
+                    {
                         // starts with 2
                         builder.append( 2 );
                         value = value - 80;
                     }
-                    else {
+                    else
+                    {
                         // starts with 0 or 1
-                        long one = value/40;
-                        long two = value%40;
-                        if ( one < 0 || one > 2 || two < 0 || (one < 2 && two > 39) ) 
+                        long one = value / 40;
+                        long two = value % 40;
+                        if ( one < 0 || one > 2 || two < 0 || ( one < 2 && two > 39 ) )
                         {
-                            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, Arrays.toString( oidBytes ) ) );
+                            throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID,
+                                Arrays.toString( oidBytes ) ) );
                         }
-                        if ( one < 2 ) 
+                        if ( one < 2 )
                         {
                             builder.append( one );
                             value = two;
                         }
                     }
                 }
-                
+
                 // normal processing
                 builder.append( '.' ).append( value );
                 value = 0;
             }
         }
-        if ( builder == null ) {
+        if ( builder == null )
+        {
             throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, Arrays.toString( oidBytes ) ) );
         }
-        
+
         return new Oid( builder.toString(), oidBytes );
     }
 
@@ -145,15 +171,16 @@ final public class Oid {
      * @return A new Oid
      * @throws DecoderException 
      */
-    public static Oid fromString( String oidString ) throws DecoderException 
+    public static Oid fromString( String oidString ) throws DecoderException
     {
-        if ( oidString == null || oidString.isEmpty() ) 
+        if ( oidString == null || oidString.isEmpty() )
         {
             throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "" ) );
         }
 
         Queue<Long> segments = new LinkedList<Long>();
-        for ( String segment : oidString.split( "\\.", -1 ) ) {
+        for ( String segment : oidString.split( "\\.", -1 ) )
+        {
             try
             {
                 segments.add( Long.parseLong( segment ) );
@@ -167,46 +194,48 @@ final public class Oid {
         // first segment special case
         ByteBuffer buffer = new ByteBuffer();
         Long segmentOne = segments.poll();
-        if ( segmentOne == null || segmentOne < 0 || segmentOne > 2 ) 
+        if ( segmentOne == null || segmentOne < 0 || segmentOne > 2 )
         {
             throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oidString ) );
         }
 
         // second segment special case
         Long segment = segments.poll();
-        if ( segment == null || segment < 0 || (segmentOne < 2 && segment > 39) ) 
+        if ( segment == null || segment < 0 || ( segmentOne < 2 && segment > 39 ) )
         {
             throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oidString ) );
         }
 
-        buffer.append( (segmentOne * 40) + segment );
-        
+        buffer.append( ( segmentOne * 40 ) + segment );
+
         // the rest
-        while ( (segment = segments.poll()) != null ) 
+        while ( ( segment = segments.poll() ) != null )
         {
             buffer.append( segment );
         }
 
         return new Oid( oidString, buffer.toByteArray() );
     }
-    
-    
+
+
     /**
      * Returns the length of the encoded <code>byte[]</code> representation.
      * 
      * @return The length of the byte[]
      */
-    public int getEncodedLength() {
+    public int getEncodedLength()
+    {
         return oidBytes.length;
     }
-    
-    
+
+
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return oidString.hashCode();
     }
-    
-    
+
+
     /**
      * Returns true if <code>oidString</code> is a valid string representation
      * of an OID.  This method simply calls {@link #fromString(String)} and 
@@ -219,15 +248,17 @@ final public class Oid {
      */
     public static boolean isOid( String oidString )
     {
-        try {
+        try
+        {
             return Oid.fromString( oidString ) != null;
         }
-        catch ( DecoderException e ) {
+        catch ( DecoderException e )
+        {
             return false;
         }
     }
-    
-    
+
+
     /**
      * Returns the <code>byte[]</code> representation of the OID. The 
      * <code>byte[]</code> that is returned is <i>copied</i> from the internal
@@ -238,23 +269,24 @@ final public class Oid {
      * 
      * @return The encoded <code>byte[]</code> representation of the OID.
      */
-    public byte[] toBytes() 
+    public byte[] toBytes()
     {
         return Arrays.copyOf( oidBytes, oidBytes.length );
     }
-    
+
+
     /**
      * Returns the string representation of the OID.
      * 
      * @return The string representation of the OID
      */
     @Override
-    public String toString() 
+    public String toString()
     {
         return oidString;
     }
-    
-    
+
+
     /**
      * Writes the bytes respresenting this OID to the provided buffer.  This 
      * should be used in preference to the {@link #toBytes()} method in order
@@ -268,7 +300,7 @@ final public class Oid {
         buffer.put( oidBytes );
     }
 
-    
+
     /**
      * Writes the bytes respresenting this OID to the provided stream.  This 
      * should be used in preference to the {@link #toBytes()} method in order
@@ -277,24 +309,25 @@ final public class Oid {
      * @param outputStream The stream to write the bytes to
      * @throws IOException
      */
-    public void writeBytesTo( OutputStream outputStream ) throws IOException 
+    public void writeBytesTo( OutputStream outputStream ) throws IOException
     {
         outputStream.write( oidBytes );
     }
 
-    
     // Internal helper class for converting a long value to a properly encoded
     // byte[]
-    final private static class ByteBuffer 
+    final private static class ByteBuffer
     {
         private ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        
-        public ByteBuffer append( long value ) 
+
+
+        public ByteBuffer append( long value )
         {
             write( value, false );
             return this;
         }
-        
+
+
         private void write( long value, boolean hasMore )
         {
             long remaining = value >> 7;
@@ -302,12 +335,14 @@ final public class Oid {
             {
                 write( remaining, true );
             }
-            buffer.write( hasMore 
-                    ? (byte)((0x7F & value) | 0x80)
-                    : (byte)(0x7F & value) );
+            buffer.write( hasMore
+                ? ( byte ) ( ( 0x7F & value ) | 0x80 )
+                : ( byte ) ( 0x7F & value ) );
         }
-        
-        public byte[] toByteArray() {
+
+
+        public byte[] toByteArray()
+        {
             return buffer.toByteArray();
         }
     }

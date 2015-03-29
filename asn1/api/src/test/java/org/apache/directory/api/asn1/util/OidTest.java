@@ -1,68 +1,100 @@
+/*
+ *  Licensed to the Apache Software Foundation (ASF) under one
+ *  or more contributor license agreements.  See the NOTICE file
+ *  distributed with this work for additional information
+ *  regarding copyright ownership.  The ASF licenses this file
+ *  to you under the Apache License, Version 2.0 (the
+ *  "License"); you may not use this file except in compliance
+ *  with the License.  You may obtain a copy of the License at
+ * 
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an
+ *  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ *  KIND, either express or implied.  See the License for the
+ *  specific language governing permissions and limitations
+ *  under the License.
+ * 
+ */
 package org.apache.directory.api.asn1.util;
+
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-
 import java.util.Arrays;
-
 
 import org.apache.directory.api.asn1.DecoderException;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OidTest {
+
+public class OidTest
+{
     private static final Logger logger = LoggerFactory.getLogger( OidTest.class );
 
-    
+
     @Test
-    public void speed() {
-        byte[] bytes = new byte[] { 0x2A, (byte)0x86, 0x48, (byte)0x86, (byte)0xF7, 0x12, 0x01, 0x02, 0x02 };
+    public void speed()
+    {
+        byte[] bytes = new byte[]
+            { 0x2A, ( byte ) 0x86, 0x48, ( byte ) 0x86, ( byte ) 0xF7, 0x12, 0x01, 0x02, 0x02 };
         String string = new String( "1.2.840.113554.1.2.2" );
-        
+
         long start = System.nanoTime();
-        for ( int i = 0; i < 1000; i++ ) {
+        for ( int i = 0; i < 1000; i++ )
+        {
             Arrays.equals( bytes, bytes );
         }
-        logger.debug( "byte[]: {}", (System.nanoTime() - start) );
-        
+        logger.debug( "byte[]: {}", ( System.nanoTime() - start ) );
+
         start = System.nanoTime();
-        for ( int i = 0; i < 1000; i++ ) {
+        for ( int i = 0; i < 1000; i++ )
+        {
             string.equals( string );
         }
-        logger.debug( "String: {}", (System.nanoTime() - start) );
+        logger.debug( "String: {}", ( System.nanoTime() - start ) );
     }
-    
+
+
     @Test
-    public void fromBytes() throws DecoderException {
+    public void fromBytes() throws DecoderException
+    {
         // first byte
-        for ( int i = 0; i < 2; i++ ) 
+        for ( int i = 0; i < 2; i++ )
         { // [0..2]
-            for ( int j = 0; j < 40; j++ ) 
+            for ( int j = 0; j < 40; j++ )
             { // [0..39]
-                assertEquals( i + "." + j, 
-                        Oid.fromBytes( new byte[] { (byte)(i*40+j) } )
-                                .toString() );
+                assertEquals( i + "." + j,
+                    Oid.fromBytes( new byte[]
+                        { ( byte ) ( i * 40 + j ) } )
+                        .toString() );
             }
         }
-        
+
         assertEquals( "1.2.840.113554.1.2.2",
-                Oid.fromBytes( new byte[] {
-                        0x2A, (byte)0x86, 0x48, (byte)0x86, (byte)0xF7, 0x12, 0x01, 0x02, 0x02
-                } ).toString() );
+            Oid.fromBytes( new byte[]
+                {
+                    0x2A, ( byte ) 0x86, 0x48, ( byte ) 0x86, ( byte ) 0xF7, 0x12, 0x01, 0x02, 0x02
+            } ).toString() );
 
         assertEquals( "2.123456",
-                Oid.fromBytes( new byte[] { (byte)0x87, (byte)0xC5, 0x10 } ).toString() );
+            Oid.fromBytes( new byte[]
+                { ( byte ) 0x87, ( byte ) 0xC5, 0x10 } ).toString() );
 
     }
-    
+
+
     @Test
-    public void test2dot123456() throws DecoderException {
+    public void test2dot123456() throws DecoderException
+    {
         String expectedString = "2.123456";
-        byte[] expectedBytes = new byte[] { (byte)0x87, (byte)0xC5, 0x10 };
+        byte[] expectedBytes = new byte[]
+            { ( byte ) 0x87, ( byte ) 0xC5, 0x10 };
 
         logger.debug( "b_to_b: " + Arrays.toString( Oid.fromBytes( expectedBytes ).toBytes() ) );
         assertTrue( Arrays.equals( expectedBytes, Oid.fromBytes( expectedBytes ).toBytes() ) );
@@ -76,24 +108,29 @@ public class OidTest {
         logger.debug( "s_to_s: " + Oid.fromString( expectedString ).toString() );
         assertEquals( expectedString, Oid.fromString( expectedString ).toString() );
     }
-    
+
+
     @Test
-    public void fromString() throws DecoderException {
+    public void fromString() throws DecoderException
+    {
         // first byte
-        for ( int i = 0; i < 2; i++ ) 
+        for ( int i = 0; i < 2; i++ )
         { // [0..2]
-            for ( int j = 0; j < 40; j++ ) 
+            for ( int j = 0; j < 40; j++ )
             { // [0..39]
-                assertTrue( Arrays.equals( new byte[] { (byte)(i*40+j) },
-                        Oid.fromString( i + "." + j ).toBytes() ) );
+                assertTrue( Arrays.equals( new byte[]
+                    { ( byte ) ( i * 40 + j ) },
+                    Oid.fromString( i + "." + j ).toBytes() ) );
             }
         }
-        
-        assertTrue( Arrays.equals( 
-                new byte[] { 0x2A, (byte)0x86, 0x48, (byte)0x86, (byte)0xF7, 0x12, 0x01, 0x02, 0x02 },
-                Oid.fromString( "1.2.840.113554.1.2.2" ).toBytes() ) );
+
+        assertTrue( Arrays.equals(
+            new byte[]
+                { 0x2A, ( byte ) 0x86, 0x48, ( byte ) 0x86, ( byte ) 0xF7, 0x12, 0x01, 0x02, 0x02 },
+            Oid.fromString( "1.2.840.113554.1.2.2" ).toBytes() ) );
     }
-    
+
+
     /**
      * Test a null NewOid
      */
@@ -120,7 +157,8 @@ public class OidTest {
     {
         try
         {
-            Oid.fromBytes( new byte[] {} );
+            Oid.fromBytes( new byte[]
+                {} );
             fail( "Should not reach this point ..." );
         }
         catch ( DecoderException de )
@@ -139,16 +177,18 @@ public class OidTest {
         try
         {
             Oid oid = null;
-            
+
             // itu-t(0), recommendation(0), series a-z (0..26)
             for ( int i = 1; i < 27; i++ )
             {
-                oid = Oid.fromBytes( new byte[] { 0x00, ( byte ) i } );
+                oid = Oid.fromBytes( new byte[]
+                    { 0x00, ( byte ) i } );
                 assertEquals( "0.0." + i, oid.toString() );
             }
 
             // itu-t(0), question(1)
-            oid = Oid.fromBytes( new byte[] { 0x01 } );
+            oid = Oid.fromBytes( new byte[]
+                { 0x01 } );
             assertEquals( "0.1", oid.toString() );
 
             // itu-t(0), administration(2), country(202 .. 748)
@@ -196,19 +236,23 @@ public class OidTest {
         try
         {
             // iso(1), standard(0)
-            oid = Oid.fromBytes( new byte[] { 40 + 0 } );
+            oid = Oid.fromBytes( new byte[]
+                { 40 + 0 } );
             assertEquals( "1.0", oid.toString() );
 
             // iso(1), registration-authority(1)
-            oid = Oid.fromBytes( new byte[] { 40 + 1 } );
+            oid = Oid.fromBytes( new byte[]
+                { 40 + 1 } );
             assertEquals( "1.1", oid.toString() );
 
             // iso(1), member-body(2)
-            oid = Oid.fromBytes( new byte[] { 40 + 2 } );
+            oid = Oid.fromBytes( new byte[]
+                { 40 + 2 } );
             assertEquals( "1.2", oid.toString() );
 
             // iso(1), identified-organization(3) | org(3) | organization(3)
-            oid = Oid.fromBytes( new byte[] { 40 + 3 } );
+            oid = Oid.fromBytes( new byte[]
+                { 40 + 3 } );
             assertEquals( "1.3", oid.toString() );
         }
         catch ( DecoderException de )
@@ -229,29 +273,35 @@ public class OidTest {
         try
         {
             // joint-iso-itu-t(2), presentation(0)
-            oid = Oid.fromBytes( new byte[] { 80 + 0 } );
+            oid = Oid.fromBytes( new byte[]
+                { 80 + 0 } );
             assertEquals( "2.0", oid.toString() );
 
             // joint-iso-itu-t(2), asn1(1)
-            oid = Oid.fromBytes( new byte[] { 80 + 1 } );
+            oid = Oid.fromBytes( new byte[]
+                { 80 + 1 } );
             assertEquals( "2.1", oid.toString() );
 
             // joint-iso-itu-t(2), association-control(2)
-            oid = Oid.fromBytes( new byte[] { 80 + 2 } );
+            oid = Oid.fromBytes( new byte[]
+                { 80 + 2 } );
             assertEquals( "2.2", oid.toString() );
 
             // joint-iso-itu-t(2), reliable-transfer(3)
-            oid = Oid.fromBytes( new byte[] { 80 + 3 } );
+            oid = Oid.fromBytes( new byte[]
+                { 80 + 3 } );
             assertEquals( "2.3", oid.toString() );
 
             // ...
             // joint-iso-itu-t(2), upu(40)
-            oid = Oid.fromBytes( new byte[] { 80 + 40 } );
+            oid = Oid.fromBytes( new byte[]
+                { 80 + 40 } );
             assertEquals( "2.40", oid.toString() );
 
             // ...
             // joint-iso-itu-t(2), xxx(100)
-            oid = Oid.fromBytes( new byte[] { ( byte ) ( 0x81 ), 0x34 } );
+            oid = Oid.fromBytes( new byte[]
+                { ( byte ) ( 0x81 ), 0x34 } );
             assertEquals( "2.100", oid.toString() );
         }
         catch ( DecoderException de )
@@ -322,7 +372,8 @@ public class OidTest {
 
         try
         {
-            oid = Oid.fromBytes( new byte[] { 0x2b, 0x06, 0x01, 0x05, 0x05, 0x02 } );
+            oid = Oid.fromBytes( new byte[]
+                { 0x2b, 0x06, 0x01, 0x05, 0x05, 0x02 } );
             assertEquals( "1.3.6.1.5.5.2", oid.toString() );
         }
         catch ( DecoderException de )
@@ -373,7 +424,8 @@ public class OidTest {
             assertEquals( oid.toString(), oid2.toString() );
 
             oid = Oid.fromString( "0.1.2.3.4" );
-            assertTrue( Arrays.equals( new byte[] {0x01, 0x02, 0x03, 0x04}, oid.toBytes() ) );
+            assertTrue( Arrays.equals( new byte[]
+                { 0x01, 0x02, 0x03, 0x04 }, oid.toBytes() ) );
             oid2 = Oid.fromBytes( oid.toBytes() );
             assertEquals( oid.toString(), oid2.toString() );
 
