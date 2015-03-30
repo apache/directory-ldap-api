@@ -982,7 +982,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         if ( colonIndex != -1 )
         {
-            String attributeType = Strings.toLowerCase( line ).substring( 0, colonIndex );
+            String attributeType = line.substring( 0, colonIndex );
             Object attributeValue = parseSimpleValue( line, colonIndex );
 
             // Create an attribute
