@@ -582,7 +582,10 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
                     if ( !isConnected )
                     {
-                        if ( connectionFuture.getException() instanceof ConnectException )
+                        Throwable connectionException = connectionFuture.getException();
+
+                        if ( ( connectionException instanceof ConnectException )
+                            || ( connectionException instanceof UnresolvedAddressException ) )
                         {
                             // No need to wait
                             // We know that there was a permanent error such as "connection refused".
