@@ -1079,7 +1079,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                     }
                     else
                     {
-                        LOG.error( I18n.err( I18n.ERR_04486_VALUE_ALREADY_EXISTS, val, upId ) );
+                        LOG.warn( I18n.err( I18n.ERR_04486_VALUE_ALREADY_EXISTS, val, upId ) );
                     }
                 }
             }
@@ -1133,7 +1133,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                     }
                     else
                     {
-                        LOG.error( I18n.err( I18n.ERR_04486_VALUE_ALREADY_EXISTS, val, upId ) );
+                        LOG.warn( I18n.err( I18n.ERR_04486_VALUE_ALREADY_EXISTS, val, upId ) );
                     }
                 }
             }
@@ -1212,7 +1212,7 @@ public class DefaultAttribute implements Attribute, Cloneable
                 }
                 else
                 {
-                    LOG.error( I18n.err( I18n.ERR_04486_VALUE_ALREADY_EXISTS, Strings.dumpBytes( val ), upId ) );
+                    LOG.warn( I18n.err( I18n.ERR_04486_VALUE_ALREADY_EXISTS, Strings.dumpBytes( val ), upId ) );
                 }
             }
         }
