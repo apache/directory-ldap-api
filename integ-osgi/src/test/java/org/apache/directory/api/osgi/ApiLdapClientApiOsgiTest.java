@@ -27,6 +27,7 @@ import org.apache.directory.ldap.client.api.LdapConnectionPool;
 import org.apache.directory.ldap.client.api.LdapNetworkConnection;
 import org.apache.directory.ldap.client.api.SaslGssApiRequest;
 import org.apache.directory.ldap.client.api.future.AddFuture;
+import org.apache.directory.ldap.client.api.search.FilterBuilder;
 import org.apache.directory.ldap.client.template.LdapConnectionTemplate;
 
 
@@ -49,6 +50,7 @@ public class ApiLdapClientApiOsgiTest extends ApiOsgiTestBase
         new AddFuture( new LdapNetworkConnection(), 2 );
         new LdapConnectionTemplate( new LdapConnectionPool( new DefaultPoolableLdapConnectionFactory(
             new LdapConnectionConfig() ) ) );
+        FilterBuilder.and( FilterBuilder.not( FilterBuilder.contains( "cn", "a", "b" ) ) ).toString();
     }
 
 }
