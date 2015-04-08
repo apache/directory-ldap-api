@@ -62,10 +62,10 @@ import org.xmlpull.v1.XmlPullParserException;
 public final class ParserUtils
 {
     /** W3C XML Schema URI. */
-    public static final String XML_SCHEMA_URI = "http://www.w3c.org/2001/XMLSchema";
+    public static final String XML_SCHEMA_URI = "http://www.w3.org/2001/XMLSchema";
 
     /** W3C XML Schema Instance URI. */
-    public static final String XML_SCHEMA_INSTANCE_URI = "http://www.w3c.org/2001/XMLSchema-instance";
+    public static final String XML_SCHEMA_INSTANCE_URI = "http://www.w3.org/2001/XMLSchema-instance";
 
     /** Base-64 identifier. */
     public static final String BASE64BINARY = "base64Binary";
@@ -84,9 +84,10 @@ public final class ParserUtils
 
     /** The XSI namespace */
     public static final Namespace XSI_NAMESPACE = new Namespace( XSI, XML_SCHEMA_INSTANCE_URI );
-    
+
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ParserUtils.class );
+
 
     /**
      * Returns the value of the attribute 'type' of the "XMLSchema-instance' namespace if it exists
