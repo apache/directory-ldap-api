@@ -131,7 +131,7 @@
               org.dom4j;version=${dom4j.version},
               org.dom4j.io;version=${dom4j.version},
               org.dom4j.tree;version=${dom4j.version},
-              org.slf4j;version=${slf4j.api.version},
+              org.slf4j;version=${slf4j.api.bundleversion},
               org.xmlpull.v1;version=${xpp3.version},
               javax.xml.transform,
               javax.xml.transform.stream

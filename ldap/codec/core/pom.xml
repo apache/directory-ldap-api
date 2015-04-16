@@ -151,7 +151,7 @@
               org.apache.directory.api.util.exception;version=${project.version},
               org.apache.mina.filter.codec;version=${mina.core.version},
               org.apache.mina.util;version=${mina.core.version},
-              org.slf4j;version=${slf4j.api.version},
+              org.slf4j;version=${slf4j.api.bundleversion},
               org.osgi.framework;version="[1.0.0,2.0.0)",
               javax.naming,
               javax.naming.directory,

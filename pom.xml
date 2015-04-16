@@ -54,6 +54,7 @@
     <org.osgi.core.version>6.0.0</org.osgi.core.version>
     <org.apache.felix.version>4.4.1</org.apache.felix.version>
     <slf4j.api.version>1.7.10</slf4j.api.version>
+    <slf4j.api.bundleversion>"$«range;[==,=+)»"</slf4j.api.bundleversion>
     <slf4j.log4j12.version>1.7.10</slf4j.log4j12.version>
     <xml.apis.version>2.0.2</xml.apis.version>
     <xpp3.version>1.1.4c</xpp3.version>

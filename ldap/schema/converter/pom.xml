@@ -134,7 +134,7 @@
               org.apache.directory.api.ldap.model.name;version=${project.version},
               org.apache.directory.api.ldap.model.schema;version=${project.version},
               org.apache.directory.api.util;version=${project.version},
-              org.slf4j;version=${slf4j.api.version},
+              org.slf4j;version=${slf4j.api.bundleversion},
               antlr;version=${antlr.version},
               *
               ]]>

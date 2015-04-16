@@ -72,7 +72,7 @@
             </Export-Package>
             <Import-Package>
               org.apache.directory.api.i18n;version=${project.version},
-              org.slf4j;version=${slf4j.api.version},
+              org.slf4j;version=${slf4j.api.bundleversion},
               javax.naming,
               javax.naming.directory,
               javax.naming.ldap
