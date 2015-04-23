@@ -9,7 +9,6 @@ objectclass: metaObjectClass
 m-supobjectclass: ads-authenticator
 m-must: ads-delegateHost
 m-must: ads-delegatePort
-m-must: ads-delegateBaseDn
 m-may: ads-delegateSsl
 m-may: ads-delegateTls
 m-may: ads-delegateSslTrustManager
