@@ -7,8 +7,8 @@ objectclass: top
 objectclass: metaTop
 objectclass: metaObjectClass
 m-supobjectclass: ads-transport
-m-may: ads-enabledProtocol
-m-may: ads-enabledCipher
+m-may: ads-enabledProtocols
+m-may: ads-enabledCiphers
 m-may: ads-wantClientAuth
 m-may: ads-needClientAuth
 creatorsname: uid=admin,ou=system
