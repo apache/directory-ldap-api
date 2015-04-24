@@ -81,13 +81,13 @@ public class DefaultLdapCodecService implements LdapApiService
     private static final Logger LOG = LoggerFactory.getLogger( DefaultLdapCodecService.class );
 
     /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ControlFactory}'s */
-    protected Map<String, ControlFactory<? extends Control>> controlFactories = new HashMap<String, ControlFactory<? extends Control>>();
+    private Map<String, ControlFactory<? extends Control>> controlFactories = new HashMap<String, ControlFactory<? extends Control>>();
 
     /** The map of registered {@link org.apache.directory.api.ldap.codec.api.ExtendedOperationFactory}'s by request OID */
-    protected Map<String, ExtendedOperationFactory> extendedOperationsFactories = new HashMap<String, ExtendedOperationFactory>();
+    private Map<String, ExtendedOperationFactory> extendedOperationsFactories = new HashMap<String, ExtendedOperationFactory>();
 
     /** The registered ProtocolCodecFactory */
-    protected ProtocolCodecFactory protocolCodecFactory;
+    private ProtocolCodecFactory protocolCodecFactory;
 
 
     /**
@@ -538,5 +538,50 @@ public class DefaultLdapCodecService implements LdapApiService
     public boolean isExtendedOperationRegistered( String oid )
     {
         return extendedOperationsFactories.containsKey( oid );
+    }
+
+
+    /**
+     * @return the controlFactories
+     */
+    public Map<String, ControlFactory<? extends Control>> getControlFactories()
+    {
+        return controlFactories;
+    }
+
+
+    /**
+     * @param controlFactories the controlFactories to set
+     */
+    public void setControlFactories( Map<String, ControlFactory<? extends Control>> controlFactories )
+    {
+        this.controlFactories = controlFactories;
+    }
+
+
+    /**
+     * @return the extendedOperationsFactories
+     */
+    public Map<String, ExtendedOperationFactory> getExtendedOperationsFactories()
+    {
+        return extendedOperationsFactories;
+    }
+
+
+    /**
+     * @param extendedOperationsFactories the extendedOperationsFactories to set
+     */
+    public void setExtendedOperationsFactories( Map<String, ExtendedOperationFactory> extendedOperationsFactories )
+    {
+        this.extendedOperationsFactories = extendedOperationsFactories;
+    }
+
+
+    /**
+     * @param protocolCodecFactory the protocolCodecFactory to set
+     */
+    public void setProtocolCodecFactory( ProtocolCodecFactory protocolCodecFactory )
+    {
+        this.protocolCodecFactory = protocolCodecFactory;
     }
 }

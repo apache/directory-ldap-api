@@ -145,9 +145,9 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
     public StandaloneLdapApiService( List<String> controls, List<String> extendedOperations ) throws Exception
     {
-        CodecFactoryUtil.loadStockControls( controlFactories, this );
+        CodecFactoryUtil.loadStockControls( getControlFactories(), this );
 
-        CodecFactoryUtil.loadStockExtendedOperations( extendedOperationsFactories, this );
+        CodecFactoryUtil.loadStockExtendedOperations( getExtendedOperationsFactories(), this );
 
         // Load the controls
         loadControls( controls );
@@ -155,7 +155,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         // Load the extended operations
         loadExtendedOperations( extendedOperations );
 
-        if ( protocolCodecFactory == null )
+        if ( getProtocolCodecFactory() == null )
         {
             try
             {
@@ -166,11 +166,11 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
                     clazz.getConstructor( LdapApiService.class );
                 if ( constructor != null )
                 {
-                    protocolCodecFactory = constructor.newInstance( this );
+                    setProtocolCodecFactory( constructor.newInstance( this ) );
                 }
                 else
                 {
-                    protocolCodecFactory = clazz.newInstance();
+                    setProtocolCodecFactory( clazz.newInstance() );
                 }
             }
             catch ( Exception cause )
@@ -276,7 +276,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      */
     private void loadControl( String controlFQCN ) throws Exception
     {
-        if ( controlFactories.containsKey( controlFQCN ) )
+        if ( getControlFactories().containsKey( controlFQCN ) )
         {
             LOG.debug( "Factory for control {} was already loaded", controlFQCN );
             return;
@@ -293,7 +293,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
 
         ControlFactory<?> factory = ( ControlFactory<?> ) constructor.newInstance( new Object[]
             { this } );
-        controlFactories.put( factory.getOid(), factory );
+        getControlFactories().put( factory.getOid(), factory );
 
         LOG.info( "Registered control factory: {}", factory.getOid() );
     }
@@ -320,7 +320,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
      */
     private void loadExtendedOperation( String extendedOperationFQCN ) throws Exception
     {
-        if ( extendedOperationsFactories.containsKey( extendedOperationFQCN ) )
+        if ( getExtendedOperationsFactories().containsKey( extendedOperationFQCN ) )
         {
             LOG.debug( "Factory for extended operation {} was already loaded", extendedOperationFQCN );
             return;
@@ -339,7 +339,7 @@ public class StandaloneLdapApiService extends DefaultLdapCodecService
         ExtendedOperationFactory factory = ( ExtendedOperationFactory ) constructor
             .newInstance( new Object[]
                 { this } );
-        extendedOperationsFactories.put( factory.getOid(), factory );
+        getExtendedOperationsFactories().put( factory.getOid(), factory );
 
         LOG.info( "Registered pre-bundled extended operation factory: {}", factory.getOid() );
     }
