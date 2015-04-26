@@ -1817,6 +1817,12 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         authenticated.set( false );
 
+        // Close all the Future for this session
+        for ( ResponseFuture<? extends Response> responseFuture : futureMap.values() )
+        {
+            responseFuture.cancel();
+        }
+
         // clear the mappings
         clearMaps();
 
