@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.apache.directory.api</groupId>
     <artifactId>api-asn1-parent</artifactId>
-    <version>1.0.0-M30-SNAPSHOT</version>
+    <version>1.0.0-M30</version>
   </parent>
   
   <artifactId>api-asn1-api</artifactId>
