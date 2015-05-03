@@ -308,7 +308,7 @@ public final class ParserUtils
         try
         {
             transformer = factory.newTransformer( new StreamSource( ParserUtils.class
-                .getResourceAsStream( "DSMLv2.xslt" ) ) );
+                .getResourceAsStream( "/org/apache/directory/shared/dsmlv2/DSMLv2.xslt" ) ) );
         }
         catch ( TransformerConfigurationException e1 )
         {
