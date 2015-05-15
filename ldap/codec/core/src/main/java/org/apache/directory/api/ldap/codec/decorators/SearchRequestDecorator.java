@@ -327,12 +327,12 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
                     filterParent = filterParent.getParent();
                 }
-                else if ( filterParent instanceof Filter )
+                else
                 {
                     filterParent = filterParent.getParent();
                 }
 
-                if ( filterParent instanceof Filter )
+                if ( filterParent != null )
                 {
                     // The parent is a filter ; it will become the new currentFilter
                     // and we will loop again.
@@ -1127,8 +1127,8 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     {
         return ( SearchRequest ) super.removeControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -1145,8 +1145,8 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
     {
         return getDecorated().followReferrals();
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */

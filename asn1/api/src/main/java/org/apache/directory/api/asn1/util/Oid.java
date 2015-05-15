@@ -111,9 +111,11 @@ final public class Oid
 
         StringBuilder builder = null;
         long value = 0;
+
         for ( int i = 0; i < oidBytes.length; i++ )
         {
             value |= oidBytes[i] & 0x7F;
+
             if ( oidBytes[i] < 0 )
             {
                 // leading 1, so value continues
@@ -125,6 +127,7 @@ final public class Oid
                 if ( builder == null )
                 {
                     builder = new StringBuilder();
+
                     // first value special processing
                     if ( value >= 80 )
                     {
@@ -137,11 +140,13 @@ final public class Oid
                         // starts with 0 or 1
                         long one = value / 40;
                         long two = value % 40;
-                        if ( one < 0 || one > 2 || two < 0 || ( one < 2 && two > 39 ) )
+
+                        if ( ( one < 0 ) || ( one > 2 ) || ( two < 0 ) || ( ( one < 2 ) && ( two > 39 ) ) )
                         {
                             throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID,
                                 Arrays.toString( oidBytes ) ) );
                         }
+
                         if ( one < 2 )
                         {
                             builder.append( one );
@@ -155,12 +160,16 @@ final public class Oid
                 value = 0;
             }
         }
+
         if ( builder == null )
         {
             throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, Arrays.toString( oidBytes ) ) );
         }
 
-        return new Oid( builder.toString(), oidBytes );
+        byte[] oidBytesCopy = new byte[oidBytes.length];
+        System.arraycopy( oidBytes, 0, oidBytesCopy, 0, oidBytes.length );
+
+        return new Oid( builder.toString(), oidBytesCopy );
     }
 
 
@@ -173,12 +182,13 @@ final public class Oid
      */
     public static Oid fromString( String oidString ) throws DecoderException
     {
-        if ( oidString == null || oidString.isEmpty() )
+        if ( ( oidString == null ) || oidString.isEmpty() )
         {
             throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, "" ) );
         }
 
         Queue<Long> segments = new LinkedList<Long>();
+
         for ( String segment : oidString.split( "\\.", -1 ) )
         {
             try
@@ -194,14 +204,16 @@ final public class Oid
         // first segment special case
         ByteBuffer buffer = new ByteBuffer();
         Long segmentOne = segments.poll();
-        if ( segmentOne == null || segmentOne < 0 || segmentOne > 2 )
+
+        if ( ( segmentOne == null ) || ( segmentOne < 0 ) || ( segmentOne > 2 ) )
         {
             throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oidString ) );
         }
 
         // second segment special case
         Long segment = segments.poll();
-        if ( segment == null || segment < 0 || ( segmentOne < 2 && segment > 39 ) )
+
+        if ( ( segment == null ) || ( segment < 0 ) || ( ( segmentOne < 2 ) && ( segment > 39 ) ) )
         {
             throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oidString ) );
         }
@@ -250,7 +262,9 @@ final public class Oid
     {
         try
         {
-            return Oid.fromString( oidString ) != null;
+            Oid.fromString( oidString );
+
+            return true;
         }
         catch ( DecoderException e )
         {

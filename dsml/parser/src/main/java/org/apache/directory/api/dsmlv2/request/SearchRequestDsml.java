@@ -522,7 +522,8 @@ public class SearchRequestDsml
             {
                 newElement = element.addElement( "greaterOrEqual" );
             }
-            else if ( filter instanceof LessEqNode )
+            else
+            // it is a LessEqNode )
             {
                 newElement = element.addElement( "lessOrEqual" );
             }
@@ -824,8 +825,8 @@ public class SearchRequestDsml
     {
         return ( SearchRequest ) super.removeControl( control );
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
@@ -842,8 +843,8 @@ public class SearchRequestDsml
     {
         return getDecorated().followReferrals();
     }
-    
-    
+
+
     /**
      * {@inheritDoc}
      */
