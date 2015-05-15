@@ -657,11 +657,11 @@ public class Asn1Decoder implements TLVBerDecoderMBean
         boolean hasRemaining = stream.hasRemaining();
 
         // Increment the PDU size counter.
-        container.incrementDecodeBytes( stream.remaining() );
+        container.incrementDecodedBytes( stream.remaining() );
 
-        if ( container.getDecodeBytes() > container.getMaxPDUSize() )
+        if ( container.getDecodedBytes() > container.getMaxPDUSize() )
         {
-            String message = I18n.err( I18n.ERR_00042_PDU_SIZE_TOO_LONG, container.getDecodeBytes(), container
+            String message = I18n.err( I18n.ERR_00042_PDU_SIZE_TOO_LONG, container.getDecodedBytes(), container
                 .getMaxPDUSize() );
             LOG.error( message );
             throw new DecoderException( message );

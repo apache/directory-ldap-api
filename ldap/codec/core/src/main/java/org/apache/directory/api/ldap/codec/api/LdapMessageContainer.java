@@ -121,7 +121,7 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
         messageDecorator = null;
         messageId = 0;
         currentControl = null;
-        decodeBytes = 0;
+        setDecodedBytes( 0 );
     }
 
 

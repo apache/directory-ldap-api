@@ -56,7 +56,7 @@ public abstract class AbstractContainer implements Asn1Container
     private boolean grammarEndAllowed;
 
     /** A counter for the decoded bytes */
-    protected int decodeBytes;
+    private int decodedBytes;
 
     /** The maximum allowed size for a PDU. Default to MAX int value */
     private int maxPDUSize = Integer.MAX_VALUE;
@@ -235,18 +235,27 @@ public abstract class AbstractContainer implements Asn1Container
     /**
      * {@inheritDoc}
      */
-    public int getDecodeBytes()
+    public int getDecodedBytes()
     {
-        return decodeBytes;
+        return decodedBytes;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void incrementDecodeBytes( int nb )
+    public void setDecodedBytes( int decodedBytes )
     {
-        decodeBytes += nb;
+        this.decodedBytes = decodedBytes;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void incrementDecodedBytes( int nb )
+    {
+        decodedBytes += nb;
     }
 
 
