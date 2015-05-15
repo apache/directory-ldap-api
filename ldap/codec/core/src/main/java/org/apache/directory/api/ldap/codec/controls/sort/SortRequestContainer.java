@@ -42,6 +42,7 @@ public class SortRequestContainer extends AbstractContainer
     /** current key that is being decoded */
     private SortKey currentKey;
 
+
     /**
      * Creates a new instance of SortRequestContainer.
      *
@@ -51,7 +52,7 @@ public class SortRequestContainer extends AbstractContainer
     {
         super();
         this.codec = codec;
-        grammar = SortRequestGrammar.getInstance();
+        setGrammar( SortRequestGrammar.getInstance() );
         setTransition( SortRequestStates.START_STATE );
     }
 
@@ -129,5 +130,5 @@ public class SortRequestContainer extends AbstractContainer
     {
         this.currentKey = currentKey;
     }
-    
+
 }

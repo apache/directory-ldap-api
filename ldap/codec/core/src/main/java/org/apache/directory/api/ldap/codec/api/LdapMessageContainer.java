@@ -72,7 +72,7 @@ public class LdapMessageContainer<E extends MessageDecorator<? extends Message>>
     {
         super();
         this.codec = codec;
-        this.grammar = LdapMessageGrammar.getInstance();
+        setGrammar( LdapMessageGrammar.getInstance() );
         this.binaryAttributeDetector = binaryAttributeDetector;
         setTransition( LdapStatesEnum.START_STATE );
     }

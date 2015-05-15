@@ -44,7 +44,7 @@ public class PersistentSearchContainer extends AbstractContainer
     {
         super();
         this.codec = codec;
-        grammar = PersistentSearchGrammar.getInstance();
+        setGrammar( PersistentSearchGrammar.getInstance() );
         setTransition( PersistentSearchStates.START_STATE );
     }
 

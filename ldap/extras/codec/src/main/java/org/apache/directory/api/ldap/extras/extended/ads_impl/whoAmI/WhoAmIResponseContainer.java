@@ -41,7 +41,7 @@ public class WhoAmIResponseContainer extends AbstractContainer
     public WhoAmIResponseContainer()
     {
         super();
-        grammar = WhoAmIResponseGrammar.getInstance();
+        setGrammar( WhoAmIResponseGrammar.getInstance() );
         setTransition( WhoAmIResponseStatesEnum.START_STATE );
     }
 

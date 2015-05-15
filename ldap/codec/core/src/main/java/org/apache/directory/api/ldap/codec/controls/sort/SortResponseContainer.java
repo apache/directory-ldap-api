@@ -38,6 +38,7 @@ public class SortResponseContainer extends AbstractContainer
     /** LDAP codec */
     private LdapApiService codec;
 
+
     /**
      * Creates a new instance of SortResponseContainer.
      *
@@ -47,7 +48,7 @@ public class SortResponseContainer extends AbstractContainer
     {
         super();
         this.codec = codec;
-        grammar = SortResponseGrammar.getInstance();
+        setGrammar( SortResponseGrammar.getInstance() );
         setTransition( SortResponseStates.START_STATE );
     }
 

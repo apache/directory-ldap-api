@@ -41,7 +41,7 @@ public class GracefulDisconnectContainer extends AbstractContainer
     public GracefulDisconnectContainer()
     {
         super();
-        grammar = GracefulDisconnectGrammar.getInstance();
+        setGrammar( GracefulDisconnectGrammar.getInstance() );
         setTransition( GracefulDisconnectStatesEnum.START_STATE );
     }
 

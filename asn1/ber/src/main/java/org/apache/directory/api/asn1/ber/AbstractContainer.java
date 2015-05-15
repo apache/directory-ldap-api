@@ -38,7 +38,7 @@ import org.apache.directory.api.asn1.ber.tlv.TLVStateEnum;
 public abstract class AbstractContainer implements Asn1Container
 {
     /** All the possible grammars */
-    protected Grammar<?> grammar;
+    private Grammar<?> grammar;
 
     /** The current state of the decoding */
     private TLVStateEnum state;
@@ -97,10 +97,18 @@ public abstract class AbstractContainer implements Asn1Container
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("rawtypes")
-    public Grammar getGrammar()
+    public Grammar<?> getGrammar()
     {
         return grammar;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setGrammar( Grammar<?> grammar )
+    {
+        this.grammar = grammar;
     }
 
 

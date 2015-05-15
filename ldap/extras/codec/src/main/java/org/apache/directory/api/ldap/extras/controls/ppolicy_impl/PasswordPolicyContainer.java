@@ -41,7 +41,7 @@ public class PasswordPolicyContainer extends AbstractContainer
     {
         super();
         control = new PasswordPolicyDecorator( codec, new PasswordPolicyImpl() );
-        grammar = PasswordPolicyGrammar.getInstance();
+        setGrammar( PasswordPolicyGrammar.getInstance() );
         setTransition( PasswordPolicyStates.START_STATE );
     }
 
@@ -59,7 +59,7 @@ public class PasswordPolicyContainer extends AbstractContainer
             control = new PasswordPolicyDecorator( codec, ppolicyResponse );
         }
 
-        grammar = PasswordPolicyGrammar.getInstance();
+        setGrammar( PasswordPolicyGrammar.getInstance() );
         setTransition( PasswordPolicyStates.START_STATE );
     }
 

@@ -49,7 +49,7 @@ public class AdDirSyncContainer extends AbstractContainer
         super();
         this.codec = codec;
         this.control = new AdDirSyncDecorator( codec );
-        grammar = AdDirSyncGrammar.getInstance();
+        setGrammar( AdDirSyncGrammar.getInstance() );
         setTransition( AdDirSyncStatesEnum.START_STATE );
     }
 
@@ -64,7 +64,7 @@ public class AdDirSyncContainer extends AbstractContainer
         super();
         this.codec = codec;
         this.control = control;
-        grammar = AdDirSyncGrammar.getInstance();
+        setGrammar( AdDirSyncGrammar.getInstance() );
         setTransition( AdDirSyncStatesEnum.START_STATE );
     }
 

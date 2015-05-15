@@ -47,7 +47,7 @@ public class SyncInfoValueContainer extends AbstractContainer
         super();
         this.codec = codec;
         this.control = new SyncInfoValueDecorator( codec );
-        grammar = SyncInfoValueGrammar.getInstance();
+        setGrammar( SyncInfoValueGrammar.getInstance() );
         setTransition( SyncInfoValueStatesEnum.START_STATE );
     }
 
@@ -61,7 +61,7 @@ public class SyncInfoValueContainer extends AbstractContainer
         super();
         this.codec = codec;
         this.control = control;
-        grammar = SyncInfoValueGrammar.getInstance();
+        setGrammar( SyncInfoValueGrammar.getInstance() );
         setTransition( SyncInfoValueStatesEnum.START_STATE );
     }
 

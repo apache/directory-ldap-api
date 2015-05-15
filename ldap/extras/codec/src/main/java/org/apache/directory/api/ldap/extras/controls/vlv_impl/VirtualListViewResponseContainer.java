@@ -42,7 +42,7 @@ public class VirtualListViewResponseContainer extends AbstractContainer
     {
         super();
         this.codec = codec;
-        grammar = VirtualListViewResponseGrammar.getInstance();
+        setGrammar( VirtualListViewResponseGrammar.getInstance() );
         setTransition( VirtualListViewResponseStates.START_STATE );
     }
 
