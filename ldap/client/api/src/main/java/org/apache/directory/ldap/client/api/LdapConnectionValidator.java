@@ -36,5 +36,5 @@ public interface LdapConnectionValidator
      * @param ldapConnection The connection to test
      * @return True, if the connection is still valid
      */
-    public boolean validate( LdapConnection ldapConnection );
+    boolean validate( LdapConnection ldapConnection );
 }

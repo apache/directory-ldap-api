@@ -79,7 +79,7 @@ public class SchemaObjectSorter
         } );
     }
 
-    private static interface ReferenceCallback<T extends SchemaObject>
+    private interface ReferenceCallback<T extends SchemaObject>
     {
 
         Collection<String> getSuperiorOids( T schemaObject );

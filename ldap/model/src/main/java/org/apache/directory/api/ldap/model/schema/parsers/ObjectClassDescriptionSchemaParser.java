@@ -23,7 +23,6 @@ package org.apache.directory.api.ldap.model.schema.parsers;
 import java.text.ParseException;
 
 import org.apache.directory.api.i18n.I18n;
-import org.apache.directory.api.ldap.model.schema.MutableObjectClass;
 import org.apache.directory.api.ldap.model.schema.ObjectClass;
 
 import antlr.RecognitionException;

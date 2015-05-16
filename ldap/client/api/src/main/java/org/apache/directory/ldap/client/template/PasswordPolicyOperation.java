@@ -42,5 +42,5 @@ public interface PasswordPolicyOperation
      * reason
      * @throws LdapException If there was an general ldap failure
      */
-    public ResultResponse process() throws PasswordException, LdapException;
+    ResultResponse process() throws PasswordException, LdapException;
 }

@@ -31,5 +31,5 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 public interface StartTlsRequest extends ExtendedRequest
 {
     /** The OID string for the StartTLS extended operation request. */
-    static final String EXTENSION_OID = "1.3.6.1.4.1.1466.20037";
+    String EXTENSION_OID = "1.3.6.1.4.1.1466.20037";
 }

@@ -31,7 +31,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 public interface CancelRequest extends ExtendedRequest
 {
     /** The OID for the Cancel extended operation request. */
-    static final String EXTENSION_OID = "1.3.6.1.1.8";
+    String EXTENSION_OID = "1.3.6.1.1.8";
 
 
     /**

@@ -40,5 +40,5 @@ public interface RequestBuilder<T>
      * @param request The request to be modified
      * @throws LdapException If something goes wrong
      */
-    public void buildRequest( T request ) throws LdapException;
+    void buildRequest( T request ) throws LdapException;
 }

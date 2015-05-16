@@ -33,5 +33,5 @@ public interface Wrapper<T>
      *
      * @return The wrapped object
      */
-    public T wrapped();
+    T wrapped();
 }

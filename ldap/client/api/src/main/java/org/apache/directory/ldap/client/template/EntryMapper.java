@@ -19,8 +19,10 @@
  */
 package org.apache.directory.ldap.client.template;
 
+
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+
 
 /**
  * A callback for processing entries from a search result.
@@ -36,5 +38,5 @@ public interface EntryMapper<T>
      * @return A object modeling the entry
      * @throws LdapException If something goes wrong
      */
-    public T map( Entry entry ) throws LdapException;
+    T map( Entry entry ) throws LdapException;
 }

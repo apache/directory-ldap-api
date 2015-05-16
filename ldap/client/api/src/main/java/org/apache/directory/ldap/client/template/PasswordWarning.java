@@ -35,7 +35,7 @@ public interface PasswordWarning extends Serializable
      *
      * @return The number of seconds before the password will expire
      */
-    public int getTimeBeforeExpiration();
+    int getTimeBeforeExpiration();
 
 
     /**
@@ -44,7 +44,7 @@ public interface PasswordWarning extends Serializable
      *
      * @return The number of authentications before lockout
      */
-    public int getGraceAuthNsRemaining();
+    int getGraceAuthNsRemaining();
 
 
     /**
@@ -52,5 +52,5 @@ public interface PasswordWarning extends Serializable
      *
      * @return True, if a password reset is required
      */
-    public boolean isChangeAfterReset();
+    boolean isChangeAfterReset();
 }

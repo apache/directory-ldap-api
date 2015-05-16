@@ -23,7 +23,6 @@ package org.apache.directory.ldap.client.template.exception;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyErrorEnum;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.ldap.client.template.LdapConnectionTemplate;
 
 
 /**

@@ -45,7 +45,7 @@ public interface ModelFactory
      * @param entry
      * @return
      */
-    public AddRequest newAddRequest( Entry entry );
+    AddRequest newAddRequest( Entry entry );
 
 
     /**
@@ -56,9 +56,9 @@ public interface ModelFactory
      * @param values
      * @return
      */
-    public Attribute newAttribute( String name, byte[]... values );
-    
-    
+    Attribute newAttribute( String name, byte[]... values );
+
+
     /**
      * Returns a new Attribute for with the provided <code>name</code> and
      * <code>value(s)</code>.
@@ -67,9 +67,9 @@ public interface ModelFactory
      * @param values
      * @return
      */
-    public Attribute newAttribute( String name, String... values );
-    
-    
+    Attribute newAttribute( String name, String... values );
+
+
     /**
      * Returns a new Attribute for with the provided <code>name</code> and
      * <code>value(s)</code>.
@@ -78,7 +78,7 @@ public interface ModelFactory
      * @param values
      * @return
      */
-    public Attribute newAttribute( String name, Value<?>... values );
+    Attribute newAttribute( String name, Value<?>... values );
 
 
     /**
@@ -87,7 +87,7 @@ public interface ModelFactory
      * @param dn
      * @return
      */
-    public DeleteRequest newDeleteRequest( Dn dn );
+    DeleteRequest newDeleteRequest( Dn dn );
 
 
     /**
@@ -96,7 +96,7 @@ public interface ModelFactory
      * @param dn
      * @return
      */
-    public Dn newDn( String dn );
+    Dn newDn( String dn );
 
 
     /**
@@ -105,7 +105,7 @@ public interface ModelFactory
      * @param dn
      * @return
      */
-    public Entry newEntry( String dn );
+    Entry newEntry( String dn );
 
 
     /**
@@ -114,7 +114,7 @@ public interface ModelFactory
      * @param dn
      * @return
      */
-    public Entry newEntry( Dn dn );
+    Entry newEntry( Dn dn );
 
 
     /**
@@ -123,7 +123,7 @@ public interface ModelFactory
      * @param dn 
      * @return
      */
-    public ModifyRequest newModifyRequest( String dn );
+    ModifyRequest newModifyRequest( String dn );
 
 
     /**
@@ -132,7 +132,7 @@ public interface ModelFactory
      * @param dn
      * @return
      */
-    public ModifyRequest newModifyRequest( Dn dn );
+    ModifyRequest newModifyRequest( Dn dn );
 
 
     /**
@@ -145,7 +145,7 @@ public interface ModelFactory
      * @param scope
      * @return
      */
-    public SearchRequest newSearchRequest( String baseDn, FilterBuilder filter,
+    SearchRequest newSearchRequest( String baseDn, FilterBuilder filter,
         SearchScope scope );
 
 
@@ -159,7 +159,7 @@ public interface ModelFactory
      * @param scope
      * @return
      */
-    public SearchRequest newSearchRequest( String baseDn, String filter,
+    SearchRequest newSearchRequest( String baseDn, String filter,
         SearchScope scope );
 
 
@@ -173,7 +173,7 @@ public interface ModelFactory
      * @param scope
      * @return
      */
-    public SearchRequest newSearchRequest( Dn baseDn, String filter,
+    SearchRequest newSearchRequest( Dn baseDn, String filter,
         SearchScope scope );
 
 
@@ -187,7 +187,7 @@ public interface ModelFactory
      * @param scope
      * @return
      */
-    public SearchRequest newSearchRequest( Dn baseDn, FilterBuilder filter,
+    SearchRequest newSearchRequest( Dn baseDn, FilterBuilder filter,
         SearchScope scope );
 
 
@@ -202,7 +202,7 @@ public interface ModelFactory
      * @param attributes
      * @return
      */
-    public SearchRequest newSearchRequest( String baseDn, String filter,
+    SearchRequest newSearchRequest( String baseDn, String filter,
         SearchScope scope, String... attributes );
 
 
@@ -217,7 +217,7 @@ public interface ModelFactory
      * @param attributes
      * @return
      */
-    public SearchRequest newSearchRequest( String baseDn, FilterBuilder filter,
+    SearchRequest newSearchRequest( String baseDn, FilterBuilder filter,
         SearchScope scope, String... attributes );
 
 
@@ -232,7 +232,7 @@ public interface ModelFactory
      * @param attributes
      * @return
      */
-    public SearchRequest newSearchRequest( Dn baseDn, String filter,
+    SearchRequest newSearchRequest( Dn baseDn, String filter,
         SearchScope scope, String... attributes );
 
 
@@ -247,6 +247,6 @@ public interface ModelFactory
      * @param attributes
      * @return
      */
-    public SearchRequest newSearchRequest( Dn baseDn, FilterBuilder filter,
+    SearchRequest newSearchRequest( Dn baseDn, FilterBuilder filter,
         SearchScope scope, String... attributes );
 }

@@ -43,7 +43,7 @@ public interface LdapConnectionFactory
      * @throws LdapException
      *             If the bind fails.
      */
-    public abstract LdapConnection bindConnection( LdapConnection connection ) throws LdapException;
+    LdapConnection bindConnection( LdapConnection connection ) throws LdapException;
 
 
     /**
@@ -63,7 +63,7 @@ public interface LdapConnectionFactory
      *            The connection to configure
      * @return The supplied connection.
      */
-    public abstract LdapConnection configureConnection( LdapConnection connection );
+    LdapConnection configureConnection( LdapConnection connection );
 
 
     /**
@@ -71,7 +71,7 @@ public interface LdapConnectionFactory
      *
      * @return The LdapApiService instance used by this factory
      */
-    public LdapApiService getLdapApiService();
+    LdapApiService getLdapApiService();
 
 
     /**
@@ -82,9 +82,9 @@ public interface LdapConnectionFactory
      * @return A newly created, configured, and authenticated LdapConnection.
      * @throws LdapException
      */
-    public abstract LdapConnection newLdapConnection() throws LdapException;
-    
-    
+    LdapConnection newLdapConnection() throws LdapException;
+
+
     /**
      * Returns a newly created connection, that has not been bound (bind) that
      * otherwise respects LdapConnectionConfig supplied to the constructor. This
@@ -93,5 +93,5 @@ public interface LdapConnectionFactory
      * 
      * @return A newly created and configured LdapConnection.
      */
-    public abstract LdapConnection newUnboundLdapConnection();
+    LdapConnection newUnboundLdapConnection();
 }

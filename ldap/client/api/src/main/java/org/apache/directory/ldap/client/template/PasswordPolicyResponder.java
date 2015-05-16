@@ -45,5 +45,5 @@ public interface PasswordPolicyResponder
      * if completely successful.
      * @throws PasswordException If the <code>operation</code> was a failure.
      */
-    public PasswordWarning process( PasswordPolicyOperation operation ) throws PasswordException;
+    PasswordWarning process( PasswordPolicyOperation operation ) throws PasswordException;
 }

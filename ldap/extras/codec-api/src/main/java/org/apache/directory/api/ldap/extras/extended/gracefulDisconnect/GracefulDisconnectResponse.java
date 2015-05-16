@@ -36,7 +36,7 @@ import org.apache.directory.api.ldap.model.message.Referral;
 public interface GracefulDisconnectResponse extends ExtendedResponse
 {
     /** The OID for the graceful disconnect extended operation response. */
-    static final String EXTENSION_OID = "1.3.6.1.4.1.18060.0.1.5";
+    String EXTENSION_OID = "1.3.6.1.4.1.18060.0.1.5";
 
 
     /**

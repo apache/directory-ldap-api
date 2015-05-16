@@ -33,7 +33,7 @@ package org.apache.directory.ldap.client.api.search;
      *
      * @return The constructed String
      */
-    public StringBuilder build();
+    StringBuilder build();
 
 
     /**
@@ -42,5 +42,5 @@ package org.apache.directory.ldap.client.api.search;
      * @param builder The current buffer containing the on going representation of the filter
      * @return The constructed String
      */
-    public StringBuilder build( StringBuilder builder );
+    StringBuilder build( StringBuilder builder );
 }

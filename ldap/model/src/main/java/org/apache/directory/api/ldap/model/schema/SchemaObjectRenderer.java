@@ -22,8 +22,6 @@ package org.apache.directory.api.ldap.model.schema;
 
 import java.util.List;
 
-import org.apache.directory.api.ldap.model.exception.LdapException;
-
 
 /**
  * Renderer for schema objects.

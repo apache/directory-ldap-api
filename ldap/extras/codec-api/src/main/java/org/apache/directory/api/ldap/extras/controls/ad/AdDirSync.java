@@ -19,7 +19,9 @@
  */
 package org.apache.directory.api.ldap.extras.controls.ad;
 
+
 import org.apache.directory.api.ldap.model.message.Control;
+
 
 /**
  * The DirSync control, as described in http://tools.ietf.org/html/draft-armijo-ldap-dirsync-00.
@@ -58,45 +60,46 @@ import org.apache.directory.api.ldap.model.message.Control;
 public interface AdDirSync extends Control
 {
     /** This control OID */
-    static final String OID = "1.2.840.113556.1.4.841";
-    
+    String OID = "1.2.840.113556.1.4.841";
+
+
     /**
      * @return 1 if the parents are guaranteed to be returned before the children.
      */
     int getParentFirst();
-    
-    
+
+
     /**
      * @param parentFirst The parentFirst flag. A value of 1 will tell the server to return the parents first.
      */
     void setParentFirst( int parentFirst );
-    
-    
+
+
     /**
      * @return The maximum length of attributes to be returned
      */
     int getMaxReturnLength();
-    
-    
+
+
     /**
      * @param maxReturnLength The maximum length of attributes to be returned
      */
     void setMaxReturnLength( int maxReturnLength );
-    
-    
+
+
     /**
      * @return The cookie used while processing the successive DirSync operations
      */
     byte[] getCookie();
-    
-    
+
+
     /**
      * @param cookie The cookie to send to the server. It's the value found in the response control. Should be null
      * for the first control.
      */
     void setCookie( byte[] cookie );
-    
-    
+
+
     /**
      * @return The flag returned by the server. One of :
      * <ul>
@@ -107,8 +110,8 @@ public interface AdDirSync extends Control
      * </ul>
      */
     AdDirSyncFlag getFlag();
-    
-    
+
+
     /**
      * @param flag The flag. 
      */

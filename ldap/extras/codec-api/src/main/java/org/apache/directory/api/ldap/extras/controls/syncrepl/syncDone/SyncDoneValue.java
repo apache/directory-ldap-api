@@ -48,7 +48,7 @@ import org.apache.directory.api.ldap.model.message.Control;
 public interface SyncDoneValue extends Control
 {
     /** This control OID */
-    static final String OID = "1.3.6.1.4.1.4203.1.9.1.3";
+    String OID = "1.3.6.1.4.1.4203.1.9.1.3";
 
 
     /**

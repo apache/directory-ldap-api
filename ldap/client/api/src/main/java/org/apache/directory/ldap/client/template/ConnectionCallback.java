@@ -19,8 +19,10 @@
  */
 package org.apache.directory.ldap.client.template;
 
+
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.ldap.client.api.LdapConnection;
+
 
 /**
  * A callback for running code against a managed {@link LdapConnection}.
@@ -37,5 +39,5 @@ public interface ConnectionCallback<T>
      * @return Anything you want
      * @throws LdapException If you want to
      */
-    public T doWithConnection( LdapConnection connection ) throws LdapException;
+    T doWithConnection( LdapConnection connection ) throws LdapException;
 }

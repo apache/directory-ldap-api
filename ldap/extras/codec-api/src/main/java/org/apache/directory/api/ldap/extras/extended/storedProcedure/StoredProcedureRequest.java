@@ -33,7 +33,7 @@ import org.apache.directory.api.ldap.model.message.ExtendedRequest;
 public interface StoredProcedureRequest extends ExtendedRequest
 {
     /** The OID for the stored procedure extended operation request. */
-    static final String EXTENSION_OID = "1.3.6.1.4.1.18060.0.1.6";
+    String EXTENSION_OID = "1.3.6.1.4.1.18060.0.1.6";
 
 
     /**

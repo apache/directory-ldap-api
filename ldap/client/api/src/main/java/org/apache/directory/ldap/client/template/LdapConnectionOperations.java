@@ -29,13 +29,11 @@ import org.apache.directory.api.ldap.model.message.DeleteRequest;
 import org.apache.directory.api.ldap.model.message.DeleteResponse;
 import org.apache.directory.api.ldap.model.message.ModifyRequest;
 import org.apache.directory.api.ldap.model.message.ModifyResponse;
-import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
 import org.apache.directory.api.ldap.model.message.ResultResponse;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.ldap.client.api.search.FilterBuilder;
-import org.apache.directory.ldap.client.template.exception.LdapRequestUnsuccessfulException;
 import org.apache.directory.ldap.client.template.exception.PasswordException;
 
 
@@ -56,7 +54,7 @@ public interface LdapConnectionOperations
      * @param addRequest The request
      * @return An AddResponse
      */
-    public abstract AddResponse add( AddRequest addRequest );
+    AddResponse add( AddRequest addRequest );
 
 
     /**
@@ -67,7 +65,7 @@ public interface LdapConnectionOperations
      * @param attributes The attributes of the new entry
      * @return An AddResponse
      */
-    public abstract AddResponse add( Dn dn, Attribute... attributes );
+    AddResponse add( Dn dn, Attribute... attributes );
 
 
     /**
@@ -78,7 +76,7 @@ public interface LdapConnectionOperations
      * @param requestBuilder The request builder
      * @return An AddResponse
      */
-    public abstract AddResponse add( Dn dn, RequestBuilder<AddRequest> requestBuilder );
+    AddResponse add( Dn dn, RequestBuilder<AddRequest> requestBuilder );
 
 
     /**
@@ -97,7 +95,8 @@ public interface LdapConnectionOperations
      * @see {@link #authenticate(Dn, char[])}
      * @see {@link #searchFirst(String, String, SearchScope, EntryMapper)}
      */
-    public PasswordWarning authenticate( String baseDn, String filter, SearchScope scope, char[] password ) throws PasswordException;
+    PasswordWarning authenticate( String baseDn, String filter, SearchScope scope, char[] password )
+        throws PasswordException;
 
 
     /**
@@ -116,9 +115,10 @@ public interface LdapConnectionOperations
      * @see {@link #authenticate(Dn, char[])}
      * @see {@link #searchFirst(Dn, String, SearchScope, EntryMapper)}
      */
-    public PasswordWarning authenticate( Dn baseDn, String filter, SearchScope scope, char[] password ) throws PasswordException;
-    
-    
+    PasswordWarning authenticate( Dn baseDn, String filter, SearchScope scope, char[] password )
+        throws PasswordException;
+
+
     /**
      * Attempts to authenticate the supplied credentials against the first 
      * entry found matching the search criteria.  If authentication fails, 
@@ -135,7 +135,7 @@ public interface LdapConnectionOperations
      * @see {@link #authenticate(Dn, char[])}
      * @see {@link #searchFirst(SearchRequest, EntryMapper)}
      */
-    public PasswordWarning authenticate( SearchRequest searchRequest, char[] password ) throws PasswordException;
+    PasswordWarning authenticate( SearchRequest searchRequest, char[] password ) throws PasswordException;
 
 
     /**
@@ -149,7 +149,7 @@ public interface LdapConnectionOperations
      * @return A PasswordWarning or null
      * @throws PasswordException If authentication fails
      */
-    public abstract PasswordWarning authenticate( Dn userDn, char[] password ) throws PasswordException;
+    PasswordWarning authenticate( Dn userDn, char[] password ) throws PasswordException;
 
 
     /**
@@ -158,7 +158,7 @@ public interface LdapConnectionOperations
      * @param deleteRequest The request
      * @return A DeleteResponse
      */
-    public abstract DeleteResponse delete( DeleteRequest deleteRequest );
+    DeleteResponse delete( DeleteRequest deleteRequest );
 
 
     /**
@@ -167,7 +167,7 @@ public interface LdapConnectionOperations
      * @param dn The distinguished name of the entry
      * @return A DeleteResponse
      */
-    public abstract DeleteResponse delete( Dn dn );
+    DeleteResponse delete( Dn dn );
 
 
     /**
@@ -178,7 +178,7 @@ public interface LdapConnectionOperations
      * @param requestBuilder The RequestBuilder
      * @return A DeleteResponse
      */
-    public abstract DeleteResponse delete( Dn dn, RequestBuilder<DeleteRequest> requestBuilder );
+    DeleteResponse delete( Dn dn, RequestBuilder<DeleteRequest> requestBuilder );
 
 
     /**
@@ -188,7 +188,7 @@ public interface LdapConnectionOperations
      * @param connectionCallback The callback
      * @return Whatever the callback returns
      */
-    public abstract <T> T execute( ConnectionCallback<T> connectionCallback );
+    <T> T execute( ConnectionCallback<T> connectionCallback );
 
 
     /**
@@ -199,7 +199,7 @@ public interface LdapConnectionOperations
      * @param entryMapper The mapper from entry to model object
      * @return Whatever the <code>entryMapper</code> returns
      */
-    public abstract <T> T lookup( Dn dn, EntryMapper<T> entryMapper );
+    <T> T lookup( Dn dn, EntryMapper<T> entryMapper );
 
 
     /**
@@ -211,7 +211,7 @@ public interface LdapConnectionOperations
      * @param entryMapper The mapper from entry to model object
      * @return Whatever the <code>entryMapper</code> returns
      */
-    public abstract <T> T lookup( Dn dn, String[] attributes, EntryMapper<T> entryMapper );
+    <T> T lookup( Dn dn, String[] attributes, EntryMapper<T> entryMapper );
 
 
     /**
@@ -223,7 +223,7 @@ public interface LdapConnectionOperations
      * @throws PasswordException
      * @see {@link #modifyPassword(Dn, char[], char[], boolean)}
      */
-    public void modifyPassword( Dn userDn, char[] newPassword ) 
+    void modifyPassword( Dn userDn, char[] newPassword )
         throws PasswordException;
 
 
@@ -237,7 +237,7 @@ public interface LdapConnectionOperations
      * @throws PasswordException
      * @see {@link #modifyPassword(Dn, char[], char[], boolean)}
      */
-    public void modifyPassword( Dn userDn, char[] oldPassword,
+    void modifyPassword( Dn userDn, char[] oldPassword,
         char[] newPassword ) throws PasswordException;
 
 
@@ -254,7 +254,7 @@ public interface LdapConnectionOperations
      * @param asAdmin If true, execute in admin context
      * @throws PasswordException If the password modification fails
      */
-    public abstract void modifyPassword( Dn userDn, char[] oldPassword, char[] newPassword,
+    void modifyPassword( Dn userDn, char[] oldPassword, char[] newPassword,
         boolean asAdmin ) throws PasswordException;
 
 
@@ -264,7 +264,7 @@ public interface LdapConnectionOperations
      * @param modifyRequest The request
      * @return A ModifyResponse
      */
-    public abstract ModifyResponse modify( ModifyRequest modifyRequest );
+    ModifyResponse modify( ModifyRequest modifyRequest );
 
 
     /**
@@ -275,9 +275,9 @@ public interface LdapConnectionOperations
      * @param requestBuilder The RequestBuilder
      * @return A ModifyResponse
      */
-    public abstract ModifyResponse modify( Dn dn, RequestBuilder<ModifyRequest> requestBuilder );
+    ModifyResponse modify( Dn dn, RequestBuilder<ModifyRequest> requestBuilder );
 
-    
+
     /**
      * Checks the supplied response for its result code, and if not 
      * {@link ResultCodeEnum#SUCCESS}, an exception is thrown. This method is 
@@ -292,7 +292,7 @@ public interface LdapConnectionOperations
      * @throws LdapRequestUnsuccessfulException If the response is not
      * {@link ResultCodeEnum#SUCCESS}
      */
-    public abstract <T extends ResultResponse> T responseOrException( T response );
+    <T extends ResultResponse> T responseOrException( T response );
 
 
     /**
@@ -306,7 +306,7 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #search(SearchRequest, EntryMapper)}
      */
-    public abstract <T> List<T> search( String baseDn, FilterBuilder filter, SearchScope scope,
+    <T> List<T> search( String baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper );
 
 
@@ -321,7 +321,7 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #search(SearchRequest, EntryMapper)}
      */
-    public abstract <T> List<T> search( String baseDn, String filter, SearchScope scope,
+    <T> List<T> search( String baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper );
 
 
@@ -336,7 +336,7 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #search(SearchRequest, EntryMapper)}
      */
-    public abstract <T> List<T> search( Dn baseDn, FilterBuilder filter, SearchScope scope,
+    <T> List<T> search( Dn baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper );
 
 
@@ -351,7 +351,7 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #search(SearchRequest, EntryMapper)}
      */
-    public abstract <T> List<T> search( Dn baseDn, String filter, SearchScope scope,
+    <T> List<T> search( Dn baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper );
 
 
@@ -368,7 +368,7 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #search(SearchRequest, EntryMapper)}
      */
-    public abstract <T> List<T> search( String baseDn, FilterBuilder filter, SearchScope scope,
+    <T> List<T> search( String baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
 
 
@@ -385,7 +385,7 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #search(SearchRequest, EntryMapper)}
      */
-    public abstract <T> List<T> search( String baseDn, String filter, SearchScope scope,
+    <T> List<T> search( String baseDn, String filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
 
 
@@ -402,7 +402,7 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #search(SearchRequest, EntryMapper)}
      */
-    public abstract <T> List<T> search( Dn baseDn, FilterBuilder filter, SearchScope scope,
+    <T> List<T> search( Dn baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
 
 
@@ -419,7 +419,7 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #search(SearchRequest, EntryMapper)}
      */
-    public abstract <T> List<T> search( Dn baseDn, String filter, SearchScope scope,
+    <T> List<T> search( Dn baseDn, String filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
 
 
@@ -432,37 +432,7 @@ public interface LdapConnectionOperations
      * @param entryMapper The mapper
      * @return The mapped entries
      */
-    public abstract <T> List<T> search( SearchRequest searchRequest,
-        EntryMapper<T> entryMapper );
-    
-    
-    /**
-     * Searches for the first entry matching the supplied criteria, feeding the 
-     * result into the <code>entryMapper</code>.
-     *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param entryMapper
-     * @return The mapped entries
-     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
-     */
-    public abstract <T> T searchFirst( String baseDn, FilterBuilder filter, SearchScope scope,
-        EntryMapper<T> entryMapper );
-    
-    
-    /**
-     * Searches for the first entry matching the supplied criteria, feeding the 
-     * result into the <code>entryMapper</code>.
-     *
-     * @param baseDn
-     * @param filter
-     * @param scope
-     * @param entryMapper
-     * @return The mapped entries
-     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
-     */
-    public abstract <T> T searchFirst( String baseDn, String filter, SearchScope scope,
+    <T> List<T> search( SearchRequest searchRequest,
         EntryMapper<T> entryMapper );
 
 
@@ -477,7 +447,7 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #searchFirst(SearchRequest, EntryMapper)}
      */
-    public abstract <T> T searchFirst( Dn baseDn, FilterBuilder filter, SearchScope scope,
+    <T> T searchFirst( String baseDn, FilterBuilder filter, SearchScope scope,
         EntryMapper<T> entryMapper );
 
 
@@ -492,7 +462,37 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #searchFirst(SearchRequest, EntryMapper)}
      */
-    public abstract <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
+    <T> T searchFirst( String baseDn, String filter, SearchScope scope,
+        EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the first entry matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     */
+    <T> T searchFirst( Dn baseDn, FilterBuilder filter, SearchScope scope,
+        EntryMapper<T> entryMapper );
+
+
+    /**
+     * Searches for the first entry matching the supplied criteria, feeding the 
+     * result into the <code>entryMapper</code>.
+     *
+     * @param baseDn
+     * @param filter
+     * @param scope
+     * @param entryMapper
+     * @return The mapped entries
+     * @see {@link #searchFirst(SearchRequest, EntryMapper)}
+     */
+    <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
         EntryMapper<T> entryMapper );
 
 
@@ -509,7 +509,7 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #searchFirst(SearchRequest, EntryMapper)}
      */
-    public abstract <T> T searchFirst( String baseDn, FilterBuilder filter, SearchScope scope,
+    <T> T searchFirst( String baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
 
 
@@ -526,7 +526,7 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #searchFirst(SearchRequest, EntryMapper)}
      */
-    public abstract <T> T searchFirst( String baseDn, String filter, SearchScope scope,
+    <T> T searchFirst( String baseDn, String filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
 
 
@@ -543,7 +543,7 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #searchFirst(SearchRequest, EntryMapper)}
      */
-    public abstract <T> T searchFirst( Dn baseDn, FilterBuilder filter, SearchScope scope,
+    <T> T searchFirst( Dn baseDn, FilterBuilder filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
 
 
@@ -560,9 +560,9 @@ public interface LdapConnectionOperations
      * @return The mapped entries
      * @see {@link #searchFirst(SearchRequest, EntryMapper)}
      */
-    public abstract <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
+    <T> T searchFirst( Dn baseDn, String filter, SearchScope scope,
         String[] attributes, EntryMapper<T> entryMapper );
-    
+
 
     /**
      * Searches for the first entry matching the supplied 
@@ -577,7 +577,7 @@ public interface LdapConnectionOperations
      * @param entryMapper The mapper
      * @return The mapped entry
      */
-    public abstract <T> T searchFirst( SearchRequest searchRequest,
+    <T> T searchFirst( SearchRequest searchRequest,
         EntryMapper<T> entryMapper );
 
 }
