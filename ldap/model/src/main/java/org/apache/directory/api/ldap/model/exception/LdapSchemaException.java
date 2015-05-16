@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.model.exception;
 
 
-import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.SchemaObject;
 
 

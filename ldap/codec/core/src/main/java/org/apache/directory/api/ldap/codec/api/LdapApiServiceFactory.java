@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.codec.api;
 
 
-import org.apache.directory.api.ldap.codec.osgi.DefaultLdapCodecService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

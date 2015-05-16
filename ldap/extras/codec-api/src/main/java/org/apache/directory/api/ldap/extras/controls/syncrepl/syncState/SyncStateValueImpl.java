@@ -22,7 +22,6 @@ package org.apache.directory.api.ldap.extras.controls.syncrepl.syncState;
 
 import java.util.Arrays;
 
-import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.controls.AbstractControl;
 import org.apache.directory.api.util.Strings;
 

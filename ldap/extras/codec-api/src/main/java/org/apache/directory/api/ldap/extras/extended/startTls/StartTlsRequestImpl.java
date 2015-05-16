@@ -57,12 +57,12 @@ public class StartTlsRequestImpl extends AbstractExtendedRequest implements Star
     @Override
     public StartTlsResponse getResultResponse()
     {
-        if ( response == null )
+        if ( getResponse() == null )
         {
-            response = new StartTlsResponseImpl( getMessageId() );
+            setResponse( new StartTlsResponseImpl( getMessageId() ) );
         }
 
-        return ( StartTlsResponse ) response;
+        return ( StartTlsResponse ) getResponse();
     }
 
 

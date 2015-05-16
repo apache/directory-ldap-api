@@ -19,8 +19,6 @@
 package org.apache.directory.api.ldap.model.cursor;
 
 
-import java.io.IOException;
-
 import org.apache.directory.api.ldap.model.exception.LdapException;
 
 

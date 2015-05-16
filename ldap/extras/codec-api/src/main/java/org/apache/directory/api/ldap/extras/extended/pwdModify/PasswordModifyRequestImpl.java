@@ -129,12 +129,12 @@ public class PasswordModifyRequestImpl extends AbstractExtendedRequest implement
     @Override
     public PasswordModifyResponse getResultResponse()
     {
-        if ( response == null )
+        if ( getResponse() == null )
         {
-            response = new PasswordModifyResponseImpl( getMessageId() );
+            setResponse( new PasswordModifyResponseImpl( getMessageId() ) );
         }
 
-        return ( PasswordModifyResponse ) response;
+        return ( PasswordModifyResponse ) getResponse();
     }
 
 

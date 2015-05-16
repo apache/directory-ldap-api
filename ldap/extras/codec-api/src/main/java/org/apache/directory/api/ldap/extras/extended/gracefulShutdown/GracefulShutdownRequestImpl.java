@@ -34,8 +34,6 @@ import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
  */
 public class GracefulShutdownRequestImpl extends AbstractExtendedRequest implements GracefulShutdownRequest
 {
-    private GracefulShutdownResponse response;
-
     /** Offline time after disconnection */
     private int timeOffline;
 
@@ -124,11 +122,11 @@ public class GracefulShutdownRequestImpl extends AbstractExtendedRequest impleme
     @Override
     public GracefulShutdownResponse getResultResponse()
     {
-        if ( response == null )
+        if ( getResponse() == null )
         {
-            response = new GracefulShutdownResponseImpl();
+            setResponse( new GracefulShutdownResponseImpl() );
         }
 
-        return response;
+        return ( GracefulShutdownResponse ) getResponse();
     }
 }

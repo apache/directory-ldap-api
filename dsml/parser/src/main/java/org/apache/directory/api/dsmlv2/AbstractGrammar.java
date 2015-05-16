@@ -47,9 +47,6 @@ public abstract class AbstractGrammar implements Grammar
     /** The grammar name */
     protected String name;
 
-    /** The grammar's states */
-    protected Enum<Dsmlv2StatesEnum>[] statesEnum;
-
 
     /**
      * Returns the grammar's name

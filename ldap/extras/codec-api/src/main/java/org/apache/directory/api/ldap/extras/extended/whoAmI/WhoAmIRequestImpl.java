@@ -57,12 +57,12 @@ public class WhoAmIRequestImpl extends AbstractExtendedRequest implements WhoAmI
     @Override
     public WhoAmIResponse getResultResponse()
     {
-        if ( response == null )
+        if ( getResponse() == null )
         {
-            response = new WhoAmIResponseImpl( getMessageId() );
+            setResponse( new WhoAmIResponseImpl( getMessageId() ) );
         }
 
-        return ( WhoAmIResponse ) response;
+        return ( WhoAmIResponse ) getResponse();
     }
 
 

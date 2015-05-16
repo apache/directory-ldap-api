@@ -46,8 +46,6 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
 
     private List<StoredProcedureParameter> parameters = new ArrayList<StoredProcedureParameter>();
 
-    private StoredProcedureResponse response;
-
 
     /**
      * Instantiates a new stored procedure request.
@@ -321,13 +319,11 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
      */
     public StoredProcedureResponse getResultResponse()
     {
-        if ( response == null )
+        if ( getResponse() == null )
         {
-            StoredProcedureResponseImpl spr = new StoredProcedureResponseImpl( getMessageId() );
-            spr.setResponseName( EXTENSION_OID );
-            response = spr;
+            setResponse( new StoredProcedureResponseImpl( getMessageId() ) );
         }
 
-        return response;
+        return ( StoredProcedureResponse ) getResponse();
     }
 }

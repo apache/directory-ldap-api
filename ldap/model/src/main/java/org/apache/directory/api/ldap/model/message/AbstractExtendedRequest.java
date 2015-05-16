@@ -33,7 +33,7 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
     private String oid;
 
     /** The associated response */
-    protected ExtendedResponse response;
+    private ExtendedResponse response;
 
 
     /**
@@ -147,6 +147,24 @@ public abstract class AbstractExtendedRequest extends AbstractRequest implements
      * @return the result containing response for this request
      */
     public abstract ExtendedResponse getResultResponse();
+
+
+    /**
+     * @return the response
+     */
+    public ExtendedResponse getResponse()
+    {
+        return response;
+    }
+
+
+    /**
+     * @param response the response to set
+     */
+    public void setResponse( ExtendedResponse response )
+    {
+        this.response = response;
+    }
 
 
     /**

@@ -79,11 +79,11 @@ public class CancelRequestImpl extends AbstractExtendedRequest implements Cancel
 
     public CancelResponse getResultResponse()
     {
-        if ( response == null )
+        if ( getResponse() == null )
         {
-            response = new CancelResponseImpl( cancelId );
+            setResponse( new CancelResponseImpl( cancelId ) );
         }
 
-        return ( CancelResponse ) response;
+        return ( CancelResponse ) getResponse();
     }
 }
