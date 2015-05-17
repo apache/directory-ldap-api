@@ -107,7 +107,7 @@ public class FilterParser
                     pos.start++;
 
                     // Get the assertionValue
-                    node.setValue( parseAssertionValue( schemaManager, attribute, filter, pos ) );
+                    node.setValue( parseAssertionValue( schemaManager, filter, pos ) );
 
                     return node;
                 }
@@ -122,7 +122,7 @@ public class FilterParser
                         pos.start += 2;
 
                         // Get the assertionValue
-                        node.setValue( parseAssertionValue( schemaManager, attribute, filter, pos ) );
+                        node.setValue( parseAssertionValue( schemaManager, filter, pos ) );
 
                         return node;
                     }
@@ -330,6 +330,102 @@ public class FilterParser
             {
                 return new BinaryValue( ( byte[] ) null );
             }
+        }
+    }
+
+
+    /**
+     * An assertion value :
+     * assertionvalue = valueencoding
+     * valueencoding  = 0*(normal / escaped)
+     * normal         = UTF1SUBSET / UTFMB
+     * escaped        = '\' HEX HEX
+     * HEX            = '0'-'9' / 'A'-'F' / 'a'-'f'
+     * UTF1SUBSET     = %x01-27 / %x2B-5B / %x5D-7F (Everything but '\0', '*', '(', ')' and '\')
+     * UTFMB          = UTF2 / UTF3 / UTF4
+     * UTF0           = %x80-BF
+     * UTF2           = %xC2-DF UTF0
+     * UTF3           = %xE0 %xA0-BF UTF0 / %xE1-EC UTF0 UTF0 / %xED %x80-9F UTF0 / %xEE-EF UTF0 UTF0
+     * UTF4           = %xF0 %x90-BF UTF0 UTF0 / %xF1-F3 UTF0 UTF0 UTF0 / %xF4 %x80-8F UTF0 UTF0
+     *
+     * With the specific constraints (RFC 4515):
+     *    "The <valueencoding> rule ensures that the entire filter string is a"
+     *    "valid UTF-8 string and provides that the octets that represent the"
+     *    "ASCII characters "*" (ASCII 0x2a), "(" (ASCII 0x28), ")" (ASCII"
+     *    "0x29), "\" (ASCII 0x5c), and NUL (ASCII 0x00) are represented as a"
+     *    "backslash "\" (ASCII 0x5c) followed by the two hexadecimal digits"
+     *    "representing the value of the encoded octet."
+     *
+     * The incoming String is already transformed from UTF-8 to unicode, so we must assume that the
+     * grammar we have to check is the following :
+     *
+     * assertionvalue = valueencoding
+     * valueencoding  = 0*(normal / escaped)
+     * normal         = unicodeSubset
+     * escaped        = '\' HEX HEX
+     * HEX            = '0'-'9' / 'A'-'F' / 'a'-'f'
+     * unicodeSubset     = %x01-27 / %x2B-5B / %x5D-FFFF
+     */
+    private static Value<?> parseAssertionValue( SchemaManager schemaManager, byte[] filter, Position pos )
+        throws ParseException
+    {
+        byte b = Strings.byteAt( filter, pos.start );
+
+        // Create a buffer big enough to contain the value once converted
+        byte[] value = new byte[filter.length - pos.start];
+        int current = 0;
+
+        do
+        {
+            if ( Unicode.isUnicodeSubset( b ) )
+            {
+                value[current++] = b;
+                pos.start++;
+            }
+            else if ( Strings.isCharASCII( filter, pos.start, '\\' ) )
+            {
+                // Maybe an escaped
+                pos.start++;
+
+                // First hex
+                if ( Chars.isHex( filter, pos.start ) )
+                {
+                    pos.start++;
+                }
+                else
+                {
+                    throw new ParseException( I18n.err( I18n.ERR_04149 ), pos.start );
+                }
+
+                // second hex
+                if ( Chars.isHex( filter, pos.start ) )
+                {
+                    value[current++] = Hex.getHexValue( filter[pos.start - 1], filter[pos.start] );
+                    pos.start++;
+                }
+                else
+                {
+                    throw new ParseException( I18n.err( I18n.ERR_04149 ), pos.start );
+                }
+            }
+            else
+            {
+                // not a valid char, so let's get out
+                break;
+            }
+        }
+        while ( ( b = Strings.byteAt( filter, pos.start ) ) != '\0' );
+
+        if ( current != 0 )
+        {
+            byte[] result = new byte[current];
+            System.arraycopy( value, 0, result, 0, current );
+
+            return new BinaryValue( result );
+        }
+        else
+        {
+            return new BinaryValue( null );
         }
     }
 

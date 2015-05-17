@@ -68,10 +68,10 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
 
         try
         {
-            passwordModifyResponse = decoder.decode( responseValue );
-
             if ( responseValue != null )
             {
+                passwordModifyResponse = decoder.decode( responseValue );
+
                 this.responseValue = new byte[responseValue.length];
                 System.arraycopy( responseValue, 0, this.responseValue, 0, responseValue.length );
             }
@@ -99,11 +99,6 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
             try
             {
                 responseValue = encodeInternal().array();
-
-                if ( responseValue == null )
-                {
-                    return null;
-                }
             }
             catch ( EncoderException e )
             {
@@ -152,7 +147,7 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
      *  [+-- 0x80 L2 genPassword] 
      * </pre>
      */
-    /* no qualifier */ int computeLengthInternal()
+    /* no qualifier */int computeLengthInternal()
     {
         requestLength = 0;
 
@@ -172,11 +167,11 @@ public class PasswordModifyResponseDecorator extends ExtendedResponseDecorator<P
      * @return A ByteBuffer that contains the encoded PDU
      * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
-    /* no qualifier */ ByteBuffer encodeInternal() throws EncoderException
+    /* no qualifier */ByteBuffer encodeInternal() throws EncoderException
     {
         // Allocate the bytes buffer.
         ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
-        
+
         bb.put( UniversalTag.SEQUENCE.getValue() );
         bb.put( TLV.getBytes( requestLength ) );
 

@@ -388,19 +388,22 @@ public final class DefaultEntry implements Entry
         }
 
         LdifAttributesReader reader = null;
-        
+
         try
-        { 
+        {
             reader = new LdifAttributesReader();
             Entry entry = reader.parseEntry( schemaManager, sb.toString() );
-    
+
             return entry;
         }
         finally
         {
             try
             {
-                reader.close();
+                if ( reader != null )
+                {
+                    reader.close();
+                }
             }
             catch ( IOException e )
             {
@@ -641,7 +644,7 @@ public final class DefaultEntry implements Entry
             // createAttribute method
             createAttribute( null, attributeType, values );
         }
-        
+
         return this;
     }
 
@@ -673,7 +676,7 @@ public final class DefaultEntry implements Entry
             // createAttribute method
             createAttribute( null, attributeType, values );
         }
-        
+
         return this;
     }
 
@@ -705,7 +708,7 @@ public final class DefaultEntry implements Entry
             // createAttribute method
             createAttribute( null, attributeType, values );
         }
-        
+
         return this;
     }
 
@@ -740,7 +743,7 @@ public final class DefaultEntry implements Entry
             // and the upId
             createAttribute( id, attributeType, values );
         }
-        
+
         return this;
     }
 
@@ -772,7 +775,7 @@ public final class DefaultEntry implements Entry
         {
             createAttribute( id, attributeType, values );
         }
-        
+
         return this;
     }
 
@@ -806,7 +809,7 @@ public final class DefaultEntry implements Entry
             // and the upId
             createAttribute( id, attributeType, values );
         }
-        
+
         return this;
     }
 
@@ -865,7 +868,7 @@ public final class DefaultEntry implements Entry
                 }
             }
         }
-        
+
         return this;
     }
 
@@ -909,7 +912,7 @@ public final class DefaultEntry implements Entry
                 attributes.put( id, new DefaultAttribute( upId, values ) );
             }
         }
-        
+
         return this;
     }
 
@@ -953,7 +956,7 @@ public final class DefaultEntry implements Entry
                 attributes.put( id, new DefaultAttribute( upId, values ) );
             }
         }
-        
+
         return this;
     }
 
@@ -997,7 +1000,7 @@ public final class DefaultEntry implements Entry
                 attributes.put( id, new DefaultAttribute( upId, values ) );
             }
         }
-        
+
         return this;
     }
 
@@ -1047,12 +1050,6 @@ public final class DefaultEntry implements Entry
         {
             // First, clone the structure
             DefaultEntry clone = ( DefaultEntry ) super.clone();
-
-            // Just in case ... Should *never* happen
-            if ( clone == null )
-            {
-                return null;
-            }
 
             // An Entry has a Dn and many attributes.
             clone.dn = dn; // note that Dn is immutable now
@@ -2630,7 +2627,7 @@ public final class DefaultEntry implements Entry
         }
 
         sb.append( '\n' );
-        
+
         if ( attributes.size() != 0 )
         {
             for ( Attribute attribute : attributes.values() )

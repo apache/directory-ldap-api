@@ -339,7 +339,7 @@ public final class ParserUtils
     /**
      * GrammarAction that reads the SOAP header data
      */
-    public static final GrammarAction readSoapHeader = new GrammarAction( "Reads SOAP header" )
+    public static final GrammarAction READ_SOAP_HEADER = new GrammarAction( "Reads SOAP header" )
     {
         public void action( Dsmlv2Container container ) throws XmlPullParserException
         {

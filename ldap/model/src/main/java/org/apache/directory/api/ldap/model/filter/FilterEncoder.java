@@ -244,23 +244,6 @@ public class FilterEncoder
             sb.append( "\\5C" );
         }
 
-        return ( sb == null ? value : sb.toString() );
-    }
-
-
-    private static void handleEscaped( boolean escaped, boolean hexPair, char hex, StringBuilder sb )
-    {
-        if ( escaped )
-        {
-            sb.append( "\\5C" );
-
-            if ( hexPair )
-            {
-                sb.append( hex );
-                hexPair = false;
-            }
-
-            escaped = false;
-        }
+        return sb.toString();
     }
 }

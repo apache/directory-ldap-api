@@ -52,6 +52,7 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
     /** stores the length of the request*/
     private int requestLength = 0;
 
+
     public CertGenerationRequestDecorator( LdapApiService codec, CertGenerationRequest decoratedMessage )
     {
         super( codec, decoratedMessage );
@@ -114,13 +115,9 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
             }
         }
 
-        if ( requestValue == null )
-        {
-            return null;
-        }
-
         final byte[] copy = new byte[requestValue.length];
         System.arraycopy( requestValue, 0, copy, 0, requestValue.length );
+
         return copy;
     }
 
@@ -219,7 +216,7 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
      *   +--> 0x04 LL key algorithm
      * </pre>
      */
-    /* no qualifier */ int computeLengthInternal()
+    /* no qualifier */int computeLengthInternal()
     {
         int len = Strings.getBytesUtf8( certGenerationRequest.getTargetDN() ).length;
         requestLength = 1 + TLV.getNbBytes( len ) + len;
@@ -243,7 +240,7 @@ public class CertGenerationRequestDecorator extends ExtendedRequestDecorator<Cer
      * @return A ByteBuffer that contains the encoded PDU
      * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
-    /* no qualifier */ ByteBuffer encodeInternal() throws EncoderException
+    /* no qualifier */ByteBuffer encodeInternal() throws EncoderException
     {
         // Allocate the bytes buffer.
         ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );

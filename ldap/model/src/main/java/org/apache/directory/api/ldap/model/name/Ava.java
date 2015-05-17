@@ -866,20 +866,11 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         {
             pos = ( ( StringValue ) upValue ).serialize( buffer, pos );
         }
-        else
-        {
-            //pos = ( ( BinaryValue ) upValue ).serialize( buffer, pos );
-
-        }
 
         // Write the normValue
         if ( normValue.isHumanReadable() )
         {
             pos = ( ( StringValue ) normValue ).serialize( buffer, pos );
-        }
-        else
-        {
-            //pos = ( ( BinaryValue ) normValue ).serialize( buffer, pos );
         }
 
         // Write the hash code
@@ -964,10 +955,6 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             // Read the normValue
             normValue = new StringValue( attributeType );
             pos = ( ( StringValue ) normValue ).deserialize( buffer, pos );
-        }
-        else
-        {
-            // TODO
         }
 
         // Read the hashCode

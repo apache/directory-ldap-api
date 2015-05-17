@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<PasswordModifyRequest> 
+public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<PasswordModifyRequest>
     implements PasswordModifyRequest
 {
     private static final Logger LOG = LoggerFactory.getLogger( PasswordModifyRequestDecorator.class );
@@ -74,10 +74,10 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
 
         try
         {
-            passwordModifyRequest = decoder.decode( requestValue );
-            
             if ( requestValue != null )
             {
+                passwordModifyRequest = decoder.decode( requestValue );
+
                 this.requestValue = new byte[requestValue.length];
                 System.arraycopy( requestValue, 0, this.requestValue, 0, requestValue.length );
             }
@@ -191,7 +191,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
      *  [+-- 0x82 L4 newPassword] 
      * </pre>
      */
-    /* No qualifier */ int computeLengthInternal()
+    /* No qualifier */int computeLengthInternal()
     {
         requestLength = 0;
 
@@ -223,7 +223,7 @@ public class PasswordModifyRequestDecorator extends ExtendedRequestDecorator<Pas
      * @return A ByteBuffer that contains the encoded PDU
      * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
-    /* No qualifier */ ByteBuffer encodeInternal() throws EncoderException
+    /* No qualifier */ByteBuffer encodeInternal() throws EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
 

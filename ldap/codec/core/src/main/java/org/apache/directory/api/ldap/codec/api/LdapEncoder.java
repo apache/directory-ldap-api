@@ -80,7 +80,8 @@ public class LdapEncoder
         // The criticality, only if true
         if ( control.isCritical() )
         {
-            controlLength += 1 + 1 + 1; // Always 3 for a boolean
+            // Always 3 for a boolean
+            controlLength += 1 + 1 + 1;
         }
 
         if ( controlValueLength != 0 )

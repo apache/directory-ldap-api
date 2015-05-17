@@ -358,11 +358,13 @@ public class Dsmlv2Engine
 
             sb.append( ParserUtils.DSML_NAMESPACE.asXML() );
 
-            sb.append( " " ); // a space to separate the namespace declarations
+            // a space to separate the namespace declarations
+            sb.append( " " );
 
             sb.append( ParserUtils.XSD_NAMESPACE.asXML() );
 
-            sb.append( " " ); // a space to separate the namespace declarations
+            // a space to separate the namespace declarations
+            sb.append( " " );
 
             sb.append( ParserUtils.XSI_NAMESPACE.asXML() );
 
@@ -412,7 +414,8 @@ public class Dsmlv2Engine
             return;
         }
 
-        while ( request != null ) // (Request == null when there's no more request to process)
+        // (Request == null when there's no more request to process)
+        while ( request != null )
         {
             // Checking the request has a requestID attribute if Processing = Parallel and ResponseOrder = Unordered
             if ( ( batchRequest.getProcessing().equals( Processing.PARALLEL ) )

@@ -72,6 +72,7 @@ import org.apache.directory.api.util.Strings;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+
 /**
  * This Class represents the DSMLv2 Response Grammar
  * 
@@ -135,7 +136,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         name = Dsmlv2ResponseGrammar.class.getName();
 
         // Create the transitions table
-        super.transitions = ( HashMap<Tag, GrammarTransition>[] ) Array.newInstance( HashMap.class, 300 ); // TODO Change this value
+        super.transitions = ( HashMap<Tag, GrammarTransition>[] ) Array.newInstance( HashMap.class, 300 );
 
         //====================================================
         //  Transitions concerning : BATCH RESPONSE
@@ -219,7 +220,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         // State: [ERROR_RESPONSE] - Tag: <detail>
         super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE.ordinal()].put( new Tag( "detail", Tag.START ),
             new GrammarTransition(
-                Dsmlv2StatesEnum.ERROR_RESPONSE, Dsmlv2StatesEnum.DETAIL_START, errorResponseAddDetail ) );
+                Dsmlv2StatesEnum.ERROR_RESPONSE, Dsmlv2StatesEnum.DETAIL_START, ERROR_RESPONSE_ADD_DETAIL ) );
 
         // State: [MESSAGE_END] - Tag: </errorResponse>
         super.transitions[Dsmlv2StatesEnum.MESSAGE_END.ordinal()].put( new Tag( "errorResponse", Tag.END ),
@@ -228,7 +229,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         // State: [MESSAGE_END] - Tag: <detail>
         super.transitions[Dsmlv2StatesEnum.MESSAGE_END.ordinal()].put( new Tag( "detail", Tag.START ),
             new GrammarTransition(
-                Dsmlv2StatesEnum.MESSAGE_END, Dsmlv2StatesEnum.DETAIL_START, errorResponseAddDetail ) );
+                Dsmlv2StatesEnum.MESSAGE_END, Dsmlv2StatesEnum.DETAIL_START, ERROR_RESPONSE_ADD_DETAIL ) );
 
         // State: [DETAIL_START] - Tag: </detail>
         super.transitions[Dsmlv2StatesEnum.DETAIL_START.ordinal()].put( new Tag( "detail", Tag.END ),
@@ -238,7 +239,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         // State: [DETAIL_END] - Tag: <detail>
         super.transitions[Dsmlv2StatesEnum.DETAIL_END.ordinal()].put( new Tag( "detail", Tag.END ),
             new GrammarTransition(
-                Dsmlv2StatesEnum.DETAIL_END, Dsmlv2StatesEnum.DETAIL_END, errorResponseAddDetail ) );
+                Dsmlv2StatesEnum.DETAIL_END, Dsmlv2StatesEnum.DETAIL_END, ERROR_RESPONSE_ADD_DETAIL ) );
 
         // State: [ERROR_RESPONSE] - Tag: </errorResponse>
         super.transitions[Dsmlv2StatesEnum.ERROR_RESPONSE.ordinal()].put( new Tag( "errorResponse", Tag.END ),
@@ -813,7 +814,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
             Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SEARCH_RESULT_REFERENCE_LOOP, Dsmlv2StatesEnum.LDAP_RESULT,
                 searchResultDoneCreation ) );
-        
+
         //------------------------------------------ handle SOAP envelopes --------------------------
         super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
         super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_START_TAG.ordinal()] = new HashMap<Tag, GrammarTransition>();
@@ -831,7 +832,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
         // state: [SOAP_ENVELOPE_START_TAG] -> Tag: <header>
         super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()].put( new Tag( "header", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG, Dsmlv2StatesEnum.SOAP_HEADER_START_TAG,
-                    ParserUtils.readSoapHeader ) );
+                ParserUtils.READ_SOAP_HEADER ) );
 
         // state: [SOAP_HEADER_START_TAG] -> Tag: </header>
         super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_START_TAG.ordinal()]
@@ -1294,7 +1295,8 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
     /**
      * GrammarAction that adds Detail to an Error Response
      */
-    private final GrammarAction errorResponseAddDetail = null; // TODO Look for documentation about this Detail element (the DSML documentation doesn't give enough information)
+    // TODO Look for documentation about this Detail element (the DSML documentation doesn't give enough information)
+    private static final GrammarAction ERROR_RESPONSE_ADD_DETAIL = null;
 
 
     /**

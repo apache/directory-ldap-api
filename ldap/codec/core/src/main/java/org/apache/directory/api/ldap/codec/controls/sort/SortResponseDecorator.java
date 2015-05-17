@@ -45,7 +45,7 @@ import org.apache.directory.api.util.Strings;
  */
 public class SortResponseDecorator extends ControlDecorator<SortResponse> implements SortResponse
 {
-    private Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
     private int sortRespLen = 0;
 
@@ -84,13 +84,13 @@ public class SortResponseDecorator extends ControlDecorator<SortResponse> implem
 
         // result code value
         sortRespLen += 1 + 1 + 1;
-        
-        if( getAttributeName() != null )
+
+        if ( getAttributeName() != null )
         {
             byte[] data = Strings.getBytesUtf8( getAttributeName() );
             sortRespLen += 1 + TLV.getNbBytes( data.length ) + data.length;
         }
-        
+
         valueLength = 1 + TLV.getNbBytes( sortRespLen ) + sortRespLen;
 
         return valueLength;
@@ -107,14 +107,14 @@ public class SortResponseDecorator extends ControlDecorator<SortResponse> implem
 
         buffer.put( UniversalTag.SEQUENCE.getValue() );
         buffer.put( TLV.getBytes( sortRespLen ) );
-        
+
         BerValue.encodeEnumerated( buffer, getSortResult().getVal() );
-        
-        if( getAttributeName() != null )
+
+        if ( getAttributeName() != null )
         {
             BerValue.encode( buffer, getAttributeName() );
         }
-        
+
         return buffer;
     }
 
@@ -127,7 +127,7 @@ public class SortResponseDecorator extends ControlDecorator<SortResponse> implem
     {
         ByteBuffer buffer = ByteBuffer.wrap( controlBytes );
         SortResponseContainer container = new SortResponseContainer( getCodecService(), this );
-        decoder.decode( buffer, container );
+        DECODER.decode( buffer, container );
         return this;
     }
 

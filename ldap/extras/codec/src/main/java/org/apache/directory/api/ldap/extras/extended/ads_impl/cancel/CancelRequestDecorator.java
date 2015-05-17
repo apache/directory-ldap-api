@@ -118,19 +118,20 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
 
         try
         {
-            CancelRequest cancel = decoder.decode( requestValue );
-
             if ( requestValue != null )
             {
+                CancelRequest cancel = decoder.decode( requestValue );
+                cancelRequest.setCancelId( cancel.getCancelId() );
+
                 this.requestValue = new byte[requestValue.length];
                 System.arraycopy( requestValue, 0, this.requestValue, 0, requestValue.length );
             }
             else
             {
                 this.requestValue = null;
+                cancelRequest.setCancelId( 0 );
             }
 
-            cancelRequest.setCancelId( cancel.getCancelId() );
         }
         catch ( DecoderException e )
         {
@@ -147,7 +148,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
      *   | 
      *   +--> 0x02 0x0(1-4) [0..2^31-1] 
      */
-    /* no qualifier */ int computeLengthInternal()
+    /* no qualifier */int computeLengthInternal()
     {
         // The messageId length
         cancelSequenceLength = 1 + 1 + BerValue.getNbBytes( cancelRequest.getCancelId() );
@@ -163,7 +164,7 @@ public class CancelRequestDecorator extends ExtendedRequestDecorator<CancelReque
      * @return A ByteBuffer that contains the encoded PDU
      * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
-    /* no qualifier */ ByteBuffer encodeInternal() throws EncoderException
+    /* no qualifier */ByteBuffer encodeInternal() throws EncoderException
     {
         // Allocate the bytes buffer.
         ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );

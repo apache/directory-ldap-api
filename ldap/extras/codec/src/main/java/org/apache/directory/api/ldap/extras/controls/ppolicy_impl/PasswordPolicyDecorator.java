@@ -82,7 +82,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
         {
             setResponse( null );
         }
-        else if ( value != null && !hasResponse() )
+        else if ( !hasResponse() )
         {
             setResponse( true );
         }

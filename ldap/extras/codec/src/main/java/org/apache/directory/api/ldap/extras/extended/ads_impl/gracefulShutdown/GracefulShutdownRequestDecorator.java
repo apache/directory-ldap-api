@@ -51,6 +51,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
 
     private GracefulShutdownRequest gracefulShutdownRequest;
 
+
     /**
      * Creates a new instance of GracefulShutdownRequestDecorator.
      *
@@ -73,10 +74,10 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
 
         try
         {
-            gracefulShutdownRequest = decoder.decode( requestValue );
-
             if ( requestValue != null )
             {
+                gracefulShutdownRequest = decoder.decode( requestValue );
+
                 this.requestValue = new byte[requestValue.length];
                 System.arraycopy( requestValue, 0, this.requestValue, 0, requestValue.length );
             }
@@ -162,7 +163,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
      * </pre>  
      * L1 will always be &lt 11.
      */
-    /* no qualifier */ int computeLengthInternal()
+    /* no qualifier */int computeLengthInternal()
     {
         int gracefulLength = 1 + 1;
         gracefulSequenceLength = 0;
@@ -187,7 +188,7 @@ public class GracefulShutdownRequestDecorator extends ExtendedRequestDecorator<G
      * @return A ByteBuffer that contains the encoded PDU
      * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
-    /* no qualifier */ ByteBuffer encodeInternal() throws EncoderException
+    /* no qualifier */ByteBuffer encodeInternal() throws EncoderException
     {
         // Allocate the bytes buffer.
         ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );

@@ -65,9 +65,10 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
      *
      * @param decoratedLdapResult the decorated LdapResult
      */
-    public LdapResultDecorator( LdapResult decoratedLdapResult )
+    public LdapResultDecorator( LdapApiService codec, LdapResult decoratedLdapResult )
     {
         this.decoratedLdapResult = decoratedLdapResult;
+        this.codec = codec;
     }
 
 

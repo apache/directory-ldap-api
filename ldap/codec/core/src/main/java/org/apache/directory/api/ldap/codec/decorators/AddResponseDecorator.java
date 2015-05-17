@@ -100,7 +100,7 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
     public int computeLength()
     {
         AddResponse addResponse = getAddResponse();
-        setLdapResult( new LdapResultDecorator( addResponse.getLdapResult() ) );
+        setLdapResult( new LdapResultDecorator( getCodecService(), addResponse.getLdapResult() ) );
         int addResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         setAddResponseLength( addResponseLength );

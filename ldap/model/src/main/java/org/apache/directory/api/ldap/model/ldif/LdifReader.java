@@ -1835,8 +1835,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
             if ( LOG.isDebugEnabled() )
             {
-                LOG.debug( "Parsed {} entries.", ( entries == null ? Integer.valueOf( 0 ) : Integer.valueOf( entries
-                    .size() ) ) );
+                LOG.debug( "Parsed {} entries.", Integer.valueOf( entries.size() ) );
             }
 
             return entries;

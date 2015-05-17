@@ -48,15 +48,16 @@ import org.apache.directory.api.util.Strings;
  */
 public class SortRequestDecorator extends ControlDecorator<SortRequest> implements SortRequest
 {
-    private Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
     private int sortReqLen = 0;
 
     private List<Integer> sortKeyLenList = new ArrayList<Integer>();
 
     public static int ORDERING_RULE_TAG = 0x80;
-    
+
     public static int REVERSE_ORDER_TAG = 0x81;
+
 
     /**
      * Creates a new instance of SortRequestDecorator.
@@ -148,7 +149,7 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
             String mrId = sk.getMatchingRuleId();
             if ( mrId != null )
             {
-                buffer.put( (byte)ORDERING_RULE_TAG );
+                buffer.put( ( byte ) ORDERING_RULE_TAG );
                 byte[] value = Asn1StringUtils.getBytesUtf8( mrId );
 
                 buffer.put( TLV.getBytes( value.length ) );
@@ -157,8 +158,8 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
 
             if ( sk.isReverseOrder() )
             {
-                buffer.put( (byte)REVERSE_ORDER_TAG );
-                buffer.put( (byte)0x01 );
+                buffer.put( ( byte ) REVERSE_ORDER_TAG );
+                buffer.put( ( byte ) 0x01 );
                 buffer.put( BerValue.TRUE_VALUE );
             }
         }
@@ -172,7 +173,7 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
     {
         ByteBuffer buffer = ByteBuffer.wrap( controlBytes );
         SortRequestContainer container = new SortRequestContainer( getCodecService(), this );
-        decoder.decode( buffer, container );
+        DECODER.decode( buffer, container );
         return this;
     }
 

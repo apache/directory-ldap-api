@@ -342,7 +342,8 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
      */
     public int computeLength()
     {
-        int bindRequestLength = 1 + 1 + 1; // Initialized with version
+        // Initialized with version
+        int bindRequestLength = 1 + 1 + 1;
 
         Dn dn = getDn();
 

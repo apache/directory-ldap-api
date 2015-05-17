@@ -92,7 +92,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
         name = Dsmlv2Grammar.class.getName();
 
         // Create the transitions table
-        super.transitions = ( HashMap<Tag, GrammarTransition>[] ) Array.newInstance( HashMap.class, 200 ); // TODO Change this value
+        super.transitions = ( HashMap<Tag, GrammarTransition>[] ) Array.newInstance( HashMap.class, 200 );
 
         //====================================================
         //  Transitions concerning : BATCH REQUEST
@@ -1138,7 +1138,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
         // state: [SOAP_ENVELOPE_START_TAG] -> Tag: <header>
         super.transitions[Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG.ordinal()].put( new Tag( "header", Tag.START ),
             new GrammarTransition( Dsmlv2StatesEnum.SOAP_ENVELOPE_START_TAG, Dsmlv2StatesEnum.SOAP_HEADER_START_TAG,
-                ParserUtils.readSoapHeader ) );
+                ParserUtils.READ_SOAP_HEADER ) );
 
         // state: [SOAP_HEADER_START_TAG] -> Tag: </header>
         super.transitions[Dsmlv2StatesEnum.SOAP_HEADER_START_TAG.ordinal()]
@@ -2670,7 +2670,8 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
             }
 
-            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter( LdapCodecConstants.APPROX_MATCH_FILTER );
+            AttributeValueAssertionFilter filter = new AttributeValueAssertionFilter(
+                LdapCodecConstants.APPROX_MATCH_FILTER );
 
             filter.setAssertion( assertion );
 

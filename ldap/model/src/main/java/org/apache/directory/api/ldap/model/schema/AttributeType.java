@@ -20,8 +20,6 @@
 package org.apache.directory.api.ldap.model.schema;
 
 
-
-
 /**
  * An attributeType specification. attributeType specifications describe the
  * nature of attributes within the directory. The attributeType specification's

@@ -139,14 +139,14 @@ public class VirtualListViewRequestDecorator extends ControlDecorator<VirtualLis
             if ( value != null )
             {
                 buffer.put( TLV.getBytes( value.length ) );
+
+                // The by assertionValue value
+                buffer.put( value );
             }
             else
             {
                 buffer.put( TLV.getBytes( 0 ) );
             }
-
-            // The by assertionValue value
-            buffer.put( value );
         }
 
         if ( getContextId() != null )

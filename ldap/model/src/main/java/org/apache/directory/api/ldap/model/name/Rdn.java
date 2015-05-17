@@ -1275,7 +1275,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                                 }
 
                             default:
-                                if ( ( chars[i] >= 0 ) && ( chars[i] < 128 ) )
+                                if ( chars[i] < 128 )
                                 {
                                     bytes[pos++] = ( byte ) chars[i];
                                 }
@@ -1458,11 +1458,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
     public static boolean isValid( String dn )
     {
         Rdn rdn = new Rdn();
-        
+
         try
         {
             parse( dn, rdn );
-            
+
             return true;
         }
         catch ( LdapInvalidDnException e )

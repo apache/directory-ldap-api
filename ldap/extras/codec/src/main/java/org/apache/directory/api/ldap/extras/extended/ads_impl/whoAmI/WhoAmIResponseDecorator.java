@@ -48,6 +48,7 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
 
     private WhoAmIResponse whoAmIResponse;
 
+
     public WhoAmIResponseDecorator( LdapApiService codec, WhoAmIResponse decoratedMessage )
     {
         super( codec, decoratedMessage );
@@ -65,16 +66,12 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
 
         try
         {
-            whoAmIResponse = decoder.decode( responseValue );
-
             if ( responseValue != null )
             {
+                whoAmIResponse = decoder.decode( responseValue );
+
                 this.responseValue = new byte[responseValue.length];
                 System.arraycopy( responseValue, 0, this.responseValue, 0, responseValue.length );
-            }
-            else
-            {
-                this.responseValue = null;
             }
         }
         catch ( DecoderException e )
@@ -96,11 +93,6 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
             try
             {
                 responseValue = encodeInternal().array();
-
-                if ( responseValue == null )
-                {
-                    return null;
-                }
             }
             catch ( EncoderException e )
             {
@@ -134,18 +126,18 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     /**
      * Set the userId
      */
-    /* no qualifier*/ void setUserId( String userId )
+    /* no qualifier*/void setUserId( String userId )
     {
-        ((WhoAmIResponseImpl)whoAmIResponse).setUserId( userId );
+        ( ( WhoAmIResponseImpl ) whoAmIResponse ).setUserId( userId );
     }
 
 
     /**
      * Set the DnId
      */
-    /* no qualifier*/ void setDn( Dn dn )
+    /* no qualifier*/void setDn( Dn dn )
     {
-        ((WhoAmIResponseImpl)whoAmIResponse).setDn( dn );
+        ( ( WhoAmIResponseImpl ) whoAmIResponse ).setDn( dn );
     }
 
 
@@ -210,11 +202,11 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
      * 0x04 L1 authzId
      * </pre>
      */
-    /* no qualifier */ int computeLengthInternal()
+    /* no qualifier */int computeLengthInternal()
     {
         if ( whoAmIResponse.getAuthzId() != null )
         {
-            return 1 + TLV.getNbBytes( whoAmIResponse.getAuthzId().length ) + 
+            return 1 + TLV.getNbBytes( whoAmIResponse.getAuthzId().length ) +
                 whoAmIResponse.getAuthzId().length;
         }
         else
@@ -230,12 +222,12 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
      * @return A ByteBuffer that contains the encoded PDU
      * @throws org.apache.directory.api.asn1.EncoderException If anything goes wrong.
      */
-    /* no qualifier */ ByteBuffer encodeInternal() throws EncoderException
+    /* no qualifier */ByteBuffer encodeInternal() throws EncoderException
     {
         ByteBuffer bb = ByteBuffer.allocate( computeLengthInternal() );
 
         BerValue.encode( bb, whoAmIResponse.getAuthzId() );
-    
+
         return bb;
     }
 }

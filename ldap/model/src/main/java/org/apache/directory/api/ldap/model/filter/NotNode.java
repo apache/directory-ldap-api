@@ -83,7 +83,7 @@ public class NotNode extends BranchNode
      */
     public void addNode( ExprNode node )
     {
-        if ( ( children != null ) && ( children.size() >= 1 ) )
+        if ( ( children == null ) || ( children.size() >= 1 ) )
         {
             throw new IllegalStateException( I18n.err( I18n.ERR_04159 ) );
         }

@@ -25,7 +25,6 @@ import java.nio.ByteBuffer;
 import org.apache.directory.api.asn1.Asn1Object;
 import org.apache.directory.api.asn1.DecoderException;
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.Asn1Decoder;
 import org.apache.directory.api.asn1.ber.tlv.BerValue;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.codec.api.ControlDecorator;
@@ -46,9 +45,6 @@ public class ProxiedAuthzDecorator extends ControlDecorator<ProxiedAuthz> implem
 {
     /** A temporary storage for the authzId */
     private byte[] authzIdBytes = null;
-
-    /** An instance of this decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
 
 
     /**
