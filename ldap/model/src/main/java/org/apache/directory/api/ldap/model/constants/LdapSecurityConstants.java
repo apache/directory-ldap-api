@@ -20,9 +20,6 @@
 package org.apache.directory.api.ldap.model.constants;
 
 
-import org.apache.directory.api.util.Strings;
-
-
 /**
  * An enum to store all the security constants used in the server
  *
@@ -135,113 +132,110 @@ public enum LdapSecurityConstants
     /**
      * Get the associated constant from a string
      *
-     * @param name The algorithm's name
+     * @param algorithm The algorithm's name
      * @return The associated constant
      */
-    public static LdapSecurityConstants getAlgorithm( String name )
+    public static LdapSecurityConstants getAlgorithm( String algorithm )
     {
-        String algorithm = "";
-
-        if ( name != null )
-        {
-            algorithm = Strings.toLowerCase( name );
-        }
-
-        if ( HASH_METHOD_SHA.getName().equalsIgnoreCase( algorithm )
-            || HASH_METHOD_SHA.getPrefix().equalsIgnoreCase( algorithm ) )
+        if ( HASH_METHOD_SHA.name.equalsIgnoreCase( algorithm )
+            || HASH_METHOD_SHA.prefix.equalsIgnoreCase( algorithm ) )
         {
             return HASH_METHOD_SHA;
         }
 
-        if ( HASH_METHOD_SSHA.getName().equalsIgnoreCase( algorithm )
-            || HASH_METHOD_SSHA.getPrefix().equalsIgnoreCase( algorithm ) )
+        if ( HASH_METHOD_SSHA.name.equalsIgnoreCase( algorithm )
+            || HASH_METHOD_SSHA.prefix.equalsIgnoreCase( algorithm ) )
         {
             return HASH_METHOD_SSHA;
         }
 
-        if ( HASH_METHOD_MD5.getName().equalsIgnoreCase( algorithm )
-            || HASH_METHOD_MD5.getPrefix().equalsIgnoreCase( algorithm ))
+        if ( HASH_METHOD_MD5.name.equalsIgnoreCase( algorithm )
+            || HASH_METHOD_MD5.prefix.equalsIgnoreCase( algorithm ) )
         {
             return HASH_METHOD_MD5;
         }
 
-        if ( HASH_METHOD_SMD5.getName().equalsIgnoreCase( algorithm )
-            || HASH_METHOD_SMD5.getPrefix().equalsIgnoreCase( algorithm ))
+        if ( HASH_METHOD_SMD5.name.equalsIgnoreCase( algorithm )
+            || HASH_METHOD_SMD5.prefix.equalsIgnoreCase( algorithm ) )
         {
             return HASH_METHOD_SMD5;
         }
 
-        if ( HASH_METHOD_CRYPT.getName().equalsIgnoreCase( algorithm )
-            || HASH_METHOD_CRYPT.getPrefix().equalsIgnoreCase( algorithm ))
+        if ( HASH_METHOD_CRYPT.name.equalsIgnoreCase( algorithm )
+            || HASH_METHOD_CRYPT.prefix.equalsIgnoreCase( algorithm ) )
         {
             return HASH_METHOD_CRYPT;
         }
 
-        if ( ( HASH_METHOD_SHA256.getName().equalsIgnoreCase( algorithm ) )
-            || ( HASH_METHOD_SHA256.getPrefix().equalsIgnoreCase( algorithm ) )
+        if ( ( HASH_METHOD_SHA256.name.equalsIgnoreCase( algorithm ) )
+            || ( HASH_METHOD_SHA256.prefix.equalsIgnoreCase( algorithm ) )
             || ( "sha-256".equalsIgnoreCase( algorithm ) ) ) // "sha-256" used for backwards compatibility
         {
             return HASH_METHOD_SHA256;
         }
 
-        if ( ( HASH_METHOD_SSHA256.getName().equalsIgnoreCase( algorithm ) )
-            || ( HASH_METHOD_SSHA256.getPrefix().equalsIgnoreCase( algorithm ) )
+        if ( ( HASH_METHOD_SSHA256.name.equalsIgnoreCase( algorithm ) )
+            || ( HASH_METHOD_SSHA256.prefix.equalsIgnoreCase( algorithm ) )
             || ( "ssha-256".equalsIgnoreCase( algorithm ) ) ) // "ssha-256" used for backwards compatibility
         {
             return HASH_METHOD_SSHA256;
         }
 
-        if ( ( HASH_METHOD_SHA384.getName().equalsIgnoreCase( algorithm ) )
-            || ( HASH_METHOD_SHA384.getPrefix().equalsIgnoreCase( algorithm ) )
-            || ( "sha-384".equalsIgnoreCase( algorithm ) ) ) // "sha-384" used for backwards compatibility
+        if ( ( HASH_METHOD_SHA384.name.equalsIgnoreCase( algorithm ) )
+            || ( HASH_METHOD_SHA384.prefix.equalsIgnoreCase( algorithm ) )
+            // "sha-384" used for backwards compatibility
+            || ( "sha-384".equalsIgnoreCase( algorithm ) ) )
         {
             return HASH_METHOD_SHA384;
         }
 
-        if ( ( HASH_METHOD_SSHA384.getName().equalsIgnoreCase( algorithm ) )
-            ||  ( HASH_METHOD_SSHA384.getPrefix().equalsIgnoreCase( algorithm ) )
-            || ( "ssha-384".equalsIgnoreCase( algorithm ) ) ) // "ssha-384" used for backwards compatibility
+        if ( ( HASH_METHOD_SSHA384.name.equalsIgnoreCase( algorithm ) )
+            || ( HASH_METHOD_SSHA384.prefix.equalsIgnoreCase( algorithm ) )
+            // "ssha-384" used for backwards compatibility
+            || ( "ssha-384".equalsIgnoreCase( algorithm ) ) )
         {
             return HASH_METHOD_SSHA384;
         }
 
-        if ( ( HASH_METHOD_SHA512.getName().equalsIgnoreCase( algorithm ) )
-            ||  ( HASH_METHOD_SHA512.getPrefix().equalsIgnoreCase( algorithm ) )
-            || ( "sha-512".equalsIgnoreCase( algorithm ) ) ) // "sha-512" used for backwards compatibility
+        if ( ( HASH_METHOD_SHA512.name.equalsIgnoreCase( algorithm ) )
+            || ( HASH_METHOD_SHA512.prefix.equalsIgnoreCase( algorithm ) )
+            // "sha-512" used for backwards compatibility
+            || ( "sha-512".equalsIgnoreCase( algorithm ) ) )
         {
             return HASH_METHOD_SHA512;
         }
 
-        if ( ( HASH_METHOD_SSHA512.getName().equalsIgnoreCase( algorithm ) )
-            ||  ( HASH_METHOD_SSHA512.getPrefix().equalsIgnoreCase( algorithm ) )
-            || ( "ssha-512".equalsIgnoreCase( algorithm ) ) ) // "ssha-512" used for backwards compatibility
+        if ( ( HASH_METHOD_SSHA512.name.equalsIgnoreCase( algorithm ) )
+            || ( HASH_METHOD_SSHA512.prefix.equalsIgnoreCase( algorithm ) )
+            // "ssha-512" used for backwards compatibility
+            || ( "ssha-512".equalsIgnoreCase( algorithm ) ) )
         {
             return HASH_METHOD_SSHA512;
         }
 
-        if ( HASH_METHOD_PKCS5S2.getName().equalsIgnoreCase( algorithm )
-            || HASH_METHOD_PKCS5S2.getPrefix().equalsIgnoreCase( algorithm ) )
+        if ( HASH_METHOD_PKCS5S2.name.equalsIgnoreCase( algorithm )
+            || HASH_METHOD_PKCS5S2.prefix.equalsIgnoreCase( algorithm ) )
         {
             return HASH_METHOD_PKCS5S2;
         }
 
         /*
-        if ( ENC_METHOD_AES.getName().equalsIgnoreCase( algorithm ) )
+        if ( ENC_METHOD_AES.name.equalsIgnoreCase( algorithm ) )
         {
             return ENC_METHOD_AES;
         }
 
-        if ( ENC_METHOD_3DES.getName().equalsIgnoreCase( algorithm ) )
+        if ( ENC_METHOD_3DES.name.equalsIgnoreCase( algorithm ) )
         {
             return ENC_METHOD_3DES;
         }
 
-        if ( ENC_METHOD_BLOWFISH.getName().equalsIgnoreCase( algorithm ) )
+        if ( ENC_METHOD_BLOWFISH.name.equalsIgnoreCase( algorithm ) )
         {
             return ENC_METHOD_BLOWFISH;
         }
 
-        if ( ENC_METHOD_RC4.getName().equalsIgnoreCase( algorithm ) )
+        if ( ENC_METHOD_RC4.name.equalsIgnoreCase( algorithm ) )
         {
             return ENC_METHOD_RC4;
         }
