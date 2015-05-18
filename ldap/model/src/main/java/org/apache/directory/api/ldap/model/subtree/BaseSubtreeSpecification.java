@@ -293,7 +293,8 @@ public class BaseSubtreeSpecification implements SubtreeSpecification
         }
 
         // The chopBefore exclusions
-        if ( !chopBefore.isEmpty() || !chopAfter.isEmpty() )
+        if ( ( ( chopBefore != null ) && !chopBefore.isEmpty() ) ||
+            ( ( chopAfter != null ) && !chopAfter.isEmpty() ) )
         {
             if ( isFirst )
             {

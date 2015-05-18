@@ -344,6 +344,7 @@ public class LdifAnonymizer
         if ( ( args == null ) || ( args.length < 1 ) )
         {
             System.out.println( "No file to anonymize" );
+            return;
         }
 
         LdifAnonymizer anonymizer = new LdifAnonymizer();

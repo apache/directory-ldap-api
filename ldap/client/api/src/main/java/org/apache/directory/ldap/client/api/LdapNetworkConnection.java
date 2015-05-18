@@ -4153,8 +4153,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         File krb5Conf = File.createTempFile( "client-api-krb5", ".conf" );
         krb5Conf.deleteOnExit();
         FileWriter fw = new FileWriter( krb5Conf );
-        fw.write( sb.toString() );
-        fw.close();
+
+        try
+        {
+            fw.write( sb.toString() );
+        }
+        finally
+        {
+            fw.close();
+        }
 
         String krb5ConfPath = krb5Conf.getAbsolutePath();
 
