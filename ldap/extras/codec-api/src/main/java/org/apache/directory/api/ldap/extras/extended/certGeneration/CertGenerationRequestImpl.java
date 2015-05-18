@@ -20,8 +20,6 @@
 package org.apache.directory.api.ldap.extras.extended.certGeneration;
 
 
-import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownResponse;
-import org.apache.directory.api.ldap.extras.extended.gracefulShutdown.GracefulShutdownResponseImpl;
 import org.apache.directory.api.ldap.model.message.AbstractExtendedRequest;
 
 
