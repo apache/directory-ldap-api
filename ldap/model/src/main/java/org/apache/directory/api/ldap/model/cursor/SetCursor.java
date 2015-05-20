@@ -54,6 +54,9 @@ public class SetCursor<E> extends AbstractCursor<E>
     /** The current position in the list */
     private int index = -1;
 
+    /** A limit to what we can print */
+    private static final int MAX_PRINTED_ELEMENT = 100;
+
 
     /**
      * Creates a new SetCursor.
@@ -430,14 +433,15 @@ public class SetCursor<E> extends AbstractCursor<E>
         {
             sb.append( tabs ).append( "    Size : " ).append( set.length ).append( "\n" );
 
-            int counter = 0; // Don't print more than 100 elements...
+            // Don't print more than 100 elements...
+            int counter = 0;
 
             for ( E e : set )
             {
                 sb.append( tabs ).append( "    " ).append( e ).append( "\n" );
                 counter++;
 
-                if ( counter == 100 )
+                if ( counter == MAX_PRINTED_ELEMENT )
                 {
                     break;
                 }

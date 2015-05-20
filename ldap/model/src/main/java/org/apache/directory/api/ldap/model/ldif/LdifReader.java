@@ -1338,7 +1338,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 parseModify( entry, iter );
                 return;
 
-            case ModDn:// They are supposed to have the same syntax ???
+            case ModDn:
+                // They are supposed to have the same syntax :
+                // No break !
             case ModRdn:
                 // First, parse the modrdn part
                 parseModRdn( entry, iter );

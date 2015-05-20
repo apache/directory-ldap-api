@@ -38,7 +38,8 @@ public class LdapUriException extends LdapException
      */
     public LdapUriException( String reason, Throwable cause )
     {
-        super( reason, cause ); // for backward compatibility of Throwable
+        // for backward compatibility of Throwable
+        super( reason, cause );
         this.reason = reason;
         this.reasonCode = UNKNOWN;
     }

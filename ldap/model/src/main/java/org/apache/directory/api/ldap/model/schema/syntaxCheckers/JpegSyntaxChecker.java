@@ -47,6 +47,7 @@ public class JpegSyntaxChecker extends SyntaxChecker
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( JpegSyntaxChecker.class );
 
+
     /**
      * Creates a new instance of JpegSyntaxChecker.
      */
@@ -83,31 +84,32 @@ public class JpegSyntaxChecker extends SyntaxChecker
             return false;
         }
 
-        if ( ( bytes[0] == ( byte ) 0x00FF ) // SOI
+        // SOI or APP0 or APP1 format
+        if ( ( bytes[0] == ( byte ) 0x00FF )
             && ( bytes[1] == ( byte ) 0x00D8 )
-            && ( bytes[2] == ( byte ) 0x00FF ) ) // APP0 or APP1
+            && ( bytes[2] == ( byte ) 0x00FF ) )
         {
-            if ( bytes[3] == (byte)0x00E0 )
+            if ( bytes[3] == ( byte ) 0x00E0 )
             {
                 // JFIF format
-                if ( ( bytes[6] == 'J' ) // JFIF
-                    && ( bytes[7] == 'F' ) // JFIF
-                    && ( bytes[8] == 'I' ) // JFIF
+                if ( ( bytes[6] == 'J' )
+                    && ( bytes[7] == 'F' )
+                    && ( bytes[8] == 'I' )
                     && ( bytes[9] == 'F' )
-                    && ( bytes[10] == 0x00 ) ) // \0
+                    && ( bytes[10] == 0x00 ) )
                 {
                     LOG.debug( "Syntax valid for '{}'", value );
                     return true;
                 }
             }
-            else if ( bytes[3] == (byte)0x00E1 )
+            else if ( bytes[3] == ( byte ) 0x00E1 )
             {
                 // Exif format
-                if ( ( bytes[6] == 'E' )   // Exif
-                    && ( bytes[7] == 'x' ) // Exif
-                    && ( bytes[8] == 'i' ) // Exif
-                    && ( bytes[9] == 'f' ) // Exif
-                    && ( bytes[10] == 0x00 ) ) // \0
+                if ( ( bytes[6] == 'E' )
+                    && ( bytes[7] == 'x' )
+                    && ( bytes[8] == 'i' )
+                    && ( bytes[9] == 'f' )
+                    && ( bytes[10] == 0x00 ) )
                 {
                     LOG.debug( "Syntax valid for '{}'", value );
                     return true;

@@ -74,7 +74,8 @@ public class UnixCrypt extends Object
 
     /* (mostly) Standard DES Tables from Tom Truscott */
     private static final byte[] IP =
-        { /* initial permutation */
+        { 
+            /* initial permutation */
             58, 50, 42, 34, 26, 18, 10, 2,
             60, 52, 44, 36, 28, 20, 12, 4,
             62, 54, 46, 38, 30, 22, 14, 6,
@@ -86,7 +87,8 @@ public class UnixCrypt extends Object
 
     /* The final permutation is the inverse of IP - no table is necessary */
     private static final byte[] ExpandTr =
-        { /* expansion operation */
+        { 
+            /* expansion operation */
             32, 1, 2, 3, 4, 5,
             4, 5, 6, 7, 8, 9,
             8, 9, 10, 11, 12, 13,
@@ -97,7 +99,8 @@ public class UnixCrypt extends Object
             28, 29, 30, 31, 32, 1 };
 
     private static final byte[] PC1 =
-        { /* permuted choice table 1 */
+        { 
+            /* permuted choice table 1 */
             57, 49, 41, 33, 25, 17, 9,
             1, 58, 50, 42, 34, 26, 18,
             10, 2, 59, 51, 43, 35, 27,
@@ -109,11 +112,13 @@ public class UnixCrypt extends Object
             21, 13, 5, 28, 20, 12, 4 };
 
     private static final byte[] Rotates =
-        { /* PC1 rotation schedule */
+        { 
+            /* PC1 rotation schedule */
             1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1 };
 
     private static final byte[] PC2 =
-        { /* permuted choice table 2 */
+        { 
+            /* permuted choice table 2 */
             9, 18, 14, 17, 11, 24, 1, 5,
             22, 25, 3, 28, 15, 6, 21, 10,
             35, 38, 23, 19, 12, 4, 26, 8,
@@ -125,7 +130,8 @@ public class UnixCrypt extends Object
             0, 0, 46, 42, 50, 36, 29, 32 };
 
     private static final byte[][] S =
-        { /* 48->32 bit substitution tables */
+        { 
+            /* 48->32 bit substitution tables */
             /* S[1]         */
             { 14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7,
                 0, 15, 7, 4, 14, 2, 13, 1, 10, 6, 12, 11, 9, 5, 3, 8,
@@ -168,7 +174,8 @@ public class UnixCrypt extends Object
                 2, 1, 14, 7, 4, 10, 8, 13, 15, 12, 9, 0, 3, 5, 6, 11 } };
 
     private static final byte[] P32Tr =
-        { /* 32-bit permutation function */
+        { 
+            /* 32-bit permutation function */
             16, 7, 20, 21,
             29, 12, 28, 17,
             1, 15, 23, 26,
@@ -179,7 +186,8 @@ public class UnixCrypt extends Object
             22, 11, 4, 25 };
 
     private static final byte[] CIFP =
-        { /* compressed/interleaved permutation */
+        { 
+            /* compressed/interleaved permutation */
             1, 2, 3, 4, 17, 18, 19, 20,
             5, 6, 7, 8, 21, 22, 23, 24,
             9, 10, 11, 12, 25, 26, 27, 28,
@@ -191,7 +199,8 @@ public class UnixCrypt extends Object
             45, 46, 47, 48, 61, 62, 63, 64 };
 
     private static final byte[] ITOA64 =
-        { /* 0..63 => ascii-64 */
+        { 
+            /* 0..63 => ascii-64 */
             ( byte ) '.',
             ( byte ) '/',
             ( byte ) '0',
@@ -646,14 +655,17 @@ public class UnixCrypt extends Object
     @SuppressWarnings("deprecation")
     public static String crypt( String key, String setting )
     {
-        long constdatablock = 0L; /* encryption constant */
-        byte[] cryptresult = new byte[13]; /* encrypted result */
+        /* encryption constant */
+        long constdatablock = 0L; 
+        /* encrypted result */
+        byte[] cryptresult = new byte[13]; 
         long keyword = 0L;
         
         /* invalid parameters! */
         if ( key == null || setting == null )
         {
-            return "*"; // will NOT match under ANY circumstances!
+         // will NOT match under ANY circumstances!
+            return "*"; 
         } 
 
         int keylen = key.length();

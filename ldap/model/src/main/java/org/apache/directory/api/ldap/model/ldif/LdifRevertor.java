@@ -226,7 +226,8 @@ public final class LdifRevertor
                     break;
 
                 default:
-                    break; // Do nothing
+                    // Do nothing
+                    break;
 
             }
 

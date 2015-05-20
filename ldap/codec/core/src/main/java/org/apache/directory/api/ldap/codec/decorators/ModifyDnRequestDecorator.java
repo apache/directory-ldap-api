@@ -239,9 +239,10 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     {
         int newRdnlength = Strings.getBytesUtf8( getNewRdn().getName() ).length;
 
+        // deleteOldRDN
         int modifyDNRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes( getName() ) )
             + Dn.getNbBytes( getName() ) + 1 + TLV.getNbBytes( newRdnlength ) + newRdnlength + 1 + 1
-            + 1; // deleteOldRDN
+            + 1;
 
         if ( getNewSuperior() != null )
         {

@@ -259,7 +259,8 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
             throw new ParseException( I18n.err( I18n.ERR_04258 ), 0 );
         }
 
-        reset( schemaObject ); // reset and initialize the parser / lexer pair
+        // reset and initialize the parser / lexer pair
+        reset( schemaObject );
         invokeParser( schemaObject );
 
         if ( !schemaDescriptions.isEmpty() )

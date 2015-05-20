@@ -99,7 +99,8 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
      */
     public int computeLength()
     {
-        return 2; // Always 2
+        // Always 2
+        return 2;
     }
 
 

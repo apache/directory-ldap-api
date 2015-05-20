@@ -37,13 +37,13 @@ public class CertGenerationRequestImpl extends AbstractExtendedRequest implement
     private String targetDN;
 
     /** the issuer Dn that will be set in the certificate*/
-    private String issuerDN;// = "CN=ApacheDS, OU=Directory, O=ASF, C=US";
+    private String issuerDN;
 
     /** the Dn of the subject that is present in the certificate*/
-    private String subjectDN;// = "CN=ApacheDS, OU=Directory, O=ASF, C=US";
+    private String subjectDN;
 
     /** name of the algorithm used for generating the keys*/
-    private String keyAlgorithm;// = "RSA";
+    private String keyAlgorithm;
 
 
     /**

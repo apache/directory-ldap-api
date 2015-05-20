@@ -114,7 +114,8 @@ public class LdifEntry implements Cloneable, Externalizable
      */
     public LdifEntry()
     {
-        changeType = ChangeType.None; // Default LDIF content
+        // Default LDIF content
+        changeType = ChangeType.None;
         modificationList = new LinkedList<Modification>();
         modifications = new HashMap<String, Modification>();
         entry = new DefaultEntry( ( Dn ) null );
@@ -128,7 +129,8 @@ public class LdifEntry implements Cloneable, Externalizable
      */
     public LdifEntry( SchemaManager schemaManager )
     {
-        changeType = ChangeType.None; // Default LDIF content
+        // Default LDIF content
+        changeType = ChangeType.None;
         modificationList = new LinkedList<Modification>();
         modifications = new HashMap<String, Modification>();
         entry = new DefaultEntry( schemaManager, ( Dn ) null );
@@ -142,7 +144,8 @@ public class LdifEntry implements Cloneable, Externalizable
      */
     public LdifEntry( Entry entry )
     {
-        changeType = ChangeType.None; // Default LDIF content
+        // Default LDIF content
+        changeType = ChangeType.None;
         modificationList = new LinkedList<Modification>();
         modifications = new HashMap<String, Modification>();
         this.entry = entry;
@@ -1032,7 +1035,8 @@ public class LdifEntry implements Cloneable, Externalizable
                     break;
 
                 default:
-                    break; // do nothing
+                    // do nothing
+                    break;
             }
         }
 
@@ -1193,7 +1197,8 @@ public class LdifEntry implements Cloneable, Externalizable
                 break;
 
             default:
-                break; // do nothing
+                // do nothing
+                break;
         }
 
         if ( controls != null )

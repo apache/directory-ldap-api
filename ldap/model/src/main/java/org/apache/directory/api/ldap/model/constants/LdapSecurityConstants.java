@@ -169,14 +169,16 @@ public enum LdapSecurityConstants
 
         if ( ( HASH_METHOD_SHA256.name.equalsIgnoreCase( algorithm ) )
             || ( HASH_METHOD_SHA256.prefix.equalsIgnoreCase( algorithm ) )
-            || ( "sha-256".equalsIgnoreCase( algorithm ) ) ) // "sha-256" used for backwards compatibility
+            // "sha-256" used for backwards compatibility
+            || ( "sha-256".equalsIgnoreCase( algorithm ) ) )
         {
             return HASH_METHOD_SHA256;
         }
 
         if ( ( HASH_METHOD_SSHA256.name.equalsIgnoreCase( algorithm ) )
             || ( HASH_METHOD_SSHA256.prefix.equalsIgnoreCase( algorithm ) )
-            || ( "ssha-256".equalsIgnoreCase( algorithm ) ) ) // "ssha-256" used for backwards compatibility
+            // "ssha-256" used for backwards compatibility
+            || ( "ssha-256".equalsIgnoreCase( algorithm ) ) )
         {
             return HASH_METHOD_SSHA256;
         }

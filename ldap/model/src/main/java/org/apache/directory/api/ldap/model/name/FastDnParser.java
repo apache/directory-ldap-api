@@ -82,7 +82,7 @@ import org.apache.directory.api.util.Strings;
 
         Position pos = new Position();
         char[] chars = name.toCharArray();
-            
+
         pos.start = 0;
         pos.length = chars.length;
 
@@ -97,9 +97,9 @@ import org.apache.directory.api.util.Strings;
                 // end of line reached
                 break;
             }
-            
+
             char c = nextChar( chars, pos, true );
-            
+
             switch ( c )
             {
                 case ',':
@@ -129,7 +129,7 @@ import org.apache.directory.api.util.Strings;
         {
             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04193 ) );
         }
-        
+
         if ( rdn == null )
         {
             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04194 ) );
@@ -195,7 +195,7 @@ import org.apache.directory.api.util.Strings;
         while ( hasMoreChars( pos ) )
         {
             char c = nextChar( name, pos, true );
-            
+
             if ( c != ' ' )
             {
                 pos.start--;
@@ -218,7 +218,7 @@ import org.apache.directory.api.util.Strings;
     private static String matchAttributeType( char[] name, Position pos ) throws LdapInvalidDnException
     {
         char c = nextChar( name, pos, false );
-        
+
         switch ( c )
         {
             case 'A':
@@ -310,11 +310,11 @@ import org.apache.directory.api.util.Strings;
     private static String matchAttributeTypeDescr( char[] name, Position pos ) throws LdapInvalidDnException
     {
         int start = pos.start;
-        
+
         while ( hasMoreChars( pos ) )
         {
             char c = nextChar( name, pos, true );
-            
+
             switch ( c )
             {
                 case 'A':
@@ -380,7 +380,8 @@ import org.apache.directory.api.util.Strings;
                 case '8':
                 case '9':
                 case '-':
-                case '_': // Violation of the RFC, just because those idiots at Microsoft decided to support it...
+                case '_':
+                    // Violation of the RFC, just because those idiots at Microsoft decided to support it...
                     break;
 
                 case ' ':
@@ -398,7 +399,7 @@ import org.apache.directory.api.util.Strings;
                         pos.start ) );
             }
         }
-        
+
         return new String( name, start, pos.start - start );
     }
 
@@ -417,33 +418,33 @@ import org.apache.directory.api.util.Strings;
     {
         int dotCount = 0;
         int start = pos.start;
-        
+
         while ( true )
         {
             char c = nextChar( name, pos, true );
-            
+
             switch ( c )
             {
                 case '0':
                     // leading '0', no other digit may follow!
                     c = nextChar( name, pos, true );
-                    
+
                     switch ( c )
                     {
                         case '.':
                             dotCount++;
                             break;
-                            
+
                         case ' ':
                         case '=':
                             pos.start--;
                             break;
-                            
+
                         default:
                             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err(
                                 I18n.ERR_04197, c, pos.start ) );
                     }
-                    
+
                     break;
 
                 case '1':
@@ -456,11 +457,11 @@ import org.apache.directory.api.util.Strings;
                 case '8':
                 case '9':
                     boolean inInnerLoop = true;
-                    
+
                     while ( inInnerLoop )
                     {
                         c = nextChar( name, pos, true );
-                        
+
                         switch ( c )
                         {
                             case ' ':
@@ -468,7 +469,7 @@ import org.apache.directory.api.util.Strings;
                                 inInnerLoop = false;
                                 pos.start--;
                                 break;
-                                
+
                             case '.':
                                 inInnerLoop = false;
                                 dotCount++;
@@ -484,19 +485,19 @@ import org.apache.directory.api.util.Strings;
                             case '8':
                             case '9':
                                 break;
-                                
+
                             default:
                                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err(
                                     I18n.ERR_04197, c, pos.start ) );
                         }
                     }
-                    
+
                     break;
-                    
+
                 case ' ':
                 case '=':
                     pos.start--;
-                    
+
                     if ( dotCount > 0 )
                     {
                         return new String( name, start, pos.start - start );
@@ -505,7 +506,7 @@ import org.apache.directory.api.util.Strings;
                     {
                         throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04198 ) );
                     }
-                    
+
                 default:
                     throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04199, c,
                         pos.start ) );
@@ -525,7 +526,7 @@ import org.apache.directory.api.util.Strings;
     private static void matchEquals( char[] name, Position pos ) throws LdapInvalidDnException
     {
         char c = nextChar( name, pos, true );
-        
+
         if ( c != '=' )
         {
             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04200, c, pos.start ) );
@@ -550,7 +551,7 @@ import org.apache.directory.api.util.Strings;
         //StringBuilder value = new StringBuilder();
         int start = pos.start;
         int numTrailingSpaces = 0;
-        
+
         while ( true )
         {
             if ( !hasMoreChars( pos ) )
@@ -558,9 +559,9 @@ import org.apache.directory.api.util.Strings;
                 pos.start -= numTrailingSpaces;
                 return new String( name, start, pos.start - start );
             }
-            
+
             char c = nextChar( name, pos, true );
-            
+
             switch ( c )
             {
                 case '\\':
@@ -568,17 +569,17 @@ import org.apache.directory.api.util.Strings;
                 case '#':
                 case '"':
                     throw TooComplexDnException.INSTANCE;
-                    
+
                 case ',':
                 case ';':
                     pos.start--;
                     pos.start -= numTrailingSpaces;
                     return new String( name, start, pos.start - start );
-                    
+
                 case ' ':
                     numTrailingSpaces++;
                     break;
-                    
+
                 default:
                     numTrailingSpaces = 0;
             }
@@ -602,14 +603,14 @@ import org.apache.directory.api.util.Strings;
         {
             throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, I18n.err( I18n.ERR_04201, pos.start ) );
         }
-        
-        char c = name[ pos.start ];
-        
+
+        char c = name[pos.start];
+
         if ( increment )
         {
             pos.start++;
         }
-        
+
         return c;
     }
 

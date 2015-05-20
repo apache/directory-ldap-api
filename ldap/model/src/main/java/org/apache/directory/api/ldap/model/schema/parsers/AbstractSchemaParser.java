@@ -74,7 +74,8 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
      * @param errorCodeOnParseExceptionWithPosition error code used on parse error when position is known
      * @param errorCodeOnParseException error code used on parse error when position is unknown
      */
-    protected AbstractSchemaParser( Class<T> schemaObjectType, I18n errorCodeOnNull, I18n errorCodeOnParseExceptionWithPosition,
+    protected AbstractSchemaParser( Class<T> schemaObjectType, I18n errorCodeOnNull,
+        I18n errorCodeOnParseExceptionWithPosition,
         I18n errorCodeOnParseException )
     {
         this.schemaObjectType = schemaObjectType;
@@ -154,7 +155,8 @@ public abstract class AbstractSchemaParser<T extends SchemaObject>
             throw new ParseException( "Null", 0 );
         }
 
-        reset( schemaDescription ); // reset and initialize the parser / lexer pair
+        // reset and initialize the parser / lexer pair
+        reset( schemaDescription );
 
         try
         {

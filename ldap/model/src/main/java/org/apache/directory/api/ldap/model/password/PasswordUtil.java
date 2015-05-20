@@ -150,12 +150,14 @@ public class PasswordUtil
             case HASH_METHOD_SSHA384:
             case HASH_METHOD_SSHA512:
             case HASH_METHOD_SMD5:
-                salt = new byte[8]; // we use 8 byte salt always except for "crypt" which needs 2 byte salt
+                // we use 8 byte salt always except for "crypt" which needs 2 byte salt
+                salt = new byte[8];
                 new SecureRandom().nextBytes( salt );
                 break;
 
             case HASH_METHOD_PKCS5S2:
-                salt = new byte[16]; // we use 16 byte salt for PKCS5S2
+                // we use 16 byte salt for PKCS5S2
+                salt = new byte[16];
                 new SecureRandom().nextBytes( salt );
                 break;
 
@@ -513,7 +515,8 @@ public class PasswordUtil
     {
         Date pwdChangeDate = DateUtils.getDate( pwdChangedZtime );
 
-        long time = pwdMaxAgeSec * 1000L;//DIRSERVER-1735
+        //DIRSERVER-1735
+        long time = pwdMaxAgeSec * 1000L;
         time += pwdChangeDate.getTime();
 
         Date expiryDate = DateUtils.getDate( DateUtils.getGeneralizedTime( time ) );

@@ -58,8 +58,9 @@ public class TriggerSpecificationParser
         this.lexer = new ReusableAntlrTriggerSpecificationLexer( new StringReader( "" ) );
         this.parser = new ReusableAntlrTriggerSpecificationParser( lexer );
 
-        this.parser.init(); // this method MUST be called while we cannot do
+        // this method MUST be called while we cannot do
         // constructor overloading for antlr generated parser
+        this.parser.init();
         this.isNormalizing = false;
     }
 
@@ -75,8 +76,9 @@ public class TriggerSpecificationParser
         this.parser = new ReusableAntlrTriggerSpecificationParser( lexer );
 
         this.parser.setNormalizerMappingResolver( resolver );
-        this.parser.init(); // this method MUST be called while we cannot do
+        // this method MUST be called while we cannot do
         // constructor overloading for ANTLR generated parser
+        this.parser.init();
         this.isNormalizing = true;
     }
 
@@ -114,7 +116,8 @@ public class TriggerSpecificationParser
             return null;
         }
 
-        reset( spec ); // reset and initialize the parser / lexer pair
+        // reset and initialize the parser / lexer pair
+        reset( spec );
 
         try
         {

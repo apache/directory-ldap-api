@@ -241,7 +241,8 @@ public class LdapResultImpl implements LdapResult
                 return false;
             }
         }
-        else if ( result.getMatchedDn() != null ) // one is null other is not
+        // one is null other is not
+        else if ( result.getMatchedDn() != null )
         {
             return false;
         }

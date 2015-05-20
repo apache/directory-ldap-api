@@ -42,18 +42,21 @@ public interface UnicodeConstants
     /** %01-%27 %2B-%5B %5D-%7F */
     boolean[] UNICODE_SUBSET =
         {
-            false, true,  true,  true,  true,  true,  true,  true, // '\0'
+            // '\0'
+            false, true,  true,  true,  true,  true,  true,  true, 
             true,  true,  true,  true,  true,  true,  true,  true,
             true,  true,  true,  true,  true,  true,  true,  true,
             true,  true,  true,  true,  true,  true,  true,  true,
             true,  true,  true,  true,  true,  true,  true,  true,
-            false, false, false, true,  true,  true,  true,  true, // '(', ')', '*'
+            // '(', ')', '*'
+            false, false, false, true,  true,  true,  true,  true, 
             true,  true,  true,  true,  true,  true,  true,  true,
             true,  true,  true,  true,  true,  true,  true,  true,
             true,  true,  true,  true,  true,  true,  true,  true,
             true,  true,  true,  true,  true,  true,  true,  true,
             true,  true,  true,  true,  true,  true,  true,  true,
-            true,  true,  true,  true,  false, true,  true,  true, // '\'
+            // '\'
+            true,  true,  true,  true,  false, true,  true,  true,
             true,  true,  true,  true,  true,  true,  true,  true,
             true,  true,  true,  true,  true,  true,  true,  true,
             true,  true,  true,  true,  true,  true,  true,  true,

@@ -582,8 +582,9 @@ public class StringValue extends AbstractValue<String>
     public int serialize( byte[] buffer, int pos )
     {
         // Compute the length
-        int length = 1 + 1 + 1 + 4; // The value type, the wrappedValue presence flag,
-                                    // the normalizedValue presence flag and the hash length.
+        // The value type, the wrappedValue presence flag,
+        // the normalizedValue presence flag and the hash length.
+        int length = 1 + 1 + 1 + 4;
 
         byte[] wrappedValueBytes = null;
         byte[] normalizedValueBytes = null;

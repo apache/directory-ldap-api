@@ -57,12 +57,13 @@ public class SubtreeSpecificationParser
      */
     public SubtreeSpecificationParser( SchemaManager schemaManager )
     {
-        StringReader in = new StringReader( "" ); // place holder for the
-                                                  // first input
+        // place holder for the first input
+        StringReader in = new StringReader( "" );
         this.lexer = new ReusableAntlrSubtreeSpecificationLexer( in );
         this.parser = new ReusableAntlrSubtreeSpecificationParser( lexer );
-        this.parser.init( schemaManager ); // this method MUST be called while we cannot do
+        // this method MUST be called while we cannot do
         // constructor overloading for antlr generated parser
+        this.parser.init( schemaManager );
         this.isNormalizing = false;
     }
 
@@ -73,13 +74,14 @@ public class SubtreeSpecificationParser
     public SubtreeSpecificationParser( @SuppressWarnings("rawtypes") NormalizerMappingResolver resolver,
         SchemaManager schemaManager )
     {
-        StringReader in = new StringReader( "" ); // place holder for the
-                                                  // first input
+        // place holder for the first input
+        StringReader in = new StringReader( "" );
         this.lexer = new ReusableAntlrSubtreeSpecificationLexer( in );
         this.parser = new ReusableAntlrSubtreeSpecificationParser( lexer );
         this.parser.setNormalizerMappingResolver( resolver );
-        this.parser.init( schemaManager ); // this method MUST be called while we cannot do
+        // this method MUST be called while we cannot do
         // constructor overloading for antlr generated parser
+        this.parser.init( schemaManager );
         this.isNormalizing = true;
     }
 
@@ -90,8 +92,8 @@ public class SubtreeSpecificationParser
      */
     private synchronized void reset( String spec )
     {
-        StringReader in = new StringReader( spec + "end" ); // append end of
-                                                            // input token
+        // append end of input token
+        StringReader in = new StringReader( spec + "end" );
         this.lexer.prepareNextInput( in );
         this.parser.resetState();
     }
@@ -115,7 +117,8 @@ public class SubtreeSpecificationParser
             return null;
         }
 
-        reset( spec ); // reset and initialize the parser / lexer pair
+        // reset and initialize the parser / lexer pair
+        reset( spec );
 
         try
         {

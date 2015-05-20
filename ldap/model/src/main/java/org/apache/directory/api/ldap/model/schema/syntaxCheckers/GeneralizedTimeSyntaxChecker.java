@@ -75,16 +75,24 @@ public class GeneralizedTimeSyntaxChecker extends SyntaxChecker
 
     /** The GeneralizedDate pattern matching */
     private static final String GENERALIZED_TIME_PATTERN =
-        "^\\d{4}" // century + year : 0000 to 9999
-            + "(0[1-9]|1[0-2])" // month : 01 to 12
-            + "(0[1-9]|[12]\\d|3[01])" // day : 01 to 31
-            + "([01]\\d|2[0-3])" // hour : 00 to 23
+        // century + year : 0000 to 9999
+        "^\\d{4}"
+            // month : 01 to 12
+            + "(0[1-9]|1[0-2])"
+            // day : 01 to 31
+            + "(0[1-9]|[12]\\d|3[01])"
+            // hour : 00 to 23
+            + "([01]\\d|2[0-3])"
             + "("
-            + "([0-5]\\d)" // optional minute : 00 to 59
-            + "([0-5]\\d|60)?" // optional second | leap second
+            // optional minute : 00 to 59
+            + "([0-5]\\d)"
+            // optional second | leap second
+            + "([0-5]\\d|60)?"
             + ")?"
-            + "([.,]\\d+)?" // fraction       
-            + "(Z|[+-]([01]\\d|2[0-3])([0-5]\\d)?)$"; // time-zone
+            // fraction
+            + "([.,]\\d+)?"
+            // time-zone
+            + "(Z|[+-]([01]\\d|2[0-3])([0-5]\\d)?)$";
 
     /** The date pattern. The regexp pattern is immutable, only one instance needed. */
     private static final Pattern DATE_PATTERN = Pattern.compile( GENERALIZED_TIME_PATTERN );

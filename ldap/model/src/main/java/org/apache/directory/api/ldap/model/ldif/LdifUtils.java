@@ -67,12 +67,18 @@ public final class LdifUtils
             LDIF_SAFE_STARTING_CHAR_ALPHABET[i] = true;
         }
 
-        LDIF_SAFE_STARTING_CHAR_ALPHABET[0] = false; // 0 (NUL)
-        LDIF_SAFE_STARTING_CHAR_ALPHABET[10] = false; // 10 (LF)
-        LDIF_SAFE_STARTING_CHAR_ALPHABET[13] = false; // 13 (CR)
-        LDIF_SAFE_STARTING_CHAR_ALPHABET[32] = false; // 32 (SPACE)
-        LDIF_SAFE_STARTING_CHAR_ALPHABET[58] = false; // 58 (:)
-        LDIF_SAFE_STARTING_CHAR_ALPHABET[60] = false; // 60 (>)
+        // 0 (NUL)
+        LDIF_SAFE_STARTING_CHAR_ALPHABET[0] = false;
+        // 10 (LF)
+        LDIF_SAFE_STARTING_CHAR_ALPHABET[10] = false;
+        // 13 (CR)
+        LDIF_SAFE_STARTING_CHAR_ALPHABET[13] = false;
+        // 32 (SPACE)
+        LDIF_SAFE_STARTING_CHAR_ALPHABET[32] = false;
+        // 58 (:)
+        LDIF_SAFE_STARTING_CHAR_ALPHABET[58] = false;
+        // 60 (>)
+        LDIF_SAFE_STARTING_CHAR_ALPHABET[60] = false;
 
         // Initialization of the array that will be used to match the other chars.
         for ( int i = 0; i < 128; i++ )
@@ -80,9 +86,12 @@ public final class LdifUtils
             LDIF_SAFE_OTHER_CHARS_ALPHABET[i] = true;
         }
 
-        LDIF_SAFE_OTHER_CHARS_ALPHABET[0] = false; // 0 (NUL)
-        LDIF_SAFE_OTHER_CHARS_ALPHABET[10] = false; // 10 (LF)
-        LDIF_SAFE_OTHER_CHARS_ALPHABET[13] = false; // 13 (CR)
+        // 0 (NUL)
+        LDIF_SAFE_OTHER_CHARS_ALPHABET[0] = false;
+        // 10 (LF)
+        LDIF_SAFE_OTHER_CHARS_ALPHABET[10] = false;
+        // 13 (CR)
+        LDIF_SAFE_OTHER_CHARS_ALPHABET[13] = false;
     }
 
 
@@ -273,9 +282,9 @@ public final class LdifUtils
         try
         {
             Attributes attributes = AttributeUtils.toAttributes( reader.parseEntry( ldif ) );
-            
+
             reader.close();
-            
+
             return attributes;
         }
         catch ( IOException ioe )
@@ -739,7 +748,7 @@ public final class LdifUtils
 
         LdifAttributesReader reader = new LdifAttributesReader();
         Attributes attributes = AttributeUtils.toAttributes( reader.parseEntry( sb.toString() ) );
-        
+
         try
         {
             reader.close();

@@ -1052,7 +1052,8 @@ public final class DefaultEntry implements Entry
             DefaultEntry clone = ( DefaultEntry ) super.clone();
 
             // An Entry has a Dn and many attributes.
-            clone.dn = dn; // note that Dn is immutable now
+            // note that Dn is immutable now
+            clone.dn = dn;
 
             // then clone the ClientAttribute Map.
             clone.attributes = ( Map<String, Attribute> ) ( ( ( HashMap<String, Attribute> ) attributes )

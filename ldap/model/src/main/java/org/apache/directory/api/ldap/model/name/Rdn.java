@@ -1544,7 +1544,8 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      */
     public int serialize( byte[] buffer, int pos ) throws IOException
     {
-        int length = 4 + 4; // The nbAvas and the HashCode length
+        // The nbAvas and the HashCode length
+        int length = 4 + 4;
 
         // The NnbAvas
         pos = Serialize.serialize( nbAvas, buffer, pos );

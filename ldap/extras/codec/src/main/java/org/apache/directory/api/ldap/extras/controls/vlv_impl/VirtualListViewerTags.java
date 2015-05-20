@@ -28,8 +28,10 @@ package org.apache.directory.api.ldap.extras.controls.vlv_impl;
  */
 public enum VirtualListViewerTags
 {
-    BY_OFFSET_TAG(0xA0), // byOffset [0]
-    ASSERTION_VALUE_TAG(0x81); // greaterThanOrEqual [1]
+    // byOffset [0]
+    BY_OFFSET_TAG(0xA0),
+    // greaterThanOrEqual [1]
+    ASSERTION_VALUE_TAG(0x81);
 
     /** Internal value for each tag */
     private int value;

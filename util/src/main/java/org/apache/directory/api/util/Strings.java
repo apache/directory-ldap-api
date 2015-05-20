@@ -63,22 +63,38 @@ public final class Strings
     /** A table containing booleans when the corresponding char is printable */
     public static final boolean[] IS_PRINTABLE_CHAR =
         {
-            false, false, false, false, false, false, false, false, // ---, ---, ---, ---, ---, ---, ---, ---
-            false, false, false, false, false, false, false, false, // ---, ---, ---, ---, ---, ---, ---, ---
-            false, false, false, false, false, false, false, false, // ---, ---, ---, ---, ---, ---, ---, ---
-            false, false, false, false, false, false, false, false, // ---, ---, ---, ---, ---, ---, ---, ---
-            true,  false, false, false, false, false, false, true,  // ' ', ---, ---, ---, ---, ---, ---, "'"
-            true,  true,  false, true,  true,  true,  true,  true,  // '(', ')', ---, '+', ',', '-', '.', '/'
-            true,  true,  true,  true,  true,  true,  true,  true,  // '0', '1', '2', '3', '4', '5', '6', '7',
-            true,  true,  true,  false, false, true,  false, true,  // '8', '9', ':', ---, ---, '=', ---, '?'
-            false, true,  true,  true,  true,  true,  true,  true,  // ---, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
-            true,  true,  true,  true,  true,  true,  true,  true,  // 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'
-            true,  true,  true,  true,  true,  true,  true,  true,  // 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
-            true,  true,  true,  false, false, false, false, false, // 'X', 'Y', 'Z', ---, ---, ---, ---, ---
-            false, true,  true,  true,  true,  true,  true,  true,  // ---, 'a', 'b', 'c', 'd', 'e', 'f', 'g'
-            true,  true,  true,  true,  true,  true,  true,  true,  // 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'
-            true,  true,  true,  true,  true,  true,  true,  true,  // 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'
-            true,  true,  true,  false, false, false, false, false // 'x', 'y', 'z', ---, ---, ---, ---, ---
+            // ---, ---, ---, ---, ---, ---, ---, ---
+            false, false, false, false, false, false, false, false, 
+            // ---, ---, ---, ---, ---, ---, ---, ---
+            false, false, false, false, false, false, false, false, 
+            // ---, ---, ---, ---, ---, ---, ---, ---
+            false, false, false, false, false, false, false, false, 
+            // ---, ---, ---, ---, ---, ---, ---, ---
+            false, false, false, false, false, false, false, false, 
+            // ' ', ---, ---, ---, ---, ---, ---, "'"
+            true,  false, false, false, false, false, false, true,  
+            // '(', ')', ---, '+', ',', '-', '.', '/'
+            true,  true,  false, true,  true,  true,  true,  true,  
+            // '0', '1', '2', '3', '4', '5', '6', '7',
+            true,  true,  true,  true,  true,  true,  true,  true,  
+            // '8', '9', ':', ---, ---, '=', ---, '?'
+            true,  true,  true,  false, false, true,  false, true,  
+            // ---, 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+            false, true,  true,  true,  true,  true,  true,  true,  
+            // 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'
+            true,  true,  true,  true,  true,  true,  true,  true,  
+            // 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W'
+            true,  true,  true,  true,  true,  true,  true,  true,  
+            // 'X', 'Y', 'Z', ---, ---, ---, ---, ---
+            true,  true,  true,  false, false, false, false, false, 
+            // ---, 'a', 'b', 'c', 'd', 'e', 'f', 'g'
+            false, true,  true,  true,  true,  true,  true,  true,  
+            // 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o'
+            true,  true,  true,  true,  true,  true,  true,  true,  
+            // 'p', 'q', 'r', 's', 't', 'u', 'v', 'w'
+            true,  true,  true,  true,  true,  true,  true,  true, 
+            // 'x', 'y', 'z', ---, ---, ---, ---, ---
+            true,  true,  true,  false, false, false, false, false 
     };
 
     public static final char[] TO_LOWER_CASE =
