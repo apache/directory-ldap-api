@@ -72,45 +72,6 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
     }
 
 
-    /**
-     * @return The encoded Error message
-     */
-    public byte[] getErrorMessageBytes()
-    {
-        return errorMessageBytes;
-    }
-
-
-    /**
-     * Set the encoded message's bytes
-     * @param errorMessageBytes The encoded bytes
-     */
-    public void setErrorMessageBytes( byte[] errorMessageBytes )
-    {
-        this.errorMessageBytes = errorMessageBytes;
-    }
-
-
-    /**
-     * Sets the encoded value for MatchedDn
-     *
-     * @param matchedDnBytes The encoded MatchedDN
-     */
-    public void setMatchedDnBytes( byte[] matchedDnBytes )
-    {
-        this.matchedDnBytes = matchedDnBytes;
-    }
-
-
-    /**
-     * @return the encoded MatchedDN
-     */
-    public byte[] getMatchedDnBytes()
-    {
-        return matchedDnBytes;
-    }
-
-
     //-------------------------------------------------------------------------
     // The LdapResult methods
     //-------------------------------------------------------------------------
@@ -252,15 +213,13 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
         }
         else
         {
-            byte[] matchedDNBytes = Strings.getBytesUtf8Ascii( Strings.trimLeft( getMatchedDn().getName() ) );
-            ldapResultLength += 1 + TLV.getNbBytes( matchedDNBytes.length ) + matchedDNBytes.length;
-            setMatchedDnBytes( matchedDNBytes );
+            matchedDnBytes = Strings.getBytesUtf8Ascii( Strings.trimLeft( getMatchedDn().getName() ) );
+            ldapResultLength += 1 + TLV.getNbBytes( matchedDnBytes.length ) + matchedDnBytes.length;
         }
 
         // The errorMessage length
-        byte[] errorMessageBytes = Strings.getBytesUtf8Ascii( getDiagnosticMessage() );
+        errorMessageBytes = Strings.getBytesUtf8Ascii( getDiagnosticMessage() );
         ldapResultLength += 1 + TLV.getNbBytes( errorMessageBytes.length ) + errorMessageBytes.length;
-        setErrorMessageBytes( errorMessageBytes );
 
         int referralLength = LdapEncoder.computeReferralLength( getReferral() );
 
@@ -306,10 +265,10 @@ public class LdapResultDecorator implements LdapResult, Decorator<LdapResult>
         }
 
         // The matchedDN
-        BerValue.encode( buffer, getMatchedDnBytes() );
+        BerValue.encode( buffer, matchedDnBytes );
 
         // The error message
-        BerValue.encode( buffer, getErrorMessageBytes() );
+        BerValue.encode( buffer, errorMessageBytes );
 
         // The referrals, if any
         Referral referral = getReferral();

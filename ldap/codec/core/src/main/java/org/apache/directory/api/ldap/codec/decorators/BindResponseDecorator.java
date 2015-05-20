@@ -53,25 +53,6 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
     }
 
 
-    /**
-     * Stores the encoded length for the BindResponse
-     * @param bindResponseLength The encoded length
-     */
-    public void setBindResponseLength( int bindResponseLength )
-    {
-        this.bindResponseLength = bindResponseLength;
-    }
-
-
-    /**
-     * @return The encoded BindResponse's length
-     */
-    public int getBindResponseLength()
-    {
-        return bindResponseLength;
-    }
-
-
     //-------------------------------------------------------------------------
     // The BindResponse methods
     //-------------------------------------------------------------------------
@@ -116,7 +97,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
         BindResponse bindResponse = getDecorated();
         int ldapResultLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
-        int bindResponseLength = ldapResultLength;
+        bindResponseLength = ldapResultLength;
 
         byte[] serverSaslCreds = bindResponse.getServerSaslCreds();
 
@@ -124,8 +105,6 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
         {
             bindResponseLength += 1 + TLV.getNbBytes( serverSaslCreds.length ) + serverSaslCreds.length;
         }
-
-        setBindResponseLength( bindResponseLength );
 
         return 1 + TLV.getNbBytes( bindResponseLength ) + bindResponseLength;
     }
@@ -152,7 +131,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
         {
             // The BindResponse Tag
             buffer.put( LdapCodecConstants.BIND_RESPONSE_TAG );
-            buffer.put( TLV.getBytes( getBindResponseLength() ) );
+            buffer.put( TLV.getBytes( bindResponseLength ) );
 
             // The LdapResult
             ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );

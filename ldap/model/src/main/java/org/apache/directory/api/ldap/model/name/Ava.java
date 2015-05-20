@@ -464,11 +464,11 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         {
             this.schemaManager = schemaManager;
 
-            AttributeType attributeType = null;
+            AttributeType tmpAttributeType = null;
 
             try
             {
-                attributeType = schemaManager.lookupAttributeTypeRegistry( normType );
+                tmpAttributeType = schemaManager.lookupAttributeTypeRegistry( normType );
             }
             catch ( LdapException le )
             {
@@ -477,17 +477,17 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
                 throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
             }
 
-            if ( this.attributeType == attributeType )
+            if ( this.attributeType == tmpAttributeType )
             {
                 // No need to normalize again
                 return;
             }
             else
             {
-                this.attributeType = attributeType;
+                this.attributeType = tmpAttributeType;
             }
 
-            normType = attributeType.getOid();
+            normType = tmpAttributeType.getOid();
 
             if ( normValue != null )
             {
@@ -497,7 +497,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             try
             {
                 // We use the Equality matching rule to normalize the value
-                MatchingRule equalityMatchingRule = attributeType.getEquality();
+                MatchingRule equalityMatchingRule = tmpAttributeType.getEquality();
 
                 if ( equalityMatchingRule != null )
                 {

@@ -62,25 +62,6 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
     }
 
 
-    /**
-     * Stores the encoded length for the AddResponse
-     * @param addResponseLength The encoded length
-     */
-    public void setAddResponseLength( int addResponseLength )
-    {
-        this.addResponseLength = addResponseLength;
-    }
-
-
-    /**
-     * @return The encoded AddResponse's length
-     */
-    public int getAddResponseLength()
-    {
-        return addResponseLength;
-    }
-
-
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -101,9 +82,7 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
     {
         AddResponse addResponse = getAddResponse();
         setLdapResult( new LdapResultDecorator( getCodecService(), addResponse.getLdapResult() ) );
-        int addResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
-
-        setAddResponseLength( addResponseLength );
+        addResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         return 1 + TLV.getNbBytes( addResponseLength ) + addResponseLength;
     }
@@ -121,7 +100,7 @@ public class AddResponseDecorator extends ResponseDecorator<AddResponse> impleme
         {
             // The AddResponse Tag
             buffer.put( LdapCodecConstants.ADD_RESPONSE_TAG );
-            buffer.put( TLV.getBytes( getAddResponseLength() ) );
+            buffer.put( TLV.getBytes( addResponseLength ) );
 
             // The LdapResult
             ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );

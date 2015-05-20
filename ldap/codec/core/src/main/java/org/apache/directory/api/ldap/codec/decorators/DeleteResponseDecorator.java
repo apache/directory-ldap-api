@@ -54,25 +54,6 @@ public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse>
     }
 
 
-    /**
-     * Stores the encoded length for the DeleteResponse
-     * @param deleteResponseLength The encoded length
-     */
-    public void setDeleteResponseLength( int deleteResponseLength )
-    {
-        this.deleteResponseLength = deleteResponseLength;
-    }
-
-
-    /**
-     * @return The encoded DeleteResponse's length
-     */
-    public int getDeleteResponseLength()
-    {
-        return deleteResponseLength;
-    }
-
-
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -92,9 +73,7 @@ public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse>
      */
     public int computeLength()
     {
-        int deleteResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
-
-        setDeleteResponseLength( deleteResponseLength );
+        deleteResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         return 1 + TLV.getNbBytes( deleteResponseLength ) + deleteResponseLength;
     }
@@ -111,7 +90,7 @@ public class DeleteResponseDecorator extends ResponseDecorator<DeleteResponse>
         {
             // The DelResponse Tag
             buffer.put( LdapCodecConstants.DEL_RESPONSE_TAG );
-            buffer.put( TLV.getBytes( getDeleteResponseLength() ) );
+            buffer.put( TLV.getBytes( deleteResponseLength ) );
 
             // The LdapResult
             ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );

@@ -65,10 +65,11 @@ public class SortResponseControlImpl extends AbstractControl  implements SortRes
     public int hashCode()
     {
         final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ( ( attributeName == null ) ? 0 : attributeName.hashCode() );
-        result = prime * result + ( ( this.result == null ) ? 0 : this.result.hashCode() );
-        return result;
+        int hash = super.hashCode();
+        hash = prime * hash + ( ( attributeName == null ) ? 0 : attributeName.hashCode() );
+        hash = prime * hash + ( ( this.result == null ) ? 0 : this.result.hashCode() );
+        
+        return hash;
     }
 
     @Override

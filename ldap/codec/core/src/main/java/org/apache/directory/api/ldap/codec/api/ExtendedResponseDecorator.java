@@ -40,12 +40,13 @@ import org.apache.directory.api.util.Strings;
 public class ExtendedResponseDecorator<R extends ExtendedResponse> extends ResponseDecorator<R>
     implements ExtendedResponse
 {
-    /** The response name as a byte[] */
+    /** The response name (OID) as a byte[] */
     private byte[] responseNameBytes;
 
     /** The encoded extendedResponse length */
     private int extendedResponseLength;
 
+    /** The response value */
     protected byte[] responseValue;
 
 
@@ -57,48 +58,6 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
     public ExtendedResponseDecorator( LdapApiService codec, R decoratedMessage )
     {
         super( codec, decoratedMessage );
-    }
-
-
-    /**
-     * Gets the responseName bytes.
-     *
-     * @return the responseName bytes of the extended response type.
-     */
-    public byte[] getResponseNameBytes()
-    {
-        return responseNameBytes;
-    }
-
-
-    /**
-     * Sets the OID bytes.
-     *
-     * @param responseNameBytes the OID bytes of the extended response type.
-     */
-    public void setResponseNameBytes( byte[] responseNameBytes )
-    {
-        this.responseNameBytes = responseNameBytes;
-    }
-
-
-    /**
-     * Stores the encoded length for the ExtendedResponse
-     *
-     * @param extendedResponseLength The encoded length
-     */
-    public void setExtendedResponseLength( int extendedResponseLength )
-    {
-        this.extendedResponseLength = extendedResponseLength;
-    }
-
-
-    /**
-     * @return The encoded ExtendedResponse's length
-     */
-    public int getExtendedResponseLength()
-    {
-        return extendedResponseLength;
     }
 
 
@@ -168,15 +127,14 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
     {
         int ldapResultLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
-        int extendedResponseLength = ldapResultLength;
+        extendedResponseLength = ldapResultLength;
 
         String id = getResponseName();
 
         if ( !Strings.isEmpty( id ) )
         {
-            byte[] idBytes = Strings.getBytesUtf8( id );
-            setResponseNameBytes( idBytes );
-            int idLength = idBytes.length;
+            responseNameBytes = Strings.getBytesUtf8( id );
+            int idLength = responseNameBytes.length;
             extendedResponseLength += 1 + TLV.getNbBytes( idLength ) + idLength;
         }
 
@@ -186,8 +144,6 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
         {
             extendedResponseLength += 1 + TLV.getNbBytes( encodedValue.length ) + encodedValue.length;
         }
-
-        setExtendedResponseLength( extendedResponseLength );
 
         return 1 + TLV.getNbBytes( extendedResponseLength ) + extendedResponseLength;
     }
@@ -209,22 +165,20 @@ public class ExtendedResponseDecorator<R extends ExtendedResponse> extends Respo
         {
             // The ExtendedResponse Tag
             buffer.put( LdapCodecConstants.EXTENDED_RESPONSE_TAG );
-            buffer.put( TLV.getBytes( getExtendedResponseLength() ) );
+            buffer.put( TLV.getBytes( extendedResponseLength ) );
 
             // The LdapResult
             ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );
 
             // The ID, if any
-            byte[] idBytes = getResponseNameBytes();
-
-            if ( idBytes != null )
+            if ( responseNameBytes != null )
             {
                 buffer.put( ( byte ) LdapCodecConstants.EXTENDED_RESPONSE_RESPONSE_NAME_TAG );
-                buffer.put( TLV.getBytes( idBytes.length ) );
+                buffer.put( TLV.getBytes( responseNameBytes.length ) );
 
-                if ( idBytes.length != 0 )
+                if ( responseNameBytes.length != 0 )
                 {
-                    buffer.put( idBytes );
+                    buffer.put( responseNameBytes );
                 }
             }
 

@@ -83,103 +83,6 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     }
 
 
-    /**
-     * Gets the distinguished name bytes of the entry object returned.
-     *
-     * @return the Dn bytes of the entry returned.
-     */
-    public byte[] getObjectNameBytes()
-    {
-        return objectNameBytes;
-    }
-
-
-    /**
-     * Sets the distinguished name bytes of the entry object returned.
-     *
-     * @param objectNameBytes the Dn bytes of the entry returned.
-     */
-    public void setObjectNameBytes( byte[] objectNameBytes )
-    {
-        this.objectNameBytes = objectNameBytes;
-    }
-
-
-    /**
-     * @return The encoded SearchResultEntry's length
-     */
-    public int getSearchResultEntryLength()
-    {
-        return searchResultEntryLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the SearchResultEntry
-     * @param searchResultEntryLength The encoded length
-     */
-    public void setSearchResultEntryLength( int searchResultEntryLength )
-    {
-        this.searchResultEntryLength = searchResultEntryLength;
-    }
-
-
-    /**
-     * @return The encoded PartialAttributeList's length
-     */
-    public int getAttributesLength()
-    {
-        return attributesLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the Attributes
-     * @param attributesLength The list of encoded lengths
-     */
-    public void setAttributesLength( int attributesLength )
-    {
-        this.attributesLength = attributesLength;
-    }
-
-
-    /**
-     * @return The encoded PartialAttributeList's length
-     */
-    public List<Integer> getAttributeLength()
-    {
-        return attributeLength;
-    }
-
-
-    /**
-     * @return The list of encoded Attributes' length
-     */
-    public void setAttributeLength( List<Integer> attributeLength )
-    {
-        this.attributeLength = attributeLength;
-    }
-
-
-    /**
-     * @return The list of encoded values' length
-     */
-    public List<Integer> getValsLength()
-    {
-        return valuesLength;
-    }
-
-
-    /**
-     * Stores the list of encoded length for the values
-     * @param valsLength The list of encoded lengths
-     */
-    public void setValsLength( List<Integer> valsLength )
-    {
-        this.valuesLength = valsLength;
-    }
-
-
     public Attribute getCurrentAttribute()
     {
         return currentAttribute;
@@ -318,14 +221,13 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
     {
         Dn dn = getObjectName();
 
-        byte[] dnBytes = Strings.getBytesUtf8Ascii( dn.getName() );
+        objectNameBytes = Strings.getBytesUtf8Ascii( dn.getName() );
 
         // The entry
-        int searchResultEntryLength = 1 + TLV.getNbBytes( dnBytes.length ) + dnBytes.length;
-        setObjectNameBytes( dnBytes );
+        searchResultEntryLength = 1 + TLV.getNbBytes( objectNameBytes.length ) + objectNameBytes.length;
 
         // The attributes sequence
-        int attributesLength = 0;
+        attributesLength = 0;
 
         Entry entry = getEntry();
 
@@ -336,8 +238,7 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
             valuesLength = new LinkedList<Integer>();
 
             // Store those lists in the object
-            setAttributeLength( attributeLength );
-            setValsLength( valuesLength );
+            valuesLength = new LinkedList<Integer>();
 
             // Compute the attributes length
             for ( Attribute attribute : entry )
@@ -389,15 +290,9 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
                 attributeLength.add( localAttributeLength );
                 valuesLength.add( localValuesLength );
             }
-
-            // Store the lengths of the entry
-            setAttributesLength( attributesLength );
         }
 
         searchResultEntryLength += 1 + TLV.getNbBytes( attributesLength ) + attributesLength;
-
-        // Store the length of the response
-        setSearchResultEntryLength( searchResultEntryLength );
 
         // Return the result.
         return 1 + TLV.getNbBytes( searchResultEntryLength ) + searchResultEntryLength;
@@ -436,14 +331,14 @@ public class SearchResultEntryDecorator extends MessageDecorator<SearchResultEnt
         {
             // The SearchResultEntry Tag
             buffer.put( LdapCodecConstants.SEARCH_RESULT_ENTRY_TAG );
-            buffer.put( TLV.getBytes( getSearchResultEntryLength() ) );
+            buffer.put( TLV.getBytes( searchResultEntryLength ) );
 
             // The objectName
-            BerValue.encode( buffer, getObjectNameBytes() );
+            BerValue.encode( buffer, objectNameBytes );
 
             // The attributes sequence
             buffer.put( UniversalTag.SEQUENCE.getValue() );
-            buffer.put( TLV.getBytes( getAttributesLength() ) );
+            buffer.put( TLV.getBytes( attributesLength ) );
 
             // The partial attribute list
             Entry entry = getEntry();

@@ -54,25 +54,6 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
     }
 
 
-    /**
-     * Stores the encoded length for the CompareResponse
-     * @param compareResponseLength The encoded length
-     */
-    public void setCompareResponseLength( int compareResponseLength )
-    {
-        this.compareResponseLength = compareResponseLength;
-    }
-
-
-    /**
-     * @return The encoded CompareResponse's length
-     */
-    public int getCompareResponseLength()
-    {
-        return compareResponseLength;
-    }
-
-
     //-------------------------------------------------------------------------
     // The CompareResponse methods
     //-------------------------------------------------------------------------
@@ -105,9 +86,7 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
      */
     public int computeLength()
     {
-        int compareResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
-
-        setCompareResponseLength( compareResponseLength );
+        compareResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         return 1 + TLV.getNbBytes( compareResponseLength ) + compareResponseLength;
     }
@@ -125,7 +104,7 @@ public class CompareResponseDecorator extends ResponseDecorator<CompareResponse>
         {
             // The CompareResponse Tag
             buffer.put( LdapCodecConstants.COMPARE_RESPONSE_TAG );
-            buffer.put( TLV.getBytes( getCompareResponseLength() ) );
+            buffer.put( TLV.getBytes( compareResponseLength ) );
 
             // The LdapResult
             ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );

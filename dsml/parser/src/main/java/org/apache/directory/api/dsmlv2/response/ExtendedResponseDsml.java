@@ -106,11 +106,11 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
         }
 
         // Response
-        Object response = getResponseValue();
+        Object responseValue = getResponseValue();
 
-        if ( response != null )
+        if ( responseValue != null )
         {
-            if ( ParserUtils.needsBase64Encoding( response ) )
+            if ( ParserUtils.needsBase64Encoding( responseValue ) )
             {
                 Namespace xsdNamespace = new Namespace( ParserUtils.XSD, ParserUtils.XML_SCHEMA_URI );
                 Namespace xsiNamespace = new Namespace( ParserUtils.XSI, ParserUtils.XML_SCHEMA_INSTANCE_URI );
@@ -118,13 +118,13 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
                 element.getDocument().getRootElement().add( xsiNamespace );
 
                 Element responseElement = element.addElement( "response" )
-                    .addText( ParserUtils.base64Encode( response ) );
+                    .addText( ParserUtils.base64Encode( responseValue ) );
                 responseElement.addAttribute( new QName( "type", xsiNamespace ), ParserUtils.XSD + ":"
                     + ParserUtils.BASE64BINARY );
             }
             else
             {
-                element.addElement( "response" ).addText( Strings.utf8ToString( ( byte[] ) response ) );
+                element.addElement( "response" ).addText( Strings.utf8ToString( ( byte[] ) responseValue ) );
             }
         }
 

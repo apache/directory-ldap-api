@@ -20,7 +20,6 @@
 package org.apache.directory.api.dsmlv2;
 
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -30,6 +29,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.directory.api.dsmlv2.actions.ReadSoapHeader;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.Processing;
 import org.apache.directory.api.dsmlv2.request.BatchRequestDsml.ResponseOrder;
@@ -339,48 +339,5 @@ public final class ParserUtils
     /**
      * GrammarAction that reads the SOAP header data
      */
-    public static final GrammarAction READ_SOAP_HEADER = new GrammarAction( "Reads SOAP header" )
-    {
-        public void action( Dsmlv2Container container ) throws XmlPullParserException
-        {
-            try
-            {
-                XmlPullParser xpp = container.getParser();
-                StringBuilder sb = new StringBuilder();
-
-                String startTag = xpp.getText();
-                sb.append( startTag );
-
-                // string '<' and '>'
-                startTag = startTag.substring( 1, startTag.length() - 1 );
-
-                int tagType = -1;
-                String endTag = "";
-
-                // continue parsing till we get to the end tag of SOAP header
-                // and match the tag values including the namespace
-                while ( !startTag.equals( endTag ) )
-                {
-                    tagType = xpp.next();
-                    endTag = xpp.getText();
-                    sb.append( endTag );
-
-                    if ( tagType == XmlPullParser.END_TAG )
-                    {
-                        // strip '<', '/' and '>'
-                        endTag = endTag.substring( 2, endTag.length() - 1 );
-                    }
-                }
-
-                // change the state to header end
-                container.setState( Dsmlv2StatesEnum.SOAP_HEADER_END_TAG );
-            }
-            catch ( IOException e )
-            {
-                e.printStackTrace();
-            }
-
-        }
-    };
-
+    public static final GrammarAction READ_SOAP_HEADER = new ReadSoapHeader();
 }

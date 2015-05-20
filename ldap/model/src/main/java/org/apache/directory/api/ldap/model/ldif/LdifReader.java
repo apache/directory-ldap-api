@@ -1776,15 +1776,15 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             throw new LdapLdifException( I18n.err( I18n.ERR_12067, fileName ) );
         }
 
-        BufferedReader reader = null;
+        BufferedReader bufferReader = null;
 
         // Open the file and then get a channel from the stream
         try
         {
-            reader = new BufferedReader(
+            bufferReader = new BufferedReader(
                 new InputStreamReader( new FileInputStream( file ), Charset.forName( encoding ) ) );
 
-            return parseLdif( reader );
+            return parseLdif( bufferReader );
         }
         catch ( FileNotFoundException fnfe )
         {
@@ -1800,9 +1800,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             // close the reader
             try
             {
-                if ( reader != null )
+                if ( bufferReader != null )
                 {
-                    reader.close();
+                    bufferReader.close();
                 }
             }
             catch ( IOException ioe )
@@ -1829,11 +1829,11 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             return new ArrayList<LdifEntry>();
         }
 
-        BufferedReader reader = new BufferedReader( new StringReader( ldif ) );
+        BufferedReader bufferReader = new BufferedReader( new StringReader( ldif ) );
 
         try
         {
-            List<LdifEntry> entries = parseLdif( reader );
+            List<LdifEntry> entries = parseLdif( bufferReader );
 
             if ( LOG.isDebugEnabled() )
             {
@@ -1856,7 +1856,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             // Close the reader
             try
             {
-                reader.close();
+                bufferReader.close();
             }
             catch ( IOException ioe )
             {

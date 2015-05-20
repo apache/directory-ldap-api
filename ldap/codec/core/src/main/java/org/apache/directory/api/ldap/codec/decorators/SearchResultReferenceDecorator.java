@@ -43,9 +43,6 @@ import org.apache.directory.api.ldap.model.message.SearchResultReference;
 public class SearchResultReferenceDecorator extends MessageDecorator<SearchResultReference>
     implements SearchResultReference
 {
-    /** The length of the referral */
-    private int referralLength;
-
     /** The search result reference length */
     private int searchResultReferenceLength;
 
@@ -58,44 +55,6 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
     public SearchResultReferenceDecorator( LdapApiService codec, SearchResultReference decoratedMessage )
     {
         super( codec, decoratedMessage );
-    }
-
-
-    /**
-     * @return The encoded Referral's length
-     */
-    public int getReferralLength()
-    {
-        return referralLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the Referrals
-     * @param referralLength The encoded length
-     */
-    public void setReferralLength( int referralLength )
-    {
-        this.referralLength = referralLength;
-    }
-
-
-    /**
-     * @return The encoded SearchResultReference's length
-     */
-    public int getSearchResultReferenceLength()
-    {
-        return searchResultReferenceLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the SearchResultReference's
-     * @param searchResultReferenceLength The encoded length
-     */
-    public void setSearchResultReferenceLength( int searchResultReferenceLength )
-    {
-        this.searchResultReferenceLength = searchResultReferenceLength;
     }
 
 
@@ -146,7 +105,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
      */
     public int computeLength()
     {
-        int searchResultReferenceLength = 0;
+        searchResultReferenceLength = 0;
 
         // We may have more than one reference.
         Referral referral = getReferral();
@@ -159,9 +118,6 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
 
             searchResultReferenceLength = referralLength;
         }
-
-        // Store the length of the response 
-        setSearchResultReferenceLength( searchResultReferenceLength );
 
         return 1 + TLV.getNbBytes( searchResultReferenceLength ) + searchResultReferenceLength;
     }
@@ -187,7 +143,7 @@ public class SearchResultReferenceDecorator extends MessageDecorator<SearchResul
         {
             // The SearchResultReference Tag
             buffer.put( LdapCodecConstants.SEARCH_RESULT_REFERENCE_TAG );
-            buffer.put( TLV.getBytes( getSearchResultReferenceLength() ) );
+            buffer.put( TLV.getBytes( searchResultReferenceLength ) );
 
             // The referrals, if any
             Referral referral = searchResultReference.getReferral();

@@ -42,7 +42,6 @@ import org.apache.directory.api.util.Strings;
 public class DeleteRequestDecorator extends SingleReplyRequestDecorator<DeleteRequest>
     implements DeleteRequest
 {
-
     /** The bytes containing the Dn */
     private byte[] dnBytes;
 

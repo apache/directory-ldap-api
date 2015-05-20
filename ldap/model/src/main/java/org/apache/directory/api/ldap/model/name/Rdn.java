@@ -334,17 +334,20 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
     public Rdn( SchemaManager schemaManager, Ava... avas ) throws LdapInvalidDnException
     {
-        StringBuilder upName = new StringBuilder();
+        StringBuilder buffer = new StringBuilder();
+        
         for ( int i = 0; i < avas.length; i++ )
         {
             if ( i > 0 )
             {
-                upName.append( '+' );
+                buffer.append( '+' );
             }
+            
             addAVA( schemaManager, avas[i] );
-            upName.append( avas[i].getName() );
+            buffer.append( avas[i].getName() );
         }
-        setUpName( upName.toString() );
+        
+        setUpName( buffer.toString() );
         normalize();
     }
 
@@ -1660,10 +1663,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
                 for ( int i = 0; i < nbAvas; i++ )
                 {
-                    Ava ava = new Ava( schemaManager );
-                    pos = ava.deserialize( buffer, pos );
-                    avas.add( ava );
-                    avaTypes.put( ava.getNormType(), ava );
+                    Ava newAva = new Ava( schemaManager );
+                    pos = newAva.deserialize( buffer, pos );
+                    avas.add( newAva );
+                    avaTypes.put( newAva.getNormType(), newAva );
                 }
 
                 ava = null;
@@ -1804,10 +1807,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
                 for ( int i = 0; i < nbAvas; i++ )
                 {
-                    Ava ava = new Ava( schemaManager );
-                    ava.readExternal( in );
-                    avas.add( ava );
-                    avaTypes.put( ava.getNormType(), ava );
+                    Ava newAva = new Ava( schemaManager );
+                    newAva.readExternal( in );
+                    avas.add( newAva );
+                    avaTypes.put( newAva.getNormType(), newAva );
                 }
 
                 ava = null;

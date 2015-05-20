@@ -116,44 +116,6 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
 
     /**
-     * Stores the encoded length for the SearchRequest
-     * @param searchRequestLength The encoded length
-     */
-    public void setSearchRequestLength( int searchRequestLength )
-    {
-        this.searchRequestLength = searchRequestLength;
-    }
-
-
-    /**
-     * @return The encoded SearchRequest's length
-     */
-    public int getSearchRequestLength()
-    {
-        return searchRequestLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the list of attributes
-     * @param attributeDescriptionListLength The encoded length of the attributes
-     */
-    public void setAttributeDescriptionListLength( int attributeDescriptionListLength )
-    {
-        this.attributeDescriptionListLength = attributeDescriptionListLength;
-    }
-
-
-    /**
-     * @return The encoded SearchRequest's attributes length
-     */
-    public int getAttributeDescriptionListLength()
-    {
-        return attributeDescriptionListLength;
-    }
-
-
-    /**
      * Set the SearchRequest PDU TLV's Id
      * @param tlvId The TLV id
      */
@@ -939,7 +901,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
      */
     public int computeLength()
     {
-        int searchRequestLength = 0;
+        searchRequestLength = 0;
 
         // The baseObject
         dnBytes = Strings.getBytesUtf8( getBase().getName() );
@@ -966,7 +928,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
             getCodecFilter().computeLength();
 
         // The attributes description list
-        int attributeDescriptionListLength = 0;
+        attributeDescriptionListLength = 0;
 
         if ( ( getAttributes() != null ) && ( getAttributes().size() != 0 ) )
         {
@@ -979,11 +941,8 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
             }
         }
 
-        setAttributeDescriptionListLength( attributeDescriptionListLength );
-
         searchRequestLength += 1 + TLV.getNbBytes( attributeDescriptionListLength ) + attributeDescriptionListLength;
 
-        setSearchRequestLength( searchRequestLength );
         // Return the result.
         return 1 + TLV.getNbBytes( searchRequestLength ) + searchRequestLength;
     }
@@ -1016,7 +975,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
         {
             // The SearchRequest Tag
             buffer.put( LdapCodecConstants.SEARCH_REQUEST_TAG );
-            buffer.put( TLV.getBytes( getSearchRequestLength() ) );
+            buffer.put( TLV.getBytes( searchRequestLength ) );
 
             // The baseObject
             BerValue.encode( buffer, dnBytes );
@@ -1041,7 +1000,7 @@ public class SearchRequestDecorator extends MessageDecorator<SearchRequest> impl
 
             // The attributeDescriptionList
             buffer.put( UniversalTag.SEQUENCE.getValue() );
-            buffer.put( TLV.getBytes( getAttributeDescriptionListLength() ) );
+            buffer.put( TLV.getBytes( attributeDescriptionListLength ) );
 
             if ( ( getAttributes() != null ) && ( getAttributes().size() != 0 ) )
             {

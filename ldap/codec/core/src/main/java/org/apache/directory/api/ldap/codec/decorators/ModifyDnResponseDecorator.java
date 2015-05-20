@@ -54,25 +54,6 @@ public class ModifyDnResponseDecorator extends ResponseDecorator<ModifyDnRespons
     }
 
 
-    /**
-     * @param modifyDnResponseLength The encoded ModifyDnResponse's length
-     */
-    public void setModifyDnResponseLength( int modifyDnResponseLength )
-    {
-        this.modifyDnResponseLength = modifyDnResponseLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the ModifyDnResponse
-     * @return The encoded length
-     */
-    public int getModifyDnResponseLength()
-    {
-        return modifyDnResponseLength;
-    }
-
-
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -91,9 +72,7 @@ public class ModifyDnResponseDecorator extends ResponseDecorator<ModifyDnRespons
      */
     public int computeLength()
     {
-        int modifyDnResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
-
-        setModifyDnResponseLength( modifyDnResponseLength );
+        modifyDnResponseLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         return 1 + TLV.getNbBytes( modifyDnResponseLength ) + modifyDnResponseLength;
     }
@@ -110,7 +89,7 @@ public class ModifyDnResponseDecorator extends ResponseDecorator<ModifyDnRespons
         {
             // The ModifyResponse Tag
             buffer.put( LdapCodecConstants.MODIFY_DN_RESPONSE_TAG );
-            buffer.put( TLV.getBytes( getModifyDnResponseLength() ) );
+            buffer.put( TLV.getBytes( modifyDnResponseLength ) );
 
             // The LdapResult
             ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );

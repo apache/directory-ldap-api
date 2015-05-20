@@ -59,25 +59,6 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
     }
 
 
-    /**
-     * @param modifyDnRequestLength The encoded ModifyDnRequest's length
-     */
-    public void setModifyDnRequestLength( int modifyDnRequestLength )
-    {
-        this.modifyDnRequestLength = modifyDnRequestLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the ModifyDnRequest
-     * @return the encoded length
-     */
-    public int getModifyDnResponseLength()
-    {
-        return modifyDnRequestLength;
-    }
-
-
     //-------------------------------------------------------------------------
     // The ModifyDnResponse methods
     //-------------------------------------------------------------------------
@@ -240,19 +221,17 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
         int newRdnlength = Strings.getBytesUtf8( getNewRdn().getName() ).length;
 
         // deleteOldRDN
-        int modifyDNRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes( getName() ) )
+        modifyDnRequestLength = 1 + TLV.getNbBytes( Dn.getNbBytes( getName() ) )
             + Dn.getNbBytes( getName() ) + 1 + TLV.getNbBytes( newRdnlength ) + newRdnlength + 1 + 1
             + 1;
 
         if ( getNewSuperior() != null )
         {
-            modifyDNRequestLength += 1 + TLV.getNbBytes( Dn.getNbBytes( getNewSuperior() ) )
+            modifyDnRequestLength += 1 + TLV.getNbBytes( Dn.getNbBytes( getNewSuperior() ) )
                 + Dn.getNbBytes( getNewSuperior() );
         }
 
-        setModifyDnRequestLength( modifyDNRequestLength );
-
-        return 1 + TLV.getNbBytes( modifyDNRequestLength ) + modifyDNRequestLength;
+        return 1 + TLV.getNbBytes( modifyDnRequestLength ) + modifyDnRequestLength;
     }
 
 
@@ -276,7 +255,7 @@ public class ModifyDnRequestDecorator extends SingleReplyRequestDecorator<Modify
         {
             // The ModifyDNRequest Tag
             buffer.put( LdapCodecConstants.MODIFY_DN_REQUEST_TAG );
-            buffer.put( TLV.getBytes( getModifyDnResponseLength() ) );
+            buffer.put( TLV.getBytes( modifyDnRequestLength ) );
 
             // The entry
 

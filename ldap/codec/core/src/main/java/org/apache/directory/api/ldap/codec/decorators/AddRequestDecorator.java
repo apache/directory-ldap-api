@@ -85,82 +85,6 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
 
 
     /**
-     * Stores the encoded length for the AddRequest
-     * @param addRequestLength The encoded length
-     */
-    public void setAddRequestLength( int addRequestLength )
-    {
-        this.addRequestLength = addRequestLength;
-    }
-
-
-    /**
-     * @return The encoded AddRequest's length
-     */
-    public int getAddRequestLength()
-    {
-        return addRequestLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the Entry
-     * @param entryLength The encoded length
-     */
-    public void setEntryLength( int entryLength )
-    {
-        this.entryLength = entryLength;
-    }
-
-
-    /**
-     * @return The encoded Entry's length
-     */
-    public int getEntryLength()
-    {
-        return entryLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the attributes
-     * @param attributesLength The encoded length
-     */
-    public void setAttributesLength( List<Integer> attributesLength )
-    {
-        this.attributesLength = attributesLength;
-    }
-
-
-    /**
-     * @return The encoded values length
-     */
-    public List<Integer> getAttributesLength()
-    {
-        return attributesLength;
-    }
-
-
-    /**
-     * Stores the encoded length for the values
-     * @param valuesLength The encoded length
-     */
-    public void setValuesLength( List<Integer> valuesLength )
-    {
-        this.valuesLength = valuesLength;
-    }
-
-
-    /**
-     * @return The encoded values length
-     */
-    public List<Integer> getValuesLength()
-    {
-        return valuesLength;
-    }
-
-
-    /**
      * {@inheritDoc}
      */
     public AddRequest setMessageId( int messageId )
@@ -360,10 +284,10 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
         int dnLen = dnBytes.length;
 
         // The entry Dn
-        int addRequestLength = 1 + TLV.getNbBytes( dnLen ) + dnLen;
+        addRequestLength = 1 + TLV.getNbBytes( dnLen ) + dnLen;
 
         // The attributes sequence
-        int entryLength = 0;
+        entryLength = 0;
 
         if ( entry.size() != 0 )
         {
@@ -417,14 +341,9 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
                 attributesLength.add( localAttributeLength );
                 valuesLength.add( localValuesLength );
             }
-
-            setAttributesLength( attributesLength );
-            setValuesLength( valuesLength );
-            setEntryLength( entryLength );
         }
 
         addRequestLength += 1 + TLV.getNbBytes( entryLength ) + entryLength;
-        setAddRequestLength( addRequestLength );
 
         // Return the result.
         return 1 + TLV.getNbBytes( addRequestLength ) + addRequestLength;
@@ -461,14 +380,14 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
         {
             // The AddRequest Tag
             buffer.put( LdapCodecConstants.ADD_REQUEST_TAG );
-            buffer.put( TLV.getBytes( getAddRequestLength() ) );
+            buffer.put( TLV.getBytes( addRequestLength ) );
 
             // The entry
             BerValue.encode( buffer, dnBytes );
 
             // The attributes sequence
             buffer.put( UniversalTag.SEQUENCE.getValue() );
-            buffer.put( TLV.getBytes( getEntryLength() ) );
+            buffer.put( TLV.getBytes( entryLength ) );
 
             // The partial attribute list
             Entry entry = getEntry();

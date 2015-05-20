@@ -53,25 +53,6 @@ public class SearchResultDoneDecorator extends ResponseDecorator<SearchResultDon
     }
 
 
-    /**
-     * Stores the encoded length for the SearchResultDone
-     * @param searchResultDoneLength The encoded length
-     */
-    public void setSearchResultDoneLength( int searchResultDoneLength )
-    {
-        this.searchResultDoneLength = searchResultDoneLength;
-    }
-
-
-    /**
-     * @return The encoded SearchResultDone's length
-     */
-    public int getSearchResultDoneLength()
-    {
-        return searchResultDoneLength;
-    }
-
-
     //-------------------------------------------------------------------------
     // The Decorator methods
     //-------------------------------------------------------------------------
@@ -91,9 +72,7 @@ public class SearchResultDoneDecorator extends ResponseDecorator<SearchResultDon
      */
     public int computeLength()
     {
-        int searchResultDoneLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
-
-        setSearchResultDoneLength( searchResultDoneLength );
+        searchResultDoneLength = ( ( LdapResultDecorator ) getLdapResult() ).computeLength();
 
         return 1 + TLV.getNbBytes( searchResultDoneLength ) + searchResultDoneLength;
     }
@@ -111,7 +90,7 @@ public class SearchResultDoneDecorator extends ResponseDecorator<SearchResultDon
         {
             // The searchResultDone Tag
             buffer.put( LdapCodecConstants.SEARCH_RESULT_DONE_TAG );
-            buffer.put( TLV.getBytes( getSearchResultDoneLength() ) );
+            buffer.put( TLV.getBytes( searchResultDoneLength ) );
 
             // The LdapResult
             ( ( LdapResultDecorator ) getLdapResult() ).encode( buffer );

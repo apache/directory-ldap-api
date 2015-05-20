@@ -1402,9 +1402,9 @@ public class DefaultSchemaManager implements SchemaManager
                 }
 
                 // Now, check the registries
-                List<Throwable> errors = clonedRegistries.checkRefInteg();
+                List<Throwable> errorList = clonedRegistries.checkRefInteg();
 
-                if ( errors.size() != 0 )
+                if ( errorList.size() != 0 )
                 {
                     // We got an error : exit
                     clonedRegistries.clear();

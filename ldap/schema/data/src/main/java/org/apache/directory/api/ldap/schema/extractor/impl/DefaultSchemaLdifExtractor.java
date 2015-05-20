@@ -210,7 +210,7 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
         FileWriter out = new FileWriter( destination );
 
         LdifReader ldifReader = null;
-        
+
         try
         {
             ldifReader = new LdifReader( source );
@@ -261,8 +261,15 @@ public class DefaultSchemaLdifExtractor implements SchemaLdifExtractor
         }
         finally
         {
-            ldifReader.close();
-            out.close();
+            if ( ldifReader != null )
+            {
+                ldifReader.close();
+            }
+
+            if ( out != null )
+            {
+                out.close();
+            }
         }
     }
 

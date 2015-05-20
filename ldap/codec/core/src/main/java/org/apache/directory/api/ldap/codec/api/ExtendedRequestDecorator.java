@@ -43,9 +43,10 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
     /** The extended request length */
     private int extendedRequestLength;
 
-    /** The OID length */
+    /** The OID bytes */
     private byte[] requestNameBytes;
 
+    /** The ExtendedRequest value */
     protected byte[] requestValue;
 
 
@@ -57,48 +58,6 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
     public ExtendedRequestDecorator( LdapApiService codec, Q decoratedMessage )
     {
         super( codec, decoratedMessage );
-    }
-
-
-    /**
-     * Stores the encoded length for the ExtendedRequest
-     *
-     * @param extendedRequestLength The encoded length
-     */
-    public void setExtendedRequestLength( int extendedRequestLength )
-    {
-        this.extendedRequestLength = extendedRequestLength;
-    }
-
-
-    /**
-     * @return The encoded ExtendedRequest's length
-     */
-    public int getExtendedRequestLength()
-    {
-        return extendedRequestLength;
-    }
-
-
-    /**
-     * Gets the requestName bytes.
-     *
-     * @return the requestName bytes of the extended request type.
-     */
-    public byte[] getRequestNameBytes()
-    {
-        return requestNameBytes;
-    }
-
-
-    /**
-     * Sets the requestName bytes.
-     *
-     * @param requestNameBytes the OID bytes of the extended request type.
-     */
-    public void setRequestNameBytes( byte[] requestNameBytes )
-    {
-        this.requestNameBytes = requestNameBytes;
     }
 
 
@@ -203,19 +162,15 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
      */
     public int computeLength()
     {
-        byte[] requestNameBytes = Strings.getBytesUtf8( getRequestName() );
+        requestNameBytes = Strings.getBytesUtf8( getRequestName() );
 
-        setRequestNameBytes( requestNameBytes );
-
-        int extendedRequestLength = 1 + TLV.getNbBytes( requestNameBytes.length ) + requestNameBytes.length;
+        extendedRequestLength = 1 + TLV.getNbBytes( requestNameBytes.length ) + requestNameBytes.length;
 
         if ( getRequestValue() != null )
         {
             extendedRequestLength += 1 + TLV.getNbBytes( getRequestValue().length )
                 + getRequestValue().length;
         }
-
-        setExtendedRequestLength( extendedRequestLength );
 
         return 1 + TLV.getNbBytes( extendedRequestLength ) + extendedRequestLength;
     }
@@ -238,20 +193,20 @@ public class ExtendedRequestDecorator<Q extends ExtendedRequest>
         {
             // The BindResponse Tag
             buffer.put( LdapCodecConstants.EXTENDED_REQUEST_TAG );
-            buffer.put( TLV.getBytes( getExtendedRequestLength() ) );
+            buffer.put( TLV.getBytes( extendedRequestLength ) );
 
             // The requestName, if any
-            if ( getRequestNameBytes() == null )
+            if ( requestNameBytes == null )
             {
                 throw new EncoderException( I18n.err( I18n.ERR_04043 ) );
             }
 
             buffer.put( ( byte ) LdapCodecConstants.EXTENDED_REQUEST_NAME_TAG );
-            buffer.put( TLV.getBytes( getRequestNameBytes().length ) );
+            buffer.put( TLV.getBytes( requestNameBytes.length ) );
 
-            if ( getRequestNameBytes().length != 0 )
+            if ( requestNameBytes.length != 0 )
             {
-                buffer.put( getRequestNameBytes() );
+                buffer.put( requestNameBytes );
             }
 
             // The requestValue, if any

@@ -1780,9 +1780,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         SearchFuture searchFuture = searchAsync( searchRequest );
 
-        long timeout = getTimeout( this.timeout, searchRequest.getTimeLimit() );
+        long searchTimeout = getTimeout( timeout, searchRequest.getTimeLimit() );
 
-        return new SearchCursorImpl( searchFuture, timeout, TimeUnit.MILLISECONDS );
+        return new SearchCursorImpl( searchFuture, searchTimeout, TimeUnit.MILLISECONDS );
     }
 
 

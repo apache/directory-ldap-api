@@ -1122,7 +1122,7 @@ public class SchemaEntityFactory implements EntityFactory
         }
         else
         {
-            schemaObject.setEnabled( schema != null && schema.isEnabled() );
+            schemaObject.setEnabled( schema.isEnabled() );
         }
 
         // The specification field
