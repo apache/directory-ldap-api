@@ -290,7 +290,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         {
             boolean isFirst = true;
 
-            for ( String oid : byOid.keySet() )
+            for ( Map.Entry<String, T> entry : byOid.entrySet() )
             {
                 if ( isFirst )
                 {
@@ -303,7 +303,7 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
                 sb.append( "<" );
 
-                SchemaObject schemaObject = byOid.get( oid );
+                SchemaObject schemaObject = entry.getValue();
 
                 if ( schemaObject != null )
                 {

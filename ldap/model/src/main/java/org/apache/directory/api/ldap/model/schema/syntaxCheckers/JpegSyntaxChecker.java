@@ -89,31 +89,27 @@ public class JpegSyntaxChecker extends SyntaxChecker
             && ( bytes[1] == ( byte ) 0x00D8 )
             && ( bytes[2] == ( byte ) 0x00FF ) )
         {
-            if ( bytes[3] == ( byte ) 0x00E0 )
+            // JFIF format
+            if ( ( bytes[3] == ( byte ) 0x00E0 )
+                && ( bytes[6] == 'J' )
+                && ( bytes[7] == 'F' )
+                && ( bytes[8] == 'I' )
+                && ( bytes[9] == 'F' )
+                && ( bytes[10] == 0x00 ) )
             {
-                // JFIF format
-                if ( ( bytes[6] == 'J' )
-                    && ( bytes[7] == 'F' )
-                    && ( bytes[8] == 'I' )
-                    && ( bytes[9] == 'F' )
-                    && ( bytes[10] == 0x00 ) )
-                {
-                    LOG.debug( "Syntax valid for '{}'", value );
-                    return true;
-                }
+                LOG.debug( "Syntax valid for '{}'", value );
+                return true;
             }
-            else if ( bytes[3] == ( byte ) 0x00E1 )
-            {
-                // Exif format
-                if ( ( bytes[6] == 'E' )
+        // EXIF Format
+            else if ( ( bytes[3] == ( byte ) 0x00E1 ) 
+                    && ( bytes[6] == 'E' )
                     && ( bytes[7] == 'x' )
                     && ( bytes[8] == 'i' )
                     && ( bytes[9] == 'f' )
                     && ( bytes[10] == 0x00 ) )
-                {
-                    LOG.debug( "Syntax valid for '{}'", value );
-                    return true;
-                }
+            {
+                LOG.debug( "Syntax valid for '{}'", value );
+                return true;
             }
         }
 

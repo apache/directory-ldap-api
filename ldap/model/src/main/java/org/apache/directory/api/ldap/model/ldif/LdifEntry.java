@@ -884,12 +884,12 @@ public class LdifEntry implements Cloneable, Externalizable
 
         if ( modifications != null )
         {
-            for ( String key : modifications.keySet() )
+            for ( Map.Entry<String, Modification> entry : modifications.entrySet() )
             {
-                Modification modif = modifications.get( key );
+                Modification modif = entry.getValue();
                 Modification modifClone = new DefaultModification( modif.getOperation(),
                     modif.getAttribute().clone() );
-                clone.modifications.put( key, modifClone );
+                clone.modifications.put( entry.getKey(), modifClone );
             }
 
         }
@@ -1215,14 +1215,16 @@ public class LdifEntry implements Cloneable, Externalizable
                 return false;
             }
 
-            for ( String controlOid : controls.keySet() )
+            for ( Map.Entry<String, LdifControl> entry : controls.entrySet() )
             {
+                String controlOid = entry.getKey();
+
                 if ( !otherControls.containsKey( controlOid ) )
                 {
                     return false;
                 }
 
-                Control thisControl = controls.get( controlOid );
+                Control thisControl = entry.getValue();
                 Control otherControl = otherControls.get( controlOid );
 
                 if ( thisControl == null )

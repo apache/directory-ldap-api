@@ -402,10 +402,7 @@ public class LdapUrl
                     
                     return currentPos;
                 }
-                else
-                {
-                    //fallback to reg-name
-                }
+                //fallback to reg-name
                 
             case 'a' : case 'b' : case 'c' : case 'd' : case 'e' :
             case 'A' : case 'B' : case 'C' : case 'D' : case 'E' :

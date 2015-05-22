@@ -27,35 +27,25 @@ package org.apache.directory.api.ldap.model.message;
  */
 public enum MessageTypeEnum
 {
-    ABANDON_REQUEST(0),
-    ADD_REQUEST(1),
-    ADD_RESPONSE(2),
-    BIND_REQUEST(3),
-    BIND_RESPONSE(4),
-    COMPARE_REQUEST(5),
-    COMPARE_RESPONSE(6),
-    DEL_REQUEST(7),
-    DEL_RESPONSE(8),
-    EXTENDED_REQUEST(9),
-    EXTENDED_RESPONSE(10),
-    MODIFYDN_REQUEST(11),
-    MODIFYDN_RESPONSE(12),
-    MODIFY_REQUEST(13),
-    MODIFY_RESPONSE(14),
-    SEARCH_REQUEST(15),
-    SEARCH_RESULT_DONE(16),
-    SEARCH_RESULT_ENTRY(17),
-    SEARCH_RESULT_REFERENCE(18),
-    UNBIND_REQUEST(19),
-    INTERMEDIATE_RESPONSE(20);
-
-    /** The internal value */
-    @SuppressWarnings("unused")
-    private int value;
-
-
-    private MessageTypeEnum( int value )
-    {
-        this.value = value;
-    }
+    ABANDON_REQUEST,
+    ADD_REQUEST,
+    ADD_RESPONSE,
+    BIND_REQUEST,
+    BIND_RESPONSE,
+    COMPARE_REQUEST,
+    COMPARE_RESPONSE,
+    DEL_REQUEST,
+    DEL_RESPONSE,
+    EXTENDED_REQUEST,
+    EXTENDED_RESPONSE,
+    MODIFYDN_REQUEST,
+    MODIFYDN_RESPONSE,
+    MODIFY_REQUEST,
+    MODIFY_RESPONSE,
+    SEARCH_REQUEST,
+    SEARCH_RESULT_DONE,
+    SEARCH_RESULT_ENTRY,
+    SEARCH_RESULT_REFERENCE,
+    UNBIND_REQUEST,
+    INTERMEDIATE_RESPONSE;
 }

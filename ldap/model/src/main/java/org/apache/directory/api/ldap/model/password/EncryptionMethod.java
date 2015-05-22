@@ -88,5 +88,4 @@ public class EncryptionMethod
         return "EncryptionMethod [algorithm=" + algorithm.getName().toUpperCase() + ", salt="
             + Strings.dumpBytes( salt ) + "]";
     }
-
 }

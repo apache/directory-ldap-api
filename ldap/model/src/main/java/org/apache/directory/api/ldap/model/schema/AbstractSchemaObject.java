@@ -503,11 +503,13 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         if ( hasExtension( name ) )
         {
-            for ( String key : extensions.keySet() )
+            for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
             {
+                String key = entry.getKey();
+                
                 if ( name.equalsIgnoreCase( key ) )
                 {
-                    return extensions.get( key );
+                    return entry.getValue();
                 }
             }
         }
@@ -751,14 +753,16 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
             }
             else
             {
-                for ( String key : extensions.keySet() )
+                for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
                 {
+                    String key = entry.getKey();
+                    
                     if ( !that.extensions.containsKey( key ) )
                     {
                         return false;
                     }
 
-                    List<String> thisValues = extensions.get( key );
+                    List<String> thisValues = entry.getValue();
                     List<String> thatValues = that.extensions.get( key );
 
                     if ( thisValues != null )
@@ -898,9 +902,9 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
     public void clear()
     {
         // Clear the extensions
-        for ( String extension : extensions.keySet() )
+        for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
         {
-            List<String> extensionList = extensions.get( extension );
+            List<String> extensionList = entry.getValue();
 
             extensionList.clear();
         }
@@ -961,11 +965,12 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
         }
 
         // The extensions, if any
-        for ( String key : extensions.keySet() )
+        for ( Map.Entry<String, List<String>> entry : extensions.entrySet() )
         {
+            String key = entry.getKey();
             h += h * 17 + key.hashCode();
 
-            List<String> values = extensions.get( key );
+            List<String> values = entry.getValue();
 
             if ( values != null )
             {

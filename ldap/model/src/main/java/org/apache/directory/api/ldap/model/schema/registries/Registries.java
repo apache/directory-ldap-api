@@ -1893,14 +1893,16 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         try
         {
-            for ( SchemaObjectWrapper wrapper : usedBy.keySet() )
+            for ( Map.Entry<SchemaObjectWrapper, Set<SchemaObjectWrapper>> entry : usedBy.entrySet() )
             {
+                SchemaObjectWrapper wrapper = entry.getKey();
+
                 sb.append( wrapper.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() )
                     .append( "] : {" );
 
                 boolean isFirst = true;
 
-                for ( SchemaObjectWrapper uses : usedBy.get( wrapper ) )
+                for ( SchemaObjectWrapper uses : entry.getValue() )
                 {
                     if ( isFirst )
                     {
@@ -1937,14 +1939,16 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         try
         {
-            for ( SchemaObjectWrapper wrapper : using.keySet() )
+            for ( Map.Entry<SchemaObjectWrapper, Set<SchemaObjectWrapper>> entry : using.entrySet() )
             {
+                SchemaObjectWrapper wrapper = entry.getKey();
+
                 sb.append( wrapper.get().getObjectType() ).append( '[' ).append( wrapper.get().getOid() )
                     .append( "] : {" );
 
                 boolean isFirst = true;
 
-                for ( SchemaObjectWrapper uses : using.get( wrapper ) )
+                for ( SchemaObjectWrapper uses : entry.getValue() )
                 {
                     if ( isFirst )
                     {
@@ -2568,10 +2572,10 @@ public class Registries implements SchemaLoaderListener, Cloneable
         // Clone the schema list
         clone.loadedSchemas = new HashMap<String, Schema>();
 
-        for ( String schemaName : loadedSchemas.keySet() )
+        for ( Map.Entry<String, Set<SchemaObjectWrapper>> entry : schemaObjects.entrySet() )
         {
             // We don't clone the schemas
-            clone.loadedSchemas.put( schemaName, loadedSchemas.get( schemaName ) );
+            clone.loadedSchemas.put( entry.getKey(), loadedSchemas.get( entry.getKey() ) );
         }
 
         // Clone the Using and usedBy structures
@@ -2589,11 +2593,11 @@ public class Registries implements SchemaLoaderListener, Cloneable
 
         // Last, not least, clone the SchemaObjects Map, and reference all the copied
         // SchemaObjects
-        for ( String schemaName : schemaObjects.keySet() )
+        for ( Map.Entry<String, Set<SchemaObjectWrapper>> entry : schemaObjects.entrySet() )
         {
             Set<SchemaObjectWrapper> objects = new HashSet<SchemaObjectWrapper>();
 
-            for ( SchemaObjectWrapper schemaObjectWrapper : schemaObjects.get( schemaName ) )
+            for ( SchemaObjectWrapper schemaObjectWrapper : entry.getValue() )
             {
                 SchemaObject original = schemaObjectWrapper.get();
 
@@ -2617,7 +2621,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 }
             }
 
-            clone.schemaObjects.put( schemaName, objects );
+            clone.schemaObjects.put( entry.getKey(), objects );
         }
 
         return clone;
@@ -2779,31 +2783,25 @@ public class Registries implements SchemaLoaderListener, Cloneable
         }
 
         // Clear the schemaObjects map
-        for ( String schemaName : schemaObjects.keySet() )
+        for ( Map.Entry<String, Set<SchemaObjectWrapper>> entry : schemaObjects.entrySet() )
         {
-            Set<SchemaObjectWrapper> wrapperSet = schemaObjects.get( schemaName );
-
-            wrapperSet.clear();
+            entry.getValue().clear();
         }
 
         schemaObjects.clear();
 
         // Clear the usedBy map
-        for ( SchemaObjectWrapper wrapper : usedBy.keySet() )
+        for ( Map.Entry<SchemaObjectWrapper, Set<SchemaObjectWrapper>> entry : usedBy.entrySet() )
         {
-            Set<SchemaObjectWrapper> wrapperSet = usedBy.get( wrapper );
-
-            wrapperSet.clear();
+            entry.getValue().clear();
         }
 
         usedBy.clear();
 
         // Clear the using map
-        for ( SchemaObjectWrapper wrapper : using.keySet() )
+        for ( Map.Entry<SchemaObjectWrapper, Set<SchemaObjectWrapper>> entry : using.entrySet() )
         {
-            Set<SchemaObjectWrapper> wrapperSet = using.get( wrapper );
-
-            wrapperSet.clear();
+            entry.getValue().clear();
         }
 
         using.clear();

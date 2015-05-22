@@ -401,7 +401,7 @@ public class AttributesFactory
     }
 
 
-    private final void injectCommon( SchemaObject object, Entry entry, SchemaManager schemaManager )
+    private void injectCommon( SchemaObject object, Entry entry, SchemaManager schemaManager )
         throws LdapException
     {
         injectNames( object.getNames(), entry, schemaManager );
@@ -432,7 +432,7 @@ public class AttributesFactory
     }
 
 
-    private final void injectNames( List<String> names, Entry entry, SchemaManager schemaManager ) throws LdapException
+    private void injectNames( List<String> names, Entry entry, SchemaManager schemaManager ) throws LdapException
     {
         if ( ( names == null ) || ( names.size() == 0 ) )
         {
@@ -459,7 +459,7 @@ public class AttributesFactory
     }
 
 
-    private final String getBoolean( boolean value )
+    private String getBoolean( boolean value )
     {
         if ( value )
         {

@@ -733,7 +733,7 @@ public final class SchemaConstants
 
     // Emails
     public static final String EMAIL_AT = "email";
-    public static final String emailAddress_AT = "emailAddress";
+    public static final String EMAIL_ADDRESS_AT = "emailAddress";
     public static final String PKCS9EMAIL_AT = "pkcs9email";
     public static final String EMAIL_AT_OID = "1.2.840.113549.1.9.1";
 

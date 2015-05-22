@@ -808,7 +808,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      */
     public Iterator<Ava> iterator()
     {
-        if ( nbAvas == 1 || nbAvas == 0 )
+        if ( ( nbAvas == 1 ) || ( nbAvas == 0 ) )
         {
             return new Iterator<Ava>()
             {

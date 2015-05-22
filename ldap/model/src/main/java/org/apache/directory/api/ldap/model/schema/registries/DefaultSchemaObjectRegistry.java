@@ -363,10 +363,11 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
     public SchemaObjectRegistry<T> copy( SchemaObjectRegistry<T> original )
     {
         // Fill the byName and OidRegistry maps, the type has already be copied
-        for ( String key : ( ( DefaultSchemaObjectRegistry<T> ) original ).byName.keySet() )
+        for ( Map.Entry<String, T> entry : ( ( DefaultSchemaObjectRegistry<T> ) original ).byName.entrySet() )
         {
+            String key = entry.getKey();
             // Clone each SchemaObject
-            T value = ( ( DefaultSchemaObjectRegistry<T> ) original ).byName.get( key );
+            T value = entry.getValue();
 
             if ( value instanceof LoadableSchemaObject )
             {
@@ -455,7 +456,7 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         sb.append( schemaObjectType ).append( ": " );
         boolean isFirst = true;
 
-        for ( String name : byName.keySet() )
+        for ( Map.Entry<String, T> entry : byName.entrySet() )
         {
             if ( isFirst )
             {
@@ -466,7 +467,8 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
                 sb.append( ", " );
             }
 
-            T schemaObject = byName.get( name );
+            String name = entry.getKey();
+            T schemaObject = entry.getValue();
 
             sb.append( '<' ).append( name ).append( ", " ).append( schemaObject.getOid() ).append( '>' );
         }

@@ -321,9 +321,9 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
         oidNormalizerMap.clear();
 
         // and clear the descendant
-        for ( String oid : oidToDescendantSet.keySet() )
+        for ( Map.Entry<String, Set<AttributeType>> entry : oidToDescendantSet.entrySet() )
         {
-            Set<AttributeType> descendants = oidToDescendantSet.get( oid );
+            Set<AttributeType> descendants = entry.getValue();
 
             if ( descendants != null )
             {

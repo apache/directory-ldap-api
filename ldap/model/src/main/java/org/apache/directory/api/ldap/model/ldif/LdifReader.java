@@ -2001,7 +2001,15 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
             public LdifEntry next()
             {
-                return nextInternal();
+                try
+                {
+                    return nextInternal();
+                }
+                catch ( NoSuchElementException nse )
+                {
+                    LOG.error( nse.getMessage() );
+                    return null;
+                }
             }
 
 
@@ -2051,19 +2059,16 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         prefetched = parseEntry();
 
         // When done, get the entries one by one.
-        try
+        for ( LdifEntry entry : this )
         {
-            for ( LdifEntry entry : this )
+            if ( entry != null )
             {
-                if ( entry != null )
-                {
-                    entries.add( entry );
-                }
+                entries.add( entry );
             }
-        }
-        catch ( NoSuchElementException nsee )
-        {
-            throw new LdapLdifException( I18n.err( I18n.ERR_12072, error.getLocalizedMessage() ), nsee );
+            else
+            {
+                throw new LdapLdifException( I18n.err( I18n.ERR_12072, error.getLocalizedMessage() ) );
+            }
         }
 
         return entries;
