@@ -48,7 +48,7 @@ public class VirtualListViewRequestDecorator extends ControlDecorator<VirtualLis
     private int vlvSeqLength;
     private int targetSeqLength;
 
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     public VirtualListViewRequestDecorator( LdapApiService codec )
@@ -190,7 +190,7 @@ public class VirtualListViewRequestDecorator extends ControlDecorator<VirtualLis
     {
         ByteBuffer buffer = ByteBuffer.wrap( controlBytes );
         VirtualListViewRequestContainer container = new VirtualListViewRequestContainer( this, getCodecService() );
-        decoder.decode( buffer, container );
+        DECODER.decode( buffer, container );
         return this;
     }
 

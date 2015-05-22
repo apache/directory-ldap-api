@@ -74,7 +74,7 @@ import org.apache.directory.api.i18n.I18n;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-final public class Oid
+public final class Oid
 {
     private byte[] oidBytes;
     private String oidString;
@@ -330,7 +330,7 @@ final public class Oid
 
     // Internal helper class for converting a long value to a properly encoded
     // byte[]
-    final private static class ByteBuffer
+    private static final class ByteBuffer
     {
         private ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 

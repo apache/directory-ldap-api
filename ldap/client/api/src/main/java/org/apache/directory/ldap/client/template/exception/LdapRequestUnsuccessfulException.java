@@ -40,6 +40,7 @@ public class LdapRequestUnsuccessfulException extends RuntimeException
     public LdapRequestUnsuccessfulException( ResultResponse response )
     {
         super();
+        this.response = response;
     }
 
 

@@ -26,8 +26,8 @@ package org.apache.directory.api.util;
  */
 public class Serialize
 {
-    public final static byte TRUE = 0x01;
-    public final static byte FALSE = 0x00;
+    public static final byte TRUE = 0x01;
+    public static final byte FALSE = 0x00;
 
 
     /**

@@ -63,8 +63,8 @@ import org.slf4j.LoggerFactory;
  */
 public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFactory
 {
-    private static Logger logger = LoggerFactory.getLogger( LdapConnectionTemplate.class );
-    private static final EntryMapper<Dn> dnEntryMapper = new EntryMapper<Dn>()
+    private static Logger LOG = LoggerFactory.getLogger( LdapConnectionTemplate.class );
+    private static final EntryMapper<Dn> DN_ENTRY_MAPPER = new EntryMapper<Dn>()
     {
         @Override
         public Dn map( Entry entry ) throws LdapException
@@ -86,7 +86,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
      */
     public LdapConnectionTemplate( LdapConnectionPool connectionPool )
     {
-        logger.debug( "creating new connection template from connectionPool" );
+        LOG.debug( "creating new connection template from connectionPool" );
         this.connectionPool = connectionPool;
         this.passwordPolicyRequestControl = new PasswordPolicyDecorator(
             connectionPool.getLdapApiService() );
@@ -166,7 +166,7 @@ public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFa
     @Override
     public PasswordWarning authenticate( SearchRequest searchRequest, char[] password ) throws PasswordException
     {
-        Dn userDn = searchFirst( searchRequest, dnEntryMapper );
+        Dn userDn = searchFirst( searchRequest, DN_ENTRY_MAPPER );
         if ( userDn == null )
         {
             throw new PasswordException().setResultCode( ResultCodeEnum.INVALID_CREDENTIALS );

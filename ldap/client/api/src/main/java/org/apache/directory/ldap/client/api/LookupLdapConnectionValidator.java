@@ -31,7 +31,7 @@ import org.apache.directory.api.ldap.model.name.Dn;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-final public class LookupLdapConnectionValidator implements LdapConnectionValidator
+public final class LookupLdapConnectionValidator implements LdapConnectionValidator
 {
     /**
      * Returns true if <code>connection</code> is connected, authenticated, and

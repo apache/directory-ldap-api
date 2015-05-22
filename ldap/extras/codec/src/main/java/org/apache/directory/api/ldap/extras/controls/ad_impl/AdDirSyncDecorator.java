@@ -47,7 +47,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     private int adDirSyncLength;
 
     /** An instance of this decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     /**
@@ -266,7 +266,7 @@ public class AdDirSyncDecorator extends ControlDecorator<AdDirSync> implements A
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         AdDirSyncContainer container = new AdDirSyncContainer( getCodecService(), this );
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         return this;
     }
 }

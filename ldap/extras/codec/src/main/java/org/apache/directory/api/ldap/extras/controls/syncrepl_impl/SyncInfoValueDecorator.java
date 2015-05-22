@@ -51,7 +51,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     private int syncUUIDsLength;
 
     /** An instance of this decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     /**
@@ -541,7 +541,7 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         SyncInfoValueContainer container = new SyncInfoValueContainer( getCodecService(), this );
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         return this;
     }
 

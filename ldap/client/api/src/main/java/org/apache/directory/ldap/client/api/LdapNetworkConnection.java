@@ -742,12 +742,9 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         if ( container != null )
         {
-            if ( schemaManager != null )
+            if ( ( schemaManager != null ) && !( container.getBinaryAttributeDetector() instanceof SchemaBinaryAttributeDetector ) )
             {
-                if ( !( container.getBinaryAttributeDetector() instanceof SchemaBinaryAttributeDetector ) )
-                {
-                    container.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( schemaManager ) );
-                }
+                container.setBinaryAttributeDetector( new SchemaBinaryAttributeDetector( schemaManager ) );
             }
         }
         else

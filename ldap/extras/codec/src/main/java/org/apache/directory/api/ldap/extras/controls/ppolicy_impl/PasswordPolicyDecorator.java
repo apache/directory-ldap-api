@@ -45,13 +45,11 @@ import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRespo
 public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> implements PasswordPolicy
 {
     /** An instance of this decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
     // Storage for computed lengths
     private int ppolicySeqLength = 0;
     private int warningLength = 0;
-    private int timeBeforeExpirationValueLength;
-    private int graceAuthNsRemainingValueLength;
 
 
     public PasswordPolicyDecorator( LdapApiService codec )
@@ -78,7 +76,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
     @Override
     public void setValue( byte[] value )
     {
-        if ( value == null || value.length <= 2 )
+        if ( ( value == null ) || ( value.length <= 2 ) )
         {
             setResponse( null );
         }
@@ -98,8 +96,6 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
         valueLength = 0;
         ppolicySeqLength = 0;
         warningLength = 0;
-        timeBeforeExpirationValueLength = 0;
-        graceAuthNsRemainingValueLength = 0;
 
         if ( !hasResponse() )
         {
@@ -108,12 +104,12 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
 
         if ( getResponse().getTimeBeforeExpiration() >= 0 )
         {
-            timeBeforeExpirationValueLength = BerValue.getNbBytes( getResponse().getTimeBeforeExpiration() );
+            int timeBeforeExpirationValueLength = BerValue.getNbBytes( getResponse().getTimeBeforeExpiration() );
             warningLength = 1 + TLV.getNbBytes( timeBeforeExpirationValueLength ) + timeBeforeExpirationValueLength;
         }
         else if ( getResponse().getGraceAuthNRemaining() >= 0 )
         {
-            graceAuthNsRemainingValueLength = BerValue.getNbBytes( getResponse().getGraceAuthNRemaining() );
+            int graceAuthNsRemainingValueLength = BerValue.getNbBytes( getResponse().getGraceAuthNRemaining() );
             warningLength = 1 + TLV.getNbBytes( graceAuthNsRemainingValueLength ) + graceAuthNsRemainingValueLength;
         }
 
@@ -233,7 +229,7 @@ public class PasswordPolicyDecorator extends ControlDecorator<PasswordPolicy> im
 
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         PasswordPolicyContainer container = new PasswordPolicyContainer( getCodecService(), this );
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         return this;
     }
 

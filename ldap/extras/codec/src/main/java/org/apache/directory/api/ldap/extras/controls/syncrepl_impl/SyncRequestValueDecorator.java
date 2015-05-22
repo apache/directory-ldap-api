@@ -49,7 +49,7 @@ public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue
     private int syncRequestValueLength;
 
     /** An instance of this decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     public SyncRequestValueDecorator( LdapApiService codec )
@@ -257,7 +257,7 @@ public class SyncRequestValueDecorator extends ControlDecorator<SyncRequestValue
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         SyncRequestValueContainer container = new SyncRequestValueContainer( this );
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         return this;
     }
 }

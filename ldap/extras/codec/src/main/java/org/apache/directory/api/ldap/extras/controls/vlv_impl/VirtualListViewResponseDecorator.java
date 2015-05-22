@@ -48,7 +48,7 @@ public class VirtualListViewResponseDecorator extends ControlDecorator<VirtualLi
 {
     private int vlvSeqLength;
 
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     public VirtualListViewResponseDecorator( LdapApiService codec )
@@ -101,7 +101,7 @@ public class VirtualListViewResponseDecorator extends ControlDecorator<VirtualLi
         BerValue.encode( buffer, getTargetPosition() );
         BerValue.encode( buffer, getContentCount() );
 
-        BerValue.encodeEnumerated( buffer, getVirtualListViewResult().getVal() );
+        BerValue.encodeEnumerated( buffer, getVirtualListViewResult().getValue() );
 
         if ( getContextId() != null )
         {
@@ -144,7 +144,7 @@ public class VirtualListViewResponseDecorator extends ControlDecorator<VirtualLi
     {
         ByteBuffer buffer = ByteBuffer.wrap( controlBytes );
         VirtualListViewResponseContainer container = new VirtualListViewResponseContainer( this, getCodecService() );
-        decoder.decode( buffer, container );
+        DECODER.decode( buffer, container );
 
         return this;
     }

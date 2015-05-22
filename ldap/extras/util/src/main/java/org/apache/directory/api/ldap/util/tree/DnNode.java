@@ -1026,7 +1026,7 @@ public class DnNode<N> implements Cloneable
 
         if ( hasChildren )
         {
-            for ( Rdn rdn : children.keySet() )
+            for ( Map.Entry<Rdn, DnNode<N>> entry : children.entrySet() )
             {
                 if ( isFirst )
                 {
@@ -1037,7 +1037,7 @@ public class DnNode<N> implements Cloneable
                     sb.append( "\n" );
                 }
 
-                DnNode<N> child = children.get( rdn );
+                DnNode<N> child = entry.getValue();
 
                 sb.append( child.toString( tabs ) );
             }

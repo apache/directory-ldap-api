@@ -35,7 +35,7 @@ import org.apache.directory.api.ldap.extras.extended.cancel.CancelRequest;
 public class CancelDecoder extends Asn1Decoder
 {
     /** The decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     /**
@@ -50,7 +50,7 @@ public class CancelDecoder extends Asn1Decoder
     {
         ByteBuffer bb = ByteBuffer.wrap( stream );
         CancelContainer container = new CancelContainer();
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         CancelRequest cancel = container.getCancel();
 
         // Clean the container for the next decoding

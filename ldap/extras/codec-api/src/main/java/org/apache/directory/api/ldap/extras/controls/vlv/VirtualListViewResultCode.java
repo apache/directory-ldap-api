@@ -48,20 +48,35 @@ public enum VirtualListViewResultCode
 
     OTHER(80, "Other");
 
-    private int val;
+    /** The associated value */
+    private int value;
+    
+    /** The associated description */
     private String desc;
 
 
-    private VirtualListViewResultCode( int val, String desc )
+    private VirtualListViewResultCode( int value, String desc )
     {
-        this.val = val;
+        this.value = value;
         this.desc = desc;
     }
 
 
-    public int getVal()
+    /**
+     * @return The associated integer value
+     */
+    public int getValue()
     {
-        return val;
+        return value;
+    }
+
+
+    /**
+     * @return The associated description
+     */
+    public String getDesc()
+    {
+        return desc;
     }
 
 

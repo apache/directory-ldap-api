@@ -48,7 +48,7 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
     private int syncStateSeqLength;
 
     /** An instance of this decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     public SyncStateValueDecorator( LdapApiService codec )
@@ -235,7 +235,7 @@ public class SyncStateValueDecorator extends ControlDecorator<SyncStateValue> im
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         SyncStateValueContainer container = new SyncStateValueContainer( this );
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         return this;
     }
 }

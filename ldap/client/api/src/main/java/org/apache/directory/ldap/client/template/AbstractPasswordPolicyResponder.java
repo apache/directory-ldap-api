@@ -40,7 +40,7 @@ import org.apache.directory.ldap.client.template.exception.PasswordException;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-abstract public class AbstractPasswordPolicyResponder implements PasswordPolicyResponder
+public abstract class AbstractPasswordPolicyResponder implements PasswordPolicyResponder
 {
     private final PasswordPolicyDecorator passwordPolicyRequestControl;
 
@@ -100,7 +100,7 @@ abstract public class AbstractPasswordPolicyResponder implements PasswordPolicyR
 
 
     @Override
-    final public PasswordWarning process( PasswordPolicyOperation operation )
+    public final PasswordWarning process( PasswordPolicyOperation operation )
         throws PasswordException
     {
         try

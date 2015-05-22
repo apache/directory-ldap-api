@@ -36,7 +36,7 @@ import org.apache.directory.api.ldap.extras.extended.whoAmI.WhoAmIResponse;
 public class WhoAmIResponseDecoder extends Asn1Decoder
 {
     /** The decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     /**
@@ -51,7 +51,7 @@ public class WhoAmIResponseDecoder extends Asn1Decoder
     {
         ByteBuffer bb = ByteBuffer.wrap( stream );
         WhoAmIResponseContainer container = new WhoAmIResponseContainer();
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         WhoAmIResponseDecorator whoAmIResponse = container.getWhoAmIResponse();
 
         // Clean the container for the next decoding

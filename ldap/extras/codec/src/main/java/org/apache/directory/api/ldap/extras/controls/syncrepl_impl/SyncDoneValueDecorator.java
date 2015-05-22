@@ -48,7 +48,7 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
     private int syncDoneValueLength;
 
     /** An instance of this decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     /**
@@ -226,7 +226,7 @@ public class SyncDoneValueDecorator extends ControlDecorator<SyncDoneValue> impl
     {
         ByteBuffer bb = ByteBuffer.wrap( controlBytes );
         SyncDoneValueContainer container = new SyncDoneValueContainer( getCodecService(), this );
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         return this;
     }
 }

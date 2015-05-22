@@ -36,7 +36,7 @@ import org.apache.directory.api.ldap.extras.extended.pwdModify.PasswordModifyRes
 public class PasswordModifyResponseDecoder extends Asn1Decoder
 {
     /** The decoder */
-    private static final Asn1Decoder decoder = new Asn1Decoder();
+    private static final Asn1Decoder DECODER = new Asn1Decoder();
 
 
     /**
@@ -51,7 +51,7 @@ public class PasswordModifyResponseDecoder extends Asn1Decoder
     {
         ByteBuffer bb = ByteBuffer.wrap( stream );
         PasswordModifyResponseContainer container = new PasswordModifyResponseContainer();
-        decoder.decode( bb, container );
+        DECODER.decode( bb, container );
         PasswordModifyResponseDecorator pwdModifyResponse = container.getPwdModifyResponse();
 
         // Clean the container for the next decoding
