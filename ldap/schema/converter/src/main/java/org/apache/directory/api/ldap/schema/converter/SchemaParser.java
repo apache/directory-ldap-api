@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.util.Strings;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
@@ -110,7 +111,7 @@ public class SchemaParser
             throw new ParseException( I18n.err( I18n.ERR_06001_EMPTY_OR_NULL_SCHEMA_OBJECT ), 0 );
         }
 
-        schemaIn = new ByteArrayInputStream( schemaObject.getBytes() );
+        schemaIn = new ByteArrayInputStream( Strings.getBytesUtf8( schemaObject ) );
 
         if ( producerThread == null )
         {
@@ -215,7 +216,7 @@ public class SchemaParser
                 }
 
                 // using an input termination token END - need extra space to return
-                parserIn.write( "END ".getBytes() );
+                parserIn.write( Strings.getBytesUtf8( "END " ) );
             }
             catch ( IOException e )
             {

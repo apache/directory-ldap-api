@@ -65,6 +65,11 @@ public class SearchRequestDsml
     extends AbstractResultResponseRequestDsml<SearchRequest, SearchResultDone>
     implements SearchRequest
 {
+    /** Some string constants */
+    private static final String DEREF_ALIASES = "derefAliases";
+    private static final String NAME = "name";
+    private static final String VALUE = "value";
+    
     /** A temporary storage for a terminal Filter */
     private Filter terminalFilter;
 
@@ -371,19 +376,19 @@ public class SearchRequestDsml
         switch ( derefAliases )
         {
             case NEVER_DEREF_ALIASES:
-                element.addAttribute( "derefAliases", "neverDerefAliases" );
+                element.addAttribute( DEREF_ALIASES, "neverDerefAliases" );
                 break;
 
             case DEREF_ALWAYS:
-                element.addAttribute( "derefAliases", "derefAlways" );
+                element.addAttribute( DEREF_ALIASES, "derefAlways" );
                 break;
 
             case DEREF_FINDING_BASE_OBJ:
-                element.addAttribute( "derefAliases", "derefFindingBaseObj" );
+                element.addAttribute( DEREF_ALIASES, "derefFindingBaseObj" );
                 break;
 
             case DEREF_IN_SEARCHING:
-                element.addAttribute( "derefAliases", "derefInSearching" );
+                element.addAttribute( DEREF_ALIASES, "derefInSearching" );
                 break;
 
             default:
@@ -421,7 +426,7 @@ public class SearchRequestDsml
 
             for ( String entryAttribute : attributes )
             {
-                attributesElement.addElement( "attribute" ).addAttribute( "name", entryAttribute );
+                attributesElement.addElement( "attribute" ).addAttribute( NAME, entryAttribute );
             }
         }
 
@@ -481,7 +486,7 @@ public class SearchRequestDsml
 
             SubstringNode substringFilter = ( SubstringNode ) filter;
 
-            newElement.addAttribute( "name", substringFilter.getAttribute() );
+            newElement.addAttribute( NAME, substringFilter.getAttribute() );
 
             String initial = substringFilter.getInitial();
 
@@ -529,7 +534,7 @@ public class SearchRequestDsml
             }
 
             String attributeName = ( ( SimpleNode<?> ) filter ).getAttribute();
-            newElement.addAttribute( "name", attributeName );
+            newElement.addAttribute( NAME, attributeName );
 
             Value<?> value = ( ( SimpleNode<?> ) filter ).getValue();
             if ( value != null )
@@ -541,14 +546,14 @@ public class SearchRequestDsml
                     element.getDocument().getRootElement().add( xsdNamespace );
                     element.getDocument().getRootElement().add( xsiNamespace );
 
-                    Element valueElement = newElement.addElement( "value" ).addText(
+                    Element valueElement = newElement.addElement( VALUE ).addText(
                         ParserUtils.base64Encode( value ) );
                     valueElement
                         .addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
                 }
                 else
                 {
-                    newElement.addElement( "value" ).setText( value.getString() );
+                    newElement.addElement( VALUE ).setText( value.getString() );
                 }
             }
         }
@@ -558,7 +563,7 @@ public class SearchRequestDsml
         {
             Element newElement = element.addElement( "present" );
 
-            newElement.addAttribute( "name", ( ( PresenceNode ) filter ).getAttribute() );
+            newElement.addAttribute( NAME, ( ( PresenceNode ) filter ).getAttribute() );
         }
 
         // EXTENSIBLEMATCH
@@ -576,13 +581,13 @@ public class SearchRequestDsml
                     element.getDocument().getRootElement().add( xsdNamespace );
                     element.getDocument().getRootElement().add( xsiNamespace );
 
-                    Element valueElement = newElement.addElement( "value" ).addText(
+                    Element valueElement = newElement.addElement( VALUE ).addText(
                         ParserUtils.base64Encode( value.getValue() ) );
                     valueElement.addAttribute( new QName( "type", xsiNamespace ), "xsd:" + ParserUtils.BASE64BINARY );
                 }
                 else
                 {
-                    newElement.addElement( "value" ).setText( value.getString() );
+                    newElement.addElement( VALUE ).setText( value.getString() );
                 }
             }
 

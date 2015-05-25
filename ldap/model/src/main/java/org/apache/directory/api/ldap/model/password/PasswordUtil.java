@@ -104,7 +104,7 @@ public class PasswordUtil
                     return null;
                 }
 
-                String algorithm = Strings.toLowerCase( new String( credentials, 1, pos - 1 ) );
+                String algorithm = Strings.toLowerCase( Strings.utf8ToString( credentials, 1, pos - 1 ) );
 
                 return LdapSecurityConstants.getAlgorithm( algorithm );
             }

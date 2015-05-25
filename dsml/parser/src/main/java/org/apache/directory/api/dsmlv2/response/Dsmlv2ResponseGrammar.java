@@ -1437,7 +1437,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 }
                 else
                 {
-                    control.setValue( nextText.trim().getBytes() );
+                    control.setValue( Strings.getBytesUtf8( nextText.trim() ) );
                 }
             }
         }

@@ -1720,7 +1720,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                         break;
                 }
 
-                byte[] data = line.getBytes();
+                byte[] data = Strings.getBytesUtf8( line );
                 // FIXME might fail on windows in the new line issue, yet to check
                 offset += ( data.length + 1 );
                 entryLen += ( data.length + 1 );

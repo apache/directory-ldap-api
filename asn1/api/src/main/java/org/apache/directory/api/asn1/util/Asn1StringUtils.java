@@ -49,8 +49,16 @@ public final class Asn1StringUtils
      */
     public static String dumpByte( byte octet )
     {
-        return new String( new byte[]
-            { '0', 'x', HEX_CHAR[( octet & 0x00F0 ) >> 4], HEX_CHAR[octet & 0x000F] } );
+        try
+        {
+            return new String( new byte[]
+                { '0', 'x', HEX_CHAR[( octet & 0x00F0 ) >> 4], HEX_CHAR[octet & 0x000F] }, "UTF-8" );
+        }
+        catch ( UnsupportedEncodingException e )
+        {
+            // Can't happen
+            return "";
+        }
     }
 
 

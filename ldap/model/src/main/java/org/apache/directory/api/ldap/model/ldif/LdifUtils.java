@@ -21,7 +21,6 @@ package org.apache.directory.api.ldap.model.ldif;
 
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import javax.naming.directory.Attributes;
 
@@ -527,19 +526,8 @@ public final class LdifUtils
      */
     private static String encodeBase64( String str )
     {
-        char[] encoded = null;
-
-        try
-        {
-            // force encoding using UTF-8 charset, as required in RFC2849 note 7
-            encoded = Base64.encode( str.getBytes( "UTF-8" ) );
-        }
-        catch ( UnsupportedEncodingException e )
-        {
-            encoded = Base64.encode( str.getBytes() );
-        }
-
-        return new String( encoded );
+        // force encoding using UTF-8 charset, as required in RFC2849 note 7
+        return new String( Base64.encode( Strings.getBytesUtf8( str ) ) );
     }
 
 

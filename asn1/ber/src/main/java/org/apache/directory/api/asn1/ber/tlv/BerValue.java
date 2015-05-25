@@ -658,7 +658,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ) );
+            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -692,7 +692,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ) );
+            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -728,7 +728,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ) );
+            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -760,7 +760,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ) );
+            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -788,7 +788,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ) );
+            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -816,7 +816,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ) );
+            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -845,7 +845,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ) );
+            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -873,7 +873,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ) );
+            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 
@@ -906,7 +906,7 @@ public class BerValue
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ) );
+            throw new EncoderException( I18n.err( I18n.ERR_00004_PDU_BUFFER_SIZE_TOO_SMALL ), boe );
         }
     }
 

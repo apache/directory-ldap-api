@@ -46,6 +46,7 @@ import org.apache.directory.api.dsmlv2.response.BindResponseDsml;
 import org.apache.directory.api.dsmlv2.response.CompareResponseDsml;
 import org.apache.directory.api.dsmlv2.response.DelResponseDsml;
 import org.apache.directory.api.dsmlv2.response.ErrorResponse;
+import org.apache.directory.api.dsmlv2.response.ErrorResponse.ErrorResponseType;
 import org.apache.directory.api.dsmlv2.response.ExtendedResponseDsml;
 import org.apache.directory.api.dsmlv2.response.ModDNResponseDsml;
 import org.apache.directory.api.dsmlv2.response.ModifyResponseDsml;
@@ -53,7 +54,6 @@ import org.apache.directory.api.dsmlv2.response.SearchResponseDsml;
 import org.apache.directory.api.dsmlv2.response.SearchResultDoneDsml;
 import org.apache.directory.api.dsmlv2.response.SearchResultEntryDsml;
 import org.apache.directory.api.dsmlv2.response.SearchResultReferenceDsml;
-import org.apache.directory.api.dsmlv2.response.ErrorResponse.ErrorResponseType;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.cursor.SearchCursor;
 import org.apache.directory.api.ldap.model.exception.LdapException;
@@ -130,6 +130,8 @@ public class Dsmlv2Engine
 
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( Dsmlv2Engine.class );
+    
+    private static final String BODY_ENVELOPE = "</Body></Envelope>";
 
 
     /**
@@ -312,7 +314,7 @@ public class Dsmlv2Engine
                 respWriter.write( batchResponse.toDsml() );
                 if ( generateSoapResp )
                 {
-                    respWriter.write( "</Body></Envelope>" );
+                    respWriter.write( BODY_ENVELOPE );
                 }
 
                 respWriter.flush();
@@ -341,7 +343,7 @@ public class Dsmlv2Engine
                 respWriter.write( batchResponse.toDsml() );
                 if ( generateSoapResp )
                 {
-                    respWriter.write( "</Body></Envelope>" );
+                    respWriter.write( BODY_ENVELOPE );
                 }
 
                 respWriter.flush();
@@ -405,7 +407,7 @@ public class Dsmlv2Engine
 
                 if ( generateSoapResp )
                 {
-                    respWriter.write( "</Body></Envelope>" );
+                    respWriter.write( BODY_ENVELOPE );
                 }
 
                 respWriter.flush();
@@ -499,7 +501,7 @@ public class Dsmlv2Engine
 
             if ( generateSoapResp )
             {
-                respWriter.write( "</Body></Envelope>" );
+                respWriter.write( BODY_ENVELOPE );
             }
 
             respWriter.flush();

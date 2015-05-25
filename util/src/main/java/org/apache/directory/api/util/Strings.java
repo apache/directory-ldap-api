@@ -259,7 +259,7 @@ public final class Strings
      */
     public static String dumpByte( byte octet )
     {
-        return new String( new byte[]
+        return Strings.utf8ToString( new byte[]
             { '0', 'x', HEX_CHAR[( octet & 0x00F0 ) >> 4], HEX_CHAR[octet & 0x000F] } );
     }
 
@@ -1936,7 +1936,7 @@ public final class Strings
             value[i] = TO_LOWER_CASE_BYTE[value[i]];
         }
 
-        return new String( value );
+        return Strings.utf8ToString( value );
     }
 
 
@@ -2138,25 +2138,23 @@ public final class Strings
      */
     public static boolean isValidUuid( String uuid )
     {
-        byte[] b = uuid.getBytes();
-
-        if ( b.length < 36 )
+        if ( uuid.length() < 36 )
         {
             return false;
         }
 
-        if ( isHex( b[0] ) && isHex( b[1] ) && isHex( b[2] ) && isHex( b[3] )
-            && isHex( b[4] ) && isHex( b[5] ) && isHex( b[6] ) && isHex( b[7] )
-            && ( b[8] == '-' )
-            && isHex( b[9] ) && isHex( b[10] ) && isHex( b[11] ) && isHex( b[12] )
-            && ( b[13] == '-' )
-            && isHex( b[14] ) && isHex( b[15] ) && isHex( b[16] ) && isHex( b[17] )
-            && ( b[18] == '-' )
-            && isHex( b[19] ) && isHex( b[20] ) && isHex( b[21] ) && isHex( b[22] )
-            && ( b[23] == '-' )
-            && isHex( b[24] ) && isHex( b[25] ) && isHex( b[26] ) && isHex( b[27] )
-            && isHex( b[28] ) && isHex( b[29] ) && isHex( b[30] ) && isHex( b[31] )
-            && isHex( b[32] ) && isHex( b[33] ) && isHex( b[34] ) && isHex( b[35] ) )
+        if ( isHex( uuid.charAt(0) ) && isHex( uuid.charAt(1) ) && isHex( uuid.charAt(2) ) && isHex( uuid.charAt(3) )
+            && isHex( uuid.charAt(4) ) && isHex( uuid.charAt(5) ) && isHex( uuid.charAt(6) ) && isHex( uuid.charAt(7) )
+            && ( uuid.charAt(8) == '-' )
+            && isHex( uuid.charAt(9) ) && isHex( uuid.charAt(10) ) && isHex( uuid.charAt(11) ) && isHex( uuid.charAt(12) )
+            && ( uuid.charAt(13) == '-' )
+            && isHex( uuid.charAt(14) ) && isHex( uuid.charAt(15) ) && isHex( uuid.charAt(16) ) && isHex( uuid.charAt(17) )
+            && ( uuid.charAt(18) == '-' )
+            && isHex( uuid.charAt(19) ) && isHex( uuid.charAt(20) ) && isHex( uuid.charAt(21) ) && isHex( uuid.charAt(22) )
+            && ( uuid.charAt(23) == '-' )
+            && isHex( uuid.charAt(24) ) && isHex( uuid.charAt(25) ) && isHex( uuid.charAt(26) ) && isHex( uuid.charAt(27) )
+            && isHex( uuid.charAt(28) ) && isHex( uuid.charAt(29) ) && isHex( uuid.charAt(30) ) && isHex( uuid.charAt(31) )
+            && isHex( uuid.charAt(32) ) && isHex( uuid.charAt(33) ) && isHex( uuid.charAt(34) ) && isHex( uuid.charAt(35) ) )
         {
             // There is not that much more we can check.
             LOG.debug( "Syntax valid for '{}'", uuid );
