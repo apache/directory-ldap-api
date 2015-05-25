@@ -153,7 +153,7 @@ public class BindResponseDecorator extends ResponseDecorator<BindResponse> imple
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

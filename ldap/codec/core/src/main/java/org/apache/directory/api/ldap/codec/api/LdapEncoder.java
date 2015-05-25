@@ -114,11 +114,11 @@ public class LdapEncoder
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         // The control type
-        BerValue.encode( buffer, control.getOid().getBytes() );
+        BerValue.encode( buffer, Strings.getBytesUtf8( control.getOid() ) );
 
         // The control criticality, if true
         if ( control.isCritical() )
@@ -172,7 +172,7 @@ public class LdapEncoder
             }
             catch ( BufferOverflowException boe )
             {
-                throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+                throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
             }
 
             // The message Id

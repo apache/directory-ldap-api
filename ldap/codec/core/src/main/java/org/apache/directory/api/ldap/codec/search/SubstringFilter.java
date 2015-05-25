@@ -296,7 +296,7 @@ public class SubstringFilter extends Filter
             buffer.put( TLV.getBytes( substringsFilterLength ) );
 
             // The type
-            BerValue.encode( buffer, type.getBytes() );
+            BerValue.encode( buffer, Strings.getBytesUtf8( type ) );
 
             // The SubstringSequenceFilter Tag
             buffer.put( UniversalTag.SEQUENCE.getValue() );
@@ -340,7 +340,7 @@ public class SubstringFilter extends Filter
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         return buffer;

@@ -375,7 +375,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( I18n.err( I18n.ERR_04005 ) );
+            throw new EncoderException( I18n.err( I18n.ERR_04005 ), boe );
         }
 
         // The version (LDAP V3 only)
@@ -422,7 +422,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
             catch ( BufferOverflowException boe )
             {
                 String msg = I18n.err( I18n.ERR_04005 );
-                throw new EncoderException( msg );
+                throw new EncoderException( msg, boe );
             }
         }
         else
@@ -446,7 +446,7 @@ public class BindRequestDecorator extends SingleReplyRequestDecorator<BindReques
             catch ( BufferOverflowException boe )
             {
                 String msg = I18n.err( I18n.ERR_04005 );
-                throw new EncoderException( msg );
+                throw new EncoderException( msg, boe );
             }
         }
 

@@ -120,7 +120,7 @@ public class UnbindRequestDecorator extends RequestDecorator<UnbindRequest> impl
         catch ( BufferOverflowException boe )
         {
             String msg = I18n.err( I18n.ERR_04005 );
-            throw new EncoderException( msg );
+            throw new EncoderException( msg, boe );
         }
 
         return buffer;

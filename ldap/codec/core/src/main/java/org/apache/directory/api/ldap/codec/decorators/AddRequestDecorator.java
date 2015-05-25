@@ -433,7 +433,7 @@ public final class AddRequestDecorator extends SingleReplyRequestDecorator<AddRe
         }
         catch ( BufferOverflowException boe )
         {
-            throw new EncoderException( "The PDU buffer size is too small !" );
+            throw new EncoderException( "The PDU buffer size is too small !", boe );
         }
     }
 }
