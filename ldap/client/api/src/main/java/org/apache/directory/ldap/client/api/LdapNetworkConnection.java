@@ -2625,7 +2625,18 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         ModifyDnRequest modDnRequest = new ModifyDnRequestImpl();
         modDnRequest.setName( entryDn );
         modDnRequest.setNewRdn( newDn.getRdn() );
-        modDnRequest.setNewSuperior( newDn.getParent() );
+        
+        // Check if we really need to specify newSuperior.
+        // newSuperior is optional [RFC4511, section 4.9]
+        // Some servers (e.g. OpenDJ 2.6) require a special privilege if
+        // newSuperior is specified even if it is the same as the old one. Therefore let's not
+        // specify it if we do not need it. This is better interoperability. 
+        Dn newDnParent = entryDn.getParent();
+        if ( newDnParent != null && !newDnParent.equals( newDn.getParent() ) )
+        {
+            modDnRequest.setNewSuperior( newDnParent );
+        }
+        
         modDnRequest.setDeleteOldRdn( deleteOldRdn );
 
         ModifyDnResponse modifyDnResponse = modifyDn( modDnRequest );
