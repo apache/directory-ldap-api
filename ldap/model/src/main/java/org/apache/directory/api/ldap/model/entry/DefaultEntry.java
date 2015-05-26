@@ -1435,7 +1435,7 @@ public final class DefaultEntry implements Entry
             {
                 String message = I18n.err( I18n.ERR_04464, upId, ne.getLocalizedMessage() );
                 LOG.error( message );
-                throw new IllegalArgumentException( message );
+                throw new IllegalArgumentException( message, ne );
             }
         }
     }
@@ -1474,7 +1474,7 @@ public final class DefaultEntry implements Entry
             {
                 String message = I18n.err( I18n.ERR_04464, upId, ne.getLocalizedMessage() );
                 LOG.error( message );
-                throw new IllegalArgumentException( message );
+                throw new IllegalArgumentException( message, ne );
             }
         }
     }
@@ -1513,7 +1513,7 @@ public final class DefaultEntry implements Entry
             {
                 String message = I18n.err( I18n.ERR_04464, upId, ne.getLocalizedMessage() );
                 LOG.error( message );
-                throw new IllegalArgumentException( message );
+                throw new IllegalArgumentException( message, ne );
             }
         }
     }
@@ -1654,7 +1654,7 @@ public final class DefaultEntry implements Entry
             {
                 String message = I18n.err( I18n.ERR_04477_NO_VALID_AT_FOR_THIS_ID );
                 LOG.error( message );
-                throw new IllegalArgumentException( message );
+                throw new IllegalArgumentException( message, e );
             }
         }
         else
@@ -1704,7 +1704,7 @@ public final class DefaultEntry implements Entry
             {
                 String message = I18n.err( I18n.ERR_04477_NO_VALID_AT_FOR_THIS_ID );
                 LOG.error( message );
-                throw new IllegalArgumentException( message );
+                throw new IllegalArgumentException( message, e );
             }
         }
         else
@@ -1747,7 +1747,7 @@ public final class DefaultEntry implements Entry
             {
                 String message = I18n.err( I18n.ERR_04477_NO_VALID_AT_FOR_THIS_ID );
                 LOG.error( message );
-                throw new IllegalArgumentException( message );
+                throw new IllegalArgumentException( message, e );
             }
         }
         else
@@ -2415,7 +2415,7 @@ public final class DefaultEntry implements Entry
                 {
                     String message = le.getLocalizedMessage();
                     LOG.error( message );
-                    throw new IOException( message );
+                    throw new IOException( message, le );
                 }
             }
             else

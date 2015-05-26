@@ -100,7 +100,7 @@ public class StoreReference extends GrammarAction<LdapMessageContainer<SearchRes
             catch ( LdapURLEncodingException luee )
             {
                 LOG.error( I18n.err( I18n.ERR_04021, urlStr, luee.getMessage() ) );
-                throw new DecoderException( I18n.err( I18n.ERR_04016, luee.getMessage() ) );
+                throw new DecoderException( I18n.err( I18n.ERR_04016, luee.getMessage() ) , luee);
             }
         }
 

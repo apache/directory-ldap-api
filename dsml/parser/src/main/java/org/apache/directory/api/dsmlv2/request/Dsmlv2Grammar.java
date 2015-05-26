@@ -1320,6 +1320,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             String attributeValue;
             // requestID
             attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
+            
             if ( attributeValue != null )
             {
                 abandonRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
@@ -1331,17 +1332,19 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
                 }
             }
+            
             // abandonID
             attributeValue = xpp.getAttributeValue( "", "abandonID" );
+            
             if ( attributeValue != null )
             {
                 try
                 {
                     abandonRequest.setAbandoned( Integer.parseInt( attributeValue ) );
                 }
-                catch ( NumberFormatException e )
+                catch ( NumberFormatException nfe )
                 {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03017 ), xpp, null );
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03017 ), xpp, nfe );
                 }
             }
             else
@@ -1367,6 +1370,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             String attributeValue;
             // requestID
             attributeValue = xpp.getAttributeValue( "", REQUEST_ID );
+            
             if ( attributeValue != null )
             {
                 addRequest.setMessageId( ParserUtils.parseAndVerifyRequestID( attributeValue, xpp ) );
@@ -1378,17 +1382,19 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     throw new XmlPullParserException( I18n.err( I18n.ERR_03016 ), xpp, null );
                 }
             }
+            
             // dn
             attributeValue = xpp.getAttributeValue( "", "dn" );
+            
             if ( attributeValue != null )
             {
                 try
                 {
                     addRequest.setEntryDn( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
                 }
             }
             else
@@ -1421,9 +1427,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     addRequest.addAttributeType( attributeValue );
                 }
-                catch ( LdapException e )
+                catch ( LdapException le )
                 {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03020 ), xpp, e );
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03020 ), xpp, le );
                 }
             }
             else
@@ -1452,6 +1458,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
                 // Getting the value
                 String nextText = xpp.nextText();
+                
                 if ( !nextText.equals( "" ) )
                 {
                     try
@@ -1467,13 +1474,13 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     }
                     catch ( LdapException le )
                     {
-                        throw new XmlPullParserException( le.getMessage() );
+                        throw new XmlPullParserException( le.getMessage(), xpp, le );
                     }
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -1561,9 +1568,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     compareRequest.setName( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
                 }
             }
             else
@@ -1632,9 +1639,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     }
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -1677,9 +1684,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     delRequest.setName( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( "" + lide.getMessage(), xpp, lide );
                 }
             }
             else
@@ -1756,9 +1763,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     }
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -1795,9 +1802,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     }
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -1840,9 +1847,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     modifyDNRequest.setName( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( "" + lide.getMessage(), xpp, lide );
                 }
             }
             else
@@ -1859,9 +1866,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     modifyDNRequest.setNewRdn( new Rdn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( "" + lide.getMessage(), xpp, lide );
                 }
             }
             else
@@ -1901,9 +1908,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     modifyDNRequest.setNewSuperior( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( "" + lide.getMessage(), xpp, lide );
                 }
             }
         }
@@ -1947,9 +1954,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     modifyRequest.setName( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getLocalizedMessage(), xpp, null );
+                    throw new XmlPullParserException( "" + lide.getLocalizedMessage(), xpp, lide );
                 }
             }
             else
@@ -2050,12 +2057,12 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 }
                 catch ( LdapException le )
                 {
-                    throw new XmlPullParserException( le.getMessage() );
+                    throw new XmlPullParserException( le.getMessage(), xpp, le );
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -2098,9 +2105,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     searchRequest.setBase( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
                 }
             }
             else
@@ -2175,9 +2182,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     searchRequest.setSizeLimit( Long.parseLong( attributeValue ) );
                 }
-                catch ( NumberFormatException e )
+                catch ( NumberFormatException nfe )
                 {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03030 ), xpp, null );
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03030 ), xpp, nfe );
                 }
             }
             else
@@ -2194,9 +2201,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                 {
                     searchRequest.setTimeLimit( Integer.parseInt( attributeValue ) );
                 }
-                catch ( NumberFormatException e )
+                catch ( NumberFormatException nfe )
                 {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03031 ), xpp, null );
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03031 ), xpp, nfe );
                 }
             }
             else
@@ -2274,9 +2281,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 searchRequestDecorator.addCurrentFilter( filter );
             }
-            catch ( DecoderException e )
+            catch ( DecoderException de )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
             }
 
             searchRequestDecorator.setTerminalFilter( filter );
@@ -2333,9 +2340,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     }
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -2374,9 +2381,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     }
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -2416,9 +2423,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     }
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -2456,9 +2463,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 searchRequestDecorator.addCurrentFilter( filter );
             }
-            catch ( DecoderException e )
+            catch ( DecoderException de )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
             }
         }
     };
@@ -2496,9 +2503,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 searchRequestDecorator.addCurrentFilter( filter );
             }
-            catch ( DecoderException e )
+            catch ( DecoderException de )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
             }
         }
     };
@@ -2522,9 +2529,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 searchRequestDecorator.addCurrentFilter( filter );
             }
-            catch ( DecoderException e )
+            catch ( DecoderException de )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
             }
         }
     };
@@ -2565,9 +2572,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 searchRequestDecorator.addCurrentFilter( filter );
             }
-            catch ( DecoderException e )
+            catch ( DecoderException de )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
             }
 
             searchRequestDecorator.setTerminalFilter( filter );
@@ -2610,9 +2617,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 searchRequestDecorator.addCurrentFilter( filter );
             }
-            catch ( DecoderException e )
+            catch ( DecoderException de )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
             }
 
             searchRequestDecorator.setTerminalFilter( filter );
@@ -2657,9 +2664,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 searchRequestDecorator.addCurrentFilter( filter );
             }
-            catch ( DecoderException e )
+            catch ( DecoderException de )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
             }
 
             searchRequestDecorator.setTerminalFilter( filter );
@@ -2702,9 +2709,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 searchRequestDecorator.addCurrentFilter( filter );
             }
-            catch ( DecoderException e )
+            catch ( DecoderException de )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
             }
 
             searchRequestDecorator.setTerminalFilter( filter );
@@ -2748,9 +2755,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     }
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -2774,9 +2781,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 searchRequestDecorator.addCurrentFilter( presentFilter );
             }
-            catch ( DecoderException e )
+            catch ( DecoderException de )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
             }
 
             // Checking and adding the filter's attributes
@@ -2835,9 +2842,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
             {
                 searchRequestDecorator.addCurrentFilter( extensibleMatchFilter );
             }
-            catch ( DecoderException e )
+            catch ( DecoderException de )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, de );
             }
 
             searchRequestDecorator.setTerminalFilter( extensibleMatchFilter );
@@ -2905,6 +2912,7 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
 
                 // Getting the value
                 String nextText = xpp.nextText();
+                
                 if ( !nextText.equals( "" ) )
                 {
                     if ( ParserUtils.isBase64BinaryValue( xpp, typeValue ) )
@@ -2917,9 +2925,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     }
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -3008,9 +3016,9 @@ public final class Dsmlv2Grammar extends AbstractGrammar implements Grammar
                     }
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };

@@ -198,9 +198,9 @@ public class Dsmlv2Parser
             {
                 eventType = xpp.next();
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03037, e.getLocalizedMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03037, ioe.getLocalizedMessage() ), xpp, ioe );
             }
         }
         while ( container.getState() != Dsmlv2StatesEnum.BATCHREQUEST_START_TAG );
@@ -279,9 +279,9 @@ public class Dsmlv2Parser
                 {
                     xpp.next();
                 }
-                catch ( IOException e )
+                catch ( IOException ioe )
                 {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03037, e.getLocalizedMessage() ), xpp, null );
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03037, ioe.getLocalizedMessage() ), xpp, ioe );
                 }
                 eventType = xpp.getEventType();
             }
@@ -309,9 +309,9 @@ public class Dsmlv2Parser
             {
                 eventType = xpp.next();
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03037, e.getLocalizedMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03037, ioe.getLocalizedMessage() ), xpp, ioe );
             }
         }
         while ( container.getState() != Dsmlv2StatesEnum.BATCHREQUEST_LOOP );

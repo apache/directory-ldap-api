@@ -90,14 +90,15 @@ public class GeneralizedTimeComparator extends LdapComparator<String>
         }
         catch ( IOException ioe )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, backendValue ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, backendValue ), ioe );
         }
         catch ( ParseException pe )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, backendValue ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, backendValue ), pe );
         }
 
         GeneralizedTime assertTime;
+        
         try
         {
             String prepared = PrepareString.normalize( assertValue, PrepareString.StringType.DIRECTORY_STRING );
@@ -105,11 +106,11 @@ public class GeneralizedTimeComparator extends LdapComparator<String>
         }
         catch ( IOException ioe )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, assertValue ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, assertValue ), ioe );
         }
         catch ( ParseException pe )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, assertValue ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, assertValue ), pe );
         }
 
         return backendTime.compareTo( assertTime );

@@ -112,7 +112,7 @@ public class StoreMatchedDN extends GrammarAction<LdapMessageContainer<MessageDe
                             .getLocalizedMessage() );
                         LOG.error( msg );
 
-                        throw new DecoderException( I18n.err( I18n.ERR_04014, ine.getLocalizedMessage() ) );
+                        throw new DecoderException( I18n.err( I18n.ERR_04014, ine.getLocalizedMessage() ), ine );
                     }
 
                     break;

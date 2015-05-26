@@ -116,5 +116,4 @@ public class SubtreeSpecificationChecker
             throw new ParseException( msg, 0 );
         }
     }
-
 }

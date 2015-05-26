@@ -77,9 +77,9 @@ public class SerializableComparator<E> extends LdapComparator<E> implements Seri
             {
                 wrapped = ( Comparator<E> ) schemaManager.lookupComparatorRegistry( matchingRuleOid );
             }
-            catch ( LdapException e )
+            catch ( LdapException le )
             {
-                throw new RuntimeException( I18n.err( I18n.ERR_04221, matchingRuleOid ) );
+                throw new RuntimeException( I18n.err( I18n.ERR_04221, matchingRuleOid ), le );
             }
         }
 

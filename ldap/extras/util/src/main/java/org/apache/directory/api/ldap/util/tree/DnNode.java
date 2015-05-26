@@ -199,7 +199,7 @@ public class DnNode<N> implements Cloneable
         catch ( LdapException le )
         {
             // Special cas e: the Dn is empty, this is not allowed
-            throw new IllegalArgumentException( le.getMessage() );
+            throw new IllegalArgumentException( le.getMessage(), le );
         }
     }
 

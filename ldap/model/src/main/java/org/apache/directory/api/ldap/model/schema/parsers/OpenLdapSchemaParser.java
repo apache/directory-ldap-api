@@ -286,16 +286,16 @@ public class OpenLdapSchemaParser extends AbstractSchemaParser<SchemaObject>
             afterParse();
             monitor.finishedParse( "Done parsing!" );
         }
-        catch ( RecognitionException e )
+        catch ( RecognitionException re )
         {
             String msg = "Parser failure on:\n\t" + subject;
-            msg += "\nAntlr exception trace:\n" + ExceptionUtils.getFullStackTrace( e );
-            throw new ParseException( msg, e.getColumn() );
+            msg += "\nAntlr exception trace:\n" + ExceptionUtils.getFullStackTrace( re );
+            throw new ParseException( msg, re.getColumn() );
         }
-        catch ( TokenStreamException e2 )
+        catch ( TokenStreamException tse )
         {
             String msg = "Parser failure on:\n\t" + subject;
-            msg += "\nAntlr exception trace:\n" + ExceptionUtils.getFullStackTrace( e2 );
+            msg += "\nAntlr exception trace:\n" + ExceptionUtils.getFullStackTrace( tse );
             throw new ParseException( msg, 0 );
         }
     }

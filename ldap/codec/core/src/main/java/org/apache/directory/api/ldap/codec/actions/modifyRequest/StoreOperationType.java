@@ -85,7 +85,7 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
             LOG.error( msg );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( msg );
+            throw new DecoderException( msg, ide );
         }
 
         // Store the current operation.

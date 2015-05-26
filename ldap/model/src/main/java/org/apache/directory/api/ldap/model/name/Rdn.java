@@ -884,7 +884,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         }
         catch ( CloneNotSupportedException cnse )
         {
-            throw new Error( "Assertion failure" );
+            throw new Error( "Assertion failure", cnse );
         }
     }
 

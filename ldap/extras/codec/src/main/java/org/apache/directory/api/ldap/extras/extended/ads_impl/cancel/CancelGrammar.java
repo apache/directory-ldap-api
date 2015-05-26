@@ -128,11 +128,11 @@ public final class CancelGrammar extends AbstractGrammar<CancelContainer>
                             cancelContainer.getCancel().setCancelId( cancelId );
                             cancelContainer.setGrammarEndAllowed( true );
                         }
-                        catch ( IntegerDecoderException e )
+                        catch ( IntegerDecoderException ide )
                         {
                             String msg = I18n.err( I18n.ERR_04031, Strings.dumpBytes( value.getData() ) );
                             LOG.error( msg );
-                            throw new DecoderException( msg );
+                            throw new DecoderException( msg, ide );
                         }
                     }
                 } );

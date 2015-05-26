@@ -342,7 +342,7 @@ public class LdapUrl
         }
         catch ( UnsupportedEncodingException uee )
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04409, string ) );
+            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04409, string ) , uee );
         }
     }
 
@@ -881,9 +881,9 @@ public class LdapUrl
         {
             return data.getBytes( "US-ASCII" );
         }
-        catch ( UnsupportedEncodingException e )
+        catch ( UnsupportedEncodingException uee )
         {
-            throw new UrlDecoderException( I18n.err( I18n.ERR_04413 ) );
+            throw new UrlDecoderException( I18n.err( I18n.ERR_04413 ), uee );
         }
     }
 
@@ -924,9 +924,9 @@ public class LdapUrl
 
                     buffer.write( ( char ) ( ( u << 4 ) + l ) );
                 }
-                catch ( ArrayIndexOutOfBoundsException e )
+                catch ( ArrayIndexOutOfBoundsException aioobe )
                 {
-                    throw new UrlDecoderException( I18n.err( I18n.ERR_04414 ) );
+                    throw new UrlDecoderException( I18n.err( I18n.ERR_04414 ) , aioobe );
                 }
             }
             else

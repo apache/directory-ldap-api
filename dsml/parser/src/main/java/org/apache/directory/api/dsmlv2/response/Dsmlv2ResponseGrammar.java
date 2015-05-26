@@ -928,9 +928,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 {
                     ldapResult.setMatchedDn( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
                 }
             }
         }
@@ -971,9 +971,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 {
                     ldapResult.setMatchedDn( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
                 }
             }
         }
@@ -1013,9 +1013,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 {
                     ldapResult.setMatchedDn( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
                 }
             }
         }
@@ -1055,9 +1055,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 {
                     ldapResult.setMatchedDn( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
                 }
             }
         }
@@ -1097,9 +1097,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 {
                     ldapResult.setMatchedDn( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
                 }
             }
         }
@@ -1139,9 +1139,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 {
                     ldapResult.setMatchedDn( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
                 }
             }
         }
@@ -1189,9 +1189,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 {
                     ldapResult.setMatchedDn( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
                 }
             }
         }
@@ -1285,9 +1285,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                     errorResponse.setMessage( nextText.trim() );
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
+                throw new XmlPullParserException( ioe.getMessage(), xpp, ioe );
             }
         }
     };
@@ -1441,9 +1441,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 }
             }
         }
-        catch ( IOException e )
+        catch ( IOException ioe )
         {
-            throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+            throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
         }
     }
 
@@ -1540,9 +1540,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 {
                     ldapResult.setResultCode( ResultCodeEnum.getResultCode( Integer.parseInt( attributeValue ) ) );
                 }
-                catch ( NumberFormatException e )
+                catch ( NumberFormatException nfe )
                 {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03009 ), xpp, null );
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03009 ), xpp, nfe );
                 }
             }
             else
@@ -1595,9 +1595,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                     ldapResult.setDiagnosticMessage( nextText.trim() );
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -1646,15 +1646,15 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                         LdapUrl ldapUrl = new LdapUrl( urlStr );
                         ldapResult.getReferral().addLdapUrl( ldapUrl.toString() );
                     }
-                    catch ( LdapURLEncodingException e )
+                    catch ( LdapURLEncodingException luee )
                     {
-                        throw new XmlPullParserException( e.getMessage(), xpp, null );
+                        throw new XmlPullParserException( luee.getMessage(), xpp, luee );
                     }
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -1723,9 +1723,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 {
                     searchResultEntry.setObjectName( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
                 }
             }
             else
@@ -1804,9 +1804,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 {
                     searchResultDone.getLdapResult().setMatchedDn( new Dn( attributeValue ) );
                 }
-                catch ( LdapInvalidDnException e )
+                catch ( LdapInvalidDnException lide )
                 {
-                    throw new XmlPullParserException( "" + e.getMessage(), xpp, null );
+                    throw new XmlPullParserException( lide.getMessage(), xpp, lide );
                 }
             }
         }
@@ -1840,7 +1840,7 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 }
                 catch ( LdapException le )
                 {
-                    throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, null );
+                    throw new XmlPullParserException( I18n.err( I18n.ERR_03012 ), xpp, le );
                 }
             }
             else
@@ -1886,12 +1886,12 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 }
                 catch ( LdapException le )
                 {
-                    throw new XmlPullParserException( le.getMessage() );
+                    throw new XmlPullParserException( le.getMessage(), xpp, le );
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };
@@ -1921,13 +1921,13 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                     searchResultReference.getReferral().addLdapUrl( ldapUrl.toString() );
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
-            catch ( LdapURLEncodingException e )
+            catch ( LdapURLEncodingException luee )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
+                throw new XmlPullParserException( luee.getMessage(), xpp, luee );
             }
         }
     };
@@ -1969,13 +1969,13 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                 }
 
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
-            catch ( DecoderException e )
+            catch ( DecoderException de )
             {
-                throw new XmlPullParserException( e.getMessage(), xpp, null );
+                throw new XmlPullParserException( de.getMessage(), xpp, de );
             }
         }
     };
@@ -2009,9 +2009,9 @@ public final class Dsmlv2ResponseGrammar extends AbstractGrammar implements Gram
                     extendedResponse.setResponseValue( Strings.getBytesUtf8( nextText.trim() ) );
                 }
             }
-            catch ( IOException e )
+            catch ( IOException ioe )
             {
-                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, e.getMessage() ), xpp, null );
+                throw new XmlPullParserException( I18n.err( I18n.ERR_03008, ioe.getMessage() ), xpp, ioe );
             }
         }
     };

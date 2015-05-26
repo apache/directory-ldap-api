@@ -55,14 +55,36 @@ public class ResponseCarryingMessageException extends RuntimeMultiException
 
 
     /**
+     * Constructs an Exception without a message.
+     *
+     * @param cause The original cause
+     */
+    public ResponseCarryingMessageException( Throwable cause )
+    {
+        super( "", cause );
+    }
+
+
+    /**
      * Constructs an Exception with a detailed message.
      * 
-     * @param message
-     *            The message associated with the exception.
+     * @param message The message associated with the exception.
      */
     public ResponseCarryingMessageException( String message )
     {
         super( message );
+    }
+
+
+    /**
+     * Constructs an Exception with a detailed message.
+     * 
+     * @param message The message associated with the exception.
+     * @param cause The original cause
+     */
+    public ResponseCarryingMessageException( String message, Throwable cause )
+    {
+        super( message, cause );
     }
 
 

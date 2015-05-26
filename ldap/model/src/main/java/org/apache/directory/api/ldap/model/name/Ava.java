@@ -603,7 +603,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         }
         catch ( CloneNotSupportedException cnse )
         {
-            throw new Error( "Assertion failure" );
+            throw new Error( "Assertion failure", cnse );
         }
     }
 

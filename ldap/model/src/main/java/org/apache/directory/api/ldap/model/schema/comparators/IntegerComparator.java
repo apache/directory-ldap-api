@@ -131,17 +131,17 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
         {
             backendValue = PrepareString.normalize( backendValue, PrepareString.StringType.NUMERIC_STRING );
         }
-        catch ( IOException e )
+        catch ( IOException ioe )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, backendValue ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, backendValue ) , ioe);
         }
         try
         {
             assertValue = PrepareString.normalize( assertValue, PrepareString.StringType.NUMERIC_STRING );
         }
-        catch ( IOException e )
+        catch ( IOException ioe )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, assertValue ) );
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, assertValue ), ioe );
         }
 
         BigInteger b1 = new BigInteger( backendValue );

@@ -137,7 +137,7 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
                         {
                             String msg = "Error while decoding the AdDirSync flag : " + ide.getMessage();
                             LOG.error( msg, ide );
-                            throw new DecoderException( msg );
+                            throw new DecoderException( msg, ide );
                         }
                     }
                 } );
@@ -176,7 +176,7 @@ public final class AdDirSyncGrammar extends AbstractGrammar<AdDirSyncContainer>
                         {
                             String msg = "Error while decoding the AdDirSync maxReturnLength : " + ide.getMessage();
                             LOG.error( msg, ide );
-                            throw new DecoderException( msg );
+                            throw new DecoderException( msg, ide );
                         }
                     }
                 } );

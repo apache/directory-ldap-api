@@ -106,7 +106,7 @@ public class StoreMessageId extends GrammarAction<LdapMessageContainer<MessageDe
                 .getLocalizedMessage() ) );
 
             // This will generate a PROTOCOL_ERROR
-            throw new DecoderException( ide.getMessage() );
+            throw new DecoderException( ide.getMessage(), ide );
         }
     }
 }

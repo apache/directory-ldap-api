@@ -228,7 +228,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             String msg = I18n.err( I18n.ERR_04025 );
                             LOG.error( msg, be );
-                            throw new DecoderException( msg );
+                            throw new DecoderException( msg, be );
                         }
 
                         // We can have an END transition
@@ -277,7 +277,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             String msg = I18n.err( I18n.ERR_04025 );
                             LOG.error( msg, be );
-                            throw new DecoderException( msg );
+                            throw new DecoderException( msg, be );
                         }
 
                         // We can have an END transition
@@ -390,7 +390,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             String msg = I18n.err( I18n.ERR_04025 );
                             LOG.error( msg, be );
-                            throw new DecoderException( msg );
+                            throw new DecoderException( msg, be );
                         }
 
                         // We can have an END transition
@@ -439,7 +439,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             String msg = I18n.err( I18n.ERR_04025 );
                             LOG.error( msg, be );
-                            throw new DecoderException( msg );
+                            throw new DecoderException( msg, be );
                         }
 
                         // We can have an END transition
@@ -541,7 +541,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             String msg = I18n.err( I18n.ERR_04026 );
                             LOG.error( msg, be );
-                            throw new DecoderException( msg );
+                            throw new DecoderException( msg, be );
                         }
                     }
                 } );
@@ -584,7 +584,7 @@ public final class SyncInfoValueGrammar extends AbstractGrammar<SyncInfoValueCon
                         {
                             String msg = I18n.err( I18n.ERR_04024 );
                             LOG.error( msg, be );
-                            throw new DecoderException( msg );
+                            throw new DecoderException( msg, be );
                         }
                     }
                 } );

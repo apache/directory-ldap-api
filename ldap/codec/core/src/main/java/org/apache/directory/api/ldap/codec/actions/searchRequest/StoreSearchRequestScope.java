@@ -89,7 +89,7 @@ public class StoreSearchRequestScope extends GrammarAction<LdapMessageContainer<
         {
             String msg = I18n.err( I18n.ERR_04101, value.toString() );
             LOG.error( msg );
-            throw new DecoderException( msg );
+            throw new DecoderException( msg, ide );
         }
 
         searchRequest.setScope( SearchScope.getSearchScope( scope ) );

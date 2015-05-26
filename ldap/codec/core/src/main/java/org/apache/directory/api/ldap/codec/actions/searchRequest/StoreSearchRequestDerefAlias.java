@@ -90,7 +90,7 @@ public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageConta
         {
             String msg = I18n.err( I18n.ERR_04102, value.toString() );
             LOG.error( msg );
-            throw new DecoderException( msg );
+            throw new DecoderException( msg, ide );
         }
 
         searchRequest.setDerefAliases( AliasDerefMode.getDerefMode( derefAliases ) );

@@ -164,7 +164,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
                 messageContainer.clean();
                 
                 // Transform the DecoderException message to a MessageException
-                ResponseCarryingMessageException rcme = new ResponseCarryingMessageException( rce.getMessage() );
+                ResponseCarryingMessageException rcme = new ResponseCarryingMessageException( rce.getMessage(), rce );
                 rcme.setResponse( ( ( ResponseCarryingException ) rce ).getResponse() );
 
                 throw rcme;
@@ -175,7 +175,7 @@ public class LdapProtocolDecoder implements ProtocolDecoder
                 messageContainer.clean();
 
                 // TODO : This is certainly not the way we should handle such an exception !
-                throw new ResponseCarryingException( de.getMessage() );
+                throw new ResponseCarryingException( de.getMessage(), de );
             }
         }
     }

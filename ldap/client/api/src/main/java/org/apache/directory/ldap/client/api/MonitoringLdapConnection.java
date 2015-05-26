@@ -47,9 +47,9 @@ public final class MonitoringLdapConnection extends LdapConnectionWrapper
         {
             START_TLS_OID = Oid.fromString( StartTlsRequest.EXTENSION_OID );
         }
-        catch ( DecoderException e )
+        catch ( DecoderException de )
         {
-            throw new IllegalStateException( "StartTlsRequest.EXTENSION_OID is not a valid oid... This cant happen" );
+            throw new IllegalStateException( "StartTlsRequest.EXTENSION_OID is not a valid oid... This cant happen", de );
         }
     }
 

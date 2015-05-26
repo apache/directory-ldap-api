@@ -103,11 +103,11 @@ public class SortRequestGrammar extends AbstractGrammar<SortRequestContainer>
 
                     container.setGrammarEndAllowed( true );
                 }
-                catch ( BooleanDecoderException e )
+                catch ( BooleanDecoderException bde )
                 {
                     //String msg = I18n.err( I18n.ERR_04050 );
                     //LOG.error( msg, e );
-                    throw new DecoderException( e.getMessage() );
+                    throw new DecoderException( bde.getMessage(), bde );
                 }
             }
 

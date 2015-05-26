@@ -743,7 +743,7 @@ public final class Strings
             catch ( UnsupportedEncodingException uee )
             {
                 // if this happens something is really strange
-                throw new RuntimeException( uee );
+                throw new RuntimeException( uee.getMessage(), uee );
             }
         }
 

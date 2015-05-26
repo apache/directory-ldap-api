@@ -209,9 +209,9 @@ public final class ParserUtils
 
             return requestID;
         }
-        catch ( NumberFormatException e )
+        catch ( NumberFormatException nfe )
         {
-            throw new XmlPullParserException( I18n.err( I18n.ERR_03039 ), xpp, null );
+            throw new XmlPullParserException( I18n.err( I18n.ERR_03039 ), xpp, nfe );
         }
     }
 

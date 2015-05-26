@@ -195,9 +195,9 @@ public final class Oid
             {
                 segments.add( Long.parseLong( segment ) );
             }
-            catch ( NumberFormatException e )
+            catch ( NumberFormatException nfe )
             {
-                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oidString ) );
+                throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, oidString ), nfe );
             }
         }
 

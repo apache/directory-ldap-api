@@ -175,7 +175,7 @@ public class Csn implements Comparable<Csn>
             {
                 String message = I18n.err( I18n.ERR_04118, timestampStr );
                 LOG.error( message );
-                throw new InvalidCSNException( message );
+                throw new InvalidCSNException( message, pe );
             }
         }
 
@@ -190,7 +190,7 @@ public class Csn implements Comparable<Csn>
         {
             String message = I18n.err( I18n.ERR_04119 );
             LOG.error( message );
-            throw new InvalidCSNException( message );
+            throw new InvalidCSNException( message, nfe );
         }
 
         tempTimestamp += ( millis / 1000 );
@@ -216,7 +216,7 @@ public class Csn implements Comparable<Csn>
         {
             String message = I18n.err( I18n.ERR_04121, changeCountStr );
             LOG.error( message );
-            throw new InvalidCSNException( message );
+            throw new InvalidCSNException( message, nfe );
         }
 
         // Get the replicaID
@@ -246,7 +246,7 @@ public class Csn implements Comparable<Csn>
         {
             String message = I18n.err( I18n.ERR_04124, replicaIdStr );
             LOG.error( message );
-            throw new InvalidCSNException( message );
+            throw new InvalidCSNException( message, nfe );
         }
 
         // Get the modification number
@@ -267,7 +267,7 @@ public class Csn implements Comparable<Csn>
         {
             String message = I18n.err( I18n.ERR_04126, operationNumberStr );
             LOG.error( message );
-            throw new InvalidCSNException( message );
+            throw new InvalidCSNException( message, nfe );
         }
 
         csnStr = value;

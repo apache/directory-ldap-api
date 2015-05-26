@@ -205,7 +205,7 @@ public class DefaultSchemaManager implements SchemaManager
         }
         catch ( CloneNotSupportedException cnse )
         {
-            throw new LdapOtherException( cnse.getMessage() );
+            throw new LdapOtherException( cnse.getMessage(), cnse );
         }
     }
 
@@ -259,7 +259,7 @@ public class DefaultSchemaManager implements SchemaManager
         }
         catch ( IOException ioe )
         {
-            throw new LdapOtherException( ioe.getMessage() );
+            throw new LdapOtherException( ioe.getMessage(), ioe );
         }
     }
 
@@ -1854,7 +1854,7 @@ public class DefaultSchemaManager implements SchemaManager
                 }
                 catch ( CloneNotSupportedException cnse )
                 {
-                    throw new LdapOtherException( cnse.getMessage() );
+                    throw new LdapOtherException( cnse.getMessage() , cnse);
                 }
 
                 // Inject the new SchemaObject in the cloned registries
@@ -1967,7 +1967,7 @@ public class DefaultSchemaManager implements SchemaManager
                 }
                 catch ( CloneNotSupportedException cnse )
                 {
-                    throw new LdapOtherException( cnse.getMessage() );
+                    throw new LdapOtherException( cnse.getMessage(), cnse );
                 }
 
                 // Delete the SchemaObject from the cloned registries

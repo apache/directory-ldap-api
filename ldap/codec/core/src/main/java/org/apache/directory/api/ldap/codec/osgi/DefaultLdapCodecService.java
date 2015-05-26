@@ -413,11 +413,11 @@ public class DefaultLdapCodecService implements LdapApiService
 
                     return jndiResponse;
                 }
-                catch ( DecoderException e )
+                catch ( DecoderException de )
                 {
                     NamingException ne = new NamingException( "Unable to decode encoded response value: " +
                         Strings.dumpBytes( berValue ) );
-                    ne.setRootCause( e );
+                    ne.setRootCause( de );
                     throw ne;
                 }
             }

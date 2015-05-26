@@ -211,7 +211,7 @@ public class LdapEncoder
         }
         catch ( EncoderException ee )
         {
-            MessageEncoderException exception = new MessageEncoderException( message.getMessageId(), ee.getMessage() );
+            MessageEncoderException exception = new MessageEncoderException( message.getMessageId(), ee.getMessage(), ee );
 
             throw exception;
         }

@@ -92,7 +92,7 @@ public class StoreMatchingRuleDnAttributes extends GrammarAction<LdapMessageCont
             LOG.error( I18n
                 .err( I18n.ERR_04110, Strings.dumpBytes( value.getData() ), bde.getMessage() ) );
 
-            throw new DecoderException( bde.getMessage() );
+            throw new DecoderException( bde.getMessage(), bde );
         }
 
         if ( IS_DEBUG )

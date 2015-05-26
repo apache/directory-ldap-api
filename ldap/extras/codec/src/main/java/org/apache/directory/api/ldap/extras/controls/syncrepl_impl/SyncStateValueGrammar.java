@@ -130,11 +130,11 @@ public final class SyncStateValueGrammar extends AbstractGrammar<SyncStateValueC
                         // move on to the entryUUID transition
                         container.setGrammarEndAllowed( false );
                     }
-                    catch ( IntegerDecoderException e )
+                    catch ( IntegerDecoderException ide )
                     {
                         String msg = I18n.err( I18n.ERR_04030 );
-                        LOG.error( msg, e );
-                        throw new DecoderException( msg );
+                        LOG.error( msg, ide );
+                        throw new DecoderException( msg, ide );
                     }
                 }
             } );

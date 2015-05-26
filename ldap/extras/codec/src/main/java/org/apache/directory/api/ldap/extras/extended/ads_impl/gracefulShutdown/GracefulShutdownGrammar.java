@@ -132,11 +132,11 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
                             container.getGracefulShutdownRequest().setTimeOffline( timeOffline );
                             container.setGrammarEndAllowed( true );
                         }
-                        catch ( IntegerDecoderException e )
+                        catch ( IntegerDecoderException ide )
                         {
                             String msg = I18n.err( I18n.ERR_04037, Strings.dumpBytes( value.getData() ) );
                             LOG.error( msg );
-                            throw new DecoderException( msg );
+                            throw new DecoderException( msg, ide );
                         }
                     }
                 } );
@@ -174,11 +174,11 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
                             container.getGracefulShutdownRequest().setDelay( delay );
                             container.setGrammarEndAllowed( true );
                         }
-                        catch ( IntegerDecoderException e )
+                        catch ( IntegerDecoderException ide )
                         {
                             String msg = I18n.err( I18n.ERR_04036, Strings.dumpBytes( value.getData() ) );
                             LOG.error( msg );
-                            throw new DecoderException( msg );
+                            throw new DecoderException( msg, ide );
                         }
                     }
                 } );
@@ -218,11 +218,11 @@ public final class GracefulShutdownGrammar extends AbstractGrammar<GracefulShutd
                             gracefulShutdownContainer.getGracefulShutdownRequest().setDelay( delay );
                             gracefulShutdownContainer.setGrammarEndAllowed( true );
                         }
-                        catch ( IntegerDecoderException e )
+                        catch ( IntegerDecoderException ide )
                         {
                             String msg = I18n.err( I18n.ERR_04036, Strings.dumpBytes( value.getData() ) );
                             LOG.error( msg );
-                            throw new DecoderException( msg );
+                            throw new DecoderException( msg, ide );
                         }
                     }
                 } );

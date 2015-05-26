@@ -92,11 +92,11 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
                     container.getGracefulDisconnectResponse().setDelay( delay );
                     container.setGrammarEndAllowed( true );
                 }
-                catch ( IntegerDecoderException e )
+                catch ( IntegerDecoderException ide )
                 {
                     String msg = I18n.err( I18n.ERR_04036, Strings.dumpBytes( value.getData() ) );
                     LOG.error( msg );
-                    throw new DecoderException( msg );
+                    throw new DecoderException( msg, ide );
                 }
             }
         };
@@ -131,11 +131,11 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
                         LOG.debug( "Stores a referral : {}", ldapUrl );
                     }
                 }
-                catch ( LdapURLEncodingException e )
+                catch ( LdapURLEncodingException luee )
                 {
                     String msg = "failed to decode the URL '" + Strings.dumpBytes( value.getData() ) + "'";
                     LOG.error( msg );
-                    throw new DecoderException( msg );
+                    throw new DecoderException( msg, luee );
                 }
             }
         };
@@ -162,11 +162,11 @@ public final class GracefulDisconnectGrammar extends AbstractGrammar<GracefulDis
                     container.getGracefulDisconnectResponse().setTimeOffline( timeOffline );
                     container.setGrammarEndAllowed( true );
                 }
-                catch ( IntegerDecoderException e )
+                catch ( IntegerDecoderException ide )
                 {
                     String msg = I18n.err( I18n.ERR_04037, Strings.dumpBytes( value.getData() ) );
                     LOG.error( msg );
-                    throw new DecoderException( msg );
+                    throw new DecoderException( msg, ide );
                 }
             }
         };
