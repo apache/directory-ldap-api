@@ -2631,8 +2631,8 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Some servers (e.g. OpenDJ 2.6) require a special privilege if
         // newSuperior is specified even if it is the same as the old one. Therefore let's not
         // specify it if we do not need it. This is better interoperability. 
-        Dn newDnParent = entryDn.getParent();
-        if ( newDnParent != null && !newDnParent.equals( newDn.getParent() ) )
+        Dn newDnParent = newDn.getParent();
+        if ( newDnParent != null && !newDnParent.equals( entryDn.getParent() ) )
         {
             modDnRequest.setNewSuperior( newDnParent );
         }
