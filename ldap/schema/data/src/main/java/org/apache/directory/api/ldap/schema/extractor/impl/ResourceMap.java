@@ -178,29 +178,32 @@ public final class ResourceMap
     {
         File[] fileList = directory.listFiles();
 
-        for ( File file : fileList )
+        if ( fileList != null )
         {
-            if ( file.isDirectory() )
+            for ( File file : fileList )
             {
-                getResourcesFromDirectory( map, file, pattern );
-            }
-            else
-            {
-                try
+                if ( file.isDirectory() )
                 {
-                    String fileName = file.getCanonicalPath();
-                    boolean accept = pattern.matcher( fileName ).matches();
-
-                    if ( accept )
-                    {
-                        map.put( fileName, Boolean.FALSE );
-                    }
+                    getResourcesFromDirectory( map, file, pattern );
                 }
-                catch ( IOException e )
+                else
                 {
-                    LOG.error( "Cannot load file {} : {}", file.getAbsolutePath(), e.getMessage() );
-
-                    // Continue...
+                    try
+                    {
+                        String fileName = file.getCanonicalPath();
+                        boolean accept = pattern.matcher( fileName ).matches();
+    
+                        if ( accept )
+                        {
+                            map.put( fileName, Boolean.FALSE );
+                        }
+                    }
+                    catch ( IOException e )
+                    {
+                        LOG.error( "Cannot load file {} : {}", file.getAbsolutePath(), e.getMessage() );
+    
+                        // Continue...
+                    }
                 }
             }
         }

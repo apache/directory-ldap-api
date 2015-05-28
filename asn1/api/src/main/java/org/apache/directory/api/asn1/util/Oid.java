@@ -83,7 +83,8 @@ public final class Oid
     private Oid( String oidString, byte[] oidBytes )
     {
         this.oidString = oidString;
-        this.oidBytes = oidBytes;
+        this.oidBytes = new byte[oidBytes.length];
+        System.arraycopy( oidBytes, 0, this.oidBytes, 0, oidBytes.length );
     }
 
 
@@ -166,10 +167,7 @@ public final class Oid
             throw new DecoderException( I18n.err( I18n.ERR_00033_INVALID_OID, Arrays.toString( oidBytes ) ) );
         }
 
-        byte[] oidBytesCopy = new byte[oidBytes.length];
-        System.arraycopy( oidBytes, 0, oidBytesCopy, 0, oidBytes.length );
-
-        return new Oid( builder.toString(), oidBytesCopy );
+        return new Oid( builder.toString(), oidBytes );
     }
 
 
