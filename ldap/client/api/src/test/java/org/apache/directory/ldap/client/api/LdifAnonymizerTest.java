@@ -42,7 +42,7 @@ public class LdifAnonymizerTest
                 "sn: elecharny\n";
 
         LdifAnonymizer anonymizer = new LdifAnonymizer();
-        String result = anonymizer.anonymize( ldif );
+        anonymizer.anonymize( ldif );
     }
 
 
@@ -60,7 +60,7 @@ public class LdifAnonymizerTest
                 "givenname: test\n";
 
         LdifAnonymizer anonymizer = new LdifAnonymizer();
-        String result = anonymizer.anonymize( ldif );
+         anonymizer.anonymize( ldif );
     }
 
 
@@ -79,6 +79,6 @@ public class LdifAnonymizerTest
                 "givenname: test\n";
 
         LdifAnonymizer anonymizer = new LdifAnonymizer();
-        String result = anonymizer.anonymize( ldif );
+        anonymizer.anonymize( ldif );
     }
 }

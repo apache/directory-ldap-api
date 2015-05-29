@@ -304,7 +304,7 @@ public class VLVTest extends AbstractCodecServiceTest
         bb.flip();
 
         VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+        control.decode( bb.array() );
         fail();
     }
 
@@ -339,7 +339,8 @@ public class VLVTest extends AbstractCodecServiceTest
         bb.flip();
 
         VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+        control.decode( bb.array() );
+        fail();
     }
 
 
@@ -371,7 +372,8 @@ public class VLVTest extends AbstractCodecServiceTest
         bb.flip();
 
         VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+        control.decode( bb.array() );
+        fail();
     }
 
 
@@ -398,7 +400,8 @@ public class VLVTest extends AbstractCodecServiceTest
         bb.flip();
 
         VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+        control.decode( bb.array() );
+        fail();
     }
 
 
@@ -427,7 +430,8 @@ public class VLVTest extends AbstractCodecServiceTest
         bb.flip();
 
         VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+        control.decode( bb.array() );
+        fail();
     }
 
 
@@ -498,7 +502,8 @@ public class VLVTest extends AbstractCodecServiceTest
         bb.flip();
 
         VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+        control.decode( bb.array() );
+        fail();
     }
 
 
@@ -533,6 +538,7 @@ public class VLVTest extends AbstractCodecServiceTest
         bb.flip();
 
         VirtualListViewRequestDecorator control = new VirtualListViewRequestDecorator( codec );
-        VirtualListViewRequest virtualListView = ( VirtualListViewRequest ) control.decode( bb.array() );
+        control.decode( bb.array() );
+        fail();
     }
 }
