@@ -35,7 +35,7 @@ import org.osgi.framework.ServiceRegistration;
 public class DefaultActivator implements BundleActivator
 {
     private DefaultLdapCodecService codec;
-    private ServiceRegistration registration;
+    private ServiceRegistration<?> registration;
 
 
     public DefaultActivator()

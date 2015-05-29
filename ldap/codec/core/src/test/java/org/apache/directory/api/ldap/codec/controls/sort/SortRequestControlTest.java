@@ -29,11 +29,9 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import org.apache.directory.api.asn1.DecoderException;
-import org.apache.directory.api.ldap.codec.controls.sort.SortRequestDecorator;
 import org.apache.directory.api.ldap.codec.osgi.AbstractCodecServiceTest;
 import org.apache.directory.api.ldap.model.message.controls.SortKey;
 import org.apache.directory.api.ldap.model.message.controls.SortRequest;
-import org.apache.directory.api.util.Strings;
 import org.junit.Test;
 
 /**
