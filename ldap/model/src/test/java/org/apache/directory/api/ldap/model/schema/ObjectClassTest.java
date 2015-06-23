@@ -151,6 +151,6 @@ public class ObjectClassTest
         assertTrue( string.contains( "\n\tSTRUCTURAL" ) );
         assertTrue( string.contains( "\n\tMUST" ) );
         assertTrue( string.contains( "\n\tMAY" ) );
-        assertTrue( string.endsWith( "\n)" ) );
+        assertTrue( string.endsWith( " )" ) );
     }
 }

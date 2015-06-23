@@ -152,7 +152,7 @@ public class SchemaObjectRendererTest
     public void testOpenLdapSchemaRendererObjectClassMinimal()
     {
         String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( new ObjectClass( "1.2.3" ) );
-        String expected = "objectclass ( 1.2.3\n\tSTRUCTURAL\n)";
+        String expected = "objectclass ( 1.2.3\n\tSTRUCTURAL )";
         assertEquals( expected, actual );
     }
 
@@ -161,7 +161,7 @@ public class SchemaObjectRendererTest
     public void testOpenLdapSchemaRendererObjectClassSimple()
     {
         String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( objectClassSimple );
-        String expected = "objectclass ( 1.2.3.4 NAME 'name0'\n\tSTRUCTURAL\n\tMUST att0\n)";
+        String expected = "objectclass ( 1.2.3.4 NAME 'name0'\n\tSTRUCTURAL\n\tMUST att0 )";
         assertEquals( expected, actual );
     }
 
@@ -170,7 +170,7 @@ public class SchemaObjectRendererTest
     public void testOpenLdapSchemaRendererObjectClassComplex()
     {
         String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( objectClassComplex );
-        String expected = "objectclass ( 1.2.3.4 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tSUP 1.3.5.7\n\tAUXILIARY\n\tMUST ( att1 $ att2 )\n\tMAY ( att3 $ att4 )\n)";
+        String expected = "objectclass ( 1.2.3.4 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tSUP 1.3.5.7\n\tAUXILIARY\n\tMUST ( att1 $ att2 )\n\tMAY ( att3 $ att4 ) )";
         assertEquals( expected, actual );
     }
 
@@ -259,7 +259,7 @@ public class SchemaObjectRendererTest
     public void testOpenLdapSchemaRendererAttributeTypeSimple()
     {
         String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( attributeTypeSimple );
-        String expected = "attributetype ( 1.2.3.4 NAME 'name0'\n\tEQUALITY matchingRule0\n\tSYNTAX 2.3.4.5{512}\n\tCOLLECTIVE\n\tUSAGE userApplications\n)";
+        String expected = "attributetype ( 1.2.3.4 NAME 'name0'\n\tEQUALITY matchingRule0\n\tSYNTAX 2.3.4.5{512}\n\tCOLLECTIVE\n\tUSAGE userApplications )";
         assertEquals( expected, actual );
     }
 
@@ -268,7 +268,7 @@ public class SchemaObjectRendererTest
     public void testOpenLdapSchemaRendererAttributeTypeComplex()
     {
         String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( attributeTypeComplex );
-        String expected = "attributetype ( 1.2.3.4 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tSUP superAttr\n\tEQUALITY matchingRule1\n\tORDERING matchingRule2\n\tSUBSTR matchingRule3\n\tSINGLE-VALUE\n\tNO-USER-MODIFICATION\n\tUSAGE directoryOperation\n)";
+        String expected = "attributetype ( 1.2.3.4 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tSUP superAttr\n\tEQUALITY matchingRule1\n\tORDERING matchingRule2\n\tSUBSTR matchingRule3\n\tSINGLE-VALUE\n\tNO-USER-MODIFICATION\n\tUSAGE directoryOperation )";
         assertEquals( expected, actual );
     }
 
@@ -348,7 +348,7 @@ public class SchemaObjectRendererTest
     public void testOpenLdapSchemaRendererMatchingRule()
     {
         String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( matchingRule );
-        String expected = "matchingrule ( 1.2.3.4 NAME 'name0'\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tSYNTAX 2.3.4.5\n)";
+        String expected = "matchingrule ( 1.2.3.4 NAME 'name0'\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tSYNTAX 2.3.4.5 )";
         assertEquals( expected, actual );
     }
 
@@ -384,7 +384,7 @@ public class SchemaObjectRendererTest
     public void testOpenLdapSchemaRendererLdapSyntax()
     {
         String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( ldapSyntax );
-        String expected = "ldapsyntax ( 1.2.3.4\n\tDESC 'description with \\27quotes\\27'\n\tX-NOT-HUMAN-READABLE 'true'\n)";
+        String expected = "ldapsyntax ( 1.2.3.4\n\tDESC 'description with \\27quotes\\27'\n\tX-NOT-HUMAN-READABLE 'true' )";
         assertEquals( expected, actual );
     }
 
@@ -420,7 +420,7 @@ public class SchemaObjectRendererTest
     public void testOpenLdapSchemaRendererMatchingRuleUse()
     {
         String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( matchingRuleUse );
-        String expected = "matchingruleuse ( 1.2.3.4 NAME 'name0'\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tAPPLIES ( 2.3.4.5 $ 3.4.5.6 )\n)";
+        String expected = "matchingruleuse ( 1.2.3.4 NAME 'name0'\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tAPPLIES ( 2.3.4.5 $ 3.4.5.6 ) )";
         assertEquals( expected, actual );
     }
 
@@ -456,7 +456,7 @@ public class SchemaObjectRendererTest
     public void testOpenLdapSchemaRendererDitContentRule()
     {
         String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( ditContentRule );
-        String expected = "ditcontentrule ( 1.2.3.4 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tAUX ( oc1 $ oc2 )\n\tMUST ( must1 $ must2 )\n\tMAY ( may1 $ may2 )\n\tNOT ( not1 $ not2 )\n)";
+        String expected = "ditcontentrule ( 1.2.3.4 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tAUX ( oc1 $ oc2 )\n\tMUST ( must1 $ must2 )\n\tMAY ( may1 $ may2 )\n\tNOT ( not1 $ not2 ) )";
         assertEquals( expected, actual );
     }
 
@@ -492,7 +492,7 @@ public class SchemaObjectRendererTest
     public void testOpenLdapSchemaRendererDitStructureRule()
     {
         String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( ditStructureRule );
-        String expected = "ditstructurerule ( 1234 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tFORM form1\n\tSUP ( 111 222 333 )\n)";
+        String expected = "ditstructurerule ( 1234 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tFORM form1\n\tSUP ( 111 222 333 ) )";
         assertEquals( expected, actual );
     }
 
@@ -533,7 +533,7 @@ public class SchemaObjectRendererTest
     public void testOpenLdapSchemaRendererNameForm()
     {
         String actual = SchemaObjectRenderer.OPEN_LDAP_SCHEMA_RENDERER.render( nameForm );
-        String expected = "nameform ( 1.2.3.4 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tOC oc1\n\tMUST ( must1 $ must2 )\n\tMAY may0\n)";
+        String expected = "nameform ( 1.2.3.4 NAME ( 'name1' 'name2' )\n\tDESC 'description with \\27quotes\\27'\n\tOBSOLETE\n\tOC oc1\n\tMUST ( must1 $ must2 )\n\tMAY may0 )";
         assertEquals( expected, actual );
     }
 

@@ -145,7 +145,7 @@ public class SchemaObjectRenderer
         // @todo extensions are not presently supported and skipped
         // the extensions would go here before closing off the description
 
-        buf.append( ")" );
+        renderClose( buf );
 
         return buf.toString();
     }
@@ -315,7 +315,7 @@ public class SchemaObjectRenderer
         // @todo extensions are not presently supported and skipped
         // the extensions would go here before closing off the description
 
-        buf.append( ")" );
+        renderClose( buf );
 
         return buf.toString();
     }
@@ -378,7 +378,7 @@ public class SchemaObjectRenderer
         // @todo extensions are not presently supported and skipped
         // the extensions would go here before closing off the description
 
-        buf.append( ")" );
+        renderClose( buf );
 
         return buf.toString();
     }
@@ -437,7 +437,7 @@ public class SchemaObjectRenderer
         // @todo extensions are not presently supported and skipped
         // the extensions would go here before closing off the description
 
-        buf.append( ")" );
+        renderClose( buf );
 
         return buf.toString();
     }
@@ -465,7 +465,7 @@ public class SchemaObjectRenderer
         // @todo extensions are not presently supported and skipped
         // the extensions would go here before closing off the description
 
-        buf.append( ")" );
+        renderClose( buf );
 
         return buf.toString();
     }
@@ -491,7 +491,7 @@ public class SchemaObjectRenderer
         // @todo extensions are not presently supported and skipped
         // the extensions would go here before closing off the description
 
-        buf.append( ")" );
+        renderClose( buf );
 
         return buf.toString();
     }
@@ -528,7 +528,7 @@ public class SchemaObjectRenderer
         // @todo extensions are not presently supported and skipped
         // the extensions would go here before closing off the description
 
-        buf.append( ")" );
+        renderClose( buf );
 
         return buf.toString();
     }
@@ -551,7 +551,7 @@ public class SchemaObjectRenderer
 
         renderXSchemaName( nf, buf );
 
-        buf.append( ")" );
+        renderClose( buf );
 
         return buf.toString();
     }
@@ -817,4 +817,19 @@ public class SchemaObjectRenderer
             prettyPrintNewLine( buf );
         }
     }
+
+
+    private void renderClose( StringBuilder buf )
+    {
+        if ( style.prettyPrint )
+        {
+            if ( buf.charAt( buf.length() - 1 ) == '\n' )
+            {
+                buf.deleteCharAt( buf.length() - 1 );
+                buf.append( " " );
+            }
+        }
+        buf.append( ")" );
+    }
+
 }
