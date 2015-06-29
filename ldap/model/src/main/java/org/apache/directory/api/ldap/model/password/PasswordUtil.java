@@ -27,7 +27,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
-import java.util.Arrays;
 import java.util.Date;
 
 import javax.crypto.SecretKeyFactory;
@@ -275,13 +274,50 @@ public class PasswordUtil
             byte[] userPassword = PasswordUtil.encryptPassword( receivedCredentials, encryptionMethod.getAlgorithm(),
                 encryptionMethod.getSalt() );
 
-            // Now, compare the two passwords.
-            return Arrays.equals( userPassword, encryptedStored );
+            return compareBytes( userPassword, encryptedStored );
         }
         else
         {
-            return Arrays.equals( storedCredentials, receivedCredentials );
+            return compareBytes( receivedCredentials, storedCredentials );
         }
+    }
+    
+    
+    /**
+     * Compare two byte[] in a constant time. This is necessary because using an Array.equals() is
+     * not Timing attack safe ([1], [2] and [3]), a breach that can be exploited to break some hashes.
+     * 
+     *  [1] https://en.wikipedia.org/wiki/Timing_attack
+     *  [2] http://rdist.root.org/2009/05/28/timing-attack-in-google-keyczar-library/
+     *  [3] https://cryptocoding.net/index.php/Coding_rules
+     */
+    private static boolean compareBytes( byte[] provided, byte[] stored )
+    {
+        if ( stored == null )
+        {
+            return provided == null;
+        }
+        else if ( provided == null )
+        {
+            return false;
+        }
+        
+        // Now, compare the two passwords, using a constant time method
+        if ( stored.length != provided.length )
+        {
+            return false;
+        }
+        
+        // loop on *every* byte in both passwords, and at the end, if one char at least is different, return false.
+        int result = 0;
+        
+        for ( int i = 0; i < stored.length; i++ )
+        {
+            // If both bytes are equal, xor will be == 0, otherwise it will be != 0 and so will result.
+            result |= ( stored[i] ^ provided[i] );
+        }
+        
+        return result == 0;
     }
 
 
