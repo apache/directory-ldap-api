@@ -553,4 +553,113 @@ public final class SchemaUtils
 
         return bytes;
     }
+
+
+    /**
+     * Tells if an AttributeType name is valid or not. An Attribute name is valid if 
+     * it's a descr / numericoid, as described in rfc4512 :
+     * <pre>
+     * name = descr / numericOid
+     * descr = keystring
+     * keystring = leadkeychar *keychar
+     * leadkeychar = ALPHA
+     * keychar = ALPHA / DIGIT / HYPHEN / USCORE
+     * numericoid = number 1*( DOT number )
+     * number  = DIGIT / ( LDIGIT 1*DIGIT )
+     * ALPHA   = %x41-5A / %x61-7A   ; "A"-"Z" / "a"-"z"
+     * DIGIT   = %x30 / LDIGIT       ; "0"-"9"
+     * HYPHEN  = %x2D ; hyphen ("-")
+     * LDIGIT  = %x31-39             ; "1"-"9"
+     * DOT     = %x2E ; period (".")
+     * USCORE  = %x5F ; underscore ("_")
+     * </pre>
+     * 
+     * Note that we have extended this grammar to accept the '_' char, which is widely used in teh LDAP world.
+     *
+     * @param attributeName The AttributeType name to check
+     * @return true if it's valid
+     */
+    public static boolean isAttributeNameValid( String attributeName )
+    {
+        if ( Strings.isEmpty( attributeName ) )
+        {
+            return false;
+        }
+        
+        // Check the first char which must be ALPHA or DIGIT
+        boolean descr = false;
+        boolean zero = false;
+        boolean dot = false;
+        
+        char c = attributeName.charAt( 0 );
+        
+        if ( ( ( c >= 'a') && ( c <= 'z' ) ) || ( ( c >= 'A' ) && ( c <= 'Z' ) ) )
+        {
+            descr = true;
+        }
+        else if ( ( c >= '0' ) && ( c <= '9' ) )
+        {
+            descr = false;
+            
+            zero = c == '0'; 
+        }
+        else
+        {
+            return false;
+        }
+        
+        for ( int i = 1; i < attributeName.length(); i++ )
+        {
+            c = attributeName.charAt( i ); 
+            
+            if ( descr )
+            {
+                // This is a descr, iterate on KeyChars (ALPHA / DIGIT / HYPHEN / USCORE)
+                if ( ( ( c < 'a') || ( c > 'z' ) ) && 
+                     ( ( c < 'A' ) || ( c > 'Z' ) ) && 
+                     ( ( c < '0' ) || ( c > '9' ) ) &&
+                     ( c != '-' ) &&
+                     ( c != '_' ) )
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                // This is a numericOid, check it
+                if ( c == '.' )
+                {
+                    // Not allowed if we already have had a dot
+                    if ( dot )
+                    {
+                        return false;
+                    }
+                    
+                    dot = true;
+                    zero = false;
+                }
+                else if ( ( c >= '0' ) && ( c <= '9' ) )
+                {
+                    dot = false;
+                    
+                    if ( zero )
+                    {
+                        // We can't have a leading '0' followed by another number
+                        return false;
+                    }
+                    else if ( c == '0' )
+                    {
+                        zero = true;
+                    }
+                }
+                else
+                {
+                    // Not valid
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
 }
