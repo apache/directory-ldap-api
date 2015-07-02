@@ -422,7 +422,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         upFractionLength = fraction.length();
 
         double fract = Double.parseDouble( "0." + fraction );
-        int millisecond = ( int ) Math.round( fract * 1000 );
+        int millisecond = ( int ) Math.floor( fract * 1000 );
 
         calendar.set( Calendar.MILLISECOND, millisecond );
     }

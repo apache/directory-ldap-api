@@ -24,8 +24,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -1208,5 +1213,19 @@ public class GeneralizedTimeTest
 
         assertEquals( "The time after round trip GeneralizedTime generation should stay the same",
             originalTime, recalculatedTime );
+    }
+    
+    static DateFormat FORMAT = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss.SSSS z" );
+    
+    @Test
+    public void fractionCloseToOne() throws ParseException
+    {
+        GeneralizedTime close = new GeneralizedTime( "20000101000000.9994Z" );
+        
+        assertThat( close.getDate(), is( equalTo( FORMAT.parse( "01/01/2000 00:00:00.999 GMT" ) ) ) );
+        
+        GeneralizedTime closer = new GeneralizedTime( "20000101000000.9995Z" );
+        
+        assertThat( closer.getDate(), is( equalTo( FORMAT.parse( "01/01/2000 00:00:00.999 GMT" ) ) ) );
     }
 }
