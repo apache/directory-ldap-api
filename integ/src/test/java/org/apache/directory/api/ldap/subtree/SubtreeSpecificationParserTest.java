@@ -117,10 +117,10 @@ public class SubtreeSpecificationParserTest
     private static SchemaManager schemaManager;
 
     /** Some global OC */
-    private static ObjectClass TOP_OC; // 2.5.6.0
-    private static ObjectClass ALIAS_OC; // 2.5.6.1
-    private static ObjectClass COUNTRY_OC; // 2.5.6.2
-    private static ObjectClass PERSON_OC; // 2.5.6.6
+    private static ObjectClass topOC; // 2.5.6.0
+    private static ObjectClass aliasOC; // 2.5.6.1
+    private static ObjectClass countryOC; // 2.5.6.2
+    private static ObjectClass personOC; // 2.5.6.6
 
 
     /**
@@ -136,10 +136,10 @@ public class SubtreeSpecificationParserTest
 
         parser = new SubtreeSpecificationParser( schemaManager );
 
-        TOP_OC = schemaManager.lookupObjectClassRegistry( "top" );
-        ALIAS_OC = schemaManager.lookupObjectClassRegistry( "alias" );
-        COUNTRY_OC = schemaManager.lookupObjectClassRegistry( "country" );
-        PERSON_OC = schemaManager.lookupObjectClassRegistry( "person" );
+        topOC = schemaManager.lookupObjectClassRegistry( "top" );
+        aliasOC = schemaManager.lookupObjectClassRegistry( "alias" );
+        countryOC = schemaManager.lookupObjectClassRegistry( "country" );
+        personOC = schemaManager.lookupObjectClassRegistry( "person" );
     }
 
 
@@ -303,10 +303,10 @@ public class SubtreeSpecificationParserTest
         SubtreeSpecification ss = parser.parse( SPEC_WITH_REFINEMENT );
 
         // The items
-        Refinement topItem = new ItemRefinement( TOP_OC );
-        Refinement aliasItem = new ItemRefinement( ALIAS_OC );
-        Refinement personItem = new ItemRefinement( PERSON_OC );
-        Refinement countryItem = new ItemRefinement( COUNTRY_OC );
+        Refinement topItem = new ItemRefinement( topOC );
+        Refinement aliasItem = new ItemRefinement( aliasOC );
+        Refinement personItem = new ItemRefinement( personOC );
+        Refinement countryItem = new ItemRefinement( countryOC );
 
         // The inner OR refinement or:{item:2.5.6.1, item:person}
         List<Refinement> orList = new ArrayList<Refinement>();

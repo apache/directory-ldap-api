@@ -25,7 +25,6 @@ import static org.junit.Assert.fail;
 
 import java.text.ParseException;
 
-import org.apache.directory.api.ldap.aci.ACIItemChecker;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.loader.JarLdifSchemaLoader;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
@@ -47,7 +46,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 public class ACIItemChekerTest
 {
     /** the ACIItem checker wrapper */
-    static private ACIItemChecker checker;
+    private static ACIItemChecker checker;
 
 
     /**
@@ -71,48 +70,48 @@ public class ACIItemChekerTest
     public void testItemFirst() throws Exception
     {
         String spec =
-            " {  " +
-                "   identificationTag  \"id1\" , " +
-                "   precedence 114  , " +
-                "   authenticationLevel simple  , " +
-                "   itemOrUserFirst itemFirst  :" +
-                "   { " +
-                "     protectedItems  " +
-                "     { " +
-                "       entry  , " +
-                "       attributeType { 1.2.3    , ou }  ," +
-                "       attributeValue { ou=people  , cn=Ersin  }  , " +
-                "       rangeOfValues (cn=ErsinEr) , " +
-                "       classes and : " +
-                "       { " +
-                "         item: xyz , " +
-                "         or:{item:X,item:Y}   " +
-                "       }" +
-                "     }  , " +
-                "     itemPermissions " +
-                "     { " +
-                "       { " +
-                "         userClasses " +
-                "         {" +
-                "           allUsers  , " +
-                "           userGroup { \"2.5.4.3=y,dc=t\"  , \"cn=b,dc=d\" } ," +
-                "           subtree { { base \"ou=people\" } } " +
-                "         }   , " +
-                "         grantsAndDenials  {  denyCompare  , grantModify } " +
-                "       }," +
-                "       { " +
-                "         precedence 10, " +
-                "         userClasses " +
-                "         {" +
-                "           allUsers  , " +
-                "           userGroup { \"2.5.4.3=y,dc=t\"  , \"cn=b,dc=d\" } ," +
-                "           subtree { { base \"ou=people\" } } " +
-                "         }   , " +
-                "         grantsAndDenials  {  denyCompare  , grantModify } " +
-                "       } " +
-                "     } " +
-                "   }" +
-                " }";
+            " {  "
+                + "   identificationTag  \"id1\" , "
+                + "   precedence 114  , "
+                + "   authenticationLevel simple  , "
+                + "   itemOrUserFirst itemFirst  :"
+                + "   { "
+                + "     protectedItems  "
+                + "     { "
+                + "       entry  , "
+                + "       attributeType { 1.2.3    , ou }  ,"
+                + "       attributeValue { ou=people  , cn=Ersin  }  , "
+                + "       rangeOfValues (cn=ErsinEr) , "
+                + "       classes and : "
+                + "       { "
+                + "         item: xyz , "
+                + "         or:{item:X,item:Y}   "
+                + "       }"
+                + "     }  , "
+                + "     itemPermissions "
+                + "     { "
+                + "       { "
+                + "         userClasses "
+                + "         {"
+                + "           allUsers  , "
+                + "           userGroup { \"2.5.4.3=y,dc=t\"  , \"cn=b,dc=d\" } ,"
+                + "           subtree { { base \"ou=people\" } } "
+                + "         }   , "
+                + "         grantsAndDenials  {  denyCompare  , grantModify } "
+                + "       },"
+                + "       { "
+                + "         precedence 10, "
+                + "         userClasses "
+                + "         {"
+                + "           allUsers  , "
+                + "           userGroup { \"2.5.4.3=y,dc=t\"  , \"cn=b,dc=d\" } ,"
+                + "           subtree { { base \"ou=people\" } } "
+                + "         }   , "
+                + "         grantsAndDenials  {  denyCompare  , grantModify } "
+                + "       } "
+                + "     } "
+                + "   }"
+                + " }";
 
         checker.parse( spec );
     }

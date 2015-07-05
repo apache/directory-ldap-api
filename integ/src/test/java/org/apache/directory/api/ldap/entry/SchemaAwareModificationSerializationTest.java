@@ -57,7 +57,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 public class SchemaAwareModificationSerializationTest
 {
     private static SchemaManager schemaManager;
-    private static AttributeType CN_AT;
+    private static AttributeType cnAT;
 
 
     /**
@@ -67,7 +67,7 @@ public class SchemaAwareModificationSerializationTest
     public static void setup() throws Exception
     {
         schemaManager = new DefaultSchemaManager();
-        CN_AT = schemaManager.getAttributeType( "cn" );
+        cnAT = schemaManager.getAttributeType( "cn" );
     }
 
 
@@ -159,7 +159,7 @@ public class SchemaAwareModificationSerializationTest
     @Test
     public void testCreateServerModification() throws LdapException
     {
-        Attribute attribute = new DefaultAttribute( "cn", CN_AT );
+        Attribute attribute = new DefaultAttribute( "cn", cnAT );
         attribute.add( "test1", "test2" );
 
         Modification mod = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attribute );
@@ -182,7 +182,7 @@ public class SchemaAwareModificationSerializationTest
     public void testSerializationModificationADD() throws ClassNotFoundException, IOException,
         LdapInvalidAttributeValueException
     {
-        Attribute attribute = new DefaultAttribute( "cn", CN_AT );
+        Attribute attribute = new DefaultAttribute( "cn", cnAT );
         attribute.add( "test1", "test2" );
 
         DefaultModification mod = new DefaultModification( ModificationOperation.ADD_ATTRIBUTE, attribute );
@@ -197,7 +197,7 @@ public class SchemaAwareModificationSerializationTest
     public void testSerializationModificationREPLACE() throws ClassNotFoundException, IOException,
         LdapInvalidAttributeValueException
     {
-        Attribute attribute = new DefaultAttribute( "cn", CN_AT );
+        Attribute attribute = new DefaultAttribute( "cn", cnAT );
         attribute.add( "test1", "test2" );
 
         DefaultModification mod = new DefaultModification( ModificationOperation.REPLACE_ATTRIBUTE, attribute );
@@ -212,7 +212,7 @@ public class SchemaAwareModificationSerializationTest
     public void testSerializationModificationREMOVE() throws ClassNotFoundException, IOException,
         LdapInvalidAttributeValueException
     {
-        Attribute attribute = new DefaultAttribute( "cn", CN_AT );
+        Attribute attribute = new DefaultAttribute( "cn", cnAT );
         attribute.add( "test1", "test2" );
 
         DefaultModification mod = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attribute );

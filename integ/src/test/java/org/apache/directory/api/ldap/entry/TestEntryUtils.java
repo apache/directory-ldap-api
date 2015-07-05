@@ -42,7 +42,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class TestEntryUtils
+public final class TestEntryUtils
 {
     /**
      * A local Syntax class for tests
@@ -149,9 +149,7 @@ public class TestEntryUtils
 
             public int compare( String o1, String o2 )
             {
-                return ( o1 == null ?
-                    ( o2 == null ? 0 : -1 ) :
-                    ( o2 == null ? 1 : o1.compareTo( o2 ) ) );
+                return ( o1 == null ? ( o2 == null ? 0 : -1 ) : ( o2 == null ? 1 : o1.compareTo( o2 ) ) );
             }
         } );
 
@@ -216,9 +214,7 @@ public class TestEntryUtils
 
             public int compare( String o1, String o2 )
             {
-                return ( ( o1 == null ) ?
-                    ( o2 == null ? 0 : -1 ) :
-                    ( o2 == null ? 1 : o1.compareTo( o2 ) ) );
+                return ( ( o1 == null ) ? ( o2 == null ? 0 : -1 ) : ( o2 == null ? 1 : o1.compareTo( o2 ) ) );
             }
         } );
 
@@ -292,5 +288,10 @@ public class TestEntryUtils
         attributeType.setSyntax( syntax );
 
         return attributeType;
+    }
+
+
+    private TestEntryUtils()
+    {
     }
 }

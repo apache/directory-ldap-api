@@ -20,7 +20,6 @@
 package org.apache.directory.api.ldap.model.name;
 
 import org.apache.directory.api.ldap.model.exception.LdapException;
-import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.junit.BeforeClass;
@@ -145,12 +144,12 @@ public class RdnTest
         
         if ( !"exemple + rdn\u00E4".equals( rdn.getValue( "ou" ) ) )
         {
-            errors += "\nRdn.getValue( 'ou' ) fails '" + (String)rdn.getValue( "ou" ) + "'";
+            errors += "\nRdn.getValue( 'ou' ) fails '" + ( String ) rdn.getValue( "ou" ) + "'";
         }
         
         if ( !"test".equals( rdn.getValue( "cn" ) ) )
         {
-            errors += "\nRdn.getValue( 'cn' ) fails '" + (String)rdn.getValue( "cn" ) + "'";
+            errors += "\nRdn.getValue( 'cn' ) fails '" + ( String ) rdn.getValue( "cn" ) + "'";
         }
         
         if ( !"OU = Exemple \\+ Rdn\\C3\\A4\\ +cn= TEST".equals( rdn.toString() ) )

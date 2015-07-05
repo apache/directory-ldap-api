@@ -45,32 +45,33 @@ public class StandaloneLdapCodecServiceTest
     {
         // Load the extension points
         System.setProperty( StandaloneLdapApiService.CONTROLS_LIST,
-            "org.apache.directory.api.ldap.codec.controls.cascade.CascadeFactory," +
-                "org.apache.directory.api.ldap.codec.controls.manageDsaIT.ManageDsaITFactory," +
-                "org.apache.directory.api.ldap.codec.controls.proxiedauthz.ProxiedAuthzFactory," +
-                "org.apache.directory.api.ldap.codec.controls.search.entryChange.EntryChangeFactory," +
-                "org.apache.directory.api.ldap.codec.controls.search.pagedSearch.PagedResultsFactory," +
-                "org.apache.directory.api.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory," +
-                "org.apache.directory.api.ldap.codec.controls.search.subentries.SubentriesFactory," +
-                "org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory," +
-                "org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory," +
-                "org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewResponseFactory," +
-                "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory," +
-                "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory," +
-                "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory," +
-                "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory," +
-                "org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncFactory" );
+            "org.apache.directory.api.ldap.codec.controls.cascade.CascadeFactory,"
+                + "org.apache.directory.api.ldap.codec.controls.manageDsaIT.ManageDsaITFactory,"
+                + "org.apache.directory.api.ldap.codec.controls.proxiedauthz.ProxiedAuthzFactory,"
+                + "org.apache.directory.api.ldap.codec.controls.search.entryChange.EntryChangeFactory,"
+                + "org.apache.directory.api.ldap.codec.controls.search.pagedSearch.PagedResultsFactory,"
+                + "org.apache.directory.api.ldap.codec.controls.search.persistentSearch.PersistentSearchFactory,"
+                + "org.apache.directory.api.ldap.codec.controls.search.subentries.SubentriesFactory,"
+                + "org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory,"
+                + "org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewRequestFactory,"
+                + "org.apache.directory.api.ldap.extras.controls.vlv_impl.VirtualListViewResponseFactory,"
+                + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncDoneValueFactory,"
+                + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncInfoValueFactory,"
+                + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncRequestValueFactory,"
+                + "org.apache.directory.api.ldap.extras.controls.syncrepl_impl.SyncStateValueFactory,"
+                + "org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncFactory" );
 
-        System.setProperty( StandaloneLdapApiService.EXTENDED_OPERATIONS_LIST,
-            "org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelFactory," +
-                "org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory," +
-                "org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory," +
-                "org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory," +
-                "org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory," +
-                "org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory," +
-                "org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory," +
-                "org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsFactory"
-            );
+        System
+            .setProperty(
+                StandaloneLdapApiService.EXTENDED_OPERATIONS_LIST,
+                "org.apache.directory.api.ldap.extras.extended.ads_impl.cancel.CancelFactory,"
+                    + "org.apache.directory.api.ldap.extras.extended.ads_impl.certGeneration.CertGenerationFactory,"
+                    + "org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulShutdown.GracefulShutdownFactory,"
+                    + "org.apache.directory.api.ldap.extras.extended.ads_impl.storedProcedure.StoredProcedureFactory,"
+                    + "org.apache.directory.api.ldap.extras.extended.ads_impl.pwdModify.PasswordModifyFactory,"
+                    + "org.apache.directory.api.ldap.extras.extended.ads_impl.gracefulDisconnect.GracefulDisconnectFactory,"
+                    + "org.apache.directory.api.ldap.extras.extended.ads_impl.whoAmI.WhoAmIFactory,"
+                    + "org.apache.directory.api.ldap.extras.extended.ads_impl.startTls.StartTlsFactory" );
     }
 
 
