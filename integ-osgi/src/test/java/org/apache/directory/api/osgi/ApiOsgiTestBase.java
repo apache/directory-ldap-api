@@ -61,13 +61,13 @@ public abstract class ApiOsgiTestBase
     @Inject
     protected BundleContext context;
 
-    private static Set<String> SKIPS = new HashSet<String>();
-    static
-    {
-        // SKIPS.add( "antlr-2.7.7.jar" );
-        // SKIPS.add( "xpp3-1.1.4c.jar" );
-        // SKIPS.add( "dom4j-1.6.1.jar" );
-    }
+    private static Set<String> skips = new HashSet<String>();
+//    static
+//    {
+//        skips.add( "antlr-2.7.7.jar" );
+//        skips.add( "xpp3-1.1.4c.jar" );
+//        skips.add( "dom4j-1.6.1.jar" );
+//    }
 
 
     @Configuration
@@ -81,7 +81,7 @@ public abstract class ApiOsgiTestBase
         File[] files = targetDependenciesDir.listFiles();
         for ( File file : files )
         {
-            if ( !SKIPS.contains( file.getName() ) )
+            if ( !skips.contains( file.getName() ) )
             {
                 dependencies.add( url( file.toURI().toString() ) );
             }

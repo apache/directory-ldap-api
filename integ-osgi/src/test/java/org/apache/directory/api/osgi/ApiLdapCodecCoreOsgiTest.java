@@ -98,7 +98,7 @@ public class ApiLdapCodecCoreOsgiTest extends ApiOsgiTestBase
     @Test
     public void testLdapApiServiceFactoryIsInitializedByOsgi()
     {
-        assertTrue( LdapApiServiceFactory.isInitialized() );;
+        assertTrue( LdapApiServiceFactory.isInitialized() );
         assertFalse( LdapApiServiceFactory.isUsingStandaloneImplementation() );
         assertNotNull( LdapApiServiceFactory.getSingleton() );
         assertNotNull( LdapApiServiceFactory.getSingleton().getProtocolCodecFactory() );
