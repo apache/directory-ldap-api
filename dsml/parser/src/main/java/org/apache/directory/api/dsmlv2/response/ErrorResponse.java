@@ -277,9 +277,9 @@ public class ErrorResponse extends AbstractResponse implements Response, DsmlDec
 
     public LdapApiService getCodecService()
     {
-        throw new IllegalArgumentException( "This should not be a decorator " +
-            "but seems it was made into one. We need to do something about" +
-            "this if this exception is being raise." );
+        throw new IllegalArgumentException( "This should not be a decorator "
+            + "but seems it was made into one. We need to do something about"
+            + "this if this exception is being raise." );
     }
 
 

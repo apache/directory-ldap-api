@@ -152,9 +152,9 @@ public abstract class AbstractDsmlMessageDecorator<M extends Message>
     /**
      * {@inheritDoc}
      */
-    public Message addAllControls( Control[] controls )
+    public Message addAllControls( Control[] controlsToAdd )
     {
-        for ( Control control : controls )
+        for ( Control control : controlsToAdd )
         {
             addControl( control );
         }

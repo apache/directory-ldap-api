@@ -177,10 +177,10 @@ public class ExtendedResponseDsml extends AbstractResultResponseDsml<ExtendedRes
     /**
      * Set the extended response
      * 
-     * @param response The response to set.
+     * @param responseValue The response to set.
      */
-    public void setResponseValue( byte[] response )
+    public void setResponseValue( byte[] responseValue )
     {
-        this.response = response;
+        this.response = responseValue;
     }
 }

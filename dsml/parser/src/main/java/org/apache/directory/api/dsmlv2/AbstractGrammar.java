@@ -122,6 +122,9 @@ public abstract class AbstractGrammar implements Grammar
                 case XmlPullParser.END_TAG:
                     processTag( container, Tag.END );
                     break;
+
+                default:
+                    break;
             }
 
             eventType = xpp.next();

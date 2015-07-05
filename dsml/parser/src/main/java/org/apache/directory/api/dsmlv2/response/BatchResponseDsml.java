@@ -169,7 +169,7 @@ public class BatchResponseDsml
             response.toDsml( element );
         }
 
-        if( prettyPrint )
+        if ( prettyPrint )
         {
             document = ParserUtils.styleDocument( document );
         }

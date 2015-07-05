@@ -188,6 +188,9 @@ public class AttributeValueAssertion
             case LdapCodecConstants.APPROX_MATCH_FILTER:
                 sb.append( "~=" );
                 break;
+
+            default:
+                throw new IllegalStateException( "Unexpected filter type " + filterType );
         }
 
         sb.append( dumpObject( assertionValue ) );

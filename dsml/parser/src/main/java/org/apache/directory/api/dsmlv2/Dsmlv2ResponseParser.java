@@ -152,6 +152,9 @@ public class Dsmlv2ResponseParser
                 case XmlPullParser.END_TAG :
                     processTag( container, Tag.END );
                     break;
+
+                default:
+                    break;
             }
             
             try
@@ -255,6 +258,9 @@ public class Dsmlv2ResponseParser
 
                 case XmlPullParser.END_TAG :
                     processTag( container, Tag.END );
+                    break;
+
+                default:
                     break;
             }
             

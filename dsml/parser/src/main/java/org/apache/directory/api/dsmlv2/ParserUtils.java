@@ -89,6 +89,11 @@ public final class ParserUtils
     private static final Logger LOG = LoggerFactory.getLogger( ParserUtils.class );
 
 
+    private ParserUtils()
+    {
+    }
+
+
     /**
      * Returns the value of the attribute 'type' of the "XMLSchema-instance' namespace if it exists
      *

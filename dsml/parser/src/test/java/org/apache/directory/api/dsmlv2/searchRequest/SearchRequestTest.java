@@ -55,7 +55,6 @@ import org.apache.directory.api.ldap.model.message.Control;
 import org.apache.directory.api.ldap.model.message.SearchRequest;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.util.Strings;
-import org.dom4j.tree.DefaultElement;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -2445,6 +2444,6 @@ public class SearchRequestTest extends AbstractTest
 
         assertEquals( "(&(|(sn=*foo*)(cn=*foo*))(|(ou=*josopuram*)(o=*k*)))", filter.toString() );
         
-        System.out.println( searchRequest.toDsml( new DefaultElement( "root" ) ).asXML());
+        //System.out.println( searchRequest.toDsml( new DefaultElement( "root" ) ).asXML() );
     }
 }

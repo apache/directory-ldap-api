@@ -244,30 +244,32 @@ public class SearchRequestDsml
                 }
                 else if ( filter instanceof AttributeValueAssertionFilter )
                 {
-                    AttributeValueAssertion ava = ( ( AttributeValueAssertionFilter ) filter ).getAssertion();
+                    AttributeValueAssertionFilter avaFilter = ( AttributeValueAssertionFilter ) filter;
+
+                    AttributeValueAssertion ava = avaFilter.getAssertion();
 
                     // Transform =, >=, <=, ~= filters
-                    switch ( ( ( AttributeValueAssertionFilter ) filter ).getFilterType() )
+                    int filterType = avaFilter.getFilterType();
+                    switch ( filterType )
                     {
                         case LdapCodecConstants.EQUALITY_MATCH_FILTER:
                             branch = new EqualityNode( ava.getAttributeDesc(), ava.getAssertionValue() );
-
                             break;
 
                         case LdapCodecConstants.GREATER_OR_EQUAL_FILTER:
                             branch = new GreaterEqNode( ava.getAttributeDesc(), ava.getAssertionValue() );
-
                             break;
 
                         case LdapCodecConstants.LESS_OR_EQUAL_FILTER:
                             branch = new LessEqNode( ava.getAttributeDesc(), ava.getAssertionValue() );
-
                             break;
 
                         case LdapCodecConstants.APPROX_MATCH_FILTER:
                             branch = new ApproximateNode( ava.getAttributeDesc(), ava.getAssertionValue() );
-
                             break;
+
+                        default:
+                            throw new IllegalStateException( "Unexpected filter type " + filterType );
                     }
 
                 }
