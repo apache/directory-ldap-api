@@ -38,7 +38,6 @@ import java.util.TimeZone;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
-import org.apache.directory.api.util.GeneralizedTime;
 import org.apache.directory.api.util.GeneralizedTime.Format;
 import org.apache.directory.api.util.GeneralizedTime.TimeZoneFormat;
 import org.junit.Test;
@@ -1215,17 +1214,17 @@ public class GeneralizedTimeTest
             originalTime, recalculatedTime );
     }
     
-    static DateFormat FORMAT = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss.SSSS z" );
+    static DateFormat format = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss.SSSS z" );
     
     @Test
     public void fractionCloseToOne() throws ParseException
     {
         GeneralizedTime close = new GeneralizedTime( "20000101000000.9994Z" );
         
-        assertThat( close.getDate(), is( equalTo( FORMAT.parse( "01/01/2000 00:00:00.999 GMT" ) ) ) );
+        assertThat( close.getDate(), is( equalTo( format.parse( "01/01/2000 00:00:00.999 GMT" ) ) ) );
         
         GeneralizedTime closer = new GeneralizedTime( "20000101000000.9995Z" );
         
-        assertThat( closer.getDate(), is( equalTo( FORMAT.parse( "01/01/2000 00:00:00.999 GMT" ) ) ) );
+        assertThat( closer.getDate(), is( equalTo( format.parse( "01/01/2000 00:00:00.999 GMT" ) ) ) );
     }
 }

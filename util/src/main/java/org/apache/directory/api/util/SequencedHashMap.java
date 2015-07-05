@@ -113,10 +113,10 @@ public class SequencedHashMap implements Map, Cloneable, Externalizable
 
 
         // per Map.Entry.setValue()
-        public Object setValue( Object value )
+        public Object setValue( Object newValue )
         {
             Object oldValue = this.value;
-            this.value = value;
+            this.value = newValue;
             return oldValue;
         }
 

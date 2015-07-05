@@ -24,10 +24,15 @@ package org.apache.directory.api.util;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class Serialize
+public final class Serialize
 {
     public static final byte TRUE = 0x01;
     public static final byte FALSE = 0x00;
+
+
+    private Serialize()
+    {
+    }
 
 
     /**

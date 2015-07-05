@@ -168,6 +168,11 @@ public final class Chars
             false, false, false, false, false, false, false, false };
 
 
+    private Chars()
+    {
+    }
+
+
     /**
     * Test if the current character is equal to a specific character.
     *

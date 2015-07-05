@@ -25,22 +25,22 @@ package org.apache.directory.api.util;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface UnicodeConstants
+public final class UnicodeConstants
 {
-    int UTF8_MULTI_BYTES_MASK = 0x0080;
-    int UTF8_TWO_BYTES_MASK = 0x00E0;
-    int UTF8_TWO_BYTES = 0x00C0;
-    int UTF8_THREE_BYTES_MASK = 0x00F0;
-    int UTF8_THREE_BYTES = 0x00E0;
-    int UTF8_FOUR_BYTES_MASK = 0x00F8;
-    int UTF8_FOUR_BYTES = 0x00F0;
-    int UTF8_FIVE_BYTES_MASK = 0x00FC;
-    int UTF8_FIVE_BYTES = 0x00F8;
-    int UTF8_SIX_BYTES_MASK = 0x00FE;
-    int UTF8_SIX_BYTES = 0x00FC;
+    public static final int UTF8_MULTI_BYTES_MASK = 0x0080;
+    public static final int UTF8_TWO_BYTES_MASK = 0x00E0;
+    public static final int UTF8_TWO_BYTES = 0x00C0;
+    public static final int UTF8_THREE_BYTES_MASK = 0x00F0;
+    public static final int UTF8_THREE_BYTES = 0x00E0;
+    public static final int UTF8_FOUR_BYTES_MASK = 0x00F8;
+    public static final int UTF8_FOUR_BYTES = 0x00F0;
+    public static final int UTF8_FIVE_BYTES_MASK = 0x00FC;
+    public static final int UTF8_FIVE_BYTES = 0x00F8;
+    public static final int UTF8_SIX_BYTES_MASK = 0x00FE;
+    public static final int UTF8_SIX_BYTES = 0x00FC;
 
     /** %01-%27 %2B-%5B %5D-%7F */
-    boolean[] UNICODE_SUBSET =
+    public static final boolean[] UNICODE_SUBSET =
         {
             // '\0'
             false, true,  true,  true,  true,  true,  true,  true, 
@@ -62,10 +62,15 @@ public interface UnicodeConstants
             true,  true,  true,  true,  true,  true,  true,  true,
             true,  true,  true,  true,  true,  true,  true,  true,
         };
-    int CHAR_ONE_BYTE_MASK = 0xFFFFFF80;
-    int CHAR_TWO_BYTES_MASK = 0xFFFFF800;
-    int CHAR_THREE_BYTES_MASK = 0xFFFF0000;
-    int CHAR_FOUR_BYTES_MASK = 0xFFE00000;
-    int CHAR_FIVE_BYTES_MASK = 0xFC000000;
-    int CHAR_SIX_BYTES_MASK = 0x80000000;
+    public static final int CHAR_ONE_BYTE_MASK = 0xFFFFFF80;
+    public static final int CHAR_TWO_BYTES_MASK = 0xFFFFF800;
+    public static final int CHAR_THREE_BYTES_MASK = 0xFFFF0000;
+    public static final int CHAR_FOUR_BYTES_MASK = 0xFFE00000;
+    public static final int CHAR_FIVE_BYTES_MASK = 0xFC000000;
+    public static final int CHAR_SIX_BYTES_MASK = 0x80000000;
+
+
+    private UnicodeConstants()
+    {
+    }
 }

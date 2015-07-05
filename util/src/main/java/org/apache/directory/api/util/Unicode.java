@@ -121,10 +121,7 @@ public final class Unicode
             {
                 // Two bytes char
                 // 110x-xxyy 10zz-zzzz -> 0000-0xxx yyzz-zzzz
-                return ( char ) ( ( ( bytes[pos] & 0x1C ) << 6 ) + 
-                    ( ( bytes[pos] & 0x03 ) << 6 ) + 
-                ( bytes[pos + 1] & 0x3F ) 
-                );
+                return ( char ) ( ( ( bytes[pos] & 0x1C ) << 6 ) + ( ( bytes[pos] & 0x03 ) << 6 ) + ( bytes[pos + 1] & 0x3F ) );
             }
             else if ( ( bytes[pos] & UnicodeConstants.UTF8_THREE_BYTES_MASK ) == UnicodeConstants.UTF8_THREE_BYTES )
             {
@@ -462,5 +459,10 @@ public final class Unicode
             }
             return strBuf.toString();
         }
+    }
+
+
+    private Unicode()
+    {
     }
 }

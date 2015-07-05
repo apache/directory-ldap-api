@@ -32,7 +32,7 @@ import org.apache.directory.api.i18n.I18n;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class Hex
+public final class Hex
 {
     /** &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66] */
     public static final byte[] HEX_VALUE =
@@ -58,6 +58,11 @@ public class Hex
     /** Used to build output as Hex */
     public static final char[] HEX_CHAR =
         { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+
+
+    private Hex()
+    {
+    }
 
 
     /**

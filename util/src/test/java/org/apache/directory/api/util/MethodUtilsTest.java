@@ -32,7 +32,6 @@ import java.util.Collection;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
-import org.apache.directory.api.util.MethodUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

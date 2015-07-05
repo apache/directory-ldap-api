@@ -46,7 +46,7 @@ public final class DateUtils
         {
             return GeneralizedTime.getDate( zuluTime );
         }
-        catch( Exception e )
+        catch ( Exception e )
         {
             throw new RuntimeException( e );
         }

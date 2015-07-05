@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class OsgiUtils
+public final class OsgiUtils
 {
     /** A logger */
     private static final Logger LOG = LoggerFactory.getLogger( OsgiUtils.class );
@@ -221,5 +221,10 @@ public class OsgiUtils
                 }
             }
         }
+    }
+
+
+    private OsgiUtils()
+    {
     }
 }

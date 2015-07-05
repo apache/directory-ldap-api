@@ -33,8 +33,6 @@ import java.util.Arrays;
 import com.mycila.junit.concurrent.Concurrency;
 import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 
-import org.apache.directory.api.util.Strings;
-import org.apache.directory.api.util.Unicode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

@@ -204,14 +204,14 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     }
 
 
-    private void setUp( Calendar calendar )
+    private void setUp( Calendar newCalendar )
     {
-        if ( calendar == null )
+        if ( newCalendar == null )
         {
             throw new IllegalArgumentException( I18n.err( I18n.ERR_04358 ) );
         }
 
-        this.calendar = calendar;
+        this.calendar = newCalendar;
         upGeneralizedTime = null;
         upFormat = Format.YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION;
         upTimeZoneFormat = TimeZoneFormat.Z;
@@ -829,6 +829,10 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
                 break;
 
+            case YEAR_MONTH_DAY_HOUR:
+                // nothing to add
+                break;
+
             case YEAR_MONTH_DAY_HOUR_FRACTION:
                 // min + sec + millis => fraction of an hour
                 fraction = 1000 * 60 * clonedCalendar.get( Calendar.MINUTE ) + 1000
@@ -863,6 +867,9 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 }
 
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected format " + format );
         }
 
         if ( ( timeZoneFormat == TimeZoneFormat.Z ) && clonedCalendar.getTimeZone().hasSameRules( GMT ) )
