@@ -29,9 +29,6 @@ import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import org.apache.directory.api.asn1.EncoderException;
-import org.apache.directory.api.asn1.ber.tlv.BerValue;
-import org.apache.directory.api.asn1.ber.tlv.IntegerDecoder;
-import org.apache.directory.api.asn1.ber.tlv.LongDecoder;
 import org.apache.directory.api.asn1.util.Asn1StringUtils;
 import org.apache.directory.api.asn1.util.BitString;
 import org.junit.Test;
@@ -123,19 +120,19 @@ public class ValueTest
                  { 0x7F },
                  
                  // 2 bytes
-                 { 0x00, (byte)0x80 }, 
-                 { 0x00, (byte)0x81 }, 
-                 { 0x7F, (byte)0xFF },
+                { 0x00, ( byte ) 0x80 },
+                { 0x00, ( byte ) 0x81 },
+                { 0x7F, ( byte ) 0xFF },
 
                  // 3 bytes
-                 { 0x00, (byte)0x80, 0x00 },
-                 { 0x00, (byte)0x80, 0x01 },
-                 { 0x7F, (byte)0xFF, (byte)0xFF },
+                { 0x00, ( byte ) 0x80, 0x00 },
+                { 0x00, ( byte ) 0x80, 0x01 },
+                { 0x7F, ( byte ) 0xFF, ( byte ) 0xFF },
 
                  // 4 bytes
-                 { 0x00, (byte)0x80, 0x00, 0x00 },
-                 { 0x00, (byte)0x80, 0x00, 0x01 },
-                 { 0x7F, (byte)0xFF, (byte)0xFF, (byte)0xFF },
+                { 0x00, ( byte ) 0x80, 0x00, 0x00 },
+                { 0x00, ( byte ) 0x80, 0x00, 0x01 },
+                { 0x7F, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF }
              };
 
          int[] negativeValues = new int[]
@@ -156,33 +153,33 @@ public class ValueTest
          byte[][] expectedNegativeBytes = new byte[][]
              {
                  // 1 byte
-                 { (byte)0xFF },
-                 { (byte)0x81 }, 
-                 { (byte)0x80 }, 
+                { ( byte ) 0xFF },
+                { ( byte ) 0x81 },
+                { ( byte ) 0x80 },
      
                  // 2 bytes
-                 { (byte)0xFF, 0x7F }, 
-                 { (byte)0xFF, 0x01 }, 
-                 { (byte)0xFF, 0x00 }, 
-                 { (byte)0xFE, (byte)0xFF }, 
-                 { (byte)0x80, 0x01 }, 
-                 { (byte)0x80, 0x00 }, 
+                { ( byte ) 0xFF, 0x7F },
+                { ( byte ) 0xFF, 0x01 },
+                { ( byte ) 0xFF, 0x00 },
+                { ( byte ) 0xFE, ( byte ) 0xFF },
+                { ( byte ) 0x80, 0x01 },
+                { ( byte ) 0x80, 0x00 },
      
                  // 3 bytes
-                 { (byte)0xFF, 0x7F, (byte)0xFF }, 
-                 { (byte)0xFF, 0x00, 0x01 },
-                 { (byte)0xFF, 0x00, 0x00 },
-                 { (byte)0xFE, (byte)0xFF, (byte)0xFF },
-                 { (byte)0x80, 0x00, 0x01 },
-                 { (byte)0x80, 0x00, 0x00 },
+                { ( byte ) 0xFF, 0x7F, ( byte ) 0xFF },
+                { ( byte ) 0xFF, 0x00, 0x01 },
+                { ( byte ) 0xFF, 0x00, 0x00 },
+                { ( byte ) 0xFE, ( byte ) 0xFF, ( byte ) 0xFF },
+                { ( byte ) 0x80, 0x00, 0x01 },
+                { ( byte ) 0x80, 0x00, 0x00 },
      
                  // 4 bytes
-                 { (byte)0xFF, 0x7F, (byte)0xFF, (byte)0xFF },
-                 { (byte)0xFF, 0x00, 0x00, 0x01 },
-                 { (byte)0xFF, 0x00, 0x00, 0x00 },
-                 { (byte)0xFE, (byte)0xFF, (byte)0xFF, (byte)0xFF },
-                 { (byte)0x80, 0x00, 0x00, 0x01 },
-                 { (byte)0x80, 0x00, 0x00, 0x00 },
+                { ( byte ) 0xFF, 0x7F, ( byte ) 0xFF, ( byte ) 0xFF },
+                { ( byte ) 0xFF, 0x00, 0x00, 0x01 },
+                { ( byte ) 0xFF, 0x00, 0x00, 0x00 },
+                { ( byte ) 0xFE, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF },
+                { ( byte ) 0x80, 0x00, 0x00, 0x01 },
+                { ( byte ) 0x80, 0x00, 0x00, 0x00 }
              };
 
          int i = 0;
@@ -195,7 +192,7 @@ public class ValueTest
              i++;
          }
          
-         i=0;
+        i = 0;
          
          for ( int value:negativeValues )
          {
@@ -220,29 +217,29 @@ public class ValueTest
         bb = BerValue.getBytes( 0x00000080 );
         assertEquals( 2, bb.length );
         assertEquals( 0x00, bb[0] );
-        assertEquals( (byte)0x80, bb[1] );
+        assertEquals( ( byte ) 0x80, bb[1] );
 
         bb = BerValue.getBytes( 0x000000FF );
         assertEquals( 2, bb.length );
         assertEquals( 0x00, bb[0] );
-        assertEquals( (byte)0xFF, bb[1] );
+        assertEquals( ( byte ) 0xFF, bb[1] );
 
         bb = BerValue.getBytes( 0x00007FFF );
         assertEquals( 2, bb.length );
         assertEquals( 0x7F, bb[0] );
-        assertEquals( (byte)0xFF, bb[1] );
+        assertEquals( ( byte ) 0xFF, bb[1] );
 
         bb = BerValue.getBytes( 0x00008000 );
         assertEquals( 3, bb.length );
         assertEquals( 0x00, bb[0] );
-        assertEquals( (byte)0x80, bb[1] );
+        assertEquals( ( byte ) 0x80, bb[1] );
         assertEquals( 0x00, bb[2] );
 
         bb = BerValue.getBytes( 0x0000FFFF );
         assertEquals( 3, bb.length );
         assertEquals( 0x00, bb[0] );
-        assertEquals( (byte)0xFF, bb[1] );
-        assertEquals( (byte)0xFF, bb[2] );
+        assertEquals( ( byte ) 0xFF, bb[1] );
+        assertEquals( ( byte ) 0xFF, bb[2] );
 
         bb = BerValue.getBytes( 0x00010000 );
         assertEquals( 3, bb.length );
@@ -253,22 +250,22 @@ public class ValueTest
         bb = BerValue.getBytes( 0x007FFFFF );
         assertEquals( 3, bb.length );
         assertEquals( 0x7F, bb[0] );
-        assertEquals( (byte)0xFF, bb[1] );
-        assertEquals( (byte)0xFF, bb[2] );
+        assertEquals( ( byte ) 0xFF, bb[1] );
+        assertEquals( ( byte ) 0xFF, bb[2] );
 
         bb = BerValue.getBytes( 0x00800000 );
         assertEquals( 4, bb.length );
         assertEquals( 0x00, bb[0] );
-        assertEquals( (byte)0x80, bb[1] );
+        assertEquals( ( byte ) 0x80, bb[1] );
         assertEquals( 0x00, bb[2] );
         assertEquals( 0x00, bb[3] );
 
         bb = BerValue.getBytes( 0x00FFFFFF );
         assertEquals( 4, bb.length );
         assertEquals( 0x00, bb[0] );
-        assertEquals( (byte)0xFF, bb[1] );
-        assertEquals( (byte)0xFF, bb[2] );
-        assertEquals( (byte)0xFF, bb[3] );
+        assertEquals( ( byte ) 0xFF, bb[1] );
+        assertEquals( ( byte ) 0xFF, bb[2] );
+        assertEquals( ( byte ) 0xFF, bb[3] );
 
         bb = BerValue.getBytes( 0x01000000 );
         assertEquals( 4, bb.length );
@@ -280,75 +277,75 @@ public class ValueTest
         bb = BerValue.getBytes( 0x7FFFFFFF );
         assertEquals( 4, bb.length );
         assertEquals( 0x7F, bb[0] );
-        assertEquals( (byte)0xFF, bb[1] );
-        assertEquals( (byte)0xFF, bb[2] );
-        assertEquals( (byte)0xFF, bb[3] );
+        assertEquals( ( byte ) 0xFF, bb[1] );
+        assertEquals( ( byte ) 0xFF, bb[2] );
+        assertEquals( ( byte ) 0xFF, bb[3] );
 
         bb = BerValue.getBytes( 0x80000000 );
         assertEquals( 4, bb.length );
-        assertEquals( (byte)0x80, bb[0] );
-        assertEquals( (byte)0x00, bb[1] );
-        assertEquals( (byte)0x00, bb[2] );
-        assertEquals( (byte)0x00, bb[3] );
+        assertEquals( ( byte ) 0x80, bb[0] );
+        assertEquals( ( byte ) 0x00, bb[1] );
+        assertEquals( ( byte ) 0x00, bb[2] );
+        assertEquals( ( byte ) 0x00, bb[3] );
         
         bb = BerValue.getBytes( 0xFFFFFFFF );
         assertEquals( 1, bb.length );
-        assertEquals( (byte)0xFF, bb[0] );
+        assertEquals( ( byte ) 0xFF, bb[0] );
         
         bb = BerValue.getBytes( 0xFFFFFF80 );
         assertEquals( 1, bb.length );
-        assertEquals( (byte)0x80, bb[0] );
+        assertEquals( ( byte ) 0x80, bb[0] );
 
         bb = BerValue.getBytes( 0xFFFFFF7F );
         assertEquals( 2, bb.length );
-        assertEquals( (byte)0xFF, bb[0] );
+        assertEquals( ( byte ) 0xFF, bb[0] );
         assertEquals( 0x7F, bb[1] );
 
         bb = BerValue.getBytes( 0xFFFFFF00 );
         assertEquals( 2, bb.length );
-        assertEquals( (byte)0xFF, bb[0] );
+        assertEquals( ( byte ) 0xFF, bb[0] );
         assertEquals( 0x00, bb[1] );
 
         bb = BerValue.getBytes( 0xFFFF8000 );
         assertEquals( 2, bb.length );
-        assertEquals( (byte)0x80, bb[0] );
+        assertEquals( ( byte ) 0x80, bb[0] );
         assertEquals( 0x00, bb[1] );
 
         bb = BerValue.getBytes( 0xFFFF7FFF );
         assertEquals( 3, bb.length );
-        assertEquals( (byte)0xFF, bb[0] );
+        assertEquals( ( byte ) 0xFF, bb[0] );
         assertEquals( 0x7F, bb[1] );
-        assertEquals( (byte)0xFF, bb[2] );
+        assertEquals( ( byte ) 0xFF, bb[2] );
 
         bb = BerValue.getBytes( 0xFFFF0000 );
         assertEquals( 3, bb.length );
-        assertEquals( (byte)0xFF, bb[0] );
+        assertEquals( ( byte ) 0xFF, bb[0] );
         assertEquals( 0x00, bb[1] );
         assertEquals( 0x00, bb[2] );
 
         bb = BerValue.getBytes( 0xFF800000 );
         assertEquals( 3, bb.length );
-        assertEquals( (byte)0x80, bb[0] );
+        assertEquals( ( byte ) 0x80, bb[0] );
         assertEquals( 0x00, bb[1] );
         assertEquals( 0x00, bb[2] );
 
         bb = BerValue.getBytes( 0xFF7FFFFF );
         assertEquals( 4, bb.length );
-        assertEquals( (byte)0xFF, bb[0] );
+        assertEquals( ( byte ) 0xFF, bb[0] );
         assertEquals( 0x7F, bb[1] );
-        assertEquals( (byte)0xFF, bb[2] );
-        assertEquals( (byte)0xFF, bb[3] );
+        assertEquals( ( byte ) 0xFF, bb[2] );
+        assertEquals( ( byte ) 0xFF, bb[3] );
 
         bb = BerValue.getBytes( 0xFF000000 );
         assertEquals( 4, bb.length );
-        assertEquals( (byte)0xFF, bb[0] );
+        assertEquals( ( byte ) 0xFF, bb[0] );
         assertEquals( 0x00, bb[1] );
         assertEquals( 0x00, bb[2] );
         assertEquals( 0x00, bb[3] );
 
         bb = BerValue.getBytes( 0x80000000 );
         assertEquals( 4, bb.length );
-        assertEquals( (byte)0x80, bb[0] );
+        assertEquals( ( byte ) 0x80, bb[0] );
         assertEquals( 0x00, bb[1] );
         assertEquals( 0x00, bb[2] );
         assertEquals( 0x00, bb[3] );
@@ -382,39 +379,40 @@ public class ValueTest
                 { 0x7F },
                 
                 // 2 bytes
-                { 0x00, (byte)0x80 }, 
-                { 0x00, (byte)0x81 }, 
-                { 0x7F, (byte)0xFF },
+                { 0x00, ( byte ) 0x80 },
+                { 0x00, ( byte ) 0x81 },
+                { 0x7F, ( byte ) 0xFF },
 
                 // 3 bytes
-                { 0x00, (byte)0x80, 0x00 },
-                { 0x00, (byte)0x80, 0x01 },
-                { 0x7F, (byte)0xFF, (byte)0xFF },
+                { 0x00, ( byte ) 0x80, 0x00 },
+                { 0x00, ( byte ) 0x80, 0x01 },
+                { 0x7F, ( byte ) 0xFF, ( byte ) 0xFF },
 
                 // 4 bytes
-                { 0x00, (byte)0x80, 0x00, 0x00 },
-                { 0x00, (byte)0x80, 0x00, 0x01 },
-                { 0x7F, (byte)0xFF, (byte)0xFF, (byte)0xFF },
+                { 0x00, ( byte ) 0x80, 0x00, 0x00 },
+                { 0x00, ( byte ) 0x80, 0x00, 0x01 },
+                { 0x7F, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF },
 
                 // 5 bytes
-                { 0x00, (byte)0x80, 0x00, 0x00, 0x00 },
-                { 0x00, (byte)0x80, 0x00, 0x00, 0x01 },
-                { 0x7F, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF },
+                { 0x00, ( byte ) 0x80, 0x00, 0x00, 0x00 },
+                { 0x00, ( byte ) 0x80, 0x00, 0x00, 0x01 },
+                { 0x7F, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF },
 
                 // 6 bytes
-                { 0x00, (byte)0x80, 0x00, 0x00, 0x00, 0x00 },
-                { 0x00, (byte)0x80, 0x00, 0x00, 0x00, 0x01 },
-                { 0x7F, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF },
+                { 0x00, ( byte ) 0x80, 0x00, 0x00, 0x00, 0x00 },
+                { 0x00, ( byte ) 0x80, 0x00, 0x00, 0x00, 0x01 },
+                { 0x7F, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF },
 
                 // 7 bytes
-                { 0x00, (byte)0x80, 0x00, 0x00, 0x00, 0x00, 0x00 },
-                { 0x00, (byte)0x80, 0x00, 0x00, 0x00, 0x00, 0x01 },
-                { 0x7F, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF },
+                { 0x00, ( byte ) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00 },
+                { 0x00, ( byte ) 0x80, 0x00, 0x00, 0x00, 0x00, 0x01 },
+                { 0x7F, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF },
 
                 // 8 bytes
-                { 0x00, (byte)0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, 
-                { 0x00, (byte)0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }, 
-                { 0x7F, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF }
+                { 0x00, ( byte ) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
+                { 0x00, ( byte ) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 },
+                { 0x7F, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF,
+                    ( byte ) 0xFF }
             };
 
         long[] negativeValues = new long[]
@@ -450,67 +448,70 @@ public class ValueTest
         byte[][] expectedNegativeBytes = new byte[][]
             {
                 // 1 byte
-                { (byte)0xFF },
-                { (byte)0x81 }, 
-                { (byte)0x80 }, 
+                { ( byte ) 0xFF },
+                { ( byte ) 0x81 },
+                { ( byte ) 0x80 },
     
                 // 2 bytes
-                { (byte)0xFF, 0x7F }, 
-                { (byte)0xFF, 0x01 }, 
-                { (byte)0xFF, 0x00 }, 
-                { (byte)0xFE, (byte)0xFF }, 
-                { (byte)0x80, 0x01 }, 
-                { (byte)0x80, 0x00 }, 
+                { ( byte ) 0xFF, 0x7F },
+                { ( byte ) 0xFF, 0x01 },
+                { ( byte ) 0xFF, 0x00 },
+                { ( byte ) 0xFE, ( byte ) 0xFF },
+                { ( byte ) 0x80, 0x01 },
+                { ( byte ) 0x80, 0x00 },
     
                 // 3 bytes
-                { (byte)0xFF, 0x7F, (byte)0xFF }, 
-                { (byte)0xFF, 0x00, 0x01 },
-                { (byte)0xFF, 0x00, 0x00 },
-                { (byte)0xFE, (byte)0xFF, (byte)0xFF },
-                { (byte)0x80, 0x00, 0x01 },
-                { (byte)0x80, 0x00, 0x00 },
+                { ( byte ) 0xFF, 0x7F, ( byte ) 0xFF },
+                { ( byte ) 0xFF, 0x00, 0x01 },
+                { ( byte ) 0xFF, 0x00, 0x00 },
+                { ( byte ) 0xFE, ( byte ) 0xFF, ( byte ) 0xFF },
+                { ( byte ) 0x80, 0x00, 0x01 },
+                { ( byte ) 0x80, 0x00, 0x00 },
     
                 // 4 bytes
-                { (byte)0xFF, 0x7F, (byte)0xFF, (byte)0xFF },
-                { (byte)0xFF, 0x00, 0x00, 0x01 },
-                { (byte)0xFF, 0x00, 0x00, 0x00 },
-                { (byte)0xFE, (byte)0xFF, (byte)0xFF, (byte)0xFF },
-                { (byte)0x80, 0x00, 0x00, 0x01 },
-                { (byte)0x80, 0x00, 0x00, 0x00 },
+                { ( byte ) 0xFF, 0x7F, ( byte ) 0xFF, ( byte ) 0xFF },
+                { ( byte ) 0xFF, 0x00, 0x00, 0x01 },
+                { ( byte ) 0xFF, 0x00, 0x00, 0x00 },
+                { ( byte ) 0xFE, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF },
+                { ( byte ) 0x80, 0x00, 0x00, 0x01 },
+                { ( byte ) 0x80, 0x00, 0x00, 0x00 },
     
                 // 5 bytes
-                { (byte)0xFF, 0x7F, (byte)0xFF, (byte)0xFF, (byte)0xFF },
-                { (byte)0xFF, 0x00, 0x00, 0x00, 0x01 },
-                { (byte)0xFF, 0x00, 0x00, 0x00, 0x00 },
-                { (byte)0xFE, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF },
-                { (byte)0x80, 0x00, 0x00, 0x00, 0x01 },
-                { (byte)0x80, 0x00, 0x00, 0x00, 0x00 },
+                { ( byte ) 0xFF, 0x7F, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF },
+                { ( byte ) 0xFF, 0x00, 0x00, 0x00, 0x01 },
+                { ( byte ) 0xFF, 0x00, 0x00, 0x00, 0x00 },
+                { ( byte ) 0xFE, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF },
+                { ( byte ) 0x80, 0x00, 0x00, 0x00, 0x01 },
+                { ( byte ) 0x80, 0x00, 0x00, 0x00, 0x00 },
     
                 // 6 bytes
-                { (byte)0xFF, 0x7F, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF },
-                { (byte)0xFF, 0x00, 0x00, 0x00, 0x00, 0x01 },
-                { (byte)0xFF, 0x00, 0x00, 0x00, 0x00, 0x00 },
-                { (byte)0xFE, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF },
-                { (byte)0x80, 0x00, 0x00, 0x00, 0x00, 0x01 },
-                { (byte)0x80, 0x00, 0x00, 0x00, 0x00, 0x00 },
+                { ( byte ) 0xFF, 0x7F, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF },
+                { ( byte ) 0xFF, 0x00, 0x00, 0x00, 0x00, 0x01 },
+                { ( byte ) 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00 },
+                { ( byte ) 0xFE, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF },
+                { ( byte ) 0x80, 0x00, 0x00, 0x00, 0x00, 0x01 },
+                { ( byte ) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00 },
     
                 // 7 bytes
-                { (byte)0xFF, 0x7F, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF },
-                { (byte)0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 },
-                { (byte)0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
-                { (byte)0xFE, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF },
-                { (byte)0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 },
-                { (byte)0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
+                { ( byte ) 0xFF, 0x7F, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF },
+                { ( byte ) 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 },
+                { ( byte ) 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
+                { ( byte ) 0xFE, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF,
+                    ( byte ) 0xFF },
+                { ( byte ) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 },
+                { ( byte ) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
     
                 // 8 bytes
-                { (byte)0xFF, 0x7F, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF },
-                { (byte)0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 },
-                { (byte)0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
-                { (byte)0xFE, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF },
-                { (byte)0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 },
-                { (byte)0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
+                { ( byte ) 0xFF, 0x7F, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF,
+                    ( byte ) 0xFF },
+                { ( byte ) 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 },
+                { ( byte ) 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },
+                { ( byte ) 0xFE, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF, ( byte ) 0xFF,
+                    ( byte ) 0xFF, ( byte ) 0xFF },
+                { ( byte ) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 },
+                { ( byte ) 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }
             };
-                                                    
+
         int i = 0;
         
         for ( long value:positiveValues )
@@ -521,7 +522,7 @@ public class ValueTest
             i++;
         }
         
-        i=0;
+        i = 0;
         
         for ( long value:negativeValues )
         {
@@ -755,14 +756,15 @@ public class ValueTest
     @Test
     public void testNewByteArrayValue()
     {
-        byte[] bb = new byte[]{0x01, (byte)0xFF};
-        
+        byte[] bb = new byte[]
+            { 0x01, ( byte ) 0xFF };
+
         BerValue v = new BerValue( bb );
         byte[] vv = v.getData();
-        
+
         assertEquals( 0x01, vv[0] );
-        assertEquals( (byte)0xFF, vv[1] );
-        
+        assertEquals( ( byte ) 0xFF, vv[1] );
+
         bb[0] = 0x00;
         assertEquals( 0x01, vv[0] );
     }

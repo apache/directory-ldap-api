@@ -41,6 +41,10 @@ public final class Asn1StringUtils
         {};
 
 
+    private Asn1StringUtils()
+    {
+    }
+
     /**
      * Helper function that dump a byte in hex form
      *

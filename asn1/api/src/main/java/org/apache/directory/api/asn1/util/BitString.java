@@ -100,26 +100,26 @@ public class BitString
      * Set a new BitString in the BitString. It will replace the old BitString,
      * and reset the current length with the new one.
      *
-     * @param bytes The string to store
+     * @param data The string to store
      */
-    public void setData( byte[] bytes )
+    public void setData( byte[] data )
     {
-        if ( ( bytes == null ) || ( bytes.length == 0 ) )
+        if ( ( data == null ) || ( data.length == 0 ) )
         {
             nbBits = -1;
             return;
         }
 
         // The first byte contains the number of unused bits
-        nbUnusedBits = bytes[0] & 0x07;
-        nbBytes = bytes.length - 1;
+        nbUnusedBits = data[0] & 0x07;
+        nbBytes = data.length - 1;
         nbBits = ( nbBytes * 8 ) - nbUnusedBits;
         this.bytes = new byte[nbBytes];
 
         // We have to transfer the data
         for ( int i = 0; i < nbBytes; i++ )
         {
-            this.bytes[i] = bytes[i + 1];
+            this.bytes[i] = data[i + 1];
         }
     }
 

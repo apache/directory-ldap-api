@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 public class OidTest
 {
-    private static final Logger logger = LoggerFactory.getLogger( OidTest.class );
+    private static final Logger LOGGER = LoggerFactory.getLogger( OidTest.class );
 
 
     @Test
@@ -50,14 +50,14 @@ public class OidTest
         {
             Arrays.equals( bytes, bytes );
         }
-        logger.debug( "byte[]: {}", ( System.nanoTime() - start ) );
+        LOGGER.debug( "byte[]: {}", ( System.nanoTime() - start ) );
 
         start = System.nanoTime();
         for ( int i = 0; i < 1000; i++ )
         {
             string.equals( string );
         }
-        logger.debug( "String: {}", ( System.nanoTime() - start ) );
+        LOGGER.debug( "String: {}", ( System.nanoTime() - start ) );
     }
 
 
@@ -96,16 +96,16 @@ public class OidTest
         byte[] expectedBytes = new byte[]
             { ( byte ) 0x87, ( byte ) 0xC5, 0x10 };
 
-        logger.debug( "b_to_b: " + Arrays.toString( Oid.fromBytes( expectedBytes ).toBytes() ) );
+        LOGGER.debug( "b_to_b: " + Arrays.toString( Oid.fromBytes( expectedBytes ).toBytes() ) );
         assertTrue( Arrays.equals( expectedBytes, Oid.fromBytes( expectedBytes ).toBytes() ) );
 
-        logger.debug( "s_to_b: " + Arrays.toString( Oid.fromString( expectedString ).toBytes() ) );
+        LOGGER.debug( "s_to_b: " + Arrays.toString( Oid.fromString( expectedString ).toBytes() ) );
         assertTrue( Arrays.equals( expectedBytes, Oid.fromString( expectedString ).toBytes() ) );
 
-        logger.debug( "b_to_s: " + Oid.fromBytes( expectedBytes ).toString() );
+        LOGGER.debug( "b_to_s: " + Oid.fromBytes( expectedBytes ).toString() );
         assertEquals( expectedString, Oid.fromBytes( expectedBytes ).toString() );
 
-        logger.debug( "s_to_s: " + Oid.fromString( expectedString ).toString() );
+        LOGGER.debug( "s_to_s: " + Oid.fromString( expectedString ).toString() );
         assertEquals( expectedString, Oid.fromString( expectedString ).toString() );
     }
 

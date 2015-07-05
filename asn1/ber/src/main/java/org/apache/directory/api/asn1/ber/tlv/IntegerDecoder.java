@@ -36,6 +36,11 @@ public final class IntegerDecoder
         { 0x000000FF, 0x0000FFFF, 0x00FFFFFF, 0xFFFFFFFF };
 
 
+    private IntegerDecoder()
+    {
+    }
+
+
     /**
      * Parse a byte buffer and send back an integer, controlling that this number
      * is in a specified interval.

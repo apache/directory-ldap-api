@@ -69,7 +69,7 @@ public abstract class AbstractContainer implements Asn1Container
 
     /** A flag telling if the Value should be accumulated before being decoded
      * for constructed types */
-    private boolean isGathering = false;
+    private boolean gathering = false;
 
 
     /**
@@ -334,16 +334,16 @@ public abstract class AbstractContainer implements Asn1Container
      */
     public boolean isGathering()
     {
-        return isGathering;
+        return gathering;
     }
 
 
     /**
      * {@inheritDoc}
      */
-    public void setGathering( boolean isGathering )
+    public void setGathering( boolean gathering )
     {
-        this.isGathering = isGathering;
+        this.gathering = gathering;
     }
 
 }

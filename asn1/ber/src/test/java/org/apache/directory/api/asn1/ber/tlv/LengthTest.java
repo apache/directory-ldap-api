@@ -25,7 +25,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
-import org.apache.directory.api.asn1.ber.tlv.TLV;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
