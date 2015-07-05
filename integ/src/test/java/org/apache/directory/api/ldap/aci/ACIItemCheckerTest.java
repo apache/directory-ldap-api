@@ -43,7 +43,7 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
  */
 @RunWith(ConcurrentJunitRunner.class)
 @Concurrency()
-public class ACIItemChekerTest
+public class ACIItemCheckerTest
 {
     /** the ACIItem checker wrapper */
     private static ACIItemChecker checker;
