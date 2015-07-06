@@ -28,7 +28,7 @@ package org.apache.directory.api.util;
 public final class Chars
 {
     /** &lt;alpha> ::= [0x41-0x5A] | [0x61-0x7A] */
-    public static final boolean[] ALPHA =
+    private static final boolean[] ALPHA =
         {
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
@@ -48,7 +48,7 @@ public final class Chars
             true, true, true, false, false, false, false, false
     };
     /** &lt;alpha-lower-case> ::= [0x61-0x7A] */
-    public static final boolean[] ALPHA_LOWER_CASE =
+    private static final boolean[] ALPHA_LOWER_CASE =
         {
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
@@ -68,7 +68,7 @@ public final class Chars
             true, true, true, false, false, false, false, false
     };
     /** &lt;alpha-upper-case> ::= [0x41-0x5A] */
-    public static final boolean[] ALPHA_UPPER_CASE =
+    private static final boolean[] ALPHA_UPPER_CASE =
         {
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
@@ -88,7 +88,7 @@ public final class Chars
             false, false, false, false, false, false, false, false,
     };
     /** &lt;alpha-digit> | &lt;digit> */
-    public static final boolean[] ALPHA_DIGIT =
+    private static final boolean[] ALPHA_DIGIT =
         {
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
@@ -108,7 +108,7 @@ public final class Chars
             true, true, true, false, false, false, false, false
     };
     /** &lt;alpha> | &lt;digit> | '-' */
-    public static final boolean[] CHAR =
+    private static final boolean[] CHAR =
         {
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
@@ -128,7 +128,7 @@ public final class Chars
             true,  true,  true,  false, false, false, false, false
     };
     /** '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' */
-    public static final boolean[] DIGIT =
+    private static final boolean[] DIGIT =
         {
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
@@ -148,7 +148,7 @@ public final class Chars
             false, false, false, false, false, false, false, false
     };
     /** &lt;hex> ::= [0x30-0x39] | [0x41-0x46] | [0x61-0x66] */
-    public static final boolean[] HEX =
+    private static final boolean[] HEX =
         {
             false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false,
