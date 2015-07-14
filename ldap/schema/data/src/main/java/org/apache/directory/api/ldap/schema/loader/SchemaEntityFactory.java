@@ -101,7 +101,7 @@ public class SchemaEntityFactory implements EntityFactory
      * Get an OID from an entry. Handles the bad cases (null OID,
      * not a valid OID, ...)
      */
-    private String getOid( Entry entry, String objectType ) throws LdapInvalidAttributeValueException
+    private String getOid( Entry entry, String objectType, boolean strict ) throws LdapInvalidAttributeValueException
     {
         // The OID
         Attribute mOid = entry.get( MetaSchemaConstants.M_OID_AT );
@@ -115,7 +115,7 @@ public class SchemaEntityFactory implements EntityFactory
 
         String oid = mOid.getString();
 
-        if ( !Oid.isOid( oid ) )
+        if ( strict && !Oid.isOid( oid ) )
         {
             String msg = I18n.err( I18n.ERR_10006, oid );
             LOG.warn( msg );
@@ -306,7 +306,7 @@ public class SchemaEntityFactory implements EntityFactory
         checkEntry( entry, SchemaConstants.SYNTAX_CHECKER );
 
         // The SyntaxChecker OID
-        String oid = getOid( entry, SchemaConstants.SYNTAX_CHECKER );
+        String oid = getOid( entry, SchemaConstants.SYNTAX_CHECKER, schemaManager.isStrict() );
 
         // Get the schema
         if ( !schemaManager.isSchemaLoaded( schemaName ) )
@@ -495,7 +495,7 @@ public class SchemaEntityFactory implements EntityFactory
         checkEntry( entry, SchemaConstants.COMPARATOR );
 
         // The Comparator OID
-        String oid = getOid( entry, SchemaConstants.COMPARATOR );
+        String oid = getOid( entry, SchemaConstants.COMPARATOR, schemaManager.isStrict() );
 
         // Get the schema
         if ( !schemaManager.isSchemaLoaded( schemaName ) )
@@ -626,7 +626,7 @@ public class SchemaEntityFactory implements EntityFactory
         checkEntry( entry, SchemaConstants.NORMALIZER );
 
         // The Normalizer OID
-        String oid = getOid( entry, SchemaConstants.NORMALIZER );
+        String oid = getOid( entry, SchemaConstants.NORMALIZER, schemaManager.isStrict() );
 
         // Get the schema
         if ( !schemaManager.isSchemaLoaded( schemaName ) )
@@ -682,7 +682,7 @@ public class SchemaEntityFactory implements EntityFactory
         checkEntry( entry, SchemaConstants.SYNTAX );
 
         // The Syntax OID
-        String oid = getOid( entry, SchemaConstants.SYNTAX );
+        String oid = getOid( entry, SchemaConstants.SYNTAX, schemaManager.isStrict() );
 
         // Get the schema
         if ( !schemaManager.isSchemaLoaded( schemaName ) )
@@ -724,7 +724,7 @@ public class SchemaEntityFactory implements EntityFactory
         checkEntry( entry, SchemaConstants.MATCHING_RULE );
 
         // The MatchingRule OID
-        String oid = getOid( entry, SchemaConstants.MATCHING_RULE );
+        String oid = getOid( entry, SchemaConstants.MATCHING_RULE, schemaManager.isStrict() );
 
         // Get the schema
         if ( !schemaManager.isSchemaLoaded( schemaName ) )
@@ -795,7 +795,7 @@ public class SchemaEntityFactory implements EntityFactory
         checkEntry( entry, SchemaConstants.OBJECT_CLASS );
 
         // The ObjectClass OID
-        String oid = getOid( entry, SchemaConstants.OBJECT_CLASS );
+        String oid = getOid( entry, SchemaConstants.OBJECT_CLASS, schemaManager.isStrict() );
 
         // Get the schema
         if ( !schemaManager.isSchemaLoaded( schemaName ) )
@@ -870,7 +870,7 @@ public class SchemaEntityFactory implements EntityFactory
         checkEntry( entry, SchemaConstants.ATTRIBUTE_TYPE );
 
         // The AttributeType OID
-        String oid = getOid( entry, SchemaConstants.ATTRIBUTE_TYPE );
+        String oid = getOid( entry, SchemaConstants.ATTRIBUTE_TYPE, schemaManager.isStrict() );
 
         // Get the schema
         if ( !schemaManager.isSchemaLoaded( schemaName ) )

@@ -405,7 +405,21 @@ public interface SchemaManager
      */
     boolean isDisabled( Schema schema );
 
+    /**
+     * Tells if the SchemaManager is permissive or if it must be checked
+     * against inconsistencies.
+     *
+     * @return True if SchemaObjects can be added even if they break the consistency
+     */
+    boolean isRelaxed();
 
+    /**
+     * Tells if the SchemaManager is strict.
+     *
+     * @return True if SchemaObjects cannot be added if they break the consistency
+     */
+    boolean isStrict();
+    
     /**
      * Check that the Schemas are consistent regarding the current Registries.
      * 
