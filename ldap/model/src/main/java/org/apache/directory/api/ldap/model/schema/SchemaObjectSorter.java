@@ -29,18 +29,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import org.apache.directory.api.ldap.model.schema.AttributeType;
-import org.apache.directory.api.ldap.model.schema.ObjectClass;
-import org.apache.directory.api.ldap.model.schema.SchemaObject;
-
 
 /**
  * Various utility methods for sorting schema objects.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SchemaObjectSorter
+public final class SchemaObjectSorter
 {
+    private SchemaObjectSorter()
+    {
+    }
+
 
     /**
      * Gets an hierarchical ordered {@link Iterable} of the given {@link AttributeType}s. 
@@ -86,7 +86,7 @@ public class SchemaObjectSorter
 
     }
 
-    private static class SchemaObjectIterable<T extends SchemaObject> implements Iterable<T>
+    private static final class SchemaObjectIterable<T extends SchemaObject> implements Iterable<T>
     {
 
         private final List<T> schemaObjects;
@@ -108,7 +108,7 @@ public class SchemaObjectSorter
 
     }
 
-    private static class SchemaObjectIterator<T extends SchemaObject> implements Iterator<T>
+    private static final class SchemaObjectIterator<T extends SchemaObject> implements Iterator<T>
     {
         private final List<T> schemaObjects;
         private final ReferenceCallback<T> callback;

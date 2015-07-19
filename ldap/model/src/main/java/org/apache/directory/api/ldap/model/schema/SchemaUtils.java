@@ -593,7 +593,7 @@ public final class SchemaUtils
         
         char c = attributeName.charAt( 0 );
         
-        if ( ( ( c >= 'a') && ( c <= 'z' ) ) || ( ( c >= 'A' ) && ( c <= 'Z' ) ) )
+        if ( ( ( c >= 'a' ) && ( c <= 'z' ) ) || ( ( c >= 'A' ) && ( c <= 'Z' ) ) )
         {
             descr = true;
         }
@@ -615,11 +615,11 @@ public final class SchemaUtils
             if ( descr )
             {
                 // This is a descr, iterate on KeyChars (ALPHA / DIGIT / HYPHEN / USCORE)
-                if ( ( ( c < 'a') || ( c > 'z' ) ) && 
-                     ( ( c < 'A' ) || ( c > 'Z' ) ) && 
-                     ( ( c < '0' ) || ( c > '9' ) ) &&
-                     ( c != '-' ) &&
-                     ( c != '_' ) )
+                if ( ( ( c < 'a' ) || ( c > 'z' ) )
+                    && ( ( c < 'A' ) || ( c > 'Z' ) )
+                    && ( ( c < '0' ) || ( c > '9' ) )
+                    && ( c != '-' )
+                    && ( c != '_' ) )
                 {
                     return false;
                 }

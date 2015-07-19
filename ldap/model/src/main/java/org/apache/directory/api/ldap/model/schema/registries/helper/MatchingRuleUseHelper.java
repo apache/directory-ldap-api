@@ -34,8 +34,13 @@ import org.apache.directory.api.ldap.model.schema.registries.Registries;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class MatchingRuleUseHelper
+public final class MatchingRuleUseHelper
 {
+    private MatchingRuleUseHelper()
+    {
+    }
+
+
     /**
      * Inject the MatchingRuleUse into the registries, updating the references to
      * other SchemaObject

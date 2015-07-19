@@ -29,9 +29,14 @@ import java.text.MessageFormat;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class FilterEncoder
+public final class FilterEncoder
 {
     private static final String[] EMPTY = new String[0];
+
+
+    private FilterEncoder()
+    {
+    }
 
 
     /**

@@ -117,7 +117,7 @@ public class DefaultComparatorRegistry extends DefaultSchemaObjectRegistry<LdapC
                 sb.append( ", " );
             }
 
-            LdapComparator<?> comparator =entry.getValue();
+            LdapComparator<?> comparator = entry.getValue();
 
             String fqcn = comparator.getFqcn();
             int lastDotPos = fqcn.lastIndexOf( '.' );

@@ -601,11 +601,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private void buildDitContentRuleReferences( List<Throwable> errors )
     {
-        for ( @SuppressWarnings("unused")
-        DitContentRule ditContentRule : ditContentRuleRegistry )
-        {
-            // TODO
-        }
+        // TODO: implement
     }
 
 
@@ -614,11 +610,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private void buildDitStructureRuleReferences( List<Throwable> errors )
     {
-        for ( @SuppressWarnings("unused")
-        DitStructureRule ditStructureRule : ditStructureRuleRegistry )
-        {
-            // TODO
-        }
+        // TODO: implement
     }
 
 
@@ -687,6 +679,15 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 case OBJECT_CLASS:
                     ObjectClassHelper.addToRegistries( ( ObjectClass ) schemaObject, errors, this );
                     break;
+
+                case SYNTAX_CHECKER:
+                case NORMALIZER:
+                case COMPARATOR:
+                    // Those are not registered
+                    break;
+
+                default:
+                    throw new IllegalArgumentException( "Unexpected SchemaObjectType: " + schemaObject.getObjectType() );
             }
         }
         catch ( LdapException ne )
@@ -741,6 +742,15 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 case MATCHING_RULE_USE :
                     // TODO
                     break;
+
+                case SYNTAX_CHECKER:
+                case NORMALIZER:
+                case COMPARATOR:
+                    // Those were not registered
+                    break;
+
+                default:
+                    throw new IllegalArgumentException( "Unexpected SchemaObjectType: " + schemaObject.getObjectType() );
             }
         }
         catch ( LdapException ne )
@@ -784,11 +794,7 @@ public class Registries implements SchemaLoaderListener, Cloneable
      */
     private void buildNameFormReferences( List<Throwable> errors )
     {
-        for ( @SuppressWarnings("unused")
-        NameForm nameFormRule : nameFormRegistry )
-        {
-            // TODO
-        }
+        // TODO: implement
     }
 
 
@@ -1511,11 +1517,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
         LOG.debug( "Registering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
         // Check that the SchemaObject is not already registered
-        if ( schemaObject instanceof LoadableSchemaObject )
-        {
-            // TODO : Check for existing Loadable SchemaObject
-        }
-        else
+        // TODO : Check for existing Loadable SchemaObject
+        if ( !( schemaObject instanceof LoadableSchemaObject ) )
         {
             if ( globalOidRegistry.contains( schemaObject.getOid() ) )
             {
@@ -1576,6 +1579,9 @@ public class Registries implements SchemaLoaderListener, Cloneable
                 case SYNTAX_CHECKER:
                     syntaxCheckerRegistry.register( ( SyntaxChecker ) schemaObject );
                     break;
+
+                default:
+                    throw new IllegalArgumentException( "Unexpected SchemaObjectType: " + schemaObject.getObjectType() );
             }
         }
         catch ( Exception e )
@@ -1728,11 +1734,8 @@ public class Registries implements SchemaLoaderListener, Cloneable
         LOG.debug( "Unregistering {}:{}", schemaObject.getObjectType(), schemaObject.getOid() );
 
         // Check that the SchemaObject is present in the registries
-        if ( schemaObject instanceof LoadableSchemaObject )
-        {
-            // TODO : check for an existing Loadable SchemaObject
-        }
-        else
+        // TODO : check for an existing Loadable SchemaObject
+        if ( !( schemaObject instanceof LoadableSchemaObject ) )
         {
             if ( !globalOidRegistry.contains( schemaObject.getOid() ) )
             {
@@ -1791,6 +1794,9 @@ public class Registries implements SchemaLoaderListener, Cloneable
             case SYNTAX_CHECKER:
                 unregistered = syntaxCheckerRegistry.unregister( ( SyntaxChecker ) schemaObject );
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected SchemaObjectType: " + schemaObject.getObjectType() );
         }
 
         return unregistered;

@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  * disconnection for the Extended response. 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ExtendedNoDResponse extends ExtendedResponseImpl
+public final class ExtendedNoDResponse extends ExtendedResponseImpl
 {
     /** The serial version UID */
     static final long serialVersionUID = 2L;

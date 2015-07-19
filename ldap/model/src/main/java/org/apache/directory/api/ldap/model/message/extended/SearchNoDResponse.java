@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.message.SearchResultDoneImpl;
  * disconnection for the Search response. 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SearchNoDResponse extends SearchResultDoneImpl
+public final class SearchNoDResponse extends SearchResultDoneImpl
 {
     /** The OID of the NotiveOfDisconnect extended operation. */
     public static final String EXTENSION_OID = NoticeOfDisconnect.EXTENSION_OID;

@@ -2150,7 +2150,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             reader.close();
             containsEntries = false;
             containsChanges = false;
-            offset = entryOffset = lineNumber = 0;
+            offset = 0;
+            entryOffset = 0;
+            lineNumber = 0;
         }
     }
 }

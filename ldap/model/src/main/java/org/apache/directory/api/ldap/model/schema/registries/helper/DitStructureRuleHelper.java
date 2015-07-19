@@ -33,8 +33,13 @@ import org.apache.directory.api.ldap.model.schema.registries.Registries;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DitStructureRuleHelper
+public final class DitStructureRuleHelper
 {
+    private DitStructureRuleHelper()
+    {
+    }
+
+
     /**
      * Inject the DitContentRule into the registries, updating the references to
      * other SchemaObject

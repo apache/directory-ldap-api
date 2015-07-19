@@ -1693,10 +1693,13 @@ public enum ResultCodeEnum
 
             case UNBIND_REQUEST:
                 return set.iterator().next();
-                
-            case INTERMEDIATE_RESPONSE :
+
+            case INTERMEDIATE_RESPONSE:
                 candidates = intersection( set, SEARCH_CODES );
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected MessageTypeEnum " + type );
         }
 
         // we don't want any codes that do not have anything to do w/ errors
@@ -1832,9 +1835,8 @@ public enum ResultCodeEnum
      */
     private static Set<ResultCodeEnum> getResultCodes( Throwable t )
     {
-        ResultCodeEnum rc;
-
-        if ( ( rc = getResultCode( t ) ) != null )
+        ResultCodeEnum rc = getResultCode( t );
+        if ( rc != null )
         {
             return Collections.singleton( rc );
         }

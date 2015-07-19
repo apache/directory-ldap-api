@@ -452,6 +452,10 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
                     case REMOVE_ATTRIBUTE:
                         sb.append( " delete\n" );
                         break;
+
+                    default:
+                        throw new IllegalArgumentException( "Unexpected ModificationOperation "
+                            + modification.getOperation() );
                 }
 
                 sb.append( "                Modification\n" );

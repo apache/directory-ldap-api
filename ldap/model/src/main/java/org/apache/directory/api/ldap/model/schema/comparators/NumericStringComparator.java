@@ -94,7 +94,7 @@ public class NumericStringComparator extends LdapComparator<String>
         }
         catch ( IOException ioe )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, assertValue ) , ioe);
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, assertValue ), ioe );
         }
 
         return backendValue.compareTo( assertValue );

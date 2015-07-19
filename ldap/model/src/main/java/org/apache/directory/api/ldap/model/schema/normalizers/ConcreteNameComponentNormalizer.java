@@ -97,6 +97,8 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
                     low = c;
                     newVal[pos++] = ( char ) Hex.getHexValue( high, low );
 
+                default:
+                    throw new IllegalStateException( "escaped can never have such a value: " + value );
             }
         }
 

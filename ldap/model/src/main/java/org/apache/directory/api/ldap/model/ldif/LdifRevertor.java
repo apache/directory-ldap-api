@@ -492,8 +492,8 @@ public final class LdifRevertor
                 // Is the new Rdn AVAs contained into the entry?
                 for ( Ava atav : newRdn )
                 {
-                    if ( !atav.equals( oldRdn.getAva() ) &&
-                         ( entry.contains( atav.getNormType(), atav.getNormValue().getString() ) ) )
+                    if ( !atav.equals( oldRdn.getAva() )
+                        && ( entry.contains( atav.getNormType(), atav.getNormValue().getString() ) ) )
                     {
                         existInEntry = true;
                     }

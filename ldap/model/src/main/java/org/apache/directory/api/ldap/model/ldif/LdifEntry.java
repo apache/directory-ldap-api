@@ -288,6 +288,9 @@ public class LdifEntry implements Cloneable, Externalizable
                     }
 
                     break;
+
+                default:
+                    throw new IllegalArgumentException( "Unexpected ChangeType: " + changeType );
             }
         }
     }
@@ -1321,6 +1324,9 @@ public class LdifEntry implements Cloneable, Externalizable
                 }
 
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected ChangeType: " + changeType );
         }
 
         int nbControls = in.readInt();
@@ -1408,6 +1414,9 @@ public class LdifEntry implements Cloneable, Externalizable
                 }
 
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected ChangeType: " + changeType );
         }
 
         // The controls

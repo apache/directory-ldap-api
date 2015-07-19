@@ -468,12 +468,12 @@ public class Csn implements Comparable<Csn>
         }
 
         // Get the changeCount. It should be an 6 digit hex number
-        if ( !Chars.isHex( (byte)chars[23] ) ||
-             !Chars.isHex( (byte)chars[24] ) ||
-             !Chars.isHex( (byte)chars[25] ) ||
-             !Chars.isHex( (byte)chars[26] ) ||
-             !Chars.isHex( (byte)chars[27] ) ||
-             !Chars.isHex( (byte)chars[28] ) )
+        if ( !Chars.isHex( ( byte ) chars[23] )
+            || !Chars.isHex( ( byte ) chars[24] )
+            || !Chars.isHex( ( byte ) chars[25] )
+            || !Chars.isHex( ( byte ) chars[26] )
+            || !Chars.isHex( ( byte ) chars[27] )
+            || !Chars.isHex( ( byte ) chars[28] ) )
         {
             return false;
         }
@@ -484,9 +484,9 @@ public class Csn implements Comparable<Csn>
         }
         
         // Get the replicaID, which should be a 3 digits hex number
-        if ( !Chars.isHex( (byte)chars[30] ) || 
-             !Chars.isHex( (byte)chars[31] ) || 
-             !Chars.isHex( (byte)chars[32] ) )
+        if ( !Chars.isHex( ( byte ) chars[30] )
+            || !Chars.isHex( ( byte ) chars[31] )
+            || !Chars.isHex( ( byte ) chars[32] ) )
         {
             return false;
         }
@@ -497,12 +497,12 @@ public class Csn implements Comparable<Csn>
         }
 
         // Check the modification number, which should be a 6 digits hex number
-        if ( !Chars.isHex( (byte)chars[34] ) ||
-             !Chars.isHex( (byte)chars[35] ) ||
-             !Chars.isHex( (byte)chars[36] ) ||
-             !Chars.isHex( (byte)chars[37] ) ||
-             !Chars.isHex( (byte)chars[38] ) ||
-             !Chars.isHex( (byte)chars[39] ) )
+        if ( !Chars.isHex( ( byte ) chars[34] )
+            || !Chars.isHex( ( byte ) chars[35] )
+            || !Chars.isHex( ( byte ) chars[36] )
+            || !Chars.isHex( ( byte ) chars[37] )
+            || !Chars.isHex( ( byte ) chars[38] )
+            || !Chars.isHex( ( byte ) chars[39] ) )
         {
             return false;
         }

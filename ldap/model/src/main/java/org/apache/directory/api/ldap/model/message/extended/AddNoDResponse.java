@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  * disconnection for the Add response. 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AddNoDResponse extends AddResponseImpl
+public final class AddNoDResponse extends AddResponseImpl
 {
     /** The OID of the NotiveOfDisconnect extended operation. */
     public static final String EXTENSION_OID = NoticeOfDisconnect.EXTENSION_OID;

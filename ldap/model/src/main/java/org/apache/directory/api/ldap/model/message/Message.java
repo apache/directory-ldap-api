@@ -78,10 +78,10 @@ public interface Message
     /**
      * Adds an array of controls to this Message.
      * 
-     * @param controls the controls to add.
+     * @param controlsToAdd the controls to add.
      * @return A Message reference
      */
-    Message addAllControls( Control[] controls );
+    Message addAllControls( Control[] controlsToAdd );
 
 
     /**

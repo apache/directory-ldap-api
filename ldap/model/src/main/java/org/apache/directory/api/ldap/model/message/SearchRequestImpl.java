@@ -512,6 +512,9 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
             case SUBTREE:
                 sb.append( "whole subtree" );
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected scope " + scope );
         }
 
         sb.append( '\n' );
@@ -563,6 +566,9 @@ public class SearchRequestImpl extends AbstractAbandonableRequest implements Sea
             case DEREF_ALWAYS:
                 sb.append( "deref Always" );
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected aliasDerefMode " + aliasDerefMode );
         }
 
         sb.append( '\n' );

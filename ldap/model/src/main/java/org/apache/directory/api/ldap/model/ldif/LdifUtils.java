@@ -500,6 +500,10 @@ public final class LdifUtils
                         case REPLACE_ATTRIBUTE:
                             sb.append( "replace: " );
                             break;
+
+                        default:
+                            throw new IllegalArgumentException( "Unexpected ModificationOperation: "
+                                + modification.getOperation() );
                     }
 
                     sb.append( modification.getAttribute().getUpId() );
@@ -510,6 +514,9 @@ public final class LdifUtils
                 }
 
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected ChangeType: " + entry.getChangeType() );
         }
 
         sb.append( '\n' );

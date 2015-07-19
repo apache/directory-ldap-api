@@ -38,7 +38,7 @@ import java.util.List;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SchemaObjectRenderer
+public final class SchemaObjectRenderer
 {
     /**
      * Preconfigured {@link SchemaObjectRenderer} that renders the schema object without line break and with

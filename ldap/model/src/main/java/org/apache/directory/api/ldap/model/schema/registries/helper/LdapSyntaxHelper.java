@@ -35,8 +35,13 @@ import org.apache.directory.api.ldap.model.schema.syntaxCheckers.OctetStringSynt
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapSyntaxHelper
+public final class LdapSyntaxHelper
 {
+    private LdapSyntaxHelper()
+    {
+    }
+
+
     /**
      * Inject the LdapSyntax into the registries, updating the references to
      * other SchemaObject

@@ -25,8 +25,6 @@ import java.util.List;
 
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
-import org.apache.directory.api.ldap.model.name.AntlrDnLexer;
-import org.apache.directory.api.ldap.model.name.AntlrDnParser;
 
 
 /**

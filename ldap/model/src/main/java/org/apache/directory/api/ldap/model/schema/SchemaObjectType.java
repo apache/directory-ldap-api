@@ -118,6 +118,9 @@ public enum SchemaObjectType
             case SYNTAX_CHECKER:
                 schemaObjectPath = SchemaConstants.SYNTAX_CHECKERS_PATH;
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected SchemaObjectType " + this );
         }
 
         return schemaObjectPath;

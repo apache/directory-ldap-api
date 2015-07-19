@@ -26,8 +26,13 @@ package org.apache.directory.api.ldap.model.constants;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class LdapConstants
+public final class LdapConstants
 {
     /** The default catch-all ObjectClass filter */
     public static final String OBJECT_CLASS_STAR = "(objectClass=*)";
+
+
+    private LdapConstants()
+    {
+    }
 }

@@ -151,8 +151,8 @@ public abstract class AbstractValue<T> implements Value<T>
 
                     if ( isHR != isHumanReadable() )
                     {
-                        String message = "The '" + attributeType.getName() + "' AttributeType and values must " +
-                            "both be String or binary";
+                        String message = "The '" + attributeType.getName() + "' AttributeType and values must "
+                            + "both be String or binary";
                         LOG.error( message );
                         throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
                     }
@@ -178,8 +178,7 @@ public abstract class AbstractValue<T> implements Value<T>
             }
             else
             {
-                String message = "The '" + attributeType.getName() + "' AttributeType does not have" +
-                    " a normalizer";
+                String message = "The '" + attributeType.getName() + "' AttributeType does not have" + " a normalizer";
                 LOG.error( message );
                 throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
             }
@@ -246,9 +245,8 @@ public abstract class AbstractValue<T> implements Value<T>
      */
     public boolean isInstanceOf( AttributeType attributeType )
     {
-        return ( attributeType != null ) &&
-            ( this.attributeType.equals( attributeType ) ||
-            this.attributeType.isDescendantOf( attributeType ) );
+        return ( attributeType != null )
+            && ( this.attributeType.equals( attributeType ) || this.attributeType.isDescendantOf( attributeType ) );
     }
 
 

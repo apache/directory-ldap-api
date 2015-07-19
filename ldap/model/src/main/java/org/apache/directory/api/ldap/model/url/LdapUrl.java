@@ -193,18 +193,20 @@ public class LdapUrl
         int pos = 0;
 
         // The scheme
-        if ( ( ( pos = Strings.areEquals( chars, 0, LDAP_SCHEME ) ) == StringConstants.NOT_EQUAL )
-            && ( ( pos = Strings.areEquals( chars, 0, LDAPS_SCHEME ) ) == StringConstants.NOT_EQUAL ) )
+        pos = Strings.areEquals( chars, 0, LDAP_SCHEME );
+        if ( pos == StringConstants.NOT_EQUAL )
         {
-            throw new LdapURLEncodingException( I18n.err( I18n.ERR_04398 ) );
+            pos = Strings.areEquals( chars, 0, LDAPS_SCHEME );
+            if ( pos == StringConstants.NOT_EQUAL )
+            {
+                throw new LdapURLEncodingException( I18n.err( I18n.ERR_04398 ) );
+            }
         }
-        else
-        {
-            scheme = new String( chars, 0, pos );
-        }
+        scheme = new String( chars, 0, pos );
 
         // The hostport
-        if ( ( pos = parseHostPort( chars, pos ) ) == -1 )
+        pos = parseHostPort( chars, pos );
+        if ( pos == -1 )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04399 ) );
         }
@@ -228,7 +230,8 @@ public class LdapUrl
         }
 
         // An optional Dn
-        if ( ( pos = parseDN( chars, pos ) ) == -1 )
+        pos = parseDN( chars, pos );
+        if ( pos == -1 )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04401 ) );
         }
@@ -246,7 +249,8 @@ public class LdapUrl
 
         pos++;
 
-        if ( ( pos = parseAttributes( chars, pos ) ) == -1 )
+        pos = parseAttributes( chars, pos );
+        if ( pos == -1 )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04403 ) );
         }
@@ -264,7 +268,8 @@ public class LdapUrl
 
         pos++;
 
-        if ( ( pos = parseScope( chars, pos ) ) == -1 )
+        pos = parseScope( chars, pos );
+        if ( pos == -1 )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04404 ) );
         }
@@ -287,7 +292,8 @@ public class LdapUrl
             return;
         }
 
-        if ( ( pos = parseFilter( chars, pos ) ) == -1 )
+        pos = parseFilter( chars, pos );
+        if ( pos == -1 )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04405 ) );
         }
@@ -305,7 +311,8 @@ public class LdapUrl
 
         pos++;
 
-        if ( ( pos = parseExtensions( chars, pos ) ) == -1 )
+        pos = parseExtensions( chars, pos );
+        if ( pos == -1 )
         {
             throw new LdapURLEncodingException( I18n.err( I18n.ERR_04406 ) );
         }
@@ -380,7 +387,7 @@ public class LdapUrl
         {
             case '[' :
                 // This is an IP Literal address
-                return parseIpLiteral( chars, pos+1 );
+                return parseIpLiteral( chars, pos + 1 );
                 
             case '0' :
             case '1' :
@@ -420,6 +427,9 @@ public class LdapUrl
             case ',' : case ';' : case '=' :
                 // A reg-name
                 return parseRegName( chars, pos );
+
+            default:
+                break;
         }
         
         host = new String( chars, start, pos - start );
@@ -539,7 +549,7 @@ public class LdapUrl
             pos++;
         }
         
-        if ( ! hexFound )
+        if ( !hexFound )
         {
             return -1;
         }
@@ -654,7 +664,7 @@ public class LdapUrl
                 case '%' : 
                     if ( Chars.isHex( chars, pos + 1 ) && Chars.isHex( chars, pos + 2 ) )
                     {
-                        pos+=3;
+                        pos += 3;
                     }
                     else
                     {
@@ -831,7 +841,8 @@ public class LdapUrl
     {
         int hostPos = pos;
 
-        if ( ( pos = parseHost( chars, pos ) ) == -1 )
+        pos = parseHost( chars, pos );
+        if ( pos == -1 )
         {
             return -1;
         }
@@ -853,7 +864,8 @@ public class LdapUrl
         }
 
         // As we have a ':', we must have a valid port (between 0 and 65535).
-        if ( ( pos = parsePort( chars, pos ) ) == -1 )
+        pos = parsePort( chars, pos );
+        if ( pos == -1 )
         {
             return -1;
         }
@@ -1603,6 +1615,10 @@ public class LdapUrl
                 case IPV6 :
                 case IPV_FUTURE :
                     sb.append( '[' ).append( host ).append( ']' );
+                    break;
+
+                default:
+                    throw new IllegalArgumentException( "Unexpected HostTypeEnum " + hostType );
             }
         }
 

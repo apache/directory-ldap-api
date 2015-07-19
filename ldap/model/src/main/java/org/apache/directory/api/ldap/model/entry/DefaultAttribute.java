@@ -1844,9 +1844,8 @@ public class DefaultAttribute implements Attribute, Cloneable
      */
     public boolean isInstanceOf( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
-        return ( attributeType != null ) &&
-            ( this.attributeType.equals( attributeType ) ||
-            this.attributeType.isDescendantOf( attributeType ) );
+        return ( attributeType != null )
+            && ( this.attributeType.equals( attributeType ) || this.attributeType.isDescendantOf( attributeType ) );
     }
 
 

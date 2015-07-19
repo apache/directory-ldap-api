@@ -42,12 +42,9 @@ import org.apache.directory.api.util.Unicode;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class FilterParser
+public final class FilterParser
 {
-    /**
-     * Creates a filter parser implementation.
-     */
-    public FilterParser()
+    private FilterParser()
     {
     }
 
@@ -280,8 +277,10 @@ public class FilterParser
                 // not a valid char, so let's get out
                 break;
             }
+
+            b = Strings.byteAt( filter, pos.start );
         }
-        while ( ( b = Strings.byteAt( filter, pos.start ) ) != '\0' );
+        while ( b != '\0' );
 
         if ( current != 0 )
         {
@@ -413,8 +412,10 @@ public class FilterParser
                 // not a valid char, so let's get out
                 break;
             }
+
+            b = Strings.byteAt( filter, pos.start );
         }
-        while ( ( b = Strings.byteAt( filter, pos.start ) ) != '\0' );
+        while ( b != '\0' );
 
         if ( current != 0 )
         {

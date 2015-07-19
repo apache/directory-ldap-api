@@ -70,7 +70,7 @@ public class BindRequestImpl extends AbstractAbandonableRequest implements BindR
     private boolean isVersion3 = true;
 
     /** The associated response */
-    public BindResponse response;
+    private BindResponse response;
 
 
     // ------------------------------------------------------------------------

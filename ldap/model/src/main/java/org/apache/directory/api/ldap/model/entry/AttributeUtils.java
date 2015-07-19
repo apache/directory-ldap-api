@@ -47,6 +47,10 @@ import org.apache.directory.api.util.Strings;
  */
 public final class AttributeUtils
 {
+    private AttributeUtils()
+    {
+    }
+
 
     /**
      * Check if an attribute contains a value. The test is case insensitive,

@@ -44,7 +44,7 @@ import org.apache.directory.api.util.UnixCrypt;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordUtil
+public final class PasswordUtil
 {
 
     /** The SHA1 hash length */
@@ -64,6 +64,11 @@ public class PasswordUtil
 
     /** The PKCS5S2 hash length */
     public static final int PKCS5S2_LENGTH = 32;
+
+
+    private PasswordUtil()
+    {
+    }
 
 
     /**

@@ -75,23 +75,23 @@ public class SortResponseControlImpl extends AbstractControl  implements SortRes
     @Override
     public boolean equals( Object o )
     {
-        if( !super.equals( o ) )
+        if ( !super.equals( o ) )
         {
             return false;
         }
         
         SortResponse that = ( SortResponse ) o;
         
-        if( result != that.getSortResult() )
+        if ( result != that.getSortResult() )
         {
             return false;
         }
         
-        if( attributeName != null )
+        if ( attributeName != null )
         {
             return ( attributeName.equalsIgnoreCase( that.getAttributeName() ) );
         }
-        else if( that.getAttributeName() == null )
+        else if ( that.getAttributeName() == null )
         {
             return true;
         }

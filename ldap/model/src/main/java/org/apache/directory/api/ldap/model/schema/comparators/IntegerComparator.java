@@ -133,7 +133,7 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
         }
         catch ( IOException ioe )
         {
-            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, backendValue ) , ioe);
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04224, backendValue ), ioe );
         }
         try
         {

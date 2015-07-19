@@ -30,7 +30,7 @@ import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
  * disconnection for the Delete response. 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DeleteNoDResponse extends DeleteResponseImpl
+public final class DeleteNoDResponse extends DeleteResponseImpl
 {
     /** The OID of the NotiveOfDisconnect extended operation. */
     public static final String EXTENSION_OID = NoticeOfDisconnect.EXTENSION_OID;

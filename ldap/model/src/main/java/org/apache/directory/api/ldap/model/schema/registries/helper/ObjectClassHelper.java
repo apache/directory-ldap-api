@@ -40,8 +40,12 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class ObjectClassHelper
+public final class ObjectClassHelper
 {
+    private ObjectClassHelper()
+    {
+    }
+
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( ObjectClassHelper.class );
 
@@ -171,6 +175,10 @@ public class ObjectClassHelper
                             }
 
                             break;
+
+                        default:
+                            throw new IllegalArgumentException( "Unexpected ObjectClassTypeEnum: "
+                                + objectClass.getType() );
                     }
 
                     objectClass.getSuperiors().add( superior );

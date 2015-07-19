@@ -43,8 +43,12 @@ import org.slf4j.LoggerFactory;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class AttributeTypeHelper
+public final class AttributeTypeHelper
 {
+    private AttributeTypeHelper()
+    {
+    }
+
     /** A logger for this class */
     private static final Logger LOG = LoggerFactory.getLogger( AttributeTypeHelper.class );
 
@@ -154,7 +158,7 @@ public class AttributeTypeHelper
             // This AT has a superior
             try
             {
-                currentSuperior = (MutableAttributeType)attributeTypeRegistry.lookup( superiorOid );
+                currentSuperior = ( MutableAttributeType ) attributeTypeRegistry.lookup( superiorOid );
             }
             catch ( Exception e )
             {

@@ -35,8 +35,13 @@ import org.apache.directory.api.ldap.model.schema.registries.Registries;
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class NameFormHelper
+public final class NameFormHelper
 {
+    private NameFormHelper()
+    {
+    }
+
+
     /**
      * Inject the NameForm into the registries, updating the references to
      * other SchemaObject
