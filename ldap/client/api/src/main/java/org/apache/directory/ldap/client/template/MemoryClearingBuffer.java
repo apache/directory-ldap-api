@@ -158,8 +158,9 @@ public final class MemoryClearingBuffer
         {
             Arrays.fill( computedChars, '0' );
         }
-        if ( precomputedChars != null )
+        if ( precomputedChars != null && precomputedChars != this.originalChars )
         {
+            // only nullify if NOT originalChars
             Arrays.fill( precomputedChars, '0' );
         }
 
