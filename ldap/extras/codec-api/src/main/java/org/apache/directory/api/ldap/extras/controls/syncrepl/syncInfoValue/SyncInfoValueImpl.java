@@ -270,11 +270,11 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
             }
         }
 
-        return ( refreshDeletes == otherControl.isRefreshDeletes() ) &&
-            ( refreshDone == otherControl.isRefreshDone() ) &&
-            ( type == otherControl.getType() ) &&
-            ( Arrays.equals( cookie, otherControl.getCookie() ) &&
-            ( isCritical() == otherControl.isCritical() ) );
+        return ( refreshDeletes == otherControl.isRefreshDeletes() )
+            && ( refreshDone == otherControl.isRefreshDone() )
+            && ( type == otherControl.getType() )
+            && ( Arrays.equals( cookie, otherControl.getCookie() ) ) 
+            && ( isCritical() == otherControl.isCritical() );
     }
 
 
@@ -359,6 +359,9 @@ public class SyncInfoValueImpl extends AbstractControl implements SyncInfoValue
                 }
 
                 break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected SynchronizationInfo: " + getType() );
         }
 
         return sb.toString();

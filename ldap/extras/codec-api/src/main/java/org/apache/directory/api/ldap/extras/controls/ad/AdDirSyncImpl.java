@@ -124,7 +124,7 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
         if ( cookie != null )
         {
             this.cookie = new byte[cookie.length];
-            System.arraycopy( cookie, 0, this.cookie, 0,cookie.length );
+            System.arraycopy( cookie, 0, this.cookie, 0, cookie.length );
         }
         else
         {
@@ -175,10 +175,10 @@ public class AdDirSyncImpl extends AbstractControl implements AdDirSync
 
         AdDirSync otherControl = ( AdDirSync ) o;
 
-        return ( maxReturnLength == otherControl.getMaxReturnLength() ) &&
-            ( parentFirst == otherControl.getParentFirst() ) &&
-            ( Arrays.equals( cookie, otherControl.getCookie() ) &&
-            ( isCritical() == otherControl.isCritical() ) );
+        return ( maxReturnLength == otherControl.getMaxReturnLength() )
+            && ( parentFirst == otherControl.getParentFirst() )
+            && ( Arrays.equals( cookie, otherControl.getCookie() ) )
+            && ( isCritical() == otherControl.isCritical() );
     }
 
 

@@ -168,10 +168,10 @@ public class SyncStateValueImpl extends AbstractControl implements SyncStateValu
 
         SyncStateValue otherControl = ( SyncStateValue ) o;
 
-        return ( type == otherControl.getSyncStateType() ) &&
-            ( Arrays.equals( entryUuid, otherControl.getEntryUUID() ) ) &&
-            ( Arrays.equals( cookie, otherControl.getCookie() ) &&
-            ( isCritical() == otherControl.isCritical() ) );
+        return ( type == otherControl.getSyncStateType() )
+            && ( Arrays.equals( entryUuid, otherControl.getEntryUUID() ) )
+            && ( Arrays.equals( cookie, otherControl.getCookie() ) )
+            && ( isCritical() == otherControl.isCritical() );
     }
 
 

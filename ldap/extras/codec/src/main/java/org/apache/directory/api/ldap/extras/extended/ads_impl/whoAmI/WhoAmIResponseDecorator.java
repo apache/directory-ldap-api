@@ -206,8 +206,8 @@ public class WhoAmIResponseDecorator extends ExtendedResponseDecorator<WhoAmIRes
     {
         if ( whoAmIResponse.getAuthzId() != null )
         {
-            return 1 + TLV.getNbBytes( whoAmIResponse.getAuthzId().length ) +
-                whoAmIResponse.getAuthzId().length;
+            return 1 + TLV.getNbBytes( whoAmIResponse.getAuthzId().length )
+                + whoAmIResponse.getAuthzId().length;
         }
         else
         {

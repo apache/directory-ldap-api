@@ -57,7 +57,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class VirtualListViewResponseGrammar extends AbstractGrammar<VirtualListViewResponseContainer>
+public final class VirtualListViewResponseGrammar extends AbstractGrammar<VirtualListViewResponseContainer>
 {
     static final Logger LOG = LoggerFactory.getLogger( VirtualListViewResponseGrammar.class );
 

@@ -139,9 +139,9 @@ public class SyncDoneValueImpl extends AbstractControl implements SyncDoneValue
 
         SyncDoneValue otherControl = ( SyncDoneValue ) o;
 
-        return ( refreshDeletes == otherControl.isRefreshDeletes() ) &&
-            ( Arrays.equals( cookie, otherControl.getCookie() ) &&
-            ( isCritical() == otherControl.isCritical() ) );
+        return ( refreshDeletes == otherControl.isRefreshDeletes() )
+            && ( Arrays.equals( cookie, otherControl.getCookie() ) )
+            && ( isCritical() == otherControl.isCritical() );
     }
 
 

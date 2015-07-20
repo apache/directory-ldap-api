@@ -184,9 +184,9 @@ public class SyncRequestValueImpl extends AbstractControl implements SyncRequest
 
         SyncRequestValue otherControl = ( SyncRequestValue ) o;
 
-        return ( mode == otherControl.getMode() ) &&
-            ( isReloadHint == otherControl.isReloadHint() ) &&
-            ( Arrays.equals( cookie, otherControl.getCookie() ) );
+        return ( mode == otherControl.getMode() )
+            && ( isReloadHint == otherControl.isReloadHint() )
+            && ( Arrays.equals( cookie, otherControl.getCookie() ) );
     }
 
 

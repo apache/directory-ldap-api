@@ -71,8 +71,9 @@ public enum SyncModifyDnType
 
             case 2:
                 return MOVE_AND_RENAME;
-        }
 
-        throw new IllegalArgumentException( "unknown modify dn operantion type " + value );
+            default:
+                throw new IllegalArgumentException( "unknown modify dn operantion type " + value );
+        }
     }
 }

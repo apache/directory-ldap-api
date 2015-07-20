@@ -49,7 +49,7 @@ import org.apache.directory.api.asn1.ber.tlv.UniversalTag;
  *          
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class PasswordPolicyGrammar extends AbstractGrammar<PasswordPolicyContainer>
+public final class PasswordPolicyGrammar extends AbstractGrammar<PasswordPolicyContainer>
 {
     /** PasswordPolicyResponseControlGrammar singleton instance */
     private static final PasswordPolicyGrammar INSTANCE = new PasswordPolicyGrammar();

@@ -252,8 +252,8 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
                     }
                     catch ( IntegerDecoderException e )
                     {
-                        throw new RuntimeException( "Failed to decode INTEGER: " +
-                            Strings.dumpBytes( ( byte[] ) obj ), e );
+                        throw new RuntimeException( "Failed to decode INTEGER: "
+                            + Strings.dumpBytes( ( byte[] ) obj ), e );
                     }
                 }
                 else

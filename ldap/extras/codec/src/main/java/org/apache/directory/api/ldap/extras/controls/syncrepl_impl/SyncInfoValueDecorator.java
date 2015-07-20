@@ -414,6 +414,11 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                         BerValue.encode( buffer, syncUUID );
                     }
                 }
+
+                break;
+
+            default:
+                throw new IllegalArgumentException( "Unexpected SynchronizationInfo: " + getType() );
         }
 
         return buffer;
@@ -520,6 +525,11 @@ public class SyncInfoValueDecorator extends ControlDecorator<SyncInfoValue> impl
                                 BerValue.encode( buffer, syncUUID );
                             }
                         }
+
+                        break;
+
+                    default:
+                        throw new IllegalArgumentException( "Unexpected SynchronizationInfo: " + getType() );
                 }
 
                 value = buffer.array();

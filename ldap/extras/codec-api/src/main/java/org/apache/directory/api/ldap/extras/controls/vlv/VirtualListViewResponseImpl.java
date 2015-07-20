@@ -158,10 +158,10 @@ public class VirtualListViewResponseImpl extends AbstractControl implements Virt
 
         VirtualListViewResponseImpl otherControl = ( VirtualListViewResponseImpl ) o;
 
-        return ( targetPosition == otherControl.getTargetPosition() ) &&
-            ( contentCount == otherControl.getContentCount() ) &&
-            ( virtualListViewResult == otherControl.getVirtualListViewResult() ) &&
-            Arrays.equals( contextId, otherControl.getContextId() );
+        return ( targetPosition == otherControl.getTargetPosition() )
+            && ( contentCount == otherControl.getContentCount() )
+            && ( virtualListViewResult == otherControl.getVirtualListViewResult() )
+            && Arrays.equals( contextId, otherControl.getContextId() );
     }
 
 

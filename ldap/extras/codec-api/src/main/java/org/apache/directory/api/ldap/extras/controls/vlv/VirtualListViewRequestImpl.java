@@ -251,11 +251,11 @@ public class VirtualListViewRequestImpl extends AbstractControl implements Virtu
 
         VirtualListViewRequestImpl otherControl = ( VirtualListViewRequestImpl ) o;
 
-        return ( beforeCount == otherControl.getBeforeCount() ) &&
-            ( afterCount == otherControl.getAfterCount() ) &&
-            ( offset == otherControl.getOffset() ) &&
-            ( contentCount == otherControl.getContentCount() ) &&
-            Arrays.equals( contextId, otherControl.getContextId() );
+        return ( beforeCount == otherControl.getBeforeCount() )
+            && ( afterCount == otherControl.getAfterCount() )
+            && ( offset == otherControl.getOffset() )
+            && ( contentCount == otherControl.getContentCount() )
+            && Arrays.equals( contextId, otherControl.getContextId() );
     }
 
 

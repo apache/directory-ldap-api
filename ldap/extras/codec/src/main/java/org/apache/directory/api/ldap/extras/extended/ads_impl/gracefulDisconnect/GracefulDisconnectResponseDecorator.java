@@ -210,8 +210,8 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
             gracefulDisconnectSequenceLength += 1 + 1 + BerValue.getNbBytes( gracefulDisconnectResponse.getDelay() );
         }
 
-        if ( ( gracefulDisconnectResponse.getReplicatedContexts() != null ) &&
-            ( gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() != 0 ) )
+        if ( ( gracefulDisconnectResponse.getReplicatedContexts() != null )
+            && ( gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() != 0 ) )
         {
             replicatedContextsLength = 0;
             
@@ -261,8 +261,8 @@ public class GracefulDisconnectResponseDecorator extends ExtendedResponseDecorat
             bb.put( BerValue.getBytes( gracefulDisconnectResponse.getDelay() ) );
         }
 
-        if ( ( gracefulDisconnectResponse.getReplicatedContexts() != null ) &&
-             ( gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() != 0 ) )
+        if ( ( gracefulDisconnectResponse.getReplicatedContexts() != null )
+            && ( gracefulDisconnectResponse.getReplicatedContexts().getLdapUrls().size() != 0 ) )
         {
             bb.put( UniversalTag.SEQUENCE.getValue() );
             bb.put( TLV.getBytes( replicatedContextsLength ) );
