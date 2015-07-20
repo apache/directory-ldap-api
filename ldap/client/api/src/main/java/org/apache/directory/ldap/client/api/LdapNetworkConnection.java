@@ -3474,14 +3474,14 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
         Attribute attr = rootDse.get( SchemaConstants.SUPPORTED_CONTROL_AT );
 
-        if (attr == null) 
+        if ( attr == null )
         {
             // Unlikely. Perhaps the server does not respond properly to "+" attribute query
             // (such as 389ds server). So let's try again and let's be more explicit.
             fetchRootDSE( SchemaConstants.ALL_USER_ATTRIBUTES, 
                 SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES, SchemaConstants.SUPPORTED_CONTROL_AT );
             attr = rootDse.get( SchemaConstants.SUPPORTED_CONTROL_AT );
-            if (attr == null) 
+            if ( attr == null )
             {
                 return supportedControls;
             }
@@ -3622,23 +3622,26 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
      * fetches the rootDSE from the server
      * @throws LdapException
      */
-    private void fetchRootDSE(String... explicitAttributes) throws LdapException
+    private void fetchRootDSE( String... explicitAttributes ) throws LdapException
     {
         EntryCursor cursor = null;
 
         String[] attributes = explicitAttributes;
-        if (attributes.length == 0) {
-            attributes = new String[] { SchemaConstants.ALL_USER_ATTRIBUTES, SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES };
+        if ( attributes.length == 0 )
+        {
+            attributes = new String[]
+                { SchemaConstants.ALL_USER_ATTRIBUTES, SchemaConstants.ALL_OPERATIONAL_ATTRIBUTES };
         }
         
         try
         {
-            cursor = search( "", LdapConstants.OBJECT_CLASS_STAR, SearchScope.OBJECT,
-            		attributes );
-            if ( cursor.next() ) 
+            cursor = search( "", LdapConstants.OBJECT_CLASS_STAR, SearchScope.OBJECT, attributes );
+            if ( cursor.next() )
             {
                 rootDse = cursor.get();
-            } else {
+            }
+            else
+            {
                 throw new LdapException( "Search for root DSE returned no entry" );
             }
         }

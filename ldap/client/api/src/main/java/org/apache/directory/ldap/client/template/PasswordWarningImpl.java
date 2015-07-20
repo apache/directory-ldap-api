@@ -31,7 +31,7 @@ import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicyRespo
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-class PasswordWarningImpl implements PasswordWarning
+final class PasswordWarningImpl implements PasswordWarning
 {
     private static final long serialVersionUID = -8952246313604352357L;
 
@@ -53,8 +53,7 @@ class PasswordWarningImpl implements PasswordWarning
             PasswordWarningImpl policyWarning = new PasswordWarningImpl();
             policyWarning.timeBeforeExpiration = response.getTimeBeforeExpiration();
             policyWarning.graceAuthNsRemaining = response.getGraceAuthNRemaining();
-            policyWarning.changeAfterReset = response.getPasswordPolicyError() ==
-                PasswordPolicyErrorEnum.CHANGE_AFTER_RESET;
+            policyWarning.changeAfterReset = response.getPasswordPolicyError() == PasswordPolicyErrorEnum.CHANGE_AFTER_RESET;
 
             if ( policyWarning.timeBeforeExpiration >= 0 || policyWarning.graceAuthNsRemaining >= 0
                 || policyWarning.changeAfterReset )

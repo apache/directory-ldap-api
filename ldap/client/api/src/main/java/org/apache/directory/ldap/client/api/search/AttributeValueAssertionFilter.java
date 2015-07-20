@@ -28,7 +28,7 @@ import org.apache.directory.api.ldap.model.filter.FilterEncoder;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-/* No qualifier*/class AttributeValueAssertionFilter extends AbstractFilter
+/* No qualifier*/final class AttributeValueAssertionFilter extends AbstractFilter
 {
     /** The associated attribute */
     private String attribute;

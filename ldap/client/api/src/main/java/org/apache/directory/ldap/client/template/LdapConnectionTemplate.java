@@ -63,7 +63,7 @@ import org.slf4j.LoggerFactory;
  */
 public class LdapConnectionTemplate implements LdapConnectionOperations, ModelFactory
 {
-    private static Logger LOG = LoggerFactory.getLogger( LdapConnectionTemplate.class );
+    private static final Logger LOG = LoggerFactory.getLogger( LdapConnectionTemplate.class );
     private static final EntryMapper<Dn> DN_ENTRY_MAPPER = new EntryMapper<Dn>()
     {
         @Override

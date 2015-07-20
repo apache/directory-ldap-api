@@ -90,18 +90,18 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
     private Dn subschemaSubentryDn;
 
     /** The SubschemaSubentry descriptions parsers */
-    private static AttributeTypeDescriptionSchemaParser AT_DESCR_SCHEMA_PARSER = new AttributeTypeDescriptionSchemaParser();
-    private static DitStructureRuleDescriptionSchemaParser DSR_DESCR_SCHEMA_PARSER = new DitStructureRuleDescriptionSchemaParser();
-    private static DitContentRuleDescriptionSchemaParser DCR_DESCR_SCHEMA_PARSER = new DitContentRuleDescriptionSchemaParser();
-    private static MatchingRuleDescriptionSchemaParser MR_DESCR_SCHEMA_PARSER = new MatchingRuleDescriptionSchemaParser();
-    private static MatchingRuleUseDescriptionSchemaParser MRU_DESCR_SCHEMA_PARSER = new MatchingRuleUseDescriptionSchemaParser();
-    private static NameFormDescriptionSchemaParser NF_DESCR_SCHEMA_PARSER = new NameFormDescriptionSchemaParser();
-    private static ObjectClassDescriptionSchemaParser OC_DESCR_SCHEMA_PARSER = new ObjectClassDescriptionSchemaParser();
-    private static LdapSyntaxDescriptionSchemaParser LS_DESCR_SCHEMA_PARSER = new LdapSyntaxDescriptionSchemaParser();
+    private static final AttributeTypeDescriptionSchemaParser AT_DESCR_SCHEMA_PARSER = new AttributeTypeDescriptionSchemaParser();
+    private static final DitStructureRuleDescriptionSchemaParser DSR_DESCR_SCHEMA_PARSER = new DitStructureRuleDescriptionSchemaParser();
+    private static final DitContentRuleDescriptionSchemaParser DCR_DESCR_SCHEMA_PARSER = new DitContentRuleDescriptionSchemaParser();
+    private static final MatchingRuleDescriptionSchemaParser MR_DESCR_SCHEMA_PARSER = new MatchingRuleDescriptionSchemaParser();
+    private static final MatchingRuleUseDescriptionSchemaParser MRU_DESCR_SCHEMA_PARSER = new MatchingRuleUseDescriptionSchemaParser();
+    private static final NameFormDescriptionSchemaParser NF_DESCR_SCHEMA_PARSER = new NameFormDescriptionSchemaParser();
+    private static final ObjectClassDescriptionSchemaParser OC_DESCR_SCHEMA_PARSER = new ObjectClassDescriptionSchemaParser();
+    private static final LdapSyntaxDescriptionSchemaParser LS_DESCR_SCHEMA_PARSER = new LdapSyntaxDescriptionSchemaParser();
 
-    private static LdapComparatorDescriptionSchemaParser C_DESCR_SCHEMA_PARSER = new LdapComparatorDescriptionSchemaParser();
-    private static NormalizerDescriptionSchemaParser N_DESCR_SCHEMA_PARSER = new NormalizerDescriptionSchemaParser();
-    private static SyntaxCheckerDescriptionSchemaParser SC_DESCR_SCHEMA_PARSER = new SyntaxCheckerDescriptionSchemaParser();
+    private static final LdapComparatorDescriptionSchemaParser C_DESCR_SCHEMA_PARSER = new LdapComparatorDescriptionSchemaParser();
+    private static final NormalizerDescriptionSchemaParser N_DESCR_SCHEMA_PARSER = new NormalizerDescriptionSchemaParser();
+    private static final SyntaxCheckerDescriptionSchemaParser SC_DESCR_SCHEMA_PARSER = new SyntaxCheckerDescriptionSchemaParser();
 
 
     /**

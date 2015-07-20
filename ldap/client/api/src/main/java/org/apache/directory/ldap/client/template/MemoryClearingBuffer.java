@@ -34,7 +34,7 @@ import java.util.Arrays;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class MemoryClearingBuffer
+public final class MemoryClearingBuffer
 {
     private static final Charset UTF8 = Charset.forName( "UTF-8" );
     private byte[] computedBytes;
@@ -66,14 +66,18 @@ public class MemoryClearingBuffer
                 for ( ; startIndex < working.length; startIndex++ )
                 {
                     if ( !Character.isWhitespace( working[startIndex] ) )
+                    {
                         break;
+                    }
                 }
 
                 // rtrim
                 for ( endIndex--; endIndex > startIndex; endIndex-- )
                 {
                     if ( !Character.isWhitespace( working[endIndex] ) )
+                    {
                         break;
+                    }
                 }
                 endIndex++;
             }

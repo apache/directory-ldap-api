@@ -133,7 +133,7 @@ public class LdapConnectionConfig
             TrustManagerFactory tmFactory = TrustManagerFactory.getInstance( trustMgmtAlgo );
             tmFactory.init( ( KeyStore ) null );
 
-            TrustManager factoryTrustManagers[] = tmFactory.getTrustManagers();
+            TrustManager[] factoryTrustManagers = tmFactory.getTrustManagers();
 
             for ( int i = 0; i < factoryTrustManagers.length; i++ )
             {

@@ -25,7 +25,7 @@ package org.apache.directory.ldap.client.api.search;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-/* No qualifier*/class UnaryFilter extends AbstractFilter
+/* No qualifier*/final class UnaryFilter extends AbstractFilter
 {
     /** The NOT filter */
     private Filter filter;

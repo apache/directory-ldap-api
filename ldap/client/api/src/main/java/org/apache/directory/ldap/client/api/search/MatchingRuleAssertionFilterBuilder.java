@@ -46,7 +46,7 @@ public class MatchingRuleAssertionFilterBuilder extends FilterBuilder
      */
     public MatchingRuleAssertionFilterBuilder setMatchingRule( String matchingRule )
     {
-        ((MatchingRuleAssertionFilter)filter).setMatchingRule( matchingRule );
+        ( ( MatchingRuleAssertionFilter ) filter ).setMatchingRule( matchingRule );
         return this;
     }
     
@@ -58,7 +58,7 @@ public class MatchingRuleAssertionFilterBuilder extends FilterBuilder
      */
     public MatchingRuleAssertionFilterBuilder useDnAttributes()
     {
-        ((MatchingRuleAssertionFilter)filter).useDnAttributes();
+        ( ( MatchingRuleAssertionFilter ) filter ).useDnAttributes();
         return this;
     }
 }

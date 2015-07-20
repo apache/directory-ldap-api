@@ -198,15 +198,6 @@ public class LdifAnonymizer
     }
 
 
-    public LdifAnonymizer( Map<String, Anonymizer> attributeAnonymizers )
-    {
-        for ( String attributeId : attributeAnonymizers.keySet() )
-        {
-
-        }
-    }
-
-
     /**
      * {@inheritDoc}
      */

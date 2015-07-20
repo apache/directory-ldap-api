@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
  */
 public class LdapConnectionPool extends GenericObjectPool<LdapConnection>
 {
-    private static Logger LOG = LoggerFactory.getLogger( LdapConnectionPool.class );
+    private static final Logger LOG = LoggerFactory.getLogger( LdapConnectionPool.class );
 
     private PoolableObjectFactory<LdapConnection> factory;
 

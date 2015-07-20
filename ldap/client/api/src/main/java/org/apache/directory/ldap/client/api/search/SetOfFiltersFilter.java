@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-/* No qualifier*/class SetOfFiltersFilter extends AbstractFilter
+/* No qualifier*/final class SetOfFiltersFilter extends AbstractFilter
 {
     /** The operator to use with this set (AND or OR) */
     private FilterOperator operator;

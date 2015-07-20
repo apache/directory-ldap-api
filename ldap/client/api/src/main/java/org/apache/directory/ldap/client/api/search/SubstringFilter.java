@@ -32,7 +32,7 @@ import org.apache.directory.api.util.Strings;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-class SubstringFilter extends AbstractFilter
+final class SubstringFilter extends AbstractFilter
 {
     /** The AttributeType for this filter */
     private String attribute;
