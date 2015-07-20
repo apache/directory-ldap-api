@@ -54,9 +54,9 @@ public class SortRequestDecorator extends ControlDecorator<SortRequest> implemen
 
     private List<Integer> sortKeyLenList = new ArrayList<Integer>();
 
-    public static int ORDERING_RULE_TAG = 0x80;
+    public static final int ORDERING_RULE_TAG = 0x80;
 
-    public static int REVERSE_ORDER_TAG = 0x81;
+    public static final int REVERSE_ORDER_TAG = 0x81;
 
 
     /**

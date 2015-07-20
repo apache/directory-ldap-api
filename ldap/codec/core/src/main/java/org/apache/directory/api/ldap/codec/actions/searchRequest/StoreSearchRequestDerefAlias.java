@@ -114,6 +114,9 @@ public class StoreSearchRequestDerefAlias extends GrammarAction<LdapMessageConta
                 case LdapCodecConstants.DEREF_ALWAYS:
                     LOG.debug( "Handling object strategy : DEREF_ALWAYS" );
                     break;
+
+                default:
+                    LOG.debug( "Handling object strategy : UNKNOWN" );
             }
         }
     }

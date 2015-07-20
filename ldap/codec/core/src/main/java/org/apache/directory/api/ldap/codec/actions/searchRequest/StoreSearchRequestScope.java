@@ -109,6 +109,9 @@ public class StoreSearchRequestScope extends GrammarAction<LdapMessageContainer<
                 case LdapCodecConstants.SCOPE_WHOLE_SUBTREE:
                     LOG.debug( "Searching within WHOLE_SUBTREE scope " );
                     break;
+
+                default:
+                    LOG.debug( "Searching within UNKNOWN scope " );
             }
         }
     }

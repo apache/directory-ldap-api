@@ -76,9 +76,14 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class CodecFactoryUtil
+public final class CodecFactoryUtil
 {
     private static final Logger LOG = LoggerFactory.getLogger( CodecFactoryUtil.class );
+
+
+    private CodecFactoryUtil()
+    {
+    }
 
 
     /**
@@ -110,9 +115,9 @@ public class CodecFactoryUtil
         controlFactories.put( persistentSearchFactory.getOid(), persistentSearchFactory );
         LOG.info( "Registered pre-bundled control factory: {}", persistentSearchFactory.getOid() );
 
-        ControlFactory<Subentries> SubentriesFactory = new SubentriesFactory( apiService );
-        controlFactories.put( SubentriesFactory.getOid(), SubentriesFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", SubentriesFactory.getOid() );
+        ControlFactory<Subentries> subentriesFactory = new SubentriesFactory( apiService );
+        controlFactories.put( subentriesFactory.getOid(), subentriesFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", subentriesFactory.getOid() );
 
         ControlFactory<PasswordPolicy> passwordPolicyFactory = new PasswordPolicyFactory( apiService );
         controlFactories.put( passwordPolicyFactory.getOid(), passwordPolicyFactory );
@@ -128,9 +133,9 @@ public class CodecFactoryUtil
         controlFactories.put( virtualListViewResponseFactory.getOid(), virtualListViewResponseFactory );
         LOG.info( "Registered pre-bundled control factory: {}", virtualListViewResponseFactory.getOid() );
 
-        ControlFactory<SyncDoneValue> SyncDoneValueFactory = new SyncDoneValueFactory( apiService );
-        controlFactories.put( SyncDoneValueFactory.getOid(), SyncDoneValueFactory );
-        LOG.info( "Registered pre-bundled control factory: {}", SyncDoneValueFactory.getOid() );
+        ControlFactory<SyncDoneValue> syncDoneValueFactory = new SyncDoneValueFactory( apiService );
+        controlFactories.put( syncDoneValueFactory.getOid(), syncDoneValueFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", syncDoneValueFactory.getOid() );
 
         ControlFactory<SyncInfoValue> syncInfoValueFactory = new SyncInfoValueFactory( apiService );
         controlFactories.put( syncInfoValueFactory.getOid(), syncInfoValueFactory );

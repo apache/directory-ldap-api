@@ -91,7 +91,8 @@ public class StoreExtendedResponseName extends GrammarAction<LdapMessageContaine
             extendedResponse = LdapApiServiceFactory.getSingleton().newExtendedResponse( responseName,
                 container.getMessageId(), null );
             
-            ((ExtendedResponseDecorator<?>)extendedResponse).setLdapResult( ((LdapResultDecorator)(container.getMessage().getLdapResult() ) ) );
+            ( ( ExtendedResponseDecorator<?> ) extendedResponse ).setLdapResult( ( ( LdapResultDecorator ) ( container
+                .getMessage().getLdapResult() ) ) );
             container.setMessage( LdapApiServiceFactory.getSingleton().decorate( extendedResponse ) );
         }
 

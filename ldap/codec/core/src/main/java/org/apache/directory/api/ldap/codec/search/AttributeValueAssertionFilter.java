@@ -208,6 +208,9 @@ public class AttributeValueAssertionFilter extends Filter
                 case LdapCodecConstants.APPROX_MATCH_FILTER:
                     buffer.put( ( byte ) LdapCodecConstants.APPROX_MATCH_FILTER_TAG );
                     break;
+
+                default:
+                    throw new IllegalArgumentException( "Unexpected filter type: " + filterType );
             }
 
             buffer.put( TLV.getBytes( avaLength ) );

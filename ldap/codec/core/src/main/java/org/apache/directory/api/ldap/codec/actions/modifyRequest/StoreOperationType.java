@@ -106,6 +106,9 @@ public class StoreOperationType extends GrammarAction<LdapMessageContainer<Modif
                 case LdapCodecConstants.OPERATION_REPLACE:
                     LOG.debug( "Modification operation : REPLACE" );
                     break;
+
+                default:
+                    LOG.debug( "Modification operation : UNKNOWN" );
             }
         }
     }

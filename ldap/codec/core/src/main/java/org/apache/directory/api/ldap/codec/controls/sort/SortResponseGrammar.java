@@ -37,7 +37,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SortResponseGrammar extends AbstractGrammar<SortResponseContainer>
+public final class SortResponseGrammar extends AbstractGrammar<SortResponseContainer>
 {
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( SortRequestGrammar.class );

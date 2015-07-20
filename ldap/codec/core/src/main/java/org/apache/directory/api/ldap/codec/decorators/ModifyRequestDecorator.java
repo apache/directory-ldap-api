@@ -63,7 +63,7 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     private List<Integer> changeLength;
 
     /** The list of all the modification lengths */
-    private List<Integer> modificationLength ;
+    private List<Integer> modificationLength;
 
     /** The list of all the value lengths */
     private List<Integer> valuesLength;

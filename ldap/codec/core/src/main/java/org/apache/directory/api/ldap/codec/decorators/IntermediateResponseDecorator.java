@@ -160,7 +160,7 @@ public class IntermediateResponseDecorator extends MessageDecorator<Intermediate
         {
             // The ExtendedResponse Tag
             buffer.put( LdapCodecConstants.INTERMEDIATE_RESPONSE_TAG );
-            buffer.put( TLV.getBytes( intermediateResponseLength ) ) ;
+            buffer.put( TLV.getBytes( intermediateResponseLength ) );
 
             // The responseName, if any
             if ( ( responseNameBytes != null ) && ( responseNameBytes.length != 0 ) )

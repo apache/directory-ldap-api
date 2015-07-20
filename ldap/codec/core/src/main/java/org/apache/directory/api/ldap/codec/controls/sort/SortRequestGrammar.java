@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class SortRequestGrammar extends AbstractGrammar<SortRequestContainer>
+public final class SortRequestGrammar extends AbstractGrammar<SortRequestContainer>
 {
     /** The logger */
     static final Logger LOG = LoggerFactory.getLogger( SortRequestGrammar.class );

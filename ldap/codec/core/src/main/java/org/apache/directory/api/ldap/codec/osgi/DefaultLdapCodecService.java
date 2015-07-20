@@ -415,8 +415,8 @@ public class DefaultLdapCodecService implements LdapApiService
                 }
                 catch ( DecoderException de )
                 {
-                    NamingException ne = new NamingException( "Unable to decode encoded response value: " +
-                        Strings.dumpBytes( berValue ) );
+                    NamingException ne = new NamingException( "Unable to decode encoded response value: "
+                        + Strings.dumpBytes( berValue ) );
                     ne.setRootCause( de );
                     throw ne;
                 }
