@@ -1854,7 +1854,7 @@ public class DefaultSchemaManager implements SchemaManager
                 }
                 catch ( CloneNotSupportedException cnse )
                 {
-                    throw new LdapOtherException( cnse.getMessage() , cnse);
+                    throw new LdapOtherException( cnse.getMessage(), cnse );
                 }
 
                 // Inject the new SchemaObject in the cloned registries
