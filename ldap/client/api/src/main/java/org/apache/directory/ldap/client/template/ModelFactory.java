@@ -50,6 +50,17 @@ public interface ModelFactory
 
     /**
      * Returns a new Attribute for with the provided <code>name</code> and
+     * a null value.  This is useful for clearing out an Attribute with a
+     * ModifyRequest, replace function.
+     *
+     * @param name
+     * @return
+     */
+    Attribute newAttribute( String name );
+
+
+    /**
+     * Returns a new Attribute for with the provided <code>name</code> and
      * <code>value(s)</code>.
      *
      * @param name

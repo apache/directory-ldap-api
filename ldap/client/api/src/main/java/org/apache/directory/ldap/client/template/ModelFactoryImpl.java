@@ -55,6 +55,13 @@ class ModelFactoryImpl implements ModelFactory
 
 
     @Override
+    public Attribute newAttribute( String name )
+    {
+        return new DefaultAttribute( name );
+    }
+
+
+    @Override
     public Attribute newAttribute( String name, byte[]... values )
     {
         return new DefaultAttribute( name, values );
