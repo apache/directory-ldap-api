@@ -1226,5 +1226,10 @@ public class GeneralizedTimeTest
         GeneralizedTime closer = new GeneralizedTime( "20000101000000.9995Z" );
         
         assertThat( closer.getDate(), is( equalTo( format.parse( "01/01/2000 00:00:00.999 GMT" ) ) ) );
+
+        GeneralizedTime larger = new GeneralizedTime( "20000101000000.9Z" );
+        
+        assertThat( larger.getDate(), is( equalTo( format.parse( "01/01/2000 00:00:00.900 GMT" ) ) ) );
+        
     }
 }
