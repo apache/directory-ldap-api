@@ -1273,7 +1273,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         if ( state != MOD_SPEC )
         {
             LOG.error( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2, lineNumber ) );
-            throw new LdapLdifException( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2 ) );
+            throw new LdapLdifException( I18n.err( I18n.ERR_12042_BAD_MODIFY_SEPARATOR_2, lineNumber ) );
         }
     }
 
