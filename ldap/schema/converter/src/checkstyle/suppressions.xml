@@ -24,8 +24,6 @@
     "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 
 <suppressions>
-    <suppress files="org.apache.directory.api.ldap.trigger.StoredProcedureParameter" checks="TypeName" />
-
     <!-- Exclude Antlr generated sources -->
     <suppress files="[\\/]generated-sources[\\/]" checks="[a-zA-Z0-9]*"/>
 </suppressions>
