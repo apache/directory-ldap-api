@@ -1392,7 +1392,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
-        objectClass.addMayAttributeTypeOids( "cn", "none", "sn" );
+        objectClass.addMayAttributeTypeOids( "cn", "none", "userPassword" );
 
         assertFalse( schemaManager.add( objectClass ) );
 
@@ -1419,7 +1419,7 @@ public class SchemaManagerAddTest
         int goidSize = schemaManager.getGlobalOidRegistry().size();
 
         MutableObjectClass objectClass = new MutableObjectClass( "1.1.1" );
-        objectClass.addMustAttributeTypeOids( "cn", "none", "sn" );
+        objectClass.addMustAttributeTypeOids( "cn", "none", "userPassword" );
 
         assertFalse( schemaManager.add( objectClass ) );
 

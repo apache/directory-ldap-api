@@ -233,7 +233,7 @@ public final class ObjectClassHelper
                         errors.add( ldapSchemaException );
                         LOG.info( msg );
 
-                        break;
+                        continue;
                     }
 
                     if ( objectClass.getMustAttributeTypes().contains( attributeType ) )
@@ -248,7 +248,7 @@ public final class ObjectClassHelper
                         errors.add( ldapSchemaException );
                         LOG.info( msg );
 
-                        break;
+                        continue;
                     }
 
                     // Check that the MUST AT is not also present in the MAY AT
@@ -265,7 +265,7 @@ public final class ObjectClassHelper
                         errors.add( ldapSchemaException );
                         LOG.info( msg );
 
-                        break;
+                        continue;
                     }
 
                     objectClass.getMustAttributeTypes().add( attributeType );
@@ -282,7 +282,7 @@ public final class ObjectClassHelper
                     errors.add( ldapSchemaException );
                     LOG.info( msg );
 
-                    break;
+                    continue;
                 }
             }
         }
@@ -319,7 +319,7 @@ public final class ObjectClassHelper
                         errors.add( ldapSchemaException );
                         LOG.info( msg );
 
-                        break;
+                        continue;
                     }
 
                     if ( objectClass.getMayAttributeTypes().contains( attributeType ) )
@@ -334,7 +334,7 @@ public final class ObjectClassHelper
                         errors.add( ldapSchemaException );
                         LOG.info( msg );
 
-                        break;
+                        continue;
                     }
 
                     objectClass.getMayAttributeTypes().add( attributeType );
@@ -351,7 +351,7 @@ public final class ObjectClassHelper
                     errors.add( ldapSchemaException );
                     LOG.info( msg );
 
-                    break;
+                    continue;
                 }
             }
         }
