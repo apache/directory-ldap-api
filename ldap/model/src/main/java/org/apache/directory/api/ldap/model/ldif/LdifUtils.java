@@ -509,7 +509,7 @@ public final class LdifUtils
                     sb.append( modification.getAttribute().getUpId() );
                     sb.append( '\n' );
 
-                    sb.append( convertToLdif( modification.getAttribute() ) );
+                    sb.append( convertToLdif( modification.getAttribute(), length ) );
                     sb.append( "-\n" );
                 }
 
