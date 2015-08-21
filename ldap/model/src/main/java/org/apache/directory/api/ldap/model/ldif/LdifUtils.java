@@ -485,8 +485,20 @@ public final class LdifUtils
                 break;
 
             case Modify:
+                boolean isFirst = true;
+                
                 for ( Modification modification : entry.getModifications() )
                 {
+                    
+                    if ( isFirst )
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        sb.append( "-\n" );
+                    }
+
                     switch ( modification.getOperation() )
                     {
                         case ADD_ATTRIBUTE:
@@ -510,9 +522,9 @@ public final class LdifUtils
                     sb.append( '\n' );
 
                     sb.append( convertToLdif( modification.getAttribute(), length ) );
-                    sb.append( "-\n" );
                 }
 
+                sb.append( '-' );
                 break;
 
             default:
@@ -562,6 +574,12 @@ public final class LdifUtils
     public static String convertToLdif( Attribute attr, int length ) throws LdapException
     {
         StringBuilder sb = new StringBuilder();
+        
+        if ( attr.size() == 0 )
+        {
+            // Special case : we don't have any value
+            return "";
+        }
 
         for ( Value<?> value : attr )
         {

@@ -1164,8 +1164,15 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 {
                     if ( isEmptyValue )
                     {
-                        // Update the entry
-                        entry.addModification( modificationType, modified, null );
+                        if ( state == ATTRVAL_SPEC_OR_SEP )
+                        {
+                            entry.addModification( modificationType, modified );
+                        }
+                        else
+                        {
+                            // Update the entry with a null value
+                            entry.addModification( modificationType, modified, null );
+                        }
                     }
                     else
                     {

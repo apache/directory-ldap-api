@@ -2485,4 +2485,31 @@ public class LdifReaderTest
 
     }
 
+
+
+    @Test
+    public void testLdifParserWithReplaceEmptyValue() throws Exception, Exception
+    {
+        String ldif =
+            "dn: cn=Steven Nguyen,ou=SAP,dc=sap,dc=local\n" +
+            "changetype: modify\n" +
+            "replace: objectClass\n" +
+            "objectClass: top\n" +
+            "objectClass: user\n" +
+            "objectClass: person\n" +
+            "objectClass: organizationalPerson\n" +
+            "-\n" +
+            "replace: sn\n" +
+            "sn: Nguyen Linh\n" +
+            "-\n" +
+            "replace: url\n" +
+            "-\n";
+
+        LdifReader reader = new LdifReader();
+        List<LdifEntry> entries = reader.parseLdif( ldif );
+        LdifEntry entry = entries.get( 0 );
+
+        assertEquals( ldif, entry.toString() );
+        reader.close();
+    }
 }

@@ -419,6 +419,31 @@ public class LdifEntry implements Cloneable, Externalizable
 
 
     /**
+     * Add a modification with no value
+     * 
+     * @param modOp The modification operation value. One of : 
+     * <ul>
+     * <li>ModificationOperation.ADD_ATTRIBUTE</li>
+     * <li>ModificationOperation.REMOVE_ATTRIBUTE</li>
+     * <li>ModificationOperation.REPLACE_ATTRIBUTE</li>
+     * </ul>
+     * 
+     * @param id The attribute's ID
+     */
+    public void addModification( ModificationOperation modOp, String id )
+    {
+        if ( changeType == ChangeType.Modify )
+        {
+            Attribute attr = new DefaultAttribute( id );
+
+            Modification item = new DefaultModification( modOp, attr );
+            modificationList.add( item );
+            modifications.put( id, item );
+        }
+    }
+
+
+    /**
      * Add a modification
      * 
      * @param modOp The modification operation value. One of : 
