@@ -23,6 +23,8 @@ package org.apache.directory.api.util;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import org.apache.directory.api.i18n.I18n;
@@ -185,7 +187,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
      */
     public GeneralizedTime( Date date )
     {
-        calendar = Calendar.getInstance();
+        calendar = GregorianCalendar.getInstance( Locale.ENGLISH );
         calendar.setTime( date );
         setUp( calendar );
     }
@@ -237,7 +239,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
         this.upGeneralizedTime = generalizedTime;
 
-        calendar = Calendar.getInstance();
+        calendar = GregorianCalendar.getInstance( Locale.ENGLISH );
         calendar.setTimeInMillis( 0 );
         calendar.setLenient( false );
 
@@ -424,7 +426,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         double fract = Double.parseDouble( "0." + fraction );
         int millisecond = ( int ) Math.floor( fract * 1000 );
 
-        calendar.set( Calendar.MILLISECOND, millisecond );
+        calendar.set( GregorianCalendar.MILLISECOND, millisecond );
     }
 
 
@@ -675,7 +677,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
     public String toGeneralizedTime( Format format, FractionDelimiter fractionDelimiter, int fractionLength,
         TimeZoneFormat timeZoneFormat )
     {
-        Calendar clonedCalendar = ( Calendar ) this.calendar.clone();
+        Calendar clonedCalendar = ( Calendar ) calendar.clone();
 
         if ( timeZoneFormat == TimeZoneFormat.Z )
         {
