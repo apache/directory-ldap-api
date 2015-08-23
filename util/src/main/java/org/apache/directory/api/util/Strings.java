@@ -2018,7 +2018,7 @@ public final class Strings
             return null;
         }
 
-        return str.toLowerCase( Locale.ENGLISH );
+        return str.toLowerCase( Locale.ROOT );
     }
 
 

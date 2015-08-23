@@ -111,7 +111,6 @@ import org.apache.directory.api.i18n.I18n;
  */
 public class GeneralizedTime implements Comparable<GeneralizedTime>
 {
-
     /**
      * The format of the generalized time.
      */
@@ -157,6 +156,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         DIFF_HOUR_MINUTE
     }
 
+    /** The GMT TimeZone */
     private static final TimeZone GMT = TimeZone.getTimeZone( "GMT" );
 
     /** The user provided value */
@@ -260,7 +260,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         // else error
         int pos = 10;
         char c = upGeneralizedTime.charAt( pos );
-        if ( '0' <= c && c <= '9' )
+        
+        if ( ( '0' <= c ) && ( c <= '9' ) )
         {
             parseMinute();
 
@@ -276,7 +277,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
             // else error
             pos = 12;
             c = upGeneralizedTime.charAt( pos );
-            if ( '0' <= c && c <= '9' )
+            
+            if ( ( '0' <= c ) && ( c <= '9' ) )
             {
                 parseSecond();
 
@@ -291,7 +293,8 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 // else error
                 pos = 14;
                 c = upGeneralizedTime.charAt( pos );
-                if ( c == '.' || c == ',' )
+                
+                if ( ( c == '.' ) || ( c == ',' ) )
                 {
                     // read fraction of second
                     parseFractionOfSecond();
@@ -300,7 +303,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                     parseTimezone( pos );
                     upFormat = Format.YEAR_MONTH_DAY_HOUR_MIN_SEC_FRACTION;
                 }
-                else if ( c == 'Z' || c == '+' || c == '-' )
+                else if ( ( c == 'Z' ) || ( c == '+' ) || ( c == '-' ) )
                 {
                     // read timezone
                     parseTimezone( pos );
@@ -311,7 +314,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                     throw new ParseException( I18n.err( I18n.ERR_04363 ), 14 );
                 }
             }
-            else if ( c == '.' || c == ',' )
+            else if ( ( c == '.' ) || ( c == ',' ) )
             {
                 // read fraction of minute
                 parseFractionOfMinute();
@@ -320,7 +323,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 parseTimezone( pos );
                 upFormat = Format.YEAR_MONTH_DAY_HOUR_MIN_FRACTION;
             }
-            else if ( c == 'Z' || c == '+' || c == '-' )
+            else if ( ( c == 'Z' ) || ( c == '+' ) || ( c == '-' ) )
             {
                 // read timezone
                 parseTimezone( pos );
@@ -331,7 +334,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 throw new ParseException( I18n.err( I18n.ERR_04364 ), 12 );
             }
         }
-        else if ( c == '.' || c == ',' )
+        else if ( ( c == '.' ) || ( c == ',' ) )
         {
             // read fraction of hour
             parseFractionOfHour();
@@ -340,7 +343,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
             parseTimezone( pos );
             upFormat = Format.YEAR_MONTH_DAY_HOUR_FRACTION;
         }
-        else if ( c == 'Z' || c == '+' || c == '-' )
+        else if ( ( c == 'Z' ) || ( c == '+' ) || ( c == '-' ) )
         {
             // read timezone
             parseTimezone( pos );
@@ -374,6 +377,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
         }
 
         char c = upGeneralizedTime.charAt( pos );
+        
         if ( c == 'Z' )
         {
             calendar.setTimeZone( GMT );
@@ -384,7 +388,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
                 throw new ParseException( I18n.err( I18n.ERR_04368 ), pos + 1 );
             }
         }
-        else if ( c == '+' || c == '-' )
+        else if ( ( c == '+' ) || ( c == '-' ) )
         {
             StringBuilder sb = new StringBuilder( "GMT" );
             sb.append( c );
