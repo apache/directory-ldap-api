@@ -1897,8 +1897,35 @@ public final class Strings
      *
      * @param value The String to lowercase
      * @return The lowercase string
+     * @deprecated Use {@link #toLowerCaseAscii(String)}
      */
     public static String toLowerCase( String value )
+    {
+        if ( ( null == value ) || ( value.length() == 0 ) )
+        {
+            return "";
+        }
+
+        char[] chars = value.toCharArray();
+
+        for ( int i = 0; i < chars.length; i++ )
+        {
+            chars[i] = TO_LOWER_CASE[chars[i]];
+        }
+
+        return new String( chars );
+    }
+
+
+    /**
+     * Rewrote the toLowercase method to improve performances.
+     * In Ldap, attributesType are supposed to use ASCII chars :
+     * 'a'-'z', 'A'-'Z', '0'-'9', '.' and '-' only.
+     *
+     * @param value The String to lowercase
+     * @return The lowercase string
+     */
+    public static String toLowerCaseAscii( String value )
     {
         if ( ( null == value ) || ( value.length() == 0 ) )
         {
@@ -1947,8 +1974,35 @@ public final class Strings
      *
      * @param value The String to uppercase
      * @return The uppercase string
+     * @deprecated Use {@link toUpperCaseAscii(String)}
      */
     public static String toUpperCase( String value )
+    {
+        if ( ( null == value ) || ( value.length() == 0 ) )
+        {
+            return "";
+        }
+
+        char[] chars = value.toCharArray();
+
+        for ( int i = 0; i < chars.length; i++ )
+        {
+            chars[i] = UPPER_CASE[chars[i]];
+        }
+
+        return new String( chars );
+    }
+
+
+    /**
+     * Rewrote the toLowercase method to improve performances.
+     * In Ldap, attributesType are supposed to use ASCII chars :
+     * 'a'-'z', 'A'-'Z', '0'-'9', '.' and '-' only.
+     *
+     * @param value The String to uppercase
+     * @return The uppercase string
+     */
+    public static String toUpperCaseAscii( String value )
     {
         if ( ( null == value ) || ( value.length() == 0 ) )
         {
@@ -1990,7 +2044,7 @@ public final class Strings
             return null;
         }
 
-        return str.toUpperCase();
+        return str.toUpperCase( Locale.ROOT );
     }
 
 

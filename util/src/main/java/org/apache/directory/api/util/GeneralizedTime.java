@@ -187,7 +187,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
      */
     public GeneralizedTime( Date date )
     {
-        calendar = GregorianCalendar.getInstance( Locale.ENGLISH );
+        calendar = new GregorianCalendar( GMT, Locale.ROOT );
         calendar.setTime( date );
         setUp( calendar );
     }
@@ -239,7 +239,7 @@ public class GeneralizedTime implements Comparable<GeneralizedTime>
 
         this.upGeneralizedTime = generalizedTime;
 
-        calendar = GregorianCalendar.getInstance( Locale.ENGLISH );
+        calendar = new GregorianCalendar( GMT, Locale.ROOT );
         calendar.setTimeInMillis( 0 );
         calendar.setLenient( false );
 

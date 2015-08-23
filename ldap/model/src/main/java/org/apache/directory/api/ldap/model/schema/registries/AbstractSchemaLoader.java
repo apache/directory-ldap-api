@@ -63,7 +63,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
         @Override
         public Schema put( String key, Schema value )
         {
-            return super.put( Strings.lowerCase( key ), value );
+            return super.put( Strings.toLowerCaseAscii( key ), value );
         }
 
 

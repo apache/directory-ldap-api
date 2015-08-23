@@ -539,7 +539,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
                 valueList.add( value );
             }
 
-            extensions.put( Strings.toUpperCase( key ), valueList );
+            extensions.put( Strings.toUpperCaseAscii( key ), valueList );
         }
     }
 
@@ -558,7 +558,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
 
         if ( !isReadOnly )
         {
-            extensions.put( Strings.toUpperCase( key ), values );
+            extensions.put( Strings.toUpperCaseAscii( key ), values );
         }
     }
 
@@ -588,7 +588,7 @@ public abstract class AbstractSchemaObject implements SchemaObject, Serializable
                     values.add( value );
                 }
 
-                this.extensions.put( Strings.toUpperCase( entry.getKey() ), values );
+                this.extensions.put( Strings.toUpperCaseAscii( entry.getKey() ), values );
             }
 
         }
