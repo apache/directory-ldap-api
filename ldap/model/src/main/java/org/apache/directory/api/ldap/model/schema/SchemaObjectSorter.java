@@ -29,6 +29,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import org.apache.directory.api.util.Strings;
+
 
 /**
  * Various utility methods for sorting schema objects.
@@ -131,12 +133,14 @@ public final class SchemaObjectSorter
 
             for ( T schemaObject : schemaObjects )
             {
-                String oid = schemaObject.getOid().toLowerCase();
+                String oid = Strings.lowerCase( schemaObject.getOid() );
                 oid2numericOid.put( oid, oid );
+                
                 for ( String name : schemaObject.getNames() )
                 {
-                    oid2numericOid.put( name.toLowerCase(), oid );
+                    oid2numericOid.put( Strings.lowerCase( name ), oid );
                 }
+                
                 numericOid2schemaObject.put( oid, schemaObject );
             }
         }
@@ -179,7 +183,7 @@ public final class SchemaObjectSorter
                             continue;
                         }
 
-                        String superiorNumeridOid = oid2numericOid.get( superiorOid.toLowerCase() );
+                        String superiorNumeridOid = oid2numericOid.get( Strings.lowerCase( superiorOid ) );
 
                         // AT's superior is not within the processed AT list
                         if ( superiorNumeridOid == null )
@@ -187,7 +191,7 @@ public final class SchemaObjectSorter
                             continue;
                         }
 
-                        T superiorSchemaObject = numericOid2schemaObject.get( superiorNumeridOid.toLowerCase() );
+                        T superiorSchemaObject = numericOid2schemaObject.get( Strings.lowerCase( superiorNumeridOid ) );
 
                         // AT's superior was already removed
                         if ( superiorSchemaObject == null )
