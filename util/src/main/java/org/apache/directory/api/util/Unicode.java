@@ -34,6 +34,48 @@ import java.io.ObjectOutput;
  */
 public final class Unicode
 {
+    private static final int UTF8_MULTI_BYTES_MASK = 0x0080;
+    private static final int UTF8_TWO_BYTES_MASK = 0x00E0;
+    private static final int UTF8_TWO_BYTES = 0x00C0;
+    private static final int UTF8_THREE_BYTES_MASK = 0x00F0;
+    private static final int UTF8_THREE_BYTES = 0x00E0;
+    private static final int UTF8_FOUR_BYTES_MASK = 0x00F8;
+    private static final int UTF8_FOUR_BYTES = 0x00F0;
+    private static final int UTF8_FIVE_BYTES_MASK = 0x00FC;
+    private static final int UTF8_FIVE_BYTES = 0x00F8;
+    private static final int UTF8_SIX_BYTES_MASK = 0x00FE;
+    private static final int UTF8_SIX_BYTES = 0x00FC;
+
+    /** %01-%27 %2B-%5B %5D-%7F */
+    private static final boolean[] UNICODE_SUBSET =
+        {
+            // '\0'
+            false, true,  true,  true,  true,  true,  true,  true, 
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            // '(', ')', '*'
+            false, false, false, true,  true,  true,  true,  true, 
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            // '\'
+            true,  true,  true,  true,  false, true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+            true,  true,  true,  true,  true,  true,  true,  true,
+        };
+    private static final int CHAR_ONE_BYTE_MASK = 0xFFFFFF80;
+    private static final int CHAR_TWO_BYTES_MASK = 0xFFFFF800;
+    private static final int CHAR_THREE_BYTES_MASK = 0xFFFF0000;
+    private static final int CHAR_FOUR_BYTES_MASK = 0xFFE00000;
+    private static final int CHAR_FIVE_BYTES_MASK = 0xFC000000;
+    private static final int CHAR_SIX_BYTES_MASK = 0x80000000;
+
     /**
      * Count the number of bytes needed to return an Unicode char. This can be
      * from 1 to 6.
@@ -52,27 +94,27 @@ public final class Unicode
             return -1;
         }
 
-        if ( ( bytes[pos] & UnicodeConstants.UTF8_MULTI_BYTES_MASK ) == 0 )
+        if ( ( bytes[pos] & UTF8_MULTI_BYTES_MASK ) == 0 )
         {
             return 1;
         }
-        else if ( ( bytes[pos] & UnicodeConstants.UTF8_TWO_BYTES_MASK ) == UnicodeConstants.UTF8_TWO_BYTES )
+        else if ( ( bytes[pos] & UTF8_TWO_BYTES_MASK ) == UTF8_TWO_BYTES )
         {
             return 2;
         }
-        else if ( ( bytes[pos] & UnicodeConstants.UTF8_THREE_BYTES_MASK ) == UnicodeConstants.UTF8_THREE_BYTES )
+        else if ( ( bytes[pos] & UTF8_THREE_BYTES_MASK ) == UTF8_THREE_BYTES )
         {
             return 3;
         }
-        else if ( ( bytes[pos] & UnicodeConstants.UTF8_FOUR_BYTES_MASK ) == UnicodeConstants.UTF8_FOUR_BYTES )
+        else if ( ( bytes[pos] & UTF8_FOUR_BYTES_MASK ) == UTF8_FOUR_BYTES )
         {
             return 4;
         }
-        else if ( ( bytes[pos] & UnicodeConstants.UTF8_FIVE_BYTES_MASK ) == UnicodeConstants.UTF8_FIVE_BYTES )
+        else if ( ( bytes[pos] & UTF8_FIVE_BYTES_MASK ) == UTF8_FIVE_BYTES )
         {
             return 5;
         }
-        else if ( ( bytes[pos] & UnicodeConstants.UTF8_SIX_BYTES_MASK ) == UnicodeConstants.UTF8_SIX_BYTES )
+        else if ( ( bytes[pos] & UTF8_SIX_BYTES_MASK ) == UTF8_SIX_BYTES )
         {
             return 6;
         }
@@ -111,19 +153,19 @@ public final class Unicode
             return ( char ) -1;
         }
 
-        if ( ( bytes[pos] & UnicodeConstants.UTF8_MULTI_BYTES_MASK ) == 0 )
+        if ( ( bytes[pos] & UTF8_MULTI_BYTES_MASK ) == 0 )
         {
             return ( char ) bytes[pos];
         }
         else
         {
-            if ( ( bytes[pos] & UnicodeConstants.UTF8_TWO_BYTES_MASK ) == UnicodeConstants.UTF8_TWO_BYTES )
+            if ( ( bytes[pos] & UTF8_TWO_BYTES_MASK ) == UTF8_TWO_BYTES )
             {
                 // Two bytes char
                 // 110x-xxyy 10zz-zzzz -> 0000-0xxx yyzz-zzzz
                 return ( char ) ( ( ( bytes[pos] & 0x1C ) << 6 ) + ( ( bytes[pos] & 0x03 ) << 6 ) + ( bytes[pos + 1] & 0x3F ) );
             }
-            else if ( ( bytes[pos] & UnicodeConstants.UTF8_THREE_BYTES_MASK ) == UnicodeConstants.UTF8_THREE_BYTES )
+            else if ( ( bytes[pos] & UTF8_THREE_BYTES_MASK ) == UTF8_THREE_BYTES )
             {
                 // Three bytes char
                 // 1110-tttt 10xx-xxyy 10zz-zzzz -> tttt-xxxx yyzz-zzzz (FF FF)
@@ -133,7 +175,7 @@ public final class Unicode
                     + ( bytes[pos + 2] & 0x3F )
                 );
             }
-            else if ( ( bytes[pos] & UnicodeConstants.UTF8_FOUR_BYTES_MASK ) == UnicodeConstants.UTF8_FOUR_BYTES )
+            else if ( ( bytes[pos] & UTF8_FOUR_BYTES_MASK ) == UTF8_FOUR_BYTES )
             {
                 // Four bytes char
                 return ( char ) (
@@ -146,7 +188,7 @@ public final class Unicode
                     + ( bytes[pos + 3] & 0x3F )
                 );
             }
-            else if ( ( bytes[pos] & UnicodeConstants.UTF8_FIVE_BYTES_MASK ) == UnicodeConstants.UTF8_FIVE_BYTES )
+            else if ( ( bytes[pos] & UTF8_FIVE_BYTES_MASK ) == UTF8_FIVE_BYTES )
             {
                 // Five bytes char
                 return ( char ) (
@@ -161,7 +203,7 @@ public final class Unicode
                     + ( bytes[pos + 4] & 0x3F )
                 );
             }
-            else if ( ( bytes[pos] & UnicodeConstants.UTF8_FIVE_BYTES_MASK ) == UnicodeConstants.UTF8_FIVE_BYTES )
+            else if ( ( bytes[pos] & UTF8_FIVE_BYTES_MASK ) == UTF8_FIVE_BYTES )
             {
                 // Six bytes char
                 return ( char ) (
@@ -194,27 +236,27 @@ public final class Unicode
      */
     public static int countNbBytesPerChar( char car )
     {
-        if ( ( car & UnicodeConstants.CHAR_ONE_BYTE_MASK ) == 0 )
+        if ( ( car & CHAR_ONE_BYTE_MASK ) == 0 )
         {
             return 1;
         }
-        else if ( ( car & UnicodeConstants.CHAR_TWO_BYTES_MASK ) == 0 )
+        else if ( ( car & CHAR_TWO_BYTES_MASK ) == 0 )
         {
             return 2;
         }
-        else if ( ( car & UnicodeConstants.CHAR_THREE_BYTES_MASK ) == 0 )
+        else if ( ( car & CHAR_THREE_BYTES_MASK ) == 0 )
         {
             return 3;
         }
-        else if ( ( car & UnicodeConstants.CHAR_FOUR_BYTES_MASK ) == 0 )
+        else if ( ( car & CHAR_FOUR_BYTES_MASK ) == 0 )
         {
             return 4;
         }
-        else if ( ( car & UnicodeConstants.CHAR_FIVE_BYTES_MASK ) == 0 )
+        else if ( ( car & CHAR_FIVE_BYTES_MASK ) == 0 )
         {
             return 5;
         }
-        else if ( ( car & UnicodeConstants.CHAR_SIX_BYTES_MASK ) == 0 )
+        else if ( ( car & CHAR_SIX_BYTES_MASK ) == 0 )
         {
             return 6;
         }
@@ -336,7 +378,7 @@ public final class Unicode
 
         char c = str.charAt( pos );
 
-        return ( ( c > 127 ) || UnicodeConstants.UNICODE_SUBSET[c] );
+        return ( ( c > 127 ) || UNICODE_SUBSET[c] );
     }
 
 
@@ -349,7 +391,7 @@ public final class Unicode
      */
     public static boolean isUnicodeSubset( char c )
     {
-        return ( ( c > 127 ) || UnicodeConstants.UNICODE_SUBSET[c] );
+        return ( ( c > 127 ) || UNICODE_SUBSET[c] );
     }
 
 
@@ -362,7 +404,7 @@ public final class Unicode
      */
     public static boolean isUnicodeSubset( byte b )
     {
-        return ( ( b < 0 ) || ( b > 127 ) || UnicodeConstants.UNICODE_SUBSET[b] );
+        return ( ( b < 0 ) || ( b > 127 ) || UNICODE_SUBSET[b] );
     }
 
 
