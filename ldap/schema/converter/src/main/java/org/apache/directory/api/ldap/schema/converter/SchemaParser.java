@@ -106,7 +106,7 @@ public class SchemaParser
      */
     public synchronized List<SchemaElement> parse( String schemaObject ) throws IOException, ParseException
     {
-        if ( ( schemaObject == null ) || ( schemaObject.trim().equals( "" ) ) )
+        if ( ( schemaObject == null ) || ( schemaObject.trim().equals( Strings.EMPTY_STRING ) ) )
         {
             throw new ParseException( I18n.err( I18n.ERR_06001_EMPTY_OR_NULL_SCHEMA_OBJECT ), 0 );
         }
@@ -119,15 +119,16 @@ public class SchemaParser
         }
 
         producerThread.start();
+        
         return invokeParser( schemaObject );
     }
 
 
     /**
      * Invoke the parser
+     * 
      * @param schemaName The schema to be parsed
      * @return A list of schema elements
-     *
      * @throws java.io.IOException If the schema file can't be processed
      * @throws java.text.ParseException If we weren't able to parse the schema
      */
@@ -186,7 +187,7 @@ public class SchemaParser
      */
     public synchronized void parse( File schemaFile ) throws IOException, ParseException
     {
-        this.schemaIn = new FileInputStream( schemaFile );
+        schemaIn = new FileInputStream( schemaFile );
 
         if ( producerThread == null )
         {
@@ -196,6 +197,7 @@ public class SchemaParser
         producerThread.start();
         invokeParser( "schema file ==> " + schemaFile.getAbsolutePath() );
     }
+    
 
     /**
      * The thread which read the schema files and fill the
@@ -203,6 +205,9 @@ public class SchemaParser
      */
     private class DataProducer implements Runnable
     {
+        /**
+         * {@inheritDoc}
+         */
         public void run()
         {
             int count = -1;

@@ -76,10 +76,19 @@ import org.apache.directory.api.i18n.I18n;
  */
 public final class Oid
 {
+    /** A byte[] representation of an OID */
     private byte[] oidBytes;
+    
+    /** The OID as a String */
     private String oidString;
 
 
+    /**
+     * Creates a new instance of Oid.
+     *
+     * @param oidString The OID as a String
+     * @param oidBytes The OID as a byte[]
+     */
     private Oid( String oidString, byte[] oidBytes )
     {
         this.oidString = oidString;
@@ -88,6 +97,9 @@ public final class Oid
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals( Object other )
     {
@@ -101,7 +113,7 @@ public final class Oid
      * 
      * @param oidBytes The encoded<code>byte[]</code>
      * @return A new Oid
-     * @throws DecoderException
+     * @throws DecoderException When the OID is not valid
      */
     public static Oid fromBytes( byte[] oidBytes ) throws DecoderException
     {
@@ -176,7 +188,7 @@ public final class Oid
      *  
      * @param oidString The string representation of the OID
      * @return A new Oid
-     * @throws DecoderException 
+     * @throws DecoderException  When the OID is not valid
      */
     public static Oid fromString( String oidString ) throws DecoderException
     {
@@ -239,6 +251,9 @@ public final class Oid
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode()
     {
@@ -304,8 +319,8 @@ public final class Oid
      * should be used in preference to the {@link #toBytes()} method in order
      * to prevent the creation of copies of the actual <code>byte[]</code>.
      * 
-     * @param buffer The buffer to write the bytes to
-     * @throws IOException
+     * @param buffer The buffer to write the bytes into
+     * @throws IOException If we can't inject the OID into a ByteBuffer 
      */
     public void writeBytesTo( java.nio.ByteBuffer buffer )
     {
@@ -319,40 +334,64 @@ public final class Oid
      * to prevent the creation of copies of the actual <code>byte[]</code>.
      * 
      * @param outputStream The stream to write the bytes to
-     * @throws IOException
+     * @throws IOException When we can't write the OID into a Stream
      */
     public void writeBytesTo( OutputStream outputStream ) throws IOException
     {
         outputStream.write( oidBytes );
     }
 
-    // Internal helper class for converting a long value to a properly encoded
-    // byte[]
+    /**
+     * 
+     * Internal helper class for converting a long value to a properly encoded byte[]
+     */
     private static final class ByteBuffer
     {
+        /** The Buffer the OID will be written in */
         private ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
 
+        /**
+         * Writes a Long into a ByteBuffer
+         * 
+         * @param value The long value to write
+         * @return A ByteBufffer containing the converted Long
+         */
         public ByteBuffer append( long value )
         {
             write( value, false );
+            
             return this;
         }
 
 
+        /**
+         * Write a long into the buffe, and a flag indicating that there are more 
+         * to write
+         *
+         * @param value The value to write
+         * @param hasMore The flag indicati,ng there is more to write into the buffer
+         */
         private void write( long value, boolean hasMore )
         {
             long remaining = value >> 7;
+        
             if ( remaining > 0 )
             {
                 write( remaining, true );
             }
+            
             buffer.write( hasMore
                 ? ( byte ) ( ( 0x7F & value ) | 0x80 )
                 : ( byte ) ( 0x7F & value ) );
         }
 
 
+        /**
+         * Convert the Buffer to a byte[]
+         * 
+         * @return The byte[] containing the Long
+         */
         public byte[] toByteArray()
         {
             return buffer.toByteArray();

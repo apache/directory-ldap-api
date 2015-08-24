@@ -60,6 +60,7 @@ public abstract class UserClass
     protected UserClass()
     {
     }
+    
 
     /**
      * Every directory user (with possible requirements for
@@ -67,6 +68,9 @@ public abstract class UserClass
      */
     public static final class AllUsers extends UserClass
     {
+        /**
+         * Creates a new instance of AllUsers.
+         */
         private AllUsers()
         {
         }
@@ -81,6 +85,7 @@ public abstract class UserClass
             return "allUsers";
         }
     }
+    
 
     /**
      * The user with the same distinguished name as the entry being accessed, or
@@ -89,6 +94,9 @@ public abstract class UserClass
      */
     public static final class ThisEntry extends UserClass
     {
+        /**
+         * Creates a new instance of ThisEntry.
+         */
         private ThisEntry()
         {
         }
@@ -103,12 +111,16 @@ public abstract class UserClass
             return "thisEntry";
         }
     }
+    
 
     /**
      * The user as parent (ancestor) of accessed entry.
      */
     public static final class ParentOfEntry extends UserClass
     {
+        /**
+         * Creates a new instance of ParentOfEntry.
+         */
         private ParentOfEntry()
         {
         }
@@ -122,8 +134,8 @@ public abstract class UserClass
         {
             return "parentOfEntry";
         }
-
     }
+    
 
     /**
      * A base class for all user classes which has a set of DNs.
@@ -154,6 +166,8 @@ public abstract class UserClass
 
         /**
          * Returns the set of all names.
+         * 
+         * @return The set of all names
          */
         public Set<Dn> getNames()
         {
@@ -180,7 +194,8 @@ public abstract class UserClass
             if ( getClass().isAssignableFrom( o.getClass() ) )
             {
                 Name that = ( Name ) o;
-                return this.names.equals( that.names );
+                
+                return names.equals( that.names );
             }
 
             return false;
@@ -204,6 +219,9 @@ public abstract class UserClass
         }
 
 
+        /**
+         * {@inheritDoc}
+         */
         public String toString()
         {
             StringBuilder buffer = new StringBuilder();
@@ -232,6 +250,7 @@ public abstract class UserClass
             return buffer.toString();
         }
     }
+    
 
     /**
      * The user with the specified distinguished name.
@@ -241,8 +260,7 @@ public abstract class UserClass
         /**
          * Creates a new instance.
          * 
-         * @param usernames
-         *            the set of user DNs.
+         * @param usernames the set of user DNs.
          */
         public Name( Set<Dn> usernames )
         {
@@ -259,6 +277,7 @@ public abstract class UserClass
             return "name " + super.toString();
         }
     }
+    
 
     /**
      * The set of users who are members of the groupOfUniqueNames entry,
@@ -271,8 +290,7 @@ public abstract class UserClass
         /**
          * Creates a new instance.
          * 
-         * @param groupNames
-         *            the set of group DNs.
+         * @param groupNames the set of group DNs.
          */
         public UserGroup( Set<Dn> groupNames )
         {
@@ -289,6 +307,7 @@ public abstract class UserClass
             return "userGroup " + super.toString();
         }
     }
+    
 
     /**
      * The set of users whose distinguished names fall within the definition of
@@ -303,12 +322,11 @@ public abstract class UserClass
         /**
          * Creates a new instance.
          * 
-         * @param subtreeSpecs
-         *            the collection of unrefined {@link SubtreeSpecification}s.
+         * @param subtreeSpecs the collection of unrefined {@link SubtreeSpecification}s.
          */
         public Subtree( Set<SubtreeSpecification> subtreeSpecs )
         {
-            this.subtreeSpecifications = Collections.unmodifiableSet( subtreeSpecs );
+            subtreeSpecifications = Collections.unmodifiableSet( subtreeSpecs );
         }
 
 
@@ -350,7 +368,8 @@ public abstract class UserClass
             if ( o instanceof Subtree )
             {
                 Subtree that = ( Subtree ) o;
-                return this.subtreeSpecifications.equals( that.subtreeSpecifications );
+                
+                return subtreeSpecifications.equals( that.subtreeSpecifications );
             }
 
             return false;
