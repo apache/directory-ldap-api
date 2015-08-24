@@ -61,7 +61,7 @@ public final class Strings
         { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
     /** A table containing booleans when the corresponding char is printable */
-    public static final boolean[] IS_PRINTABLE_CHAR =
+    private static final boolean[] IS_PRINTABLE_CHAR =
         {
             // ---, ---, ---, ---, ---, ---, ---, ---
             false, false, false, false, false, false, false, false, 
@@ -97,7 +97,7 @@ public final class Strings
             true,  true,  true,  false, false, false, false, false 
     };
 
-    public static final char[] TO_LOWER_CASE =
+    private static final char[] TO_LOWER_CASE =
         {
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
             0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
@@ -133,7 +133,7 @@ public final class Strings
             0xF8, 0xF9, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF,
     };
 
-    public static final byte[] TO_LOWER_CASE_BYTE =
+    private static final byte[] TO_LOWER_CASE_BYTE =
         {
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
             0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
@@ -186,7 +186,7 @@ public final class Strings
     };
 
     /** upperCase = 'A' .. 'Z', '0'..'9', '-' */
-    public static final char[] UPPER_CASE =
+    private static final char[] UPPER_CASE =
         {
             0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0,
@@ -214,8 +214,11 @@ public final class Strings
             0, 0, 0, 0, 0, 0, 0, 0
     };
 
-    /** A empty byte array */
+    /** An empty byte array */
     public static final byte[] EMPTY_BYTES = new byte[0];
+    
+    /** An empty String */
+    public static final String EMPTY_STRING = "";
 
 
     /**
