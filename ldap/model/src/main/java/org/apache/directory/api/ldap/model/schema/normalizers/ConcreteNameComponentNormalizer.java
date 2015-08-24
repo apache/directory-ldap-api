@@ -71,8 +71,10 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
         char low = 0;
         int pos = 0;
 
-        for ( char c : value.toCharArray() )
+        for ( int index = 0; index < value.length(); index++  )
         {
+            char c = value.charAt( index );
+            
             switch ( escaped )
             {
                 case 0:
@@ -96,6 +98,7 @@ public class ConcreteNameComponentNormalizer implements NameComponentNormalizer
                     escaped = 0;
                     low = c;
                     newVal[pos++] = ( char ) Hex.getHexValue( high, low );
+                    break;
 
                 default:
                     throw new IllegalStateException( "escaped can never have such a value: " + value );
