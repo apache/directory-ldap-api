@@ -134,7 +134,7 @@ public final class DescriptionUtils
     {
         for ( Map.Entry<String, List<String>> extension : extensions.entrySet() )
         {
-            sb.append( " " + extension.getKey() ).append( " " );
+            sb.append( ' ' ).append( extension.getKey() ).append( ' ' );
 
             List<String> values = extension.getValue();
 
@@ -157,7 +157,7 @@ public final class DescriptionUtils
                         }
                         else
                         {
-                            sb.append( " " );
+                            sb.append( ' ' );
                         }
 
                         sb.append( value );

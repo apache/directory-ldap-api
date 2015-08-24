@@ -21,6 +21,8 @@ package org.apache.directory.api.ldap.schema.loader;
 
 
 import java.lang.reflect.Constructor;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -93,7 +95,13 @@ public class SchemaEntityFactory implements EntityFactory
      */
     public SchemaEntityFactory()
     {
-        this.classLoader = new AttributeClassLoader();
+        this.classLoader = AccessController.doPrivileged( new PrivilegedAction<AttributeClassLoader>()
+        {
+            public AttributeClassLoader run() 
+            {
+                return new AttributeClassLoader();
+            }
+        } );
     }
 
 

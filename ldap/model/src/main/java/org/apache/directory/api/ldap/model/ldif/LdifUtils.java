@@ -599,15 +599,15 @@ public final class LdifUtils
 
                 if ( !LdifUtils.isLDIFSafe( str ) )
                 {
-                    lineBuffer.append( ":: " + encodeBase64( str ) );
+                    lineBuffer.append( ":: " ).append( encodeBase64( str ) );
                 }
                 else
                 {
-                    lineBuffer.append( ":" );
+                    lineBuffer.append( ':' );
 
                     if ( str != null )
                     {
-                        lineBuffer.append( " " ).append( str );
+                        lineBuffer.append( ' ' ).append( str );
                     }
                 }
             }
@@ -619,7 +619,7 @@ public final class LdifUtils
                 lineBuffer.append( ":: " + new String( encoded ) );
             }
 
-            lineBuffer.append( "\n" );
+            lineBuffer.append( '\n' );
             sb.append( stripLineToNChars( lineBuffer.toString(), length ) );
         }
 
