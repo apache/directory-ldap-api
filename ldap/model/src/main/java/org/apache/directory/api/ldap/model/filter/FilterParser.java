@@ -136,6 +136,7 @@ public final class FilterParser
         }
         else
         {
+            // No attribute
             boolean oidRequested = false;
 
             // First check if we have a ":dn"
@@ -165,7 +166,7 @@ public final class FilterParser
                     pos.start++;
 
                     // Get the assertionValue
-                    node.setValue( parseAssertionValue( schemaManager, attribute, filter, pos ) );
+                    node.setValue( parseAssertionValue( schemaManager, null, filter, pos ) );
 
                     return node;
                 }
@@ -180,7 +181,7 @@ public final class FilterParser
                         pos.start += 2;
 
                         // Get the assertionValue
-                        node.setValue( parseAssertionValue( schemaManager, attribute, filter, pos ) );
+                        node.setValue( parseAssertionValue( schemaManager, null, filter, pos ) );
 
                         return node;
                     }
