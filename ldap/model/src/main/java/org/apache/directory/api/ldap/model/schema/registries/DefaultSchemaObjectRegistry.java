@@ -59,6 +59,9 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
 
     /** the global OID Registry */
     protected OidRegistry<T> oidRegistry;
+    
+    /** A flag indicating that the Registry is relaxed or not */
+    private boolean isRelaxed;
 
 
     /**
@@ -69,6 +72,51 @@ public abstract class DefaultSchemaObjectRegistry<T extends SchemaObject> implem
         byName = new HashMap<String, T>();
         this.schemaObjectType = schemaObjectType;
         this.oidRegistry = oidRegistry;
+        this.isRelaxed = Registries.STRICT;
+    }
+    
+    /**
+     * Tells if the Registry is permissive or if it must be checked
+     * against inconsistencies.
+     *
+     * @return True if SchemaObjects can be added even if they break the consistency
+     */
+    public boolean isRelaxed()
+    {
+        return isRelaxed;
+    }
+
+
+    /**
+     * Tells if the Registry is strict.
+     *
+     * @return True if SchemaObjects cannot be added if they break the consistency
+     */
+    public boolean isStrict()
+    {
+        return !isRelaxed;
+    }
+
+
+    /**
+     * Change the Registry to a relaxed mode, where invalid SchemaObjects
+     * can be registered.
+     */
+    public void setRelaxed()
+    {
+        isRelaxed = Registries.RELAXED;
+        oidRegistry.setRelaxed();
+    }
+
+
+    /**
+     * Change the Registry to a strict mode, where invalid SchemaObjects
+     * cannot be registered.
+     */
+    public void setStrict()
+    {
+        isRelaxed = Registries.STRICT;
+        oidRegistry.setStrict();
     }
 
 

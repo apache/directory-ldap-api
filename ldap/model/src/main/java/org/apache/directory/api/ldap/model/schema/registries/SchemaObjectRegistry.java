@@ -177,4 +177,5 @@ public interface SchemaObjectRegistry<T extends SchemaObject>
      * Clear the registry from all its content
      */
     void clear() throws LdapException;
+    
 }

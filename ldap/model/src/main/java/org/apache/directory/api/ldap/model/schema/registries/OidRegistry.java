@@ -51,6 +51,9 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
     /** Maps OID to a type of SchemaObject */
     private Map<String, T> byOid = new HashMap<String, T>();
+    
+    /** A flag indicating that the Registry is relaxed or not */
+    private boolean isRelaxed = Registries.STRICT;;
 
 
     /**
@@ -169,6 +172,48 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
         return byOid.values().iterator();
     }
 
+    
+    /**
+     * Tells if the Registry is permissive or if it must be checked
+     * against inconsistencies.
+     *
+     * @return True if SchemaObjects can be added even if they break the consistency
+     */
+    public boolean isRelaxed()
+    {
+        return isRelaxed;
+    }
+
+
+    /**
+     * Tells if the Registry is strict.
+     *
+     * @return True if SchemaObjects cannot be added if they break the consistency
+     */
+    public boolean isStrict()
+    {
+        return !isRelaxed;
+    }
+
+
+    /**
+     * Change the Registry to a relaxed mode, where invalid SchemaObjects
+     * can be registered.
+     */
+    public void setRelaxed()
+    {
+        isRelaxed = Registries.RELAXED;
+    }
+
+
+    /**
+     * Change the Registry to a strict mode, where invalid SchemaObjects
+     * cannot be registered.
+     */
+    public void setStrict()
+    {
+        isRelaxed = Registries.STRICT;
+    }
 
     /**
      * Adds an OID name pair to the registry.
@@ -187,12 +232,22 @@ public class OidRegistry<T extends SchemaObject> implements Iterable<T>
 
         String oid = schemaObject.getOid();
 
-        if ( !Oid.isOid( oid ) )
+        if ( isStrict() )
         {
-            String message = I18n.err( I18n.ERR_04290 );
+            if ( !Oid.isOid( oid ) )
+            {
+                String message = I18n.err( I18n.ERR_04290 );
 
-            LOG.debug( message );
-            throw new LdapException( message );
+                LOG.debug( message );
+                throw new LdapException( message );
+            }
+        }
+        else
+        {
+            if ( ( oid == null ) || oid.isEmpty() )
+            {
+                throw new LdapException( I18n.err( I18n.ERR_00033_INVALID_OID, "" ) );
+            }
         }
 
         /*

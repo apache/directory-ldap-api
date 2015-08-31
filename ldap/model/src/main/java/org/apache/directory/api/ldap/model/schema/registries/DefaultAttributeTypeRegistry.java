@@ -298,7 +298,7 @@ public class DefaultAttributeTypeRegistry extends DefaultSchemaObjectRegistry<At
     /**
      * {@inheritDoc}
      */
-    public AttributeTypeRegistry copy()
+    public DefaultAttributeTypeRegistry copy()
     {
         DefaultAttributeTypeRegistry copy = new DefaultAttributeTypeRegistry();
 

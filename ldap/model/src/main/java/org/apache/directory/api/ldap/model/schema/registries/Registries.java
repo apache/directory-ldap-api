@@ -83,40 +83,40 @@ public class Registries implements SchemaLoaderListener, Cloneable
     protected Map<String, Schema> loadedSchemas = new HashMap<String, Schema>();
 
     /** The AttributeType registry */
-    protected AttributeTypeRegistry attributeTypeRegistry;
+    protected DefaultAttributeTypeRegistry attributeTypeRegistry;
 
     /** The ObjectClass registry */
-    protected ObjectClassRegistry objectClassRegistry;
+    protected DefaultObjectClassRegistry objectClassRegistry;
 
     /** The LdapSyntax registry */
-    protected ComparatorRegistry comparatorRegistry;
+    protected DefaultComparatorRegistry comparatorRegistry;
 
     /** The DitContentRule registry */
-    protected DitContentRuleRegistry ditContentRuleRegistry;
+    protected DefaultDitContentRuleRegistry ditContentRuleRegistry;
 
     /** The DitStructureRule registry */
-    protected DitStructureRuleRegistry ditStructureRuleRegistry;
+    protected DefaultDitStructureRuleRegistry ditStructureRuleRegistry;
 
     /** The MatchingRule registry */
-    protected MatchingRuleRegistry matchingRuleRegistry;
+    protected DefaultMatchingRuleRegistry matchingRuleRegistry;
 
     /** The MatchingRuleUse registry */
-    protected MatchingRuleUseRegistry matchingRuleUseRegistry;
+    protected DefaultMatchingRuleUseRegistry matchingRuleUseRegistry;
 
     /** The NameForm registry */
-    protected NameFormRegistry nameFormRegistry;
+    protected DefaultNameFormRegistry nameFormRegistry;
 
     /** The Normalizer registry */
-    protected NormalizerRegistry normalizerRegistry;
+    protected DefaultNormalizerRegistry normalizerRegistry;
 
     /** The global OID registry */
     protected OidRegistry<SchemaObject> globalOidRegistry;
 
     /** The SyntaxChecker registry */
-    protected SyntaxCheckerRegistry syntaxCheckerRegistry;
+    protected DefaultSyntaxCheckerRegistry syntaxCheckerRegistry;
 
     /** The LdapSyntax registry */
-    protected LdapSyntaxRegistry ldapSyntaxRegistry;
+    protected DefaultLdapSyntaxRegistry ldapSyntaxRegistry;
 
     /** A map storing all the schema objects associated with a schema */
     private Map<String, Set<SchemaObjectWrapper>> schemaObjects;
@@ -2664,6 +2664,18 @@ public class Registries implements SchemaLoaderListener, Cloneable
     public void setRelaxed()
     {
         isRelaxed = RELAXED;
+        globalOidRegistry.setRelaxed();
+        attributeTypeRegistry.setRelaxed();
+        comparatorRegistry.setRelaxed();
+        ditContentRuleRegistry.setRelaxed();
+        ditStructureRuleRegistry.setRelaxed();
+        ldapSyntaxRegistry.setRelaxed();
+        matchingRuleRegistry.setRelaxed();
+        matchingRuleUseRegistry.setRelaxed();
+        nameFormRegistry.setRelaxed();
+        normalizerRegistry.setRelaxed();
+        objectClassRegistry.setRelaxed();
+        syntaxCheckerRegistry.setRelaxed();
     }
 
 
@@ -2674,6 +2686,18 @@ public class Registries implements SchemaLoaderListener, Cloneable
     public void setStrict()
     {
         isRelaxed = STRICT;
+        globalOidRegistry.setStrict();
+        attributeTypeRegistry.setStrict();
+        comparatorRegistry.setStrict();
+        ditContentRuleRegistry.setStrict();
+        ditStructureRuleRegistry.setStrict();
+        ldapSyntaxRegistry.setStrict();
+        matchingRuleRegistry.setStrict();
+        matchingRuleUseRegistry.setStrict();
+        nameFormRegistry.setStrict();
+        normalizerRegistry.setStrict();
+        objectClassRegistry.setStrict();
+        syntaxCheckerRegistry.setStrict();
     }
 
 
