@@ -233,6 +233,17 @@ public class ModifyRequestDecorator extends SingleReplyRequestDecorator<ModifyRe
     /**
      * {@inheritDoc}
      */
+    public ModifyRequest remove( String attributeName )
+    {
+        getDecorated().remove( attributeName );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public ModifyRequest addModification( Attribute attr, ModificationOperation modOp )
     {
         getDecorated().addModification( attr, modOp );

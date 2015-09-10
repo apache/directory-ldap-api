@@ -151,7 +151,7 @@ public interface ModifyRequest extends SingleReplyRequest, AbandonableRequest
      * marks a given attribute for removal with the given
      * values from the target entry.
      *
-     * @param attributeName name of the attribute to be added
+     * @param attributeName name of the attribute to be removed
      * @param attributeValue values of the attribute
      * @return The ModifyRequest instance
      */
@@ -168,10 +168,20 @@ public interface ModifyRequest extends SingleReplyRequest, AbandonableRequest
      *
      * marks a given attribute for removal from the target entry.
      *
-     * @param attr the attribute to be added
+     * @param attr the attribute to be removed
      * @return The ModifyRequest instance
      */
     ModifyRequest remove( Attribute attr );
+
+
+    /**
+     *
+     * marks a given attribute name for removal from the target entry.
+     *
+     * @param attributeName the attribute to be removed
+     * @return The ModifyRequest instance
+     */
+    ModifyRequest remove( String attributeName );
 
 
     /**

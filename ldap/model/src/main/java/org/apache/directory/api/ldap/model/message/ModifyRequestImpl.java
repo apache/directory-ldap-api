@@ -259,6 +259,17 @@ public class ModifyRequestImpl extends AbstractAbandonableRequest implements Mod
     /**
      * {@inheritDoc}
      */
+    public ModifyRequest remove( String attributerName )
+    {
+        addModification( new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE, attributerName ) );
+
+        return this;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     public ModifyRequest setMessageId( int messageId )
     {
         super.setMessageId( messageId );

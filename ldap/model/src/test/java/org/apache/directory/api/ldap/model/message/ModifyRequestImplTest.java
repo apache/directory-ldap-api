@@ -521,6 +521,12 @@ public class ModifyRequestImplTest
             {
                 return this;
             }
+
+
+            public ModifyRequest remove( String attributerName )
+            {
+                return this;
+            }
         };
 
         ModifyRequestImpl req1 = getRequest();

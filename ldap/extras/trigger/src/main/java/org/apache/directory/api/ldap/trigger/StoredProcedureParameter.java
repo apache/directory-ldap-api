@@ -386,6 +386,11 @@ public abstract class StoredProcedureParameter
         }
     }
 
+    /**
+     * 
+     *
+     * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
+     */
     public static final class ModifyDN_NEW_DN extends StoredProcedureParameter
     {
         private static ModifyDN_NEW_DN instance = new ModifyDN_NEW_DN( "$oldRDN" );
