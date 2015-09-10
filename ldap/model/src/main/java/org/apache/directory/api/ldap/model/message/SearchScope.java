@@ -114,6 +114,32 @@ public enum SearchScope
 
 
     /**
+     * Gets the SeacrhScope associated with a scope String
+     * 
+     * @return the scope
+     */
+    public SearchScope getScope( String scope )
+    {
+        if ( "base".equalsIgnoreCase( scope ) )
+        {
+            return OBJECT;
+        }
+        else if ( "one".equalsIgnoreCase( scope ) )
+        {
+            return ONELEVEL;
+        }
+        else if ( "sub".equalsIgnoreCase( scope ) )
+        {
+            return SUBTREE;
+        }
+        else
+        {
+            throw new IllegalArgumentException( I18n.err( I18n.ERR_04161, scope ) );
+        }
+    }
+
+
+    /**
      * Gets the SearchScope enumerated type for the corresponding 
      * scope value of either base, one or sub.
      *
