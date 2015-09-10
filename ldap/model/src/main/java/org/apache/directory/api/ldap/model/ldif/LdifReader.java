@@ -542,7 +542,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     {
         ChangeType operation = ChangeType.Add;
 
-        String modOp = Strings.trim( line.substring( "changetype:".length() + 1 ) );
+        String modOp = Strings.trim( line.substring( "changetype:".length() ) );
 
         if ( "add".equalsIgnoreCase( modOp ) )
         {
@@ -580,7 +580,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
     {
         String dn;
 
-        String lowerLine = Strings.toLowerCase( line );
+        String lowerLine = Strings.toLowerCaseAscii( line );
 
         if ( lowerLine.startsWith( "dn:" ) || lowerLine.startsWith( "Dn:" ) )
         {
@@ -844,7 +844,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
      */
     private Control parseControl( String line ) throws LdapLdifException
     {
-        String lowerLine = Strings.toLowerCase( line ).trim();
+        String lowerLine = Strings.toLowerCaseAscii( line ).trim();
         char[] controlValue = line.trim().toCharArray();
         int pos = 0;
         int length = controlValue.length;
@@ -1067,7 +1067,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         if ( iter.hasNext() )
         {
             String line = iter.next();
-            String lowerLine = Strings.toLowerCase( line );
+            String lowerLine = Strings.toLowerCaseAscii( line );
 
             if ( lowerLine.startsWith( "newrdn::" ) || lowerLine.startsWith( "newrdn:" ) )
             {
@@ -1098,7 +1098,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         if ( iter.hasNext() )
         {
             String line = iter.next();
-            String lowerLine = Strings.toLowerCase( line );
+            String lowerLine = Strings.toLowerCaseAscii( line );
 
             if ( lowerLine.startsWith( "deleteoldrdn:" ) )
             {
@@ -1151,7 +1151,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         while ( iter.hasNext() )
         {
             String line = iter.next();
-            String lowerLine = Strings.toLowerCase( line );
+            String lowerLine = Strings.toLowerCaseAscii( line );
 
             if ( lowerLine.startsWith( "-" ) )
             {
@@ -1335,7 +1335,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 while ( iter.hasNext() )
                 {
                     String line = iter.next();
-                    String lowerLine = Strings.toLowerCase( line );
+                    String lowerLine = Strings.toLowerCaseAscii( line );
                     parseAttributeValue( entry, line, lowerLine );
                 }
 
@@ -1356,7 +1356,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
                 if ( iter.hasNext() )
                 {
                     String line = iter.next();
-                    String lowerLine = Strings.toLowerCase( line );
+                    String lowerLine = Strings.toLowerCaseAscii( line );
 
                     if ( lowerLine.startsWith( "newsuperior:" ) )
                     {
@@ -1458,7 +1458,7 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
             // Each line could start either with an OID, an attribute type, with
             // "control:" or with "changetype:"
             line = iter.next();
-            lowerLine = Strings.toLowerCase( line );
+            lowerLine = Strings.toLowerCaseAscii( line );
 
             // We have three cases :
             // 1) The first line after the Dn is a "control:"
