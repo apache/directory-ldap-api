@@ -24,7 +24,7 @@ import org.apache.directory.api.i18n.I18n;
 
 
 /**
- * An enumeration that represents the level of authentication. We have 5 
+ * An enumeration that represents the level of authentication. We have 4 
  * different levels :
  * <ul>
  * <li>NONE : anonymous</li>
