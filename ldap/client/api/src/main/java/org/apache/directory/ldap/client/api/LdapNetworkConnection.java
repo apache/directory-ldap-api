@@ -499,7 +499,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
             }
             catch ( UnknownHostException uhe )
             {
-                config.setLdapHost( "localhost" );
+                config.setLdapHost( LdapConnectionConfig.DEFAULT_LDAP_HOST );
             }
             
         }
