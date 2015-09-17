@@ -26,8 +26,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ConnectException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
+import java.net.UnknownHostException;
 import java.nio.channels.UnresolvedAddressException;
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
@@ -491,7 +493,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
         // Default to localhost if null
         if ( Strings.isEmpty( server ) )
         {
-            config.setLdapHost( "localhost" );
+            try
+            {
+                config.setLdapHost( InetAddress.getLocalHost().getHostName() );
+            }
+            catch ( UnknownHostException uhe )
+            {
+                config.setLdapHost( "localhost" );
+            }
+            
         }
         else
         {
