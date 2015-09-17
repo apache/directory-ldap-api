@@ -121,11 +121,11 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
      * Creates a new instance of DefaultSchemaLoader.
      *
      * @param connection the LDAP connection
-     * @param initial setting for the quirks mode
+     * @param initial setting for the relaxed mode
      * @throws Exception if the connection is not authenticated or if there are any problems
      *                   while loading the schema entries
      */
-    public DefaultSchemaLoader( LdapConnection connection, boolean quirksMode ) throws LdapException
+    public DefaultSchemaLoader( LdapConnection connection, boolean relaxed ) throws LdapException
     {
         if ( connection == null )
         {
@@ -133,7 +133,8 @@ public class DefaultSchemaLoader extends AbstractSchemaLoader
         }
 
         this.connection = connection;
-        setQuirksMode( quirksMode );
+        setRelaxed( relaxed );
+        setQuirksMode( relaxed );
 
         // Flagging if the connection was already connected
         boolean wasConnected = connection.isConnected();

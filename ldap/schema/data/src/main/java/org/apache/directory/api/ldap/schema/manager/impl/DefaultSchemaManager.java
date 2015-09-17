@@ -117,13 +117,6 @@ public class DefaultSchemaManager implements SchemaManager
     /** A flag indicating that the SchemaManager is relaxed or not */
     private boolean isRelaxed = STRICT;
 
-    /** Two flags for RELAXED and STRICT, this is STRICT */
-    public static final boolean STRICT = false;
-
-    /** Two flags for RELAXED and STRICT, this is RELAXED */
-    public static final boolean RELAXED = true;
-
-
     /**
      * Creates a new instance of DefaultSchemaManager with the default schema schemaLoader
      *
@@ -155,7 +148,7 @@ public class DefaultSchemaManager implements SchemaManager
         errors = new ArrayList<Throwable>();
         registries = new Registries();
         factory = new SchemaEntityFactory();
-        isRelaxed = STRICT;
+        isRelaxed = loader.isRelaxed();
     }
 
 
@@ -173,7 +166,7 @@ public class DefaultSchemaManager implements SchemaManager
         errors = new ArrayList<Throwable>();
         registries = new Registries();
         factory = new SchemaEntityFactory();
-        isRelaxed = STRICT;
+        isRelaxed = loader.isRelaxed();
     }
 
 
@@ -270,7 +263,7 @@ public class DefaultSchemaManager implements SchemaManager
     private void deleteSchemaObjects( Schema schema, Registries registries ) throws LdapException
     {
         Map<String, Set<SchemaObjectWrapper>> schemaObjects = registries.getObjectBySchemaName();
-        Set<SchemaObjectWrapper> content = schemaObjects.get( Strings.toLowerCase( schema.getSchemaName() ) );
+        Set<SchemaObjectWrapper> content = schemaObjects.get( Strings.toLowerCaseAscii( schema.getSchemaName() ) );
 
         List<SchemaObject> toBeDeleted = new ArrayList<SchemaObject>();
 
@@ -1103,10 +1096,17 @@ public class DefaultSchemaManager implements SchemaManager
                 loaded = true;
             }
         }
-        else
+        else if ( isStrict() )
         {
             // clear the cloned registries
             clonedRegistries.clear();
+        }
+        else
+        {
+            // Relaxed mode
+            registries = clonedRegistries;
+            registries.setRelaxed();
+            loaded = true;
         }
 
         return loaded;
@@ -1599,7 +1599,7 @@ public class DefaultSchemaManager implements SchemaManager
      */
     public AttributeType lookupAttributeTypeRegistry( String oid ) throws LdapException
     {
-        String oidTrimmed = Strings.toLowerCase( oid ).trim();
+        String oidTrimmed = Strings.toLowerCaseAscii( oid ).trim();
         String oidNoOption = stripOptions( oidTrimmed );
         return registries.getAttributeTypeRegistry().lookup( oidNoOption );
     }
@@ -1612,7 +1612,7 @@ public class DefaultSchemaManager implements SchemaManager
     {
         try
         {
-            return registries.getAttributeTypeRegistry().lookup( Strings.toLowerCase( oid ).trim() );
+            return registries.getAttributeTypeRegistry().lookup( Strings.toLowerCaseAscii( oid ).trim() );
         }
         catch ( LdapException lnsae )
         {
@@ -1635,7 +1635,7 @@ public class DefaultSchemaManager implements SchemaManager
      */
     public MatchingRule lookupMatchingRuleRegistry( String oid ) throws LdapException
     {
-        return registries.getMatchingRuleRegistry().lookup( Strings.toLowerCase( oid ).trim() );
+        return registries.getMatchingRuleRegistry().lookup( Strings.toLowerCaseAscii( oid ).trim() );
     }
 
 
@@ -1653,7 +1653,7 @@ public class DefaultSchemaManager implements SchemaManager
      */
     public ObjectClass lookupObjectClassRegistry( String oid ) throws LdapException
     {
-        return registries.getObjectClassRegistry().lookup( Strings.toLowerCase( oid ).trim() );
+        return registries.getObjectClassRegistry().lookup( Strings.toLowerCaseAscii( oid ).trim() );
     }
 
 
@@ -1662,7 +1662,7 @@ public class DefaultSchemaManager implements SchemaManager
      */
     public LdapSyntax lookupLdapSyntaxRegistry( String oid ) throws LdapException
     {
-        return registries.getLdapSyntaxRegistry().lookup( Strings.toLowerCase( oid ).trim() );
+        return registries.getLdapSyntaxRegistry().lookup( Strings.toLowerCaseAscii( oid ).trim() );
     }
 
 
@@ -1725,7 +1725,7 @@ public class DefaultSchemaManager implements SchemaManager
      */
     private String getSchemaName( SchemaObject schemaObject )
     {
-        String schemaName = Strings.toLowerCase( schemaObject.getSchemaName() );
+        String schemaName = Strings.toLowerCaseAscii( schemaObject.getSchemaName() );
 
         if ( Strings.isEmpty( schemaName ) )
         {

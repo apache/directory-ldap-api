@@ -34,6 +34,7 @@ import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.StringConstants;
 import org.apache.directory.api.util.Strings;
 
@@ -51,6 +52,9 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      * the LDIF based schema repository.
      */
     protected final Map<String, Schema> schemaMap = new LowerCaseKeyMap();
+    
+    /** The flag that tells about the SchemaLoader mode : relaxed or strict */
+    private boolean relaxed;
 
     /**
      * a map implementation which converts the keys to lower case before inserting
@@ -111,7 +115,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      */
     public Schema getSchema( String schemaName )
     {
-        return schemaMap.get( Strings.toLowerCase( schemaName ) );
+        return schemaMap.get( Strings.toLowerCaseAscii( schemaName ) );
     }
 
 
@@ -129,7 +133,7 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
      */
     public void removeSchema( Schema schema )
     {
-        schemaMap.remove( Strings.toLowerCase( schema.getSchemaName() ) );
+        schemaMap.remove( Strings.toLowerCaseAscii( schema.getSchemaName() ) );
     }
 
 
@@ -376,5 +380,32 @@ public abstract class AbstractSchemaLoader implements SchemaLoader
         }
 
         return loadSyntaxCheckers( buildSchemaArray( schemaNames ) );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isRelaxed()
+    {
+        return SchemaManager.RELAXED;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isStrict()
+    {
+        return relaxed == SchemaManager.STRICT;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setRelaxed( boolean relaxed )
+    {
+        this.relaxed = relaxed;
     }
 }

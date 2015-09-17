@@ -286,6 +286,29 @@ public interface SchemaLoader
 
     /**
      * Remove a schema from the schema's list
+     * 
+     * @param schema The schema to remove
      */
     void removeSchema( Schema schema );
+    
+    
+    /**
+     * @return Tells if the SchemaLoader is in RELAXED mode
+     */
+    boolean isRelaxed();
+    
+    
+    /**
+     * @return Tells if the SchemaLoader is in STRICT mode
+     */
+    boolean isStrict();
+    
+    
+    /**
+     * Set the SchemzLoader in STRICT or RELAXED mode.
+     * 
+     * @param relaxed if <code>true</code>, the SchemaLoader will be in relaxed mode, otherwise
+     * it will be in strict mode (the default)
+     */
+    void setRelaxed( boolean relaxed );
 }

@@ -792,6 +792,16 @@ public interface LdapConnection extends Closeable
 
 
     /**
+     * Loads all the default schemas that are bundled with the API, in a relaxed mode.<br><br>
+     * <b>Note:</b> This method enables <b>all</b> schemas prior to loading.<br/>
+     * The relaxed mode will allow inconsistencies in the schema.
+     * 
+     * @throws LdapException in case of problems while loading the schema
+     */
+    void loadSchemaRelaxed() throws LdapException;
+
+
+    /**
      * @return The SchemaManager associated with this LdapConection if any
      */
     SchemaManager getSchemaManager();

@@ -3506,6 +3506,15 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
 
     /**
+     * {@inheritDoc}
+     */
+    public void loadSchemaRelaxed() throws LdapException
+    {
+        loadSchema( new DefaultSchemaLoader( this, true ) );
+    }
+
+
+    /**
      * loads schema using the specified schema loader
      *
      * @param loader the {@link SchemaLoader} to be used to load schema
@@ -3519,7 +3528,7 @@ public class LdapNetworkConnection extends AbstractLdapConnection implements Lda
 
             tmp.loadAllEnabled();
 
-            if ( !tmp.getErrors().isEmpty() )
+            if ( !tmp.getErrors().isEmpty() && loader.isStrict() )
             {
                 String msg = "there are errors while loading the schema";
                 LOG.error( msg + " {}", tmp.getErrors() );

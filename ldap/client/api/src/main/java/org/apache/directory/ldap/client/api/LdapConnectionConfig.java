@@ -21,6 +21,7 @@
 package org.apache.directory.ldap.client.api;
 
 
+import java.net.InetAddress;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -54,7 +55,19 @@ public class LdapConnectionConfig
     public static final int DEFAULT_LDAPS_PORT = 636;
 
     /** The default host : localhost */
-    public static final String DEFAULT_LDAP_HOST = "127.0.0.1";
+    public static String DEFAULT_LDAP_HOST;
+    
+    static
+    {
+        try
+        {
+            DEFAULT_LDAP_HOST = InetAddress.getLocalHost().getHostName();//"127.0.0.1";
+        }
+        catch ( Exception e )
+        {
+            
+        }
+    }
 
     /** The LDAP version */
     public static final int LDAP_V3 = 3;

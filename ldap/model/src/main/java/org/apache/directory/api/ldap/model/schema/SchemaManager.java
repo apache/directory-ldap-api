@@ -52,6 +52,12 @@ import org.apache.directory.api.ldap.model.schema.registries.SyntaxCheckerRegist
  */
 public interface SchemaManager
 {
+    /** Two flags for RELAXED and STRICT, this is STRICT */
+    boolean STRICT = false;
+
+    /** Two flags for RELAXED and STRICT, this is RELAXED */
+    boolean RELAXED = true;
+
     //---------------------------------------------------------------------------------
     // Schema loading methods
     //---------------------------------------------------------------------------------

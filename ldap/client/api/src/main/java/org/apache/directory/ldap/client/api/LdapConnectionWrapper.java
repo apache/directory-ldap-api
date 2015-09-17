@@ -566,4 +566,14 @@ public class LdapConnectionWrapper implements LdapConnection, Wrapper<LdapConnec
     {
         connection.setSchemaManager( schemaManager );
     }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void loadSchemaRelaxed() throws LdapException
+    {
+        connection.loadSchemaRelaxed();
+    }
 }
