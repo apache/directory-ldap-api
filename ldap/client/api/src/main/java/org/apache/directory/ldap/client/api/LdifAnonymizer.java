@@ -24,10 +24,11 @@ package org.apache.directory.ldap.client.api;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
@@ -36,6 +37,8 @@ import org.apache.directory.api.ldap.model.entry.DefaultEntry;
 import org.apache.directory.api.ldap.model.entry.Entry;
 import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
+import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.ldif.LdifEntry;
 import org.apache.directory.api.ldap.model.ldif.LdifReader;
 import org.apache.directory.api.ldap.model.ldif.LdifUtils;
@@ -47,7 +50,9 @@ import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.LdapSyntax;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.ldap.model.schema.syntaxCheckers.DnSyntaxChecker;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 
 
@@ -96,25 +101,17 @@ import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
  */
 public class LdifAnonymizer
 {
+    /** The map that stores the anonymized values associated to the original value */
+    Map<Value<?>, Value<?>> valueMap = new HashMap<Value<?>, Value<?>>();
+    
     /** The map of Attributes we want to anonymize. They are all associated with anonymizers */
     Map<AttributeType, Anonymizer> attributeAnonymizers = new HashMap<AttributeType, Anonymizer>();
+    
+    /** The list of existing NamingContexts */
+    Set<Dn> namingContexts = new HashSet<Dn>();
 
     /** The schemaManager */
     SchemaManager schemaManager;
-
-    /** The list of CL options */
-    //private static Options options = new Options();
-
-    /** The configuration file option shot name */
-    private static final String CONFIG_FILE_OPT = "f";
-
-    /** The configuration file option */
-    //private static final Option configFileOption = new Option( CONFIG_FILE_OPT, "config", true,
-    //    "Anonymizer configuration file" );
-
-    /** the file containing the list of attributes and their anonymizers */
-    private static String configFile;
-
 
     /**
      * Creates a default instance of LdifAnonymizer. The list of anonymized attribute
@@ -134,6 +131,29 @@ public class LdifAnonymizer
             System.exit( -1 );
         }
 
+        init();
+    }
+    
+
+    /**
+     * Creates a default instance of LdifAnonymizer. The list of anonymized attribute
+     * is set to a default value.
+     * 
+     * @param schemaManager The SchemaManager instance we will use
+     */
+    public LdifAnonymizer( SchemaManager schemaManager )
+    {
+        this.schemaManager = schemaManager;
+
+        init();
+    }
+    
+    
+    /**
+     * Initialize the anonymizer, filling the maps we use.
+     */
+    private void init()
+    {
         // Load the anonymizers
         attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.CAR_LICENSE_AT ),
             new StringAnonymizer() );
@@ -196,10 +216,182 @@ public class LdifAnonymizer
         attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.X500_UNIQUE_IDENTIFIER_AT ),
             new BinaryAnonymizer() );
     }
+    
+    
+    /**
+     * Add an attributeType that has to be anonymized
+     *
+     * @param attributeType the AttributeType that has to be anonymized
+     * @throws LdapException If the attributeType cannot be added
+     */
+    public void addAnonAttributeType( AttributeType attributeType ) throws LdapException
+    {
+        schemaManager.add( attributeType );
+        LdapSyntax syntax = attributeType.getSyntax();
+        
+        if ( syntax.isHumanReadable() )
+        {
+            if ( syntax.getOid().equals( SchemaConstants.INTEGER_SYNTAX ) )
+            {
+                attributeAnonymizers.put( attributeType, new IntegerAnonymizer() );
+            }
+            else
+            {
+                attributeAnonymizers.put( attributeType, new StringAnonymizer() );
+            }
+        }
+        else
+        {
+            attributeAnonymizers.put( attributeType, new BinaryAnonymizer() );
+        }
+    }
+    
+    
+    /**
+     * Remove an attributeType that has to be anonymized
+     *
+     * @param attributeType the AttributeType that we don't want to be anonymized
+     * @throws LdapException If the attributeType cannot be removed
+     */
+    public void removeAnonAttributeType( AttributeType attributeType ) throws LdapException
+    {
+        attributeAnonymizers.remove( attributeType );
+    }
+    
+    
+    /**
+     * Add a new NamingContext
+     *
+     * @param dn The naming context to add
+     * @throws LdapInvalidDnException if it's an invalid naming context
+     */
+    public void addNamingContext( String dn ) throws LdapInvalidDnException
+    {
+        Dn namingContext = new Dn( schemaManager, dn );
+        namingContexts.add( namingContext );
+    }
 
+    
+    /**
+     * Anonymize an AVA
+     */
+    private Ava anonymizeAva( Ava ava ) throws LdapInvalidDnException, LdapInvalidAttributeValueException
+    {
+        Value<?> value = ava.getValue();
+        AttributeType attributeType = ava.getAttributeType();
+        Value<?> anonymizedValue = valueMap.get( value );
+        Ava anonymizedAva = null;
+        
+        if ( anonymizedValue == null )
+        {
+            Attribute attribute = new DefaultAttribute( attributeType );
+            attribute.add( value );
+            Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType() );
+
+            if ( value.isHumanReadable() )
+            {
+                if ( anonymizer == null )
+                {
+                    anonymizedAva = new Ava( schemaManager, attributeType.getName(), value.getString() );
+                }
+                else
+                {
+                    Attribute anonymizedAttribute = anonymizer.anonymize( valueMap, attribute );
+
+                    anonymizedAva = new Ava( schemaManager, attributeType.getName(), anonymizedAttribute.getString() );
+                }
+            }
+            else
+            {
+                if ( anonymizer == null )
+                {
+                    anonymizedAva = new Ava( schemaManager, attributeType.getName(), value.getBytes() );
+                }
+                else
+                {
+                    Attribute anonymizedAttribute = anonymizer.anonymize( valueMap, attribute );
+
+                    anonymizedAva = new Ava( schemaManager, attributeType.getName(), anonymizedAttribute.getBytes() );
+                }
+            }
+        }
+        else
+        {
+            if ( value.isHumanReadable() )
+            {
+                anonymizedAva = new Ava( schemaManager, attributeType.getName(), anonymizedValue.getString() );
+            }
+            else
+            {
+                anonymizedAva = new Ava( schemaManager, attributeType.getName(), anonymizedValue.getBytes() );
+            }
+        }
+
+        return anonymizedAva;
+    }
+    
+    
+    /**
+     * Anonymize the entry's DN
+     */
+    private Dn anonymizeDn( Dn entryDn ) throws LdapException
+    {
+        // Search for the naming context
+        Dn descendant = entryDn;
+        Dn namingContext = null;
+        
+        for ( Dn nc : namingContexts )
+        {
+            if ( entryDn.isDescendantOf( nc ) )
+            { 
+                descendant = entryDn.getDescendantOf( nc );
+                namingContext = nc;
+                break;
+            }
+        }
+
+        Rdn[] anonymizedRdns = new Rdn[entryDn.size()];
+        int rdnPos = entryDn.size() - 1;
+
+        // Copy the naming contex
+        for ( Rdn ncRdn : namingContext )
+        {
+            anonymizedRdns[rdnPos] = ncRdn;
+            rdnPos--;
+        }
+        
+        // Iterate on all the RDN
+        for ( Rdn rdn : descendant )
+        {
+            Ava[] anonymizedAvas = new Ava[rdn.size()];
+            int pos = 0;
+            
+            // Iterate on the AVAs
+            for ( Ava ava : rdn )
+            {
+                Ava anonymizedAva = anonymizeAva( ava );
+                anonymizedAvas[pos] = anonymizedAva;
+                pos++;
+            }
+
+            Rdn anonymizedRdn = new Rdn( schemaManager, anonymizedAvas );
+            anonymizedRdns[rdnPos] = anonymizedRdn;
+            rdnPos--;
+        }
+        
+        Dn anonymizedDn = new Dn( schemaManager, anonymizedRdns );
+        
+        return anonymizedDn;
+    }
+    
 
     /**
-     * {@inheritDoc}
+     * Anonymize a LDIF 
+     * 
+     * @param ldif The ldif content to anonymize
+     * @return an anonymized version of the given ldif
+     * @throws LdapException If we got some LDAP related exception
+     * @throws IOException If we had some issue during some IO operations
      */
     public String anonymize( String ldif ) throws LdapException, IOException
     {
@@ -216,107 +408,42 @@ public class LdifAnonymizer
                 Entry newEntry = new DefaultEntry( schemaManager );
 
                 // Process the DN first
-                Dn dn = entry.getDn();
-                Rdn rdns = dn.getRdn();
-                List<Attribute> rdnAttributes = new ArrayList<Attribute>();
-
-                // Iterate on all the RDN's AVAs
-                List<Ava> avas = new ArrayList<Ava>();
-                boolean dnAnonymized = false;
-
-                for ( Ava ava : rdns )
-                {
-                    // Get the entry's attribute that is used in the RDN
-                    Attribute rdnAttribute = entry.get( ava.getType() );
-
-                    // Create a new Attribute for this value specifically
-                    Attribute newRdnAttribute = new DefaultAttribute( rdnAttribute.getUpId(),
-                        rdnAttribute.getAttributeType() );
-
-                    // inject the value we just removed
-                    newRdnAttribute.add( rdnAttribute.get() );
-
-                    // Remove the RDN value from the entry's attribute
-                    rdnAttribute.remove( rdnAttribute.get() );
-
-                    if ( rdnAttribute.size() == 0 )
-                    {
-                        // The last value has been removed, remove the attribute from the entry
-                        entry.remove( rdnAttribute );
-                    }
-
-                    // And anonymize it
-                    Anonymizer anonymizer = attributeAnonymizers.get( rdnAttribute.getAttributeType() );
-
-                    if ( anonymizer != null )
-                    {
-                        Attribute anonymizedAttribute = anonymizer.anonymize( newRdnAttribute );
-                        dnAnonymized = true;
-
-                        // Keep it for later, we will reinject this value in the entry
-                        rdnAttributes.add( anonymizedAttribute );
-
-                        if ( anonymizedAttribute.isHumanReadable() )
-                        {
-                            avas.add( new Ava( schemaManager, rdnAttribute.getUpId(), anonymizedAttribute.getString() ) );
-                        }
-                        else
-                        {
-                            avas.add( new Ava( schemaManager, rdnAttribute.getUpId(), anonymizedAttribute.getBytes() ) );
-                        }
-                    }
-                    else
-                    {
-                        avas.add( ava );
-                    }
-                }
-
-                // Recreate the DN if needed
-                if ( dnAnonymized )
-                {
-                    Rdn newRdn = new Rdn( schemaManager, avas.toArray( new Ava[]
-                        {} ) );
-                    dn = new Dn( newRdn, dn.getParent() );
-                }
+                Dn entryDn = entry.getDn();
+                
+                Dn anonymizedDn = anonymizeDn( entryDn );
 
                 // Now, process the entry
                 for ( Attribute attribute : entry )
                 {
-                    Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType() );
-
-                    if ( anonymizer == null )
+                    AttributeType attributeType = attribute.getAttributeType();
+                    
+                    if ( attributeType.getSyntax().getSyntaxChecker() instanceof DnSyntaxChecker )
                     {
-                        newEntry.add( attribute );
-                    }
-                    else
-                    {
-                        Attribute anonymizedAttribute = anonymizer.anonymize( attribute );
-
-                        newEntry.add( anonymizedAttribute );
-                    }
-                }
-
-                // Last, not least, inject the RDN attributes in the entry, if we have some
-                for ( Attribute rdnAttribute : rdnAttributes )
-                {
-                    Attribute attribute = newEntry.get( rdnAttribute.getAttributeType() );
-
-                    if ( attribute == null )
-                    {
-                        // It has been completely remove, reinject it
-                        newEntry.add( rdnAttribute );
-                    }
-                    else
-                    {
-                        // Inject the rdn values in the newEntry attributes
-                        for ( Value<?> value : rdnAttribute )
+                        for ( Value<?> dnValue : attribute )
                         {
-                            attribute.add( value );
+                            Dn dn = new Dn( schemaManager, dnValue.getString() );
+                            Dn newdDn = anonymizeDn( dn );
+                            newEntry.add( attributeType, newdDn.toString() );
+                        }
+                    }
+                    else
+                    {
+                        Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType() );
+    
+                        if ( anonymizer == null )
+                        {
+                            newEntry.add( attribute );
+                        }
+                        else
+                        {
+                            Attribute anonymizedAttribute = anonymizer.anonymize( valueMap, attribute );
+    
+                            newEntry.add( anonymizedAttribute );
                         }
                     }
                 }
 
-                newEntry.setDn( dn );
+                newEntry.setDn( anonymizedDn );
                 result.append( LdifUtils.convertToLdif( newEntry ) );
                 result.append( "\n" );
             }
@@ -330,6 +457,12 @@ public class LdifAnonymizer
     }
 
 
+    /**
+     * The entry point, when used as a standalone application.
+     *
+     * @param args Contains the arguments : the file to convert. The anonymized 
+     * LDIF will be printed on stdout
+     */
     public static void main( String[] args ) throws IOException, LdapException
     {
         if ( ( args == null ) || ( args.length < 1 ) )
