@@ -21,6 +21,8 @@
 package org.apache.directory.ldap.client.api;
 
 
+import org.apache.directory.api.ldap.model.schema.SchemaManager;
+import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 import org.junit.Test;
 
 
@@ -35,13 +37,43 @@ public class LdifAnonymizerTest
     public void testLdifAnonymizer() throws Exception, Exception
     {
         String ldif =
-            "dn:: Y249RW1tYW51ZWwgTMOpY2hhcm55LCBkYz1leG1hcGxlLCBkYz1jb20=\n" +
-                "ObjectClass: top\n" +
-                "objectClass: person\n" +
-                "cn:: RW1tYW51ZWwgTMOpY2hhcm55\n" +
-                "sn: elecharny\n";
+            "dn: cn=test,dc=example,dc=com\n" +
+            "ObjectClass: top\n" +
+            "objectClass: person\n" +
+            "cn: test\n" +
+            "sn: Test\n" +
+            "\n" +
+            "dn: cn=emmanuel,dc=acme,dc=com\n" +
+            "ObjectClass: top\n" +
+            "objectClass: person\n" +
+            "cn: emmanuel\n" +
+            "sn: elecharny\n"+
+            "\n" +
+            "dn: cn=emmanuel,dc=test,dc=example,dc=com\n" +
+            "ObjectClass: top\n" +
+            "objectClass: person\n" +
+            "cn: emmanuel\n" +
+            "seeAlso: cn=emmanuel,dc=acme,dc=com\n" +
+            "sn: elecharny\n";
 
-        LdifAnonymizer anonymizer = new LdifAnonymizer();
+        SchemaManager schemaManager = null;
+        
+        try
+        {
+            schemaManager = new DefaultSchemaManager();
+        }
+        catch ( Exception e )
+        {
+            // Todo : we need a schemaManager
+            System.out.println( "Missing a SchemaManager !" );
+            System.exit( -1 );
+        }
+        
+        LdifAnonymizer anonymizer = new LdifAnonymizer( schemaManager );
+        anonymizer.addNamingContext( "dc=example,dc=com" );
+        anonymizer.addNamingContext( "dc=acme,dc=com" );
+        anonymizer.removeAnonAttributeType( schemaManager.getAttributeType( "sn" ) );
+        
         anonymizer.anonymize( ldif );
     }
 
@@ -60,7 +92,7 @@ public class LdifAnonymizerTest
                 "givenname: test\n";
 
         LdifAnonymizer anonymizer = new LdifAnonymizer();
-         anonymizer.anonymize( ldif );
+        anonymizer.anonymize( ldif );
     }
 
 
