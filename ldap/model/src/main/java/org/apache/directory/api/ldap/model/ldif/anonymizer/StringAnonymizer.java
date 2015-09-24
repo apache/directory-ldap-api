@@ -21,6 +21,7 @@
 package org.apache.directory.api.ldap.model.ldif.anonymizer;
 
 
+import java.util.Map;
 import java.util.Random;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
@@ -35,7 +36,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class StringAnonymizer implements Anonymizer
+public class StringAnonymizer implements Anonymizer<String>
 {
     /** Create a random generator */
     Random random = new Random( System.currentTimeMillis() );
@@ -45,30 +46,20 @@ public class StringAnonymizer implements Anonymizer
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
      */
     @Override
-    public Attribute anonymize( Attribute attribute )
+    public Attribute anonymize( Map<Value<String>, Value<String>> valueMap, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );
         random.setSeed( System.nanoTime() );
 
         for ( Value<?> value : attribute )
         {
-            if ( value instanceof StringValue )
+            Value<String> anonymized =  valueMap.get( value );
+            
+            if ( anonymized != null )
             {
-                String strValue = value.getString();
-
-                int length = strValue.length();
-
-                // Same size
-                char[] newValue = new char[length];
-
-                for ( int i = 0; i < length; i++ )
-                {
-                    newValue[i] = ( char ) ( random.nextInt( 'Z' - 'A' ) + 'A' );
-                }
-
                 try
                 {
-                    result.add( new String( newValue ) );
+                    result.add( anonymized.getString() );
                 }
                 catch ( LdapInvalidAttributeValueException e )
                 {
@@ -77,23 +68,52 @@ public class StringAnonymizer implements Anonymizer
             }
             else
             {
-                byte[] byteValue = value.getBytes();
-
-                // Same size
-                byte[] newValue = new byte[byteValue.length];
-
-                for ( int i = 0; i < byteValue.length; i++ )
+                if ( value instanceof StringValue )
                 {
-                    newValue[i] = ( byte ) random.nextInt();
+                    String strValue = value.getNormValue().toString();
+                    int length = strValue.length();
+    
+                    // Same size
+                    char[] newValue = new char[length];
+    
+                    for ( int i = 0; i < length; i++ )
+                    {
+                        newValue[i] = ( char ) ( random.nextInt( 'Z' - 'A' ) + 'A' );
+                    }
+    
+                    try
+                    {
+                        String newValueStr = new String( newValue );
+                        result.add( newValueStr );
+                        
+                        Value<String> anonValue = new StringValue( attribute.getAttributeType(), newValueStr );
+                        valueMap.put( ( Value<String> ) value, anonValue );
+                    }
+                    catch ( LdapInvalidAttributeValueException e )
+                    {
+                        // TODO : handle that
+                    }
                 }
-
-                try
+                else
                 {
-                    result.add( newValue );
-                }
-                catch ( LdapInvalidAttributeValueException e )
-                {
-                    // TODO : handle that
+                    byte[] byteValue = value.getBytes();
+    
+                    // Same size
+                    byte[] newValue = new byte[byteValue.length];
+    
+                    for ( int i = 0; i < byteValue.length; i++ )
+                    {
+                        newValue[i] = ( byte ) random.nextInt();
+                    }
+    
+                    try
+                    {
+                        result.add( newValue );
+                    }
+                    catch ( LdapInvalidAttributeValueException e )
+                    {
+                        // TODO : handle that
+                    }
                 }
             }
         }

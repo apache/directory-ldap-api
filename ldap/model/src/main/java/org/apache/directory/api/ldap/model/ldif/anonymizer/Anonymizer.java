@@ -21,7 +21,10 @@
 package org.apache.directory.api.ldap.model.ldif.anonymizer;
 
 
+import java.util.Map;
+
 import org.apache.directory.api.ldap.model.entry.Attribute;
+import org.apache.directory.api.ldap.model.entry.Value;
 
 
 /**
@@ -29,13 +32,14 @@ import org.apache.directory.api.ldap.model.entry.Attribute;
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface Anonymizer
+public interface Anonymizer<K>
 {
     /**
      * Take an attribute and its value, anonymizing all of them.
-     *
+     * 
+     * @param valueMap The existing map for value to the associated anonymized counterpart
      * @param attribute The attribute to anonymize
      * @return The anonymized attribute
      */
-    Attribute anonymize( Attribute attribute );
+    Attribute anonymize( Map<Value<K>, Value<K>> valueMap, Attribute attribute );
 }

@@ -21,6 +21,7 @@
 package org.apache.directory.api.ldap.model.ldif.anonymizer;
 
 
+import java.util.Map;
 import java.util.Random;
 
 import org.apache.directory.api.ldap.model.entry.Attribute;
@@ -35,7 +36,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class IntegerAnonymizer implements Anonymizer
+public class IntegerAnonymizer implements Anonymizer<String>
 {
     /** Create a random generator */
     Random random = new Random( System.currentTimeMillis() );
@@ -45,7 +46,7 @@ public class IntegerAnonymizer implements Anonymizer
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
      */
     @Override
-    public Attribute anonymize( Attribute attribute )
+    public Attribute anonymize( Map<Value<String>, Value<String>> valueMap, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );
         random.setSeed( System.nanoTime() );
