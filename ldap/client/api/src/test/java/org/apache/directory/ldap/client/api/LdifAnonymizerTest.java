@@ -23,6 +23,7 @@ package org.apache.directory.ldap.client.api;
 
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -33,6 +34,26 @@ import org.junit.Test;
  */
 public class LdifAnonymizerTest
 {
+    private static SchemaManager schemaManager;
+    
+    @BeforeClass
+    public static void setup()
+    {
+        schemaManager = null;
+        
+        try
+        {
+            schemaManager = new DefaultSchemaManager();
+        }
+        catch ( Exception e )
+        {
+            // Todo : we need a schemaManager
+            System.out.println( "Missing a SchemaManager !" );
+            System.exit( -1 );
+        }
+    }
+    
+    
     @Test
     public void testLdifAnonymizer() throws Exception, Exception
     {
@@ -68,7 +89,7 @@ public class LdifAnonymizerTest
             System.out.println( "Missing a SchemaManager !" );
             System.exit( -1 );
         }
-        
+
         LdifAnonymizer anonymizer = new LdifAnonymizer( schemaManager );
         anonymizer.addNamingContext( "dc=example,dc=com" );
         anonymizer.addNamingContext( "dc=acme,dc=com" );
@@ -91,7 +112,8 @@ public class LdifAnonymizerTest
                 "sn: elecharny\n" +
                 "givenname: test\n";
 
-        LdifAnonymizer anonymizer = new LdifAnonymizer();
+        LdifAnonymizer anonymizer = new LdifAnonymizer( schemaManager );
+        anonymizer.addNamingContext( "dc=example,dc=com" );
         anonymizer.anonymize( ldif );
     }
 
@@ -110,7 +132,8 @@ public class LdifAnonymizerTest
                 "sn: elecharny\n" +
                 "givenname: test\n";
 
-        LdifAnonymizer anonymizer = new LdifAnonymizer();
+        LdifAnonymizer anonymizer = new LdifAnonymizer( schemaManager );
+        anonymizer.addNamingContext( "dc=example,dc=com" );
         anonymizer.anonymize( ldif );
     }
 }
