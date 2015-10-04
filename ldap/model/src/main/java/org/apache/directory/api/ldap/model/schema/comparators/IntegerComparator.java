@@ -74,8 +74,6 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
     /**
      * Implementation of the Compare method
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "RC_REF_COMPARISON",
-        justification = "false positive")
     private int compare( Long backendValue, Long assertValue )
     {
         LOG.debug( "comparing Integer objects '{}' with '{}'", backendValue, assertValue );
@@ -103,8 +101,6 @@ public class IntegerComparator extends LdapComparator<Object> implements Seriali
     /**
      * Implementation of the Compare method
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ES_COMPARING_PARAMETER_STRING_WITH_EQ",
-        justification = "false positive")
     private int compare( String backendValue, String assertValue )
     {
         LOG.debug( "comparing Integer objects '{}' with '{}'", backendValue, assertValue );

@@ -189,13 +189,12 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     /**
      * {@inheritDoc}
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "BC_IMPOSSIBLE_INSTANCEOF",
-        justification = "False positive")
     public Object getParameterTypeString( int index )
     {
         if ( !language.equals( "java" ) )
         {
             Object obj = parameters.get( index ).getType();
+            
             if ( obj instanceof byte[] )
             {
                 return Strings.utf8ToString( ( byte[] ) obj );
@@ -232,13 +231,12 @@ public class StoredProcedureRequestImpl extends AbstractExtendedRequest implemen
     /**
      * {@inheritDoc}
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "BC_IMPOSSIBLE_INSTANCEOF",
-        justification = "False positive")
     public Object getParameterValueString( int index )
     {
         if ( !language.equals( "java" ) )
         {
             Object obj = parameters.get( index ).getValue();
+            
             if ( obj instanceof byte[] )
             {
                 String str = Strings.utf8ToString( ( byte[] ) obj );

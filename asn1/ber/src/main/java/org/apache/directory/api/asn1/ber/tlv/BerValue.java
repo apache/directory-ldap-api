@@ -151,8 +151,6 @@ public class BerValue
      *
      * @return Returns the data.
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "EI_EXPOSE_REP",
-            justification = "The return of the direct value (without cloning) was intended. Even if we modify the interned value, it won't have any impact")
     public byte[] getData()
     {
         return data;

@@ -2164,7 +2164,7 @@ public class DefaultSchemaManager implements SchemaManager
         return isRelaxed;
     }
 
-
+    
     /**
      * Tells if the SchemaManager is strict.
      *

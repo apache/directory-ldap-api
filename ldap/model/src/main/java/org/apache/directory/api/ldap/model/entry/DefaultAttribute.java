@@ -768,8 +768,6 @@ public class DefaultAttribute implements Attribute, Cloneable
     /**
      * {@inheritDoc}
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "NP_LOAD_OF_KNOWN_NULL_VALUE",
-        justification = "Validity of null depends on the checker")
     public int add( Value<?>... vals )
     {
         int nbAdded = 0;

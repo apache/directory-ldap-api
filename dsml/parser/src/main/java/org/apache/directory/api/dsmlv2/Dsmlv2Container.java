@@ -196,8 +196,6 @@ public class Dsmlv2Container implements Container
      * 
      * @return the states.
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "UWF_UNWRITTEN_FIELD",
-        justification = "it exists a setter for 'states'")
     public Enum<Dsmlv2StatesEnum>[] getStates()
     {
         return states;

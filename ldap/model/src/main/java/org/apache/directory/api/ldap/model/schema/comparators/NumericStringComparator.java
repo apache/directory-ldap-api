@@ -56,8 +56,6 @@ public class NumericStringComparator extends LdapComparator<String>
     /**
      * Implementation of the Compare method
      */
-    @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "ES_COMPARING_PARAMETER_STRING_WITH_EQ",
-        justification = "false positive")
     public int compare( String backendValue, String assertValue )
     {
         LOG.debug( "comparing numericStringOrdering objects '{}' with '{}'", backendValue, assertValue );
