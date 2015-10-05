@@ -44,7 +44,9 @@ import org.apache.directory.api.ldap.model.ldif.LdapLdifException;
 import org.apache.directory.api.ldap.model.ldif.LdifAttributesReader;
 import org.apache.directory.api.util.Strings;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 
 import com.mycila.junit.concurrent.Concurrency;
@@ -58,6 +60,10 @@ import com.mycila.junit.concurrent.ConcurrentJunitRunner;
 @Concurrency()
 public class LdifAttributesReaderTest
 {
+    /** Uses a temporary folder rule */
+    @Rule 
+    public TemporaryFolder tmpFolder= new TemporaryFolder();
+
     private byte[] data;
 
     private File HJENSEN_JPEG_FILE = null;
@@ -65,18 +71,12 @@ public class LdifAttributesReaderTest
 
     private File createFile( String name, byte[] data ) throws IOException
     {
-        File jpeg = File.createTempFile( name, "jpg" );
-
-        jpeg.createNewFile();
+        File jpeg = tmpFolder.newFile( name + ".jpg" );
 
         DataOutputStream os = new DataOutputStream( new FileOutputStream( jpeg ) );
 
         os.write( data );
         os.close();
-
-        // This file will be deleted when the JVM
-        // will exit.
-        jpeg.deleteOnExit();
 
         return jpeg;
     }
