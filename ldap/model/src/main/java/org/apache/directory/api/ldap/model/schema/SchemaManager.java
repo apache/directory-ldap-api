@@ -419,12 +419,23 @@ public interface SchemaManager
      */
     boolean isRelaxed();
 
+
+    /**
+     * Set the SchemaManager to a RELAXED mode
+     */
+    void setRelaxed();
+
     /**
      * Tells if the SchemaManager is strict.
      *
      * @return True if SchemaObjects cannot be added if they break the consistency
      */
     boolean isStrict();
+
+    /**
+     * Set the SchemaManager to a STRICT mode
+     */
+    void setStrict();
     
     /**
      * Check that the Schemas are consistent regarding the current Registries.

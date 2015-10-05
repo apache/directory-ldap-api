@@ -43,6 +43,7 @@ import java.util.NoSuchElementException;
 
 import org.apache.directory.api.asn1.util.Oid;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.constants.SchemaConstants;
 import org.apache.directory.api.ldap.model.entry.Attribute;
 import org.apache.directory.api.ldap.model.entry.DefaultAttribute;
 import org.apache.directory.api.ldap.model.entry.ModificationOperation;
@@ -50,8 +51,11 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.Control;
+import org.apache.directory.api.ldap.model.name.Ava;
 import org.apache.directory.api.ldap.model.name.Dn;
+import org.apache.directory.api.ldap.model.name.Rdn;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
+import org.apache.directory.api.ldap.model.schema.MutableAttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.util.Base64;
 import org.apache.directory.api.util.Chars;
@@ -164,7 +168,8 @@ import org.slf4j.LoggerFactory;
  *  - The ValueSpec rule must accept multilines values. In this case, we have a LF followed by a
  *  single space before the continued value.
  * </pre>
- *
+ * The relaxed mode is used when a SchemaManager is injected.
+ * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
 public class LdifReader implements Iterable<LdifEntry>, Closeable
@@ -243,6 +248,9 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
     /** flag to turn on/off of the DN validation. By default DNs are validated after parsing */
     protected boolean validateDn = true;
+    
+    /** A counter used to create facked OIDs */
+    private int oidCounter = 0;
 
 
     /**
@@ -1049,7 +1057,22 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
         }
 
         // Update the entry
-        entry.addAttribute( attributeType, attributeValue );
+        try
+        {
+            entry.addAttribute( attributeType, attributeValue );
+        }
+        catch ( Exception e )
+        {
+            // The attribute does not exist already, create a fake one 
+            if ( ( schemaManager != null ) && schemaManager.isRelaxed() )
+            {
+                MutableAttributeType newAttributeType = new MutableAttributeType( "1.3.6.1.4.1.18060.0.9999." + oidCounter++ );
+                newAttributeType.setNames( attributeType );
+                newAttributeType.setSyntax( schemaManager.getLdapSyntaxRegistry().get( SchemaConstants.DIRECTORY_STRING_SYNTAX ) );
+                schemaManager.add( newAttributeType );
+                entry.addAttribute( attributeType, attributeValue );
+            }
+        }
     }
 
 
@@ -1421,7 +1444,36 @@ public class LdifReader implements Iterable<LdifEntry>, Closeable
 
         String name = parseDn( line );
 
-        Dn dn = new Dn( schemaManager, name );
+        Dn dn = null;
+        
+        try
+        {
+            dn = new Dn( schemaManager, name );
+        }
+        catch ( LdapInvalidDnException lide )
+        {
+            // Deal with the RDN whihc is not in the schema
+            // First parse the DN without the schema
+            dn = new Dn( name );
+            
+            Rdn rdn = dn.getRdn();
+            
+            // Process each Ava
+            for ( Ava ava : rdn )
+            {
+                if ( ( schemaManager != null ) && ( schemaManager.getAttributeType( ava.getType() ) == null ) 
+                    && schemaManager.isRelaxed() )
+                {
+                    // Not found : create a new one
+                    MutableAttributeType newAttributeType = new MutableAttributeType( "1.3.6.1.4.1.18060.0.9999." + oidCounter++ );
+                    newAttributeType.setNames( ava.getType() );
+                    newAttributeType.setSyntax( schemaManager.getLdapSyntaxRegistry().get( SchemaConstants.DIRECTORY_STRING_SYNTAX ) );
+                    schemaManager.add( newAttributeType );
+                }
+            }
+            
+            dn = new Dn( schemaManager, name );
+        }
 
         // Ok, we have found a Dn
         LdifEntry entry = createLdifEntry( schemaManager );

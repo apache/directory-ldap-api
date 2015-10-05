@@ -383,7 +383,79 @@ public class LdifAnonymizer
         
         return anonymizedDn;
     }
+
+
+    /**
+     * Anonymize a LDIF 
+     * 
+     * @param ldif The ldif content to anonymize
+     * @return an anonymized version of the given ldif
+     * @throws LdapException If we got some LDAP related exception
+     * @throws IOException If we had some issue during some IO operations
+     */
+    public String anonymizeFile( String ldifFile ) throws LdapException, IOException
+    {
+        LdifReader ldifReader = new LdifReader( schemaManager );
+
+        try
+        {
+            List<LdifEntry> entries = ldifReader.parseLdifFile( ldifFile );
+            StringBuilder result = new StringBuilder();
+
+            for ( LdifEntry ldifEntry : entries )
+            {
+                Entry entry = ldifEntry.getEntry();
+                Entry newEntry = new DefaultEntry( schemaManager );
+
+                // Process the DN first
+                Dn entryDn = entry.getDn();
+                
+                Dn anonymizedDn = anonymizeDn( entryDn );
+
+                // Now, process the entry
+                for ( Attribute attribute : entry )
+                {
+                    AttributeType attributeType = attribute.getAttributeType();
+                    
+                    if ( attributeType.getSyntax().getSyntaxChecker() instanceof DnSyntaxChecker )
+                    {
+                        for ( Value<?> dnValue : attribute )
+                        {
+                            Dn dn = new Dn( schemaManager, dnValue.getString() );
+                            Dn newdDn = anonymizeDn( dn );
+                            newEntry.add( attributeType, newdDn.toString() );
+                        }
+                    }
+                    else
+                    {
+                        Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType() );
     
+                        if ( anonymizer == null )
+                        {
+                            newEntry.add( attribute );
+                        }
+                        else
+                        {
+                            Attribute anonymizedAttribute = anonymizer.anonymize( valueMap, attribute );
+    
+                            newEntry.add( anonymizedAttribute );
+                        }
+                    }
+                }
+
+                newEntry.setDn( anonymizedDn );
+                result.append( LdifUtils.convertToLdif( newEntry ) );
+                result.append( "\n" );
+            }
+
+            return result.toString();
+        }
+        finally
+        {
+            ldifReader.close();
+        }
+    }
+
 
     /**
      * Anonymize a LDIF 
@@ -454,6 +526,24 @@ public class LdifAnonymizer
         {
             ldifReader.close();
         }
+    }
+
+
+    /**
+     * @return the valueMap
+     */
+    public Map<Value<?>, Value<?>> getValueMap()
+    {
+        return valueMap;
+    }
+
+
+    /**
+     * @param valueMap the valueMap to set
+     */
+    public void setValueMap( Map<Value<?>, Value<?>> valueMap )
+    {
+        this.valueMap = valueMap;
     }
 
 
