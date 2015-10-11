@@ -763,6 +763,7 @@ public final class SchemaConstants
     public static final String L_AT = "l";
     public static final String LOCALITY_NAME_AT = "localityName";
     public static final String L_AT_OID = "2.5.4.7";
+    public static final String LOCALITY_NAME_AT_OID = "2.5.4.7";
 
     // St
     public static final String ST_AT = "st";
@@ -778,11 +779,13 @@ public final class SchemaConstants
     public static final String O_AT = "o";
     public static final String ORGANIZATION_NAME_AT = "organizationName";
     public static final String O_AT_OID = "2.5.4.10";
+    public static final String ORGANIZATION_NAME_AT_OID = "2.5.4.10";
 
     // Ou
     public static final String OU_AT = "ou";
     public static final String ORGANIZATIONAL_UNIT_NAME_AT = "organizationalUnitName";
     public static final String OU_AT_OID = "2.5.4.11";
+    public static final String ORGANIZATIONAL_UNIT_NAME_AT_OID = "2.5.4.11";
 
     // Title
     public static final String TITLE_AT = "title";
@@ -901,6 +904,7 @@ public final class SchemaConstants
     public static final String GN_AT = "gn";
     public static final String GIVENNAME_AT = "givenName";
     public static final String GN_AT_OID = "2.5.4.42";
+    public static final String GIVENNAME_AT_OID = "2.5.4.42";
 
     // Initials
     public static final String INITIALS_AT = "initials";
