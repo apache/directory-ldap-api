@@ -77,11 +77,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     /** The user provided Name type */
     private String upType;
 
-    /** The name value. It can be a String or a byte array */
-    private Value<?> normValue;
-
-    /** The name user provided value. It can be a String or a byte array */
-    private Value<?> upValue;
+    /** The value. It can be a String or a byte array */
+    private Value<?> value;
 
     /** The user provided Ava */
     private String upName;
@@ -114,8 +111,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     {
         normType = null;
         upType = null;
-        normValue = null;
-        upValue = null;
+        value = null;
         upName = "";
         this.schemaManager = schemaManager;
         this.attributeType = null;
@@ -260,39 +256,17 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      *
      * @param schemaManager The SchemaManager instance
      * @param upType The User Provided type
-     * @param upValue The User Provided value
+     * @param value The value
      * 
      * @throws LdapInvalidDnException If the given type or value are invalid
      */
-    private void createAva( SchemaManager schemaManager, String upType, Value<?> upValue )
+    private void createAva( SchemaManager schemaManager, String upType, Value<?> value )
         throws LdapInvalidDnException
     {
         normType = attributeType.getOid();
         this.upType = upType;
-
-        try
-        {
-            MatchingRule equalityMatchingRule = attributeType.getEquality();
-
-            if ( equalityMatchingRule != null )
-            {
-                this.normValue = equalityMatchingRule.getNormalizer().normalize( upValue );
-            }
-            else
-            {
-                this.normValue = upValue;
-            }
-        }
-        catch ( LdapException le )
-        {
-            String message = I18n.err( I18n.ERR_04188 );
-            LOG.error( message );
-            throw new LdapInvalidDnException( ResultCodeEnum.INVALID_DN_SYNTAX, message, le );
-        }
-
-        this.upValue = upValue;
-
-        upName = this.upType + '=' + ( this.upValue == null ? "" : Rdn.escapeValue( this.upValue.getString() ) );
+        this.value = value;
+        upName = this.upType + '=' + ( value == null ? "" : Rdn.escapeValue( value.getString() ) );
         hashCode();
     }
 
@@ -343,10 +317,9 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
         }
 
-        this.normValue = upValue;
-        this.upValue = upValue;
+        value = upValue;
 
-        upName = this.upType + '=' + ( this.upValue == null ? "" : Rdn.escapeValue( this.upValue.getString() ) );
+        upName = this.upType + '=' + ( value == null ? "" : Rdn.escapeValue( value.getString() ) );
         hashCode();
     }
 
@@ -362,23 +335,20 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * @param schemaManager The SchemaManager
      * @param upType The User Provided type
      * @param normType The normalized type
-     * @param upValue The User Provided value
-     * @param normValue The normalized value
+     * @param value The value
      * 
      * @throws LdapInvalidDnException If the given type or value are invalid
      */
     // WARNING : The protection level is left unspecified intentionally.
     // We need this method to be visible from the DnParser class, but not
     // from outside this package.
-    /* Unspecified protection */Ava( SchemaManager schemaManager, String upType, String normType, Value<?> upValue,
-        Value<?> normValue )
+    /* Unspecified protection */Ava( SchemaManager schemaManager, String upType, String normType, Value<?> value )
         throws LdapInvalidDnException
     {
         this.upType = upType;
         this.normType = normType;
-        this.upValue = upValue;
-        this.normValue = normValue;
-        upName = this.upType + '=' + ( this.upValue == null ? "" : this.upValue.getString() );
+        this.value = value;
+        upName = this.upType + '=' + ( this.value == null ? "" : this.value.getString() );
 
         if ( schemaManager != null )
         {
@@ -399,8 +369,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      *
      * @param upType The User Provided type
      * @param normType The normalized type
-     * @param upValue The User Provided value
-     * @param normValue The normalized value
+     * @param value The User Provided value
      * @param upName The User Provided name (may be escaped)
      * 
      * @throws LdapInvalidDnException If the given type or value are invalid
@@ -408,10 +377,36 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     // WARNING : The protection level is left unspecified intentionally.
     // We need this method to be visible from the DnParser class, but not
     // from outside this package.
-    /* Unspecified protection */Ava( String upType, String normType, Value<?> upValue, Value<?> normValue,
-        String upName )
+    /* Unspecified protection */Ava( String upType, String normType, Value<?> value, String upName )
         throws LdapInvalidDnException
     {
+        this( null, upType, normType, value, upName );
+    }
+    
+    
+    /**
+     * Construct an Ava. The type and value are normalized :
+     * <li> the type is trimmed and lowercased </li>
+     * <li> the value is trimmed </li>
+     * <p>
+     * Note that the upValue should <b>not</b> be null or empty, or resolved
+     * to an empty string after having trimmed it.
+     *
+     * @param attributeType The AttributeType for this value
+     * @param upType The User Provided type
+     * @param normType The normalized type
+     * @param value The value
+     * @param upName The User Provided name (may be escaped)
+     * 
+     * @throws LdapInvalidDnException If the given type or value are invalid
+     */
+    // WARNING : The protection level is left unspecified intentionally.
+    // We need this method to be visible from the DnParser class, but not
+    // from outside this package.
+    /* Unspecified protection */Ava( AttributeType attributeType, String upType, String normType, Value<?> value, String upName )
+        throws LdapInvalidDnException
+    {
+        this.attributeType = attributeType;
         String upTypeTrimmed = Strings.trim( upType );
         String normTypeTrimmed = Strings.trim( normType );
 
@@ -442,8 +437,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             this.upType = upType;
         }
 
-        this.normValue = normValue;
-        this.upValue = upValue;
+        this.value = value;
         this.upName = upName;
         hashCode();
     }
@@ -489,24 +483,9 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
             normType = tmpAttributeType.getOid();
 
-            if ( normValue != null )
-            {
-                return;
-            }
-
             try
             {
-                // We use the Equality matching rule to normalize the value
-                MatchingRule equalityMatchingRule = tmpAttributeType.getEquality();
-
-                if ( equalityMatchingRule != null )
-                {
-                    this.normValue = equalityMatchingRule.getNormalizer().normalize( upValue );
-                }
-                else
-                {
-                    this.normValue = upValue;
-                }
+                this.value.apply( tmpAttributeType );
             }
             catch ( LdapException le )
             {
@@ -547,20 +526,9 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      *
      * @return The value
      */
-    public Value<?> getNormValue()
-    {
-        return normValue.clone();
-    }
-
-
-    /**
-     * Get the User Provided Value of a Ava
-     *
-     * @return The value
-     */
     public Value<?> getValue()
     {
-        return upValue.clone();
+        return value.clone();
     }
 
 
@@ -596,8 +564,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         try
         {
             Ava clone = ( Ava ) super.clone();
-            clone.upValue = upValue.clone();
-            clone.normValue = normValue.clone();
+            clone.value = value.clone();
 
             return clone;
         }
@@ -612,15 +579,14 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * A Normalized String representation of a Ava :
      * <ul>
      * <li>type is trimed and lowercased</li>
-     * <li>value is trimed and lowercased, and special characters</li>
+     * <li>value is trimed and lowercased, and special characters are escaped if needed.</li>
      * </ul>
-     * are escaped if needed.
      *
      * @return A normalized string representing an Ava
      */
     public String normalize()
     {
-        if ( normValue.isHumanReadable() )
+        if ( value.isHumanReadable() )
         {
             // The result will be gathered in a stringBuilder
             StringBuilder sb = new StringBuilder();
@@ -628,9 +594,9 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             // First, store the type and the '=' char
             sb.append( normType ).append( '=' );
 
-            String normalizedValue = normValue.getString();
+            String normalizedValue = ( String ) value.getNormValue();
 
-            if ( normalizedValue.length() > 0 )
+            if ( ( normalizedValue != null ) && ( normalizedValue.length() > 0 ) )
             {
                 sb.append( Rdn.escapeValue( normalizedValue ) );
             }
@@ -640,7 +606,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         else
         {
             return normType + "=#"
-                + Strings.dumpHexPairs( normValue.getBytes() );
+                + Strings.dumpHexPairs( value.getBytes() );
         }
     }
 
@@ -658,7 +624,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             h = 37;
 
             h = h * 17 + ( normType != null ? normType.hashCode() : 0 );
-            h = h * 17 + ( normValue != null ? normValue.hashCode() : 0 );
+            h = h * 17 + ( value != null ? value.hashCode() : 0 );
         }
 
         return h;
@@ -699,9 +665,9 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         }
 
         // Compare the values
-        if ( normValue.isNull() )
+        if ( value.isNull() )
         {
-            return instance.normValue.isNull();
+            return instance.value.isNull();
         }
         else
         {
@@ -711,25 +677,25 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
                 if ( equalityMatchingRule != null )
                 {
-                    return equalityMatchingRule.getLdapComparator().compare( normValue.getValue(),
-                        instance.normValue.getValue() ) == 0;
+                    return equalityMatchingRule.getLdapComparator().compare( value.getValue(),
+                        instance.value.getValue() ) == 0;
                 }
                 else
                 {
                     // No Equality MR, use a direct comparison
-                    if ( normValue instanceof BinaryValue )
+                    if ( value instanceof BinaryValue )
                     {
-                        return Arrays.equals( normValue.getBytes(), instance.normValue.getBytes() );
+                        return Arrays.equals( value.getBytes(), instance.value.getBytes() );
                     }
                     else
                     {
-                        return normValue.getString().equals( instance.normValue.getString() );
+                        return value.getString().equals( instance.value.getString() );
                     }
                 }
             }
             else
             {
-                return normValue.equals( instance.normValue );
+                return value.equals( instance.value );
             }
         }
     }
@@ -747,8 +713,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         if ( Strings.isEmpty( upName )
             || Strings.isEmpty( upType )
             || Strings.isEmpty( normType )
-            || ( upValue.isNull() )
-            || ( normValue.isNull() ) )
+            || ( value.isNull() )
+            || ( value.isNull() ) )
         {
             String message = "Cannot serialize an wrong ATAV, ";
 
@@ -764,11 +730,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             {
                 message += "the normType should not be null or empty";
             }
-            else if ( upValue.isNull() )
-            {
-                message += "the upValue should not be null";
-            }
-            else if ( normValue.isNull() )
+            else if ( value.isNull() )
             {
                 message += "the value should not be null";
             }
@@ -852,7 +814,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         }
 
         // Write the isHR flag
-        if ( normValue.isHumanReadable() )
+        if ( value.isHumanReadable() )
         {
             buffer[pos++] = Serialize.TRUE;
         }
@@ -862,15 +824,9 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         }
 
         // Write the upValue
-        if ( upValue.isHumanReadable() )
+        if ( value.isHumanReadable() )
         {
-            pos = ( ( StringValue ) upValue ).serialize( buffer, pos );
-        }
-
-        // Write the normValue
-        if ( normValue.isHumanReadable() )
-        {
-            pos = ( ( StringValue ) normValue ).serialize( buffer, pos );
+            pos = ( ( StringValue ) value ).serialize( buffer, pos );
         }
 
         // Write the hash code
@@ -949,12 +905,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         if ( isHR )
         {
             // Read the upValue
-            upValue = new StringValue( attributeType );
-            pos = ( ( StringValue ) upValue ).deserialize( buffer, pos );
-
-            // Read the normValue
-            normValue = new StringValue( attributeType );
-            pos = ( ( StringValue ) normValue ).deserialize( buffer, pos );
+            value = new StringValue( attributeType );
+            pos = ( ( StringValue ) value ).deserialize( buffer, pos );
         }
 
         // Read the hashCode
@@ -993,26 +945,17 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
      * if the value is a String :
      * <ul>
      *   <li>
-     *     <b>upValue</b> The User Provided value
-     *   </li>
-     *   <li>
-     *     <b>value</b> The normalized value
+     *     <b>value</b> The value
      *   </li>
      * </ul>
      * <br/>
      * if the value is binary :
      * <ul>
      *   <li>
-     *     <b>upValueLength</b>
-     *   </li>
-     *   <li>
-     *     <b>upValue</b> The User Provided value
-     *   </li>
-     *   <li>
      *     <b>valueLength</b>
      *   </li>
      *   <li>
-     *     <b>value</b> The normalized value
+     *     <b>value</b> The value
      *   </li>
      * </ul>
      * 
@@ -1025,10 +968,9 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
         if ( Strings.isEmpty( upName )
             || Strings.isEmpty( upType )
             || Strings.isEmpty( normType )
-            || ( upValue.isNull() )
-            || ( normValue.isNull() ) )
+            || ( value.isNull() ) )
         {
-            String message = "Cannot serialize an wrong ATAV, ";
+            String message = "Cannot serialize a wrong ATAV, ";
 
             if ( Strings.isEmpty( upName ) )
             {
@@ -1042,11 +984,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             {
                 message += "the normType should not be null or empty";
             }
-            else if ( upValue.isNull() )
-            {
-                message += "the upValue should not be null";
-            }
-            else if ( normValue.isNull() )
+            else if ( value.isNull() )
             {
                 message += "the value should not be null";
             }
@@ -1085,12 +1023,11 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             out.writeBoolean( false );
         }
 
-        boolean isHR = normValue.isHumanReadable();
+        boolean isHR = value.isHumanReadable();
 
         out.writeBoolean( isHR );
 
-        upValue.writeExternal( out );
-        normValue.writeExternal( out );
+        value.writeExternal( out );
 
         // Write the hashCode
         out.writeInt( h );
@@ -1148,13 +1085,11 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
         if ( isHR )
         {
-            upValue = StringValue.deserialize( attributeType, in );
-            normValue = StringValue.deserialize( attributeType, in );
+            value = StringValue.deserialize( attributeType, in );
         }
         else
         {
-            upValue = BinaryValue.deserialize( attributeType, in );
-            normValue = BinaryValue.deserialize( attributeType, in );
+            value = BinaryValue.deserialize( attributeType, in );
         }
 
         h = in.readInt();
@@ -1190,16 +1125,16 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
     {
         int comp = 0;
 
-        if ( normValue.getNormValue() instanceof String )
+        if ( value.getNormValue() instanceof String )
         {
-            comp = ( ( String ) normValue.getNormValue() ).compareTo( ( ( String ) that.normValue.getNormValue() ) );
+            comp = ( ( String ) value.getNormValue() ).compareTo( ( ( String ) that.value.getNormValue() ) );
 
             return comp;
         }
         else
         {
-            byte[] bytes1 = ( byte[] ) normValue.getNormValue();
-            byte[] bytes2 = ( byte[] ) that.normValue.getNormValue();
+            byte[] bytes1 = ( byte[] ) value.getNormValue();
+            byte[] bytes2 = ( byte[] ) that.value.getNormValue();
 
             for ( int pos = 0; pos < bytes1.length; pos++ )
             {
@@ -1246,9 +1181,9 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
 
             // and compare the values
-            if ( normValue == null )
+            if ( value == null )
             {
-                if ( that.normValue == null )
+                if ( that.value == null )
                 {
                     return 0;
                 }
@@ -1259,21 +1194,21 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
             else
             {
-                if ( that.normValue == null )
+                if ( that.value == null )
                 {
                     return 1;
                 }
                 else
                 {
-                    if ( normValue instanceof StringValue )
+                    if ( value instanceof StringValue )
                     {
-                        comp = ( ( StringValue ) normValue ).compareTo( ( StringValue ) that.normValue );
+                        comp = ( ( StringValue ) value ).compareTo( ( StringValue ) that.value );
 
                         return comp;
                     }
                     else
                     {
-                        comp = ( ( BinaryValue ) normValue ).compareTo( ( BinaryValue ) that.normValue );
+                        comp = ( ( BinaryValue ) value ).compareTo( ( BinaryValue ) that.value );
 
                         return comp;
                     }
@@ -1312,7 +1247,7 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
 
                 if ( comparator != null )
                 {
-                    comp = comparator.compare( normValue.getNormValue(), that.normValue.getNormValue() );
+                    comp = comparator.compare( value.getNormValue(), that.value.getNormValue() );
 
                     return comp;
                 }
@@ -1331,8 +1266,8 @@ public class Ava implements Externalizable, Cloneable, Comparable<Ava>
             }
         }
     }
-
-
+    
+    
     /**
      * A String representation of an Ava, as provided by the user.
      *

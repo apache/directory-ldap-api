@@ -36,9 +36,13 @@ import java.util.TreeSet;
 
 import org.apache.commons.collections.list.UnmodifiableList;
 import org.apache.directory.api.i18n.I18n;
+import org.apache.directory.api.ldap.model.entry.BinaryValue;
+import org.apache.directory.api.ldap.model.entry.StringValue;
+import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.message.ResultCodeEnum;
+import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 import org.apache.directory.api.ldap.model.schema.normalizers.OidNormalizer;
 import org.apache.directory.api.util.Strings;
@@ -1069,7 +1073,7 @@ public class Dn implements Iterable<Rdn>, Externalizable
                 return atav;
             }
 
-            type = Strings.toLowerCase( type );
+            type = Strings.toLowerCaseAscii( type );
 
             // Check that we have an existing AttributeType for this type
             if ( !oidsMap.containsKey( type ) )
@@ -1086,13 +1090,33 @@ public class Dn implements Iterable<Rdn>, Externalizable
             {
                 try
                 {
+                    AttributeType attributeType = schemaManager.getAttributeType( type );
+                    Value<?> atavValue = null;
+                    Value<?> value = atav.getValue();
+                    
+                    if ( value instanceof StringValue )
+                    {
+                        if ( attributeType.getSyntax().isHumanReadable() )
+                        {
+                            atavValue = new StringValue( attributeType, value.getString() );
+                        }
+                        else
+                        {
+                            // This is a binary variable, transaform the StringValue to a BinaryValye
+                            atavValue = new BinaryValue( attributeType, value.getBytes() );
+                        }
+                    }
+                    else
+                    {
+                        atavValue = new BinaryValue( attributeType, atav.getValue().getBytes() );
+                    }
+                    
                     Ava newAva = new Ava(
+                        attributeType,
                         atav.getType(),
                         oidNormalizer.getAttributeTypeOid(),
-                        atav.getValue(),
-                        oidNormalizer.getNormalizer().normalize( atav.getNormValue() ),
+                        atavValue,
                         atav.getName() );
-                    newAva.apply( schemaManager );
 
                     return newAva;
                 }

@@ -34,12 +34,10 @@ import org.apache.commons.collections.map.MultiValueMap;
 import org.apache.directory.api.i18n.I18n;
 import org.apache.directory.api.ldap.model.entry.StringValue;
 import org.apache.directory.api.ldap.model.entry.Value;
-import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueException;
 import org.apache.directory.api.ldap.model.exception.LdapInvalidDnException;
 import org.apache.directory.api.ldap.model.schema.AttributeType;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
-import org.apache.directory.api.ldap.model.schema.normalizers.OidNormalizer;
 import org.apache.directory.api.util.Chars;
 import org.apache.directory.api.util.Hex;
 import org.apache.directory.api.util.Serialize;
@@ -295,7 +293,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      */
     public Rdn( SchemaManager schemaManager, String upType, String upValue ) throws LdapInvalidDnException
     {
-        addAVA( schemaManager, upType, upType, new StringValue( upValue ), new StringValue( upValue ) );
+        addAVA( schemaManager, upType, upType, new StringValue( upValue ) );
 
         upName = upType + '=' + upValue;
 
@@ -424,13 +422,13 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             case 1:
                 // We have a single Ava
                 // We will trim and lowercase type and value.
-                if ( ava.getNormValue().isHumanReadable() )
+                if ( ava.getValue().isHumanReadable() )
                 {
                     normName = ava.getNormName();
                 }
                 else
                 {
-                    normName = ava.getNormType() + "=#" + Strings.dumpHexPairs( ava.getNormValue().getBytes() );
+                    normName = ava.getNormType() + "=#" + Strings.dumpHexPairs( ava.getValue().getBytes() );
                 }
 
                 break;
@@ -501,26 +499,24 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * @throws LdapInvalidDnException
      *             If the Rdn is invalid
      */
-    private void addAVA( SchemaManager schemaManager, String upType, String type, Value<?> upValue,
-        Value<?> value ) throws LdapInvalidDnException
+    private void addAVA( SchemaManager schemaManager, String upType, String type, Value<?> value ) throws LdapInvalidDnException
     {
         // First, let's normalize the type
-        Value<?> normalizedValue = value;
+        AttributeType attributeType = null;
         String normalizedType = Strings.lowerCaseAscii( type );
         this.schemaManager = schemaManager;
 
         if ( schemaManager != null )
         {
-            OidNormalizer oidNormalizer = schemaManager.getNormalizerMapping().get( normalizedType );
-            normalizedType = oidNormalizer.getAttributeTypeOid();
-
+            attributeType = schemaManager.getAttributeType( normalizedType );
+            
             try
             {
-                normalizedValue = oidNormalizer.getNormalizer().normalize( value );
+                value.apply( attributeType );
             }
-            catch ( LdapException e )
+            catch ( LdapInvalidAttributeValueException liave )
             {
-                throw new LdapInvalidDnException( e.getMessage(), e );
+                throw new LdapInvalidDnException( liave.getMessage(), liave );
             }
         }
 
@@ -528,7 +524,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         {
             case 0:
                 // This is the first Ava. Just stores it.
-                ava = new Ava( schemaManager, upType, normalizedType, upValue, normalizedValue );
+                ava = new Ava( schemaManager, upType, normalizedType, value );
                 nbAvas = 1;
                 avaType = normalizedType;
                 hashCode();
@@ -553,7 +549,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
             default:
                 // add a new Ava
-                Ava newAva = new Ava( schemaManager, upType, normalizedType, upValue, normalizedValue );
+                Ava newAva = new Ava( schemaManager, upType, normalizedType, value );
                 avas.add( newAva );
                 avaTypes.put( normalizedType, newAva );
                 nbAvas++;
@@ -694,11 +690,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
 
     /**
-     * Get the Value of the Ava which type is given as an
+     * Get the value of the Ava which type is given as an
      * argument.
      *
      * @param type the type of the NameArgument
-     * @return the Value to be returned, or null if none found.
+     * @return the value to be returned, or null if none found.
      * @throws LdapInvalidDnException if the Rdn is invalid
      */
     public Object getValue( String type ) throws LdapInvalidDnException
@@ -724,7 +720,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
             case 1:
                 if ( Strings.equals( ava.getNormType(), normalizedType ) )
                 {
-                    return ava.getNormValue().getValue();
+                    return ava.getValue().getValue();
                 }
 
                 return "";
@@ -748,7 +744,73 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                             sb.append( ',' );
                         }
 
-                        sb.append( elem.getNormValue() );
+                        sb.append( elem.getValue() );
+                    }
+
+                    return sb.toString();
+                }
+
+                return "";
+        }
+    }
+
+
+    /**
+     * Get the normalized value of the Ava which type is given as an
+     * argument.
+     *
+     * @param type the type of the NameArgument
+     * @return the normalized value to be returned, or null if none found.
+     * @throws LdapInvalidDnException if the Rdn is invalid
+     */
+    public Object getNormValue( String type ) throws LdapInvalidDnException
+    {
+        // First, let's normalize the type
+        String normalizedType = Strings.lowerCaseAscii( Strings.trim( type ) );
+
+        if ( schemaManager != null )
+        {
+            AttributeType attributeType = schemaManager.getAttributeType( normalizedType );
+
+            if ( attributeType != null )
+            {
+                normalizedType = attributeType.getOid();
+            }
+        }
+
+        switch ( nbAvas )
+        {
+            case 0:
+                return "";
+
+            case 1:
+                if ( Strings.equals( ava.getNormType(), normalizedType ) )
+                {
+                    return ava.getValue().getNormValue();
+                }
+
+                return "";
+
+            default:
+                if ( avaTypes.containsKey( normalizedType ) )
+                {
+                    @SuppressWarnings("unchecked")
+                    Collection<Ava> atavList = ( Collection<Ava> ) avaTypes.get( normalizedType );
+                    StringBuffer sb = new StringBuffer();
+                    boolean isFirst = true;
+
+                    for ( Ava elem : atavList )
+                    {
+                        if ( isFirst )
+                        {
+                            isFirst = false;
+                        }
+                        else
+                        {
+                            sb.append( ',' );
+                        }
+
+                        sb.append( elem.getValue().getNormValue() );
                     }
 
                     return sb.toString();
@@ -985,11 +1047,11 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
 
 
     /**
-     * Return the User Provided value
+     * Return the User Provided value, as a String
      *
      * @return The first User provided value of this Rdn
      */
-    public Value<?> getValue()
+    public String getValue()
     {
         switch ( nbAvas )
         {
@@ -997,20 +1059,20 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 return null;
 
             case 1:
-                return ava.getValue();
+                return ava.getValue().getString();
 
             default:
-                return avas.get( 0 ).getValue();
+                return avas.get( 0 ).getValue().getString();
         }
     }
 
 
     /**
-     * Return the normalized value, or the first one of we have more than one (the lowest)
+     * Return the Normalized value, as a String
      *
-     * @return The first normalized value of this Rdn
+     * @return The first Normalized value of this Rdn
      */
-    public Value<?> getNormValue()
+    public String getNormValue()
     {
         switch ( nbAvas )
         {
@@ -1018,10 +1080,10 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                 return null;
 
             case 1:
-                return ava.getNormValue();
+                return ava.getValue().getNormValue().toString();
 
             default:
-                return avas.get( 0 ).getNormValue();
+                return avas.get( 0 ).getValue().getNormValue().toString();
         }
     }
 
@@ -1131,11 +1193,15 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
      * Unescape the given string according to RFC 2253 If in <string> form, a
      * LDAP string representation asserted value can be obtained by replacing
      * (left-to-right, non-recursively) each <pair> appearing in the <string> as
-     * follows: replace <ESC><ESC> with <ESC>; replace <ESC><special> with
-     * <special>; replace <ESC><hexpair> with the octet indicated by the
-     * <hexpair> If in <hexstring> form, a BER representation can be obtained
-     * from converting each <hexpair> of the <hexstring> to the octet indicated
-     * by the <hexpair>
+     * follows: 
+     * <ul>
+     * <li>replace &lt;ESC&gt;&lt;ESC&gt; with &lt;ESC&gt;</li>
+     * <li>replace &lt;ESC&gt;&lt;special&gt; with &lt;special&gt;</li>
+     * <li>replace &lt;ESC&gt;&lt;hexpair&gt; with the octet indicated by the &lt;hexpair&gt;</li>
+     * </ul>
+     * If in &lt;hexstring&gt; form, a BER representation can be obtained
+     * from converting each &lt;hexpair&gt; of the &lt;hexstring&gt; to the octet indicated
+     * by the &lt;hexpair&gt;
      *
      * @param value The value to be unescaped
      * @return Returns a string value as a String, and a binary value as a byte
@@ -1154,7 +1220,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
         // If the value is contained into double quotes, return it as is.
         if ( ( chars[0] == '\"' ) && ( chars[chars.length - 1] == '\"' ) )
         {
-            return value;
+            return new String( chars, 1, chars.length - 2 );
         }
 
         if ( chars[0] == '#' )
@@ -1237,6 +1303,7 @@ public class Rdn implements Cloneable, Externalizable, Iterable<Ava>, Comparable
                             pair += Hex.getHexValue( chars[i] );
                             bytes[pos++] = pair;
                             isHex = false;
+                            pair = 0;
                         }
                     }
                     else

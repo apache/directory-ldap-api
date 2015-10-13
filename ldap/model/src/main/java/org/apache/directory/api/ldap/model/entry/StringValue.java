@@ -39,7 +39,7 @@ import org.apache.directory.api.util.exception.NotImplementedException;
  * A server side schema aware wrapper around a String attribute value.
  * This value wrapper uses schema information to syntax check values,
  * and to compare them for equality and ordering.  It caches results
- * and invalidates them when the wrapped value changes.
+ * and invalidates them when the user provided value changes.
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -56,7 +56,7 @@ public class StringValue extends AbstractValue<String>
     // Constructors
     // -----------------------------------------------------------------------
     /**
-     * Creates a StringValue without an initial wrapped value.
+     * Creates a StringValue without an initial user provided value.
      *
      * @param attributeType the schema attribute type associated with this StringValue
      */
@@ -82,20 +82,34 @@ public class StringValue extends AbstractValue<String>
 
 
     /**
-     * Creates a StringValue with an initial wrapped String value.
+     * Creates a StringValue with an initial user provided String value.
      *
      * @param value the value to wrap which can be null
      */
     public StringValue( String value )
     {
-        this.wrappedValue = value;
+        this.upValue = value;
         this.normalizedValue = value;
         bytes = Strings.getBytesUtf8( value );
     }
 
 
     /**
-     * Creates a schema aware StringValue with an initial wrapped String value.
+     * Creates a StringValue with an initial user provided String value and a normalized value.
+     *
+     * @param value the user provided value to wrap which can be null
+     * @param normValue the normalized value to wrap which can be null
+     */
+    public StringValue( String value, String normalizedValue )
+    {
+        this.upValue = value;
+        this.normalizedValue = normalizedValue;
+        bytes = Strings.getBytesUtf8( normalizedValue );
+    }
+
+
+    /**
+     * Creates a schema aware StringValue with an initial user provided String value.
      *
      * @param attributeType the schema type associated with this StringValue
      * @param value the value to wrap
@@ -104,7 +118,22 @@ public class StringValue extends AbstractValue<String>
      */
     public StringValue( AttributeType attributeType, String value ) throws LdapInvalidAttributeValueException
     {
-        this( value );
+        this( value, value );
+        apply( attributeType );
+    }
+
+
+    /**
+     * Creates a schema aware StringValue with an initial user provided String value.
+     *
+     * @param attributeType the schema type associated with this StringValue
+     * @param value the value to wrap
+     * @throws LdapInvalidAttributeValueException If the added value is invalid accordingly
+     * to the schema
+     */
+    public StringValue( AttributeType attributeType, String value, String normValue ) throws LdapInvalidAttributeValueException
+    {
+        this( value, normValue );
         apply( attributeType );
     }
 
@@ -119,7 +148,7 @@ public class StringValue extends AbstractValue<String>
     {
         // The String is immutable, we can safely return the internal
         // object without copying it.
-        return wrappedValue;
+        return upValue;
     }
 
 
@@ -231,9 +260,9 @@ public class StringValue extends AbstractValue<String>
                 return 0;
             }
 
-            // If the normalized value is null, will default to wrapped
+            // If the normalized value is null, will default to user provided
             // which cannot be null at this point.
-            // If the normalized value is null, will default to wrapped
+            // If the normalized value is null, will default to user provided
             // which cannot be null at this point.
             String normalized = getNormValue();
 
@@ -289,7 +318,7 @@ public class StringValue extends AbstractValue<String>
 
                     // Shortcut : if we have an AT for both the values, check the 
                     // already normalized values
-                    if ( wrappedValue.equals( other.wrappedValue ) )
+                    if ( upValue.equals( other.upValue ) )
                     {
                         return true;
                     }
@@ -438,13 +467,13 @@ public class StringValue extends AbstractValue<String>
      */
     public int length()
     {
-        return wrappedValue != null ? wrappedValue.length() : 0;
+        return upValue != null ? upValue.length() : 0;
     }
 
 
     /**
-     * Get the wrapped value as a byte[].
-     * @return the wrapped value as a byte[]
+     * Get the user provided value as a byte[].
+     * @return the user provided value as a byte[]
      */
     public byte[] getBytes()
     {
@@ -453,13 +482,13 @@ public class StringValue extends AbstractValue<String>
 
 
     /**
-     * Get the wrapped value as a String.
+     * Get the user provided value as a String.
      *
-     * @return the wrapped value as a String
+     * @return the user provided value as a String
      */
     public String getString()
     {
-        return wrappedValue != null ? wrappedValue : "";
+        return upValue != null ? upValue : "";
     }
 
 
@@ -512,11 +541,11 @@ public class StringValue extends AbstractValue<String>
             throw new IOException( "The serialized value is not a String value" );
         }
 
-        // Read the wrapped value, if it's not null
+        // Read the user provided value, if it's not null
         if ( in.readBoolean() )
         {
-            wrappedValue = in.readUTF();
-            bytes = Strings.getBytesUtf8( wrappedValue );
+            upValue = in.readUTF();
+            bytes = Strings.getBytesUtf8( upValue );
         }
 
         // Read the isNormalized flag
@@ -540,7 +569,7 @@ public class StringValue extends AbstractValue<String>
 
                     if ( equality == null )
                     {
-                        normalizedValue = wrappedValue;
+                        normalizedValue = upValue;
                     }
                     else
                     {
@@ -548,22 +577,22 @@ public class StringValue extends AbstractValue<String>
 
                         if ( normalizer != null )
                         {
-                            normalizedValue = normalizer.normalize( wrappedValue );
+                            normalizedValue = normalizer.normalize( upValue );
                         }
                         else
                         {
-                            normalizedValue = wrappedValue;
+                            normalizedValue = upValue;
                         }
                     }
                 }
                 catch ( LdapException le )
                 {
-                    normalizedValue = wrappedValue;
+                    normalizedValue = upValue;
                 }
             }
             else
             {
-                normalizedValue = wrappedValue;
+                normalizedValue = upValue;
             }
         }
 
@@ -582,17 +611,17 @@ public class StringValue extends AbstractValue<String>
     public int serialize( byte[] buffer, int pos )
     {
         // Compute the length
-        // The value type, the wrappedValue presence flag,
+        // The value type, the user provided value presence flag,
         // the normalizedValue presence flag and the hash length.
         int length = 1 + 1 + 1 + 4;
 
-        byte[] wrappedValueBytes = null;
+        byte[] upValueBytes = null;
         byte[] normalizedValueBytes = null;
 
-        if ( wrappedValue != null )
+        if ( upValue != null )
         {
-            wrappedValueBytes = Strings.getBytesUtf8( wrappedValue );
-            length += 4 + wrappedValueBytes.length;
+            upValueBytes = Strings.getBytesUtf8( upValue );
+            length += 4 + upValueBytes.length;
         }
 
         if ( attributeType != null )
@@ -618,11 +647,11 @@ public class StringValue extends AbstractValue<String>
         buffer[pos] = Serialize.TRUE;
         pos++;
 
-        // Write the wrapped value, if it's not null
-        if ( wrappedValue != null )
+        // Write the user provided value, if it's not null
+        if ( upValue != null )
         {
             buffer[pos++] = Serialize.TRUE;
-            pos = Serialize.serialize( wrappedValueBytes, buffer, pos );
+            pos = Serialize.serialize( upValueBytes, buffer, pos );
         }
         else
         {
@@ -685,15 +714,15 @@ public class StringValue extends AbstractValue<String>
             throw new IOException( "The serialized value is not a String value" );
         }
 
-        // Read the wrapped value, if it's not null
+        // Read the user provided value, if it's not null
         boolean hasWrappedValue = Serialize.deserializeBoolean( buffer, pos );
         pos++;
 
         if ( hasWrappedValue )
         {
-            byte[] wrappedValueBytes = Serialize.deserializeBytes( buffer, pos );
-            pos += 4 + wrappedValueBytes.length;
-            wrappedValue = Strings.utf8ToString( wrappedValueBytes );
+            byte[] upValueBytes = Serialize.deserializeBytes( buffer, pos );
+            pos += 4 + upValueBytes.length;
+            upValue = Strings.utf8ToString( upValueBytes );
         }
 
         // Read the isNormalized flag
@@ -723,7 +752,7 @@ public class StringValue extends AbstractValue<String>
 
                     if ( equality == null )
                     {
-                        normalizedValue = wrappedValue;
+                        normalizedValue = upValue;
                     }
                     else
                     {
@@ -731,22 +760,22 @@ public class StringValue extends AbstractValue<String>
 
                         if ( normalizer != null )
                         {
-                            normalizedValue = normalizer.normalize( wrappedValue );
+                            normalizedValue = normalizer.normalize( upValue );
                         }
                         else
                         {
-                            normalizedValue = wrappedValue;
+                            normalizedValue = upValue;
                         }
                     }
                 }
                 catch ( LdapException le )
                 {
-                    normalizedValue = wrappedValue;
+                    normalizedValue = upValue;
                 }
             }
             else
             {
-                normalizedValue = wrappedValue;
+                normalizedValue = upValue;
             }
         }
 
@@ -766,11 +795,11 @@ public class StringValue extends AbstractValue<String>
         // Write a boolean for the HR flag
         out.writeBoolean( STRING );
 
-        // Write the wrapped value, if it's not null
-        if ( wrappedValue != null )
+        // Write the user provided value, if it's not null
+        if ( upValue != null )
         {
             out.writeBoolean( true );
-            out.writeUTF( wrappedValue );
+            out.writeUTF( upValue );
         }
         else
         {
@@ -814,6 +843,6 @@ public class StringValue extends AbstractValue<String>
      */
     public String toString()
     {
-        return wrappedValue == null ? "null" : wrappedValue;
+        return upValue == null ? "null" : upValue;
     }
 }

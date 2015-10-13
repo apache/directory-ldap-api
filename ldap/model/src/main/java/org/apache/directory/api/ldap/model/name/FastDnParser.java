@@ -174,8 +174,7 @@ import org.apache.directory.api.util.Strings;
 
         String upName = name.substring( rdnStart, pos.start );
 
-        Ava ava = new Ava( type, type, new StringValue( upValue ),
-            new StringValue( value ), upName );
+        Ava ava = new Ava( type, type, new StringValue( upValue ), upName );
         rdn.addAVA( null, ava );
 
         rdn.setUpName( upName );

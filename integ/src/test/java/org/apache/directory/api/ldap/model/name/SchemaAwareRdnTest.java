@@ -316,7 +316,7 @@ public class SchemaAwareRdnTest
 
         rdn = new Rdn( schemaManager, "cn=d" );
 
-        assertEquals( "b", rdnClone.getValue( "Cn" ) );
+        assertEquals( "b", rdnClone.getNormValue( "Cn" ) );
     }
 
 
@@ -634,7 +634,7 @@ public class SchemaAwareRdnTest
     {
         Rdn rdn = new Rdn( schemaManager, " cn = b + sn = f + gn = h + l = d " );
 
-        assertEquals( "b", rdn.getNormValue().getString() );
+        assertEquals( "b", rdn.getNormValue() );
     }
 
 
@@ -891,9 +891,9 @@ public class SchemaAwareRdnTest
 
         Rdn rdn3 = new Rdn( schemaManager, "cn=\\ a b c\\ " );
         Rdn rdn4 = new Rdn( schemaManager, "cn=\\ a\\ b\\ c\\ " );
-        assertEquals( "2.5.4.3=a b c", rdn3.getNormName() );
+        assertEquals( "2.5.4.3=\\ a b c\\ ", rdn3.getNormName() );
         assertEquals( "cn=\\ a b c\\ ", rdn3.getName() );
-        assertEquals( "2.5.4.3=a b c", rdn4.getNormName() );
+        assertEquals( "2.5.4.3=\\ a b c\\ ", rdn4.getNormName() );
         assertEquals( "cn=\\ a\\ b\\ c\\ ", rdn4.getName() );
         assertTrue( rdn3.equals( rdn4 ) );
     }
@@ -1063,7 +1063,7 @@ public class SchemaAwareRdnTest
     @Test
     public void testSimpleRdnNoValueSerialization() throws LdapException, IOException, ClassNotFoundException
     {
-        Rdn rdn = new Rdn( schemaManager, " CN  =" );
+        Rdn rdn = new Rdn( schemaManager, " DC  =" );
         rdn.normalize();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1168,10 +1168,10 @@ public class SchemaAwareRdnTest
     @Test
     public void testRdnWithEmptyValue() throws LdapException
     {
-        assertTrue( Rdn.isValid( "cn=" ) );
-        assertTrue( Rdn.isValid( "cn=\"\"" ) );
-        assertEquals( "2.5.4.3=", new Rdn( schemaManager, "cn=\"\"" ).getNormName() );
-        assertEquals( "2.5.4.3=", new Rdn( schemaManager, "cn=" ).getNormName() );
+        assertTrue( Rdn.isValid( "dc=" ) );
+        assertTrue( Rdn.isValid( "dc=\"\"" ) );
+        assertEquals( "0.9.2342.19200300.100.1.25=", new Rdn( schemaManager, "dc=" ).getNormName() );
+        assertEquals( "0.9.2342.19200300.100.1.25=", new Rdn( schemaManager, "dc=\"\"" ).getNormName() );
     }
 
 

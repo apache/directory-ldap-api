@@ -104,8 +104,8 @@ public class LdifAnonymizer
     /** The map that stores the anonymized values associated to the original value */
     Map<Value<?>, Value<?>> valueMap = new HashMap<Value<?>, Value<?>>();
     
-    /** The map of Attributes we want to anonymize. They are all associated with anonymizers */
-    Map<AttributeType, Anonymizer> attributeAnonymizers = new HashMap<AttributeType, Anonymizer>();
+    /** The map of AttributeType'sOID we want to anonymize. They are all associated with anonymizers */
+    Map<String, Anonymizer> attributeAnonymizers = new HashMap<String, Anonymizer>();
     
     /** The list of existing NamingContexts */
     Set<Dn> namingContexts = new HashSet<Dn>();
@@ -155,65 +155,65 @@ public class LdifAnonymizer
     private void init()
     {
         // Load the anonymizers
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.CAR_LICENSE_AT ),
+        attributeAnonymizers.put( SchemaConstants.CAR_LICENSE_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.CN_AT ), new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.DESCRIPTION_AT ),
+        attributeAnonymizers.put( SchemaConstants.CN_AT_OID, new StringAnonymizer() );
+        attributeAnonymizers.put( SchemaConstants.DESCRIPTION_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.DISPLAY_NAME_AT ),
+        attributeAnonymizers.put( SchemaConstants.DISPLAY_NAME_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.GECOS_AT ), new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.GID_NUMBER_AT ),
+        attributeAnonymizers.put( SchemaConstants.GECOS_AT_OID, new StringAnonymizer() );
+        attributeAnonymizers.put( SchemaConstants.GID_NUMBER_AT_OID,
             new IntegerAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.GIVENNAME_AT ),
+        attributeAnonymizers.put( SchemaConstants.GIVENNAME_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.HOME_DIRECTORY_AT ),
+        attributeAnonymizers.put( SchemaConstants.HOME_DIRECTORY_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.HOME_PHONE_AT ),
+        attributeAnonymizers.put( SchemaConstants.HOME_PHONE_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.HOME_POSTAL_ADDRESS_AT ),
+        attributeAnonymizers.put( SchemaConstants.HOME_POSTAL_ADDRESS_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.HOST_AT ), new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.HOUSE_IDENTIFIER_AT ),
+        attributeAnonymizers.put( SchemaConstants.HOST_AT_OID, new StringAnonymizer() );
+        attributeAnonymizers.put( SchemaConstants.HOUSE_IDENTIFIER_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.JPEG_PHOTO_AT ),
+        attributeAnonymizers.put( SchemaConstants.JPEG_PHOTO_AT_OID,
             new BinaryAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.LABELED_URI_AT ),
+        attributeAnonymizers.put( SchemaConstants.LABELED_URI_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.LOCALITY_NAME_AT ),
+        attributeAnonymizers.put( SchemaConstants.LOCALITY_NAME_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.MAIL_AT ), new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.MANAGER_AT ), new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.MEMBER_UID_AT ),
+        attributeAnonymizers.put( SchemaConstants.MAIL_AT_OID, new StringAnonymizer() );
+        attributeAnonymizers.put( SchemaConstants.MANAGER_AT_OID, new StringAnonymizer() );
+        attributeAnonymizers.put( SchemaConstants.MEMBER_UID_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.MOBILE_AT ), new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.ORGANIZATION_NAME_AT ),
+        attributeAnonymizers.put( SchemaConstants.MOBILE_AT_OID, new StringAnonymizer() );
+        attributeAnonymizers.put( SchemaConstants.ORGANIZATION_NAME_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.ORGANIZATIONAL_UNIT_NAME_AT ),
+        attributeAnonymizers.put( SchemaConstants.ORGANIZATIONAL_UNIT_NAME_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.PAGER_AT ), new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.POSTAL_ADDRESS_AT ),
+        attributeAnonymizers.put( SchemaConstants.PAGER_AT_OID, new StringAnonymizer() );
+        attributeAnonymizers.put( SchemaConstants.POSTAL_ADDRESS_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.PHOTO_AT ), new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.SECRETARY_AT ),
+        attributeAnonymizers.put( SchemaConstants.PHOTO_AT_OID, new StringAnonymizer() );
+        attributeAnonymizers.put( SchemaConstants.SECRETARY_AT_OID,
             new StringAnonymizer() );
         attributeAnonymizers
-            .put( schemaManager.getAttributeType( SchemaConstants.SEE_ALSO_AT ), new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.SN_AT ), new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.TELEPHONE_NUMBER_AT ),
+            .put( SchemaConstants.SEE_ALSO_AT_OID, new StringAnonymizer() );
+        attributeAnonymizers.put( SchemaConstants.SN_AT_OID, new StringAnonymizer() );
+        attributeAnonymizers.put( SchemaConstants.TELEPHONE_NUMBER_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.UID_AT ), new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.UID_NUMBER_AT ),
+        attributeAnonymizers.put( SchemaConstants.UID_AT_OID, new StringAnonymizer() );
+        attributeAnonymizers.put( SchemaConstants.UID_NUMBER_AT_OID,
             new IntegerAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.USER_CERTIFICATE_AT ),
+        attributeAnonymizers.put( SchemaConstants.USER_CERTIFICATE_AT_OID,
             new StringAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.USER_PASSWORD_AT ),
+        attributeAnonymizers.put( SchemaConstants.USER_PASSWORD_AT_OID,
             new BinaryAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.USER_PKCS12_AT ),
+        attributeAnonymizers.put( SchemaConstants.USER_PKCS12_AT_OID,
             new BinaryAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.USER_SMIME_CERTIFICATE_AT ),
+        attributeAnonymizers.put( SchemaConstants.USER_SMIME_CERTIFICATE_AT_OID,
             new BinaryAnonymizer() );
-        attributeAnonymizers.put( schemaManager.getAttributeType( SchemaConstants.X500_UNIQUE_IDENTIFIER_AT ),
+        attributeAnonymizers.put( SchemaConstants.X500_UNIQUE_IDENTIFIER_AT_OID,
             new BinaryAnonymizer() );
     }
     
@@ -233,16 +233,16 @@ public class LdifAnonymizer
         {
             if ( syntax.getOid().equals( SchemaConstants.INTEGER_SYNTAX ) )
             {
-                attributeAnonymizers.put( attributeType, new IntegerAnonymizer() );
+                attributeAnonymizers.put( attributeType.getOid(), new IntegerAnonymizer() );
             }
             else
             {
-                attributeAnonymizers.put( attributeType, new StringAnonymizer() );
+                attributeAnonymizers.put( attributeType.getOid(), new StringAnonymizer() );
             }
         }
         else
         {
-            attributeAnonymizers.put( attributeType, new BinaryAnonymizer() );
+            attributeAnonymizers.put( attributeType.getOid(), new BinaryAnonymizer() );
         }
     }
     
@@ -428,7 +428,8 @@ public class LdifAnonymizer
                     }
                     else
                     {
-                        Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType() );
+                        int h = attribute.getAttributeType().hashCode();
+                        Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType().getOid() );
     
                         if ( anonymizer == null )
                         {

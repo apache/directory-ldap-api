@@ -268,8 +268,10 @@ public class RdnTest
     @Test
     public void testRdnQuotedAttributeValue() throws LdapException
     {
-        assertEquals( "a=quoted \\\"value", new Rdn( "a = quoted \\\"value" ).getNormName() );
-        assertEquals( "quoted \"value", new Rdn( "a = quoted \\\"value" ).getValue( "a" ) );
+        Rdn rdn = new Rdn( "a = quoted \\\"value" );
+        assertEquals( "a=quoted \\\"value", rdn.getNormName() );
+        assertEquals( "quoted \\\"value", rdn.getValue( "a" ) );
+        assertEquals( "quoted \"value", rdn.getNormValue( "a" ) );
     }
 
 
@@ -605,7 +607,7 @@ public class RdnTest
     {
         Rdn rdn = new Rdn( " a = b + b = f + g = h + c = d " );
 
-        assertEquals( "b", rdn.getNormValue().getString() );
+        assertEquals( "b", rdn.getNormValue() );
     }
 
 
@@ -860,7 +862,7 @@ public class RdnTest
         assertEquals( "cn=a b c", rdn2.getNormName() );
         assertTrue( rdn1.equals( rdn2 ) );
 
-        Rdn rdn3 = new Rdn( "cn=\\ a b c\\ " );
+        Rdn rdn3 = new Rdn( "cn= \\ a b c\\  " );
         Rdn rdn4 = new Rdn( "cn=\\ a\\ b\\ c\\ " );
         assertEquals( "cn=\\ a b c\\ ", rdn3.getNormName() );
         assertEquals( "cn=\\ a b c\\ ", rdn4.getNormName() );
@@ -1154,7 +1156,7 @@ public class RdnTest
         assertTrue( Rdn.isValid( "a=\"b\\,c\"" ) );
         Rdn rdn = new Rdn( "a=\"b\\,c\"" );
         assertEquals( "a=\"b\\,c\"", rdn.getName() );
-        assertEquals( "a=b\\,c", rdn.getNormName() );
+        assertEquals( "a=b\\\\\\,c", rdn.getNormName() );
     }
 
 
@@ -1253,8 +1255,8 @@ public class RdnTest
         assertEquals( "CN=\u00E4+A=d", rdn.getName() );
         assertEquals( "cn=\u00E4+a=d", rdn.getNormName() );
         assertEquals( "\u00E4", rdn.getValue( "CN" ) );
-        assertEquals( "\u00E4", rdn.getValue().getValue() );
-        assertEquals( "\u00E4", rdn.getNormValue().getValue() );
+        assertEquals( "\u00E4", rdn.getValue() );
+        assertEquals( "\u00E4", rdn.getValue() );
         assertEquals( "CN", rdn.getType() );
         assertEquals( "cn", rdn.getNormType() );
     }

@@ -579,7 +579,7 @@ public class DnParserTest
     public void testAUmlautPlusBytes() throws Exception
     {
         String cn = new String( new byte[]
-            { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0x84, 0x5C, 0x32, 0x42 }, "UTF-8" );
+            { 'c', 'n', '=', ( byte ) 0xC3, ( byte ) 0x84, '\\', '2', 'B' }, "UTF-8" );
 
         Dn dn = new Dn( cn );
 
@@ -664,7 +664,7 @@ public class DnParserTest
                 
                 Dn dn = new Dn( dnStr );
                 Rdn rdn = dn.getRdn();
-                assertEquals( value, rdn.getValue().getString() );
+                assertEquals( value, rdn.getValue() );
             }
             catch ( Exception e )
             {
@@ -679,7 +679,7 @@ public class DnParserTest
             
             Dn dn = new Dn( dnStr );
             Rdn rdn = dn.getRdn();
-            assertEquals( "2#", rdn.getValue().getString() );
+            assertEquals( "2#", rdn.getValue() );
         }
         catch ( Exception e )
         {

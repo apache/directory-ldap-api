@@ -44,17 +44,34 @@ public class LdapProtocolCodecFactory implements ProtocolCodecFactory
     /** The LdapEncoder key */
     public static final String LDAP_ENCODER = "LDAP_ENCODER";
 
-    private LdapApiService ldapApiService;
+    /** The statefull LDAP decoder */
+    private LdapProtocolDecoder ldapDecoder;
+
+    /** The statefull LDAP edcoder */
+    private LdapProtocolEncoder ldapEncoder;
     
+    
+    /**
+     * Creates a new instance of LdapProtocolCodecFactory.
+     */
     public LdapProtocolCodecFactory() 
     {
         this( LdapApiServiceFactory.getSingleton() );
     }
 
+    
+    /**
+     * 
+     * Creates a new instance of LdapProtocolCodecFactory.
+     *
+     * @param ldapApiService The associated LdapApiService instance
+     */
     public LdapProtocolCodecFactory( LdapApiService ldapApiService ) 
     {
-        this.ldapApiService = ldapApiService;
+        ldapDecoder = new LdapProtocolDecoder();
+        ldapEncoder = new LdapProtocolEncoder( ldapApiService );
     }
+    
 
     /**
      * Get the LDAP decoder.
@@ -64,7 +81,7 @@ public class LdapProtocolCodecFactory implements ProtocolCodecFactory
      */
     public ProtocolDecoder getDecoder( IoSession session )
     {
-        return new LdapProtocolDecoder();
+        return ldapDecoder;
     }
 
 
@@ -76,6 +93,6 @@ public class LdapProtocolCodecFactory implements ProtocolCodecFactory
      */
     public ProtocolEncoder getEncoder( IoSession session )
     {
-        return new LdapProtocolEncoder( ldapApiService );
+        return ldapEncoder;
     }
 }

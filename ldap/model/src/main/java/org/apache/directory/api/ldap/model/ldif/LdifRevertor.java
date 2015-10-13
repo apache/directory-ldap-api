@@ -359,9 +359,9 @@ public final class LdifRevertor
         {
             // No need to add something which has already been added
             // in the previous modification
-            if ( !entry.contains( ava.getNormType(), ava.getNormValue().getString() )
-                && !( ava.getNormType().equals( oldRdn.getNormType() ) && ava.getNormValue().getString().equals(
-                    oldRdn.getNormValue().getString() ) ) )
+            if ( !entry.contains( ava.getNormType(), ava.getValue().getString() )
+                && !( ava.getNormType().equals( oldRdn.getNormType() ) && ava.getValue().getString().equals(
+                    oldRdn.getNormValue() ) ) )
             {
                 // Create the modification, which is an Remove
                 Modification modification = new DefaultModification( ModificationOperation.REMOVE_ATTRIBUTE,
@@ -493,7 +493,7 @@ public final class LdifRevertor
                 for ( Ava atav : newRdn )
                 {
                     if ( !atav.equals( oldRdn.getAva() )
-                        && ( entry.contains( atav.getNormType(), atav.getNormValue().getString() ) ) )
+                        && ( entry.contains( atav.getNormType(), atav.getValue().getString() ) ) )
                     {
                         existInEntry = true;
                     }
@@ -546,7 +546,7 @@ public final class LdifRevertor
                     {
                         overlapping = true;
                     }
-                    else if ( entry.contains( atav.getNormType(), atav.getNormValue().getString() ) )
+                    else if ( entry.contains( atav.getNormType(), atav.getValue().getString() ) )
                     {
                         existInEntry = true;
                     }

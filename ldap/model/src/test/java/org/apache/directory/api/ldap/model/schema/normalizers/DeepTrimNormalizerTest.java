@@ -113,7 +113,11 @@ public class DeepTrimNormalizerTest
             { ' ', 0x0310 };
         char[] expected = new char[]
             { ' ', 0x0310 };
-        assertEquals( new String( expected ), normalizer.normalize( new String( chars ) ) );
+        //assertEquals( new String( expected ), normalizer.normalize( new String( chars ) ) );
+        
+        String expectedStr = new String( expected );
+        String charsStr = new String( chars );
+        assertEquals( expectedStr, normalizer.normalize( charsStr ) );
     }
 
 
@@ -152,8 +156,10 @@ public class DeepTrimNormalizerTest
         char[] chars = new char[]
             { ' ', 0x0310, 'a', 'a', ' ', ' ', 0x0311, ' ', ' ', 'a', 0x0311, 0x0312 };
         char[] expected = new char[]
-            { ' ', 0x0310, 'a', 'a', ' ', ' ', 0x0311, ' ', 'a', 0x0311, 0x0312 };
-        assertEquals( new String( expected ), normalizer.normalize( new String( chars ) ) );
+            { ' ', 0x0310, 'a', 'a', ' ', 0x0311, ' ', 'a', 0x0311, 0x0312 };
+        String expectedStr = new String( expected );
+        String charsStr = new String( chars );
+        assertEquals( expectedStr, normalizer.normalize( charsStr ) );
     }
 
 

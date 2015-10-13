@@ -230,6 +230,7 @@ public final class FilterParser
      * escaped        = '\' HEX HEX
      * HEX            = '0'-'9' / 'A'-'F' / 'a'-'f'
      * unicodeSubset     = %x01-27 / %x2B-5B / %x5D-FFFF
+     * @throws LdapInvalidAttributeValueException 
      */
     private static Value<?> parseAssertionValue( SchemaManager schemaManager, String attribute, byte[] filter,
         Position pos ) throws ParseException

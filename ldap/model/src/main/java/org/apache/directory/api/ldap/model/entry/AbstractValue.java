@@ -47,10 +47,10 @@ public abstract class AbstractValue<T> implements Value<T>
     /** reference to the attributeType zssociated with the value */
     protected transient AttributeType attributeType;
 
-    /** the wrapped binary value */
-    protected T wrappedValue;
+    /** the User Provided value */
+    protected T upValue;
 
-    /** the canonical representation of the wrapped value */
+    /** the canonical representation of the user provided value */
     protected T normalizedValue;
 
     /** The computed hashcode. We don't want to compute it each time the hashcode() method is called */
@@ -80,7 +80,7 @@ public abstract class AbstractValue<T> implements Value<T>
      */
     public T getReference()
     {
-        return wrappedValue;
+        return upValue;
     }
 
 
@@ -123,12 +123,19 @@ public abstract class AbstractValue<T> implements Value<T>
      * to the schema
      */
     @SuppressWarnings("unchecked")
-    protected void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException
+    public void apply( AttributeType attributeType ) throws LdapInvalidAttributeValueException
     {
+        if ( this.attributeType != null )
+        {
+            // We already have applied an AttributeType, get out
+            LOG.warn( "AttributeType {0} already applied", attributeType.getName() );
+            return;
+        }
+        
         if ( attributeType == null )
         {
             // No attributeType : the normalized value and the user provided value are the same
-            normalizedValue = wrappedValue;
+            normalizedValue = upValue;
             return;
         }
 
@@ -145,12 +152,14 @@ public abstract class AbstractValue<T> implements Value<T>
 
             if ( normalizer != null )
             {
-                if ( wrappedValue != null )
+                if ( upValue != null )
                 {
                     boolean isHR = attributeType.getSyntax().isHumanReadable();
+                    
 
                     if ( isHR != isHumanReadable() )
                     {
+                        
                         String message = "The '" + attributeType.getName() + "' AttributeType and values must "
                             + "both be String or binary";
                         LOG.error( message );
@@ -161,11 +170,18 @@ public abstract class AbstractValue<T> implements Value<T>
                     {
                         if ( isHumanReadable() )
                         {
-                            normalizedValue = ( T ) normalizer.normalize( ( String ) wrappedValue );
+                            if ( normalizedValue != null )
+                            {    
+                                normalizedValue = ( T ) normalizer.normalize( ( String ) normalizedValue );
+                            }
+                            else
+                            {
+                                normalizedValue = ( T ) normalizer.normalize( ( String ) upValue );
+                            }
                         }
                         else
                         {
-                            normalizedValue = ( T ) normalizer.normalize( new BinaryValue( ( byte[] ) wrappedValue ) )
+                            normalizedValue = ( T ) normalizer.normalize( new BinaryValue( ( byte[] ) upValue ) )
                                 .getNormReference();
                         }
                     }
@@ -187,7 +203,7 @@ public abstract class AbstractValue<T> implements Value<T>
         {
             // No MatchingRule, there is nothing we can do but make the normalized value
             // to be a reference on the user provided value
-            normalizedValue = wrappedValue;
+            normalizedValue = upValue;
         }
 
         // and checks that the value syntax is valid
@@ -198,7 +214,7 @@ public abstract class AbstractValue<T> implements Value<T>
             // Check the syntax
             if ( ( syntax != null ) && ( !isValid( syntax.getSyntaxChecker() ) ) )
             {
-                String message = I18n.err( I18n.ERR_04473_NOT_VALID_VALUE, wrappedValue, attributeType );
+                String message = I18n.err( I18n.ERR_04473_NOT_VALID_VALUE, upValue, attributeType );
                 LOG.info( message );
                 throw new LdapInvalidAttributeValueException( ResultCodeEnum.INVALID_ATTRIBUTE_SYNTAX, message );
             }
@@ -262,7 +278,7 @@ public abstract class AbstractValue<T> implements Value<T>
 
         if ( normalizedValue == null )
         {
-            return wrappedValue;
+            return upValue;
         }
 
         return normalizedValue;
@@ -274,7 +290,7 @@ public abstract class AbstractValue<T> implements Value<T>
      */
     public final boolean isNull()
     {
-        return wrappedValue == null;
+        return upValue == null;
     }
 
 

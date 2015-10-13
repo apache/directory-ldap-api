@@ -4803,7 +4803,6 @@ public final class PrepareString
 
 
     /**
-     * 
      * Remove all insignificant spaces in a string.
      * 
      * This method use a finite state machine to parse
@@ -4830,21 +4829,20 @@ public final class PrepareString
         // three chars.
         // TODO : we have to find a way to prevent this waste of space.
         char[] target = new char[str.length() * 3 + 2];
-
+        
         int pos = 0;
         char lowerCase = ( char ) ( caseSensitive ? 0x00 : 0x20 );
 
-        // First pass to map the chars
-        //System.arraycopy( array, 0, target, 0, array.length );
+        // First pass to map the chars. This will copy the array into the target
         int limit = map( array, target, lowerCase );
         pos = 0;
 
         // Second pass to remove spaces. We work on the target
-        int i = 0;
+        int start = 0;
         char c = '\0';
 
         // First remove starting spaces
-        for ( i = 0; i < limit; i++ )
+        for ( int i = 0; i < limit; i++ )
         {
             c = target[i];
 
@@ -4853,12 +4851,11 @@ public final class PrepareString
                 checkProhibited( c );
                 break;
             }
+            
+            start++;
         }
 
-        // Now, 'i' will be the starting point. We will just handle the special
-        // case of a combining character
-        int start = i;
-
+        // We will just handle the special case of a combining character
         if ( start == limit )
         {
             // we only have spaces, we keep only one
@@ -4885,9 +4882,37 @@ public final class PrepareString
         }
 
         // Now remove the spaces at the end
-        for ( i = limit - 1; i > start; i-- )
+        int i = 0;
+        
+        for ( i = limit - 1; i >= start; i-- )
         {
-            if ( target[i] != ' ' )
+            if ( target[i] == ' ' )
+            {
+                // Check if we have a preceding '\' 
+                if ( i - 1 >= start )
+                {
+                    // Break only if the space is preceded by a single ESC
+                    if ( i - 2 >= start )
+                    {
+                        if ( ( target[i - 1] == '\\' ) && ( target[i - 2] != '\\' ) )
+                        {
+                            target[i - 1] = ' ';
+                            i--;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if ( target[i - 1] == '\\' )
+                        {
+                            target[i - 1] = ' ';
+                            i--;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
             {
                 break;
             }
@@ -4895,13 +4920,15 @@ public final class PrepareString
 
         limit = i + 1;
 
-        // Let's deal with the following chars. It will be
-        // a list of chars and spaces. We will consider that
-        // we have couples of chars and spaces :
-        // (char * space*)*. We have a special case :
-        // a space followed by a combining char.
+        // Remove the " around the string if any
+        if ( target[start] == '"' )
+        {
+            start++;
+            limit--;
+        }
+
         boolean spaceSeen = false;
-        boolean space2Seen = false;
+        boolean escapeSeen = false;
 
         for ( i = start; i < limit; i++ )
         {
@@ -4909,35 +4936,33 @@ public final class PrepareString
 
             checkProhibited( c );
 
-            if ( isCombiningMark( c ) )
+            if ( c == ' ' )
             {
-                if ( spaceSeen )
+                if ( escapeSeen )
                 {
-                    if ( space2Seen )
-                    {
-                        target[pos++] = ' ';
-                    }
-
                     target[pos++] = ' ';
-                    target[pos++] = c;
-                    spaceSeen = false;
-                    space2Seen = false;
-                }
-                else
-                {
-                    target[pos++] = c;
-                }
-            }
-            else if ( c == ' ' )
-            {
-                if ( spaceSeen )
-                {
-                    space2Seen = true;
                 }
                 else
                 {
                     spaceSeen = true;
                 }
+
+                escapeSeen = false;
+            }
+            else if ( c == '\\' )
+            {
+                if ( escapeSeen )
+                {
+                    target[pos++] = '\\';
+                    target[pos++] = '\\';
+                }
+                else if ( spaceSeen )
+                {
+                    target[pos++] = ' ';
+                }
+                
+                escapeSeen = !escapeSeen;
+                spaceSeen = false;
             }
             else
             {
@@ -4945,19 +4970,38 @@ public final class PrepareString
                 {
                     target[pos++] = ' ';
                     spaceSeen = false;
-                    space2Seen = false;
                 }
-
+                else if ( escapeSeen )
+                {
+                    target[pos++] = '\\';
+                }
+                
                 target[pos++] = c;
+                escapeSeen = false;
             }
         }
 
-        return new String( target, 0, pos );
+        // A special case : we have seen a space at the end of the array : it must be added back
+        // because it's an escaped space, otherwise it would have been discarded by the previous 
+        // end of String's space removal
+        if ( spaceSeen )
+        {
+            target[pos++] = ' ';
+        }
+        // Same for the escape
+        else if ( escapeSeen )
+        {
+            target[pos++] = '\\';
+        }
+        // Ends by unescaping the escaped elements
+        String result = unescape( target, pos );
+
+        return result;
     }
 
 
     /**
-     * Remove all insignificant spaces in a Ascii string.
+     * Remove all insignificant spaces in a Ascii string. We don't remove escaped spaces.
      * 
      * This method use a finite state machine to parse
      * the text.
@@ -4975,7 +5019,7 @@ public final class PrepareString
             // Special case : an empty strings is replaced by 2 spaces
             return "";
         }
-
+        
         char[] array = str.toCharArray();
 
         int pos = 0;
@@ -4985,12 +5029,12 @@ public final class PrepareString
         int limit = map( array, array, lowerCase );
         pos = 0;
 
-        // Second pass to remove spaces. We work on the target
-        int i = 0;
+        // Second pass to remove spaces (except the escaped ones). We work on the target
+        int start = 0;
         char c = '\0';
 
         // First remove starting spaces
-        for ( i = 0; i < limit; i++ )
+        for ( int i = 0; i < limit; i++ )
         {
             c = array[i];
 
@@ -4999,12 +5043,11 @@ public final class PrepareString
                 checkProhibited( c );
                 break;
             }
+            
+            start++;
         }
 
-        // Now, 'i' will be the starting point. We will just handle the special
-        // case of a combining character
-        int start = i;
-
+        // We will just handle the special case of a combining character
         if ( start == limit )
         {
             // we only have spaces, we keep only one
@@ -5022,16 +5065,39 @@ public final class PrepareString
                 throw new InvalidCharacterException( c );
             }
         }
-        else
-        {
-            array[pos++] = c;
-            start++;
-        }
 
         // Now remove the spaces at the end
-        for ( i = limit - 1; i > start; i-- )
+        int i = 0;
+        
+        for ( i = limit - 1; i >= start; i-- )
         {
-            if ( array[i] != ' ' )
+            if ( array[i] == ' ' )
+            {
+                // Check if we have a preceding '\' 
+                if ( i - 1 >= start )
+                {
+                    // Break only if the space is preceded by a single ESC
+                    if ( i - 2 >= start )
+                    {
+                        if ( ( array[i - 1] == '\\' ) && ( array[i - 2] != '\\' ) )
+                        {
+                            array[i - 1] = ' ';
+                            i--;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if ( array[i - 1] == '\\' )
+                        {
+                            array[i - 1] = ' ';
+                            i--;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
             {
                 break;
             }
@@ -5039,12 +5105,15 @@ public final class PrepareString
 
         limit = i + 1;
 
-        // Let's deal with the following chars. It will be
-        // a list of chars and spaces. We will consider that
-        // we have couples of chars and spaces :
-        // (char* space*)*. We have a special case :
-        // a space followed by a combining char.
+        // Remove the " around the string if any
+        if ( array[start] == '"' )
+        {
+            start++;
+            limit--;
+        }
+        
         boolean spaceSeen = false;
+        boolean escapeSeen = false;
 
         for ( i = start; i < limit; i++ )
         {
@@ -5052,13 +5121,37 @@ public final class PrepareString
 
             checkProhibited( c );
 
-            if ( isCombiningMark( c ) )
+            /*if ( isCombiningMark( c ) )
             {
                 throw new InvalidCharacterException( c );
             }
-            else if ( c == ' ' )
+            else*/ if ( c == ' ' )
             {
-                spaceSeen = true;
+                if ( escapeSeen )
+                {
+                    array[pos++] = ' ';
+                }
+                else
+                {
+                    spaceSeen = true;
+                }
+
+                escapeSeen = false;
+            }
+            else if ( c == '\\' )
+            {
+                if ( escapeSeen )
+                {
+                    array[pos++] = '\\';
+                    array[pos++] = '\\';
+                }
+                else if ( spaceSeen )
+                {
+                    array[pos++] = ' ';
+                }
+                
+                escapeSeen = !escapeSeen;
+                spaceSeen = false;
             }
             else
             {
@@ -5067,11 +5160,196 @@ public final class PrepareString
                     array[pos++] = ' ';
                     spaceSeen = false;
                 }
-
+                else if ( escapeSeen )
+                {
+                    array[pos++] = '\\';
+                }
+                
                 array[pos++] = c;
+                escapeSeen = false;
             }
         }
 
-        return new String( array, 0, pos );
+        // A special case : we have seen a space at the end of the array : it must be added back
+        // because it's an escaped space, otherwise it would have been discarded by the previous 
+        // end of String's space removal
+        if ( spaceSeen )
+        {
+            array[pos++] = ' ';
+        }
+        // Same for the escape
+        else if ( escapeSeen )
+        {
+            array[pos++] = '\\';
+        }
+        
+        // Ends by unescaping the escaped elements
+        String result = unescape( array, pos );
+        
+        return result;
+    }
+    
+    
+    private static String unescape( char[] array, int end )
+    {
+        byte[] bytes = new byte[end * 3];
+        boolean escapeSeen = false;
+        int pos = 0;
+            
+        for ( int i = 0; i < end; i++ )
+        {
+            char c = array[i];
+            
+            if ( c == '\\' )
+            {
+                if ( escapeSeen )
+                {
+                    bytes[pos++] = '\\';
+                }
+                
+                escapeSeen = !escapeSeen;
+            }
+            else
+            {
+                if ( escapeSeen )
+                {
+                    switch ( c )
+                    {
+                        // Various form of space
+                        case 0x0A :
+                        case 0x0B :
+                        case 0x0C :
+                        case 0x0D :
+                        case 0x85 :
+                        case 0xA0 :
+                        case ' ' :
+                            bytes[pos++] = ' ';
+                            break;
+                        
+                        // Special chars
+                        case '#' :
+                        case '=' :
+                        case '+' :
+                        case '"' :
+                        case ',' :
+                        case ';' :
+                        case '<' :
+                        case '>' : 
+                            bytes[pos++] = ( byte ) c;
+                            break;
+                        
+                        // Hexpair
+                        case '0' :
+                        case '1' :
+                        case '2' :
+                        case '3' :
+                        case '4' :
+                        case '5' :
+                        case '6' :
+                        case '7' :
+                        case '8' :
+                        case '9' :
+                            bytes[pos++] = ( byte ) ( ( ( byte ) ( array[i] - '0' ) << 4 ) + toByte( array[i + 1] ) );
+                            i++;
+                            break;
+                            
+                        case 'a' :
+                        case 'b' :
+                        case 'c' :
+                        case 'd' :
+                        case 'e' :
+                        case 'f' :
+                            bytes[pos++] = ( byte ) ( ( ( byte ) ( array[i] - 'a' + 10 ) << 4 ) + toByte( array[i + 1] ) );
+                            i++;
+                            break;
+                            
+                        case 'A' :
+                        case 'B' :
+                        case 'C' :
+                        case 'D' :
+                        case 'E' :
+                        case 'F' :
+                            bytes[pos++] = ( byte ) ( ( ( byte ) ( array[i] - 'A' + 10 ) << 4 ) + toByte( array[i + 1] ) );
+                            i++;
+                            break;
+                            
+                        default :
+                            break;
+                    }
+                    
+                    escapeSeen = false;
+                }
+                else
+                {
+                    // We might have a UTF-8 char
+                    if ( ( c & 0x007F ) == c )
+                    {
+                        // Single byte char
+                        bytes[pos++] = ( byte ) c;
+                    }
+                    else if ( ( c & 0x07FF ) == c )
+                    {
+                        bytes[pos++] = ( byte ) ( 0x00C0 | ( c >> 6 ) );
+                        bytes[pos++] = ( byte ) ( 0x0080 | ( c & 0x003F ) );
+                    }
+                    else
+                    {
+                        bytes[pos++] = ( byte ) ( 0x00E0 | ( c >> 12 ) );
+                        bytes[pos++] = ( byte ) ( 0x0080 | ( ( c >> 6 ) & 0x3F ) );
+                        bytes[pos++] = ( byte ) ( 0x0080 | ( c & 0x003F ) );
+                    }
+                }
+            }
+        }
+        
+        // Deal with the special case where we have one single escape
+        if ( escapeSeen )
+        {
+            bytes[pos++] = '\\';
+        }
+        
+        String result = Strings.utf8ToString( bytes, pos );
+        
+        return result;
+    }
+    
+    
+    private static byte toByte( char c )
+    {
+        switch ( c )
+        {
+            case '0' :
+            case '1' :
+            case '2' :
+            case '3' :
+            case '4' :
+            case '5' :
+            case '6' :
+            case '7' :
+            case '8' :
+            case '9' :
+                return ( byte ) ( c - '0' );
+                
+            case 'a' :
+            case 'b' :
+            case 'c' :
+            case 'd' :
+            case 'e' :
+            case 'f' :
+                return ( byte ) ( c - 'a' + 10 );
+                
+            case 'A' :
+            case 'B' :
+            case 'C' :
+            case 'D' :
+            case 'E' :
+            case 'F' :
+                return ( byte ) ( c - 'A' + 10 );
+                
+            default :
+                break;
+        }
+        
+        return 0;
     }
 }

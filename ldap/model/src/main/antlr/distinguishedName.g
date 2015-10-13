@@ -151,6 +151,7 @@ options    {
     {
         Object value = "";
         String rawValue = "";
+		int lastEscapedSpace = -1;
     }
 }
 
@@ -351,15 +352,63 @@ attributeTypeAndValue [Rdn rdn] returns [String upName = ""]
                         value.rawValue = upValue + value.rawValue;
                     }
                     
-                    Object unescapedValue = Rdn.unescapeValue( Strings.trim( (String)value.rawValue ) );
+					int start = 0;
+		
+					for ( int pos = 0; pos < value.rawValue.length(); pos++ )
+					{
+					    if ( value.rawValue.charAt( pos ) == ' ' )
+					    {
+					        start++;
+					    }
+					    else
+					    {
+					        break;
+					    }
+					}
+		
+					boolean escape = false;
+					int lastEscapedSpace = -1;
+					
+					for ( int pos = start; pos< value.rawValue.length(); pos++ )
+					{
+					    if ( escape )
+					    {
+					        escape = false;
+		        
+					        if ( value.rawValue.charAt( pos ) == ' ' )
+					        {
+					            lastEscapedSpace = pos;
+					        }
+					    }
+					    else if ( value.rawValue.charAt( pos ) == '\\' )
+					    {
+					        escape = true;
+					    }
+					}
+		
+					// Remove spaces from the right if needed
+					int pos = value.rawValue.length() - 1;
+		
+					while ( ( value.rawValue.charAt( pos ) == ' ' ) && ( pos > lastEscapedSpace ) )
+					{
+					    pos--;
+					}
+					
+					String trimmedValue = value.rawValue;
+					
+					if ( ( start > 0 ) || ( pos + 1 < value.rawValue.length() ) )
+					{
+						trimmedValue = value.rawValue.substring( start, pos + 1 );
+					}
+					
+					Object unescapedValue = Rdn.unescapeValue( trimmedValue );
                     
                     if ( unescapedValue instanceof String )
                     {
                         ava = new Ava(
                             type,
                             type,
-                            new StringValue( (String)unescapedValue ),
-                            new StringValue( (String)value.value ), 
+                            new StringValue( trimmedValue, (String)unescapedValue ),
                             upName
                         );
                     }
@@ -369,7 +418,6 @@ attributeTypeAndValue [Rdn rdn] returns [String upName = ""]
                             type,
                             type,
                             new BinaryValue( (byte[])unescapedValue ),
-                            new StringValue( (String)value.value ), 
                             upName
                         );
                     }
@@ -380,7 +428,6 @@ attributeTypeAndValue [Rdn rdn] returns [String upName = ""]
                         type,
                         type,
                         new BinaryValue( (byte[])value.value ), 
-                        new BinaryValue( (byte[])value.value ),
                         upName
                     );
                 }
@@ -585,7 +632,10 @@ string [UpAndNormValue value]
                 bb.append( Strings.getBytesUtf8( tmp ) );
             }
             |
-            bytes = pair [value] { bb.append( bytes ); }
+            bytes = pair [value] 
+			{ 
+				bb.append( bytes );
+			}
         )
         ( 
             tmp = sutf1
@@ -600,10 +650,14 @@ string [UpAndNormValue value]
                 bb.append( Strings.getBytesUtf8( tmp ) );
             }
             |
-            bytes = pair [value] { bb.append( bytes ); }
+            bytes = pair [value] 
+			{ 
+				bb.append( bytes ); 
+			}
         )*
     )
     {
+		/*
         String string = Strings.utf8ToString( bb.copyOfUsedBytes() );
         
         // trim trailing space characters manually
@@ -618,6 +672,7 @@ string [UpAndNormValue value]
         }
         
         value.value = string;
+		*/
     }
     ;
 

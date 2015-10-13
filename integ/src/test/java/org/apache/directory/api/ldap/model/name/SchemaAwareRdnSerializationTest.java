@@ -157,8 +157,9 @@ public class SchemaAwareRdnSerializationTest
         rdn2.readExternal( in );
 
         assertEquals( rdn1, rdn2 );
-        assertEquals( "doe", rdn2.getValue( "cn" ) );
-        assertEquals( "Doe", rdn2.getValue().getString() );
+        assertEquals( "Doe", rdn2.getValue( "cn" ) );
+        assertEquals( "doe", rdn2.getNormValue( "cn" ) );
+        assertEquals( "Doe", rdn2.getValue() );
     }
 
 
@@ -175,8 +176,9 @@ public class SchemaAwareRdnSerializationTest
 
         assertEquals( pos1, pos2 );
         assertEquals( rdn1, rdn2 );
-        assertEquals( "doe", rdn2.getValue( "cn" ) );
-        assertEquals( "Doe", rdn2.getValue().getString() );
+        assertEquals( "Doe", rdn2.getValue( "cn" ) );
+        assertEquals( "doe", rdn2.getNormValue( "cn" ) );
+        assertEquals( "Doe", rdn2.getValue() );
     }
 
 
