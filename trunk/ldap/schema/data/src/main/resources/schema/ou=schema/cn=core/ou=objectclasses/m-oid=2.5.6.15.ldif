@@ -1,0 +1,13 @@
+version: 1
+dn: m-oid=2.5.6.15,ou=objectClasses,cn=core,ou=schema
+objectclass: top
+objectclass: metaTop
+objectclass: metaObjectClass
+m-oid: 2.5.6.15
+m-name: strongAuthenticationUser
+m-description: X.521 strong authentication user
+m-supobjectclass: top
+m-typeobjectclass: AUXILIARY
+m-must: userCertificate
+m-obsolete: FALSE
+creatorsname: uid=admin,ou=system

@@ -1,0 +1,13 @@
+version: 1
+dn: m-oid=2.5.6.16.2,ou=objectClasses,cn=core,ou=schema
+objectclass: top
+objectclass: metaTop
+objectclass: metaObjectClass
+m-oid: 2.5.6.16.2
+m-name: certificationAuthority-V2
+m-description: X.509 certificate authority, version 2
+m-supobjectclass: certificationAuthority
+m-typeobjectclass: AUXILIARY
+m-may: deltaRevocationList
+m-obsolete: FALSE
+creatorsname: uid=admin,ou=system

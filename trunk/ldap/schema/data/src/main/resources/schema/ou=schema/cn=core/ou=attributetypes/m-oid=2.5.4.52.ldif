@@ -1,0 +1,16 @@
+version: 1
+dn: m-oid=2.5.4.52,ou=attributeTypes,cn=core,ou=schema
+objectclass: top
+objectclass: metaTop
+objectclass: metaAttributeType
+m-oid: 2.5.4.52
+m-name: supportedAlgorithms
+m-description: X.509 supported algorithms
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.49
+m-equality: algorithmIdentifierMatch
+m-collective: FALSE
+m-singlevalue: FALSE
+m-obsolete: FALSE
+m-nousermodification: FALSE
+m-usage: USER_APPLICATIONS
+creatorsname: uid=admin,ou=system

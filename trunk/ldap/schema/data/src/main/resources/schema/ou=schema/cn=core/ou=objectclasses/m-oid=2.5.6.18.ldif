@@ -1,0 +1,13 @@
+version: 1
+dn: m-oid=2.5.6.18,ou=objectClasses,cn=core,ou=schema
+objectclass: top
+objectclass: metaTop
+objectclass: metaObjectClass
+m-oid: 2.5.6.18
+m-name: userSecurityInformation
+m-description: X.521 user security information
+m-supobjectclass: top
+m-typeobjectclass: AUXILIARY
+m-may: supportedAlgorithms
+m-obsolete: FALSE
+creatorsname: uid=admin,ou=system

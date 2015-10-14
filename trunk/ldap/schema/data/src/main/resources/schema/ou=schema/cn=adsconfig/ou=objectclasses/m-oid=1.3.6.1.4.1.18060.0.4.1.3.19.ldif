@@ -1,0 +1,14 @@
+version: 1
+dn: m-oid=1.3.6.1.4.1.18060.0.4.1.3.19,ou=objectClasses,cn=adsconfig,ou=schema
+m-oid: 1.3.6.1.4.1.18060.0.4.1.3.19
+m-name: ads-tcpTransport
+m-description: A TCP transport
+objectclass: top
+objectclass: metaTop
+objectclass: metaObjectClass
+m-supobjectclass: ads-transport
+m-may: ads-enabledProtocols
+m-may: ads-enabledCiphers
+m-may: ads-wantClientAuth
+m-may: ads-needClientAuth
+creatorsname: uid=admin,ou=system

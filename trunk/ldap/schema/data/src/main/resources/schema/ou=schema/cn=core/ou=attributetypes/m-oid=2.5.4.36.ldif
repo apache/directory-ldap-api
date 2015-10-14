@@ -1,0 +1,16 @@
+version: 1
+dn: m-oid=2.5.4.36,ou=attributeTypes,cn=core,ou=schema
+objectclass: top
+objectclass: metaTop
+objectclass: metaAttributeType
+m-oid: 2.5.4.36
+m-name: userCertificate
+m-description: X.509 user certificate
+m-syntax: 1.3.6.1.4.1.1466.115.121.1.8
+m-equality: certificateExactMatch
+m-usage: USER_APPLICATIONS
+m-singlevalue: FALSE
+m-collective: FALSE
+m-obsolete: FALSE
+m-nousermodification: FALSE
+creatorsname: uid=admin,ou=system

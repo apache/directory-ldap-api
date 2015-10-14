@@ -1,0 +1,13 @@
+version: 1
+dn: m-oid=2.5.6.21,ou=objectClasses,cn=core,ou=schema
+objectclass: top
+objectclass: metaTop
+objectclass: metaObjectClass
+m-oid: 2.5.6.21
+m-name: pkiUser
+m-description: X.509 PKI User
+m-supobjectclass: top
+m-typeobjectclass: AUXILIARY
+m-may: userCertificate
+m-obsolete: FALSE
+creatorsname: uid=admin,ou=system
