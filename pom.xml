@@ -33,6 +33,7 @@
   <version>1.0.0-M32-SNAPSHOT</version>
 
   <properties>
+    <additionalparam>-Xdoclint:none</additionalparam>
     <projectName>ApacheDS-LDAP-API</projectName>
     <distMgmtSiteUrl>scpexe://people.apache.org/www/directory.apache.org/api/gen-docs/${project.version}/</distMgmtSiteUrl>
     
