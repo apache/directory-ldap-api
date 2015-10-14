@@ -101,6 +101,24 @@ if($json) {
 else {
     # Default markdown format
     require POSIX;
+    print("#\n");
+    print("#  Licensed to the Apache Software Foundation (ASF) under one\n");
+    print("#  or more contributor license agreements.  See the NOTICE file\n");
+    print("#  distributed with this work for additional information\n");
+    print("#  regarding copyright ownership.  The ASF licenses this file\n");
+    print("#  to you under the Apache License, Version 2.0 (the\n");
+    print("#  \"License\"); you may not use this file except in compliance\n");
+    print("#  with the License.  You may obtain a copy of the License at\n");
+    print("#\n");
+    print("#    http://www.apache.org/licenses/LICENSE-2.0\n");
+    print("#\n");
+    print("#  Unless required by applicable law or agreed to in writing,\n");
+    print("#  software distributed under the License is distributed on an\n");
+    print("#  \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY\n");
+    print("#  KIND, either express or implied.  See the License for the\n");
+    print("#  specific language governing permissions and limitations\n");
+    print("#  under the License.\n");
+
     foreach my $oid (sort {versioncmp($a, $b)} keys(%oid_to_metadata)) {
         next unless ($oid =~ /^1\.3\.6\.1\.4\.1\.18060\.0\.4\.1\.(\d+)\.(\d+).*$/);
         my $section = "$1";
