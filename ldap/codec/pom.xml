@@ -21,7 +21,7 @@
   <parent>
     <groupId>org.apache.directory.api</groupId>
     <artifactId>api-ldap-parent</artifactId>
-    <version>1.0.0-M32-SNAPSHOT</version>
+    <version>1.0.0-M32</version>
   </parent>
   
   <artifactId>api-ldap-codec-parent</artifactId>
