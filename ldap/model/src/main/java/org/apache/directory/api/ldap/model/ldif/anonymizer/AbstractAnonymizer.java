@@ -20,35 +20,23 @@
 
 package org.apache.directory.api.ldap.model.ldif.anonymizer;
 
-
-import java.util.Map;
-
-import org.apache.directory.api.ldap.model.entry.Attribute;
-import org.apache.directory.api.ldap.model.entry.Value;
 import org.apache.directory.api.ldap.model.schema.SchemaManager;
 
-
 /**
- * An interface for Anonymizers.
+ * An abstract class implementing the default behavior of an Aninymizer instance
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public interface Anonymizer<K>
+public abstract class AbstractAnonymizer<K> implements Anonymizer<K>
 {
-    /**
-     * Take an attribute and its value, anonymizing all of them.
-     * 
-     * @param valueMap The existing map for value to the associated anonymized counterpart
-     * @param attribute The attribute to anonymize
-     * @return The anonymized attribute
-     */
-    Attribute anonymize( Map<Value<K>, Value<K>> valueMap, Attribute attribute );
-    
+    /** The SchemaManager instance */
+    protected SchemaManager schemaManager;
     
     /**
-     * Inject a SchemaManager instance in this Anonymizer
-     *
-     * @param schemaManager The SchemaManager instance
+     * {@inheritDoc}
      */
-    void setSchemaManager( SchemaManager schemaManager );
+    public void setSchemaManager( SchemaManager schemaManager )
+    {
+        this.schemaManager = schemaManager;
+    }
 }

@@ -32,11 +32,11 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
 
 
 /**
- * TODO DefaultAnonymizer.
+ * A DefaultAnonymizer. It take a value and change it to a random String
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class DefaultAnonymizer<K> implements Anonymizer<K>
+public class DefaultAnonymizer<K> extends AbstractAnonymizer<K>
 {
     /** Create a random generator */
     Random random = new Random( System.nanoTime() );
@@ -45,7 +45,6 @@ public class DefaultAnonymizer<K> implements Anonymizer<K>
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
      */
-    @Override
     public Attribute anonymize( Map<Value<K>, Value<K>> valueMap, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );

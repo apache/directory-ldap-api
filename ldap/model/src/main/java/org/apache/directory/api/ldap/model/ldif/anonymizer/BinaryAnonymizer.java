@@ -36,7 +36,7 @@ import org.apache.directory.api.ldap.model.exception.LdapInvalidAttributeValueEx
  *
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
-public class BinaryAnonymizer implements Anonymizer<byte[]>
+public class BinaryAnonymizer extends AbstractAnonymizer<byte[]>
 {
     /** Create a random generator */
     Random random = new Random( System.currentTimeMillis() );
@@ -45,7 +45,6 @@ public class BinaryAnonymizer implements Anonymizer<byte[]>
     /**
      * Anonymize an attribute using pure random values (either chars of bytes, depending on the Attribute type)
      */
-    @Override
     public Attribute anonymize( Map<Value<byte[]>, Value<byte[]>> valueMap, Attribute attribute )
     {
         Attribute result = new DefaultAttribute( attribute.getAttributeType() );
