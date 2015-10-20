@@ -22,7 +22,9 @@ package org.apache.directory.api.ldap.extras;
 
 import org.apache.directory.api.ldap.codec.api.ControlFactory;
 import org.apache.directory.api.ldap.codec.api.LdapApiService;
+import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeleted;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncFactory;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
@@ -153,6 +155,9 @@ public class ExtrasBundleActivator implements BundleActivator
 
         ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( codec );
         codec.registerControl( adDirSyncFactory );
+        
+        ControlFactory<AdShowDeleted> adDeletedFactory = new AdShowDeletedFactory( codec );
+        codec.registerControl( adDeletedFactory );
     }
 
 
@@ -210,6 +215,7 @@ public class ExtrasBundleActivator implements BundleActivator
         codec.unregisterControl( SyncStateValue.OID );
         codec.unregisterControl( PasswordPolicy.OID );
         codec.unregisterControl( AdDirSync.OID );
+        codec.unregisterControl( AdShowDeleted.OID );
     }
 
 

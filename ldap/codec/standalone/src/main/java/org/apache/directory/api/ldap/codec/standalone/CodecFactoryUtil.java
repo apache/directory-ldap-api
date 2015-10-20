@@ -34,7 +34,9 @@ import org.apache.directory.api.ldap.codec.controls.search.persistentSearch.Pers
 import org.apache.directory.api.ldap.codec.controls.search.subentries.SubentriesFactory;
 import org.apache.directory.api.ldap.codec.controls.sort.SortRequestFactory;
 import org.apache.directory.api.ldap.codec.controls.sort.SortResponseFactory;
+import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeleted;
 import org.apache.directory.api.ldap.extras.controls.ad.AdDirSync;
+import org.apache.directory.api.ldap.extras.controls.ad_impl.AdShowDeletedFactory;
 import org.apache.directory.api.ldap.extras.controls.ad_impl.AdDirSyncFactory;
 import org.apache.directory.api.ldap.extras.controls.ppolicy.PasswordPolicy;
 import org.apache.directory.api.ldap.extras.controls.ppolicy_impl.PasswordPolicyFactory;
@@ -160,6 +162,10 @@ public final class CodecFactoryUtil
         ControlFactory<AdDirSync> adDirSyncFactory = new AdDirSyncFactory( apiService );
         controlFactories.put( adDirSyncFactory.getOid(), adDirSyncFactory );
         LOG.info( "Registered pre-bundled control factory: {}", adDirSyncFactory.getOid() );
+        
+        ControlFactory<AdShowDeleted> adDeletedFactory = new AdShowDeletedFactory( apiService );
+        controlFactories.put( adDeletedFactory.getOid(), adDeletedFactory );
+        LOG.info( "Registered pre-bundled control factory: {}", adDeletedFactory.getOid() );
     }
 
 
