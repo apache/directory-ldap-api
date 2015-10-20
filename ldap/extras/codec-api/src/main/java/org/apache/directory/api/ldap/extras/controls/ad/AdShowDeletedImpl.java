@@ -47,15 +47,4 @@ public class AdShowDeletedImpl extends AbstractControl implements AdShowDeleted
         super( OID );
         setCritical( isCritical );
     }
-
-
-    public void setValue( byte[] value )
-    {
-    }
-
-
-    public boolean hasValue()
-    {
-        return false;
-    }
 }

@@ -32,7 +32,7 @@ import org.apache.directory.api.ldap.extras.controls.ad.AdShowDeleted;
 
 
 /**
- * The Active Directory Deleted control decorator.
+ * The Active Directory Show Deleted control decorator.
  * 
  * @author <a href="mailto:dev@directory.apache.org">Apache Directory Project</a>
  */
@@ -56,12 +56,19 @@ public class AdShowDeletedDecorator extends ControlDecorator<AdShowDeleted> impl
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public Asn1Object decode( byte[] controlBytes ) throws DecoderException
     {
         return this;
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ByteBuffer encode( ByteBuffer buffer ) throws EncoderException
     {
