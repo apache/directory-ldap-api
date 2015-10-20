@@ -25,6 +25,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,16 +106,19 @@ import org.apache.directory.api.ldap.schema.manager.impl.DefaultSchemaManager;
 public class LdifAnonymizer
 {
     /** The map that stores the anonymized values associated to the original value */
-    Map<Value<?>, Value<?>> valueMap = new HashMap<Value<?>, Value<?>>();
+    private Map<Value<?>, Value<?>> valueMap = new HashMap<Value<?>, Value<?>>();
     
     /** The map of AttributeType'sOID we want to anonymize. They are all associated with anonymizers */
-    Map<String, Anonymizer> attributeAnonymizers = new HashMap<String, Anonymizer>();
+    private Map<String, Anonymizer> attributeAnonymizers = new HashMap<String, Anonymizer>();
     
     /** The list of existing NamingContexts */
-    Set<Dn> namingContexts = new HashSet<Dn>();
+    private Set<Dn> namingContexts = new HashSet<Dn>();
 
     /** The schemaManager */
-    SchemaManager schemaManager;
+    private SchemaManager schemaManager;
+    
+    /** The PrintStream used to write informations about the processing */
+    private PrintStream out = null;
 
     /**
      * Creates a default instance of LdifAnonymizer. The list of anonymized attribute
@@ -130,11 +134,58 @@ public class LdifAnonymizer
         catch ( Exception e )
         {
             // Todo : we need a schemaManager
-            System.out.println( "Missing a SchemaManager !" );
+            println( "Missing a SchemaManager !" );
             System.exit( -1 );
         }
 
         init();
+    }
+    
+    
+    /**
+     * Set the PrintStream to use to print information about the processing
+     * 
+     * @param out The PrintStream to use
+     */
+    public void setOut( PrintStream out )
+    {
+        this.out = out;
+    }
+    
+    
+    /**
+     * Print the string into the PrintStream
+     */
+    private void print( String str )
+    {
+        if ( out != null )
+        {
+            out.print( str );
+        }
+    }
+    
+    
+    /**
+     * Print the string into the PrintStream, with a NL at the end
+     */
+    private void println( String str )
+    {
+        if ( out != null )
+        {
+            out.println( str );
+        }
+    }
+    
+    
+    /**
+     * Print a nl into the PrintStream
+     */
+    private void println()
+    {
+        if ( out != null )
+        {
+            out.println();
+        }
     }
     
 
@@ -421,7 +472,7 @@ public class LdifAnonymizer
         
         if ( !inputFile.exists() )
         {
-            System.out.println( "Cannot open file " + ldifFile );
+            println( "Cannot open file " + ldifFile );
             return;
         }
         
@@ -491,7 +542,7 @@ public class LdifAnonymizer
                     
                     if ( count % 100  == 0 )
                     {
-                        System.out.println();
+                        println();
                     }
                 }
                 catch ( Exception e )
@@ -500,36 +551,36 @@ public class LdifAnonymizer
 
                     if ( count % 100  == 0 )
                     {
-                        System.out.println();
+                        println();
                     }
                     
                     errors.add( ldifEntry );
                 }
             }
 
-            System.out.println();
+            println();
             
             if ( errors.size() != 0 )
             {
-                System.out.println( "There are " + errors.size() + " bad entries" );
+                println( "There are " + errors.size() + " bad entries" );
                 
                 for ( LdifEntry ldifEntry : errors )
                 {
-                    System.out.println( "---------------------------------------------------" );
-                    System.out.println( ldifEntry.getDn() );
+                    println( "---------------------------------------------------" );
+                    println( ldifEntry.getDn().toString() );
                 }
             }
         }
         finally
         {
-            System.out.println();
+            println();
 
             if ( errors.size() != 0 )
             {
-                System.out.println( "There are " + errors.size() + " bad entries" );
+                println( "There are " + errors.size() + " bad entries" );
             }
                 
-            System.out.println( "Nb entries : " + count ); 
+            println( "Nb entries : " + count ); 
             ldifReader.close();
         }
     }
@@ -612,7 +663,7 @@ public class LdifAnonymizer
         }
         catch ( Exception e )
         {
-            System.out.println( "Error :"  + e.getMessage() );
+            println( "Error :"  + e.getMessage() );
             return null;
         }
         finally
