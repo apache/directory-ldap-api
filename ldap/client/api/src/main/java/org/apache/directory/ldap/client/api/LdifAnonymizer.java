@@ -22,8 +22,11 @@ package org.apache.directory.ldap.client.api;
 
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -235,7 +238,7 @@ public class LdifAnonymizer
             {
                 attributeAnonymizers.put( attributeType.getOid(), new IntegerAnonymizer() );
             }
-            else
+            if ( syntax.getOid().equals( SchemaConstants.DIRECTORY_STRING_SYNTAX ) )
             {
                 attributeAnonymizers.put( attributeType.getOid(), new StringAnonymizer() );
             }
@@ -244,6 +247,20 @@ public class LdifAnonymizer
         {
             attributeAnonymizers.put( attributeType.getOid(), new BinaryAnonymizer() );
         }
+    }
+    
+    
+    /**
+     * Add an attributeType that has to be anonymized, with its associated anonymizer.
+     *
+     * @param attributeType the AttributeType that has to be anonymized
+     * @param anonymizer the instance of anonymizer to use with this AttributeType
+     * @throws LdapException If the attributeType cannot be added
+     */
+    public void addAnonAttributeType( AttributeType attributeType, Anonymizer<?> anonymizer ) throws LdapException
+    {
+        schemaManager.add( attributeType );
+        attributeAnonymizers.put( attributeType.getOid(), anonymizer );
     }
     
     
@@ -286,7 +303,7 @@ public class LdifAnonymizer
         {
             Attribute attribute = new DefaultAttribute( attributeType );
             attribute.add( value );
-            Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType() );
+            Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType().getOid() );
 
             if ( value.isHumanReadable() )
             {
@@ -349,6 +366,11 @@ public class LdifAnonymizer
                 break;
             }
         }
+        
+        if ( namingContext == null )
+        {
+            throw new LdapException( "No naming context attached with this entry : " + entryDn );
+        }
 
         Rdn[] anonymizedRdns = new Rdn[entryDn.size()];
         int rdnPos = entryDn.size() - 1;
@@ -393,66 +415,121 @@ public class LdifAnonymizer
      * @throws LdapException If we got some LDAP related exception
      * @throws IOException If we had some issue during some IO operations
      */
-    public String anonymizeFile( String ldifFile ) throws LdapException, IOException
+    public void anonymizeFile( String ldifFile, Writer writer ) throws LdapException, IOException
     {
-        LdifReader ldifReader = new LdifReader( schemaManager );
+        File inputFile = new File( ldifFile );
+        
+        if ( !inputFile.exists() )
+        {
+            System.out.println( "Cannot open file " + ldifFile );
+            return;
+        }
+        
+        LdifReader ldifReader = new LdifReader( inputFile, schemaManager );
+        int count = 0;
+        List<LdifEntry> errors = new ArrayList<LdifEntry>();
 
         try
         {
-            List<LdifEntry> entries = ldifReader.parseLdifFile( ldifFile );
-            StringBuilder result = new StringBuilder();
-
-            for ( LdifEntry ldifEntry : entries )
+            for ( LdifEntry ldifEntry : ldifReader )
             {
-                Entry entry = ldifEntry.getEntry();
-                Entry newEntry = new DefaultEntry( schemaManager );
-
-                // Process the DN first
-                Dn entryDn = entry.getDn();
+                count++;
                 
-                Dn anonymizedDn = anonymizeDn( entryDn );
-
-                // Now, process the entry
-                for ( Attribute attribute : entry )
+                try
                 {
-                    AttributeType attributeType = attribute.getAttributeType();
-                    
-                    if ( attributeType.getSyntax().getSyntaxChecker() instanceof DnSyntaxChecker )
-                    {
-                        for ( Value<?> dnValue : attribute )
-                        {
-                            Dn dn = new Dn( schemaManager, dnValue.getString() );
-                            Dn newdDn = anonymizeDn( dn );
-                            newEntry.add( attributeType, newdDn.toString() );
-                        }
-                    }
-                    else
-                    {
-                        int h = attribute.getAttributeType().hashCode();
-                        Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType().getOid() );
+                    Entry entry = ldifEntry.getEntry();
+                    Entry newEntry = new DefaultEntry( schemaManager );
     
-                        if ( anonymizer == null )
+                    // Process the DN first
+                    Dn entryDn = entry.getDn();
+                    
+                    Dn anonymizedDn = anonymizeDn( entryDn );
+                    
+                    if ( anonymizedDn == null )
+                    {
+                        // Wrong entry base DN
+                        continue;
+                    }
+    
+                    // Now, process the entry
+                    for ( Attribute attribute : entry )
+                    {
+                        AttributeType attributeType = attribute.getAttributeType();
+                        
+                        if ( attributeType.getSyntax().getSyntaxChecker() instanceof DnSyntaxChecker )
                         {
-                            newEntry.add( attribute );
+                            for ( Value<?> dnValue : attribute )
+                            {
+                                String dnStr = dnValue.getString();
+                                Dn dn = new Dn( schemaManager, dnStr );
+                                Dn newdDn = anonymizeDn( dn );
+                                newEntry.add( attributeType, newdDn.toString() );
+                            }
                         }
                         else
                         {
-                            Attribute anonymizedAttribute = anonymizer.anonymize( valueMap, attribute );
-    
-                            newEntry.add( anonymizedAttribute );
+                            Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType().getOid() );
+        
+                            if ( anonymizer == null )
+                            {
+                                newEntry.add( attribute );
+                            }
+                            else
+                            {
+                                Attribute anonymizedAttribute = anonymizer.anonymize( valueMap, attribute );
+        
+                                newEntry.add( anonymizedAttribute );
+                            }
                         }
                     }
-                }
 
-                newEntry.setDn( anonymizedDn );
-                result.append( LdifUtils.convertToLdif( newEntry ) );
-                result.append( "\n" );
+                    newEntry.setDn( anonymizedDn );
+                    writer.write( LdifUtils.convertToLdif( newEntry ) );
+                    writer.write( "\n" );
+
+                    System.out.print( '.' );
+                    
+                    if ( count % 100  == 0 )
+                    {
+                        System.out.println();
+                    }
+                }
+                catch ( Exception e )
+                {
+                    System.out.print( '*' );
+
+                    if ( count % 100  == 0 )
+                    {
+                        System.out.println();
+                    }
+                    
+                    errors.add( ldifEntry );
+                }
             }
 
-            return result.toString();
+            System.out.println();
+            
+            if ( errors.size() != 0 )
+            {
+                System.out.println( "There are " + errors.size() + " bad entries" );
+                
+                for ( LdifEntry ldifEntry : errors )
+                {
+                    System.out.println( "---------------------------------------------------" );
+                    System.out.println( ldifEntry.getDn() );
+                }
+            }
         }
         finally
         {
+            System.out.println();
+
+            if ( errors.size() != 0 )
+            {
+                System.out.println( "There are " + errors.size() + " bad entries" );
+            }
+                
+            System.out.println( "Nb entries : " + count ); 
             ldifReader.close();
         }
     }
@@ -484,11 +561,18 @@ public class LdifAnonymizer
                 Dn entryDn = entry.getDn();
                 
                 Dn anonymizedDn = anonymizeDn( entryDn );
+                
+                if ( anonymizedDn == null )
+                {
+                    continue;
+                }
 
                 // Now, process the entry
                 for ( Attribute attribute : entry )
                 {
                     AttributeType attributeType = attribute.getAttributeType();
+                    
+                    // Deal with the special case of 
                     
                     if ( attributeType.getSyntax().getSyntaxChecker() instanceof DnSyntaxChecker )
                     {
@@ -501,7 +585,7 @@ public class LdifAnonymizer
                     }
                     else
                     {
-                        Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType() );
+                        Anonymizer anonymizer = attributeAnonymizers.get( attribute.getAttributeType().getOid() );
     
                         if ( anonymizer == null )
                         {
@@ -510,8 +594,11 @@ public class LdifAnonymizer
                         else
                         {
                             Attribute anonymizedAttribute = anonymizer.anonymize( valueMap, attribute );
-    
-                            newEntry.add( anonymizedAttribute );
+                            
+                            if ( anonymizedAttribute != null )
+                            {
+                                newEntry.add( anonymizedAttribute );
+                            }
                         }
                     }
                 }
@@ -522,6 +609,11 @@ public class LdifAnonymizer
             }
 
             return result.toString();
+        }
+        catch ( Exception e )
+        {
+            System.out.println( "Error :"  + e.getMessage() );
+            return null;
         }
         finally
         {
